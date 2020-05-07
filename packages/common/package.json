@@ -6,8 +6,12 @@
     "compile": "tsc -b --incremental",
     "clean": "shx rm -f *.tsbuildinfo && shx rm -rf dist/*",
     "build": "yarn clean && yarn compile",
-    "lint": "eslint '*/**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
+    "test": "jest",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}'",
+    "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
     "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}"
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }

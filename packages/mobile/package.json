@@ -8,27 +8,17 @@
     "start": "react-native start",
     "prestart": "yarn workspace @homzhub/common build",
     "test": "jest",
-    "lint": "eslint '*/**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}'",
+    "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
     "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}"
   },
   "dependencies": {
     "@homzhub/common": "0.0.1",
+    "react-dom": "16",
     "react-native": "0.62.2"
   },
   "devDependencies": {
     "@types/react-native": "^0.62.7",
     "metro-react-native-babel-preset": "^0.59.0"
-  },
-  "jest": {
-    "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
   }
 }
