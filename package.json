@@ -1,0 +1,68 @@
+{
+  "name": "homzhub",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": []
+  },
+  "scripts": {
+    "lint": "yarn workspaces run lint",
+    "lint:fix": "yarn workspaces run lint:fix",
+    "start:web": "yarn workspace @homzhub/web start",
+    "start:mobile": "yarn workspace @homzhub/mobile start",
+    "android": "yarn workspace @homzhub/mobile android",
+    "ios": "yarn workspace @homzhub/mobile ios",
+    "build:web": "yarn workspace @homzhub/web build",
+    "build:mobile": "yarn workspace @homzhub/mobile build",
+    "format": "yarn workspaces run format"
+  },
+  "dependencies": {
+    "formik": "^1.5.8",
+    "react": "16.13.1",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@types/react": "^16.9.34",
+    "@types/react-native": "*",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.15",
+    "@types/jsdom": "^12.2.4",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.1.0",
+    "babel-jest": "^24.8.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "eslint-config-airbnb-typescript": "^7.2.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "eslint-plugin-react-native": "^3.8.1",
+    "husky": "^4.2.5",
+    "jest": "^24.1.0",
+    "jest-enzyme": "^7.0.2",
+    "jsdom": "^15.1.1",
+    "prettier": "^2.0.5",
+    "shx": "^0.3.2",
+    "typescript": "^3.8.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format && yarn lint"
+    }
+  }
+}
