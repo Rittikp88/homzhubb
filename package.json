@@ -20,9 +20,11 @@
     "format": "yarn workspaces run format"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "formik": "^1.5.8",
     "i18next": "^19.4.4",
     "react": "16.13.1",
+    "url-regex": "^5.0.0",
     "react-i18next": "^11.4.0",
     "react-native": "*"
   },

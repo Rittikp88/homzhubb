@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
 import languageDetector from './languageDetector';
 import { LocaleConstants, supportedLanguages } from './constants';
+import { Logger } from '../../utils/Logger';
 
 class I18nextService {
   private readonly _instance: i18n;
@@ -54,9 +55,9 @@ class I18nextService {
 
   private initCallback = (error: Error): void => {
     if (error) {
-      console.log(error);
+      Logger.error(error);
     } else {
-      console.log('Loaded i18next');
+      Logger.info('Loaded i18next');
     }
   };
 }
