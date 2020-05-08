@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import Title from '../Title';
 
 const title = 'This is title';
+// @ts-ignore
 const wrapped = shallow(<Title>{title}</Title>);
 describe('Title', () => {
   it('should render the Title Component correctly', () => {
