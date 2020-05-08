@@ -60,7 +60,7 @@
       }
     ],
     "@typescript-eslint/no-explicit-any": [
-      "error",
+      "warn",
       {
         "ignoreRestArgs": true
       }
@@ -116,7 +116,13 @@
     ],
     "comma-dangle": [
       "error",
-      "always-multiline"
+      {
+        "arrays": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never",
+        "imports": "always-multiline",
+        "objects": "always-multiline"
+      }
     ],
     "accessor-pairs": [
       "error",
@@ -138,8 +144,11 @@
     ],
     "object-curly-newline": "off",
     "no-console": "warn",
+    "global-require": "off",
+    "no-underscore-dangle": "off",
     "import/prefer-default-export": "off",
     "react/jsx-one-expression-per-line": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "react/state-in-constructor": "off"
   }
 }
