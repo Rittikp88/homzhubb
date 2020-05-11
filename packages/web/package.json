@@ -6,7 +6,7 @@
     "prestart": "yarn workspace @homzhub/common build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "test": "CI=true react-app-rewired test --coverage --env=jsdom",
     "eject": "react-app-rewired eject",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
@@ -32,6 +32,11 @@
     "snapshotSerializers": ["enzyme-to-json/serializer"],
     "collectCoverageFrom": ["src/**/*.tsx", "!src/index.tsx"],
     "coverageReporters": ["text"]
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   },
   "browserslist": {
     "production": [

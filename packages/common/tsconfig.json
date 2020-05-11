@@ -16,8 +16,10 @@
     "typeRoots": [
       "@types",
       "../../node_modules/@types"
-    ],
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true
-  }
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

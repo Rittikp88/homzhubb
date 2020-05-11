@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import { Welcome } from '@homzhub/common/src/components';
-import { I18nService } from '../../common/src/services/Localization/i18nextService';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
 interface IState {
   isLocalizationInitialised: boolean;

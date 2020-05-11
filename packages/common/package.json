@@ -6,10 +6,15 @@
     "compile": "tsc -b --incremental",
     "clean": "shx rm -f *.tsbuildinfo && shx rm -rf dist/*",
     "build": "yarn clean && yarn compile",
-    "test": "jest",
+    "test": "jest --coverage --env=jsdom",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
     "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}",
     "sonar": "ts-node sonar-project.ts"
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   }
 }

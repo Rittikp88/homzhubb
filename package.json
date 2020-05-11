@@ -67,6 +67,7 @@
     "husky": "^4.2.5",
     "jest": "^24.1.0",
     "jest-enzyme": "^7.0.2",
+    "jest-sonar-reporter": "^2.0.0",
     "jsdom": "^15.1.1",
     "prettier": "^2.0.5",
     "shx": "^0.3.2",
