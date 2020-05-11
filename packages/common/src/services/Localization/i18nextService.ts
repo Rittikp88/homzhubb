@@ -33,6 +33,7 @@ class I18nextService {
     return this._instance;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public t = (key: string, options?: any): string => {
     if (!this._instance) {
       this.init().then();

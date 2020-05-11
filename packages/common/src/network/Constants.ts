@@ -27,7 +27,7 @@ export const HttpStatusCode = {
   GatewayTimeout: 504,
 };
 
-export const HttpMethod: any = {
+export const HttpMethod = {
   GET: 'GET',
   HEAD: 'HEAD',
   POST: 'POST',

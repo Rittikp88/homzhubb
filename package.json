@@ -24,6 +24,7 @@
     "axios": "^0.19.2",
     "formik": "^1.5.8",
     "i18next": "^19.4.4",
+    "json2typescript": "^1.4.1",
     "react": "16.13.1",
     "react-i18next": "^11.4.0",
     "react-native": "*",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
@@ -74,7 +76,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format && yarn lint"
+      "pre-commit": "yarn format && yarn lint && yarn test"
     }
   }
 }

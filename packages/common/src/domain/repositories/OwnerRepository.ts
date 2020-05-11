@@ -5,18 +5,19 @@ import { IOwnerRepository } from './Interfaces';
 // TODO: Dummy repo for testing purpose, remove once API is ready
 
 const ENDPOINTS = {
-  allDetail: () => '/users',
+  allDetail: (): string => '/users',
 };
 
 class OwnerRepository implements IOwnerRepository {
-  get apiClient(): IApiClient {
-    return BootstrapAppService.clientInstance;
+  private apiClient: IApiClient;
+
+  public constructor() {
+    this.apiClient = BootstrapAppService.clientInstance;
   }
 
   public getDetails = async (): Promise<any> => {
     const url = ENDPOINTS.allDetail();
-    const response = await this.apiClient.get(url);
-    return response;
+    return await this.apiClient.get(url);
   };
 }
 

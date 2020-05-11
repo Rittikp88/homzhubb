@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 enum LogLevel {
   Info = 'info',
   Warn = 'warn',
@@ -20,7 +21,9 @@ export default class Logger {
   private logWithLevel = (logLevel: LogLevel, message: any): void => {
     const logMessage = JSON.parse(JSON.stringify(message));
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
+    // eslint-disable-next-line no-console
     console[logLevel.toString()](logMessage);
   };
 }

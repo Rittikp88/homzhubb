@@ -1,13 +1,13 @@
-/* @typescript-eslint/no-explicit-any: 0 */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export class ObjectUtils {
   public static isOfType = (type: string, val: any): boolean => {
-    return !!(val.constructor && val.constructor.name.toLowerCase() === type.toLowerCase());
+    return val.constructor && val.constructor.name.toLowerCase() === type.toLowerCase();
   };
 
   // This function sorts an array of objects based on a `key` of the object
   public static sort = (arrayOfObjects: any[], key: any): any => {
-    arrayOfObjects.sort((a, b) => {
+    return arrayOfObjects.sort((a, b) => {
       let comparison = 0;
       if (a[key] > b[key]) {
         comparison = 1;

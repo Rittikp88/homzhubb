@@ -146,6 +146,7 @@
     "no-console": "warn",
     "global-require": "off",
     "no-underscore-dangle": "off",
+    "no-return-await": "off",
     "import/prefer-default-export": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",

@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import { StringUtils } from '../utils/StringUtils';
 import ApiResponseHandler from './ApiResponseHandler';
 import { DEFAULT_API_TIMEOUT, HttpMethod } from './Constants';
@@ -81,7 +82,7 @@ export class ApiClient implements IApiClient {
     );
   };
 
-  public handleSuccess = (apiResponse: IApiResponse<any>): any => {
+  public handleSuccess = (apiResponse: IApiResponse): any => {
     let response = apiResponse;
     if (this.defaultHandler && this.defaultHandler.success) {
       response = this.defaultHandler.success(response);
@@ -110,7 +111,7 @@ export class ApiClient implements IApiClient {
   public get = (url: string, params?: {}, options?: IApiClientOptions): Promise<any> => {
     return this.request(
       {
-        method: HttpMethod.GET,
+        method: HttpMethod.GET as Method,
         url,
         params,
       },
@@ -121,7 +122,7 @@ export class ApiClient implements IApiClient {
   public post = (url: string, data?: {}, params?: {}, options?: IApiClientOptions): Promise<any> => {
     return this.request(
       {
-        method: HttpMethod.POST,
+        method: HttpMethod.POST as Method,
         url,
         data,
         params,
@@ -133,7 +134,7 @@ export class ApiClient implements IApiClient {
   public put = (url: string, data?: {}, params?: {}, options?: IApiClientOptions): Promise<any> => {
     return this.request(
       {
-        method: HttpMethod.PUT,
+        method: HttpMethod.PUT as Method,
         url,
         data,
       },
@@ -144,7 +145,7 @@ export class ApiClient implements IApiClient {
   public patch = (url: string, data?: {}, params?: {}, options?: IApiClientOptions): Promise<any> => {
     return this.request(
       {
-        method: HttpMethod.PATCH,
+        method: HttpMethod.PATCH as Method,
         url,
         data,
         params,
@@ -156,7 +157,7 @@ export class ApiClient implements IApiClient {
   public delete = (url: string, params?: {}, options?: IApiClientOptions): Promise<any> => {
     return this.request(
       {
-        method: HttpMethod.DELETE,
+        method: HttpMethod.DELETE as Method,
         url,
         params,
       },

@@ -1,16 +1,23 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src/**/*", "src/*.json"],
+  "include": [
+    "src/**/*",
+    "src/*.json",
+    "src/styles/font.ts"
+  ],
   "compilerOptions": {
+    "experimentalDecorators": true,
     "composite": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "outDir": "dist",
     "rootDir": "src",
     "typeRoots": [
       "@types",
       "../../node_modules/@types"
-    ]
+    ],
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
   }
 }

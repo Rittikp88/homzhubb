@@ -9,6 +9,7 @@ export default class ApiResponseHandler implements IApiResponseHandler {
     return NO_INTERNET_ERROR_MESSAGE;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public success = (response: IApiResponse): any => {
     const responseBody = response.data;
     if (!responseBody) {

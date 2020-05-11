@@ -9,7 +9,7 @@ const whitelist = Object.values(supportedLanguages);
  * key must be from among the above enum `supportedLanguages`
  */
 const resources = {
-  en: require('../../assets/lang/en.json'),
+  en: require('../../assets/languages/en.json'),
 };
 
 // Add namespaces here
