@@ -10,7 +10,7 @@
     "composite": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "outDir": "dist",
     "rootDir": "src",
     "typeRoots": [

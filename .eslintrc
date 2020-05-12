@@ -109,10 +109,6 @@
       "error",
       "prefer-double"
     ],
-    "indent": [
-      "error",
-      2
-    ],
     "semi": [
       "error",
       "always"
@@ -153,6 +149,8 @@
     "import/prefer-default-export": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/state-in-constructor": "off"
+    "react/state-in-constructor": "off",
+    "class-methods-use-this": "off",
+    "no-useless-computed-key": "off"
   }
 }

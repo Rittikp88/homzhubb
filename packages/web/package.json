@@ -10,7 +10,7 @@
     "eject": "react-app-rewired eject",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
-    "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}",
+    "format": "prettier --write 'src/**/*.{ts,tsx,scss,css}'",
     "sonar": "ts-node sonar-project.ts"
   },
   "dependencies": {

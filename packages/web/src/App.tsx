@@ -1,8 +1,10 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'react-redux';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { store } from '@homzhub/common/src/modules/store';
 import { Welcome } from '@homzhub/common/src/components';
-import { I18nService } from '../../common/src/services/Localization/i18nextService';
 
 interface IState {
   isLocalizationInitialised: boolean;
@@ -27,11 +29,13 @@ export class App extends React.PureComponent<{}, IState> {
 
     return (
       <I18nextProvider i18n={I18nService.instance}>
-        <SafeAreaView>
-          <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
-            <Welcome />
-          </ScrollView>
-        </SafeAreaView>
+        <Provider store={store}>
+          <SafeAreaView>
+            <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
+              <Welcome />
+            </ScrollView>
+          </SafeAreaView>
+        </Provider>
       </I18nextProvider>
     );
   };
