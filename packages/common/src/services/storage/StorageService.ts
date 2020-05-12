@@ -1,18 +1,29 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Storage } from './index';
+// eslint-disable-next-line import/extensions,import/no-unresolved
+import { Storage, CryptoJS } from './index';
+
+export enum StorageKeys {
+  TOKEN = '@token',
+}
 
 class StorageService {
+  private secret = 'secret';
+
   public get = async <T>(key: string): Promise<T | null> => {
     const value: string | null = await Storage.getItem(key);
     if (!value) {
       return null;
     }
 
-    return JSON.parse(value) as T;
+    const bytes = CryptoJS.AES.decrypt(value, this.secret);
+    const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    return decryptedData as T;
   };
 
   public set = async <T>(key: string, data: T): Promise<void> => {
-    await Storage.setItem(key, JSON.stringify(data));
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), this.secret).toString();
+    await Storage.setItem(key, encryptedData);
   };
 
   public remove = async (key: string): Promise<void> => {
@@ -22,22 +33,7 @@ class StorageService {
   public reset = async (): Promise<void> => {
     await Storage.clear();
   };
-
-  public clear = async (): Promise<void> => {
-    const keysToRemove = [LocalStorageKeys.TOKEN];
-    await Storage.multiRemove(keysToRemove);
-  };
-
-  public clearUserData = async (): Promise<void> => {
-    await Storage.removeItem(LocalStorageKeys.TOKEN);
-  };
 }
-
-export const LocalStorageKeys = {
-  TOKEN: '@token',
-};
-
-export type LocalStorageKeysName = keyof typeof LocalStorageKeys;
 
 const storageService = new StorageService();
 export { storageService as StorageService };
