@@ -47,7 +47,7 @@ const iconFontStyles = `
 }
 `;
 // Create stylesheet
-const style:any = document.createElement('style');
+const style: any = document.createElement('style');
 style.type = 'text/css';
 if (style.styleSheet) {
   style.styleSheet.cssText = iconFontStyles;
