@@ -1,8 +1,12 @@
-import { Logger } from '../utils/Logger';
-import { ObjectUtils } from '../utils/ObjectUtils';
-import { ApiClientError, IApiClientError } from './ApiClientError';
-import { DEFAULT_ERROR_MESSAGE, HttpStatusCode, NO_INTERNET_ERROR_MESSAGE } from './Constants';
-import { IApiError, IApiResponse, IApiResponseHandler } from './Interfaces';
+import { Logger } from '@homzhub/common/src/utils/Logger';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { ApiClientError, IApiClientError } from '@homzhub/common/src/network/ApiClientError';
+import {
+  DEFAULT_ERROR_MESSAGE,
+  HttpStatusCode,
+  NO_INTERNET_ERROR_MESSAGE,
+} from '@homzhub/common/src/network/Constants';
+import { IApiError, IApiResponse, IApiResponseHandler } from '@homzhub/common/src/network/Interfaces';
 
 export default class ApiResponseHandler implements IApiResponseHandler {
   public netInfoErrorMessage = (): string => {

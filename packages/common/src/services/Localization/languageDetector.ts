@@ -1,5 +1,5 @@
 import { Services, InitOptions, LanguageDetectorAsyncModule } from 'i18next';
-import { supportedLanguages } from './constants';
+import { supportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 
 const languageDetector: LanguageDetectorAsyncModule = {
   type: 'languageDetector',

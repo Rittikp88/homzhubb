@@ -1,5 +1,5 @@
 import { StyleProp, TextStyle } from 'react-native';
-import { I18nService } from '../services/Localization/i18nextService';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
 export interface IFontStyle {
   regular: StyleProp<TextStyle>;

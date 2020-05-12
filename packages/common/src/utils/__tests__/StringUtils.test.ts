@@ -1,4 +1,4 @@
-import { StringUtils } from '../StringUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 
 describe('String Utils', () => {
   it('should return true for a valid url', () => {

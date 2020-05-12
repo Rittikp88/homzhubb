@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { IFluxStandardAction } from '../interfaces';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 // TODO: For reference (remove)
 

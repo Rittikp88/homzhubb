@@ -9,7 +9,7 @@ const whitelist = Object.values(supportedLanguages);
  * key must be from among the above enum `supportedLanguages`
  */
 const resources = {
-  en: require('../../assets/languages/en.json'),
+  en: require('@homzhub/common/src/assets/languages/en.json'),
 };
 
 // Add namespaces here

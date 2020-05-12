@@ -1,4 +1,4 @@
-import { ObjectUtils } from '../ObjectUtils';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 
 interface ITestObject {
   name: string;

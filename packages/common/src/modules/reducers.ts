@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ownerReducer } from './owner/reducer';
+import { ownerReducer } from '@homzhub/common/src/modules/owner/reducer';
 
 // TODO: For reference (remove)
 

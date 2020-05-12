@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
 import { call, put, takeEvery } from '@redux-saga/core/effects';
-import { OwnerRepository } from '../../domain/repositories/OwnerRepository';
-import { OwnerActions, OwnerActionTypes } from './actions';
+import { OwnerRepository } from '@homzhub/common/src/domain/repositories/OwnerRepository';
+import { OwnerActions, OwnerActionTypes } from '@homzhub/common/src/modules/owner/actions';
 
 // TODO: For reference (remove)
 

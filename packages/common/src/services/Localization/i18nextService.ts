@@ -1,9 +1,9 @@
 import i18next, { i18n } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
-import languageDetector from './languageDetector';
-import { LocaleConstants, supportedLanguages } from './constants';
-import { Logger } from '../../utils/Logger';
+import languageDetector from '@homzhub/common/src/services/Localization/languageDetector';
+import { LocaleConstants, supportedLanguages } from '@homzhub/common/src/services/Localization/constants';
+import { Logger } from '@homzhub/common/src/utils/Logger';
 
 class I18nextService {
   private readonly _instance: i18n;

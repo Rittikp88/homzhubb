@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { JsonObject, JsonProperty, ObjectMapper } from '../ObjectMapper';
+import { JsonObject, JsonProperty, ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 
 @JsonObject('NestedClass')
 class NestedClass {

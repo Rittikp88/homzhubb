@@ -1,4 +1,4 @@
-import { Logger } from '../Logger';
+import { Logger } from '@homzhub/common/src/utils/Logger';
 
 describe('Logger', () => {
   const logMessage = 'test message';

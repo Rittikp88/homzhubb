@@ -1,4 +1,4 @@
-import { ConfigHelper } from '../ConfigHelper';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 
 jest.mock('config.json', () => ({
   API_BASE_URL: 'https://testbaseurl.com',

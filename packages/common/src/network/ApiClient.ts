@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
-import { StringUtils } from '../utils/StringUtils';
-import ApiResponseHandler from './ApiResponseHandler';
-import { DEFAULT_API_TIMEOUT, HttpMethod } from './Constants';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import ApiResponseHandler from '@homzhub/common/src/network/ApiResponseHandler';
+import { DEFAULT_API_TIMEOUT, HttpMethod } from '@homzhub/common/src/network/Constants';
 import {
   IApiClient,
   IApiClientConfig,
@@ -11,7 +11,7 @@ import {
   IApiInterceptor,
   IApiResponse,
   IApiResponseHandler,
-} from './Interfaces';
+} from '@homzhub/common/src/network/Interfaces';
 
 const createClient = (apiClient: IApiClient): AxiosInstance => {
   const baseURL = apiClient.getBaseUrl();

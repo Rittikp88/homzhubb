@@ -1,7 +1,7 @@
-import { ConfigHelper } from '../utils/ConfigHelper';
-import { ApiClient } from '../network/ApiClient';
-import ApiResponseHandler from '../network/ApiResponseHandler';
-import { IApiClient } from '../network/Interfaces';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { ApiClient } from '@homzhub/common/src/network/ApiClient';
+import ApiResponseHandler from '@homzhub/common/src/network/ApiResponseHandler';
+import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 class BootstrapAppService {
   private instance: IApiClient | undefined;

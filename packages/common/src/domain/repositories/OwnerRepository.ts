@@ -1,6 +1,6 @@
-import { BootstrapAppService } from '../../services/BootstrapAppService';
-import { IApiClient } from '../../network/Interfaces';
-import { IOwnerRepository } from './Interfaces';
+import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { IApiClient } from '@homzhub/common/src/network/Interfaces';
+import { IOwnerRepository } from '@homzhub/common/src/domain/repositories/Interfaces';
 
 // TODO: Dummy repo for testing purpose, remove once API is ready
 

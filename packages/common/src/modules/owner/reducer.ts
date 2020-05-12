@@ -1,6 +1,6 @@
-import { IOwnerState } from './interface';
-import { IFluxStandardAction } from '../interfaces';
-import { OwnerActionTypes } from './actions';
+import { IOwnerState } from '@homzhub/common/src/modules/owner/interface';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { OwnerActionTypes } from '@homzhub/common/src/modules/owner/actions';
 
 // TODO: For reference (remove)
 

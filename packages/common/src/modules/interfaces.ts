@@ -1,4 +1,4 @@
-import { IOwnerState } from './owner/interface';
+import { IOwnerState } from '@homzhub/common/src/modules/owner/interface';
 
 export interface IFluxStandardAction<Payload = undefined, Error = string> {
   type: string;

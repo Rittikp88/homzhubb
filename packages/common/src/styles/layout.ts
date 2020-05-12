@@ -1,4 +1,4 @@
-import { PlatformUtils } from '../utils/PlatformUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 const layoutStyles = {
   screenPadding: PlatformUtils.isIOS() ? 20 : 16,

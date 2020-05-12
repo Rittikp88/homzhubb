@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { ApiClientError } from './ApiClientError';
+import { ApiClientError } from '@homzhub/common/src/network/ApiClientError';
 
 export interface IApiClientOptions {
   apiName: string;

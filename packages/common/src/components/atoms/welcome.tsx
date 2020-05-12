@@ -3,7 +3,7 @@ import { Button, I18nManager, Platform, StyleSheet, Text, View } from 'react-nat
 import { TFunction } from 'i18next';
 import { withTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
-import { I18nService } from '../../services/Localization/i18nextService';
+import { I18nService } from '@homzhub/common/src//services/Localization/i18nextService';
 
 const Welcome = ({ t }: { t: TFunction }): React.ReactElement => {
   const onPress = (): void => {
