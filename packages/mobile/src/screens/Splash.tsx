@@ -1,10 +1,13 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 export const Splash = (): React.ReactElement => {
   return (
     <View>
-      <Text>Loading......</Text>
+      <Text type="small" textType="bold">
+        Loading......
+      </Text>
     </View>
   );
 };

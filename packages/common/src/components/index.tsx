@@ -1,1 +1,1 @@
-export { Welcome } from './atoms/welcome';
+export { Text } from '@homzhub/common/src/components/atoms/Text';
