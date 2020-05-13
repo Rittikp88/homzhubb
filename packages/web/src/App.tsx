@@ -2,9 +2,10 @@ import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { store } from '@homzhub/common/src/modules/store';
-import { Welcome } from '@homzhub/common/src/components';
+import { MainRouter } from './router/MainRouter';
 
 interface IState {
   isLocalizationInitialised: boolean;
@@ -32,7 +33,11 @@ export class App extends React.PureComponent<{}, IState> {
         <Provider store={store}>
           <SafeAreaView>
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
-              <Welcome />
+              <Provider store={store} key="HOMZHUB_KEY">
+                <BrowserRouter>
+                  <MainRouter />
+                </BrowserRouter>
+              </Provider>
             </ScrollView>
           </SafeAreaView>
         </Provider>
