@@ -1,9 +1,8 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { store } from '@homzhub/common/src/modules/store';
-import { Welcome } from '@homzhub/common/src/components';
+import { RootNavigator } from '@homzhub/mobile/src/navigation/RootNavigator';
 
 interface IState {
   isLocalizationInitialised: boolean;
@@ -28,20 +27,8 @@ export default class App extends React.PureComponent<{}, IState> {
 
     return (
       <Provider store={store}>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
-          <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
-            <Welcome />
-          </ScrollView>
-        </SafeAreaView>
+        <RootNavigator />
       </Provider>
     );
   };
 }
-
-const white = 'white';
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: white,
-  },
-});

@@ -10,16 +10,24 @@
     "test": "jest --coverage --env=jsdom",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
-    "format": "prettier --write 'src/**/*.{ts,tsx}'",
+    "format": "prettier --write './**/*.{ts,tsx,js,json}'",
     "sonar": "ts-node sonar-project.ts"
   },
   "dependencies": {
     "@homzhub/common": "0.0.1",
     "@react-native-community/async-storage": "^1.10.0",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/bottom-tabs": "^5.4.2",
+    "@react-navigation/native": "^5.3.0",
+    "@react-navigation/stack": "^5.3.3",
     "react-dom": "16",
     "react-native": "0.62.2",
     "react-native-crypto-js": "^1.0.0",
-    "react-native-restart": "^0.0.15"
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-reanimated": "^1.8.0",
+    "react-native-restart": "^0.0.15",
+    "react-native-safe-area-context": "^1.0.0",
+    "react-native-screens": "^2.7.0"
   },
   "devDependencies": {
     "@types/react-native": "^0.62.7",
