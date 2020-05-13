@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ImageRound /> renders a round image 1`] = `
+<Image
+  source={
+    Object {
+      "testUri": "../../../packages/common/src/assets/images/download.jpeg",
+    }
+  }
+  style={
+    Array [
+      undefined,
+      Object {
+        "borderRadius": 25,
+        "height": 50,
+        "width": 50,
+      },
+    ]
+  }
+/>
+`;
+
+exports[`<ImageSquare /> renders a square image 1`] = `
+<Image
+  source={
+    Object {
+      "testUri": "../../../packages/common/src/assets/images/download.jpeg",
+    }
+  }
+  style={
+    Array [
+      undefined,
+      Object {
+        "height": 50,
+        "width": 50,
+      },
+    ]
+  }
+/>
+`;

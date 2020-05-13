@@ -46,7 +46,7 @@ class I18nextService {
   };
 
   public select<T>(map: { [position in 'rtl' | 'ltr']: T }): T {
-    const key = this.isRTL ? 'rtl' : 'ltr';
+    const key = this.isRTL() ? 'rtl' : 'ltr';
     return map[key];
   }
 
