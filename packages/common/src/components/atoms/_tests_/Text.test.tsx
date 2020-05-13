@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
-const testProps = (Props: object) => ({
+const testProps = (Props: object): any => ({
   ...Props,
 });
 let props: any;
@@ -20,7 +20,7 @@ describe('Label Component', () => {
         props = testProps({
           type: labelType.type,
         });
-        const tree = renderer.create(<Label {...props}>Demo</Label>).toJSON();
+        const tree = renderer.create(<Label {...props}>Text</Label>).toJSON();
         expect(tree).toMatchSnapshot();
       });
     });

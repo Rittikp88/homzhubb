@@ -6,7 +6,7 @@ exports[`Label Component Snapshot tests for <Label> Type: Default 1`] = `
     Array [
       Object {
         "fontSize": 10,
-        "lineHeight": 150,
+        "lineHeight": 15,
         "textAlign": "left",
       },
       Object {
@@ -17,7 +17,7 @@ exports[`Label Component Snapshot tests for <Label> Type: Default 1`] = `
     ]
   }
 >
-  Demo
+  Text
 </Text>
 `;
 
@@ -27,7 +27,7 @@ exports[`Label Component Snapshot tests for <Label> Type: Regular 1`] = `
     Array [
       Object {
         "fontSize": 12,
-        "lineHeight": 150,
+        "lineHeight": 18,
         "textAlign": "left",
       },
       Object {
@@ -38,7 +38,7 @@ exports[`Label Component Snapshot tests for <Label> Type: Regular 1`] = `
     ]
   }
 >
-  Demo
+  Text
 </Text>
 `;
 
@@ -48,7 +48,7 @@ exports[`Label Component Snapshot tests for <Label> Type: Small 1`] = `
     Array [
       Object {
         "fontSize": 10,
-        "lineHeight": 150,
+        "lineHeight": 15,
         "textAlign": "left",
       },
       Object {
@@ -59,7 +59,7 @@ exports[`Label Component Snapshot tests for <Label> Type: Small 1`] = `
     ]
   }
 >
-  Demo
+  Text
 </Text>
 `;
 
@@ -68,8 +68,8 @@ exports[`Text Component Snapshot tests for <Text> Type: Default 1`] = `
   style={
     Array [
       Object {
-        "fontSize": 24,
-        "lineHeight": 100,
+        "fontSize": 16,
+        "lineHeight": 24,
         "textAlign": "left",
       },
       Object {
@@ -89,8 +89,8 @@ exports[`Text Component Snapshot tests for <Text> Type: Large 1`] = `
   style={
     Array [
       Object {
-        "fontSize": 32,
-        "lineHeight": 100,
+        "fontSize": 24,
+        "lineHeight": 24,
         "textAlign": "left",
       },
       Object {
@@ -110,8 +110,8 @@ exports[`Text Component Snapshot tests for <Text> Type: Regular 1`] = `
   style={
     Array [
       Object {
-        "fontSize": 30,
-        "lineHeight": 100,
+        "fontSize": 20,
+        "lineHeight": 30,
         "textAlign": "left",
       },
       Object {
@@ -131,8 +131,8 @@ exports[`Text Component Snapshot tests for <Text> Type: Small 1`] = `
   style={
     Array [
       Object {
-        "fontSize": 24,
-        "lineHeight": 100,
+        "fontSize": 16,
+        "lineHeight": 24,
         "textAlign": "left",
       },
       Object {

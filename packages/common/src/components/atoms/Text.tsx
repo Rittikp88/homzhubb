@@ -9,6 +9,7 @@ export type FontWeightType = 'light' | 'regular' | 'semiBold' | 'bold' | 'extraB
 interface IStyle {
   labelSmall: TextStyle;
   labelRegular: TextStyle;
+  labelLarge: TextStyle;
   textSmall: TextStyle;
   textRegular: TextStyle;
   textLarge: TextStyle;
@@ -31,28 +32,36 @@ const styles: IStyle = StyleSheet.create<IStyle>({
     lineHeight: 18,
     textAlign: 'left',
   },
+  labelLarge: {
+    fontSize: I18nService.select<number>({
+      rtl: 14,
+      ltr: 14,
+    }),
+    lineHeight: 21,
+    textAlign: 'left',
+  },
   textSmall: {
     fontSize: I18nService.select<number>({
-      rtl: 24,
-      ltr: 24,
+      rtl: 16,
+      ltr: 16,
     }),
     lineHeight: 24,
     textAlign: 'left',
   },
   textRegular: {
     fontSize: I18nService.select<number>({
-      rtl: 30,
-      ltr: 30,
+      rtl: 20,
+      ltr: 20,
     }),
     lineHeight: 30,
     textAlign: 'left',
   },
   textLarge: {
     fontSize: I18nService.select<number>({
-      rtl: 32,
-      ltr: 32,
+      rtl: 24,
+      ltr: 24,
     }),
-    lineHeight: 32,
+    lineHeight: 24,
     textAlign: 'left',
   },
 });
@@ -67,12 +76,13 @@ const Label = ({ type, style, children, textType, ...props }: IProps): ReactElem
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
   switch (type) {
-    case 'small':
-      defaultStyle = styles.labelSmall;
+    case 'large':
+      defaultStyle = styles.labelLarge;
       break;
     case 'regular':
       defaultStyle = styles.labelRegular;
       break;
+    case 'small':
     default:
       defaultStyle = styles.labelSmall;
       break;
@@ -88,15 +98,13 @@ const Text = ({ type, style, children, textType, ...props }: IProps): ReactEleme
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
   switch (type) {
-    case 'small':
-      defaultStyle = styles.textSmall;
-      break;
     case 'regular':
       defaultStyle = styles.textRegular;
       break;
     case 'large':
       defaultStyle = styles.textLarge;
       break;
+    case 'small':
     default:
       defaultStyle = styles.textSmall;
       break;
