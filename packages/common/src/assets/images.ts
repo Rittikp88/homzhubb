@@ -1,2 +1,9 @@
 // Require all images here
-export const images = {};
+const images = {
+  eyeOpen: require('./images/eye.png'),
+  eyeClosed: require('./images/eye-slash.png'),
+};
+
+export default images;
+
+export { images as Images };

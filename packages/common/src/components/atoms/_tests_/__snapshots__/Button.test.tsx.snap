@@ -6,11 +6,8 @@ exports[`Button should match snapshot 1`] = `
   onPress={[Function]}
   style={
     Object {
-      "alignItems": "center",
       "backgroundColor": "#0084F8",
       "borderRadius": 4,
-      "flex": 1,
-      "justifyContent": "center",
     }
   }
 >
@@ -37,11 +34,8 @@ exports[`Button should match snapshot for disabled 1`] = `
   onPress={[Function]}
   style={
     Object {
-      "alignItems": "center",
       "backgroundColor": "#C9D6DF",
       "borderRadius": 4,
-      "flex": 1,
-      "justifyContent": "center",
     }
   }
 >
@@ -68,13 +62,10 @@ exports[`Button should match snapshot for secondary button 1`] = `
   onPress={[Function]}
   style={
     Object {
-      "alignItems": "center",
       "backgroundColor": "#FFFFFF",
       "borderColor": "#0084F8",
       "borderRadius": 4,
       "borderWidth": 1,
-      "flex": 1,
-      "justifyContent": "center",
     }
   }
 >

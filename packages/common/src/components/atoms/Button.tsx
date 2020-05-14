@@ -1,26 +1,42 @@
 import React from 'react';
-import { GestureResponderEvent, StyleSheet, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+  Image,
+  ImageSourcePropType,
+  ImageStyle,
+} from 'react-native';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 export type ButtonType = 'primary' | 'secondary';
-interface IButtonProps {
+
+export interface IButtonProps {
   type: ButtonType;
-  title: string;
-  onPress: (event: GestureResponderEvent) => void;
+  title?: string;
+  onPress?: (event: GestureResponderEvent) => void;
   disabled?: boolean;
   titleStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  image?: ImageSourcePropType;
+  imageStyle?: StyleProp<ImageStyle>;
 }
 
 export class Button extends React.PureComponent<IButtonProps> {
   public render = (): React.ReactElement => {
-    const { onPress, title, disabled = false } = this.props;
+    const { onPress, title, disabled = false, image, imageStyle } = this.props;
     return (
       <TouchableOpacity onPress={onPress} disabled={disabled} style={this.getContainerStyle()}>
-        <Text type="small" textType="semiBold" style={this.getTextStyle()}>
-          {title}
-        </Text>
+        {title && (
+          <Text type="small" textType="semiBold" style={this.getTextStyle()}>
+            {title}
+          </Text>
+        )}
+        {image && <Image resizeMode="cover" source={image} style={imageStyle} />}
       </TouchableOpacity>
     );
   };
@@ -50,7 +66,6 @@ export class Button extends React.PureComponent<IButtonProps> {
 
 const styles = StyleSheet.create({
   container: {
-    ...theme.globalStyles.center,
     borderRadius: 4,
   },
   textStyle: {

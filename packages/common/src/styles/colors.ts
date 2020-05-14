@@ -11,7 +11,12 @@ const namedColors = {
   mediumPriority: '#FBC02D',
   highPriority: '#FF8576',
   error: '#F23C06',
-  dark: '#001B36',
+  dark: '#001b36',
+};
+
+const colorTints = {
+  darkTint3: '#4C5F72',
+  darkTint4: '#33495E',
 };
 
 // Theme based color scheme
@@ -27,4 +32,5 @@ const themedColors = {
 export const colors = {
   ...namedColors,
   ...themedColors,
+  ...colorTints,
 };
