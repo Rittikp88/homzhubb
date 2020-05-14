@@ -4,7 +4,7 @@ exports[`<ImageRound /> renders a round image 1`] = `
 <Image
   source={
     Object {
-      "testUri": "../../../packages/common/src/assets/images/download.jpeg",
+      "testUri": "../../../packages/common/src/assets/images/logo.png",
     }
   }
   style={
@@ -24,7 +24,7 @@ exports[`<ImageSquare /> renders a square image 1`] = `
 <Image
   source={
     Object {
-      "testUri": "../../../packages/common/src/assets/images/download.jpeg",
+      "testUri": "../../../packages/common/src/assets/images/logo.png",
     }
   }
   style={

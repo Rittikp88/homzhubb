@@ -1,15 +1,23 @@
 import React from 'react';
-import { GestureResponderEvent, StyleSheet, View } from 'react-native';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Image, StatusBar, StyleSheet, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { images } from '@homzhub/common/src/assets/images';
 
 export const Splash = (): React.ReactElement => {
-  const onPress = (event: GestureResponderEvent): void => {};
-
   return (
-    <View style={styles.container}>
-      <Button type="primary" containerStyle={theme.buttonStyle.error} title="Button" onPress={onPress} />
-    </View>
+    <LinearGradient
+      useAngle
+      angle={157.69}
+      colors={[theme.colors.splashGradientA, theme.colors.splashGradientB]}
+      locations={[0.0512, 0.9475]}
+      style={styles.container}
+    >
+      <StatusBar translucent backgroundColor="transparent" />
+      <View style={styles.logoContainer}>
+        <Image source={images.logo} />
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -17,6 +25,19 @@ const styles = StyleSheet.create({
   container: {
     ...theme.globalStyles.center,
     flexDirection: 'row',
-    marginHorizontal: theme.layout.screenPadding,
+  },
+  logoContainer: {
+    padding: 30,
+    borderRadius: 8,
+    backgroundColor: theme.colors.white,
+    shadowColor: theme.colors.shadow,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+
+    elevation: 12,
   },
 });

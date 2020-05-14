@@ -1,9 +1,6 @@
 // Require all images here
-const images = {
-  eyeOpen: require('./images/eye.png'),
-  eyeClosed: require('./images/eye-slash.png'),
+export const images = {
+  logo: require('@homzhub/common/src/assets/images/logo.png'),
+  eyeOpen: require('@homzhub/common/src/assets/images/eye.png'),
+  eyeClosed: require('@homzhub/common/src/assets/images/eye-slash.png'),
 };
-
-export default images;
-
-export { images as Images };

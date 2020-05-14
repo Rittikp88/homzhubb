@@ -24,6 +24,7 @@
     "react-native": "0.62.2",
     "react-native-crypto-js": "^1.0.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-reanimated": "^1.8.0",
     "react-native-restart": "^0.0.15",
     "react-native-safe-area-context": "^1.0.0",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@types/react-native": "^0.62.7",
+    "@types/react-native-linear-gradient": "^2.4.0",
     "@types/react-native-restart": "^0.0.0",
     "metro-react-native-babel-preset": "^0.59.0"
   },

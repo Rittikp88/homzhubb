@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { ImageRound, ImageSquare } from '@homzhub/common/src/components';
 
 const SearchOnBoarding = (
   props: NavigationScreenProps<AuthStackParamList, ScreensKeys.SearchOnBoarding>
@@ -16,8 +15,6 @@ const SearchOnBoarding = (
     <View style={styles.container}>
       <Text>{route.name}</Text>
       <Button title="Next" onPress={onPress} />
-      <ImageRound size={50} source={require('@homzhub/common/src/assets/images/download.jpeg')} />
-      <ImageSquare size={100} source={require('@homzhub/common/src/assets/images/download.jpeg')} />
     </View>
   );
 };

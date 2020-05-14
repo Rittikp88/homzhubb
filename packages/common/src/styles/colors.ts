@@ -11,10 +11,11 @@ const namedColors = {
   mediumPriority: '#FBC02D',
   highPriority: '#FF8576',
   error: '#F23C06',
-  dark: '#001b36',
+  dark: '#001B36',
+  shadow: '#000',
 };
 
-const colorTints = {
+const tintColors = {
   darkTint3: '#4C5F72',
   darkTint4: '#33495E',
 };
@@ -29,8 +30,15 @@ const themedColors = {
   error: namedColors.error,
 };
 
+// colors for adding gradients on UI
+const gradientColors = {
+  splashGradientA: '#037ADE',
+  splashGradientB: '#03E5B7',
+};
+
 export const colors = {
   ...namedColors,
   ...themedColors,
-  ...colorTints,
+  ...gradientColors,
+  ...tintColors,
 };
