@@ -11,7 +11,6 @@ import {
 import { FormikErrors, FormikProps, FormikValues } from 'formik';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
-import { images } from '@homzhub/common/src/assets/images';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -97,8 +96,10 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
             type="secondary"
             onPress={this.toggleShowPassword}
             containerStyle={styles.passwordButton}
-            image={showPassword ? images.eyeOpen : images.eyeClosed}
-            imageStyle={styles.passwordIcon}
+            icon={showPassword ? 'eye-open' : 'eye-close'}
+            iconColor={showPassword ? theme.colors.primaryColor : theme.colors.disabled}
+            iconSize={20}
+            iconStyle={styles.passwordIcon}
           />
         ) : undefined;
         break;
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
   },
   passwordIcon: {
     height: 16,
-    width: 16,
+    width: 20,
     opacity: 0.4,
   },
   container: {

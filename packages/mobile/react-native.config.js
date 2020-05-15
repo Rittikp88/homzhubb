@@ -3,5 +3,5 @@ module.exports = {
     ios: {},
     android: {}, // grouped into "project"
   },
-  assets: ['@homzhub/common/src/assets/fonts'], // stays the same
+  assets: ['../common/src/assets/fonts'], // stays the same
 };

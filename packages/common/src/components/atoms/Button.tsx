@@ -6,12 +6,11 @@ import {
   TextStyle,
   TouchableOpacity,
   ViewStyle,
-  Image,
-  ImageSourcePropType,
   ImageStyle,
 } from 'react-native';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon from '@homzhub/common/src/assets/icon';
 
 export type ButtonType = 'primary' | 'secondary';
 
@@ -22,13 +21,15 @@ export interface IButtonProps {
   disabled?: boolean;
   titleStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
-  image?: ImageSourcePropType;
-  imageStyle?: StyleProp<ImageStyle>;
+  icon?: string;
+  iconSize?: number;
+  iconColor?: string;
+  iconStyle?: StyleProp<ImageStyle>;
 }
 
 export class Button extends React.PureComponent<IButtonProps> {
   public render = (): React.ReactElement => {
-    const { onPress, title, disabled = false, image, imageStyle } = this.props;
+    const { onPress, title, disabled = false, icon, iconSize, iconColor, iconStyle } = this.props;
     return (
       <TouchableOpacity onPress={onPress} disabled={disabled} style={this.getContainerStyle()}>
         {title && (
@@ -36,7 +37,7 @@ export class Button extends React.PureComponent<IButtonProps> {
             {title}
           </Text>
         )}
-        {image && <Image resizeMode="cover" source={image} style={imageStyle} />}
+        {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
       </TouchableOpacity>
     );
   };
