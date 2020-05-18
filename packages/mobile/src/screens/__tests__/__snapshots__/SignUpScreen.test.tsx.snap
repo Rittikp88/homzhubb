@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignUp Screen should match snapshot 1`] = `
+<ForwardRef(SafeAreaView)
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+    }
+  }
+>
+  <ScrollViewMock
+    keyboardShouldPersistTaps="handled"
+  >
+    <withI18nextTranslation(SignUpForm) />
+  </ScrollViewMock>
+</ForwardRef(SafeAreaView)>
+`;

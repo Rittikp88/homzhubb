@@ -1,6 +1,24 @@
 {
   "common": {
     "welcome": "Welcome to Homzhub",
-    "ok": "OK"
+    "ok": "OK",
+    "termsCondition": "terms and Condition"
+  },
+  "auth": {
+    "enterName": "Enter Your Name",
+    "enterEmail": "Enter Your Email",
+    "newPassword": "New Password",
+    "yourNumber": "Your Mobile Number",
+    "signup": "Signup",
+    "nameRequired": "Please enter your name",
+    "emailRequired": "Please enter your email",
+    "numberRequired": "Please enter your mobile number",
+    "passwordRequired": "Please enter your password",
+    "otpVerification": "We will send you an OTP via SMS for verification",
+    "passwordValidation": "Should contain a upper-case, lower-case alphabet and a number",
+    "emailValidation": "Please enter valid email-id",
+    "onlyAlphabets": "Only alphabets are allowed",
+    "minimumCharacters": "Minimum 8 characters allowed",
+    "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub"
   }
 }

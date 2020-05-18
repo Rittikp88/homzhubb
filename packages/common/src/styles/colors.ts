@@ -18,8 +18,10 @@ const namedColors = {
 };
 
 const tintColors = {
-  darkTint3: '#4C5F72',
-  darkTint4: '#33495E',
+  darkTint3: '#33495E',
+  darkTint4: '#4C5F72',
+  darkTint5: '#667686',
+  darkTint7: '#99A4AF',
 };
 
 // Theme based color scheme

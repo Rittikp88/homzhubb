@@ -6,6 +6,7 @@ export enum ScreensKeys {
   OnBoarding = 'OnBoarding',
   Home = 'Home',
   GettingStarted = 'Getting Started',
+  SignUp = 'SignUp',
 }
 
 // Tab keys

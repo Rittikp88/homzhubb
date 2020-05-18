@@ -6,14 +6,15 @@ import {
   TextStyle,
   View,
   ViewStyle,
+  Image,
   TextInput as RNTextInput,
 } from 'react-native';
 import { FormikErrors, FormikProps, FormikValues } from 'formik';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon from '@homzhub/common/src/assets/icon';
+import { images } from '@homzhub/common/src/assets/images';
+import { Label, Button, WithFieldError, TextSizeType } from '@homzhub/common/src/components';
 
 type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default';
 
@@ -22,18 +23,24 @@ export interface IFormTextInputProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
   formProps: FormikProps<FormikValues>;
   inputType: SupportedInputType;
+  labelTextType?: TextSizeType;
   name: string;
+  label: string;
+  helpText?: string;
   hideError?: boolean;
+  isOptional?: boolean;
   inputPrefixText?: string;
   inputGroupPrefix?: React.ReactNode;
   inputGroupSuffix?: React.ReactNode;
   hidePasswordRevealer?: boolean;
   disallowedCharacters?: RegExp;
   onValueChange?: (text: string) => void;
+  isTouched?: boolean;
 }
 
 interface IFormTextInputState {
   showPassword: boolean;
+  isFocused: boolean;
 }
 
 export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputState> {
@@ -41,11 +48,13 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
 
   public state = {
     showPassword: false,
+    isFocused: false,
   };
 
   public render(): React.ReactNode {
     const {
       name,
+      label,
       placeholder,
       formProps,
       style = {},
@@ -55,14 +64,20 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       children,
       hideError,
       containerStyle = {},
+      isOptional,
+      helpText,
+      isTouched = true,
+      maxLength = 40,
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
-    const { values } = formProps;
-    const { showPassword } = this.state;
+    const { values, setFieldTouched } = formProps;
+    const { showPassword, isFocused } = this.state;
+    const optionalText: string | null = isOptional ? '(optional)' : null;
 
     // @ts-ignore
     const inputFieldStyles = { ...theme.form.input, ...style };
+    let labelStyles = { ...theme.form.formLabel };
 
     let inputProps = {
       value: values[name],
@@ -70,7 +85,15 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       placeholderTextColor: theme.form.placeholderColor,
       style: inputFieldStyles,
       autoCorrect: false,
+      maxLength,
       onChangeText: this.handleTextChange,
+      onBlur: (): void => {
+        setFieldTouched(name, isTouched);
+        this.handleBlur();
+      },
+      onFocus: (): void => {
+        this.handleFocus();
+      },
       ...rest,
     };
 
@@ -101,14 +124,17 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
         ) : undefined;
         break;
       }
+      // TODO: (Shikha:18/05/20)- once backend is ready, refactor flag image part according data
       case 'phone':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
         if (inputPrefixText.length > 0) {
           inputGroupPrefix = (
             <View style={styles.inputGroupPrefix}>
+              <Image source={images.flag} height={12} width={18} style={styles.flagStyle} />
               <Label type="regular" style={styles.inputPrefixText}>
                 {inputPrefixText}
               </Label>
+              <Icon name="down-arrow-filled" color={theme.colors.darkTint7} size={12} style={styles.iconStyle} />
             </View>
           );
 
@@ -130,21 +156,32 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     const error = this.getFieldError();
     if (error) {
       inputProps.style = { ...inputProps.style, ...theme.form.fieldError };
+      labelStyles = { ...labelStyles, color: theme.colors.error };
+    }
+    if (isFocused) {
+      inputProps.style = { ...inputProps.style, ...theme.form.fieldFocus };
+      labelStyles = { ...labelStyles, color: theme.colors.primaryColor };
     }
 
     return (
       <WithFieldError error={error} hideError={hideError}>
-        <View style={[styles.container, containerStyle]}>
-          <RNTextInput
-            ref={(input): void => {
-              this.inputText = input as any;
-            }}
-            {...inputProps}
-          />
+        <Label type="regular" style={labelStyles}>
+          {label}
+          <Label type="small" style={styles.optionalText}>
+            {optionalText}
+          </Label>
+        </Label>
+        <View style={containerStyle}>
+          <RNTextInput ref={(input) => (this.inputText = input as any)} {...inputProps} />
           {children}
           {inputGroupPrefix}
           {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}
         </View>
+        {helpText && (
+          <Label type="small" style={styles.helpText}>
+            {helpText}
+          </Label>
+        )}
       </WithFieldError>
     );
   }
@@ -153,17 +190,20 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     const { formProps, inputType, name, onValueChange } = this.props;
     const { setFieldValue } = formProps;
     const regExp = /^\s/;
+    let inputValue = text;
     if (inputType === 'number' || inputType === 'phone') {
-      text.replace(/\D/g, '');
+      inputValue = text.replace(/\D/g, '');
+    } else if (inputType === 'default') {
+      inputValue = text.replace(/\d/g, '');
     } else if (inputType === 'email') {
-      text.replace(DisallowedInputCharacters.email, '');
+      inputValue = text.replace(DisallowedInputCharacters.email, '');
     }
     /*
     RegExp added to remove trailing white space from the text
      */
-    setFieldValue(name, text.replace(regExp, ''));
+    setFieldValue(name, inputValue.replace(regExp, ''));
     if (onValueChange) {
-      onValueChange(text);
+      onValueChange(inputValue);
     }
   };
 
@@ -179,42 +219,57 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       showPassword: !showPassword,
     });
   };
+
+  private handleFocus = (): void => this.setState({ isFocused: true });
+
+  private handleBlur = (): void => this.setState({ isFocused: false });
 }
 
 const styles = StyleSheet.create({
   inputGroupPrefix: {
     position: 'absolute',
-    left: 0,
-    bottom: 6,
-    width: 60,
-    height: 34,
-    paddingBottom: 4,
+    left: 1,
+    marginTop: 2,
+    right: 5,
+    width: 90,
+    height: 44,
+    alignItems: 'center',
     justifyContent: 'center',
-    paddingStart: 14,
+    flexDirection: 'row',
+    backgroundColor: theme.colors.background,
     borderRightWidth: StyleSheet.hairlineWidth,
     borderRightColor: theme.colors.disabled,
   },
   inputPrefixText: {
-    color: theme.colors.dark,
+    color: theme.colors.darkTint4,
   },
   inputGroupSuffix: {
     position: 'absolute',
     right: 6,
-    bottom: 10,
   },
   passwordButton: {
-    paddingVertical: 10,
-    paddingTop: 12,
-    paddingBottom: 8,
+    flex: 0,
+    paddingVertical: 14,
     paddingHorizontal: 10,
     borderWidth: 0,
+    backgroundColor: theme.colors.transparent,
   },
   passwordIcon: {
     height: 16,
     width: 20,
     opacity: 0.4,
   },
-  container: {
-    marginBottom: 4,
+  helpText: {
+    color: theme.colors.darkTint4,
+    marginTop: 6,
+  },
+  optionalText: {
+    color: theme.colors.darkTint3,
+  },
+  flagStyle: {
+    marginEnd: 6,
+  },
+  iconStyle: {
+    marginStart: 6,
   },
 });
