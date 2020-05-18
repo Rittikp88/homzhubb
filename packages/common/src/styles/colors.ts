@@ -12,7 +12,9 @@ const namedColors = {
   highPriority: '#FF8576',
   error: '#F23C06',
   dark: '#001B36',
+  background: '#F0F5F9',
   shadow: '#000',
+  transparent: 'transparent',
 };
 
 const tintColors = {
@@ -25,6 +27,7 @@ const themedColors = {
   primaryColor: namedColors.blue,
   splashScreenBackgroundColor: '',
   splashScreenIndicatorColor: '',
+  onboardingScreenBackground: namedColors.background,
   active: namedColors.blue,
   success: namedColors.completed,
   error: namedColors.error,

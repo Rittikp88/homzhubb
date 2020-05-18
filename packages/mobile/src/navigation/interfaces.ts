@@ -3,9 +3,9 @@ import { RouteProp } from '@react-navigation/native';
 
 // Route keys
 export enum ScreensKeys {
-  SearchOnBoarding = 'SearchOnBoarding',
-  PostOnBoarding = 'PostOnBoarding',
+  OnBoarding = 'OnBoarding',
   Home = 'Home',
+  GettingStarted = 'Getting Started',
 }
 
 // Tab keys

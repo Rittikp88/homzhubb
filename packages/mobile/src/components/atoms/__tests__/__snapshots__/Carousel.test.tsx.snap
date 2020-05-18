@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Carousel should match snapshot 1`] = `
+<Fragment>
+  <Carousel
+    activeAnimationOptions={null}
+    activeAnimationType="timing"
+    activeSlideAlignment="center"
+    activeSlideOffset={20}
+    apparitionDelay={0}
+    autoplay={false}
+    autoplayDelay={1000}
+    autoplayInterval={3000}
+    callbackOffsetMargin={5}
+    containerCustomStyle={Object {}}
+    contentContainerCustomStyle={Object {}}
+    data={
+      Array [
+        Object {
+          "buttonText": "Next",
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a. Sed massa facilisi vel neque id dolor",
+          "heading": "Search",
+          "scene": Object {
+            "testUri": "../../../packages/common/src/assets/images/scene.jpeg",
+          },
+        },
+        Object {
+          "buttonText": "Next",
+          "description": "Ornare nunc, sagittis est ut. Mi arcu morbi faucibus consectetur auctor. Diam odio sed vel nam ultricies.",
+          "heading": "Post",
+          "scene": Object {
+            "testUri": "../../../packages/common/src/assets/images/scene1.jpeg",
+          },
+        },
+        Object {
+          "buttonText": "Got it",
+          "description": "Mattis ut est senectus commodo id sem arcu erat luctus. Id egestas eu enim, varius. Ut tellus id neque enim.",
+          "heading": "Maintain",
+          "scene": Object {
+            "testUri": "../../../packages/common/src/assets/images/scene2.jpeg",
+          },
+        },
+      ]
+    }
+    enableMomentum={false}
+    enableSnap={true}
+    firstItem={0}
+    hasParallaxImages={false}
+    inactiveSlideOpacity={0.7}
+    inactiveSlideScale={0.9}
+    inactiveSlideShift={0}
+    itemWidth={750}
+    layout="default"
+    lockScrollTimeoutDuration={1000}
+    lockScrollWhileSnapping={false}
+    loop={false}
+    loopClonesPerSide={3}
+    onLayout={[Function]}
+    onSnapToItem={[Function]}
+    renderItem={[Function]}
+    scrollEnabled={true}
+    shouldOptimizeUpdates={true}
+    slideStyle={
+      Object {
+        "width": 750,
+      }
+    }
+    sliderWidth={750}
+    swipeThreshold={20}
+    useScrollView={false}
+    vertical={false}
+  />
+  <Pagination
+    activeDotIndex={0}
+    animatedDuration={250}
+    animatedFriction={4}
+    animatedTension={50}
+    delayPressInDot={0}
+    dotStyle={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#0084F8",
+        "borderRadius": 5,
+        "borderStyle": "solid",
+        "borderWidth": 3,
+        "height": 10,
+        "marginHorizontal": 2,
+        "width": 10,
+      }
+    }
+    dotsLength={3}
+    inactiveDotOpacity={1}
+    inactiveDotScale={1}
+    inactiveDotStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderRadius": 5,
+        "height": 10,
+        "marginHorizontal": 2,
+        "width": 10,
+      }
+    }
+    tappableDots={false}
+    vertical={false}
+  />
+</Fragment>
+`;

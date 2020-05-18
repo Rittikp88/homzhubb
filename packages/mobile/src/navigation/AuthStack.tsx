@@ -1,13 +1,13 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import { SearchOnBoarding } from '@homzhub/mobile/src/screens/SearchOnBorading';
-import { PostOnBoarding } from '@homzhub/mobile/src/screens/PostOnBoarding';
+import Onboarding from '@homzhub/mobile/src/screens/OnBoarding';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
-  [ScreensKeys.SearchOnBoarding]: undefined;
-  [ScreensKeys.PostOnBoarding]: undefined;
+  [ScreensKeys.OnBoarding]: undefined;
+  [ScreensKeys.GettingStarted]: undefined;
 };
 
 const AuthStack = (): React.ReactElement => {
@@ -18,8 +18,8 @@ const AuthStack = (): React.ReactElement => {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <AuthStackNavigator.Screen name={ScreensKeys.SearchOnBoarding} component={SearchOnBoarding} />
-      <AuthStackNavigator.Screen name={ScreensKeys.PostOnBoarding} component={PostOnBoarding} />
+      <AuthStackNavigator.Screen name={ScreensKeys.OnBoarding} component={Onboarding} />
+      <AuthStackNavigator.Screen name={ScreensKeys.GettingStarted} component={GettingStarted} />
     </AuthStackNavigator.Navigator>
   );
 };

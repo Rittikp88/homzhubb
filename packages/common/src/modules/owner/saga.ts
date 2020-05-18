@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
 import { call, put, takeEvery } from '@redux-saga/core/effects';
-import { OwnerRepository } from '@homzhub/common/src/domain/repositories/OwnerRepository';
+import { OwnerRepository } from '@homzhub/common/src/domain/repositories/owner/OwnerRepository';
 import { OwnerActions, OwnerActionTypes } from '@homzhub/common/src/modules/owner/actions';
 
 // TODO: For reference (remove)
@@ -15,10 +15,6 @@ function* getOwnerDetails() {
   }
 }
 
-function* watchCart() {
+export function* watchOwner() {
   yield takeEvery(OwnerActionTypes.GET.FETCH_GET_DETAIL, getOwnerDetails);
 }
-
-export const OwnerSaga = {
-  watchCart,
-};

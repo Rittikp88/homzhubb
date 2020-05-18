@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Onboarding Screen should match snapshot 1`] = `
+<Connect(Component)
+  activeSlide={0}
+  getOnboardingDetail={[MockFunction]}
+  navigation={Object {}}
+  onboarding={
+    Object {
+      "data": Array [
+        Object {
+          "buttonText": "Next",
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a. Sed massa facilisi vel neque id dolor",
+          "heading": "Search",
+          "scene": Object {
+            "testUri": "../../../packages/common/src/assets/images/scene.jpeg",
+          },
+        },
+        Object {
+          "buttonText": "Next",
+          "description": "Ornare nunc, sagittis est ut. Mi arcu morbi faucibus consectetur auctor. Diam odio sed vel nam ultricies.",
+          "heading": "Post",
+          "scene": Object {
+            "testUri": "../../../packages/common/src/assets/images/scene1.jpeg",
+          },
+        },
+        Object {
+          "buttonText": "Got it",
+          "description": "Mattis ut est senectus commodo id sem arcu erat luctus. Id egestas eu enim, varius. Ut tellus id neque enim.",
+          "heading": "Maintain",
+          "scene": Object {
+            "testUri": "../../../packages/common/src/assets/images/scene2.jpeg",
+          },
+        },
+      ],
+    }
+  }
+/>
+`;
