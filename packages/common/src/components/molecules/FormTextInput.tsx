@@ -39,12 +39,9 @@ interface IFormTextInputState {
 export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputState> {
   public inputText: RNTextInput | null = null;
 
-  public constructor(props: IFormTextInputProps) {
-    super(props);
-    this.state = {
-      showPassword: false,
-    };
-  }
+  public state = {
+    showPassword: false,
+  };
 
   public render(): React.ReactNode {
     const {
@@ -138,7 +135,12 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     return (
       <WithFieldError error={error} hideError={hideError}>
         <View style={[styles.container, containerStyle]}>
-          <RNTextInput ref={(input) => (this.inputText = input as any)} {...inputProps} />
+          <RNTextInput
+            ref={(input): void => {
+              this.inputText = input as any;
+            }}
+            {...inputProps}
+          />
           {children}
           {inputGroupPrefix}
           {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}

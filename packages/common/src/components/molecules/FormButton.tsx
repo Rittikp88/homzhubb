@@ -8,7 +8,7 @@ export interface IFormButtonProps extends IButtonProps {
 }
 
 export const FormButton = (props: IFormButtonProps): React.ReactElement => {
-  const { isSubmitting = false, formProps, containerStyle, ...buttonProps } = props;
+  const { isSubmitting = false, containerStyle, ...buttonProps } = props;
 
   return <Button disabled={isSubmitting} {...buttonProps} containerStyle={containerStyle} />;
 };

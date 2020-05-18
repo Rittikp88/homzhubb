@@ -13,16 +13,9 @@ interface ILoginFormState {
 }
 
 export class LoginForm extends Component<{}, ILoginFormState> {
-  public constructor(props: ILoginFormState) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
-  }
-
-  public handleSubmit = (): void => {
-    Logger.info('on submit');
+  public state = {
+    email: '',
+    password: '',
   };
 
   public render(): React.ReactNode {
@@ -31,7 +24,7 @@ export class LoginForm extends Component<{}, ILoginFormState> {
     return (
       <View style={styles.container}>
         <Formik initialValues={formData} onSubmit={this.handleSubmit}>
-          {(formProps: FormikProps<FormikValues>) => (
+          {(formProps: FormikProps<FormikValues>): React.ReactElement => (
             <>
               <FormField label="Email" name="email" formProps={formProps}>
                 <FormTextInput name="email" inputType="email" placeholder="Enter Your Email" formProps={formProps} />
@@ -60,6 +53,10 @@ export class LoginForm extends Component<{}, ILoginFormState> {
       </View>
     );
   }
+
+  public handleSubmit = (): void => {
+    Logger.info('on submit');
+  };
 }
 
 const styles = StyleSheet.create({

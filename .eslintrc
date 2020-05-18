@@ -141,6 +141,33 @@
         "prop": "parens-new-line"
       }
     ],
+    "react/sort-comp": ["error", {
+      "order": [
+        "instance-variables",
+        "state",
+        "constructor",
+        "static-methods",
+        "lifecycle",
+        "rendering",
+        "/^on.+$/",
+        "everything-else"
+      ],
+      "groups": {
+        "rendering": [
+          "render",
+          "/^render.+$/"
+        ],
+        "lifecycle": [
+          "componentWillMount",
+          "componentDidMount",
+          "componentWillReceiveProps",
+          "shouldComponentUpdate",
+          "componentWillUpdate",
+          "componentDidUpdate",
+          "componentWillUnmount"
+        ]
+      }
+    }],
     "object-curly-newline": "off",
     "no-console": "warn",
     "global-require": "off",

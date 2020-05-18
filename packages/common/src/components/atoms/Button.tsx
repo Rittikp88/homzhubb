@@ -8,7 +8,7 @@ import {
   ViewStyle,
   ImageStyle,
 } from 'react-native';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 
@@ -19,8 +19,12 @@ export interface IButtonProps {
   title?: string;
   onPress?: (event: GestureResponderEvent) => void;
   disabled?: boolean;
+  activeOpacity?: number;
   titleStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  textType?: TextFieldType;
+  textSize?: TextSizeType;
+  fontType?: FontWeightType;
   icon?: string;
   iconSize?: number;
   iconColor?: string;
@@ -29,16 +33,33 @@ export interface IButtonProps {
 
 export class Button extends React.PureComponent<IButtonProps> {
   public render = (): React.ReactElement => {
-    const { onPress, title, disabled = false, icon, iconSize, iconColor, iconStyle } = this.props;
+    const { onPress, disabled = false, activeOpacity = 0.5, title, icon, iconSize, iconColor, iconStyle } = this.props;
     return (
-      <TouchableOpacity onPress={onPress} disabled={disabled} style={this.getContainerStyle()}>
-        {title && (
-          <Text type="small" textType="semiBold" style={this.getTextStyle()}>
-            {title}
-          </Text>
-        )}
+      <TouchableOpacity
+        activeOpacity={activeOpacity}
+        onPress={onPress}
+        disabled={disabled}
+        style={this.getContainerStyle()}
+      >
+        {title && this.getTextField()}
         {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
       </TouchableOpacity>
+    );
+  };
+
+  private getTextField = (): React.ReactElement => {
+    const { textType, title, textSize = 'small', fontType = 'semiBold' } = this.props;
+    let TextField = null;
+
+    if (textType === 'label') {
+      TextField = Label;
+    } else {
+      TextField = Text;
+    }
+    return (
+      <TextField type={textSize} textType={fontType} style={this.getTextStyle()}>
+        {title}
+      </TextField>
     );
   };
 
@@ -67,6 +88,7 @@ export class Button extends React.PureComponent<IButtonProps> {
 
 const styles = StyleSheet.create({
   container: {
+    ...theme.globalStyles.center,
     borderRadius: 4,
   },
   textStyle: {

@@ -6,7 +6,7 @@ import AuthStack from '@homzhub/mobile/src/navigation/AuthStack';
 import { AppNavigator } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 export const RootNavigator = (): React.ReactElement => {
-  const isLoading = true;
+  const isLoading = false;
   const isLoggedIn = false;
 
   if (isLoading) {

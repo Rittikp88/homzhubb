@@ -18,7 +18,7 @@ export interface IFormFieldProps {
   labelTextType?: 'normal' | 'medium' | 'bold';
 }
 
-export class FormField extends PureComponent<IFormFieldProps, {}> {
+export class FormField extends PureComponent<IFormFieldProps> {
   public render(): React.ReactNode {
     const { children, label, isOptional = false, containerStyle = {}, helpText = '' } = this.props;
 
@@ -46,12 +46,13 @@ export class FormField extends PureComponent<IFormFieldProps, {}> {
     );
   }
 
-  private getFieldError = (): string | FormikErrors<any> | undefined => {
+  private getFieldError = (): string | FormikErrors<any> | void => {
     const { formProps, name } = this.props;
     if (formProps) {
       const { errors, touched } = formProps;
       return touched[name] && errors[name] ? errors[name] : undefined;
     }
+    return undefined;
   };
 }
 

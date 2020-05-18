@@ -1,14 +1,15 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const SearchOnBoarding = (
   props: NavigationScreenProps<AuthStackParamList, ScreensKeys.SearchOnBoarding>
 ): React.ReactElement => {
   const { route } = props;
   const onPress = (): void => {
-    props.navigation.navigate(ScreensKeys.PostOnBoarding);
+    AlertHelper.error({ message: 'This is a sample text. Trying for 2 sentences. Or maybe 3' });
   };
 
   return (

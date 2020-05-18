@@ -166,10 +166,13 @@ exports[`Test cases for FormTextInput should render snapshot when input type is 
       onStartShouldSetResponder={[Function]}
       style={
         Object {
+          "alignItems": "center",
           "backgroundColor": "#FFFFFF",
           "borderColor": "#0084F8",
           "borderRadius": 4,
           "borderWidth": 0,
+          "flex": 1,
+          "justifyContent": "center",
           "opacity": 1,
           "paddingBottom": 8,
           "paddingHorizontal": 10,
@@ -178,21 +181,30 @@ exports[`Test cases for FormTextInput should render snapshot when input type is 
         }
       }
     >
-      <Image
-        resizeMode="cover"
-        source={
-          Object {
-            "testUri": "../../../packages/common/src/assets/images/eye-slash.png",
-          }
-        }
+      <Text
+        allowFontScaling={false}
         style={
-          Object {
-            "height": 16,
-            "opacity": 0.4,
-            "width": 16,
-          }
+          Array [
+            Object {
+              "color": "#C9D6DF",
+              "fontSize": 20,
+            },
+            Object {
+              "height": 16,
+              "opacity": 0.4,
+              "width": 20,
+            },
+            Object {
+              "fontFamily": "icomoon",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            Object {},
+          ]
         }
-      />
+      >
+        
+      </Text>
     </View>
   </View>
 </View>

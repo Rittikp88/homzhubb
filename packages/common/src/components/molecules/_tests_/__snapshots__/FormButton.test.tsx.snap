@@ -13,8 +13,11 @@ exports[`Test cases for FormButton should render snapshot 1`] = `
   onStartShouldSetResponder={[Function]}
   style={
     Object {
+      "alignItems": "center",
       "backgroundColor": "#0084F8",
       "borderRadius": 4,
+      "flex": 1,
+      "justifyContent": "center",
       "opacity": 1,
     }
   }
