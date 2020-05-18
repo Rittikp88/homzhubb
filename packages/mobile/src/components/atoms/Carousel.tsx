@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { ImageSquare } from '@homzhub/common/src/components';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { SVGUri } from '@homzhub/mobile/src/components/atoms/Svg';
 
 interface ICarouselItems {
   screen: string;
   description: string;
   buttonText: string;
-  scene: any;
+  scene: string;
 }
 
 interface ICarouselProps {
@@ -31,7 +31,6 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
           data={carouselItems}
           sliderWidth={theme.viewport.width}
           itemWidth={theme.viewport.width}
-          slideStyle={{ width: theme.viewport.width }}
           renderItem={this.renderItem}
           activeSlideOffset={20}
           onSnapToItem={this.updateSlideIndex}
@@ -46,9 +45,9 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
 
   public renderItem = ({ item }: any): React.ReactElement => {
     return (
-      <View style={styles.container}>
-        <ImageSquare size={theme.viewport.width} source={item.scene} style={styles.image} />
-      </View>
+      <>
+        <SVGUri width="100%" height="100%" uri={item.scene} />
+      </>
     );
   };
 
@@ -78,13 +77,6 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: theme.viewport.height / 3,
-  },
-  image: {
-    width: theme.viewport.width / 2,
-    height: theme.viewport.width / 3,
-  },
   dotStyle: {
     width: 10,
     height: 10,
