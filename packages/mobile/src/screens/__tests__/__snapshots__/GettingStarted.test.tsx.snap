@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Getting started Screen should click getting started button 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "stretch",
+      "backgroundColor": "#F0F5F9",
+      "flex": 1,
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "margin": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "borderRadius": 8,
+        "marginVertical": 30,
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../packages/common/src/assets/images/homzhub_getting_started.png",
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "stretch",
+        "flex": 0,
+        "justifyContent": "center",
+        "marginHorizontal": 36,
+        "marginVertical": 20,
+      }
+    }
+  >
+    <Component
+      textType="semiBold"
+      type="large"
+    >
+      gettingStarted:header
+    </Component>
+    <Component
+      style={
+        Object {
+          "marginVertical": 10,
+          "textAlign": "center",
+        }
+      }
+      textType="semiBold"
+      type="large"
+    >
+      gettingStarted:owners
+    </Component>
+  </View>
+  <View
+    style={
+      Object {
+        "justifyContent": "center",
+        "marginHorizontal": 35,
+      }
+    }
+  >
+    <Component
+      containerStyle={
+        Object {
+          "backgroundColor": "#0084F8",
+          "flex": 0,
+          "marginVertical": 10,
+        }
+      }
+      onPress={[Function]}
+      textSize="small"
+      title="gettingStarted:get_started"
+      type="primary"
+    />
+    <Component
+      containerStyle={
+        Object {
+          "flex": 0,
+          "marginVertical": 10,
+        }
+      }
+      onPress={[Function]}
+      title="common:login"
+      type="secondary"
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 0,
+        "marginVertical": 30,
+      }
+    }
+  >
+    <Component
+      textType="regular"
+      type="large"
+    >
+      gettingStarted:new_around_here
+      <Component
+        style={
+          Object {
+            "color": "#0084F8",
+          }
+        }
+        textType="bold"
+        type="large"
+      >
+        common:sign_up
+      </Component>
+    </Component>
+  </View>
+</View>
+`;

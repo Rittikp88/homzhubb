@@ -2,6 +2,15 @@
   "common": {
     "welcome": "Welcome to Homzhub",
     "ok": "OK",
+    "login": "Login",
+    "signUp": "Sign Up",
+    "header": "Simplifying Real Estate For",
+    "owners": "Owners",
+    "getStarted": "Get Started",
+    "newAroundHere": "New around here?",
+    "next": "Next",
+    "gotIt": "Got It",
+    "skip": "Skip"
     "termsCondition": "terms and Condition"
   },
   "auth": {

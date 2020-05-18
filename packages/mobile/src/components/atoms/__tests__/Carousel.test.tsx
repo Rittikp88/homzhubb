@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -20,7 +20,7 @@ describe('Carousel', () => {
       bubbleRef: mockBubbleRef,
       currentSlide: mockCurrentSlide,
     });
-    const wrapper = shallow(<SnapCarousel {...props} />);
+    const wrapper: ShallowWrapper = shallow(<SnapCarousel {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

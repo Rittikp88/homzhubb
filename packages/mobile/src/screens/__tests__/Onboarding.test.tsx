@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Onboarding, { mapDispatchToProps } from '@homzhub/mobile/src/screens/OnBoarding';
 import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
 import toJson from 'enzyme-to-json';
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, ShallowWrapper } from 'enzyme';
 
 const createTestProps = (testProps: object): any => ({
   ...testProps,
@@ -19,7 +19,7 @@ jest.mock('@homzhub/common/src/components/atoms/Button', () => 'Button');
 
 describe('Onboarding Screen', () => {
   let store;
-  let component;
+  let component: ShallowWrapper;
   let props;
   const OnboardingDataExample = {
     data: OnboardingData,

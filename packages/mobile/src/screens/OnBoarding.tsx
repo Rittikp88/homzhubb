@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { OnboardingActions } from '@homzhub/common/src/modules/onboarding/actions';
 import { IOnboardingState } from '@homzhub/common/src/modules/onboarding/interface';
 import { Button, Label, Text } from '@homzhub/common/src/components/';
@@ -28,7 +29,7 @@ interface IOnboardingScreenState {
   ref: any;
 }
 
-type Props = IOwnProps & IStateProps & IDispatchProps;
+type Props = IOwnProps & IStateProps & IDispatchProps & WithTranslation;
 
 class Onboarding extends React.Component<Props, IOnboardingScreenState> {
   public state = {
@@ -84,7 +85,7 @@ class Onboarding extends React.Component<Props, IOnboardingScreenState> {
   };
 
   public renderSkipButton = (): React.ReactNode => {
-    const { onboarding } = this.props;
+    const { onboarding, t } = this.props;
     const { activeSlide } = this.state;
     if (activeSlide === onboarding.data.length - 1) {
       return <View style={styles.emptySkipView} />;
@@ -93,7 +94,7 @@ class Onboarding extends React.Component<Props, IOnboardingScreenState> {
       <View style={styles.skipLinkContainer}>
         <Button
           type="secondary"
-          title="Skip"
+          title={t('skip')}
           containerStyle={styles.skipLink}
           onPress={this.navigateToGettingStarted}
         />
@@ -167,4 +168,4 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Onboarding));
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(withTranslation()(Onboarding)));
