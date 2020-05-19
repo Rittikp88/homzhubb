@@ -11,3 +11,6 @@ export { WithFieldError } from '@homzhub/common/src/components/molecules/WithFie
 
 // Organism
 export { SignUpForm } from '@homzhub/common/src/components/organisms/SignUpForm';
+
+// Templates
+export { SignupView } from '@homzhub/common/src/components/templates/SignupView';

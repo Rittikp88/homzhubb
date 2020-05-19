@@ -1,9 +1,10 @@
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
 
 export const initialUserState: IUserState = {
-  data: [],
+  data: SocialMediaData,
   error: {
     user: '',
   },

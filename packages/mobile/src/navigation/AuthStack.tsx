@@ -3,7 +3,7 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import Onboarding from '@homzhub/mobile/src/screens/OnBoarding';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
-import { SignUpScreen } from '@homzhub/mobile/src/screens/SignUpScreen';
+import SignUpScreen from '@homzhub/mobile/src/screens/SignUpScreen';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
