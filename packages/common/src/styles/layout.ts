@@ -1,5 +1,6 @@
 const layoutStyles = {
-  screenPadding: 16,
+  screenPadding: 24,
+  screenPaddingTop: 16,
   toastMargin: 40,
 };
 

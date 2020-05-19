@@ -8,7 +8,7 @@ import {
   ViewStyle,
   ImageStyle,
 } from 'react-native';
-import { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components';
+import { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 

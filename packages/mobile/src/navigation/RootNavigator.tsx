@@ -5,11 +5,15 @@ import { Splash } from '@homzhub/mobile/src/screens/Splash';
 import AuthStack from '@homzhub/mobile/src/navigation/AuthStack';
 import { AppNavigator } from '@homzhub/mobile/src/navigation/AppNavigator';
 
-export const RootNavigator = (): React.ReactElement => {
-  const isLoading = false;
+interface IProps {
+  isLocalizationLoading: boolean;
+}
+
+export const RootNavigator = (props: IProps): React.ReactElement => {
+  const { isLocalizationLoading } = props;
   const isLoggedIn = false;
 
-  if (isLoading) {
+  if (!isLocalizationLoading) {
     return <Splash />;
   }
 

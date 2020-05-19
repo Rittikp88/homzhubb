@@ -34,7 +34,7 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
           renderItem={this.renderItem}
           activeSlideOffset={20}
           onSnapToItem={this.updateSlideIndex}
-          ref={(c: any) => {
+          ref={(c: any): void => {
             this.carouselRef = c;
           }}
         />
@@ -44,11 +44,7 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
   };
 
   public renderItem = ({ item }: any): React.ReactElement => {
-    return (
-      <>
-        <SVGUri width="100%" height="100%" uri={item.scene} />
-      </>
-    );
+    return <SVGUri width="100%" height="100%" uri={item.scene} />;
   };
 
   public pagination = (): React.ReactElement => {

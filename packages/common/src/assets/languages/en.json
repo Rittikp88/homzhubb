@@ -14,6 +14,13 @@
     "termsCondition": "terms and Condition"
   },
   "auth": {
+    "verifyNumber": "Verify your number",
+    "enterOTP": "Enter the 6-digit OTP, Homzhub sent to",
+    "receiveOtp": "Did not receive OTP?",
+    "resend": "Resend",
+    "resendIn": "Resend in {{sec}} sec",
+    "otpError": "Please enter a valid OTP",
+    "loginOtp": "Login with OTP",
     "enterName": "Enter Your Name",
     "enterEmail": "Enter Your Email",
     "newPassword": "New Password",

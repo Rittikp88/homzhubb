@@ -1,12 +1,6 @@
 {
   "root": true,
-  "plugins": [
-    "@typescript-eslint",
-    "prettier",
-    "jsx-a11y",
-    "react",
-    "react-hooks"
-  ],
+  "plugins": ["@typescript-eslint", "prettier", "jsx-a11y", "react", "react-hooks"],
   "extends": [
     "airbnb-typescript",
     "eslint:recommended",
@@ -68,9 +62,7 @@
         "ignoreRestArgs": true
       }
     ],
-    "@typescript-eslint/ban-ts-comment": [
-      "warn"
-    ],
+    "@typescript-eslint/ban-ts-comment": ["warn"],
     "@typescript-eslint/explicit-member-accessibility": [
       "error",
       {
@@ -105,14 +97,8 @@
     ],
     "react/jsx-key": "error",
     "import/no-extraneous-dependencies": "off",
-    "jsx-quotes": [
-      "error",
-      "prefer-double"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
+    "jsx-quotes": ["error", "prefer-double"],
+    "semi": ["error", "always"],
     "comma-dangle": [
       "error",
       {
@@ -141,33 +127,33 @@
         "prop": "parens-new-line"
       }
     ],
-    "react/sort-comp": ["error", {
-      "order": [
-        "instance-variables",
-        "state",
-        "constructor",
-        "static-methods",
-        "lifecycle",
-        "rendering",
-        "/^on.+$/",
-        "everything-else"
-      ],
-      "groups": {
-        "rendering": [
-          "render",
-          "/^render.+$/"
+    "react/sort-comp": [
+      "error",
+      {
+        "order": [
+          "instance-variables",
+          "state",
+          "constructor",
+          "static-methods",
+          "lifecycle",
+          "rendering",
+          "/^on.+$/",
+          "everything-else"
         ],
-        "lifecycle": [
-          "componentWillMount",
-          "componentDidMount",
-          "componentWillReceiveProps",
-          "shouldComponentUpdate",
-          "componentWillUpdate",
-          "componentDidUpdate",
-          "componentWillUnmount"
-        ]
+        "groups": {
+          "rendering": ["render", "/^render.+$/"],
+          "lifecycle": [
+            "componentWillMount",
+            "componentDidMount",
+            "componentWillReceiveProps",
+            "shouldComponentUpdate",
+            "componentWillUpdate",
+            "componentDidUpdate",
+            "componentWillUnmount"
+          ]
+        }
       }
-    }],
+    ],
     "object-curly-newline": "off",
     "no-console": "warn",
     "global-require": "off",
@@ -177,14 +163,18 @@
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
     "react/state-in-constructor": "off",
+    "react/no-array-index-key": "off",
     "class-methods-use-this": "off",
     "no-useless-computed-key": "off",
-    "react/jsx-no-bind": ["error", {
-      "ignoreDOMComponents": false,
-      "ignoreRefs": true,
-      "allowArrowFunctions": false,
-      "allowFunctions":  false,
-      "allowBind": false
-    }]
+    "react/jsx-no-bind": [
+      "error",
+      {
+        "ignoreDOMComponents": false,
+        "ignoreRefs": true,
+        "allowArrowFunctions": false,
+        "allowFunctions": false,
+        "allowBind": false
+      }
+    ]
   }
 }

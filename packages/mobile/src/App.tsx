@@ -17,19 +17,17 @@ export default class App extends React.PureComponent<{}, IState> {
 
   public componentDidMount = async (): Promise<void> => {
     await I18nService.init();
-    this.setState({ isLocalizationInitialised: true });
+    setTimeout(() => {
+      this.setState({ isLocalizationInitialised: true });
+    }, 500);
   };
 
   public render = (): React.ReactNode => {
     const { isLocalizationInitialised } = this.state;
 
-    if (!isLocalizationInitialised) {
-      return null;
-    }
-
     return (
       <Provider store={store}>
-        <RootNavigator />
+        <RootNavigator isLocalizationLoading={isLocalizationInitialised} />
         <FlashMessage position="bottom" MessageComponent={this.renderToast} />
       </Provider>
     );

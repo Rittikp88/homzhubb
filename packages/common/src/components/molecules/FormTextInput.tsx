@@ -172,7 +172,12 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
           </Label>
         </Label>
         <View style={containerStyle}>
-          <RNTextInput ref={(input) => (this.inputText = input as any)} {...inputProps} />
+          <RNTextInput
+            ref={(input): void => {
+              this.inputText = input;
+            }}
+            {...inputProps}
+          />
           {children}
           {inputGroupPrefix}
           {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}

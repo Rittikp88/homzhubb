@@ -12,10 +12,6 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
-interface IOwnProps {
-  navigation: NavigationScreenProps<AuthStackParamList, ScreensKeys.GettingStarted>;
-}
-
 interface IStateProps {
   onboarding: IOnboardingState;
 }
@@ -29,9 +25,10 @@ interface IOnboardingScreenState {
   ref: any;
 }
 
+type IOwnProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OnBoarding>;
 type Props = IOwnProps & IStateProps & IDispatchProps & WithTranslation;
 
-class Onboarding extends React.Component<Props, IOnboardingScreenState> {
+class Onboarding extends React.PureComponent<Props, IOnboardingScreenState> {
   public state = {
     activeSlide: 0,
     ref: null,
@@ -76,7 +73,7 @@ class Onboarding extends React.Component<Props, IOnboardingScreenState> {
   public renderNextFrame = (): void => {
     const { activeSlide, ref } = this.state;
     const { onboarding } = this.props;
-    if (activeSlide < onboarding.data.length - 1) {
+    if (activeSlide < onboarding.data.length - 1 && ref) {
       ref.snapToNext();
       this.setState({ activeSlide: activeSlide + 1 });
     } else {
@@ -168,4 +165,4 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(withTranslation()(Onboarding)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Onboarding));

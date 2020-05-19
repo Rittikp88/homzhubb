@@ -7,7 +7,9 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { SignupView } from '@homzhub/common/src/components';
+import { SignupView, Button } from '@homzhub/common/src/components';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
@@ -17,7 +19,8 @@ interface IStateProps {
   user: IUserState;
 }
 
-type Props = IStateProps & IDispatchProps & WithTranslation;
+type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp>;
+type Props = IStateProps & IDispatchProps & libraryProps;
 
 class SignUpScreen extends React.PureComponent<Props, {}> {
   public componentDidMount(): void {
@@ -31,10 +34,19 @@ class SignUpScreen extends React.PureComponent<Props, {}> {
       <SafeAreaView style={styles.container}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <SignupView socialMediaItems={user.data} />
+          <Button type="primary" title="OTP" onPress={this.onPress} />
         </ScrollView>
       </SafeAreaView>
     );
   }
+
+  private onPress = (): void => {
+    const { navigation } = this.props;
+    // TODO: Take value from form
+    navigation.navigate(ScreensKeys.OTP, {
+      phone: '+91 9008004265',
+    });
+  };
 }
 
 const styles = StyleSheet.create({
@@ -51,7 +63,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getSocialMedia } = UserActions;
   return bindActionCreators(
     {
