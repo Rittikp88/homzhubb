@@ -16,6 +16,7 @@ const AuthStack = (): React.ReactElement => {
   return (
     <AuthStackNavigator.Navigator
       screenOptions={{
+        headerShown: false,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >

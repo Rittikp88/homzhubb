@@ -1,13 +1,15 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, Button, Label } from '@homzhub/common/src/components';
 import { images } from '@homzhub/common/src/assets/images';
+import { Text, Button, Label } from '@homzhub/common/src/components';
 
-type Props = WithTranslation;
+type IProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp> & WithTranslation;
 
-class GettingStarted extends React.PureComponent<Props> {
+class GettingStarted extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
     const { t } = this.props;
     return (
@@ -36,7 +38,7 @@ class GettingStarted extends React.PureComponent<Props> {
         <View style={styles.labelContainer}>
           <Label type="large" textType="regular">
             {t('newAroundHere')} &nbsp;
-            <Label type="large" textType="bold" style={styles.signUpLink}>
+            <Label type="large" textType="bold" style={styles.signUpLink} onPress={this.navigateToSignUp}>
               {t('signUp')}
             </Label>
           </Label>
@@ -51,6 +53,11 @@ class GettingStarted extends React.PureComponent<Props> {
 
   public login = (): void => {
     // TODO: Navigate to login page
+  };
+
+  public navigateToSignUp = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.SignUp);
   };
 }
 
