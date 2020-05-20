@@ -7,6 +7,7 @@ export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
 // Molecules
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+export { Header } from '@homzhub/common/src/components/molecules/Header';
 export { OtpInputs } from '@homzhub/common/src/components/molecules/OtpInputs';
 export { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 export { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';

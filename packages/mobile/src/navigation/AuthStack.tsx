@@ -31,12 +31,8 @@ const AuthStack = (): React.ReactElement => {
         options={{ headerShown: false }}
         component={GettingStarted}
       />
-      <AuthStackNavigator.Screen
-        name={ScreensKeys.SignUp}
-        options={{ title: ScreensTitles[ScreensKeys.SignUp] }}
-        component={SignUpScreen}
-      />
-      <AuthStackNavigator.Screen name={ScreensKeys.OTP} options={{ title: '' }} component={Otp} />
+      <AuthStackNavigator.Screen name={ScreensKeys.SignUp} options={{ headerShown: false }} component={SignUpScreen} />
+      <AuthStackNavigator.Screen name={ScreensKeys.OTP} options={{ headerShown: false }} component={Otp} />
     </AuthStackNavigator.Navigator>
   );
 };

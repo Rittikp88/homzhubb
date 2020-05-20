@@ -35,6 +35,7 @@
     "emailValidation": "Please enter valid email-id",
     "onlyAlphabets": "Only alphabets are allowed",
     "minimumCharacters": "Minimum 8 characters allowed",
-    "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub"
+    "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
+    "alreadyRegistered": "Already Registered?"
   }
 }

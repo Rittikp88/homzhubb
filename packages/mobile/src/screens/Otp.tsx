@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
-import { Label, Text, OtpTimer, OtpInputs } from '@homzhub/common/src/components';
+import { Label, Text, OtpTimer, OtpInputs, Header } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -24,6 +24,7 @@ class Otp extends React.PureComponent<IProps> {
 
     return (
       <SafeAreaView style={styles.screen}>
+        <Header icon="left-arrow" onIconPress={this.onIconPress} />
         <View style={styles.container}>
           <Text type="large" textType="semiBold">
             {title}

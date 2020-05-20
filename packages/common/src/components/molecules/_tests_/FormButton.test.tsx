@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormButton } from '@homzhub/common/src/components';
 
 describe('Test cases for FormButton', () => {
   it('should render snapshot', () => {
