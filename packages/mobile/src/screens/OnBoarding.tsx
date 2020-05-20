@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 30,
     marginBottom: 30,
   },
   description: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 0,
-    marginVertical: 20,
+    marginVertical: 30,
   },
 });
 

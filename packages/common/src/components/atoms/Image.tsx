@@ -2,15 +2,25 @@ import React, { ReactElement } from 'react';
 import { Image as RNImage, ImageProps } from 'react-native';
 
 interface IProps extends ImageProps {
-  size: number;
+  size?: number;
 }
 
 const ImageRound = ({ source, size, style, ...props }: IProps): ReactElement<RNImage> => {
-  return <RNImage style={[style, { height: size, width: size, borderRadius: size / 2 }]} source={source} {...props} />;
+  return (
+    <RNImage
+      style={[style, { height: size, width: size, borderRadius: size ? size / 2 : 0 }]}
+      source={source}
+      {...props}
+    />
+  );
 };
 
 const ImageSquare = ({ source, size, style, ...props }: IProps): ReactElement<RNImage> => {
   return <RNImage style={[style, { height: size, width: size }]} source={source} {...props} />;
 };
 
-export { ImageRound, ImageSquare };
+const Image = ({ source, style, ...props }: IProps): ReactElement<RNImage> => {
+  return <RNImage style={style} source={source} {...props} />;
+};
+
+export { ImageRound, ImageSquare, Image };

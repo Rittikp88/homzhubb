@@ -29,8 +29,8 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
         <Carousel
           onLayout={this.updateRef}
           data={carouselItems}
-          sliderWidth={theme.viewport.width}
-          itemWidth={theme.viewport.width}
+          sliderWidth={theme.viewport.width - theme.layout.screenPadding}
+          itemWidth={theme.viewport.width - 60}
           renderItem={this.renderItem}
           activeSlideOffset={20}
           onSnapToItem={this.updateSlideIndex}
