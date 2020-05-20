@@ -10,7 +10,7 @@ export const SocialMediaData = [
     clientID: '',
   },
   {
-    provider: 'LINKED_IN',
+    provider: 'LINKEDIN',
     description: 'Signup with Linkedin',
     clientID: '',
   },
