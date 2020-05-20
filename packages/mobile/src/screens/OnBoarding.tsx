@@ -11,6 +11,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
 
 interface IStateProps {
   onboarding: IOnboardingState;
@@ -99,8 +100,10 @@ class Onboarding extends React.PureComponent<Props, IOnboardingScreenState> {
     );
   };
 
-  public navigateToGettingStarted = (): void => {
+  public navigateToGettingStarted = async (): void => {
     const { navigation } = this.props;
+    // Update the value of Async Storage isOnboardingCompleted
+    await StorageService.set(StorageKeys.IS_ONBOARDING_COMPLETED, true);
     navigation.navigate(ScreensKeys.GettingStarted);
   };
 
