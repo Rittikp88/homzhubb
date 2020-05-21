@@ -154,6 +154,13 @@
         }
       }
     ],
+    "lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": true
+      }
+    ],
     "object-curly-newline": "off",
     "no-console": "warn",
     "global-require": "off",

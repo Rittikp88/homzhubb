@@ -6,13 +6,8 @@ interface IProps extends ImageProps {
 }
 
 const ImageRound = ({ source, size, style, ...props }: IProps): ReactElement<RNImage> => {
-  return (
-    <RNImage
-      style={[style, { height: size, width: size, borderRadius: size ? size / 2 : 0 }]}
-      source={source}
-      {...props}
-    />
-  );
+  const conditionalStyle = { height: size, width: size, borderRadius: size ? size / 2 : 0 };
+  return <RNImage style={[style, conditionalStyle]} source={source} {...props} />;
 };
 
 const ImageSquare = ({ source, size, style, ...props }: IProps): ReactElement<RNImage> => {

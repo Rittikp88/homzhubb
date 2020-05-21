@@ -28,6 +28,7 @@
     "react-native-flash-message": "^0.1.15",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-otp-verify": "^1.0.3",
     "react-native-reanimated": "^1.8.0",
     "react-native-restart": "^0.0.15",
     "react-native-safe-area-context": "^1.0.0",

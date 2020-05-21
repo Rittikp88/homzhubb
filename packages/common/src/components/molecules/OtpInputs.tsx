@@ -1,5 +1,7 @@
 import React from 'react';
-import { NativeSyntheticEvent, StyleSheet, TextInput, TextInputKeyPressEventData, View } from 'react-native';
+import RNOtpVerify from 'react-native-otp-verify';
+import { Keyboard, NativeSyntheticEvent, StyleSheet, TextInput, TextInputKeyPressEventData, View } from 'react-native';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
@@ -14,16 +16,29 @@ interface IState {
 }
 
 export class OtpInputs extends React.PureComponent<IProps, IState> {
-  private otpTextInput: TextInput[] = [];
+  private OtpLength: number = ConfigHelper.getOtpLength();
+  private isSMSListenerEnabled = false;
+  private OtpTextInput: TextInput[] = [];
 
   public state = {
-    otp: Array(6).fill(''),
+    otp: Array(this.OtpLength).fill(''),
     currentFocus: 0,
   };
 
-  public componentDidMount(): void {
-    this.otpTextInput[0].setNativeProps({ style: styles.active });
-  }
+  public componentDidMount = async (): Promise<void> => {
+    this.OtpTextInput[0].setNativeProps({ style: styles.active });
+    this.isSMSListenerEnabled = await RNOtpVerify.getOtp();
+
+    if (this.isSMSListenerEnabled) {
+      RNOtpVerify.addListener(this.otpHandler);
+    }
+  };
+
+  public componentWillUnmount = (): void => {
+    if (this.isSMSListenerEnabled) {
+      RNOtpVerify.removeListener();
+    }
+  };
 
   public render = (): React.ReactNode => {
     const { error } = this.props;
@@ -42,7 +57,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
   private renderInputs = (): React.ReactNode => {
     const { error } = this.props;
     const { otp, currentFocus } = this.state;
-    const inputs = Array(6).fill(0);
+    const inputs = Array(this.OtpLength).fill(0);
 
     return inputs.map((counter: number, index: number) => {
       const onChangeText = (value: string): void => {
@@ -66,6 +81,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
           <TextInput
             key={`${index}-otp`}
             caretHidden
+            textContentType="oneTimeCode"
             value={otp[index]}
             autoFocus={index === 0}
             keyboardType="number-pad"
@@ -74,7 +90,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
             onChangeText={onChangeText}
             onKeyPress={onKeyPress}
             ref={(ref): void => {
-              this.otpTextInput[index] = ref!;
+              this.OtpTextInput[index] = ref!;
             }}
           />
         </View>
@@ -88,8 +104,8 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
 
     if (key === 'Backspace' && index !== 0) {
       this.setState({ otp: [...otp], currentFocus: index - 1 }, () => {
-        this.otpTextInput[index - 1].focus();
-        this.otpTextInput[index].setNativeProps({ style: styles.textInput });
+        this.OtpTextInput[index - 1].focus();
+        this.OtpTextInput[index].setNativeProps({ style: styles.textInput });
       });
       return;
     }
@@ -103,17 +119,41 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
     let currentFocus = index;
     otp[index] = value;
 
-    if (index < this.otpTextInput.length - 1) {
+    if (index < this.OtpTextInput.length - 1) {
       currentFocus = index + 1;
-      this.otpTextInput[index + 1].focus();
-      this.otpTextInput[index + 1].setNativeProps({ style: styles.active });
+      this.OtpTextInput[index + 1].focus();
+      this.OtpTextInput[index + 1].setNativeProps({ style: styles.active });
     }
 
-    if (index === this.otpTextInput.length - 1) {
-      this.otpTextInput[index].blur();
+    if (index === this.OtpTextInput.length - 1) {
+      this.OtpTextInput[index].blur();
       bubbleOtp(otp.join(''));
     }
     this.setState({ otp: [...otp], currentFocus });
+  };
+
+  private otpHandler = (message: string): void => {
+    const regexLiteral = new RegExp(`\\d{${this.OtpLength}}`, 'g');
+    const otpCode: string[] | null = regexLiteral.exec(message);
+    const { bubbleOtp } = this.props;
+
+    if (!otpCode || (otpCode && otpCode[0].length !== this.OtpLength)) {
+      return;
+    }
+
+    this.setState({ otp: Array.from(otpCode[0]), currentFocus: 5 });
+    this.OtpTextInput.forEach((inputRef, index: number) => {
+      inputRef.setNativeProps({ style: styles.active });
+      if (index === 5) {
+        inputRef.focus();
+      }
+    });
+
+    bubbleOtp(otpCode[0]);
+    Keyboard.dismiss();
+    if (this.isSMSListenerEnabled) {
+      RNOtpVerify.removeListener();
+    }
   };
 }
 
