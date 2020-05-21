@@ -24,7 +24,7 @@ class Otp extends React.PureComponent<IProps> {
 
     return (
       <SafeAreaView style={styles.screen}>
-        <Header icon="left-arrow" onIconPress={this.onIconPress} />
+        <Header icon="left-arrow" onIconPress={this.onIconPress} headerContainerStyle={styles.headerStyle} />
         <View style={styles.container}>
           <Text type="large" textType="semiBold">
             {title}
@@ -98,5 +98,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginStart: 8,
+  },
+  headerStyle: {
+    marginTop: 0,
   },
 });

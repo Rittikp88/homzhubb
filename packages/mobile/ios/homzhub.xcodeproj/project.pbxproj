@@ -53,6 +53,8 @@
 		A745EDC2246AAF0000ECF13B /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A745EDB2246AAF0000ECF13B /* EvilIcons.ttf */; };
 		A745EDC3246AAF0000ECF13B /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A745EDB3246AAF0000ECF13B /* SimpleLineIcons.ttf */; };
 		A745EDC4246AAF0000ECF13B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A745EDB4246AAF0000ECF13B /* MaterialIcons.ttf */; };
+		A75934E72475716800C22E4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A75934E62475716800C22E4B /* GoogleService-Info.plist */; };
+		A7F4CC3624756BDC0002A4E7 /* libRNGoogleSignin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4CC3524756BDC0002A4E7 /* libRNGoogleSignin.a */; };
 		B0A20E345E3AB2B81097AB22 /* libPods-homzhub-homzhubTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400139C0843A029E1314342A /* libPods-homzhub-homzhubTests.a */; };
 		BE5A72445A0D406196536C66 /* fonts.ts in Resources */ = {isa = PBXBuildFile; fileRef = 2AA5DB1BADC34556BB91B00D /* fonts.ts */; };
 		C5726BBF0D2C4E9C842BCC0A /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7BED97CAA974EFA8E236585 /* AntDesign.ttf */; };
@@ -145,8 +147,10 @@
 		A745EDCA246AAF6100ECF13B /* Raleway-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-Bold.ttf"; path = "../../../../../Downloads/fonts 2/Raleway-Bold.ttf"; sourceTree = "<group>"; };
 		A745EDCB246AAF6400ECF13B /* Raleway-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-Light.ttf"; path = "../../../../../Downloads/fonts 2/Raleway-Light.ttf"; sourceTree = "<group>"; };
 		A745EDCC246AAF6800ECF13B /* Raleway-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-Medium.ttf"; path = "../../../../../Downloads/fonts 2/Raleway-Medium.ttf"; sourceTree = "<group>"; };
+		A75934E62475716800C22E4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A7AEE66C246DBC9C004FE048 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = "../../../../../Downloads/icomoon (6)/fonts/icomoon.ttf"; sourceTree = "<group>"; };
 		A7BED97CAA974EFA8E236585 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		A7F4CC3524756BDC0002A4E7 /* libRNGoogleSignin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNGoogleSignin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEE1E36151987B8A9B595CAB /* Pods-homzhub.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homzhub.release.xcconfig"; path = "Target Support Files/Pods-homzhub/Pods-homzhub.release.xcconfig"; sourceTree = "<group>"; };
 		B1B7405BCB6F401F82FC3A6C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-homzhub.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +179,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7F4CC3624756BDC0002A4E7 /* libRNGoogleSignin.a in Frameworks */,
 				D0B11F371B00388BA34ACC25 /* libPods-homzhub.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -254,6 +259,7 @@
 				A745EDA4246AAF0000ECF13B /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				A75934E62475716800C22E4B /* GoogleService-Info.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -266,6 +272,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A7F4CC3524756BDC0002A4E7 /* libRNGoogleSignin.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */,
@@ -369,7 +376,7 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				59E45AFC14A0ED602A3B9EF7 /* [CP] Copy Pods Resources */,
+				041D23AB72625D7537F85808 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -391,7 +398,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				018A5AA916006E272769475D /* [CP] Copy Pods Resources */,
+				7B8EA9905EA9EC4AC39E6340 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -502,6 +509,7 @@
 			files = (
 				A745EDB5246AAF0000ECF13B /* Fontisto.ttf in Resources */,
 				A745EDC0246AAF0000ECF13B /* FontAwesome.ttf in Resources */,
+				A75934E72475716800C22E4B /* GoogleService-Info.plist in Resources */,
 				A745EDBC246AAF0000ECF13B /* Foundation.ttf in Resources */,
 				A745EDBF246AAF0000ECF13B /* FontAwesome5_Regular.ttf in Resources */,
 				A745EDBD246AAF0000ECF13B /* Ionicons.ttf in Resources */,
@@ -579,22 +587,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport EXTRA_PACKAGER_ARGS=\"--entry-file packages/mobile/index.js\"\n../../../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		018A5AA916006E272769475D /* [CP] Copy Pods Resources */ = {
+		041D23AB72625D7537F85808 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-homzhub/Pods-homzhub-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-homzhub-homzhubTests/Pods-homzhub-homzhubTests-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-homzhub/Pods-homzhub-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-homzhub-homzhubTests/Pods-homzhub-homzhubTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2C0A582DDD2FC508BC1D0BD8 /* [CP] Check Pods Manifest.lock */ = {
@@ -633,24 +643,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		59E45AFC14A0ED602A3B9EF7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-homzhub-homzhubTests/Pods-homzhub-homzhubTests-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-homzhub-homzhubTests/Pods-homzhub-homzhubTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		796257FEFCE1A56A0C95AAA4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -671,6 +663,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7B8EA9905EA9EC4AC39E6340 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-homzhub/Pods-homzhub-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-homzhub/Pods-homzhub-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D6DD8CEF7ECBEBB6328DADAD /* [CP] Check Pods Manifest.lock */ = {

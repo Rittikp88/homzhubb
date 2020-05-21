@@ -14,7 +14,9 @@ import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
-import { Label, Button, WithFieldError, TextSizeType } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
 type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default';
 

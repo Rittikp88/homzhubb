@@ -4,7 +4,8 @@ import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
 import OnBoarding from '@homzhub/mobile/src/screens/OnBoarding';
 import { Otp } from '@homzhub/mobile/src/screens/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/SignUpScreen';
-import { IOtpNavProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import MobileVerificationScreen from '@homzhub/mobile/src/screens/MobileVerifactionScreen';
+import { IOtpNavProps, ScreensKeys, IVerificationProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
@@ -12,6 +13,7 @@ export type AuthStackParamList = {
   [ScreensKeys.GettingStarted]: undefined;
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.SignUp]: undefined;
+  [ScreensKeys.MobileVerification]: IVerificationProps;
 };
 
 interface IProps {
@@ -37,6 +39,7 @@ export function AuthStack(props: IProps): React.ReactElement {
       {showOnBoardingScreen()}
       <AuthStackNavigator.Screen name={ScreensKeys.GettingStarted} component={GettingStarted} />
       <AuthStackNavigator.Screen name={ScreensKeys.SignUp} component={SignUpScreen} />
+      <AuthStackNavigator.Screen name={ScreensKeys.MobileVerification} component={MobileVerificationScreen} />
       <AuthStackNavigator.Screen name={ScreensKeys.OTP} component={Otp} />
     </AuthStackNavigator.Navigator>
   );

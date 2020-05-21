@@ -1,5 +1,6 @@
 // Add commonly used style based strings here to avoid duplication
 import { StyleSheet } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { colors } from '@homzhub/common/src/styles/colors';
 
 export const styleConstants = {
@@ -28,3 +29,9 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+// Constant Height for Animated header
+export const headerConstants = {
+  headerMaxHeight: PlatformUtils.isIOS() ? 200 : 180,
+  headerMinHeight: PlatformUtils.isIOS() ? 100 : 80,
+};

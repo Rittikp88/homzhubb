@@ -3,19 +3,13 @@ import { Animated, ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SignupView, Button, Header } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-
-// Constant Height for Animated header
-const HEADER_MAX_HEIGHT = PlatformUtils.isIOS() ? 200 : 180;
-const HEADER_MIN_HEIGHT = PlatformUtils.isIOS() ? 100 : 80;
-const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 interface IDispatchProps {
   getSocialMedia: () => void;
@@ -45,8 +39,6 @@ class SignUpScreen extends Component<Props, ISignUpState> {
   public render(): React.ReactNode {
     const { animatedValue } = this.state;
     const { user, t } = this.props;
-    const headerHeight = this.getAnimatedHeaderStyle();
-    const animatedStyle = this.getAnimatedStyles();
 
     return (
       <View style={styles.container}>
@@ -57,21 +49,19 @@ class SignUpScreen extends Component<Props, ISignUpState> {
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: animatedValue } } }])}
         >
           <View style={styles.scrollViewContent}>
-            <SignupView socialMediaItems={user.data} />
+            <SignupView socialMediaItems={user.data} onSignUpSuccess={this.handleSignUpSuccess} />
             <Button type="primary" title="OTP" onPress={this.onPress} />
           </View>
         </ScrollView>
-        <Animated.View style={[styles.headerView, { height: headerHeight }]}>
-          <Header
-            icon="close"
-            title={t('signUp')}
-            subTitle={t('auth:alreadyRegistered')}
-            linkText={t('login')}
-            onIconPress={this.onClosePress}
-            animatedStyle={animatedStyle}
-            headerContainerStyle={styles.headerStyle}
-          />
-        </Animated.View>
+        <Header
+          isAnimation
+          icon="close"
+          title={t('signUp')}
+          subTitle={t('auth:alreadyRegistered')}
+          linkText={t('login')}
+          animatedValue={animatedValue}
+          onIconPress={this.onClosePress}
+        />
       </View>
     );
   }
@@ -89,40 +79,19 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     navigation.goBack();
   };
 
-  private getAnimatedHeaderStyle = (): Animated.AnimatedInterpolation => {
-    const { animatedValue } = this.state;
-    return animatedValue.interpolate({
-      inputRange: [0, HEADER_SCROLL_DISTANCE],
-      outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-      extrapolate: 'clamp',
+  // TODO: need to add response type
+  private handleSignUpSuccess = (resposne: any): void => {
+    const { navigation, t } = this.props;
+    const {
+      user: { email, givenName },
+    } = resposne;
+    navigation.navigate(ScreensKeys.MobileVerification, {
+      title: t('auth:signUpWithGoogle'),
+      subTitle: email,
+      icon: 'left-arrow',
+      message: t('auth:enterNumberForProfile', { givenName }),
+      buttonTitle: t('signUp'),
     });
-  };
-
-  private getAnimatedStyles = (): Animated.AnimatedWithChildren => {
-    const { animatedValue } = this.state;
-    return {
-      fontSize: animatedValue.interpolate({
-        inputRange: [0, HEADER_SCROLL_DISTANCE],
-        outputRange: [24, 16],
-        extrapolate: 'clamp',
-      }),
-      transform: [
-        {
-          translateX: animatedValue.interpolate({
-            inputRange: [0, HEADER_SCROLL_DISTANCE],
-            outputRange: [0, 150],
-            extrapolate: 'clamp',
-          }),
-        },
-        {
-          translateY: animatedValue.interpolate({
-            inputRange: [0, HEADER_SCROLL_DISTANCE],
-            outputRange: [0, -50],
-            extrapolate: 'clamp',
-          }),
-        },
-      ],
-    };
   };
 }
 
@@ -154,21 +123,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   scrollViewContent: {
-    marginTop: HEADER_MAX_HEIGHT,
-  },
-  headerView: {
-    position: 'absolute',
-    flexDirection: 'row',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: theme.colors.white,
-    borderBottomColor: theme.colors.disabled,
-    borderBottomWidth: 1,
-    overflow: 'hidden',
-  },
-  headerStyle: {
-    flex: 1,
-    marginTop: PlatformUtils.isIOS() ? 50 : 20,
+    marginTop: theme.headerConstants.headerMaxHeight,
   },
 });

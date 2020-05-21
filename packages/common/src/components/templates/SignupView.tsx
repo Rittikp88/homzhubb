@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { LoginManager, LoginResult, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, Text, SignUpForm } from '@homzhub/common/src/components';
 
 export enum SocialMediaKeys {
@@ -14,6 +14,7 @@ export enum SocialMediaKeys {
 
 interface IProps {
   socialMediaItems: Array<any>;
+  onSignUpSuccess: (response: any) => void;
 }
 
 export class SignupView extends React.PureComponent<IProps, {}> {
@@ -61,14 +62,16 @@ export class SignupView extends React.PureComponent<IProps, {}> {
   };
 
   public onGoogleSignIn = async (socialMedia: any): Promise<void> => {
+    const { onSignUpSuccess } = this.props;
     try {
       GoogleSignin.configure({
         scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
-        webClientId: socialMedia.clientID,
+        // webClientId: socialMedia.clientID,
+        iosClientId: socialMedia.clientID,
       });
       await GoogleSignin.hasPlayServices();
-      await GoogleSignin.signIn();
-      // TODO: Add further logic to navigate to next screen
+      const response = await GoogleSignin.signIn();
+      onSignUpSuccess(response);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         AlertHelper.error({ message: 'Sign in Cancelled' });

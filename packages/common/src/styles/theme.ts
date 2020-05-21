@@ -1,6 +1,6 @@
 import { colors } from '@homzhub/common/src/styles/colors';
 import { layout } from '@homzhub/common/src/styles/layout';
-import { styleConstants, buttonStyle, globalStyles } from '@homzhub/common/src/styles/constants';
+import { styleConstants, buttonStyle, globalStyles, headerConstants } from '@homzhub/common/src/styles/constants';
 import { font } from '@homzhub/common/src/styles/font';
 import { viewport } from '@homzhub/common/src/styles/viewport';
 import { form } from '@homzhub/common/src/styles/form';
@@ -13,5 +13,6 @@ export const theme = {
   viewport,
   globalStyles,
   buttonStyle,
+  headerConstants,
   form,
 };

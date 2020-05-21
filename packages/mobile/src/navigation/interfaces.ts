@@ -8,6 +8,7 @@ export enum ScreensKeys {
   GettingStarted = 'Getting Started',
   SignUp = 'SignUp',
   OTP = 'OTP',
+  MobileVerification = 'Mobile Verification',
 }
 
 // Tab keys
@@ -31,4 +32,12 @@ export interface IOtpNavProps {
   title?: string;
   phone: string;
   focusCallback?: () => void;
+}
+
+export interface IVerificationProps {
+  title: string;
+  subTitle: string;
+  icon: string;
+  buttonTitle: string;
+  message?: string;
 }
