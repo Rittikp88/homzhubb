@@ -51,6 +51,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
           <View style={styles.scrollViewContent}>
             <SignupView socialMediaItems={user.data} onSignUpSuccess={this.handleSignUpSuccess} />
             <Button type="primary" title="OTP" onPress={this.onPress} />
+            <Button type="primary" title="Forgot Password" onPress={this.onForgotPassword} />
           </View>
         </ScrollView>
         <Header
@@ -72,6 +73,11 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     navigation.navigate(ScreensKeys.OTP, {
       phone: '+91 9008004265',
     });
+  };
+
+  public onForgotPassword = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ForgotPassword);
   };
 
   private onClosePress = (): void => {

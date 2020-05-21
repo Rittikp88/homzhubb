@@ -9,6 +9,9 @@ export enum ScreensKeys {
   SignUp = 'SignUp',
   OTP = 'OTP',
   MobileVerification = 'Mobile Verification',
+  ForgotPassword = 'Forgot Password',
+  ResetPassword = 'Reset Password',
+  SuccessResetPassword = 'Success Reset Password',
 }
 
 // Tab keys

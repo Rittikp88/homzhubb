@@ -21,7 +21,7 @@ export class SignupView extends React.PureComponent<IProps, {}> {
   public render(): React.ReactElement {
     return (
       <>
-        <SignUpForm/>
+        <SignUpForm />
         {this.renderSocialMedia()}
       </>
     );
@@ -44,17 +44,17 @@ export class SignupView extends React.PureComponent<IProps, {}> {
           textSize="large"
           titleStyle={styles.buttonText}
           key={socialMedia.provider}
-        />,
+        />
       );
     });
     return (
       <View style={styles.buttonContainer}>
         <View style={styles.seperatorContainer}>
-          <View style={styles.seperatorLine}/>
+          <View style={styles.seperatorLine} />
           <Text style={styles.seperatorText} type="regular" textType="regular">
             or
           </Text>
-          <View style={styles.seperatorLine}/>
+          <View style={styles.seperatorLine} />
         </View>
         {buttons}
       </View>
@@ -96,7 +96,7 @@ export class SignupView extends React.PureComponent<IProps, {}> {
             const infoRequest = new GraphRequest(
               `/me?fields=email,first_name,last_name&access_token=${accessToken}`,
               null,
-              () => this.responseCallback,
+              () => this.responseCallback
             );
             // Start the graph request
             new GraphRequestManager().addRequest(infoRequest).start();
@@ -105,7 +105,7 @@ export class SignupView extends React.PureComponent<IProps, {}> {
       },
       (error) => {
         AlertHelper.error(error);
-      },
+      }
     );
   };
 

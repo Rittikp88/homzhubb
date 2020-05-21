@@ -22,6 +22,7 @@
     "loginOtp": "Login with OTP",
     "enterName": "Enter Your Name",
     "enterEmail": "Enter Your Email",
+    "enterPassword": "Enter Your Password",
     "newPassword": "New Password",
     "yourNumber": "Your Mobile Number",
     "signup": "Signup",
@@ -37,6 +38,14 @@
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already Registered?",
     "signUpWithGoogle": "Signup With Google",
-    "enterNumberForProfile": "Hello {{givenName}}, Enter your phone number to complete your profile."
+    "enterNumberForProfile": "Hello {{givenName}}, Enter your phone number to complete your profile.",
+    "forgotPassword": "Forgot Password?",
+    "forgotPasswordDescription": "Enter the email address you used to signup on Homzhub. We will send you the reset link.",
+    "forgotPasswordRequestLink": "Request reset link",
+    "backToLogin": "Back to Login",
+    "resetPassword": "Reset your password",
+    "resetPasswordButtonTitle": "Reset my password",
+    "successResetPassword": "Successful password reset!",
+    "successResetPasswordDescription": "You can now use your new password to log in to your account."
   }
 }
