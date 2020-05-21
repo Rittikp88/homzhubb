@@ -9,6 +9,8 @@ export enum ScreensKeys {
   SignUp = 'SignUp',
   OTP = 'OTP',
   MobileVerification = 'Mobile Verification',
+  Login = 'Login',
+  EmailLogin = 'Email Login',
   ForgotPassword = 'Forgot Password',
   ResetPassword = 'Reset Password',
   SuccessResetPassword = 'Success Reset Password',

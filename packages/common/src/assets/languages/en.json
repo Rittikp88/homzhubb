@@ -46,6 +46,8 @@
     "resetPassword": "Reset your password",
     "resetPasswordButtonTitle": "Reset my password",
     "successResetPassword": "Successful password reset!",
-    "successResetPasswordDescription": "You can now use your new password to log in to your account."
+    "successResetPasswordDescription": "You can now use your new password to log in to your account.",
+    "newAroundHere": "New Around Here?",
+    "logInWithEmail": "Log In With Email"
   }
 }

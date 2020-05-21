@@ -7,7 +7,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SignupView, Button, Header } from '@homzhub/common/src/components';
+import { Header, LoginView } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -23,10 +23,10 @@ interface ISignUpState {
   animatedValue: Animated.Value;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp>;
+type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.Login>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
-class SignUpScreen extends Component<Props, ISignUpState> {
+class LoginScreen extends Component<Props, ISignUpState> {
   public state = {
     animatedValue: new Animated.Value(0),
   };
@@ -38,7 +38,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
 
   public render(): React.ReactNode {
     const { animatedValue } = this.state;
-    const { user, t } = this.props;
+    const { t } = this.props;
 
     return (
       <View style={styles.container}>
@@ -49,17 +49,15 @@ class SignUpScreen extends Component<Props, ISignUpState> {
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: animatedValue } } }])}
         >
           <View style={styles.scrollViewContent}>
-            <SignupView socialMediaItems={user.data} onSignUpSuccess={this.handleSignUpSuccess} />
-            <Button type="primary" title="OTP" onPress={this.onPress} />
-            <Button type="primary" title="Forgot Password" onPress={this.onForgotPassword} />
+            <LoginView onEmailLogin={this.handleEmailLoginPress} />
           </View>
         </ScrollView>
         <Header
           isAnimation
           icon="close"
-          title={t('signUp')}
-          subTitle={t('auth:alreadyRegistered')}
-          linkText={t('login')}
+          title={t('login')}
+          subTitle={t('auth:newAroundHere')}
+          linkText={t('auth:signup')}
           animatedValue={animatedValue}
           onLinkPress={this.handleLinkPress}
           onIconPress={this.onClosePress}
@@ -68,42 +66,19 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     );
   }
 
-  private onPress = (): void => {
-    const { navigation } = this.props;
-    // TODO: Take value from form
-    navigation.navigate(ScreensKeys.OTP, {
-      phone: '+91 9008004265',
-    });
-  };
-
-  public onForgotPassword = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.ForgotPassword);
-  };
-
   private onClosePress = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
   };
 
-  private handleLinkPress = (): void => {
+  private handleEmailLoginPress = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.Login);
+    navigation.navigate(ScreensKeys.EmailLogin);
   };
 
-  // TODO: need to add response type
-  private handleSignUpSuccess = (resposne: any): void => {
-    const { navigation, t } = this.props;
-    const {
-      user: { email, givenName },
-    } = resposne;
-    navigation.navigate(ScreensKeys.MobileVerification, {
-      title: t('auth:signUpWithGoogle'),
-      subTitle: email,
-      icon: 'left-arrow',
-      message: t('auth:enterNumberForProfile', { givenName }),
-      buttonTitle: t('signUp'),
-    });
+  private handleLinkPress = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.SignUp);
   };
 }
 
@@ -127,7 +102,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation()(SignUpScreen));
+)(withTranslation()(LoginScreen));
 
 const styles = StyleSheet.create({
   container: {
