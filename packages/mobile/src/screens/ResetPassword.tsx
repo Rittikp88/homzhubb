@@ -28,7 +28,9 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
       <View style={styles.container}>
         <Header
           icon="close"
-          title={t('auth:resetPassword')}
+          subTitle={t('auth:resetPassword')}
+          subTitleType="large"
+          subTitleColor={theme.colors.dark}
           onIconPress={this.handleIconPress}
           headerContainerStyle={styles.headerContainer}
         />
@@ -75,13 +77,11 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
 
   public handleIconPress = (): void => {
     const { navigation } = this.props;
-    // TODO: Redirect to Login Page once ready
-    navigation.navigate(ScreensKeys.ForgotPassword);
+    navigation.navigate(ScreensKeys.EmailLogin);
   };
 
   public navigateToSuccessResetPassword = (): void => {
     const { navigation } = this.props;
-    // TODO: Redirect to Login Page once ready
     navigation.navigate(ScreensKeys.SuccessResetPassword);
   };
 

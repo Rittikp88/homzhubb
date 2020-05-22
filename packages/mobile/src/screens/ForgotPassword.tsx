@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormButton, FormTextInput, Header, Label } from '@homzhub/common/src/components';
+import { FormButton, FormTextInput, Header, Label, Text } from '@homzhub/common/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
@@ -54,9 +54,9 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
               </>
             )}
           </Formik>
-          <Label type="large" textType="bold" style={styles.backToLoginLink} onPress={this.navigateToLogin}>
+          <Text type="small" textType="semiBold" style={styles.backToLoginLink} onPress={this.navigateToLogin}>
             {t('auth:backToLogin')}
-          </Label>
+          </Text>
           {/* TODO: Remove the use of Reset Password from here */}
           <Label type="large" textType="bold" style={styles.backToLoginLink} onPress={this.navigateToResetPassword}>
             Reset Password
@@ -73,8 +73,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
 
   public navigateToLogin = (): void => {
     const { navigation } = this.props;
-    // TODO: Redirect to Login Page once ready
-    navigation.navigate(ScreensKeys.SignUp);
+    navigation.navigate(ScreensKeys.EmailLogin);
   };
 
   public navigateToResetPassword = (): void => {
@@ -85,8 +84,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
 
   public handleIconPress = (): void => {
     const { navigation } = this.props;
-    // TODO: Redirect to Login Page once ready
-    navigation.navigate(ScreensKeys.SignUp);
+    navigation.goBack();
   };
 
   private formSchema = (): yup.ObjectSchema<{ email: string }> => {

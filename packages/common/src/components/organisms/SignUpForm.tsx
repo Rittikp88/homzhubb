@@ -5,7 +5,9 @@ import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormButton, FormTextInput, TermsCondition } from '@homzhub/common/src/components';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 
 type ISignUpFormProps = WithTranslation;
 
@@ -111,7 +113,7 @@ export { HOC as SignUpForm };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: theme.layout.screenPadding,
+    paddingHorizontal: theme.layout.screenPadding,
   },
   submitStyle: {
     flex: 0,

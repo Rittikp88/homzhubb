@@ -21,7 +21,7 @@ class EmailLoginScreen extends React.PureComponent<Props, {}> {
           subTitleColor={theme.colors.dark}
           onIconPress={this.handleIconPress}
         />
-        <LoginForm isEmailLogin />
+        <LoginForm isEmailLogin handleForgotPassword={this.handleForgotPassword} />
       </View>
     );
   }
@@ -29,6 +29,11 @@ class EmailLoginScreen extends React.PureComponent<Props, {}> {
   private handleIconPress = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  private handleForgotPassword = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ForgotPassword);
   };
 }
 

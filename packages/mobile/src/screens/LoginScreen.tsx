@@ -38,7 +38,7 @@ class LoginScreen extends Component<Props, ISignUpState> {
 
   public render(): React.ReactNode {
     const { animatedValue } = this.state;
-    const { t } = this.props;
+    const { t, user } = this.props;
 
     return (
       <View style={styles.container}>
@@ -46,10 +46,16 @@ class LoginScreen extends Component<Props, ISignUpState> {
           keyboardShouldPersistTaps="handled"
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: animatedValue } } }])}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: animatedValue } } }], {
+            useNativeDriver: false,
+          })}
         >
           <View style={styles.scrollViewContent}>
-            <LoginView onEmailLogin={this.handleEmailLoginPress} />
+            <LoginView
+              onEmailLogin={this.handleEmailLoginPress}
+              onSocialLoginSuccess={this.handleSocialLogin}
+              socialMediaItems={user.data}
+            />
           </View>
         </ScrollView>
         <Header
@@ -79,6 +85,20 @@ class LoginScreen extends Component<Props, ISignUpState> {
   private handleLinkPress = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.SignUp);
+  };
+
+  private handleSocialLogin = (resposne: any): void => {
+    const { navigation, t } = this.props;
+    const {
+      user: { email, givenName },
+    } = resposne;
+    navigation.navigate(ScreensKeys.MobileVerification, {
+      title: t('auth:signUpWithGoogle'),
+      subTitle: email,
+      icon: 'left-arrow',
+      message: t('auth:enterNumberForProfile', { givenName }),
+      buttonTitle: t('signUp'),
+    });
   };
 }
 

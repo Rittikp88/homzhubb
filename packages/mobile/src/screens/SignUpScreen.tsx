@@ -46,10 +46,12 @@ class SignUpScreen extends Component<Props, ISignUpState> {
           keyboardShouldPersistTaps="handled"
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: animatedValue } } }])}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: animatedValue } } }], {
+            useNativeDriver: false,
+          })}
         >
           <View style={styles.scrollViewContent}>
-            <SignupView socialMediaItems={user.data} onSignUpSuccess={this.handleSignUpSuccess} />
+            <SignupView socialMediaItems={user.data} onSocialSignUpSuccess={this.handleSocialSignUp} />
             <Button type="primary" title="OTP" onPress={this.onPress} />
             <Button type="primary" title="Forgot Password" onPress={this.onForgotPassword} />
           </View>
@@ -92,7 +94,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
   };
 
   // TODO: need to add response type
-  private handleSignUpSuccess = (resposne: any): void => {
+  private handleSocialSignUp = (resposne: any): void => {
     const { navigation, t } = this.props;
     const {
       user: { email, givenName },

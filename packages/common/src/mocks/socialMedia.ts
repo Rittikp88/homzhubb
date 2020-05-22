@@ -1,17 +1,17 @@
 export const SocialMediaData = [
   {
     provider: 'GOOGLE',
-    description: 'Signup with Google',
+    description: 'with Google',
     clientID: '1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com',
   },
   {
     provider: 'FACEBOOK',
-    description: 'Signup with Facebook',
+    description: 'with Facebook',
     clientID: '',
   },
   {
     provider: 'LINKEDIN',
-    description: 'Signup with Linkedin',
+    description: 'with Linkedin',
     clientID: '',
   },
 ];

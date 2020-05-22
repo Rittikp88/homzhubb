@@ -11,6 +11,7 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 
 interface ISignUpFormProps extends WithTranslation {
   isEmailLogin?: boolean;
+  handleForgotPassword?: () => void;
 }
 
 interface ISignUpFormState {
@@ -18,20 +19,25 @@ interface ISignUpFormState {
     email: string;
     phone: string;
     password: string;
+    isEmailFlow: boolean;
   };
 }
 
 class LoginForm extends Component<ISignUpFormProps, ISignUpFormState> {
-  public state = {
-    user: {
-      email: '',
-      phone: '',
-      password: '',
-    },
-  };
+  public constructor(props: ISignUpFormProps) {
+    super(props);
+    this.state = {
+      user: {
+        email: '',
+        phone: '',
+        password: '',
+        isEmailFlow: props.isEmailLogin || false,
+      },
+    };
+  }
 
   public render(): React.ReactNode {
-    const { t, isEmailLogin } = this.props;
+    const { t, handleForgotPassword } = this.props;
     const { user } = this.state;
     const formData = { ...user };
 
@@ -49,12 +55,13 @@ class LoginForm extends Component<ISignUpFormProps, ISignUpFormState> {
                 title={t('login')}
                 containerStyle={styles.submitStyle}
               />
-              {isEmailLogin && (
+              {user.isEmailFlow && (
                 <Button
                   type="secondary"
                   title={t('auth:forgotPassword')}
                   fontType="semiBold"
                   textSize="small"
+                  onPress={handleForgotPassword}
                   containerStyle={styles.forgotButtonStyle}
                 />
               )}
@@ -66,10 +73,13 @@ class LoginForm extends Component<ISignUpFormProps, ISignUpFormState> {
   }
 
   private renderLoginFields = (formProps: FormikProps<FormikValues>): React.ReactElement => {
-    const { t, isEmailLogin = false } = this.props;
+    const { t } = this.props;
+    const {
+      user: { isEmailFlow },
+    } = this.state;
     return (
       <>
-        {isEmailLogin ? (
+        {isEmailFlow ? (
           <>
             <FormTextInput
               name="email"
@@ -102,16 +112,24 @@ class LoginForm extends Component<ISignUpFormProps, ISignUpFormState> {
     );
   };
 
-  private formSchema = (): yup.ObjectSchema<{ email: string; phone: string; password: string }> => {
+  private formSchema = (): yup.ObjectSchema<{
+    isEmailFlow: boolean;
+    email: string;
+    phone: string;
+    password: string;
+  }> => {
     const { t } = this.props;
     return yup.object().shape({
-      isEmailLogin: yup.boolean(),
-      email: yup.string().when('isEmailLogin', {
+      isEmailFlow: yup.boolean(),
+      email: yup.string().when('isEmailFlow', {
         is: true,
         then: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
       }),
-      phone: yup.string().required(t('auth:numberRequired')),
-      password: yup.string().when('isEmailLogin', {
+      phone: yup.string().when('isEmailFlow', {
+        is: false,
+        then: yup.string().required(t('auth:numberRequired')),
+      }),
+      password: yup.string().when('isEmailFlow', {
         is: true,
         then: yup
           .string()
