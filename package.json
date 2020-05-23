@@ -13,14 +13,15 @@
     "start:web": "yarn workspace @homzhub/web start",
     "start:mobile": "yarn workspace @homzhub/mobile start",
     "test": "yarn workspaces run test",
-    "android": "yarn workspace @homzhub/mobile android",
+    "android": "jetify && yarn workspace @homzhub/mobile android",
     "android:clean": "cd packages/mobile/android && ./gradlew clean",
     "ios": "yarn workspace @homzhub/mobile ios",
     "ios:clean": "cd packages/mobile && rm -rf ios/build",
     "build:web": "yarn workspace @homzhub/web build",
     "build:mobile": "yarn workspace @homzhub/mobile build",
     "format": "yarn workspaces run format",
-    "sonar": "yarn workspaces run sonar"
+    "sonar": "yarn workspaces run sonar",
+    "postinstall": "jetify"
   },
   "dependencies": {
     "axios": "^0.19.2",

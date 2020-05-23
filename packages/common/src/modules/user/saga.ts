@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/user/UserRepository';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 
 function* getSocialMedia() {

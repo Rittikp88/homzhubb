@@ -27,6 +27,7 @@ const PickerItemIOS = PickerIOS.Item;
 export class Dropdown extends React.PureComponent<IProps> {
   public state = {
     modalVisible: false,
+    // eslint-disable-next-line react/destructuring-assignment
     value: this.props.value,
   };
 

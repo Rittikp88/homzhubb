@@ -50,6 +50,7 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
                   formProps={formProps}
                   type="primary"
                   title={t('auth:resetPasswordButtonTitle')}
+                  // @ts-ignore
                   onPress={formProps.handleSubmit}
                   containerStyle={styles.formButtonStyle}
                 />

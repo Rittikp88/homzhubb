@@ -1,11 +1,9 @@
-import { IOnboarding } from '@homzhub/common/src/domain/repositories/onboarding/Interfaces';
-
-export interface IOnboardingState {
-  data: IOnboarding[];
+export interface IOnBoardingState {
+  data: any;
   error: {
-    onboarding: string;
+    onBoarding: string;
   };
   loaders: {
-    onboarding: boolean;
+    onBoarding: boolean;
   };
 }

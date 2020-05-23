@@ -1,12 +1,13 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { IUserRepository } from '@homzhub/common/src/domain/repositories/user/Interfaces';
 
 const ENDPOINTS = {
   socialMedia: (): string => 'https://jsonplaceholder.typicode.com/users',
+  fetchOtp: (): string => '',
+  verifyOtp: (): string => '',
 };
 
-class UserRepository implements IUserRepository {
+class UserRepository {
   private apiClient: IApiClient;
 
   public constructor() {
@@ -16,6 +17,14 @@ class UserRepository implements IUserRepository {
   public getSocialMedia = async (): Promise<any> => {
     const url = ENDPOINTS.socialMedia(); // TODO: Replace OnboardingData with url once api is ready
     return await this.apiClient.get(url);
+  };
+
+  public fetchOtp = async (): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.fetchOtp());
+  };
+
+  public verifyOtp = async (): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.verifyOtp());
   };
 }
 

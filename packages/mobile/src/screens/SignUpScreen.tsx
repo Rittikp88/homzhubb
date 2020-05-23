@@ -100,10 +100,10 @@ class SignUpScreen extends Component<Props, ISignUpState> {
       user: { email, givenName },
     } = resposne;
     navigation.navigate(ScreensKeys.MobileVerification, {
-      title: t('auth:signUpWithGoogle'),
+      title: t('auth:signUpWithGoogle') ?? '',
       subTitle: email,
       icon: 'left-arrow',
-      message: t('auth:enterNumberForProfile', { givenName }),
+      message: t('auth:enterNumberForProfile', { givenName }) ?? '',
       buttonTitle: t('signUp'),
     });
   };

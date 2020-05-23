@@ -1,4 +1,4 @@
-import { IOnboardingState } from '@homzhub/common/src/modules/onboarding/interface';
+import { IOnBoardingState } from '@homzhub/common/src/modules/onboarding/interface';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 
 export interface IFluxStandardAction<Payload = undefined, Error = string> {
@@ -8,6 +8,6 @@ export interface IFluxStandardAction<Payload = undefined, Error = string> {
 }
 
 export interface IState {
-  onboarding: IOnboardingState;
+  onBoarding: IOnBoardingState;
   user: IUserState;
 }

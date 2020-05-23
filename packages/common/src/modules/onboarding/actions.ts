@@ -2,7 +2,7 @@
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
-const actionTypePrefix = 'Onboarding/';
+const actionTypePrefix = 'OnBoarding/';
 
 export const OnboardingActionTypes = {
   GET: {
@@ -12,28 +12,28 @@ export const OnboardingActionTypes = {
   },
 };
 
-const getOnboardingDetail = (): IFluxStandardAction => {
+const getOnBoardingDetail = (): IFluxStandardAction => {
   return {
     type: OnboardingActionTypes.GET.ONBOARDING,
   };
 };
 
-const getOnboardingSuccess = (data: any): IFluxStandardAction<any> => {
+const getOnBoardingSuccess = (data: any): IFluxStandardAction<any> => {
   return {
     type: OnboardingActionTypes.GET.ONBOARDING_SUCCESS,
     payload: data,
   };
 };
 
-const getOnboardingFailure = (error: string): IFluxStandardAction<string> => {
+const getOnBoardingFailure = (error: string): IFluxStandardAction<string> => {
   return {
     type: OnboardingActionTypes.GET.ONBOARDING_FAILURE,
     payload: error,
   };
 };
 
-export const OnboardingActions = {
-  getOnboardingDetail,
-  getOnboardingSuccess,
-  getOnboardingFailure,
+export const OnBoardingActions = {
+  getOnBoardingDetail,
+  getOnBoardingSuccess,
+  getOnBoardingFailure,
 };

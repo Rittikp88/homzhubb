@@ -30,7 +30,7 @@ const themedColors = {
   primaryColor: namedColors.blue,
   splashScreenBackgroundColor: '',
   splashScreenIndicatorColor: '',
-  onboardingScreenBackground: namedColors.background,
+  onBoardingScreenBackground: namedColors.background,
   active: namedColors.blue,
   success: namedColors.completed,
   error: namedColors.error,

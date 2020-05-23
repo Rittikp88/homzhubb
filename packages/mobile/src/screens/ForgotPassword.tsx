@@ -48,6 +48,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
                   formProps={formProps}
                   type="primary"
                   title={t('auth:forgotPasswordRequestLink')}
+                  // @ts-ignore
                   onPress={formProps.handleSubmit}
                   containerStyle={styles.formButtonStyle}
                 />

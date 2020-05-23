@@ -87,16 +87,16 @@ class LoginScreen extends Component<Props, ISignUpState> {
     navigation.navigate(ScreensKeys.SignUp);
   };
 
-  private handleSocialLogin = (resposne: any): void => {
+  private handleSocialLogin = (response: any): void => {
     const { navigation, t } = this.props;
     const {
       user: { email, givenName },
-    } = resposne;
+    } = response;
     navigation.navigate(ScreensKeys.MobileVerification, {
-      title: t('auth:signUpWithGoogle'),
+      title: t('auth:signUpWithGoogle') ?? '',
       subTitle: email,
       icon: 'left-arrow',
-      message: t('auth:enterNumberForProfile', { givenName }),
+      message: t('auth:enterNumberForProfile', { givenName }) ?? '',
       buttonTitle: t('signUp'),
     });
   };

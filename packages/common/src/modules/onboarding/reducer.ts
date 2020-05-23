@@ -1,39 +1,39 @@
-import { IOnboardingState } from '@homzhub/common/src/modules/onboarding/interface';
+import { IOnBoardingState } from '@homzhub/common/src/modules/onboarding/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { OnboardingActionTypes } from '@homzhub/common/src/modules/onboarding/actions';
 
-export const initialOnboardingState: IOnboardingState = {
+export const initialOnBoardingState: IOnBoardingState = {
   data: null,
   error: {
-    onboarding: '',
+    onBoarding: '',
   },
   loaders: {
-    onboarding: false,
+    onBoarding: false,
   },
 };
 
-export const onboardingReducer = (
-  state: IOnboardingState = initialOnboardingState,
+export const onBoardingReducer = (
+  state: IOnBoardingState = initialOnBoardingState,
   action: IFluxStandardAction
-): IOnboardingState => {
+): IOnBoardingState => {
   switch (action.type) {
     case OnboardingActionTypes.GET.ONBOARDING:
       return {
         ...state,
-        ['loaders']: { ...state.loaders, ['onboarding']: true },
-        ['error']: { ...state.error, ['onboarding']: '' },
+        ['loaders']: { ...state.loaders, ['onBoarding']: true },
+        ['error']: { ...state.error, ['onBoarding']: '' },
       };
     case OnboardingActionTypes.GET.ONBOARDING_SUCCESS:
       return {
         ...state,
         ['data']: action.payload,
-        ['loaders']: { ...state.loaders, ['onboarding']: false },
+        ['loaders']: { ...state.loaders, ['onBoarding']: false },
       };
     case OnboardingActionTypes.GET.ONBOARDING_FAILURE:
       return {
         ...state,
-        ['loaders']: { ...state.loaders, ['onboarding']: false },
-        ['error']: { ...state.error, ['onboarding']: '' },
+        ['loaders']: { ...state.loaders, ['onBoarding']: false },
+        ['error']: { ...state.error, ['onBoarding']: '' },
       };
     default:
       return state;

@@ -11,7 +11,8 @@
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
     "format": "prettier --write './**/*.{ts,tsx,js,json}'",
-    "sonar": "ts-node sonar-project.ts"
+    "sonar": "ts-node sonar-project.ts",
+    "postinstall": "jetify"
   },
   "dependencies": {
     "@homzhub/common": "0.0.1",
