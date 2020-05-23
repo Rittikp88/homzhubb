@@ -6,7 +6,7 @@ import { OnBoardingActions, OnboardingActionTypes } from '@homzhub/common/src/mo
 function* getOnBoardingDetails() {
   try {
     const data = yield call(OnBoardingRepository.getDetails);
-    yield put(OnBoardingActions.getOnBoardingSuccess(data.data));
+    yield put(OnBoardingActions.getOnBoardingSuccess(data));
   } catch (e) {
     yield put(OnBoardingActions.getOnBoardingFailure(e.message));
   }

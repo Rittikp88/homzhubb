@@ -24,11 +24,20 @@ export default class ApiResponseHandler implements IApiResponseHandler {
       return {};
     }
 
+    if (!responseBody.data) {
+      Logger.warn(`Empty data. Data: ${responseBody.data}`);
+      return {};
+    }
+
     if (!this.isJsonResponse(response)) {
       Logger.warn(`Response is not a JSON. ${responseBody}`);
     }
 
-    return responseBody;
+    if (!this.isDataJson(responseBody.data)) {
+      Logger.warn(`Data is not a JSON. ${responseBody.data}`);
+    }
+
+    return responseBody.data;
   };
 
   public error = (error: IApiError): ApiClientError => {
@@ -69,9 +78,10 @@ export default class ApiResponseHandler implements IApiResponseHandler {
     const responseBody = response.data || '';
     const contentType = headers['content-type'] || '';
 
-    return (
-      contentType.indexOf('application/json') > -1 &&
-      (ObjectUtils.isOfType('array', responseBody) || ObjectUtils.isOfType('object', responseBody))
-    );
+    return contentType.indexOf('application/json') > -1 && this.isDataJson(responseBody);
+  };
+
+  private isDataJson = (data: any): boolean => {
+    return ObjectUtils.isOfType('array', data) || ObjectUtils.isOfType('object', data);
   };
 }
