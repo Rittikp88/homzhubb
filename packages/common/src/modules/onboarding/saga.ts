@@ -5,8 +5,8 @@ import { OnboardingActions, OnboardingActionTypes } from '@homzhub/common/src/mo
 
 function* getOnboardingDetails() {
   try {
-    const data: any = yield call(OnboardingRepository.getDetails);
-    yield put(OnboardingActions.getOnboardingSuccess(data));
+    const data = yield call(OnboardingRepository.getDetails);
+    yield put(OnboardingActions.getOnboardingSuccess(data.data));
   } catch (e) {
     yield put(OnboardingActions.getOnboardingFailure(e.message));
   }

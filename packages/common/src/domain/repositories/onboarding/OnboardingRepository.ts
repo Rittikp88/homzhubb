@@ -1,9 +1,9 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { IOnboardingRepository } from '@homzhub/common/src/domain/repositories/onboarding/Interfaces';
+import { IOnboardingRepository, IOnboarding } from '@homzhub/common/src/domain/repositories/onboarding/Interfaces';
 
 const ENDPOINTS = {
-  allDetail: (): string => 'https://jsonplaceholder.typicode.com/users',
+  allDetail: (): string => 'onboardings',
 };
 
 class OnboardingRepository implements IOnboardingRepository {
@@ -13,8 +13,8 @@ class OnboardingRepository implements IOnboardingRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getDetails = async (): Promise<any> => {
-    const url = ENDPOINTS.allDetail(); // TODO: Replace OnboardingData with url once api is ready
+  public getDetails = async (): Promise<IOnboarding[]> => {
+    const url = ENDPOINTS.allDetail();
     return await this.apiClient.get(url);
   };
 }

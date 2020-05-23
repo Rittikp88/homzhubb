@@ -40,9 +40,13 @@ class Onboarding extends React.PureComponent<Props, IOnboardingScreenState> {
     getOnboardingDetail();
   }
 
-  public render(): React.ReactElement {
-    const { onboarding } = this.props;
+  public render(): React.ReactNode {
+    const { onboarding, t } = this.props;
     const { activeSlide } = this.state;
+    if (!onboarding.data) {
+      return null;
+    }
+    const buttonText = activeSlide === onboarding.data.length - 1 ? t('common:gotIt') : t('common:next');
     return (
       <SafeAreaView style={styles.container}>
         {this.renderSkipButton()}
@@ -53,20 +57,13 @@ class Onboarding extends React.PureComponent<Props, IOnboardingScreenState> {
           showPagination
           currentSlide={this.changeSlide}
         />
-        <Text type="large" textType="bold" style={styles.heading}>
-          {onboarding.data[activeSlide].heading || ''}
+        <Text type="large" textType="bold" style={styles.title}>
+          {onboarding.data[activeSlide].title || ''}
         </Text>
         <Label type="large" textType="regular" style={styles.description}>
           {onboarding.data[activeSlide].description || ''}
         </Label>
-        <View style={styles.skipContainer}>
-          <Button
-            type="primary"
-            title={onboarding.data[activeSlide].buttonText}
-            onPress={this.renderNextFrame}
-            containerStyle={styles.button}
-          />
-        </View>
+        <Button type="primary" title={buttonText} onPress={this.renderNextFrame} containerStyle={styles.button} />
       </SafeAreaView>
     );
   }
@@ -102,7 +99,6 @@ class Onboarding extends React.PureComponent<Props, IOnboardingScreenState> {
 
   public navigateToGettingStarted = async (): void => {
     const { navigation } = this.props;
-    // Update the value of Async Storage isOnboardingCompleted
     await StorageService.set(StorageKeys.IS_ONBOARDING_COMPLETED, true);
     navigation.navigate(ScreensKeys.GettingStarted);
   };
@@ -121,16 +117,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.onboardingScreenBackground,
   },
-  skipContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  emptySkipView: {
-    height: 48,
-  },
   skipLinkContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  emptySkipView: {
+    height: 48,
   },
   skipLink: {
     flex: 0,
@@ -138,16 +130,16 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     alignItems: 'flex-end',
   },
-  heading: {
+  title: {
     textAlign: 'center',
     marginVertical: 30,
-    marginBottom: 30,
   },
   description: {
     textAlign: 'center',
   },
   button: {
     flex: 0,
+    alignSelf: 'center',
     marginVertical: 30,
   },
 });

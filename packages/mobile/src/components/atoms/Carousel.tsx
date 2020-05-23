@@ -7,8 +7,7 @@ import { SVGUri } from '@homzhub/mobile/src/components/atoms/Svg';
 interface ICarouselItems {
   screen: string;
   description: string;
-  buttonText: string;
-  scene: string;
+  image_url: string;
 }
 
 interface ICarouselProps {
@@ -29,8 +28,8 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
         <Carousel
           onLayout={this.updateRef}
           data={carouselItems}
-          sliderWidth={theme.viewport.width - theme.layout.screenPadding}
-          itemWidth={theme.viewport.width - 60}
+          sliderWidth={theme.viewport.width}
+          itemWidth={theme.viewport.width - 20}
           renderItem={this.renderItem}
           activeSlideOffset={20}
           onSnapToItem={this.updateSlideIndex}
@@ -44,7 +43,7 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
   };
 
   public renderItem = ({ item }: any): React.ReactElement => {
-    return <SVGUri width="100%" height="100%" uri={item.scene} />;
+    return <SVGUri width="100%" height="100%" uri={item.image_url} />;
   };
 
   public pagination = (): React.ReactElement => {

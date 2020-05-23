@@ -1,4 +1,4 @@
 {
-  "API_BASE_URL": "https://jsonplaceholder.typicode.com",
+  "API_BASE_URL": "http://3.7.27.67/api/v1/",
   "OTP_LENGTH": 6
 }

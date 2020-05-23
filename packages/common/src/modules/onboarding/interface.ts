@@ -1,5 +1,7 @@
+import { IOnboarding } from '@homzhub/common/src/domain/repositories/onboarding/Interfaces';
+
 export interface IOnboardingState {
-  data: any;
+  data: IOnboarding[];
   error: {
     onboarding: string;
   };
