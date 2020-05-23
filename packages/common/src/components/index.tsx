@@ -3,6 +3,8 @@ export { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzh
 export { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
 export { ImageRound, ImageSquare, Image } from '@homzhub/common/src/components/atoms/Image';
 export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
+export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';
 
 // Molecules
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
