@@ -1,12 +1,13 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { ISignUpPayload } from './interfaces';
+import { ISignUpPayload, IForgotPasswordPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   socialMedia: (): string => 'https://jsonplaceholder.typicode.com/users',
   signUp: (): string => 'users/',
   fetchOtp: (): string => '',
   verifyOtp: (): string => '',
+  forgotPasswordEmail: (): string => 'users/reset-password/',
 };
 
 class UserRepository {
@@ -31,6 +32,10 @@ class UserRepository {
 
   public verifyOtp = async (): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.verifyOtp());
+  };
+
+  public resetPassword = async (payload: IForgotPasswordPayload): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
   };
 }
 

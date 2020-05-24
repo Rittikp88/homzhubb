@@ -5,6 +5,7 @@ import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormTextInput, Header, Label, Text } from '@homzhub/common/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -58,29 +59,43 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
           <Text type="small" textType="semiBold" style={styles.backToLoginLink} onPress={this.navigateToLogin}>
             {t('auth:backToLogin')}
           </Text>
-          {/* TODO: Remove the use of Reset Password from here */}
-          <Label type="large" textType="bold" style={styles.backToLoginLink} onPress={this.navigateToResetPassword}>
-            Reset Password
-          </Label>
         </View>
       </View>
     );
   }
 
-  private onSubmit = (): void => {
-    // TODO: Add the login on submit of Form
-    AlertHelper.success({ message: 'Some message title' });
+  private onSubmit = (formProps: IForgotPasswordState): void => {
+    const { navigation } = this.props;
+    const { email } = formProps;
+    const payload = {
+      action: 'SEND_EMAIL',
+      payload: {
+        email,
+      },
+    };
+    UserService.resetPassword(payload)
+      .then((response) => {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        const { email_exists, token } = response;
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        if (email_exists) {
+          navigation.navigate(ScreensKeys.ResetPassword, {
+            token,
+            email,
+          });
+        } else {
+          AlertHelper.error({ message: 'Email does not exists' });
+        }
+        return null;
+      })
+      .catch((err) => {
+        AlertHelper.error({ message: err });
+      });
   };
 
   public navigateToLogin = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.EmailLogin);
-  };
-
-  public navigateToResetPassword = (): void => {
-    const { navigation } = this.props;
-    // TODO: Remove this navigation from here once the actual implementation is done
-    navigation.navigate(ScreensKeys.ResetPassword);
   };
 
   public handleIconPress = (): void => {

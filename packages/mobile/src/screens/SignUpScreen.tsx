@@ -57,7 +57,6 @@ class SignUpScreen extends Component<Props, ISignUpState> {
               onSocialSignUpSuccess={this.handleSocialSignUp}
               onSubmitForm={this.handleFormSubmit}
             />
-            <Button type="primary" title="Forgot Password" onPress={this.onForgotPassword} />
           </View>
         </ScrollView>
         <Header
@@ -74,11 +73,6 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     );
   }
 
-  public onForgotPassword = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.ForgotPassword);
-  };
-
   private onClosePress = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
@@ -94,14 +88,17 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     const { navigation, t } = this.props;
     const {
       provider,
-      user: { email, givenName },
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      user: { email, givenName, first_name, last_name },
     } = response;
     const title = provider === 'GOOGLE' ? t('auth:signUpWithGoogle') : t('auth:signUpWithFacebook');
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    const name = provider === 'GOOGLE' ? givenName : `${first_name} ${last_name}`;
     navigation.navigate(ScreensKeys.MobileVerification, {
       title: title ?? '',
       subTitle: email,
       icon: 'left-arrow',
-      message: t('auth:enterNumberForProfile', { givenName }) ?? '',
+      message: t('auth:enterNumberForProfile', { givenName: name }) ?? '',
       buttonTitle: t('signUp'),
     });
   };

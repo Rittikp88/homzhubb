@@ -127,7 +127,7 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
             const infoRequest = new GraphRequest(
               `/me?fields=email,first_name,last_name&access_token=${accessToken}`,
               null,
-              this._responseInfoCallback
+              this.responseFacebookCallback
             );
             // Start the graph request
             new GraphRequestManager().addRequest(infoRequest).start();
@@ -140,7 +140,7 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
     );
   };
 
-  public _responseInfoCallback = (error?: object, result?: object): void => {
+  public responseFacebookCallback = (error?: object, result?: object): void => {
     const { onSuccess } = this.props;
     if (error) {
       AlertHelper.error({ message: 'Error in Facebook Signin' });

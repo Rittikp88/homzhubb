@@ -57,3 +57,8 @@ export interface IVerificationProps {
   buttonTitle: string;
   message?: string;
 }
+
+export interface IResetPasswordProps {
+  token?: string | number;
+  email?: string;
+}

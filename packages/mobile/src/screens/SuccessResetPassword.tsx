@@ -17,7 +17,7 @@ class SuccessResetPassword extends Component<Props, {}> {
           icon="close"
           title={t('auth:successResetPassword')}
           subTitle={t('auth:successResetPasswordDescription')}
-          onIconPress={this.handleIconPress}
+          onIconPress={this.navigateToLogin}
           headerContainerStyle={styles.headerContainer}
         />
         <Button
@@ -30,16 +30,9 @@ class SuccessResetPassword extends Component<Props, {}> {
     );
   }
 
-  public handleIconPress = (): void => {
-    const { navigation } = this.props;
-    // TODO: Redirect to Login Page once ready
-    navigation.navigate(ScreensKeys.ResetPassword);
-  };
-
   public navigateToLogin = (): void => {
     const { navigation } = this.props;
-    // TODO: Redirect to Login Page once ready
-    navigation.navigate(ScreensKeys.ResetPassword);
+    navigation.navigate(ScreensKeys.Login);
   };
 }
 

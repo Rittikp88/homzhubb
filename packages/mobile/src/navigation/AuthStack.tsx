@@ -10,7 +10,12 @@ import { Otp } from '@homzhub/mobile/src/screens/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/SignUpScreen';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/SuccessResetPassword';
 import ResetPassword from '@homzhub/mobile/src/screens/ResetPassword';
-import { IOtpNavProps, ScreensKeys, IVerificationProps } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  IOtpNavProps,
+  ScreensKeys,
+  IVerificationProps,
+  IResetPasswordProps,
+} from '@homzhub/mobile/src/navigation/interfaces';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
@@ -22,7 +27,7 @@ export type AuthStackParamList = {
   [ScreensKeys.EmailLogin]: undefined;
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.ForgotPassword]: undefined;
-  [ScreensKeys.ResetPassword]: undefined;
+  [ScreensKeys.ResetPassword]: IResetPasswordProps;
   [ScreensKeys.SuccessResetPassword]: undefined;
 };
 

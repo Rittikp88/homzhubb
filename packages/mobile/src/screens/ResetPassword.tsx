@@ -5,6 +5,7 @@ import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormTextInput, Header, Label } from '@homzhub/common/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -57,33 +58,39 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
               </>
             )}
           </Formik>
-          {/* TODO: Remove the use of Success Password Reset Label from here */}
-          <Label
-            type="large"
-            textType="bold"
-            style={styles.successResetPasswordLink}
-            onPress={this.navigateToSuccessResetPassword}
-          >
-            Success Password Reset
-          </Label>
         </View>
       </View>
     );
   }
 
-  private onSubmit = (): void => {
-    // TODO: Add the login on submit of Form
-    AlertHelper.success({ message: 'Some message title' });
+  private onSubmit = (formProps: IResetPasswordState): void => {
+    const { password } = formProps;
+    const {
+      navigation,
+      route: {
+        params: { token },
+      },
+    } = this.props;
+    const payload = {
+      action: 'SET_PASSWORD',
+      payload: {
+        token,
+        password,
+      },
+    };
+    UserService.resetPassword(payload)
+      .then(() => {
+        navigation.navigate(ScreensKeys.SuccessResetPassword);
+        return null;
+      })
+      .catch((err) => {
+        AlertHelper.error({ message: err });
+      });
   };
 
   public handleIconPress = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.EmailLogin);
-  };
-
-  public navigateToSuccessResetPassword = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SuccessResetPassword);
   };
 
   private formSchema = (): yup.ObjectSchema<{ password: string }> => {

@@ -5,3 +5,12 @@ export interface ISignUpPayload {
   phone_number: string;
   password: string;
 }
+
+export interface IForgotPasswordPayload {
+  action: string;
+  payload: {
+    email?: string;
+    token?: string | number;
+    password?: string;
+  };
+}
