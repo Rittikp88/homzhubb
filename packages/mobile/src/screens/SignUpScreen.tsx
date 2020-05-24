@@ -6,8 +6,9 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SignupView, Button, Header } from '@homzhub/common/src/components';
+import { SignupView, Button, Header, FormTextInput } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -51,8 +52,11 @@ class SignUpScreen extends Component<Props, ISignUpState> {
           })}
         >
           <View style={styles.scrollViewContent}>
-            <SignupView socialMediaItems={user.data} onSocialSignUpSuccess={this.handleSocialSignUp} />
-            <Button type="primary" title="OTP" onPress={this.onPress} />
+            <SignupView
+              socialMediaItems={user.data}
+              onSocialSignUpSuccess={this.handleSocialSignUp}
+              onSubmitForm={this.handleFormSubmit}
+            />
             <Button type="primary" title="Forgot Password" onPress={this.onForgotPassword} />
           </View>
         </ScrollView>
@@ -69,18 +73,6 @@ class SignUpScreen extends Component<Props, ISignUpState> {
       </View>
     );
   }
-
-  private onPress = (): void => {
-    const { navigation, t } = this.props;
-    navigation.navigate(ScreensKeys.OTP, {
-      type: OtpNavTypes.SignUp,
-      title: t('auth:verifyNumber'),
-      countryCode: 'IN',
-      phone: '+91 9008004265',
-      userData: {},
-      ref: null,
-    });
-  };
 
   public onForgotPassword = (): void => {
     const { navigation } = this.props;
@@ -109,6 +101,18 @@ class SignUpScreen extends Component<Props, ISignUpState> {
       icon: 'left-arrow',
       message: t('auth:enterNumberForProfile', { givenName }) ?? '',
       buttonTitle: t('signUp'),
+    });
+  };
+
+  private handleFormSubmit = (formData: ISignUpPayload, ref: FormTextInput | null): void => {
+    const { navigation, t } = this.props;
+    navigation.navigate(ScreensKeys.OTP, {
+      type: OtpNavTypes.SignUp,
+      title: t('auth:verifyNumber'),
+      countryCode: formData.country_code,
+      phone: formData.phone_number,
+      userData: formData,
+      ref,
     });
   };
 }

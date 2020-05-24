@@ -176,7 +176,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
         <View style={containerStyle}>
           <RNTextInput
             ref={(input): void => {
-              this.inputText = input;
+              this.inputText = input as any;
             }}
             {...inputProps}
           />
@@ -230,6 +230,10 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
   private handleFocus = (): void => this.setState({ isFocused: true });
 
   private handleBlur = (): void => this.setState({ isFocused: false });
+
+  public focus = (): void => {
+    this.inputText?.focus();
+  };
 }
 
 const styles = StyleSheet.create({

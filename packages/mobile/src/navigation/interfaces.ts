@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
 // Route keys
@@ -45,8 +46,8 @@ export interface IOtpNavProps {
   title: string;
   countryCode: string;
   phone: string;
-  userData?: any;
-  ref: FormTextInput;
+  userData?: ISignUpPayload;
+  ref: FormTextInput | null;
 }
 
 export interface IVerificationProps {

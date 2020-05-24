@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { OtpService } from '@homzhub/common/src/services/OtpService';
+import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Label, Text, OtpTimer, Header } from '@homzhub/common/src/components';
@@ -75,14 +76,34 @@ class Otp extends React.PureComponent<IProps, IState> {
     } = this.props;
 
     if (params && params.ref) {
-      // @ts-ignore
       params.ref.focus();
     }
 
     navigation.goBack();
   };
 
-  private onVerifySuccess = (): void => {};
+  private onVerifySuccess = (): void => {
+    const {
+      route: {
+        params: { userData },
+      },
+    } = this.props;
+    if (!userData) {
+      return;
+    }
+
+    try {
+      UserService.signUpService(userData)
+        .then(() => {
+          AlertHelper.success({ message: 'Successfully registered' });
+        })
+        .catch(() => {
+          AlertHelper.error({ message: 'error' });
+        });
+    } catch (e) {
+      AlertHelper.error({ message: 'error' });
+    }
+  };
 
   private fetchOtp = async (): Promise<void> => {
     try {
