@@ -38,6 +38,7 @@
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already Registered?",
     "signUpWithGoogle": "Signup With Google",
+    "signUpWithFacebook": "Signup With Facebook",
     "enterNumberForProfile": "Hello {{givenName}}, Enter your phone number to complete your profile.",
     "forgotPassword": "Forgot Password?",
     "forgotPasswordDescription": "Enter the email address you used to signup on Homzhub. We will send you the reset link.",

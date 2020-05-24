@@ -20,6 +20,12 @@ interface ISocialMediaProps {
   onEmailLogin?: () => void;
 }
 
+interface IFacebookResultProps {
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
 export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
   public render(): React.ReactNode {
     const { socialMediaItems, onEmailLogin, isFromLogin } = this.props;
@@ -29,11 +35,18 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
       return null;
     }
     socialMediaItems.forEach((socialMedia) => {
+      const invokeSocialMediaLogin = async (): Promise<void> => {
+        if (socialMedia.provider === SocialMediaKeys.Google) {
+          await this.onGoogleSignIn(socialMedia.clientID);
+        } else {
+          this.onFacebookLogin();
+        }
+      };
       buttons.push(
         <Button
           title={`${titlePrefix}${socialMedia.description}`}
           type="secondary"
-          onPress={socialMedia.provider === SocialMediaKeys.Google ? this.onGoogleSignIn : this.onFacebookLogin}
+          onPress={invokeSocialMediaLogin}
           containerStyle={styles.socialMedia}
           textType="label"
           textSize="large"
@@ -75,17 +88,21 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
     );
   }
 
-  private onGoogleSignIn = async (socialMedia: any): Promise<void> => {
+  private onGoogleSignIn = async (clientID: string): Promise<void> => {
     const { onSuccess } = this.props;
     try {
       GoogleSignin.configure({
         scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
-        // webClientId: socialMedia.clientID,
-        iosClientId: socialMedia.clientID,
+        webClientId: clientID,
+        iosClientId: clientID,
       });
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-      onSuccess(response);
+      const responseObject = {
+        ...response,
+        provider: 'GOOGLE',
+      };
+      onSuccess(responseObject);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         AlertHelper.error({ message: 'Sign in Cancelled' });
@@ -110,7 +127,7 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
             const infoRequest = new GraphRequest(
               `/me?fields=email,first_name,last_name&access_token=${accessToken}`,
               null,
-              () => this.responseCallback
+              this._responseInfoCallback
             );
             // Start the graph request
             new GraphRequestManager().addRequest(infoRequest).start();
@@ -123,11 +140,17 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
     );
   };
 
-  private responseCallback = (error: object, result: object): void => {
+  public _responseInfoCallback = (error?: object, result?: object): void => {
+    const { onSuccess } = this.props;
     if (error) {
       AlertHelper.error({ message: 'Error in Facebook Signin' });
     } else {
-      // TODO: Navigate the user with the result from here
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      const responseObject = {
+        provider: 'FACEBOOK',
+        user: result,
+      };
+      onSuccess(responseObject);
     }
   };
 }

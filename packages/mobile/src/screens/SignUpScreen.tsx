@@ -90,13 +90,15 @@ class SignUpScreen extends Component<Props, ISignUpState> {
   };
 
   // TODO: need to add response type
-  private handleSocialSignUp = (resposne: any): void => {
+  private handleSocialSignUp = (response: any): void => {
     const { navigation, t } = this.props;
     const {
+      provider,
       user: { email, givenName },
-    } = resposne;
+    } = response;
+    const title = provider === 'GOOGLE' ? t('auth:signUpWithGoogle') : t('auth:signUpWithFacebook');
     navigation.navigate(ScreensKeys.MobileVerification, {
-      title: t('auth:signUpWithGoogle') ?? '',
+      title: title ?? '',
       subTitle: email,
       icon: 'left-arrow',
       message: t('auth:enterNumberForProfile', { givenName }) ?? '',
