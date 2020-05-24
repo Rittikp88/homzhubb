@@ -9,7 +9,7 @@ import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SignupView, Button, Header } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
@@ -71,10 +71,14 @@ class SignUpScreen extends Component<Props, ISignUpState> {
   }
 
   private onPress = (): void => {
-    const { navigation } = this.props;
-    // TODO: Take value from form
+    const { navigation, t } = this.props;
     navigation.navigate(ScreensKeys.OTP, {
+      type: OtpNavTypes.SignUp,
+      title: t('auth:verifyNumber'),
+      countryCode: 'IN',
       phone: '+91 9008004265',
+      userData: {},
+      ref: null,
     });
   };
 

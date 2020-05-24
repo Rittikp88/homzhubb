@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
 // Route keys
 export enum ScreensKeys {
@@ -28,15 +29,24 @@ export const ScreensTitles = {
   [ScreensKeys.SignUp]: 'Sign Up',
 };
 
+export enum OtpNavTypes {
+  Login = 'Login',
+  SignUp = 'SignUp',
+  SocialMedia = 'SocialMedia',
+}
+
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
   route: RouteProp<S, T>;
 };
 
 export interface IOtpNavProps {
-  title?: string;
+  type: OtpNavTypes;
+  title: string;
+  countryCode: string;
   phone: string;
-  focusCallback?: () => void;
+  userData?: any;
+  ref: FormTextInput;
 }
 
 export interface IVerificationProps {

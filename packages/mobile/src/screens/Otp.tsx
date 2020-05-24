@@ -1,30 +1,47 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { OtpService } from '@homzhub/common/src/services/OtpService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
-import { Label, Text, OtpTimer, OtpInputs, Header } from '@homzhub/common/src/components';
+import { Label, Text, OtpTimer, Header } from '@homzhub/common/src/components';
+import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 type IProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OTP> & WithTranslation;
-class Otp extends React.PureComponent<IProps> {
-  public componentDidMount(): void {
-    // TODO: Add API call logic for fetch OTP here
-  }
+interface IState {
+  error: boolean;
+}
+
+class Otp extends React.PureComponent<IProps, IState> {
+  public state = {
+    error: false,
+  };
+
+  public componentDidMount = async (): Promise<void> => {
+    await this.fetchOtp();
+  };
 
   public render = (): React.ReactNode => {
     const {
       t,
+      navigation: { goBack },
       route: { params },
     } = this.props;
+    const { error } = this.state;
     const title = params?.title ?? t('verifyNumber');
     const phone = params?.phone ?? '';
 
+    const toggleError = (): void => {
+      this.toggleErrorState(false);
+    };
+
     return (
       <SafeAreaView style={styles.screen}>
-        <Header icon="left-arrow" onIconPress={this.onIconPress} headerContainerStyle={styles.headerStyle} />
+        <Header icon="left-arrow" onIconPress={goBack} headerContainerStyle={styles.headerStyle} />
         <View style={styles.container}>
           <Text type="large" textType="semiBold">
             {title}
@@ -44,8 +61,8 @@ class Otp extends React.PureComponent<IProps> {
               onPress={this.onIconPress}
             />
           </View>
-          <OtpInputs bubbleOtp={this.getOtp} />
-          <OtpTimer onResentPress={this.onResendPress} />
+          <OtpInputs error={error ? t('otpError') : undefined} bubbleOtp={this.verifyOtp} toggleError={toggleError} />
+          <OtpTimer onResentPress={this.fetchOtp} />
         </View>
       </SafeAreaView>
     );
@@ -57,21 +74,40 @@ class Otp extends React.PureComponent<IProps> {
       route: { params },
     } = this.props;
 
-    if (params && params.focusCallback) {
-      params.focusCallback();
+    if (params && params.ref) {
+      // @ts-ignore
+      params.ref.focus();
     }
 
     navigation.goBack();
   };
 
-  private onResendPress = (): void => {
-    // TODO: Add API call logic for fetch OTP here
-    console.log('press');
+  private onVerifySuccess = (): void => {};
+
+  private fetchOtp = async (): Promise<void> => {
+    try {
+      await OtpService.fetchOtp();
+    } catch (e) {
+      AlertHelper.error({
+        message: e.message,
+      });
+    }
   };
 
-  private getOtp = (otp: string): void => {
-    // TODO: Add API call logic for verify OTP here
-    console.log(otp);
+  private verifyOtp = async (otp: string): Promise<void> => {
+    try {
+      await OtpService.verifyOtp();
+      this.onVerifySuccess();
+    } catch (e) {
+      this.toggleErrorState(true);
+      AlertHelper.error({
+        message: e.message,
+      });
+    }
+  };
+
+  private toggleErrorState = (error: boolean): void => {
+    this.setState({ error });
   };
 }
 

@@ -8,6 +8,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 interface IProps {
   error?: string;
   bubbleOtp: (otp: string) => void;
+  toggleError: () => void;
 }
 
 interface IState {
@@ -33,6 +34,13 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
       RNOtpVerify.addListener(this.otpHandler);
     }
   };
+
+  public componentDidUpdate(prevProps: IProps, prevState: IState): void {
+    const { error } = this.props;
+    if (!!prevProps.error && !error) {
+      this.OtpTextInput[0].setNativeProps({ style: styles.active });
+    }
+  }
 
   public componentWillUnmount = (): void => {
     if (this.isSMSListenerEnabled) {
@@ -99,6 +107,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
   };
 
   private focusPrevious = (key: string, index: number): void => {
+    const { error, toggleError } = this.props;
     const { otp }: { otp: string[] } = this.state;
     otp[index] = '';
 
@@ -110,6 +119,9 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
       return;
     }
 
+    if (error) {
+      toggleError();
+    }
     this.setState({ otp: [...otp] });
   };
 
