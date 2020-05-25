@@ -39,7 +39,7 @@ export default class App extends React.PureComponent<{}, IState> {
 
   private bootUp = async (): Promise<void> => {
     await I18nService.init();
-    const isLoggedIn = (await StorageService.get<boolean>(StorageKeys.IS_LOGGED_IN)) ?? false;
+    const isLoggedIn = (await StorageService.get<boolean>(StorageKeys.USER)) ?? false;
     const isOnBoardingCompleted = (await StorageService.get<boolean>(StorageKeys.IS_ONBOARDING_COMPLETED)) ?? false;
     setTimeout(() => {
       this.setState({ booting: false, isLoggedIn, isOnBoardingCompleted });

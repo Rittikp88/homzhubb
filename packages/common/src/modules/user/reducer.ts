@@ -5,6 +5,7 @@ import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
 
 export const initialUserState: IUserState = {
   data: SocialMediaData,
+  user: null,
   error: {
     user: '',
   },
@@ -28,6 +29,24 @@ export const userReducer = (state: IUserState = initialUserState, action: IFluxS
         ['loaders']: { ...state.loaders, ['user']: false },
       };
     case UserActionTypes.GET.SOCIAL_MEDIA_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['user']: false },
+        ['error']: { ...state.error, ['user']: '' },
+      };
+    case UserActionTypes.AUTH.LOGIN:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['user']: true },
+        ['error']: { ...state.error, ['user']: '' },
+      };
+    case UserActionTypes.AUTH.LOGIN_SUCCESS:
+      return {
+        ...state,
+        ['user']: action.payload,
+        ['loaders']: { ...state.loaders, ['user']: false },
+      };
+    case UserActionTypes.AUTH.LOGIN_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['user']: false },

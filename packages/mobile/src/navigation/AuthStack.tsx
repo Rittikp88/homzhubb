@@ -1,12 +1,12 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import { EmailLoginScreen } from '@homzhub/mobile/src/screens/EmailLoginScreen';
+import EmailLoginScreen from '@homzhub/mobile/src/screens/EmailLoginScreen';
 import ForgotPassword from '@homzhub/mobile/src/screens/ForgotPassword';
 import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
 import LoginScreen from '@homzhub/mobile/src/screens/LoginScreen';
 import MobileVerificationScreen from '@homzhub/mobile/src/screens/MobileVerifactionScreen';
 import OnBoarding from '@homzhub/mobile/src/screens/OnBoarding';
-import { Otp } from '@homzhub/mobile/src/screens/Otp';
+import Otp from '@homzhub/mobile/src/screens/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/SignUpScreen';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/SuccessResetPassword';
 import ResetPassword from '@homzhub/mobile/src/screens/ResetPassword';

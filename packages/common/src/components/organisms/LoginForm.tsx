@@ -4,17 +4,19 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
-interface ISignUpFormProps extends WithTranslation {
+interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
   handleForgotPassword?: () => void;
+  onLoginSuccess: (payload: ILoginFormData) => void;
 }
 
-interface ISignUpFormState {
+interface ILoginFormState {
   user: {
     email: string;
     phone: string;
@@ -23,8 +25,8 @@ interface ISignUpFormState {
   };
 }
 
-class LoginForm extends Component<ISignUpFormProps, ISignUpFormState> {
-  public constructor(props: ISignUpFormProps) {
+class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
+  public constructor(props: ILoginFormProps) {
     super(props);
     this.state = {
       user: {
@@ -141,7 +143,16 @@ class LoginForm extends Component<ISignUpFormProps, ISignUpFormState> {
   };
 
   public handleSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
+    const { onLoginSuccess } = this.props;
     formActions.setSubmitting(true);
+    const loginFormDta: ILoginFormData = {
+      email: values.email,
+      password: values.password,
+      country_code: 'IN',
+      phone_number: values.phone,
+    };
+
+    onLoginSuccess(loginFormDta);
   };
 }
 

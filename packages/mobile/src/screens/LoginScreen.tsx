@@ -6,10 +6,11 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
+import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header, LoginView } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
@@ -55,6 +56,7 @@ class LoginScreen extends Component<Props, ISignUpState> {
               onEmailLogin={this.handleEmailLoginPress}
               onSocialLoginSuccess={this.handleSocialLogin}
               socialMediaItems={user.data}
+              handleLoginSuccess={this.handleLoginFormSubmit}
             />
           </View>
         </ScrollView>
@@ -98,6 +100,17 @@ class LoginScreen extends Component<Props, ISignUpState> {
       icon: 'left-arrow',
       message: t('auth:enterNumberForProfile', { givenName }) ?? '',
       buttonTitle: t('signUp'),
+    });
+  };
+
+  private handleLoginFormSubmit = (values: ILoginFormData): void => {
+    const { navigation, t } = this.props;
+    navigation.navigate(ScreensKeys.OTP, {
+      type: OtpNavTypes.Login,
+      title: t('auth:loginOtp'),
+      countryCode: values.country_code,
+      phone: values.phone_number,
+      ref: null,
     });
   };
 }

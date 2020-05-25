@@ -1,7 +1,10 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { OtpService } from '@homzhub/common/src/services/OtpService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,9 +13,16 @@ import { Label, Text, OtpTimer, Header } from '@homzhub/common/src/components';
 import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IEmailLoginPayload, IMobileLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
-type IProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OTP> & WithTranslation;
+interface IDispatchProps {
+  login: (payload: IEmailLoginPayload | IMobileLoginPayload) => void;
+}
+
+type libraryProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OTP> & WithTranslation;
+type IProps = IDispatchProps & libraryProps;
+
 interface IState {
   error: boolean;
 }
@@ -85,23 +95,36 @@ class Otp extends React.PureComponent<IProps, IState> {
   private onVerifySuccess = (): void => {
     const {
       route: {
-        params: { userData },
+        params: { userData, countryCode, phone },
       },
+      login,
     } = this.props;
-    if (!userData) {
-      return;
-    }
 
-    try {
-      UserService.signUpService(userData)
-        .then(() => {
-          AlertHelper.success({ message: 'Successfully registered' });
-        })
-        .catch(() => {
-          AlertHelper.error({ message: 'error' });
-        });
-    } catch (e) {
-      AlertHelper.error({ message: 'error' });
+    if (OtpNavTypes.Login) {
+      const mobileLoginPayload: IMobileLoginPayload = {
+        action: 'OTP_LOGIN',
+        payload: {
+          country_code: countryCode,
+          phone_number: phone,
+          otp: '123456', // TODO: Add Token
+        },
+      };
+      login(mobileLoginPayload);
+    } else {
+      if (!userData) {
+        return;
+      }
+      try {
+        UserService.signUpService(userData)
+          .then(() => {
+            AlertHelper.success({ message: 'Successfully registered' });
+          })
+          .catch(() => {
+            AlertHelper.error({ message: 'error' });
+          });
+      } catch (e) {
+        AlertHelper.error({ message: 'error' });
+      }
     }
   };
 
@@ -132,8 +155,20 @@ class Otp extends React.PureComponent<IProps, IState> {
   };
 }
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.auth)(Otp);
-export { HOC as Otp };
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { login } = UserActions;
+  return bindActionCreators(
+    {
+      login,
+    },
+    dispatch
+  );
+};
+
+export default connect<null, IDispatchProps, WithTranslation, IState>(
+  null,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.auth)(Otp));
 
 const styles = StyleSheet.create({
   screen: {
