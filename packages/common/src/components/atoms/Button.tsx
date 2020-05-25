@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ViewStyle,
   ImageStyle,
+  Image,
 } from 'react-native';
 import { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -28,12 +29,25 @@ export interface IButtonProps {
   icon?: string;
   iconSize?: number;
   iconColor?: string;
+  image?: any;
+  imageStyle?: StyleProp<ImageStyle>;
   iconStyle?: StyleProp<ImageStyle>;
 }
 
 export class Button extends React.PureComponent<IButtonProps> {
   public render = (): React.ReactElement => {
-    const { onPress, disabled = false, activeOpacity = 0.5, title, icon, iconSize, iconColor, iconStyle } = this.props;
+    const {
+      onPress,
+      disabled = false,
+      activeOpacity = 0.5,
+      title,
+      icon,
+      iconSize,
+      iconColor,
+      iconStyle,
+      image,
+      imageStyle
+    } = this.props;
     return (
       <TouchableOpacity
         activeOpacity={activeOpacity}
@@ -42,7 +56,8 @@ export class Button extends React.PureComponent<IButtonProps> {
         style={this.getContainerStyle()}
       >
         {title && this.getTextField()}
-        {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
+        {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle}/>}
+        {image && <Image source={image} style={imageStyle}/>}
       </TouchableOpacity>
     );
   };

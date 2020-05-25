@@ -35,6 +35,10 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
       return null;
     }
     socialMediaItems.forEach((socialMedia) => {
+      const imageUrl =
+        socialMedia.provider === SocialMediaKeys.Google
+          ? require('@homzhub/common/src/assets/images/google.png')
+          : require('@homzhub/common/src/assets/images/facebook.png');
       const invokeSocialMediaLogin = async (): Promise<void> => {
         if (socialMedia.provider === SocialMediaKeys.Google) {
           await this.onGoogleSignIn(socialMedia.clientID);
@@ -50,23 +54,21 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
           containerStyle={styles.socialMedia}
           textType="label"
           textSize="large"
-          icon="inbox-outline"
-          iconColor={theme.colors.darkTint5}
-          iconSize={17}
-          iconStyle={styles.iconStyle}
+          image={imageUrl}
+          imageStyle={styles.imageStyle}
           titleStyle={styles.buttonText}
           key={socialMedia.provider}
-        />
+        />,
       );
     });
     return (
       <View style={styles.buttonContainer}>
         <View style={styles.lineContainer}>
-          <View style={styles.line} />
+          <View style={styles.line}/>
           <Label style={styles.labelText} type="large" textType="regular">
             or
           </Label>
-          <View style={styles.line} />
+          <View style={styles.line}/>
         </View>
         {onEmailLogin && (
           <Button
@@ -130,7 +132,7 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
               // eslint-disable-next-line no-shadow
               (error?: object, result?: object) => {
                 this.responseFacebookCallback(error, result, accessToken);
-              }
+              },
             );
             // Start the graph request
             new GraphRequestManager().addRequest(infoRequest).start();
@@ -139,7 +141,7 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
       },
       (error) => {
         AlertHelper.error(error);
-      }
+      },
     );
   };
 
@@ -191,5 +193,10 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     paddingLeft: 10,
+  },
+  imageStyle: {
+    margin: 10,
+    height: 17,
+    width: 17,
   },
 });
