@@ -1,4 +1,8 @@
-import { ISignUpPayload, IForgotPasswordPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  ISignUpPayload,
+  IForgotPasswordPayload,
+  ISocialLoginPayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 
 class UserService {
@@ -16,6 +20,10 @@ class UserService {
 
   public resetPassword = async (payload: IForgotPasswordPayload): Promise<any> => {
     return await UserRepository.resetPassword(payload);
+  };
+
+  public socialLogin = async (payload: ISocialLoginPayload): Promise<any> => {
+    return await UserRepository.socialLogin(payload);
   };
 }
 

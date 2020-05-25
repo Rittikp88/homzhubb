@@ -61,12 +61,12 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
     });
     return (
       <View style={styles.buttonContainer}>
-        <View style={styles.seperatorContainer}>
-          <View style={styles.seperatorLine} />
-          <Label style={styles.seperatorText} type="large" textType="regular">
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Label style={styles.labelText} type="large" textType="regular">
             or
           </Label>
-          <View style={styles.seperatorLine} />
+          <View style={styles.line} />
         </View>
         {onEmailLogin && (
           <Button
@@ -127,7 +127,10 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
             const infoRequest = new GraphRequest(
               `/me?fields=email,first_name,last_name&access_token=${accessToken}`,
               null,
-              this.responseFacebookCallback
+              // eslint-disable-next-line no-shadow
+              (error?: object, result?: object) => {
+                this.responseFacebookCallback(error, result, accessToken);
+              }
             );
             // Start the graph request
             new GraphRequestManager().addRequest(infoRequest).start();
@@ -140,7 +143,7 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
     );
   };
 
-  public responseFacebookCallback = (error?: object, result?: object): void => {
+  public responseFacebookCallback = (error?: object, result?: object, token?: string): void => {
     const { onSuccess } = this.props;
     if (error) {
       AlertHelper.error({ message: 'Error in Facebook Signin' });
@@ -149,6 +152,7 @@ export class SocialMediaComponent extends React.PureComponent<ISocialMediaProps,
       const responseObject = {
         provider: 'FACEBOOK',
         user: result,
+        idToken: token,
       };
       onSuccess(responseObject);
     }
@@ -159,18 +163,18 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: theme.layout.screenPadding,
   },
-  seperatorContainer: {
+  lineContainer: {
     flexDirection: 'row',
     marginTop: 10,
     marginBottom: 24,
   },
-  seperatorLine: {
+  line: {
     backgroundColor: theme.colors.darkTint9,
     height: 1,
     flex: 1,
     alignSelf: 'center',
   },
-  seperatorText: {
+  labelText: {
     alignSelf: 'center',
     paddingHorizontal: 5,
     color: theme.colors.darkTint5,

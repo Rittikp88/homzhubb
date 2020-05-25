@@ -6,15 +6,17 @@ import {
   IOtpLoginPayload,
   ISignUpPayload,
   IForgotPasswordPayload,
+  ISocialLoginPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  socialMedia: (): string => '',
+  socialMedia: (): string => 'social-providers/',
   signUp: (): string => 'users/',
   login: (): string => 'users/login/',
   fetchOtp: (): string => '',
   verifyOtp: (): string => '',
   forgotPasswordEmail: (): string => 'users/reset-password/',
+  socialLogin: (): string => 'users/social-login/',
 };
 
 class UserRepository {
@@ -25,7 +27,7 @@ class UserRepository {
   }
 
   public getSocialMedia = async (): Promise<any> => {
-    const url = ENDPOINTS.socialMedia(); // TODO: Replace OnboardingData with url once api is ready
+    const url = ENDPOINTS.socialMedia();
     return await this.apiClient.get(url);
   };
 
@@ -52,6 +54,10 @@ class UserRepository {
 
   public resetPassword = async (payload: IForgotPasswordPayload): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
+  };
+
+  public socialLogin = async (payload: ISocialLoginPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.socialLogin(), payload);
   };
 }
 

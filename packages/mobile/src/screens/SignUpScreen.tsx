@@ -6,14 +6,17 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
-import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISignUpPayload, ISocialLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SignupView, Header, FormTextInput } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
+  loginSuccess: (data: any) => void;
 }
 
 interface IStateProps {
@@ -53,7 +56,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
         >
           <View style={styles.scrollViewContent}>
             <SignupView
-              socialMediaItems={user.data}
+              socialMediaItems={user.socialProviders}
               onSocialSignUpSuccess={this.handleSocialSignUp}
               onSubmitForm={this.handleFormSubmit}
             />
@@ -85,22 +88,50 @@ class SignUpScreen extends Component<Props, ISignUpState> {
 
   // TODO: need to add response type
   private handleSocialSignUp = (response: any): void => {
-    const { navigation, t } = this.props;
+    const { navigation, t, loginSuccess } = this.props;
     const {
       provider,
       // eslint-disable-next-line @typescript-eslint/camelcase
       user: { email, givenName, first_name, last_name },
+      idToken,
     } = response;
     const title = provider === 'GOOGLE' ? t('auth:signUpWithGoogle') : t('auth:signUpWithFacebook');
     // eslint-disable-next-line @typescript-eslint/camelcase
     const name = provider === 'GOOGLE' ? givenName : `${first_name} ${last_name}`;
-    navigation.navigate(ScreensKeys.MobileVerification, {
-      title: title ?? '',
-      subTitle: email,
-      icon: 'left-arrow',
-      message: t('auth:enterNumberForProfile', { givenName: name }) ?? '',
-      buttonTitle: t('signUp'),
-    });
+
+    const socialLoginData: ISocialLoginPayload = {
+      action: 'SOCIAL_LOGIN',
+      payload: {
+        provider,
+        id_token: idToken,
+      },
+    };
+    try {
+      UserService.socialLogin(socialLoginData)
+        .then((data) => {
+          if (data.is_new_user) {
+            navigation.navigate(ScreensKeys.MobileVerification, {
+              title: title ?? '',
+              subTitle: email,
+              icon: 'left-arrow',
+              message: t('auth:enterNumberForProfileForSignup', { givenName: name }) ?? '',
+              buttonTitle: t('signUp'),
+            });
+          } else {
+            const loginSuccessObject = {
+              access_token: data.payload.access_token,
+              refresh_token: data.payload.refresh_token,
+              ...data.payload.user,
+            };
+            loginSuccess(loginSuccessObject);
+          }
+        })
+        .catch((err) => {
+          AlertHelper.error({ message: err });
+        });
+    } catch (err) {
+      AlertHelper.error({ message: err });
+    }
   };
 
   private handleFormSubmit = (formData: ISignUpPayload, ref: FormTextInput | null): void => {
@@ -124,10 +155,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getSocialMedia } = UserActions;
+  const { getSocialMedia, loginSuccess } = UserActions;
   return bindActionCreators(
     {
       getSocialMedia,
+      loginSuccess,
     },
     dispatch
   );

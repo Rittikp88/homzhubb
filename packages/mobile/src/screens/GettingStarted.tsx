@@ -39,7 +39,8 @@ class GettingStarted extends React.PureComponent<IProps> {
   }
 
   public getStarted = (): void => {
-    // TODO: Navigate to app
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.PropertySearch);
   };
 
   public login = (): void => {

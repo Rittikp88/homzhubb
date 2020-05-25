@@ -19,6 +19,14 @@ export interface IEmailLoginPayload {
   };
 }
 
+export interface ISocialLoginPayload {
+  action: string;
+  payload: {
+    provider: string;
+    id_token: string;
+  };
+}
+
 export interface IOtpLoginPayload {
   action: LoginTypes.OTP;
   payload: {

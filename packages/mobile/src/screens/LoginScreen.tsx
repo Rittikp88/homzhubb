@@ -6,14 +6,17 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
-import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILoginFormData, ISocialLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header, LoginView } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
+  loginSuccess: (data: any) => void;
 }
 
 interface IStateProps {
@@ -55,7 +58,7 @@ class LoginScreen extends Component<Props, ISignUpState> {
             <LoginView
               onEmailLogin={this.handleEmailLoginPress}
               onSocialLoginSuccess={this.handleSocialLogin}
-              socialMediaItems={user.data}
+              socialMediaItems={user.socialProviders}
               handleLoginSuccess={this.handleLoginFormSubmit}
             />
           </View>
@@ -90,17 +93,50 @@ class LoginScreen extends Component<Props, ISignUpState> {
   };
 
   private handleSocialLogin = (response: any): void => {
-    const { navigation, t } = this.props;
+    const { navigation, t, loginSuccess } = this.props;
     const {
-      user: { email, givenName },
+      provider,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      user: { email, givenName, first_name, last_name },
+      idToken,
     } = response;
-    navigation.navigate(ScreensKeys.MobileVerification, {
-      title: t('auth:signUpWithGoogle') ?? '',
-      subTitle: email,
-      icon: 'left-arrow',
-      message: t('auth:enterNumberForProfile', { givenName }) ?? '',
-      buttonTitle: t('signUp'),
-    });
+    const title = provider === 'GOOGLE' ? t('auth:loginWithGoogle') : t('auth:loginWithFacebook');
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    const name = provider === 'GOOGLE' ? givenName : `${first_name} ${last_name}`;
+
+    const socialLoginData: ISocialLoginPayload = {
+      action: 'SOCIAL_LOGIN',
+      payload: {
+        provider,
+        id_token: idToken,
+      },
+    };
+    try {
+      UserService.socialLogin(socialLoginData)
+        .then((data) => {
+          if (data.is_new_user) {
+            navigation.navigate(ScreensKeys.MobileVerification, {
+              title: title ?? '',
+              subTitle: email,
+              icon: 'left-arrow',
+              message: t('auth:enterNumberForProfileForLogin', { givenName: name }) ?? '',
+              buttonTitle: t('common:login'),
+            });
+          } else {
+            const loginSuccessObject = {
+              access_token: data.payload.access_token,
+              refresh_token: data.payload.refresh_token,
+              ...data.payload.user,
+            };
+            loginSuccess(loginSuccessObject);
+          }
+        })
+        .catch((err) => {
+          AlertHelper.error({ message: err });
+        });
+    } catch (err) {
+      AlertHelper.error({ message: err });
+    }
   };
 
   private handleLoginFormSubmit = (values: ILoginFormData): void => {
@@ -123,10 +159,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getSocialMedia } = UserActions;
+  const { getSocialMedia, loginSuccess } = UserActions;
   return bindActionCreators(
     {
       getSocialMedia,
+      loginSuccess,
     },
     dispatch
   );

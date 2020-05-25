@@ -1,7 +1,7 @@
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
 export interface IUserState {
-  data: any;
+  socialProviders: any;
   user: IUser | null;
   error: {
     user: string;

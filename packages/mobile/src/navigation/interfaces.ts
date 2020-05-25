@@ -16,6 +16,7 @@ export enum ScreensKeys {
   ForgotPassword = 'Forgot Password',
   ResetPassword = 'Reset Password',
   SuccessResetPassword = 'Success Reset Password',
+  PropertySearch = 'Property Search',
 }
 
 // Tab keys
