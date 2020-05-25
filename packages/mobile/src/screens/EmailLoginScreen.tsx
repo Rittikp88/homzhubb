@@ -8,7 +8,8 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import {
   IEmailLoginPayload,
   ILoginFormData,
-  IMobileLoginPayload,
+  IOtpLoginPayload,
+  LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header } from '@homzhub/common/src/components/molecules/Header';
@@ -17,7 +18,7 @@ import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
-  login: (payload: IEmailLoginPayload | IMobileLoginPayload) => void;
+  login: (payload: IEmailLoginPayload | IOtpLoginPayload) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.EmailLogin>;
@@ -58,7 +59,7 @@ class EmailLoginScreen extends React.PureComponent<Props> {
     const { login } = this.props;
 
     const emailLoginData: IEmailLoginPayload = {
-      action: 'EMAIL_LOGIN',
+      action: LoginTypes.EMAIL,
       payload: {
         email: values.email,
         password: values.password,

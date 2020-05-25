@@ -1,14 +1,15 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IEmailLoginPayload,
-  IMobileLoginPayload,
+  IOtpLoginPayload,
   ISignUpPayload,
   IForgotPasswordPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  socialMedia: (): string => 'https://jsonplaceholder.typicode.com/users',
+  socialMedia: (): string => '',
   signUp: (): string => 'users/',
   login: (): string => 'users/login/',
   fetchOtp: (): string => '',
@@ -28,12 +29,17 @@ class UserRepository {
     return await this.apiClient.get(url);
   };
 
-  public signUp = async (payload: ISignUpPayload): Promise<any> => {
+  public signUp = async (payload: ISignUpPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.signUp(), payload);
   };
 
-  public login = async (payload: IEmailLoginPayload | IMobileLoginPayload): Promise<any> => {
-    return await this.apiClient.post(ENDPOINTS.login(), payload);
+  public login = async (payload: IEmailLoginPayload | IOtpLoginPayload): Promise<IUser> => {
+    const response = await this.apiClient.post(ENDPOINTS.login(), payload);
+    return {
+      ...response.user,
+      access_token: response.access_token,
+      refresh_token: response.refresh_token,
+    };
   };
 
   public fetchOtp = async (): Promise<void> => {

@@ -1,6 +1,8 @@
+import { IUser } from '@homzhub/common/src/domain/models/User';
+
 export interface IUserState {
   data: any;
-  user: any;
+  user: IUser | null;
   error: {
     user: string;
   };

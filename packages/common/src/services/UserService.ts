@@ -2,7 +2,15 @@ import { ISignUpPayload, IForgotPasswordPayload } from '@homzhub/common/src/doma
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 
 class UserService {
-  public signUpService = async (payload: ISignUpPayload): Promise<any> => {
+  public fetchOtp = async (): Promise<void> => {
+    await UserRepository.fetchOtp();
+  };
+
+  public verifyOtp = async (): Promise<void> => {
+    await UserRepository.verifyOtp();
+  };
+
+  public signUpService = async (payload: ISignUpPayload): Promise<void> => {
     return await UserRepository.signUp(payload);
   };
 

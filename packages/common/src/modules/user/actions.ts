@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IEmailLoginPayload, IMobileLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IEmailLoginPayload, IOtpLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 
 const actionTypePrefix = 'User/';
 
@@ -31,36 +31,37 @@ const getSocialMediaSuccess = (data: any): IFluxStandardAction<any> => {
   };
 };
 
-const getSocialMediaFailure = (error: string): IFluxStandardAction<string> => {
+const getSocialMediaFailure = (error: string): IFluxStandardAction => {
   return {
     type: UserActionTypes.GET.SOCIAL_MEDIA_FAILURE,
-    payload: error,
+    error,
   };
 };
 
 const login = (
-  payload: IEmailLoginPayload | IMobileLoginPayload
-): IFluxStandardAction<IEmailLoginPayload | IMobileLoginPayload> => {
+  payload: IEmailLoginPayload | IOtpLoginPayload
+): IFluxStandardAction<IEmailLoginPayload | IOtpLoginPayload> => {
   return {
     type: UserActionTypes.AUTH.LOGIN,
     payload,
   };
 };
 
-const loginSuccess = (data: any): IFluxStandardAction<any> => {
+const loginSuccess = (data: IUser): IFluxStandardAction<IUser> => {
   return {
     type: UserActionTypes.AUTH.LOGIN_SUCCESS,
     payload: data,
   };
 };
 
-const loginFailure = (error: string): IFluxStandardAction<string> => {
+const loginFailure = (error: string): IFluxStandardAction => {
   return {
     type: UserActionTypes.AUTH.LOGIN_FAILURE,
-    payload: error,
+    error,
   };
 };
 
+export type UserPayloadTypes = string | IUser;
 export const UserActions = {
   getSocialMedia,
   getSocialMediaSuccess,

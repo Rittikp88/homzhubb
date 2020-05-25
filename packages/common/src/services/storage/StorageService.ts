@@ -4,15 +4,8 @@
 import { Storage, CryptoJS } from './index';
 
 export enum StorageKeys {
-  IS_ONBOARDING_COMPLETED = '@is_onboarding_completed',
+  IS_ONBOARDING_COMPLETED = '@is_onBoarding_completed',
   USER = '@user',
-}
-
-export interface IUser {
-  accessToken: string;
-  refreshToken: string;
-  email: string;
-  userName: string;
 }
 
 class StorageService {

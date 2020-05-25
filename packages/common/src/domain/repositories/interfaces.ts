@@ -1,3 +1,8 @@
+export enum LoginTypes {
+  OTP = 'OTP_LOGIN',
+  EMAIL = 'EMAIL_LOGIN',
+}
+
 export interface ISignUpPayload {
   full_name: string;
   email: string;
@@ -7,15 +12,15 @@ export interface ISignUpPayload {
 }
 
 export interface IEmailLoginPayload {
-  action: string;
+  action: LoginTypes.EMAIL;
   payload: {
     email: string;
     password: string;
   };
 }
 
-export interface IMobileLoginPayload {
-  action: string;
+export interface IOtpLoginPayload {
+  action: LoginTypes.OTP;
   payload: {
     country_code: string;
     phone_number: string;

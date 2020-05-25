@@ -1,6 +1,7 @@
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
 
 export const initialUserState: IUserState = {
@@ -14,7 +15,10 @@ export const initialUserState: IUserState = {
   },
 };
 
-export const userReducer = (state: IUserState = initialUserState, action: IFluxStandardAction): IUserState => {
+export const userReducer = (
+  state: IUserState = initialUserState,
+  action: IFluxStandardAction<UserPayloadTypes>
+): IUserState => {
   switch (action.type) {
     case UserActionTypes.GET.SOCIAL_MEDIA:
       return {
@@ -32,7 +36,7 @@ export const userReducer = (state: IUserState = initialUserState, action: IFluxS
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['user']: false },
-        ['error']: { ...state.error, ['user']: '' },
+        ['error']: { ...state.error, ['user']: action.error as string },
       };
     case UserActionTypes.AUTH.LOGIN:
       return {
@@ -43,14 +47,14 @@ export const userReducer = (state: IUserState = initialUserState, action: IFluxS
     case UserActionTypes.AUTH.LOGIN_SUCCESS:
       return {
         ...state,
-        ['user']: action.payload,
+        ['user']: action.payload as IUser,
         ['loaders']: { ...state.loaders, ['user']: false },
       };
     case UserActionTypes.AUTH.LOGIN_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['user']: false },
-        ['error']: { ...state.error, ['user']: '' },
+        ['error']: { ...state.error, ['user']: action.error as string },
       };
     default:
       return state;

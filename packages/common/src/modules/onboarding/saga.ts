@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
 import { OnBoardingRepository } from '@homzhub/common/src/domain/repositories/OnBoardingRepository';
-import { OnBoardingActions, OnboardingActionTypes } from '@homzhub/common/src/modules/onboarding/actions';
+import { OnBoardingActions, OnBoardingActionTypes } from '@homzhub/common/src/modules/onboarding/actions';
 
 function* getOnBoardingDetails() {
   try {
@@ -13,5 +13,5 @@ function* getOnBoardingDetails() {
 }
 
 export function* watchOnBoarding() {
-  yield takeEvery(OnboardingActionTypes.GET.ONBOARDING, getOnBoardingDetails);
+  yield takeEvery(OnBoardingActionTypes.GET.ONBOARDING, getOnBoardingDetails);
 }

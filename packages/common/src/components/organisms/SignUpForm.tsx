@@ -55,7 +55,9 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
             return (
               <>
                 <FormTextInput
-                  ref={(refs) => (this.name = refs)}
+                  ref={(refs): void => {
+                    this.name = refs;
+                  }}
                   name="name"
                   label="Name"
                   inputType="default"
@@ -64,7 +66,9 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   onSubmitEditing={onEmailFocus}
                 />
                 <FormTextInput
-                  ref={(refs) => (this.email = refs)}
+                  ref={(refs): void => {
+                    this.email = refs;
+                  }}
                   name="email"
                   label="Email"
                   inputType="email"
@@ -73,7 +77,9 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   onSubmitEditing={onPhoneNumberFocus}
                 />
                 <FormTextInput
-                  ref={(refs) => (this.phone = refs)}
+                  ref={(refs): void => {
+                    this.phone = refs;
+                  }}
                   name="phone"
                   label="Phone"
                   inputType="phone"
@@ -85,7 +91,9 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   onSubmitEditing={onPasswordFocus}
                 />
                 <FormTextInput
-                  ref={(refs) => (this.password = refs)}
+                  ref={(refs): void => {
+                    this.password = refs;
+                  }}
                   name="password"
                   label="Password"
                   inputType="password"

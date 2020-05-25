@@ -8,7 +8,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SignupView, Button, Header, FormTextInput } from '@homzhub/common/src/components';
+import { SignupView, Header, FormTextInput } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
