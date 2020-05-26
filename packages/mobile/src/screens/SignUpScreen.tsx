@@ -6,21 +6,22 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { IUserState } from '@homzhub/common/src/modules/user/interface';
-import { ISignUpPayload, ISocialLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { UserService } from '@homzhub/common/src/services/UserService';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SignupView, Header, FormTextInput } from '@homzhub/common/src/components';
+import { Header, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IUser } from '@homzhub/common/src/domain/models/User';
+import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
-  loginSuccess: (data: any) => void;
+  loginSuccess: (data: IUser) => void;
 }
 
 interface IStateProps {
-  user: IUserState;
+  socialMediaProviders: SocialMediaProvider[];
 }
 
 interface ISignUpState {
@@ -44,11 +45,12 @@ class SignUpScreen extends Component<Props, ISignUpState> {
 
   public render(): React.ReactNode {
     const { animatedValue } = this.state;
-    const { user, t } = this.props;
+    const { socialMediaProviders, t, loginSuccess, navigation } = this.props;
 
     return (
-      <View style={styles.container}>
+      <>
         <ScrollView
+          style={styles.container}
           keyboardShouldPersistTaps="handled"
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
@@ -57,10 +59,12 @@ class SignUpScreen extends Component<Props, ISignUpState> {
           })}
         >
           <View style={styles.scrollViewContent}>
-            <SignupView
-              socialMediaItems={user.socialProviders}
-              onSocialSignUpSuccess={this.handleSocialSignUp}
-              onSubmitForm={this.handleFormSubmit}
+            <SignUpForm onSubmitFormSuccess={this.onFormSubmit} />
+            <SocialMediaComponent
+              isFromLogin={false}
+              socialMediaItems={socialMediaProviders}
+              onLoginSuccessAction={loginSuccess}
+              navigation={navigation}
             />
           </View>
         </ScrollView>
@@ -71,10 +75,10 @@ class SignUpScreen extends Component<Props, ISignUpState> {
           subTitle={t('auth:alreadyRegistered')}
           linkText={t('login')}
           animatedValue={animatedValue}
-          onLinkPress={this.handleLinkPress}
+          onLinkPress={this.onLoginPress}
           onIconPress={this.onClosePress}
         />
-      </View>
+      </>
     );
   }
 
@@ -83,60 +87,12 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     navigation.goBack();
   };
 
-  private handleLinkPress = (): void => {
+  private onLoginPress = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.Login);
   };
 
-  // TODO: need to add response type
-  private handleSocialSignUp = (response: any): void => {
-    const { navigation, t, loginSuccess } = this.props;
-    const {
-      provider,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      user: { email, givenName, first_name, last_name },
-      idToken,
-    } = response;
-    const title = provider === 'GOOGLE' ? t('auth:signUpWithGoogle') : t('auth:signUpWithFacebook');
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    const name = provider === 'GOOGLE' ? givenName : `${first_name} ${last_name}`;
-
-    const socialLoginData: ISocialLoginPayload = {
-      action: 'SOCIAL_LOGIN',
-      payload: {
-        provider,
-        id_token: idToken,
-      },
-    };
-    try {
-      UserService.socialLogin(socialLoginData)
-        .then((data) => {
-          if (data.is_new_user) {
-            navigation.navigate(ScreensKeys.MobileVerification, {
-              title: title ?? '',
-              subTitle: email,
-              icon: 'left-arrow',
-              message: t('auth:enterNumberForProfileForSignup', { givenName: name }) ?? '',
-              buttonTitle: t('signUp'),
-            });
-          } else {
-            const loginSuccessObject = {
-              access_token: data.payload.access_token,
-              refresh_token: data.payload.refresh_token,
-              ...data.payload.user,
-            };
-            loginSuccess(loginSuccessObject);
-          }
-        })
-        .catch((err) => {
-          AlertHelper.error({ message: err });
-        });
-    } catch (err) {
-      AlertHelper.error({ message: err });
-    }
-  };
-
-  private handleFormSubmit = (formData: ISignUpPayload, ref: FormTextInput | null): void => {
+  private onFormSubmit = (formData: ISignUpPayload, ref: FormTextInput | null): void => {
     const { navigation, t } = this.props;
     const { isNewUser } = this.state;
     this.validateUser(formData);
@@ -193,9 +149,8 @@ class SignUpScreen extends Component<Props, ISignUpState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { user } = state;
   return {
-    user,
+    socialMediaProviders: UserSelector.getSocialMediaProviders(state),
   };
 };
 

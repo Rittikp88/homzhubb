@@ -17,7 +17,3 @@ export { WithFieldError } from '@homzhub/common/src/components/molecules/WithFie
 export { SignUpForm } from '@homzhub/common/src/components/organisms/SignUpForm';
 export { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 export { SocialMediaComponent } from '@homzhub/common/src/components/organisms/SocialMediaComponent';
-
-// Templates
-export { SignupView } from '@homzhub/common/src/components/templates/SignupView';
-export { LoginView } from '@homzhub/common/src/components/templates/LoginView';

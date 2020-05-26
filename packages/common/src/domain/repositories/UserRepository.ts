@@ -1,3 +1,4 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
@@ -7,7 +8,9 @@ import {
   ISignUpPayload,
   IForgotPasswordPayload,
   ISocialLoginPayload,
+  ISocialLogin,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const ENDPOINTS = {
   socialMedia: (): string => 'social-providers/',
@@ -28,9 +31,9 @@ class UserRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getSocialMedia = async (): Promise<any> => {
-    const url = ENDPOINTS.socialMedia();
-    return await this.apiClient.get(url);
+  public getSocialMedia = async (): Promise<SocialMediaProvider[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.socialMedia());
+    return ObjectMapper.deserializeArray(SocialMediaProvider, response);
   };
 
   public signUp = async (payload: ISignUpPayload): Promise<void> => {
@@ -58,7 +61,7 @@ class UserRepository {
     return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
   };
 
-  public socialLogin = async (payload: ISocialLoginPayload): Promise<void> => {
+  public socialLogin = async (payload: ISocialLoginPayload): Promise<ISocialLogin> => {
     return await this.apiClient.post(ENDPOINTS.socialLogin(), payload);
   };
 

@@ -75,9 +75,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
     };
     UserService.resetPassword(payload)
       .then((response) => {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         const { email_exists, token } = response;
-        // eslint-disable-next-line @typescript-eslint/camelcase
         if (email_exists) {
           navigation.navigate(ScreensKeys.ResetPassword, {
             token,

@@ -24,17 +24,17 @@ const dummy = (): React.ReactElement => {
 export const AppNavigator = (): React.ReactElement => {
   return (
     <TabNavigator.Navigator>
-      <TabNavigator.Screen name={TabKeys.Home} component={dummy}/>
-      <TabNavigator.Screen name={TabKeys.Profile} component={dummy}/>
+      <TabNavigator.Screen name={TabKeys.Home} component={dummy} />
+      <TabNavigator.Screen name={TabKeys.Profile} component={dummy} />
     </TabNavigator.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.white,
-  }
-})
+  },
+});

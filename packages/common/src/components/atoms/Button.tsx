@@ -46,7 +46,7 @@ export class Button extends React.PureComponent<IButtonProps> {
       iconColor,
       iconStyle,
       image,
-      imageStyle
+      imageStyle,
     } = this.props;
     return (
       <TouchableOpacity
@@ -56,8 +56,8 @@ export class Button extends React.PureComponent<IButtonProps> {
         style={this.getContainerStyle()}
       >
         {title && this.getTextField()}
-        {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle}/>}
-        {image && <Image source={image} style={imageStyle}/>}
+        {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
+        {image && <Image source={image} style={imageStyle} />}
       </TouchableOpacity>
     );
   };

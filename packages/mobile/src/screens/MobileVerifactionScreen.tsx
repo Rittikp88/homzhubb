@@ -48,6 +48,8 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
                   helpText={t('auth:otpVerification')}
                 />
                 <FormButton
+                  // @ts-ignore
+                  onPress={formProps.handleSubmit}
                   formProps={formProps}
                   type="primary"
                   title={buttonTitle}

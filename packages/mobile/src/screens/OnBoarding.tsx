@@ -72,6 +72,7 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
     const { activeSlide, ref } = this.state;
     const { onBoarding } = this.props;
     if (activeSlide < onBoarding.data.length - 1 && ref) {
+      // @ts-ignore
       ref.snapToNext();
       this.setState({ activeSlide: activeSlide + 1 });
     } else {

@@ -2,9 +2,10 @@ import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
 import { IUser } from '@homzhub/common/src/domain/models/User';
+import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 export const initialUserState: IUserState = {
-  socialProviders: null,
+  socialProviders: [],
   user: null,
   error: {
     user: '',
@@ -28,7 +29,7 @@ export const userReducer = (
     case UserActionTypes.GET.SOCIAL_MEDIA_SUCCESS:
       return {
         ...state,
-        ['socialProviders']: action.payload,
+        ['socialProviders']: action.payload as ISocialMediaProvider[],
         ['loaders']: { ...state.loaders, ['user']: false },
       };
     case UserActionTypes.GET.SOCIAL_MEDIA_FAILURE:
