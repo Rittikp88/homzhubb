@@ -25,6 +25,14 @@ class UserService {
   public socialLogin = async (payload: ISocialLoginPayload): Promise<any> => {
     return await UserRepository.socialLogin(payload);
   };
+
+  public checkEmailExists = async (emailId: string): Promise<any> => {
+    return await UserRepository.emailExists(emailId);
+  };
+
+  public checkPhoneNumberExists = async (phone: string): Promise<any> => {
+    return await UserRepository.phoneExists(phone);
+  };
 }
 
 const userService = new UserService();

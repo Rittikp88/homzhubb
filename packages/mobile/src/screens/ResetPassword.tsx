@@ -96,7 +96,11 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
   private formSchema = (): yup.ObjectSchema<{ password: string }> => {
     const { t } = this.props;
     return yup.object().shape({
-      password: yup.string().required(t('auth:emailRequired')),
+      password: yup
+        .string()
+        .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
+        .min(8, t('auth:minimumCharacters'))
+        .required(t('auth:passwordRequired')),
     });
   };
 }

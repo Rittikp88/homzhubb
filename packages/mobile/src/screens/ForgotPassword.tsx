@@ -106,7 +106,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
   private formSchema = (): yup.ObjectSchema<{ email: string }> => {
     const { t } = this.props;
     return yup.object().shape({
-      email: yup.string().required(t('auth:emailRequired')),
+      email: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
     });
   };
 }

@@ -17,6 +17,8 @@ const ENDPOINTS = {
   verifyOtp: (): string => '',
   forgotPasswordEmail: (): string => 'users/reset-password/',
   socialLogin: (): string => 'users/social-login/',
+  emailExists: (emailId: string): string => `users/emails/${emailId}`,
+  phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
 };
 
 class UserRepository {
@@ -58,6 +60,14 @@ class UserRepository {
 
   public socialLogin = async (payload: ISocialLoginPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.socialLogin(), payload);
+  };
+
+  public emailExists = async (emailId: string): Promise<any> => {
+    return await this.apiClient.get(ENDPOINTS.emailExists(emailId));
+  };
+
+  public phoneExists = async (phone: string): Promise<any> => {
+    return await this.apiClient.get(ENDPOINTS.phoneExists(phone));
   };
 }
 

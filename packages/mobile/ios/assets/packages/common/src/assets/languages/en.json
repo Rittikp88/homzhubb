@@ -10,7 +10,7 @@
     "next": "Next",
     "gotIt": "Got It",
     "skip": "Skip",
-    "termsCondition": "terms and condition"
+    "termsCondition": "terms and Condition"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -20,11 +20,11 @@
     "resendIn": "Resend in {{sec}} sec",
     "otpError": "Please enter a valid OTP",
     "loginOtp": "Login with OTP",
-    "enterName": "Enter your name",
-    "enterEmail": "Enter your email",
-    "enterPassword": "Enter your password",
-    "newPassword": "New password",
-    "yourNumber": "Your mobile number",
+    "enterName": "Enter Your Name",
+    "enterEmail": "Enter Your Email",
+    "enterPassword": "Enter Your Password",
+    "newPassword": "New Password",
+    "yourNumber": "Your Mobile Number",
     "signup": "Signup",
     "nameRequired": "Please enter your name",
     "emailRequired": "Please enter your email",
@@ -36,7 +36,7 @@
     "onlyAlphabets": "Only alphabets are allowed",
     "minimumCharacters": "Minimum 8 characters allowed",
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
-    "alreadyRegistered": "Already registered?",
+    "alreadyRegistered": "Already Registered?",
     "signUpWithGoogle": "Signup With Google",
     "signUpWithFacebook": "Signup With Facebook",
     "loginWithGoogle": "Login With Google",
@@ -52,8 +52,6 @@
     "successResetPassword": "Successful password reset!",
     "successResetPasswordDescription": "You can now use your new password to log in to your account.",
     "newAroundHere": "New Around Here?",
-    "logInWithEmail": "Log In With Email",
-    "emailAlreadyExists": "Email already exists",
-    "phoneAlreadyExists": "Mobile number already exists"
+    "logInWithEmail": "Log In With Email"
   }
 }

@@ -3,6 +3,7 @@ import { Animated, ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
@@ -12,7 +13,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { SignupView, Header, FormTextInput } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
@@ -25,6 +25,7 @@ interface IStateProps {
 
 interface ISignUpState {
   animatedValue: Animated.Value;
+  isNewUser: boolean;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp>;
@@ -33,6 +34,7 @@ type Props = IStateProps & IDispatchProps & libraryProps;
 class SignUpScreen extends Component<Props, ISignUpState> {
   public state = {
     animatedValue: new Animated.Value(0),
+    isNewUser: false,
   };
 
   public componentDidMount(): void {
@@ -136,14 +138,57 @@ class SignUpScreen extends Component<Props, ISignUpState> {
 
   private handleFormSubmit = (formData: ISignUpPayload, ref: FormTextInput | null): void => {
     const { navigation, t } = this.props;
-    navigation.navigate(ScreensKeys.OTP, {
-      type: OtpNavTypes.SignUp,
-      title: t('auth:verifyNumber'),
-      countryCode: formData.country_code,
-      phone: formData.phone_number,
-      userData: formData,
-      ref,
-    });
+    const { isNewUser } = this.state;
+    this.validateUser(formData);
+
+    if (isNewUser) {
+      navigation.navigate(ScreensKeys.OTP, {
+        type: OtpNavTypes.SignUp,
+        title: t('auth:verifyNumber'),
+        countryCode: formData.country_code,
+        phone: formData.phone_number,
+        userData: formData,
+        ref,
+      });
+    }
+  };
+
+  private validateUser = (formData: ISignUpPayload): void => {
+    const { t } = this.props;
+    const phone = `${formData.country_code}~${formData.phone_number}`;
+    try {
+      UserService.checkEmailExists(formData.email)
+        .then((res) => {
+          if (res.data && res.data.is_exists) {
+            AlertHelper.error({ message: t('auth:emailAlreadyExists') });
+            this.setState({ isNewUser: false });
+          } else {
+            this.setState({ isNewUser: true });
+          }
+        })
+        .catch((e) => {
+          AlertHelper.error({ message: e });
+        });
+    } catch (e) {
+      AlertHelper.error({ message: e });
+    }
+
+    try {
+      UserService.checkPhoneNumberExists(phone)
+        .then((res) => {
+          if (res.data && res.data.is_exists) {
+            AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
+            this.setState({ isNewUser: false });
+          } else {
+            this.setState({ isNewUser: true });
+          }
+        })
+        .catch((e) => {
+          AlertHelper.error({ message: e });
+        });
+    } catch (e) {
+      AlertHelper.error({ message: e });
+    }
   };
 }
 

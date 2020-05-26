@@ -101,7 +101,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
 
     switch (inputType) {
       case 'email':
-        inputProps = { ...inputProps, ...{ keyboardType: 'email-address' } };
+        inputProps = { ...inputProps, ...{ keyboardType: 'email-address', autoCapitalize: 'none' } };
         break;
       case 'number':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };

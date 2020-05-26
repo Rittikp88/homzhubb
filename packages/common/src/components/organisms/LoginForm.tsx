@@ -103,7 +103,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
             name="phone"
             label="Phone"
             inputType="phone"
-            maxLength={15}
+            maxLength={10}
             inputPrefixText="+91"
             placeholder={t('auth:yourNumber')}
             helpText={t('auth:otpVerification')}

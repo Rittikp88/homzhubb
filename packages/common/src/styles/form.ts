@@ -39,6 +39,20 @@ const formStyles = {
   fieldFocus: {
     borderColor: colors.primaryColor,
   },
+  iosDropdown: {
+    height: 48,
+    borderWidth: 1,
+    paddingHorizontal: 16,
+    borderColor: colors.disabled,
+    borderRadius: 2,
+    // textAlign: I18nService.select({rtl: 'right', ltr: 'left'}),
+    backgroundColor: 'transparent',
+    margin: 0,
+  },
+  androidDropdown: {
+    height: 46,
+    // textAlign: I18nService.select({rtl: 'right', ltr: 'left'}),
+  },
 };
 
 export { formStyles as form };

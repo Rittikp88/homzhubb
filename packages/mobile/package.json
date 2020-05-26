@@ -5,6 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "ios:bundle": "react-native bundle --entry-file packages/mobile/index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
     "start": "react-native start",
     "prestart": "yarn workspace @homzhub/common build",
     "test": "jest --coverage --env=jsdom",
