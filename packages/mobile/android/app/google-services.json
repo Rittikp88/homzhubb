@@ -1,0 +1,10 @@
+{
+  "web": {
+    "client_id": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
+    "project_id": "homzhub-1589889329369",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "NdnStJW8DhpKfTpEJng64aR3"
+  }
+}

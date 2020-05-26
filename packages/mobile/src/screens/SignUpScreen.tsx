@@ -8,6 +8,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -114,7 +115,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     const phone = `${formData.country_code}~${formData.phone_number}`;
     try {
       UserService.checkEmailExists(formData.email)
-        .then((res) => {
+        .then((res: any) => {
           if (res.data && res.data.is_exists) {
             AlertHelper.error({ message: t('auth:emailAlreadyExists') });
             this.setState({ isNewUser: false });
@@ -122,7 +123,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
             this.setState({ isNewUser: true });
           }
         })
-        .catch((e) => {
+        .catch((e: any) => {
           AlertHelper.error({ message: e });
         });
     } catch (e) {
@@ -131,7 +132,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
 
     try {
       UserService.checkPhoneNumberExists(phone)
-        .then((res) => {
+        .then((res: any) => {
           if (res.data && res.data.is_exists) {
             AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
             this.setState({ isNewUser: false });
@@ -139,7 +140,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
             this.setState({ isNewUser: true });
           }
         })
-        .catch((e) => {
+        .catch((e: any) => {
           AlertHelper.error({ message: e });
         });
     } catch (e) {
