@@ -116,7 +116,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     try {
       UserService.checkEmailExists(formData.email)
         .then((res: any) => {
-          if (res.data && res.data.is_exists) {
+          if (res && res.is_exists) {
             AlertHelper.error({ message: t('auth:emailAlreadyExists') });
             this.setState({ isNewUser: false });
           } else {
@@ -133,7 +133,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     try {
       UserService.checkPhoneNumberExists(phone)
         .then((res: any) => {
-          if (res.data && res.data.is_exists) {
+          if (res && res.is_exists) {
             AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
             this.setState({ isNewUser: false });
           } else {
