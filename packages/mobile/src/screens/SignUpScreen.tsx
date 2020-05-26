@@ -14,7 +14,7 @@ import { Header, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhu
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
@@ -22,7 +22,7 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  socialMediaProviders: SocialMediaProvider[];
+  socialMediaProviders: ISocialMediaProvider[];
 }
 
 interface ISignUpState {

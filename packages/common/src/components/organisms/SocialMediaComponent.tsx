@@ -15,7 +15,7 @@ import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ISocialLogin, ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 export enum SocialMediaKeys {
   Google = 'GOOGLE',
@@ -36,7 +36,7 @@ interface ISocialMediaUser {
 
 interface ISocialMediaProps extends WithTranslation {
   isFromLogin: boolean;
-  socialMediaItems: SocialMediaProvider[];
+  socialMediaItems: ISocialMediaProvider[];
   onEmailLogin?: () => void;
   onLoginSuccessAction: (data: IUser) => void;
   navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;

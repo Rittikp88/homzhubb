@@ -1,4 +1,3 @@
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
@@ -10,7 +9,6 @@ import {
   ISocialLoginPayload,
   ISocialLogin,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const ENDPOINTS = {
   socialMedia: (): string => 'social-providers/',
@@ -31,9 +29,8 @@ class UserRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getSocialMedia = async (): Promise<SocialMediaProvider[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.socialMedia());
-    return ObjectMapper.deserializeArray(SocialMediaProvider, response);
+  public getSocialMedia = async (): Promise<[]> => {
+    return await this.apiClient.get(ENDPOINTS.socialMedia());
   };
 
   public signUp = async (payload: ISignUpPayload): Promise<void> => {

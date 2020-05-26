@@ -2,7 +2,6 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IEmailLoginPayload, IOtpLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { ISocialMediaProvider, SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const actionTypePrefix = 'User/';
 
@@ -25,10 +24,10 @@ const getSocialMedia = (): IFluxStandardAction => {
   };
 };
 
-const getSocialMediaSuccess = (data: SocialMediaProvider[]): IFluxStandardAction<ISocialMediaProvider[]> => {
+const getSocialMediaSuccess = (data: []): IFluxStandardAction<[]> => {
   return {
     type: UserActionTypes.GET.SOCIAL_MEDIA_SUCCESS,
-    payload: ObjectMapper.serializeArray(data),
+    payload: data,
   };
 };
 
@@ -62,7 +61,7 @@ const loginFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-export type UserPayloadTypes = string | IUser | ISocialMediaProvider[];
+export type UserPayloadTypes = string | IUser | [];
 export const UserActions = {
   getSocialMedia,
   getSocialMediaSuccess,
