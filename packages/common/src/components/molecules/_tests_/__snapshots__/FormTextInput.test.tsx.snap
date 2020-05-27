@@ -119,6 +119,7 @@ Array [
   >
     <TextInput
       allowFontScaling={true}
+      autoCapitalize="none"
       autoCorrect={false}
       keyboardType="email-address"
       maxLength={40}

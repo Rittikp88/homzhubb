@@ -1,15 +1,15 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import EmailLoginScreen from '@homzhub/mobile/src/screens/EmailLoginScreen';
-import ForgotPassword from '@homzhub/mobile/src/screens/ForgotPassword';
+import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen';
+import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
-import LoginScreen from '@homzhub/mobile/src/screens/LoginScreen';
-import MobileVerificationScreen from '@homzhub/mobile/src/screens/MobileVerifactionScreen';
+import LoginScreen from '@homzhub/mobile/src/screens/Auth/LoginScreen';
+import MobileVerificationScreen from '@homzhub/mobile/src/screens/Auth/MobileVerifactionScreen';
 import OnBoarding from '@homzhub/mobile/src/screens/OnBoarding';
-import Otp from '@homzhub/mobile/src/screens/Otp';
-import SignUpScreen from '@homzhub/mobile/src/screens/SignUpScreen';
-import SuccessResetPassword from '@homzhub/mobile/src/screens/SuccessResetPassword';
-import ResetPassword from '@homzhub/mobile/src/screens/ResetPassword';
+import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
+import SignUpScreen from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
+import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
+import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import PropertySearch from '@homzhub/mobile/src/screens/PropertySearch';
 import {
   IOtpNavProps,
