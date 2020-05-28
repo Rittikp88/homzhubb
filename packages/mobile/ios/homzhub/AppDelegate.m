@@ -13,6 +13,8 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
+@import GoogleMaps;
+
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
   SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
@@ -31,6 +33,8 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG && TARGET_OS_SIMULATOR
   InitializeFlipper(application);
 #endif
+  
+  [GMSServices provideAPIKey:@"AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo"];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
