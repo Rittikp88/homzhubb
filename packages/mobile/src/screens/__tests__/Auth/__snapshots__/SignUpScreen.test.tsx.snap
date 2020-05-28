@@ -1,0 +1,981 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignUp Screen should render signup screen 1`] = `
+Array [
+  <RCTScrollView
+    keyboardShouldPersistTaps="handled"
+    onScroll={[Function]}
+    scrollEventThrottle={16}
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "marginTop": 200,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "paddingHorizontal": 24,
+            }
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                  "lineHeight": 18,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-Regular",
+                  "fontWeight": "400",
+                },
+                Object {
+                  "color": "#33495E",
+                  "marginBottom": 6,
+                  "marginTop": 16,
+                },
+              ]
+            }
+          >
+            Name
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 10,
+                    "lineHeight": 15,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-Regular",
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "color": "#33495E",
+                  },
+                ]
+              }
+            />
+          </Text>
+          <View
+            style={Object {}}
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoCorrect={false}
+              maxLength={40}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              placeholder="Enter your name"
+              placeholderTextColor="#C9D6DF"
+              rejectResponderTermination={true}
+              style={
+                Object {
+                  "borderColor": "#C9D6DF",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "color": "#001B36",
+                  "fontSize": 14,
+                  "height": 48,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 4,
+                  "textAlign": "left",
+                }
+              }
+              underlineColorAndroid="transparent"
+              value=""
+            />
+          </View>
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                  "lineHeight": 18,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-Regular",
+                  "fontWeight": "400",
+                },
+                Object {
+                  "color": "#33495E",
+                  "marginBottom": 6,
+                  "marginTop": 16,
+                },
+              ]
+            }
+          >
+            Email
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 10,
+                    "lineHeight": 15,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-Regular",
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "color": "#33495E",
+                  },
+                ]
+              }
+            />
+          </Text>
+          <View
+            style={Object {}}
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              maxLength={40}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              placeholder="Enter your email"
+              placeholderTextColor="#C9D6DF"
+              rejectResponderTermination={true}
+              style={
+                Object {
+                  "borderColor": "#C9D6DF",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "color": "#001B36",
+                  "fontSize": 14,
+                  "height": 48,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 4,
+                  "textAlign": "left",
+                }
+              }
+              underlineColorAndroid="transparent"
+              value=""
+            />
+          </View>
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                  "lineHeight": 18,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-Regular",
+                  "fontWeight": "400",
+                },
+                Object {
+                  "color": "#33495E",
+                  "marginBottom": 6,
+                  "marginTop": 16,
+                },
+              ]
+            }
+          >
+            Phone
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 10,
+                    "lineHeight": 15,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-Regular",
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "color": "#33495E",
+                  },
+                ]
+              }
+            />
+          </Text>
+          <View
+            style={Object {}}
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoCorrect={false}
+              keyboardType="number-pad"
+              maxLength={10}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              placeholder="Your mobile number"
+              placeholderTextColor="#C9D6DF"
+              rejectResponderTermination={true}
+              style={
+                Object {
+                  "borderColor": "#C9D6DF",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "color": "#001B36",
+                  "fontSize": 14,
+                  "height": 48,
+                  "paddingHorizontal": 16,
+                  "paddingStart": 100,
+                  "paddingVertical": 4,
+                  "textAlign": "left",
+                }
+              }
+              underlineColorAndroid="transparent"
+              value=""
+            />
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#F0F5F9",
+                  "borderRightColor": "#C9D6DF",
+                  "borderRightWidth": 0.5,
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "left": 1,
+                  "marginTop": 2,
+                  "position": "absolute",
+                  "right": 5,
+                  "width": 90,
+                }
+              }
+            >
+              <Image
+                height={12}
+                source={
+                  Object {
+                    "testUri": "../../../packages/common/src/assets/images/flag.png",
+                  }
+                }
+                style={
+                  Object {
+                    "marginEnd": 6,
+                  }
+                }
+                width={18}
+              />
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 12,
+                      "lineHeight": 18,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "fontFamily": "OpenSans-Regular",
+                      "fontWeight": "400",
+                    },
+                    Object {
+                      "color": "#4C5F72",
+                    },
+                  ]
+                }
+              >
+                +91
+              </Text>
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "#99A4AF",
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "marginStart": 6,
+                    },
+                    Object {
+                      "fontFamily": "icomoon",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontSize": 10,
+                  "lineHeight": 15,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-Regular",
+                  "fontWeight": "400",
+                },
+                Object {
+                  "color": "#4C5F72",
+                  "marginTop": 6,
+                },
+              ]
+            }
+          >
+            We will send you an OTP via SMS for verification
+          </Text>
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                  "lineHeight": 18,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-Regular",
+                  "fontWeight": "400",
+                },
+                Object {
+                  "color": "#33495E",
+                  "marginBottom": 6,
+                  "marginTop": 16,
+                },
+              ]
+            }
+          >
+            Password
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 10,
+                    "lineHeight": 15,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-Regular",
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "color": "#33495E",
+                  },
+                ]
+              }
+            />
+          </Text>
+          <View
+            style={Object {}}
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoCorrect={false}
+              maxLength={40}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              placeholder="New password"
+              placeholderTextColor="#C9D6DF"
+              rejectResponderTermination={true}
+              secureTextEntry={true}
+              style={
+                Object {
+                  "borderColor": "#C9D6DF",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "color": "#001B36",
+                  "fontSize": 14,
+                  "height": 48,
+                  "paddingEnd": 36,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 4,
+                  "textAlign": "left",
+                }
+              }
+              underlineColorAndroid="transparent"
+              value=""
+            />
+            <View
+              style={
+                Object {
+                  "position": "absolute",
+                  "right": 6,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "borderColor": "#0084F8",
+                    "borderRadius": 4,
+                    "borderWidth": 0,
+                    "flex": 0,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "paddingHorizontal": 10,
+                    "paddingVertical": 14,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#C9D6DF",
+                        "fontSize": 20,
+                      },
+                      Object {
+                        "height": 16,
+                        "opacity": 0.4,
+                        "width": 20,
+                      },
+                      Object {
+                        "fontFamily": "icomoon",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+          </View>
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontSize": 10,
+                  "lineHeight": 15,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-Regular",
+                  "fontWeight": "400",
+                },
+                Object {
+                  "color": "#4C5F72",
+                  "marginTop": 6,
+                },
+              ]
+            }
+          >
+            Should contain a upper-case, lower-case alphabet and a number
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "marginBottom": 12,
+                  "marginTop": 24,
+                },
+                Object {},
+              ]
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 12,
+                    "lineHeight": 18,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-Regular",
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "color": "#667686",
+                  },
+                ]
+              }
+            >
+              By clicking signup you confirm that you agree to Homzhub
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 12,
+                    "lineHeight": 18,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-Regular",
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "color": "#0084F8",
+                  },
+                ]
+              }
+            >
+              terms and condition
+            </Text>
+          </View>
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#C9D6DF",
+                "borderRadius": 4,
+                "flex": 0,
+                "justifyContent": "center",
+                "marginVertical": 4,
+                "opacity": 1,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-SemiBold",
+                    "fontWeight": "600",
+                  },
+                  Object {
+                    "color": "#FFFFFF",
+                    "marginHorizontal": 36,
+                    "marginVertical": 12,
+                    "textAlign": "center",
+                  },
+                ]
+              }
+            >
+              Signup
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "padding": 24,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "marginBottom": 24,
+                "marginTop": 10,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "backgroundColor": "#CCD1D7",
+                  "flex": 1,
+                  "height": 1,
+                }
+              }
+            />
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 14,
+                    "lineHeight": 21,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-Regular",
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "alignSelf": "center",
+                    "color": "#667686",
+                    "paddingHorizontal": 5,
+                  },
+                ]
+              }
+            >
+              or
+            </Text>
+            <View
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "backgroundColor": "#CCD1D7",
+                  "flex": 1,
+                  "height": 1,
+                }
+              }
+            />
+          </View>
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "#667686",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "flex": 1,
+                "flexDirection": "row-reverse",
+                "justifyContent": "center",
+                "marginVertical": 10,
+                "opacity": 1,
+                "paddingHorizontal": 10,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 14,
+                    "lineHeight": 21,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-SemiBold",
+                    "fontWeight": "600",
+                  },
+                  Object {
+                    "color": "#667686",
+                    "flex": 1,
+                    "marginHorizontal": 36,
+                    "marginVertical": 12,
+                    "textAlign": "center",
+                  },
+                ]
+              }
+            >
+              Signup with Google
+            </Text>
+            <Image
+              source={
+                Object {
+                  "testUri": "../../../packages/common/src/assets/images/google.png",
+                }
+              }
+              style={
+                Object {
+                  "height": 17,
+                  "margin": 10,
+                  "width": 17,
+                }
+              }
+            />
+          </View>
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "#667686",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "flex": 1,
+                "flexDirection": "row-reverse",
+                "justifyContent": "center",
+                "marginVertical": 10,
+                "opacity": 1,
+                "paddingHorizontal": 10,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 14,
+                    "lineHeight": 21,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-SemiBold",
+                    "fontWeight": "600",
+                  },
+                  Object {
+                    "color": "#667686",
+                    "flex": 1,
+                    "marginHorizontal": 36,
+                    "marginVertical": 12,
+                    "textAlign": "center",
+                  },
+                ]
+              }
+            >
+              Signup with Facebook
+            </Text>
+            <Image
+              source={
+                Object {
+                  "testUri": "../../../packages/common/src/assets/images/facebook.png",
+                }
+              }
+              style={
+                Object {
+                  "height": 17,
+                  "margin": 10,
+                  "width": 17,
+                }
+              }
+            />
+          </View>
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "#667686",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "flex": 1,
+                "flexDirection": "row-reverse",
+                "justifyContent": "center",
+                "marginVertical": 10,
+                "opacity": 1,
+                "paddingHorizontal": 10,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontSize": 14,
+                    "lineHeight": 21,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "fontFamily": "OpenSans-SemiBold",
+                    "fontWeight": "600",
+                  },
+                  Object {
+                    "color": "#667686",
+                    "flex": 1,
+                    "marginHorizontal": 36,
+                    "marginVertical": 12,
+                    "textAlign": "center",
+                  },
+                ]
+              }
+            >
+              Signup with Linkedin
+            </Text>
+            <Image
+              source={
+                Object {
+                  "testUri": "../../../packages/common/src/assets/images/facebook.png",
+                }
+              }
+              style={
+                Object {
+                  "height": 17,
+                  "margin": 10,
+                  "width": 17,
+                }
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>,
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderBottomColor": "#C9D6DF",
+        "borderBottomWidth": 1,
+        "height": 200,
+        "left": 0,
+        "overflow": "hidden",
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderBottomColor": "#C9D6DF",
+            "borderBottomWidth": 0,
+            "flex": 1,
+            "marginTop": 50,
+          },
+          Object {},
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        onPress={[Function]}
+        style={
+          Array [
+            Object {
+              "color": "#4C5F72",
+              "fontSize": 16,
+            },
+            Object {
+              "padding": 16,
+            },
+            Object {
+              "fontFamily": "icomoon",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            Object {},
+          ]
+        }
+      >
+        
+      </Text>
+      <View
+        style={
+          Object {
+            "marginVertical": 16,
+            "paddingHorizontal": 24,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#001B36",
+              "fontSize": 24,
+              "fontWeight": "600",
+              "transform": Array [
+                Object {
+                  "translateX": 0,
+                },
+                Object {
+                  "translateY": 0,
+                },
+              ],
+            }
+          }
+        >
+          Sign Up
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "fontSize": 16,
+                "lineHeight": 24,
+                "textAlign": "left",
+              },
+              Object {
+                "fontFamily": "OpenSans-Regular",
+                "fontWeight": "400",
+              },
+              Object {
+                "color": "#33495E",
+                "marginVertical": 6,
+              },
+            ]
+          }
+        >
+          Already registered?
+           
+          <Text
+            onPress={[Function]}
+            style={
+              Array [
+                Object {
+                  "fontSize": 16,
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-Regular",
+                  "fontWeight": "400",
+                },
+                Object {
+                  "color": "#0084F8",
+                  "marginVertical": 6,
+                },
+              ]
+            }
+          >
+            Login
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;

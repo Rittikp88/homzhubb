@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 
 const actionTypePrefix = 'OnBoarding/';
 
@@ -18,7 +19,7 @@ const getOnBoardingDetail = (): IFluxStandardAction => {
   };
 };
 
-const getOnBoardingSuccess = (data: any): IFluxStandardAction<any> => {
+const getOnBoardingSuccess = (data: any): IFluxStandardAction<IOnboardingData[]> => {
   return {
     type: OnBoardingActionTypes.GET.ONBOARDING_SUCCESS,
     payload: data,
@@ -32,7 +33,7 @@ const getOnBoardingFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-export type OnBoardingPayloadTypes = string;
+export type OnBoardingPayloadTypes = string | IOnboardingData[];
 export const OnBoardingActions = {
   getOnBoardingDetail,
   getOnBoardingSuccess,

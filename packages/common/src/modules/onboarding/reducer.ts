@@ -1,9 +1,10 @@
 import { IOnBoardingState } from '@homzhub/common/src/modules/onboarding/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { OnBoardingActionTypes, OnBoardingPayloadTypes } from '@homzhub/common/src/modules/onboarding/actions';
+import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 
 export const initialOnBoardingState: IOnBoardingState = {
-  data: null,
+  data: [],
   error: {
     onBoarding: '',
   },
@@ -26,7 +27,7 @@ export const onBoardingReducer = (
     case OnBoardingActionTypes.GET.ONBOARDING_SUCCESS:
       return {
         ...state,
-        ['data']: action.payload,
+        ['data']: action.payload as IOnboardingData[],
         ['loaders']: { ...state.loaders, ['onBoarding']: false },
       };
     case OnBoardingActionTypes.GET.ONBOARDING_FAILURE:

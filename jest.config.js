@@ -6,7 +6,9 @@ module.exports = {
     '^.+\\.js$': '../../node_modules/react-native/jest/preprocessor.js',
   },
   setupFiles: ['<rootDir>/src/setupTests.js'],
-  transformIgnorePatterns: ['node_modules/(?!(jest-)?react-native)'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(jest-)?react-native|@react-native-community/google-signin|@react-native-community/picker)',
+  ],
   coveragePathIgnorePatterns: ['/node_modules/', '/jest'],
   testPathIgnorePatterns: ['/dist/'], // ignores dist folder while running test cases
   coverageReporters: ['json', 'lcov', 'text'],
@@ -21,4 +23,9 @@ module.exports = {
   ],
   testEnvironment: 'node',
   testResultsProcessor: 'jest-sonar-reporter',
+  globals: {
+    'babel-jest': {
+      isolatedModules: true,
+    },
+  },
 };

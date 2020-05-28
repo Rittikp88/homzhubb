@@ -5,7 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { SVGUri } from '@homzhub/mobile/src/components/atoms/Svg';
 
 interface ICarouselItems {
-  screen: string;
+  title: string;
   description: string;
   image_url: string;
 }

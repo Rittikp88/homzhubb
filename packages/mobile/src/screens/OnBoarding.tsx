@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { OnBoardingActions } from '@homzhub/common/src/modules/onboarding/actions';
-import { IOnBoardingState } from '@homzhub/common/src/modules/onboarding/interface';
+import { OnboardingSelector } from '@homzhub/common/src/modules/onboarding/selectors';
+import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 import { Button, Label, Text } from '@homzhub/common/src/components/';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,7 +15,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
 
 interface IStateProps {
-  onBoarding: IOnBoardingState;
+  data: IOnboardingData[];
 }
 
 interface IDispatchProps {
@@ -41,27 +42,27 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
   }
 
   public render(): React.ReactNode {
-    const { onBoarding, t } = this.props;
+    const { data, t } = this.props;
     const { activeSlide } = this.state;
-    if (!onBoarding.data) {
+    if (data.length === 0) {
       return null;
     }
-    const buttonText = activeSlide === onBoarding.data.length - 1 ? t('common:gotIt') : t('common:next');
+    const buttonText = activeSlide === data.length - 1 ? t('common:gotIt') : t('common:next');
     return (
       <SafeAreaView style={styles.container}>
         {this.renderSkipButton()}
         <SnapCarousel
           bubbleRef={this.updateRef}
-          carouselItems={onBoarding.data}
+          carouselItems={data}
           activeSlide={activeSlide}
           showPagination
           currentSlide={this.changeSlide}
         />
         <Text type="large" textType="bold" style={styles.title}>
-          {onBoarding.data[activeSlide].title || ''}
+          {data[activeSlide]?.title ?? ''}
         </Text>
         <Label type="large" textType="regular" style={styles.description}>
-          {onBoarding.data[activeSlide].description || ''}
+          {data[activeSlide]?.description ?? ''}
         </Label>
         <Button type="primary" title={buttonText} onPress={this.renderNextFrame} containerStyle={styles.button} />
       </SafeAreaView>
@@ -70,8 +71,8 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
 
   public renderNextFrame = async (): Promise<void> => {
     const { activeSlide, ref } = this.state;
-    const { onBoarding } = this.props;
-    if (activeSlide < onBoarding.data.length - 1 && ref) {
+    const { data } = this.props;
+    if (activeSlide < data.length - 1 && ref) {
       // @ts-ignore
       ref.snapToNext();
       this.setState({ activeSlide: activeSlide + 1 });
@@ -81,9 +82,9 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
   };
 
   public renderSkipButton = (): React.ReactNode => {
-    const { onBoarding, t } = this.props;
+    const { data, t } = this.props;
     const { activeSlide } = this.state;
-    if (activeSlide === onBoarding.data.length - 1) {
+    if (activeSlide === data.length - 1) {
       return <View style={styles.emptySkipView} />;
     }
     return (
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
-    onBoarding: state.onBoarding,
+    data: OnboardingSelector.getOnboardingData(state),
   };
 };
 

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gradient Background Component should render GradientBackground 1`] = `
+<BVLinearGradient
+  angle={54.15}
+  colors={
+    Array [
+      4282424831,
+      4278284002,
+    ]
+  }
+  endPoint={
+    Object {
+      "x": 0.5,
+      "y": 1,
+    }
+  }
+  locations={
+    Array [
+      0.1955,
+      0.7738,
+    ]
+  }
+  startPoint={
+    Object {
+      "x": 0.5,
+      "y": 0,
+    }
+  }
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "center",
+    }
+  }
+  useAngle={true}
+>
+  <StatusBar
+    animated={false}
+    backgroundColor="transparent"
+    showHideTransition="fade"
+    translucent={true}
+  />
+</BVLinearGradient>
+`;

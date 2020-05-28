@@ -3,6 +3,7 @@
     "welcome": "Welcome to Homzhub",
     "ok": "OK",
     "login": "Login",
+    "logout": "Logout",
     "signUp": "Sign Up",
     "header": "Simplifying Real Estate For Owners",
     "getStarted": "Get Started",
@@ -57,5 +58,12 @@
     "socialButtonPrefixSignUp": "Signup ",
     "emailAlreadyExists": "Email already exists",
     "phoneAlreadyExists": "Mobile number already exists"
+  },
+  "propertyPost": {
+    "welcomeUser": "Welcome {{username}},",
+    "description": "Let's add your first property on Homzhub",
+    "searchProject": "Search for project or street name",
+    "addProperty": "Add property",
+    "logoutHelperText": "If it's not you?"
   }
 }

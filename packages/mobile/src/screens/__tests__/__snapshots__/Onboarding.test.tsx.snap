@@ -1,33 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Onboarding Screen should match snapshot 1`] = `
-<Connect(withI18nextTranslation(Onboarding))
-  activeSlide={0}
-  getOnboardingDetail={[MockFunction]}
-  navigation={Object {}}
-  onboarding={
-    Object {
-      "data": Array [
-        Object {
-          "buttonText": "Next",
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a. Sed massa facilisi vel neque id dolor",
-          "heading": "Search",
-          "scene": "https://socion-s3-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-        },
-        Object {
-          "buttonText": "Next",
-          "description": "Ornare nunc, sagittis est ut. Mi arcu morbi faucibus consectetur auctor. Diam odio sed vel nam ultricies.",
-          "heading": "Post",
-          "scene": "https://socion-s3-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-        },
-        Object {
-          "buttonText": "Got it",
-          "description": "Mattis ut est senectus commodo id sem arcu erat luctus. Id egestas eu enim, varius. Ut tellus id neque enim.",
-          "heading": "Maintain",
-          "scene": "https://socion-s3-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-        },
-      ],
-    }
-  }
-/>
-`;
+exports[`Onboarding Screen should match snapshot 1`] = `"loading"`;

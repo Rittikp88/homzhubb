@@ -40,6 +40,8 @@ const themedColors = {
 const gradientColors = {
   splashGradientA: '#037ADE',
   splashGradientB: '#03E5B7',
+  propertyGradientA: '#409DFF',
+  propertyGradientB: '#016EE2',
 };
 
 export const colors = {

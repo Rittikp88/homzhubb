@@ -9,6 +9,7 @@ import {
   ISocialLoginPayload,
   ISocialLogin,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const ENDPOINTS = {
   socialMedia: (): string => 'social-providers/',
@@ -29,7 +30,7 @@ class UserRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getSocialMedia = async (): Promise<[]> => {
+  public getSocialMedia = async (): Promise<ISocialMediaProvider[]> => {
     return await this.apiClient.get(ENDPOINTS.socialMedia());
   };
 

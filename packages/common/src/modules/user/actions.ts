@@ -1,6 +1,7 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IEmailLoginPayload, IOtpLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
+import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const actionTypePrefix = 'User/';
 
@@ -14,6 +15,9 @@ export const UserActionTypes = {
     LOGIN: `${actionTypePrefix}LOGIN`,
     LOGIN_SUCCESS: `${actionTypePrefix}LOGIN_SUCCESS`,
     LOGIN_FAILURE: `${actionTypePrefix}LOGIN_FAILURE`,
+    LOGOUT: `${actionTypePrefix}LOGOUT`,
+    LOGOUT_SUCCESS: `${actionTypePrefix}LOGOUT_SUCCESS`,
+    LOGOUT_FAILURE: `${actionTypePrefix}LOGOUT_FAILURE`,
   },
 };
 
@@ -23,7 +27,7 @@ const getSocialMedia = (): IFluxStandardAction => {
   };
 };
 
-const getSocialMediaSuccess = (data: []): IFluxStandardAction<[]> => {
+const getSocialMediaSuccess = (data: any): IFluxStandardAction<ISocialMediaProvider[]> => {
   return {
     type: UserActionTypes.GET.SOCIAL_MEDIA_SUCCESS,
     payload: data,
@@ -60,7 +64,26 @@ const loginFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-export type UserPayloadTypes = string | IUser | [];
+const logout = (): IFluxStandardAction => {
+  return {
+    type: UserActionTypes.AUTH.LOGOUT,
+  };
+};
+
+const logoutSuccess = (): IFluxStandardAction => {
+  return {
+    type: UserActionTypes.AUTH.LOGOUT_SUCCESS,
+  };
+};
+
+const logoutFailure = (error: string): IFluxStandardAction => {
+  return {
+    type: UserActionTypes.AUTH.LOGOUT_FAILURE,
+    error,
+  };
+};
+
+export type UserPayloadTypes = string | IUser | ISocialMediaProvider[];
 export const UserActions = {
   getSocialMedia,
   getSocialMediaSuccess,
@@ -68,4 +91,7 @@ export const UserActions = {
   login,
   loginSuccess,
   loginFailure,
+  logout,
+  logoutSuccess,
+  logoutFailure,
 };
