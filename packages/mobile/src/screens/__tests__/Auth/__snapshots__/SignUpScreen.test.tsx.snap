@@ -544,7 +544,7 @@ Array [
                 ]
               }
             >
-              terms and condition
+              terms and conditions
             </Text>
           </View>
           <View
@@ -887,7 +887,7 @@ Array [
           Array [
             Object {
               "color": "#4C5F72",
-              "fontSize": 16,
+              "fontSize": 22,
             },
             Object {
               "padding": 16,

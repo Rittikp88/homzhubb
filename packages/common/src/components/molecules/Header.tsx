@@ -90,7 +90,7 @@ export const Header = (props: IHeaderProps): React.ReactElement => {
       <View style={[customStyle.headerStyle, headerContainerStyle]}>
         <Icon
           name={icon}
-          size={iconSize || 16}
+          size={iconSize || 22}
           color={iconColor || theme.colors.darkTint4}
           style={styles.iconStyle}
           onPress={onIconPress}

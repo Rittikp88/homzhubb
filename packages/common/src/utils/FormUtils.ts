@@ -7,7 +7,7 @@ export const DisallowedInputCharacters = {
 class FormUtils {
   public nameRegex = /^[a-zA-Z ]*$/;
 
-  public passwordRegex = /^(?=.*\d).[a-zA-Z0-9]*$/;
+  public passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]*$/;
 
   public validate = (getValidationSchema: any): any => {
     return (values: any[]): any => {

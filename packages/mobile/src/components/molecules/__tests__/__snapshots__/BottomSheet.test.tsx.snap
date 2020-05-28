@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BottomSheet should render snapshot 1`] = `ReactWrapper {}`;
+
+exports[`BottomSheet should render snapshot when visible is true 1`] = `ReactWrapper {}`;
