@@ -6,13 +6,14 @@ import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface ISignUpFormProps extends WithTranslation {
-  onSubmitFormSuccess: (payload: ISignUpPayload, ref: FormTextInput | null) => void;
+  onSubmitFormSuccess: (payload: ISignUpPayload, ref: () => FormTextInput | null) => void;
 }
 
 interface ISignUpFormState {
@@ -22,6 +23,8 @@ interface ISignUpFormState {
     phone: string;
     password: string;
   };
+  countryCode: string;
+  isBottomSheetVisible: boolean;
 }
 
 class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
@@ -37,11 +40,13 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
       phone: '',
       password: '',
     },
+    countryCode: '+91',
+    isBottomSheetVisible: false,
   };
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { user } = this.state;
+    const { user, countryCode, isBottomSheetVisible } = this.state;
     const formData = { ...user };
 
     return (
@@ -84,9 +89,10 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   label="Phone"
                   inputType="phone"
                   maxLength={10}
-                  inputPrefixText="+91"
+                  inputPrefixText={countryCode}
                   placeholder={t('auth:yourNumber')}
                   helpText={t('auth:otpVerification')}
+                  onIconPress={this.handleDropdown}
                   formProps={formProps}
                   onSubmitEditing={onPasswordFocus}
                 />
@@ -114,9 +120,29 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
             );
           }}
         </Formik>
+        <BottomSheetListView
+          selectedValue={countryCode}
+          listTitle={t('auth:countryRegion')}
+          isBottomSheetVisible={isBottomSheetVisible}
+          onCloseDropDown={this.onCloseDropDown}
+          onSelectItem={this.handleSelection}
+        />
       </View>
     );
   }
+
+  private onCloseDropDown = (): void => {
+    this.setState({ isBottomSheetVisible: false });
+  };
+
+  private handleSelection = (value: string): void => {
+    this.setState({ countryCode: value });
+  };
+
+  private handleDropdown = (): void => {
+    const { isBottomSheetVisible } = this.state;
+    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
 
   private formSchema = (): yup.ObjectSchema<{ email: string; name: string; phone: string; password: string }> => {
     const { t } = this.props;
@@ -142,7 +168,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
       phone_number: values.phone,
       password: values.password,
     };
-    const phoneRef = this.phone;
+    const phoneRef = (): FormTextInput | null => this.phone;
     onSubmitFormSuccess(signUpData, phoneRef);
   };
 }

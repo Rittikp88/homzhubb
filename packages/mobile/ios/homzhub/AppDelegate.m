@@ -4,6 +4,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTI18nUtil.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 #if DEBUG && TARGET_OS_SIMULATOR
 #import <FlipperKit/FlipperClient.h>
@@ -50,6 +51,21 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
   return YES;
 }
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+
+
+
+    BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+      openURL:url
+      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+    ];
+
+    return handled;
+  }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {

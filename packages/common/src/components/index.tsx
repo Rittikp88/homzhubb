@@ -5,6 +5,7 @@ export { ImageRound, ImageSquare, Image } from '@homzhub/common/src/components/a
 export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
 export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';
+export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 
 // Molecules
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';

@@ -7,13 +7,14 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
 interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
   handleForgotPassword?: () => void;
-  onLoginSuccess: (payload: ILoginFormData) => void;
+  onLoginSuccess: (payload: ILoginFormData, ref: () => FormTextInput | null) => void;
 }
 
 interface ILoginFormState {
@@ -23,9 +24,15 @@ interface ILoginFormState {
     password: string;
     isEmailFlow: boolean;
   };
+  countryCode: string;
+  isBottomSheetVisible: boolean;
 }
 
 class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
+  public email: FormTextInput | null = null;
+  public phone: FormTextInput | null = null;
+  public password: FormTextInput | null = null;
+
   public constructor(props: ILoginFormProps) {
     super(props);
     this.state = {
@@ -35,14 +42,15 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
         password: '',
         isEmailFlow: props.isEmailLogin || false,
       },
+      countryCode: '+91',
+      isBottomSheetVisible: false,
     };
   }
 
   public render(): React.ReactNode {
     const { t, handleForgotPassword } = this.props;
-    const { user } = this.state;
+    const { user, countryCode, isBottomSheetVisible } = this.state;
     const formData = { ...user };
-
     return (
       <View style={styles.container}>
         <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
@@ -70,6 +78,13 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
             </>
           )}
         </Formik>
+        <BottomSheetListView
+          selectedValue={countryCode}
+          listTitle={t('auth:countryRegion')}
+          isBottomSheetVisible={isBottomSheetVisible}
+          onCloseDropDown={this.onCloseDropDown}
+          onSelectItem={this.handleSelection}
+        />
       </View>
     );
   }
@@ -78,19 +93,28 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
     const { t } = this.props;
     const {
       user: { isEmailFlow },
+      countryCode,
     } = this.state;
+    const onPasswordFocus = (): void => this.password?.focus();
     return (
       <>
         {isEmailFlow ? (
           <>
             <FormTextInput
+              ref={(refs): void => {
+                this.email = refs;
+              }}
               name="email"
               label="Email"
               inputType="email"
               placeholder={t('auth:enterEmail')}
               formProps={formProps}
+              onSubmitEditing={onPasswordFocus}
             />
             <FormTextInput
+              ref={(refs): void => {
+                this.password = refs;
+              }}
               name="password"
               label="Password"
               inputType="password"
@@ -100,18 +124,49 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
           </>
         ) : (
           <FormTextInput
+            ref={(refs): void => {
+              this.phone = refs;
+            }}
             name="phone"
             label="Phone"
             inputType="phone"
             maxLength={10}
-            inputPrefixText="+91"
+            inputPrefixText={countryCode}
             placeholder={t('auth:yourNumber')}
             helpText={t('auth:otpVerification')}
+            onIconPress={this.handleDropdown}
             formProps={formProps}
           />
         )}
       </>
     );
+  };
+
+  private onCloseDropDown = (): void => {
+    this.setState({ isBottomSheetVisible: false });
+  };
+
+  private handleSelection = (value: string): void => {
+    this.setState({ countryCode: value });
+  };
+
+  private handleDropdown = (): void => {
+    const { isBottomSheetVisible } = this.state;
+    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
+
+  public handleSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
+    const { onLoginSuccess } = this.props;
+    formActions.setSubmitting(true);
+    const loginFormDta: ILoginFormData = {
+      email: values.email,
+      password: values.password,
+      country_code: 'IN',
+      phone_number: values.phone,
+    };
+
+    const phoneRef = (): FormTextInput | null => this.phone;
+    onLoginSuccess(loginFormDta, phoneRef);
   };
 
   private formSchema = (): yup.ObjectSchema<{
@@ -140,19 +195,6 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
           .required(t('auth:passwordRequired')),
       }),
     });
-  };
-
-  public handleSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
-    const { onLoginSuccess } = this.props;
-    formActions.setSubmitting(true);
-    const loginFormDta: ILoginFormData = {
-      email: values.email,
-      password: values.password,
-      country_code: 'IN',
-      phone_number: values.phone,
-    };
-
-    onLoginSuccess(loginFormDta);
   };
 }
 

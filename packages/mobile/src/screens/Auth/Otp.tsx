@@ -85,7 +85,7 @@ class Otp extends React.PureComponent<IProps, IState> {
     } = this.props;
 
     if (params && params.ref) {
-      params.ref.focus();
+      params.ref()?.focus();
     }
 
     navigation.goBack();

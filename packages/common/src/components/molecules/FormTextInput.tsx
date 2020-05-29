@@ -38,6 +38,7 @@ export interface IFormTextInputProps extends TextInputProps {
   disallowedCharacters?: RegExp;
   onValueChange?: (text: string) => void;
   isTouched?: boolean;
+  onIconPress?: () => void;
 }
 
 interface IFormTextInputState {
@@ -70,6 +71,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       helpText,
       isTouched = true,
       maxLength = 40,
+      onIconPress,
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
@@ -136,7 +138,13 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
               <Label type="regular" style={styles.inputPrefixText}>
                 {inputPrefixText}
               </Label>
-              <Icon name="down-arrow-filled" color={theme.colors.darkTint7} size={12} style={styles.iconStyle} />
+              <Icon
+                name="down-arrow-filled"
+                color={theme.colors.darkTint7}
+                size={12}
+                style={styles.iconStyle}
+                onPress={onIconPress}
+              />
             </View>
           );
 

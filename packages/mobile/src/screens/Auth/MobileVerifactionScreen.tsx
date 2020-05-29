@@ -8,9 +8,12 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { FormTextInput, Header, Text, FormButton } from '@homzhub/common/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
 interface IVerificationState {
   phone: string;
+  countryCode: string;
+  isBottomSheetVisible: boolean;
 }
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.MobileVerification>;
@@ -18,6 +21,8 @@ type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, Screens
 class MobileVerificationScreen extends Component<Props, IVerificationState> {
   public state = {
     phone: '',
+    countryCode: '+91',
+    isBottomSheetVisible: false,
   };
 
   public render(): React.ReactNode {
@@ -27,6 +32,7 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
         params: { icon, title, subTitle, buttonTitle, message },
       },
     } = this.props;
+    const { isBottomSheetVisible, countryCode } = this.state;
     const formData = { ...this.state };
     return (
       <View style={styles.container}>
@@ -43,7 +49,8 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
                   inputType="phone"
                   name="phone"
                   label="Phone"
-                  inputPrefixText="+91"
+                  inputPrefixText={countryCode}
+                  onIconPress={this.handleDropdown}
                   placeholder={t('auth:yourNumber')}
                   helpText={t('auth:otpVerification')}
                 />
@@ -59,6 +66,13 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
             )}
           </Formik>
         </View>
+        <BottomSheetListView
+          selectedValue={countryCode}
+          listTitle={t('auth:countryRegion')}
+          isBottomSheetVisible={isBottomSheetVisible}
+          onCloseDropDown={this.onCloseDropDown}
+          onSelectItem={this.handleSelection}
+        />
       </View>
     );
   }
@@ -67,9 +81,22 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
     // TOD0: Add logic
   };
 
+  private onCloseDropDown = (): void => {
+    this.setState({ isBottomSheetVisible: false });
+  };
+
   private handleIconPress = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  private handleSelection = (value: string): void => {
+    this.setState({ countryCode: value });
+  };
+
+  private handleDropdown = (): void => {
+    const { isBottomSheetVisible } = this.state;
+    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
   private formSchema = (): yup.ObjectSchema<{ phone: string }> => {

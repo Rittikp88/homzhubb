@@ -13,8 +13,8 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Header, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IDispatchProps {
   getSocialMedia: () => void;
@@ -93,7 +93,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
     navigation.navigate(ScreensKeys.Login);
   };
 
-  private onFormSubmit = (formData: ISignUpPayload, ref: FormTextInput | null): void => {
+  private onFormSubmit = (formData: ISignUpPayload, ref: () => FormTextInput | null): void => {
     const { navigation, t } = this.props;
     const { isNewUser } = this.state;
     this.validateUser(formData);

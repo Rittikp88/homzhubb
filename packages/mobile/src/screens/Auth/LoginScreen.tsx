@@ -8,7 +8,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Header, LoginForm, SocialMediaComponent } from '@homzhub/common/src/components';
+import { FormTextInput, Header, LoginForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
@@ -95,14 +95,14 @@ class LoginScreen extends Component<Props, ISignUpState> {
     navigation.navigate(ScreensKeys.SignUp);
   };
 
-  private onOtpLoginPress = (values: ILoginFormData): void => {
+  private onOtpLoginPress = (values: ILoginFormData, ref: () => FormTextInput | null): void => {
     const { navigation, t } = this.props;
     navigation.navigate(ScreensKeys.OTP, {
       type: OtpNavTypes.Login,
       title: t('auth:loginOtp'),
       countryCode: values.country_code,
       phone: values.phone_number,
-      ref: null,
+      ref,
     });
   };
 }

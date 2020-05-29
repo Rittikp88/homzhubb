@@ -49,7 +49,7 @@ export interface IOtpNavProps {
   countryCode: string;
   phone: string;
   userData?: ISignUpPayload;
-  ref: FormTextInput | null;
+  ref: () => FormTextInput | null;
 }
 
 export interface IVerificationProps {

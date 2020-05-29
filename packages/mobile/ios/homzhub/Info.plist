@@ -26,9 +26,9 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6</string>
-			</array>
+      <array>
+        <string>com.googleusercontent.apps.1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6</string>
+      </array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
@@ -93,5 +93,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>fb1034466930282873</string>
+    </array>
+    </dict>
+  </array>
+  <key>FacebookAppID</key>
+  <string>1034466930282873</string>
+  <key>FacebookDisplayName</key>
+  <string>homzhub</string>
 </dict>
 </plist>

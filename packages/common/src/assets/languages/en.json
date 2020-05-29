@@ -57,7 +57,8 @@
     "socialButtonPrefixLogin": "Log in ",
     "socialButtonPrefixSignUp": "Signup ",
     "emailAlreadyExists": "Email already exists",
-    "phoneAlreadyExists": "Mobile number already exists"
+    "phoneAlreadyExists": "Mobile number already exists",
+    "countryRegion": "Country/Region"
   },
   "propertyPost": {
     "welcomeUser": "Welcome {{username}},",
