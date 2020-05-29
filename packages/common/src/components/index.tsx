@@ -10,7 +10,7 @@ export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowV
 // Molecules
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-export { Header } from '@homzhub/common/src/components/molecules/Header';
+export { AnimatedHeader } from '@homzhub/common/src/components/molecules/AnimatedHeader';
 export { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 export { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 

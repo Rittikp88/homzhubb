@@ -7,7 +7,7 @@ import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetP
 
 jest.mock('@react-native-community/google-signin', () => {});
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-jest.mock('@homzhub/common/src/components/', () => 'Header');
+jest.mock('@homzhub/common/src/components/', () => 'AnimatedHeader');
 jest.mock('@homzhub/common/src/components/', () => 'Button');
 
 describe('Success Password Screen', () => {

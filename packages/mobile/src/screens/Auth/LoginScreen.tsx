@@ -8,7 +8,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormTextInput, Header, LoginForm, SocialMediaComponent } from '@homzhub/common/src/components';
+import { FormTextInput, AnimatedHeader, LoginForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
@@ -66,7 +66,7 @@ class LoginScreen extends Component<Props, ISignUpState> {
             />
           </View>
         </ScrollView>
-        <Header
+        <AnimatedHeader
           isAnimation
           icon="close"
           title={t('login')}

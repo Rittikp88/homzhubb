@@ -10,7 +10,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Header, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
+import { AnimatedHeader, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
@@ -69,7 +69,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
             />
           </View>
         </ScrollView>
-        <Header
+        <AnimatedHeader
           isAnimation
           icon="close"
           title={t('signUp')}

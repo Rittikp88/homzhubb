@@ -21,7 +21,7 @@ interface IHeaderProps {
   headerContainerStyle?: StyleProp<ViewStyle>;
 }
 
-export const Header = (props: IHeaderProps): React.ReactElement => {
+export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
   const {
     icon,
     iconColor,

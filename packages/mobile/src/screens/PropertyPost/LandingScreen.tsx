@@ -59,6 +59,10 @@ class LandingScreen extends React.PureComponent<Props, {}> {
                 {t('common:logout')}
               </Label>
             </Label>
+            {/* TODO: to be removed once gmaps integration is present */}
+            <Label type="small" textType="bold" style={styles.logout} onPress={this.navigateToPropertyDetails}>
+              Property Details
+            </Label>
           </View>
         </View>
       </GradientBackground>
@@ -71,6 +75,12 @@ class LandingScreen extends React.PureComponent<Props, {}> {
     const { logoutSuccess } = this.props;
     logoutSuccess();
     await StorageService.remove(StorageKeys.USER);
+  };
+
+  // TODO: to be removed once gmaps integration is present
+  public navigateToPropertyDetails = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.PropertyDetailsScreen);
   };
 }
 

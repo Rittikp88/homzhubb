@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Header, Button } from '@homzhub/common/src/components';
+import { AnimatedHeader, Button } from '@homzhub/common/src/components';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -13,7 +13,7 @@ class SuccessResetPassword extends Component<Props, {}> {
     const { t } = this.props;
     return (
       <View style={styles.container}>
-        <Header
+        <AnimatedHeader
           icon="close"
           title={t('auth:successResetPassword')}
           subTitle={t('auth:successResetPasswordDescription')}

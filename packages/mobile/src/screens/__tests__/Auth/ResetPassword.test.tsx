@@ -10,7 +10,7 @@ jest.mock('@react-native-community/google-signin', () => {});
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@homzhub/common/src/components/', () => 'FormButton');
 jest.mock('@homzhub/common/src/components/', () => 'FormTextInput');
-jest.mock('@homzhub/common/src/components/', () => 'Header');
+jest.mock('@homzhub/common/src/components/', () => 'AnimatedHeader');
 
 describe('Reset Password Screen', () => {
   let component: any;
