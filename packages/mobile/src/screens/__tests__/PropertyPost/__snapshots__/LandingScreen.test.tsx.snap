@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Landing Screen Component should render landing screen 1`] = `undefined`;
+exports[`Landing Screen Component should render landing screen 1`] = `
+<Connect(withI18nextTranslation(LandingScreen))
+  logoutSuccess={[MockFunction]}
+  user={
+    Object {
+      "access_token": "accesstoken",
+      "country_code": "IN",
+      "email": "johndoe@gmail.com",
+      "full_name": "John Doe",
+      "phone_number": "9876543210",
+      "refresh_token": "refreshtoken",
+    }
+  }
+/>
+`;

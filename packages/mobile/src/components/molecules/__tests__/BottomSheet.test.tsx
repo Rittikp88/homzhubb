@@ -1,18 +1,18 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import { BottomSheet, IBottomSheetProps } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
 describe('BottomSheet', () => {
-
   it('should render snapshot', () => {
     const testProps: IBottomSheetProps = {
       children: <Text>Bottom Sheet</Text>,
       visible: false,
       onCloseSheet: jest.fn(),
     };
-    const wrapper = mount(<BottomSheet {...testProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = shallow(<BottomSheet {...testProps} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('should render snapshot when visible is true', () => {
@@ -21,7 +21,7 @@ describe('BottomSheet', () => {
       visible: true,
       onCloseSheet: jest.fn(),
     };
-    const wrapper = mount(<BottomSheet {...testProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = shallow(<BottomSheet {...testProps} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

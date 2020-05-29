@@ -1,7 +1,8 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import TestRenderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import { I18nextProvider } from 'react-i18next';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
@@ -46,16 +47,16 @@ describe('Landing Screen Component', () => {
       logoutSuccess: jest.fn(),
     };
     await I18nService.init();
-    component = TestRenderer.create(
+    component = shallow(
       <Provider store={store}>
         <I18nextProvider i18n={I18nService.instance}>
           <LandingScreen {...props} />
         </I18nextProvider>
       </Provider>
-    ).toJSON();
+    );
   });
 
   it('should render landing screen', () => {
-    expect(component).toMatchSnapshot();
+    expect(toJson(component.dive().dive().dive())).toMatchSnapshot();
   });
 });

@@ -1,5 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BottomSheet should render snapshot 1`] = `ReactWrapper {}`;
+exports[`BottomSheet should render snapshot 1`] = `
+<RBSheet
+  animationType="slide"
+  closeDuration={200}
+  closeOnDragDown={true}
+  closeOnPressBack={true}
+  closeOnPressMask={true}
+  customStyles={Object {}}
+  dragFromTopOnly={true}
+  height={260}
+  keyboardAvoidingViewEnabled={true}
+  minClosingHeight={0}
+  onClose={[MockFunction]}
+  onOpen={null}
+  openDuration={300}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "flex": 1,
+          "marginHorizontal": 26,
+          "marginVertical": 20,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text>
+      Bottom Sheet
+    </Text>
+  </View>
+</RBSheet>
+`;
 
-exports[`BottomSheet should render snapshot when visible is true 1`] = `ReactWrapper {}`;
+exports[`BottomSheet should render snapshot when visible is true 1`] = `
+<RBSheet
+  animationType="slide"
+  closeDuration={200}
+  closeOnDragDown={true}
+  closeOnPressBack={true}
+  closeOnPressMask={true}
+  customStyles={Object {}}
+  dragFromTopOnly={true}
+  height={260}
+  keyboardAvoidingViewEnabled={true}
+  minClosingHeight={0}
+  onClose={[MockFunction]}
+  onOpen={null}
+  openDuration={300}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "flex": 1,
+          "marginHorizontal": 26,
+          "marginVertical": 20,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text>
+      Bottom Sheet
+    </Text>
+  </View>
+</RBSheet>
+`;
