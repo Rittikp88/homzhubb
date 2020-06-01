@@ -17,7 +17,6 @@ import {
   IVerificationProps,
   IResetPasswordProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
-import { RentServices } from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
