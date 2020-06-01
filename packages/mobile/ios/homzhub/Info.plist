@@ -93,6 +93,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysUsageDescription</key>
+    <string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
   <key>CFBundleURLTypes</key>
   <array>
     <dict>

@@ -84,6 +84,9 @@ target 'homzhub' do
   pod 'glog', :podspec => '../../../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../../../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  pod 'Permission-LocationAlways', :path => "../../../node_modules/react-native-permissions/ios/LocationAlways.podspec"
+  pod 'Permission-LocationWhenInUse', :path => "../../../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
+
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 

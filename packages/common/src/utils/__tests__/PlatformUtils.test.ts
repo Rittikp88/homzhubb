@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { PlatformUtils, OSTypes } from '@homzhub/common/src/utils/PlatformUtils';
 
 describe('Platform Util', () => {
   it('should return true if Platform is android', () => {
@@ -40,5 +40,12 @@ describe('Platform Util', () => {
   it('should return false if Platform is not mobile', () => {
     Platform.OS = 'web';
     expect(PlatformUtils.isMobile()).toEqual(false);
+  });
+
+  ['ios', 'android', 'windows', 'macos', 'web'].forEach((platform: string) => {
+    it(`should return the current Platform for ${platform}`, () => {
+      Platform.OS = platform as OSTypes;
+      expect(PlatformUtils.getPlatform()).toEqual(platform);
+    });
   });
 });

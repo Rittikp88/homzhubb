@@ -9,6 +9,7 @@ export enum StorageKeys {
 }
 
 class StorageService {
+  // TODO (Rishabh 31-May-2020): Move this secret out
   private secret = 'secret';
 
   public get = async <T>(key: string): Promise<T | null> => {
