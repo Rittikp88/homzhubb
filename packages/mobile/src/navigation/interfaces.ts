@@ -19,6 +19,7 @@ export enum ScreensKeys {
   PropertySearch = 'Property Search',
   PropertyPostLandingScreen = 'Property Post',
   PropertyDetailsScreen = 'Property Details',
+  RentServicesScreen = 'Rent Services',
 }
 
 // Tab keys

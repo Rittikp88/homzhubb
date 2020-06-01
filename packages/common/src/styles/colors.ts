@@ -18,6 +18,7 @@ const namedColors = {
 };
 
 const tintColors = {
+  darkTint2: '#19324A',
   darkTint3: '#33495E',
   darkTint4: '#4C5F72',
   darkTint5: '#667686',

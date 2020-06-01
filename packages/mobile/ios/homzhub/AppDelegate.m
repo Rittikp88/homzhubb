@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTI18nUtil.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 #if DEBUG && TARGET_OS_SIMULATOR
 #import <FlipperKit/FlipperClient.h>

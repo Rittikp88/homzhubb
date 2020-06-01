@@ -23,12 +23,10 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
-      <array>
-        <string>com.googleusercontent.apps.1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6</string>
-      </array>
+			<array>
+				<string>fb1034466930282873</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
@@ -49,7 +47,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Fontisto.ttf</string>
@@ -76,8 +74,8 @@
 		<string>Raleway-Light.ttf</string>
 		<string>Raleway-Medium.ttf</string>
 		<string>Raleway-Bold.ttf</string>
-		<string>icomoon.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
+		<string>icomoon.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -94,21 +92,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationAlwaysUsageDescription</key>
-    <string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-    <key>CFBundleURLSchemes</key>
-    <array>
-      <string>fb1034466930282873</string>
-    </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>1034466930282873</string>
-  <key>FacebookDisplayName</key>
-  <string>homzhub</string>
+	<string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
+	<key>FacebookAppID</key>
+	<string>1034466930282873</string>
+	<key>FacebookDisplayName</key>
+	<string>homzhub</string>
 </dict>
 </plist>

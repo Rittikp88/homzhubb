@@ -11,7 +11,8 @@
     "next": "Next",
     "gotIt": "Got It",
     "skip": "Skip",
-    "termsCondition": "terms and conditions"
+    "termsCondition": "terms and conditions",
+    "continue": "Continue"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -65,6 +66,9 @@
     "description": "Let's add your first property on Homzhub",
     "searchProject": "Search for project or street name",
     "addProperty": "Add property",
-    "logoutHelperText": "If it's not you?"
+    "logoutHelperText": "If it's not you?",
+    "congratsUser": "Congratulations {{name}}",
+    "propertyAddedMsg": "Your Property is added to your Dashboard",
+    "serviceNeed": "What service do you need today?"
   }
 }

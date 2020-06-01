@@ -16,6 +16,7 @@ const resources = {
 enum namespacesKey {
   common = 'common',
   auth = 'auth',
+  propertyPost = 'propertyPost',
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;

@@ -69,7 +69,11 @@ class LandingScreen extends React.PureComponent<Props, {}> {
     );
   }
 
-  public onAddProperty = (): void => {};
+  public onAddProperty = (): void => {
+    const { navigation } = this.props;
+    // TODO: Remove once add property screen is ready
+    navigation.navigate(ScreensKeys.RentServicesScreen);
+  };
 
   public logout = async (): Promise<void> => {
     const { logoutSuccess } = this.props;
