@@ -13,8 +13,8 @@ jest.mock('@homzhub/common/src/assets/images/landingScreenLogo.png');
 jest.mock('@homzhub/common/src/components/', () => 'Text');
 jest.mock('@homzhub/common/src/components/', () => 'Label');
 jest.mock('@homzhub/common/src/components/', () => 'Button');
-jest.mock('@homzhub/mobile/src/components/atoms/Svg', () => 'SVGUri');
-jest.mock('@homzhub/mobile/src/screens/PropertyPost/GradientBackground', () => 'GradientBackground');
+jest.mock('@homzhub/common/src/components/', () => 'SVGUri');
+jest.mock('@homzhub/mobile/src/components/molecules/GradientBackground', () => 'GradientBackground');
 const mockStore = configureStore([]);
 
 describe('Landing Screen Component', () => {

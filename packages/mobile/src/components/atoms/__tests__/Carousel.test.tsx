@@ -4,6 +4,7 @@ import toJson from 'enzyme-to-json';
 import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 
+jest.mock('@react-native-community/google-signin');
 const createTestProps = (testProps: any): object => ({
   ...testProps,
 });

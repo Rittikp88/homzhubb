@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SVGUri } from '@homzhub/mobile/src/components/atoms/Svg';
+import { SVGUri } from '@homzhub/common/src/components';
 
 interface ICarouselItems {
   title: string;

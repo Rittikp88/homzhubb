@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { SVGUri } from '@homzhub/mobile/src/components/atoms/Svg';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 
 describe('Svg', () => {
   it('should match snapshot', () => {

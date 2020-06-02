@@ -12,7 +12,9 @@
     "gotIt": "Got It",
     "skip": "Skip",
     "termsCondition": "terms and conditions",
-    "continue": "Continue"
+    "continue": "Continue",
+    "submit": "Submit",
+    "change": "Change"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -70,5 +72,12 @@
     "congratsUser": "Congratulations {{name}}",
     "propertyAddedMsg": "Your Property is added to your Dashboard",
     "serviceNeed": "What service do you need today?"
+  },
+  "propertyDetails": {
+    "headerTitle": "Details",
+    "propertyType": "Property type",
+    "spaceAvailable": "Space available",
+    "carpetArea": "Carpet area",
+    "areaUnit": "Area unit"
   }
 }

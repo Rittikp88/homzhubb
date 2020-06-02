@@ -3,9 +3,10 @@ import { FlatList } from 'react-native';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { CountryWithCode } from '@homzhub/common/src/mocks/countryWithCode';
 import { ListItem } from '@homzhub/common/src/components/atoms/ListItem';
+import { AreaUnit } from '@homzhub/common/src/mocks/AreaUnit';
 
 interface IProps {
-  data?: typeof CountryWithCode; // TODO: (Shikha:28/05/20): Replace country mock data once API ready
+  data?: typeof CountryWithCode | typeof AreaUnit; // TODO: (Shikha:28/05/20): Replace country mock data once API ready
   selectedValue: string;
   listTitle: string;
   isBottomSheetVisible: boolean;

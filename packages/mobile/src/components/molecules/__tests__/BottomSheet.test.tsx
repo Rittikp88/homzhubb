@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { BottomSheet, IBottomSheetProps } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
+jest.mock('@react-native-community/google-signin');
 describe('BottomSheet', () => {
   it('should render snapshot', () => {
     const testProps: IBottomSheetProps = {

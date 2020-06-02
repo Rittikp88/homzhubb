@@ -12,9 +12,8 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { Text, Label, Button } from '@homzhub/common/src/components';
-import { SVGUri } from '@homzhub/mobile/src/components/atoms/Svg';
-import { GradientBackground } from '@homzhub/mobile/src/screens/PropertyPost/GradientBackground';
+import { Text, Label, Button, SVGUri } from '@homzhub/common/src/components';
+import { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
 
 interface IStateProps {
   user: IUser | null;
