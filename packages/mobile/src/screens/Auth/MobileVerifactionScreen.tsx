@@ -5,10 +5,10 @@ import * as yup from 'yup';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormTextInput, AnimatedHeader, Text, FormButton } from '@homzhub/common/src/components';
+import { FormTextInput, Text, FormButton, DetailedHeader } from '@homzhub/common/src/components';
+import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
 interface IVerificationState {
   phone: string;
@@ -36,7 +36,7 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
     const formData = { ...this.state };
     return (
       <View style={styles.container}>
-        <AnimatedHeader icon={icon} title={title} subTitle={subTitle} onIconPress={this.handleIconPress} />
+        <DetailedHeader icon={icon} title={title} subTitle={subTitle} onIconPress={this.handleIconPress} />
         <View style={styles.content}>
           <Text type="small" style={styles.message}>
             {message}

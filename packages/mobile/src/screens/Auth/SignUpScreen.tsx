@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -26,7 +26,6 @@ interface IStateProps {
 }
 
 interface ISignUpState {
-  animatedValue: Animated.Value;
   isNewUser: boolean;
 }
 
@@ -35,7 +34,6 @@ type Props = IStateProps & IDispatchProps & libraryProps;
 
 class SignUpScreen extends Component<Props, ISignUpState> {
   public state = {
-    animatedValue: new Animated.Value(0),
     isNewUser: false,
   };
 
@@ -45,41 +43,26 @@ class SignUpScreen extends Component<Props, ISignUpState> {
   }
 
   public render(): React.ReactNode {
-    const { animatedValue } = this.state;
     const { socialMediaProviders, t, loginSuccess, navigation } = this.props;
 
     return (
-      <>
-        <ScrollView
-          style={styles.container}
-          keyboardShouldPersistTaps="handled"
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: animatedValue } } }], {
-            useNativeDriver: false,
-          })}
-        >
-          <View style={styles.scrollViewContent}>
-            <SignUpForm onSubmitFormSuccess={this.onFormSubmit} />
-            <SocialMediaComponent
-              isFromLogin={false}
-              socialMediaItems={socialMediaProviders}
-              onLoginSuccessAction={loginSuccess}
-              navigation={navigation}
-            />
-          </View>
-        </ScrollView>
-        <AnimatedHeader
-          isAnimation
-          icon="close"
-          title={t('signUp')}
-          subTitle={t('auth:alreadyRegistered')}
-          linkText={t('login')}
-          animatedValue={animatedValue}
-          onLinkPress={this.onLoginPress}
-          onIconPress={this.onClosePress}
-        />
-      </>
+      <AnimatedHeader
+        title={t('signUp')}
+        subTitle={t('auth:alreadyRegistered')}
+        linkText={t('login')}
+        onIconPress={this.onClosePress}
+        onLinkPress={this.onLoginPress}
+      >
+        <>
+          <SignUpForm onSubmitFormSuccess={this.onFormSubmit} />
+          <SocialMediaComponent
+            isFromLogin={false}
+            socialMediaItems={socialMediaProviders}
+            onLoginSuccessAction={loginSuccess}
+            navigation={navigation}
+          />
+        </>
+      </AnimatedHeader>
     );
   }
 
@@ -170,13 +153,3 @@ export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation()(SignUpScreen));
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-  },
-  scrollViewContent: {
-    marginTop: theme.headerConstants.headerMaxHeight,
-  },
-});

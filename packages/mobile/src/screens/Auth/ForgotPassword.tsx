@@ -7,7 +7,7 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormButton, FormTextInput, AnimatedHeader, Text } from '@homzhub/common/src/components';
+import { FormButton, FormTextInput, Text, DetailedHeader } from '@homzhub/common/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
@@ -27,8 +27,8 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
     const formData = { ...this.state };
     return (
       <View style={styles.container}>
-        <AnimatedHeader
-          icon="left-arrow"
+        <DetailedHeader
+          icon="close"
           title={t('auth:forgotPassword')}
           subTitle={t('auth:forgotPasswordDescription')}
           onIconPress={this.handleIconPress}

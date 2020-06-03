@@ -1,16 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SignUp Screen should render signup screen 1`] = `
-Array [
-  <RCTScrollView
-    keyboardShouldPersistTaps="handled"
-    onScroll={[Function]}
-    scrollEventThrottle={16}
-    showsVerticalScrollIndicator={false}
+<View
+  onLayout={[Function]}
+  style={
+    Array [
+      undefined,
+      Object {
+        "backgroundColor": "transparent",
+        "flex": 1,
+      },
+    ]
+  }
+>
+  <View
     style={
       Object {
         "backgroundColor": "#FFFFFF",
-        "flex": 1,
+        "height": 200,
+        "opacity": 1,
+        "overflow": "hidden",
+        "position": "absolute",
+        "top": 0,
+        "transform": Array [
+          Object {
+            "translateY": 0,
+          },
+          Object {
+            "scale": 1,
+          },
+        ],
+        "width": 750,
+      }
+    }
+  >
+    <View>
+      <View />
+    </View>
+  </View>
+  <RCTScrollView
+    backgroundSpeed={10}
+    forwardedRef={[Function]}
+    onChangeHeaderVisibility={[Function]}
+    onScroll={[Function]}
+    scrollEventThrottle={1}
+    style={
+      Object {
+        "backgroundColor": "transparent",
       }
     }
   >
@@ -18,10 +54,149 @@ Array [
       <View
         style={
           Object {
-            "marginTop": 200,
+            "backgroundColor": "transparent",
+            "overflow": "hidden",
           }
         }
       >
+        <View
+          style={
+            Object {
+              "backgroundColor": "transparent",
+              "height": 200,
+              "opacity": 1,
+              "overflow": "hidden",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "height": 200,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "paddingTop": 50,
+                }
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "borderBottomColor": "#C9D6DF",
+                      "borderBottomWidth": 0.5,
+                      "flex": 1,
+                      "paddingTop": 50,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "marginVertical": 16,
+                      "paddingHorizontal": 24,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 24,
+                          "lineHeight": 24,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "fontFamily": "OpenSans-SemiBold",
+                          "fontWeight": "600",
+                        },
+                        Object {
+                          "color": "#001B36",
+                          "paddingVertical": 5,
+                        },
+                      ]
+                    }
+                  >
+                    Sign Up
+                  </Text>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 16,
+                          "lineHeight": 24,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "fontFamily": "OpenSans-Regular",
+                          "fontWeight": "400",
+                        },
+                        Object {
+                          "color": "#33495E",
+                          "marginVertical": 6,
+                        },
+                      ]
+                    }
+                  >
+                    Already registered?
+                     
+                    <Text
+                      onPress={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "fontSize": 16,
+                            "lineHeight": 24,
+                            "textAlign": "left",
+                          },
+                          Object {
+                            "fontFamily": "OpenSans-Regular",
+                            "fontWeight": "400",
+                          },
+                          Object {
+                            "color": "#0084F8",
+                          },
+                        ]
+                      }
+                    >
+                      Login
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Array [
+              Object {
+                "backgroundColor": "#fff",
+              },
+            ],
+            Object {
+              "minHeight": 0,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        />
         <View
           style={
             Object {
@@ -1083,34 +1258,125 @@ Array [
           </View>
         </View>
       </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "#fff",
+          }
+        }
+      />
     </View>
-  </RCTScrollView>,
+  </RCTScrollView>
   <View
     style={
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderBottomColor": "#C9D6DF",
-        "borderBottomWidth": 1,
-        "height": 200,
-        "left": 0,
-        "overflow": "hidden",
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-      }
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "left": 0,
+          "overflow": "hidden",
+          "position": "absolute",
+          "top": 0,
+        },
+        Object {
+          "height": 100,
+          "width": 750,
+        },
+      ]
     }
   >
     <View
       style={
-        Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "height": 100,
+          "opacity": 0,
+        }
+      }
+    >
+      <View
+        style={
           Object {
-            "borderBottomColor": "#C9D6DF",
-            "borderBottomWidth": 0,
-            "flex": 1,
-            "marginTop": 50,
-          },
-          Object {},
-        ]
+            "transform": Array [
+              Object {
+                "translateY": 100,
+              },
+            ],
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+                "paddingBottom": 10,
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#FFFFFF",
+                  "elevation": 7,
+                  "shadowColor": "#99A4AF",
+                  "shadowOffset": Object {
+                    "height": 0,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.8,
+                  "shadowRadius": 4.65,
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "borderBottomColor": "#C9D6DF",
+                  "borderBottomWidth": 0.5,
+                  "height": 95,
+                  "paddingTop": 55,
+                }
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 20,
+                      "lineHeight": 30,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "fontFamily": "OpenSans-SemiBold",
+                      "fontWeight": "600",
+                    },
+                    Object {
+                      "color": "#001B36",
+                      "flex": 1,
+                      "textAlign": "center",
+                    },
+                  ]
+                }
+              >
+                Sign Up
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "bottom": 20,
+          "left": 20,
+          "position": "absolute",
+        }
       }
     >
       <Text
@@ -1122,9 +1388,7 @@ Array [
               "color": "#4C5F72",
               "fontSize": 22,
             },
-            Object {
-              "padding": 16,
-            },
+            undefined,
             Object {
               "fontFamily": "icomoon",
               "fontStyle": "normal",
@@ -1136,79 +1400,7 @@ Array [
       >
         
       </Text>
-      <View
-        style={
-          Object {
-            "marginVertical": 16,
-            "paddingHorizontal": 24,
-          }
-        }
-      >
-        <Text
-          style={
-            Object {
-              "color": "#001B36",
-              "fontSize": 24,
-              "fontWeight": "600",
-              "transform": Array [
-                Object {
-                  "translateX": 0,
-                },
-                Object {
-                  "translateY": 0,
-                },
-              ],
-            }
-          }
-        >
-          Sign Up
-        </Text>
-        <Text
-          style={
-            Array [
-              Object {
-                "fontSize": 16,
-                "lineHeight": 24,
-                "textAlign": "left",
-              },
-              Object {
-                "fontFamily": "OpenSans-Regular",
-                "fontWeight": "400",
-              },
-              Object {
-                "color": "#33495E",
-                "marginVertical": 6,
-              },
-            ]
-          }
-        >
-          Already registered?
-           
-          <Text
-            onPress={[Function]}
-            style={
-              Array [
-                Object {
-                  "fontSize": 16,
-                  "lineHeight": 24,
-                  "textAlign": "left",
-                },
-                Object {
-                  "fontFamily": "OpenSans-Regular",
-                  "fontWeight": "400",
-                },
-                Object {
-                  "color": "#0084F8",
-                  "marginVertical": 6,
-                },
-              ]
-            }
-          >
-            Login
-          </Text>
-        </Text>
-      </View>
     </View>
-  </View>,
-]
+  </View>
+</View>
 `;

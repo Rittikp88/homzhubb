@@ -8,7 +8,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
-import { AnimatedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
+import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
 import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -51,7 +51,7 @@ class Otp extends React.PureComponent<IProps, IState> {
 
     return (
       <SafeAreaView style={styles.screen}>
-        <AnimatedHeader icon="left-arrow" onIconPress={goBack} headerContainerStyle={styles.headerStyle} />
+        <DetailedHeader icon="left-arrow" onIconPress={goBack} headerContainerStyle={styles.headerStyle} />
         <View style={styles.container}>
           <Text type="large" textType="semiBold">
             {title}
@@ -222,6 +222,7 @@ const styles = StyleSheet.create({
     marginStart: 8,
   },
   headerStyle: {
-    marginTop: 0,
+    paddingTop: 0,
+    borderBottomWidth: 0,
   },
 });

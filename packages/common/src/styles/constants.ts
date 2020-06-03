@@ -29,9 +29,3 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-// Constant Height for Animated header
-export const headerConstants = {
-  headerMaxHeight: PlatformUtils.isIOS() ? 200 : 180,
-  headerMinHeight: PlatformUtils.isIOS() ? 100 : 80,
-};

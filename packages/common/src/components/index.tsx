@@ -11,6 +11,7 @@ export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowV
 
 // Molecules
 export { AnimatedHeader } from '@homzhub/common/src/components/molecules/AnimatedHeader';
+export { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 export { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
