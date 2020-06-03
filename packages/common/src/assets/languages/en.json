@@ -9,10 +9,13 @@
     "getStarted": "Get Started",
     "newAroundHere": "New around here?",
     "next": "Next",
+    "cancel": "Cancel",
     "gotIt": "Got It",
     "skip": "Skip",
     "termsCondition": "terms and conditions",
+    "location": "Location",
     "continue": "Continue",
+    "searchResults": "Search Results",
     "submit": "Submit",
     "change": "Change"
   },
@@ -69,6 +72,7 @@
     "searchProject": "Search for project or street name",
     "addProperty": "Add property",
     "logoutHelperText": "If it's not you?",
+    "autoDetect": "Auto-Detect Current Location",
     "congratsUser": "Congratulations {{name}}",
     "propertyAddedMsg": "Your Property is added to your Dashboard",
     "serviceNeed": "What service do you need today?"

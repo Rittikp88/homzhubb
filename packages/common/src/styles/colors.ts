@@ -23,15 +23,16 @@ const tintColors = {
   darkTint3: '#33495E',
   darkTint4: '#4C5F72',
   darkTint5: '#667686',
+  darkTint6: '#808D9B',
   darkTint7: '#99A4AF',
   darkTint9: '#CCD1D7',
-  darkTint10: '#9A99A2',
-  darkTint11: '#808D9B',
+  darkTint10: '#E5E8EB',
 };
 
 // Theme based color scheme
 const themedColors = {
   primaryColor: namedColors.blue,
+  secondaryColor: namedColors.white,
   splashScreenBackgroundColor: '',
   splashScreenIndicatorColor: '',
   onBoardingScreenBackground: namedColors.background,

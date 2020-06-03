@@ -5,21 +5,28 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 
 // Route keys
 export enum ScreensKeys {
+  // Auth
   OnBoarding = 'OnBoarding',
   Home = 'Home',
-  GettingStarted = 'Getting Started',
+  GettingStarted = 'GettingStarted',
   SignUp = 'SignUp',
   OTP = 'OTP',
-  MobileVerification = 'Mobile Verification',
+  MobileVerification = 'MobileVerification',
   Login = 'Login',
-  EmailLogin = 'Email Login',
-  ForgotPassword = 'Forgot Password',
-  ResetPassword = 'Reset Password',
-  SuccessResetPassword = 'Success Reset Password',
-  PropertySearch = 'Property Search',
-  PropertyPostLandingScreen = 'Property Post',
-  PropertyDetailsScreen = 'Property Details',
-  RentServicesScreen = 'Rent Services',
+  EmailLogin = 'EmailLogin',
+  ForgotPassword = 'ForgotPassword',
+  SuccessResetPassword = 'SuccessResetPassword',
+  ResetPassword = 'ResetPassword',
+
+  // Tenant
+  PropertySearch = 'PropertySearch',
+
+  // Post Property
+  PropertyPostLandingScreen = 'PropertyPost',
+  SearchPropertyOwner = 'SearchPropertyOwner',
+  AddProperty = 'AddProperty',
+  PropertyDetailsScreen = 'PropertyDetails',
+  RentServicesScreen = 'RentServices',
 }
 
 // Tab keys
@@ -65,4 +72,12 @@ export interface IVerificationProps {
 export interface IResetPasswordProps {
   token?: string | number;
   email?: string;
+}
+
+// Post Property
+export interface IAddPropertyMapProps {
+  initialLatitude: number;
+  initialLongitude: number;
+  primaryTitle: string;
+  secondaryTitle: string;
 }

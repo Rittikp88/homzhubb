@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderColor: theme.colors.darkTint11,
+    borderColor: theme.colors.darkTint6,
     borderWidth: 0.5,
     width: 150,
     borderRadius: 4,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 const createConditionalStyles = (opacity: number, isSelected: boolean): any => ({
   viewItem: {
     opacity,
-    borderColor: isSelected ? theme.colors.darkTint11 : theme.colors.transparent,
+    borderColor: isSelected ? theme.colors.darkTint6 : theme.colors.transparent,
     borderTopColor: theme.colors.transparent,
     borderBottomColor: theme.colors.transparent,
     width: 50,

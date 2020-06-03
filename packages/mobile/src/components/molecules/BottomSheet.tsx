@@ -27,7 +27,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
       // @ts-ignore
       rbSheet.current.close();
     }
-  });
+  }, [visible]);
   const onCloseBottomSheet = (): void => {
     // @ts-ignore
     rbSheet.current.close();
@@ -53,6 +53,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
       height={sheetHeight}
       closeOnDragDown
       dragFromTopOnly
+      onClose={onCloseSheet}
       customStyles={{
         container: {
           borderTopLeftRadius: 10,

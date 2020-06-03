@@ -110,6 +110,7 @@
         "objects": "always-multiline"
       }
     ],
+    "no-prototype-builtins": "off",
     "accessor-pairs": [
       "error",
       {

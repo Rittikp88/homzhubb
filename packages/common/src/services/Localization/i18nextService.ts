@@ -54,6 +54,10 @@ class I18nextService {
     await this._instance.changeLanguage(lngCode);
   };
 
+  public getLanguage = (): string => {
+    return this._instance.language;
+  };
+
   private initCallback = (error: Error): void => {
     if (error) {
       Logger.error(error);

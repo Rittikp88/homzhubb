@@ -1,4 +1,6 @@
 {
   "API_BASE_URL": "http://3.7.27.67/api/v1/",
+  "PLACES_API_BASE_URL": "https://maps.googleapis.com/maps/api/",
+  "PLACES_API_KEY": "AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo",
   "OTP_LENGTH": 6
 }
