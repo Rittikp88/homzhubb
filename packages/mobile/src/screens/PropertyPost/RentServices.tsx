@@ -83,17 +83,25 @@ class RentServices extends Component<Props, IRentServicesState> {
   // TODO: (Shikha: 01/06/20)- Add return type once Api is ready
   private renderServiceItem = (item: any): React.ReactElement => {
     const { isSelected, selectedItem } = this.state;
-    const handlePress = (): void => this.onPressIcon(item.name);
+    const handleSelectedItem = (): void => this.onPressSelectedIcon(item.name);
+    const handlePress = (): void => this.onSelectIcon(item.name);
+    const isSelect = isSelected && selectedItem === item.name;
+    const customStyle = customizedStyles(isSelect);
     return (
-      <View style={styles.services} key={item.name}>
+      <View style={customStyle.services} key={item.name}>
         <View style={styles.serviceContent}>
-          <Icon name={item.icon} size={22} color={theme.colors.darkTint5} style={styles.iconStyle} />
-          <Label type="large" style={styles.serviceName}>
+          <Icon
+            name={item.icon}
+            size={22}
+            color={isSelect ? theme.colors.primaryColor : theme.colors.darkTint5}
+            style={styles.iconStyle}
+          />
+          <Label type="large" style={customStyle.serviceName}>
             {item.name}
           </Label>
         </View>
-        {isSelected && selectedItem === item.name ? (
-          <Icon name="circle-filled" size={18} color={theme.colors.primaryColor} onPress={handlePress} />
+        {isSelect ? (
+          <Icon name="circle-filled" size={18} color={theme.colors.primaryColor} onPress={handleSelectedItem} />
         ) : (
           <Icon name="circle-outline" size={18} color={theme.colors.disabled} onPress={handlePress} />
         )}
@@ -101,9 +109,13 @@ class RentServices extends Component<Props, IRentServicesState> {
     );
   };
 
-  private onPressIcon = (selectedItem: string): void => {
+  private onPressSelectedIcon = (selectedItem: string): void => {
     const { isSelected } = this.state;
     this.setState({ isSelected: !isSelected, selectedItem });
+  };
+
+  private onSelectIcon = (selectedItem: string): void => {
+    this.setState({ isSelected: true, selectedItem });
   };
 
   private onContinue = (): void => {
@@ -147,15 +159,6 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     marginHorizontal: 24,
   },
-  services: {
-    marginTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderColor: theme.colors.disabled,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    padding: 16,
-  },
   title: {
     paddingVertical: 8,
     color: theme.colors.darkTint2,
@@ -183,7 +186,19 @@ const styles = StyleSheet.create({
     flex: 0,
     margin: 16,
   },
+});
+
+const customizedStyles = (isSelect: boolean): any => ({
+  services: {
+    marginTop: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderColor: isSelect ? theme.colors.primaryColor : theme.colors.disabled,
+    borderRadius: 4,
+    borderWidth: 1,
+    padding: 16,
+  },
   serviceName: {
-    color: theme.colors.darkTint5,
+    color: isSelect ? theme.colors.primaryColor : theme.colors.darkTint5,
   },
 });

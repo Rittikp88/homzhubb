@@ -62,6 +62,10 @@ class LandingScreen extends React.PureComponent<Props, {}> {
             <Label type="small" textType="bold" style={styles.logout} onPress={this.navigateToPropertyDetails}>
               Property Details
             </Label>
+            {/* TODO: to be removed once post property api integration is done */}
+            <Label type="small" textType="bold" style={styles.logout} onPress={this.navigateToRentServices}>
+              Rent Services
+            </Label>
           </View>
         </View>
       </GradientBackground>
@@ -85,6 +89,12 @@ class LandingScreen extends React.PureComponent<Props, {}> {
   public navigateToPropertyDetails = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.PropertyDetailsScreen);
+  };
+
+  // TODO: to be removed once post property api integration is done
+  public navigateToRentServices = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.RentServicesScreen);
   };
 }
 
