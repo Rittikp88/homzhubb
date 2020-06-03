@@ -5,9 +5,7 @@ exports[`Property Details Item Component should render property details items co
   data={
     Array [
       Object {
-        "id": 1,
-        "name": "Residential",
-        "property_types": Array [
+        "asset_types": Array [
           Object {
             "id": 1,
             "name": "Residential House",
@@ -33,11 +31,11 @@ exports[`Property Details Item Component should render property details items co
             "name": "Independent Floor",
           },
         ],
+        "id": 1,
+        "name": "Residential",
       },
       Object {
-        "id": 2,
-        "name": "Commercial",
-        "property_types": Array [
+        "asset_types": Array [
           Object {
             "id": 1,
             "name": "Commercial Office Space",
@@ -55,6 +53,8 @@ exports[`Property Details Item Component should render property details items co
             "name": "Warehouse/Godown",
           },
         ],
+        "id": 2,
+        "name": "Commercial",
       },
     ]
   }

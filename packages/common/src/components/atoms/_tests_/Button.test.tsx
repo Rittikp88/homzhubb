@@ -21,7 +21,7 @@ describe('Button', () => {
   });
 
   it('should render with icon', () => {
-    wrapper.setProps({ icon: 'cross', textType: 'label' });
+    wrapper.setProps({ icon: 'search', textType: 'label' });
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

@@ -2,7 +2,7 @@ export const PropertyAssetGroupData = [
   {
     id: 1,
     name: 'Residential',
-    property_types: [
+    asset_types: [
       {
         id: 1,
         name: 'Residential House',
@@ -32,7 +32,7 @@ export const PropertyAssetGroupData = [
   {
     id: 2,
     name: 'Commercial',
-    property_types: [
+    asset_types: [
       {
         id: 1,
         name: 'Commercial Office Space',

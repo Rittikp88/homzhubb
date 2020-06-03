@@ -1,11 +1,12 @@
 import React from 'react';
 import { SafeAreaView, TouchableOpacity, FlatList, StyleSheet, StyleProp, TextStyle } from 'react-native';
+import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label, TextFieldType } from '@homzhub/common/src/components';
 
 interface IButtonGroupProps {
   data: any;
-  onItemSelect: (id: string | number) => void;
+  onItemSelect: (item: IPropertyTypes | IPropertyDetailsData, id: string | number) => void;
   selectedIndex: number;
   textType: TextFieldType;
   textStyle?: StyleProp<TextStyle>;
@@ -43,6 +44,7 @@ class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
           renderItem={this.renderItem}
           numColumns={numOfColumns}
           key={numOfColumns}
+          // @ts-ignore
           keyExtractor={this.keyExtractor}
           extraData={data?.[selectedIndex] ?? []}
         />
@@ -50,12 +52,18 @@ class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
     );
   }
 
-  public renderItem = ({ item, index }: { item: any; index: number }): React.ReactElement => {
+  public renderItem = ({
+    item,
+    index,
+  }: {
+    item: IPropertyTypes | IPropertyDetailsData;
+    index: number;
+  }): React.ReactElement => {
     const { selectedIndex, onItemSelect, textStyle, superTitle, textType, data } = this.props;
     const dataLength = data.length;
     const isSelected = index === selectedIndex;
     const conditionalStyle = createConditionalStyles(isSelected, dataLength);
-    const onItemPress = (): void => onItemSelect(index);
+    const onItemPress = (): void => onItemSelect(item, index);
     return (
       <TouchableOpacity onPress={onItemPress} style={[conditionalStyle.itemContainer, conditionalStyle.item]}>
         {superTitle && (
@@ -76,7 +84,7 @@ class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
     );
   };
 
-  public keyExtractor = (item: any, index: number): string => item.id;
+  public keyExtractor = (item: IPropertyTypes, index: number): string | number => item.id;
 }
 
 export default ItemGroup;

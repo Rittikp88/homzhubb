@@ -33,7 +33,7 @@ const getOnBoardingFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-export type OnBoardingPayloadTypes = string | IOnboardingData[];
+export type OnBoardingPayloadTypes = string | IOnboardingData[] | undefined;
 export const OnBoardingActions = {
   getOnBoardingDetail,
   getOnBoardingSuccess,

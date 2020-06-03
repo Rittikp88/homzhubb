@@ -19,7 +19,7 @@ const getPropertyDetails = (): IFluxStandardAction => {
   };
 };
 
-const getPropertyDetailsSuccess = (data: IPropertyDetailsData): IFluxStandardAction<IPropertyDetailsData> => {
+const getPropertyDetailsSuccess = (data: any): IFluxStandardAction<IPropertyDetailsData[]> => {
   return {
     type: PropertyActionTypes.GET.PROPERTY_DETAILS_SUCCESS,
     payload: data,
@@ -33,7 +33,7 @@ const getPropertyDetailsFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-export type PropertyPayloadTypes = string | IPropertyDetailsData[];
+export type PropertyPayloadTypes = string | IPropertyDetailsData[] | undefined;
 export const PropertyActions = {
   getPropertyDetails,
   getPropertyDetailsSuccess,

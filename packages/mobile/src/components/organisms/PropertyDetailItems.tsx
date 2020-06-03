@@ -13,8 +13,8 @@ interface IPropertyDetailsItemsProps {
   data: IPropertyDetailsData[];
   propertyGroupSelectedIndex: number;
   propertyGroupTypeSelectedIndex: number;
-  onPropertyGroupChange: (index: string | number) => void;
-  onPropertyGroupTypeChange: (index: string | number) => void;
+  onPropertyGroupChange: (item: IPropertyTypes | IPropertyDetailsData, index: string | number) => void;
+  onPropertyGroupTypeChange: (item: IPropertyTypes, index: string | number) => void;
 }
 
 type Props = IPropertyDetailsItemsProps & WithTranslation;
@@ -125,14 +125,14 @@ class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsIt
     );
   };
 
-  public onPropertyGroupSelect = (index: string | number): void => {
+  public onPropertyGroupSelect = (item: IPropertyTypes | IPropertyDetailsData, index: string | number): void => {
     const { onPropertyGroupChange } = this.props;
-    onPropertyGroupChange(index);
+    onPropertyGroupChange(item, index);
   };
 
-  public onPropertyGroupTypeSelect = (index: string | number): void => {
+  public onPropertyGroupTypeSelect = (item: IPropertyTypes, index: string | number): void => {
     const { onPropertyGroupTypeChange } = this.props;
-    onPropertyGroupTypeChange(index);
+    onPropertyGroupTypeChange(item, index);
   };
 
   private onSubmit = (formProps: any): void => {};

@@ -129,7 +129,7 @@ exports[`Button should render with icon 1`] = `
   </Label>
   <Icon
     allowFontScaling={false}
-    name="cross"
+    name="search"
     size={12}
   />
 </ForwardRef>

@@ -7,7 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
-import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { Button, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
@@ -27,10 +27,23 @@ interface IStateProps {
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyDetailsScreen>;
 type Props = IDispatchProps & IStateProps & libraryProps;
 
+interface ISpaceAvailable {
+  bedroom?: number;
+  bathroom?: number;
+  balcony?: number;
+  floorNumber?: number;
+  totalFloors?: number;
+  carpetArea?: number;
+  areaUnit?: string;
+}
+
 interface IPropertyDetailsState {
   propertyGroupSelectedIndex: string | number;
   propertyGroupTypeSelectedIndex: string | number;
   isSelected: boolean;
+  propertyGroup: IPropertyTypes | IPropertyDetailsData | null;
+  propertyGroupType: IPropertyTypes | null;
+  spaceAvailable: ISpaceAvailable;
 }
 
 class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> {
@@ -38,6 +51,17 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
     propertyGroupSelectedIndex: 0,
     propertyGroupTypeSelectedIndex: 0,
     isSelected: false,
+    propertyGroup: null,
+    propertyGroupType: null,
+    spaceAvailable: {
+      bedroom: 0,
+      bathroom: 0,
+      balcony: 0,
+      floorNumber: 0,
+      totalFloors: 0,
+      carpetArea: 0,
+      areaUnit: '',
+    },
   };
 
   public componentDidMount(): void {
@@ -93,21 +117,24 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
 
   public onNavigateToMaps = (): void => {};
 
-  public onPropertyGroupChange = (index: string | number): void => {
+  public onPropertyGroupChange = (item: IPropertyTypes | IPropertyDetailsData, index: string | number): void => {
     this.setState({
       propertyGroupSelectedIndex: index,
       propertyGroupTypeSelectedIndex: 0,
+      propertyGroup: item,
     });
   };
 
-  public onPropertyGroupTypeChange = (index: string | number): void => {
+  public onPropertyGroupTypeChange = (item: IPropertyTypes, index: string | number): void => {
     this.setState({
       propertyGroupTypeSelectedIndex: index,
+      propertyGroupType: item,
     });
   };
 
   private onSubmit = (): void => {
-    // Add logic
+    const { propertyGroup, propertyGroupType, spaceAvailable } = this.state;
+    console.log(propertyGroup, propertyGroupType, spaceAvailable);
   };
 
   public handleIconPress = (): void => {
