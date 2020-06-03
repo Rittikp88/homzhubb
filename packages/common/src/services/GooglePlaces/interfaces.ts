@@ -70,6 +70,7 @@ export interface Point {
 
 interface Geometry {
   location: Point;
+  location_type: string;
   viewport: {
     northeast: Point;
     southwest: Point;

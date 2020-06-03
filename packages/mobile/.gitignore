@@ -66,3 +66,4 @@ Podfile.lock
 
 # Sonar
 .scannerwork
+/ios/homzhub.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings

@@ -75,7 +75,14 @@
     "autoDetect": "Auto-Detect Current Location",
     "congratsUser": "Congratulations {{name}}",
     "propertyAddedMsg": "Your Property is added to your Dashboard",
-    "serviceNeed": "What service do you need today?"
+    "serviceNeed": "What service do you need today?",
+    "projectName": "Enter project Name",
+    "unitNo": "Unit No.",
+    "blockNo": "Block No.",
+    "saveLocation": "Save Location",
+    "setLocation": "Set Location",
+    "projectName": "Project Name",
+    "locationDetails": "Location Details"
   },
   "propertyDetails": {
     "headerTitle": "Details",

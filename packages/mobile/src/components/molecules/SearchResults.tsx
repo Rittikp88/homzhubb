@@ -19,6 +19,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
         data={results}
         renderItem={this.renderSearchResult}
         ListHeaderComponent={this.renderListHeader}
+        contentContainerStyle={styles.contentContainer}
       />
     );
   };
@@ -32,7 +33,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
     );
   };
 
-  private renderSearchResult = ({ item, index }: { item: GooglePlaceData; index: number }): React.ReactElement => {
+  private renderSearchResult = ({ item }: { item: GooglePlaceData }): React.ReactElement => {
     const { onResultPress } = this.props;
 
     const onPress = (): void => {
@@ -41,7 +42,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
 
     return (
       <TouchableOpacity style={styles.listItemContainer} onPress={onPress}>
-        <Label type="large" style={styles.listItemTitle}>
+        <Label type="large" style={styles.listItemTitle} numberOfLines={2}>
           {item.description}
         </Label>
       </TouchableOpacity>
@@ -50,19 +51,24 @@ class SearchResults extends React.PureComponent<IProps, {}> {
 }
 
 const styles = StyleSheet.create({
-  listItemContainer: {
+  contentContainer: {
     backgroundColor: theme.colors.secondaryColor,
+  },
+  listItemContainer: {
+    marginStart: 16,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.darkTint10,
   },
   listTitle: {
+    backgroundColor: theme.colors.background,
     color: theme.colors.darkTint4,
-    marginTop: 20,
-    marginStart: 16,
-    marginBottom: 6,
+    paddingTop: 20,
+    paddingStart: 16,
+    paddingBottom: 6,
   },
   listItemTitle: {
-    margin: 16,
+    marginVertical: 16,
+    marginEnd: 16,
   },
 });
 

@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { GooglePlaceData, GooglePlaceDetail, Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import {
+  GoogleGeocodeData,
+  GooglePlaceData,
+  GooglePlaceDetail,
+  Point,
+} from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 const ENDPOINTS = {
   autoComplete: (): string => 'place/autocomplete/json',
@@ -42,7 +47,7 @@ class GooglePlacesService {
     return response.data.result;
   };
 
-  public getLocationData = async (point: Point): Promise<void> => {
+  public getLocationData = async (point: Point): Promise<GoogleGeocodeData> => {
     const response = await this.axiosInstance.get(ENDPOINTS.getLocationData(), {
       params: {
         key: this.apiKey,
@@ -51,6 +56,16 @@ class GooglePlacesService {
     });
 
     this.checkError(response.data);
+
+    return response.data.results[0];
+  };
+
+  public getSplitAddress = (address: string): { primaryAddress: string; secondaryAddress: string } => {
+    const secondIndex = address.indexOf(',', address.indexOf(',') + 1);
+    return {
+      primaryAddress: address.substr(0, secondIndex),
+      secondaryAddress: address.substr(secondIndex + 1).trimStart(),
+    };
   };
 
   private checkError = (object: Record<string, any>): void => {

@@ -32,7 +32,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
     const {
       route: { params },
     } = props;
-    const { initialLatitude, initialLongitude } = params;
+    const { initialLatitude, initialLongitude, primaryTitle, secondaryTitle } = params;
     this.state = {
       markerLatLng: {
         latitude: initialLatitude,
@@ -40,7 +40,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
       },
       isVisible: false,
       location: {
-        projectName: '',
+        projectName: `${primaryTitle}, ${secondaryTitle}`,
         unitNo: 0,
         blockNo: '',
       },
@@ -49,6 +49,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
 
   public render(): React.ReactNode {
     const { markerLatLng } = this.state;
+    const { t } = this.props;
 
     return (
       <View style={styles.container}>
@@ -67,7 +68,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
         <WithShadowView outerViewStyle={styles.shadowView}>
           <Button
             type="primary"
-            title="Set Location"
+            title={t('setLocation')}
             containerStyle={styles.buttonStyle}
             onPress={this.onPressSetLocation}
           />
@@ -110,34 +111,37 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
 
   private renderBottomSheet = (): React.ReactElement => {
     const { isVisible, location } = this.state;
+    const { t } = this.props;
     const formData = { ...location };
     return (
-      <BottomSheet visible={isVisible} onCloseSheet={this.onClose} headerTitle="Dummy title" sheetHeight={400}>
+      <BottomSheet visible={isVisible} onCloseSheet={this.onClose} headerTitle={t('locationDetails')} sheetHeight={400}>
         <Formik initialValues={formData} onSubmit={this.onSaveLocation}>
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
             return (
               <>
                 <View style={styles.fieldsView}>
                   <FormTextInput
+                    autoFocus
                     name="projectName"
-                    label="Project Name"
+                    label={t('projectName')}
                     inputType="default"
-                    placeholder="Enter project Name"
+                    maxLength={100}
+                    placeholder={t('projectName')}
                     formProps={formProps}
                   />
                   <View style={styles.contentView}>
                     <View style={styles.subContentView}>
-                      <FormTextInput name="unitNo" label="Unit No." inputType="number" formProps={formProps} />
+                      <FormTextInput name="unitNo" label={t('unitNo')} inputType="number" formProps={formProps} />
                     </View>
                     <View style={styles.flexOne}>
-                      <FormTextInput name="blockNo" label="Block No." inputType="default" formProps={formProps} />
+                      <FormTextInput name="blockNo" label={t('blockNo')} inputType="default" formProps={formProps} />
                     </View>
                   </View>
                 </View>
                 <WithShadowView outerViewStyle={styles.shadowView}>
                   <FormButton
                     type="primary"
-                    title="Save Location"
+                    title={t('saveLocation')}
                     containerStyle={styles.buttonStyle}
                     // @ts-ignore
                     onPress={formProps.handleSubmit}
@@ -170,10 +174,28 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
 
   private onMarkerDragEnd = (event: MapEvent): void => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
+    const {
+      navigation: { setParams },
+    } = this.props;
+
     GooglePlacesService.getLocationData({ lng: longitude, lat: latitude })
       .then((locData) => {
+        const { formatted_address } = locData;
+        const { location } = this.state;
+        const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
+        setParams({
+          primaryTitle: primaryAddress,
+          secondaryTitle: secondaryAddress,
+        });
         this.setState({
-          markerLatLng: event.nativeEvent.coordinate,
+          location: {
+            ...location,
+            projectName: formatted_address,
+          },
+          markerLatLng: {
+            longitude,
+            latitude,
+          },
         });
       })
       .catch((e: Error): void => {

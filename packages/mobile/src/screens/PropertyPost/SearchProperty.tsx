@@ -109,14 +109,17 @@ class SearchProperty extends React.PureComponent<Props, IState> {
     } = data;
 
     GooglePlacesService.getLocationData({ lng: longitude, lat: latitude })
-      .then((locData) => {})
+      .then((locData) => {
+        const { formatted_address } = locData;
+        const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
+        this.navigateToMapView({
+          initialLatitude: latitude,
+          initialLongitude: longitude,
+          primaryTitle: primaryAddress,
+          secondaryTitle: secondaryAddress,
+        });
+      })
       .catch(this.displayError);
-    this.navigateToMapView({
-      initialLatitude: latitude,
-      initialLongitude: longitude,
-      primaryTitle: '',
-      secondaryTitle: '',
-    });
   };
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
