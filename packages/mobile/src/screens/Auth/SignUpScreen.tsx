@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -9,7 +8,6 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserService } from '@homzhub/common/src/services/UserService';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { AnimatedHeader, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

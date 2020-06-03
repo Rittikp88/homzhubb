@@ -1,12 +1,11 @@
 import { IPropertyState } from '@homzhub/common/src/modules/property/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActionTypes, PropertyPayloadTypes } from '@homzhub/common/src/modules/property/actions';
-import { PropertyAssetGroupData, ResidentialPropertyTypeData } from '@homzhub/common/src/mocks/PropertyDetails';
+import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 
 export const initialPropertyState: IPropertyState = {
   propertyDetails: {
-    propertyGroup: [],
-    propertyGroupSpaceAvailable: [],
+    propertyGroup: null,
   },
   error: {
     property: '',
@@ -30,34 +29,13 @@ export const propertyReducer = (
     case PropertyActionTypes.GET.PROPERTY_DETAILS_SUCCESS:
       return {
         ...state,
-        ['propertyDetails']: { ...state.propertyDetails, ['propertyGroup']: PropertyAssetGroupData }, // TODO: Add the data here once the api is ready
+        ['propertyDetails']: {
+          ...state.propertyDetails,
+          ['propertyGroup']: action.payload as IPropertyDetailsData[],
+        },
         ['loaders']: { ...state.loaders, ['property']: false },
       };
     case PropertyActionTypes.GET.PROPERTY_DETAILS_FAILURE:
-      return {
-        ...state,
-        ['loaders']: { ...state.loaders, ['property']: false },
-        ['error']: { ...state.error, ['property']: action.error as string },
-      };
-
-    case PropertyActionTypes.GET.PROPERTY_DETAILS_BY_ID:
-      // eslint-disable-next-line no-case-declarations
-      return {
-        ...state,
-        ['loaders']: { ...state.loaders, ['property']: true },
-        ['propertyDetails']: {
-          ...state.propertyDetails,
-          ['propertyGroupSpaceAvailable']: ResidentialPropertyTypeData,
-        }, // TODO: Remove once the api is ready
-        ['error']: { ...state.error, ['property']: '' },
-      };
-    case PropertyActionTypes.GET.PROPERTY_DETAILS_BY_ID_SUCCESS:
-      return {
-        ...state,
-        // ['propertyDetails']: { ...state.propertyDetails, ['propertyGroup']: PropertyAssetGroupData }, // TODO: Add the data here once the api is ready
-        ['loaders']: { ...state.loaders, ['property']: false },
-      };
-    case PropertyActionTypes.GET.PROPERTY_DETAILS_BY_ID_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['property']: false },

@@ -1,9 +1,9 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
+import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 
 const ENDPOINTS = {
-  allDetail: (): string => 'https://jsonplaceholder.typicode.com/todos/1', // TODO: change the url once the api is ready
-  getDetailsById: (id: string | number): string => 'https://jsonplaceholder.typicode.com/todos/1',
+  getPropertyDetails: (): string => 'asset-groups/',
 };
 
 class PropertyRepository {
@@ -13,12 +13,8 @@ class PropertyRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getDetails = async (): Promise<void> => {
-    return await this.apiClient.get(ENDPOINTS.allDetail());
-  };
-
-  public getDetailsById = async (payload: any): Promise<void> => {
-    return await this.apiClient.get(ENDPOINTS.getDetailsById(payload));
+  public getDetails = async (): Promise<IPropertyDetailsData[]> => {
+    return await this.apiClient.get(ENDPOINTS.getPropertyDetails());
   };
 }
 

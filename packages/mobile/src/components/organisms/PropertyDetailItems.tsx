@@ -5,12 +5,12 @@ import { Formik, FormikProps, FormikValues } from 'formik';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AreaUnit } from '@homzhub/common/src/mocks/AreaUnit';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 import { FormTextInput, FormDropdown, HorizontalPicker, Label, Text } from '@homzhub/common/src/components';
 import ItemGroup from '@homzhub/mobile/src/components/molecules/ItemGroup';
 
 interface IPropertyDetailsItemsProps {
-  data: any;
-  spaceAvailable: any;
+  data: IPropertyDetailsData[];
   propertyGroupSelectedIndex: number;
   propertyGroupTypeSelectedIndex: number;
   onPropertyGroupChange: (index: string | number) => void;
@@ -35,8 +35,8 @@ class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsIt
   };
 
   public render(): React.ReactNode {
-    const { t, data, spaceAvailable, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
-    if (!data || !spaceAvailable) {
+    const { t, data, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
+    if (!data) {
       return null;
     }
     return (
@@ -50,16 +50,13 @@ class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsIt
           superTitle={t('propertyDetails:propertyType')}
         />
         <ItemGroup
-          data={data?.[propertyGroupSelectedIndex]?.property_types ?? []}
+          data={data?.[propertyGroupSelectedIndex]?.asset_types ?? []}
           onItemSelect={this.onPropertyGroupTypeSelect}
           textStyle={styles.textColor}
           selectedIndex={propertyGroupTypeSelectedIndex}
           textType="label"
         />
         <View style={styles.propertyContainer}>
-          <Text type="regular" textType="semiBold" style={styles.typeProperty}>
-            {t('propertyDetails:spaceAvailable')}
-          </Text>
           {this.renderSpaceAvailable()}
           {this.renderCarpetArea()}
         </View>
@@ -68,12 +65,12 @@ class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsIt
   }
 
   public renderSpaceAvailable = (): React.ReactNode => {
-    const { spaceAvailable } = this.props;
-    if (!spaceAvailable) {
+    const { t, data, propertyGroupSelectedIndex } = this.props;
+    if (!data) {
       return null;
     }
     const spaceAvailableElements: Array<React.ReactNode> = [];
-    spaceAvailable.forEach((space: any, index: number) => {
+    data?.[propertyGroupSelectedIndex]?.asset_types.forEach((space: IPropertyTypes, index: number) => {
       return spaceAvailableElements.push(
         <View style={styles.picker} key={index}>
           <Label type="large" textType="regular" style={styles.label}>
@@ -83,7 +80,14 @@ class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsIt
         </View>
       );
     });
-    return spaceAvailableElements;
+    return (
+      <>
+        <Text type="regular" textType="semiBold" style={styles.typeProperty}>
+          {t('propertyDetails:spaceAvailable')}
+        </Text>
+        {spaceAvailableElements}
+      </>
+    );
   };
 
   public renderCarpetArea = (): React.ReactNode => {

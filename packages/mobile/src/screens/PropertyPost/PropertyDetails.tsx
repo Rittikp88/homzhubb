@@ -7,6 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
+import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { Button, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
@@ -17,12 +18,10 @@ import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 interface IDispatchProps {
   getPropertyDetails: () => void;
-  getPropertyDetailsById: (id: string | number) => void;
 }
 
 interface IStateProps {
-  property: any;
-  spaceAvailable: any;
+  property: IPropertyDetailsData[] | null;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyDetailsScreen>;
@@ -42,17 +41,14 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
   };
 
   public componentDidMount(): void {
-    const { getPropertyDetails, getPropertyDetailsById } = this.props;
-    const { propertyGroupSelectedIndex } = this.state;
+    const { getPropertyDetails } = this.props;
     getPropertyDetails();
-    // TODO: Move this to saga in get property details once the api is ready
-    getPropertyDetailsById(propertyGroupSelectedIndex);
   }
 
   public render(): React.ReactNode {
-    const { property, spaceAvailable, t } = this.props;
+    const { property, t } = this.props;
     const { propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex, isSelected } = this.state;
-    if (!property || !spaceAvailable) {
+    if (!property) {
       return null;
     }
     return (
@@ -78,7 +74,6 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
             data={property}
             propertyGroupSelectedIndex={propertyGroupSelectedIndex}
             propertyGroupTypeSelectedIndex={propertyGroupTypeSelectedIndex}
-            spaceAvailable={spaceAvailable ?? []}
             onPropertyGroupChange={this.onPropertyGroupChange}
             onPropertyGroupTypeChange={this.onPropertyGroupTypeChange}
           />
@@ -99,12 +94,10 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
   public onNavigateToMaps = (): void => {};
 
   public onPropertyGroupChange = (index: string | number): void => {
-    const { getPropertyDetailsById } = this.props;
     this.setState({
       propertyGroupSelectedIndex: index,
       propertyGroupTypeSelectedIndex: 0,
     });
-    getPropertyDetailsById(index);
   };
 
   public onPropertyGroupTypeChange = (index: string | number): void => {
@@ -126,16 +119,14 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     property: PropertySelector.getPropertyDetails(state),
-    spaceAvailable: PropertySelector.getPropertySpaceAvailable(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getPropertyDetails, getPropertyDetailsById } = PropertyActions;
+  const { getPropertyDetails } = PropertyActions;
   return bindActionCreators(
     {
       getPropertyDetails,
-      getPropertyDetailsById,
     },
     dispatch
   );

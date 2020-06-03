@@ -27,6 +27,7 @@ const tintColors = {
   darkTint7: '#99A4AF',
   darkTint9: '#CCD1D7',
   darkTint10: '#E5E8EB',
+  darkTint11: '#9A99A2',
 };
 
 // Theme based color scheme

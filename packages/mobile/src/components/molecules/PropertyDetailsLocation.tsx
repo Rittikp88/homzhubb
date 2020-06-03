@@ -22,7 +22,7 @@ const PropertyDetailsLocation = (props: Props): React.ReactElement => {
   return (
     <View style={styles.locationContainer}>
       <View style={styles.icon}>
-        <Icon name="location" size={30} color={theme.colors.warning} />
+        <Icon name="location" size={30} color={theme.colors.shadow} />
       </View>
       <View style={styles.address}>
         <Label type="large" textType="semiBold">
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: 'row',
     flex: 1,
-    backgroundColor: theme.colors.white,
     margin: theme.layout.screenPadding,
   },
   icon: {
@@ -56,12 +55,16 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkTint5,
     opacity: 0.1,
     marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   navigation: {
     flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   address: {
-    flex: 5,
+    flex: 3,
   },
   addressPadding: {
     paddingTop: 10,

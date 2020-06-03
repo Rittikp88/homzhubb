@@ -1,6 +1,7 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 
-const getPropertyDetails = (state: IState): any => {
+const getPropertyDetails = (state: IState): IPropertyDetailsData[] | null => {
   const {
     property: {
       propertyDetails: { propertyGroup },
@@ -9,16 +10,6 @@ const getPropertyDetails = (state: IState): any => {
   return propertyGroup;
 };
 
-const getPropertySpaceAvailable = (state: IState): any => {
-  const {
-    property: {
-      propertyDetails: { propertyGroupSpaceAvailable },
-    },
-  } = state;
-  return propertyGroupSpaceAvailable ?? [];
-};
-
 export const PropertySelector = {
   getPropertyDetails,
-  getPropertySpaceAvailable,
 };

@@ -1,5 +1,6 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import { AnimatedHeader } from '@homzhub/common/src/components';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
@@ -11,7 +12,7 @@ describe('Test cases for Header', () => {
       onIconPress: jest.fn(),
     };
 
-    const tree = renderer.create(<AnimatedHeader {...props} />).toJSON();
-    expect(tree).toMatchSnapshot();
+    const tree = shallow(<AnimatedHeader {...props} />);
+    expect(toJson(tree)).toMatchSnapshot();
   });
 });

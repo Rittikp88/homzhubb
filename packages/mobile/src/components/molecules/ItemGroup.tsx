@@ -19,11 +19,18 @@ interface IStateProps {
 
 const { width, height } = theme.viewport;
 const SCREEN_WIDTH = width < height ? width : height;
-const isSmallDevice = SCREEN_WIDTH <= 414;
+let columns = 1;
+if (SCREEN_WIDTH <= 393) {
+  columns = 1;
+} else if (SCREEN_WIDTH > 393 && SCREEN_WIDTH <= 414) {
+  columns = 2;
+} else {
+  columns = 3;
+}
 
 class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
   public state = {
-    numOfColumns: isSmallDevice ? 2 : 3,
+    numOfColumns: columns,
   };
 
   public render(): React.ReactElement {
@@ -77,8 +84,10 @@ export default ItemGroup;
 const styles = StyleSheet.create({
   container: {
     flex: 0,
+    flexGrow: 1,
     flexDirection: 'row',
     marginTop: 15,
+    maxWidth: SCREEN_WIDTH,
   },
 });
 

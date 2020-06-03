@@ -5,6 +5,7 @@ jest.mock('config.json', () => ({
   PLACES_API_BASE_URL: 'https://testbaseurl.com',
   PLACES_API_KEY: 'test',
   OTP_LENGTH: 6,
+  storage_secret: 'secret',
 }));
 
 describe('Config Helper', () => {
@@ -26,5 +27,10 @@ describe('Config Helper', () => {
   it('should return places API key', () => {
     const placesAPIKey = ConfigHelper.getPlacesApiKey();
     expect(placesAPIKey).toStrictEqual('test');
+  });
+
+  it('should return storage secret key', () => {
+    const storageSecretKey = ConfigHelper.getStorageSecret();
+    expect(storageSecretKey).toStrictEqual('secret');
   });
 });

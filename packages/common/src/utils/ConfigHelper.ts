@@ -8,6 +8,8 @@ class ConfigHelper {
   public getOtpLength = (): number => config.OTP_LENGTH;
 
   public getPlacesApiKey = (): string => config.PLACES_API_KEY;
+
+  public getStorageSecret = (): string => config.storage_secret;
 }
 
 const configHelper = new ConfigHelper();

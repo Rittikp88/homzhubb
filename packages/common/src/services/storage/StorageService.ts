@@ -1,3 +1,4 @@
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -9,8 +10,7 @@ export enum StorageKeys {
 }
 
 class StorageService {
-  // TODO (Rishabh 31-May-2020): Move this secret out
-  private secret = 'secret';
+  private secret: string = ConfigHelper.getStorageSecret();
 
   public get = async <T>(key: string): Promise<T | null> => {
     const value: string | null = await Storage.getItem(key);

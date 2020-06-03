@@ -103,6 +103,6 @@ const createConditionalStyles = (opacity: number, isSelected: boolean): any => (
     width: 50,
   },
   itemStyle: {
-    color: isSelected ? theme.colors.primaryColor : theme.colors.darkTint10,
+    color: isSelected ? theme.colors.primaryColor : theme.colors.darkTint11,
   },
 });

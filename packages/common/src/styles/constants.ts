@@ -1,6 +1,5 @@
 // Add commonly used style based strings here to avoid duplication
 import { StyleSheet } from 'react-native';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { colors } from '@homzhub/common/src/styles/colors';
 
 export const styleConstants = {

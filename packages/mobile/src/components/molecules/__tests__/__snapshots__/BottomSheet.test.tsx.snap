@@ -7,7 +7,14 @@ exports[`BottomSheet should render snapshot 1`] = `
   closeOnDragDown={true}
   closeOnPressBack={true}
   closeOnPressMask={true}
-  customStyles={Object {}}
+  customStyles={
+    Object {
+      "container": Object {
+        "borderTopLeftRadius": 10,
+        "borderTopRightRadius": 10,
+      },
+    }
+  }
   dragFromTopOnly={true}
   height={260}
   keyboardAvoidingViewEnabled={true}
@@ -21,13 +28,40 @@ exports[`BottomSheet should render snapshot 1`] = `
       Array [
         Object {
           "flex": 1,
-          "marginHorizontal": 26,
-          "marginVertical": 20,
+          "marginTop": 18,
         },
         undefined,
       ]
     }
   >
+    <View
+      style={
+        Object {
+          "alignContent": "center",
+          "flexDirection": "row",
+          "marginHorizontal": 24,
+          "paddingBottom": 20,
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#33495E"
+        name="close"
+        onPress={[Function]}
+        size={22}
+      />
+      <Label
+        style={
+          Object {
+            "flex": 1,
+            "textAlign": "center",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      />
+    </View>
     <Text>
       Bottom Sheet
     </Text>
@@ -42,7 +76,14 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
   closeOnDragDown={true}
   closeOnPressBack={true}
   closeOnPressMask={true}
-  customStyles={Object {}}
+  customStyles={
+    Object {
+      "container": Object {
+        "borderTopLeftRadius": 10,
+        "borderTopRightRadius": 10,
+      },
+    }
+  }
   dragFromTopOnly={true}
   height={260}
   keyboardAvoidingViewEnabled={true}
@@ -56,13 +97,40 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
       Array [
         Object {
           "flex": 1,
-          "marginHorizontal": 26,
-          "marginVertical": 20,
+          "marginTop": 18,
         },
         undefined,
       ]
     }
   >
+    <View
+      style={
+        Object {
+          "alignContent": "center",
+          "flexDirection": "row",
+          "marginHorizontal": 24,
+          "paddingBottom": 20,
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#33495E"
+        name="close"
+        onPress={[Function]}
+        size={22}
+      />
+      <Label
+        style={
+          Object {
+            "flex": 1,
+            "textAlign": "center",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      />
+    </View>
     <Text>
       Bottom Sheet
     </Text>
