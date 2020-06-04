@@ -31,6 +31,10 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>1034466930282873</string>
+	<key>FacebookDisplayName</key>
+	<string>homzhub</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -46,6 +50,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
 	<key>UIAppFonts</key>
@@ -90,11 +96,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs location access to allow user to find properties to rent</string>
-	<key>FacebookAppID</key>
-	<string>1034466930282873</string>
-	<key>FacebookDisplayName</key>
-	<string>homzhub</string>
 </dict>
 </plist>

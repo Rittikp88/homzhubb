@@ -382,6 +382,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				492E0CE2C771296BD183A6BE /* Pods */,
 				056058312F2C4850A9FB5612 /* Resources */,
+				A7EF14652488E92A00747FCE /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -493,6 +494,14 @@
 			path = "../../../node_modules/react-native-maps/lib/ios/AirGoogleMaps";
 			sourceTree = "<group>";
 		};
+		A7EF14652488E92A00747FCE /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				C9BA667FDF4442E0A1E875F9 /* icomoon.ttf */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -589,8 +598,9 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 4UWCG95258;
+						DevelopmentTeam = 9TKZH83J22;
 						LastSwiftMigration = 1120;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1058,8 +1068,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Harish Taori (KB2425WYJP)";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4UWCG95258;
+				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1124,8 +1136,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.react.poc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
 				PRODUCT_NAME = homzhub;
+				PROVISIONING_PROFILE_SPECIFIER = "Dev-homzhub";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1138,6 +1151,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Harish Taori (KB2425WYJP)";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4UWCG95258;
 				GCC_PREPROCESSOR_DEFINITIONS = (

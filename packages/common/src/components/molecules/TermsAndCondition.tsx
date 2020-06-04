@@ -15,10 +15,10 @@ export const TermsCondition = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.container, containerStyle]}>
       <Label type="regular" style={styles.text}>
-        {t('auth:signUpConfirm')}
-      </Label>
-      <Label type="regular" style={styles.inLineText}>
-        {t('termsCondition')}
+        {t('auth:signUpConfirm')}{' '}
+        <Label type="regular" style={styles.inLineText}>
+          {t('termsCondition')}
+        </Label>
       </Label>
     </View>
   );
