@@ -3,11 +3,13 @@ import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IEmailLoginPayload,
-  IOtpLoginPayload,
-  ISignUpPayload,
   IForgotPasswordPayload,
-  ISocialLoginPayload,
+  IOtpLoginPayload,
+  IOtpVerify,
+  IOtpVerifyResponse,
+  ISignUpPayload,
   ISocialLogin,
+  ISocialLoginPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
@@ -15,8 +17,7 @@ const ENDPOINTS = {
   socialMedia: (): string => 'social-providers/',
   signUp: (): string => 'users/',
   login: (): string => 'users/login/',
-  fetchOtp: (): string => '',
-  verifyOtp: (): string => '',
+  otp: (): string => 'otp/verifications/',
   forgotPasswordEmail: (): string => 'users/reset-password/',
   socialLogin: (): string => 'users/social-login/',
   emailExists: (emailId: string): string => `users/emails/${emailId}`,
@@ -48,12 +49,8 @@ class UserRepository {
     };
   };
 
-  public fetchOtp = async (): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.fetchOtp());
-  };
-
-  public verifyOtp = async (): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.verifyOtp());
+  public Otp = async (requestPayload: IOtpVerify): Promise<IOtpVerifyResponse> => {
+    return await this.apiClient.post(ENDPOINTS.otp(), requestPayload);
   };
 
   public resetPassword = async (payload: IForgotPasswordPayload): Promise<void> => {

@@ -22,6 +22,7 @@
     "android": "jetify && yarn workspace @homzhub/mobile android",
     "android:clean": "cd packages/mobile/android && ./gradlew clean",
     "ios": "yarn workspace @homzhub/mobile ios",
+    "pod:install": "cd packages/mobile/ios && pod install",
     "ios:bundle": "yarn workspace @homzhub/mobile ios:bundle",
     "ios:clean": "cd packages/mobile && rm -rf ios/build",
     "build:web": "yarn workspace @homzhub/web build",

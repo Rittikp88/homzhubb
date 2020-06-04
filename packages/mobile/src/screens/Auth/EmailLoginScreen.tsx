@@ -12,6 +12,7 @@ import {
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -30,7 +31,7 @@ class EmailLoginScreen extends React.PureComponent<Props> {
     return (
       <View style={styles.container}>
         <DetailedHeader
-          icon="left-arrow"
+          icon={icons.leftArrow}
           subTitle={t('auth:logInWithEmail')}
           subTitleType="large"
           subTitleColor={theme.colors.dark}

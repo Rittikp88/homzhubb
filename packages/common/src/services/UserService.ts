@@ -1,22 +1,50 @@
 import {
-  ISignUpPayload,
   IForgotPasswordPayload,
   ISocialLoginPayload,
   ISocialLogin,
+  IOtpVerify,
+  OtpActionTypes,
+  OtpTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 
 class UserService {
-  public fetchOtp = async (): Promise<void> => {
-    await UserRepository.fetchOtp();
+  public fetchOtp = async (phone_number: string, country_code: string): Promise<void> => {
+    const requestBody: IOtpVerify = {
+      action: OtpActionTypes.SEND,
+      payload: {
+        media: [OtpTypes.PHONE],
+        destination_details: [
+          {
+            country_code,
+            phone_number,
+          },
+        ],
+      },
+    };
+
+    await UserRepository.Otp(requestBody);
   };
 
-  public verifyOtp = async (): Promise<void> => {
-    await UserRepository.verifyOtp();
-  };
+  public verifyOtp = async (otp: string, phone_number: string, country_code: string): Promise<void> => {
+    const requestBody: IOtpVerify = {
+      action: OtpActionTypes.VERIFY,
+      payload: {
+        otp,
+        media: [OtpTypes.PHONE],
+        destination_details: [
+          {
+            country_code,
+            phone_number,
+          },
+        ],
+      },
+    };
 
-  public signUpService = async (payload: ISignUpPayload): Promise<void> => {
-    return await UserRepository.signUp(payload);
+    const response = await UserRepository.Otp(requestBody);
+    if (!response.otp_verify) {
+      throw new Error();
+    }
   };
 
   public resetPassword = async (payload: IForgotPasswordPayload): Promise<any> => {

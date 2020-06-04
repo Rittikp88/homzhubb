@@ -3,17 +3,18 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserService } from '@homzhub/common/src/services/UserService';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
 import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IEmailLoginPayload, IOtpLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
   login: (payload: IEmailLoginPayload | IOtpLoginPayload) => void;
@@ -32,7 +33,7 @@ class Otp extends React.PureComponent<IProps, IState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
-    // await this.fetchOtp();
+    await this.fetchOtp();
   };
 
   public render = (): React.ReactNode => {
@@ -51,7 +52,7 @@ class Otp extends React.PureComponent<IProps, IState> {
 
     return (
       <SafeAreaView style={styles.screen}>
-        <DetailedHeader icon="left-arrow" onIconPress={goBack} headerContainerStyle={styles.headerStyle} />
+        <DetailedHeader icon={icons.leftArrow} onIconPress={goBack} headerContainerStyle={styles.headerStyle} />
         <View style={styles.container}>
           <Text type="large" textType="semiBold">
             {title}
@@ -64,7 +65,7 @@ class Otp extends React.PureComponent<IProps, IState> {
               {phone}
             </Text>
             <Icon
-              name="note-book"
+              name={icons.noteBook}
               size={16}
               color={theme.colors.active}
               style={styles.icon}
@@ -91,7 +92,7 @@ class Otp extends React.PureComponent<IProps, IState> {
     navigation.goBack();
   };
 
-  private onVerifySuccess = async (): Promise<void> => {
+  private onVerifySuccess = async (otp?: string): Promise<void> => {
     const {
       route: {
         params: { type },
@@ -103,17 +104,23 @@ class Otp extends React.PureComponent<IProps, IState> {
         await this.signUp();
         break;
       case OtpNavTypes.Login:
-        this.loginOtp();
+        this.loginOtp(otp ?? '');
         break;
-      default:
       case OtpNavTypes.SocialMedia:
+      default:
         break;
     }
   };
 
   private fetchOtp = async (): Promise<void> => {
+    const {
+      route: {
+        params: { phone, countryCode },
+      },
+    } = this.props;
+
     try {
-      await UserService.fetchOtp();
+      await UserService.fetchOtp(phone, countryCode);
     } catch (e) {
       AlertHelper.error({
         message: e.message,
@@ -122,16 +129,18 @@ class Otp extends React.PureComponent<IProps, IState> {
   };
 
   private verifyOtp = async (otp: string): Promise<void> => {
-    await this.onVerifySuccess();
-    // try {
-    //   await UserService.verifyOtp();
-    //   this.onVerifySuccess();
-    // } catch (e) {
-    //   this.toggleErrorState(true);
-    //   AlertHelper.error({
-    //     message: e.message,
-    //   });
-    // }
+    const {
+      route: {
+        params: { phone, countryCode },
+      },
+    } = this.props;
+
+    try {
+      await UserService.verifyOtp(otp, phone, countryCode);
+      await this.onVerifySuccess();
+    } catch (e) {
+      this.toggleErrorState(true);
+    }
   };
 
   private signUp = async (): Promise<void> => {
@@ -147,7 +156,7 @@ class Otp extends React.PureComponent<IProps, IState> {
     }
 
     try {
-      await UserService.signUpService(userData);
+      await UserRepository.signUp(userData);
       const loginData: IEmailLoginPayload = {
         action: LoginTypes.EMAIL,
         payload: {
@@ -161,7 +170,7 @@ class Otp extends React.PureComponent<IProps, IState> {
     }
   };
 
-  private loginOtp = (): void => {
+  private loginOtp = (otp: string): void => {
     const {
       login,
       route: {
@@ -174,7 +183,7 @@ class Otp extends React.PureComponent<IProps, IState> {
       payload: {
         country_code: countryCode,
         phone_number: phone,
-        otp: '123456',
+        otp,
       },
     };
     login(loginData);

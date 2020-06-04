@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, TextInput, TextStyle, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components';
 
 interface IProps {
@@ -34,7 +35,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
         <View style={styles.textInputContainer}>
           <Button
             type="primary"
-            icon="search"
+            icon={icons.search}
             iconSize={20}
             iconColor={theme.colors.darkTint6}
             containerStyle={[styles.iconButton, styles.searchIcon]}
@@ -50,7 +51,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
             placeholderTextColor={theme.colors.darkTint7}
             autoCorrect={false}
             numberOfLines={1}
-            returnKeyType="search"
+            returnKeyType="done"
             onChangeText={this.onChangeText}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
@@ -58,7 +59,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
           {value.length > 0 && (
             <Button
               type="primary"
-              icon="circular-cross-filled"
+              icon={icons.circularCrossFilled}
               iconSize={20}
               iconColor={theme.colors.darkTint6}
               containerStyle={styles.iconButton}

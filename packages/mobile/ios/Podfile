@@ -87,8 +87,6 @@ target 'homzhub' do
   pod 'Permission-LocationAlways', :path => "../../../node_modules/react-native-permissions/ios/LocationAlways.podspec"
   pod 'Permission-LocationWhenInUse', :path => "../../../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
 
-  pod 'RNVectorIcons', :path => '../../../node_modules/react-native-vector-icons'
-
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 

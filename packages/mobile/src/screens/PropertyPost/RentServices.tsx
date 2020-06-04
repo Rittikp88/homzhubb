@@ -8,7 +8,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
@@ -47,7 +47,7 @@ class RentServices extends Component<Props, IRentServicesState> {
       <>
         <Header
           backgroundColor={theme.colors.primaryColor}
-          icon="left-arrow"
+          icon={icons.leftArrow}
           iconColor={theme.colors.white}
           onIconPress={this.handleBackPress}
         />
@@ -101,9 +101,9 @@ class RentServices extends Component<Props, IRentServicesState> {
           </Label>
         </View>
         {isSelect ? (
-          <Icon name="circle-filled" size={18} color={theme.colors.primaryColor} onPress={handleSelectedItem} />
+          <Icon name={icons.circleFilled} size={18} color={theme.colors.primaryColor} onPress={handleSelectedItem} />
         ) : (
-          <Icon name="circle-outline" size={18} color={theme.colors.disabled} onPress={handlePress} />
+          <Icon name={icons.circleOutline} size={18} color={theme.colors.disabled} onPress={handlePress} />
         )}
       </View>
     );

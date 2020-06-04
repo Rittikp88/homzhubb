@@ -9,6 +9,7 @@ import { UserService } from '@homzhub/common/src/services/UserService';
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -62,7 +63,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
             containerStyle={styles.socialMedia}
             textType="label"
             textSize="large"
-            icon="inbox-outline"
+            icon={icons.inboxOutline}
             iconColor={theme.colors.darkTint5}
             iconSize={17}
             iconStyle={styles.iconStyle}
@@ -124,7 +125,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
         navigation.navigate(ScreensKeys.MobileVerification, {
           title: this.getTitleForVerification(provider),
           subTitle: email,
-          icon: 'left-arrow',
+          icon: icons.leftArrow,
           message: t(`auth:${messageKey}`, { givenName: name }),
           buttonTitle: isFromLogin ? t('common:login') : t('common:signUp'),
         });

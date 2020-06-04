@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, StyleProp, ViewStyle, PickerItemProps, View, ImageStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
@@ -57,7 +58,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
           textSize="small"
           title={selectedItem ? selectedItem.label : placeholder}
           titleStyle={[styles.titleText, placeholderStyle, { color: textColor }]}
-          icon="down-arrow-filled"
+          icon={icons.downArrowFilled}
           iconSize={iconSize || 16}
           iconColor={iconColor || theme.colors.disabled}
           iconStyle={[styles.iconStyle, iconStyle]}

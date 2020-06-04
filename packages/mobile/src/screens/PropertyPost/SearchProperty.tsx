@@ -8,7 +8,7 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
@@ -39,7 +39,7 @@ class SearchProperty extends React.PureComponent<Props, IState> {
     return (
       <View style={styles.container}>
         <Header
-          icon="left-arrow"
+          icon={icons.leftArrow}
           iconColor={theme.colors.white}
           onIconPress={this.onBackPress}
           isHeadingVisible
@@ -60,7 +60,7 @@ class SearchProperty extends React.PureComponent<Props, IState> {
         )}
         {showAutoDetect && searchString.length <= 0 && (
           <TouchableOpacity onPress={this.onAutoDetectPress} style={styles.autoDetectTextContainer}>
-            <Icon name="location" size={16} color={theme.colors.primaryColor} />
+            <Icon name={icons.location} size={16} color={theme.colors.primaryColor} />
             <Label type="large" textType="semiBold" style={styles.autoDetectText}>
               {t('autoDetect')}
             </Label>

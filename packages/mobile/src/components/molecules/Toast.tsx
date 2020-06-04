@@ -3,9 +3,9 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { StyleProp, StyleSheet, TouchableHighlight, View, ViewStyle } from 'react-native';
 import { MessageComponentProps } from 'react-native-flash-message';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import Icon from '@homzhub/common/src/assets/icon';
-import { Label } from '@homzhub/common/src/components';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Label } from '@homzhub/common/src/components';
 
 type IProps = MessageComponentProps & WithTranslation;
 class Toast extends React.PureComponent<IProps> {
@@ -14,7 +14,7 @@ class Toast extends React.PureComponent<IProps> {
       t,
       message: { message, type },
     } = this.props;
-    const icon = type === 'danger' ? 'circular-cross-filled' : 'circular-check-filled';
+    const icon = type === 'danger' ? icons.circularCrossFilled : icons.circularCheckFilled;
 
     return (
       <View style={this.getContainerStyle()}>

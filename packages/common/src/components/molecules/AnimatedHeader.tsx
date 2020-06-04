@@ -4,7 +4,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, TextSizeType, WithShadowView, DetailedHeader } from '@homzhub/common/src/components';
 
 interface IHeaderProps {
@@ -43,7 +43,7 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
   const fixedHeader = (): React.ReactElement => {
     return (
       <View key="fixed-header" style={styles.fixedSection}>
-        <Icon name="close" size={22} color={theme.colors.darkTint4} onPress={onIconPress} />
+        <Icon name={icons.close} size={22} color={theme.colors.darkTint4} onPress={onIconPress} />
       </View>
     );
   };

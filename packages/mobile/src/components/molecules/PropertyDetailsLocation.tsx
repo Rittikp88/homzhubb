@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components';
 
 interface IProps {
@@ -22,7 +22,7 @@ const PropertyDetailsLocation = (props: Props): React.ReactElement => {
   return (
     <View style={styles.locationContainer}>
       <View style={styles.icon}>
-        <Icon name="location" size={30} color={theme.colors.shadow} />
+        <Icon name={icons.location} size={30} color={theme.colors.shadow} />
       </View>
       <View style={styles.address}>
         <Label type="large" textType="semiBold">

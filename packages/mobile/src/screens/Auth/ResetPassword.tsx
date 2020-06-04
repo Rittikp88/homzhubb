@@ -7,6 +7,7 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { FormButton, FormTextInput, DetailedHeader } from '@homzhub/common/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -28,7 +29,7 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
     return (
       <View style={styles.container}>
         <DetailedHeader
-          icon="close"
+          icon={icons.close}
           subTitle={t('auth:resetPassword')}
           subTitleType="large"
           subTitleColor={theme.colors.dark}

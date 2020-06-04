@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Divider from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 
@@ -21,7 +21,7 @@ export const ListItem = (props: IListItemProps): React.ReactElement => {
         <Text type="small" style={styles.item}>
           {listItem.label}
         </Text>
-        {isCheck && <Icon name="check" size={16} color={theme.colors.primaryColor} />}
+        {isCheck && <Icon name={icons.check} size={16} color={theme.colors.primaryColor} />}
       </TouchableOpacity>
       <Divider />
     </View>

@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
@@ -79,7 +80,7 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
       <View style={styles.container}>
         <Header
           backgroundColor={theme.colors.primaryColor}
-          icon="left-arrow"
+          icon={icons.leftArrow}
           iconColor="white"
           onIconPress={this.handleIconPress}
           isHeadingVisible

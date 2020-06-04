@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, WithShadowView } from '@homzhub/common/src/components';
 
@@ -37,7 +37,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
   const header = (): React.ReactElement => {
     return (
       <View style={styles.bottomSheetHeader}>
-        <Icon name="close" size={22} color={theme.colors.darkTint3} onPress={onCloseBottomSheet} />
+        <Icon name={icons.close} size={22} color={theme.colors.darkTint3} onPress={onCloseBottomSheet} />
         <Label type="large" textType="semiBold" style={styles.headerTitle}>
           {headerTitle}
         </Label>

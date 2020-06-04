@@ -28,9 +28,9 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
 
   public componentDidMount = async (): Promise<void> => {
     this.OtpTextInput[0].setNativeProps({ style: styles.active });
-    this.isSMSListenerEnabled = await RNOtpVerify.getOtp();
 
     if (this.isSMSListenerEnabled) {
+      this.isSMSListenerEnabled = await RNOtpVerify.getOtp();
       RNOtpVerify.addListener(this.otpHandler);
     }
   };

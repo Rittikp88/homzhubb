@@ -7,6 +7,7 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, FormButton, FormTextInput, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
@@ -87,7 +88,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
     return (
       <>
         <Header
-          icon="left-arrow"
+          icon={icons.leftArrow}
           iconColor={theme.colors.white}
           onIconPress={this.onBackPress}
           isHeadingVisible

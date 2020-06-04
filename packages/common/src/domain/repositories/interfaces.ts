@@ -6,6 +6,16 @@ export enum LoginTypes {
   SOCIAL_MEDIA = 'SOCIAL_LOGIN',
 }
 
+export enum OtpActionTypes {
+  SEND = 'SEND_OTP',
+  VERIFY = 'VERIFY_OTP',
+}
+
+export enum OtpTypes {
+  PHONE = 'PHONE',
+  EMAIL = 'EMAIL',
+}
+
 export interface ISignUpPayload {
   full_name: string;
   email: string;
@@ -58,6 +68,29 @@ export interface IForgotPasswordPayload {
     token?: string | number;
     password?: string;
   };
+}
+
+interface IOtpPhoneVerifyPayload {
+  country_code: string;
+  phone_number: string;
+}
+
+interface IOtpEmailVerifyPayload {
+  email: string;
+}
+
+export interface IOtpVerify {
+  action: OtpActionTypes;
+  payload: {
+    otp?: string;
+    media: [OtpTypes];
+    destination_details: [IOtpPhoneVerifyPayload | IOtpEmailVerifyPayload];
+  };
+}
+
+export interface IOtpVerifyResponse {
+  otp_verify?: boolean;
+  otp_sent?: boolean;
 }
 
 export interface IUserPayload {

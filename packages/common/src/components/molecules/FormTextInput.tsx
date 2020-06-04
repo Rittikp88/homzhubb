@@ -12,7 +12,7 @@ import {
 import { FormikErrors, FormikProps, FormikValues } from 'formik';
 import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
@@ -120,7 +120,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
             type="secondary"
             onPress={this.toggleShowPassword}
             containerStyle={styles.passwordButton}
-            icon={showPassword ? 'eye-open' : 'eye-close'}
+            icon={showPassword ? icons.eyeOpen : icons.eyeClosed}
             iconColor={showPassword ? theme.colors.primaryColor : theme.colors.disabled}
             iconSize={20}
             iconStyle={styles.passwordIcon}
@@ -139,7 +139,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
                 {inputPrefixText}
               </Label>
               <Icon
-                name="down-arrow-filled"
+                name={icons.downArrowFilled}
                 color={theme.colors.darkTint7}
                 size={12}
                 style={styles.iconStyle}
