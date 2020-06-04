@@ -5,9 +5,12 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { CommonService } from '@homzhub/common/src/services/CommonService';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -25,6 +28,7 @@ interface ISignUpFormState {
   };
   countryCode: string;
   isBottomSheetVisible: boolean;
+  countryCodeData: IDropdownOption[];
 }
 
 class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
@@ -42,11 +46,12 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
     },
     countryCode: '+91',
     isBottomSheetVisible: false,
+    countryCodeData: [],
   };
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { user, countryCode, isBottomSheetVisible } = this.state;
+    const { user, countryCode, isBottomSheetVisible, countryCodeData } = this.state;
     const formData = { ...user };
 
     return (
@@ -121,6 +126,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
           }}
         </Formik>
         <BottomSheetListView
+          data={countryCodeData}
           selectedValue={countryCode}
           listTitle={t('auth:countryRegion')}
           isBottomSheetVisible={isBottomSheetVisible}
@@ -141,6 +147,13 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
 
   private handleDropdown = (): void => {
     const { isBottomSheetVisible } = this.state;
+    CommonService.getCountryWithCode()
+      .then((res) => {
+        this.setState({ countryCodeData: res });
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: e.message });
+      });
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
@@ -160,11 +173,12 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
 
   public handleSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
     const { onSubmitFormSuccess } = this.props;
+    const { countryCode } = this.state;
     formActions.setSubmitting(true);
     const signUpData: ISignUpPayload = {
       full_name: values.name,
       email: values.email,
-      country_code: 'IN',
+      country_code: countryCode,
       phone_number: values.phone,
       password: values.password,
     };

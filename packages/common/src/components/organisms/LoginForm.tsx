@@ -4,12 +4,15 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { CommonService } from '@homzhub/common/src/services/CommonService';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
@@ -26,6 +29,7 @@ interface ILoginFormState {
   };
   countryCode: string;
   isBottomSheetVisible: boolean;
+  countryCodeData: IDropdownOption[];
 }
 
 class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
@@ -44,12 +48,13 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
       },
       countryCode: '+91',
       isBottomSheetVisible: false,
+      countryCodeData: [],
     };
   }
 
   public render(): React.ReactNode {
     const { t, handleForgotPassword } = this.props;
-    const { user, countryCode, isBottomSheetVisible } = this.state;
+    const { user, countryCode, isBottomSheetVisible, countryCodeData } = this.state;
     const formData = { ...user };
     return (
       <View style={styles.container}>
@@ -79,6 +84,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
           )}
         </Formik>
         <BottomSheetListView
+          data={countryCodeData}
           selectedValue={countryCode}
           listTitle={t('auth:countryRegion')}
           isBottomSheetVisible={isBottomSheetVisible}
@@ -152,16 +158,24 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
 
   private handleDropdown = (): void => {
     const { isBottomSheetVisible } = this.state;
+    CommonService.getCountryWithCode()
+      .then((res) => {
+        this.setState({ countryCodeData: res });
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: e.message });
+      });
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
   public handleSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
     const { onLoginSuccess } = this.props;
+    const { countryCode } = this.state;
     formActions.setSubmitting(true);
     const loginFormDta: ILoginFormData = {
       email: values.email,
       password: values.password,
-      country_code: 'IN',
+      country_code: countryCode,
       phone_number: values.phone,
     };
 
