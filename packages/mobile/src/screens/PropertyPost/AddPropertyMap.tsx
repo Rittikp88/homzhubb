@@ -14,6 +14,8 @@ import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
+import { ICreateAssetDetails } from '@homzhub/common/src/domain/repositories/interfaces';
 
 type Props = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.AddProperty>;
 
@@ -204,9 +206,36 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
       });
   };
 
-  private onSaveLocation = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
+  private onSaveLocation = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
     formActions.setSubmitting(true);
-    // TODO: Add logic
+    const {
+      navigation: { navigate },
+      route: {
+        params: { primaryTitle, secondaryTitle },
+      },
+    } = this.props;
+    const {
+      markerLatLng: { longitude, latitude },
+    } = this.state;
+
+    try {
+      const requestBody: ICreateAssetDetails = {
+        block_number: values.blockNo,
+        unit_number: values.unitNo,
+        project_name: values.projectName,
+        latitude: latitude.toString(),
+        longitude: longitude.toString(),
+      };
+      const property = await PropertyRepository.createAsset(requestBody);
+      this.onClose();
+      navigate(ScreensKeys.PropertyDetailsScreen, {
+        propertyId: property.id,
+        primaryAddress: primaryTitle,
+        secondaryAddress: secondaryTitle,
+      });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
   };
 }
 

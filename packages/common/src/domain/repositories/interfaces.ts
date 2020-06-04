@@ -110,3 +110,16 @@ export interface IUserLogoutPayload {
   action: string;
   payload: IRefreshTokenPayload;
 }
+
+// POST PROPERTY
+export interface ICreateAssetDetails {
+  project_name: string;
+  unit_number: string;
+  block_number: string;
+  latitude: string;
+  longitude: string;
+}
+
+export interface ICreateAssetResult {
+  id: number;
+}

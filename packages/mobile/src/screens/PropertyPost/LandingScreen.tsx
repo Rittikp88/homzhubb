@@ -59,10 +59,6 @@ class LandingScreen extends React.PureComponent<Props, {}> {
                 {t('common:logout')}
               </Label>
             </Label>
-            {/* TODO: to be removed once gmaps integration is present */}
-            <Label type="small" textType="bold" style={styles.logout} onPress={this.navigateToPropertyDetails}>
-              Property Details
-            </Label>
             {/* TODO: to be removed once post property api integration is done */}
             <Label type="small" textType="bold" style={styles.logout} onPress={this.navigateToRentServices}>
               Rent Services

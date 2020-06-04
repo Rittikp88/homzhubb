@@ -81,3 +81,9 @@ export interface IAddPropertyMapProps {
   primaryTitle: string;
   secondaryTitle: string;
 }
+
+export interface IPropertyDetailScreenProps {
+  propertyId: number;
+  primaryAddress: string;
+  secondaryAddress: string;
+}
