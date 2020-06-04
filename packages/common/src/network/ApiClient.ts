@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { Interceptor } from '@homzhub/common/src/network/Interceptor';
 import ApiResponseHandler from '@homzhub/common/src/network/ApiResponseHandler';
 import { DEFAULT_API_TIMEOUT, HttpMethod } from '@homzhub/common/src/network/Constants';
 import {
@@ -25,14 +26,10 @@ const createClient = (apiClient: IApiClient): AxiosInstance => {
 
   // Add Request & Response Interceptors
   // see: https://interglobalmedia.gitbooks.io/react-notes/adding-interceptors-to-execute-code-globally.html?q=
-  const apiInterceptor = apiClient.getInterceptor();
-  if (apiInterceptor) {
-    const requestInterceptor = apiInterceptor.request(apiClient);
-    const responseInterceptor = apiInterceptor.response(apiClient);
-    axiosInstance.interceptors.request.use(requestInterceptor.onFulfilled, requestInterceptor.onRejected);
-    axiosInstance.interceptors.response.use(responseInterceptor.onFulfilled, responseInterceptor.onRejected);
-  }
-
+  const requestInterceptor = Interceptor.request();
+  const responseInterceptor = Interceptor.response();
+  axiosInstance.interceptors.request.use(requestInterceptor.onFulfilled, requestInterceptor.onRejected);
+  axiosInstance.interceptors.response.use(responseInterceptor.onFulfilled, responseInterceptor.onRejected);
   return axiosInstance;
 };
 

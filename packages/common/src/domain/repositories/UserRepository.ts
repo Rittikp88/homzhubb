@@ -21,6 +21,7 @@ const ENDPOINTS = {
   socialLogin: (): string => 'users/social-login/',
   emailExists: (emailId: string): string => `users/emails/${emailId}`,
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
+  logout: (): string => 'users/logout/',
 };
 
 class UserRepository {
@@ -69,6 +70,11 @@ class UserRepository {
 
   public phoneExists = async (phone: string): Promise<any> => {
     return await this.apiClient.get(ENDPOINTS.phoneExists(phone));
+  };
+
+  public logout = async (payload: any): Promise<any> => {
+    // TODO: Add the return type of promise once the api is completely ready
+    return await this.apiClient.post(ENDPOINTS.logout(), payload);
   };
 }
 

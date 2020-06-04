@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { ApiClientError } from '@homzhub/common/src/network/ApiClientError';
 
 export interface IApiClientOptions {
@@ -34,19 +34,18 @@ export interface IApiResponseHandler {
 }
 
 export interface IApiInterceptor {
-  request(
-    apiClient: IApiClient
-  ): {
-    onFulfilled?: (value: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
-    onRejected?: (error: any) => any;
-  };
+  request(apiClient: IApiClient): IApiRequestInterceptor;
+  response(apiClient: IApiClient): IApiResponseInterceptor;
+}
 
-  response(
-    apiClient: IApiClient
-  ): {
-    onFulfilled?: (value: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>;
-    onRejected?: (error: any) => any;
-  };
+export interface IApiRequestInterceptor {
+  onFulfilled: (value: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
+  onRejected: (error: AxiosError) => any;
+}
+
+export interface IApiResponseInterceptor {
+  onFulfilled: (value: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>;
+  onRejected: (error: AxiosError) => any;
 }
 
 export interface IApiClientConfig {

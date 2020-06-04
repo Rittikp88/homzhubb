@@ -134,6 +134,7 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
 
   private onSubmit = (): void => {
     const { propertyGroup, propertyGroupType, spaceAvailable } = this.state;
+    // TODO: to handle this case once the api is ready
     console.log(propertyGroup, propertyGroupType, spaceAvailable);
   };
 

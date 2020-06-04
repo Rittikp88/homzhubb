@@ -16,10 +16,12 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '<rootDir>/src/**/*.tsx',
-    '!<rootDir>/src/**/*.mock.ts',
+    '!<rootDir>/src/mocks/*',
+    '!<rootDir>/src/assets/*',
     '!<rootDir>/src/**/*.module.ts',
     '!<rootDir>/src/**/*.spec.ts',
     '!<rootDir>/src/**/*.test.ts',
+    '!<rootDir>/src/**/*.d.ts',
   ],
   testEnvironment: 'node',
   testResultsProcessor: 'jest-sonar-reporter',

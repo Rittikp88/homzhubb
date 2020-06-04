@@ -59,3 +59,21 @@ export interface IForgotPasswordPayload {
     password?: string;
   };
 }
+
+export interface IUserPayload {
+  full_name: string;
+  email: string;
+  country_code: string;
+  phone_number: string;
+  access_token: string;
+  refresh_token: string;
+}
+
+export interface IRefreshTokenPayload {
+  refresh_token: string;
+}
+
+export interface IUserLogoutPayload {
+  action: string;
+  payload: IRefreshTokenPayload;
+}

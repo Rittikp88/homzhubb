@@ -1,5 +1,9 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IEmailLoginPayload, IOtpLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IEmailLoginPayload,
+  IOtpLoginPayload,
+  IRefreshTokenPayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
@@ -64,9 +68,10 @@ const loginFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-const logout = (): IFluxStandardAction => {
+const logout = (data: IRefreshTokenPayload): IFluxStandardAction<IRefreshTokenPayload> => {
   return {
     type: UserActionTypes.AUTH.LOGOUT,
+    payload: data,
   };
 };
 

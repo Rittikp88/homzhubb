@@ -65,7 +65,7 @@ export const userReducer = (
     case UserActionTypes.AUTH.LOGOUT_SUCCESS:
       return {
         ...state,
-        ['user']: null, // TODO: Check the flow once the api is integrated
+        ['user']: null,
         ['loaders']: { ...state.loaders, ['user']: false },
       };
     case UserActionTypes.AUTH.LOGOUT_FAILURE:

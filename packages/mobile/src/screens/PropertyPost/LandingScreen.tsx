@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { Text, Label, Button, SVGUri } from '@homzhub/common/src/components';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
 
 interface IStateProps {
@@ -20,7 +21,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  logoutSuccess: () => void;
+  logout: (data: IRefreshTokenPayload) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyPostLandingScreen>;
@@ -80,9 +81,16 @@ class LandingScreen extends React.PureComponent<Props, {}> {
   };
 
   public logout = async (): Promise<void> => {
-    const { logoutSuccess } = this.props;
-    logoutSuccess();
-    await StorageService.remove(StorageKeys.USER);
+    const { logout } = this.props;
+    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
+    if (!user) {
+      return;
+    }
+    const { refresh_token } = user;
+    const logoutPayload = {
+      refresh_token,
+    };
+    logout(logoutPayload);
   };
 
   // TODO: to be removed once gmaps integration is present
@@ -105,10 +113,10 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { logoutSuccess } = UserActions;
+  const { logout } = UserActions;
   return bindActionCreators(
     {
-      logoutSuccess,
+      logout,
     },
     dispatch
   );
