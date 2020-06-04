@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { ListItem } from '@homzhub/common/src/components/atoms/ListItem';
-import { IDropdownOption } from '@homzhub/common/dist/components/molecules/FormDropdown';
+import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 interface IProps {
   data: IDropdownOption[];
