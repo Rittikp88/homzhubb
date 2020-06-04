@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Divider should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "borderColor": "#C9D6DF",
+      "borderWidth": 0.5,
+    }
+  }
+/>
+`;

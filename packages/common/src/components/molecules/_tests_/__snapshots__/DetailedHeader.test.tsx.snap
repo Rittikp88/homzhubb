@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test cases for DetailedHeader should render snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "paddingTop": 50,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#C9D6DF",
+          "borderBottomWidth": 0.5,
+          "flex": 1,
+          "paddingTop": 50,
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;

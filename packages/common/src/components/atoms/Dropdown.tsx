@@ -4,7 +4,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
-interface IProps {
+export interface IProps {
   data: PickerItemProps[];
   value: number | string;
   onDonePress: (value: string | number) => void;

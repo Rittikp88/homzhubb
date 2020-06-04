@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test cases for FormDropdown should render snapshot 1`] = `
+<WithFieldError>
+  <Label
+    style={
+      Object {
+        "color": "#33495E",
+        "marginBottom": 6,
+        "marginTop": 16,
+      }
+    }
+    type="regular"
+  >
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      type="small"
+    />
+  </Label>
+  <Dropdown
+    containerStyle={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "borderColor": "#C9D6DF",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "height": 48,
+        },
+        Object {},
+      ]
+    }
+    disable={false}
+    iconColor="#99A4AF"
+    iconSize={16}
+    onDonePress={[Function]}
+  />
+</WithFieldError>
+`;

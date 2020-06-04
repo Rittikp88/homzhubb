@@ -701,26 +701,27 @@ exports[`SignUp Screen should render signup screen 1`] = `
               }
             >
               By clicking signup you confirm that you agree to Homzhub
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "fontSize": 12,
-                    "lineHeight": 18,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "fontFamily": "OpenSans-Regular",
-                    "fontWeight": "400",
-                  },
-                  Object {
-                    "color": "#0084F8",
-                  },
-                ]
-              }
-            >
-              terms and conditions
+               
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 12,
+                      "lineHeight": 18,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "fontFamily": "OpenSans-Regular",
+                      "fontWeight": "400",
+                    },
+                    Object {
+                      "color": "#0084F8",
+                    },
+                  ]
+                }
+              >
+                terms and conditions
+              </Text>
             </Text>
           </View>
           <View
@@ -972,6 +973,7 @@ exports[`SignUp Screen should render signup screen 1`] = `
                     </View>
                   </View>
                   <RCTScrollView
+                    data={Array []}
                     disableVirtualization={false}
                     extraData="+91"
                     getItem={[Function]}

@@ -31,26 +31,27 @@ exports[`Test cases for TermsAndCondition should render snapshot 1`] = `
     }
   >
     auth:signUpConfirm
-  </Text>
-  <Text
-    style={
-      Array [
-        Object {
-          "fontSize": 12,
-          "lineHeight": 18,
-          "textAlign": "left",
-        },
-        Object {
-          "fontFamily": "OpenSans-Regular",
-          "fontWeight": "400",
-        },
-        Object {
-          "color": "#0084F8",
-        },
-      ]
-    }
-  >
-    termsCondition
+     
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+            "lineHeight": 18,
+            "textAlign": "left",
+          },
+          Object {
+            "fontFamily": "OpenSans-Regular",
+            "fontWeight": "400",
+          },
+          Object {
+            "color": "#0084F8",
+          },
+        ]
+      }
+    >
+      termsCondition
+    </Text>
   </Text>
 </View>
 `;

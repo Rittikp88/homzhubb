@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Modal, StyleProp, ViewStyle, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-interface IModalProps {
+export interface IModalProps {
   visible: boolean;
   animationType?: 'none' | 'slide' | 'fade';
   children: React.ReactElement | React.ReactNode;

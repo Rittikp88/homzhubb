@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test cases for LoginForm should render snapshot 1`] = `
+<LoginForm
+  i18n={Object {}}
+  isEmailLogin={true}
+  onLoginSuccess={[MockFunction]}
+  t={[Function]}
+  tReady={false}
+/>
+`;
