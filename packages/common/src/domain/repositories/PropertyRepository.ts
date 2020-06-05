@@ -1,11 +1,12 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
-import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { ICreateAssetDetails, ICreateAssetResult } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   getPropertyDetails: (): string => 'asset-groups/',
   createAsset: (): string => 'assets/',
+  getRentServices: (): string => 'services/',
 };
 
 class PropertyRepository {
@@ -21,6 +22,10 @@ class PropertyRepository {
 
   public createAsset = async (assetDetails: ICreateAssetDetails): Promise<ICreateAssetResult> => {
     return await this.apiClient.post(ENDPOINTS.createAsset(), assetDetails);
+  };
+
+  public getRentServices = async (): Promise<IRentServiceList[]> => {
+    return await this.apiClient.get(ENDPOINTS.getRentServices());
   };
 }
 

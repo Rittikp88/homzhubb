@@ -8,3 +8,9 @@ export interface IPropertyDetailsData {
   name: string;
   asset_types: IPropertyTypes[];
 }
+
+export interface IRentServiceList {
+  id: string | number;
+  label: string;
+  icon: string;
+}

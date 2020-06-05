@@ -5,8 +5,9 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
+import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -14,15 +15,16 @@ import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/compone
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IRentServiceList } from '@homzhub/common/src/domain/models/Property';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { RentServicesData } from '@homzhub/common/src/mocks/rentServices';
 
 interface IStateProps {
   user: IUser | null;
+  serviceList: IRentServiceList[] | null;
 }
 
 interface IDispatchProps {
-  logoutSuccess: () => void;
+  getRentServiceList: () => void;
 }
 
 interface IRentServicesState {
@@ -39,9 +41,14 @@ class RentServices extends Component<Props, IRentServicesState> {
     selectedItem: '',
   };
 
+  public componentDidMount(): void {
+    const { getRentServiceList } = this.props;
+    getRentServiceList();
+  }
+
   public render(): React.ReactNode {
     const { isSelected } = this.state;
-    const { user, t } = this.props;
+    const { user, t, serviceList } = this.props;
     const name = user ? user.full_name : '';
     return (
       <>
@@ -62,9 +69,10 @@ class RentServices extends Component<Props, IRentServicesState> {
             <Label type="large" textType="semiBold" style={styles.serviceTitle}>
               {t('serviceNeed')}
             </Label>
-            {RentServicesData.map((item) => {
-              return this.renderServiceItem(item);
-            })}
+            {serviceList &&
+              serviceList.map((item) => {
+                return this.renderServiceItem(item);
+              })}
           </View>
           <WithShadowView outerViewStyle={styles.shadowView}>
             <Button
@@ -80,15 +88,14 @@ class RentServices extends Component<Props, IRentServicesState> {
     );
   }
 
-  // TODO: (Shikha: 01/06/20)- Add return type once Api is ready
-  private renderServiceItem = (item: any): React.ReactElement => {
+  private renderServiceItem = (item: IRentServiceList): React.ReactElement => {
     const { isSelected, selectedItem } = this.state;
-    const handleSelectedItem = (): void => this.onPressSelectedIcon(item.name);
-    const handlePress = (): void => this.onSelectIcon(item.name);
-    const isSelect = isSelected && selectedItem === item.name;
+    const handleSelectedItem = (): void => this.onPressSelectedIcon(item.label);
+    const handlePress = (): void => this.onSelectIcon(item.label);
+    const isSelect = isSelected && selectedItem === item.label;
     const customStyle = customizedStyles(isSelect);
     return (
-      <View style={customStyle.services} key={item.name}>
+      <View style={customStyle.services} key={item.label}>
         <View style={styles.serviceContent}>
           <Icon
             name={item.icon}
@@ -97,7 +104,7 @@ class RentServices extends Component<Props, IRentServicesState> {
             style={styles.iconStyle}
           />
           <Label type="large" style={customStyle.serviceName}>
-            {item.name}
+            {item.label}
           </Label>
         </View>
         {isSelect ? (
@@ -131,14 +138,15 @@ class RentServices extends Component<Props, IRentServicesState> {
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     user: UserSelector.getUserDetails(state),
+    serviceList: PropertySelector.getRentServicesList(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { logoutSuccess } = UserActions;
+  const { getRentServiceList } = PropertyActions;
   return bindActionCreators(
     {
-      logoutSuccess,
+      getRentServiceList,
     },
     dispatch
   );

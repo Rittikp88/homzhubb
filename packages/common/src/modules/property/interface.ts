@@ -1,8 +1,9 @@
-import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
 
 export interface IPropertyState {
   propertyDetails: {
     propertyGroup: IPropertyDetailsData[] | null;
+    rentServices: IRentServiceList[] | null;
   };
   error: {
     property: string;

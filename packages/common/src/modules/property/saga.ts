@@ -12,6 +12,16 @@ function* getPropertyDetails() {
   }
 }
 
+function* getRentServicesList() {
+  try {
+    const data = yield call(PropertyRepository.getRentServices);
+    yield put(PropertyActions.getRentServiceListSuccess(data));
+  } catch (e) {
+    yield put(PropertyActions.getRentServiceListFailure(e.message));
+  }
+}
+
 export function* watchProperty() {
   yield takeEvery(PropertyActionTypes.GET.PROPERTY_DETAILS, getPropertyDetails);
+  yield takeEvery(PropertyActionTypes.GET.RENT_SERVICE_LIST, getRentServicesList);
 }
