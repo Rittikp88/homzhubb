@@ -14,6 +14,7 @@ const state: IState = {
   },
   property: {
     ...initialPropertyState,
+    // @ts-ignore
     propertyDetails: {
       propertyGroup: PropertyAssetGroupData,
     },
