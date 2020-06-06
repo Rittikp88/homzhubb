@@ -23,6 +23,7 @@ export const UserActionTypes = {
     LOGOUT_SUCCESS: `${actionTypePrefix}LOGOUT_SUCCESS`,
     LOGOUT_FAILURE: `${actionTypePrefix}LOGOUT_FAILURE`,
   },
+  UPDATE_ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
 };
 
 const getSocialMedia = (): IFluxStandardAction => {
@@ -88,7 +89,12 @@ const logoutFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-export type UserPayloadTypes = string | IUser | ISocialMediaProvider[];
+const updateOnBoarding = (updatedOnBoarding: boolean): IFluxStandardAction<boolean> => ({
+  type: UserActionTypes.UPDATE_ONBOARDING,
+  payload: updatedOnBoarding,
+});
+
+export type UserPayloadTypes = string | boolean | IUser | ISocialMediaProvider[];
 export const UserActions = {
   getSocialMedia,
   getSocialMediaSuccess,
@@ -99,4 +105,5 @@ export const UserActions = {
   logout,
   logoutSuccess,
   logoutFailure,
+  updateOnBoarding,
 };

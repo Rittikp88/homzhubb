@@ -1,15 +1,16 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { LatLng, MapEvent, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { FormikActions, FormikValues } from 'formik';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, FormButton, FormTextInput, Label, Text, WithShadowView } from '@homzhub/common/src/components';
+import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import SetLocationForm from '@homzhub/mobile/src/components/molecules/SetLocationForm';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -24,12 +25,13 @@ interface IState {
   isVisible: boolean;
   location: {
     projectName: string;
-    unitNo: number;
+    unitNo: string;
     blockNo: string;
   };
 }
 
 class AddPropertyMap extends React.PureComponent<Props, IState> {
+  private mapRef: MapView | null = null;
   public constructor(props: Props) {
     super(props);
     const {
@@ -44,7 +46,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
       isVisible: false,
       location: {
         projectName: `${primaryTitle}, ${secondaryTitle}`,
-        unitNo: 0,
+        unitNo: '',
         blockNo: '',
       },
     };
@@ -55,9 +57,12 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
     const { t } = this.props;
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         {this.renderHeader()}
         <MapView
+          ref={(mapRef): void => {
+            this.mapRef = mapRef;
+          }}
           provider={PROVIDER_GOOGLE}
           style={styles.mapView}
           initialRegion={{
@@ -77,7 +82,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
           />
         </WithShadowView>
         {this.renderBottomSheet()}
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -118,43 +123,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
     const formData = { ...location };
     return (
       <BottomSheet visible={isVisible} onCloseSheet={this.onClose} headerTitle={t('locationDetails')} sheetHeight={400}>
-        <Formik initialValues={formData} onSubmit={this.onSaveLocation}>
-          {(formProps: FormikProps<FormikValues>): React.ReactNode => {
-            return (
-              <>
-                <View style={styles.fieldsView}>
-                  <FormTextInput
-                    autoFocus
-                    name="projectName"
-                    label={t('projectName')}
-                    inputType="default"
-                    maxLength={100}
-                    placeholder={t('projectName')}
-                    formProps={formProps}
-                  />
-                  <View style={styles.contentView}>
-                    <View style={styles.subContentView}>
-                      <FormTextInput name="unitNo" label={t('unitNo')} inputType="number" formProps={formProps} />
-                    </View>
-                    <View style={styles.flexOne}>
-                      <FormTextInput name="blockNo" label={t('blockNo')} inputType="default" formProps={formProps} />
-                    </View>
-                  </View>
-                </View>
-                <WithShadowView outerViewStyle={styles.shadowView}>
-                  <FormButton
-                    type="primary"
-                    title={t('saveLocation')}
-                    containerStyle={styles.buttonStyle}
-                    // @ts-ignore
-                    onPress={formProps.handleSubmit}
-                    formProps={formProps}
-                  />
-                </WithShadowView>
-              </>
-            );
-          }}
-        </Formik>
+        <SetLocationForm formData={formData} onSubmit={this.onSaveLocation} />
       </BottomSheet>
     );
   };
@@ -200,6 +169,12 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
             latitude,
           },
         });
+        this.mapRef?.animateCamera({
+          center: {
+            longitude,
+            latitude,
+          },
+        });
       })
       .catch((e: Error): void => {
         AlertHelper.error({ message: e.message });
@@ -210,9 +185,6 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
     formActions.setSubmitting(true);
     const {
       navigation: { navigate },
-      route: {
-        params: { primaryTitle, secondaryTitle },
-      },
     } = this.props;
     const {
       markerLatLng: { longitude, latitude },
@@ -227,11 +199,12 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
         longitude: longitude.toString(),
       };
       const property = await PropertyRepository.createAsset(requestBody);
+      const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(values.projectName);
       this.onClose();
       navigate(ScreensKeys.PropertyDetailsScreen, {
         propertyId: property.id,
-        primaryAddress: primaryTitle,
-        secondaryAddress: secondaryTitle,
+        primaryAddress,
+        secondaryAddress,
       });
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -249,7 +222,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     backgroundColor: theme.colors.primaryColor,
-    paddingStart: 16,
+    paddingHorizontal: 16,
   },
   titlePrimary: {
     marginTop: 4,
@@ -262,27 +235,12 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
   },
   shadowView: {
-    paddingTop: 10,
     marginBottom: PlatformUtils.isIOS() ? 20 : 0,
     paddingBottom: 0,
   },
   buttonStyle: {
     flex: 0,
     margin: 16,
-  },
-  fieldsView: {
-    marginHorizontal: 24,
-    marginBottom: 24,
-  },
-  contentView: {
-    flexDirection: 'row',
-  },
-  subContentView: {
-    flex: 1,
-    marginRight: 16,
-  },
-  flexOne: {
-    flex: 1,
   },
 });
 

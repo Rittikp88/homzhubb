@@ -11,15 +11,11 @@ import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IState {
   booting: boolean;
-  isLoggedIn: boolean;
-  isOnBoardingCompleted: boolean;
 }
 
 export default class App extends React.PureComponent<{}, IState> {
   public state = {
     booting: true,
-    isLoggedIn: false,
-    isOnBoardingCompleted: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -27,11 +23,11 @@ export default class App extends React.PureComponent<{}, IState> {
   };
 
   public render = (): React.ReactNode => {
-    const { booting, isLoggedIn, isOnBoardingCompleted } = this.state;
+    const { booting } = this.state;
 
     return (
       <Provider store={store}>
-        <RootNavigator isLoggedIn={isLoggedIn} booting={booting} showOnBoarding={!isOnBoardingCompleted} />
+        <RootNavigator booting={booting} />
         <FlashMessage position="bottom" MessageComponent={this.renderToast} />
       </Provider>
     );
@@ -42,6 +38,7 @@ export default class App extends React.PureComponent<{}, IState> {
   private bootUp = async (): Promise<void> => {
     await I18nService.init();
     const isOnBoardingCompleted = (await StorageService.get<boolean>(StorageKeys.IS_ONBOARDING_COMPLETED)) ?? false;
+    store.dispatch(UserActions.updateOnBoarding(isOnBoardingCompleted));
 
     const userData = await StorageService.get<IUser>(StorageKeys.USER);
     if (userData) {
@@ -49,7 +46,7 @@ export default class App extends React.PureComponent<{}, IState> {
     }
 
     setTimeout(() => {
-      this.setState({ booting: false, isLoggedIn: !!userData, isOnBoardingCompleted });
+      this.setState({ booting: false });
     }, 500);
   };
 }

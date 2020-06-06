@@ -18,7 +18,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
-type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default';
+type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name';
 
 export interface IFormTextInputProps extends TextInputProps {
   style?: StyleProp<TextStyle>;
@@ -208,7 +208,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     let inputValue = text;
     if (inputType === 'number' || inputType === 'phone') {
       inputValue = text.replace(/\D/g, '');
-    } else if (inputType === 'default') {
+    } else if (inputType === 'name') {
       inputValue = text.replace(/\d/g, '');
     } else if (inputType === 'email') {
       inputValue = text.replace(DisallowedInputCharacters.email, '');

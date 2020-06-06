@@ -6,6 +6,10 @@ const isLoggedIn = (state: IState): boolean => {
   return !!state.user.user;
 };
 
+const hasOnBoardingCompleted = (state: IState): boolean => {
+  return state.user.isOnBoardingCompleted;
+};
+
 const getSocialMediaProviders = (state: IState): ISocialMediaProvider[] => {
   const { user } = state;
   return user.socialProviders;
@@ -20,6 +24,7 @@ const getUserDetails = (state: IState): IUser | null => {
 
 export const UserSelector = {
   isLoggedIn,
+  hasOnBoardingCompleted,
   getSocialMediaProviders,
   getUserDetails,
 };

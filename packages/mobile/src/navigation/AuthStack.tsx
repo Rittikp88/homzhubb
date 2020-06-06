@@ -1,5 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
@@ -33,14 +35,11 @@ export type AuthStackParamList = {
   [ScreensKeys.PropertySearch]: undefined;
 };
 
-interface IProps {
-  showOnBoarding: boolean;
-}
+export function AuthStack(): React.ReactElement {
+  const hasOnBoardingCompleted = useSelector(UserSelector.hasOnBoardingCompleted);
 
-export function AuthStack(props: IProps): React.ReactElement {
-  const { showOnBoarding } = props;
   const showOnBoardingScreen = (): React.ReactNode => {
-    if (showOnBoarding) {
+    if (!hasOnBoardingCompleted) {
       return <AuthStackNavigator.Screen name={ScreensKeys.OnBoarding} component={OnBoarding} />;
     }
     return null;

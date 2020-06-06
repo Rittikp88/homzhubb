@@ -17,7 +17,8 @@
     "continue": "Continue",
     "searchResults": "Search Results",
     "submit": "Submit",
-    "change": "Change"
+    "change": "Change",
+    "onlyNumeric": "Only numeric values allowed"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -76,8 +77,10 @@
     "congratsUser": "Congratulations {{name}}",
     "propertyAddedMsg": "Your Property is added to your Dashboard",
     "serviceNeed": "What service do you need today?",
-    "projectName": "Enter project Name",
+    "projectNamePlaceholder": "Enter project Name",
+    "projectNameRequired": "Please enter project name",
     "unitNo": "Unit No.",
+    "unitNoRequired": "Please enter unit no",
     "blockNo": "Block No.",
     "saveLocation": "Save Location",
     "setLocation": "Set Location",

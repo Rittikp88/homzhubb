@@ -70,7 +70,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   }}
                   name="name"
                   label="Name"
-                  inputType="default"
+                  inputType="name"
                   placeholder={t('auth:enterName')}
                   formProps={formProps}
                   onSubmitEditing={onEmailFocus}

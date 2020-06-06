@@ -4,6 +4,7 @@ import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMe
 export interface IUserState {
   socialProviders: ISocialMediaProvider[];
   user: IUser | null;
+  isOnBoardingCompleted: boolean;
   error: {
     user: string;
   };

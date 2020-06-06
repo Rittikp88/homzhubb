@@ -7,6 +7,7 @@ import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMe
 export const initialUserState: IUserState = {
   socialProviders: [],
   user: null,
+  isOnBoardingCompleted: false,
   error: {
     user: '',
   },
@@ -73,6 +74,11 @@ export const userReducer = (
         ...state,
         ['loaders']: { ...state.loaders, ['user']: false },
         ['error']: { ...state.error, ['user']: action.error as string },
+      };
+    case UserActionTypes.UPDATE_ONBOARDING:
+      return {
+        ...state,
+        ['isOnBoardingCompleted']: action.payload as boolean,
       };
     default:
       return state;

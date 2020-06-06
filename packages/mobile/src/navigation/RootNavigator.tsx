@@ -9,21 +9,15 @@ import { Splash } from '@homzhub/mobile/src/screens/Splash';
 
 interface IProps {
   booting: boolean;
-  isLoggedIn: boolean;
-  showOnBoarding: boolean;
 }
 
 export const RootNavigator = (props: IProps): React.ReactElement => {
-  const { booting, isLoggedIn, showOnBoarding } = props;
-  const hasLoggedIn = useSelector(UserSelector.isLoggedIn);
+  const { booting } = props;
+  const isLoggedIn = useSelector(UserSelector.isLoggedIn);
 
   if (booting) {
     return <Splash />;
   }
 
-  return (
-    <NavigationContainer>
-      {isLoggedIn || hasLoggedIn ? <AppNavigator /> : <AuthStack showOnBoarding={showOnBoarding} />}
-    </NavigationContainer>
-  );
+  return <NavigationContainer>{isLoggedIn ? <AppNavigator /> : <AuthStack />}</NavigationContainer>;
 };
