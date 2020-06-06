@@ -37,8 +37,8 @@ function* logout(action: IFluxStandardAction<IUserLogoutPayload>) {
   const { payload } = action;
   try {
     yield call(UserRepository.logout, payload);
-    yield StorageService.remove(StorageKeys.USER);
     yield put(UserActions.logoutSuccess());
+    yield StorageService.remove(StorageKeys.USER);
   } catch (e) {
     yield put(UserActions.logoutFailure(e.message));
   }

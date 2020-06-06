@@ -1,39 +1,33 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikProps, FormikValues } from 'formik';
-import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { AreaUnit } from '@homzhub/common/src/mocks/AreaUnit';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
-import { FormTextInput, FormDropdown, HorizontalPicker, Label, Text } from '@homzhub/common/src/components';
+import {
+  SpaceAvailableTypes,
+  ISpaceAvailable,
+  ISpaceAvailablePayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
+import { HorizontalPicker, Label, Text, Dropdown } from '@homzhub/common/src/components';
 import ItemGroup from '@homzhub/mobile/src/components/molecules/ItemGroup';
 
 interface IPropertyDetailsItemsProps {
   data: IPropertyDetailsData[];
+  areaUnits: IDropdownOption[];
+  spaceAvailable: ISpaceAvailable;
   propertyGroupSelectedIndex: number;
   propertyGroupTypeSelectedIndex: number;
-  onPropertyGroupChange: (item: IPropertyTypes | IPropertyDetailsData, index: string | number) => void;
-  onPropertyGroupTypeChange: (item: IPropertyTypes, index: string | number) => void;
+  carpetAreaError: boolean;
+  onPropertyGroupChange: (index: string | number) => void;
+  onPropertyGroupTypeChange: (index: string | number) => void;
+  onSpaceAvailableValueChange: (item: IPropertyTypes, index: string | number) => void;
+  onCommercialPropertyChange?: (type: string, value: string | number) => void;
 }
 
 type Props = IPropertyDetailsItemsProps & WithTranslation;
 
-interface IPropertyDetailsItemsState {
-  carpetArea: string | number;
-  areaUnit: string;
-  isBottomSheetVisible: boolean;
-}
-
-class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsItemsState> {
-  public carpetArea: FormTextInput | null = null;
-  public areaUnit: FormTextInput | null = null;
-  public state = {
-    carpetArea: '',
-    areaUnit: 'Sq.ft',
-    isBottomSheetVisible: false,
-  };
-
+class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
     const { t, data, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
     if (!data) {
@@ -70,13 +64,18 @@ class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsIt
       return null;
     }
     const spaceAvailableElements: Array<React.ReactNode> = [];
-    data?.[propertyGroupSelectedIndex]?.asset_types.forEach((space: IPropertyTypes, index: number) => {
-      return spaceAvailableElements.push(
-        <View style={styles.picker} key={index}>
+    data?.[propertyGroupSelectedIndex]?.space_types.forEach((space: IPropertyTypes, index: number) => {
+      const key = data?.[propertyGroupSelectedIndex]?.name;
+      const pickerValue = this.findSpaceTypeValue(space);
+      const onValueChange = (value: string | number): void => {
+        this.onHorizontalPickerValueChange(space, value);
+      };
+      spaceAvailableElements.push(
+        <View style={styles.picker} key={`${key}-${index}`}>
           <Label type="large" textType="regular" style={styles.label}>
             {space.name}
           </Label>
-          <HorizontalPicker key={index} />
+          <HorizontalPicker key={`${key}-${index}`} onValueChange={onValueChange} value={pickerValue} />
         </View>
       );
     });
@@ -85,65 +84,150 @@ class PropertyDetailsItems extends React.PureComponent<Props, IPropertyDetailsIt
         <Text type="regular" textType="semiBold" style={styles.typeProperty}>
           {t('propertyDetails:spaceAvailable')}
         </Text>
+        {this.renderCommercialPickers()}
         {spaceAvailableElements}
       </>
     );
   };
 
-  public renderCarpetArea = (): React.ReactNode => {
-    const { t, propertyGroupSelectedIndex } = this.props;
-    if (propertyGroupSelectedIndex === 0) {
+  public renderCommercialPickers = (): React.ReactNode => {
+    const {
+      propertyGroupSelectedIndex,
+      spaceAvailable: { totalFloors, floorNumber },
+    } = this.props;
+    if (propertyGroupSelectedIndex !== 1) {
       return null;
     }
-    const formData = { ...this.state };
+    const commercialElements: Array<React.ReactNode> = [];
+    const commercialSpaces = [
+      {
+        id: 1,
+        name: SpaceAvailableTypes.FLOOR_NUMBER,
+        value: floorNumber,
+      },
+      {
+        id: 2,
+        name: SpaceAvailableTypes.TOTAL_FLOORS,
+        value: totalFloors,
+      },
+    ];
+    commercialSpaces.forEach((space: any, index: number) => {
+      const onValueChange = (value: string | number): void => {
+        this.onHorizontalPickerValueChange(space, value);
+      };
+      commercialElements.push(
+        <View style={styles.picker} key={index}>
+          <Label type="large" textType="regular" style={styles.label}>
+            {space.name}
+          </Label>
+          <HorizontalPicker key={index} onValueChange={onValueChange} value={space.value} />
+        </View>
+      );
+    });
+    return commercialElements;
+  };
+
+  public renderCarpetArea = (): React.ReactNode => {
+    const {
+      t,
+      propertyGroupSelectedIndex,
+      areaUnits,
+      carpetAreaError,
+      spaceAvailable: { carpetArea, areaUnit },
+    } = this.props;
+    if (propertyGroupSelectedIndex === 0 || areaUnits.length === 0) {
+      return null;
+    }
+    const labelStyles = { ...theme.form.formLabel };
     return (
-      <>
-        <Formik onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)} initialValues={formData}>
-          {(formProps: FormikProps<FormikValues>): React.ReactElement => (
-            <View style={styles.formContainer}>
-              <View style={styles.carpetArea}>
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="number"
-                  name="carpetArea"
-                  label={t('propertyDetails:carpetArea')}
-                  placeholder="Enter"
-                />
-              </View>
-              <View style={styles.areaUnit}>
-                <FormDropdown
-                  label={t('propertyDetails:areaUnit')}
-                  name="areaUnit"
-                  options={AreaUnit}
-                  formProps={formProps}
-                />
-              </View>
-            </View>
+      <View style={styles.formContainer}>
+        <View style={styles.carpetArea}>
+          <Label type="regular" textType="regular" style={labelStyles}>
+            {t('propertyDetails:carpetArea')}
+          </Label>
+          <TextInput
+            key="carpetArea"
+            value={carpetArea}
+            keyboardType="number-pad"
+            style={styles.textInput}
+            placeholder={t('propertyDetails:enterCarpetArea')}
+            onChangeText={this.onCarpetAreaChange}
+            maxLength={5}
+          />
+          {carpetAreaError && (
+            <Label type="regular" style={styles.error}>
+              {t('propertyDetails:enterCarpetArea')}
+            </Label>
           )}
-        </Formik>
-      </>
+        </View>
+        <View style={styles.areaUnit}>
+          <Label type="regular" textType="regular" style={labelStyles}>
+            {t('propertyDetails:areaUnit')}
+          </Label>
+          <Dropdown
+            data={areaUnits}
+            value={areaUnit}
+            listTitle={t('propertyDetails:selectAreaUnit')}
+            onDonePress={this.onAreaUnitChange}
+            iconSize={16}
+            iconColor={theme.colors.darkTint7}
+          />
+        </View>
+      </View>
     );
   };
 
-  public onPropertyGroupSelect = (item: IPropertyTypes | IPropertyDetailsData, index: string | number): void => {
+  public onCarpetAreaChange = (value: string | number): void => {
+    const { onCommercialPropertyChange } = this.props;
+    if (onCommercialPropertyChange) {
+      onCommercialPropertyChange('carpetArea', value);
+    }
+  };
+
+  public onHorizontalPickerValueChange = (item: IPropertyTypes, index: string | number): void => {
+    const { onSpaceAvailableValueChange } = this.props;
+    onSpaceAvailableValueChange(item, index);
+  };
+
+  public onPropertyGroupSelect = (index: string | number): void => {
     const { onPropertyGroupChange } = this.props;
-    onPropertyGroupChange(item, index);
+    onPropertyGroupChange(index);
   };
 
-  public onPropertyGroupTypeSelect = (item: IPropertyTypes, index: string | number): void => {
+  public onPropertyGroupTypeSelect = (index: string | number): void => {
     const { onPropertyGroupTypeChange } = this.props;
-    onPropertyGroupTypeChange(item, index);
+    onPropertyGroupTypeChange(index);
   };
 
-  private onSubmit = (formProps: any): void => {};
+  public onAreaUnitChange = (value: string | number): void => {
+    const { onCommercialPropertyChange } = this.props;
+    if (onCommercialPropertyChange) {
+      onCommercialPropertyChange('areaUnit', value);
+    }
+  };
 
-  private formSchema = (): void => {};
+  public findSpaceTypeValue = (space: ISpaceAvailablePayload): number => {
+    const {
+      spaceAvailable: { bedroom, bathroom, balcony },
+    } = this.props;
+    switch (space.name) {
+      case SpaceAvailableTypes.BATHROOM:
+        return bathroom;
+      case SpaceAvailableTypes.BALCONY:
+        return balcony;
+      case SpaceAvailableTypes.BEDROOM:
+        return bedroom;
+      default:
+        return 0;
+    }
+  };
 }
 
 export default withTranslation()(PropertyDetailsItems);
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
+    maxWidth: theme.viewport.width,
   },
   textColor: {
     color: theme.colors.darkTint5,
@@ -157,27 +241,38 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'column',
   },
+  textInput: {
+    textAlign: 'left',
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderColor: theme.colors.disabled,
+  },
   formContainer: {
     flexDirection: 'row',
+    marginBottom: 80,
   },
   carpetArea: {
     flex: 0.5,
-    marginRight: 10,
+    marginRight: 20,
   },
   areaUnit: {
     flex: 0.5,
   },
   picker: {
+    flex: 1,
     flexDirection: 'row',
-    backgroundColor: theme.colors.white,
     marginBottom: 10,
     marginTop: 10,
   },
   label: {
-    flex: 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
+    flex: 0.8,
+    alignSelf: 'center',
     color: theme.colors.darkTint4,
+  },
+  error: {
+    color: theme.form.formErrorColor,
+    marginTop: 3,
   },
 });

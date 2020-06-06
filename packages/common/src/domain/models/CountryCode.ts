@@ -4,3 +4,8 @@ export interface ICountryCode {
   country_code: string;
   country: string;
 }
+
+export interface ICarpetAreaUnit {
+  label: string;
+  value: string;
+}

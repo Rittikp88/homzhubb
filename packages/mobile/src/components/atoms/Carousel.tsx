@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SVGUri } from '@homzhub/common/src/components';
@@ -24,7 +24,7 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
   public render = (): React.ReactElement => {
     const { carouselItems, showPagination } = this.props;
     return (
-      <>
+      <View>
         <Carousel
           onLayout={this.updateRef}
           data={carouselItems}
@@ -38,12 +38,14 @@ export class SnapCarousel extends React.PureComponent<ICarouselProps, {}> {
           }}
         />
         {showPagination && this.pagination()}
-      </>
+      </View>
     );
   };
 
   public renderItem = ({ item }: any): React.ReactElement => {
-    return <SVGUri width="100%" height="100%" uri={item.image_url} />;
+    return (
+      <SVGUri width={400} height={220} viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.image_url} />
+    );
   };
 
   public pagination = (): React.ReactElement => {

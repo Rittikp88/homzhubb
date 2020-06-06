@@ -40,6 +40,12 @@ exports[`Property Details Screen Component should render property details screen
         ],
         "id": 1,
         "name": "Residential",
+        "space_types": Array [
+          Object {
+            "id": 1,
+            "name": "Room",
+          },
+        ],
       },
       Object {
         "asset_types": Array [
@@ -62,6 +68,12 @@ exports[`Property Details Screen Component should render property details screen
         ],
         "id": 2,
         "name": "Commercial",
+        "space_types": Array [
+          Object {
+            "id": 1,
+            "name": "Room",
+          },
+        ],
       },
     ]
   }

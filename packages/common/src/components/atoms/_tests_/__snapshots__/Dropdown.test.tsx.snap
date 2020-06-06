@@ -9,10 +9,11 @@ exports[`Dropdown should match snapshot 1`] = `
       Object {
         "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
-        "borderWidth": 0.5,
+        "borderWidth": 1,
         "flex": 1,
         "flexDirection": "row",
         "justifyContent": "space-between",
+        "paddingVertical": 2,
       }
     }
     icon="down-arrow-filled"
@@ -21,7 +22,7 @@ exports[`Dropdown should match snapshot 1`] = `
     iconStyle={
       Array [
         Object {
-          "marginRight": 20,
+          "marginRight": 10,
         },
         undefined,
       ]
@@ -102,7 +103,7 @@ exports[`Dropdown should match snapshot 1`] = `
       ]
     }
     isBottomSheetVisible={false}
-    listTitle="Select Area Unit"
+    listTitle="Select From here"
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
     selectedValue="India (+91)"
@@ -119,10 +120,11 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
       Object {
         "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
-        "borderWidth": 0.5,
+        "borderWidth": 1,
         "flex": 1,
         "flexDirection": "row",
         "justifyContent": "space-between",
+        "paddingVertical": 2,
       }
     }
     icon="down-arrow-filled"
@@ -131,7 +133,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
     iconStyle={
       Array [
         Object {
-          "marginRight": 20,
+          "marginRight": 10,
         },
         undefined,
       ]
@@ -212,7 +214,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
       ]
     }
     isBottomSheetVisible={false}
-    listTitle="Select Area Unit"
+    listTitle="Select From here"
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
     selectedValue="India (+91)"

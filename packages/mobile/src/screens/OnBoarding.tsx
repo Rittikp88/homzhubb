@@ -58,13 +58,15 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
           showPagination
           currentSlide={this.changeSlide}
         />
-        <Text type="large" textType="bold" style={styles.title}>
-          {data[activeSlide]?.title ?? ''}
-        </Text>
-        <Label type="large" textType="regular" style={styles.description}>
-          {data[activeSlide]?.description ?? ''}
-        </Label>
-        <Button type="primary" title={buttonText} onPress={this.renderNextFrame} containerStyle={styles.button} />
+        <View style={styles.textContainer}>
+          <Text type="large" textType="bold">
+            {data[activeSlide]?.title ?? ''}
+          </Text>
+          <Label type="large" textType="regular" style={styles.description}>
+            {data[activeSlide]?.description ?? ''}
+          </Label>
+          <Button type="primary" title={buttonText} onPress={this.renderNextFrame} containerStyle={styles.button} />
+        </View>
       </SafeAreaView>
     );
   }
@@ -118,6 +120,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.onBoardingScreenBackground,
+    justifyContent: 'space-around',
+  },
+  textContainer: {
+    flex: 1,
+    padding: theme.layout.screenPadding,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   skipLinkContainer: {
     flexDirection: 'row',
@@ -132,17 +142,11 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     alignItems: 'flex-end',
   },
-  title: {
-    textAlign: 'center',
-    marginVertical: 30,
-  },
   description: {
     textAlign: 'center',
   },
   button: {
     flex: 0,
-    alignSelf: 'center',
-    marginVertical: 30,
   },
 });
 

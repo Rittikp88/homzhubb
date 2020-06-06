@@ -41,8 +41,6 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
       }
     };
 
-    const containerStyles = [theme.form.dropdownContainer, isDisabled ? theme.form.inputDisabled : {}];
-
     const error = touched[name] && errors[name] ? errors[name] : undefined;
     if (error) {
       labelStyles = { ...labelStyles, color: theme.colors.error };
@@ -63,7 +61,6 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
           onDonePress={onSelect}
           disable={isDisabled}
           placeholder={placeholder}
-          containerStyle={containerStyles}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
         />

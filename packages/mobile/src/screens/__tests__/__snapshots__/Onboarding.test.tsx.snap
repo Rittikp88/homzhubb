@@ -164,8 +164,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -176,7 +178,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -325,8 +327,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
               "propertyDetails": Object {
                 "areaUnit": "Area unit",
                 "carpetArea": "Carpet area",
+                "enterCarpetArea": "Enter carpet area",
                 "headerTitle": "Details",
                 "propertyType": "Property type",
+                "selectAreaUnit": "Select Area Unit",
                 "spaceAvailable": "Space available",
               },
               "propertyPost": Object {
@@ -337,7 +341,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "description": "Let's add your first property on Homzhub",
                 "locationDetails": "Location Details",
                 "logoutHelperText": "If it's not you?",
-                "projectName": "Project Name",
+                "projectName": "Enter project Name",
                 "propertyAddedMsg": "Your Property is added to your Dashboard",
                 "saveLocation": "Save Location",
                 "searchProject": "Search for project or street name",
@@ -483,8 +487,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -495,7 +501,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -628,8 +634,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -640,7 +648,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -786,8 +794,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -798,7 +808,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -936,8 +946,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -948,7 +960,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -1048,8 +1060,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -1060,7 +1074,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -1194,8 +1208,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -1206,7 +1222,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -1344,8 +1360,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -1356,7 +1374,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -1513,8 +1531,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -1525,7 +1545,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -1658,8 +1678,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -1670,7 +1692,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -1815,8 +1837,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -1827,7 +1851,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -1972,8 +1996,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -1984,7 +2010,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -2117,8 +2143,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -2129,7 +2157,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -2275,8 +2303,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -2287,7 +2317,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -3331,8 +3361,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
               "propertyDetails": Object {
                 "areaUnit": "Area unit",
                 "carpetArea": "Carpet area",
+                "enterCarpetArea": "Enter carpet area",
                 "headerTitle": "Details",
                 "propertyType": "Property type",
+                "selectAreaUnit": "Select Area Unit",
                 "spaceAvailable": "Space available",
               },
               "propertyPost": Object {
@@ -3343,7 +3375,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "description": "Let's add your first property on Homzhub",
                 "locationDetails": "Location Details",
                 "logoutHelperText": "If it's not you?",
-                "projectName": "Project Name",
+                "projectName": "Enter project Name",
                 "propertyAddedMsg": "Your Property is added to your Dashboard",
                 "saveLocation": "Save Location",
                 "searchProject": "Search for project or street name",
@@ -3430,8 +3462,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
             "propertyDetails": Object {
               "areaUnit": "Area unit",
               "carpetArea": "Carpet area",
+              "enterCarpetArea": "Enter carpet area",
               "headerTitle": "Details",
               "propertyType": "Property type",
+              "selectAreaUnit": "Select Area Unit",
               "spaceAvailable": "Space available",
             },
             "propertyPost": Object {
@@ -3442,7 +3476,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
               "description": "Let's add your first property on Homzhub",
               "locationDetails": "Location Details",
               "logoutHelperText": "If it's not you?",
-              "projectName": "Project Name",
+              "projectName": "Enter project Name",
               "propertyAddedMsg": "Your Property is added to your Dashboard",
               "saveLocation": "Save Location",
               "searchProject": "Search for project or street name",
@@ -3573,8 +3607,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -3585,7 +3621,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -3718,8 +3754,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -3730,7 +3768,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -3876,8 +3914,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -3888,7 +3928,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -4026,8 +4066,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -4038,7 +4080,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -4188,8 +4230,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "propertyDetails": Object {
                           "areaUnit": "Area unit",
                           "carpetArea": "Carpet area",
+                          "enterCarpetArea": "Enter carpet area",
                           "headerTitle": "Details",
                           "propertyType": "Property type",
+                          "selectAreaUnit": "Select Area Unit",
                           "spaceAvailable": "Space available",
                         },
                         "propertyPost": Object {
@@ -4200,7 +4244,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "description": "Let's add your first property on Homzhub",
                           "locationDetails": "Location Details",
                           "logoutHelperText": "If it's not you?",
-                          "projectName": "Project Name",
+                          "projectName": "Enter project Name",
                           "propertyAddedMsg": "Your Property is added to your Dashboard",
                           "saveLocation": "Save Location",
                           "searchProject": "Search for project or street name",
@@ -4338,8 +4382,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -4350,7 +4396,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -4507,8 +4553,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "propertyDetails": Object {
                           "areaUnit": "Area unit",
                           "carpetArea": "Carpet area",
+                          "enterCarpetArea": "Enter carpet area",
                           "headerTitle": "Details",
                           "propertyType": "Property type",
+                          "selectAreaUnit": "Select Area Unit",
                           "spaceAvailable": "Space available",
                         },
                         "propertyPost": Object {
@@ -4519,7 +4567,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "description": "Let's add your first property on Homzhub",
                           "locationDetails": "Location Details",
                           "logoutHelperText": "If it's not you?",
-                          "projectName": "Project Name",
+                          "projectName": "Enter project Name",
                           "propertyAddedMsg": "Your Property is added to your Dashboard",
                           "saveLocation": "Save Location",
                           "searchProject": "Search for project or street name",
@@ -4652,8 +4700,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -4664,7 +4714,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -4809,8 +4859,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -4821,7 +4873,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -4966,8 +5018,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "propertyDetails": Object {
                             "areaUnit": "Area unit",
                             "carpetArea": "Carpet area",
+                            "enterCarpetArea": "Enter carpet area",
                             "headerTitle": "Details",
                             "propertyType": "Property type",
+                            "selectAreaUnit": "Select Area Unit",
                             "spaceAvailable": "Space available",
                           },
                           "propertyPost": Object {
@@ -4978,7 +5032,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                             "description": "Let's add your first property on Homzhub",
                             "locationDetails": "Location Details",
                             "logoutHelperText": "If it's not you?",
-                            "projectName": "Project Name",
+                            "projectName": "Enter project Name",
                             "propertyAddedMsg": "Your Property is added to your Dashboard",
                             "saveLocation": "Save Location",
                             "searchProject": "Search for project or street name",
@@ -5111,8 +5165,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "propertyDetails": Object {
                           "areaUnit": "Area unit",
                           "carpetArea": "Carpet area",
+                          "enterCarpetArea": "Enter carpet area",
                           "headerTitle": "Details",
                           "propertyType": "Property type",
+                          "selectAreaUnit": "Select Area Unit",
                           "spaceAvailable": "Space available",
                         },
                         "propertyPost": Object {
@@ -5123,7 +5179,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "description": "Let's add your first property on Homzhub",
                           "locationDetails": "Location Details",
                           "logoutHelperText": "If it's not you?",
-                          "projectName": "Project Name",
+                          "projectName": "Enter project Name",
                           "propertyAddedMsg": "Your Property is added to your Dashboard",
                           "saveLocation": "Save Location",
                           "searchProject": "Search for project or street name",
@@ -5269,8 +5325,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "propertyDetails": Object {
                           "areaUnit": "Area unit",
                           "carpetArea": "Carpet area",
+                          "enterCarpetArea": "Enter carpet area",
                           "headerTitle": "Details",
                           "propertyType": "Property type",
+                          "selectAreaUnit": "Select Area Unit",
                           "spaceAvailable": "Space available",
                         },
                         "propertyPost": Object {
@@ -5281,7 +5339,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "description": "Let's add your first property on Homzhub",
                           "locationDetails": "Location Details",
                           "logoutHelperText": "If it's not you?",
-                          "projectName": "Project Name",
+                          "projectName": "Enter project Name",
                           "propertyAddedMsg": "Your Property is added to your Dashboard",
                           "saveLocation": "Save Location",
                           "searchProject": "Search for project or street name",
@@ -6325,8 +6383,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -6337,7 +6397,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -6425,8 +6485,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -6437,7 +6499,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -6571,8 +6633,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -6583,7 +6647,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -6721,8 +6785,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -6733,7 +6799,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -6884,8 +6950,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -6896,7 +6964,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -7029,8 +7097,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -7041,7 +7111,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -7187,8 +7257,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -7199,7 +7271,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -7337,8 +7409,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -7349,7 +7423,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -7492,8 +7566,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -7504,7 +7580,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -7637,8 +7713,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -7649,7 +7727,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -7795,8 +7873,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -7807,7 +7887,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -8851,8 +8931,10 @@ exports[`Onboarding Screen should match snapshot 1`] = `
               "propertyDetails": Object {
                 "areaUnit": "Area unit",
                 "carpetArea": "Carpet area",
+                "enterCarpetArea": "Enter carpet area",
                 "headerTitle": "Details",
                 "propertyType": "Property type",
+                "selectAreaUnit": "Select Area Unit",
                 "spaceAvailable": "Space available",
               },
               "propertyPost": Object {
@@ -8863,7 +8945,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "description": "Let's add your first property on Homzhub",
                 "locationDetails": "Location Details",
                 "logoutHelperText": "If it's not you?",
-                "projectName": "Project Name",
+                "projectName": "Enter project Name",
                 "propertyAddedMsg": "Your Property is added to your Dashboard",
                 "saveLocation": "Save Location",
                 "searchProject": "Search for project or street name",

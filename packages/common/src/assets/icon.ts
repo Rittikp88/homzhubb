@@ -34,4 +34,5 @@ export const icons = {
   circularCheckFilled: 'circular-check-filled',
   circularCrossFilled: 'circular-cross-filled',
   circularWarningFilled: 'circular-warning-filled',
+  locationMarker: 'location-marker',
 };

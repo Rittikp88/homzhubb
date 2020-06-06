@@ -28,6 +28,12 @@ export const PropertyAssetGroupData = [
         name: 'Independent Floor',
       },
     ],
+    space_types: [
+      {
+        id: 1,
+        name: 'Room',
+      },
+    ],
   },
   {
     id: 2,
@@ -48,6 +54,12 @@ export const PropertyAssetGroupData = [
       {
         id: 4,
         name: 'Warehouse/Godown',
+      },
+    ],
+    space_types: [
+      {
+        id: 1,
+        name: 'Room',
       },
     ],
   },

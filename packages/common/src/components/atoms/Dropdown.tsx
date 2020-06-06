@@ -8,6 +8,7 @@ import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/Bo
 export interface IProps {
   data: PickerItemProps[];
   value: number | string;
+  listTitle?: string;
   onDonePress: (value: string | number) => void;
   disable?: boolean;
   placeholder?: string;
@@ -40,6 +41,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
       iconColor,
       iconSize,
       iconStyle,
+      listTitle,
     } = this.props;
     const { dropdownVisible } = this.state;
     const selectedItem = data.find((d: PickerItemProps) => d.value === value);
@@ -67,7 +69,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
           // @ts-ignore
           data={data}
           selectedValue={selectedItem ? selectedItem.label : ''}
-          listTitle="Select Area Unit"
+          listTitle={listTitle ?? 'Select From here'}
           isBottomSheetVisible={dropdownVisible}
           onCloseDropDown={this.onCancel}
           onSelectItem={this.onValueChange}
@@ -81,6 +83,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
     const selectedValue = value === placeholder ? '' : value;
     if (onDonePress) {
       onDonePress(selectedValue);
+      this.closeDropdown();
     }
   };
 
@@ -96,7 +99,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     borderColor: theme.colors.disabled,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
+    paddingVertical: 2,
     backgroundColor: theme.colors.white,
     justifyContent: 'space-between',
   },
@@ -105,6 +109,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   iconStyle: {
-    marginRight: 20,
+    marginRight: 10,
   },
 });

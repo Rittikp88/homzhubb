@@ -6,7 +6,7 @@ import { Text, Label, TextFieldType } from '@homzhub/common/src/components';
 
 interface IButtonGroupProps {
   data: any;
-  onItemSelect: (item: IPropertyTypes | IPropertyDetailsData, id: string | number) => void;
+  onItemSelect: (id: string | number) => void;
   selectedIndex: number;
   textType: TextFieldType;
   textStyle?: StyleProp<TextStyle>;
@@ -20,18 +20,11 @@ interface IStateProps {
 
 const { width, height } = theme.viewport;
 const SCREEN_WIDTH = width < height ? width : height;
-let columns = 1;
-if (SCREEN_WIDTH <= 393) {
-  columns = 1;
-} else if (SCREEN_WIDTH > 393 && SCREEN_WIDTH <= 414) {
-  columns = 2;
-} else {
-  columns = 3;
-}
+const isSmallDevice = SCREEN_WIDTH <= 414;
 
 class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
   public state = {
-    numOfColumns: columns,
+    numOfColumns: isSmallDevice ? 2 : 3,
   };
 
   public render(): React.ReactElement {
@@ -63,7 +56,7 @@ class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
     const dataLength = data.length;
     const isSelected = index === selectedIndex;
     const conditionalStyle = createConditionalStyles(isSelected, dataLength);
-    const onItemPress = (): void => onItemSelect(item, index);
+    const onItemPress = (): void => onItemSelect(index);
     return (
       <TouchableOpacity onPress={onItemPress} style={[conditionalStyle.itemContainer, conditionalStyle.item]}>
         {superTitle && (
@@ -95,7 +88,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexDirection: 'row',
     marginTop: 15,
-    maxWidth: SCREEN_WIDTH,
   },
 });
 

@@ -22,7 +22,7 @@ const PropertyDetailsLocation = (props: Props): React.ReactElement => {
   return (
     <View style={styles.locationContainer}>
       <View style={styles.icon}>
-        <Icon name={icons.location} size={30} color={theme.colors.shadow} />
+        <Icon name={icons.locationMarker} size={30} color={theme.colors.darkTint5} />
       </View>
       <View style={styles.address}>
         <Label type="large" textType="semiBold">

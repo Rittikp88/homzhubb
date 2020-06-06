@@ -33,6 +33,12 @@ exports[`Property Details Item Component should render property details items co
         ],
         "id": 1,
         "name": "Residential",
+        "space_types": Array [
+          Object {
+            "id": 1,
+            "name": "Room",
+          },
+        ],
       },
       Object {
         "asset_types": Array [
@@ -55,6 +61,12 @@ exports[`Property Details Item Component should render property details items co
         ],
         "id": 2,
         "name": "Commercial",
+        "space_types": Array [
+          Object {
+            "id": 1,
+            "name": "Room",
+          },
+        ],
       },
     ]
   }
@@ -189,8 +201,10 @@ exports[`Property Details Item Component should render property details items co
               "propertyDetails": Object {
                 "areaUnit": "Area unit",
                 "carpetArea": "Carpet area",
+                "enterCarpetArea": "Enter carpet area",
                 "headerTitle": "Details",
                 "propertyType": "Property type",
+                "selectAreaUnit": "Select Area Unit",
                 "spaceAvailable": "Space available",
               },
               "propertyPost": Object {
@@ -201,7 +215,7 @@ exports[`Property Details Item Component should render property details items co
                 "description": "Let's add your first property on Homzhub",
                 "locationDetails": "Location Details",
                 "logoutHelperText": "If it's not you?",
-                "projectName": "Project Name",
+                "projectName": "Enter project Name",
                 "propertyAddedMsg": "Your Property is added to your Dashboard",
                 "saveLocation": "Save Location",
                 "searchProject": "Search for project or street name",
@@ -350,8 +364,10 @@ exports[`Property Details Item Component should render property details items co
             "propertyDetails": Object {
               "areaUnit": "Area unit",
               "carpetArea": "Carpet area",
+              "enterCarpetArea": "Enter carpet area",
               "headerTitle": "Details",
               "propertyType": "Property type",
+              "selectAreaUnit": "Select Area Unit",
               "spaceAvailable": "Space available",
             },
             "propertyPost": Object {
@@ -362,7 +378,7 @@ exports[`Property Details Item Component should render property details items co
               "description": "Let's add your first property on Homzhub",
               "locationDetails": "Location Details",
               "logoutHelperText": "If it's not you?",
-              "projectName": "Project Name",
+              "projectName": "Enter project Name",
               "propertyAddedMsg": "Your Property is added to your Dashboard",
               "saveLocation": "Save Location",
               "searchProject": "Search for project or street name",
@@ -513,8 +529,10 @@ exports[`Property Details Item Component should render property details items co
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -525,7 +543,7 @@ exports[`Property Details Item Component should render property details items co
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -658,8 +676,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -670,7 +690,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -816,8 +836,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -828,7 +850,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -966,8 +988,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -978,7 +1002,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -1078,8 +1102,10 @@ exports[`Property Details Item Component should render property details items co
               "propertyDetails": Object {
                 "areaUnit": "Area unit",
                 "carpetArea": "Carpet area",
+                "enterCarpetArea": "Enter carpet area",
                 "headerTitle": "Details",
                 "propertyType": "Property type",
+                "selectAreaUnit": "Select Area Unit",
                 "spaceAvailable": "Space available",
               },
               "propertyPost": Object {
@@ -1090,7 +1116,7 @@ exports[`Property Details Item Component should render property details items co
                 "description": "Let's add your first property on Homzhub",
                 "locationDetails": "Location Details",
                 "logoutHelperText": "If it's not you?",
-                "projectName": "Project Name",
+                "projectName": "Enter project Name",
                 "propertyAddedMsg": "Your Property is added to your Dashboard",
                 "saveLocation": "Save Location",
                 "searchProject": "Search for project or street name",
@@ -1224,8 +1250,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -1236,7 +1264,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -1374,8 +1402,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -1386,7 +1416,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -1543,8 +1573,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -1555,7 +1587,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -1688,8 +1720,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -1700,7 +1734,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -1845,8 +1879,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -1857,7 +1893,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -2002,8 +2038,10 @@ exports[`Property Details Item Component should render property details items co
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -2014,7 +2052,7 @@ exports[`Property Details Item Component should render property details items co
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -2147,8 +2185,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -2159,7 +2199,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -2305,8 +2345,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -2317,7 +2359,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -3361,8 +3403,10 @@ exports[`Property Details Item Component should render property details items co
             "propertyDetails": Object {
               "areaUnit": "Area unit",
               "carpetArea": "Carpet area",
+              "enterCarpetArea": "Enter carpet area",
               "headerTitle": "Details",
               "propertyType": "Property type",
+              "selectAreaUnit": "Select Area Unit",
               "spaceAvailable": "Space available",
             },
             "propertyPost": Object {
@@ -3373,7 +3417,7 @@ exports[`Property Details Item Component should render property details items co
               "description": "Let's add your first property on Homzhub",
               "locationDetails": "Location Details",
               "logoutHelperText": "If it's not you?",
-              "projectName": "Project Name",
+              "projectName": "Enter project Name",
               "propertyAddedMsg": "Your Property is added to your Dashboard",
               "saveLocation": "Save Location",
               "searchProject": "Search for project or street name",
@@ -3460,8 +3504,10 @@ exports[`Property Details Item Component should render property details items co
           "propertyDetails": Object {
             "areaUnit": "Area unit",
             "carpetArea": "Carpet area",
+            "enterCarpetArea": "Enter carpet area",
             "headerTitle": "Details",
             "propertyType": "Property type",
+            "selectAreaUnit": "Select Area Unit",
             "spaceAvailable": "Space available",
           },
           "propertyPost": Object {
@@ -3472,7 +3518,7 @@ exports[`Property Details Item Component should render property details items co
             "description": "Let's add your first property on Homzhub",
             "locationDetails": "Location Details",
             "logoutHelperText": "If it's not you?",
-            "projectName": "Project Name",
+            "projectName": "Enter project Name",
             "propertyAddedMsg": "Your Property is added to your Dashboard",
             "saveLocation": "Save Location",
             "searchProject": "Search for project or street name",
@@ -3603,8 +3649,10 @@ exports[`Property Details Item Component should render property details items co
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -3615,7 +3663,7 @@ exports[`Property Details Item Component should render property details items co
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -3748,8 +3796,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -3760,7 +3810,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -3906,8 +3956,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -3918,7 +3970,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -4056,8 +4108,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -4068,7 +4122,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -4218,8 +4272,10 @@ exports[`Property Details Item Component should render property details items co
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -4230,7 +4286,7 @@ exports[`Property Details Item Component should render property details items co
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -4368,8 +4424,10 @@ exports[`Property Details Item Component should render property details items co
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -4380,7 +4438,7 @@ exports[`Property Details Item Component should render property details items co
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -4537,8 +4595,10 @@ exports[`Property Details Item Component should render property details items co
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -4549,7 +4609,7 @@ exports[`Property Details Item Component should render property details items co
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -4682,8 +4742,10 @@ exports[`Property Details Item Component should render property details items co
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -4694,7 +4756,7 @@ exports[`Property Details Item Component should render property details items co
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -4839,8 +4901,10 @@ exports[`Property Details Item Component should render property details items co
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -4851,7 +4915,7 @@ exports[`Property Details Item Component should render property details items co
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -4996,8 +5060,10 @@ exports[`Property Details Item Component should render property details items co
                         "propertyDetails": Object {
                           "areaUnit": "Area unit",
                           "carpetArea": "Carpet area",
+                          "enterCarpetArea": "Enter carpet area",
                           "headerTitle": "Details",
                           "propertyType": "Property type",
+                          "selectAreaUnit": "Select Area Unit",
                           "spaceAvailable": "Space available",
                         },
                         "propertyPost": Object {
@@ -5008,7 +5074,7 @@ exports[`Property Details Item Component should render property details items co
                           "description": "Let's add your first property on Homzhub",
                           "locationDetails": "Location Details",
                           "logoutHelperText": "If it's not you?",
-                          "projectName": "Project Name",
+                          "projectName": "Enter project Name",
                           "propertyAddedMsg": "Your Property is added to your Dashboard",
                           "saveLocation": "Save Location",
                           "searchProject": "Search for project or street name",
@@ -5141,8 +5207,10 @@ exports[`Property Details Item Component should render property details items co
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -5153,7 +5221,7 @@ exports[`Property Details Item Component should render property details items co
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -5299,8 +5367,10 @@ exports[`Property Details Item Component should render property details items co
                       "propertyDetails": Object {
                         "areaUnit": "Area unit",
                         "carpetArea": "Carpet area",
+                        "enterCarpetArea": "Enter carpet area",
                         "headerTitle": "Details",
                         "propertyType": "Property type",
+                        "selectAreaUnit": "Select Area Unit",
                         "spaceAvailable": "Space available",
                       },
                       "propertyPost": Object {
@@ -5311,7 +5381,7 @@ exports[`Property Details Item Component should render property details items co
                         "description": "Let's add your first property on Homzhub",
                         "locationDetails": "Location Details",
                         "logoutHelperText": "If it's not you?",
-                        "projectName": "Project Name",
+                        "projectName": "Enter project Name",
                         "propertyAddedMsg": "Your Property is added to your Dashboard",
                         "saveLocation": "Save Location",
                         "searchProject": "Search for project or street name",
@@ -6355,8 +6425,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -6367,7 +6439,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -6455,8 +6527,10 @@ exports[`Property Details Item Component should render property details items co
               "propertyDetails": Object {
                 "areaUnit": "Area unit",
                 "carpetArea": "Carpet area",
+                "enterCarpetArea": "Enter carpet area",
                 "headerTitle": "Details",
                 "propertyType": "Property type",
+                "selectAreaUnit": "Select Area Unit",
                 "spaceAvailable": "Space available",
               },
               "propertyPost": Object {
@@ -6467,7 +6541,7 @@ exports[`Property Details Item Component should render property details items co
                 "description": "Let's add your first property on Homzhub",
                 "locationDetails": "Location Details",
                 "logoutHelperText": "If it's not you?",
-                "projectName": "Project Name",
+                "projectName": "Enter project Name",
                 "propertyAddedMsg": "Your Property is added to your Dashboard",
                 "saveLocation": "Save Location",
                 "searchProject": "Search for project or street name",
@@ -6601,8 +6675,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -6613,7 +6689,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -6751,8 +6827,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -6763,7 +6841,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -6914,8 +6992,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -6926,7 +7006,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -7059,8 +7139,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -7071,7 +7153,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -7217,8 +7299,10 @@ exports[`Property Details Item Component should render property details items co
                 "propertyDetails": Object {
                   "areaUnit": "Area unit",
                   "carpetArea": "Carpet area",
+                  "enterCarpetArea": "Enter carpet area",
                   "headerTitle": "Details",
                   "propertyType": "Property type",
+                  "selectAreaUnit": "Select Area Unit",
                   "spaceAvailable": "Space available",
                 },
                 "propertyPost": Object {
@@ -7229,7 +7313,7 @@ exports[`Property Details Item Component should render property details items co
                   "description": "Let's add your first property on Homzhub",
                   "locationDetails": "Location Details",
                   "logoutHelperText": "If it's not you?",
-                  "projectName": "Project Name",
+                  "projectName": "Enter project Name",
                   "propertyAddedMsg": "Your Property is added to your Dashboard",
                   "saveLocation": "Save Location",
                   "searchProject": "Search for project or street name",
@@ -7367,8 +7451,10 @@ exports[`Property Details Item Component should render property details items co
               "propertyDetails": Object {
                 "areaUnit": "Area unit",
                 "carpetArea": "Carpet area",
+                "enterCarpetArea": "Enter carpet area",
                 "headerTitle": "Details",
                 "propertyType": "Property type",
+                "selectAreaUnit": "Select Area Unit",
                 "spaceAvailable": "Space available",
               },
               "propertyPost": Object {
@@ -7379,7 +7465,7 @@ exports[`Property Details Item Component should render property details items co
                 "description": "Let's add your first property on Homzhub",
                 "locationDetails": "Location Details",
                 "logoutHelperText": "If it's not you?",
-                "projectName": "Project Name",
+                "projectName": "Enter project Name",
                 "propertyAddedMsg": "Your Property is added to your Dashboard",
                 "saveLocation": "Save Location",
                 "searchProject": "Search for project or street name",
@@ -7522,8 +7608,10 @@ exports[`Property Details Item Component should render property details items co
                     "propertyDetails": Object {
                       "areaUnit": "Area unit",
                       "carpetArea": "Carpet area",
+                      "enterCarpetArea": "Enter carpet area",
                       "headerTitle": "Details",
                       "propertyType": "Property type",
+                      "selectAreaUnit": "Select Area Unit",
                       "spaceAvailable": "Space available",
                     },
                     "propertyPost": Object {
@@ -7534,7 +7622,7 @@ exports[`Property Details Item Component should render property details items co
                       "description": "Let's add your first property on Homzhub",
                       "locationDetails": "Location Details",
                       "logoutHelperText": "If it's not you?",
-                      "projectName": "Project Name",
+                      "projectName": "Enter project Name",
                       "propertyAddedMsg": "Your Property is added to your Dashboard",
                       "saveLocation": "Save Location",
                       "searchProject": "Search for project or street name",
@@ -7667,8 +7755,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -7679,7 +7769,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -7825,8 +7915,10 @@ exports[`Property Details Item Component should render property details items co
                   "propertyDetails": Object {
                     "areaUnit": "Area unit",
                     "carpetArea": "Carpet area",
+                    "enterCarpetArea": "Enter carpet area",
                     "headerTitle": "Details",
                     "propertyType": "Property type",
+                    "selectAreaUnit": "Select Area Unit",
                     "spaceAvailable": "Space available",
                   },
                   "propertyPost": Object {
@@ -7837,7 +7929,7 @@ exports[`Property Details Item Component should render property details items co
                     "description": "Let's add your first property on Homzhub",
                     "locationDetails": "Location Details",
                     "logoutHelperText": "If it's not you?",
-                    "projectName": "Project Name",
+                    "projectName": "Enter project Name",
                     "propertyAddedMsg": "Your Property is added to your Dashboard",
                     "saveLocation": "Save Location",
                     "searchProject": "Search for project or street name",
@@ -8881,8 +8973,10 @@ exports[`Property Details Item Component should render property details items co
             "propertyDetails": Object {
               "areaUnit": "Area unit",
               "carpetArea": "Carpet area",
+              "enterCarpetArea": "Enter carpet area",
               "headerTitle": "Details",
               "propertyType": "Property type",
+              "selectAreaUnit": "Select Area Unit",
               "spaceAvailable": "Space available",
             },
             "propertyPost": Object {
@@ -8893,7 +8987,7 @@ exports[`Property Details Item Component should render property details items co
               "description": "Let's add your first property on Homzhub",
               "locationDetails": "Location Details",
               "logoutHelperText": "If it's not you?",
-              "projectName": "Project Name",
+              "projectName": "Enter project Name",
               "propertyAddedMsg": "Your Property is added to your Dashboard",
               "saveLocation": "Save Location",
               "searchProject": "Search for project or street name",

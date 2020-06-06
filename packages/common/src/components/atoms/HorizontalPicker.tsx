@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import SmoothPicker from 'react-native-smooth-picker';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
@@ -13,6 +13,11 @@ interface IItemProps {
 interface IItem {
   item: number;
   index: number;
+}
+
+interface IProps {
+  value: number;
+  onValueChange: (index: string | number) => void;
 }
 
 const data = [...Array(10).keys()];
@@ -40,17 +45,13 @@ const ItemToRender = ({ item, index }: IItem, indexSelected: number): React.Reac
 
 const keyExtractor = (item: number, index: number): string => index.toString();
 
-const HorizontalPicker = (): React.ReactElement => {
-  const [selected, setSelected] = useState(5);
-  const refPicker: React.MutableRefObject<FlatList | null> = useRef(null);
+const HorizontalPicker = (props: IProps): React.ReactElement => {
+  const { onValueChange, value } = props;
+  const [selected, setSelected] = useState(value);
 
   const handleChange = (index: number): void => {
     setSelected(index);
-    refPicker?.current?.scrollToIndex({
-      animated: true,
-      index,
-      viewOffset: -30,
-    });
+    onValueChange(index);
   };
 
   return (
@@ -58,14 +59,11 @@ const HorizontalPicker = (): React.ReactElement => {
       <SmoothPicker
         data={data}
         initialScrollToIndex={selected}
-        refFlatList={refPicker}
         keyExtractor={keyExtractor}
         horizontal
-        scrollAnimation
         showsHorizontalScrollIndicator={false}
         onSelected={({ item, index }: IItem): void => handleChange(index)}
         renderItem={(option: IItem): React.ReactElement => ItemToRender(option, selected)}
-        magnet
       />
     </View>
   );

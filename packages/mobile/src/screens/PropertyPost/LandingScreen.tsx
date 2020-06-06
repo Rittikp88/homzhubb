@@ -38,10 +38,16 @@ class LandingScreen extends React.PureComponent<Props, {}> {
             <Text type="regular" textType="semiBold">
               {t('propertyPost:welcomeUser', { username: user?.full_name ?? '' })}
             </Text>
-            <Text type="small" textType="regular">
+            <Text type="small" textType="regular" style={styles.description}>
               {t('propertyPost:description')}
             </Text>
-            <SVGUri width="90%" height="50%" uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg" />
+            <SVGUri
+              width={295}
+              height={133}
+              viewBox="0 0 295 133"
+              preserveAspectRatio="xMidYMid meet"
+              uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg"
+            />
             <Label type="regular" textType="regular">
               {t('propertyPost:searchProject')}
             </Label>
@@ -59,9 +65,8 @@ class LandingScreen extends React.PureComponent<Props, {}> {
                 {t('common:logout')}
               </Label>
             </Label>
-            {/* TODO: to be removed once post property api integration is done */}
-            <Label type="small" textType="bold" style={styles.logout} onPress={this.navigateToRentServices}>
-              Rent Services
+            <Label type="large" textType="bold" style={styles.logout} onPress={this.propertyDetails}>
+              Property details
             </Label>
           </View>
         </View>
@@ -76,6 +81,17 @@ class LandingScreen extends React.PureComponent<Props, {}> {
     navigate(ScreensKeys.SearchPropertyOwner);
   };
 
+  public propertyDetails = (): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.PropertyDetailsScreen, {
+      propertyId: 1,
+      primaryAddress: 'Address A',
+      secondaryAddress: 'Address B',
+    });
+  };
+
   public logout = async (): Promise<void> => {
     const { logout } = this.props;
     const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
@@ -87,18 +103,6 @@ class LandingScreen extends React.PureComponent<Props, {}> {
       refresh_token,
     };
     logout(logoutPayload);
-  };
-
-  // TODO: to be removed once gmaps integration is present
-  public navigateToPropertyDetails = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.PropertyDetailsScreen);
-  };
-
-  // TODO: to be removed once post property api integration is done
-  public navigateToRentServices = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.RentServicesScreen);
   };
 }
 
@@ -136,13 +140,18 @@ const styles = StyleSheet.create({
     shadowRadius: 13.16,
     elevation: 20,
     width: theme.viewport.width,
+    maxHeight: theme.viewport.height - 100,
     borderRadius: 8,
     margin: theme.layout.screenPadding,
     paddingHorizontal: theme.layout.screenPadding,
   },
   imagesContainer: {
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    flex: 0.9,
+  },
+  description: {
+    textAlign: 'center',
   },
   buttonContainer: {
     justifyContent: 'space-around',

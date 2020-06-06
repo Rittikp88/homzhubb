@@ -7,6 +7,7 @@ export interface IPropertyDetailsData {
   id: string | number;
   name: string;
   asset_types: IPropertyTypes[];
+  space_types: IPropertyTypes[];
 }
 
 export interface IRentServiceList {

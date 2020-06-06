@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Carousel should match snapshot 1`] = `
-<Fragment>
+<View>
   <Carousel
     activeAnimationOptions={null}
     activeAnimationType="timing"
@@ -90,5 +90,5 @@ exports[`Carousel should match snapshot 1`] = `
     tappableDots={false}
     vertical={false}
   />
-</Fragment>
+</View>
 `;

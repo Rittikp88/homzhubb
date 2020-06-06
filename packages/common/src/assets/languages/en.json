@@ -81,7 +81,6 @@
     "blockNo": "Block No.",
     "saveLocation": "Save Location",
     "setLocation": "Set Location",
-    "projectName": "Project Name",
     "locationDetails": "Location Details"
   },
   "propertyDetails": {
@@ -89,6 +88,8 @@
     "propertyType": "Property type",
     "spaceAvailable": "Space available",
     "carpetArea": "Carpet area",
-    "areaUnit": "Area unit"
+    "enterCarpetArea": "Enter carpet area",
+    "areaUnit": "Area unit",
+    "selectAreaUnit": "Select Area Unit"
   }
 }

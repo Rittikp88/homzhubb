@@ -20,7 +20,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* homzhubTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* homzhubTests.m */; };
 		3CE0B25D5D2242B9A4ACD16F /* Raleway-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91EB2EB3156A4550A4A5A313 /* Raleway-Light.ttf */; };
 		485FB185D000453CA281FC32 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E34190D8490D46B08059F25B /* Raleway-Bold.ttf */; };
-		5150A870C2DC4D4DBBF5C96B /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 378244B61A3F4ED0B70EA077 /* icomoon.ttf */; };
 		8564E5F6117C4F70AA50FD44 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A04799508A8C4BD789AA5913 /* OpenSans-Light.ttf */; };
 		970565415EAE458C8CC2587D /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8492EB7400E45288F69B5DA /* OpenSans-Bold.ttf */; };
 		A1B57CC04BC44394B448A2AE /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9683A370CCFB4BE9814CAA71 /* OpenSans-Regular.ttf */; };
@@ -98,7 +97,6 @@
 		2D02E47B1E0B4A5D006451C7 /* homzhub-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "homzhub-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* homzhub-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "homzhub-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35C9381915564BBDA4C55CC6 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../../common/src/assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		378244B61A3F4ED0B70EA077 /* icomoon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.ttf; path = ../../common/src/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		38A5CFF8ED7045348B9F6D99 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		400139C0843A029E1314342A /* libPods-homzhub-homzhubTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-homzhub-homzhubTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE19622E89A68F902597012 /* libPods-homzhub-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-homzhub-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,7 +295,6 @@
 				91EB2EB3156A4550A4A5A313 /* Raleway-Light.ttf */,
 				BF7AB555DA614F1CAC96AA3E /* Raleway-Medium.ttf */,
 				2AA5DB1BADC34556BB91B00D /* fonts.ts */,
-				378244B61A3F4ED0B70EA077 /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -641,7 +638,6 @@
 				3CE0B25D5D2242B9A4ACD16F /* Raleway-Light.ttf in Resources */,
 				15882547F49946668123D15D /* Raleway-Medium.ttf in Resources */,
 				BE5A72445A0D406196536C66 /* fonts.ts in Resources */,
-				5150A870C2DC4D4DBBF5C96B /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

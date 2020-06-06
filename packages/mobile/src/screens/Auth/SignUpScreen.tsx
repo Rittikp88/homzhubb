@@ -94,39 +94,31 @@ class SignUpScreen extends Component<Props, ISignUpState> {
   private validateUser = (formData: ISignUpPayload): void => {
     const { t } = this.props;
     const phone = `${formData.country_code}~${formData.phone_number}`;
-    try {
-      UserService.checkEmailExists(formData.email)
-        .then((res: any) => {
-          if (res && res.is_exists) {
-            AlertHelper.error({ message: t('auth:emailAlreadyExists') });
-            this.setState({ isNewUser: false });
-          } else {
-            this.setState({ isNewUser: true });
-          }
-        })
-        .catch((e: any) => {
-          AlertHelper.error({ message: e });
-        });
-    } catch (e) {
-      AlertHelper.error({ message: e });
-    }
+    UserService.checkEmailExists(formData.email)
+      .then((res: any) => {
+        if (res && res.is_exists) {
+          AlertHelper.error({ message: t('auth:emailAlreadyExists') });
+          this.setState({ isNewUser: false });
+        } else {
+          this.setState({ isNewUser: true });
+        }
+      })
+      .catch((e: any) => {
+        AlertHelper.error({ message: e });
+      });
 
-    try {
-      UserService.checkPhoneNumberExists(phone)
-        .then((res: any) => {
-          if (res && res.is_exists) {
-            AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
-            this.setState({ isNewUser: false });
-          } else {
-            this.setState({ isNewUser: true });
-          }
-        })
-        .catch((e: any) => {
-          AlertHelper.error({ message: e });
-        });
-    } catch (e) {
-      AlertHelper.error({ message: e });
-    }
+    UserService.checkPhoneNumberExists(phone)
+      .then((res: any) => {
+        if (res && res.is_exists) {
+          AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
+          this.setState({ isNewUser: false });
+        } else {
+          this.setState({ isNewUser: true });
+        }
+      })
+      .catch((e: any) => {
+        AlertHelper.error({ message: e });
+      });
   };
 }
 

@@ -16,6 +16,31 @@ export enum OtpTypes {
   EMAIL = 'EMAIL',
 }
 
+export enum SpaceAvailableTypes {
+  BATHROOM = 'Bathroom',
+  BEDROOM = 'Bedroom',
+  TOTAL_FLOORS = 'Total Floors',
+  FLOOR_NUMBER = 'Floor number',
+  BALCONY = 'Balcony',
+}
+
+export interface ISpaceAvailable {
+  bedroom: number;
+  bathroom: number;
+  balcony: number;
+  floorNumber: number;
+  totalFloors: number;
+  carpetArea: string;
+  areaUnit: string;
+}
+
+export interface ISpaceAvailablePayload {
+  id: string | number;
+  name?: string;
+  value?: number;
+  count?: number;
+}
+
 export interface ISignUpPayload {
   full_name: string;
   email: string;
@@ -122,4 +147,18 @@ export interface ICreateAssetDetails {
 
 export interface ICreateAssetResult {
   id: number;
+}
+
+export interface IUpdateAssetDetails {
+  project_name?: string;
+  unit_number?: string;
+  block_number?: string;
+  latitude?: string;
+  longitude?: string;
+  carpet_area?: string;
+  carpet_area_unit?: string;
+  floor_number?: number;
+  total_floors?: number;
+  asset_type?: number;
+  spaces?: ISpaceAvailablePayload[];
 }
