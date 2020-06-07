@@ -103,6 +103,6 @@ const createConditionalStyles = (isSelected: boolean, dataLength: number): any =
     borderColor: theme.colors.disabled,
     borderWidth: 1,
     padding: dataLength <= 2 ? 10 : 8,
-    margin: 5,
+    margin: 3,
   },
 });

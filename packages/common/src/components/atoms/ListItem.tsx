@@ -21,7 +21,7 @@ export const ListItem = (props: IListItemProps): React.ReactElement => {
         <Text type="small" style={styles.item}>
           {listItem.label}
         </Text>
-        {isCheck && <Icon name={icons.check} size={16} color={theme.colors.primaryColor} />}
+        {isCheck && <Icon name={icons.checkFilled} size={16} color={theme.colors.primaryColor} />}
       </TouchableOpacity>
       <Divider />
     </View>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, StyleProp, ViewStyle, PickerItemProps, View, ImageStyle } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components';
@@ -68,7 +69,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
         <BottomSheetListView
           // @ts-ignore
           data={data}
-          selectedValue={selectedItem ? selectedItem.label : ''}
+          selectedValue={selectedItem ? selectedItem.value : ''}
           listTitle={listTitle ?? 'Select From here'}
           isBottomSheetVisible={dropdownVisible}
           onCloseDropDown={this.onCancel}
@@ -100,13 +101,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: theme.colors.disabled,
     borderWidth: 1,
-    paddingVertical: 2,
     backgroundColor: theme.colors.white,
     justifyContent: 'space-between',
+    height: PlatformUtils.isIOS() ? 43 : 53,
   },
   titleText: {
     flex: 1,
     textAlign: 'left',
+    marginTop: 7,
+    marginLeft: 16,
   },
   iconStyle: {
     marginRight: 10,
