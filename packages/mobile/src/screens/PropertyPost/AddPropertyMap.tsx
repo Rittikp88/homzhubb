@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { LatLng, MapEvent, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { FormikActions, FormikValues } from 'formik';
@@ -57,7 +57,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
     const { t } = this.props;
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         {this.renderHeader()}
         <MapView
           ref={(mapRef): void => {
@@ -82,7 +82,7 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
           />
         </WithShadowView>
         {this.renderBottomSheet()}
-      </SafeAreaView>
+      </View>
     );
   }
 
