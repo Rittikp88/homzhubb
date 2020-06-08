@@ -79,26 +79,29 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
     const { socialMediaItems, isFromLogin, t } = this.props;
     const titlePrefix = isFromLogin ? t('auth:socialButtonPrefixLogin') : t('auth:socialButtonPrefixSignUp');
 
-    return socialMediaItems.map((socialMedia) => {
-      const initiateSocialLogin = async (): Promise<void> => {
-        await this.initiateSocialLogin(socialMedia);
-      };
+    return (
+      socialMediaItems &&
+      socialMediaItems.map((socialMedia) => {
+        const initiateSocialLogin = async (): Promise<void> => {
+          await this.initiateSocialLogin(socialMedia);
+        };
 
-      return (
-        <Button
-          title={`${titlePrefix}${socialMedia.description}`}
-          type="secondary"
-          onPress={initiateSocialLogin}
-          containerStyle={styles.socialMedia}
-          textType="label"
-          textSize="large"
-          image={this.getImageUrlForLib(socialMedia)}
-          imageStyle={styles.imageStyle}
-          titleStyle={styles.buttonText}
-          key={socialMedia.provider}
-        />
-      );
-    });
+        return (
+          <Button
+            title={`${titlePrefix}${socialMedia.description}`}
+            type="secondary"
+            onPress={initiateSocialLogin}
+            containerStyle={styles.socialMedia}
+            textType="label"
+            textSize="large"
+            image={this.getImageUrlForLib(socialMedia)}
+            imageStyle={styles.imageStyle}
+            titleStyle={styles.buttonText}
+            key={socialMedia.provider}
+          />
+        );
+      })
+    );
   };
 
   private onSocialMediaLoginSuccess = async (userData: any): Promise<void> => {

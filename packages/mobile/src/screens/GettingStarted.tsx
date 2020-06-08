@@ -14,8 +14,8 @@ class GettingStarted extends React.PureComponent<IProps> {
     const { t } = this.props;
     return (
       <View style={styles.container}>
-        <Image source={images.gettingStarted} style={styles.imageAndText} />
-        <Text type="regular" textType="semiBold" style={styles.imageAndText}>
+        <Image source={images.gettingStarted} style={styles.image} />
+        <Text type="regular" textType="semiBold" style={styles.header}>
           {t('header')}
         </Text>
         <View style={styles.buttonContainer}>
@@ -27,7 +27,7 @@ class GettingStarted extends React.PureComponent<IProps> {
             onPress={this.getStarted}
           />
           <Button title={t('login')} type="secondary" containerStyle={styles.login} onPress={this.login} />
-          <Label type="large" textType="regular" style={styles.imageAndText}>
+          <Label type="large" textType="regular" style={styles.image}>
             {t('newAroundHere')} &nbsp;
             <Label type="large" textType="bold" style={styles.signUpLink} onPress={this.navigateToSignUp}>
               {t('signUp')}
@@ -53,10 +53,8 @@ class GettingStarted extends React.PureComponent<IProps> {
     navigation.navigate(ScreensKeys.SignUp);
   };
 }
-
 const HOC = withTranslation()(GettingStarted);
 export { HOC as GettingStarted };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -64,8 +62,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: theme.layout.screenPadding,
   },
-  imageAndText: {
+  image: {
     alignSelf: 'center',
+  },
+  header: {
+    textAlign: 'center',
+    lineHeight: 30,
   },
   buttonContainer: {
     alignItems: 'stretch',

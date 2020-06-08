@@ -1,8 +1,8 @@
 import React from 'react';
-import { SafeAreaView, TouchableOpacity, FlatList, StyleSheet, StyleProp, TextStyle } from 'react-native';
-import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
+import { TouchableOpacity, StyleSheet, StyleProp, TextStyle, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label, TextFieldType } from '@homzhub/common/src/components';
+import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 
 interface IButtonGroupProps {
   data: any;
@@ -14,44 +14,20 @@ interface IButtonGroupProps {
   title?: string;
 }
 
-interface IStateProps {
-  numOfColumns: number;
-}
-
-const { width, height } = theme.viewport;
-const SCREEN_WIDTH = width < height ? width : height;
-const isSmallDevice = SCREEN_WIDTH <= 414;
-
-class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
-  public state = {
-    numOfColumns: isSmallDevice ? 2 : 3,
-  };
-
+class ItemGroup extends React.PureComponent<IButtonGroupProps> {
   public render(): React.ReactElement {
-    const { data, selectedIndex } = this.props;
-    const { numOfColumns } = this.state;
+    const { data } = this.props;
     return (
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={data}
-          renderItem={this.renderItem}
-          numColumns={numOfColumns}
-          key={numOfColumns}
-          // @ts-ignore
-          keyExtractor={this.keyExtractor}
-          extraData={data?.[selectedIndex] ?? []}
-        />
-      </SafeAreaView>
+      <View style={styles.container}>
+        {data &&
+          data.map((item: IPropertyDetailsData | IPropertyTypes, index: number) => {
+            return this.renderItem(item, index);
+          })}
+      </View>
     );
   }
 
-  public renderItem = ({
-    item,
-    index,
-  }: {
-    item: IPropertyTypes | IPropertyDetailsData;
-    index: number;
-  }): React.ReactElement => {
+  public renderItem = (item: IPropertyDetailsData | IPropertyTypes, index: number): React.ReactElement => {
     const { selectedIndex, onItemSelect, textStyle, superTitle, textType, data } = this.props;
     const dataLength = data.length;
     const isSelected = index === selectedIndex;
@@ -76,8 +52,6 @@ class ItemGroup extends React.PureComponent<IButtonGroupProps, IStateProps> {
       </TouchableOpacity>
     );
   };
-
-  public keyExtractor = (item: IPropertyTypes, index: number): string | number => item.id;
 }
 
 export default ItemGroup;
@@ -86,6 +60,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 0,
     flexGrow: 1,
+    flexWrap: 'wrap',
     flexDirection: 'row',
     marginTop: 15,
   },

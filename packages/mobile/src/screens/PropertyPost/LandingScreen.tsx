@@ -5,16 +5,16 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
-import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
-import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { IUser } from '@homzhub/common/src/domain/models/User';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
+import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Text, Label, Button, SVGUri } from '@homzhub/common/src/components';
+import { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
-import { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IStateProps {
   user: IUser | null;
@@ -65,9 +65,6 @@ class LandingScreen extends React.PureComponent<Props, {}> {
                 {t('common:logout')}
               </Label>
             </Label>
-            <Label type="large" textType="bold" style={styles.logout} onPress={this.propertyDetails}>
-              Property details
-            </Label>
           </View>
         </View>
       </GradientBackground>
@@ -79,17 +76,6 @@ class LandingScreen extends React.PureComponent<Props, {}> {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.SearchPropertyOwner);
-  };
-
-  public propertyDetails = (): void => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate(ScreensKeys.PropertyDetailsScreen, {
-      propertyId: 1,
-      primaryAddress: 'Address A',
-      secondaryAddress: 'Address B',
-    });
   };
 
   public logout = async (): Promise<void> => {

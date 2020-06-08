@@ -202,6 +202,7 @@ const customizedStyles = (isSelect: boolean): any => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderColor: isSelect ? theme.colors.primaryColor : theme.colors.disabled,
+    alignItems: 'center',
     borderRadius: 4,
     borderWidth: 1,
     padding: 16,
