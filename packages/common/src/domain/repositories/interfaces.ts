@@ -141,8 +141,8 @@ export interface ICreateAssetDetails {
   project_name: string;
   unit_number: string;
   block_number: string;
-  latitude: string;
-  longitude: string;
+  latitude: string | number;
+  longitude: string | number;
 }
 
 export interface ICreateAssetResult {

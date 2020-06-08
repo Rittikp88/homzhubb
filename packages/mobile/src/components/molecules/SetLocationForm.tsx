@@ -44,7 +44,7 @@ const SetLocationForm = (props: IProps): React.ReactElement => {
                 name="projectName"
                 label={t('projectName')}
                 inputType="default"
-                maxLength={80}
+                maxLength={200}
                 numberOfLines={1}
                 placeholder={t('projectNamePlaceholder')}
                 formProps={formProps}

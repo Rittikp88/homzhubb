@@ -6,7 +6,6 @@ import { Geolocation } from './index';
 const defaultPositionOptions: GeolocationOptions = {
   enableHighAccuracy: true,
   timeout: 5000,
-  maximumAge: 0,
 };
 
 class GeolocationService {

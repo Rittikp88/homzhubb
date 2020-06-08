@@ -5,6 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { OnBoardingActions } from '@homzhub/common/src/modules/onboarding/actions';
 import { OnboardingSelector } from '@homzhub/common/src/modules/onboarding/selectors';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 import { Button, Label, Text } from '@homzhub/common/src/components/';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -20,6 +21,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   getOnBoardingDetail: () => void;
+  updateOnBoarding: (isOnBoardingCompleted: boolean) => void;
 }
 
 interface IOnBoardingScreenState {
@@ -102,7 +104,8 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
   };
 
   public navigateToGettingStarted = async (): Promise<void> => {
-    const { navigation } = this.props;
+    const { navigation, updateOnBoarding } = this.props;
+    updateOnBoarding(true);
     await StorageService.set(StorageKeys.IS_ONBOARDING_COMPLETED, true);
     navigation.navigate(ScreensKeys.GettingStarted);
   };
@@ -158,9 +161,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getOnBoardingDetail } = OnBoardingActions;
+  const { updateOnBoarding } = UserActions;
   return bindActionCreators(
     {
       getOnBoardingDetail,
+      updateOnBoarding,
     },
     dispatch
   );

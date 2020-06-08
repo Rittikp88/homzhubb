@@ -5,6 +5,7 @@ import MapView, { LatLng, MapEvent, Marker, PROVIDER_GOOGLE } from 'react-native
 import { FormikActions, FormikValues } from 'formik';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { MathUtils } from '@homzhub/common/src/utils/MathUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -195,11 +196,11 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
 
     try {
       const requestBody: ICreateAssetDetails = {
-        block_number: values.blockNo,
+        block_number: values.blockNo || '',
         unit_number: values.unitNo,
         project_name: values.projectName,
-        latitude: latitude.toString(),
-        longitude: longitude.toString(),
+        latitude: MathUtils.roundToDecimal(latitude, 8),
+        longitude: MathUtils.roundToDecimal(longitude, 7),
       };
       const property = await PropertyRepository.createAsset(requestBody);
       const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(values.projectName);
