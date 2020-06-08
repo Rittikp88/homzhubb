@@ -28,7 +28,7 @@ const SetLocationForm = (props: IProps): React.ReactElement => {
   }> => {
     return yup.object().shape({
       projectName: yup.string().required(t('projectNameRequired')),
-      unitNo: yup.string().matches(FormUtils.digitRegex, t('common:onlyNumeric')).required(t('unitNoRequired')),
+      unitNo: yup.string().required(t('unitNoRequired')),
       blockNo: yup.string(),
     });
   };
@@ -44,7 +44,8 @@ const SetLocationForm = (props: IProps): React.ReactElement => {
                 name="projectName"
                 label={t('projectName')}
                 inputType="default"
-                maxLength={100}
+                maxLength={80}
+                numberOfLines={1}
                 placeholder={t('projectNamePlaceholder')}
                 formProps={formProps}
               />
@@ -54,6 +55,7 @@ const SetLocationForm = (props: IProps): React.ReactElement => {
                     name="unitNo"
                     label={t('unitNo')}
                     maxLength={10}
+                    numberOfLines={1}
                     inputType="default"
                     formProps={formProps}
                   />
@@ -62,7 +64,8 @@ const SetLocationForm = (props: IProps): React.ReactElement => {
                   <FormTextInput
                     name="blockNo"
                     label={t('blockNo')}
-                    maxLength={20}
+                    maxLength={10}
+                    numberOfLines={1}
                     inputType="default"
                     formProps={formProps}
                   />

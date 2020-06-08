@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { LatLng, MapEvent, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { FormikActions, FormikValues } from 'formik';
@@ -190,6 +190,9 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
       markerLatLng: { longitude, latitude },
     } = this.state;
 
+    this.onClose();
+    Keyboard.dismiss();
+
     try {
       const requestBody: ICreateAssetDetails = {
         block_number: values.blockNo,
@@ -200,7 +203,6 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
       };
       const property = await PropertyRepository.createAsset(requestBody);
       const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(values.projectName);
-      this.onClose();
       navigate(ScreensKeys.PropertyDetailsScreen, {
         propertyId: property.id,
         primaryAddress,
