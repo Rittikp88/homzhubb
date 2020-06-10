@@ -12,8 +12,8 @@ exports[`Dropdown should match snapshot 1`] = `
         "borderWidth": 1,
         "flex": 1,
         "flexDirection": "row",
+        "height": 43,
         "justifyContent": "space-between",
-        "paddingVertical": 2,
       }
     }
     icon="down-arrow-filled"
@@ -35,6 +35,8 @@ exports[`Dropdown should match snapshot 1`] = `
       Array [
         Object {
           "flex": 1,
+          "marginLeft": 16,
+          "marginTop": 7,
           "textAlign": "left",
         },
         Object {},
@@ -106,7 +108,7 @@ exports[`Dropdown should match snapshot 1`] = `
     listTitle="Select From here"
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
-    selectedValue="India (+91)"
+    selectedValue="+91"
   />
 </View>
 `;
@@ -123,8 +125,8 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
         "borderWidth": 1,
         "flex": 1,
         "flexDirection": "row",
+        "height": 43,
         "justifyContent": "space-between",
-        "paddingVertical": 2,
       }
     }
     icon="down-arrow-filled"
@@ -146,6 +148,8 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
       Array [
         Object {
           "flex": 1,
+          "marginLeft": 16,
+          "marginTop": 7,
           "textAlign": "left",
         },
         Object {},
@@ -217,7 +221,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
     listTitle="Select From here"
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
-    selectedValue="India (+91)"
+    selectedValue="+91"
   />
 </View>
 `;

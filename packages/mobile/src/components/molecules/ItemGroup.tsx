@@ -34,7 +34,11 @@ class ItemGroup extends React.PureComponent<IButtonGroupProps> {
     const conditionalStyle = createConditionalStyles(isSelected, dataLength);
     const onItemPress = (): void => onItemSelect(index);
     return (
-      <TouchableOpacity onPress={onItemPress} style={[conditionalStyle.itemContainer, conditionalStyle.item]}>
+      <TouchableOpacity
+        onPress={onItemPress}
+        style={[conditionalStyle.itemContainer, conditionalStyle.item]}
+        key={index}
+      >
         {superTitle && (
           <Label type="regular" textType="regular" style={[textStyle, conditionalStyle.itemContainer]}>
             {superTitle}
@@ -77,7 +81,7 @@ const createConditionalStyles = (isSelected: boolean, dataLength: number): any =
     borderRadius: 8,
     borderColor: theme.colors.disabled,
     borderWidth: 1,
-    padding: dataLength <= 2 ? 10 : 8,
-    margin: 3,
+    padding: 10,
+    margin: 8,
   },
 });

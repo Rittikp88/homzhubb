@@ -136,9 +136,14 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
   };
 
   public onPropertyGroupChange = async (index: string | number): Promise<void> => {
+    const { spaceAvailable } = this.state;
     this.setState({
       propertyGroupSelectedIndex: index,
       propertyGroupTypeSelectedIndex: 0,
+      spaceAvailable: {
+        ...spaceAvailable,
+        bathroom: 0,
+      },
     });
     if (index === 1) {
       await this.getCarpetAreaUnits();

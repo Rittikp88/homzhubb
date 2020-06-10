@@ -139,17 +139,18 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
       return null;
     }
     const labelStyles = { ...theme.form.formLabel };
+    const errorLabelStyles = { ...theme.form.formLabel, color: theme.colors.error };
     return (
       <View style={styles.formContainer}>
         <View style={styles.carpetArea}>
-          <Label type="regular" textType="regular" style={labelStyles}>
+          <Label type="regular" textType="regular" style={carpetAreaError ? errorLabelStyles : labelStyles}>
             {t('propertyDetails:carpetArea')}
           </Label>
           <TextInput
             key="carpetArea"
             value={carpetArea}
             keyboardType="number-pad"
-            style={styles.textInput}
+            style={carpetAreaError ? styles.errorTextInput : styles.textInput}
             placeholder={t('propertyDetails:enterCarpetArea')}
             onChangeText={this.onCarpetAreaChange}
             maxLength={5}
@@ -249,9 +250,17 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderColor: theme.colors.disabled,
   },
+  errorTextInput: {
+    textAlign: 'left',
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    ...theme.form.fieldError,
+  },
   formContainer: {
     flexDirection: 'row',
-    marginBottom: 80,
+    marginBottom: 20,
   },
   carpetArea: {
     flex: 0.5,

@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     flex: 1,
-    backgroundColor: theme.colors.darkTint5,
-    opacity: 0.1,
+    backgroundColor: theme.colors.darkTint10,
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 4,
   },
   navigation: {
     flex: 1,
