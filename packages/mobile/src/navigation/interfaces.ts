@@ -27,6 +27,9 @@ export enum ScreensKeys {
   AddProperty = 'AddProperty',
   PropertyDetailsScreen = 'PropertyDetails',
   RentServicesScreen = 'RentServices',
+
+  // Service
+  ServiceListScreen = 'ServiceList',
 }
 
 // Tab keys
