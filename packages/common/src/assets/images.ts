@@ -4,4 +4,5 @@ export const images = {
   gettingStarted: require('@homzhub/common/src/assets/images/homzhub_getting_started.png'),
   flag: require('@homzhub/common/src/assets/images/flag.png'),
   landingScreenLogo: require('@homzhub/common/src/assets/images/landingScreenLogo.png'),
+  round: require('@homzhub/common/src/assets/images/round.png'),
 };
