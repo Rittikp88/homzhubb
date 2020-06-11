@@ -1,6 +1,7 @@
 // Atoms
 export { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
 export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+export { Divider } from '@homzhub/common/src/components/atoms/Divider';
 export { HorizontalPicker } from '@homzhub/common/src/components/atoms/HorizontalPicker';
 export { ImageRound, ImageSquare, Image } from '@homzhub/common/src/components/atoms/Image';
 export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';

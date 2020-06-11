@@ -12,8 +12,10 @@ import {
   ISocialLoginPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 
 const ENDPOINTS = {
+  onboarding: (): string => 'onboardings',
   socialMedia: (): string => 'social-providers/',
   signUp: (): string => 'users/',
   login: (): string => 'users/login/',
@@ -31,6 +33,10 @@ class UserRepository {
   public constructor() {
     this.apiClient = BootstrapAppService.clientInstance;
   }
+
+  public getOnboarding = async (): Promise<IOnboardingData[]> => {
+    return await this.apiClient.get(ENDPOINTS.onboarding());
+  };
 
   public getSocialMedia = async (): Promise<ISocialMediaProvider[]> => {
     return await this.apiClient.get(ENDPOINTS.socialMedia());

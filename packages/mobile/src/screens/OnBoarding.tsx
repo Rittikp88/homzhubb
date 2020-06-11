@@ -3,53 +3,49 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { OnBoardingActions } from '@homzhub/common/src/modules/onboarding/actions';
-import { OnboardingSelector } from '@homzhub/common/src/modules/onboarding/selectors';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 import { Button, Label, Text } from '@homzhub/common/src/components/';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
-
-interface IStateProps {
-  data: IOnboardingData[];
-}
 
 interface IDispatchProps {
-  getOnBoardingDetail: () => void;
   updateOnBoarding: (isOnBoardingCompleted: boolean) => void;
 }
 
 interface IOnBoardingScreenState {
   activeSlide: number;
   ref: any;
+  data: IOnboardingData[];
 }
 
-type IOwnProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OnBoarding>;
-type Props = IOwnProps & IStateProps & IDispatchProps & WithTranslation;
+type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.OnBoarding>;
+type Props = IDispatchProps & libraryProps;
 
 class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
   public state = {
     activeSlide: 0,
     ref: null,
+    data: [],
   };
 
-  public componentDidMount(): void {
-    const { getOnBoardingDetail } = this.props;
-    getOnBoardingDetail();
-  }
+  public componentDidMount = async (): Promise<void> => {
+    await this.getOnboardingData();
+  };
 
   public render(): React.ReactNode {
-    const { data, t } = this.props;
-    const { activeSlide } = this.state;
+    const { t } = this.props;
+    const { data, activeSlide } = this.state;
     if (data.length === 0) {
       return null;
     }
     const buttonText = activeSlide === data.length - 1 ? t('common:gotIt') : t('common:next');
+    const currentSlide: IOnboardingData = data[activeSlide];
     return (
       <SafeAreaView style={styles.container}>
         {this.renderSkipButton()}
@@ -62,10 +58,10 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
         />
         <View style={styles.textContainer}>
           <Text type="large" textType="bold">
-            {data[activeSlide]?.title ?? ''}
+            {currentSlide.title}
           </Text>
           <Label type="large" textType="regular" style={styles.description}>
-            {data[activeSlide]?.description ?? ''}
+            {currentSlide.description}
           </Label>
           <Button type="primary" title={buttonText} onPress={this.renderNextFrame} containerStyle={styles.button} />
         </View>
@@ -74,8 +70,7 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
   }
 
   public renderNextFrame = async (): Promise<void> => {
-    const { activeSlide, ref } = this.state;
-    const { data } = this.props;
+    const { activeSlide, ref, data } = this.state;
     if (activeSlide < data.length - 1 && ref) {
       // @ts-ignore
       ref.snapToNext();
@@ -86,8 +81,8 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
   };
 
   public renderSkipButton = (): React.ReactNode => {
-    const { data, t } = this.props;
-    const { activeSlide } = this.state;
+    const { t } = this.props;
+    const { data, activeSlide } = this.state;
     if (activeSlide === data.length - 1) {
       return <View style={styles.emptySkipView} />;
     }
@@ -101,6 +96,17 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
         />
       </View>
     );
+  };
+
+  public getOnboardingData = async (): Promise<void> => {
+    try {
+      const response = await UserRepository.getOnboarding();
+      this.setState({
+        data: response,
+      });
+    } catch (error) {
+      AlertHelper.error({ message: error.message });
+    }
   };
 
   public navigateToGettingStarted = async (): Promise<void> => {
@@ -153,22 +159,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: IState): IStateProps => {
-  return {
-    data: OnboardingSelector.getOnboardingData(state),
-  };
-};
-
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getOnBoardingDetail } = OnBoardingActions;
   const { updateOnBoarding } = UserActions;
   return bindActionCreators(
     {
-      getOnBoardingDetail,
       updateOnBoarding,
     },
     dispatch
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OnBoarding));
+export default connect(null, mapDispatchToProps)(withTranslation()(OnBoarding));

@@ -11,6 +11,7 @@ import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDe
 import RentServices from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
 import { SearchProperty } from '@homzhub/mobile/src/screens/PropertyPost/SearchProperty';
 import { ServiceListScreen } from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
+import ServiceListDetails from '@homzhub/mobile/src/screens/Service/ServiceListDetails';
 
 export type AppStackParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
@@ -19,6 +20,7 @@ export type AppStackParamList = {
   [ScreensKeys.PropertyDetailsScreen]: IPropertyDetailScreenProps;
   [ScreensKeys.RentServicesScreen]: undefined;
   [ScreensKeys.ServiceListScreen]: undefined;
+  [ScreensKeys.ServiceListDetails]: undefined;
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
@@ -37,6 +39,7 @@ export function AppNavigator(): React.ReactElement {
       <AppStackNavigator.Screen name={ScreensKeys.PropertyDetailsScreen} component={PropertyDetails} />
       <AppStackNavigator.Screen name={ScreensKeys.RentServicesScreen} component={RentServices} />
       <AppStackNavigator.Screen name={ScreensKeys.ServiceListScreen} component={ServiceListScreen} />
+      <AppStackNavigator.Screen name={ScreensKeys.ServiceListDetails} component={ServiceListDetails} />
     </AppStackNavigator.Navigator>
   );
 }

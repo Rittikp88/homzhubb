@@ -16,10 +16,6 @@ class CommonService {
 
     return countryCodeOptions;
   };
-
-  public getCarpetAreaUnits = async (): Promise<IDropdownOption[]> => {
-    return await CommonRepository.getCarpetAreaUnits();
-  };
 }
 
 const commonService = new CommonService();

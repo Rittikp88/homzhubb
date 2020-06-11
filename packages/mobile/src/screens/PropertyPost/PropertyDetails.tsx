@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { CommonService } from '@homzhub/common/src/services/CommonService';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
@@ -253,10 +253,14 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
   }
 
   public getCarpetAreaUnits = async (): Promise<void> => {
-    const response = await CommonService.getCarpetAreaUnits();
-    this.setState({
-      areaUnits: response,
-    });
+    try {
+      const response = await CommonRepository.getCarpetAreaUnits();
+      this.setState({
+        areaUnits: response,
+      });
+    } catch (error) {
+      AlertHelper.error({ message: error.message });
+    }
   };
 
   public handleIconPress = (): void => {

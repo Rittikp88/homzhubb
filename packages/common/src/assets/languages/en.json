@@ -95,5 +95,9 @@
     "enterCarpetArea": "Enter carpet area",
     "areaUnit": "Area unit",
     "selectAreaUnit": "Select Area Unit"
+  },
+  "propertyServices": {
+    "listProperty": "List your property",
+    "subHeader": "To initiate the service, You will have to follow these steps"
   }
 }

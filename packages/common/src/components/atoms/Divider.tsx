@@ -9,7 +9,7 @@ interface IProps {
 class Divider extends React.PureComponent<IProps> {
   public render(): React.ReactNode {
     const { containerStyles } = this.props;
-    const dividerStyles = containerStyles ? { ...styles.separator, containerStyles } : styles.separator;
+    const dividerStyles = containerStyles ?? styles.separator;
     return <View style={dividerStyles} />;
   }
 }
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Divider;
+export { Divider };
