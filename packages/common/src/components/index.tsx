@@ -1,5 +1,6 @@
 // Atoms
 export { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
+export { Badge } from '@homzhub/common/src/components/atoms/Badge';
 export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 export { Divider } from '@homzhub/common/src/components/atoms/Divider';
 export { HorizontalPicker } from '@homzhub/common/src/components/atoms/HorizontalPicker';

@@ -4,14 +4,16 @@ import {
   ScreensKeys,
   IAddPropertyMapProps,
   IPropertyDetailScreenProps,
+  IServiceDetailProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { AddPropertyMap } from '@homzhub/mobile/src/screens/PropertyPost/AddPropertyMap';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
 import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
 import RentServices from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
 import { SearchProperty } from '@homzhub/mobile/src/screens/PropertyPost/SearchProperty';
-import { ServiceListScreen } from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
-import ServiceListDetails from '@homzhub/mobile/src/screens/Service/ServiceListDetails';
+import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
+import ServiceDetailScreen from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
+import ServiceListSteps from '@homzhub/mobile/src/screens/Service/ServiceListSteps';
 
 export type AppStackParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
@@ -20,7 +22,8 @@ export type AppStackParamList = {
   [ScreensKeys.PropertyDetailsScreen]: IPropertyDetailScreenProps;
   [ScreensKeys.RentServicesScreen]: undefined;
   [ScreensKeys.ServiceListScreen]: undefined;
-  [ScreensKeys.ServiceListDetails]: undefined;
+  [ScreensKeys.ServiceDetailScreen]: IServiceDetailProps;
+  [ScreensKeys.ServiceListSteps]: undefined;
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
@@ -39,7 +42,8 @@ export function AppNavigator(): React.ReactElement {
       <AppStackNavigator.Screen name={ScreensKeys.PropertyDetailsScreen} component={PropertyDetails} />
       <AppStackNavigator.Screen name={ScreensKeys.RentServicesScreen} component={RentServices} />
       <AppStackNavigator.Screen name={ScreensKeys.ServiceListScreen} component={ServiceListScreen} />
-      <AppStackNavigator.Screen name={ScreensKeys.ServiceListDetails} component={ServiceListDetails} />
+      <AppStackNavigator.Screen name={ScreensKeys.ServiceDetailScreen} component={ServiceDetailScreen} />
+      <AppStackNavigator.Screen name={ScreensKeys.ServiceListSteps} component={ServiceListSteps} />
     </AppStackNavigator.Navigator>
   );
 }

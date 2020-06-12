@@ -3,7 +3,8 @@ import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, WithShadowView } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 
 export interface IBottomSheetProps {
   children: React.ReactElement;

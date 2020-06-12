@@ -1,0 +1,45 @@
+export const ServicesData = [
+  {
+    index: 0,
+    serviceName: 'Free Listing',
+    description: 'Eleifend mi nunc facilisis ut. Tristique egestas lorem proin nec eu sem',
+    serviceCost: 'No cost - Free',
+    facilities: [
+      { name: 'Property Listing on Homzhub', included: true },
+      { name: 'Assisted Site-visits', included: false },
+      { name: 'Assisted Negotiation', included: false },
+      { name: 'Tenant Screening', included: false },
+      { name: 'Tenant Background check', included: false },
+      { name: 'Door step agreement delivery', included: false },
+    ],
+  },
+  {
+    index: 1,
+    serviceName: 'Assisted Listing',
+    description: 'Ac ultricies a viverra risus ut tortor, ut. Suspendisse purus gravida fusce quis.',
+    serviceCost: '9% of agreement value',
+    badge: 'RECOMMENDED',
+    facilities: [
+      { name: 'Property Listing on Homzhub', included: true },
+      { name: 'Assisted Site-visits', included: true },
+      { name: 'Assisted Negotiation', included: true },
+      { name: 'Tenant Screening', included: true },
+      { name: 'Tenant Background check', included: true },
+      { name: 'Door step agreement delivery', included: true },
+    ],
+  },
+  {
+    index: 2,
+    serviceName: 'Boosted Listing',
+    description: 'Vestibulum eu, tristique donec aenean faucibus. Rhoncus lacus nunc.',
+    serviceCost: '9% of agreement value',
+    facilities: [
+      { name: 'Property Listing on Homzhub', included: true },
+      { name: 'Assisted Site-visits', included: true },
+      { name: 'Assisted Negotiation', included: true },
+      { name: 'Tenant Screening', included: false },
+      { name: 'Tenant Background check', included: false },
+      { name: 'Door step agreement delivery', included: false },
+    ],
+  },
+];

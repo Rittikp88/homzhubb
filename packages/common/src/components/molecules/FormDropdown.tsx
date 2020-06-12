@@ -2,7 +2,9 @@ import { StyleSheet } from 'react-native';
 import React, { PureComponent } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, Dropdown, WithFieldError } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
 export interface IDropdownOption {
   value: any;

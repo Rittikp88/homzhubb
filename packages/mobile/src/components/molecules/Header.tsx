@@ -18,7 +18,7 @@ interface ICommonHeaderProps {
   title?: string;
   titleStyle?: StyleProp<TextStyle>;
 }
-const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight;
+const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 20 : StatusBar.currentHeight;
 
 class Header extends React.PureComponent<ICommonHeaderProps, {}> {
   public render(): React.ReactNode {
@@ -49,11 +49,7 @@ class Header extends React.PureComponent<ICommonHeaderProps, {}> {
             onPress={onIconPress}
           />
           {isHeadingVisible && (
-            <Text
-              type={titleType || 'small'}
-              textType={titleFontType ? 'semiBold' : 'regular'}
-              style={[styles.title, titleStyle]}
-            >
+            <Text type={titleType || 'small'} textType={titleFontType || 'semiBold'} style={[styles.title, titleStyle]}>
               {title ?? ''}
             </Text>
           )}

@@ -35,4 +35,10 @@ export const icons = {
   circularCrossFilled: 'circular-cross-filled',
   circularWarningFilled: 'circular-warning-filled',
   locationMarker: 'location-marker',
+  info: 'info',
+  idProof: 'id-proof',
+  document: 'document',
+  gallery: 'gallery',
+  selfie: 'selfie',
+  calendar: 'calendar',
 };

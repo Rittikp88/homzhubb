@@ -96,7 +96,15 @@
     "areaUnit": "Area unit",
     "selectAreaUnit": "Select Area Unit"
   },
-  "propertyServices": {
+  "service": {
+    "moreInformation": "More Information",
+    "services": "Services",
+    "pleaseConfirm": "Please confirm a service to initiate",
+    "thankYouMsg":"Thank you for choosing {{name}} service",
+    "clickContinue": "Click \"Continue\" to initiate the service",
+    "timeToSelect": "Time to select the service you need!",
+    "totalServiceFee": "Total service fees",
+    "confirmService": "Confirm Service",
     "listProperty": "List your property",
     "subHeader": "To initiate the service, You will have to follow these steps"
   }

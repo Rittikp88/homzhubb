@@ -3,16 +3,17 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
-import { Button, Label, Text } from '@homzhub/common/src/components/';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
+import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
+import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 
 interface IDispatchProps {
   updateOnBoarding: (isOnBoardingCompleted: boolean) => void;
@@ -51,11 +52,12 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
         {this.renderSkipButton()}
         <SnapCarousel
           bubbleRef={this.updateRef}
-          carouselItems={data}
+          carouselData={data}
+          carouselItem={this.renderCarouselItem}
           activeSlide={activeSlide}
-          showPagination
           currentSlide={this.changeSlide}
         />
+        <PaginationComponent dotsLength={data.length} activeSlide={activeSlide} />
         <View style={styles.textContainer}>
           <Text type="large" textType="bold">
             {currentSlide.title}
@@ -68,6 +70,12 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
       </SafeAreaView>
     );
   }
+
+  private renderCarouselItem = (item: any): React.ReactElement => {
+    return (
+      <SVGUri width={400} height={220} viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.image_url} />
+    );
+  };
 
   public renderNextFrame = async (): Promise<void> => {
     const { activeSlide, ref, data } = this.state;

@@ -3,6 +3,7 @@ import { PropertySelector } from '@homzhub/common/src/modules/property/selectors
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
+import { initialServiceState } from '@homzhub/common/src/modules/service/reducer';
 
 const state: IState = {
   user: {
@@ -15,6 +16,9 @@ const state: IState = {
       ...initialPropertyState.propertyDetails,
       propertyGroup: PropertyAssetGroupData,
     },
+  },
+  service: {
+    ...initialServiceState,
   },
 };
 

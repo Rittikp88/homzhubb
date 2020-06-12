@@ -9,14 +9,14 @@ import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
-type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListDetails>;
+type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListSteps>;
 type Props = libraryProps;
 
 interface IState {
   listing: any;
 }
 
-class ServiceListDetails extends React.PureComponent<Props, IState> {
+class ServiceListSteps extends React.PureComponent<Props, IState> {
   public state = {
     listing: InitiatePropertyListData,
   };
@@ -35,7 +35,7 @@ class ServiceListDetails extends React.PureComponent<Props, IState> {
           iconStyle={styles.iconStyle}
           onIconPress={this.navigateBack}
           isHeadingVisible
-          title={t('propertyServices:listProperty')}
+          title={t('service:listProperty')}
           titleType="regular"
           titleFontType="semiBold"
           titleStyle={styles.headerTitle}
@@ -50,7 +50,7 @@ class ServiceListDetails extends React.PureComponent<Props, IState> {
         </View>
         <View style={styles.initiateService}>
           <Text type="small" textType="semiBold" style={styles.subHeader}>
-            {t('propertyServices:subHeader')}
+            {t('service:subHeader')}
           </Text>
           {this.renderSteps()}
         </View>
@@ -86,7 +86,7 @@ class ServiceListDetails extends React.PureComponent<Props, IState> {
   };
 }
 
-export default withTranslation()(ServiceListDetails);
+export default withTranslation()(ServiceListSteps);
 
 const styles = StyleSheet.create({
   container: {

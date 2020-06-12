@@ -30,7 +30,8 @@ export enum ScreensKeys {
 
   // Service
   ServiceListScreen = 'ServiceList',
-  ServiceListDetails = 'ServiceListDetails',
+  ServiceDetailScreen = 'ServiceDetail',
+  ServiceListSteps = 'ServiceListSteps',
 }
 
 // Tab keys
@@ -90,4 +91,8 @@ export interface IPropertyDetailScreenProps {
   propertyId: number;
   primaryAddress: string;
   secondaryAddress: string;
+}
+
+export interface IServiceDetailProps {
+  index: number;
 }

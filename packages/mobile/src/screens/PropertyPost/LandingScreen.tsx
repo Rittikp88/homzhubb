@@ -85,7 +85,7 @@ class LandingScreen extends React.PureComponent<Props, {}> {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate(ScreensKeys.ServiceListDetails);
+    navigate(ScreensKeys.ServiceListSteps);
   };
 
   public logout = async (): Promise<void> => {

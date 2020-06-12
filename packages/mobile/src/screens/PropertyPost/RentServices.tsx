@@ -126,7 +126,8 @@ class RentServices extends Component<Props, IRentServicesState> {
   };
 
   private onContinue = (): void => {
-    // Add logic
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ServiceListScreen);
   };
 
   private handleBackPress = (): void => {
