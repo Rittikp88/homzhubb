@@ -1,11 +1,6 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import {
-  ScreensKeys,
-  IAddPropertyMapProps,
-  IPropertyDetailScreenProps,
-  IServiceDetailProps,
-} from '@homzhub/mobile/src/navigation/interfaces';
+import { ScreensKeys, IAddPropertyMapProps, IServiceDetailProps } from '@homzhub/mobile/src/navigation/interfaces';
 import { AddPropertyMap } from '@homzhub/mobile/src/screens/PropertyPost/AddPropertyMap';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
 import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
@@ -19,7 +14,7 @@ export type AppStackParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
   [ScreensKeys.SearchPropertyOwner]: undefined;
   [ScreensKeys.AddProperty]: IAddPropertyMapProps;
-  [ScreensKeys.PropertyDetailsScreen]: IPropertyDetailScreenProps;
+  [ScreensKeys.PropertyDetailsScreen]: undefined;
   [ScreensKeys.RentServicesScreen]: undefined;
   [ScreensKeys.ServiceListScreen]: undefined;
   [ScreensKeys.ServiceDetailScreen]: IServiceDetailProps;

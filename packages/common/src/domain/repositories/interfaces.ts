@@ -49,6 +49,11 @@ export interface ISignUpPayload {
   password: string;
 }
 
+export interface ISocialSignUpPayload {
+  otp: string;
+  user_details: ISignUpPayload;
+}
+
 export interface IEmailLoginPayload {
   action: LoginTypes.EMAIL;
   payload: {
@@ -153,8 +158,8 @@ export interface IUpdateAssetDetails {
   project_name?: string;
   unit_number?: string;
   block_number?: string;
-  latitude?: string;
-  longitude?: string;
+  latitude?: string | number;
+  longitude?: string | number;
   carpet_area?: string;
   carpet_area_unit?: string;
   floor_number?: number;

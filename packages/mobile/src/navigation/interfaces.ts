@@ -1,7 +1,8 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISocialUserData } from '@homzhub/common/src/assets/constants';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 // Route keys
 export enum ScreensKeys {
@@ -67,11 +68,8 @@ export interface IOtpNavProps {
 }
 
 export interface IVerificationProps {
-  title: string;
-  subTitle: string;
-  icon: string;
-  buttonTitle: string;
-  message?: string;
+  isFromLogin: boolean;
+  userData: ISocialUserData;
 }
 
 export interface IResetPasswordProps {

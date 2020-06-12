@@ -14,6 +14,9 @@ export const PropertyActionTypes = {
     RENT_SERVICE_LIST_SUCCESS: `${actionTypePrefix}RENT_SERVICE_LIST_SUCCESS`,
     RENT_SERVICE_LIST_FAILURE: `${actionTypePrefix}RENT_SERVICE_LIST_FAILURE`,
   },
+  SET: {
+    CURRENT_PROPERTY_ID: `${actionTypePrefix}CURRENT_PROPERTY_ID`,
+  },
 };
 
 const getPropertyDetails = (): IFluxStandardAction => {
@@ -56,7 +59,12 @@ const getRentServiceListFailure = (error: string): IFluxStandardAction<string> =
   };
 };
 
-export type PropertyPayloadTypes = string | IPropertyDetailsData[] | IRentServiceList[] | undefined;
+const setCurrentPropertyId = (payload: number): IFluxStandardAction<number> => ({
+  type: PropertyActionTypes.SET.CURRENT_PROPERTY_ID,
+  payload,
+});
+
+export type PropertyPayloadTypes = string | number | IPropertyDetailsData[] | IRentServiceList[] | undefined;
 export const PropertyActions = {
   getPropertyDetails,
   getPropertyDetailsSuccess,
@@ -64,4 +72,5 @@ export const PropertyActions = {
   getRentServiceList,
   getRentServiceListSuccess,
   getRentServiceListFailure,
+  setCurrentPropertyId,
 };

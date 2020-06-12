@@ -13,27 +13,11 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { ISocialUserData, SocialMediaKeys } from '@homzhub/common/src/assets/constants';
 import { ISocialLogin, ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
-
-export enum SocialMediaKeys {
-  Google = 'GOOGLE',
-  Facebook = 'FACEBOOK',
-  LinkedIn = 'LINKEDIN',
-}
-
-interface ISocialMediaUser {
-  provider: SocialMediaKeys;
-  user: {
-    givenName: string | null;
-    first_name?: string;
-    last_name?: string;
-    email: string;
-  };
-  idToken: string | null;
-}
 
 interface ISocialMediaProps extends WithTranslation {
   isFromLogin: boolean;
@@ -104,21 +88,15 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
     );
   };
 
-  private onSocialMediaLoginSuccess = async (userData: any): Promise<void> => {
-    const { t, onLoginSuccessAction, navigation, isFromLogin } = this.props;
-    const {
-      provider,
-      user: { email, givenName, first_name, last_name },
-      idToken,
-    } = userData;
-    const name = provider === SocialMediaKeys.Google ? givenName : `${first_name} ${last_name}`;
-    const messageKey = isFromLogin ? 'enterNumberForProfileForLogin' : 'enterNumberForProfileForSignUp';
+  private onSocialMediaLoginSuccess = async (userData: ISocialUserData): Promise<void> => {
+    const { onLoginSuccessAction, navigation, isFromLogin } = this.props;
+    const { provider, idToken } = userData;
 
     const socialLoginData: ISocialLoginPayload = {
       action: LoginTypes.SOCIAL_MEDIA,
       payload: {
         provider,
-        id_token: idToken,
+        id_token: idToken ?? '',
       },
     };
 
@@ -126,15 +104,27 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
       const response: ISocialLogin = await UserService.socialLogin(socialLoginData);
       if (response.is_new_user) {
         navigation.navigate(ScreensKeys.MobileVerification, {
-          title: this.getTitleForVerification(provider),
-          subTitle: email,
-          icon: icons.leftArrow,
-          message: t(`auth:${messageKey}`, { givenName: name }),
-          buttonTitle: isFromLogin ? t('common:login') : t('common:signUp'),
+          isFromLogin,
+          userData,
         });
         return;
       }
-      onLoginSuccessAction(response.payload);
+      // TODO: Send the correct payload. Rectify the types.
+      const {
+        access_token,
+        refresh_token,
+        // @ts-ignore
+        user: { full_name, email, country_code, phone_number },
+      } = response.payload;
+      const userPayload = {
+        access_token,
+        refresh_token,
+        full_name,
+        email,
+        country_code,
+        phone_number,
+      };
+      onLoginSuccessAction(userPayload);
       await StorageService.set<IUser>('@user', response.payload);
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -143,7 +133,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
 
   private initiateSocialLogin = async (socialMedia: any): Promise<void> => {
     if (socialMedia.provider === SocialMediaKeys.Google) {
-      await this.googleSignIn(socialMedia.clientID);
+      await this.googleSignIn(socialMedia.client_id);
       return;
     }
     await this.facebookLogin();
@@ -159,15 +149,21 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
 
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-      const responseObject: ISocialMediaUser = {
+      const {
+        user: { givenName, email, familyName },
+      } = response;
+
+      const responseObject = {
         provider: SocialMediaKeys.Google,
         idToken: response.idToken,
         user: {
-          givenName: response.user.givenName,
-          email: response.user.email,
+          first_name: givenName ?? '',
+          last_name: familyName ?? '',
+          email,
         },
       };
 
+      // @ts-ignore
       await this.onSocialMediaLoginSuccess(responseObject);
     } catch (error) {
       let alertMessage = '';
@@ -194,6 +190,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
 
       if (loginResult.isCancelled) {
         AlertHelper.error({ message: 'Sign in Cancelled' });
+        return;
       }
 
       const accessTokenData: AccessToken | null = await AccessToken.getCurrentAccessToken();
@@ -219,10 +216,11 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
     const responseObject = {
       provider: SocialMediaKeys.Facebook,
       user: {
-        givenName: result.givenName,
+        first_name: result.first_name,
+        last_name: result.last_name,
         email: result.email,
       },
-      idToken: token,
+      idToken: token ?? '',
     };
     await this.onSocialMediaLoginSuccess(responseObject);
   };
@@ -232,22 +230,6 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
       return require('@homzhub/common/src/assets/images/google.png');
     }
     return require('@homzhub/common/src/assets/images/facebook.png');
-  };
-
-  private getTitleForVerification = (provider: SocialMediaKeys): string => {
-    const { isFromLogin, t } = this.props;
-
-    if (isFromLogin) {
-      if (provider === SocialMediaKeys.Google) {
-        return t('loginWithGoogle');
-      }
-      return t('loginWithFacebook');
-    }
-
-    if (provider === SocialMediaKeys.Google) {
-      return t('signUpWithGoogle');
-    }
-    return t('auth:signUpWithFacebook');
   };
 }
 

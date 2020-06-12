@@ -9,5 +9,7 @@ describe('Font Utils', () => {
     expect(FontUtils.chooseFontStyle({ fontType: 'semiBold' })).toStrictEqual(semiBold);
     expect(FontUtils.chooseFontStyle({ fontType: 'bold' })).toStrictEqual(bold);
     expect(FontUtils.chooseFontStyle({ fontType: 'extraBold' })).toStrictEqual(extraBold);
+    // @ts-ignore
+    expect(FontUtils.chooseFontStyle({ fontType: 'default' })).toStrictEqual(regular);
   });
 });

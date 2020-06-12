@@ -4,6 +4,7 @@ import { PropertyActionTypes, PropertyPayloadTypes } from '@homzhub/common/src/m
 import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
 
 export const initialPropertyState: IPropertyState = {
+  currentPropertyId: 0,
   propertyDetails: {
     propertyGroup: null,
     rentServices: null,
@@ -53,6 +54,8 @@ export const propertyReducer = (
         },
         ['loaders']: { ...state.loaders, ['property']: false },
       };
+    case PropertyActionTypes.SET.CURRENT_PROPERTY_ID:
+      return { ...state, ['currentPropertyId']: action.payload as number };
     default:
       return state;
   }

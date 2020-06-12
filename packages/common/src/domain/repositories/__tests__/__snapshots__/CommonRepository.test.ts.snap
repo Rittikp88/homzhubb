@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommonRepository should fetch a list of county codes 1`] = `
+Array [
+  Object {
+    "alpha_code": "IN",
+    "country": "INDIA",
+    "country_code": "+91",
+    "id": 1,
+  },
+  Object {
+    "alpha_code": "SG",
+    "country": "SINGAPORE",
+    "country_code": "+65",
+    "id": 2,
+  },
+  Object {
+    "alpha_code": "AU",
+    "country": "AUSTRALIA",
+    "country_code": "+36",
+    "id": 3,
+  },
+]
+`;
+
+exports[`CommonRepository should fetch a list of unit areas 1`] = `
+Array [
+  Object {
+    "label": "Sq.ft",
+    "value": "SQ_FT",
+  },
+  Object {
+    "label": "Sq.yard",
+    "value": "SQ_YARD",
+  },
+  Object {
+    "label": "Sq.m",
+    "value": "SQ_M",
+  },
+  Object {
+    "label": "Cents",
+    "value": "CENTS",
+  },
+  Object {
+    "label": "Biswa",
+    "value": "BISWA",
+  },
+  Object {
+    "label": "Acres",
+    "value": "ACRES",
+  },
+  Object {
+    "label": "Hectares",
+    "value": "HECTARES",
+  },
+  Object {
+    "label": "Kattha",
+    "value": "KATTHA",
+  },
+]
+`;

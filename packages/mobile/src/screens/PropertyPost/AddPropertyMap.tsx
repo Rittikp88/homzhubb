@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Keyboard } from 'react-native';
+import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { LatLng, MapEvent, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { FormikActions, FormikValues } from 'formik';
@@ -9,6 +10,9 @@ import { MathUtils } from '@homzhub/common/src/utils/MathUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
+import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import SetLocationForm from '@homzhub/mobile/src/components/molecules/SetLocationForm';
@@ -17,11 +21,19 @@ import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
-import { ICreateAssetDetails } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICreateAssetDetails, IUpdateAssetDetails } from '@homzhub/common/src/domain/repositories/interfaces';
+import { bindActionCreators, Dispatch } from 'redux';
 
-type Props = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.AddProperty>;
+interface IStateProps {
+  propertyId: number;
+}
+interface IDispatchProps {
+  setCurrentPropertyId: (propertyId: number) => void;
+}
+type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.AddProperty>;
+type Props = OwnProps & IStateProps & IDispatchProps;
 
-interface IState {
+interface IAddPropertyState {
   markerLatLng: LatLng;
   isVisible: boolean;
   location: {
@@ -31,7 +43,7 @@ interface IState {
   };
 }
 
-class AddPropertyMap extends React.PureComponent<Props, IState> {
+class AddPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
   private mapRef: MapView | null = null;
   public constructor(props: Props) {
     super(props);
@@ -140,8 +152,10 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
 
   private onBackPress = (): void => {
     const {
+      setCurrentPropertyId,
       navigation: { goBack },
     } = this.props;
+    setCurrentPropertyId(0);
     goBack();
   };
 
@@ -185,6 +199,8 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
   private onSaveLocation = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
     formActions.setSubmitting(true);
     const {
+      propertyId,
+      setCurrentPropertyId,
       navigation: { navigate },
     } = this.props;
     const {
@@ -195,20 +211,23 @@ class AddPropertyMap extends React.PureComponent<Props, IState> {
     Keyboard.dismiss();
 
     try {
-      const requestBody: ICreateAssetDetails = {
+      const requestBody: ICreateAssetDetails | IUpdateAssetDetails = {
         block_number: values.blockNo || '',
         unit_number: values.unitNo,
         project_name: values.projectName,
         latitude: MathUtils.roundToDecimal(latitude, 8),
         longitude: MathUtils.roundToDecimal(longitude, 7),
       };
-      const property = await PropertyRepository.createAsset(requestBody);
-      const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(values.projectName);
-      navigate(ScreensKeys.PropertyDetailsScreen, {
-        propertyId: property.id,
-        primaryAddress,
-        secondaryAddress,
-      });
+
+      if (propertyId) {
+        await PropertyRepository.updateAsset(propertyId, requestBody as IUpdateAssetDetails);
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const property = await PropertyRepository.createAsset(requestBody as ICreateAssetDetails);
+        setCurrentPropertyId(property.id);
+      }
+
+      navigate(ScreensKeys.PropertyDetailsScreen);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
@@ -247,5 +266,26 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getCurrentPropertyId } = PropertySelector;
+  return {
+    propertyId: getCurrentPropertyId(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentPropertyId } = PropertyActions;
+  return bindActionCreators(
+    {
+      setCurrentPropertyId,
+    },
+    dispatch
+  );
+};
+
 const HOC = withTranslation(LocaleConstants.namespacesKey.propertyPost)(AddPropertyMap);
-export { HOC as AddPropertyMap };
+const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(HOC);
+export { connectedComponent as AddPropertyMap };

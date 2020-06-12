@@ -10,6 +10,13 @@ const getPropertyDetails = (state: IState): IPropertyDetailsData[] | null => {
   return propertyGroup;
 };
 
+const getCurrentPropertyId = (state: IState): number => {
+  const {
+    property: { currentPropertyId },
+  } = state;
+  return currentPropertyId;
+};
+
 const getRentServicesList = (state: IState): IRentServiceList[] | null => {
   const {
     property: {
@@ -22,4 +29,5 @@ const getRentServicesList = (state: IState): IRentServiceList[] | null => {
 export const PropertySelector = {
   getPropertyDetails,
   getRentServicesList,
+  getCurrentPropertyId,
 };

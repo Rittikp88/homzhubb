@@ -10,6 +10,7 @@ import {
   ISignUpPayload,
   ISocialLogin,
   ISocialLoginPayload,
+  ISocialSignUpPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
@@ -18,6 +19,7 @@ const ENDPOINTS = {
   onboarding: (): string => 'onboardings',
   socialMedia: (): string => 'social-providers/',
   signUp: (): string => 'users/',
+  socialSignUp: (): string => 'users/social-signup/',
   login: (): string => 'users/login/',
   otp: (): string => 'otp/verifications/',
   forgotPasswordEmail: (): string => 'users/reset-password/',
@@ -44,6 +46,10 @@ class UserRepository {
 
   public signUp = async (payload: ISignUpPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.signUp(), payload);
+  };
+
+  public socialSignUp = async (payload: ISocialSignUpPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.socialSignUp(), payload);
   };
 
   public login = async (payload: IEmailLoginPayload | IOtpLoginPayload): Promise<IUser> => {

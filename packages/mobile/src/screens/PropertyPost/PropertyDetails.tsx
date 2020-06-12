@@ -32,6 +32,7 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
+  propertyId: number;
   property: IPropertyDetailsData[] | null;
 }
 
@@ -69,13 +70,7 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
   }
 
   public render(): React.ReactNode {
-    const {
-      property,
-      t,
-      route: {
-        params: { primaryAddress, secondaryAddress },
-      },
-    } = this.props;
+    const { property, t } = this.props;
     const {
       propertyGroupSelectedIndex,
       propertyGroupTypeSelectedIndex,
@@ -101,8 +96,8 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
         />
         <ScrollView style={styles.scrollContainer}>
           <PropertyDetailsLocation
-            propertyName={primaryAddress ?? ''}
-            propertyAddress={secondaryAddress ?? ''}
+            propertyName="Address"
+            propertyAddress="Address"
             onNavigate={this.onNavigateToMaps}
           />
           <PropertyDetailsItems
@@ -179,13 +174,7 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
   };
 
   private onSubmit = async (): Promise<void> => {
-    const {
-      navigation,
-      property,
-      route: {
-        params: { propertyId },
-      },
-    } = this.props;
+    const { navigation, property, propertyId } = this.props;
     const {
       spaceAvailable: { carpetArea, areaUnit, floorNumber, totalFloors },
       propertyGroupSelectedIndex,
@@ -281,8 +270,10 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
+  const { getCurrentPropertyId, getPropertyDetails } = PropertySelector;
   return {
-    property: PropertySelector.getPropertyDetails(state),
+    property: getPropertyDetails(state),
+    propertyId: getCurrentPropertyId(state),
   };
 };
 

@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PropertyRepository should fetch a asset data 1`] = `
+Array [
+  Object {
+    "asset_types": Array [
+      Object {
+        "id": 1,
+        "name": "Residential House",
+      },
+      Object {
+        "id": 2,
+        "name": "Apartment / Condo",
+      },
+      Object {
+        "id": 3,
+        "name": "Villa",
+      },
+      Object {
+        "id": 4,
+        "name": "Penthouse",
+      },
+      Object {
+        "id": 5,
+        "name": "Studio Apartment",
+      },
+      Object {
+        "id": 6,
+        "name": "Independant Floor",
+      },
+    ],
+    "id": 1,
+    "name": "Residential",
+    "space_types": Array [
+      Object {
+        "id": 1,
+        "name": "Bedroom",
+      },
+      Object {
+        "id": 2,
+        "name": "Bathroom",
+      },
+      Object {
+        "id": 3,
+        "name": "Balcony",
+      },
+    ],
+  },
+  Object {
+    "asset_types": Array [
+      Object {
+        "id": 7,
+        "name": "Commercial Office Space",
+      },
+      Object {
+        "id": 8,
+        "name": "Office in IT park/SEZ",
+      },
+      Object {
+        "id": 9,
+        "name": "Commercial Showroom",
+      },
+      Object {
+        "id": 10,
+        "name": "Warehouse / Godown",
+      },
+    ],
+    "id": 2,
+    "name": "Commercial",
+    "space_types": Array [
+      Object {
+        "id": 2,
+        "name": "Bathroom",
+      },
+    ],
+  },
+]
+`;
+
+exports[`PropertyRepository should fetch a list of rent services 1`] = `
+Array [
+  Object {
+    "icon": "home-search",
+    "name": "I want to find tenants",
+  },
+  Object {
+    "icon": "home-calculus",
+    "name": "I want to sell my property",
+  },
+  Object {
+    "icon": "home-person",
+    "name": "I already have found a tenant",
+  },
+]
+`;

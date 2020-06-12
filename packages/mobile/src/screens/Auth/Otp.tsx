@@ -3,21 +3,24 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+// import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
 import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IEmailLoginPayload, IOtpLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
   login: (payload: IEmailLoginPayload | IOtpLoginPayload) => void;
+  loginSuccess: (data: IUser) => void;
 }
 
 type libraryProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OTP> & WithTranslation;
@@ -131,9 +134,14 @@ class Otp extends React.PureComponent<IProps, IState> {
   private verifyOtp = async (otp: string): Promise<void> => {
     const {
       route: {
-        params: { phone, countryCode },
+        params: { phone, countryCode, type },
       },
     } = this.props;
+
+    if (type === OtpNavTypes.SocialMedia) {
+      await this.socialSignUp(otp);
+      return;
+    }
 
     try {
       await UserService.verifyOtp(otp, phone, countryCode);
@@ -170,6 +178,30 @@ class Otp extends React.PureComponent<IProps, IState> {
     }
   };
 
+  private socialSignUp = async (otp: string): Promise<void> => {
+    const {
+      // loginSuccess,
+      route: {
+        params: { userData },
+      },
+    } = this.props;
+
+    if (!userData) {
+      return;
+    }
+
+    try {
+      await UserRepository.socialSignUp({
+        otp,
+        user_details: userData,
+      });
+      // loginSuccess(data);
+      // await StorageService.set<IUser>('@user', data);
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
+
   private loginOtp = (otp: string): void => {
     const {
       login,
@@ -195,10 +227,11 @@ class Otp extends React.PureComponent<IProps, IState> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { login } = UserActions;
+  const { login, loginSuccess } = UserActions;
   return bindActionCreators(
     {
       login,
+      loginSuccess,
     },
     dispatch
   );
