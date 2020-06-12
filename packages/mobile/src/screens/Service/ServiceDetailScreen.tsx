@@ -25,7 +25,6 @@ interface IServiceDetailState {
   isInfoSheet: boolean;
   isConfirmSheet: boolean;
   activeSlide: number;
-  ref: any;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceDetailScreen>;
@@ -41,7 +40,6 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
       isInfoSheet: false,
       isConfirmSheet: false,
       activeSlide: params ? params.index : 0,
-      ref: null,
     };
   }
 
@@ -78,7 +76,6 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
               carouselItem={this.renderCarouselItem}
               activeSlide={activeSlide}
               currentSlide={this.changeSlide}
-              bubbleRef={this.updateRef}
               contentStyle={styles.carouselStyle}
             />
           </View>
@@ -164,10 +161,6 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
 
   private changeSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
-  };
-
-  private updateRef = (ref: any): void => {
-    this.setState({ ref });
   };
 }
 

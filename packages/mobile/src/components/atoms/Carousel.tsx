@@ -8,7 +8,7 @@ interface ICarouselProps<T> {
   carouselItem: (item: T) => React.ReactElement;
   activeSlide: number;
   currentSlide: (index: number) => void;
-  bubbleRef: (ref: any) => void;
+  bubbleRef?: (ref: any) => void;
   contentStyle?: StyleProp<ViewStyle>;
 }
 
@@ -47,6 +47,8 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
 
   public updateRef = (): void => {
     const { bubbleRef } = this.props;
-    bubbleRef(this.carouselRef);
+    if (bubbleRef) {
+      bubbleRef(this.carouselRef);
+    }
   };
 }
