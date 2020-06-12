@@ -7,15 +7,18 @@ import { store } from '@homzhub/common/src/modules/store';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { RootNavigator } from '@homzhub/mobile/src/navigation/RootNavigator';
 import { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
+import { BlankScreen } from '@homzhub/mobile/src/screens/BlankScreen'; // For Testing on UI
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IState {
   booting: boolean;
+  showBlankScreen: boolean; // For Testing on UI
 }
 
 export default class App extends React.PureComponent<{}, IState> {
   public state = {
     booting: true,
+    showBlankScreen: false, // For Testing on UI, change to false for regular flow
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -23,7 +26,12 @@ export default class App extends React.PureComponent<{}, IState> {
   };
 
   public render = (): React.ReactNode => {
-    const { booting } = this.state;
+    const { booting, showBlankScreen } = this.state;
+
+    // For UI Testing Remove once app goes live
+    if (showBlankScreen) {
+      return <BlankScreen />;
+    }
 
     return (
       <Provider store={store}>

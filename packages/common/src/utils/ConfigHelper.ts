@@ -10,6 +10,8 @@ class ConfigHelper {
   public getPlacesApiKey = (): string => config.PLACES_API_KEY;
 
   public getStorageSecret = (): string => config.storage_secret;
+
+  public getRazorApiKey = (): string => config.RAZOR_API_KEY;
 }
 
 const configHelper = new ConfigHelper();

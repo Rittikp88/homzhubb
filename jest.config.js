@@ -18,6 +18,8 @@ module.exports = {
     '<rootDir>/src/**/*.tsx',
     '!<rootDir>/src/mocks/*',
     '!<rootDir>/src/assets/*',
+    '!<rootDir>/src/**/*.native.ts',
+    '!<rootDir>/src/**/*.web.ts',
     '!<rootDir>/src/**/*.module.ts',
     '!<rootDir>/src/**/*.spec.ts',
     '!<rootDir>/src/**/*.test.ts',

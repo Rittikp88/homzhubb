@@ -38,6 +38,7 @@
     "react-native-parallax-scroll-view": "^0.21.3",
     "react-native-permissions": "^2.1.5",
     "react-native-raw-bottom-sheet": "^2.2.0",
+    "react-native-razorpay": "^2.1.33",
     "react-native-restart": "^0.0.15",
     "react-native-safe-area-context": "^1.0.0",
     "react-native-screens": "^2.7.0",
