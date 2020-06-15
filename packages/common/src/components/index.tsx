@@ -19,6 +19,7 @@ export { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropd
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 export { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
+export { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 export { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
 // Organism

@@ -1,0 +1,205 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Item Group Component should render item group label 1`] = `
+<View
+  style={
+    Object {
+      "flex": 0,
+      "flexDirection": "row",
+      "flexGrow": 1,
+      "flexWrap": "wrap",
+      "marginTop": 15,
+    }
+  }
+>
+  <ForwardRef
+    key="0"
+    onPress={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#0084F8",
+          "color": "#FFFFFF",
+        },
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flex": 1,
+          "margin": 8,
+          "padding": 10,
+        },
+      ]
+    }
+  >
+    <Component
+      style={
+        Array [
+          undefined,
+          Object {
+            "backgroundColor": "#0084F8",
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+      textType="regular"
+      type="large"
+    >
+      Residential
+    </Component>
+  </ForwardRef>
+  <ForwardRef
+    key="1"
+    onPress={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "color": "#667686",
+        },
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flex": 1,
+          "margin": 8,
+          "padding": 10,
+        },
+      ]
+    }
+  >
+    <Component
+      style={
+        Array [
+          undefined,
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "color": "#667686",
+          },
+        ]
+      }
+      textType="regular"
+      type="large"
+    >
+      Commercial
+    </Component>
+  </ForwardRef>
+</View>
+`;
+
+exports[`Item Group Component should render item group text 1`] = `
+<View
+  style={
+    Object {
+      "flex": 0,
+      "flexDirection": "row",
+      "flexGrow": 1,
+      "flexWrap": "wrap",
+      "marginTop": 15,
+    }
+  }
+>
+  <ForwardRef
+    key="0"
+    onPress={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#0084F8",
+          "color": "#FFFFFF",
+        },
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flex": 1,
+          "margin": 8,
+          "padding": 10,
+        },
+      ]
+    }
+  >
+    <Component
+      style={
+        Array [
+          undefined,
+          Object {
+            "backgroundColor": "#0084F8",
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+      textType="regular"
+      type="regular"
+    >
+      Property type
+    </Component>
+    <Component
+      style={
+        Array [
+          undefined,
+          Object {
+            "backgroundColor": "#0084F8",
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Residential
+    </Component>
+  </ForwardRef>
+  <ForwardRef
+    key="1"
+    onPress={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "color": "#667686",
+        },
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flex": 1,
+          "margin": 8,
+          "padding": 10,
+        },
+      ]
+    }
+  >
+    <Component
+      style={
+        Array [
+          undefined,
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "color": "#667686",
+          },
+        ]
+      }
+      textType="regular"
+      type="regular"
+    >
+      Property type
+    </Component>
+    <Component
+      style={
+        Array [
+          undefined,
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "color": "#667686",
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Commercial
+    </Component>
+  </ForwardRef>
+</View>
+`;
