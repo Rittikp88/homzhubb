@@ -46,7 +46,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   public render(): React.ReactNode {
     const { services, t } = this.props;
     const { activeSlide } = this.state;
-    const activeItem = services.find((item: IServiceDetail) => item.index === activeSlide);
+    const activeItem = services.find((item: IServiceDetail, index: number) => index === activeSlide);
     return (
       <>
         <AnimatedServiceList
@@ -88,7 +88,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   private renderCarouselItem = (item: IServiceDetail): React.ReactElement => {
     return (
       <CardBody
-        key={item.index}
+        key={item.id}
         title={item.serviceName}
         isDetailView
         description={item.description}
@@ -118,6 +118,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
 
   private renderConfirmationView = (name: string): React.ReactElement => {
     const { t } = this.props;
+    const handlePress = (): void => this.onPressContinue(name);
     return (
       <View style={styles.confirmationView}>
         <View style={styles.confirmationContent}>
@@ -135,7 +136,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
             {t('clickContinue')}
           </Label>
         </View>
-        <Button type="primary" title={t('common:continue')} containerStyle={styles.buttonStyle} />
+        <Button type="primary" title={t('common:continue')} containerStyle={styles.buttonStyle} onPress={handlePress} />
       </View>
     );
   };
@@ -143,6 +144,12 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   private onConfirmService = (): void => {
     const { isConfirmSheet } = this.state;
     this.setState({ isConfirmSheet: !isConfirmSheet });
+  };
+
+  private onPressContinue = (name: string): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ServiceListSteps, { name });
+    this.closeBottomSheet();
   };
 
   private handleMoreInfo = (): void => {

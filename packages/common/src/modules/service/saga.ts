@@ -3,7 +3,7 @@ import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { ServiceActions, ServiceActionTypes } from '@homzhub/common/src/modules/service/actions';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 
-function* getServiceDetails() {
+export function* getServiceDetails() {
   try {
     const data = yield call(ServiceRepository.getServiceDetail);
     yield put(ServiceActions.getServiceDetailsSuccess(data));

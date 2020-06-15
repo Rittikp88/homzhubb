@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Service Detail Screen should render snapshot 1`] = `
+<Connect(withI18nextTranslation(ServiceDetailScreen))
+  navigation={
+    Object {
+      "navigate": [MockFunction],
+      "route": Object {
+        "params": Object {
+          "index": 1,
+        },
+      },
+    }
+  }
+  services={
+    Array [
+      Object {
+        "description": "Eleifend mi nunc facilisis ut. Tristique egestas lorem proin nec eu sem",
+        "facilities": Array [
+          Object {
+            "included": true,
+            "name": "Property Listing on Homzhub",
+          },
+          Object {
+            "included": false,
+            "name": "Assisted Site-visits",
+          },
+          Object {
+            "included": false,
+            "name": "Assisted Negotiation",
+          },
+          Object {
+            "included": false,
+            "name": "Tenant Screening",
+          },
+          Object {
+            "included": false,
+            "name": "Tenant Background check",
+          },
+          Object {
+            "included": false,
+            "name": "Door step agreement delivery",
+          },
+        ],
+        "id": 1,
+        "serviceCost": "No cost - Free",
+        "serviceName": "Free Listing",
+      },
+      Object {
+        "badge": "RECOMMENDED",
+        "description": "Ac ultricies a viverra risus ut tortor, ut. Suspendisse purus gravida fusce quis.",
+        "facilities": Array [
+          Object {
+            "included": true,
+            "name": "Property Listing on Homzhub",
+          },
+          Object {
+            "included": true,
+            "name": "Assisted Site-visits",
+          },
+          Object {
+            "included": true,
+            "name": "Assisted Negotiation",
+          },
+          Object {
+            "included": true,
+            "name": "Tenant Screening",
+          },
+          Object {
+            "included": true,
+            "name": "Tenant Background check",
+          },
+          Object {
+            "included": true,
+            "name": "Door step agreement delivery",
+          },
+        ],
+        "id": 2,
+        "serviceCost": "9% of agreement value",
+        "serviceName": "Assisted Listing",
+      },
+      Object {
+        "description": "Vestibulum eu, tristique donec aenean faucibus. Rhoncus lacus nunc.",
+        "facilities": Array [
+          Object {
+            "included": true,
+            "name": "Property Listing on Homzhub",
+          },
+          Object {
+            "included": true,
+            "name": "Assisted Site-visits",
+          },
+          Object {
+            "included": true,
+            "name": "Assisted Negotiation",
+          },
+          Object {
+            "included": false,
+            "name": "Tenant Screening",
+          },
+          Object {
+            "included": false,
+            "name": "Tenant Background check",
+          },
+          Object {
+            "included": false,
+            "name": "Door step agreement delivery",
+          },
+        ],
+        "id": 3,
+        "serviceCost": "9% of agreement value",
+        "serviceName": "Boosted Listing",
+      },
+    ]
+  }
+/>
+`;

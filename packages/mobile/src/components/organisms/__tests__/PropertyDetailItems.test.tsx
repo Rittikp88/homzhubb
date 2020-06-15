@@ -37,6 +37,6 @@ describe('Property Details Item Component', () => {
   });
 
   it('should render property details items component', () => {
-    expect(toJson(component.dive().dive())).toMatchSnapshot();
+    expect(toJson(component)).toMatchSnapshot();
   });
 });

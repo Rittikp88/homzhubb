@@ -21,17 +21,7 @@ interface ICardProps {
 type Props = WithTranslation & ICardProps;
 
 const CardBody = (props: Props): React.ReactElement => {
-  const {
-    t,
-    title,
-    description,
-    serviceCost,
-    isDetailView = false,
-    badgeTitle,
-    detailedData,
-    onPressInfo,
-    onConfirm,
-  } = props;
+  const { t, title, description, serviceCost, isDetailView, badgeTitle, detailedData, onPressInfo, onConfirm } = props;
 
   const renderDetailedData = (item: IFacilities, index: number): React.ReactElement => {
     const isIncluded = item.included;

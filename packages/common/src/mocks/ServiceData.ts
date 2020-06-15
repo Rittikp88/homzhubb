@@ -1,6 +1,6 @@
 export const ServicesData = [
   {
-    index: 0,
+    id: 1,
     serviceName: 'Free Listing',
     description: 'Eleifend mi nunc facilisis ut. Tristique egestas lorem proin nec eu sem',
     serviceCost: 'No cost - Free',
@@ -14,7 +14,7 @@ export const ServicesData = [
     ],
   },
   {
-    index: 1,
+    id: 2,
     serviceName: 'Assisted Listing',
     description: 'Ac ultricies a viverra risus ut tortor, ut. Suspendisse purus gravida fusce quis.',
     serviceCost: '9% of agreement value',
@@ -29,7 +29,7 @@ export const ServicesData = [
     ],
   },
   {
-    index: 2,
+    id: 3,
     serviceName: 'Boosted Listing',
     description: 'Vestibulum eu, tristique donec aenean faucibus. Rhoncus lacus nunc.',
     serviceCost: '9% of agreement value',

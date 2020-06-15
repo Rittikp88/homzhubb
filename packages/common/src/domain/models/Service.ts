@@ -1,5 +1,5 @@
 export interface IServiceDetail {
-  index: number;
+  id: number;
   serviceName: string;
   description: string;
   serviceCost: string;

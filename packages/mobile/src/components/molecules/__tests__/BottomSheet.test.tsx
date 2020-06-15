@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { BottomSheet, IBottomSheetProps } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
@@ -15,7 +15,7 @@ describe('BottomSheet', () => {
       visible: false,
       onCloseSheet: jest.fn(),
     };
-    const wrapper = shallow(<BottomSheet {...testProps} />);
+    const wrapper = mount(<BottomSheet {...testProps} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -25,7 +25,7 @@ describe('BottomSheet', () => {
       visible: true,
       onCloseSheet: jest.fn(),
     };
-    const wrapper = shallow(<BottomSheet {...testProps} />);
+    const wrapper = mount(<BottomSheet {...testProps} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

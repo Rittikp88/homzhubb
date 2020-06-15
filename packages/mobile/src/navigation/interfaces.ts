@@ -94,3 +94,7 @@ export interface IPropertyDetailScreenProps {
 export interface IServiceDetailProps {
   index: number;
 }
+
+export interface IServiceStepProps {
+  name: string;
+}

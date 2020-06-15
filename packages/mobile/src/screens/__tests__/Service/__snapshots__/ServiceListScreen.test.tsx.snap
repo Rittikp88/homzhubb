@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Property Details Item Component should render property details items component 1`] = `
+exports[`Service List Screen should render snapshot 1`] = `
 <ContextProvider
   value={
     Object {
@@ -9626,92 +9626,111 @@ exports[`Property Details Item Component should render property details items co
     }
   }
 >
-  <withI18nextTranslation(PropertyDetailsItems)
-    data={
-      Array [
-        Object {
-          "asset_types": Array [
-            Object {
-              "id": 1,
-              "name": "Residential House",
-            },
-            Object {
-              "id": 2,
-              "name": "Apartment/Condo",
-            },
-            Object {
-              "id": 3,
-              "name": "Villa",
-            },
-            Object {
-              "id": 4,
-              "name": "Penthouse",
-            },
-            Object {
-              "id": 5,
-              "name": "Studio Apartment",
-            },
-            Object {
-              "id": 6,
-              "name": "Independent Floor",
-            },
-          ],
-          "id": 1,
-          "name": "Residential",
-          "space_types": Array [
-            Object {
-              "id": 1,
-              "name": "Room",
-            },
-          ],
-        },
-        Object {
-          "asset_types": Array [
-            Object {
-              "id": 1,
-              "name": "Commercial Office Space",
-            },
-            Object {
-              "id": 2,
-              "name": "Office in IT park/SEZ",
-            },
-            Object {
-              "id": 3,
-              "name": "Commercial Showroom",
-            },
-            Object {
-              "id": 4,
-              "name": "Warehouse/Godown",
-            },
-          ],
-          "id": 2,
-          "name": "Commercial",
-          "space_types": Array [
-            Object {
-              "id": 1,
-              "name": "Room",
-            },
-          ],
-        },
-      ]
+  <Connect(withI18nextTranslation(ServiceListScreen))
+    getServiceDetails={[MockFunction]}
+    navigation={
+      Object {
+        "navigate": [MockFunction],
+      }
     }
-    onPropertyGroupChange={[MockFunction]}
-    onPropertyGroupTypeChange={[MockFunction]}
-    propertyGroupSelectedIndex={0}
-    propertyGroupTypeSelectedIndex={0}
-    spaceAvailable={
+    services={
       Array [
         Object {
+          "description": "Eleifend mi nunc facilisis ut. Tristique egestas lorem proin nec eu sem",
+          "facilities": Array [
+            Object {
+              "included": true,
+              "name": "Property Listing on Homzhub",
+            },
+            Object {
+              "included": false,
+              "name": "Assisted Site-visits",
+            },
+            Object {
+              "included": false,
+              "name": "Assisted Negotiation",
+            },
+            Object {
+              "included": false,
+              "name": "Tenant Screening",
+            },
+            Object {
+              "included": false,
+              "name": "Tenant Background check",
+            },
+            Object {
+              "included": false,
+              "name": "Door step agreement delivery",
+            },
+          ],
           "id": 1,
-          "name": "Room",
+          "serviceCost": "No cost - Free",
+          "serviceName": "Free Listing",
         },
         Object {
+          "badge": "RECOMMENDED",
+          "description": "Ac ultricies a viverra risus ut tortor, ut. Suspendisse purus gravida fusce quis.",
+          "facilities": Array [
+            Object {
+              "included": true,
+              "name": "Property Listing on Homzhub",
+            },
+            Object {
+              "included": true,
+              "name": "Assisted Site-visits",
+            },
+            Object {
+              "included": true,
+              "name": "Assisted Negotiation",
+            },
+            Object {
+              "included": true,
+              "name": "Tenant Screening",
+            },
+            Object {
+              "included": true,
+              "name": "Tenant Background check",
+            },
+            Object {
+              "included": true,
+              "name": "Door step agreement delivery",
+            },
+          ],
           "id": 2,
-          "name": "Balcony",
+          "serviceCost": "9% of agreement value",
+          "serviceName": "Assisted Listing",
         },
         Object {
+          "description": "Vestibulum eu, tristique donec aenean faucibus. Rhoncus lacus nunc.",
+          "facilities": Array [
+            Object {
+              "included": true,
+              "name": "Property Listing on Homzhub",
+            },
+            Object {
+              "included": true,
+              "name": "Assisted Site-visits",
+            },
+            Object {
+              "included": true,
+              "name": "Assisted Negotiation",
+            },
+            Object {
+              "included": false,
+              "name": "Tenant Screening",
+            },
+            Object {
+              "included": false,
+              "name": "Tenant Background check",
+            },
+            Object {
+              "included": false,
+              "name": "Door step agreement delivery",
+            },
+          ],
           "id": 3,
-          "name": "Bathroom",
+          "serviceCost": "9% of agreement value",
+          "serviceName": "Boosted Listing",
         },
       ]
     }

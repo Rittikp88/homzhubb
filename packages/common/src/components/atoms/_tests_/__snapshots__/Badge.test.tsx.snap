@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge should match snapshot 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "borderRadius": 2,
+        "paddingHorizontal": 6,
+      },
+      undefined,
+      Object {
+        "backgroundColor": "#0084F8",
+      },
+    ]
+  }
+>
+  <Label
+    style={
+      Object {
+        "alignSelf": "center",
+        "color": "#FFFFFF",
+      }
+    }
+    type="regular"
+  >
+    Badge
+  </Label>
+</View>
+`;

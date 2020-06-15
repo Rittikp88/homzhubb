@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OtpTimer should match snapshot 1`] = `
+<Label
+  style={
+    Object {
+      "color": "#4C5F72",
+    }
+  }
+  textType="regular"
+  type="large"
+>
+  receiveOtp 
+  <Label
+    textType="semiBold"
+    type="large"
+  >
+    resendIn
+  </Label>
+</Label>
+`;

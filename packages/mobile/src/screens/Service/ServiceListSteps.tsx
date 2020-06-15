@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { InitiatePropertyListData } from '@homzhub/common/src/mocks/InitiatePropertyListing';
+import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 import { Label, Text } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -18,14 +18,19 @@ interface IState {
 
 class ServiceListSteps extends React.PureComponent<Props, IState> {
   public state = {
-    listing: InitiatePropertyListData,
+    listing: ServiceSteps,
   };
 
-  public render(): React.ReactElement {
-    const { t } = this.props;
+  public render(): React.ReactNode {
     const {
-      listing: { name },
-    } = this.state;
+      t,
+      route: { params },
+    } = this.props;
+    const { listing } = this.state;
+    const listItem = listing.find((item) => item.name === params.name);
+    if (!listItem) {
+      return null;
+    }
     return (
       <View style={styles.container}>
         <Header
@@ -42,7 +47,7 @@ class ServiceListSteps extends React.PureComponent<Props, IState> {
         />
         <View style={styles.listing}>
           <Text type="regular" textType="semiBold" style={styles.listingTitle}>
-            {name}
+            {listItem.name}
           </Text>
           <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
             {t('common:change')}
@@ -52,17 +57,14 @@ class ServiceListSteps extends React.PureComponent<Props, IState> {
           <Text type="small" textType="semiBold" style={styles.subHeader}>
             {t('service:subHeader')}
           </Text>
-          {this.renderSteps()}
+          {this.renderSteps(listItem.steps)}
         </View>
       </View>
     );
   }
 
-  public renderSteps(): React.ReactNode {
-    const {
-      listing: { steps },
-    } = this.state;
-    return steps.map((step: any, index: number) => {
+  public renderSteps(steps: any): React.ReactElement {
+    return steps.map((stepItem: any, index: number) => {
       // const isLast = steps.length - 1 === index;
       return (
         <>
@@ -71,7 +73,7 @@ class ServiceListSteps extends React.PureComponent<Props, IState> {
               {index + 1}
             </Text>
             <Text type="regular" textType="regular" style={styles.stepName}>
-              {step.name}
+              {stepItem.name}
             </Text>
           </View>
           {/* {!isLast && <Divider containerStyles={styles.divider} />} */}
@@ -118,7 +120,6 @@ const styles = StyleSheet.create({
   stepView: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
     marginTop: 45,
   },
   stepItem: {
@@ -128,7 +129,6 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     borderWidth: 2,
     textAlign: 'center',
-    paddingTop: 5,
   },
   // divider: {
   //   borderColor: theme.colors.disabled,
