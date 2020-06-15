@@ -1,0 +1,1221 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StepIndicator should render snapshot 1`] = `
+<StepIndicatorComponent
+  currentPosition={1}
+  labels={
+    Array [
+      "a",
+      "b",
+      "c",
+    ]
+  }
+  onPress={[MockFunction]}
+  stepCount={4}
+>
+  <View
+    style={Object {}}
+  >
+    <View
+      style={Object {}}
+    >
+      <StepIndicator
+        currentPosition={1}
+        customStyles={Object {}}
+        direction="horizontal"
+        labels={
+          Array [
+            "a",
+            "b",
+            "c",
+          ]
+        }
+        onPress={[MockFunction]}
+        renderLabel={[Function]}
+        renderStepIndicator={[Function]}
+        stepCount={4}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+              },
+              Object {
+                "flexDirection": "column",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                },
+                Object {
+                  "flexDirection": "column",
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "flexDirection": "row",
+                    "justifyContent": "space-around",
+                  },
+                  Object {
+                    "flexDirection": "row",
+                    "height": 40,
+                  },
+                ]
+              }
+            >
+              <View
+                onLayout={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "transparent",
+                      "flexDirection": "row",
+                      "justifyContent": "space-around",
+                    },
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    },
+                  ]
+                }
+              >
+                <TouchableWithoutFeedback
+                  key="0"
+                  onPress={[Function]}
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                        },
+                        Object {
+                          "flexDirection": "row",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "justifyContent": "center",
+                          },
+                          Object {
+                            "flexDirection": "row",
+                          },
+                        ]
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        key="step-indicator"
+                        style={
+                          Array [
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                              "zIndex": 2,
+                            },
+                            Object {
+                              "backgroundColor": "#4aae4f",
+                              "borderColor": "#4aae4f",
+                              "borderRadius": 15,
+                              "borderWidth": 0,
+                              "height": 30,
+                              "width": 30,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          style={
+                            Array [
+                              Object {
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "zIndex": 2,
+                              },
+                              Object {
+                                "backgroundColor": "#4aae4f",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 0,
+                                "height": 30,
+                                "width": 30,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "backgroundColor": "#4aae4f",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 0,
+                                "height": 30,
+                                "justifyContent": "center",
+                                "width": 30,
+                                "zIndex": 2,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                Object {
+                                  "alignItems": "center",
+                                  "backgroundColor": "#4aae4f",
+                                  "borderColor": "#4aae4f",
+                                  "borderRadius": 15,
+                                  "borderWidth": 0,
+                                  "height": 30,
+                                  "justifyContent": "center",
+                                  "width": 30,
+                                  "zIndex": 2,
+                                }
+                              }
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                    "borderRadius": 14,
+                                    "height": 28,
+                                    "justifyContent": "center",
+                                    "width": 28,
+                                  }
+                                }
+                              >
+                                <View
+                                  style={
+                                    Object {
+                                      "alignItems": "center",
+                                      "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                      "borderRadius": 14,
+                                      "height": 28,
+                                      "justifyContent": "center",
+                                      "width": 28,
+                                    }
+                                  }
+                                >
+                                  <Icon
+                                    allowFontScaling={false}
+                                    color="#0084F8"
+                                    name="check-filled"
+                                    size={20}
+                                  >
+                                    <Text
+                                      allowFontScaling={false}
+                                      style={
+                                        Array [
+                                          Object {
+                                            "color": "#0084F8",
+                                            "fontSize": 20,
+                                          },
+                                          undefined,
+                                          Object {
+                                            "fontFamily": "icomoon",
+                                            "fontStyle": "normal",
+                                            "fontWeight": "normal",
+                                          },
+                                          Object {},
+                                        ]
+                                      }
+                                    >
+                                      <Text
+                                        allowFontScaling={false}
+                                        style={
+                                          Array [
+                                            Object {
+                                              "color": "#0084F8",
+                                              "fontSize": 20,
+                                            },
+                                            undefined,
+                                            Object {
+                                              "fontFamily": "icomoon",
+                                              "fontStyle": "normal",
+                                              "fontWeight": "normal",
+                                            },
+                                            Object {},
+                                          ]
+                                        }
+                                      >
+                                        
+                                      </Text>
+                                    </Text>
+                                  </Icon>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                      <PressabilityDebugView
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  key="1"
+                  onPress={[Function]}
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                        },
+                        Object {
+                          "flexDirection": "row",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "justifyContent": "center",
+                          },
+                          Object {
+                            "flexDirection": "row",
+                          },
+                        ]
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        key="step-indicator"
+                        style={
+                          Array [
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                              "zIndex": 2,
+                            },
+                            Object {
+                              "backgroundColor": "#ffffff",
+                              "borderColor": "#4aae4f",
+                              "borderRadius": 15,
+                              "borderWidth": 5,
+                              "height": 30,
+                              "width": 30,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          style={
+                            Array [
+                              Object {
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "zIndex": 2,
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 5,
+                                "height": 30,
+                                "width": 30,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "backgroundColor": "#ffffff",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 5,
+                                "height": 30,
+                                "justifyContent": "center",
+                                "width": 30,
+                                "zIndex": 2,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                Object {
+                                  "alignItems": "center",
+                                  "backgroundColor": "#ffffff",
+                                  "borderColor": "#4aae4f",
+                                  "borderRadius": 15,
+                                  "borderWidth": 5,
+                                  "height": 30,
+                                  "justifyContent": "center",
+                                  "width": 30,
+                                  "zIndex": 2,
+                                }
+                              }
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                    "borderRadius": 14,
+                                    "height": 28,
+                                    "justifyContent": "center",
+                                    "width": 28,
+                                  }
+                                }
+                              >
+                                <View
+                                  style={
+                                    Object {
+                                      "alignItems": "center",
+                                      "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                      "borderRadius": 14,
+                                      "height": 28,
+                                      "justifyContent": "center",
+                                      "width": 28,
+                                    }
+                                  }
+                                >
+                                  <View
+                                    style={
+                                      Array [
+                                        Object {
+                                          "backgroundColor": "#FFFFFF",
+                                          "borderRadius": 5,
+                                          "height": 10,
+                                          "width": 10,
+                                        },
+                                        Object {
+                                          "backgroundColor": "#0084F8",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        Array [
+                                          Object {
+                                            "backgroundColor": "#FFFFFF",
+                                            "borderRadius": 5,
+                                            "height": 10,
+                                            "width": 10,
+                                          },
+                                          Object {
+                                            "backgroundColor": "#0084F8",
+                                          },
+                                        ]
+                                      }
+                                    />
+                                  </View>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                      <PressabilityDebugView
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  key="2"
+                  onPress={[Function]}
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                        },
+                        Object {
+                          "flexDirection": "row",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "justifyContent": "center",
+                          },
+                          Object {
+                            "flexDirection": "row",
+                          },
+                        ]
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        key="step-indicator"
+                        style={
+                          Array [
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                              "zIndex": 2,
+                            },
+                            Object {
+                              "backgroundColor": "#a4d4a5",
+                              "borderColor": "#4aae4f",
+                              "borderRadius": 15,
+                              "borderWidth": 0,
+                              "height": 30,
+                              "width": 30,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          style={
+                            Array [
+                              Object {
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "zIndex": 2,
+                              },
+                              Object {
+                                "backgroundColor": "#a4d4a5",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 0,
+                                "height": 30,
+                                "width": 30,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "backgroundColor": "#a4d4a5",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 0,
+                                "height": 30,
+                                "justifyContent": "center",
+                                "width": 30,
+                                "zIndex": 2,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                Object {
+                                  "alignItems": "center",
+                                  "backgroundColor": "#a4d4a5",
+                                  "borderColor": "#4aae4f",
+                                  "borderRadius": 15,
+                                  "borderWidth": 0,
+                                  "height": 30,
+                                  "justifyContent": "center",
+                                  "width": 30,
+                                  "zIndex": 2,
+                                }
+                              }
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                    "borderRadius": 14,
+                                    "height": 28,
+                                    "justifyContent": "center",
+                                    "width": 28,
+                                  }
+                                }
+                              >
+                                <View
+                                  style={
+                                    Object {
+                                      "alignItems": "center",
+                                      "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                      "borderRadius": 14,
+                                      "height": 28,
+                                      "justifyContent": "center",
+                                      "width": 28,
+                                    }
+                                  }
+                                >
+                                  <View
+                                    style={
+                                      Array [
+                                        Object {
+                                          "backgroundColor": "#FFFFFF",
+                                          "borderRadius": 5,
+                                          "height": 10,
+                                          "width": 10,
+                                        },
+                                        Object {},
+                                      ]
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        Array [
+                                          Object {
+                                            "backgroundColor": "#FFFFFF",
+                                            "borderRadius": 5,
+                                            "height": 10,
+                                            "width": 10,
+                                          },
+                                          Object {},
+                                        ]
+                                      }
+                                    />
+                                  </View>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                      <PressabilityDebugView
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  key="3"
+                  onPress={[Function]}
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                        },
+                        Object {
+                          "flexDirection": "row",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "justifyContent": "center",
+                          },
+                          Object {
+                            "flexDirection": "row",
+                          },
+                        ]
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        key="step-indicator"
+                        style={
+                          Array [
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                              "zIndex": 2,
+                            },
+                            Object {
+                              "backgroundColor": "#a4d4a5",
+                              "borderColor": "#4aae4f",
+                              "borderRadius": 15,
+                              "borderWidth": 0,
+                              "height": 30,
+                              "width": 30,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          style={
+                            Array [
+                              Object {
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "zIndex": 2,
+                              },
+                              Object {
+                                "backgroundColor": "#a4d4a5",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 0,
+                                "height": 30,
+                                "width": 30,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "backgroundColor": "#a4d4a5",
+                                "borderColor": "#4aae4f",
+                                "borderRadius": 15,
+                                "borderWidth": 0,
+                                "height": 30,
+                                "justifyContent": "center",
+                                "width": 30,
+                                "zIndex": 2,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                Object {
+                                  "alignItems": "center",
+                                  "backgroundColor": "#a4d4a5",
+                                  "borderColor": "#4aae4f",
+                                  "borderRadius": 15,
+                                  "borderWidth": 0,
+                                  "height": 30,
+                                  "justifyContent": "center",
+                                  "width": 30,
+                                  "zIndex": 2,
+                                }
+                              }
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                    "borderRadius": 14,
+                                    "height": 28,
+                                    "justifyContent": "center",
+                                    "width": 28,
+                                  }
+                                }
+                              >
+                                <View
+                                  style={
+                                    Object {
+                                      "alignItems": "center",
+                                      "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                                      "borderRadius": 14,
+                                      "height": 28,
+                                      "justifyContent": "center",
+                                      "width": 28,
+                                    }
+                                  }
+                                >
+                                  <View
+                                    style={
+                                      Array [
+                                        Object {
+                                          "backgroundColor": "#FFFFFF",
+                                          "borderRadius": 5,
+                                          "height": 10,
+                                          "width": 10,
+                                        },
+                                        Object {},
+                                      ]
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        Array [
+                                          Object {
+                                            "backgroundColor": "#FFFFFF",
+                                            "borderRadius": 5,
+                                            "height": 10,
+                                            "width": 10,
+                                          },
+                                          Object {},
+                                        ]
+                                      }
+                                    />
+                                  </View>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                      <PressabilityDebugView
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "justifyContent": "space-around",
+                  },
+                  Object {
+                    "flexDirection": "row",
+                    "paddingVertical": 4,
+                  },
+                  Object {
+                    "alignItems": "center",
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "justifyContent": "space-around",
+                    },
+                    Object {
+                      "flexDirection": "row",
+                      "paddingVertical": 4,
+                    },
+                    Object {
+                      "alignItems": "center",
+                    },
+                  ]
+                }
+              >
+                <TouchableWithoutFeedback
+                  key="0"
+                  onPress={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "justifyContent": "center",
+                    }
+                  }
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "justifyContent": "center",
+                      }
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <Label
+                        numberOfLines={1}
+                        style={
+                          Object {
+                            "color": "#FFFFFF",
+                            "textAlign": "center",
+                          }
+                        }
+                        textType="semiBold"
+                        type="large"
+                      >
+                        <Text
+                          numberOfLines={1}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 14,
+                                "lineHeight": 21,
+                                "textAlign": "left",
+                              },
+                              Object {
+                                "fontFamily": "OpenSans-SemiBold",
+                                "fontWeight": "600",
+                              },
+                              Object {
+                                "color": "#FFFFFF",
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={
+                              Array [
+                                Object {
+                                  "fontSize": 14,
+                                  "lineHeight": 21,
+                                  "textAlign": "left",
+                                },
+                                Object {
+                                  "fontFamily": "OpenSans-SemiBold",
+                                  "fontWeight": "600",
+                                },
+                                Object {
+                                  "color": "#FFFFFF",
+                                  "textAlign": "center",
+                                },
+                              ]
+                            }
+                          >
+                            a
+                          </Text>
+                        </Text>
+                      </Label>
+                      <PressabilityDebugView
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  key="1"
+                  onPress={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "justifyContent": "center",
+                    }
+                  }
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "justifyContent": "center",
+                      }
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <Label
+                        numberOfLines={1}
+                        style={
+                          Object {
+                            "color": "#FFFFFF",
+                            "textAlign": "center",
+                          }
+                        }
+                        textType="semiBold"
+                        type="large"
+                      >
+                        <Text
+                          numberOfLines={1}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 14,
+                                "lineHeight": 21,
+                                "textAlign": "left",
+                              },
+                              Object {
+                                "fontFamily": "OpenSans-SemiBold",
+                                "fontWeight": "600",
+                              },
+                              Object {
+                                "color": "#FFFFFF",
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={
+                              Array [
+                                Object {
+                                  "fontSize": 14,
+                                  "lineHeight": 21,
+                                  "textAlign": "left",
+                                },
+                                Object {
+                                  "fontFamily": "OpenSans-SemiBold",
+                                  "fontWeight": "600",
+                                },
+                                Object {
+                                  "color": "#FFFFFF",
+                                  "textAlign": "center",
+                                },
+                              ]
+                            }
+                          >
+                            b
+                          </Text>
+                        </Text>
+                      </Label>
+                      <PressabilityDebugView
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  key="2"
+                  onPress={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "justifyContent": "center",
+                    }
+                  }
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "justifyContent": "center",
+                      }
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <Label
+                        numberOfLines={1}
+                        style={
+                          Object {
+                            "color": "#FFFFFF",
+                            "textAlign": "center",
+                          }
+                        }
+                        textType="semiBold"
+                        type="large"
+                      >
+                        <Text
+                          numberOfLines={1}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 14,
+                                "lineHeight": 21,
+                                "textAlign": "left",
+                              },
+                              Object {
+                                "fontFamily": "OpenSans-SemiBold",
+                                "fontWeight": "600",
+                              },
+                              Object {
+                                "color": "#FFFFFF",
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={
+                              Array [
+                                Object {
+                                  "fontSize": 14,
+                                  "lineHeight": 21,
+                                  "textAlign": "left",
+                                },
+                                Object {
+                                  "fontFamily": "OpenSans-SemiBold",
+                                  "fontWeight": "600",
+                                },
+                                Object {
+                                  "color": "#FFFFFF",
+                                  "textAlign": "center",
+                                },
+                              ]
+                            }
+                          >
+                            c
+                          </Text>
+                        </Text>
+                      </Label>
+                      <PressabilityDebugView
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+            </View>
+          </View>
+        </View>
+      </StepIndicator>
+    </View>
+  </View>
+</StepIndicatorComponent>
+`;

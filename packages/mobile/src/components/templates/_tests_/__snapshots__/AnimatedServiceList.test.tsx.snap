@@ -62,12 +62,13 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
         <View
           style={
             Object {
-              "alignItems": "flex-end",
+              "alignItems": "center",
               "backgroundColor": "#0084F8",
               "flex": 0,
               "flexDirection": "row",
-              "justifyContent": "flex-end",
-              "padding": 15,
+              "justifyContent": "center",
+              "paddingBottom": 16,
+              "paddingHorizontal": 16,
               "paddingTop": 30,
             }
           }
@@ -75,12 +76,13 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
           <View
             style={
               Object {
-                "alignItems": "flex-end",
+                "alignItems": "center",
                 "backgroundColor": "#0084F8",
                 "flex": 0,
                 "flexDirection": "row",
-                "justifyContent": "flex-end",
-                "padding": 15,
+                "justifyContent": "center",
+                "paddingBottom": 16,
+                "paddingHorizontal": 16,
                 "paddingTop": 30,
               }
             }
@@ -94,7 +96,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               style={
                 Array [
                   Object {
-                    "flex": 2,
+                    "bottom": 16,
+                    "left": 16,
+                    "position": "absolute",
                   },
                   undefined,
                 ]
@@ -111,7 +115,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                     },
                     Array [
                       Object {
-                        "flex": 2,
+                        "bottom": 16,
+                        "left": 16,
+                        "position": "absolute",
                       },
                       undefined,
                     ],
@@ -135,7 +141,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       },
                       Array [
                         Object {
-                          "flex": 2,
+                          "bottom": 16,
+                          "left": 16,
+                          "position": "absolute",
                         },
                         undefined,
                       ],
@@ -154,14 +162,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
             </Icon>
             <Text
               style={
-                Array [
-                  Object {
-                    "flex": 3,
-                  },
-                  Object {
-                    "color": "#FFFFFF",
-                  },
-                ]
+                Object {
+                  "color": "#FFFFFF",
+                }
               }
               textType="semiBold"
               type="small"
@@ -178,14 +181,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       "fontFamily": "OpenSans-SemiBold",
                       "fontWeight": "600",
                     },
-                    Array [
-                      Object {
-                        "flex": 3,
-                      },
-                      Object {
-                        "color": "#FFFFFF",
-                      },
-                    ],
+                    Object {
+                      "color": "#FFFFFF",
+                    },
                   ]
                 }
               >
@@ -201,14 +199,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                         "fontFamily": "OpenSans-SemiBold",
                         "fontWeight": "600",
                       },
-                      Array [
-                        Object {
-                          "flex": 3,
-                        },
-                        Object {
-                          "color": "#FFFFFF",
-                        },
-                      ],
+                      Object {
+                        "color": "#FFFFFF",
+                      },
                     ]
                   }
                 >

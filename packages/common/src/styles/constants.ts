@@ -7,6 +7,8 @@ export const styleConstants = {
   flexStart: 'flex-start',
   flexEnd: 'flex-end',
   center: 'center',
+  transparent: 'transparent',
+  none: 'none',
 };
 
 // Button styles for special cases

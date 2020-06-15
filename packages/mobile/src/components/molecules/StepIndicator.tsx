@@ -1,0 +1,129 @@
+import React from 'react';
+import { StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
+import StepIndicator from 'react-native-step-indicator';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Label } from '@homzhub/common/src/components';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+
+enum StepStatus {
+  finished = 'finished',
+  unfinished = 'unfinished',
+  current = 'current',
+}
+
+enum StepDirection {
+  horizontal = 'horizontal',
+  vertical = 'vertical',
+}
+
+export interface IStepIndicatorStyles {
+  stepIndicatorSize?: number;
+  currentStepIndicatorSize?: number;
+  separatorStrokeWidth?: number;
+  stepStrokeWidth?: number;
+  currentStepStrokeWidth?: number;
+  stepStrokeCurrentColor?: string;
+  stepStrokeFinishedColor?: string;
+  stepStrokeUnFinishedColor?: string;
+  separatorFinishedColor?: string;
+  separatorUnFinishedColor?: string;
+  stepIndicatorFinishedColor?: string;
+  stepIndicatorUnFinishedColor?: string;
+  stepIndicatorCurrentColor?: string;
+  stepIndicatorLabelFontSize?: number;
+  currentStepIndicatorLabelFontSize?: number;
+  stepIndicatorLabelCurrentColor?: string;
+  stepIndicatorLabelFinishedColor?: string;
+  stepIndicatorLabelUnFinishedColor?: string;
+  labelColor?: string;
+  currentStepLabelColor?: string;
+  labelSize?: number;
+  labelAlign?: string;
+  labelFontFamily?: string;
+}
+
+interface IProps {
+  stepCount: number;
+  currentPosition: number;
+  labels?: string[];
+  direction?: StepDirection;
+  customStyles?: IStepIndicatorStyles;
+  containerStyle?: StyleProp<ViewStyle>;
+  onPress?: (step: number) => void;
+}
+
+export class StepIndicatorComponent extends React.PureComponent<IProps, {}> {
+  public render(): React.ReactNode {
+    const {
+      stepCount,
+      currentPosition,
+      customStyles,
+      labels,
+      onPress,
+      direction = StepDirection.horizontal,
+      containerStyle = {},
+    } = this.props;
+    return (
+      <View style={containerStyle}>
+        <StepIndicator
+          stepCount={stepCount}
+          direction={direction}
+          customStyles={customStyles}
+          currentPosition={currentPosition}
+          labels={labels}
+          onPress={onPress}
+          renderLabel={this.label}
+          renderStepIndicator={this.stepIndicator}
+        />
+      </View>
+    );
+  }
+
+  private label = ({ label }: { label: string }): React.ReactNode => {
+    return (
+      <Label type="large" textType="semiBold" style={styles.label} numberOfLines={1}>
+        {label}
+      </Label>
+    );
+  };
+
+  private stepIndicator = ({ stepStatus }: { stepStatus: string }): React.ReactNode => {
+    let conditionalInnerStyle = {};
+    if (stepStatus === StepStatus.current) {
+      conditionalInnerStyle = {
+        backgroundColor: theme.colors.primaryColor,
+      };
+    }
+
+    return (
+      <View style={styles.stepIndicator}>
+        {stepStatus === StepStatus.finished ? (
+          <Icon name={icons.checkFilled} size={20} color={theme.colors.primaryColor} />
+        ) : (
+          <View style={[styles.inner, conditionalInnerStyle]} />
+        )}
+      </View>
+    );
+  };
+}
+
+const styles = StyleSheet.create({
+  stepIndicator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 28,
+    height: 28,
+    borderRadius: 28 / 2,
+    backgroundColor: theme.colors.whiteOpacity,
+  },
+  inner: {
+    width: 10,
+    height: 10,
+    borderRadius: 10 / 2,
+    backgroundColor: theme.colors.secondaryColor,
+  },
+  label: {
+    textAlign: 'center',
+    color: theme.colors.white,
+  },
+});

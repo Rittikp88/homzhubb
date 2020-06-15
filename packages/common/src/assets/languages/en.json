@@ -18,7 +18,12 @@
     "searchResults": "Search Results",
     "submit": "Submit",
     "change": "Change",
-    "onlyNumeric": "Only numeric values allowed"
+    "onlyNumeric": "Only numeric values allowed",
+    "stepIndicator": "STEP {{position}}",
+    "details": "DETAILS",
+    "images": "IMAGES",
+    "verification": "VERIFICATION",
+    "payment": "PAYMENT"
   },
   "auth": {
     "verifyNumber": "Verify your number",

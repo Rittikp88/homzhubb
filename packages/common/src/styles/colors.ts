@@ -50,9 +50,14 @@ const gradientColors = {
   propertyGradientB: '#016EE2',
 };
 
+const opacity = {
+  whiteOpacity: 'rgba(255, 255, 255, 0.1)',
+};
+
 export const colors = {
   ...namedColors,
   ...themedColors,
   ...gradientColors,
   ...tintColors,
+  ...opacity,
 };

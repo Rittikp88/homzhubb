@@ -45,11 +45,11 @@ class Header extends React.PureComponent<ICommonHeaderProps, {}> {
             name={icon}
             size={iconSize || 22}
             color={iconColor || theme.colors.darkTint4}
-            style={[styles.iconStyle, iconStyle]}
+            style={[styles.icon, iconStyle]}
             onPress={onIconPress}
           />
           {isHeadingVisible && (
-            <Text type={titleType || 'small'} textType={titleFontType || 'semiBold'} style={[styles.title, titleStyle]}>
+            <Text type={titleType || 'small'} textType={titleFontType || 'semiBold'} style={titleStyle}>
               {title ?? ''}
             </Text>
           )}
@@ -63,18 +63,18 @@ export default Header;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     flex: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    padding: 15,
+    flexDirection: 'row',
     paddingTop: 30,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: theme.colors.primaryColor,
   },
-  iconStyle: {
-    flex: 2,
-  },
-  title: {
-    flex: 3,
+  icon: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
   },
 });
