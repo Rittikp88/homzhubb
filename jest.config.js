@@ -16,8 +16,12 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '<rootDir>/src/**/*.tsx',
-    '!<rootDir>/src/mocks/*',
+    '<rootDir>/src/**/interfaces.ts',
+    '<rootDir>/src/**/Interfaces.ts',
     '!<rootDir>/src/assets/*',
+    '!<rootDir>/src/mocks/*',
+    '!<rootDir>/src/styles/*',
+    '!<rootDir>/src/domain/models/*',
     '!<rootDir>/src/**/*.native.ts',
     '!<rootDir>/src/**/*.web.ts',
     '!<rootDir>/src/**/*.module.ts',

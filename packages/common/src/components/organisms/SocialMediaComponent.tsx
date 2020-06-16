@@ -5,7 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager, LoginResult } from 'react-native-fbsdk';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { UserService } from '@homzhub/common/src/services/UserService';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,7 +14,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ISocialUserData, SocialMediaKeys } from '@homzhub/common/src/assets/constants';
-import { ISocialLogin, ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
@@ -101,31 +101,16 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
     };
 
     try {
-      const response: ISocialLogin = await UserService.socialLogin(socialLoginData);
-      if (response.is_new_user) {
+      const response = await UserRepository.socialLogin(socialLoginData);
+      if ((response as { is_new_user: boolean }).is_new_user) {
         navigation.navigate(ScreensKeys.MobileVerification, {
           isFromLogin,
           userData,
         });
         return;
       }
-      // TODO: Send the correct payload. Rectify the types.
-      const {
-        access_token,
-        refresh_token,
-        // @ts-ignore
-        user: { full_name, email, country_code, phone_number },
-      } = response.payload;
-      const userPayload = {
-        access_token,
-        refresh_token,
-        full_name,
-        email,
-        country_code,
-        phone_number,
-      };
-      onLoginSuccessAction(userPayload);
-      await StorageService.set<IUser>('@user', response.payload);
+      onLoginSuccessAction(response as IUser);
+      await StorageService.set<IUser>('@user', response as IUser);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

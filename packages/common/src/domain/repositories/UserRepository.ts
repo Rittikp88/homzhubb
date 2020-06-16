@@ -48,8 +48,13 @@ class UserRepository {
     return await this.apiClient.post(ENDPOINTS.signUp(), payload);
   };
 
-  public socialSignUp = async (payload: ISocialSignUpPayload): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.socialSignUp(), payload);
+  public socialSignUp = async (payload: ISocialSignUpPayload): Promise<IUser> => {
+    const response = await this.apiClient.post(ENDPOINTS.socialSignUp(), payload);
+    return {
+      ...response.user,
+      access_token: response.access_token,
+      refresh_token: response.refresh_token,
+    };
   };
 
   public login = async (payload: IEmailLoginPayload | IOtpLoginPayload): Promise<IUser> => {
@@ -61,16 +66,27 @@ class UserRepository {
     };
   };
 
+  public socialLogin = async (payload: ISocialLoginPayload): Promise<IUser | { is_new_user: boolean }> => {
+    const response: ISocialLogin = await this.apiClient.post(ENDPOINTS.socialLogin(), payload);
+    if (!response.user) {
+      return {
+        is_new_user: response.is_new_user ?? true,
+      } as { is_new_user: boolean };
+    }
+
+    return {
+      ...response.user,
+      access_token: response.access_token ?? '',
+      refresh_token: response.refresh_token ?? '',
+    } as IUser;
+  };
+
   public Otp = async (requestPayload: IOtpVerify): Promise<IOtpVerifyResponse> => {
     return await this.apiClient.post(ENDPOINTS.otp(), requestPayload);
   };
 
-  public resetPassword = async (payload: IForgotPasswordPayload): Promise<void> => {
+  public resetPassword = async (payload: IForgotPasswordPayload): Promise<any> => {
     return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
-  };
-
-  public socialLogin = async (payload: ISocialLoginPayload): Promise<ISocialLogin> => {
-    return await this.apiClient.post(ENDPOINTS.socialLogin(), payload);
   };
 
   public emailExists = async (emailId: string): Promise<any> => {

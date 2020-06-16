@@ -5,7 +5,7 @@ import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { UserService } from '@homzhub/common/src/services/UserService';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { FormButton, FormTextInput, Text, DetailedHeader } from '@homzhub/common/src/components';
@@ -74,7 +74,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
         email,
       },
     };
-    UserService.resetPassword(payload)
+    UserRepository.resetPassword(payload)
       .then((response) => {
         const { email_exists, token } = response;
         if (email_exists) {

@@ -1,5 +1,3 @@
-import { IUser } from '@homzhub/common/src/domain/models/User';
-
 export enum LoginTypes {
   OTP = 'OTP_LOGIN',
   EMAIL = 'EMAIL_LOGIN',
@@ -63,8 +61,15 @@ export interface IEmailLoginPayload {
 }
 
 export interface ISocialLogin {
-  is_new_user: boolean;
-  payload: IUser;
+  is_new_user?: boolean;
+  access_token?: string;
+  refresh_token?: string;
+  user?: {
+    full_name: string;
+    email: string;
+    country_code: string;
+    phone_number: string;
+  };
 }
 
 export interface ISocialLoginPayload {

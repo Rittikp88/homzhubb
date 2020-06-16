@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-// import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -109,7 +109,6 @@ class Otp extends React.PureComponent<IProps, IState> {
       case OtpNavTypes.Login:
         this.loginOtp(otp ?? '');
         break;
-      case OtpNavTypes.SocialMedia:
       default:
         break;
     }
@@ -145,7 +144,7 @@ class Otp extends React.PureComponent<IProps, IState> {
 
     try {
       await UserService.verifyOtp(otp, phone, countryCode);
-      await this.onVerifySuccess();
+      await this.onVerifySuccess(otp);
     } catch (e) {
       this.toggleErrorState(true);
     }
@@ -180,7 +179,7 @@ class Otp extends React.PureComponent<IProps, IState> {
 
   private socialSignUp = async (otp: string): Promise<void> => {
     const {
-      // loginSuccess,
+      loginSuccess,
       route: {
         params: { userData },
       },
@@ -191,12 +190,12 @@ class Otp extends React.PureComponent<IProps, IState> {
     }
 
     try {
-      await UserRepository.socialSignUp({
+      const data: IUser = await UserRepository.socialSignUp({
         otp,
         user_details: userData,
       });
-      // loginSuccess(data);
-      // await StorageService.set<IUser>('@user', data);
+      loginSuccess(data);
+      await StorageService.set<IUser>('@user', data);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

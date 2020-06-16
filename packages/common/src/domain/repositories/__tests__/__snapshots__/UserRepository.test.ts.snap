@@ -36,16 +36,13 @@ Object {
 
 exports[`UserRepository should call socialLogin and return response 1`] = `
 Object {
-  "is_new_user": false,
+  "access_token": "",
+  "refresh_token": "",
   "user": Object {
-    "access_token": "access_token",
-    "refresh_token": "refresh_token",
-    "user": Object {
-      "country_code": "IN",
-      "email": "r@gmail.com",
-      "full_name": "Rishabh Modi",
-      "phone_number": "99999999",
-    },
+    "country_code": "IN",
+    "email": "r@gmail.com",
+    "full_name": "Rishabh Modi",
+    "phone_number": "99999999",
   },
 }
 `;

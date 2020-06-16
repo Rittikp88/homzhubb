@@ -2,36 +2,40 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { FormTextInput, AnimatedHeader, LoginForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
-  getSocialMedia: () => void;
   loginSuccess: (data: IUser) => void;
 }
 
-interface IStateProps {
+interface ILoginScreenState {
   socialMediaProviders: ISocialMediaProvider[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.Login>;
-type Props = IStateProps & IDispatchProps & libraryProps;
+type Props = IDispatchProps & libraryProps;
 
-class LoginScreen extends Component<Props> {
-  public componentDidMount(): void {
-    const { getSocialMedia } = this.props;
-    getSocialMedia();
+class LoginScreen extends Component<Props, ILoginScreenState> {
+  public state = {
+    socialMediaProviders: [],
+  };
+
+  public async componentDidMount(): Promise<void> {
+    await this.fetchSocialMedia();
   }
 
   public render(): React.ReactNode {
-    const { t, socialMediaProviders, loginSuccess, navigation } = this.props;
+    const { t, loginSuccess, navigation } = this.props;
+    const { socialMediaProviders } = this.state;
 
     return (
       <AnimatedHeader
@@ -80,26 +84,28 @@ class LoginScreen extends Component<Props> {
       ref,
     });
   };
+
+  private fetchSocialMedia = async (): Promise<void> => {
+    try {
+      const response = await UserRepository.getSocialMedia();
+      this.setState({ socialMediaProviders: response });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
-  return {
-    socialMediaProviders: UserSelector.getSocialMediaProviders(state),
-  };
-};
-
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getSocialMedia, loginSuccess } = UserActions;
+  const { loginSuccess } = UserActions;
   return bindActionCreators(
     {
-      getSocialMedia,
       loginSuccess,
     },
     dispatch
   );
 };
 
-export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
-  mapStateToProps,
+export default connect<{}, IDispatchProps, WithTranslation, IState>(
+  null,
   mapDispatchToProps
 )(withTranslation()(LoginScreen));

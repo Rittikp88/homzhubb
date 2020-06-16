@@ -5,7 +5,7 @@ import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { UserService } from '@homzhub/common/src/services/UserService';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { FormButton, FormTextInput, DetailedHeader } from '@homzhub/common/src/components';
@@ -79,7 +79,7 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
         password,
       },
     };
-    UserService.resetPassword(payload)
+    UserRepository.resetPassword(payload)
       .then(() => {
         navigation.navigate(ScreensKeys.SuccessResetPassword);
         return null;

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommonService should return country with country code 1`] = `
+Array [
+  Object {
+    "label": "INDIA (+91)",
+    "value": "+91",
+  },
+  Object {
+    "label": "SINGAPORE (+65)",
+    "value": "+65",
+  },
+  Object {
+    "label": "AUSTRALIA (+36)",
+    "value": "+36",
+  },
+]
+`;

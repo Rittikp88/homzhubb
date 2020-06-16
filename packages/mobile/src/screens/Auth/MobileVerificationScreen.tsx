@@ -163,10 +163,12 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
     if (isFromLogin) {
       if (provider === SocialMediaKeys.Google) {
         title = t('loginWithGoogle');
+      } else {
+        title = t('loginWithFacebook');
       }
-      title = t('loginWithFacebook');
     }
-    if (provider === SocialMediaKeys.Google) {
+
+    if (!isFromLogin && provider === SocialMediaKeys.Google) {
       title = t('signUpWithGoogle');
     }
 

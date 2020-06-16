@@ -5,16 +5,10 @@ import {
   IRefreshTokenPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const actionTypePrefix = 'User/';
 
 export const UserActionTypes = {
-  GET: {
-    SOCIAL_MEDIA: `${actionTypePrefix}SOCIAL_MEDIA`,
-    SOCIAL_MEDIA_SUCCESS: `${actionTypePrefix}SOCIAL_MEDIA_SUCCESS`,
-    SOCIAL_MEDIA_FAILURE: `${actionTypePrefix}SOCIAL_MEDIA_FAILURE`,
-  },
   AUTH: {
     LOGIN: `${actionTypePrefix}LOGIN`,
     LOGIN_SUCCESS: `${actionTypePrefix}LOGIN_SUCCESS`,
@@ -24,26 +18,6 @@ export const UserActionTypes = {
     LOGOUT_FAILURE: `${actionTypePrefix}LOGOUT_FAILURE`,
   },
   UPDATE_ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
-};
-
-const getSocialMedia = (): IFluxStandardAction => {
-  return {
-    type: UserActionTypes.GET.SOCIAL_MEDIA,
-  };
-};
-
-const getSocialMediaSuccess = (data: any): IFluxStandardAction<ISocialMediaProvider[]> => {
-  return {
-    type: UserActionTypes.GET.SOCIAL_MEDIA_SUCCESS,
-    payload: data,
-  };
-};
-
-const getSocialMediaFailure = (error: string): IFluxStandardAction => {
-  return {
-    type: UserActionTypes.GET.SOCIAL_MEDIA_FAILURE,
-    error,
-  };
 };
 
 const login = (
@@ -94,11 +68,8 @@ const updateOnBoarding = (updatedOnBoarding: boolean): IFluxStandardAction<boole
   payload: updatedOnBoarding,
 });
 
-export type UserPayloadTypes = string | boolean | IUser | ISocialMediaProvider[];
+export type UserPayloadTypes = string | boolean | IUser;
 export const UserActions = {
-  getSocialMedia,
-  getSocialMediaSuccess,
-  getSocialMediaFailure,
   login,
   loginSuccess,
   loginFailure,

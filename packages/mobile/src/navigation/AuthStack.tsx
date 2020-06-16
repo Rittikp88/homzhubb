@@ -6,7 +6,7 @@ import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen'
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
 import LoginScreen from '@homzhub/mobile/src/screens/Auth/LoginScreen';
-import MobileVerificationScreen from '@homzhub/mobile/src/screens/Auth/MobileVerifactionScreen';
+import MobileVerificationScreen from '@homzhub/mobile/src/screens/Auth/MobileVerificationScreen';
 import OnBoarding from '@homzhub/mobile/src/screens/OnBoarding';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/Auth/SignUpScreen';

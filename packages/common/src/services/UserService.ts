@@ -1,11 +1,4 @@
-import {
-  IForgotPasswordPayload,
-  ISocialLoginPayload,
-  ISocialLogin,
-  IOtpVerify,
-  OtpActionTypes,
-  OtpTypes,
-} from '@homzhub/common/src/domain/repositories/interfaces';
+import { IOtpVerify, OtpActionTypes, OtpTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 
 class UserService {
@@ -45,22 +38,6 @@ class UserService {
     if (!response.otp_verify) {
       throw new Error();
     }
-  };
-
-  public resetPassword = async (payload: IForgotPasswordPayload): Promise<any> => {
-    return await UserRepository.resetPassword(payload);
-  };
-
-  public socialLogin = async (payload: ISocialLoginPayload): Promise<ISocialLogin> => {
-    return await UserRepository.socialLogin(payload);
-  };
-
-  public checkEmailExists = async (emailId: string): Promise<any> => {
-    return await UserRepository.emailExists(emailId);
-  };
-
-  public checkPhoneNumberExists = async (phone: string): Promise<any> => {
-    return await UserRepository.phoneExists(phone);
   };
 }
 

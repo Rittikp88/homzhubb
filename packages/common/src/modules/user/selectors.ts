@@ -1,5 +1,4 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
 const isLoggedIn = (state: IState): boolean => {
@@ -8,11 +7,6 @@ const isLoggedIn = (state: IState): boolean => {
 
 const hasOnBoardingCompleted = (state: IState): boolean => {
   return state.user.isOnBoardingCompleted;
-};
-
-const getSocialMediaProviders = (state: IState): ISocialMediaProvider[] => {
-  const { user } = state;
-  return user.socialProviders;
 };
 
 const getUserDetails = (state: IState): IUser | null => {
@@ -25,6 +19,5 @@ const getUserDetails = (state: IState): IUser | null => {
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
-  getSocialMediaProviders,
   getUserDetails,
 };

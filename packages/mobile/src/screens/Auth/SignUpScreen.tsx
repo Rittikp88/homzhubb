@@ -3,45 +3,41 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { UserService } from '@homzhub/common/src/services/UserService';
 import { AnimatedHeader, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
-  getSocialMedia: () => void;
   loginSuccess: (data: IUser) => void;
-}
-
-interface IStateProps {
-  socialMediaProviders: ISocialMediaProvider[];
 }
 
 interface ISignUpState {
   isNewUser: boolean;
+  socialMediaProviders: ISocialMediaProvider[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp>;
-type Props = IStateProps & IDispatchProps & libraryProps;
+type Props = IDispatchProps & libraryProps;
 
 class SignUpScreen extends Component<Props, ISignUpState> {
   public state = {
     isNewUser: false,
+    socialMediaProviders: [],
   };
 
-  public componentDidMount(): void {
-    const { getSocialMedia } = this.props;
-    getSocialMedia();
+  public async componentDidMount(): Promise<void> {
+    await this.fetchSocialMedia();
   }
 
   public render(): React.ReactNode {
-    const { socialMediaProviders, t, loginSuccess, navigation } = this.props;
+    const { t, loginSuccess, navigation } = this.props;
+    const { socialMediaProviders } = this.state;
 
     return (
       <AnimatedHeader
@@ -94,7 +90,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
   private validateUser = (formData: ISignUpPayload): void => {
     const { t } = this.props;
     const phone = `${formData.country_code}~${formData.phone_number}`;
-    UserService.checkEmailExists(formData.email)
+    UserRepository.emailExists(formData.email)
       .then((res: any) => {
         if (res && res.is_exists) {
           AlertHelper.error({ message: t('auth:emailAlreadyExists') });
@@ -107,7 +103,7 @@ class SignUpScreen extends Component<Props, ISignUpState> {
         AlertHelper.error({ message: e });
       });
 
-    UserService.checkPhoneNumberExists(phone)
+    UserRepository.phoneExists(phone)
       .then((res: any) => {
         if (res && res.is_exists) {
           AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
@@ -120,26 +116,28 @@ class SignUpScreen extends Component<Props, ISignUpState> {
         AlertHelper.error({ message: e });
       });
   };
+
+  private fetchSocialMedia = async (): Promise<void> => {
+    try {
+      const response = await UserRepository.getSocialMedia();
+      this.setState({ socialMediaProviders: response });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
-  return {
-    socialMediaProviders: UserSelector.getSocialMediaProviders(state),
-  };
-};
-
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getSocialMedia, loginSuccess } = UserActions;
+  const { loginSuccess } = UserActions;
   return bindActionCreators(
     {
-      getSocialMedia,
       loginSuccess,
     },
     dispatch
   );
 };
 
-export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
-  mapStateToProps,
+export default connect<{}, IDispatchProps, WithTranslation, IState>(
+  null,
   mapDispatchToProps
 )(withTranslation()(SignUpScreen));
