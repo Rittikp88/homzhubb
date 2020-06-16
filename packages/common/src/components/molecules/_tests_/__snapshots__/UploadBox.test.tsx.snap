@@ -1,74 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test cases for UploadBox should render snapshot 1`] = `
-<View
-  style={
-    Array [
-      Object {
-        "borderColor": "#78B7FA",
-        "borderRadius": 4,
-        "borderStyle": "dashed",
-        "borderWidth": 1,
-        "flexDirection": "row",
-        "padding": 8,
-      },
-      undefined,
-    ]
-  }
->
-  <View
+<Fragment>
+  <ForwardRef
+    onPress={[MockFunction]}
     style={
-      Object {
-        "alignItems": "center",
-        "borderRadius": 4,
-        "flex": 1,
-        "justifyContent": "center",
-      }
+      Array [
+        Object {
+          "borderColor": "#78B7FA",
+          "borderRadius": 4,
+          "borderStyle": "dashed",
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "padding": 8,
+        },
+        undefined,
+      ]
     }
   >
-    <Icon
-      allowFontScaling={false}
-      color="#0084F8"
-      name="id-proof"
-      size={40}
-    />
-  </View>
-  <View
-    style={
-      Object {
-        "flex": 3,
-      }
-    }
-  >
-    <Text
+    <View
       style={
-        Array [
-          Object {
-            "color": "#0084F8",
-          },
-          undefined,
-        ]
+        Object {
+          "alignItems": "center",
+          "borderRadius": 4,
+          "flex": 1,
+          "justifyContent": "center",
+        }
       }
-      textType="semiBold"
-      type="small"
     >
-      Header
-    </Text>
-    <Label
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="id-proof"
+        size={40}
+      />
+    </View>
+    <View
       style={
-        Array [
-          Object {
-            "color": "#667686",
-            "paddingTop": 8,
-          },
-          undefined,
-        ]
+        Object {
+          "flex": 3,
+        }
       }
-      textType="regular"
-      type="regular"
     >
-      Sub header Text
-    </Label>
-  </View>
-</View>
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#0084F8",
+            },
+            undefined,
+          ]
+        }
+        textType="semiBold"
+        type="small"
+      >
+        Header
+      </Text>
+      <Label
+        style={
+          Array [
+            Object {
+              "color": "#667686",
+              "paddingTop": 8,
+            },
+            undefined,
+          ]
+        }
+        textType="regular"
+        type="regular"
+      >
+        Sub header Text
+      </Label>
+    </View>
+  </ForwardRef>
+</Fragment>
 `;

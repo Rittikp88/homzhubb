@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components';
@@ -8,6 +8,7 @@ interface IProps {
   icon: string;
   header: string;
   subHeader: string;
+  onPress: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   headerStyle?: StyleProp<ViewStyle>;
   subHeaderStyle?: StyleProp<ViewStyle>;
@@ -16,9 +17,9 @@ interface IProps {
 }
 
 export const UploadBox = (props: IProps): React.ReactElement => {
-  const { icon, header, subHeader, containerStyle, headerStyle, subHeaderStyle, iconSize, iconColor } = props;
+  const { icon, header, subHeader, onPress, containerStyle, headerStyle, subHeaderStyle, iconSize, iconColor } = props;
   return (
-    <View style={[styles.container, containerStyle]}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
       <View style={styles.icon}>
         <Icon name={icon} size={iconSize ?? 40} color={iconColor ?? theme.colors.primaryColor} />
       </View>
@@ -30,7 +31,7 @@ export const UploadBox = (props: IProps): React.ReactElement => {
           {subHeader}
         </Label>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

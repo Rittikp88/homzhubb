@@ -13,6 +13,7 @@ describe('Test cases for UploadBox', () => {
       icon: icons.idProof,
       header: 'Header',
       subHeader: 'Sub header Text',
+      onPress: jest.fn(),
       iconSize: 40,
     };
     const wrapper: ShallowWrapper = shallow(<UploadBox {...props} />);
