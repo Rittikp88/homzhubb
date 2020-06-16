@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
+import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
 
 const actionTypePrefix = 'Service/';
 
@@ -10,6 +10,9 @@ export const ServiceActionTypes = {
     SERVICE_DETAILS: `${actionTypePrefix}SERVICE_DETAILS`,
     SERVICE_DETAILS_SUCCESS: `${actionTypePrefix}SERVICE_DETAILS_SUCCESS`,
     SERVICE_DETAILS_FAILURE: `${actionTypePrefix}SERVICE_DETAILS_FAILURE`,
+    SERVICE_STEPS: `${actionTypePrefix}SERVICE_STEPS`,
+    SERVICE_STEPS_SUCCESS: `${actionTypePrefix}SERVICE_STEPS_SUCCESS`,
+    SERVICE_STEPS_FAILURE: `${actionTypePrefix}SERVICE_STEPS_FAILURE`,
   },
 };
 
@@ -33,9 +36,35 @@ const getServiceDetailsFailure = (error: string): IFluxStandardAction<string> =>
   };
 };
 
-export type ServicePayloadTypes = string | IServiceDetail[];
+const getServiceStepsDetails = (payload: number): IFluxStandardAction<number> => {
+  return {
+    type: ServiceActionTypes.GET.SERVICE_STEPS,
+    payload,
+  };
+};
+
+const getServiceStepsDetailsSuccess = (
+  payload: IServiceListStepsDetail[]
+): IFluxStandardAction<IServiceListStepsDetail[]> => {
+  return {
+    type: ServiceActionTypes.GET.SERVICE_STEPS_SUCCESS,
+    payload,
+  };
+};
+
+const getServiceStepsDetailsFailure = (error: string): IFluxStandardAction<string> => {
+  return {
+    type: ServiceActionTypes.GET.SERVICE_STEPS_FAILURE,
+    error,
+  };
+};
+
+export type ServicePayloadTypes = string | number | IServiceDetail[] | IServiceListStepsDetail[];
 export const ServiceActions = {
   getServiceDetails,
   getServiceDetailsSuccess,
   getServiceDetailsFailure,
+  getServiceStepsDetails,
+  getServiceStepsDetailsSuccess,
+  getServiceStepsDetailsFailure,
 };

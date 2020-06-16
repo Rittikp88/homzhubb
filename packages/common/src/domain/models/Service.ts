@@ -11,3 +11,9 @@ export interface IFacilities {
   name: string;
   included: boolean;
 }
+
+export interface IServiceListStepsDetail {
+  id: number;
+  name: string;
+  title: string;
+}

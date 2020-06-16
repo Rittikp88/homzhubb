@@ -50,14 +50,16 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
     return (
       <SafeAreaView style={styles.container}>
         {this.renderSkipButton()}
-        <SnapCarousel
-          bubbleRef={this.updateRef}
-          carouselData={data}
-          carouselItem={this.renderCarouselItem}
-          activeSlide={activeSlide}
-          currentSlide={this.changeSlide}
-        />
-        <PaginationComponent dotsLength={data.length} activeSlide={activeSlide} />
+        <View style={styles.carousel}>
+          <SnapCarousel
+            bubbleRef={this.updateRef}
+            carouselData={data}
+            carouselItem={this.renderCarouselItem}
+            activeSlide={activeSlide}
+            currentSlide={this.changeSlide}
+          />
+          <PaginationComponent dotsLength={data.length} activeSlide={activeSlide} />
+        </View>
         <View style={styles.textContainer}>
           <Text type="large" textType="bold">
             {currentSlide.title}
@@ -138,6 +140,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.onBoardingScreenBackground,
     justifyContent: 'space-around',
+  },
+  carousel: {
+    flex: 1,
   },
   textContainer: {
     flex: 1,

@@ -8,6 +8,14 @@ const getServiceDetails = (state: IState): IServiceDetail[] => {
   return servicesData;
 };
 
+const getServiceSteps = (state: IState): any => {
+  const {
+    service: { servicesSteps },
+  } = state;
+  return servicesSteps;
+};
+
 export const ServiceSelector = {
   getServiceDetails,
+  getServiceSteps,
 };

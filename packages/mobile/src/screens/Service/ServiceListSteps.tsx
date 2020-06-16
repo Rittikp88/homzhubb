@@ -1,36 +1,39 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
-import { Label, Text } from '@homzhub/common/src/components';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ServiceSelector } from '@homzhub/common/src/modules/service/selectors';
+import { ServiceActions } from '@homzhub/common/src/modules/service/actions';
+import { IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
+import { Label, Text, Divider } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
-type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListSteps>;
-type Props = libraryProps;
-
-interface IState {
-  listing: any;
+interface IStateProps {
+  serviceSteps: IServiceListStepsDetail[];
 }
 
-class ServiceListSteps extends React.PureComponent<Props, IState> {
-  public state = {
-    listing: ServiceSteps,
-  };
+interface IDispatchProps {
+  getServiceStepsDetails: (id: number) => void;
+}
+
+type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListSteps>;
+type Props = libraryProps & IStateProps & IDispatchProps;
+
+class ServiceListSteps extends React.PureComponent<Props, {}> {
+  public componentDidMount(): void {
+    const { getServiceStepsDetails } = this.props;
+    // TODO: Pass the id from the route params
+    getServiceStepsDetails(2);
+  }
 
   public render(): React.ReactNode {
-    const {
-      t,
-      route: { params },
-    } = this.props;
-    const { listing } = this.state;
-    const listItem = listing.find((item) => item.name === params.name);
-    if (!listItem) {
-      return null;
-    }
+    const { t } = this.props;
     return (
       <View style={styles.container}>
         <Header
@@ -46,8 +49,9 @@ class ServiceListSteps extends React.PureComponent<Props, IState> {
           titleStyle={styles.headerTitle}
         />
         <View style={styles.listing}>
+          {/* TODO: Remove the string from here once the api is giving the result */}
           <Text type="regular" textType="semiBold" style={styles.listingTitle}>
-            {listItem.name}
+            Boosted Listing
           </Text>
           <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
             {t('common:change')}
@@ -57,15 +61,16 @@ class ServiceListSteps extends React.PureComponent<Props, IState> {
           <Text type="small" textType="semiBold" style={styles.subHeader}>
             {t('service:subHeader')}
           </Text>
-          {this.renderSteps(listItem.steps)}
+          {this.renderSteps()}
         </View>
       </View>
     );
   }
 
-  public renderSteps(steps: any): React.ReactElement {
-    return steps.map((stepItem: any, index: number) => {
-      // const isLast = steps.length - 1 === index;
+  public renderSteps(): React.ReactNode {
+    const { serviceSteps } = this.props;
+    return serviceSteps.map((stepItem: IServiceListStepsDetail, index: number) => {
+      const isLast = serviceSteps.length - 1 === index;
       return (
         <>
           <View key={index} style={styles.stepView}>
@@ -73,10 +78,10 @@ class ServiceListSteps extends React.PureComponent<Props, IState> {
               {index + 1}
             </Text>
             <Text type="regular" textType="regular" style={styles.stepName}>
-              {stepItem.name}
+              {stepItem.title}
             </Text>
           </View>
-          {/* {!isLast && <Divider containerStyles={styles.divider} />} */}
+          {!isLast && <Divider containerStyles={styles.divider} key={`divider-${index}`} />}
         </>
       );
     });
@@ -88,7 +93,27 @@ class ServiceListSteps extends React.PureComponent<Props, IState> {
   };
 }
 
-export default withTranslation()(ServiceListSteps);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getServiceSteps } = ServiceSelector;
+  return {
+    serviceSteps: getServiceSteps(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getServiceStepsDetails } = ServiceActions;
+  return bindActionCreators(
+    {
+      getServiceStepsDetails,
+    },
+    dispatch
+  );
+};
+
+export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation()(ServiceListSteps));
 
 const styles = StyleSheet.create({
   container: {
@@ -120,7 +145,7 @@ const styles = StyleSheet.create({
   stepView: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 45,
+    marginTop: 25,
   },
   stepItem: {
     width: 35,
@@ -128,13 +153,16 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint4,
     borderRadius: 35,
     borderWidth: 2,
+    paddingTop: 5,
     textAlign: 'center',
   },
-  // divider: {
-  //   borderColor: theme.colors.disabled,
-  //   borderWidth: 1,
-  //   transform: [{ rotate: '90deg' }],
-  // },
+  divider: {
+    borderColor: theme.colors.disabled,
+    borderWidth: 1,
+    width: 35,
+    marginTop: 25,
+    transform: [{ rotate: '90deg' }],
+  },
   stepName: {
     flex: 1,
     marginLeft: 20,
