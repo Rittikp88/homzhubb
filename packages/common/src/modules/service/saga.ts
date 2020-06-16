@@ -3,10 +3,11 @@ import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ServiceActions, ServiceActionTypes } from '@homzhub/common/src/modules/service/actions';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
-export function* getServiceDetails() {
+export function* getServiceDetails(action: IFluxStandardAction<IServiceParam>) {
   try {
-    const data = yield call(ServiceRepository.getServiceDetail);
+    const data = yield call(ServiceRepository.getServiceDetail, action.payload as IServiceParam);
     yield put(ServiceActions.getServiceDetailsSuccess(data));
   } catch (e) {
     yield put(ServiceActions.getServiceDetailsFailure(e.message));

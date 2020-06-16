@@ -91,10 +91,11 @@ export interface IPropertyDetailScreenProps {
   secondaryAddress: string;
 }
 
-export interface IServiceDetailProps {
-  index: number;
+export interface IServiceDataProps {
+  serviceId: number;
 }
 
 export interface IServiceStepProps {
+  id: number;
   name: string;
 }

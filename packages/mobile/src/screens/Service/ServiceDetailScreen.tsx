@@ -39,7 +39,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
     this.state = {
       isInfoSheet: false,
       isConfirmSheet: false,
-      activeSlide: params ? params.index : 0,
+      activeSlide: params ? params.serviceId : 0,
     };
   }
 
@@ -63,9 +63,9 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
                 activeSlide={activeSlide}
                 containerStyle={styles.pagination}
               />
-              {activeItem && activeItem.badge && (
+              {activeItem && !!activeItem.label && (
                 <Badge
-                  title={activeItem.badge}
+                  title={activeItem.label}
                   badgeColor={theme.colors.mediumPriority}
                   badgeStyle={styles.badgeStyle}
                 />
@@ -80,7 +80,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
             />
           </View>
         </AnimatedServiceList>
-        {activeItem && this.renderBottomSheet(activeItem.serviceName)}
+        {activeItem && this.renderBottomSheet(activeItem.title, activeItem.id)}
       </>
     );
   }
@@ -89,18 +89,18 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
     return (
       <CardBody
         key={item.id}
-        title={item.serviceName}
+        title={item.title}
         isDetailView
         description={item.description}
-        serviceCost={item.serviceCost}
-        detailedData={item.facilities}
+        serviceCost={item.service_cost}
+        detailedData={item.service_items}
         onPressInfo={this.handleMoreInfo}
         onConfirm={this.onConfirmService}
       />
     );
   };
 
-  private renderBottomSheet = (name: string): React.ReactElement => {
+  private renderBottomSheet = (name: string, id: number): React.ReactElement => {
     const { isInfoSheet, isConfirmSheet } = this.state;
     const { t } = this.props;
     return (
@@ -111,14 +111,14 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
         isShadowView={isInfoSheet}
         sheetHeight={500}
       >
-        <>{isConfirmSheet && this.renderConfirmationView(name)}</>
+        <>{isConfirmSheet && this.renderConfirmationView(name, id)}</>
       </BottomSheet>
     );
   };
 
-  private renderConfirmationView = (name: string): React.ReactElement => {
+  private renderConfirmationView = (name: string, id: number): React.ReactElement => {
     const { t } = this.props;
-    const handlePress = (): void => this.onPressContinue(name);
+    const handlePress = (): void => this.onPressContinue(name, id);
     return (
       <View style={styles.confirmationView}>
         <View style={styles.confirmationContent}>
@@ -146,9 +146,9 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
     this.setState({ isConfirmSheet: !isConfirmSheet });
   };
 
-  private onPressContinue = (name: string): void => {
+  private onPressContinue = (name: string, id: number): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.ServiceListSteps, { name });
+    navigation.navigate(ScreensKeys.ServiceListSteps, { id, name });
     this.closeBottomSheet();
   };
 

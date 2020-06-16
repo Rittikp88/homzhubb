@@ -27,13 +27,18 @@ type Props = libraryProps & IStateProps & IDispatchProps;
 
 class ServiceListSteps extends React.PureComponent<Props, {}> {
   public componentDidMount(): void {
-    const { getServiceStepsDetails } = this.props;
-    // TODO: Pass the id from the route params
-    getServiceStepsDetails(2);
+    const {
+      getServiceStepsDetails,
+      route: { params },
+    } = this.props;
+    getServiceStepsDetails(params.id);
   }
 
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     return (
       <View style={styles.container}>
         <Header
@@ -49,9 +54,8 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
           titleStyle={styles.headerTitle}
         />
         <View style={styles.listing}>
-          {/* TODO: Remove the string from here once the api is giving the result */}
           <Text type="regular" textType="semiBold" style={styles.listingTitle}>
-            Boosted Listing
+            {params.name}
           </Text>
           <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
             {t('common:change')}

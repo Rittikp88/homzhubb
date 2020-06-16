@@ -2,6 +2,7 @@
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
+import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const actionTypePrefix = 'Service/';
 
@@ -16,9 +17,10 @@ export const ServiceActionTypes = {
   },
 };
 
-const getServiceDetails = (): IFluxStandardAction => {
+const getServiceDetails = (payload: IServiceParam): IFluxStandardAction<IServiceParam> => {
   return {
     type: ServiceActionTypes.GET.SERVICE_DETAILS,
+    payload,
   };
 };
 

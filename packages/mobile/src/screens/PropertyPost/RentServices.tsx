@@ -29,7 +29,7 @@ interface IDispatchProps {
 
 interface IRentServicesState {
   isSelected: boolean;
-  selectedItem: string;
+  selectedItem: number;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.RentServicesScreen>;
@@ -38,7 +38,7 @@ type Props = IStateProps & IDispatchProps & libraryProps;
 class RentServices extends Component<Props, IRentServicesState> {
   public state = {
     isSelected: false,
-    selectedItem: '',
+    selectedItem: -1,
   };
 
   public componentDidMount(): void {
@@ -90,9 +90,9 @@ class RentServices extends Component<Props, IRentServicesState> {
 
   private renderServiceItem = (item: IRentServiceList): React.ReactElement => {
     const { isSelected, selectedItem } = this.state;
-    const handleSelectedItem = (): void => this.onPressSelectedIcon(item.label);
-    const handlePress = (): void => this.onSelectIcon(item.label);
-    const isSelect = isSelected && selectedItem === item.label;
+    const handleSelectedItem = (): void => this.onPressSelectedIcon(item.id);
+    const handlePress = (): void => this.onSelectIcon(item.id);
+    const isSelect = isSelected && selectedItem === item.id;
     const customStyle = customizedStyles(isSelect);
     return (
       <View style={customStyle.services} key={item.label}>
@@ -116,18 +116,19 @@ class RentServices extends Component<Props, IRentServicesState> {
     );
   };
 
-  private onPressSelectedIcon = (selectedItem: string): void => {
+  private onPressSelectedIcon = (selectedItem: number): void => {
     const { isSelected } = this.state;
     this.setState({ isSelected: !isSelected, selectedItem });
   };
 
-  private onSelectIcon = (selectedItem: string): void => {
+  private onSelectIcon = (selectedItem: number): void => {
     this.setState({ isSelected: true, selectedItem });
   };
 
   private onContinue = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.ServiceListScreen);
+    const { selectedItem } = this.state;
+    navigation.navigate(ScreensKeys.ServiceListScreen, { serviceId: selectedItem });
   };
 
   private handleBackPress = (): void => {

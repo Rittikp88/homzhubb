@@ -18,7 +18,7 @@ interface ICommonHeaderProps {
   title?: string;
   titleStyle?: StyleProp<TextStyle>;
 }
-const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 20 : StatusBar.currentHeight;
+const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight;
 
 class Header extends React.PureComponent<ICommonHeaderProps, {}> {
   public render(): React.ReactNode {

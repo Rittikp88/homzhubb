@@ -1,15 +1,20 @@
 export interface IServiceDetail {
   id: number;
-  serviceName: string;
+  name: string;
+  title: string;
   description: string;
-  serviceCost: string;
-  badge?: string;
-  facilities: IFacilities[];
+  service_cost: string;
+  service_info: string;
+  label: string;
+  service_items: IServiceItems[];
 }
 
-export interface IFacilities {
+export interface IServiceItems {
+  id: number;
   name: string;
-  included: boolean;
+  description: string;
+  label: string;
+  is_covered: boolean;
 }
 
 export interface IServiceListStepsDetail {

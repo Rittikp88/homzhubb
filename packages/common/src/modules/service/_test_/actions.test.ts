@@ -3,9 +3,10 @@ import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 
 describe('Property Actions', () => {
   it('should call get service detail action', () => {
-    const action = ServiceActions.getServiceDetails();
+    const action = ServiceActions.getServiceDetails({ service_categories_id: 1 });
     expect(action).toStrictEqual({
       type: ServiceActionTypes.GET.SERVICE_DETAILS,
+      payload: { service_categories_id: 1 },
     });
   });
 

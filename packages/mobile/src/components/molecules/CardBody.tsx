@@ -5,7 +5,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, Label, Text, Badge } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IFacilities } from '@homzhub/common/src/domain/models/Service';
+import { IServiceItems } from '@homzhub/common/src/domain/models/Service';
 
 interface ICardProps {
   title: string;
@@ -13,7 +13,7 @@ interface ICardProps {
   description: string;
   serviceCost: string;
   isDetailView?: boolean;
-  detailedData?: any[];
+  detailedData?: IServiceItems[];
   onPressInfo?: () => void;
   onConfirm?: () => void;
 }
@@ -23,8 +23,8 @@ type Props = WithTranslation & ICardProps;
 const CardBody = (props: Props): React.ReactElement => {
   const { t, title, description, serviceCost, isDetailView, badgeTitle, detailedData, onPressInfo, onConfirm } = props;
 
-  const renderDetailedData = (item: IFacilities, index: number): React.ReactElement => {
-    const isIncluded = item.included;
+  const renderDetailedData = (item: IServiceItems, index: number): React.ReactElement => {
+    const isIncluded = item.is_covered;
     return (
       <View style={styles.detailContent} key={index}>
         <Icon
@@ -33,7 +33,7 @@ const CardBody = (props: Props): React.ReactElement => {
           size={22}
         />
         <Text type="small" textType="regular" style={styles.listTitle}>
-          {item.name}
+          {item.label}
         </Text>
       </View>
     );
@@ -42,7 +42,7 @@ const CardBody = (props: Props): React.ReactElement => {
   return (
     <>
       <View style={styles.content}>
-        {badgeTitle && (
+        {!!badgeTitle && (
           <Badge title={badgeTitle} badgeColor={theme.colors.mediumPriority} badgeStyle={styles.badgeStyle} />
         )}
         <Text type="regular" textType="semiBold" style={styles.title}>
@@ -65,7 +65,7 @@ const CardBody = (props: Props): React.ReactElement => {
       </View>
       {isDetailView && detailedData && (
         <View style={styles.detailContainer}>
-          {detailedData.map((item: IFacilities, index) => {
+          {detailedData.map((item: IServiceItems, index) => {
             return renderDetailedData(item, index);
           })}
           <Button type="primary" title={t('confirmService')} containerStyle={styles.buttonStyle} onPress={onConfirm} />

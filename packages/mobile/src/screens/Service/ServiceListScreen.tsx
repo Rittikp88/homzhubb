@@ -13,9 +13,10 @@ import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/An
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
+import { IServiceParam } from '@homzhub/common/dist/domain/repositories/interfaces';
 
 interface IDispatchProps {
-  getServiceDetails: () => void;
+  getServiceDetails: (payload: IServiceParam) => void;
 }
 
 interface IStateProps {
@@ -27,8 +28,11 @@ type Props = libraryProps & IStateProps & IDispatchProps;
 
 class ServiceListScreen extends Component<Props> {
   public componentDidMount(): void {
-    const { getServiceDetails } = this.props;
-    getServiceDetails();
+    const {
+      getServiceDetails,
+      route: { params },
+    } = this.props;
+    getServiceDetails({ service_categories_id: params.serviceId });
   }
 
   public render(): React.ReactNode {
@@ -46,10 +50,10 @@ class ServiceListScreen extends Component<Props> {
             return (
               <TouchableOpacity style={styles.cardView} key={index} activeOpacity={0.7} onPress={handlePress}>
                 <CardBody
-                  title={item.serviceName}
-                  badgeTitle={item.badge}
+                  title={item.title}
+                  badgeTitle={item.label}
                   description={item.description}
-                  serviceCost={item.serviceCost}
+                  serviceCost={item.service_cost}
                 />
               </TouchableOpacity>
             );
@@ -61,7 +65,7 @@ class ServiceListScreen extends Component<Props> {
 
   private navigateToServiceDetail = (index: number): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.ServiceDetailScreen, { index });
+    navigation.navigate(ScreensKeys.ServiceDetailScreen, { serviceId: index });
   };
 
   private handleIconPress = (): void => {

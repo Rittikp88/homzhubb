@@ -1,9 +1,10 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
+import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
+  getServiceData: (): string => 'service-categories/services/',
   getServiceSteps: (): string => 'service-categories/services/steps',
 };
 
@@ -14,8 +15,8 @@ class ServiceRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getServiceDetail = (): IServiceDetail[] => {
-    return ServicesData;
+  public getServiceDetail = async (param: IServiceParam): Promise<IServiceDetail[]> => {
+    return await this.apiClient.get(ENDPOINTS.getServiceData(), param);
   };
 
   public getServiceStepsDetails = async (serviceId: number): Promise<IServiceListStepsDetail[]> => {

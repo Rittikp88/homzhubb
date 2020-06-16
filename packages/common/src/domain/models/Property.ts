@@ -11,7 +11,7 @@ export interface IPropertyDetailsData {
 }
 
 export interface IRentServiceList {
-  id: string | number;
+  id: number;
   label: string;
   icon: string;
 }
