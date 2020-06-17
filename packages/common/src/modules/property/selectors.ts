@@ -1,5 +1,6 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
+import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
 
 const getPropertyDetails = (state: IState): IPropertyDetailsData[] | null => {
   const {
@@ -26,8 +27,24 @@ const getRentServicesList = (state: IState): IRentServiceList[] | null => {
   return rentServices;
 };
 
+const getServiceDetails = (state: IState): IServiceDetail[] => {
+  const {
+    property: { servicesInfo },
+  } = state;
+  return servicesInfo;
+};
+
+const getServiceSteps = (state: IState): any => {
+  const {
+    property: { servicesSteps },
+  } = state;
+  return servicesSteps;
+};
+
 export const PropertySelector = {
   getPropertyDetails,
   getRentServicesList,
   getCurrentPropertyId,
+  getServiceDetails,
+  getServiceSteps,
 };

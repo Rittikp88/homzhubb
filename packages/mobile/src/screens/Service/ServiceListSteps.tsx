@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ServiceSelector } from '@homzhub/common/src/modules/service/selectors';
-import { ServiceActions } from '@homzhub/common/src/modules/service/actions';
+import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
+import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
 import { Label, Text, Divider } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
@@ -98,14 +98,14 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getServiceSteps } = ServiceSelector;
+  const { getServiceSteps } = PropertySelector;
   return {
     serviceSteps: getServiceSteps(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getServiceStepsDetails } = ServiceActions;
+  const { getServiceStepsDetails } = PropertyActions;
   return bindActionCreators(
     {
       getServiceStepsDetails,

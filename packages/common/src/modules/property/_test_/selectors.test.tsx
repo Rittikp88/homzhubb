@@ -3,7 +3,8 @@ import { PropertySelector } from '@homzhub/common/src/modules/property/selectors
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
-import { initialServiceState } from '@homzhub/common/src/modules/service/reducer';
+import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
+import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 
 const state: IState = {
   user: {
@@ -16,14 +17,17 @@ const state: IState = {
       ...initialPropertyState.propertyDetails,
       propertyGroup: PropertyAssetGroupData,
     },
-  },
-  service: {
-    ...initialServiceState,
+    servicesInfo: ServicesData,
+    servicesSteps: ServiceSteps,
   },
 };
 
 describe('Property Selector', () => {
   it('should return the property data', () => {
     expect(PropertySelector.getPropertyDetails(state)).toBe(PropertyAssetGroupData);
+  });
+
+  it('should return the Service data', () => {
+    expect(PropertySelector.getServiceDetails(state)).toBe(ServicesData);
   });
 });

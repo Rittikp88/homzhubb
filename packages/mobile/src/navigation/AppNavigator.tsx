@@ -38,7 +38,6 @@ export function AppNavigator(): React.ReactElement {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <AppStackNavigator.Screen name={ScreensKeys.ServiceCheckoutSteps} component={ServiceCheckoutSteps} />
       <AppStackNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={LandingScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.SearchPropertyOwner} component={SearchProperty} />
       <AppStackNavigator.Screen name={ScreensKeys.AddProperty} component={AddPropertyMap} />
@@ -47,6 +46,7 @@ export function AppNavigator(): React.ReactElement {
       <AppStackNavigator.Screen name={ScreensKeys.ServiceListScreen} component={ServiceListScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.ServiceDetailScreen} component={ServiceDetailScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.ServiceListSteps} component={ServiceListSteps} />
+      <AppStackNavigator.Screen name={ScreensKeys.ServiceCheckoutSteps} component={ServiceCheckoutSteps} />
     </AppStackNavigator.Navigator>
   );
 }

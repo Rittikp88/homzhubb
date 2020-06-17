@@ -1,27 +1,22 @@
 export const ServiceSteps = [
   {
-    name: 'Free Listing',
-    steps: [
-      { id: 1, name: 'Enter the Lease details' },
-      { id: 2, name: 'Add Property Images' },
-    ],
+    id: 1,
+    name: 'LEASE_DETAILS',
+    title: 'Enter the Lease details',
   },
   {
-    name: 'Assisted Listing',
-    steps: [
-      { id: 1, name: 'Enter the Lease details' },
-      { id: 2, name: 'Add Property Images' },
-      { id: 3, name: 'Complete property verification' },
-      { id: 4, name: 'Payment of token amount' },
-    ],
+    id: 2,
+    name: 'PROPERTY_IMAGES',
+    title: 'Add Property Images',
   },
   {
-    name: 'Boosted Listing',
-    steps: [
-      { id: 1, name: 'Enter the Lease details' },
-      { id: 2, name: 'Add Property Images' },
-      { id: 3, name: 'Complete property verification' },
-      { id: 4, name: 'Payment of token amount' },
-    ],
+    id: 3,
+    name: 'PROPERTY_VERIFICATIONS',
+    title: 'Complete property verification',
+  },
+  {
+    id: 4,
+    name: 'PAYMENT_TOKEN_AMOUNT',
+    title: 'Payment of token amount',
   },
 ];

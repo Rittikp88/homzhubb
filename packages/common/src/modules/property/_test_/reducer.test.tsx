@@ -36,4 +36,27 @@ describe('Property Reducer', () => {
       ['error']: { ...state.error, ['property']: 'Test Error' },
     });
   });
+
+  it('should return the initial state', () => {
+    expect(reducer(undefined, { type: 'INITIAL_STATE' })).toEqual(initialPropertyState);
+  });
+
+  it('should handle Get Service details', () => {
+    // @ts-ignore
+    const state = reducer(initialPropertyState, PropertyActions.getServiceDetails());
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['loaders']: { ...state.loaders, ['service']: true },
+      ['error']: { ...state.error, ['service']: '' },
+    });
+  });
+
+  it('should handle Get Service failure', () => {
+    const state = reducer(initialPropertyState, PropertyActions.getServiceDetailsFailure('Test Error'));
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['loaders']: { ...state.loaders, ['service']: false },
+      ['error']: { ...state.error, ['service']: 'Test Error' },
+    });
+  });
 });

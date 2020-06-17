@@ -4,8 +4,8 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ServiceSelector } from '@homzhub/common/src/modules/service/selectors';
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -173,7 +173,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
-    services: ServiceSelector.getServiceDetails(state),
+    services: PropertySelector.getServiceDetails(state),
   };
 };
 

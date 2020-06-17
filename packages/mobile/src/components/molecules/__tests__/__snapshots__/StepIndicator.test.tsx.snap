@@ -21,7 +21,15 @@ exports[`StepIndicator should render snapshot 1`] = `
     >
       <StepIndicator
         currentPosition={1}
-        customStyles={Object {}}
+        customStyles={
+          Object {
+            "separatorFinishedColor": "#FFFFFF",
+            "separatorUnFinishedColor": "rgba(255, 255, 255, 0.1)",
+            "stepIndicatorFinishedColor": "#FFFFFF",
+            "stepIndicatorUnFinishedColor": "transparent",
+            "stepStrokeCurrentColor": "#FFFFFF",
+          }
+        }
         direction="horizontal"
         labels={
           Array [
@@ -155,7 +163,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               "zIndex": 2,
                             },
                             Object {
-                              "backgroundColor": "#4aae4f",
+                              "backgroundColor": "#FFFFFF",
                               "borderColor": "#4aae4f",
                               "borderRadius": 15,
                               "borderWidth": 0,
@@ -174,7 +182,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                                 "zIndex": 2,
                               },
                               Object {
-                                "backgroundColor": "#4aae4f",
+                                "backgroundColor": "#FFFFFF",
                                 "borderColor": "#4aae4f",
                                 "borderRadius": 15,
                                 "borderWidth": 0,
@@ -188,7 +196,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                             style={
                               Object {
                                 "alignItems": "center",
-                                "backgroundColor": "#4aae4f",
+                                "backgroundColor": "#FFFFFF",
                                 "borderColor": "#4aae4f",
                                 "borderRadius": 15,
                                 "borderWidth": 0,
@@ -203,7 +211,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               style={
                                 Object {
                                   "alignItems": "center",
-                                  "backgroundColor": "#4aae4f",
+                                  "backgroundColor": "#FFFFFF",
                                   "borderColor": "#4aae4f",
                                   "borderRadius": 15,
                                   "borderWidth": 0,
@@ -359,7 +367,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                             },
                             Object {
                               "backgroundColor": "#ffffff",
-                              "borderColor": "#4aae4f",
+                              "borderColor": "#FFFFFF",
                               "borderRadius": 15,
                               "borderWidth": 5,
                               "height": 30,
@@ -378,7 +386,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
-                                "borderColor": "#4aae4f",
+                                "borderColor": "#FFFFFF",
                                 "borderRadius": 15,
                                 "borderWidth": 5,
                                 "height": 30,
@@ -392,7 +400,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               Object {
                                 "alignItems": "center",
                                 "backgroundColor": "#ffffff",
-                                "borderColor": "#4aae4f",
+                                "borderColor": "#FFFFFF",
                                 "borderRadius": 15,
                                 "borderWidth": 5,
                                 "height": 30,
@@ -407,7 +415,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                                 Object {
                                   "alignItems": "center",
                                   "backgroundColor": "#ffffff",
-                                  "borderColor": "#4aae4f",
+                                  "borderColor": "#FFFFFF",
                                   "borderRadius": 15,
                                   "borderWidth": 5,
                                   "height": 30,
@@ -546,7 +554,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               "zIndex": 2,
                             },
                             Object {
-                              "backgroundColor": "#a4d4a5",
+                              "backgroundColor": "transparent",
                               "borderColor": "#4aae4f",
                               "borderRadius": 15,
                               "borderWidth": 0,
@@ -565,7 +573,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                                 "zIndex": 2,
                               },
                               Object {
-                                "backgroundColor": "#a4d4a5",
+                                "backgroundColor": "transparent",
                                 "borderColor": "#4aae4f",
                                 "borderRadius": 15,
                                 "borderWidth": 0,
@@ -579,7 +587,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                             style={
                               Object {
                                 "alignItems": "center",
-                                "backgroundColor": "#a4d4a5",
+                                "backgroundColor": "transparent",
                                 "borderColor": "#4aae4f",
                                 "borderRadius": 15,
                                 "borderWidth": 0,
@@ -594,7 +602,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               style={
                                 Object {
                                   "alignItems": "center",
-                                  "backgroundColor": "#a4d4a5",
+                                  "backgroundColor": "transparent",
                                   "borderColor": "#4aae4f",
                                   "borderRadius": 15,
                                   "borderWidth": 0,
@@ -730,7 +738,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               "zIndex": 2,
                             },
                             Object {
-                              "backgroundColor": "#a4d4a5",
+                              "backgroundColor": "transparent",
                               "borderColor": "#4aae4f",
                               "borderRadius": 15,
                               "borderWidth": 0,
@@ -749,7 +757,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                                 "zIndex": 2,
                               },
                               Object {
-                                "backgroundColor": "#a4d4a5",
+                                "backgroundColor": "transparent",
                                 "borderColor": "#4aae4f",
                                 "borderRadius": 15,
                                 "borderWidth": 0,
@@ -763,7 +771,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                             style={
                               Object {
                                 "alignItems": "center",
-                                "backgroundColor": "#a4d4a5",
+                                "backgroundColor": "transparent",
                                 "borderColor": "#4aae4f",
                                 "borderRadius": 15,
                                 "borderWidth": 0,
@@ -778,7 +786,7 @@ exports[`StepIndicator should render snapshot 1`] = `
                               style={
                                 Object {
                                   "alignItems": "center",
-                                  "backgroundColor": "#a4d4a5",
+                                  "backgroundColor": "transparent",
                                   "borderColor": "#4aae4f",
                                   "borderRadius": 15,
                                   "borderWidth": 0,

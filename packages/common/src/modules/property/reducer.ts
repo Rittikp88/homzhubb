@@ -2,6 +2,7 @@ import { IPropertyState } from '@homzhub/common/src/modules/property/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActionTypes, PropertyPayloadTypes } from '@homzhub/common/src/modules/property/actions';
 import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
+import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
 
 export const initialPropertyState: IPropertyState = {
   currentPropertyId: 0,
@@ -9,11 +10,15 @@ export const initialPropertyState: IPropertyState = {
     propertyGroup: null,
     rentServices: null,
   },
+  servicesInfo: [],
+  servicesSteps: [],
   error: {
     property: '',
+    service: '',
   },
   loaders: {
     property: false,
+    service: false,
   },
 };
 
@@ -56,6 +61,32 @@ export const propertyReducer = (
       };
     case PropertyActionTypes.SET.CURRENT_PROPERTY_ID:
       return { ...state, ['currentPropertyId']: action.payload as number };
+    case PropertyActionTypes.GET.SERVICE_DETAILS:
+    case PropertyActionTypes.GET.SERVICE_STEPS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['service']: true },
+        ['error']: { ...state.error, ['service']: '' },
+      };
+    case PropertyActionTypes.GET.SERVICE_DETAILS_SUCCESS:
+      return {
+        ...state,
+        ['servicesInfo']: action.payload as IServiceDetail[],
+        ['loaders']: { ...state.loaders, ['service']: false },
+      };
+    case PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS:
+      return {
+        ...state,
+        ['servicesSteps']: action.payload as IServiceListStepsDetail[],
+        ['loaders']: { ...state.loaders, ['service']: false },
+      };
+    case PropertyActionTypes.GET.SERVICE_DETAILS_FAILURE:
+    case PropertyActionTypes.GET.SERVICE_STEPS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['service']: false },
+        ['error']: { ...state.error, ['service']: action.error as string },
+      };
     default:
       return state;
   }

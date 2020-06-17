@@ -4,10 +4,10 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { IState } from '@homzhub/common/dist/modules/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
+import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ServiceActions } from '@homzhub/common/src/modules/service/actions';
-import { ServiceSelector } from '@homzhub/common/src/modules/service/selectors';
 import { CardBody } from '@homzhub/mobile/src/components/molecules/CardBody';
 import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
@@ -76,12 +76,12 @@ class ServiceListScreen extends Component<Props> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
-    services: ServiceSelector.getServiceDetails(state),
+    services: PropertySelector.getServiceDetails(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getServiceDetails } = ServiceActions;
+  const { getServiceDetails } = PropertyActions;
   return bindActionCreators(
     {
       getServiceDetails,

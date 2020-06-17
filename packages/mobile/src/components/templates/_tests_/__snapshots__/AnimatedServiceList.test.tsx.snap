@@ -38,7 +38,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
           style={
             Object {
               "backgroundColor": "#0084F8",
-              "height": 20,
+              "height": 30,
             }
           }
         >
@@ -46,7 +46,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
             style={
               Object {
                 "backgroundColor": "#0084F8",
-                "height": 20,
+                "height": 30,
               }
             }
           >
