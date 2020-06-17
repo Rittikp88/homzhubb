@@ -33,6 +33,7 @@ export enum ScreensKeys {
   ServiceListScreen = 'ServiceList',
   ServiceDetailScreen = 'ServiceDetail',
   ServiceListSteps = 'ServiceListSteps',
+  ServiceCheckoutSteps = 'ServiceCheckoutSteps',
 }
 
 // Tab keys

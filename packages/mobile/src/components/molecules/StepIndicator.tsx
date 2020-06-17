@@ -16,6 +16,14 @@ enum StepDirection {
   vertical = 'vertical',
 }
 
+const baseCustomStyles = {
+  stepStrokeCurrentColor: theme.colors.secondaryColor,
+  separatorFinishedColor: theme.colors.secondaryColor,
+  separatorUnFinishedColor: theme.colors.whiteOpacity,
+  stepIndicatorFinishedColor: theme.colors.secondaryColor,
+  stepIndicatorUnFinishedColor: theme.styleConstants.transparent,
+};
+
 export interface IStepIndicatorStyles {
   stepIndicatorSize?: number;
   currentStepIndicatorSize?: number;
@@ -57,10 +65,10 @@ export class StepIndicatorComponent extends React.PureComponent<IProps, {}> {
     const {
       stepCount,
       currentPosition,
-      customStyles,
       labels,
       onPress,
       direction = StepDirection.horizontal,
+      customStyles = {},
       containerStyle = {},
     } = this.props;
     return (
@@ -68,7 +76,7 @@ export class StepIndicatorComponent extends React.PureComponent<IProps, {}> {
         <StepIndicator
           stepCount={stepCount}
           direction={direction}
-          customStyles={customStyles}
+          customStyles={{ ...baseCustomStyles, ...customStyles }}
           currentPosition={currentPosition}
           labels={labels}
           onPress={onPress}

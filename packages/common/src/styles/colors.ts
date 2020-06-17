@@ -34,8 +34,7 @@ const tintColors = {
 const themedColors = {
   primaryColor: namedColors.blue,
   secondaryColor: namedColors.white,
-  splashScreenBackgroundColor: '',
-  splashScreenIndicatorColor: '',
+  screenBackground: namedColors.white,
   onBoardingScreenBackground: namedColors.background,
   active: namedColors.blue,
   success: namedColors.completed,
@@ -50,6 +49,7 @@ const gradientColors = {
   propertyGradientB: '#016EE2',
 };
 
+// rgba functions for opacity
 const opacity = {
   whiteOpacity: 'rgba(255, 255, 255, 0.1)',
 };

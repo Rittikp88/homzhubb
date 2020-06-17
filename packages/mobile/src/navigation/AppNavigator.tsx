@@ -11,8 +11,9 @@ import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScree
 import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
 import RentServices from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
 import { SearchProperty } from '@homzhub/mobile/src/screens/PropertyPost/SearchProperty';
-import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
+import { ServiceCheckoutSteps } from '@homzhub/mobile/src/screens/Service/ServiceCheckoutSteps';
 import ServiceDetailScreen from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
+import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
 import ServiceListSteps from '@homzhub/mobile/src/screens/Service/ServiceListSteps';
 
 export type AppStackParamList = {
@@ -24,6 +25,7 @@ export type AppStackParamList = {
   [ScreensKeys.ServiceListScreen]: IServiceDataProps;
   [ScreensKeys.ServiceDetailScreen]: IServiceDataProps;
   [ScreensKeys.ServiceListSteps]: IServiceStepProps;
+  [ScreensKeys.ServiceCheckoutSteps]: undefined;
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
@@ -36,6 +38,7 @@ export function AppNavigator(): React.ReactElement {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
+      <AppStackNavigator.Screen name={ScreensKeys.ServiceCheckoutSteps} component={ServiceCheckoutSteps} />
       <AppStackNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={LandingScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.SearchPropertyOwner} component={SearchProperty} />
       <AppStackNavigator.Screen name={ScreensKeys.AddProperty} component={AddPropertyMap} />

@@ -102,6 +102,10 @@
     "selectAreaUnit": "Select Area Unit"
   },
   "service": {
+    "leaseDetails": "Lease Details",
+    "propertyImages": "Property Images",
+    "propertyVerification": "Property Verification",
+    "tokenPayment": "Token Payment",
     "moreInformation": "More Information",
     "services": "Services",
     "pleaseConfirm": "Please confirm a service to initiate",
@@ -111,6 +115,12 @@
     "totalServiceFee": "Total service fees",
     "confirmService": "Confirm Service",
     "listProperty": "List your property",
-    "subHeader": "To initiate the service, You will have to follow these steps"
+    "subHeader": "To initiate the service, You will have to follow these steps",
+    "step": "STEP {{stepNumber}}/{{totalSteps}}",
+    "skipForNow": "Skip for now",
+    "enterLeaseDetails": "Enter the Lease Details",
+    "addPropertyImages": "Add Property Images",
+    "completePropertyVerification": "Complete Property Verification",
+    "payTokenAmount": "Payment of Token Amount"
   }
 }
