@@ -9,10 +9,11 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
-import { Label, Text, Divider } from '@homzhub/common/src/components';
+import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 interface IStateProps {
   serviceSteps: IServiceListStepsDetail[];
@@ -41,32 +42,42 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
     } = this.props;
     return (
       <View style={styles.container}>
-        <Header
-          backgroundColor={theme.colors.primaryColor}
-          icon={icons.leftArrow}
-          iconColor="white"
-          iconStyle={styles.iconStyle}
-          onIconPress={this.navigateBack}
-          isHeadingVisible
-          title={t('service:listProperty')}
-          titleType="regular"
-          titleFontType="semiBold"
-          titleStyle={styles.headerTitle}
-        />
-        <View style={styles.listing}>
-          <Text type="regular" textType="semiBold" style={styles.listingTitle}>
-            {params.name}
-          </Text>
-          <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
-            {t('common:change')}
-          </Label>
+        <View style={styles.flexOne}>
+          <Header
+            backgroundColor={theme.colors.primaryColor}
+            icon={icons.leftArrow}
+            iconColor="white"
+            iconStyle={styles.flexOne}
+            onIconPress={this.navigateBack}
+            isHeadingVisible
+            title={t('property:listProperty')}
+            titleType="regular"
+            titleFontType="semiBold"
+            titleStyle={styles.headerTitle}
+          />
+          <View style={styles.listing}>
+            <Text type="regular" textType="semiBold" style={styles.listingTitle}>
+              {params.name}
+            </Text>
+            <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
+              {t('common:change')}
+            </Label>
+          </View>
+          <View style={styles.initiateService}>
+            <Text type="small" textType="semiBold" style={styles.subHeader}>
+              {t('property:subHeader')}
+            </Text>
+            {this.renderSteps()}
+          </View>
         </View>
-        <View style={styles.initiateService}>
-          <Text type="small" textType="semiBold" style={styles.subHeader}>
-            {t('service:subHeader')}
-          </Text>
-          {this.renderSteps()}
-        </View>
+        <WithShadowView outerViewStyle={styles.shadowView}>
+          <Button
+            type="primary"
+            title={t('common:getStarted')}
+            containerStyle={styles.buttonStyle}
+            onPress={this.onContinue}
+          />
+        </WithShadowView>
       </View>
     );
   }
@@ -90,6 +101,11 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
       );
     });
   }
+
+  private onContinue = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ServiceCheckoutSteps);
+  };
 
   public navigateBack = (): void => {
     const { navigation } = this.props;
@@ -124,7 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white,
   },
-  iconStyle: {
+  flexOne: {
     flex: 1,
   },
   headerTitle: {
@@ -170,5 +186,14 @@ const styles = StyleSheet.create({
   stepName: {
     flex: 1,
     marginLeft: 20,
+  },
+  shadowView: {
+    paddingTop: 10,
+    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
+    paddingBottom: 0,
+  },
+  buttonStyle: {
+    flex: 0,
+    margin: 16,
   },
 });

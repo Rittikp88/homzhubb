@@ -55,6 +55,7 @@ interface IProps {
   currentPosition: number;
   labels?: string[];
   direction?: StepDirection;
+  isPaymentSuccess?: boolean;
   customStyles?: IStepIndicatorStyles;
   containerStyle?: StyleProp<ViewStyle>;
   onPress?: (step: number) => void;
@@ -96,6 +97,7 @@ export class StepIndicatorComponent extends React.PureComponent<IProps, {}> {
   };
 
   private stepIndicator = ({ stepStatus }: { stepStatus: string }): React.ReactNode => {
+    const { isPaymentSuccess } = this.props;
     let conditionalInnerStyle = {};
     if (stepStatus === StepStatus.current) {
       conditionalInnerStyle = {
@@ -105,7 +107,7 @@ export class StepIndicatorComponent extends React.PureComponent<IProps, {}> {
 
     return (
       <View style={styles.stepIndicator}>
-        {stepStatus === StepStatus.finished ? (
+        {stepStatus === StepStatus.finished || isPaymentSuccess ? (
           <Icon name={icons.checkFilled} size={20} color={theme.colors.primaryColor} />
         ) : (
           <View style={[styles.inner, conditionalInnerStyle]} />

@@ -8,6 +8,7 @@ import { images } from '@homzhub/common/src/assets/images';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
 import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Text, Label, Button, SVGUri } from '@homzhub/common/src/components';
@@ -36,10 +37,10 @@ class LandingScreen extends React.PureComponent<Props, {}> {
           <View style={styles.imagesContainer}>
             <Image source={images.landingScreenLogo} />
             <Text type="regular" textType="semiBold">
-              {t('propertyPost:welcomeUser', { username: user?.full_name ?? '' })}
+              {t('welcomeUser', { username: user?.full_name ?? '' })}
             </Text>
             <Text type="small" textType="regular" style={styles.description}>
-              {t('propertyPost:description')}
+              {t('description')}
             </Text>
             <SVGUri
               width={295}
@@ -49,18 +50,18 @@ class LandingScreen extends React.PureComponent<Props, {}> {
               uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg"
             />
             <Label type="regular" textType="regular">
-              {t('propertyPost:searchProject')}
+              {t('searchProject')}
             </Label>
           </View>
           <View style={styles.buttonContainer}>
             <Button
-              title={t('propertyPost:addProperty')}
+              title={t('addProperty')}
               type="primary"
               onPress={this.onAddProperty}
               containerStyle={styles.addProperty}
             />
             <Label type="large" textType="regular" style={styles.logoutContainer}>
-              {t('propertyPost:logoutHelperText')} &nbsp;
+              {t('logoutHelperText')} &nbsp;
               <Label type="large" textType="bold" style={styles.logout} onPress={this.logout}>
                 {t('common:logout')}
               </Label>
@@ -111,7 +112,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation()(LandingScreen));
+)(withTranslation(LocaleConstants.namespacesKey.property)(LandingScreen));
 
 const styles = StyleSheet.create({
   container: {

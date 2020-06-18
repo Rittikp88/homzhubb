@@ -74,7 +74,7 @@ const CardBody = (props: Props): React.ReactElement => {
     </>
   );
 };
-const HOC = withTranslation(LocaleConstants.namespacesKey.service)(CardBody);
+const HOC = withTranslation(LocaleConstants.namespacesKey.property)(CardBody);
 export { HOC as CardBody };
 
 const styles = StyleSheet.create({

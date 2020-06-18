@@ -178,5 +178,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.propertyPost)(SearchProperty);
+const HOC = withTranslation(LocaleConstants.namespacesKey.property)(SearchProperty);
 export { HOC as SearchProperty };

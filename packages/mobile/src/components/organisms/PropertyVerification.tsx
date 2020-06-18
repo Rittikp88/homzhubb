@@ -4,9 +4,10 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker';
 import { findIndex } from 'lodash';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Text, Label, Divider, UploadBox, ImageThumbnail } from '@homzhub/common/src/components';
 import {
   IVerificationTypes,
@@ -45,10 +46,10 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
       <View style={styles.container}>
         <View style={styles.propertyVerification}>
           <Label type="large" textType="regular" style={styles.subTitle}>
-            {t('propertyVerification:subTitle')}
+            {t('subTitle')}
           </Label>
           <Text type="small" textType="semiBold" style={styles.link} onPress={this.navigateToHelper}>
-            {t('propertyVerification:helperNavigationText')}
+            {t('helperNavigationText')}
           </Text>
           <Divider containerStyles={styles.divider} />
         </View>
@@ -133,7 +134,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   public captureSelfie = (documentId: number): void => {
     const { t } = this.props;
     const options = {
-      title: t('propertyVerification:captureSelfie'),
+      title: t('captureSelfie'),
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -238,7 +239,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 }
 
-export default withTranslation()(PropertyVerification);
+export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyVerification);
 
 const styles = StyleSheet.create({
   container: {

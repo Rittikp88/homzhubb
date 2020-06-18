@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 import {
@@ -41,7 +42,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           textStyle={styles.textColor}
           selectedIndex={propertyGroupSelectedIndex}
           textType="text"
-          superTitle={t('propertyDetails:propertyType')}
+          superTitle={t('propertyType')}
         />
         <ItemGroup
           data={data?.[propertyGroupSelectedIndex]?.asset_types ?? []}
@@ -82,7 +83,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
     return (
       <>
         <Text type="regular" textType="semiBold" style={styles.typeProperty}>
-          {t('propertyDetails:spaceAvailable')}
+          {t('spaceAvailable')}
         </Text>
         {this.renderCommercialPickers()}
         {spaceAvailableElements}
@@ -144,31 +145,31 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
       <View style={styles.formContainer}>
         <View style={styles.carpetArea}>
           <Label type="regular" textType="regular" style={carpetAreaError ? errorLabelStyles : labelStyles}>
-            {t('propertyDetails:carpetArea')}
+            {t('carpetArea')}
           </Label>
           <TextInput
             key="carpetArea"
             value={carpetArea}
             keyboardType="number-pad"
             style={carpetAreaError ? styles.errorTextInput : styles.textInput}
-            placeholder={t('propertyDetails:enterCarpetArea')}
+            placeholder={t('enterCarpetArea')}
             onChangeText={this.onCarpetAreaChange}
             maxLength={5}
           />
           {carpetAreaError && (
             <Label type="regular" style={styles.error}>
-              {t('propertyDetails:enterCarpetArea')}
+              {t('enterCarpetArea')}
             </Label>
           )}
         </View>
         <View style={styles.areaUnit}>
           <Label type="regular" textType="regular" style={labelStyles}>
-            {t('propertyDetails:areaUnit')}
+            {t('areaUnit')}
           </Label>
           <Dropdown
             data={areaUnits}
             value={areaUnit}
-            listTitle={t('propertyDetails:selectAreaUnit')}
+            listTitle={t('selectAreaUnit')}
             onDonePress={this.onAreaUnitChange}
             iconSize={16}
             iconColor={theme.colors.darkTint7}
@@ -224,7 +225,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   };
 }
 
-export default withTranslation()(PropertyDetailsItems);
+export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyDetailsItems);
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,

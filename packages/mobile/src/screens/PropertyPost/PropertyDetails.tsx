@@ -89,7 +89,7 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
           iconColor="white"
           onIconPress={this.handleIconPress}
           isHeadingVisible
-          title={t('propertyDetails:headerTitle')}
+          title={t('property:headerTitle')}
           titleType="small"
           titleFontType="semiBold"
           titleStyle={styles.headerTitle}

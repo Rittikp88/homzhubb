@@ -13,7 +13,7 @@ import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/An
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
-import { IServiceParam } from '@homzhub/common/dist/domain/repositories/interfaces';
+import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IDispatchProps {
   getServiceDetails: (payload: IServiceParam) => void;
@@ -93,7 +93,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.service)(ServiceListScreen));
+)(withTranslation(LocaleConstants.namespacesKey.property)(ServiceListScreen));
 
 const styles = StyleSheet.create({
   cardView: {

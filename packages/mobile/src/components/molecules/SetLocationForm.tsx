@@ -19,7 +19,7 @@ interface IProps {
 
 const SetLocationForm = (props: IProps): React.ReactElement => {
   const { formData, onSubmit } = props;
-  const [t] = useTranslation(LocaleConstants.namespacesKey.propertyPost);
+  const [t] = useTranslation(LocaleConstants.namespacesKey.property);
 
   const formSchema = (): yup.ObjectSchema<{
     projectName: string;

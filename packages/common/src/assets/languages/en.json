@@ -23,7 +23,9 @@
     "details": "DETAILS",
     "images": "IMAGES",
     "verification": "VERIFICATION",
-    "payment": "PAYMENT"
+    "payment": "PAYMENT",
+    "allDone": "All Done",
+    "why": "Why?"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -72,7 +74,7 @@
     "phoneAlreadyExists": "Mobile number already exists",
     "countryRegion": "Country/Region"
   },
-  "propertyPost": {
+  "property": {
     "welcomeUser": "Welcome {{username}},",
     "description": "Let's add your first property on Homzhub",
     "searchProject": "Search for project or street name",
@@ -90,18 +92,14 @@
     "blockNo": "Block No.",
     "saveLocation": "Save Location",
     "setLocation": "Set Location",
-    "locationDetails": "Location Details"
-  },
-  "propertyDetails": {
+    "locationDetails": "Location Details",
     "headerTitle": "Details",
     "propertyType": "Property type",
     "spaceAvailable": "Space available",
     "carpetArea": "Carpet area",
     "enterCarpetArea": "Enter carpet area",
     "areaUnit": "Area unit",
-    "selectAreaUnit": "Select Area Unit"
-  },
-  "service": {
+    "selectAreaUnit": "Select Area Unit",
     "leaseDetails": "Lease Details",
     "propertyImages": "Property Images",
     "propertyVerification": "Property Verification",
@@ -121,13 +119,16 @@
     "enterLeaseDetails": "Enter the Lease Details",
     "addPropertyImages": "Add Property Images",
     "completePropertyVerification": "Complete Property Verification",
-    "payTokenAmount": "Payment of Token Amount"
-  },
-  "propertyVerification": {
+    "payTokenAmount": "Payment of Token Amount",
     "title": "Complete Property Verification",
     "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
     "helperNavigationText": "Why do I have to do this?",
     "captureSelfie": "Capture Selfie",
-    "webviewHeader": "Property Verification"
+    "webviewHeader": "Property Verification",
+    "previewProperty": "Preview Your Property",
+    "paymentSuccessful": "Your payment has been processed successfully",
+    "reviewProperty": "We are reviewing your property.",
+    "expectCall": "Please expect a call from our executives within the next 18 - 24 hours.",
+    "visitInfo": "Our executives will visit the property location to onboard the property."
   }
 }

@@ -157,7 +157,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.propertyPost)(RentServices));
+)(withTranslation(LocaleConstants.namespacesKey.property)(RentServices));
 
 const styles = StyleSheet.create({
   container: {

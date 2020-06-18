@@ -42,4 +42,6 @@ export const icons = {
   gallery: 'gallery',
   selfie: 'selfie',
   calendar: 'calendar',
+  starFilled: 'filled-star',
+  starUnfilled: 'unfilled-star',
 };

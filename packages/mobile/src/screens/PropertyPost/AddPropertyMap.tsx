@@ -283,7 +283,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.propertyPost)(AddPropertyMap);
+const HOC = withTranslation(LocaleConstants.namespacesKey.property)(AddPropertyMap);
 const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState>(
   mapStateToProps,
   mapDispatchToProps

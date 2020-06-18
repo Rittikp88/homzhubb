@@ -38,7 +38,7 @@ class PropertyVerificationHelper extends React.PureComponent<Props, IPropertyVer
           iconStyle={styles.iconStyle}
           onIconPress={this.navigateBack}
           isHeadingVisible
-          title={t('propertyVerification:webviewHeader')}
+          title={t('property:webviewHeader')}
           titleType="regular"
           titleFontType="semiBold"
           titleStyle={styles.headerTitle}
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    backgroundColor: theme.colors.white,
   },
   markdownContainer: {
     margin: theme.layout.screenPadding,

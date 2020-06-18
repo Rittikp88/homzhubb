@@ -180,7 +180,7 @@ const mapStateToProps = (state: IState): IStateProps => {
 export default connect<IStateProps, null, WithTranslation, IState>(
   mapStateToProps,
   null
-)(withTranslation(LocaleConstants.namespacesKey.service)(ServiceDetailScreen));
+)(withTranslation(LocaleConstants.namespacesKey.property)(ServiceDetailScreen));
 
 const styles = StyleSheet.create({
   cardView: {

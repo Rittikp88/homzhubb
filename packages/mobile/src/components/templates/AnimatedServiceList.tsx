@@ -65,6 +65,7 @@ export class AnimatedServiceList extends Component<IProps> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: theme.colors.background,
   },
   headerTitle: {
     color: theme.colors.white,
