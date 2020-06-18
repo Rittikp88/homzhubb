@@ -197,6 +197,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
                 },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
+                },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
                   "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -392,6 +399,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "unitNoRequired": "Please enter unit no",
                 "welcomeUser": "Welcome {{username}},",
               },
+              "propertyVerification": Object {
+                "captureSelfie": "Capture Selfie",
+                "helperNavigationText": "Why do I have to do this?",
+                "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                "title": "Complete Property Verification",
+                "webviewHeader": "Property Verification",
+              },
               "service": Object {
                 "addPropertyImages": "Add Property Images",
                 "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -584,6 +598,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -762,6 +783,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -955,6 +983,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -1139,6 +1174,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -1283,6 +1325,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "unitNo": "Unit No.",
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
+                },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
                 },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
@@ -1463,6 +1512,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -1647,6 +1703,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -1851,6 +1914,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -2029,6 +2099,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -2221,6 +2298,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -2412,6 +2496,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -2590,6 +2681,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -2782,6 +2880,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -3872,6 +3977,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "unitNoRequired": "Please enter unit no",
                 "welcomeUser": "Welcome {{username}},",
               },
+              "propertyVerification": Object {
+                "captureSelfie": "Capture Selfie",
+                "helperNavigationText": "Why do I have to do this?",
+                "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                "title": "Complete Property Verification",
+                "webviewHeader": "Property Verification",
+              },
               "service": Object {
                 "addPropertyImages": "Add Property Images",
                 "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -4003,6 +4115,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
               "unitNo": "Unit No.",
               "unitNoRequired": "Please enter unit no",
               "welcomeUser": "Welcome {{username}},",
+            },
+            "propertyVerification": Object {
+              "captureSelfie": "Capture Selfie",
+              "helperNavigationText": "Why do I have to do this?",
+              "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+              "title": "Complete Property Verification",
+              "webviewHeader": "Property Verification",
             },
             "service": Object {
               "addPropertyImages": "Add Property Images",
@@ -4180,6 +4299,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "unitNo": "Unit No.",
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
+                      },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
                       },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
@@ -4359,6 +4485,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -4552,6 +4685,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -4735,6 +4875,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -4932,6 +5079,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
                         },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
+                        },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
                           "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -5115,6 +5269,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "unitNo": "Unit No.",
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
+                      },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
                       },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
@@ -5319,6 +5480,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
                         },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
+                        },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
                           "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -5497,6 +5665,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "unitNo": "Unit No.",
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
+                      },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
                       },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
@@ -5689,6 +5864,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -5880,6 +6062,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                             "unitNoRequired": "Please enter unit no",
                             "welcomeUser": "Welcome {{username}},",
                           },
+                          "propertyVerification": Object {
+                            "captureSelfie": "Capture Selfie",
+                            "helperNavigationText": "Why do I have to do this?",
+                            "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                            "title": "Complete Property Verification",
+                            "webviewHeader": "Property Verification",
+                          },
                           "service": Object {
                             "addPropertyImages": "Add Property Images",
                             "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -6058,6 +6247,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "unitNo": "Unit No.",
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
+                        },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
                         },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
@@ -6250,6 +6446,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "unitNo": "Unit No.",
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
+                        },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
                         },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
@@ -7340,6 +7543,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -7472,6 +7682,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "unitNo": "Unit No.",
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
+                },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
                 },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
@@ -7652,6 +7869,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -7836,6 +8060,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -8034,6 +8265,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -8212,6 +8450,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -8405,6 +8650,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -8588,6 +8840,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "unitNo": "Unit No.",
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
+                },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
                 },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
@@ -8778,6 +9037,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -8956,6 +9222,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -9148,6 +9421,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -10237,6 +10517,13 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "unitNo": "Unit No.",
                 "unitNoRequired": "Please enter unit no",
                 "welcomeUser": "Welcome {{username}},",
+              },
+              "propertyVerification": Object {
+                "captureSelfie": "Capture Selfie",
+                "helperNavigationText": "Why do I have to do this?",
+                "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                "title": "Complete Property Verification",
+                "webviewHeader": "Property Verification",
               },
               "service": Object {
                 "addPropertyImages": "Add Property Images",

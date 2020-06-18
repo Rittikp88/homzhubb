@@ -122,5 +122,12 @@
     "addPropertyImages": "Add Property Images",
     "completePropertyVerification": "Complete Property Verification",
     "payTokenAmount": "Payment of Token Amount"
+  },
+  "propertyVerification": {
+    "title": "Complete Property Verification",
+    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+    "helperNavigationText": "Why do I have to do this?",
+    "captureSelfie": "Capture Selfie",
+    "webviewHeader": "Property Verification"
   }
 }

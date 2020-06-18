@@ -1,16 +1,17 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
-import { Label, Text } from '@homzhub/common/src/components';
-import { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
+import { Label, Text } from '@homzhub/common/src/components';
+import Header from '@homzhub/mobile/src/components/molecules/Header';
+import { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
+import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
+import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IScreenState {
@@ -20,6 +21,7 @@ interface IScreenState {
 interface IStateProps {
   propertyId: number;
 }
+
 type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceCheckoutSteps>;
 type Props = OwnProps & IStateProps;
 const TOTAL_STEPS = 4;
@@ -33,10 +35,12 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     return (
       <>
         {this.renderHeader()}
-        <View style={styles.screen}>
-          {this.renderTitle()}
-          {this.renderContent()}
-        </View>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.screen}>
+            {this.renderTitle()}
+            {this.renderContent()}
+          </View>
+        </ScrollView>
       </>
     );
   };
@@ -106,11 +110,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           </Label>
         );
       case 2:
-        return (
-          <Label type="regular" textType="regular">
-            3
-          </Label>
-        );
+        return <PropertyVerification navigateToPropertyHelper={this.navigateToScreen} />;
       default:
         return (
           <Label type="regular" textType="regular">
@@ -155,6 +155,11 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     const screenTitles = [t('leaseDetails'), t('propertyImages'), t('propertyVerification'), t('tokenPayment')];
     return screenTitles[currentStep];
   };
+
+  public navigateToScreen = (screenKey: any): any => {
+    const { navigation } = this.props;
+    navigation.navigate(screenKey);
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -189,5 +194,8 @@ const styles = StyleSheet.create({
   },
   textColor: {
     color: theme.colors.white,
+  },
+  scrollView: {
+    flex: 1,
   },
 });

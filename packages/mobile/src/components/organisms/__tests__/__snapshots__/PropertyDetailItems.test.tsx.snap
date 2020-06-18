@@ -168,6 +168,13 @@ exports[`Property Details Item Component should render property details items co
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
                 },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
+                },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
                   "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -363,6 +370,13 @@ exports[`Property Details Item Component should render property details items co
                 "unitNoRequired": "Please enter unit no",
                 "welcomeUser": "Welcome {{username}},",
               },
+              "propertyVerification": Object {
+                "captureSelfie": "Capture Selfie",
+                "helperNavigationText": "Why do I have to do this?",
+                "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                "title": "Complete Property Verification",
+                "webviewHeader": "Property Verification",
+              },
               "service": Object {
                 "addPropertyImages": "Add Property Images",
                 "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -555,6 +569,13 @@ exports[`Property Details Item Component should render property details items co
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -733,6 +754,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -926,6 +954,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -1110,6 +1145,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -1254,6 +1296,13 @@ exports[`Property Details Item Component should render property details items co
                   "unitNo": "Unit No.",
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
+                },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
                 },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
@@ -1434,6 +1483,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -1618,6 +1674,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -1822,6 +1885,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -2000,6 +2070,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -2192,6 +2269,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -2383,6 +2467,13 @@ exports[`Property Details Item Component should render property details items co
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -2561,6 +2652,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -2753,6 +2851,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -3843,6 +3948,13 @@ exports[`Property Details Item Component should render property details items co
                 "unitNoRequired": "Please enter unit no",
                 "welcomeUser": "Welcome {{username}},",
               },
+              "propertyVerification": Object {
+                "captureSelfie": "Capture Selfie",
+                "helperNavigationText": "Why do I have to do this?",
+                "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                "title": "Complete Property Verification",
+                "webviewHeader": "Property Verification",
+              },
               "service": Object {
                 "addPropertyImages": "Add Property Images",
                 "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -3974,6 +4086,13 @@ exports[`Property Details Item Component should render property details items co
               "unitNo": "Unit No.",
               "unitNoRequired": "Please enter unit no",
               "welcomeUser": "Welcome {{username}},",
+            },
+            "propertyVerification": Object {
+              "captureSelfie": "Capture Selfie",
+              "helperNavigationText": "Why do I have to do this?",
+              "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+              "title": "Complete Property Verification",
+              "webviewHeader": "Property Verification",
             },
             "service": Object {
               "addPropertyImages": "Add Property Images",
@@ -4151,6 +4270,13 @@ exports[`Property Details Item Component should render property details items co
                         "unitNo": "Unit No.",
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
+                      },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
                       },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
@@ -4330,6 +4456,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -4523,6 +4656,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -4706,6 +4846,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -4903,6 +5050,13 @@ exports[`Property Details Item Component should render property details items co
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
                         },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
+                        },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
                           "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -5086,6 +5240,13 @@ exports[`Property Details Item Component should render property details items co
                         "unitNo": "Unit No.",
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
+                      },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
                       },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
@@ -5290,6 +5451,13 @@ exports[`Property Details Item Component should render property details items co
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
                         },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
+                        },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
                           "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -5468,6 +5636,13 @@ exports[`Property Details Item Component should render property details items co
                         "unitNo": "Unit No.",
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
+                      },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
                       },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
@@ -5660,6 +5835,13 @@ exports[`Property Details Item Component should render property details items co
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -5851,6 +6033,13 @@ exports[`Property Details Item Component should render property details items co
                             "unitNoRequired": "Please enter unit no",
                             "welcomeUser": "Welcome {{username}},",
                           },
+                          "propertyVerification": Object {
+                            "captureSelfie": "Capture Selfie",
+                            "helperNavigationText": "Why do I have to do this?",
+                            "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                            "title": "Complete Property Verification",
+                            "webviewHeader": "Property Verification",
+                          },
                           "service": Object {
                             "addPropertyImages": "Add Property Images",
                             "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -6029,6 +6218,13 @@ exports[`Property Details Item Component should render property details items co
                           "unitNo": "Unit No.",
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
+                        },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
                         },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
@@ -6221,6 +6417,13 @@ exports[`Property Details Item Component should render property details items co
                           "unitNo": "Unit No.",
                           "unitNoRequired": "Please enter unit no",
                           "welcomeUser": "Welcome {{username}},",
+                        },
+                        "propertyVerification": Object {
+                          "captureSelfie": "Capture Selfie",
+                          "helperNavigationText": "Why do I have to do this?",
+                          "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                          "title": "Complete Property Verification",
+                          "webviewHeader": "Property Verification",
                         },
                         "service": Object {
                           "addPropertyImages": "Add Property Images",
@@ -7311,6 +7514,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -7443,6 +7653,13 @@ exports[`Property Details Item Component should render property details items co
                   "unitNo": "Unit No.",
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
+                },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
                 },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
@@ -7623,6 +7840,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -7807,6 +8031,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -8005,6 +8236,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
                     },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
+                    },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
                       "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -8183,6 +8421,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNo": "Unit No.",
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
+                  },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
                   },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
@@ -8376,6 +8621,13 @@ exports[`Property Details Item Component should render property details items co
                     "unitNoRequired": "Please enter unit no",
                     "welcomeUser": "Welcome {{username}},",
                   },
+                  "propertyVerification": Object {
+                    "captureSelfie": "Capture Selfie",
+                    "helperNavigationText": "Why do I have to do this?",
+                    "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                    "title": "Complete Property Verification",
+                    "webviewHeader": "Property Verification",
+                  },
                   "service": Object {
                     "addPropertyImages": "Add Property Images",
                     "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -8559,6 +8811,13 @@ exports[`Property Details Item Component should render property details items co
                   "unitNo": "Unit No.",
                   "unitNoRequired": "Please enter unit no",
                   "welcomeUser": "Welcome {{username}},",
+                },
+                "propertyVerification": Object {
+                  "captureSelfie": "Capture Selfie",
+                  "helperNavigationText": "Why do I have to do this?",
+                  "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                  "title": "Complete Property Verification",
+                  "webviewHeader": "Property Verification",
                 },
                 "service": Object {
                   "addPropertyImages": "Add Property Images",
@@ -8749,6 +9008,13 @@ exports[`Property Details Item Component should render property details items co
                         "unitNoRequired": "Please enter unit no",
                         "welcomeUser": "Welcome {{username}},",
                       },
+                      "propertyVerification": Object {
+                        "captureSelfie": "Capture Selfie",
+                        "helperNavigationText": "Why do I have to do this?",
+                        "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                        "title": "Complete Property Verification",
+                        "webviewHeader": "Property Verification",
+                      },
                       "service": Object {
                         "addPropertyImages": "Add Property Images",
                         "clickContinue": "Click \\"Continue\\" to initiate the service",
@@ -8927,6 +9193,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -9119,6 +9392,13 @@ exports[`Property Details Item Component should render property details items co
                       "unitNo": "Unit No.",
                       "unitNoRequired": "Please enter unit no",
                       "welcomeUser": "Welcome {{username}},",
+                    },
+                    "propertyVerification": Object {
+                      "captureSelfie": "Capture Selfie",
+                      "helperNavigationText": "Why do I have to do this?",
+                      "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                      "title": "Complete Property Verification",
+                      "webviewHeader": "Property Verification",
                     },
                     "service": Object {
                       "addPropertyImages": "Add Property Images",
@@ -10208,6 +10488,13 @@ exports[`Property Details Item Component should render property details items co
                 "unitNo": "Unit No.",
                 "unitNoRequired": "Please enter unit no",
                 "welcomeUser": "Welcome {{username}},",
+              },
+              "propertyVerification": Object {
+                "captureSelfie": "Capture Selfie",
+                "helperNavigationText": "Why do I have to do this?",
+                "subTitle": "You will need your ID proof and a property ownership proof to complete this process.",
+                "title": "Complete Property Verification",
+                "webviewHeader": "Property Verification",
               },
               "service": Object {
                 "addPropertyImages": "Add Property Images",

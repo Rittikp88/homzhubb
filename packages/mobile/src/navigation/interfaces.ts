@@ -34,6 +34,7 @@ export enum ScreensKeys {
   ServiceDetailScreen = 'ServiceDetail',
   ServiceListSteps = 'ServiceListSteps',
   ServiceCheckoutSteps = 'ServiceCheckoutSteps',
+  PropertyVerificationHelper = 'PropertyVerificationHelper',
 }
 
 // Tab keys

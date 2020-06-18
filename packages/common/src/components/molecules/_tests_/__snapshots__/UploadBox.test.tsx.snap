@@ -37,7 +37,7 @@ exports[`Test cases for UploadBox should render snapshot 1`] = `
   <View
     style={
       Object {
-        "flex": 3,
+        "flex": 4,
       }
     }
   >

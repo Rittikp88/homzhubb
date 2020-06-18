@@ -22,3 +22,26 @@ export interface IServiceListStepsDetail {
   name: string;
   title: string;
 }
+
+export interface IVerificationTypes {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  label: string;
+  help_text: string;
+  icon: string;
+}
+
+export interface IVerificationDocumentList {
+  document_type_id: number;
+  document_id: number;
+  document_url: string;
+  name?: string;
+  type?: string;
+}
+
+export enum VerificationDocumentTypes {
+  ID_PROOF = 'ID_PROOF',
+  SELFIE_ID_PROOF = 'SELFIE_ID_PROOF',
+}

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerView: {
-    flex: 3,
+    flex: 4,
   },
   header: {
     color: theme.colors.primaryColor,
