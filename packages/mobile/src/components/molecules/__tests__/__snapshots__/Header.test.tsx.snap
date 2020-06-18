@@ -129,7 +129,7 @@ exports[`Header should match snapshot 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </Text>
       </Icon>
@@ -307,7 +307,7 @@ exports[`Header should match snapshot without title 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </Text>
       </Icon>

@@ -156,7 +156,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
               </Text>
             </Icon>

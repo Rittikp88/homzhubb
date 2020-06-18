@@ -7,6 +7,7 @@ export const icons = {
   location: 'location',
   search: 'search',
   leftArrow: 'left-arrow',
+  rightArrow: 'right-arrow',
   noteBook: 'note-book',
   star: 'star',
   face: 'face',
