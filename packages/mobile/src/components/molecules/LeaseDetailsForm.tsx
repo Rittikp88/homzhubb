@@ -150,7 +150,6 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                 data={this.PAID_BY_OPTIONS}
                 onItemSelect={onMaintenanceChanged}
                 selectedItem={maintenanceBy}
-                totalItems={this.PAID_BY_OPTIONS.length}
               />
               {maintenanceBy === PaidByTypes.TENANT && (
                 <MaintenanceDetails
@@ -211,8 +210,6 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
           data={this.FURNISHING_STATUS}
           onItemSelect={this.onFurnishingStatusChange}
           selectedItem={furnishingStatus}
-          totalItems={this.FURNISHING_STATUS.length}
-          containerStyle={styles.furnishingStatusButtonGroup}
         />
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
           {t('utilityBy')}
@@ -221,7 +218,6 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
           data={this.PAID_BY_OPTIONS}
           onItemSelect={this.onUtilityChanged}
           selectedItem={utilityBy}
-          totalItems={this.PAID_BY_OPTIONS.length}
         />
       </>
     );
@@ -319,9 +315,6 @@ export { HOC as LeaseDetailsForm };
 
 const styles = StyleSheet.create({
   continue: {
-    flex: 0,
-  },
-  furnishingStatusButtonGroup: {
     flex: 0,
   },
   currentMonth: {

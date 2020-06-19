@@ -12,8 +12,8 @@ interface IButtonGroupProps<T> {
   data: IButtonGroupItem<T>[];
   onItemSelect: (value: T) => void;
   selectedItem: T;
-  totalItems: number;
   containerStyle?: StyleProp<ViewStyle>;
+  buttonItemStyle?: StyleProp<ViewStyle>;
   textType?: TextFieldType;
   textSize?: TextSizeType;
   fontType?: FontWeightType;
@@ -21,9 +21,9 @@ interface IButtonGroupProps<T> {
 
 export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
   public render(): React.ReactElement {
-    const { data } = this.props;
+    const { data, containerStyle = {} } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         {data.map((item: IButtonGroupItem<T>) => {
           return this.renderItem(item);
         })}
@@ -35,11 +35,10 @@ export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
     const {
       selectedItem,
       onItemSelect,
-      totalItems,
       textType = 'label',
       textSize = 'large',
       fontType = 'regular',
-      containerStyle = {},
+      buttonItemStyle = {},
     } = this.props;
     let TextField = Label;
 
@@ -53,8 +52,7 @@ export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
     const buttonItemContainerStyle = StyleSheet.flatten([
       styles.item,
       isSelected && styles.selectedContainerStyle,
-      totalItems > 2 && { flex: 1 },
-      containerStyle,
+      buttonItemStyle,
     ]);
 
     const onItemPress = (): void => onItemSelect(item.value);
@@ -75,7 +73,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
-    marginTop: 16,
   },
   item: {
     marginEnd: 12,

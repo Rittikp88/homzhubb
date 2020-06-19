@@ -11,7 +11,7 @@ import {
   ISpaceAvailablePayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { HorizontalPicker, Label, Text, Dropdown } from '@homzhub/common/src/components';
-// import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
+import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 
 interface IPropertyDetailsItemsProps {
   data: IPropertyDetailsData[];
@@ -30,27 +30,32 @@ type Props = IPropertyDetailsItemsProps & WithTranslation;
 
 class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
-    const { data } = this.props;
+    const { data, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
     if (!data) {
       return null;
     }
     return (
       <View style={styles.container}>
-        {/* <ButtonGroup */}
-        {/*  data={data} */}
-        {/*  onItemSelect={this.onPropertyGroupSelect} */}
-        {/*  textStyle={styles.textColor} */}
-        {/*  selectedIndex={propertyGroupSelectedIndex} */}
-        {/*  textType="text" */}
-        {/*  superTitle={t('propertyDetails:propertyType')} */}
-        {/* /> */}
-        {/* <ButtonGroup */}
-        {/*  data={data?.[propertyGroupSelectedIndex]?.asset_types ?? []} */}
-        {/*  onItemSelect={this.onPropertyGroupTypeSelect} */}
-        {/*  textStyle={styles.textColor} */}
-        {/*  selectedIndex={propertyGroupTypeSelectedIndex} */}
-        {/*  textType="label" */}
-        {/* /> */}
+        <ButtonGroup<number>
+          data={this.fetchButtonGroupData<IPropertyDetailsData>(data)}
+          onItemSelect={this.onPropertyGroupSelect}
+          selectedItem={propertyGroupSelectedIndex}
+          textType="text"
+          textSize="small"
+          fontType="semiBold"
+          containerStyle={styles.buttonGroupContainer}
+          buttonItemStyle={styles.propertyTypeButton}
+        />
+        <ButtonGroup<number>
+          data={this.fetchButtonGroupData<IPropertyTypes>(data[propertyGroupSelectedIndex].asset_types)}
+          onItemSelect={this.onPropertyGroupTypeSelect}
+          selectedItem={propertyGroupTypeSelectedIndex}
+          textType="label"
+          textSize="regular"
+          fontType="regular"
+          containerStyle={styles.buttonGroupContainer}
+          buttonItemStyle={styles.assetTypeButton}
+        />
         <View style={styles.propertyContainer}>
           {this.renderSpaceAvailable()}
           {this.renderCarpetArea()}
@@ -223,6 +228,13 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
         return 0;
     }
   };
+
+  private fetchButtonGroupData = <T extends { name: string }>(data: T[]): { title: string; value: number }[] => {
+    return data.map((item, index) => ({
+      title: item.name,
+      value: index,
+    }));
+  };
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyDetailsItems);
@@ -281,5 +293,15 @@ const styles = StyleSheet.create({
   error: {
     color: theme.form.formErrorColor,
     marginTop: 3,
+  },
+  buttonGroupContainer: {
+    marginBottom: 28,
+  },
+  propertyTypeButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+  },
+  assetTypeButton: {
+    marginBottom: 12,
   },
 });

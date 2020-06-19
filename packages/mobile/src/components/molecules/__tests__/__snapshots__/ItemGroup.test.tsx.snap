@@ -3,13 +3,15 @@
 exports[`Item Group Component should render item group label 1`] = `
 <View
   style={
-    Object {
-      "flex": 0,
-      "flexDirection": "row",
-      "flexGrow": 1,
-      "flexWrap": "wrap",
-      "marginTop": 16,
-    }
+    Array [
+      Object {
+        "flex": 0,
+        "flexDirection": "row",
+        "flexGrow": 1,
+        "flexWrap": "wrap",
+      },
+      Object {},
+    ]
   }
 >
   <ForwardRef
@@ -66,13 +68,15 @@ exports[`Item Group Component should render item group label 1`] = `
 exports[`Item Group Component should render item group text 1`] = `
 <View
   style={
-    Object {
-      "flex": 0,
-      "flexDirection": "row",
-      "flexGrow": 1,
-      "flexWrap": "wrap",
-      "marginTop": 16,
-    }
+    Array [
+      Object {
+        "flex": 0,
+        "flexDirection": "row",
+        "flexGrow": 1,
+        "flexWrap": "wrap",
+      },
+      Object {},
+    ]
   }
 >
   <ForwardRef
