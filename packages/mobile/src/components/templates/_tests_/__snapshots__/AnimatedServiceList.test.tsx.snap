@@ -164,9 +164,14 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
             </Icon>
             <Text
               style={
-                Object {
-                  "color": "#FFFFFF",
-                }
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                  },
+                  Object {
+                    "color": "#FFFFFF",
+                  },
+                ]
               }
               textType="semiBold"
               type="small"
@@ -183,9 +188,14 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       "fontFamily": "OpenSans-SemiBold",
                       "fontWeight": "600",
                     },
-                    Object {
-                      "color": "#FFFFFF",
-                    },
+                    Array [
+                      Object {
+                        "color": "#FFFFFF",
+                      },
+                      Object {
+                        "color": "#FFFFFF",
+                      },
+                    ],
                   ]
                 }
               >
@@ -201,9 +211,14 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                         "fontFamily": "OpenSans-SemiBold",
                         "fontWeight": "600",
                       },
-                      Object {
-                        "color": "#FFFFFF",
-                      },
+                      Array [
+                        Object {
+                          "color": "#FFFFFF",
+                        },
+                        Object {
+                          "color": "#FFFFFF",
+                        },
+                      ],
                     ]
                   }
                 >

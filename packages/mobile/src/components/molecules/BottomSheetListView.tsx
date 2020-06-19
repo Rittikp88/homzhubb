@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, PickerItemProps } from 'react-native';
 import { ListItem } from '@homzhub/common/src/components/atoms/ListItem';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 interface IProps {
-  data: IDropdownOption[];
+  data: PickerItemProps[];
   selectedValue: string;
   listTitle: string;
   isBottomSheetVisible: boolean;

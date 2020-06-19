@@ -6,7 +6,7 @@ import { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/Payment
 interface IPaymentProps {
   onPayNow: () => void;
   isSuccess: boolean;
-  navigateToPropertyHelper: (key: any) => string;
+  navigateToPropertyHelper: () => void;
 }
 
 export const PropertyPayment = (props: IPaymentProps): React.ReactElement => {

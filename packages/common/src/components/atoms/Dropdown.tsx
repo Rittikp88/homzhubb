@@ -1,16 +1,25 @@
 import React from 'react';
-import { StyleSheet, StyleProp, ViewStyle, PickerItemProps, View, ImageStyle } from 'react-native';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import {
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  PickerItemProps,
+  View,
+  ImageStyle,
+  TouchableOpacity,
+  TextStyle,
+} from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
 export interface IProps {
   data: PickerItemProps[];
   value: number | string;
-  listTitle?: string;
   onDonePress: (value: string | number) => void;
+  icon?: string;
+  listTitle?: string;
   disable?: boolean;
   placeholder?: string;
   iosDropdownStyle?: object;
@@ -18,9 +27,10 @@ export interface IProps {
   androidContainerStyle?: StyleProp<ViewStyle>;
   iconColor?: string;
   iconSize?: number;
-  placeholderStyle?: object;
   iconStyle?: StyleProp<ImageStyle>;
   itemStyle?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 interface IState {
@@ -36,40 +46,29 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
     const {
       value,
       data,
-      placeholder = '',
-      disable = false,
-      placeholderStyle = {},
       iconColor,
       iconSize,
       iconStyle,
       listTitle,
+      disable = false,
+      placeholder = '',
+      containerStyle = {},
+      textStyle = {},
+      icon = icons.downArrowFilled,
     } = this.props;
     const { dropdownVisible } = this.state;
     const selectedItem = data.find((d: PickerItemProps) => d.value === value);
-    const placeHolderTextColor = theme.colors.disabled;
-    let textColor = theme.colors.darkTint1;
-    if (!selectedItem) {
-      textColor = placeHolderTextColor;
-    }
     return (
       <View pointerEvents={disable ? 'none' : 'auto'}>
-        <Button
-          containerStyle={styles.container}
-          onPress={this.openDropdown}
-          type="secondary"
-          textType="text"
-          textSize="small"
-          title={selectedItem ? selectedItem.label : placeholder}
-          titleStyle={[styles.titleText, placeholderStyle, { color: textColor }]}
-          icon={icons.downArrowFilled}
-          iconSize={iconSize || 16}
-          iconColor={iconColor || theme.colors.disabled}
-          iconStyle={[styles.iconStyle, iconStyle]}
-        />
+        <TouchableOpacity onPress={this.openDropdown} style={[styles.container, containerStyle]}>
+          <Label type="large" textType="regular" style={textStyle}>
+            {selectedItem?.label ?? placeholder}
+          </Label>
+          <Icon name={icon} size={iconSize ?? 16} color={iconColor ?? theme.colors.disabled} style={iconStyle} />
+        </TouchableOpacity>
         <BottomSheetListView
-          // @ts-ignore
           data={data}
-          selectedValue={selectedItem ? selectedItem.value : ''}
+          selectedValue={selectedItem?.value ?? ''}
           listTitle={listTitle ?? 'Select From here'}
           isBottomSheetVisible={dropdownVisible}
           onCloseDropDown={this.onCancel}
@@ -97,21 +96,13 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
-    borderColor: theme.colors.disabled,
-    borderWidth: 1,
-    backgroundColor: theme.colors.white,
+    alignItems: 'center',
     justifyContent: 'space-between',
-    height: PlatformUtils.isIOS() ? 43 : 53,
-  },
-  titleText: {
-    flex: 1,
-    textAlign: 'left',
-    marginTop: 7,
-    marginLeft: 16,
-  },
-  iconStyle: {
-    marginRight: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: theme.colors.disabled,
   },
 });

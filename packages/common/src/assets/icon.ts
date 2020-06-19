@@ -8,6 +8,7 @@ export const icons = {
   search: 'search',
   leftArrow: 'left-arrow',
   rightArrow: 'right-arrow',
+  downArrow: 'down-arrow',
   noteBook: 'note-book',
   star: 'star',
   face: 'face',

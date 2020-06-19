@@ -4,6 +4,9 @@ import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 import { FormTextInput, IFormTextInputProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 
+jest.mock('@react-native-community/google-signin', () => {});
+jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
+
 describe('Test cases for FormTextInput', () => {
   const formValues = {
     values: {

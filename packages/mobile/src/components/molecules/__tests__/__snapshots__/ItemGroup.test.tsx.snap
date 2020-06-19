@@ -8,81 +8,57 @@ exports[`Item Group Component should render item group label 1`] = `
       "flexDirection": "row",
       "flexGrow": 1,
       "flexWrap": "wrap",
-      "marginTop": 15,
+      "marginTop": 16,
     }
   }
 >
   <ForwardRef
-    key="0"
     onPress={[Function]}
     style={
-      Array [
-        Object {
-          "backgroundColor": "#0084F8",
-          "color": "#FFFFFF",
-        },
-        Object {
-          "borderColor": "#C9D6DF",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flex": 1,
-          "margin": 8,
-          "padding": 10,
-        },
-      ]
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderColor": "#C9D6DF",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "marginEnd": 12,
+        "paddingHorizontal": 12,
+        "paddingVertical": 6,
+      }
     }
   >
     <Component
       style={
-        Array [
-          undefined,
-          Object {
-            "backgroundColor": "#0084F8",
-            "color": "#FFFFFF",
-          },
-        ]
+        Object {
+          "color": "#FFFFFF",
+        }
       }
       textType="regular"
       type="large"
-    >
-      Residential
-    </Component>
+    />
   </ForwardRef>
   <ForwardRef
-    key="1"
     onPress={[Function]}
     style={
-      Array [
-        Object {
-          "backgroundColor": "#FFFFFF",
-          "color": "#667686",
-        },
-        Object {
-          "borderColor": "#C9D6DF",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flex": 1,
-          "margin": 8,
-          "padding": 10,
-        },
-      ]
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderColor": "#C9D6DF",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "marginEnd": 12,
+        "paddingHorizontal": 12,
+        "paddingVertical": 6,
+      }
     }
   >
     <Component
       style={
-        Array [
-          undefined,
-          Object {
-            "backgroundColor": "#FFFFFF",
-            "color": "#667686",
-          },
-        ]
+        Object {
+          "color": "#FFFFFF",
+        }
       }
       textType="regular"
       type="large"
-    >
-      Commercial
-    </Component>
+    />
   </ForwardRef>
 </View>
 `;
@@ -95,111 +71,57 @@ exports[`Item Group Component should render item group text 1`] = `
       "flexDirection": "row",
       "flexGrow": 1,
       "flexWrap": "wrap",
-      "marginTop": 15,
+      "marginTop": 16,
     }
   }
 >
   <ForwardRef
-    key="0"
     onPress={[Function]}
     style={
-      Array [
-        Object {
-          "backgroundColor": "#0084F8",
-          "color": "#FFFFFF",
-        },
-        Object {
-          "borderColor": "#C9D6DF",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flex": 1,
-          "margin": 8,
-          "padding": 10,
-        },
-      ]
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderColor": "#C9D6DF",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "marginEnd": 12,
+        "paddingHorizontal": 12,
+        "paddingVertical": 6,
+      }
     }
   >
     <Component
       style={
-        Array [
-          undefined,
-          Object {
-            "backgroundColor": "#0084F8",
-            "color": "#FFFFFF",
-          },
-        ]
+        Object {
+          "color": "#FFFFFF",
+        }
       }
       textType="regular"
-      type="regular"
-    >
-      Property type
-    </Component>
-    <Component
-      style={
-        Array [
-          undefined,
-          Object {
-            "backgroundColor": "#0084F8",
-            "color": "#FFFFFF",
-          },
-        ]
-      }
-      textType="semiBold"
-      type="small"
-    >
-      Residential
-    </Component>
+      type="large"
+    />
   </ForwardRef>
   <ForwardRef
-    key="1"
     onPress={[Function]}
     style={
-      Array [
-        Object {
-          "backgroundColor": "#FFFFFF",
-          "color": "#667686",
-        },
-        Object {
-          "borderColor": "#C9D6DF",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flex": 1,
-          "margin": 8,
-          "padding": 10,
-        },
-      ]
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderColor": "#C9D6DF",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "marginEnd": 12,
+        "paddingHorizontal": 12,
+        "paddingVertical": 6,
+      }
     }
   >
     <Component
       style={
-        Array [
-          undefined,
-          Object {
-            "backgroundColor": "#FFFFFF",
-            "color": "#667686",
-          },
-        ]
+        Object {
+          "color": "#FFFFFF",
+        }
       }
       textType="regular"
-      type="regular"
-    >
-      Property type
-    </Component>
-    <Component
-      style={
-        Array [
-          undefined,
-          Object {
-            "backgroundColor": "#FFFFFF",
-            "color": "#667686",
-          },
-        ]
-      }
-      textType="semiBold"
-      type="small"
-    >
-      Commercial
-    </Component>
+      type="large"
+    />
   </ForwardRef>
 </View>
 `;

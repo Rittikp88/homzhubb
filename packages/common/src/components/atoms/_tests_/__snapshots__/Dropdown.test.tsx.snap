@@ -4,49 +4,38 @@ exports[`Dropdown should match snapshot 1`] = `
 <View
   pointerEvents="auto"
 >
-  <Button
-    containerStyle={
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#C9D6DF",
-        "borderWidth": 1,
-        "flex": 1,
-        "flexDirection": "row",
-        "height": 43,
-        "justifyContent": "space-between",
-      }
-    }
-    icon="down-arrow-filled"
-    iconColor="#C9D6DF"
-    iconSize={16}
-    iconStyle={
-      Array [
-        Object {
-          "marginRight": 10,
-        },
-        undefined,
-      ]
-    }
+  <ForwardRef
     onPress={[Function]}
-    textSize="small"
-    textType="text"
-    title="India (+91)"
-    titleStyle={
+    style={
       Array [
         Object {
-          "flex": 1,
-          "marginLeft": 16,
-          "marginTop": 7,
-          "textAlign": "left",
+          "alignItems": "center",
+          "borderColor": "#C9D6DF",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
         },
         Object {},
-        Object {
-          "color": "#001B36",
-        },
       ]
     }
-    type="secondary"
-  />
+  >
+    <Label
+      style={Object {}}
+      textType="regular"
+      type="large"
+    >
+      India (+91)
+    </Label>
+    <Icon
+      allowFontScaling={false}
+      color="#C9D6DF"
+      name="down-arrow-filled"
+      size={16}
+    />
+  </ForwardRef>
   <BottomSheetListView
     data={
       Array [
@@ -117,49 +106,38 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
 <View
   pointerEvents="none"
 >
-  <Button
-    containerStyle={
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#C9D6DF",
-        "borderWidth": 1,
-        "flex": 1,
-        "flexDirection": "row",
-        "height": 43,
-        "justifyContent": "space-between",
-      }
-    }
-    icon="down-arrow-filled"
-    iconColor="#C9D6DF"
-    iconSize={16}
-    iconStyle={
-      Array [
-        Object {
-          "marginRight": 10,
-        },
-        undefined,
-      ]
-    }
+  <ForwardRef
     onPress={[Function]}
-    textSize="small"
-    textType="text"
-    title="Select"
-    titleStyle={
+    style={
       Array [
         Object {
-          "flex": 1,
-          "marginLeft": 16,
-          "marginTop": 7,
-          "textAlign": "left",
+          "alignItems": "center",
+          "borderColor": "#C9D6DF",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
         },
         Object {},
-        Object {
-          "color": "#C9D6DF",
-        },
       ]
     }
-    type="secondary"
-  />
+  >
+    <Label
+      style={Object {}}
+      textType="regular"
+      type="large"
+    >
+      Select
+    </Label>
+    <Icon
+      allowFontScaling={false}
+      color="#C9D6DF"
+      name="down-arrow-filled"
+      size={16}
+    />
+  </ForwardRef>
   <BottomSheetListView
     data={Array []}
     isBottomSheetVisible={false}
@@ -175,49 +153,38 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
 <View
   pointerEvents="auto"
 >
-  <Button
-    containerStyle={
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#C9D6DF",
-        "borderWidth": 1,
-        "flex": 1,
-        "flexDirection": "row",
-        "height": 43,
-        "justifyContent": "space-between",
-      }
-    }
-    icon="down-arrow-filled"
-    iconColor="#C9D6DF"
-    iconSize={16}
-    iconStyle={
-      Array [
-        Object {
-          "marginRight": 10,
-        },
-        undefined,
-      ]
-    }
+  <ForwardRef
     onPress={[Function]}
-    textSize="small"
-    textType="text"
-    title="Select"
-    titleStyle={
+    style={
       Array [
         Object {
-          "flex": 1,
-          "marginLeft": 16,
-          "marginTop": 7,
-          "textAlign": "left",
+          "alignItems": "center",
+          "borderColor": "#C9D6DF",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
         },
         Object {},
-        Object {
-          "color": "#C9D6DF",
-        },
       ]
     }
-    type="secondary"
-  />
+  >
+    <Label
+      style={Object {}}
+      textType="regular"
+      type="large"
+    >
+      Select
+    </Label>
+    <Icon
+      allowFontScaling={false}
+      color="#C9D6DF"
+      name="down-arrow-filled"
+      size={16}
+    />
+  </ForwardRef>
   <BottomSheetListView
     data={Array []}
     isBottomSheetVisible={false}

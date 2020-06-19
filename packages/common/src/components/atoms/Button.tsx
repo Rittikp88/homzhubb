@@ -64,13 +64,12 @@ export class Button extends React.PureComponent<IButtonProps> {
 
   private getTextField = (): React.ReactElement => {
     const { textType, title, textSize = 'small', fontType = 'semiBold' } = this.props;
-    let TextField = null;
+    let TextField = Text;
 
     if (textType === 'label') {
       TextField = Label;
-    } else {
-      TextField = Text;
     }
+
     return (
       <TextField type={textSize} textType={fontType} style={this.getTextStyle()}>
         {title}

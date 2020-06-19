@@ -15,7 +15,6 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/Service';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IPropertyVerificationState {
   verificationTypes: IVerificationTypes[];
@@ -23,7 +22,7 @@ interface IPropertyVerificationState {
 }
 
 interface IProps {
-  navigateToPropertyHelper: (key: any) => string;
+  navigateToPropertyHelper: () => void;
 }
 
 type Props = WithTranslation & IProps;
@@ -235,7 +234,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public navigateToHelper = (): void => {
     const { navigateToPropertyHelper } = this.props;
-    navigateToPropertyHelper(ScreensKeys.PropertyVerificationHelper);
+    navigateToPropertyHelper();
   };
 }
 

@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle, ImageURISource } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 interface IProps {
-  sliderStyle: StyleProp<ViewStyle>;
+  sliderStyle?: StyleProp<ViewStyle>;
   minimumValue: number;
   maximumValue: number;
   minimumTrackTintColor: string;
@@ -37,22 +37,6 @@ export const RNSlider = (props: IProps): React.ReactElement => {
     thumbImage,
   } = props;
 
-  const bubbleValueChange = (data: number): void => {
-    onValueChange(data);
-  };
-
-  const bubbleOnSlidingStart = (data: number): void => {
-    if (onSlidingStart) {
-      onSlidingStart(data);
-    }
-  };
-
-  const bubbleOnSlidingComplete = (data: number): void => {
-    if (onSlidingComplete) {
-      onSlidingComplete(data);
-    }
-  };
-
   return (
     <Slider
       style={sliderStyle}
@@ -61,9 +45,9 @@ export const RNSlider = (props: IProps): React.ReactElement => {
       minimumTrackTintColor={minimumTrackTintColor}
       maximumTrackTintColor={maximumTrackTintColor}
       disabled={disabled}
-      onSlidingStart={bubbleOnSlidingStart}
-      onSlidingComplete={bubbleOnSlidingComplete}
-      onValueChange={bubbleValueChange}
+      onSlidingStart={onSlidingStart}
+      onSlidingComplete={onSlidingComplete}
+      onValueChange={onValueChange}
       step={step}
       value={value}
       inverted={inverted}

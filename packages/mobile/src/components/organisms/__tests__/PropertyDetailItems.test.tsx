@@ -13,7 +13,7 @@ jest.mock('@homzhub/common/src/components/', () => 'Label');
 jest.mock('@homzhub/common/src/components/', () => 'HorizontalPicker');
 jest.mock('@homzhub/common/src/components/', () => 'FormTextInput');
 jest.mock('@homzhub/mobile/src/components/molecules/BottomSheetListView', () => 'BottomSheetListView');
-jest.mock('@homzhub/mobile/src/components/molecules/ItemGroup', () => 'ItemGroup');
+jest.mock('@homzhub/mobile/src/components/molecules/ButtonGroup', () => 'ItemGroup');
 
 describe('Property Details Item Component', () => {
   let component: any;

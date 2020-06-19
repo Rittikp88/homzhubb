@@ -18,6 +18,13 @@ const getCurrentPropertyId = (state: IState): number => {
   return currentPropertyId;
 };
 
+const getCurrentLeaseTermId = (state: IState): number => {
+  const {
+    property: { currentLeaseTermId },
+  } = state;
+  return currentLeaseTermId;
+};
+
 const getRentServicesList = (state: IState): IRentServiceList[] | null => {
   const {
     property: {
@@ -47,4 +54,5 @@ export const PropertySelector = {
   getCurrentPropertyId,
   getServiceDetails,
   getServiceSteps,
+  getCurrentLeaseTermId,
 };

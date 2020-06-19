@@ -49,7 +49,7 @@ class Header extends React.PureComponent<ICommonHeaderProps, {}> {
             onPress={onIconPress}
           />
           {isHeadingVisible && (
-            <Text type={titleType || 'small'} textType={titleFontType || 'semiBold'} style={titleStyle}>
+            <Text type={titleType || 'small'} textType={titleFontType || 'semiBold'} style={[styles.text, titleStyle]}>
               {title ?? ''}
             </Text>
           )}
@@ -76,5 +76,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     left: 16,
+  },
+  text: {
+    color: theme.colors.white,
   },
 });

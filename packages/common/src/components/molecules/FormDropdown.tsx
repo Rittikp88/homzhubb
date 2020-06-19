@@ -13,9 +13,9 @@ export interface IDropdownOption {
 
 export interface IFormDropdownProps {
   name: string;
+  options: IDropdownOption[];
   placeholder?: string;
   label?: string;
-  options?: IDropdownOption[];
   formProps: FormikProps<FormikValues>;
   isDisabled?: boolean;
   onBlur?: () => void;

@@ -6,12 +6,20 @@ import {
   ICreateAssetResult,
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  ILeaseTermDetails,
+  ICreateLeaseTermDetails,
+  IUpdateLeaseTermDetails,
+} from '@homzhub/common/src/domain/models/LeaseTerms';
 
 const ENDPOINTS = {
   getPropertyDetails: (): string => 'asset-groups/',
   createAsset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
   getRentServices: (): string => 'services/',
+  leaseTerms: (propertyId: number): string => `assets/${propertyId}/lease-terms/`,
+  updateLeaseTerms: (propertyId: number, leaseTermId: number): string =>
+    `assets/${propertyId}/lease-terms/${leaseTermId}`,
 };
 
 class PropertyRepository {
@@ -31,6 +39,25 @@ class PropertyRepository {
 
   public updateAsset = async (id: number, requestBody: IUpdateAssetDetails): Promise<void> => {
     return await this.apiClient.patch(ENDPOINTS.updateAsset(id), requestBody);
+  };
+
+  public getLeaseTerms = async (propertyId: number): Promise<ILeaseTermDetails[]> => {
+    return await this.apiClient.get(ENDPOINTS.leaseTerms(propertyId));
+  };
+
+  public createLeaseTerms = async (
+    propertyId: number,
+    leaseTerms: ICreateLeaseTermDetails
+  ): Promise<{ id: number }> => {
+    return await this.apiClient.post(ENDPOINTS.leaseTerms(propertyId), leaseTerms);
+  };
+
+  public updateLeaseTerms = async (
+    propertyId: number,
+    leaseTermId: number,
+    leaseTerms: IUpdateLeaseTermDetails
+  ): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.updateLeaseTerms(propertyId, leaseTermId), leaseTerms);
   };
 
   public getRentServices = async (): Promise<IRentServiceList[]> => {

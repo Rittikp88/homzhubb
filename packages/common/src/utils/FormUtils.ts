@@ -9,6 +9,8 @@ class FormUtils {
 
   public digitRegex = /^[0-9]*$/;
 
+  public percentageRegex = /[0-9]{1,2}(.[0-9])*/;
+
   public passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]*$/;
 
   public validate = (getValidationSchema: any): any => {

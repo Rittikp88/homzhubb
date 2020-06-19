@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import ItemGroup from '@homzhub/mobile/src/components/molecules/ItemGroup';
+import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
 
 jest.mock('@homzhub/common/src/components/', () => 'Text');
@@ -17,7 +17,7 @@ describe('Item Group Component', () => {
       title: 'Item Group',
     };
     // @ts-ignore
-    const component = shallow(<ItemGroup {...props} />);
+    const component = shallow(<ButtonGroup {...props} />);
     expect(toJson(component)).toMatchSnapshot();
   });
 
@@ -31,7 +31,7 @@ describe('Item Group Component', () => {
       title: 'Item Group',
     };
     // @ts-ignore
-    const component = shallow(<ItemGroup {...props} />);
+    const component = shallow(<ButtonGroup {...props} />);
     expect(toJson(component)).toMatchSnapshot();
   });
 });

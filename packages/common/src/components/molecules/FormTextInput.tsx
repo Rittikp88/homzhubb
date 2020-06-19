@@ -16,9 +16,10 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import { TextInputSuffix } from '@homzhub/common/src/components/atoms/TextInputSuffix';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
-type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name';
+type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name' | 'decimal';
 
 export interface IFormTextInputProps extends TextInputProps {
   style?: StyleProp<TextStyle>;
@@ -34,6 +35,7 @@ export interface IFormTextInputProps extends TextInputProps {
   inputPrefixText?: string;
   inputGroupPrefix?: React.ReactNode;
   inputGroupSuffix?: React.ReactNode;
+  inputGroupSuffixText?: string;
   hidePasswordRevealer?: boolean;
   disallowedCharacters?: RegExp;
   onValueChange?: (text: string) => void;
@@ -64,6 +66,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       inputType,
       hidePasswordRevealer,
       inputPrefixText = '',
+      inputGroupSuffixText = '',
       children,
       hideError,
       containerStyle = {},
@@ -107,6 +110,9 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
         break;
       case 'number':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
+        break;
+      case 'decimal':
+        inputProps = { ...inputProps, ...{ keyboardType: 'numeric' } };
         break;
       case 'password': {
         const passwordFieldStyles = hidePasswordRevealer ? {} : { ...inputProps.style, ...theme.form.inputPassword };
@@ -191,6 +197,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
           {children}
           {inputGroupPrefix}
           {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}
+          {!!inputGroupSuffixText && <TextInputSuffix text={inputGroupSuffixText} />}
         </View>
         {helpText && (
           <Label type="small" style={styles.helpText}>

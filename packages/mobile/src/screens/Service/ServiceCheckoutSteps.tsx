@@ -1,19 +1,22 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
+import { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 import { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IScreenState {
@@ -23,10 +26,15 @@ interface IScreenState {
 
 interface IStateProps {
   propertyId: number;
+  leaseTermId: number;
+}
+
+interface IDispatchProps {
+  setCurrentLeaseTermId: (leaseTermId: number) => void;
 }
 
 type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceCheckoutSteps>;
-type Props = OwnProps & IStateProps;
+type Props = OwnProps & IStateProps & IDispatchProps;
 const TOTAL_STEPS = 4;
 
 class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
@@ -41,11 +49,9 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     return (
       <>
         {this.renderHeader()}
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.screen}>
-            {this.renderTitle()}
-            {this.renderContent()}
-          </View>
+        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {this.renderTitle()}
+          {this.renderContent()}
         </ScrollView>
         {isPaymentSuccess && (
           <WithShadowView outerViewStyle={styles.shadowView}>
@@ -69,7 +75,6 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           title={this.fetchScreenTitle()}
           titleType="small"
           titleFontType="semiBold"
-          titleStyle={styles.textColor}
           backgroundColor={theme.colors.primaryColor}
         />
         <StepIndicatorComponent
@@ -91,16 +96,16 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     return (
       <>
         <View style={styles.headingRow}>
-          <Label type="large" textType="semiBold">
+          <Label type="large" textType="semiBold" style={styles.textColor}>
             {t('step', { stepNumber: currentStep + 1, totalSteps: TOTAL_STEPS })}
           </Label>
           {(currentStep === 1 || currentStep === 2) && (
-            <Text type="small" textType="semiBold" style={styles.skipForNow} onPress={this.onSkipPress}>
+            <Text type="small" textType="semiBold" style={styles.skipForNow} onPress={this.onProceedToNextStep}>
               {t('skipForNow')}
             </Text>
           )}
         </View>
-        <Text type="regular" textType="semiBold">
+        <Text type="regular" textType="semiBold" style={styles.textColor}>
           {this.fetchStepTitle()}
         </Text>
       </>
@@ -109,12 +114,17 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderContent = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
+    const { propertyId, leaseTermId, setCurrentLeaseTermId } = this.props;
     switch (currentStep) {
       case 0:
         return (
-          <Label type="regular" textType="regular">
-            1
-          </Label>
+          <CheckoutAssetDetails
+            propertyId={propertyId}
+            leaseTermId={leaseTermId}
+            setLeaseTermId={setCurrentLeaseTermId}
+            isLeaseFlow
+            onStepSuccess={this.onProceedToNextStep}
+          />
         );
       case 1:
         return (
@@ -123,13 +133,13 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           </Label>
         );
       case 2:
-        return <PropertyVerification navigateToPropertyHelper={this.navigateToScreen} />;
+        return <PropertyVerification navigateToPropertyHelper={this.navigateToPropertyHelper} />;
       default:
         return (
           <PropertyPayment
             onPayNow={this.handlePayNow}
             isSuccess={isPaymentSuccess}
-            navigateToPropertyHelper={this.navigateToScreen}
+            navigateToPropertyHelper={this.navigateToPropertyHelper}
           />
         );
     }
@@ -139,7 +149,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     this.setState({ currentStep });
   };
 
-  private onSkipPress = (): void => {
+  private onProceedToNextStep = (): void => {
     const { currentStep } = this.state;
     this.setState({ currentStep: currentStep + 1 });
   };
@@ -171,9 +181,9 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     return screenTitles[currentStep];
   };
 
-  public navigateToScreen = (screenKey: any): any => {
+  public navigateToPropertyHelper = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(screenKey);
+    navigation.navigate(ScreensKeys.PropertyVerificationHelper);
   };
 
   public handleBackPress = (): void => {
@@ -188,18 +198,27 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentPropertyId } = PropertySelector;
+  const { getCurrentPropertyId, getCurrentLeaseTermId } = PropertySelector;
   return {
     propertyId: getCurrentPropertyId(state),
+    leaseTermId: getCurrentLeaseTermId(state),
   };
 };
 
-const connectedComponent = connect<IStateProps, null, OwnProps, IState>(mapStateToProps, null)(ServiceCheckoutSteps);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentLeaseTermId } = PropertyActions;
+  return bindActionCreators({ setCurrentLeaseTermId }, dispatch);
+};
+
+const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(ServiceCheckoutSteps);
 const HOC = withTranslation(LocaleConstants.namespacesKey.property)(connectedComponent);
 export { HOC as ServiceCheckoutSteps };
 
 const styles = StyleSheet.create({
-  screen: {
+  scrollView: {
     flex: 1,
     backgroundColor: theme.colors.screenBackground,
     paddingHorizontal: theme.layout.screenPadding,
@@ -218,11 +237,7 @@ const styles = StyleSheet.create({
     color: theme.colors.active,
   },
   textColor: {
-    color: theme.colors.white,
-  },
-  scrollView: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
+    color: theme.colors.darkTint3,
   },
   shadowView: {
     paddingTop: 10,

@@ -5,15 +5,14 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Text } from '@homzhub/common/src/components';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
-  onClickLink: (key: any) => void;
+  onClickLink: () => void;
 }
 
 export const PaymentSuccess = (props: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-  const handleLink = (): void => props.onClickLink(ScreensKeys.PropertyVerificationHelper);
+  const handleLink = (): void => props.onClickLink();
   return (
     <View style={styles.container}>
       <View style={styles.doneView}>

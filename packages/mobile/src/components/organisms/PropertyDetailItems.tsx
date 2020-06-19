@@ -11,7 +11,7 @@ import {
   ISpaceAvailablePayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { HorizontalPicker, Label, Text, Dropdown } from '@homzhub/common/src/components';
-import ItemGroup from '@homzhub/mobile/src/components/molecules/ItemGroup';
+// import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 
 interface IPropertyDetailsItemsProps {
   data: IPropertyDetailsData[];
@@ -30,27 +30,27 @@ type Props = IPropertyDetailsItemsProps & WithTranslation;
 
 class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
-    const { t, data, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
+    const { data } = this.props;
     if (!data) {
       return null;
     }
     return (
       <View style={styles.container}>
-        <ItemGroup
-          data={data}
-          onItemSelect={this.onPropertyGroupSelect}
-          textStyle={styles.textColor}
-          selectedIndex={propertyGroupSelectedIndex}
-          textType="text"
-          superTitle={t('propertyType')}
-        />
-        <ItemGroup
-          data={data?.[propertyGroupSelectedIndex]?.asset_types ?? []}
-          onItemSelect={this.onPropertyGroupTypeSelect}
-          textStyle={styles.textColor}
-          selectedIndex={propertyGroupTypeSelectedIndex}
-          textType="label"
-        />
+        {/* <ButtonGroup */}
+        {/*  data={data} */}
+        {/*  onItemSelect={this.onPropertyGroupSelect} */}
+        {/*  textStyle={styles.textColor} */}
+        {/*  selectedIndex={propertyGroupSelectedIndex} */}
+        {/*  textType="text" */}
+        {/*  superTitle={t('propertyDetails:propertyType')} */}
+        {/* /> */}
+        {/* <ButtonGroup */}
+        {/*  data={data?.[propertyGroupSelectedIndex]?.asset_types ?? []} */}
+        {/*  onItemSelect={this.onPropertyGroupTypeSelect} */}
+        {/*  textStyle={styles.textColor} */}
+        {/*  selectedIndex={propertyGroupTypeSelectedIndex} */}
+        {/*  textType="label" */}
+        {/* /> */}
         <View style={styles.propertyContainer}>
           {this.renderSpaceAvailable()}
           {this.renderCarpetArea()}
@@ -230,9 +230,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
     maxWidth: theme.viewport.width,
-  },
-  textColor: {
-    color: theme.colors.darkTint5,
   },
   typeProperty: {
     color: theme.colors.darkTint4,

@@ -6,6 +6,7 @@ import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/dom
 
 export const initialPropertyState: IPropertyState = {
   currentPropertyId: 0,
+  currentLeaseTermId: 0,
   propertyDetails: {
     propertyGroup: null,
     rentServices: null,
@@ -61,6 +62,8 @@ export const propertyReducer = (
       };
     case PropertyActionTypes.SET.CURRENT_PROPERTY_ID:
       return { ...state, ['currentPropertyId']: action.payload as number };
+    case PropertyActionTypes.SET.CURRENT_LEASE_TERM_ID:
+      return { ...state, ['currentLeaseTermId']: action.payload as number };
     case PropertyActionTypes.GET.SERVICE_DETAILS:
     case PropertyActionTypes.GET.SERVICE_STEPS:
       return {

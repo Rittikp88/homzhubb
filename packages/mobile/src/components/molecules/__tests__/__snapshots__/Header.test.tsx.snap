@@ -134,7 +134,14 @@ exports[`Header should match snapshot 1`] = `
         </Text>
       </Icon>
       <Text
-        style={Object {}}
+        style={
+          Array [
+            Object {
+              "color": "#FFFFFF",
+            },
+            Object {},
+          ]
+        }
         textType="semiBold"
         type="small"
       >
@@ -150,7 +157,12 @@ exports[`Header should match snapshot 1`] = `
                 "fontFamily": "OpenSans-SemiBold",
                 "fontWeight": "600",
               },
-              Object {},
+              Array [
+                Object {
+                  "color": "#FFFFFF",
+                },
+                Object {},
+              ],
             ]
           }
         >
@@ -166,7 +178,12 @@ exports[`Header should match snapshot 1`] = `
                   "fontFamily": "OpenSans-SemiBold",
                   "fontWeight": "600",
                 },
-                Object {},
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                  },
+                  Object {},
+                ],
               ]
             }
           />
@@ -312,7 +329,14 @@ exports[`Header should match snapshot without title 1`] = `
         </Text>
       </Icon>
       <Text
-        style={Object {}}
+        style={
+          Array [
+            Object {
+              "color": "#FFFFFF",
+            },
+            Object {},
+          ]
+        }
         textType="semiBold"
         type="small"
       >
@@ -328,7 +352,12 @@ exports[`Header should match snapshot without title 1`] = `
                 "fontFamily": "OpenSans-SemiBold",
                 "fontWeight": "600",
               },
-              Object {},
+              Array [
+                Object {
+                  "color": "#FFFFFF",
+                },
+                Object {},
+              ],
             ]
           }
         >
@@ -344,7 +373,12 @@ exports[`Header should match snapshot without title 1`] = `
                   "fontFamily": "OpenSans-SemiBold",
                   "fontWeight": "600",
                 },
-                Object {},
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                  },
+                  Object {},
+                ],
               ]
             }
           >

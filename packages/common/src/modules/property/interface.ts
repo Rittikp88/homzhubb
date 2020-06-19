@@ -3,6 +3,7 @@ import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/dom
 
 export interface IPropertyState {
   currentPropertyId: number;
+  currentLeaseTermId: number;
   propertyDetails: {
     propertyGroup: IPropertyDetailsData[] | null;
     rentServices: IRentServiceList[] | null;
