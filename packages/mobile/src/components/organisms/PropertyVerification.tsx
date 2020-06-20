@@ -2,26 +2,37 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import DocumentPicker from 'react-native-document-picker';
-import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker';
-import { findIndex } from 'lodash';
-import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Text, Label, Divider, UploadBox, ImageThumbnail } from '@homzhub/common/src/components';
+import ImagePicker from 'react-native-image-crop-picker';
+import { findIndex, cloneDeep } from 'lodash';
 import {
   IVerificationTypes,
   IVerificationDocumentList,
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/Service';
+import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import {
+  Text,
+  Label,
+  Divider,
+  UploadBox,
+  ImageThumbnail,
+  Button,
+  WithShadowView,
+} from '@homzhub/common/src/components';
 
 interface IPropertyVerificationState {
   verificationTypes: IVerificationTypes[];
   existingDocuments: IVerificationDocumentList[];
+  localDocuments: IVerificationDocumentList[];
 }
 
 interface IProps {
+  propertyId: number;
   navigateToPropertyHelper: () => void;
 }
 
@@ -31,12 +42,14 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   public state = {
     verificationTypes: [],
     existingDocuments: [],
+    localDocuments: [],
   };
 
   public componentDidMount = async (): Promise<void> => {
     // TODO: Get the proper ids from reducer to pass here
+    const { propertyId } = this.props;
     await this.getVerificationTypes(1);
-    await this.getExistingDocuments(10);
+    await this.getExistingDocuments(propertyId);
   };
 
   public render(): React.ReactElement {
@@ -45,7 +58,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
       <View style={styles.container}>
         <View style={styles.propertyVerification}>
           <Label type="large" textType="regular" style={styles.subTitle}>
-            {t('subTitle')}
+            {t('propertyVerificationSubTitle')}
           </Label>
           <Text type="small" textType="semiBold" style={styles.link} onPress={this.navigateToHelper}>
             {t('helperNavigationText')}
@@ -53,6 +66,14 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
           <Divider containerStyles={styles.divider} />
         </View>
         <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
+        <WithShadowView outerViewStyle={styles.shadowView}>
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            containerStyle={styles.buttonStyle}
+            onPress={this.postPropertyVerificationDocuments}
+          />
+        </WithShadowView>
       </View>
     );
   }
@@ -78,16 +99,19 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 
   public renderImageOrUploadBox = (currentData: IVerificationTypes): React.ReactElement => {
-    const { existingDocuments } = this.state;
+    const { existingDocuments, localDocuments } = this.state;
     const onPress = async (): Promise<void> => this.handleVerificationDocumentUploads(currentData);
-    const thumbnailIndex = findIndex(existingDocuments, (document: IVerificationDocumentList) => {
-      return document.document_type_id === currentData.id;
+    const totalDocuments = existingDocuments.concat(localDocuments);
+    const thumbnailIndex = findIndex(totalDocuments, (document: IVerificationDocumentList) => {
+      return currentData.id === document.verification_document_type_id;
     });
     if (thumbnailIndex !== -1) {
-      const currentDocument: IVerificationDocumentList = existingDocuments[thumbnailIndex];
-      const thumbnailImage = currentDocument.document_url;
-      const onDeleteImageThumbnail = (): Promise<void> => this.deleteDocument(currentDocument.document_id);
-      return currentDocument.type === 'application/pdf' ? (
+      const currentDocument: IVerificationDocumentList = totalDocuments[thumbnailIndex];
+      const thumbnailImage = currentDocument.document_link;
+      const fileType = currentDocument.document_link.split('/')?.pop()?.split('.')[1];
+      const onDeleteImageThumbnail = (): Promise<void> =>
+        this.deleteDocument(currentDocument, currentDocument.is_local_document);
+      return currentDocument.type === 'application/pdf' || fileType === 'pdf' ? (
         <View style={styles.pdfContainer}>
           <Text type="small" textType="regular">
             {currentDocument.name}
@@ -111,16 +135,13 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     );
   };
 
-  public uploadDocument = async (documentId: number): Promise<void> => {
+  public uploadDocument = async (documentId: number, verificationDocumentId: number): Promise<void> => {
     try {
       const response = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
       const source = { uri: response.uri, type: response.type, name: response.name };
-      // TODO: Upload the file from here once the api call is set.
-      // await this.postDocument()
-      // TODO: To be removed once the api call is in place
-      this.updateExistingDocument(documentId, source);
+      this.updateLocalDocuments(documentId, source, verificationDocumentId);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         AlertHelper.error({ message: err.message });
@@ -130,44 +151,28 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     }
   };
 
-  public captureSelfie = (documentId: number): void => {
-    const { t } = this.props;
-    const options = {
-      title: t('captureSelfie'),
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-      mediaType: 'photo',
-      quality: 1,
-    };
-    // @ts-ignore
-    ImagePicker.launchCamera(options, (response: ImagePickerResponse) => {
-      if (response.didCancel) {
-        AlertHelper.error({ message: 'User cancelled image picker' });
-      } else if (response.error) {
-        AlertHelper.error({ message: `ImagePicker Error: ${response.error}` });
-      } else if (response.customButton) {
-        AlertHelper.error({ message: `User tapped on custom button: ${response.customButton}` });
-      } else {
-        const source = {
-          uri: `data:image/jpeg;base64,${response.data}`,
-          type: response.type,
-          name: response.fileName,
-        };
-        // TODO: Call the post document function from here
-        // await this.postDocument(requestBody)
-        // TODO: Remove this logic
-        this.updateExistingDocument(documentId, source);
-      }
+  public captureSelfie = (documentId: number, verificationDocumentId: number): void => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      includeBase64: true,
+      useFrontCamera: true,
+    }).then((image: any) => {
+      const source = {
+        uri: `data:${image.mime};base64,${image.data}`,
+        type: image.mime,
+        name: image.fileName,
+      };
+      this.updateLocalDocuments(documentId, source, verificationDocumentId);
     });
   };
 
   public handleVerificationDocumentUploads = async (data: IVerificationTypes): Promise<void> => {
     if (data.name === VerificationDocumentTypes.SELFIE_ID_PROOF) {
-      this.captureSelfie(data.id);
+      this.captureSelfie(data.id, 2);
     } else {
-      await this.uploadDocument(data.id);
+      const verificationDocumentId = data.name === VerificationDocumentTypes.ID_PROOF ? 1 : 3;
+      await this.uploadDocument(data.id, verificationDocumentId);
     }
   };
 
@@ -182,9 +187,9 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     }
   };
 
-  public getExistingDocuments = async (assetId: number): Promise<void> => {
+  public getExistingDocuments = async (propertyId: number): Promise<void> => {
     try {
-      const response = await ServiceRepository.getExistingVerificationDocuments(assetId);
+      const response = await ServiceRepository.getExistingVerificationDocuments(propertyId);
       this.setState({
         existingDocuments: response,
       });
@@ -193,42 +198,69 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     }
   };
 
-  // TODO: Add the type of document once the api is ready
-  public postDocument = async (document: any): Promise<void> => {
-    try {
-      await ServiceRepository.postDocument(document);
-      // TODO: Map the correct ID here
-      await this.getExistingDocuments(10);
-    } catch (error) {
-      AlertHelper.error({ message: error.message });
+  public postPropertyVerificationDocuments = async (): Promise<void> => {
+    const { propertyId } = this.props;
+    // First- Upload all the local documents to s3 using attachment upload api,
+    // get the id back and update the local references of id in these objects
+    // then make a payload with new id and verification type id and make a post call and update the step
+    // Promise.all([promise1, promise2, promise3]).then(function(values) {
+    //   console.log(values);
+    // });
+    // try {
+    //   await ServiceRepository.postDocument(document);
+    await this.getExistingDocuments(propertyId);
+    // } catch (error) {
+    //   AlertHelper.error({ message: error.message });
+    // }
+  };
+
+  public deleteDocument = async (
+    document: IVerificationDocumentList,
+    isLocalDocument: boolean | undefined
+  ): Promise<void> => {
+    const { existingDocuments, localDocuments, verificationTypes } = this.state;
+    const clonedDocuments = isLocalDocument ? cloneDeep(localDocuments) : cloneDeep(existingDocuments);
+    if (!document.id) {
+      const documentIndex = findIndex(clonedDocuments, (existingDocument: IVerificationDocumentList) => {
+        return existingDocument.verification_document_type_id === document.verification_document_type_id;
+      });
+      if (documentIndex !== -1) {
+        clonedDocuments.splice(documentIndex, 1);
+        const key = isLocalDocument ? 'localDocuments' : 'existingDocuments';
+        this.setState({
+          existingDocuments,
+          localDocuments,
+          verificationTypes,
+          [key]: clonedDocuments,
+        });
+      }
+    } else {
+      const { propertyId } = this.props;
+      try {
+        await ServiceRepository.deleteVerificationDocument(propertyId, document.id);
+        await this.getExistingDocuments(propertyId);
+      } catch (error) {
+        AlertHelper.error({ message: error.message });
+      }
     }
   };
 
-  public deleteDocument = async (documentId: number): Promise<void> => {
-    try {
-      await ServiceRepository.deleteVerificationDocument(documentId);
-      // TODO: Map the correct ID here
-      await this.getExistingDocuments(10);
-    } catch (error) {
-      AlertHelper.error({ message: error.message });
-    }
-  };
-
-  // TODO: This function needs to be removed once the post call is in place
-  public updateExistingDocument = (
+  public updateLocalDocuments = (
     documentId: number,
-    source: { uri: string; type: string | undefined; name: string | undefined }
+    source: { uri: string; type: string | undefined; name: string | undefined },
+    verificationDocumentId: number
   ): void => {
     const imageObject: IVerificationDocumentList = {
-      document_type_id: documentId,
-      document_id: 2,
-      document_url: source.uri,
+      verification_document_type_id: verificationDocumentId,
+      document_id: documentId,
+      document_link: source.uri,
       type: source.type,
       name: source.name,
+      is_local_document: true,
     };
-    const { existingDocuments } = this.state;
+    const { localDocuments } = this.state;
     this.setState({
-      existingDocuments: [...existingDocuments, imageObject],
+      localDocuments: [...localDocuments, imageObject],
     });
   };
 
@@ -296,5 +328,14 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 0,
     // backgroundColor: theme.colors.crossIconContainer,
+  },
+  shadowView: {
+    paddingTop: 10,
+    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
+    paddingBottom: 0,
+  },
+  buttonStyle: {
+    flex: 0,
+    margin: 16,
   },
 });

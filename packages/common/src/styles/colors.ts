@@ -53,6 +53,7 @@ const gradientColors = {
 const opacity = {
   whiteOpacity: 'rgba(255, 255, 255, 0.1)',
   crossIconContainer: 'rgba(0, 0, 0, 0.2)',
+  imageThumbnailBackground: 'rgba(0, 27, 54, 0.6)',
 };
 
 export const colors = {

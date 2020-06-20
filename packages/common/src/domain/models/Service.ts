@@ -34,14 +34,26 @@ export interface IVerificationTypes {
 }
 
 export interface IVerificationDocumentList {
-  document_type_id: number;
+  verification_document_type_id: number;
   document_id: number;
-  document_url: string;
+  document_link: string;
   name?: string;
   type?: string;
+  id?: number | null;
+  is_local_document?: boolean;
 }
 
 export enum VerificationDocumentTypes {
   ID_PROOF = 'ID_PROOF',
   SELFIE_ID_PROOF = 'SELFIE_ID_PROOF',
+  OWNERSHIP_VERIFICATION_DOCUMENT = 'OWNERSHIP_VERIFICATION_DOCUMENT',
+}
+
+export interface IPropertySelectedImages {
+  id: number;
+  description: string;
+  is_cover_image: boolean;
+  asset: number;
+  attachment: number;
+  link: string;
 }

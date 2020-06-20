@@ -11,6 +11,7 @@ import { PropertySelector } from '@homzhub/common/src/modules/property/selectors
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
+import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 import { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
@@ -113,6 +114,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   };
 
   private renderContent = (): React.ReactNode => {
+    // const { propertyId } = this.props;
     const { currentStep, isPaymentSuccess } = this.state;
     const { propertyId, leaseTermId, setCurrentLeaseTermId } = this.props;
     switch (currentStep) {
@@ -127,13 +129,11 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           />
         );
       case 1:
-        return (
-          <Label type="regular" textType="regular">
-            2
-          </Label>
-        );
+        // TODO: Remove the hardcode propertyId
+        return <PropertyImages propertyId={63} updateStep={this.onProceedToNextStep} />;
       case 2:
-        return <PropertyVerification navigateToPropertyHelper={this.navigateToPropertyHelper} />;
+        // TODO: Remove the hardcode propertyId
+        return <PropertyVerification propertyId={63} navigateToPropertyHelper={this.navigateToPropertyHelper} />;
       default:
         return (
           <PropertyPayment

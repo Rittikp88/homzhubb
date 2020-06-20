@@ -48,8 +48,18 @@ class PropertyVerificationHelper extends React.PureComponent<Props, IPropertyVer
             {/* TODO: Send the data from state rather hardcoded value */}
             <RNMarkdown>{markdown}</RNMarkdown>
             <RNMarkdown>
-              ## Markdown for Property Verification Screen! {'\n\n'}
-              You can **emphasize** what you want, or just _suggest it_ 😏…{'\n'}
+              **why do i have to do this?** Praesent a tortor non ex fringilla porta. Sed aliquam nisl risus, nec
+              facilisis mauris auctor at. Integer consequat ante sit amet nisl posuere aliquam. Fusce semper posuere
+              velit eget hendrerit. Donec quis eros augue. Aenean suscipit, risus vel tincidunt iaculis, ex sem aliquet
+              turpis, sed vehicula leo lacus eget metus. Sed ut felis in dolor semper eleifend. Vivamus vel velit
+              bibendum, congue ligula ac, malesuada diam. Vestibulum blandit pellentesque volutpat. Aliquam fermentum
+              libero vitae odio ultricies luctus. Integer consequat ante sit amet nisl posuere aliquam. Fusce semper
+              posuere velit eget hendrerit. Donec quis eros augue. Aenean suscipit, risus vel tincidunt iaculis, ex sem
+              aliquet turpis, sed vehicula leo lacus eget metus. Sed ut felis in dolor semper eleifend. Fusce semper
+              posuere velit eget hendrerit. Donec quis eros augue. Aenean suscipit, risus vel tincidunt iaculis, ex sem
+              aliquet turpis, sed vehicula leo lacus eget metus. Sed ut felis in dolor semper eleifend. Vivamus vel
+              velit bibendum, congue ligula ac, malesuada diam. Vestibulum blandit pellentesque volutpat. Aliquam
+              fermentum libero vitae odio ultricies luctus.
             </RNMarkdown>
           </View>
         </ScrollView>
