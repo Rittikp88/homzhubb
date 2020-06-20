@@ -4,17 +4,12 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
-import {
-  IVerificationTypes,
-  IVerificationDocumentList,
-  VerificationDocumentTypes,
-} from '@homzhub/common/src/domain/models/Service';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
   Text,
   Label,
@@ -24,6 +19,12 @@ import {
   Button,
   WithShadowView,
 } from '@homzhub/common/src/components';
+import {
+  IVerificationTypes,
+  IVerificationDocumentList,
+  VerificationDocumentTypes,
+} from '@homzhub/common/src/domain/models/Service';
+import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IPropertyVerificationState {
   verificationTypes: IVerificationTypes[];
@@ -32,8 +33,9 @@ interface IPropertyVerificationState {
 }
 
 interface IProps {
+  navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
+  updateStep: () => void;
   propertyId: number;
-  navigateToPropertyHelper: () => void;
 }
 
 type Props = WithTranslation & IProps;
@@ -199,7 +201,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
-    const { propertyId } = this.props;
+    const { propertyId, updateStep } = this.props;
     // First- Upload all the local documents to s3 using attachment upload api,
     // get the id back and update the local references of id in these objects
     // then make a payload with new id and verification type id and make a post call and update the step
@@ -212,6 +214,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     // } catch (error) {
     //   AlertHelper.error({ message: error.message });
     // }
+    updateStep();
   };
 
   public deleteDocument = async (
@@ -266,7 +269,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public navigateToHelper = (): void => {
     const { navigateToPropertyHelper } = this.props;
-    navigateToPropertyHelper();
+    navigateToPropertyHelper('verification');
   };
 }
 

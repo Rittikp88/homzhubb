@@ -2,7 +2,6 @@
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
-import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
 
 const actionTypePrefix = 'Property/';
@@ -78,7 +77,7 @@ const setCurrentLeaseTermId = (payload: number): IFluxStandardAction<number> => 
   payload,
 });
 
-const getServiceDetails = (payload: IServiceParam): IFluxStandardAction<IServiceParam> => {
+const getServiceDetails = (payload: number): IFluxStandardAction<number> => {
   return {
     type: PropertyActionTypes.GET.SERVICE_DETAILS,
     payload,

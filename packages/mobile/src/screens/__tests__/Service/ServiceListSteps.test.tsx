@@ -23,7 +23,7 @@ describe('Service List Steps Screen', () => {
   beforeEach(async () => {
     store = mockStore({
       service: {
-        servicesSteps: ServiceSteps[0].steps,
+        servicesSteps: ServiceSteps[0],
       },
     });
     props = {

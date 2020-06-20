@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
   listing: {
     flexDirection: 'row',
     margin: theme.layout.screenPadding,
+    alignItems: 'center',
   },
   listingTitle: {
     flex: 1,

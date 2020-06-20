@@ -310,8 +310,6 @@ PODS:
     - React
   - react-native-geolocation (2.0.2):
     - React
-  - react-native-image-picker (2.3.1):
-    - React
   - react-native-maps (0.27.1):
     - React
   - react-native-razorpay (2.1.33):
@@ -382,6 +380,8 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
+  - rn-fetch-blob (0.12.0):
+    - React-Core
   - RNCAsyncStorage (1.11.0):
     - React
   - RNCMaskedView (0.1.10):
@@ -393,6 +393,15 @@ PODS:
   - RNGoogleSignin (4.0.3):
     - GoogleSignIn (~> 5.0.0)
     - React
+  - RNImageCropPicker (0.32.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.32.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.32.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNPermissions (2.1.5):
     - React
   - RNScreens (2.8.0):
@@ -401,6 +410,7 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
+  - TOCropViewController (2.5.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -449,7 +459,6 @@ DEPENDENCIES:
   - react-native-document-picker (from `../../../node_modules/react-native-document-picker`)
   - react-native-fbsdk (from `../../../node_modules/react-native-fbsdk`)
   - "react-native-geolocation (from `../../../node_modules/@react-native-community/geolocation`)"
-  - react-native-image-picker (from `../../../node_modules/react-native-image-picker`)
   - react-native-maps (from `../../../node_modules/react-native-maps`)
   - react-native-razorpay (from `../../../node_modules/react-native-razorpay`)
   - react-native-restart (from `../../../node_modules/react-native-restart`)
@@ -466,11 +475,13 @@ DEPENDENCIES:
   - React-RCTVibration (from `../../../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/callinvoker (from `../../../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
+  - rn-fetch-blob (from `../../../node_modules/rn-fetch-blob`)
   - "RNCAsyncStorage (from `../../../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../../../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../../../node_modules/@react-native-community/picker`)"
   - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../../../node_modules/@react-native-community/google-signin`)"
+  - RNImageCropPicker (from `../../../node_modules/react-native-image-crop-picker`)
   - RNPermissions (from `../../../node_modules/react-native-permissions`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNSVG (from `../../../node_modules/react-native-svg`)
@@ -500,6 +511,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - OpenSSL-Universal
     - razorpay-pod
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -543,8 +555,6 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-fbsdk"
   react-native-geolocation:
     :path: "../../../node_modules/@react-native-community/geolocation"
-  react-native-image-picker:
-    :path: "../../../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../../../node_modules/react-native-maps"
   react-native-razorpay:
@@ -575,6 +585,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../../../node_modules/react-native/ReactCommon"
+  rn-fetch-blob:
+    :path: "../../../node_modules/rn-fetch-blob"
   RNCAsyncStorage:
     :path: "../../../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
@@ -585,6 +597,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../../../node_modules/@react-native-community/google-signin"
+  RNImageCropPicker:
+    :path: "../../../node_modules/react-native-image-crop-picker"
   RNPermissions:
     :path: "../../../node_modules/react-native-permissions"
   RNScreens:
@@ -638,7 +652,6 @@ SPEC CHECKSUMS:
   react-native-document-picker: 3026780fc04e7ad27534a0f35d5daefb550aa03a
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
-  react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-razorpay: fb2411102f375adb0818da2f65759a16438dcdb4
   react-native-restart: fff228304625f55de2ebd4de43938110f4c888ed
@@ -654,15 +667,18 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
+  rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: b8c53479842804a3e7b721e01def0ce2c89ddc69
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9
+  RNImageCropPicker: fc4b4d2a4d7176eeb6442fa191ba56493c14b6d6
   RNPermissions: ad71dd4f767ec254f2cd57592fbee02afee75467
   RNScreens: 62211832af51e0aebcf6e8c36bcf7dd65592f244
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

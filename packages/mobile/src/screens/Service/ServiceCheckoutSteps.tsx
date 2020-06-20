@@ -18,7 +18,7 @@ import PropertyVerification from '@homzhub/mobile/src/components/organisms/Prope
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IScreenState {
   currentStep: number;
@@ -133,7 +133,13 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
         return <PropertyImages propertyId={63} updateStep={this.onProceedToNextStep} />;
       case 2:
         // TODO: Remove the hardcode propertyId
-        return <PropertyVerification propertyId={63} navigateToPropertyHelper={this.navigateToPropertyHelper} />;
+        return (
+          <PropertyVerification
+            propertyId={63}
+            navigateToPropertyHelper={this.navigateToPropertyHelper}
+            updateStep={this.onProceedToNextStep}
+          />
+        );
       default:
         return (
           <PropertyPayment
@@ -181,9 +187,10 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     return screenTitles[currentStep];
   };
 
-  public navigateToPropertyHelper = (): void => {
+  public navigateToPropertyHelper = (markdownKey: MarkdownType): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.PropertyVerificationHelper);
+    const title = markdownKey === 'verification' ? 'Property Verification' : '';
+    navigation.navigate(ScreensKeys.MarkdownScreen, { title, isFrom: markdownKey });
   };
 
   public handleBackPress = (): void => {

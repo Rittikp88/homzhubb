@@ -7,11 +7,10 @@ import {
   IVerificationTypes,
   IPropertySelectedImages,
 } from '@homzhub/common/src/domain/models/Service';
-import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  getServiceData: (): string => 'service-categories/services/',
-  getServiceSteps: (): string => 'service-categories/services/steps',
+  getServiceData: (serviceId: number): string => `service-categories/${serviceId}/services`,
+  getServiceSteps: (serviceId: number): string => `service-categories/services/${serviceId}/steps`,
   getVerificationDocumentDetails: (categoryId: number): string =>
     `service-categories/${categoryId}/verification-document-types`,
   existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents`,
@@ -36,12 +35,12 @@ class ServiceRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getServiceDetail = async (param: IServiceParam): Promise<IServiceDetail[]> => {
-    return await this.apiClient.get(ENDPOINTS.getServiceData(), param);
+  public getServiceDetail = async (serviceId: number): Promise<IServiceDetail[]> => {
+    return await this.apiClient.get(ENDPOINTS.getServiceData(serviceId));
   };
 
   public getServiceStepsDetails = async (serviceId: number): Promise<IServiceListStepsDetail[]> => {
-    return await this.apiClient.get(ENDPOINTS.getServiceSteps(), { service_id: serviceId });
+    return await this.apiClient.get(ENDPOINTS.getServiceSteps(serviceId));
   };
 
   public getVerificationDocumentTypes = async (categoryId: number): Promise<IVerificationTypes[]> => {

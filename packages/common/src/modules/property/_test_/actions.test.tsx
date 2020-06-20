@@ -27,10 +27,10 @@ describe('Property Actions', () => {
   });
 
   it('should call get service detail action', () => {
-    const action = PropertyActions.getServiceDetails({ service_categories_id: 1 });
+    const action = PropertyActions.getServiceDetails(1);
     expect(action).toStrictEqual({
       type: PropertyActionTypes.GET.SERVICE_DETAILS,
-      payload: { service_categories_id: 1 },
+      payload: 1,
     });
   });
 

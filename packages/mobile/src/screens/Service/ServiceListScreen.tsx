@@ -13,10 +13,9 @@ import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/An
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
-import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IDispatchProps {
-  getServiceDetails: (payload: IServiceParam) => void;
+  getServiceDetails: (payload: number) => void;
 }
 
 interface IStateProps {
@@ -32,7 +31,7 @@ class ServiceListScreen extends Component<Props> {
       getServiceDetails,
       route: { params },
     } = this.props;
-    getServiceDetails({ service_categories_id: params.serviceId });
+    getServiceDetails(params.serviceId);
   }
 
   public render(): React.ReactNode {

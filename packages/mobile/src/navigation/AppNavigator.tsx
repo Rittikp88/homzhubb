@@ -5,6 +5,7 @@ import {
   IAddPropertyMapProps,
   IServiceStepProps,
   IServiceDataProps,
+  IMarkdownProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { AddPropertyMap } from '@homzhub/mobile/src/screens/PropertyPost/AddPropertyMap';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
@@ -15,7 +16,7 @@ import { ServiceCheckoutSteps } from '@homzhub/mobile/src/screens/Service/Servic
 import ServiceDetailScreen from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
 import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
 import ServiceListSteps from '@homzhub/mobile/src/screens/Service/ServiceListSteps';
-import PropertyVerificationHelper from '@homzhub/mobile/src/screens/Service/PropertyVerificationHelper';
+import { MarkdownView } from '@homzhub/mobile/src/screens/MarkdownView';
 
 export type AppStackParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
@@ -27,7 +28,7 @@ export type AppStackParamList = {
   [ScreensKeys.ServiceDetailScreen]: IServiceDataProps;
   [ScreensKeys.ServiceListSteps]: IServiceStepProps;
   [ScreensKeys.ServiceCheckoutSteps]: undefined;
-  [ScreensKeys.PropertyVerificationHelper]: undefined;
+  [ScreensKeys.MarkdownScreen]: IMarkdownProps;
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
@@ -49,7 +50,7 @@ export function AppNavigator(): React.ReactElement {
       <AppStackNavigator.Screen name={ScreensKeys.ServiceDetailScreen} component={ServiceDetailScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.ServiceListSteps} component={ServiceListSteps} />
       <AppStackNavigator.Screen name={ScreensKeys.ServiceCheckoutSteps} component={ServiceCheckoutSteps} />
-      <AppStackNavigator.Screen name={ScreensKeys.PropertyVerificationHelper} component={PropertyVerificationHelper} />
+      <AppStackNavigator.Screen name={ScreensKeys.MarkdownScreen} component={MarkdownView} />
     </AppStackNavigator.Navigator>
   );
 }

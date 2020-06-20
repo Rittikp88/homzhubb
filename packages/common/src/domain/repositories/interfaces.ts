@@ -172,7 +172,3 @@ export interface IUpdateAssetDetails {
   asset_type?: number;
   spaces?: ISpaceAvailablePayload[];
 }
-
-export interface IServiceParam {
-  service_categories_id: number;
-}

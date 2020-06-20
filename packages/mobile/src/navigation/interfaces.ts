@@ -34,7 +34,7 @@ export enum ScreensKeys {
   ServiceDetailScreen = 'ServiceDetail',
   ServiceListSteps = 'ServiceListSteps',
   ServiceCheckoutSteps = 'ServiceCheckoutSteps',
-  PropertyVerificationHelper = 'PropertyVerificationHelper',
+  MarkdownScreen = 'Markdown',
 }
 
 // Tab keys
@@ -100,4 +100,11 @@ export interface IServiceDataProps {
 export interface IServiceStepProps {
   id: number;
   name: string;
+}
+
+export type MarkdownType = 'visit' | 'verification';
+
+export interface IMarkdownProps {
+  title?: string;
+  isFrom: MarkdownType;
 }

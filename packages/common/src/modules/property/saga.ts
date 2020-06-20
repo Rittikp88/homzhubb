@@ -3,7 +3,6 @@ import { call, put, takeEvery } from '@redux-saga/core/effects';
 import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
 import { PropertyActions, PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IServiceParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 
 function* getPropertyDetails() {
@@ -24,9 +23,10 @@ function* getRentServicesList() {
   }
 }
 
-export function* getServiceDetails(action: IFluxStandardAction<IServiceParam>) {
+export function* getServiceDetails(action: IFluxStandardAction<number>) {
+  const { payload } = action;
   try {
-    const data = yield call(ServiceRepository.getServiceDetail, action.payload as IServiceParam);
+    const data = yield call(ServiceRepository.getServiceDetail, payload as number);
     yield put(PropertyActions.getServiceDetailsSuccess(data));
   } catch (e) {
     yield put(PropertyActions.getServiceDetailsFailure(e.message));

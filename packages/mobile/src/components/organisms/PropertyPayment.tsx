@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from '@homzhub/common/src/components';
 import { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
+import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IPaymentProps {
   onPayNow: () => void;
   isSuccess: boolean;
-  navigateToPropertyHelper: () => void;
+  navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
 }
 
 export const PropertyPayment = (props: IPaymentProps): React.ReactElement => {
