@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import moment from 'moment';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -75,7 +76,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
       maintenanceSchedule: ScheduleTypes.ANNUALLY,
     },
     minimumLeasePeriod: this.DEFAULT_LEASE_PERIOD,
-    availableFrom: '',
+    availableFrom: moment().format('YYYY-MM-DD'),
     furnishingStatus: FurnishingType.NONE,
     maintenanceBy: PaidByTypes.OWNER,
     utilityBy: PaidByTypes.TENANT,
@@ -129,7 +130,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                 inputGroupSuffixText={currency}
               />
               <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
-                {t('showMore')}
+                {showMore ? t('showLess') : t('showMore')}
               </Text>
               {showMore && (
                 <FormTextInput
@@ -187,12 +188,14 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
           <Text type="small" textType="semiBold" style={styles.headerTitle}>
             {t('minimumLeasePeriod')}
           </Text>
-          <Text type="regular" textType="regular" style={styles.currentMonth}>
-            {minimumLeasePeriod}
+          <View style={styles.currentMonth}>
+            <Text type="regular" textType="regular">
+              {minimumLeasePeriod}
+            </Text>
             <Label type="regular" textType="regular">
               {` ${minimumLeasePeriod === 1 ? t('common:month') : t('common:months')}`}
             </Label>
-          </Text>
+          </View>
           <RNSlider
             minimumValue={this.MINIMUM_LEASE_PERIOD}
             maximumValue={this.MAXIMUM_LEASE_PERIOD}
@@ -316,8 +319,11 @@ export { HOC as LeaseDetailsForm };
 const styles = StyleSheet.create({
   continue: {
     flex: 0,
+    marginVertical: 28,
   },
   currentMonth: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 24,
   },
   showMore: {

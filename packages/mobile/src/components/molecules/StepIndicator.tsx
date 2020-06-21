@@ -90,7 +90,7 @@ export class StepIndicatorComponent extends React.PureComponent<IProps, {}> {
 
   private label = ({ label }: { label: string }): React.ReactNode => {
     return (
-      <Label type="large" textType="semiBold" style={styles.label} numberOfLines={1}>
+      <Label type="regular" textType="semiBold" style={styles.label} numberOfLines={1}>
         {label}
       </Label>
     );

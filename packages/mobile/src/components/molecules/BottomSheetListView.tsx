@@ -7,6 +7,7 @@ interface IProps {
   data: PickerItemProps[];
   selectedValue: string;
   listTitle: string;
+  listHeight?: number;
   isBottomSheetVisible: boolean;
   onCloseDropDown: () => void;
   onSelectItem: (value: string) => void;
@@ -14,11 +15,11 @@ interface IProps {
 
 export class BottomSheetListView extends Component<IProps> {
   public render(): React.ReactNode {
-    const { isBottomSheetVisible, onCloseDropDown, selectedValue, listTitle, data } = this.props;
+    const { isBottomSheetVisible, onCloseDropDown, selectedValue, listTitle, data, listHeight = 750 } = this.props;
     return (
       <BottomSheet
         isShadowView
-        sheetHeight={750}
+        sheetHeight={listHeight}
         headerTitle={listTitle}
         visible={isBottomSheetVisible}
         onCloseSheet={onCloseDropDown}

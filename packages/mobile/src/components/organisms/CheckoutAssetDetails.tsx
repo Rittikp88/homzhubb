@@ -23,7 +23,7 @@ interface IOwnProps extends WithTranslation {
 }
 class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   public state = {
-    currency: 'INR',
+    currency: 'INR \u20B9',
   };
 
   public componentDidMount = (): void => {
@@ -43,7 +43,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
             {isLeaseFlow ? t('rentAndDeposit') : t('resaleDetails')}
           </Text>
           <Dropdown
-            data={[{ label: 'INR', value: 'INR' }]}
+            data={[{ label: 'INR \u20B9', value: 'INR \u20B9' }]}
             icon={icons.downArrow}
             iconColor={theme.colors.darkTint5}
             iconSize={8}

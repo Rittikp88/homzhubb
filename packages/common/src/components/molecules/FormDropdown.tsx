@@ -16,6 +16,8 @@ export interface IFormDropdownProps {
   options: IDropdownOption[];
   placeholder?: string;
   label?: string;
+  listTitle?: string;
+  listHeight?: number;
   formProps: FormikProps<FormikValues>;
   isDisabled?: boolean;
   onBlur?: () => void;
@@ -26,7 +28,18 @@ export interface IFormDropdownProps {
 
 export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
   public render(): React.ReactNode {
-    const { name, options, isDisabled = false, formProps, placeholder, onChange, optionalText, label } = this.props;
+    const {
+      name,
+      options,
+      isDisabled = false,
+      formProps,
+      placeholder,
+      onChange,
+      optionalText,
+      label,
+      listTitle,
+      listHeight,
+    } = this.props;
     const { values, errors, touched, setFieldValue, setFieldTouched } = formProps;
 
     let labelStyles = { ...theme.form.formLabel };
@@ -59,6 +72,8 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
         <Dropdown
           // @ts-ignore
           data={options}
+          listTitle={listTitle}
+          listHeight={listHeight}
           value={values[name]}
           onDonePress={onSelect}
           disable={isDisabled}

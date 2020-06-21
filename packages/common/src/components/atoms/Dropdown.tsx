@@ -20,6 +20,7 @@ export interface IProps {
   onDonePress: (value: string | number) => void;
   icon?: string;
   listTitle?: string;
+  listHeight?: number;
   disable?: boolean;
   placeholder?: string;
   iosDropdownStyle?: object;
@@ -50,6 +51,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
       iconSize,
       iconStyle,
       listTitle,
+      listHeight,
       disable = false,
       placeholder = '',
       containerStyle = {},
@@ -70,6 +72,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
           data={data}
           selectedValue={selectedItem?.value ?? ''}
           listTitle={listTitle ?? 'Select From here'}
+          listHeight={listHeight}
           isBottomSheetVisible={dropdownVisible}
           onCloseDropDown={this.onCancel}
           onSelectItem={this.onValueChange}

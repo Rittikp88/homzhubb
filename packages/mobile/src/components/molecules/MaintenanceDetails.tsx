@@ -18,8 +18,8 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
   const { formProps, currency, maintenanceAmountKey, maintenanceScheduleKey } = props;
 
   const scheduleOptions = [
-    { label: t('quarterly'), value: ScheduleTypes.QUARTERLY },
     { label: t('monthly'), value: ScheduleTypes.MONTHLY },
+    { label: t('quarterly'), value: ScheduleTypes.QUARTERLY },
     { label: t('annually'), value: ScheduleTypes.ANNUALLY },
   ];
 
@@ -39,6 +39,8 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
       <View style={styles.dropdownContainer}>
         <FormDropdown
           label={t('maintenanceSchedule')}
+          listTitle={t('maintenanceSchedule')}
+          listHeight={300}
           name={maintenanceScheduleKey}
           options={scheduleOptions}
           formProps={formProps}
