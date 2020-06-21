@@ -56,6 +56,8 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public render(): React.ReactElement {
     const { t } = this.props;
+    const { existingDocuments, localDocuments } = this.state;
+    const totalDocuments = existingDocuments.concat(localDocuments);
     return (
       <View style={styles.container}>
         <View style={styles.propertyVerification}>
@@ -68,14 +70,16 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
           <Divider containerStyles={styles.divider} />
         </View>
         <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
-        <WithShadowView outerViewStyle={styles.shadowView}>
-          <Button
-            type="primary"
-            title={t('common:continue')}
-            containerStyle={styles.buttonStyle}
-            onPress={this.postPropertyVerificationDocuments}
-          />
-        </WithShadowView>
+        {totalDocuments.length === 3 && (
+          <WithShadowView outerViewStyle={styles.shadowView}>
+            <Button
+              type="primary"
+              title={t('common:continue')}
+              containerStyle={styles.buttonStyle}
+              onPress={this.postPropertyVerificationDocuments}
+            />
+          </WithShadowView>
+        )}
       </View>
     );
   }
@@ -206,7 +210,6 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     // get the id back and update the local references of id in these objects
     // then make a payload with new id and verification type id and make a post call and update the step
     // Promise.all([promise1, promise2, promise3]).then(function(values) {
-    //   console.log(values);
     // });
     // try {
     //   await ServiceRepository.postDocument(document);
@@ -306,7 +309,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   divider: {
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: theme.colors.disabled,
   },
   pdfContainer: {

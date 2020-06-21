@@ -178,6 +178,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
             onDonePress={this.onAreaUnitChange}
             iconSize={16}
             iconColor={theme.colors.darkTint7}
+            containerStyle={styles.dropdownContainer}
           />
         </View>
       </View>
@@ -249,7 +250,7 @@ const styles = StyleSheet.create({
   },
   propertyContainer: {
     marginHorizontal: 10,
-    marginTop: 20,
+    marginTop: 0,
     flexDirection: 'column',
   },
   textInput: {
@@ -303,5 +304,8 @@ const styles = StyleSheet.create({
   },
   assetTypeButton: {
     marginBottom: 12,
+  },
+  dropdownContainer: {
+    height: 54,
   },
 });

@@ -114,7 +114,6 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   };
 
   private renderContent = (): React.ReactNode => {
-    // const { propertyId } = this.props;
     const { currentStep, isPaymentSuccess } = this.state;
     const { propertyId, leaseTermId, setCurrentLeaseTermId } = this.props;
     switch (currentStep) {
@@ -129,8 +128,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           />
         );
       case 1:
-        // TODO: Remove the hardcode propertyId
-        return <PropertyImages propertyId={63} updateStep={this.onProceedToNextStep} />;
+        return <PropertyImages propertyId={propertyId} updateStep={this.onProceedToNextStep} />;
       case 2:
         // TODO: Remove the hardcode propertyId
         return (

@@ -2,10 +2,9 @@ import React from 'react';
 import { StyleSheet, View, SafeAreaView, FlatList, ScrollView } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
-import RNFetchBlob from 'rn-fetch-blob';
-import { findIndex } from 'lodash';
+import { findIndex, cloneDeep } from 'lodash';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
-import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/Service';
+import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -59,14 +58,16 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         >
           <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
         </BottomSheet>
-        <WithShadowView outerViewStyle={styles.shadowView}>
-          <Button
-            type="primary"
-            title={t('common:continue')}
-            containerStyle={styles.buttonStyle}
-            onPress={this.postAttachmentsForProperty}
-          />
-        </WithShadowView>
+        {selectedImages.length > 0 && (
+          <WithShadowView outerViewStyle={styles.shadowView}>
+            <Button
+              type="primary"
+              title={t('common:continue')}
+              containerStyle={styles.buttonStyle}
+              onPress={this.postAttachmentsForProperty}
+            />
+          </WithShadowView>
+        )}
       </View>
     );
   }
@@ -80,10 +81,10 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     return (
       <>
         <View style={styles.uploadImageContainer}>
-          <Text type="regular" textType="semiBold" style={styles.uploadImageText}>
+          <Text type="small" textType="semiBold" style={styles.uploadImageText}>
             {t('property:uploadedImages')}
           </Text>
-          <Text type="regular" textType="semiBold" style={styles.edit} onPress={this.onToggleBottomSheet}>
+          <Text type="small" textType="semiBold" style={styles.edit} onPress={this.onToggleBottomSheet}>
             {t('common:edit')}
           </Text>
         </View>
@@ -131,7 +132,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     const { item, index } = data;
     const { selectedImages } = this.state;
     const extraDataLength = selectedImages.length > 6 ? selectedImages.length - 7 : selectedImages.length;
-    const isLastThumbnail = index === 5;
+    const isLastThumbnail = index === 5 && extraDataLength > 0;
     const onPressLastThumbnail = (): void => this.onToggleBottomSheet();
     return (
       <ImageThumbnail
@@ -157,7 +158,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         <ImageThumbnail
           imageUrl={currentImage.link}
           key={index}
-          coverPhotoTitle={t('property:addCoverPhoto')}
+          coverPhotoTitle={currentImage.is_cover_image ? t('property:coverPhoto') : t('property:addCoverPhoto')}
           isCoverPhotoContainer
           isIconVisible
           isFavorite={currentImage.is_cover_image}
@@ -176,8 +177,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public onPhotosUpload = async (): Promise<void> => {
     const { propertyId } = this.props;
-    const { Blob } = RNFetchBlob.polyfill;
-    const { fs } = RNFetchBlob;
+    const { selectedImages } = this.state;
     // @ts-ignore
     const images: ImagePickerResponse[] = await ImagePicker.openPicker({
       multiple: true,
@@ -185,40 +185,25 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       includeBase64: true,
       mediaType: 'photo',
     });
-    images.forEach((image: ImagePickerResponse) => {
-      const imagePath = image.path;
-      const { mime } = image;
-      fs.readFile(imagePath, 'base64')
-        .then((data) => {
-          // @ts-ignore
-          return Blob.build(data, { type: `${mime};BASE64` });
-        })
-        .then(async (blob) => {
-          const formData = new FormData();
-          const file = new File([blob], 'someName.jpg', { type: image.mime });
-          formData.append('files[]', file);
-          await ServiceRepository.postAttachment(formData);
-          await this.getPropertyImagesByPropertyId(propertyId);
-          return blob;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    const localSelectedImages: IPropertySelectedImages[] = [];
+    images.forEach((image, index: number) => {
+      localSelectedImages.push({
+        id: null,
+        description: '',
+        is_cover_image: false,
+        asset: propertyId,
+        attachment: index, // TODO: To be fetched after post attachment upload call
+        link: `data:${image.mime};base64,${image.data}`,
+        isLocalImage: true,
+      });
     });
-    // this.setState({
-    //   selectedImages: images.map((image: any) => {
-    //     return { uri: image.path, width: image.width, height: image.height, mime: image.mime, data: image.data };
-    //   }),
-    // });
-    // images.forEach((image: any) => {
-    //   const file = {
-    //     ...image,
-    //     uri: image.uri,
-    //     name: PlatformUtils.isIOS() ? image.filename : `asset_images_${Date.now()}.${image.mime.split('/')[1]}`,
-    //   };
-    //   formData.append('files[]', JSON.stringify(file));
-    // });
-    // await ServiceRepository.postAttachment(formData);
+    if (selectedImages.length === 0) {
+      localSelectedImages[0].is_cover_image = true;
+    }
+    this.setState({
+      // @ts-ignore
+      selectedImages: selectedImages.concat(localSelectedImages),
+    });
   };
 
   public onToggleBottomSheet = (): void => {
@@ -232,12 +217,28 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public deletePropertyImage = async (selectedImage: IPropertySelectedImages): Promise<void> => {
     const { propertyId } = this.props;
-    await ServiceRepository.deletePropertyImage(propertyId, selectedImage.attachment);
+    const { selectedImages } = this.state;
+    const clonedSelectedImages = cloneDeep(selectedImages);
+    if (selectedImage.isLocalImage) {
+      const localImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
+        return selectedImage.attachment === image.attachment;
+      });
+      clonedSelectedImages.splice(localImageIndex, 1);
+      this.setState({ selectedImages: clonedSelectedImages });
+      return;
+    }
+    await ServiceRepository.deletePropertyImage(selectedImage.attachment);
     await this.getPropertyImagesByPropertyId(propertyId);
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
     const response = await ServiceRepository.getPropertyImagesByPropertyId(propertyId);
+    const coverImageIndex = findIndex(response, (image) => {
+      return image.is_cover_image;
+    });
+    if (coverImageIndex === -1 && response.length > 0) {
+      response[0].is_cover_image = true;
+    }
     this.setState({
       selectedImages: response,
     });
@@ -245,16 +246,34 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public markAttachmentAsCoverImage = async (selectedImage: IPropertySelectedImages): Promise<void> => {
     const { propertyId } = this.props;
-    await ServiceRepository.markAttachmentAsCoverImage(propertyId, selectedImage.attachment);
+    const { selectedImages } = this.state;
+    const clonedSelectedImages: IPropertySelectedImages[] = cloneDeep(selectedImages);
+    if (!selectedImage.id) {
+      const existingCoverImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
+        return image.is_cover_image;
+      });
+      clonedSelectedImages[existingCoverImageIndex].is_cover_image = false;
+      const newCoverImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
+        return selectedImage.attachment === image.attachment;
+      });
+      clonedSelectedImages[newCoverImageIndex].is_cover_image = true;
+      this.setState({
+        selectedImages: clonedSelectedImages,
+      });
+      return;
+    }
+    await ServiceRepository.markAttachmentAsCoverImage(propertyId, selectedImage.id);
     await this.getPropertyImagesByPropertyId(propertyId);
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
     const { propertyId, updateStep } = this.props;
     const { selectedImages } = this.state;
-    const attachmentIds: number[] = [];
-    selectedImages.forEach((selectedImage: IPropertySelectedImages) => attachmentIds.push(selectedImage.attachment));
-    await ServiceRepository.postAttachmentsForProperty(propertyId, { id: attachmentIds });
+    const attachmentIds: IPropertyImagesPostPayload[] = [];
+    selectedImages.forEach((selectedImage: IPropertySelectedImages) =>
+      attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.is_cover_image })
+    );
+    await ServiceRepository.postAttachmentsForProperty(propertyId, attachmentIds);
     updateStep();
   };
 }

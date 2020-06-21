@@ -50,10 +50,16 @@ export enum VerificationDocumentTypes {
 }
 
 export interface IPropertySelectedImages {
-  id: number;
+  id: number | null;
   description: string;
   is_cover_image: boolean;
   asset: number;
   attachment: number;
-  link: string;
+  link: string | null;
+  isLocalImage?: boolean;
+}
+
+export interface IPropertyImagesPostPayload {
+  attachment: number;
+  is_cover_image: boolean;
 }

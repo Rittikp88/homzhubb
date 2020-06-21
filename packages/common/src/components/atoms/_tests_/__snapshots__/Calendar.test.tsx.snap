@@ -199,6 +199,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
       </Divider>
       <Calendar
         current={2020-06-19T18:30:00.000Z}
+        enableSwipeMonths={false}
         hideArrows={true}
         key="Sat Jun 20 2020"
         markedDates={
