@@ -66,9 +66,6 @@ class LandingScreen extends React.PureComponent<Props, {}> {
                 {t('common:logout')}
               </Label>
             </Label>
-            <Label type="large" textType="bold" style={styles.logout} onPress={this.propertyVerification}>
-              Property Verification
-            </Label>
           </View>
         </View>
       </GradientBackground>
@@ -80,13 +77,6 @@ class LandingScreen extends React.PureComponent<Props, {}> {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.SearchPropertyOwner);
-  };
-
-  public propertyVerification = (): void => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate(ScreensKeys.ServiceCheckoutSteps);
   };
 
   public logout = async (): Promise<void> => {

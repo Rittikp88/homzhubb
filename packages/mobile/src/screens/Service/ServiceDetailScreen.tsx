@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
+import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -15,7 +18,10 @@ import { CardBody } from '@homzhub/mobile/src/components/molecules/CardBody';
 import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
+
+interface IDispatchProps {
+  setCurrentServiceCategoryId: (id: number) => void;
+}
 
 interface IStateProps {
   services: IServiceDetail[];
@@ -147,7 +153,9 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   };
 
   private onPressContinue = (name: string, id: number): void => {
-    const { navigation } = this.props;
+    // @ts-ignore
+    const { navigation, setCurrentServiceCategoryId } = this.props;
+    setCurrentServiceCategoryId(id);
     navigation.navigate(ScreensKeys.ServiceListSteps, { id, name });
     this.closeBottomSheet();
   };
@@ -177,9 +185,19 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-export default connect<IStateProps, null, WithTranslation, IState>(
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentServiceCategoryId } = PropertyActions;
+  return bindActionCreators(
+    {
+      setCurrentServiceCategoryId,
+    },
+    dispatch
+  );
+};
+
+export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(ServiceDetailScreen));
 
 const styles = StyleSheet.create({

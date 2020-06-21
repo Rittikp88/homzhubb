@@ -48,6 +48,13 @@ const getServiceSteps = (state: IState): any => {
   return servicesSteps;
 };
 
+const getCurrentServiceCategoryId = (state: IState): number => {
+  const {
+    property: { currentServiceCategoryId },
+  } = state;
+  return currentServiceCategoryId;
+};
+
 export const PropertySelector = {
   getPropertyDetails,
   getRentServicesList,
@@ -55,4 +62,5 @@ export const PropertySelector = {
   getServiceDetails,
   getServiceSteps,
   getCurrentLeaseTermId,
+  getCurrentServiceCategoryId,
 };

@@ -28,6 +28,7 @@ interface IScreenState {
 interface IStateProps {
   propertyId: number;
   leaseTermId: number;
+  serviceCategoryId: number;
 }
 
 interface IDispatchProps {
@@ -115,7 +116,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderContent = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
-    const { propertyId, leaseTermId, setCurrentLeaseTermId } = this.props;
+    const { propertyId, leaseTermId, setCurrentLeaseTermId, serviceCategoryId } = this.props;
     switch (currentStep) {
       case 0:
         return (
@@ -130,10 +131,10 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
       case 1:
         return <PropertyImages propertyId={propertyId} updateStep={this.onProceedToNextStep} />;
       case 2:
-        // TODO: Remove the hardcode propertyId
         return (
           <PropertyVerification
-            propertyId={63}
+            propertyId={propertyId}
+            serviceCategoryId={serviceCategoryId}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
             updateStep={this.onProceedToNextStep}
           />
@@ -203,10 +204,11 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentPropertyId, getCurrentLeaseTermId } = PropertySelector;
+  const { getCurrentPropertyId, getCurrentLeaseTermId, getCurrentServiceCategoryId } = PropertySelector;
   return {
     propertyId: getCurrentPropertyId(state),
     leaseTermId: getCurrentLeaseTermId(state),
+    serviceCategoryId: getCurrentServiceCategoryId(state),
   };
 };
 

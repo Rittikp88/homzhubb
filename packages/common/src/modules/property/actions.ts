@@ -24,6 +24,7 @@ export const PropertyActionTypes = {
   SET: {
     CURRENT_PROPERTY_ID: `${actionTypePrefix}CURRENT_PROPERTY_ID`,
     CURRENT_LEASE_TERM_ID: `${actionTypePrefix}CURRENT_LEASE_TERM_ID`,
+    CURRENT_SERVICE_CATEGORY_ID: `${actionTypePrefix}CURRENT_SERVICE_CATEGORY_ID`,
   },
 };
 
@@ -121,6 +122,11 @@ const getServiceStepsDetailsFailure = (error: string): IFluxStandardAction<strin
   };
 };
 
+const setCurrentServiceCategoryId = (payload: number): IFluxStandardAction<number> => ({
+  type: PropertyActionTypes.SET.CURRENT_SERVICE_CATEGORY_ID,
+  payload,
+});
+
 export type PropertyPayloadTypes =
   | string
   | number
@@ -144,4 +150,5 @@ export const PropertyActions = {
   getServiceStepsDetails,
   getServiceStepsDetailsSuccess,
   getServiceStepsDetailsFailure,
+  setCurrentServiceCategoryId,
 };

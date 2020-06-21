@@ -10,6 +10,9 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { IUser } from '@homzhub/common/src/domain/models/User';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 
 interface IProps {
   propertyId: number;
@@ -58,16 +61,15 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         >
           <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
         </BottomSheet>
-        {selectedImages.length > 0 && (
-          <WithShadowView outerViewStyle={styles.shadowView}>
-            <Button
-              type="primary"
-              title={t('common:continue')}
-              containerStyle={styles.buttonStyle}
-              onPress={this.postAttachmentsForProperty}
-            />
-          </WithShadowView>
-        )}
+        <WithShadowView outerViewStyle={styles.shadowView}>
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            disabled={selectedImages.length === 0}
+            containerStyle={styles.buttonStyle}
+            onPress={this.postAttachmentsForProperty}
+          />
+        </WithShadowView>
       </View>
     );
   }
@@ -181,29 +183,55 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     // @ts-ignore
     const images: ImagePickerResponse[] = await ImagePicker.openPicker({
       multiple: true,
+      width: 300,
+      height: 400,
       compressImageQuality: 1,
       includeBase64: true,
       mediaType: 'photo',
     });
-    const localSelectedImages: IPropertySelectedImages[] = [];
-    images.forEach((image, index: number) => {
-      localSelectedImages.push({
-        id: null,
-        description: '',
-        is_cover_image: false,
-        asset: propertyId,
-        attachment: index, // TODO: To be fetched after post attachment upload call
-        link: `data:${image.mime};base64,${image.data}`,
-        isLocalImage: true,
+    const formData = new FormData();
+    images.forEach((image) => {
+      formData.append('files[]', {
+        // @ts-ignore
+        name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
+        uri: image.path,
+        type: image.mime,
       });
     });
-    if (selectedImages.length === 0) {
-      localSelectedImages[0].is_cover_image = true;
-    }
-    this.setState({
-      // @ts-ignore
-      selectedImages: selectedImages.concat(localSelectedImages),
-    });
+    const baseUrl = ConfigHelper.getBaseUrl();
+    const user: IUser | null = await StorageService.get(StorageKeys.USER);
+    fetch(`${baseUrl}attachments/upload/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'multipart/form-data',
+        // @ts-ignore
+        Authorization: `Bearer ${user.access_token}`,
+      },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const { data } = responseJson;
+        const localSelectedImages: IPropertySelectedImages[] = [];
+        images.forEach((image, index: number) => {
+          localSelectedImages.push({
+            id: null,
+            description: '',
+            is_cover_image: false,
+            asset: propertyId,
+            attachment: data[index].id,
+            link: data[index].link,
+            isLocalImage: true,
+          });
+        });
+        if (selectedImages.length === 0) {
+          localSelectedImages[0].is_cover_image = true;
+        }
+        this.setState({
+          // @ts-ignore
+          selectedImages: selectedImages.concat(localSelectedImages),
+        });
+      });
   };
 
   public onToggleBottomSheet = (): void => {
@@ -283,7 +311,6 @@ export default withTranslation()(PropertyImages);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 20,
   },
   uploadBox: {
     marginTop: 20,

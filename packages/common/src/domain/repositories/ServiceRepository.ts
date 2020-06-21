@@ -17,10 +17,10 @@ const ENDPOINTS = {
   existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents`,
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}`,
-  // TODO: Add the url for post call
-  postDocument: (): string => 'someURLForPostingDocuments',
+  postVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   getPropertyVerificationHelperMarkdown: (): string => 'someURLForPropertyVerificationMarkdown',
   attachmentUpload: (): string => 'attachments/upload/',
+  attachmentUploadWithBase64: (): string => 'attachments/base64',
   getAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments`,
   postAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,
   markAttachmentAsCoverImage: (propertyId: number, attachmentId: number): string =>
@@ -53,7 +53,7 @@ class ServiceRepository {
 
   // TODO: Add the return type when the api is ready
   public postDocument = async (requestBody: any): Promise<any> => {
-    return await this.apiClient.post(ENDPOINTS.postDocument(), requestBody);
+    return await this.apiClient.post(ENDPOINTS.attachmentUpload(), requestBody);
   };
 
   // TODO: Add the return type when the api is ready
@@ -68,7 +68,7 @@ class ServiceRepository {
 
   // TODO: Add the return type when the api is ready
   public postAttachment = async (requestBody: any): Promise<any> => {
-    return await this.apiClient.post(ENDPOINTS.attachmentUpload(), requestBody);
+    return await this.apiClient.post(ENDPOINTS.attachmentUploadWithBase64(), requestBody);
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<IPropertySelectedImages[]> => {
@@ -91,6 +91,10 @@ class ServiceRepository {
   // TODO: Add the return type when the api is ready
   public deletePropertyImage = async (attachmentId: number): Promise<any> => {
     return await this.apiClient.delete(ENDPOINTS.deletePropertyAttachment(attachmentId));
+  };
+
+  public postVerificationDocuments = async (propertyId: number, requestBody: any): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.postVerificationDocuments(propertyId), requestBody);
   };
 }
 

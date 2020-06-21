@@ -950,15 +950,15 @@ exports[`StepIndicator should render snapshot 1`] = `
                           }
                         }
                         textType="semiBold"
-                        type="large"
+                        type="regular"
                       >
                         <Text
                           numberOfLines={1}
                           style={
                             Array [
                               Object {
-                                "fontSize": 14,
-                                "lineHeight": 21,
+                                "fontSize": 12,
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               Object {
@@ -977,8 +977,8 @@ exports[`StepIndicator should render snapshot 1`] = `
                             style={
                               Array [
                                 Object {
-                                  "fontSize": 14,
-                                  "lineHeight": 21,
+                                  "fontSize": 12,
+                                  "lineHeight": 18,
                                   "textAlign": "left",
                                 },
                                 Object {
@@ -1058,15 +1058,15 @@ exports[`StepIndicator should render snapshot 1`] = `
                           }
                         }
                         textType="semiBold"
-                        type="large"
+                        type="regular"
                       >
                         <Text
                           numberOfLines={1}
                           style={
                             Array [
                               Object {
-                                "fontSize": 14,
-                                "lineHeight": 21,
+                                "fontSize": 12,
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               Object {
@@ -1085,8 +1085,8 @@ exports[`StepIndicator should render snapshot 1`] = `
                             style={
                               Array [
                                 Object {
-                                  "fontSize": 14,
-                                  "lineHeight": 21,
+                                  "fontSize": 12,
+                                  "lineHeight": 18,
                                   "textAlign": "left",
                                 },
                                 Object {
@@ -1166,15 +1166,15 @@ exports[`StepIndicator should render snapshot 1`] = `
                           }
                         }
                         textType="semiBold"
-                        type="large"
+                        type="regular"
                       >
                         <Text
                           numberOfLines={1}
                           style={
                             Array [
                               Object {
-                                "fontSize": 14,
-                                "lineHeight": 21,
+                                "fontSize": 12,
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               Object {
@@ -1193,8 +1193,8 @@ exports[`StepIndicator should render snapshot 1`] = `
                             style={
                               Array [
                                 Object {
-                                  "fontSize": 14,
-                                  "lineHeight": 21,
+                                  "fontSize": 12,
+                                  "lineHeight": 18,
                                   "textAlign": "left",
                                 },
                                 Object {

@@ -25,6 +25,9 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/Service';
 import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
+import { IUser } from '@homzhub/common/dist/domain/models/User';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 
 interface IPropertyVerificationState {
   verificationTypes: IVerificationTypes[];
@@ -36,6 +39,7 @@ interface IProps {
   navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
   updateStep: () => void;
   propertyId: number;
+  serviceCategoryId: number;
 }
 
 type Props = WithTranslation & IProps;
@@ -48,9 +52,9 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 
   public componentDidMount = async (): Promise<void> => {
-    // TODO: Get the proper ids from reducer to pass here
-    const { propertyId } = this.props;
-    await this.getVerificationTypes(1);
+    const { propertyId, serviceCategoryId } = this.props;
+    console.log(propertyId, 'property id');
+    await this.getVerificationTypes(serviceCategoryId);
     await this.getExistingDocuments(propertyId);
   };
 
@@ -70,16 +74,15 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
           <Divider containerStyles={styles.divider} />
         </View>
         <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
-        {totalDocuments.length === 3 && (
-          <WithShadowView outerViewStyle={styles.shadowView}>
-            <Button
-              type="primary"
-              title={t('common:continue')}
-              containerStyle={styles.buttonStyle}
-              onPress={this.postPropertyVerificationDocuments}
-            />
-          </WithShadowView>
-        )}
+        <WithShadowView outerViewStyle={styles.shadowView}>
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            disabled={totalDocuments.length < 3}
+            containerStyle={styles.buttonStyle}
+            onPress={this.postPropertyVerificationDocuments}
+          />
+        </WithShadowView>
       </View>
     );
   }
@@ -167,7 +170,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
       const source = {
         uri: `data:${image.mime};base64,${image.data}`,
         type: image.mime,
-        name: image.fileName,
+        name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
       };
       this.updateLocalDocuments(documentId, source, verificationDocumentId);
     });
@@ -206,18 +209,42 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
     const { propertyId, updateStep } = this.props;
-    // First- Upload all the local documents to s3 using attachment upload api,
-    // get the id back and update the local references of id in these objects
-    // then make a payload with new id and verification type id and make a post call and update the step
-    // Promise.all([promise1, promise2, promise3]).then(function(values) {
-    // });
-    // try {
-    //   await ServiceRepository.postDocument(document);
-    await this.getExistingDocuments(propertyId);
-    // } catch (error) {
-    //   AlertHelper.error({ message: error.message });
-    // }
-    updateStep();
+    const { localDocuments } = this.state;
+    const formData = new FormData();
+    localDocuments.forEach((document: IVerificationDocumentList) => {
+      formData.append('files[]', {
+        // @ts-ignore
+        name: document.name,
+        uri: document.document_link,
+        // @ts-ignore
+        type: document.type,
+      });
+    });
+    const baseUrl = ConfigHelper.getBaseUrl();
+    const user: IUser | null = await StorageService.get(StorageKeys.USER);
+    fetch(`${baseUrl}attachments/upload/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'multipart/form-data',
+        // @ts-ignore
+        Authorization: `Bearer ${user.access_token}`,
+      },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then(async (responseJson) => {
+        const { data } = responseJson;
+        const postRequestBody: { verification_document_type_id: number; document_id: number }[] = [];
+        localDocuments.forEach((document: IVerificationDocumentList, index: number) => {
+          postRequestBody.push({
+            verification_document_type_id: document.verification_document_type_id,
+            document_id: data[index].id,
+          });
+        });
+        await ServiceRepository.postVerificationDocuments(propertyId, postRequestBody);
+        await this.getExistingDocuments(propertyId);
+        updateStep();
+      });
   };
 
   public deleteDocument = async (
