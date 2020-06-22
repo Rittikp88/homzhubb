@@ -10,24 +10,29 @@ import { Divider, Button, Text, Label, WithShadowView } from '@homzhub/common/sr
 
 interface ICalendarProps {
   onSelect: (day: string) => void;
+  selectedDate: string;
 }
 
 interface ICalendarState {
   isMonthView: boolean;
-  selectedDay: string;
+  selectedDate: string;
   day: string;
   month: number;
   year: string;
 }
 
 export class CalendarComponent extends Component<ICalendarProps, ICalendarState> {
-  public state = {
-    isMonthView: false,
-    selectedDay: '',
-    day: moment().format(DateFormats.DD),
-    month: new Date().getMonth(),
-    year: moment().format(DateFormats.YYYY),
-  };
+  public constructor(props: ICalendarProps) {
+    super(props);
+    const { selectedDate } = props;
+    this.state = {
+      isMonthView: false,
+      selectedDate: selectedDate ?? '',
+      day: moment().format(DateFormats.DD),
+      month: new Date().getMonth(),
+      year: moment().format(DateFormats.YYYY),
+    };
+  }
 
   public render(): React.ReactNode {
     const { isMonthView } = this.state;
@@ -95,9 +100,10 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   };
 
   private renderCalendar = (): React.ReactElement => {
-    const { day, month, year, selectedDay } = this.state;
+    const { day, month, year, selectedDate } = this.state;
     const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMM);
-    const date = DateUtils.getFormattedDate(day, updateMonth, year, DateFormats.YYYYMMMDD);
+    const date =
+      selectedDate || DateUtils.getFormattedDate(day, updateMonth, year, DateFormats.YYYYMMMDD).toDateString();
     return (
       <>
         <Calendar
@@ -105,13 +111,13 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           // @ts-ignore
           renderHeader={this.headerView}
           current={date}
-          key={date.toDateString()}
+          key={date}
           style={styles.calendarStyle}
           onDayPress={this.onDayPress}
           markingType="custom"
           theme={{}}
           markedDates={{
-            [selectedDay]: {
+            [date]: {
               customStyles: {
                 container: {
                   backgroundColor: theme.colors.primaryColor,
@@ -132,18 +138,20 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   };
 
   private onSelectMonth = (item: string, index: number): void => {
+    const { year } = this.state;
     this.setState({ month: index, isMonthView: false });
+    this.getSelectedDate(index, Number(year));
   };
 
   // TODO: (Shikha: 18/06/2020) - Need to add day type
   private onDayPress = (day: any): void => {
-    this.setState({ selectedDay: day.dateString });
+    this.setState({ selectedDate: day.dateString });
   };
 
   private handleSelect = (): void => {
     const { onSelect } = this.props;
-    const { selectedDay } = this.state;
-    onSelect(selectedDay);
+    const { selectedDate } = this.state;
+    onSelect(selectedDate);
   };
 
   private headerView = (): null => {
@@ -152,23 +160,38 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
 
   private handleBackPress = (): void => {
     const { year, isMonthView, month } = this.state;
-    const previousYear = Number(year) - 1;
-    const previousMonth = month - 1;
     if (isMonthView) {
+      const previousYear = Number(year) - 1;
+      this.getSelectedDate(month, previousYear);
       this.setState({ year: previousYear.toString() });
     } else {
+      const previousMonth = month - 1;
+      this.getSelectedDate(previousMonth, Number(year));
       this.setState({ month: previousMonth });
     }
   };
 
   private handleNextPress = (): void => {
     const { year, isMonthView, month } = this.state;
-    const nextYear = Number(year) + 1;
-    const nextMonth = month + 1;
+
     if (isMonthView) {
+      const nextYear = Number(year) + 1;
+      this.getSelectedDate(month, nextYear);
       this.setState({ year: nextYear.toString() });
     } else {
+      const nextMonth = month + 1;
+      this.getSelectedDate(nextMonth, Number(year));
       this.setState({ month: nextMonth });
+    }
+  };
+
+  private getSelectedDate = (month: number, year: number): void => {
+    const { selectedDate } = this.props;
+    const isNotSelected = moment(selectedDate).month() !== month || moment(selectedDate).year() !== year;
+    if (isNotSelected) {
+      this.setState({ selectedDate: '' });
+    } else {
+      this.setState({ selectedDate });
     }
   };
 

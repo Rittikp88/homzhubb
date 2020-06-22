@@ -28,7 +28,8 @@
     "months": "Months",
     "month": "Month",
     "allDone": "All Done!",
-    "why": "Why?"
+    "why": "Why?",
+    "availableFrom": "Available from"
   },
   "auth": {
     "verifyNumber": "Verify your number",

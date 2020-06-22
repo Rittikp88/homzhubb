@@ -363,5 +363,5 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     margin: theme.layout.screenPadding,
-  }
+  },
 });

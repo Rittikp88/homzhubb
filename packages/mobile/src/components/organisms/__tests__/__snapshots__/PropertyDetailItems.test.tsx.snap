@@ -112,7 +112,7 @@ exports[`Property Details Item Component should render property details items co
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -354,7 +354,7 @@ exports[`Property Details Item Component should render property details items co
                 "yourNumber": "Your mobile number",
               },
               "common": Object {
-                "allDone": "All Done",
+                "allDone": "All Done!",
                 "cancel": "Cancel",
                 "change": "Change",
                 "continue": "Continue",
@@ -593,7 +593,7 @@ exports[`Property Details Item Component should render property details items co
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -819,7 +819,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -1058,7 +1058,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -1289,7 +1289,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -1483,7 +1483,7 @@ exports[`Property Details Item Component should render property details items co
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -1710,7 +1710,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -1941,7 +1941,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -2191,7 +2191,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -2417,7 +2417,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -2655,7 +2655,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -2893,7 +2893,7 @@ exports[`Property Details Item Component should render property details items co
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -3119,7 +3119,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -3358,7 +3358,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -4496,7 +4496,7 @@ exports[`Property Details Item Component should render property details items co
                 "yourNumber": "Your mobile number",
               },
               "common": Object {
-                "allDone": "All Done",
+                "allDone": "All Done!",
                 "cancel": "Cancel",
                 "change": "Change",
                 "continue": "Continue",
@@ -4677,7 +4677,7 @@ exports[`Property Details Item Component should render property details items co
               "yourNumber": "Your mobile number",
             },
             "common": Object {
-              "allDone": "All Done",
+              "allDone": "All Done!",
               "cancel": "Cancel",
               "change": "Change",
               "continue": "Continue",
@@ -4901,7 +4901,7 @@ exports[`Property Details Item Component should render property details items co
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -5127,7 +5127,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -5366,7 +5366,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -5597,7 +5597,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -5840,7 +5840,7 @@ exports[`Property Details Item Component should render property details items co
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -6071,7 +6071,7 @@ exports[`Property Details Item Component should render property details items co
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -6321,7 +6321,7 @@ exports[`Property Details Item Component should render property details items co
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -6547,7 +6547,7 @@ exports[`Property Details Item Component should render property details items co
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -6785,7 +6785,7 @@ exports[`Property Details Item Component should render property details items co
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -7023,7 +7023,7 @@ exports[`Property Details Item Component should render property details items co
                             "yourNumber": "Your mobile number",
                           },
                           "common": Object {
-                            "allDone": "All Done",
+                            "allDone": "All Done!",
                             "cancel": "Cancel",
                             "change": "Change",
                             "continue": "Continue",
@@ -7249,7 +7249,7 @@ exports[`Property Details Item Component should render property details items co
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -7488,7 +7488,7 @@ exports[`Property Details Item Component should render property details items co
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -8626,7 +8626,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -8808,7 +8808,7 @@ exports[`Property Details Item Component should render property details items co
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -9035,7 +9035,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -9266,7 +9266,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -9510,7 +9510,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -9736,7 +9736,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -9975,7 +9975,7 @@ exports[`Property Details Item Component should render property details items co
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -10206,7 +10206,7 @@ exports[`Property Details Item Component should render property details items co
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -10442,7 +10442,7 @@ exports[`Property Details Item Component should render property details items co
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -10668,7 +10668,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -10907,7 +10907,7 @@ exports[`Property Details Item Component should render property details items co
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -12045,7 +12045,7 @@ exports[`Property Details Item Component should render property details items co
                 "yourNumber": "Your mobile number",
               },
               "common": Object {
-                "allDone": "All Done",
+                "allDone": "All Done!",
                 "cancel": "Cancel",
                 "change": "Change",
                 "continue": "Continue",

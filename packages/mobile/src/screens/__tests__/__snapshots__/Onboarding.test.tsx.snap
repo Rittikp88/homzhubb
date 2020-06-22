@@ -141,7 +141,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -383,7 +383,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "yourNumber": "Your mobile number",
               },
               "common": Object {
-                "allDone": "All Done",
+                "allDone": "All Done!",
                 "cancel": "Cancel",
                 "change": "Change",
                 "continue": "Continue",
@@ -622,7 +622,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -848,7 +848,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -1087,7 +1087,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -1318,7 +1318,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -1512,7 +1512,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -1739,7 +1739,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -1970,7 +1970,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -2220,7 +2220,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -2446,7 +2446,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -2684,7 +2684,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -2922,7 +2922,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -3148,7 +3148,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -3387,7 +3387,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -4525,7 +4525,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "yourNumber": "Your mobile number",
               },
               "common": Object {
-                "allDone": "All Done",
+                "allDone": "All Done!",
                 "cancel": "Cancel",
                 "change": "Change",
                 "continue": "Continue",
@@ -4706,7 +4706,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
               "yourNumber": "Your mobile number",
             },
             "common": Object {
-              "allDone": "All Done",
+              "allDone": "All Done!",
               "cancel": "Cancel",
               "change": "Change",
               "continue": "Continue",
@@ -4930,7 +4930,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -5156,7 +5156,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -5395,7 +5395,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -5626,7 +5626,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -5869,7 +5869,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -6100,7 +6100,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -6350,7 +6350,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -6576,7 +6576,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -6814,7 +6814,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -7052,7 +7052,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                             "yourNumber": "Your mobile number",
                           },
                           "common": Object {
-                            "allDone": "All Done",
+                            "allDone": "All Done!",
                             "cancel": "Cancel",
                             "change": "Change",
                             "continue": "Continue",
@@ -7278,7 +7278,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -7517,7 +7517,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                           "yourNumber": "Your mobile number",
                         },
                         "common": Object {
-                          "allDone": "All Done",
+                          "allDone": "All Done!",
                           "cancel": "Cancel",
                           "change": "Change",
                           "continue": "Continue",
@@ -8655,7 +8655,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -8837,7 +8837,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -9064,7 +9064,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -9295,7 +9295,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -9539,7 +9539,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -9765,7 +9765,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -10004,7 +10004,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                     "yourNumber": "Your mobile number",
                   },
                   "common": Object {
-                    "allDone": "All Done",
+                    "allDone": "All Done!",
                     "cancel": "Cancel",
                     "change": "Change",
                     "continue": "Continue",
@@ -10235,7 +10235,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                   "yourNumber": "Your mobile number",
                 },
                 "common": Object {
-                  "allDone": "All Done",
+                  "allDone": "All Done!",
                   "cancel": "Cancel",
                   "change": "Change",
                   "continue": "Continue",
@@ -10471,7 +10471,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                         "yourNumber": "Your mobile number",
                       },
                       "common": Object {
-                        "allDone": "All Done",
+                        "allDone": "All Done!",
                         "cancel": "Cancel",
                         "change": "Change",
                         "continue": "Continue",
@@ -10697,7 +10697,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -10936,7 +10936,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                       "yourNumber": "Your mobile number",
                     },
                     "common": Object {
-                      "allDone": "All Done",
+                      "allDone": "All Done!",
                       "cancel": "Cancel",
                       "change": "Change",
                       "continue": "Continue",
@@ -12074,7 +12074,7 @@ exports[`Onboarding Screen should match snapshot 1`] = `
                 "yourNumber": "Your mobile number",
               },
               "common": Object {
-                "allDone": "All Done",
+                "allDone": "All Done!",
                 "cancel": "Cancel",
                 "change": "Change",
                 "continue": "Continue",

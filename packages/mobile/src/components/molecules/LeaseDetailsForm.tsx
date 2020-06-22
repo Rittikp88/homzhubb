@@ -5,9 +5,12 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import moment from 'moment';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormTextInput, Label, RNSlider, Text } from '@homzhub/common/src/components';
+import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
+import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
@@ -31,6 +34,7 @@ interface IState {
   furnishingStatus: FurnishingType;
   maintenanceBy: PaidByTypes;
   utilityBy: PaidByTypes;
+  isCalendarVisible: boolean;
 }
 
 interface IProps extends WithTranslation {
@@ -80,110 +84,132 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
     furnishingStatus: FurnishingType.NONE,
     maintenanceBy: PaidByTypes.OWNER,
     utilityBy: PaidByTypes.TENANT,
+    isCalendarVisible: false,
   };
 
   public render(): React.ReactNode {
     const { t, currency } = this.props;
-    const { leaseFormDetails, showMore, maintenanceBy } = this.state;
+    const { leaseFormDetails, showMore, maintenanceBy, isCalendarVisible, availableFrom } = this.state;
 
     return (
-      <Formik
-        onSubmit={this.onSubmit}
-        initialValues={{ ...leaseFormDetails, maintenanceBy, showMore }}
-        validate={FormUtils.validate(this.formSchema)}
-      >
-        {(formProps: FormikProps<FormikValues>): React.ReactElement => {
-          const { setFieldValue, setFieldTouched } = formProps;
-          const onShowMorePress = (): void => {
-            setFieldValue(LeaseFormKeys.showMore, !showMore);
-            if (!showMore) {
-              setFieldTouched(LeaseFormKeys.annualIncrement, false);
-            }
-            this.onShowMorePress();
-          };
-          const onMaintenanceChanged = (value: PaidByTypes): void => {
-            setFieldValue(LeaseFormKeys.maintenanceBy, value);
-            if (value === PaidByTypes.TENANT) {
-              setFieldTouched(LeaseFormKeys.maintenanceAmount, false);
-            }
-            this.onMaintenanceChanged(value);
-          };
+      <>
+        <Formik
+          onSubmit={this.onSubmit}
+          initialValues={{ ...leaseFormDetails, maintenanceBy, showMore }}
+          validate={FormUtils.validate(this.formSchema)}
+        >
+          {(formProps: FormikProps<FormikValues>): React.ReactElement => {
+            const { setFieldValue, setFieldTouched } = formProps;
+            const onShowMorePress = (): void => {
+              setFieldValue(LeaseFormKeys.showMore, !showMore);
+              if (!showMore) {
+                setFieldTouched(LeaseFormKeys.annualIncrement, false);
+              }
+              this.onShowMorePress();
+            };
+            const onMaintenanceChanged = (value: PaidByTypes): void => {
+              setFieldValue(LeaseFormKeys.maintenanceBy, value);
+              if (value === PaidByTypes.TENANT) {
+                setFieldTouched(LeaseFormKeys.maintenanceAmount, false);
+              }
+              this.onMaintenanceChanged(value);
+            };
 
-          return (
-            <>
-              <FormTextInput
-                inputType="number"
-                name={LeaseFormKeys.monthlyRent}
-                label={t('monthlyRent')}
-                placeholder={t('monthlyRentPlaceholder')}
-                maxLength={12}
-                formProps={formProps}
-                inputGroupSuffixText={currency}
-              />
-              <FormTextInput
-                inputType="number"
-                name={LeaseFormKeys.securityDeposit}
-                label={t('securityDeposit')}
-                placeholder={t('securityDepositPlaceholder')}
-                maxLength={12}
-                formProps={formProps}
-                inputGroupSuffixText={currency}
-              />
-              <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
-                {showMore ? t('showLess') : t('showMore')}
-              </Text>
-              {showMore && (
+            return (
+              <>
                 <FormTextInput
-                  inputType="decimal"
-                  name={LeaseFormKeys.annualIncrement}
-                  label={t('annualIncrement')}
-                  placeholder={t('annualIncrementPlaceholder')}
-                  maxLength={4}
+                  inputType="number"
+                  name={LeaseFormKeys.monthlyRent}
+                  label={t('monthlyRent')}
+                  placeholder={t('monthlyRentPlaceholder')}
+                  maxLength={12}
                   formProps={formProps}
-                  inputGroupSuffixText={t('annualIncrementSuffix')}
+                  inputGroupSuffixText={currency}
                 />
-              )}
-              {this.renderNonFormikInputs()}
-              <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                {t('maintenanceBy')}
-              </Text>
-              <ButtonGroup<PaidByTypes>
-                data={this.PAID_BY_OPTIONS}
-                onItemSelect={onMaintenanceChanged}
-                selectedItem={maintenanceBy}
-              />
-              {maintenanceBy === PaidByTypes.TENANT && (
-                <MaintenanceDetails
+                <FormTextInput
+                  inputType="number"
+                  name={LeaseFormKeys.securityDeposit}
+                  label={t('securityDeposit')}
+                  placeholder={t('securityDepositPlaceholder')}
+                  maxLength={12}
                   formProps={formProps}
-                  currency={currency}
-                  maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
-                  maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
+                  inputGroupSuffixText={currency}
                 />
-              )}
-              <FormButton
-                // @ts-ignore
-                onPress={formProps.handleSubmit}
-                formProps={formProps}
-                type="primary"
-                title={t('common:continue')}
-                containerStyle={styles.continue}
-              />
-            </>
-          );
-        }}
-      </Formik>
+                <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
+                  {showMore ? t('showLess') : t('showMore')}
+                </Text>
+                {showMore && (
+                  <FormTextInput
+                    inputType="decimal"
+                    name={LeaseFormKeys.annualIncrement}
+                    label={t('annualIncrement')}
+                    placeholder={t('annualIncrementPlaceholder')}
+                    maxLength={4}
+                    formProps={formProps}
+                    inputGroupSuffixText={t('annualIncrementSuffix')}
+                  />
+                )}
+                {this.renderNonFormikInputs()}
+                <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                  {t('maintenanceBy')}
+                </Text>
+                <ButtonGroup<PaidByTypes>
+                  data={this.PAID_BY_OPTIONS}
+                  onItemSelect={onMaintenanceChanged}
+                  selectedItem={maintenanceBy}
+                />
+                {maintenanceBy === PaidByTypes.TENANT && (
+                  <MaintenanceDetails
+                    formProps={formProps}
+                    currency={currency}
+                    maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
+                    maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
+                  />
+                )}
+                <FormButton
+                  // @ts-ignore
+                  onPress={formProps.handleSubmit}
+                  formProps={formProps}
+                  type="primary"
+                  title={t('common:continue')}
+                  containerStyle={styles.continue}
+                />
+              </>
+            );
+          }}
+        </Formik>
+        <BottomSheet
+          visible={isCalendarVisible}
+          onCloseSheet={this.closeBottomSheet}
+          headerTitle={t('common:availableFrom')}
+          isShadowView
+          sheetHeight={580}
+        >
+          <CalendarComponent onSelect={this.handleCalendar} selectedDate={availableFrom} />
+        </BottomSheet>
+      </>
     );
   }
 
   private renderNonFormikInputs = (): React.ReactNode => {
     const { t } = this.props;
-    const { minimumLeasePeriod, utilityBy, furnishingStatus } = this.state;
+    const { minimumLeasePeriod, utilityBy, furnishingStatus, availableFrom } = this.state;
+    const availableDate = availableFrom === moment().format('YYYY-MM-DD') ? 'Today' : availableFrom;
 
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
           {t('duration')}
         </Text>
+        <View style={styles.dateView}>
+          <View style={styles.dateLeft}>
+            <Icon name={icons.calendar} color={theme.colors.darkTint5} size={18} onPress={this.handleOnPress} />
+            <Text type="small" textType="regular" style={styles.dateText}>
+              {availableDate}
+            </Text>
+          </View>
+          <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} onPress={this.handleOnPress} />
+        </View>
         <>
           <Text type="small" textType="semiBold" style={styles.headerTitle}>
             {t('minimumLeasePeriod')}
@@ -281,6 +307,19 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
     onSubmit(leaseTerms);
   };
 
+  private handleOnPress = (): void => {
+    const { isCalendarVisible } = this.state;
+    this.setState({ isCalendarVisible: !isCalendarVisible });
+  };
+
+  private closeBottomSheet = (): void => {
+    this.setState({ isCalendarVisible: false });
+  };
+
+  private handleCalendar = (day: string): void => {
+    this.setState({ isCalendarVisible: false, availableFrom: day });
+  };
+
   private formSchema = (): yup.ObjectSchema => {
     const { t } = this.props;
     return yup.object().shape({
@@ -335,5 +374,23 @@ const styles = StyleSheet.create({
     marginTop: 28,
     marginBottom: 16,
     color: theme.colors.darkTint3,
+  },
+  dateView: {
+    borderWidth: 1,
+    borderColor: theme.colors.disabled,
+    flexDirection: 'row',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 4,
+  },
+  dateLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dateText: {
+    marginLeft: 16,
+    color: theme.colors.darkTint1,
   },
 });

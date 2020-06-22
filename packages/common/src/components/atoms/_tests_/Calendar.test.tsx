@@ -7,7 +7,7 @@ jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageS
 jest.mock('@react-native-community/google-signin', () => {});
 
 describe('CalendarComponent', () => {
-  const wrapper = mount(<CalendarComponent onSelect={jest.fn()} />);
+  const wrapper = mount(<CalendarComponent onSelect={jest.fn()} selectedDate="2020-06-22" />);
 
   it('should match snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
