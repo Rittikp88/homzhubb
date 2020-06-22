@@ -45,6 +45,7 @@ export const PaymentSuccess = (props: IProps): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 16,
   },
   doneView: {
     flexDirection: 'row',

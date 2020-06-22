@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -40,6 +41,7 @@ type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, S
 type Props = IDispatchProps & IStateProps & libraryProps;
 
 interface IPropertyDetailsState {
+  projectName: string;
   propertyGroupSelectedIndex: string | number;
   propertyGroupTypeSelectedIndex: string | number;
   areaUnits: IDropdownOption[];
@@ -49,6 +51,7 @@ interface IPropertyDetailsState {
 
 class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> {
   public state = {
+    projectName: '',
     propertyGroupSelectedIndex: 0,
     propertyGroupTypeSelectedIndex: 0,
     areaUnits: [],
@@ -64,10 +67,11 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
     carpetAreaError: false,
   };
 
-  public componentDidMount(): void {
+  public componentDidMount = async (): Promise<void> => {
     const { getPropertyDetails } = this.props;
     getPropertyDetails();
-  }
+    await this.getProjectName();
+  };
 
   public render(): React.ReactNode {
     const { property, t } = this.props;
@@ -77,10 +81,12 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
       areaUnits,
       spaceAvailable,
       carpetAreaError,
+      projectName,
     } = this.state;
     if (!property) {
       return null;
     }
+    const address = GooglePlacesService.getSplitAddress(projectName);
     return (
       <View style={styles.container}>
         <Header
@@ -96,8 +102,8 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
         />
         <ScrollView style={styles.scrollContainer}>
           <PropertyDetailsLocation
-            propertyName="Address"
-            propertyAddress="Address"
+            propertyName={address.primaryAddress}
+            propertyAddress={address.secondaryAddress}
             onNavigate={this.onNavigateToMaps}
           />
           <PropertyDetailsItems
@@ -266,6 +272,16 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
       },
       carpetAreaError: false,
     });
+  };
+
+  private getProjectName = async (): Promise<void> => {
+    const { propertyId } = this.props;
+    try {
+      const response = await PropertyRepository.getAssetById(propertyId);
+      this.setState({ projectName: response.project_name });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
   };
 }
 

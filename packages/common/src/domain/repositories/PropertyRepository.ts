@@ -6,6 +6,7 @@ import {
   ICreateAssetResult,
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAssetDetails } from '@homzhub/common/src/domain/models/Asset';
 import {
   ILeaseTermDetails,
   ICreateLeaseTermDetails,
@@ -13,6 +14,7 @@ import {
 } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 const ENDPOINTS = {
+  getAssetById: (propertyId: number): string => `assets/${propertyId}`,
   getPropertyDetails: (): string => 'asset-groups/',
   createAsset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
@@ -28,6 +30,10 @@ class PropertyRepository {
   public constructor() {
     this.apiClient = BootstrapAppService.clientInstance;
   }
+
+  public getAssetById = async (propertyId: number): Promise<IAssetDetails> => {
+    return this.apiClient.get(ENDPOINTS.getAssetById(propertyId));
+  };
 
   public getDetails = async (): Promise<IPropertyDetailsData[]> => {
     return await this.apiClient.get(ENDPOINTS.getPropertyDetails());
