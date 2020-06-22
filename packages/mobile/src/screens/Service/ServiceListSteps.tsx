@@ -92,7 +92,7 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
             <Text type="small" textType="regular" style={styles.stepItem}>
               {index + 1}
             </Text>
-            <Text type="regular" textType="regular" style={styles.stepName}>
+            <Text type="small" textType="regular" style={styles.stepName}>
               {stepItem.title}
             </Text>
           </View>
@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
   stepName: {
     flex: 1,
     marginLeft: 20,
+    alignSelf: 'center',
   },
   shadowView: {
     paddingTop: 10,

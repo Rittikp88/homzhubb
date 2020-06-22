@@ -7,6 +7,8 @@ import {
   IVerificationTypes,
   IPropertySelectedImages,
   IPropertyImagesPostPayload,
+  IMarkCoverImageAttachment,
+  IPostVerificationDocuments,
 } from '@homzhub/common/src/domain/models/Service';
 
 const ENDPOINTS = {
@@ -18,9 +20,6 @@ const ENDPOINTS = {
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}`,
   postVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
-  getPropertyVerificationHelperMarkdown: (): string => 'someURLForPropertyVerificationMarkdown',
-  attachmentUpload: (): string => 'attachments/upload/',
-  attachmentUploadWithBase64: (): string => 'attachments/base64',
   getAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments`,
   postAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,
   markAttachmentAsCoverImage: (propertyId: number, attachmentId: number): string =>
@@ -51,36 +50,21 @@ class ServiceRepository {
     return await this.apiClient.get(ENDPOINTS.existingVerificationDocuments(propertyId));
   };
 
-  // TODO: Add the return type when the api is ready
-  public postDocument = async (requestBody: any): Promise<any> => {
-    return await this.apiClient.post(ENDPOINTS.attachmentUpload(), requestBody);
-  };
-
-  // TODO: Add the return type when the api is ready
   public deleteVerificationDocument = async (propertyId: number, documentId: number): Promise<any> => {
     return await this.apiClient.delete(ENDPOINTS.deleteExistingVerificationDocuments(propertyId, documentId));
-  };
-
-  // TODO: Add the return type when the api is ready
-  public getPropertyVerificationHelperMarkdown = async (): Promise<any> => {
-    return await this.apiClient.get(ENDPOINTS.getPropertyVerificationHelperMarkdown());
-  };
-
-  // TODO: Add the return type when the api is ready
-  public postAttachment = async (requestBody: any): Promise<any> => {
-    return await this.apiClient.post(ENDPOINTS.attachmentUploadWithBase64(), requestBody);
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<IPropertySelectedImages[]> => {
     return await this.apiClient.get(ENDPOINTS.getAssetAttachments(propertyId));
   };
 
-  // TODO: Add the return type when the api is ready
-  public markAttachmentAsCoverImage = async (propertyId: number, attachmentId: number): Promise<any> => {
+  public markAttachmentAsCoverImage = async (
+    propertyId: number,
+    attachmentId: number
+  ): Promise<IMarkCoverImageAttachment> => {
     return await this.apiClient.put(ENDPOINTS.markAttachmentAsCoverImage(propertyId, attachmentId));
   };
 
-  // TODO: Add the return type when the api is ready
   public postAttachmentsForProperty = async (
     propertyId: number,
     requestBody: IPropertyImagesPostPayload[]
@@ -88,12 +72,14 @@ class ServiceRepository {
     return await this.apiClient.post(ENDPOINTS.postAssetAttachments(propertyId), requestBody);
   };
 
-  // TODO: Add the return type when the api is ready
   public deletePropertyImage = async (attachmentId: number): Promise<any> => {
     return await this.apiClient.delete(ENDPOINTS.deletePropertyAttachment(attachmentId));
   };
 
-  public postVerificationDocuments = async (propertyId: number, requestBody: any): Promise<void> => {
+  public postVerificationDocuments = async (
+    propertyId: number,
+    requestBody: IPostVerificationDocuments[]
+  ): Promise<any> => {
     return await this.apiClient.post(ENDPOINTS.postVerificationDocuments(propertyId), requestBody);
   };
 }

@@ -3,16 +3,16 @@ import { StyleSheet, View, SafeAreaView, FlatList, ScrollView } from 'react-nati
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { IUser } from '@homzhub/common/src/domain/models/User';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 
 interface IProps {
   propertyId: number;
@@ -153,6 +153,11 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   public renderBottomSheetForPropertyImages = (): React.ReactNode => {
     const { t } = this.props;
     const { selectedImages } = this.state;
+    // Sort the images with cover image as first object and then the rest
+    selectedImages.sort((a, b) => {
+      // @ts-ignore
+      return b.is_cover_image - a.is_cover_image;
+    });
     return selectedImages.map((currentImage: IPropertySelectedImages, index: number) => {
       const deletePropertyImage = async (): Promise<void> => await this.deletePropertyImage(currentImage);
       const markFavorite = async (): Promise<void> => await this.markAttachmentAsCoverImage(currentImage);
@@ -165,7 +170,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
           isIconVisible
           isFavorite={currentImage.is_cover_image}
           markFavorite={markFavorite}
-          containerStyle={{ margin: theme.layout.screenPadding }}
+          containerStyle={styles.bottomSheetContainer}
           onIconPress={deletePropertyImage}
         />
       );
@@ -183,9 +188,9 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     // @ts-ignore
     const images: ImagePickerResponse[] = await ImagePicker.openPicker({
       multiple: true,
-      width: 300,
-      height: 400,
-      compressImageQuality: 1,
+      compressImageMaxWidth: 400,
+      compressImageMaxHeight: 400,
+      compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
       includeBase64: true,
       mediaType: 'photo',
     });
@@ -246,12 +251,18 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   public deletePropertyImage = async (selectedImage: IPropertySelectedImages): Promise<void> => {
     const { propertyId } = this.props;
     const { selectedImages } = this.state;
-    const clonedSelectedImages = cloneDeep(selectedImages);
+    const clonedSelectedImages: IPropertySelectedImages[] = cloneDeep(selectedImages);
     if (selectedImage.isLocalImage) {
       const localImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
         return selectedImage.attachment === image.attachment;
       });
       clonedSelectedImages.splice(localImageIndex, 1);
+      const coverImageIndex = findIndex(clonedSelectedImages, (image) => {
+        return image.is_cover_image;
+      });
+      if (coverImageIndex === -1 && clonedSelectedImages.length > 0) {
+        clonedSelectedImages[0].is_cover_image = true;
+      }
       this.setState({ selectedImages: clonedSelectedImages });
       return;
     }
@@ -340,7 +351,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 100,
   },
   shadowView: {
     paddingTop: 10,
@@ -351,4 +361,7 @@ const styles = StyleSheet.create({
     flex: 0,
     margin: 16,
   },
+  bottomSheetContainer: {
+    margin: theme.layout.screenPadding,
+  }
 });

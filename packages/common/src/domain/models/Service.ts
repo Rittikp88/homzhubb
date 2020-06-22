@@ -63,3 +63,12 @@ export interface IPropertyImagesPostPayload {
   attachment: number;
   is_cover_image: boolean;
 }
+
+export interface IMarkCoverImageAttachment {
+  cover_updated: boolean;
+}
+
+export interface IPostVerificationDocuments {
+  verification_document_type_id: number;
+  document_id: number;
+}

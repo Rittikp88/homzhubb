@@ -5,11 +5,21 @@ import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { IUser } from '@homzhub/common/src/domain/models/User';
+import {
+  IVerificationTypes,
+  IVerificationDocumentList,
+  VerificationDocumentTypes,
+  IPostVerificationDocuments,
+} from '@homzhub/common/src/domain/models/Service';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 import {
   Text,
   Label,
@@ -19,15 +29,6 @@ import {
   Button,
   WithShadowView,
 } from '@homzhub/common/src/components';
-import {
-  IVerificationTypes,
-  IVerificationDocumentList,
-  VerificationDocumentTypes,
-} from '@homzhub/common/src/domain/models/Service';
-import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
-import { IUser } from '@homzhub/common/dist/domain/models/User';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 
 interface IPropertyVerificationState {
   verificationTypes: IVerificationTypes[];
@@ -53,7 +54,6 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public componentDidMount = async (): Promise<void> => {
     const { propertyId, serviceCategoryId } = this.props;
-    console.log(propertyId, 'property id');
     await this.getVerificationTypes(serviceCategoryId);
     await this.getExistingDocuments(propertyId);
   };
@@ -71,7 +71,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
           <Text type="small" textType="semiBold" style={styles.link} onPress={this.navigateToHelper}>
             {t('helperNavigationText')}
           </Text>
-          <Divider containerStyles={styles.divider} />
+          <Divider containerStyles={styles.divider}/>
         </View>
         <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
         <WithShadowView outerViewStyle={styles.shadowView}>
@@ -117,20 +117,20 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     if (thumbnailIndex !== -1) {
       const currentDocument: IVerificationDocumentList = totalDocuments[thumbnailIndex];
       const thumbnailImage = currentDocument.document_link;
-      const fileType = currentDocument.document_link.split('/')?.pop()?.split('.')[1];
+      const fileType = currentDocument.document_link.split('/')?.pop()?.split('.');
       const onDeleteImageThumbnail = (): Promise<void> =>
         this.deleteDocument(currentDocument, currentDocument.is_local_document);
-      return currentDocument.type === 'application/pdf' || fileType === 'pdf' ? (
+      return currentDocument.type === 'application/pdf' || !fileType || fileType[1] === 'pdf' ? (
         <View style={styles.pdfContainer}>
-          <Text type="small" textType="regular">
-            {currentDocument.name}
+          <Text type="small" textType="regular" style={styles.pdfName}>
+            {currentDocument.name || (fileType ? fileType : [0])}
           </Text>
           <TouchableOpacity style={styles.iconContainer} onPress={onDeleteImageThumbnail}>
-            <Icon name={icons.close} size={22} color={theme.colors.shadow} />
+            <Icon name={icons.close} size={22} color={theme.colors.shadow}/>
           </TouchableOpacity>
         </View>
       ) : (
-        <ImageThumbnail imageUrl={thumbnailImage} onIconPress={onDeleteImageThumbnail} />
+        <ImageThumbnail imageUrl={thumbnailImage} onIconPress={onDeleteImageThumbnail}/>
       );
     }
     return (
@@ -145,30 +145,22 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 
   public uploadDocument = async (documentId: number, verificationDocumentId: number): Promise<void> => {
-    try {
-      const response = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
-      const source = { uri: response.uri, type: response.type, name: response.name };
-      this.updateLocalDocuments(documentId, source, verificationDocumentId);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        AlertHelper.error({ message: err.message });
-      } else {
-        throw err;
-      }
-    }
+    const response = await DocumentPicker.pick({
+      type: [DocumentPicker.types.allFiles],
+    });
+    const source = { uri: response.uri, type: response.type, name: response.name };
+    this.updateLocalDocuments(documentId, source, verificationDocumentId);
   };
 
   public captureSelfie = (documentId: number, verificationDocumentId: number): void => {
     ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      includeBase64: true,
+      compressImageMaxWidth: 400,
+      compressImageMaxHeight: 400,
+      compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
       useFrontCamera: true,
     }).then((image: any) => {
       const source = {
-        uri: `data:${image.mime};base64,${image.data}`,
+        uri: image.path,
         type: image.mime,
         name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
       };
@@ -209,7 +201,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
     const { propertyId, updateStep } = this.props;
-    const { localDocuments } = this.state;
+    const { localDocuments, existingDocuments } = this.state;
     const formData = new FormData();
     localDocuments.forEach((document: IVerificationDocumentList) => {
       formData.append('files[]', {
@@ -234,12 +226,20 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
       .then((response) => response.json())
       .then(async (responseJson) => {
         const { data } = responseJson;
-        const postRequestBody: { verification_document_type_id: number; document_id: number }[] = [];
+        const postRequestBody: IPostVerificationDocuments[] = [];
         localDocuments.forEach((document: IVerificationDocumentList, index: number) => {
           postRequestBody.push({
             verification_document_type_id: document.verification_document_type_id,
             document_id: data[index].id,
           });
+        });
+        existingDocuments.forEach((document: IVerificationDocumentList) => {
+          if (!document.id) {
+            postRequestBody.push({
+              verification_document_type_id: document.verification_document_type_id,
+              document_id: document.document_id,
+            });
+          }
         });
         await ServiceRepository.postVerificationDocuments(propertyId, postRequestBody);
         await this.getExistingDocuments(propertyId);
@@ -249,7 +249,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public deleteDocument = async (
     document: IVerificationDocumentList,
-    isLocalDocument: boolean | undefined
+    isLocalDocument: boolean | undefined,
   ): Promise<void> => {
     const { existingDocuments, localDocuments, verificationTypes } = this.state;
     const clonedDocuments = isLocalDocument ? cloneDeep(localDocuments) : cloneDeep(existingDocuments);
@@ -281,7 +281,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   public updateLocalDocuments = (
     documentId: number,
     source: { uri: string; type: string | undefined; name: string | undefined },
-    verificationDocumentId: number
+    verificationDocumentId: number,
   ): void => {
     const imageObject: IVerificationDocumentList = {
       verification_document_type_id: verificationDocumentId,
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
-    padding: 15,
+    padding: 20,
     borderColor: theme.colors.primaryColor,
     borderWidth: 1,
     borderStyle: 'solid',
@@ -360,7 +360,6 @@ const styles = StyleSheet.create({
     top: 13,
     right: 10,
     bottom: 0,
-    // backgroundColor: theme.colors.crossIconContainer,
   },
   shadowView: {
     paddingTop: 10,
@@ -370,5 +369,8 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     margin: 16,
+  },
+  pdfName: {
+    flex: 0.9,
   },
 });
