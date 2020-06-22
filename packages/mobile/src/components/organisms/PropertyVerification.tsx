@@ -77,7 +77,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
         <WithShadowView outerViewStyle={styles.shadowView}>
           <Button
             type="primary"
-            title={t('common:continue')}
+            title={t('common:saveAndContinue')}
             disabled={totalDocuments.length < 3}
             containerStyle={styles.buttonStyle}
             onPress={this.postPropertyVerificationDocuments}

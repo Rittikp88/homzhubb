@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+// @ts-ignore
+import Markdown from 'react-native-easy-markdown';
 import { bindActionCreators, Dispatch } from 'redux';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -18,6 +23,7 @@ import { CardBody } from '@homzhub/mobile/src/components/molecules/CardBody';
 import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IDispatchProps {
   setCurrentServiceCategoryId: (id: number) => void;
@@ -31,6 +37,7 @@ interface IServiceDetailState {
   isInfoSheet: boolean;
   isConfirmSheet: boolean;
   activeSlide: number;
+  serviceInfo: string;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceDetailScreen>;
@@ -46,6 +53,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
       isInfoSheet: false,
       isConfirmSheet: false,
       activeSlide: params ? params.serviceId : 0,
+      serviceInfo: '',
     };
   }
 
@@ -92,6 +100,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   }
 
   private renderCarouselItem = (item: IServiceDetail): React.ReactElement => {
+    const onPressIcon = (): Promise<void> => this.handleMoreInfo(item.name);
     return (
       <CardBody
         key={item.id}
@@ -100,7 +109,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
         description={item.description}
         serviceCost={item.service_cost}
         detailedData={item.service_items}
-        onPressInfo={this.handleMoreInfo}
+        onPressInfo={onPressIcon}
         onConfirm={this.onConfirmService}
       />
     );
@@ -115,9 +124,12 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
         onCloseSheet={this.closeBottomSheet}
         headerTitle={isInfoSheet ? t('moreInformation') : ''}
         isShadowView={isInfoSheet}
-        sheetHeight={500}
+        sheetHeight={isInfoSheet ? 650 : 500}
       >
-        <>{isConfirmSheet && this.renderConfirmationView(name, id)}</>
+        <>
+          {isInfoSheet && this.renderMoreInfo()}
+          {isConfirmSheet && this.renderConfirmationView(name, id)}
+        </>
       </BottomSheet>
     );
   };
@@ -147,6 +159,24 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
     );
   };
 
+  private renderMoreInfo = (): React.ReactElement => {
+    const { serviceInfo } = this.state;
+    return (
+      <View style={styles.infoView}>
+        <Markdown
+          markdownStyles={{
+            h2: { fontWeight: '600', fontSize: 20, marginVertical: 10 },
+            h4: { fontWeight: '300', fontSize: 24, color: theme.colors.darkTint2 },
+            strong: { fontWeight: '600', fontSize: 16 },
+            text: { fontWeight: 'normal', fontSize: 14 },
+          }}
+        >
+          {serviceInfo}
+        </Markdown>
+      </View>
+    );
+  };
+
   private onConfirmService = (): void => {
     const { isConfirmSheet } = this.state;
     this.setState({ isConfirmSheet: !isConfirmSheet });
@@ -160,8 +190,23 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
     this.closeBottomSheet();
   };
 
-  private handleMoreInfo = (): void => {
+  // TODO: (Shikha: 22/06/2020) - Remove axios call once get api response correctly
+  private handleMoreInfo = async (serviceName: string): Promise<void> => {
     const { isInfoSheet } = this.state;
+    const baseUrl = ConfigHelper.getBaseUrl();
+    const user: IUser | null = await StorageService.get(StorageKeys.USER);
+    if (user) {
+      axios
+        .get(`${baseUrl}markdown/${serviceName}/`, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.access_token}`,
+          },
+        })
+        .then((res) => {
+          this.setState({ serviceInfo: res.data });
+        });
+    }
     this.setState({ isInfoSheet: !isInfoSheet });
   };
 
@@ -247,5 +292,8 @@ const styles = StyleSheet.create({
   carouselStyle: {
     paddingLeft: 0,
     paddingRight: 20,
+  },
+  infoView: {
+    paddingHorizontal: 24,
   },
 });
