@@ -6,10 +6,17 @@ import { CalendarComponent } from '@homzhub/common/src/components/atoms/Calendar
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
-describe('CalendarComponent', () => {
-  const wrapper = mount(<CalendarComponent onSelect={jest.fn()} selectedDate="2020-06-22" />);
+const createTestProps = (testProps: any): object => ({
+  onSelect: jest.fn(),
+  selectedDate: '2020-06-22',
+  ...testProps,
+});
+let props: any;
 
+describe('CalendarComponent', () => {
   it('should match snapshot', () => {
+    props = createTestProps({});
+    const wrapper = mount(<CalendarComponent {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

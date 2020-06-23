@@ -1,6 +1,9 @@
 import { propertyReducer as reducer, initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
+import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
+import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
+import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 
 describe('Property Reducer', () => {
   it('should return the initial state', () => {
@@ -57,6 +60,60 @@ describe('Property Reducer', () => {
       ...initialPropertyState,
       ['loaders']: { ...state.loaders, ['service']: false },
       ['error']: { ...state.error, ['service']: 'Test Error' },
+    });
+  });
+
+  it('should handle Get Rent Service list Success', () => {
+    const state = reducer(initialPropertyState, PropertyActions.getRentServiceListSuccess(RentServicesData));
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['propertyDetails']: {
+        ...state.propertyDetails,
+        ['rentServices']: RentServicesData,
+      },
+      ['loaders']: { ...state.loaders, ['property']: false },
+    });
+  });
+
+  it('should handle Get Service detail Success', () => {
+    const state = reducer(initialPropertyState, PropertyActions.getServiceDetailsSuccess(ServicesData));
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['servicesInfo']: ServicesData,
+      ['loaders']: { ...state.loaders, ['service']: false },
+    });
+  });
+
+  it('should handle Get Service steps Success', () => {
+    const state = reducer(initialPropertyState, PropertyActions.getServiceStepsDetailsSuccess(ServiceSteps));
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['servicesSteps']: ServiceSteps,
+      ['loaders']: { ...state.loaders, ['service']: false },
+    });
+  });
+
+  it('should handle set current property id', () => {
+    const state = reducer(initialPropertyState, PropertyActions.setCurrentPropertyId(1));
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['currentPropertyId']: 1,
+    });
+  });
+
+  it('should handle set current lease term id', () => {
+    const state = reducer(initialPropertyState, PropertyActions.setCurrentLeaseTermId(1));
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['currentLeaseTermId']: 1,
+    });
+  });
+
+  it('should handle set current service category id', () => {
+    const state = reducer(initialPropertyState, PropertyActions.setCurrentServiceCategoryId(1));
+    expect(state).toStrictEqual({
+      ...initialPropertyState,
+      ['currentServiceCategoryId']: 1,
     });
   });
 });

@@ -1,14 +1,17 @@
 export const RentServicesData = [
   {
-    name: 'I want to find tenants',
+    id: 1,
+    label: 'I want to find tenants',
     icon: 'home-search',
   },
   {
-    name: 'I want to sell my property',
+    id: 2,
+    label: 'I want to sell my property',
     icon: 'home-calculus',
   },
   {
-    name: 'I already have found a tenant',
+    id: 3,
+    label: 'I already have found a tenant',
     icon: 'home-person',
   },
 ];

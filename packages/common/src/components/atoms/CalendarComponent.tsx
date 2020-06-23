@@ -27,7 +27,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const { selectedDate } = props;
     this.state = {
       isMonthView: false,
-      selectedDate: selectedDate ?? '',
+      selectedDate,
       day: moment().format(DateFormats.DD),
       month: new Date().getMonth(),
       year: moment().format(DateFormats.YYYY),

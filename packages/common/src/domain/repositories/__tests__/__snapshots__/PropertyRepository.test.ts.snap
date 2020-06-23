@@ -81,15 +81,18 @@ exports[`PropertyRepository should fetch a list of rent services 1`] = `
 Array [
   Object {
     "icon": "home-search",
-    "name": "I want to find tenants",
+    "id": 1,
+    "label": "I want to find tenants",
   },
   Object {
     "icon": "home-calculus",
-    "name": "I want to sell my property",
+    "id": 2,
+    "label": "I want to sell my property",
   },
   Object {
     "icon": "home-person",
-    "name": "I already have found a tenant",
+    "id": 3,
+    "label": "I already have found a tenant",
   },
 ]
 `;

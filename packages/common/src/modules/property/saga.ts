@@ -5,7 +5,7 @@ import { PropertyActions, PropertyActionTypes } from '@homzhub/common/src/module
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 
-function* getPropertyDetails() {
+export function* getPropertyDetails() {
   try {
     const data = yield call(PropertyRepository.getDetails);
     yield put(PropertyActions.getPropertyDetailsSuccess(data));
@@ -14,7 +14,7 @@ function* getPropertyDetails() {
   }
 }
 
-function* getRentServicesList() {
+export function* getRentServicesList() {
   try {
     const data = yield call(PropertyRepository.getRentServices);
     yield put(PropertyActions.getRentServiceListSuccess(data));

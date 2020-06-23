@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextInputSuffix should match snapshot 1`] = `
+<Label
+  style={
+    Object {
+      "bottom": 14,
+      "color": "#808D9B",
+      "position": "absolute",
+      "right": 16,
+      "top": 14,
+    }
+  }
+  type="large"
+>
+  Suffix
+</Label>
+`;

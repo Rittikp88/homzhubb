@@ -57,6 +57,17 @@ describe('Test cases for FormTextInput', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('should render snapshot when input type is decimal', () => {
+    props = testProps({
+      inputType: 'decimal',
+      inputPrefixText: '1.09',
+      inputGroupSuffixText: 'INR',
+    });
+
+    const tree = renderer.create(<FormTextInput {...props} />).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
   it('should render snapshot and call handleChange when inputPrefixText is not there', () => {
     props = testProps({
       inputType: 'phone',

@@ -6,6 +6,104 @@ exports[`Test cases for FormTextInput should render snapshot and call handleChan
 
 exports[`Test cases for FormTextInput should render snapshot and call handleChange when inputPrefixText is not there 1`] = `ShallowWrapper {}`;
 
+exports[`Test cases for FormTextInput should render snapshot when input type is decimal 1`] = `
+Array [
+  <Text
+    style={
+      Array [
+        Object {
+          "fontSize": 12,
+          "lineHeight": 18,
+          "textAlign": "left",
+        },
+        Object {
+          "fontFamily": "OpenSans-Regular",
+          "fontWeight": "400",
+        },
+        Object {
+          "color": "#33495E",
+          "marginBottom": 6,
+          "marginTop": 16,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 10,
+            "lineHeight": 15,
+            "textAlign": "left",
+          },
+          Object {
+            "fontFamily": "OpenSans-Regular",
+            "fontWeight": "400",
+          },
+          Object {
+            "color": "#33495E",
+          },
+        ]
+      }
+    />
+  </Text>,
+  <View
+    style={Object {}}
+  >
+    <TextInput
+      allowFontScaling={true}
+      autoCorrect={false}
+      keyboardType="numeric"
+      maxLength={40}
+      onBlur={[Function]}
+      onChangeText={[Function]}
+      onFocus={[Function]}
+      onValueChange={[MockFunction]}
+      placeholderTextColor="#C9D6DF"
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "color": "#001B36",
+          "fontSize": 14,
+          "height": 48,
+          "paddingHorizontal": 16,
+          "paddingVertical": 4,
+          "textAlign": "left",
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 14,
+            "lineHeight": 21,
+            "textAlign": "left",
+          },
+          Object {
+            "fontFamily": "OpenSans-Regular",
+            "fontWeight": "400",
+          },
+          Object {
+            "bottom": 14,
+            "color": "#808D9B",
+            "position": "absolute",
+            "right": 16,
+            "top": 14,
+          },
+        ]
+      }
+    >
+      INR
+    </Text>
+  </View>,
+]
+`;
+
 exports[`Test cases for FormTextInput should render snapshot when input type is email 1`] = `ShallowWrapper {}`;
 
 exports[`Test cases for FormTextInput should render snapshot when input type is password 1`] = `ShallowWrapper {}`;
