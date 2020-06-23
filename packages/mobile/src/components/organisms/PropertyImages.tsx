@@ -42,6 +42,8 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     const { t } = this.props;
     const { selectedImages, isBottomSheetVisible } = this.state;
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
+    const { width } = theme.viewport;
+    const conditionalStyle = createConditionalStyles(width);
     return (
       <View style={styles.container}>
         <UploadBox
@@ -59,7 +61,9 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
           visible={isBottomSheetVisible}
           onCloseSheet={this.onCloseBottomSheet}
         >
-          <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
+          <ScrollView style={[styles.scrollView, conditionalStyle.scrollViewContainer]}>
+            {this.renderBottomSheetForPropertyImages()}
+          </ScrollView>
         </BottomSheet>
         <WithShadowView outerViewStyle={styles.shadowView}>
           <Button
@@ -363,5 +367,12 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     margin: theme.layout.screenPadding,
+  },
+});
+
+// TODO: (Rishabh:23/06/20) - Need to check the return type
+const createConditionalStyles = (width: number): any => ({
+  scrollViewContainer: {
+    marginBottom: width < 414 ? 100 : 0,
   },
 });

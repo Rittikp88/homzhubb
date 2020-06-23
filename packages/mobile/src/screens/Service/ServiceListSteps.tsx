@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -55,20 +55,22 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
             titleFontType="semiBold"
             titleStyle={styles.headerTitle}
           />
-          <View style={styles.listing}>
-            <Text type="regular" textType="semiBold" style={styles.listingTitle}>
-              {params.name}
-            </Text>
-            <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
-              {t('common:change')}
-            </Label>
-          </View>
-          <View style={styles.initiateService}>
-            <Text type="small" textType="semiBold" style={styles.subHeader}>
-              {t('property:subHeader')}
-            </Text>
-            {this.renderSteps()}
-          </View>
+          <ScrollView style={styles.flexOne}>
+            <View style={styles.listing}>
+              <Text type="regular" textType="semiBold" style={styles.listingTitle}>
+                {params.name}
+              </Text>
+              <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
+                {t('common:change')}
+              </Label>
+            </View>
+            <View style={styles.initiateService}>
+              <Text type="small" textType="semiBold" style={styles.subHeader}>
+                {t('property:subHeader')}
+              </Text>
+              {this.renderSteps()}
+            </View>
+          </ScrollView>
         </View>
         <WithShadowView outerViewStyle={styles.shadowView}>
           <Button
