@@ -45,8 +45,10 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   }
 
   private renderHeader = (): React.ReactElement => {
-    const { year, month, isMonthView } = this.state;
-    const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMMM);
+    const { year, month, isMonthView, selectedDate } = this.state;
+    const newMonth = moment(selectedDate).month();
+    const newYear = moment(selectedDate).year();
+    const updateMonth = DateUtils.getFullMonthName(newMonth || month, DateFormats.MMMM);
     return (
       <>
         <View style={styles.headerContainer}>
@@ -57,7 +59,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
             onPress={this.handleMonthPress}
             style={StyleSheet.flatten([customStyles.headerTitle(isMonthView)])}
           >
-            {`${updateMonth} ${year}`}
+            {`${updateMonth} ${newYear || year}`}
           </Text>
           <Icon name={icons.rightArrow} size={22} color={theme.colors.primaryColor} onPress={this.handleNextPress} />
         </View>
@@ -110,6 +112,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           hideArrows
           // @ts-ignore
           renderHeader={this.headerView}
+          minDate={new Date()}
           current={date}
           key={date}
           style={styles.calendarStyle}

@@ -54,7 +54,7 @@ describe('Landing Screen Component', () => {
         <I18nextProvider i18n={I18nService.instance}>
           <LandingScreen {...props} />
         </I18nextProvider>
-      </Provider>,
+      </Provider>
     ) as any;
   });
 

@@ -5,12 +5,10 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import moment from 'moment';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormTextInput, Label, RNSlider, Text } from '@homzhub/common/src/components';
-import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
@@ -35,7 +33,6 @@ interface IState {
   furnishingStatus: FurnishingType;
   maintenanceBy: PaidByTypes;
   utilityBy: PaidByTypes;
-  isCalendarVisible: boolean;
 }
 
 interface IProps extends WithTranslation {
@@ -84,7 +81,6 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
     furnishingStatus: FurnishingType.NONE,
     maintenanceBy: PaidByTypes.OWNER,
     utilityBy: PaidByTypes.TENANT,
-    isCalendarVisible: false,
   };
 
   public componentDidUpdate = (prevProps: Readonly<IProps>, prevState: Readonly<IState>): void => {
@@ -117,14 +113,13 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
         furnishingStatus: furnishing_status,
         maintenanceBy: maintenance_paid_by,
         utilityBy: utility_paid_by,
-        isCalendarVisible: false,
       });
     }
   };
 
   public render(): React.ReactNode {
     const { t, currency } = this.props;
-    const { leaseFormDetails, showMore, maintenanceBy, isCalendarVisible, availableFrom } = this.state;
+    const { leaseFormDetails, showMore, maintenanceBy } = this.state;
 
     return (
       <>
@@ -219,15 +214,6 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
             );
           }}
         </Formik>
-        <BottomSheet
-          visible={isCalendarVisible}
-          onCloseSheet={this.closeBottomSheet}
-          headerTitle={t('common:availableFrom')}
-          isShadowView
-          sheetHeight={580}
-        >
-          <CalendarComponent onSelect={this.handleCalendar} selectedDate={availableFrom} />
-        </BottomSheet>
       </>
     );
   }
@@ -235,22 +221,13 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
   private renderNonFormikInputs = (): React.ReactNode => {
     const { t } = this.props;
     const { minimumLeasePeriod, utilityBy, furnishingStatus, availableFrom } = this.state;
-    const availableDate = availableFrom === moment().format('YYYY-MM-DD') ? 'Today' : availableFrom;
 
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
           {t('duration')}
         </Text>
-        <View style={styles.dateView}>
-          <View style={styles.dateLeft}>
-            <Icon name={icons.calendar} color={theme.colors.darkTint5} size={18} onPress={this.handleOnPress} />
-            <Text type="small" textType="regular" style={styles.dateText}>
-              {availableDate}
-            </Text>
-          </View>
-          <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} onPress={this.handleOnPress} />
-        </View>
+        <FormCalendar availableFrom={availableFrom} onSelectDate={this.handleSelect} />
         <>
           <Text type="small" textType="semiBold" style={styles.headerTitle}>
             {t('minimumLeasePeriod')}
@@ -398,17 +375,8 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
     onSubmit(leaseTerms);
   };
 
-  private handleOnPress = (): void => {
-    const { isCalendarVisible } = this.state;
-    this.setState({ isCalendarVisible: !isCalendarVisible });
-  };
-
-  private closeBottomSheet = (): void => {
-    this.setState({ isCalendarVisible: false });
-  };
-
-  private handleCalendar = (day: string): void => {
-    this.setState({ isCalendarVisible: false, availableFrom: day });
+  private handleSelect = (day: string): void => {
+    this.setState({ availableFrom: day });
   };
 
   private formSchema = (): yup.ObjectSchema => {
@@ -465,23 +433,5 @@ const styles = StyleSheet.create({
     marginTop: 28,
     marginBottom: 16,
     color: theme.colors.darkTint3,
-  },
-  dateView: {
-    borderWidth: 1,
-    borderColor: theme.colors.disabled,
-    flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 4,
-  },
-  dateLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dateText: {
-    marginLeft: 16,
-    color: theme.colors.darkTint1,
   },
 });

@@ -31,7 +31,7 @@ describe('Service List Steps Screen', () => {
         <I18nextProvider i18n={I18nService.instance}>
           <ServiceListSteps {...props} />
         </I18nextProvider>
-      </Provider>,
+      </Provider>
     );
   });
 

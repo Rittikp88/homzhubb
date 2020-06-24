@@ -5,7 +5,7 @@ import PropertySearch from '@homzhub/mobile/src/screens/PropertySearch';
 
 describe('Property Search Screen', () => {
   it('should render the property search screen', () => {
-    const component = shallow(<PropertySearch/>);
+    const component = shallow(<PropertySearch />);
     expect(toJson(component)).toMatchSnapshot();
   });
 });

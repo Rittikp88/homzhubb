@@ -1,22 +1,28 @@
+enum ServiceStepTypes {
+  LEASE_DETAILS = 'LEASE_DETAILS',
+  PROPERTY_IMAGES = 'PROPERTY_IMAGES',
+  PROPERTY_VERIFICATIONS = 'PROPERTY_VERIFICATIONS',
+  PAYMENT_TOKEN_AMOUNT = 'PAYMENT_TOKEN_AMOUNT',
+}
 export const ServiceSteps = [
   {
     id: 1,
-    name: 'LEASE_DETAILS',
+    name: ServiceStepTypes.LEASE_DETAILS,
     title: 'Enter the Lease details',
   },
   {
     id: 2,
-    name: 'PROPERTY_IMAGES',
+    name: ServiceStepTypes.PROPERTY_IMAGES,
     title: 'Add Property Images',
   },
   {
     id: 3,
-    name: 'PROPERTY_VERIFICATIONS',
+    name: ServiceStepTypes.PROPERTY_VERIFICATIONS,
     title: 'Complete property verification',
   },
   {
     id: 4,
-    name: 'PAYMENT_TOKEN_AMOUNT',
+    name: ServiceStepTypes.PAYMENT_TOKEN_AMOUNT,
     title: 'Payment of token amount',
   },
 ];
