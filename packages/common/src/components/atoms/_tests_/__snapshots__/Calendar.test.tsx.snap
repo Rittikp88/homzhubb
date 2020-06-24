@@ -200,6 +200,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
       </Divider>
       <Calendar
         current="2020-06-22"
+        enableSwipeMonths={false}
         hideArrows={true}
         key="2020-06-22"
         markedDates={
@@ -5754,7 +5755,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                               }
                             >
                               <IGNORE
-                                accessibilityLabel="today Tuesday 23 June 2020 "
+                                accessibilityLabel=" Tuesday 23 June 2020 "
                                 date={
                                   Object {
                                     "dateString": "2020-06-23",
@@ -5767,12 +5768,12 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                 marking={Array []}
                                 onLongPress={[Function]}
                                 onPress={[Function]}
-                                state="today"
+                                state=""
                                 testID="native.calendar.SELECT_DATE_SLOT-2020-06-23"
                                 theme={Object {}}
                               >
                                 <ForwardRef
-                                  accessibilityLabel="today Tuesday 23 June 2020 "
+                                  accessibilityLabel=" Tuesday 23 June 2020 "
                                   accessibilityRole="button"
                                   onLongPress={[Function]}
                                   onPress={[Function]}
@@ -5783,15 +5784,12 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                         "height": 32,
                                         "width": 32,
                                       },
-                                      Object {
-                                        "backgroundColor": undefined,
-                                      },
                                     ]
                                   }
                                   testID="native.calendar.SELECT_DATE_SLOT-2020-06-23"
                                 >
                                   <TouchableOpacity
-                                    accessibilityLabel="today Tuesday 23 June 2020 "
+                                    accessibilityLabel=" Tuesday 23 June 2020 "
                                     accessibilityRole="button"
                                     hostRef={null}
                                     onLongPress={[Function]}
@@ -5803,15 +5801,12 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                           "height": 32,
                                           "width": 32,
                                         },
-                                        Object {
-                                          "backgroundColor": undefined,
-                                        },
                                       ]
                                     }
                                     testID="native.calendar.SELECT_DATE_SLOT-2020-06-23"
                                   >
                                     <ForwardRef(AnimatedComponentWrapper)
-                                      accessibilityLabel="today Tuesday 23 June 2020 "
+                                      accessibilityLabel=" Tuesday 23 June 2020 "
                                       accessibilityRole="button"
                                       accessible={true}
                                       focusable={true}
@@ -5830,9 +5825,6 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                               "height": 32,
                                               "width": 32,
                                             },
-                                            Object {
-                                              "backgroundColor": undefined,
-                                            },
                                           ],
                                           Object {
                                             "opacity": 1,
@@ -5842,7 +5834,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                       testID="native.calendar.SELECT_DATE_SLOT-2020-06-23"
                                     >
                                       <AnimatedComponent
-                                        accessibilityLabel="today Tuesday 23 June 2020 "
+                                        accessibilityLabel=" Tuesday 23 June 2020 "
                                         accessibilityRole="button"
                                         accessible={true}
                                         focusable={true}
@@ -5861,9 +5853,6 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                                 "height": 32,
                                                 "width": 32,
                                               },
-                                              Object {
-                                                "backgroundColor": undefined,
-                                              },
                                             ],
                                             Object {
                                               "opacity": 1,
@@ -5873,7 +5862,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                         testID="native.calendar.SELECT_DATE_SLOT-2020-06-23"
                                       >
                                         <View
-                                          accessibilityLabel="today Tuesday 23 June 2020 "
+                                          accessibilityLabel=" Tuesday 23 June 2020 "
                                           accessibilityRole="button"
                                           accessible={true}
                                           focusable={true}
@@ -5887,7 +5876,6 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                           style={
                                             Object {
                                               "alignItems": "center",
-                                              "backgroundColor": undefined,
                                               "height": 32,
                                               "opacity": 1,
                                               "width": 32,
@@ -5896,7 +5884,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                           testID="native.calendar.SELECT_DATE_SLOT-2020-06-23"
                                         >
                                           <View
-                                            accessibilityLabel="today Tuesday 23 June 2020 "
+                                            accessibilityLabel=" Tuesday 23 June 2020 "
                                             accessibilityRole="button"
                                             accessible={true}
                                             focusable={true}
@@ -5910,7 +5898,6 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                             style={
                                               Object {
                                                 "alignItems": "center",
-                                                "backgroundColor": undefined,
                                                 "height": 32,
                                                 "opacity": 1,
                                                 "width": 32,
@@ -5930,9 +5917,6 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                                     "fontWeight": "300",
                                                     "marginTop": 6,
                                                   },
-                                                  Object {
-                                                    "color": "#00BBF2",
-                                                  },
                                                 ]
                                               }
                                             >
@@ -5947,9 +5931,6 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "fontWeight": "300",
                                                       "marginTop": 6,
-                                                    },
-                                                    Object {
-                                                      "color": "#00BBF2",
                                                     },
                                                   ]
                                                 }
@@ -5987,7 +5968,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                               }
                             >
                               <IGNORE
-                                accessibilityLabel=" Wednesday 24 June 2020 "
+                                accessibilityLabel="today Wednesday 24 June 2020 "
                                 date={
                                   Object {
                                     "dateString": "2020-06-24",
@@ -6000,12 +5981,12 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                 marking={Array []}
                                 onLongPress={[Function]}
                                 onPress={[Function]}
-                                state=""
+                                state="today"
                                 testID="native.calendar.SELECT_DATE_SLOT-2020-06-24"
                                 theme={Object {}}
                               >
                                 <ForwardRef
-                                  accessibilityLabel=" Wednesday 24 June 2020 "
+                                  accessibilityLabel="today Wednesday 24 June 2020 "
                                   accessibilityRole="button"
                                   onLongPress={[Function]}
                                   onPress={[Function]}
@@ -6016,12 +5997,15 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                         "height": 32,
                                         "width": 32,
                                       },
+                                      Object {
+                                        "backgroundColor": undefined,
+                                      },
                                     ]
                                   }
                                   testID="native.calendar.SELECT_DATE_SLOT-2020-06-24"
                                 >
                                   <TouchableOpacity
-                                    accessibilityLabel=" Wednesday 24 June 2020 "
+                                    accessibilityLabel="today Wednesday 24 June 2020 "
                                     accessibilityRole="button"
                                     hostRef={null}
                                     onLongPress={[Function]}
@@ -6033,12 +6017,15 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                           "height": 32,
                                           "width": 32,
                                         },
+                                        Object {
+                                          "backgroundColor": undefined,
+                                        },
                                       ]
                                     }
                                     testID="native.calendar.SELECT_DATE_SLOT-2020-06-24"
                                   >
                                     <ForwardRef(AnimatedComponentWrapper)
-                                      accessibilityLabel=" Wednesday 24 June 2020 "
+                                      accessibilityLabel="today Wednesday 24 June 2020 "
                                       accessibilityRole="button"
                                       accessible={true}
                                       focusable={true}
@@ -6057,6 +6044,9 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                               "height": 32,
                                               "width": 32,
                                             },
+                                            Object {
+                                              "backgroundColor": undefined,
+                                            },
                                           ],
                                           Object {
                                             "opacity": 1,
@@ -6066,7 +6056,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                       testID="native.calendar.SELECT_DATE_SLOT-2020-06-24"
                                     >
                                       <AnimatedComponent
-                                        accessibilityLabel=" Wednesday 24 June 2020 "
+                                        accessibilityLabel="today Wednesday 24 June 2020 "
                                         accessibilityRole="button"
                                         accessible={true}
                                         focusable={true}
@@ -6085,6 +6075,9 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                                 "height": 32,
                                                 "width": 32,
                                               },
+                                              Object {
+                                                "backgroundColor": undefined,
+                                              },
                                             ],
                                             Object {
                                               "opacity": 1,
@@ -6094,7 +6087,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                         testID="native.calendar.SELECT_DATE_SLOT-2020-06-24"
                                       >
                                         <View
-                                          accessibilityLabel=" Wednesday 24 June 2020 "
+                                          accessibilityLabel="today Wednesday 24 June 2020 "
                                           accessibilityRole="button"
                                           accessible={true}
                                           focusable={true}
@@ -6108,6 +6101,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                           style={
                                             Object {
                                               "alignItems": "center",
+                                              "backgroundColor": undefined,
                                               "height": 32,
                                               "opacity": 1,
                                               "width": 32,
@@ -6116,7 +6110,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                           testID="native.calendar.SELECT_DATE_SLOT-2020-06-24"
                                         >
                                           <View
-                                            accessibilityLabel=" Wednesday 24 June 2020 "
+                                            accessibilityLabel="today Wednesday 24 June 2020 "
                                             accessibilityRole="button"
                                             accessible={true}
                                             focusable={true}
@@ -6130,6 +6124,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                             style={
                                               Object {
                                                 "alignItems": "center",
+                                                "backgroundColor": undefined,
                                                 "height": 32,
                                                 "opacity": 1,
                                                 "width": 32,
@@ -6149,6 +6144,9 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                                     "fontWeight": "300",
                                                     "marginTop": 6,
                                                   },
+                                                  Object {
+                                                    "color": "#00BBF2",
+                                                  },
                                                 ]
                                               }
                                             >
@@ -6163,6 +6161,9 @@ exports[`CalendarComponent should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "fontWeight": "300",
                                                       "marginTop": 6,
+                                                    },
+                                                    Object {
+                                                      "color": "#00BBF2",
                                                     },
                                                   ]
                                                 }

@@ -57,7 +57,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
               </>
             )}
           </Formik>
-          <Text type="small" textType="semiBold" style={styles.backToLoginLink} onPress={this.navigateToLogin}>
+          <Text type="small" textType="semiBold" style={styles.backToLoginLink} onPress={this.navigateToLogin} testID="login">
             {t('auth:backToLogin')}
           </Text>
         </View>

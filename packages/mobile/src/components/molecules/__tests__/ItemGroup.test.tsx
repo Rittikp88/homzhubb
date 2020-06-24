@@ -4,9 +4,6 @@ import toJson from 'enzyme-to-json';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
 
-jest.mock('@homzhub/common/src/components/', () => 'Text');
-jest.mock('@homzhub/common/src/components/', () => 'Label');
-
 describe('Item Group Component', () => {
   it('should render item group label', () => {
     const props = {

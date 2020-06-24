@@ -13,22 +13,6 @@ class PropertySearch extends React.PureComponent<{}, {}> {
       </View>
     );
   }
-
-  public onPressOfUploadBox = (): void => {
-    // ImagePicker.showImagePicker(options, (response: ImagePickerResponse) => {
-    //   if (response.didCancel) {
-    //     AlertHelper.error({ message: 'User cancelled image picker' });
-    //   } else if (response.error) {
-    //     AlertHelper.error({ message: `ImagePicker Error: ${response.error}` });
-    //   } else if (response.customButton) {
-    //     AlertHelper.error({ message: `User tapped on custom button: ${response.customButton}` });
-    //   } else {
-    //     const source = { uri: response.uri };
-    //     // You can also display the image using data:
-    //     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-    //   }
-    // });
-  };
 }
 
 export default PropertySearch;

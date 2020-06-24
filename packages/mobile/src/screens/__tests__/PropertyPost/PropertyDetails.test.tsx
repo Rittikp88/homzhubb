@@ -8,11 +8,6 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
 import { PropertyAssetGroupData, ResidentialPropertyTypeData } from '@homzhub/common/src/mocks/PropertyDetails';
 
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-jest.mock('@react-native-community/google-signin');
-jest.mock('@homzhub/common/src/components/', () => 'WithShadowView');
-jest.mock('@homzhub/common/src/components/', () => 'Button');
-
 const mockStore = configureStore([]);
 
 describe('Property Details Screen Component', () => {

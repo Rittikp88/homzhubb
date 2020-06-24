@@ -9,7 +9,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(jest-)?react-native|@react-native-community/google-signin|@react-native-community/picker)',
   ],
-  coveragePathIgnorePatterns: ['/node_modules/', '/jest'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/jest', '/src/mocks/', '/src/assets/'],
   testPathIgnorePatterns: ['/dist/'], // ignores dist folder while running test cases
   coverageReporters: ['json', 'lcov', 'text'],
   coverageDirectory: './coverage',
@@ -19,7 +19,7 @@ module.exports = {
     '<rootDir>/src/**/interfaces.ts',
     '<rootDir>/src/**/Interfaces.ts',
     '!<rootDir>/src/assets/*',
-    '!<rootDir>/src/mocks/*',
+    '!<rootDir>/src/mocks/**./*.{ts,tsx}',
     '!<rootDir>/src/styles/*',
     '!<rootDir>/src/domain/models/*',
     '!<rootDir>/src/**/*.native.ts',

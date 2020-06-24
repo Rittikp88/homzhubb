@@ -59,10 +59,11 @@ class LandingScreen extends React.PureComponent<Props, {}> {
               type="primary"
               onPress={this.onAddProperty}
               containerStyle={styles.addProperty}
+              testID="addProperty"
             />
             <Label type="large" textType="regular" style={styles.logoutContainer}>
               {t('logoutHelperText')} &nbsp;
-              <Label type="large" textType="bold" style={styles.logout} onPress={this.logout}>
+              <Label type="large" textType="bold" style={styles.logout} onPress={this.logout} testID="logout">
                 {t('common:logout')}
               </Label>
             </Label>
@@ -73,10 +74,8 @@ class LandingScreen extends React.PureComponent<Props, {}> {
   }
 
   public onAddProperty = (): void => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate(ScreensKeys.SearchPropertyOwner);
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.SearchPropertyOwner);
   };
 
   public logout = async (): Promise<void> => {

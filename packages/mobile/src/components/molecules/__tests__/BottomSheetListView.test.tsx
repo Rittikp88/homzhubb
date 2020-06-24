@@ -4,9 +4,6 @@ import toJson from 'enzyme-to-json';
 import { CountryWithCode } from '@homzhub/common/src/mocks/countryWithCode';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
-jest.mock('@react-native-community/google-signin', () => {});
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-
 const createTestProps = (testProps: any): object => ({
   data: CountryWithCode,
   selectedValue: 'abc',

@@ -71,9 +71,10 @@ interface IProps extends TextProps {
   children: string | React.ReactNode;
   type: TextSizeType;
   textType?: FontWeightType;
+  testID?: string;
 }
 
-const Label = ({ type, style, children, textType, ...props }: IProps): ReactElement<RNText> => {
+const Label = ({ type, style, children, textType, testID, ...props }: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
   switch (type) {
@@ -89,13 +90,13 @@ const Label = ({ type, style, children, textType, ...props }: IProps): ReactElem
       break;
   }
   return (
-    <RNText style={[defaultStyle, fontStyle, style]} {...props}>
+    <RNText style={[defaultStyle, fontStyle, style]} {...props} testID={testID}>
       {children}
     </RNText>
   );
 };
 
-const Text = ({ type, style, children, textType, ...props }: IProps): ReactElement<RNText> => {
+const Text = ({ type, style, children, textType, testID, ...props }: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
   switch (type) {
@@ -111,7 +112,7 @@ const Text = ({ type, style, children, textType, ...props }: IProps): ReactEleme
       break;
   }
   return (
-    <RNText style={[defaultStyle, fontStyle, style]} {...props}>
+    <RNText style={[defaultStyle, fontStyle, style]} {...props} testID={testID}>
       {children}
     </RNText>
   );

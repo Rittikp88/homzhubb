@@ -25,11 +25,24 @@ class GettingStarted extends React.PureComponent<IProps> {
             textSize="small"
             containerStyle={styles.getStarted}
             onPress={this.getStarted}
+            testID="getStarted"
           />
-          <Button title={t('login')} type="secondary" containerStyle={styles.login} onPress={this.login} />
+          <Button
+            title={t('login')}
+            type="secondary"
+            containerStyle={styles.login}
+            onPress={this.login}
+            testID="login"
+          />
           <Label type="large" textType="regular" style={styles.image}>
             {t('newAroundHere')} &nbsp;
-            <Label type="large" textType="bold" style={styles.signUpLink} onPress={this.navigateToSignUp}>
+            <Label
+              type="large"
+              textType="bold"
+              style={styles.signUpLink}
+              onPress={this.navigateToSignUp}
+              testID="sign_up"
+            >
               {t('signUp')}
             </Label>
           </Label>

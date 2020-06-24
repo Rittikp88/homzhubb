@@ -8,9 +8,6 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-jest.mock('@react-native-community/google-signin', () => {});
-
 const mockStore = configureStore([]);
 
 describe('Service List Screen', () => {
@@ -20,8 +17,8 @@ describe('Service List Screen', () => {
 
   beforeEach(async () => {
     store = mockStore({
-      service: {
-        serviceData: ServicesData,
+      property: {
+        servicesInfo: ServicesData,
       },
     });
     props = {

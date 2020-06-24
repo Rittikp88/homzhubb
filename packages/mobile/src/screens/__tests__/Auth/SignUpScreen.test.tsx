@@ -8,9 +8,6 @@ import configureStore from 'redux-mock-store';
 import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
 import { Animated } from 'react-native';
 
-jest.mock('@react-native-community/google-signin', () => {});
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-
 const mockStore = configureStore([]);
 
 describe('SignUp Screen', () => {

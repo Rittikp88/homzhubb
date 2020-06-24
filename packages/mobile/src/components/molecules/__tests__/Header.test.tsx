@@ -5,9 +5,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 
-jest.mock('@react-native-community/google-signin', () => {});
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-
 const createTestProps = (testProps: any): object => ({
   backgroundColor: theme.colors.primaryColor,
   icon: icons.leftArrow,

@@ -1,20 +1,19 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { I18nextProvider } from 'react-i18next';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
 
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-jest.mock('@react-native-community/google-signin');
-jest.mock('@homzhub/common/src/assets/images/landingScreenLogo.png');
-jest.mock('@homzhub/common/src/components/', () => 'Text');
-jest.mock('@homzhub/common/src/components/', () => 'Label');
-jest.mock('@homzhub/common/src/components/', () => 'Button');
-jest.mock('@homzhub/common/src/components/', () => 'SVGUri');
-jest.mock('@homzhub/mobile/src/components/molecules/GradientBackground', () => 'GradientBackground');
+const mock = jest.fn();
+jest.mock('@homzhub/common/src/services/storage/StorageService', () => {
+  return {
+    get: jest.fn(),
+  };
+});
+
 const mockStore = configureStore([]);
 
 describe('Landing Screen Component', () => {
@@ -44,19 +43,36 @@ describe('Landing Screen Component', () => {
         access_token: 'accesstoken',
         refresh_token: 'refreshtoken',
       },
-      logoutSuccess: jest.fn(),
+      logout: mock,
+      navigation: {
+        navigate: mock,
+      },
     };
     await I18nService.init();
-    component = shallow(
+    component = mount(
       <Provider store={store}>
         <I18nextProvider i18n={I18nService.instance}>
           <LandingScreen {...props} />
         </I18nextProvider>
-      </Provider>
-    );
+      </Provider>,
+    ) as any;
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 
   it('should render landing screen', () => {
-    expect(toJson(component.dive().dive().dive())).toMatchSnapshot();
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should navigate to Add Property Screen', () => {
+    component.find('[testID="addProperty"]').at(1).prop('onPress')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should call logout', () => {
+    component.find('[testID="logout"]').at(1).prop('onPress')();
+    expect(mock).toHaveBeenCalled();
   });
 });

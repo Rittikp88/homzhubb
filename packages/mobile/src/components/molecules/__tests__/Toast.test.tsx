@@ -6,9 +6,6 @@ import { MessageComponentProps } from 'react-native-flash-message';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 
-jest.mock('@react-native-community/google-signin', () => {});
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-
 const sampleProps: MessageComponentProps = {
   message: {
     message: 'Test Message',

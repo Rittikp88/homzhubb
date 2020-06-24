@@ -28,7 +28,7 @@ exports[`Item Group Component should render item group label 1`] = `
       }
     }
   >
-    <Component
+    <Label
       style={
         Object {
           "color": "#FFFFFF",
@@ -52,7 +52,7 @@ exports[`Item Group Component should render item group label 1`] = `
       }
     }
   >
-    <Component
+    <Label
       style={
         Object {
           "color": "#FFFFFF",
@@ -93,7 +93,7 @@ exports[`Item Group Component should render item group text 1`] = `
       }
     }
   >
-    <Component
+    <Text
       style={
         Object {
           "color": "#FFFFFF",
@@ -117,7 +117,7 @@ exports[`Item Group Component should render item group text 1`] = `
       }
     }
   >
-    <Component
+    <Text
       style={
         Object {
           "color": "#FFFFFF",

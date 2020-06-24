@@ -6,15 +6,6 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import PropertyDetailItems from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 import { PropertyAssetGroupData, ResidentialPropertyTypeData } from '@homzhub/common/src/mocks/PropertyDetails';
 
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-jest.mock('@react-native-community/google-signin');
-jest.mock('@homzhub/common/src/components/', () => 'Text');
-jest.mock('@homzhub/common/src/components/', () => 'Label');
-jest.mock('@homzhub/common/src/components/', () => 'HorizontalPicker');
-jest.mock('@homzhub/common/src/components/', () => 'FormTextInput');
-jest.mock('@homzhub/mobile/src/components/molecules/BottomSheetListView', () => 'BottomSheetListView');
-jest.mock('@homzhub/mobile/src/components/molecules/ButtonGroup', () => 'ItemGroup');
-
 describe('Property Details Item Component', () => {
   let component: any;
   let props: any;

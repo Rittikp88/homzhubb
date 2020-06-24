@@ -32,6 +32,7 @@ export interface IButtonProps {
   image?: any;
   imageStyle?: StyleProp<ImageStyle>;
   iconStyle?: StyleProp<ImageStyle>;
+  testID?: string;
 }
 
 export class Button extends React.PureComponent<IButtonProps> {
@@ -47,6 +48,7 @@ export class Button extends React.PureComponent<IButtonProps> {
       iconStyle,
       image,
       imageStyle,
+      testID,
     } = this.props;
     return (
       <TouchableOpacity
@@ -54,6 +56,7 @@ export class Button extends React.PureComponent<IButtonProps> {
         onPress={onPress}
         disabled={disabled}
         style={this.getContainerStyle()}
+        testID={testID}
       >
         {title && this.getTextField()}
         {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}

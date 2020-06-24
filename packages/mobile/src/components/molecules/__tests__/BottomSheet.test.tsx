@@ -4,9 +4,6 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { BottomSheet, IBottomSheetProps } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
-jest.mock('@react-native-community/google-signin', () => {});
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-
 describe('BottomSheet', () => {
   beforeAll(() => jest.spyOn(React, 'useEffect').mockImplementation((f) => f));
   it('should render snapshot', () => {

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Property Search Screen should render the property search screen 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#F0F5F9",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <Text
+    textType="regular"
+    type="regular"
+  >
+    Welcome to Property Search!
+  </Text>
+</View>
+`;
