@@ -1,6 +1,6 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
-import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
+import { IServiceDetail, IServiceListStepsDetail, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 
 const getPropertyDetails = (state: IState): IPropertyDetailsData[] | null => {
   const {
@@ -41,11 +41,16 @@ const getServiceDetails = (state: IState): IServiceDetail[] => {
   return servicesInfo;
 };
 
-const getServiceSteps = (state: IState): any => {
+const getServiceSteps = (state: IState): IServiceListStepsDetail[] => {
   const {
     property: { servicesSteps },
   } = state;
   return servicesSteps;
+};
+
+const getServiceStepsDetails = (state: IState): ServiceStepTypes[] => {
+  const steps = getServiceSteps(state);
+  return steps.map((serviceStep) => serviceStep.name);
 };
 
 const getCurrentServiceCategoryId = (state: IState): number => {
@@ -63,4 +68,5 @@ export const PropertySelector = {
   getServiceSteps,
   getCurrentLeaseTermId,
   getCurrentServiceCategoryId,
+  getServiceStepsDetails,
 };

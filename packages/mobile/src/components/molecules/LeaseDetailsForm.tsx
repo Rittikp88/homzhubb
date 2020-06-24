@@ -16,6 +16,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import {
   FurnishingType,
   ICreateLeaseTermDetails,
+  ILeaseTermDetails,
   PaidByTypes,
   ScheduleTypes,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
@@ -27,7 +28,7 @@ interface IState {
     securityDeposit: string;
     annualIncrement: string;
     maintenanceAmount: string;
-    maintenanceSchedule: string;
+    maintenanceSchedule: ScheduleTypes;
   };
   minimumLeasePeriod: number;
   availableFrom: string;
@@ -38,6 +39,7 @@ interface IState {
 }
 
 interface IProps extends WithTranslation {
+  initialValues: ILeaseTermDetails | null;
   currency: string;
   onSubmit: (data: ICreateLeaseTermDetails) => void;
 }
@@ -51,18 +53,16 @@ export enum LeaseFormKeys {
   maintenanceSchedule = 'maintenanceSchedule',
   maintenanceBy = 'maintenanceBy',
 }
+const MINIMUM_LEASE_PERIOD = 1;
+const DEFAULT_LEASE_PERIOD = 11;
+const MAXIMUM_LEASE_PERIOD = 24;
 
 class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
-  private MINIMUM_LEASE_PERIOD = 1;
-  private DEFAULT_LEASE_PERIOD = 11;
-  private MAXIMUM_LEASE_PERIOD = 24;
-
   /*eslint-disable */
   private PAID_BY_OPTIONS = [
     { title: this.props.t('owner'), value: PaidByTypes.OWNER },
     { title: this.props.t('tenant'), value: PaidByTypes.TENANT },
   ];
-
   private FURNISHING_STATUS = [
     { title: this.props.t('fullyFurnished'), value: FurnishingType.FULL },
     { title: this.props.t('semiFurnished'), value: FurnishingType.SEMI },
@@ -79,12 +79,47 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
       maintenanceAmount: '',
       maintenanceSchedule: ScheduleTypes.ANNUALLY,
     },
-    minimumLeasePeriod: this.DEFAULT_LEASE_PERIOD,
+    minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
     availableFrom: moment().format('YYYY-MM-DD'),
     furnishingStatus: FurnishingType.NONE,
     maintenanceBy: PaidByTypes.OWNER,
     utilityBy: PaidByTypes.TENANT,
     isCalendarVisible: false,
+  };
+
+  public componentDidUpdate = (prevProps: Readonly<IProps>, prevState: Readonly<IState>): void => {
+    const { initialValues } = this.props;
+    if (prevProps.initialValues !== initialValues && initialValues) {
+      const {
+        maintenance_schedule,
+        monthly_rent_price,
+        security_deposit_price,
+        annual_increment_percentage,
+        maintenance_amount,
+        minimum_lease_period,
+        available_from_date,
+        furnishing_status,
+        maintenance_paid_by,
+        utility_paid_by,
+      } = initialValues;
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        showMore: !!annual_increment_percentage,
+        leaseFormDetails: {
+          monthlyRent: monthly_rent_price.toString(),
+          securityDeposit: security_deposit_price.toString(),
+          annualIncrement: annual_increment_percentage?.toString() ?? '',
+          maintenanceAmount: maintenance_amount?.toString() ?? '',
+          maintenanceSchedule: maintenance_schedule ?? ScheduleTypes.ANNUALLY,
+        },
+        minimumLeasePeriod: minimum_lease_period,
+        availableFrom: available_from_date,
+        furnishingStatus: furnishing_status,
+        maintenanceBy: maintenance_paid_by,
+        utilityBy: utility_paid_by,
+        isCalendarVisible: false,
+      });
+    }
   };
 
   public render(): React.ReactNode {
@@ -94,6 +129,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
     return (
       <>
         <Formik
+          enableReinitialize
           onSubmit={this.onSubmit}
           initialValues={{ ...leaseFormDetails, maintenanceBy, showMore }}
           validate={FormUtils.validate(this.formSchema)}
@@ -125,6 +161,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                   maxLength={12}
                   formProps={formProps}
                   inputGroupSuffixText={currency}
+                  onChangeText={this.onRentChange}
                 />
                 <FormTextInput
                   inputType="number"
@@ -134,6 +171,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                   maxLength={12}
                   formProps={formProps}
                   inputGroupSuffixText={currency}
+                  onChangeText={this.onDepositChange}
                 />
                 <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
                   {showMore ? t('showLess') : t('showMore')}
@@ -147,6 +185,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                     maxLength={4}
                     formProps={formProps}
                     inputGroupSuffixText={t('annualIncrementSuffix')}
+                    onChangeText={this.onIncrementChange}
                   />
                 )}
                 {this.renderNonFormikInputs()}
@@ -164,6 +203,8 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                     currency={currency}
                     maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
                     maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
+                    onMaintenanceAmountChanged={this.onMaintenanceAmountChanged}
+                    onMaintenanceScheduleChanged={this.onMaintenanceScheduleChanged}
                   />
                 )}
                 <FormButton
@@ -223,8 +264,8 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
             </Label>
           </View>
           <RNSlider
-            minimumValue={this.MINIMUM_LEASE_PERIOD}
-            maximumValue={this.MAXIMUM_LEASE_PERIOD}
+            minimumValue={MINIMUM_LEASE_PERIOD}
+            maximumValue={MAXIMUM_LEASE_PERIOD}
             minimumTrackTintColor={theme.colors.active}
             thumbTintColor={theme.colors.active}
             maximumTrackTintColor={theme.colors.disabled}
@@ -250,6 +291,56 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
         />
       </>
     );
+  };
+
+  private onRentChange = (text: string): void => {
+    const { leaseFormDetails } = this.state;
+    this.setState({
+      leaseFormDetails: {
+        ...leaseFormDetails,
+        monthlyRent: text,
+      },
+    });
+  };
+
+  private onDepositChange = (text: string): void => {
+    const { leaseFormDetails } = this.state;
+    this.setState({
+      leaseFormDetails: {
+        ...leaseFormDetails,
+        securityDeposit: text,
+      },
+    });
+  };
+
+  private onIncrementChange = (text: string): void => {
+    const { leaseFormDetails } = this.state;
+    this.setState({
+      leaseFormDetails: {
+        ...leaseFormDetails,
+        annualIncrement: text,
+      },
+    });
+  };
+
+  private onMaintenanceAmountChanged = (text: string): void => {
+    const { leaseFormDetails } = this.state;
+    this.setState({
+      leaseFormDetails: {
+        ...leaseFormDetails,
+        maintenanceAmount: text,
+      },
+    });
+  };
+
+  private onMaintenanceScheduleChanged = (schedule: ScheduleTypes): void => {
+    const { leaseFormDetails } = this.state;
+    this.setState({
+      leaseFormDetails: {
+        ...leaseFormDetails,
+        maintenanceSchedule: schedule,
+      },
+    });
   };
 
   private onShowMorePress = (): void => {

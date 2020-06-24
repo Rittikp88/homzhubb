@@ -1,17 +1,25 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, PickerItemProps } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Text } from '@homzhub/common/src/components';
 import { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ICreateLeaseTermDetails, IUpdateLeaseTermDetails } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
+import {
+  ICreateLeaseTermDetails,
+  ILeaseTermDetails,
+  IUpdateLeaseTermDetails,
+} from '@homzhub/common/src/domain/models/LeaseTerms';
 
 interface IState {
   currency: string;
+  currencyData: PickerItemProps[];
+  initialLeaseTerms: ILeaseTermDetails | null;
 }
 
 interface IOwnProps extends WithTranslation {
@@ -23,19 +31,19 @@ interface IOwnProps extends WithTranslation {
 }
 class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   public state = {
-    currency: 'INR \u20B9',
+    currencyData: [],
+    currency: 'INR',
+    initialLeaseTerms: null,
   };
 
-  public componentDidMount = (): void => {
-    const { leaseTermId } = this.props;
-    if (leaseTermId) {
-      this.getLeaseDetails().then();
-    }
+  public componentDidMount = async (): Promise<void> => {
+    await this.getLeaseDetails();
+    await this.getCurrencyCodes();
   };
 
   public render = (): React.ReactNode => {
     const { t, isLeaseFlow } = this.props;
-    const { currency } = this.state;
+    const { currency, currencyData, initialLeaseTerms } = this.state;
     return (
       <>
         <View style={styles.titleRow}>
@@ -43,7 +51,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
             {isLeaseFlow ? t('rentAndDeposit') : t('resaleDetails')}
           </Text>
           <Dropdown
-            data={[{ label: 'INR \u20B9', value: 'INR \u20B9' }]}
+            data={currencyData}
             icon={icons.downArrow}
             iconColor={theme.colors.darkTint5}
             iconSize={8}
@@ -53,7 +61,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
             containerStyle={styles.dropdownContainer}
           />
         </View>
-        <LeaseDetailsForm currency={currency} onSubmit={this.onLeaseFormSubmit} />
+        <LeaseDetailsForm initialValues={initialLeaseTerms} currency={currency} onSubmit={this.onLeaseFormSubmit} />
       </>
     );
   };
@@ -82,7 +90,8 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   private getLeaseDetails = async (): Promise<void> => {
     const { propertyId } = this.props;
     try {
-      await PropertyRepository.getLeaseTerms(propertyId);
+      const response = await PropertyRepository.getLeaseTerms(propertyId);
+      this.setState({ initialLeaseTerms: response[0] });
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
@@ -93,6 +102,22 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     try {
       await PropertyRepository.updateLeaseTerms(propertyId, leaseTermId, data);
       onStepSuccess();
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
+
+  private getCurrencyCodes = async (): Promise<void> => {
+    try {
+      const response = await CommonRepository.getCurrencyCodes();
+      this.setState({
+        currencyData: response.map(
+          (currency: ICurrency): PickerItemProps => ({
+            label: currency.currency_code,
+            value: currency.currency_code,
+          })
+        ),
+      });
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

@@ -1,3 +1,10 @@
+export enum ServiceStepTypes {
+  LEASE_DETAILS = 'LEASE_DETAILS',
+  PROPERTY_IMAGES = 'PROPERTY_IMAGES',
+  PROPERTY_VERIFICATIONS = 'PROPERTY_VERIFICATIONS',
+  PAYMENT_TOKEN_AMOUNT = 'PAYMENT_TOKEN_AMOUNT',
+}
+
 export interface IServiceDetail {
   id: number;
   name: string;
@@ -19,7 +26,7 @@ export interface IServiceItems {
 
 export interface IServiceListStepsDetail {
   id: number;
-  name: string;
+  name: ServiceStepTypes;
   title: string;
 }
 

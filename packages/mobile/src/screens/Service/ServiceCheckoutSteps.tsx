@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { Dispatch, bindActionCreators } from 'redux';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -18,7 +18,14 @@ import PropertyVerification from '@homzhub/mobile/src/components/organisms/Prope
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+
+interface IStringForStep {
+  title: string;
+  screenTitle: string;
+  stepLabel: string;
+}
 
 interface IScreenState {
   currentStep: number;
@@ -26,6 +33,7 @@ interface IScreenState {
 }
 
 interface IStateProps {
+  steps: ServiceStepTypes[];
   propertyId: number;
   leaseTermId: number;
   serviceCategoryId: number;
@@ -37,7 +45,6 @@ interface IDispatchProps {
 
 type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceCheckoutSteps>;
 type Props = OwnProps & IStateProps & IDispatchProps;
-const TOTAL_STEPS = 4;
 
 class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   public state = {
@@ -66,6 +73,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderHeader = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
+    const { steps } = this.props;
 
     return (
       <>
@@ -74,13 +82,13 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           iconColor={theme.colors.white}
           onIconPress={this.handleBackPress}
           isHeadingVisible
-          title={this.fetchScreenTitle()}
+          title={this.getTitleStringsForStep(steps[currentStep]).screenTitle}
           titleType="small"
           titleFontType="semiBold"
           backgroundColor={theme.colors.primaryColor}
         />
         <StepIndicatorComponent
-          stepCount={TOTAL_STEPS}
+          stepCount={steps.length}
           labels={this.fetchStepLabels()}
           currentPosition={currentStep}
           onPress={this.onStepPress}
@@ -93,13 +101,13 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderTitle = (): React.ReactNode => {
     const { currentStep } = this.state;
-    const { t } = this.props;
+    const { t, steps } = this.props;
 
     return (
       <>
         <View style={styles.headingRow}>
           <Label type="large" textType="semiBold" style={styles.textColor}>
-            {t('step', { stepNumber: currentStep + 1, totalSteps: TOTAL_STEPS })}
+            {t('step', { stepNumber: currentStep + 1, totalSteps: steps.length })}
           </Label>
           {(currentStep === 1 || currentStep === 2) && (
             <Text type="small" textType="semiBold" style={styles.skipForNow} onPress={this.onProceedToNextStep}>
@@ -108,7 +116,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           )}
         </View>
         <Text type="regular" textType="semiBold" style={styles.textColor}>
-          {this.fetchStepTitle()}
+          {this.getTitleStringsForStep(steps[currentStep]).title}
         </Text>
       </>
     );
@@ -116,9 +124,11 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderContent = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
-    const { propertyId, leaseTermId, setCurrentLeaseTermId, serviceCategoryId } = this.props;
-    switch (currentStep) {
-      case 0:
+    const { propertyId, leaseTermId, setCurrentLeaseTermId, serviceCategoryId, steps } = this.props;
+
+    const currentStepId = steps[currentStep];
+    switch (currentStepId) {
+      case ServiceStepTypes.LEASE_DETAILS:
         return (
           <CheckoutAssetDetails
             propertyId={propertyId}
@@ -128,9 +138,9 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
             onStepSuccess={this.onProceedToNextStep}
           />
         );
-      case 1:
+      case ServiceStepTypes.PROPERTY_IMAGES:
         return <PropertyImages propertyId={propertyId} updateStep={this.onProceedToNextStep} />;
-      case 2:
+      case ServiceStepTypes.PROPERTY_VERIFICATIONS:
         return (
           <PropertyVerification
             propertyId={propertyId}
@@ -139,7 +149,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
             updateStep={this.onProceedToNextStep}
           />
         );
-      default:
+      case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
         return (
           <PropertyPayment
             onPayNow={this.handlePayNow}
@@ -147,6 +157,8 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
             navigateToPropertyHelper={this.navigateToPropertyHelper}
           />
         );
+      default:
+        return null;
     }
   };
 
@@ -160,30 +172,44 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   };
 
   private fetchStepLabels = (): string[] => {
-    const { t } = this.props;
-    // Maintain Order as Per Steps
-    return [t('common:details'), t('common:images'), t('common:verification'), t('common:payment')];
+    const { steps } = this.props;
+    return steps.map((serviceStep) => this.getTitleStringsForStep(serviceStep).stepLabel);
   };
 
-  private fetchStepTitle = (): string => {
+  private getTitleStringsForStep = (serviceStep: ServiceStepTypes): IStringForStep => {
     const { t } = this.props;
-    const { currentStep } = this.state;
-    // Maintain Order as Per Steps
-    const titleStep = [
-      t('enterLeaseDetails'),
-      t('addPropertyImages'),
-      t('completePropertyVerification'),
-      t('payTokenAmount'),
-    ];
-    return titleStep[currentStep];
-  };
-
-  private fetchScreenTitle = (): string => {
-    const { t } = this.props;
-    const { currentStep } = this.state;
-    // Maintain Order as Per Steps
-    const screenTitles = [t('leaseDetails'), t('propertyImages'), t('propertyVerification'), t('tokenPayment')];
-    return screenTitles[currentStep];
+    switch (serviceStep) {
+      case ServiceStepTypes.LEASE_DETAILS:
+        return {
+          stepLabel: t('common:details'),
+          title: t('enterLeaseDetails'),
+          screenTitle: t('leaseDetails'),
+        };
+      case ServiceStepTypes.PROPERTY_IMAGES:
+        return {
+          stepLabel: t('common:images'),
+          title: t('addPropertyImages'),
+          screenTitle: t('propertyImages'),
+        };
+      case ServiceStepTypes.PROPERTY_VERIFICATIONS:
+        return {
+          stepLabel: t('common:verification'),
+          title: t('completePropertyVerification'),
+          screenTitle: t('verification'),
+        };
+      case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
+        return {
+          stepLabel: t('common:payment'),
+          title: t('payTokenAmount'),
+          screenTitle: t('tokenPayment'),
+        };
+      default:
+        return {
+          stepLabel: '',
+          title: '',
+          screenTitle: '',
+        };
+    }
   };
 
   public navigateToPropertyHelper = (markdownKey: MarkdownType): void => {
@@ -204,11 +230,17 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentPropertyId, getCurrentLeaseTermId, getCurrentServiceCategoryId } = PropertySelector;
+  const {
+    getCurrentPropertyId,
+    getCurrentLeaseTermId,
+    getCurrentServiceCategoryId,
+    getServiceStepsDetails,
+  } = PropertySelector;
   return {
     propertyId: getCurrentPropertyId(state),
     leaseTermId: getCurrentLeaseTermId(state),
     serviceCategoryId: getCurrentServiceCategoryId(state),
+    steps: getServiceStepsDetails(state),
   };
 };
 

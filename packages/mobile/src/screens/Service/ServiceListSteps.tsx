@@ -91,10 +91,12 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
       return (
         <>
           <View key={index} style={styles.stepView}>
-            <Text type="small" textType="regular" style={styles.stepItem}>
-              {index + 1}
-            </Text>
-            <Text type="small" textType="regular" style={styles.stepName}>
+            <View style={styles.stepItem}>
+              <Text type="small" textType="regular" key={`stepNo${index}`}>
+                {index + 1}
+              </Text>
+            </View>
+            <Text type="small" textType="regular" style={styles.stepName} key={`stepTitle${index}`}>
               {stepItem.title}
             </Text>
           </View>
@@ -174,10 +176,10 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     borderColor: theme.colors.darkTint4,
-    borderRadius: 35,
+    borderRadius: 35 / 2,
     borderWidth: 2,
-    paddingTop: 5,
-    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   divider: {
     borderColor: theme.colors.disabled,

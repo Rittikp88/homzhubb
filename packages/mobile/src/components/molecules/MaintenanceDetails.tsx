@@ -11,11 +11,20 @@ interface IProps {
   currency: string;
   maintenanceAmountKey: string;
   maintenanceScheduleKey: string;
+  onMaintenanceAmountChanged?: (value: string) => void;
+  onMaintenanceScheduleChanged?: (value: ScheduleTypes) => void;
 }
 
 export const MaintenanceDetails = (props: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
-  const { formProps, currency, maintenanceAmountKey, maintenanceScheduleKey } = props;
+  const {
+    formProps,
+    currency,
+    maintenanceAmountKey,
+    maintenanceScheduleKey,
+    onMaintenanceAmountChanged,
+    onMaintenanceScheduleChanged,
+  } = props;
 
   const scheduleOptions = [
     { label: t('monthly'), value: ScheduleTypes.MONTHLY },
@@ -34,6 +43,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           maxLength={12}
           formProps={formProps}
           inputGroupSuffixText={currency}
+          onChangeText={onMaintenanceAmountChanged}
         />
       </View>
       <View style={styles.dropdownContainer}>
@@ -44,6 +54,8 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           name={maintenanceScheduleKey}
           options={scheduleOptions}
           formProps={formProps}
+          // @ts-ignore
+          onChange={onMaintenanceScheduleChanged}
         />
       </View>
     </View>
