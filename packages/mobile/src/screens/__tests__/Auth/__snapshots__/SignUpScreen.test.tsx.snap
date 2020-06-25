@@ -669,7 +669,7 @@ exports[`SignUp Screen should render signup screen 1`] = `
               ]
             }
           >
-            Should contain a upper-case, lower-case alphabet and a number
+            Should contain a Uppercase/lowercase, a number and a special character
           </Text>
           <View
             style={
