@@ -11,7 +11,7 @@ import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/a
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
-function* login(action: IFluxStandardAction<IEmailLoginPayload | IOtpLoginPayload>) {
+export function* login(action: IFluxStandardAction<IEmailLoginPayload | IOtpLoginPayload>) {
   const { payload } = action;
   try {
     const data: IUser = yield call(UserRepository.login, payload as IEmailLoginPayload | IOtpLoginPayload);
@@ -23,7 +23,7 @@ function* login(action: IFluxStandardAction<IEmailLoginPayload | IOtpLoginPayloa
   }
 }
 
-function* logout(action: IFluxStandardAction<IUserLogoutPayload>) {
+export function* logout(action: IFluxStandardAction<IUserLogoutPayload>) {
   const { payload } = action;
   try {
     yield call(UserRepository.logout, payload);

@@ -7,6 +7,7 @@ import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetail
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
+import { ServiceStepTypes } from '../../../domain/models/Service';
 
 const state: IState = {
   user: {
@@ -54,5 +55,15 @@ describe('Property Selector', () => {
 
   it('should return the service steps', () => {
     expect(PropertySelector.getServiceSteps(state)).toBe(ServiceSteps);
+  });
+
+  it('should return the service steps details', () => {
+    const types = [
+      ServiceStepTypes.LEASE_DETAILS,
+      ServiceStepTypes.PROPERTY_IMAGES,
+      ServiceStepTypes.PROPERTY_VERIFICATIONS,
+      ServiceStepTypes.PAYMENT_TOKEN_AMOUNT,
+    ];
+    expect(PropertySelector.getServiceStepsDetails(state)).toStrictEqual(types);
   });
 });

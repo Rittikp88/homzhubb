@@ -1,3 +1,5 @@
+import { LoginTypes } from '../domain/repositories/interfaces';
+
 export const loginData = {
   access_token: 'access_token',
   refresh_token: 'refresh_token',
@@ -24,4 +26,21 @@ export const otpVerify = {
 
 export const emailExists = {
   is_exists: true,
+};
+
+export const userData = {
+  access_token: 'access_token',
+  refresh_token: 'refresh_token',
+  full_name: 'Rishabh Modi',
+  email: 'r@gmail.com',
+  country_code: 'IN',
+  phone_number: '99999999',
+};
+
+export const loginPayload = {
+  action: LoginTypes.EMAIL,
+  payload: {
+    email: 'test@yopmail.com',
+    password: 'Test@123',
+  },
 };
