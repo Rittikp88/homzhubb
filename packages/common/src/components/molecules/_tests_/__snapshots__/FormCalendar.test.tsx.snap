@@ -2,11 +2,11 @@
 
 exports[`Test cases for FormCalendar should render snapshot 1`] = `
 <withI18nextTranslation(FormCalendar)
-  availableFrom="202020-06-25"
+  availableFrom="202020-06-26"
   onSelectDate={[MockFunction]}
 >
   <FormCalendar
-    availableFrom="202020-06-25"
+    availableFrom="202020-06-26"
     i18n={Object {}}
     onSelectDate={[MockFunction]}
     t={[Function]}
@@ -204,7 +204,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                     ]
                   }
                 >
-                  202020-06-25
+                  202020-06-26
                 </Text>
               </Text>
             </Text>
@@ -862,7 +862,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                               </WithShadowView>
                               <CalendarComponent
                                 onSelect={[Function]}
-                                selectedDate="202020-06-25"
+                                selectedDate="202020-06-26"
                               >
                                 <View>
                                   <View>
@@ -1058,12 +1058,12 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                       </View>
                                     </Divider>
                                     <Calendar
-                                      current="202020-06-25"
+                                      current="202020-06-26"
                                       hideArrows={true}
-                                      key="202020-06-25"
+                                      key="202020-06-26"
                                       markedDates={
                                         Object {
-                                          "202020-06-25": Object {
+                                          "202020-06-26": Object {
                                             "customStyles": Object {
                                               "container": Object {
                                                 "backgroundColor": "#0084F8",
@@ -1077,7 +1077,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                         }
                                       }
                                       markingType="custom"
-                                      minDate={2020-06-25T17:38:42.495Z}
+                                      minDate={2020-06-26T04:59:41.873Z}
                                       onDayPress={[Function]}
                                       renderHeader={[Function]}
                                       style={
@@ -1151,7 +1151,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                 <IGNORE
                                                   addMonth={[Function]}
                                                   hideArrows={true}
-                                                  month={"+202020-06-24T18:30:00.000Z"}
+                                                  month={"+202020-06-25T18:30:00.000Z"}
                                                   monthFormat="MMMM yyyy"
                                                   renderHeader={[Function]}
                                                   theme={Object {}}
@@ -7002,7 +7002,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                             }
                                                           >
                                                             <IGNORE
-                                                              accessibilityLabel=" Thursday 25 June 202020 [object Object]"
+                                                              accessibilityLabel=" Thursday 25 June 202020 "
                                                               date={
                                                                 Object {
                                                                   "dateString": "202020-06-25",
@@ -7012,19 +7012,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                   "year": 202020,
                                                                 }
                                                               }
-                                                              marking={
-                                                                Object {
-                                                                  "customStyles": Object {
-                                                                    "container": Object {
-                                                                      "backgroundColor": "#0084F8",
-                                                                      "borderRadius": 4,
-                                                                    },
-                                                                    "text": Object {
-                                                                      "color": "#FFFFFF",
-                                                                    },
-                                                                  },
-                                                                }
-                                                              }
+                                                              marking={Array []}
                                                               onLongPress={[Function]}
                                                               onPress={[Function]}
                                                               state=""
@@ -7032,7 +7020,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                               theme={Object {}}
                                                             >
                                                               <ForwardRef
-                                                                accessibilityLabel=" Thursday 25 June 202020 [object Object]"
+                                                                accessibilityLabel=" Thursday 25 June 202020 "
                                                                 accessibilityRole="button"
                                                                 onLongPress={[Function]}
                                                                 onPress={[Function]}
@@ -7043,16 +7031,12 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                       "height": 32,
                                                                       "width": 32,
                                                                     },
-                                                                    Object {
-                                                                      "backgroundColor": "#0084F8",
-                                                                      "borderRadius": 4,
-                                                                    },
                                                                   ]
                                                                 }
                                                                 testID="native.calendar.SELECT_DATE_SLOT-202020-06-25"
                                                               >
                                                                 <TouchableOpacity
-                                                                  accessibilityLabel=" Thursday 25 June 202020 [object Object]"
+                                                                  accessibilityLabel=" Thursday 25 June 202020 "
                                                                   accessibilityRole="button"
                                                                   hostRef={null}
                                                                   onLongPress={[Function]}
@@ -7064,16 +7048,12 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                         "height": 32,
                                                                         "width": 32,
                                                                       },
-                                                                      Object {
-                                                                        "backgroundColor": "#0084F8",
-                                                                        "borderRadius": 4,
-                                                                      },
                                                                     ]
                                                                   }
                                                                   testID="native.calendar.SELECT_DATE_SLOT-202020-06-25"
                                                                 >
                                                                   <ForwardRef(AnimatedComponentWrapper)
-                                                                    accessibilityLabel=" Thursday 25 June 202020 [object Object]"
+                                                                    accessibilityLabel=" Thursday 25 June 202020 "
                                                                     accessibilityRole="button"
                                                                     accessible={true}
                                                                     focusable={true}
@@ -7092,10 +7072,6 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                             "height": 32,
                                                                             "width": 32,
                                                                           },
-                                                                          Object {
-                                                                            "backgroundColor": "#0084F8",
-                                                                            "borderRadius": 4,
-                                                                          },
                                                                         ],
                                                                         Object {
                                                                           "opacity": 1,
@@ -7105,7 +7081,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                     testID="native.calendar.SELECT_DATE_SLOT-202020-06-25"
                                                                   >
                                                                     <AnimatedComponent
-                                                                      accessibilityLabel=" Thursday 25 June 202020 [object Object]"
+                                                                      accessibilityLabel=" Thursday 25 June 202020 "
                                                                       accessibilityRole="button"
                                                                       accessible={true}
                                                                       focusable={true}
@@ -7124,10 +7100,6 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                               "height": 32,
                                                                               "width": 32,
                                                                             },
-                                                                            Object {
-                                                                              "backgroundColor": "#0084F8",
-                                                                              "borderRadius": 4,
-                                                                            },
                                                                           ],
                                                                           Object {
                                                                             "opacity": 1,
@@ -7137,7 +7109,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                       testID="native.calendar.SELECT_DATE_SLOT-202020-06-25"
                                                                     >
                                                                       <View
-                                                                        accessibilityLabel=" Thursday 25 June 202020 [object Object]"
+                                                                        accessibilityLabel=" Thursday 25 June 202020 "
                                                                         accessibilityRole="button"
                                                                         accessible={true}
                                                                         focusable={true}
@@ -7151,8 +7123,6 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                         style={
                                                                           Object {
                                                                             "alignItems": "center",
-                                                                            "backgroundColor": "#0084F8",
-                                                                            "borderRadius": 4,
                                                                             "height": 32,
                                                                             "opacity": 1,
                                                                             "width": 32,
@@ -7161,7 +7131,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                         testID="native.calendar.SELECT_DATE_SLOT-202020-06-25"
                                                                       >
                                                                         <View
-                                                                          accessibilityLabel=" Thursday 25 June 202020 [object Object]"
+                                                                          accessibilityLabel=" Thursday 25 June 202020 "
                                                                           accessibilityRole="button"
                                                                           accessible={true}
                                                                           focusable={true}
@@ -7175,8 +7145,6 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                           style={
                                                                             Object {
                                                                               "alignItems": "center",
-                                                                              "backgroundColor": "#0084F8",
-                                                                              "borderRadius": 4,
                                                                               "height": 32,
                                                                               "opacity": 1,
                                                                               "width": 32,
@@ -7196,9 +7164,6 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                                   "fontWeight": "300",
                                                                                   "marginTop": 6,
                                                                                 },
-                                                                                Object {
-                                                                                  "color": "#FFFFFF",
-                                                                                },
                                                                               ]
                                                                             }
                                                                           >
@@ -7213,9 +7178,6 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                                     "fontSize": 16,
                                                                                     "fontWeight": "300",
                                                                                     "marginTop": 6,
-                                                                                  },
-                                                                                  Object {
-                                                                                    "color": "#FFFFFF",
                                                                                   },
                                                                                 ]
                                                                               }
@@ -7253,7 +7215,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                             }
                                                           >
                                                             <IGNORE
-                                                              accessibilityLabel=" Friday 26 June 202020 "
+                                                              accessibilityLabel=" Friday 26 June 202020 [object Object]"
                                                               date={
                                                                 Object {
                                                                   "dateString": "202020-06-26",
@@ -7263,7 +7225,19 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                   "year": 202020,
                                                                 }
                                                               }
-                                                              marking={Array []}
+                                                              marking={
+                                                                Object {
+                                                                  "customStyles": Object {
+                                                                    "container": Object {
+                                                                      "backgroundColor": "#0084F8",
+                                                                      "borderRadius": 4,
+                                                                    },
+                                                                    "text": Object {
+                                                                      "color": "#FFFFFF",
+                                                                    },
+                                                                  },
+                                                                }
+                                                              }
                                                               onLongPress={[Function]}
                                                               onPress={[Function]}
                                                               state=""
@@ -7271,7 +7245,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                               theme={Object {}}
                                                             >
                                                               <ForwardRef
-                                                                accessibilityLabel=" Friday 26 June 202020 "
+                                                                accessibilityLabel=" Friday 26 June 202020 [object Object]"
                                                                 accessibilityRole="button"
                                                                 onLongPress={[Function]}
                                                                 onPress={[Function]}
@@ -7282,12 +7256,16 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                       "height": 32,
                                                                       "width": 32,
                                                                     },
+                                                                    Object {
+                                                                      "backgroundColor": "#0084F8",
+                                                                      "borderRadius": 4,
+                                                                    },
                                                                   ]
                                                                 }
                                                                 testID="native.calendar.SELECT_DATE_SLOT-202020-06-26"
                                                               >
                                                                 <TouchableOpacity
-                                                                  accessibilityLabel=" Friday 26 June 202020 "
+                                                                  accessibilityLabel=" Friday 26 June 202020 [object Object]"
                                                                   accessibilityRole="button"
                                                                   hostRef={null}
                                                                   onLongPress={[Function]}
@@ -7299,12 +7277,16 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                         "height": 32,
                                                                         "width": 32,
                                                                       },
+                                                                      Object {
+                                                                        "backgroundColor": "#0084F8",
+                                                                        "borderRadius": 4,
+                                                                      },
                                                                     ]
                                                                   }
                                                                   testID="native.calendar.SELECT_DATE_SLOT-202020-06-26"
                                                                 >
                                                                   <ForwardRef(AnimatedComponentWrapper)
-                                                                    accessibilityLabel=" Friday 26 June 202020 "
+                                                                    accessibilityLabel=" Friday 26 June 202020 [object Object]"
                                                                     accessibilityRole="button"
                                                                     accessible={true}
                                                                     focusable={true}
@@ -7323,6 +7305,10 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                             "height": 32,
                                                                             "width": 32,
                                                                           },
+                                                                          Object {
+                                                                            "backgroundColor": "#0084F8",
+                                                                            "borderRadius": 4,
+                                                                          },
                                                                         ],
                                                                         Object {
                                                                           "opacity": 1,
@@ -7332,7 +7318,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                     testID="native.calendar.SELECT_DATE_SLOT-202020-06-26"
                                                                   >
                                                                     <AnimatedComponent
-                                                                      accessibilityLabel=" Friday 26 June 202020 "
+                                                                      accessibilityLabel=" Friday 26 June 202020 [object Object]"
                                                                       accessibilityRole="button"
                                                                       accessible={true}
                                                                       focusable={true}
@@ -7351,6 +7337,10 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                               "height": 32,
                                                                               "width": 32,
                                                                             },
+                                                                            Object {
+                                                                              "backgroundColor": "#0084F8",
+                                                                              "borderRadius": 4,
+                                                                            },
                                                                           ],
                                                                           Object {
                                                                             "opacity": 1,
@@ -7360,7 +7350,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                       testID="native.calendar.SELECT_DATE_SLOT-202020-06-26"
                                                                     >
                                                                       <View
-                                                                        accessibilityLabel=" Friday 26 June 202020 "
+                                                                        accessibilityLabel=" Friday 26 June 202020 [object Object]"
                                                                         accessibilityRole="button"
                                                                         accessible={true}
                                                                         focusable={true}
@@ -7374,6 +7364,8 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                         style={
                                                                           Object {
                                                                             "alignItems": "center",
+                                                                            "backgroundColor": "#0084F8",
+                                                                            "borderRadius": 4,
                                                                             "height": 32,
                                                                             "opacity": 1,
                                                                             "width": 32,
@@ -7382,7 +7374,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                         testID="native.calendar.SELECT_DATE_SLOT-202020-06-26"
                                                                       >
                                                                         <View
-                                                                          accessibilityLabel=" Friday 26 June 202020 "
+                                                                          accessibilityLabel=" Friday 26 June 202020 [object Object]"
                                                                           accessibilityRole="button"
                                                                           accessible={true}
                                                                           focusable={true}
@@ -7396,6 +7388,8 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                           style={
                                                                             Object {
                                                                               "alignItems": "center",
+                                                                              "backgroundColor": "#0084F8",
+                                                                              "borderRadius": 4,
                                                                               "height": 32,
                                                                               "opacity": 1,
                                                                               "width": 32,
@@ -7415,6 +7409,9 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                                   "fontWeight": "300",
                                                                                   "marginTop": 6,
                                                                                 },
+                                                                                Object {
+                                                                                  "color": "#FFFFFF",
+                                                                                },
                                                                               ]
                                                                             }
                                                                           >
@@ -7429,6 +7426,9 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                                                                     "fontSize": 16,
                                                                                     "fontWeight": "300",
                                                                                     "marginTop": 6,
+                                                                                  },
+                                                                                  Object {
+                                                                                    "color": "#FFFFFF",
                                                                                   },
                                                                                 ]
                                                                               }
@@ -10568,7 +10568,7 @@ exports[`Test cases for FormCalendar should render snapshot when availableFrom i
                                         }
                                       }
                                       markingType="custom"
-                                      minDate={2020-06-25T17:38:43.376Z}
+                                      minDate={2020-06-26T04:59:42.544Z}
                                       onDayPress={[Function]}
                                       renderHeader={[Function]}
                                       style={
