@@ -219,7 +219,7 @@ exports[`CalendarComponent should match snapshot 1`] = `
           }
         }
         markingType="custom"
-        minDate={2020-06-26T05:29:49.303Z}
+        minDate={2020-06-26T06:44:01.853Z}
         onDayPress={[Function]}
         renderHeader={[Function]}
         style={

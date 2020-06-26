@@ -96,7 +96,15 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
                 {index + 1}
               </Text>
             </View>
-            <Text type="small" textType="regular" style={styles.stepName} key={`stepTitle${index}`}>
+            <Text
+              type="small"
+              textType="regular"
+              style={styles.stepName}
+              key={`stepTitle${index}`}
+              numberOfLines={1}
+              minimumFontScale={0.5}
+              adjustsFontSizeToFit
+            >
               {stepItem.title}
             </Text>
           </View>

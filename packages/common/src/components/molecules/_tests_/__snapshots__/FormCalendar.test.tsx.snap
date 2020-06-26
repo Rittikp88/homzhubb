@@ -1078,7 +1078,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                         }
                                       }
                                       markingType="custom"
-                                      minDate={2020-06-26T05:29:49.592Z}
+                                      minDate={2020-06-26T06:44:02.255Z}
                                       onDayPress={[Function]}
                                       renderHeader={[Function]}
                                       style={
@@ -10570,7 +10570,7 @@ exports[`Test cases for FormCalendar should render snapshot when availableFrom i
                                         }
                                       }
                                       markingType="custom"
-                                      minDate={2020-06-26T05:29:50.375Z}
+                                      minDate={2020-06-26T06:44:02.901Z}
                                       onDayPress={[Function]}
                                       renderHeader={[Function]}
                                       style={
