@@ -3,10 +3,11 @@
 ## Prerequisites : 
 ####Story / Task / Bug should be logged in to JIRA. 
 
-1. Go to JIRA ticket and node the ticket ID as <jira-id>
+1. Go to JIRA ticket and note the ticket ID as <jira-id>
 2. feature/<jira-id>-storyname
 3. task/<jira-id>-storyname
 4. bugfix/<jira-id>-storyname
+5. patch/<jira-id>-storyname
 
 # Code Check in Check List 
 

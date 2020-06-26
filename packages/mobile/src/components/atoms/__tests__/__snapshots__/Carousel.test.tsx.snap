@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Carousel should match snapshot 1`] = `
+exports[`Carousel Atom should match snapshot 1`] = `
 <Carousel
   activeAnimationOptions={null}
   activeAnimationType="timing"
@@ -13,6 +13,25 @@ exports[`Carousel should match snapshot 1`] = `
   callbackOffsetMargin={5}
   containerCustomStyle={Object {}}
   contentContainerCustomStyle={Object {}}
+  data={
+    Array [
+      Object {
+        "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+        "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+        "title": "Search",
+      },
+      Object {
+        "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+        "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+        "title": "Post",
+      },
+      Object {
+        "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+        "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+        "title": "Maintain",
+      },
+    ]
+  }
   enableMomentum={false}
   enableSnap={true}
   firstItem={0}
@@ -34,6 +53,7 @@ exports[`Carousel should match snapshot 1`] = `
   slideStyle={Object {}}
   sliderWidth={750}
   swipeThreshold={20}
+  testID="carsl"
   useScrollView={false}
   vertical={false}
 />

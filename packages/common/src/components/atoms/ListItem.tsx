@@ -11,13 +11,14 @@ interface IListItemProps {
   onItemSelect?: () => void;
   listItemViewStyle?: StyleProp<ViewStyle>;
   itemContentStyle?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 export const ListItem = (props: IListItemProps): React.ReactElement => {
-  const { listItem, onItemSelect, isCheck, listItemViewStyle, itemContentStyle } = props;
+  const { listItem, onItemSelect, isCheck, listItemViewStyle, itemContentStyle, testID } = props;
   return (
     <View style={[styles.listItemView, listItemViewStyle]}>
-      <TouchableOpacity style={[styles.itemContent, itemContentStyle]} onPress={onItemSelect}>
+      <TouchableOpacity style={[styles.itemContent, itemContentStyle]} onPress={onItemSelect} testID={testID}>
         <Text type="small" style={styles.item}>
           {listItem.label}
         </Text>

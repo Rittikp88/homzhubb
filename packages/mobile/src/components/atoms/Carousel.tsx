@@ -31,6 +31,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
         ref={(c: any): void => {
           this.carouselRef = c;
         }}
+        testID="carsl"
       />
     );
   };

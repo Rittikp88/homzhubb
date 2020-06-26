@@ -1,0 +1,2485 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MaintenanceDetails should match snapshot 1`] = `
+<MaintenanceDetails
+  currency="INR"
+  formProps={
+    Object {
+      "touched": Object {
+        "name": "test",
+      },
+      "values": Object {
+        "name": "test",
+      },
+    }
+  }
+  maintenanceAmountKey="maintenance_key"
+  maintenanceScheduleKey="ANNUALLY"
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "flexDirection": "row",
+        "marginBottom": 24,
+        "marginTop": 12,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "flexDirection": "row",
+          "marginBottom": 24,
+          "marginTop": 12,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 0.5,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 0.5,
+            }
+          }
+        >
+          <FormTextInput
+            formProps={
+              Object {
+                "touched": Object {
+                  "name": "test",
+                },
+                "values": Object {
+                  "name": "test",
+                },
+              }
+            }
+            inputGroupSuffixText="INR"
+            inputType="number"
+            label="maintenanceAmount"
+            maxLength={12}
+            name="maintenance_key"
+            placeholder="maintenanceAmountPlaceholder"
+          >
+            <WithFieldError>
+              <Label
+                style={
+                  Object {
+                    "color": "#33495E",
+                    "marginBottom": 6,
+                    "marginTop": 16,
+                  }
+                }
+                type="regular"
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "fontFamily": "OpenSans-Regular",
+                        "fontWeight": "400",
+                      },
+                      Object {
+                        "color": "#33495E",
+                        "marginBottom": 6,
+                        "marginTop": 16,
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "fontFamily": "OpenSans-Regular",
+                          "fontWeight": "400",
+                        },
+                        Object {
+                          "color": "#33495E",
+                          "marginBottom": 6,
+                          "marginTop": 16,
+                        },
+                      ]
+                    }
+                  >
+                    maintenanceAmount
+                    <Label
+                      style={
+                        Object {
+                          "color": "#33495E",
+                        }
+                      }
+                      type="small"
+                    >
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "fontSize": 10,
+                              "lineHeight": 15,
+                              "textAlign": "left",
+                            },
+                            Object {
+                              "fontFamily": "OpenSans-Regular",
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "color": "#33495E",
+                            },
+                          ]
+                        }
+                      >
+                        <Text
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 10,
+                                "lineHeight": 15,
+                                "textAlign": "left",
+                              },
+                              Object {
+                                "fontFamily": "OpenSans-Regular",
+                                "fontWeight": "400",
+                              },
+                              Object {
+                                "color": "#33495E",
+                              },
+                            ]
+                          }
+                        />
+                      </Text>
+                    </Label>
+                  </Text>
+                </Text>
+              </Label>
+              <View
+                style={Object {}}
+              >
+                <View
+                  style={Object {}}
+                >
+                  <Component
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    keyboardType="number-pad"
+                    maxLength={12}
+                    onBlur={[Function]}
+                    onFocus={[Function]}
+                    placeholder="maintenanceAmountPlaceholder"
+                    placeholderTextColor="#C9D6DF"
+                    rejectResponderTermination={true}
+                    style={
+                      Object {
+                        "borderColor": "#C9D6DF",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "color": "#001B36",
+                        "fontSize": 14,
+                        "height": 48,
+                        "paddingHorizontal": 16,
+                        "paddingVertical": 4,
+                        "textAlign": "left",
+                      }
+                    }
+                    underlineColorAndroid="transparent"
+                  >
+                    <TextInput
+                      allowFontScaling={true}
+                      autoCorrect={false}
+                      keyboardType="number-pad"
+                      maxLength={12}
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      placeholder="maintenanceAmountPlaceholder"
+                      placeholderTextColor="#C9D6DF"
+                      rejectResponderTermination={true}
+                      style={
+                        Object {
+                          "borderColor": "#C9D6DF",
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "color": "#001B36",
+                          "fontSize": 14,
+                          "height": 48,
+                          "paddingHorizontal": 16,
+                          "paddingVertical": 4,
+                          "textAlign": "left",
+                        }
+                      }
+                      underlineColorAndroid="transparent"
+                    />
+                  </Component>
+                  <TextInputSuffix
+                    text="INR"
+                  >
+                    <Label
+                      style={
+                        Object {
+                          "bottom": 14,
+                          "color": "#808D9B",
+                          "position": "absolute",
+                          "right": 16,
+                          "top": 14,
+                        }
+                      }
+                      type="large"
+                    >
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "fontSize": 14,
+                              "lineHeight": 21,
+                              "textAlign": "left",
+                            },
+                            Object {
+                              "fontFamily": "OpenSans-Regular",
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "bottom": 14,
+                              "color": "#808D9B",
+                              "position": "absolute",
+                              "right": 16,
+                              "top": 14,
+                            },
+                          ]
+                        }
+                      >
+                        <Text
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 14,
+                                "lineHeight": 21,
+                                "textAlign": "left",
+                              },
+                              Object {
+                                "fontFamily": "OpenSans-Regular",
+                                "fontWeight": "400",
+                              },
+                              Object {
+                                "bottom": 14,
+                                "color": "#808D9B",
+                                "position": "absolute",
+                                "right": 16,
+                                "top": 14,
+                              },
+                            ]
+                          }
+                        >
+                          INR
+                        </Text>
+                      </Text>
+                    </Label>
+                  </TextInputSuffix>
+                </View>
+              </View>
+            </WithFieldError>
+          </FormTextInput>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "flex": 0.5,
+            "marginStart": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 0.5,
+              "marginStart": 16,
+            }
+          }
+        >
+          <FormDropdown
+            formProps={
+              Object {
+                "touched": Object {
+                  "name": "test",
+                },
+                "values": Object {
+                  "name": "test",
+                },
+              }
+            }
+            label="maintenanceSchedule"
+            listHeight={300}
+            listTitle="maintenanceSchedule"
+            name="ANNUALLY"
+            options={
+              Array [
+                Object {
+                  "label": "monthly",
+                  "value": "MONTHLY",
+                },
+                Object {
+                  "label": "quarterly",
+                  "value": "QUARTERLY",
+                },
+                Object {
+                  "label": "annually",
+                  "value": "ANNUALLY",
+                },
+              ]
+            }
+          >
+            <WithFieldError>
+              <Label
+                style={
+                  Object {
+                    "color": "#33495E",
+                    "marginBottom": 6,
+                    "marginTop": 16,
+                  }
+                }
+                type="regular"
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "fontFamily": "OpenSans-Regular",
+                        "fontWeight": "400",
+                      },
+                      Object {
+                        "color": "#33495E",
+                        "marginBottom": 6,
+                        "marginTop": 16,
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "fontFamily": "OpenSans-Regular",
+                          "fontWeight": "400",
+                        },
+                        Object {
+                          "color": "#33495E",
+                          "marginBottom": 6,
+                          "marginTop": 16,
+                        },
+                      ]
+                    }
+                  >
+                    maintenanceSchedule
+                    <Label
+                      style={
+                        Object {
+                          "color": "#33495E",
+                        }
+                      }
+                      type="small"
+                    >
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "fontSize": 10,
+                              "lineHeight": 15,
+                              "textAlign": "left",
+                            },
+                            Object {
+                              "fontFamily": "OpenSans-Regular",
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "color": "#33495E",
+                            },
+                          ]
+                        }
+                      >
+                        <Text
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 10,
+                                "lineHeight": 15,
+                                "textAlign": "left",
+                              },
+                              Object {
+                                "fontFamily": "OpenSans-Regular",
+                                "fontWeight": "400",
+                              },
+                              Object {
+                                "color": "#33495E",
+                              },
+                            ]
+                          }
+                        />
+                      </Text>
+                    </Label>
+                  </Text>
+                </Text>
+              </Label>
+              <Dropdown
+                data={
+                  Array [
+                    Object {
+                      "label": "monthly",
+                      "value": "MONTHLY",
+                    },
+                    Object {
+                      "label": "quarterly",
+                      "value": "QUARTERLY",
+                    },
+                    Object {
+                      "label": "annually",
+                      "value": "ANNUALLY",
+                    },
+                  ]
+                }
+                disable={false}
+                iconColor="#99A4AF"
+                iconSize={16}
+                listHeight={300}
+                listTitle="maintenanceSchedule"
+                onDonePress={[Function]}
+              >
+                <View
+                  pointerEvents="auto"
+                >
+                  <View
+                    pointerEvents="auto"
+                  >
+                    <ForwardRef
+                      onPress={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "borderColor": "#C9D6DF",
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "flexDirection": "row",
+                            "justifyContent": "space-between",
+                            "paddingHorizontal": 16,
+                            "paddingVertical": 12,
+                          },
+                          Object {},
+                        ]
+                      }
+                    >
+                      <TouchableOpacity
+                        hostRef={null}
+                        onPress={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "alignItems": "center",
+                              "borderColor": "#C9D6DF",
+                              "borderRadius": 4,
+                              "borderWidth": 1,
+                              "flexDirection": "row",
+                              "justifyContent": "space-between",
+                              "paddingHorizontal": 16,
+                              "paddingVertical": 12,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        <ForwardRef(AnimatedComponentWrapper)
+                          accessible={true}
+                          focusable={true}
+                          onClick={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            Array [
+                              Array [
+                                Object {
+                                  "alignItems": "center",
+                                  "borderColor": "#C9D6DF",
+                                  "borderRadius": 4,
+                                  "borderWidth": 1,
+                                  "flexDirection": "row",
+                                  "justifyContent": "space-between",
+                                  "paddingHorizontal": 16,
+                                  "paddingVertical": 12,
+                                },
+                                Object {},
+                              ],
+                              Object {
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                        >
+                          <AnimatedComponent
+                            accessible={true}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              Array [
+                                Array [
+                                  Object {
+                                    "alignItems": "center",
+                                    "borderColor": "#C9D6DF",
+                                    "borderRadius": 4,
+                                    "borderWidth": 1,
+                                    "flexDirection": "row",
+                                    "justifyContent": "space-between",
+                                    "paddingHorizontal": 16,
+                                    "paddingVertical": 12,
+                                  },
+                                  Object {},
+                                ],
+                                Object {
+                                  "opacity": 1,
+                                },
+                              ]
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "alignItems": "center",
+                                  "borderColor": "#C9D6DF",
+                                  "borderRadius": 4,
+                                  "borderWidth": 1,
+                                  "flexDirection": "row",
+                                  "justifyContent": "space-between",
+                                  "opacity": 1,
+                                  "paddingHorizontal": 16,
+                                  "paddingVertical": 12,
+                                }
+                              }
+                            >
+                              <View
+                                accessible={true}
+                                focusable={true}
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "borderColor": "#C9D6DF",
+                                    "borderRadius": 4,
+                                    "borderWidth": 1,
+                                    "flexDirection": "row",
+                                    "justifyContent": "space-between",
+                                    "opacity": 1,
+                                    "paddingHorizontal": 16,
+                                    "paddingVertical": 12,
+                                  }
+                                }
+                              >
+                                <Label
+                                  style={Object {}}
+                                  textType="regular"
+                                  type="large"
+                                >
+                                  <Text
+                                    style={
+                                      Array [
+                                        Object {
+                                          "fontSize": 14,
+                                          "lineHeight": 21,
+                                          "textAlign": "left",
+                                        },
+                                        Object {
+                                          "fontFamily": "OpenSans-Regular",
+                                          "fontWeight": "400",
+                                        },
+                                        Object {},
+                                      ]
+                                    }
+                                  >
+                                    <Text
+                                      style={
+                                        Array [
+                                          Object {
+                                            "fontSize": 14,
+                                            "lineHeight": 21,
+                                            "textAlign": "left",
+                                          },
+                                          Object {
+                                            "fontFamily": "OpenSans-Regular",
+                                            "fontWeight": "400",
+                                          },
+                                          Object {},
+                                        ]
+                                      }
+                                    />
+                                  </Text>
+                                </Label>
+                                <Icon
+                                  allowFontScaling={false}
+                                  color="#99A4AF"
+                                  name="down-arrow-filled"
+                                  size={16}
+                                >
+                                  <Text
+                                    allowFontScaling={false}
+                                    style={
+                                      Array [
+                                        Object {
+                                          "color": "#99A4AF",
+                                          "fontSize": 16,
+                                        },
+                                        undefined,
+                                        Object {
+                                          "fontFamily": "icomoon",
+                                          "fontStyle": "normal",
+                                          "fontWeight": "normal",
+                                        },
+                                        Object {},
+                                      ]
+                                    }
+                                  >
+                                    <Text
+                                      allowFontScaling={false}
+                                      style={
+                                        Array [
+                                          Object {
+                                            "color": "#99A4AF",
+                                            "fontSize": 16,
+                                          },
+                                          undefined,
+                                          Object {
+                                            "fontFamily": "icomoon",
+                                            "fontStyle": "normal",
+                                            "fontWeight": "normal",
+                                          },
+                                          Object {},
+                                        ]
+                                      }
+                                    >
+                                      
+                                    </Text>
+                                  </Text>
+                                </Icon>
+                                <PressabilityDebugView
+                                  color="cyan"
+                                />
+                              </View>
+                            </View>
+                          </AnimatedComponent>
+                        </ForwardRef(AnimatedComponentWrapper)>
+                      </TouchableOpacity>
+                    </ForwardRef>
+                    <BottomSheetListView
+                      data={
+                        Array [
+                          Object {
+                            "label": "monthly",
+                            "value": "MONTHLY",
+                          },
+                          Object {
+                            "label": "quarterly",
+                            "value": "QUARTERLY",
+                          },
+                          Object {
+                            "label": "annually",
+                            "value": "ANNUALLY",
+                          },
+                        ]
+                      }
+                      isBottomSheetVisible={false}
+                      listHeight={300}
+                      listTitle="maintenanceSchedule"
+                      onCloseDropDown={[Function]}
+                      onSelectItem={[Function]}
+                      selectedValue=""
+                    >
+                      <BottomSheet
+                        headerTitle="maintenanceSchedule"
+                        isShadowView={true}
+                        onCloseSheet={[Function]}
+                        sheetHeight={300}
+                        visible={false}
+                      >
+                        <RBSheet
+                          animationType="slide"
+                          closeDuration={200}
+                          closeOnDragDown={true}
+                          closeOnPressBack={true}
+                          closeOnPressMask={true}
+                          customStyles={
+                            Object {
+                              "container": Object {
+                                "borderTopLeftRadius": 10,
+                                "borderTopRightRadius": 10,
+                              },
+                            }
+                          }
+                          dragFromTopOnly={true}
+                          height={300}
+                          keyboardAvoidingViewEnabled={true}
+                          minClosingHeight={0}
+                          onClose={[Function]}
+                          onOpen={null}
+                          openDuration={300}
+                        >
+                          <Component
+                            animationType="slide"
+                            hardwareAccelerated={false}
+                            onRequestClose={[Function]}
+                            supportedOrientations={
+                              Array [
+                                "portrait",
+                                "portrait-upside-down",
+                                "landscape",
+                                "landscape-left",
+                                "landscape-right",
+                              ]
+                            }
+                            transparent={true}
+                            visible={false}
+                          >
+                            <Modal
+                              animationType="slide"
+                              hardwareAccelerated={false}
+                              onRequestClose={[Function]}
+                              supportedOrientations={
+                                Array [
+                                  "portrait",
+                                  "portrait-upside-down",
+                                  "landscape",
+                                  "landscape-left",
+                                  "landscape-right",
+                                ]
+                              }
+                              transparent={true}
+                              visible={false}
+                            >
+                              <KeyboardAvoidingView
+                                behavior="padding"
+                                enabled={true}
+                                keyboardVerticalOffset={0}
+                                style={
+                                  Array [
+                                    Object {
+                                      "backgroundColor": "#00000077",
+                                      "flex": 1,
+                                    },
+                                    undefined,
+                                  ]
+                                }
+                              >
+                                <View
+                                  onLayout={[Function]}
+                                  style={
+                                    Array [
+                                      Array [
+                                        Object {
+                                          "backgroundColor": "#00000077",
+                                          "flex": 1,
+                                        },
+                                        undefined,
+                                      ],
+                                      Object {
+                                        "paddingBottom": 0,
+                                      },
+                                    ]
+                                  }
+                                >
+                                  <View
+                                    onLayout={[Function]}
+                                    style={
+                                      Array [
+                                        Array [
+                                          Object {
+                                            "backgroundColor": "#00000077",
+                                            "flex": 1,
+                                          },
+                                          undefined,
+                                        ],
+                                        Object {
+                                          "paddingBottom": 0,
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    <ForwardRef
+                                      activeOpacity={1}
+                                      onPress={[Function]}
+                                      style={
+                                        Object {
+                                          "backgroundColor": "transparent",
+                                          "flex": 1,
+                                        }
+                                      }
+                                    >
+                                      <TouchableOpacity
+                                        activeOpacity={1}
+                                        hostRef={null}
+                                        onPress={[Function]}
+                                        style={
+                                          Object {
+                                            "backgroundColor": "transparent",
+                                            "flex": 1,
+                                          }
+                                        }
+                                      >
+                                        <ForwardRef(AnimatedComponentWrapper)
+                                          accessible={true}
+                                          focusable={true}
+                                          onClick={[Function]}
+                                          onResponderGrant={[Function]}
+                                          onResponderMove={[Function]}
+                                          onResponderRelease={[Function]}
+                                          onResponderTerminate={[Function]}
+                                          onResponderTerminationRequest={[Function]}
+                                          onStartShouldSetResponder={[Function]}
+                                          style={
+                                            Array [
+                                              Object {
+                                                "backgroundColor": "transparent",
+                                                "flex": 1,
+                                              },
+                                              Object {
+                                                "opacity": 1,
+                                              },
+                                            ]
+                                          }
+                                        >
+                                          <AnimatedComponent
+                                            accessible={true}
+                                            focusable={true}
+                                            onClick={[Function]}
+                                            onResponderGrant={[Function]}
+                                            onResponderMove={[Function]}
+                                            onResponderRelease={[Function]}
+                                            onResponderTerminate={[Function]}
+                                            onResponderTerminationRequest={[Function]}
+                                            onStartShouldSetResponder={[Function]}
+                                            style={
+                                              Array [
+                                                Object {
+                                                  "backgroundColor": "transparent",
+                                                  "flex": 1,
+                                                },
+                                                Object {
+                                                  "opacity": 1,
+                                                },
+                                              ]
+                                            }
+                                          >
+                                            <View
+                                              accessible={true}
+                                              focusable={true}
+                                              onClick={[Function]}
+                                              onResponderGrant={[Function]}
+                                              onResponderMove={[Function]}
+                                              onResponderRelease={[Function]}
+                                              onResponderTerminate={[Function]}
+                                              onResponderTerminationRequest={[Function]}
+                                              onStartShouldSetResponder={[Function]}
+                                              style={
+                                                Object {
+                                                  "backgroundColor": "transparent",
+                                                  "flex": 1,
+                                                  "opacity": 1,
+                                                }
+                                              }
+                                            >
+                                              <View
+                                                accessible={true}
+                                                focusable={true}
+                                                onClick={[Function]}
+                                                onResponderGrant={[Function]}
+                                                onResponderMove={[Function]}
+                                                onResponderRelease={[Function]}
+                                                onResponderTerminate={[Function]}
+                                                onResponderTerminationRequest={[Function]}
+                                                onStartShouldSetResponder={[Function]}
+                                                style={
+                                                  Object {
+                                                    "backgroundColor": "transparent",
+                                                    "flex": 1,
+                                                    "opacity": 1,
+                                                  }
+                                                }
+                                              >
+                                                <PressabilityDebugView
+                                                  color="cyan"
+                                                />
+                                              </View>
+                                            </View>
+                                          </AnimatedComponent>
+                                        </ForwardRef(AnimatedComponentWrapper)>
+                                      </TouchableOpacity>
+                                    </ForwardRef>
+                                    <ForwardRef(AnimatedComponentWrapper)
+                                      style={
+                                        Array [
+                                          Object {
+                                            "transform": Array [
+                                              Object {
+                                                "translateX": 0,
+                                              },
+                                              Object {
+                                                "translateY": 0,
+                                              },
+                                            ],
+                                          },
+                                          Object {
+                                            "backgroundColor": "#fff",
+                                            "height": 0,
+                                            "overflow": "hidden",
+                                            "width": "100%",
+                                          },
+                                          Object {
+                                            "height": 0,
+                                          },
+                                          Object {
+                                            "borderTopLeftRadius": 10,
+                                            "borderTopRightRadius": 10,
+                                          },
+                                        ]
+                                      }
+                                    >
+                                      <AnimatedComponent
+                                        style={
+                                          Array [
+                                            Object {
+                                              "transform": Array [
+                                                Object {
+                                                  "translateX": 0,
+                                                },
+                                                Object {
+                                                  "translateY": 0,
+                                                },
+                                              ],
+                                            },
+                                            Object {
+                                              "backgroundColor": "#fff",
+                                              "height": 0,
+                                              "overflow": "hidden",
+                                              "width": "100%",
+                                            },
+                                            Object {
+                                              "height": 0,
+                                            },
+                                            Object {
+                                              "borderTopLeftRadius": 10,
+                                              "borderTopRightRadius": 10,
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        <View
+                                          style={
+                                            Object {
+                                              "backgroundColor": "#fff",
+                                              "borderTopLeftRadius": 10,
+                                              "borderTopRightRadius": 10,
+                                              "height": 0,
+                                              "overflow": "hidden",
+                                              "transform": Array [
+                                                Object {
+                                                  "translateX": 0,
+                                                },
+                                                Object {
+                                                  "translateY": 0,
+                                                },
+                                              ],
+                                              "width": "100%",
+                                            }
+                                          }
+                                        >
+                                          <View
+                                            style={
+                                              Object {
+                                                "backgroundColor": "#fff",
+                                                "borderTopLeftRadius": 10,
+                                                "borderTopRightRadius": 10,
+                                                "height": 0,
+                                                "overflow": "hidden",
+                                                "transform": Array [
+                                                  Object {
+                                                    "translateX": 0,
+                                                  },
+                                                  Object {
+                                                    "translateY": 0,
+                                                  },
+                                                ],
+                                                "width": "100%",
+                                              }
+                                            }
+                                          >
+                                            <View
+                                              onMoveShouldSetResponder={[Function]}
+                                              onMoveShouldSetResponderCapture={[Function]}
+                                              onResponderEnd={[Function]}
+                                              onResponderGrant={[Function]}
+                                              onResponderMove={[Function]}
+                                              onResponderReject={[Function]}
+                                              onResponderRelease={[Function]}
+                                              onResponderStart={[Function]}
+                                              onResponderTerminate={[Function]}
+                                              onResponderTerminationRequest={[Function]}
+                                              onStartShouldSetResponder={[Function]}
+                                              onStartShouldSetResponderCapture={[Function]}
+                                              style={
+                                                Object {
+                                                  "alignItems": "center",
+                                                  "backgroundColor": "transparent",
+                                                  "width": "100%",
+                                                }
+                                              }
+                                            >
+                                              <View
+                                                onMoveShouldSetResponder={[Function]}
+                                                onMoveShouldSetResponderCapture={[Function]}
+                                                onResponderEnd={[Function]}
+                                                onResponderGrant={[Function]}
+                                                onResponderMove={[Function]}
+                                                onResponderReject={[Function]}
+                                                onResponderRelease={[Function]}
+                                                onResponderStart={[Function]}
+                                                onResponderTerminate={[Function]}
+                                                onResponderTerminationRequest={[Function]}
+                                                onStartShouldSetResponder={[Function]}
+                                                onStartShouldSetResponderCapture={[Function]}
+                                                style={
+                                                  Object {
+                                                    "alignItems": "center",
+                                                    "backgroundColor": "transparent",
+                                                    "width": "100%",
+                                                  }
+                                                }
+                                              >
+                                                <View
+                                                  style={
+                                                    Array [
+                                                      Object {
+                                                        "backgroundColor": "#ccc",
+                                                        "borderRadius": 5,
+                                                        "height": 5,
+                                                        "margin": 10,
+                                                        "width": 35,
+                                                      },
+                                                      undefined,
+                                                    ]
+                                                  }
+                                                >
+                                                  <View
+                                                    style={
+                                                      Array [
+                                                        Object {
+                                                          "backgroundColor": "#ccc",
+                                                          "borderRadius": 5,
+                                                          "height": 5,
+                                                          "margin": 10,
+                                                          "width": 35,
+                                                        },
+                                                        undefined,
+                                                      ]
+                                                    }
+                                                  />
+                                                </View>
+                                              </View>
+                                            </View>
+                                            <View
+                                              style={
+                                                Array [
+                                                  Object {
+                                                    "flex": 1,
+                                                    "marginTop": 18,
+                                                  },
+                                                  undefined,
+                                                ]
+                                              }
+                                            >
+                                              <View
+                                                style={
+                                                  Array [
+                                                    Object {
+                                                      "flex": 1,
+                                                      "marginTop": 18,
+                                                    },
+                                                    undefined,
+                                                  ]
+                                                }
+                                              >
+                                                <WithShadowView>
+                                                  <View
+                                                    style={
+                                                      Array [
+                                                        Object {
+                                                          "overflow": "hidden",
+                                                          "paddingBottom": 10,
+                                                        },
+                                                        undefined,
+                                                      ]
+                                                    }
+                                                  >
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "overflow": "hidden",
+                                                            "paddingBottom": 10,
+                                                          },
+                                                          undefined,
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "backgroundColor": "#FFFFFF",
+                                                              "elevation": 7,
+                                                              "shadowColor": "#99A4AF",
+                                                              "shadowOffset": Object {
+                                                                "height": 0,
+                                                                "width": 0,
+                                                              },
+                                                              "shadowOpacity": 0.8,
+                                                              "shadowRadius": 4.65,
+                                                            },
+                                                            undefined,
+                                                          ]
+                                                        }
+                                                      >
+                                                        <View
+                                                          style={
+                                                            Array [
+                                                              Object {
+                                                                "backgroundColor": "#FFFFFF",
+                                                                "elevation": 7,
+                                                                "shadowColor": "#99A4AF",
+                                                                "shadowOffset": Object {
+                                                                  "height": 0,
+                                                                  "width": 0,
+                                                                },
+                                                                "shadowOpacity": 0.8,
+                                                                "shadowRadius": 4.65,
+                                                              },
+                                                              undefined,
+                                                            ]
+                                                          }
+                                                        >
+                                                          <View
+                                                            style={
+                                                              Object {
+                                                                "alignContent": "center",
+                                                                "flexDirection": "row",
+                                                                "marginHorizontal": 24,
+                                                                "paddingBottom": 20,
+                                                              }
+                                                            }
+                                                          >
+                                                            <View
+                                                              style={
+                                                                Object {
+                                                                  "alignContent": "center",
+                                                                  "flexDirection": "row",
+                                                                  "marginHorizontal": 24,
+                                                                  "paddingBottom": 20,
+                                                                }
+                                                              }
+                                                            >
+                                                              <Icon
+                                                                allowFontScaling={false}
+                                                                color="#33495E"
+                                                                name="close"
+                                                                onPress={[Function]}
+                                                                size={22}
+                                                              >
+                                                                <Text
+                                                                  allowFontScaling={false}
+                                                                  onPress={[Function]}
+                                                                  style={
+                                                                    Array [
+                                                                      Object {
+                                                                        "color": "#33495E",
+                                                                        "fontSize": 22,
+                                                                      },
+                                                                      undefined,
+                                                                      Object {
+                                                                        "fontFamily": "icomoon",
+                                                                        "fontStyle": "normal",
+                                                                        "fontWeight": "normal",
+                                                                      },
+                                                                      Object {},
+                                                                    ]
+                                                                  }
+                                                                >
+                                                                  <Text
+                                                                    allowFontScaling={false}
+                                                                    onPress={[Function]}
+                                                                    style={
+                                                                      Array [
+                                                                        Object {
+                                                                          "color": "#33495E",
+                                                                          "fontSize": 22,
+                                                                        },
+                                                                        undefined,
+                                                                        Object {
+                                                                          "fontFamily": "icomoon",
+                                                                          "fontStyle": "normal",
+                                                                          "fontWeight": "normal",
+                                                                        },
+                                                                        Object {},
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    
+                                                                  </Text>
+                                                                </Text>
+                                                              </Icon>
+                                                              <Label
+                                                                style={
+                                                                  Object {
+                                                                    "flex": 1,
+                                                                    "textAlign": "center",
+                                                                  }
+                                                                }
+                                                                textType="semiBold"
+                                                                type="large"
+                                                              >
+                                                                <Text
+                                                                  style={
+                                                                    Array [
+                                                                      Object {
+                                                                        "fontSize": 14,
+                                                                        "lineHeight": 21,
+                                                                        "textAlign": "left",
+                                                                      },
+                                                                      Object {
+                                                                        "fontFamily": "OpenSans-SemiBold",
+                                                                        "fontWeight": "600",
+                                                                      },
+                                                                      Object {
+                                                                        "flex": 1,
+                                                                        "textAlign": "center",
+                                                                      },
+                                                                    ]
+                                                                  }
+                                                                >
+                                                                  <Text
+                                                                    style={
+                                                                      Array [
+                                                                        Object {
+                                                                          "fontSize": 14,
+                                                                          "lineHeight": 21,
+                                                                          "textAlign": "left",
+                                                                        },
+                                                                        Object {
+                                                                          "fontFamily": "OpenSans-SemiBold",
+                                                                          "fontWeight": "600",
+                                                                        },
+                                                                        Object {
+                                                                          "flex": 1,
+                                                                          "textAlign": "center",
+                                                                        },
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    maintenanceSchedule
+                                                                  </Text>
+                                                                </Text>
+                                                              </Label>
+                                                            </View>
+                                                          </View>
+                                                        </View>
+                                                      </View>
+                                                    </View>
+                                                  </View>
+                                                </WithShadowView>
+                                                <FlatList
+                                                  data={
+                                                    Array [
+                                                      Object {
+                                                        "label": "monthly",
+                                                        "value": "MONTHLY",
+                                                      },
+                                                      Object {
+                                                        "label": "quarterly",
+                                                        "value": "QUARTERLY",
+                                                      },
+                                                      Object {
+                                                        "label": "annually",
+                                                        "value": "ANNUALLY",
+                                                      },
+                                                    ]
+                                                  }
+                                                  disableVirtualization={false}
+                                                  extraData=""
+                                                  horizontal={false}
+                                                  initialNumToRender={10}
+                                                  keyExtractor={[Function]}
+                                                  maxToRenderPerBatch={10}
+                                                  numColumns={1}
+                                                  onEndReachedThreshold={2}
+                                                  removeClippedSubviews={false}
+                                                  renderItem={[Function]}
+                                                  scrollEventThrottle={50}
+                                                  updateCellsBatchingPeriod={50}
+                                                  windowSize={21}
+                                                >
+                                                  <VirtualizedList
+                                                    data={
+                                                      Array [
+                                                        Object {
+                                                          "label": "monthly",
+                                                          "value": "MONTHLY",
+                                                        },
+                                                        Object {
+                                                          "label": "quarterly",
+                                                          "value": "QUARTERLY",
+                                                        },
+                                                        Object {
+                                                          "label": "annually",
+                                                          "value": "ANNUALLY",
+                                                        },
+                                                      ]
+                                                    }
+                                                    disableVirtualization={false}
+                                                    extraData=""
+                                                    getItem={[Function]}
+                                                    getItemCount={[Function]}
+                                                    horizontal={false}
+                                                    initialNumToRender={10}
+                                                    keyExtractor={[Function]}
+                                                    maxToRenderPerBatch={10}
+                                                    onEndReachedThreshold={2}
+                                                    removeClippedSubviews={false}
+                                                    renderItem={[Function]}
+                                                    scrollEventThrottle={50}
+                                                    updateCellsBatchingPeriod={50}
+                                                    viewabilityConfigCallbackPairs={Array []}
+                                                    windowSize={21}
+                                                  >
+                                                    <ScrollViewMock
+                                                      data={
+                                                        Array [
+                                                          Object {
+                                                            "label": "monthly",
+                                                            "value": "MONTHLY",
+                                                          },
+                                                          Object {
+                                                            "label": "quarterly",
+                                                            "value": "QUARTERLY",
+                                                          },
+                                                          Object {
+                                                            "label": "annually",
+                                                            "value": "ANNUALLY",
+                                                          },
+                                                        ]
+                                                      }
+                                                      disableVirtualization={false}
+                                                      extraData=""
+                                                      getItem={[Function]}
+                                                      getItemCount={[Function]}
+                                                      horizontal={false}
+                                                      initialNumToRender={10}
+                                                      keyExtractor={[Function]}
+                                                      maxToRenderPerBatch={10}
+                                                      onContentSizeChange={[Function]}
+                                                      onEndReachedThreshold={2}
+                                                      onLayout={[Function]}
+                                                      onMomentumScrollEnd={[Function]}
+                                                      onScroll={[Function]}
+                                                      onScrollBeginDrag={[Function]}
+                                                      onScrollEndDrag={[Function]}
+                                                      removeClippedSubviews={false}
+                                                      renderItem={[Function]}
+                                                      scrollEventThrottle={50}
+                                                      stickyHeaderIndices={Array []}
+                                                      updateCellsBatchingPeriod={50}
+                                                      viewabilityConfigCallbackPairs={Array []}
+                                                      windowSize={21}
+                                                    >
+                                                      <RCTScrollView
+                                                        data={
+                                                          Array [
+                                                            Object {
+                                                              "label": "monthly",
+                                                              "value": "MONTHLY",
+                                                            },
+                                                            Object {
+                                                              "label": "quarterly",
+                                                              "value": "QUARTERLY",
+                                                            },
+                                                            Object {
+                                                              "label": "annually",
+                                                              "value": "ANNUALLY",
+                                                            },
+                                                          ]
+                                                        }
+                                                        disableVirtualization={false}
+                                                        extraData=""
+                                                        getItem={[Function]}
+                                                        getItemCount={[Function]}
+                                                        horizontal={false}
+                                                        initialNumToRender={10}
+                                                        keyExtractor={[Function]}
+                                                        maxToRenderPerBatch={10}
+                                                        onContentSizeChange={[Function]}
+                                                        onEndReachedThreshold={2}
+                                                        onLayout={[Function]}
+                                                        onMomentumScrollEnd={[Function]}
+                                                        onScroll={[Function]}
+                                                        onScrollBeginDrag={[Function]}
+                                                        onScrollEndDrag={[Function]}
+                                                        removeClippedSubviews={false}
+                                                        renderItem={[Function]}
+                                                        scrollEventThrottle={50}
+                                                        stickyHeaderIndices={Array []}
+                                                        updateCellsBatchingPeriod={50}
+                                                        viewabilityConfigCallbackPairs={Array []}
+                                                        windowSize={21}
+                                                      >
+                                                        <RCTScrollView
+                                                          data={
+                                                            Array [
+                                                              Object {
+                                                                "label": "monthly",
+                                                                "value": "MONTHLY",
+                                                              },
+                                                              Object {
+                                                                "label": "quarterly",
+                                                                "value": "QUARTERLY",
+                                                              },
+                                                              Object {
+                                                                "label": "annually",
+                                                                "value": "ANNUALLY",
+                                                              },
+                                                            ]
+                                                          }
+                                                          disableVirtualization={false}
+                                                          extraData=""
+                                                          getItem={[Function]}
+                                                          getItemCount={[Function]}
+                                                          horizontal={false}
+                                                          initialNumToRender={10}
+                                                          keyExtractor={[Function]}
+                                                          maxToRenderPerBatch={10}
+                                                          onContentSizeChange={[Function]}
+                                                          onEndReachedThreshold={2}
+                                                          onLayout={[Function]}
+                                                          onMomentumScrollEnd={[Function]}
+                                                          onScroll={[Function]}
+                                                          onScrollBeginDrag={[Function]}
+                                                          onScrollEndDrag={[Function]}
+                                                          removeClippedSubviews={false}
+                                                          renderItem={[Function]}
+                                                          scrollEventThrottle={50}
+                                                          stickyHeaderIndices={Array []}
+                                                          updateCellsBatchingPeriod={50}
+                                                          viewabilityConfigCallbackPairs={Array []}
+                                                          windowSize={21}
+                                                        >
+                                                          <View>
+                                                            <View>
+                                                              <CellRenderer
+                                                                cellKey="MONTHLY-0"
+                                                                fillRateHelper={
+                                                                  FillRateHelper {
+                                                                    "_anyBlankStartTime": null,
+                                                                    "_enabled": false,
+                                                                    "_getFrameMetrics": [Function],
+                                                                    "_info": Info {
+                                                                      "any_blank_count": 0,
+                                                                      "any_blank_ms": 0,
+                                                                      "any_blank_speed_sum": 0,
+                                                                      "mostly_blank_count": 0,
+                                                                      "mostly_blank_ms": 0,
+                                                                      "pixels_blank": 0,
+                                                                      "pixels_sampled": 0,
+                                                                      "pixels_scrolled": 0,
+                                                                      "sample_count": 0,
+                                                                      "total_time_spent": 0,
+                                                                    },
+                                                                    "_mostlyBlankStartTime": null,
+                                                                    "_samplesStartTime": null,
+                                                                  }
+                                                                }
+                                                                horizontal={false}
+                                                                index={0}
+                                                                inversionStyle={null}
+                                                                item={
+                                                                  Object {
+                                                                    "label": "monthly",
+                                                                    "value": "MONTHLY",
+                                                                  }
+                                                                }
+                                                                key="MONTHLY-0"
+                                                                onLayout={[Function]}
+                                                                onUnmount={[Function]}
+                                                                onUpdateSeparators={[Function]}
+                                                                parentProps={
+                                                                  Object {
+                                                                    "data": Array [
+                                                                      Object {
+                                                                        "label": "monthly",
+                                                                        "value": "MONTHLY",
+                                                                      },
+                                                                      Object {
+                                                                        "label": "quarterly",
+                                                                        "value": "QUARTERLY",
+                                                                      },
+                                                                      Object {
+                                                                        "label": "annually",
+                                                                        "value": "ANNUALLY",
+                                                                      },
+                                                                    ],
+                                                                    "disableVirtualization": false,
+                                                                    "extraData": "",
+                                                                    "getItem": [Function],
+                                                                    "getItemCount": [Function],
+                                                                    "horizontal": false,
+                                                                    "initialNumToRender": 10,
+                                                                    "keyExtractor": [Function],
+                                                                    "maxToRenderPerBatch": 10,
+                                                                    "onEndReachedThreshold": 2,
+                                                                    "removeClippedSubviews": false,
+                                                                    "renderItem": [Function],
+                                                                    "scrollEventThrottle": 50,
+                                                                    "updateCellsBatchingPeriod": 50,
+                                                                    "viewabilityConfigCallbackPairs": Array [],
+                                                                    "windowSize": 21,
+                                                                  }
+                                                                }
+                                                              >
+                                                                <View
+                                                                  onLayout={[Function]}
+                                                                  style={null}
+                                                                >
+                                                                  <View
+                                                                    onLayout={[Function]}
+                                                                    style={null}
+                                                                  >
+                                                                    <ListItem
+                                                                      isCheck={false}
+                                                                      key="0"
+                                                                      listItem={
+                                                                        Object {
+                                                                          "label": "monthly",
+                                                                          "value": "MONTHLY",
+                                                                        }
+                                                                      }
+                                                                      onItemSelect={[Function]}
+                                                                    >
+                                                                      <View
+                                                                        style={
+                                                                          Array [
+                                                                            Object {
+                                                                              "marginHorizontal": 26,
+                                                                            },
+                                                                            undefined,
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        <View
+                                                                          style={
+                                                                            Array [
+                                                                              Object {
+                                                                                "marginHorizontal": 26,
+                                                                              },
+                                                                              undefined,
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          <ForwardRef
+                                                                            onPress={[Function]}
+                                                                            style={
+                                                                              Array [
+                                                                                Object {
+                                                                                  "alignItems": "center",
+                                                                                  "flexDirection": "row",
+                                                                                  "justifyContent": "space-between",
+                                                                                },
+                                                                                undefined,
+                                                                              ]
+                                                                            }
+                                                                          >
+                                                                            <TouchableOpacity
+                                                                              hostRef={null}
+                                                                              onPress={[Function]}
+                                                                              style={
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "alignItems": "center",
+                                                                                    "flexDirection": "row",
+                                                                                    "justifyContent": "space-between",
+                                                                                  },
+                                                                                  undefined,
+                                                                                ]
+                                                                              }
+                                                                            >
+                                                                              <ForwardRef(AnimatedComponentWrapper)
+                                                                                accessible={true}
+                                                                                focusable={true}
+                                                                                onClick={[Function]}
+                                                                                onResponderGrant={[Function]}
+                                                                                onResponderMove={[Function]}
+                                                                                onResponderRelease={[Function]}
+                                                                                onResponderTerminate={[Function]}
+                                                                                onResponderTerminationRequest={[Function]}
+                                                                                onStartShouldSetResponder={[Function]}
+                                                                                style={
+                                                                                  Array [
+                                                                                    Array [
+                                                                                      Object {
+                                                                                        "alignItems": "center",
+                                                                                        "flexDirection": "row",
+                                                                                        "justifyContent": "space-between",
+                                                                                      },
+                                                                                      undefined,
+                                                                                    ],
+                                                                                    Object {
+                                                                                      "opacity": 1,
+                                                                                    },
+                                                                                  ]
+                                                                                }
+                                                                              >
+                                                                                <AnimatedComponent
+                                                                                  accessible={true}
+                                                                                  focusable={true}
+                                                                                  onClick={[Function]}
+                                                                                  onResponderGrant={[Function]}
+                                                                                  onResponderMove={[Function]}
+                                                                                  onResponderRelease={[Function]}
+                                                                                  onResponderTerminate={[Function]}
+                                                                                  onResponderTerminationRequest={[Function]}
+                                                                                  onStartShouldSetResponder={[Function]}
+                                                                                  style={
+                                                                                    Array [
+                                                                                      Array [
+                                                                                        Object {
+                                                                                          "alignItems": "center",
+                                                                                          "flexDirection": "row",
+                                                                                          "justifyContent": "space-between",
+                                                                                        },
+                                                                                        undefined,
+                                                                                      ],
+                                                                                      Object {
+                                                                                        "opacity": 1,
+                                                                                      },
+                                                                                    ]
+                                                                                  }
+                                                                                >
+                                                                                  <View
+                                                                                    accessible={true}
+                                                                                    focusable={true}
+                                                                                    onClick={[Function]}
+                                                                                    onResponderGrant={[Function]}
+                                                                                    onResponderMove={[Function]}
+                                                                                    onResponderRelease={[Function]}
+                                                                                    onResponderTerminate={[Function]}
+                                                                                    onResponderTerminationRequest={[Function]}
+                                                                                    onStartShouldSetResponder={[Function]}
+                                                                                    style={
+                                                                                      Object {
+                                                                                        "alignItems": "center",
+                                                                                        "flexDirection": "row",
+                                                                                        "justifyContent": "space-between",
+                                                                                        "opacity": 1,
+                                                                                      }
+                                                                                    }
+                                                                                  >
+                                                                                    <View
+                                                                                      accessible={true}
+                                                                                      focusable={true}
+                                                                                      onClick={[Function]}
+                                                                                      onResponderGrant={[Function]}
+                                                                                      onResponderMove={[Function]}
+                                                                                      onResponderRelease={[Function]}
+                                                                                      onResponderTerminate={[Function]}
+                                                                                      onResponderTerminationRequest={[Function]}
+                                                                                      onStartShouldSetResponder={[Function]}
+                                                                                      style={
+                                                                                        Object {
+                                                                                          "alignItems": "center",
+                                                                                          "flexDirection": "row",
+                                                                                          "justifyContent": "space-between",
+                                                                                          "opacity": 1,
+                                                                                        }
+                                                                                      }
+                                                                                    >
+                                                                                      <Text
+                                                                                        style={
+                                                                                          Object {
+                                                                                            "paddingVertical": 16,
+                                                                                          }
+                                                                                        }
+                                                                                        type="small"
+                                                                                      >
+                                                                                        <Text
+                                                                                          style={
+                                                                                            Array [
+                                                                                              Object {
+                                                                                                "fontSize": 16,
+                                                                                                "lineHeight": 24,
+                                                                                                "textAlign": "left",
+                                                                                              },
+                                                                                              Object {
+                                                                                                "fontFamily": "OpenSans-Regular",
+                                                                                                "fontWeight": "400",
+                                                                                              },
+                                                                                              Object {
+                                                                                                "paddingVertical": 16,
+                                                                                              },
+                                                                                            ]
+                                                                                          }
+                                                                                        >
+                                                                                          <Text
+                                                                                            style={
+                                                                                              Array [
+                                                                                                Object {
+                                                                                                  "fontSize": 16,
+                                                                                                  "lineHeight": 24,
+                                                                                                  "textAlign": "left",
+                                                                                                },
+                                                                                                Object {
+                                                                                                  "fontFamily": "OpenSans-Regular",
+                                                                                                  "fontWeight": "400",
+                                                                                                },
+                                                                                                Object {
+                                                                                                  "paddingVertical": 16,
+                                                                                                },
+                                                                                              ]
+                                                                                            }
+                                                                                          >
+                                                                                            monthly
+                                                                                          </Text>
+                                                                                        </Text>
+                                                                                      </Text>
+                                                                                      <PressabilityDebugView
+                                                                                        color="cyan"
+                                                                                      />
+                                                                                    </View>
+                                                                                  </View>
+                                                                                </AnimatedComponent>
+                                                                              </ForwardRef(AnimatedComponentWrapper)>
+                                                                            </TouchableOpacity>
+                                                                          </ForwardRef>
+                                                                          <Divider>
+                                                                            <View
+                                                                              style={
+                                                                                Object {
+                                                                                  "borderColor": "#C9D6DF",
+                                                                                  "borderWidth": 0.5,
+                                                                                }
+                                                                              }
+                                                                            >
+                                                                              <View
+                                                                                style={
+                                                                                  Object {
+                                                                                    "borderColor": "#C9D6DF",
+                                                                                    "borderWidth": 0.5,
+                                                                                  }
+                                                                                }
+                                                                              />
+                                                                            </View>
+                                                                          </Divider>
+                                                                        </View>
+                                                                      </View>
+                                                                    </ListItem>
+                                                                  </View>
+                                                                </View>
+                                                              </CellRenderer>
+                                                              <CellRenderer
+                                                                cellKey="QUARTERLY-1"
+                                                                fillRateHelper={
+                                                                  FillRateHelper {
+                                                                    "_anyBlankStartTime": null,
+                                                                    "_enabled": false,
+                                                                    "_getFrameMetrics": [Function],
+                                                                    "_info": Info {
+                                                                      "any_blank_count": 0,
+                                                                      "any_blank_ms": 0,
+                                                                      "any_blank_speed_sum": 0,
+                                                                      "mostly_blank_count": 0,
+                                                                      "mostly_blank_ms": 0,
+                                                                      "pixels_blank": 0,
+                                                                      "pixels_sampled": 0,
+                                                                      "pixels_scrolled": 0,
+                                                                      "sample_count": 0,
+                                                                      "total_time_spent": 0,
+                                                                    },
+                                                                    "_mostlyBlankStartTime": null,
+                                                                    "_samplesStartTime": null,
+                                                                  }
+                                                                }
+                                                                horizontal={false}
+                                                                index={1}
+                                                                inversionStyle={null}
+                                                                item={
+                                                                  Object {
+                                                                    "label": "quarterly",
+                                                                    "value": "QUARTERLY",
+                                                                  }
+                                                                }
+                                                                key="QUARTERLY-1"
+                                                                onLayout={[Function]}
+                                                                onUnmount={[Function]}
+                                                                onUpdateSeparators={[Function]}
+                                                                parentProps={
+                                                                  Object {
+                                                                    "data": Array [
+                                                                      Object {
+                                                                        "label": "monthly",
+                                                                        "value": "MONTHLY",
+                                                                      },
+                                                                      Object {
+                                                                        "label": "quarterly",
+                                                                        "value": "QUARTERLY",
+                                                                      },
+                                                                      Object {
+                                                                        "label": "annually",
+                                                                        "value": "ANNUALLY",
+                                                                      },
+                                                                    ],
+                                                                    "disableVirtualization": false,
+                                                                    "extraData": "",
+                                                                    "getItem": [Function],
+                                                                    "getItemCount": [Function],
+                                                                    "horizontal": false,
+                                                                    "initialNumToRender": 10,
+                                                                    "keyExtractor": [Function],
+                                                                    "maxToRenderPerBatch": 10,
+                                                                    "onEndReachedThreshold": 2,
+                                                                    "removeClippedSubviews": false,
+                                                                    "renderItem": [Function],
+                                                                    "scrollEventThrottle": 50,
+                                                                    "updateCellsBatchingPeriod": 50,
+                                                                    "viewabilityConfigCallbackPairs": Array [],
+                                                                    "windowSize": 21,
+                                                                  }
+                                                                }
+                                                                prevCellKey="MONTHLY-0"
+                                                              >
+                                                                <View
+                                                                  onLayout={[Function]}
+                                                                  style={null}
+                                                                >
+                                                                  <View
+                                                                    onLayout={[Function]}
+                                                                    style={null}
+                                                                  >
+                                                                    <ListItem
+                                                                      isCheck={false}
+                                                                      key="1"
+                                                                      listItem={
+                                                                        Object {
+                                                                          "label": "quarterly",
+                                                                          "value": "QUARTERLY",
+                                                                        }
+                                                                      }
+                                                                      onItemSelect={[Function]}
+                                                                    >
+                                                                      <View
+                                                                        style={
+                                                                          Array [
+                                                                            Object {
+                                                                              "marginHorizontal": 26,
+                                                                            },
+                                                                            undefined,
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        <View
+                                                                          style={
+                                                                            Array [
+                                                                              Object {
+                                                                                "marginHorizontal": 26,
+                                                                              },
+                                                                              undefined,
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          <ForwardRef
+                                                                            onPress={[Function]}
+                                                                            style={
+                                                                              Array [
+                                                                                Object {
+                                                                                  "alignItems": "center",
+                                                                                  "flexDirection": "row",
+                                                                                  "justifyContent": "space-between",
+                                                                                },
+                                                                                undefined,
+                                                                              ]
+                                                                            }
+                                                                          >
+                                                                            <TouchableOpacity
+                                                                              hostRef={null}
+                                                                              onPress={[Function]}
+                                                                              style={
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "alignItems": "center",
+                                                                                    "flexDirection": "row",
+                                                                                    "justifyContent": "space-between",
+                                                                                  },
+                                                                                  undefined,
+                                                                                ]
+                                                                              }
+                                                                            >
+                                                                              <ForwardRef(AnimatedComponentWrapper)
+                                                                                accessible={true}
+                                                                                focusable={true}
+                                                                                onClick={[Function]}
+                                                                                onResponderGrant={[Function]}
+                                                                                onResponderMove={[Function]}
+                                                                                onResponderRelease={[Function]}
+                                                                                onResponderTerminate={[Function]}
+                                                                                onResponderTerminationRequest={[Function]}
+                                                                                onStartShouldSetResponder={[Function]}
+                                                                                style={
+                                                                                  Array [
+                                                                                    Array [
+                                                                                      Object {
+                                                                                        "alignItems": "center",
+                                                                                        "flexDirection": "row",
+                                                                                        "justifyContent": "space-between",
+                                                                                      },
+                                                                                      undefined,
+                                                                                    ],
+                                                                                    Object {
+                                                                                      "opacity": 1,
+                                                                                    },
+                                                                                  ]
+                                                                                }
+                                                                              >
+                                                                                <AnimatedComponent
+                                                                                  accessible={true}
+                                                                                  focusable={true}
+                                                                                  onClick={[Function]}
+                                                                                  onResponderGrant={[Function]}
+                                                                                  onResponderMove={[Function]}
+                                                                                  onResponderRelease={[Function]}
+                                                                                  onResponderTerminate={[Function]}
+                                                                                  onResponderTerminationRequest={[Function]}
+                                                                                  onStartShouldSetResponder={[Function]}
+                                                                                  style={
+                                                                                    Array [
+                                                                                      Array [
+                                                                                        Object {
+                                                                                          "alignItems": "center",
+                                                                                          "flexDirection": "row",
+                                                                                          "justifyContent": "space-between",
+                                                                                        },
+                                                                                        undefined,
+                                                                                      ],
+                                                                                      Object {
+                                                                                        "opacity": 1,
+                                                                                      },
+                                                                                    ]
+                                                                                  }
+                                                                                >
+                                                                                  <View
+                                                                                    accessible={true}
+                                                                                    focusable={true}
+                                                                                    onClick={[Function]}
+                                                                                    onResponderGrant={[Function]}
+                                                                                    onResponderMove={[Function]}
+                                                                                    onResponderRelease={[Function]}
+                                                                                    onResponderTerminate={[Function]}
+                                                                                    onResponderTerminationRequest={[Function]}
+                                                                                    onStartShouldSetResponder={[Function]}
+                                                                                    style={
+                                                                                      Object {
+                                                                                        "alignItems": "center",
+                                                                                        "flexDirection": "row",
+                                                                                        "justifyContent": "space-between",
+                                                                                        "opacity": 1,
+                                                                                      }
+                                                                                    }
+                                                                                  >
+                                                                                    <View
+                                                                                      accessible={true}
+                                                                                      focusable={true}
+                                                                                      onClick={[Function]}
+                                                                                      onResponderGrant={[Function]}
+                                                                                      onResponderMove={[Function]}
+                                                                                      onResponderRelease={[Function]}
+                                                                                      onResponderTerminate={[Function]}
+                                                                                      onResponderTerminationRequest={[Function]}
+                                                                                      onStartShouldSetResponder={[Function]}
+                                                                                      style={
+                                                                                        Object {
+                                                                                          "alignItems": "center",
+                                                                                          "flexDirection": "row",
+                                                                                          "justifyContent": "space-between",
+                                                                                          "opacity": 1,
+                                                                                        }
+                                                                                      }
+                                                                                    >
+                                                                                      <Text
+                                                                                        style={
+                                                                                          Object {
+                                                                                            "paddingVertical": 16,
+                                                                                          }
+                                                                                        }
+                                                                                        type="small"
+                                                                                      >
+                                                                                        <Text
+                                                                                          style={
+                                                                                            Array [
+                                                                                              Object {
+                                                                                                "fontSize": 16,
+                                                                                                "lineHeight": 24,
+                                                                                                "textAlign": "left",
+                                                                                              },
+                                                                                              Object {
+                                                                                                "fontFamily": "OpenSans-Regular",
+                                                                                                "fontWeight": "400",
+                                                                                              },
+                                                                                              Object {
+                                                                                                "paddingVertical": 16,
+                                                                                              },
+                                                                                            ]
+                                                                                          }
+                                                                                        >
+                                                                                          <Text
+                                                                                            style={
+                                                                                              Array [
+                                                                                                Object {
+                                                                                                  "fontSize": 16,
+                                                                                                  "lineHeight": 24,
+                                                                                                  "textAlign": "left",
+                                                                                                },
+                                                                                                Object {
+                                                                                                  "fontFamily": "OpenSans-Regular",
+                                                                                                  "fontWeight": "400",
+                                                                                                },
+                                                                                                Object {
+                                                                                                  "paddingVertical": 16,
+                                                                                                },
+                                                                                              ]
+                                                                                            }
+                                                                                          >
+                                                                                            quarterly
+                                                                                          </Text>
+                                                                                        </Text>
+                                                                                      </Text>
+                                                                                      <PressabilityDebugView
+                                                                                        color="cyan"
+                                                                                      />
+                                                                                    </View>
+                                                                                  </View>
+                                                                                </AnimatedComponent>
+                                                                              </ForwardRef(AnimatedComponentWrapper)>
+                                                                            </TouchableOpacity>
+                                                                          </ForwardRef>
+                                                                          <Divider>
+                                                                            <View
+                                                                              style={
+                                                                                Object {
+                                                                                  "borderColor": "#C9D6DF",
+                                                                                  "borderWidth": 0.5,
+                                                                                }
+                                                                              }
+                                                                            >
+                                                                              <View
+                                                                                style={
+                                                                                  Object {
+                                                                                    "borderColor": "#C9D6DF",
+                                                                                    "borderWidth": 0.5,
+                                                                                  }
+                                                                                }
+                                                                              />
+                                                                            </View>
+                                                                          </Divider>
+                                                                        </View>
+                                                                      </View>
+                                                                    </ListItem>
+                                                                  </View>
+                                                                </View>
+                                                              </CellRenderer>
+                                                              <CellRenderer
+                                                                cellKey="ANNUALLY-2"
+                                                                fillRateHelper={
+                                                                  FillRateHelper {
+                                                                    "_anyBlankStartTime": null,
+                                                                    "_enabled": false,
+                                                                    "_getFrameMetrics": [Function],
+                                                                    "_info": Info {
+                                                                      "any_blank_count": 0,
+                                                                      "any_blank_ms": 0,
+                                                                      "any_blank_speed_sum": 0,
+                                                                      "mostly_blank_count": 0,
+                                                                      "mostly_blank_ms": 0,
+                                                                      "pixels_blank": 0,
+                                                                      "pixels_sampled": 0,
+                                                                      "pixels_scrolled": 0,
+                                                                      "sample_count": 0,
+                                                                      "total_time_spent": 0,
+                                                                    },
+                                                                    "_mostlyBlankStartTime": null,
+                                                                    "_samplesStartTime": null,
+                                                                  }
+                                                                }
+                                                                horizontal={false}
+                                                                index={2}
+                                                                inversionStyle={null}
+                                                                item={
+                                                                  Object {
+                                                                    "label": "annually",
+                                                                    "value": "ANNUALLY",
+                                                                  }
+                                                                }
+                                                                key="ANNUALLY-2"
+                                                                onLayout={[Function]}
+                                                                onUnmount={[Function]}
+                                                                onUpdateSeparators={[Function]}
+                                                                parentProps={
+                                                                  Object {
+                                                                    "data": Array [
+                                                                      Object {
+                                                                        "label": "monthly",
+                                                                        "value": "MONTHLY",
+                                                                      },
+                                                                      Object {
+                                                                        "label": "quarterly",
+                                                                        "value": "QUARTERLY",
+                                                                      },
+                                                                      Object {
+                                                                        "label": "annually",
+                                                                        "value": "ANNUALLY",
+                                                                      },
+                                                                    ],
+                                                                    "disableVirtualization": false,
+                                                                    "extraData": "",
+                                                                    "getItem": [Function],
+                                                                    "getItemCount": [Function],
+                                                                    "horizontal": false,
+                                                                    "initialNumToRender": 10,
+                                                                    "keyExtractor": [Function],
+                                                                    "maxToRenderPerBatch": 10,
+                                                                    "onEndReachedThreshold": 2,
+                                                                    "removeClippedSubviews": false,
+                                                                    "renderItem": [Function],
+                                                                    "scrollEventThrottle": 50,
+                                                                    "updateCellsBatchingPeriod": 50,
+                                                                    "viewabilityConfigCallbackPairs": Array [],
+                                                                    "windowSize": 21,
+                                                                  }
+                                                                }
+                                                                prevCellKey="QUARTERLY-1"
+                                                              >
+                                                                <View
+                                                                  onLayout={[Function]}
+                                                                  style={null}
+                                                                >
+                                                                  <View
+                                                                    onLayout={[Function]}
+                                                                    style={null}
+                                                                  >
+                                                                    <ListItem
+                                                                      isCheck={false}
+                                                                      key="2"
+                                                                      listItem={
+                                                                        Object {
+                                                                          "label": "annually",
+                                                                          "value": "ANNUALLY",
+                                                                        }
+                                                                      }
+                                                                      onItemSelect={[Function]}
+                                                                    >
+                                                                      <View
+                                                                        style={
+                                                                          Array [
+                                                                            Object {
+                                                                              "marginHorizontal": 26,
+                                                                            },
+                                                                            undefined,
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        <View
+                                                                          style={
+                                                                            Array [
+                                                                              Object {
+                                                                                "marginHorizontal": 26,
+                                                                              },
+                                                                              undefined,
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          <ForwardRef
+                                                                            onPress={[Function]}
+                                                                            style={
+                                                                              Array [
+                                                                                Object {
+                                                                                  "alignItems": "center",
+                                                                                  "flexDirection": "row",
+                                                                                  "justifyContent": "space-between",
+                                                                                },
+                                                                                undefined,
+                                                                              ]
+                                                                            }
+                                                                          >
+                                                                            <TouchableOpacity
+                                                                              hostRef={null}
+                                                                              onPress={[Function]}
+                                                                              style={
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "alignItems": "center",
+                                                                                    "flexDirection": "row",
+                                                                                    "justifyContent": "space-between",
+                                                                                  },
+                                                                                  undefined,
+                                                                                ]
+                                                                              }
+                                                                            >
+                                                                              <ForwardRef(AnimatedComponentWrapper)
+                                                                                accessible={true}
+                                                                                focusable={true}
+                                                                                onClick={[Function]}
+                                                                                onResponderGrant={[Function]}
+                                                                                onResponderMove={[Function]}
+                                                                                onResponderRelease={[Function]}
+                                                                                onResponderTerminate={[Function]}
+                                                                                onResponderTerminationRequest={[Function]}
+                                                                                onStartShouldSetResponder={[Function]}
+                                                                                style={
+                                                                                  Array [
+                                                                                    Array [
+                                                                                      Object {
+                                                                                        "alignItems": "center",
+                                                                                        "flexDirection": "row",
+                                                                                        "justifyContent": "space-between",
+                                                                                      },
+                                                                                      undefined,
+                                                                                    ],
+                                                                                    Object {
+                                                                                      "opacity": 1,
+                                                                                    },
+                                                                                  ]
+                                                                                }
+                                                                              >
+                                                                                <AnimatedComponent
+                                                                                  accessible={true}
+                                                                                  focusable={true}
+                                                                                  onClick={[Function]}
+                                                                                  onResponderGrant={[Function]}
+                                                                                  onResponderMove={[Function]}
+                                                                                  onResponderRelease={[Function]}
+                                                                                  onResponderTerminate={[Function]}
+                                                                                  onResponderTerminationRequest={[Function]}
+                                                                                  onStartShouldSetResponder={[Function]}
+                                                                                  style={
+                                                                                    Array [
+                                                                                      Array [
+                                                                                        Object {
+                                                                                          "alignItems": "center",
+                                                                                          "flexDirection": "row",
+                                                                                          "justifyContent": "space-between",
+                                                                                        },
+                                                                                        undefined,
+                                                                                      ],
+                                                                                      Object {
+                                                                                        "opacity": 1,
+                                                                                      },
+                                                                                    ]
+                                                                                  }
+                                                                                >
+                                                                                  <View
+                                                                                    accessible={true}
+                                                                                    focusable={true}
+                                                                                    onClick={[Function]}
+                                                                                    onResponderGrant={[Function]}
+                                                                                    onResponderMove={[Function]}
+                                                                                    onResponderRelease={[Function]}
+                                                                                    onResponderTerminate={[Function]}
+                                                                                    onResponderTerminationRequest={[Function]}
+                                                                                    onStartShouldSetResponder={[Function]}
+                                                                                    style={
+                                                                                      Object {
+                                                                                        "alignItems": "center",
+                                                                                        "flexDirection": "row",
+                                                                                        "justifyContent": "space-between",
+                                                                                        "opacity": 1,
+                                                                                      }
+                                                                                    }
+                                                                                  >
+                                                                                    <View
+                                                                                      accessible={true}
+                                                                                      focusable={true}
+                                                                                      onClick={[Function]}
+                                                                                      onResponderGrant={[Function]}
+                                                                                      onResponderMove={[Function]}
+                                                                                      onResponderRelease={[Function]}
+                                                                                      onResponderTerminate={[Function]}
+                                                                                      onResponderTerminationRequest={[Function]}
+                                                                                      onStartShouldSetResponder={[Function]}
+                                                                                      style={
+                                                                                        Object {
+                                                                                          "alignItems": "center",
+                                                                                          "flexDirection": "row",
+                                                                                          "justifyContent": "space-between",
+                                                                                          "opacity": 1,
+                                                                                        }
+                                                                                      }
+                                                                                    >
+                                                                                      <Text
+                                                                                        style={
+                                                                                          Object {
+                                                                                            "paddingVertical": 16,
+                                                                                          }
+                                                                                        }
+                                                                                        type="small"
+                                                                                      >
+                                                                                        <Text
+                                                                                          style={
+                                                                                            Array [
+                                                                                              Object {
+                                                                                                "fontSize": 16,
+                                                                                                "lineHeight": 24,
+                                                                                                "textAlign": "left",
+                                                                                              },
+                                                                                              Object {
+                                                                                                "fontFamily": "OpenSans-Regular",
+                                                                                                "fontWeight": "400",
+                                                                                              },
+                                                                                              Object {
+                                                                                                "paddingVertical": 16,
+                                                                                              },
+                                                                                            ]
+                                                                                          }
+                                                                                        >
+                                                                                          <Text
+                                                                                            style={
+                                                                                              Array [
+                                                                                                Object {
+                                                                                                  "fontSize": 16,
+                                                                                                  "lineHeight": 24,
+                                                                                                  "textAlign": "left",
+                                                                                                },
+                                                                                                Object {
+                                                                                                  "fontFamily": "OpenSans-Regular",
+                                                                                                  "fontWeight": "400",
+                                                                                                },
+                                                                                                Object {
+                                                                                                  "paddingVertical": 16,
+                                                                                                },
+                                                                                              ]
+                                                                                            }
+                                                                                          >
+                                                                                            annually
+                                                                                          </Text>
+                                                                                        </Text>
+                                                                                      </Text>
+                                                                                      <PressabilityDebugView
+                                                                                        color="cyan"
+                                                                                      />
+                                                                                    </View>
+                                                                                  </View>
+                                                                                </AnimatedComponent>
+                                                                              </ForwardRef(AnimatedComponentWrapper)>
+                                                                            </TouchableOpacity>
+                                                                          </ForwardRef>
+                                                                          <Divider>
+                                                                            <View
+                                                                              style={
+                                                                                Object {
+                                                                                  "borderColor": "#C9D6DF",
+                                                                                  "borderWidth": 0.5,
+                                                                                }
+                                                                              }
+                                                                            >
+                                                                              <View
+                                                                                style={
+                                                                                  Object {
+                                                                                    "borderColor": "#C9D6DF",
+                                                                                    "borderWidth": 0.5,
+                                                                                  }
+                                                                                }
+                                                                              />
+                                                                            </View>
+                                                                          </Divider>
+                                                                        </View>
+                                                                      </View>
+                                                                    </ListItem>
+                                                                  </View>
+                                                                </View>
+                                                              </CellRenderer>
+                                                            </View>
+                                                          </View>
+                                                        </RCTScrollView>
+                                                      </RCTScrollView>
+                                                    </ScrollViewMock>
+                                                  </VirtualizedList>
+                                                </FlatList>
+                                              </View>
+                                            </View>
+                                          </View>
+                                        </View>
+                                      </AnimatedComponent>
+                                    </ForwardRef(AnimatedComponentWrapper)>
+                                  </View>
+                                </View>
+                              </KeyboardAvoidingView>
+                            </Modal>
+                          </Component>
+                        </RBSheet>
+                      </BottomSheet>
+                    </BottomSheetListView>
+                  </View>
+                </View>
+              </Dropdown>
+            </WithFieldError>
+          </FormDropdown>
+        </View>
+      </View>
+    </View>
+  </View>
+</MaintenanceDetails>
+`;

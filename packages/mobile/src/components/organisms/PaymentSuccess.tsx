@@ -34,7 +34,7 @@ export const PaymentSuccess = (props: IProps): React.ReactElement => {
       </Text>
       <Text type="small" textType="semiBold" style={styles.helperText}>
         {t('visitInfo')}
-        <Text type="small" textType="semiBold" style={styles.linkText} onPress={handleLink}>
+        <Text type="small" textType="semiBold" style={styles.linkText} onPress={handleLink} testID="txtPress">
           {t('common:why')}
         </Text>
       </Text>

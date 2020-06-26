@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Item Group Component should render item group label 1`] = `
+exports[`Button Group Component should render item group label 1`] = `
 <View
   style={
     Array [
@@ -18,7 +18,7 @@ exports[`Item Group Component should render item group label 1`] = `
     onPress={[Function]}
     style={
       Object {
-        "backgroundColor": "#0084F8",
+        "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
@@ -27,11 +27,12 @@ exports[`Item Group Component should render item group label 1`] = `
         "paddingVertical": 6,
       }
     }
+    testID="btngrp"
   >
     <Label
       style={
         Object {
-          "color": "#FFFFFF",
+          "color": "#667686",
         }
       }
       textType="regular"
@@ -42,7 +43,7 @@ exports[`Item Group Component should render item group label 1`] = `
     onPress={[Function]}
     style={
       Object {
-        "backgroundColor": "#0084F8",
+        "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
@@ -51,11 +52,12 @@ exports[`Item Group Component should render item group label 1`] = `
         "paddingVertical": 6,
       }
     }
+    testID="btngrp"
   >
     <Label
       style={
         Object {
-          "color": "#FFFFFF",
+          "color": "#667686",
         }
       }
       textType="regular"
@@ -65,7 +67,7 @@ exports[`Item Group Component should render item group label 1`] = `
 </View>
 `;
 
-exports[`Item Group Component should render item group text 1`] = `
+exports[`Button Group Component should render item group text 1`] = `
 <View
   style={
     Array [
@@ -83,7 +85,7 @@ exports[`Item Group Component should render item group text 1`] = `
     onPress={[Function]}
     style={
       Object {
-        "backgroundColor": "#0084F8",
+        "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
@@ -92,11 +94,12 @@ exports[`Item Group Component should render item group text 1`] = `
         "paddingVertical": 6,
       }
     }
+    testID="btngrp"
   >
     <Text
       style={
         Object {
-          "color": "#FFFFFF",
+          "color": "#667686",
         }
       }
       textType="regular"
@@ -107,7 +110,7 @@ exports[`Item Group Component should render item group text 1`] = `
     onPress={[Function]}
     style={
       Object {
-        "backgroundColor": "#0084F8",
+        "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
@@ -116,11 +119,12 @@ exports[`Item Group Component should render item group text 1`] = `
         "paddingVertical": 6,
       }
     }
+    testID="btngrp"
   >
     <Text
       style={
         Object {
-          "color": "#FFFFFF",
+          "color": "#667686",
         }
       }
       textType="regular"

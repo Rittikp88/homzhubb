@@ -17,6 +17,7 @@ interface IButtonGroupProps<T> {
   textType?: TextFieldType;
   textSize?: TextSizeType;
   fontType?: FontWeightType;
+  testID?: string;
 }
 
 export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
@@ -39,6 +40,7 @@ export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
       textSize = 'large',
       fontType = 'regular',
       buttonItemStyle = {},
+      testID = 'btngrp',
     } = this.props;
     let TextField = Label;
 
@@ -58,7 +60,7 @@ export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
     const onItemPress = (): void => onItemSelect(item.value);
 
     return (
-      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.title}>
+      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.title} testID={testID}>
         <TextField type={textSize} textType={fontType} style={textStyle}>
           {item.title}
         </TextField>

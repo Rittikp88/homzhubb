@@ -33,7 +33,7 @@ describe('Forgot Password Screen', () => {
 
   it('should navigate to login screen', () => {
     // @ts-ignore
-    component.dive().dive().dive().find('[testID="login"]').prop('onPress')();
+    component.dive().dive().dive().find('[testID="txtLogin"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 

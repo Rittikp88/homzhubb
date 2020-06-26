@@ -62,7 +62,7 @@ class ForgotPassword extends Component<Props, IForgotPasswordState> {
             textType="semiBold"
             style={styles.backToLoginLink}
             onPress={this.navigateToLogin}
-            testID="login"
+            testID="txtLogin"
           >
             {t('auth:backToLogin')}
           </Text>

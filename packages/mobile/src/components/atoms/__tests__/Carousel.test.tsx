@@ -7,20 +7,60 @@ import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 const createTestProps = (testProps: any): object => ({
   ...testProps,
 });
-let props: any;
-const mockBubbleRef = jest.fn();
-const mockCurrentSlide = jest.fn();
+const mock = jest.fn();
 
-describe('Carousel', () => {
+describe('Carousel Atom', () => {
+  let component: ShallowWrapper;
+  let props: any;
+
+  beforeEach(() => {
+    props = createTestProps({
+      carouselData: OnboardingData,
+      activeSlide: 0,
+      carouselItem: OnboardingData[0],
+      bubbleRef: mock,
+      currentSlide: mock,
+    });
+    component = shallow(<SnapCarousel {...props} />);
+  });
+
+  afterEach(() => jest.clearAllMocks());
+
   it('should match snapshot', () => {
     props = createTestProps({
-      carouselItems: OnboardingData,
+      carouselData: OnboardingData,
       activeSlide: 0,
-      showPagination: true,
-      bubbleRef: mockBubbleRef,
-      currentSlide: mockCurrentSlide,
+      carouselItem: mock,
+      bubbleRef: mock,
+      currentSlide: mock,
     });
-    const wrapper: ShallowWrapper = shallow(<SnapCarousel {...props} />);
-    expect(toJson(wrapper)).toMatchSnapshot();
+    component = shallow(<SnapCarousel {...props} />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should update the current slide', () => {
+    // @ts-ignore
+    component.dive().find('[testID="carsl"]').prop('onSnapToItem')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should call the bubbleref', () => {
+    // @ts-ignore
+    component.dive().find('[testID="carsl"]').prop('onLayout')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should not call the bubbleref', () => {
+    // @ts-ignore
+    props = createTestProps({
+      carouselData: OnboardingData,
+      activeSlide: 0,
+      carouselItem: OnboardingData[0],
+      currentSlide: mock,
+    });
+    const wrapper = shallow(<SnapCarousel {...props} />);
+    // @ts-ignore
+    wrapper.dive().find('[testID="carsl"]').prop('onLayout')();
+    expect(mock).toBeCalledTimes(0);
   });
 });

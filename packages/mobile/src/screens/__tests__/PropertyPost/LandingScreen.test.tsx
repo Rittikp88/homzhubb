@@ -8,11 +8,6 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
 
 const mock = jest.fn();
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => {
-  return {
-    get: jest.fn(),
-  };
-});
 
 const mockStore = configureStore([]);
 
@@ -55,7 +50,7 @@ describe('Landing Screen Component', () => {
           <LandingScreen {...props} />
         </I18nextProvider>
       </Provider>
-    ) as any;
+    );
   });
 
   afterAll(() => {
@@ -67,12 +62,12 @@ describe('Landing Screen Component', () => {
   });
 
   it('should navigate to Add Property Screen', () => {
-    component.find('[testID="addProperty"]').at(1).prop('onPress')();
+    component.find('[testID="btnAddProperty"]').at(0).prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should call logout', () => {
-    component.find('[testID="logout"]').at(1).prop('onPress')();
+    component.find('[testID="lblLogout"]').at(1).prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 });

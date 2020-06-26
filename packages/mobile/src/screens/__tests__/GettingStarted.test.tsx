@@ -32,19 +32,19 @@ describe('Getting started Screen', () => {
 
   it('should navigate to Property Search Screen', () => {
     // @ts-ignore
-    component.find('[testID="getStarted"]').prop('onPress')();
+    component.find('[testID="btnGettingStarted"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate to login Screen', () => {
     // @ts-ignore
-    component.find('[testID="login"]').prop('onPress')();
+    component.find('[testID="btnLogin"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate to signup Screen', () => {
     // @ts-ignore
-    component.find('[testID="sign_up"]').prop('onPress')();
+    component.find('[testID="lblSignup"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 });

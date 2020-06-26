@@ -31,9 +31,6 @@ type Props = IPropertyDetailsItemsProps & WithTranslation;
 class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
     const { data, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
-    if (!data) {
-      return null;
-    }
     return (
       <View style={styles.container}>
         <ButtonGroup<number>
@@ -45,6 +42,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           fontType="semiBold"
           containerStyle={styles.buttonGroupContainer}
           buttonItemStyle={styles.propertyTypeButton}
+          testID="btngrpPropertyGroup"
         />
         <ButtonGroup<number>
           data={this.fetchButtonGroupData<IPropertyTypes>(data[propertyGroupSelectedIndex].asset_types)}
@@ -55,6 +53,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           fontType="regular"
           containerStyle={styles.buttonGroupContainer}
           buttonItemStyle={styles.assetTypeButton}
+          testID="btngrpPropertyGroupType"
         />
         <View style={styles.propertyContainer}>
           {this.renderSpaceAvailable()}
@@ -64,12 +63,9 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
     );
   }
 
-  public renderSpaceAvailable = (): React.ReactNode => {
+  public renderSpaceAvailable = (): React.ReactElement => {
     const { t, data, propertyGroupSelectedIndex } = this.props;
-    if (!data) {
-      return null;
-    }
-    const spaceAvailableElements: Array<React.ReactNode> = [];
+    const spaceAvailableElements: Array<React.ReactElement> = [];
     data?.[propertyGroupSelectedIndex]?.space_types.forEach((space: IPropertyTypes, index: number) => {
       const key = data?.[propertyGroupSelectedIndex]?.name;
       const pickerValue = this.findSpaceTypeValue(space);
@@ -81,7 +77,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           <Label type="large" textType="regular" style={styles.label}>
             {space.name}
           </Label>
-          <HorizontalPicker key={`${key}-${index}`} onValueChange={onValueChange} value={pickerValue} />
+          <HorizontalPicker key={`${key}-${index}`} onValueChange={onValueChange} value={pickerValue} testID="ftlist" />
         </View>
       );
     });
@@ -126,7 +122,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           <Label type="large" textType="regular" style={styles.label}>
             {space.name}
           </Label>
-          <HorizontalPicker key={index} onValueChange={onValueChange} value={space.value} />
+          <HorizontalPicker key={index} onValueChange={onValueChange} value={space.value} testID="ftlist" />
         </View>
       );
     });
@@ -160,6 +156,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
             placeholder={t('enterCarpetArea')}
             onChangeText={this.onCarpetAreaChange}
             maxLength={5}
+            testID="txtipCarpetArea"
           />
           {carpetAreaError && (
             <Label type="regular" style={styles.error}>
@@ -179,6 +176,7 @@ class PropertyDetailsItems extends React.PureComponent<Props, {}> {
             iconSize={16}
             iconColor={theme.colors.darkTint7}
             containerStyle={styles.dropdownContainer}
+            testID="dpnAreaUnit"
           />
         </View>
       </View>

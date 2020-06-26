@@ -29,7 +29,7 @@ describe('Success Password Screen', () => {
   });
 
   it('should navigate to login screen', () => {
-    component.dive().dive().dive().find('[testID="login"]').prop('onPress')();
+    component.dive().dive().dive().find('[testID="btnLogin"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 });

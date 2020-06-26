@@ -103,7 +103,7 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
           title={t('skip')}
           containerStyle={styles.skipLink}
           onPress={this.navigateToGettingStarted}
-          testID="gettingStarted"
+          testID="btnGettingStarted"
         />
       </View>
     );

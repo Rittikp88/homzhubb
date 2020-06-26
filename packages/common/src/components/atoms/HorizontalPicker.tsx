@@ -18,6 +18,7 @@ interface IItem {
 interface IProps {
   value: number;
   onValueChange: (index: string | number) => void;
+  testID?: string;
 }
 
 const data = [...Array(10).keys()];
@@ -47,7 +48,7 @@ const keyExtractor = (item: number, index: number): string => index.toString();
 
 const HorizontalPicker = (props: IProps): React.ReactElement => {
   const refPicker = useRef(null);
-  const { onValueChange, value } = props;
+  const { onValueChange, value, testID } = props;
   const [selected, setSelected] = useState(value);
 
   useEffect(() => {
@@ -82,6 +83,7 @@ const HorizontalPicker = (props: IProps): React.ReactElement => {
         showsHorizontalScrollIndicator={false}
         onSelected={({ item, index }: IItem): void => handleChange(index)}
         renderItem={(option: IItem): React.ReactElement => ItemToRender(option, selected)}
+        testID={testID}
       />
     </View>
   );

@@ -32,6 +32,7 @@ export interface IProps {
   itemStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  testID?: string;
 }
 
 interface IState {
@@ -57,6 +58,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
       containerStyle = {},
       textStyle = {},
       icon = icons.downArrowFilled,
+      testID,
     } = this.props;
     const { dropdownVisible } = this.state;
     const selectedItem = data.find((d: PickerItemProps) => d.value === value);
@@ -76,6 +78,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
           isBottomSheetVisible={dropdownVisible}
           onCloseDropDown={this.onCancel}
           onSelectItem={this.onValueChange}
+          testID={testID}
         />
       </View>
     );

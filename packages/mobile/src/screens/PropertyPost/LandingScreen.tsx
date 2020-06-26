@@ -59,11 +59,11 @@ class LandingScreen extends React.PureComponent<Props, {}> {
               type="primary"
               onPress={this.onAddProperty}
               containerStyle={styles.addProperty}
-              testID="addProperty"
+              testID="btnAddProperty"
             />
             <Label type="large" textType="regular" style={styles.logoutContainer}>
               {t('logoutHelperText')} &nbsp;
-              <Label type="large" textType="bold" style={styles.logout} onPress={this.logout} testID="logout">
+              <Label type="large" textType="bold" style={styles.logout} onPress={this.logout} testID="lblLogout">
                 {t('common:logout')}
               </Label>
             </Label>

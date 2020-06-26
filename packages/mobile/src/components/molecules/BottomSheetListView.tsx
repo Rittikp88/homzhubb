@@ -11,6 +11,7 @@ interface IProps {
   isBottomSheetVisible: boolean;
   onCloseDropDown: () => void;
   onSelectItem: (value: string) => void;
+  testID?: string;
 }
 
 export class BottomSheetListView extends Component<IProps> {
@@ -36,10 +37,10 @@ export class BottomSheetListView extends Component<IProps> {
 
   private renderSheetItem = (data: any): React.ReactElement => {
     const { item, index } = data;
-    const { selectedValue, onSelectItem } = this.props;
+    const { selectedValue, onSelectItem, testID } = this.props;
     const onItemSelect = (): void => onSelectItem(item.value);
     const isCheck: boolean = selectedValue === item.value;
-    return <ListItem listItem={item} isCheck={isCheck} onItemSelect={onItemSelect} key={index} />;
+    return <ListItem listItem={item} isCheck={isCheck} onItemSelect={onItemSelect} key={index} testID={testID} />;
   };
 
   private renderKeyExtractor = (item: any, index: number): string => {

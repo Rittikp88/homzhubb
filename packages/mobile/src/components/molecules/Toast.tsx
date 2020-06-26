@@ -26,7 +26,7 @@ class Toast extends React.PureComponent<IProps> {
         </View>
         {type === 'danger' && (
           <TouchableHighlight
-            testID="OkButton"
+            testID="tohighPress"
             style={styles.buttonContainer}
             onPress={this.onOKPress}
             underlayColor={theme.colors.highPriority}

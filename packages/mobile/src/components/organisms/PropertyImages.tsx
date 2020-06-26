@@ -103,22 +103,23 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     const { t } = this.props;
     const { selectedImages } = this.state;
     const coverPhoto: React.ReactNode[] = [];
-    if (selectedImages.length > 0) {
-      const coverImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
-        return image.is_cover_image;
-      });
-      const currentImage: IPropertySelectedImages =
-        coverImageIndex !== -1 ? selectedImages[coverImageIndex] : selectedImages[0];
-      coverPhoto.push(
-        <ImageThumbnail
-          imageUrl={currentImage.link}
-          isIconVisible={false}
-          isFavorite
-          coverPhotoTitle={t('property:coverPhoto')}
-          isCoverPhotoContainer
-        />
-      );
+    if (selectedImages.length <= 0) {
+      return null;
     }
+    const coverImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
+      return image.is_cover_image;
+    });
+    const currentImage: IPropertySelectedImages =
+      coverImageIndex !== -1 ? selectedImages[coverImageIndex] : selectedImages[0];
+    coverPhoto.push(
+      <ImageThumbnail
+        imageUrl={currentImage.link}
+        isIconVisible={false}
+        isFavorite
+        coverPhotoTitle={t('property:coverPhoto')}
+        isCoverPhotoContainer
+      />
+    );
     return (
       <>
         {coverPhoto}
@@ -128,6 +129,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
             numColumns={3}
             renderItem={this.renderImagesList}
             keyExtractor={this.renderKeyExtractor}
+            testID="ftlistRenderItem"
           />
         </SafeAreaView>
       </>

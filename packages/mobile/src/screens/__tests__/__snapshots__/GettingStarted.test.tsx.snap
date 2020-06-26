@@ -50,7 +50,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
         }
       }
       onPress={[Function]}
-      testID="getStarted"
+      testID="btnGettingStarted"
       textSize="small"
       title="Get Started"
       type="primary"
@@ -63,7 +63,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
         }
       }
       onPress={[Function]}
-      testID="login"
+      testID="btnLogin"
       title="Login"
       type="secondary"
     />
@@ -85,7 +85,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
             "color": "#0084F8",
           }
         }
-        testID="sign_up"
+        testID="lblSignup"
         textType="bold"
         type="large"
       >

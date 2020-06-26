@@ -24988,7 +24988,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                               }
                             }
                             onPress={[Function]}
-                            testID="addProperty"
+                            testID="btnAddProperty"
                             title="Add property"
                             type="primary"
                           >
@@ -25005,7 +25005,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                   "justifyContent": "center",
                                 }
                               }
-                              testID="addProperty"
+                              testID="btnAddProperty"
                             >
                               <TouchableOpacity
                                 activeOpacity={0.5}
@@ -25021,7 +25021,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                     "justifyContent": "center",
                                   }
                                 }
-                                testID="addProperty"
+                                testID="btnAddProperty"
                               >
                                 <ForwardRef(AnimatedComponentWrapper)
                                   accessible={true}
@@ -25047,7 +25047,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                       },
                                     ]
                                   }
-                                  testID="addProperty"
+                                  testID="btnAddProperty"
                                 >
                                   <AnimatedComponent
                                     accessible={true}
@@ -25073,7 +25073,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                         },
                                       ]
                                     }
-                                    testID="addProperty"
+                                    testID="btnAddProperty"
                                   >
                                     <View
                                       accessible={true}
@@ -25095,7 +25095,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                           "opacity": 1,
                                         }
                                       }
-                                      testID="addProperty"
+                                      testID="btnAddProperty"
                                     >
                                       <View
                                         accessible={true}
@@ -25117,7 +25117,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                             "opacity": 1,
                                           }
                                         }
-                                        testID="addProperty"
+                                        testID="btnAddProperty"
                                       >
                                         <Text
                                           style={
@@ -25244,7 +25244,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                       "color": "#0084F8",
                                     }
                                   }
-                                  testID="logout"
+                                  testID="lblLogout"
                                   textType="bold"
                                   type="large"
                                 >
@@ -25266,7 +25266,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                         },
                                       ]
                                     }
-                                    testID="logout"
+                                    testID="lblLogout"
                                   >
                                     <Text
                                       onPress={[Function]}
@@ -25286,7 +25286,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
                                           },
                                         ]
                                       }
-                                      testID="logout"
+                                      testID="lblLogout"
                                     >
                                       Logout
                                     </Text>

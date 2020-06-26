@@ -26,7 +26,7 @@ class SuccessResetPassword extends Component<Props, {}> {
           title={t('common:login')}
           onPress={this.navigateToLogin}
           containerStyle={styles.button}
-          testID="login"
+          testID="btnLogin"
         />
       </View>
     );
