@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Property Details Component should render PropertyDetails 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "flexDirection": "row",
+      "margin": 24,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#E5E8EB",
+        "borderRadius": 4,
+        "flex": 1,
+        "justifyContent": "center",
+        "marginRight": 10,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#667686"
+      name="location-marker"
+      size={30}
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "flex": 3,
+      }
+    }
+  >
+    <Label
+      textType="semiBold"
+      type="large"
+    >
+      Property A
+    </Label>
+    <Label
+      style={
+        Object {
+          "paddingTop": 10,
+        }
+      }
+      textType="regular"
+      type="regular"
+    >
+      Property Address
+    </Label>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "flex-start",
+      }
+    }
+  >
+    <Label
+      onPress={[Function]}
+      style={
+        Object {
+          "color": "#0084F8",
+        }
+      }
+      testID="lblChange"
+      textType="semiBold"
+      type="large"
+    >
+      common:change
+    </Label>
+  </View>
+</View>
+`;

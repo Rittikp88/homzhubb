@@ -28,7 +28,7 @@ interface IOnBoardingScreenState {
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.OnBoarding>;
 type Props = IDispatchProps & libraryProps;
 
-class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
+export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
   public state = {
     activeSlide: 0,
     ref: null,
@@ -57,6 +57,7 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
             carouselItem={this.renderCarouselItem}
             activeSlide={activeSlide}
             currentSlide={this.changeSlide}
+            testID="carsl"
           />
           <PaginationComponent dotsLength={data.length} activeSlide={activeSlide} />
         </View>
@@ -67,7 +68,13 @@ class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
           <Label type="large" textType="regular" style={styles.description}>
             {currentSlide.description}
           </Label>
-          <Button type="primary" title={buttonText} onPress={this.renderNextFrame} containerStyle={styles.button} />
+          <Button
+            type="primary"
+            title={buttonText}
+            onPress={this.renderNextFrame}
+            containerStyle={styles.button}
+            testID="btnNextFrame"
+          />
         </View>
       </SafeAreaView>
     );

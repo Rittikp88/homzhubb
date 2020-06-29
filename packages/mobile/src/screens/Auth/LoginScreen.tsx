@@ -24,7 +24,7 @@ interface ILoginScreenState {
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.Login>;
 type Props = IDispatchProps & libraryProps;
 
-class LoginScreen extends Component<Props, ILoginScreenState> {
+export class LoginScreen extends Component<Props, ILoginScreenState> {
   public state = {
     socialMediaProviders: [],
   };
@@ -44,15 +44,17 @@ class LoginScreen extends Component<Props, ILoginScreenState> {
         linkText={t('auth:signup')}
         onIconPress={this.onClosePress}
         onLinkPress={this.onSignUpClicked}
+        testID="headerEvents"
       >
         <>
-          <LoginForm onLoginSuccess={this.onOtpLoginPress} />
+          <LoginForm onLoginSuccess={this.onOtpLoginPress} testID="loginForm" />
           <SocialMediaComponent
             isFromLogin
             onLoginSuccessAction={loginSuccess}
             socialMediaItems={socialMediaProviders}
             onEmailLogin={this.onEmailLoginPress}
             navigation={navigation}
+            testID="socialEmailLogin"
           />
         </>
       </AnimatedHeader>
@@ -95,7 +97,7 @@ class LoginScreen extends Component<Props, ILoginScreenState> {
   };
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { loginSuccess } = UserActions;
   return bindActionCreators(
     {

@@ -25,7 +25,7 @@ interface IDispatchProps {
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.EmailLogin>;
 type Props = IDispatchProps & libraryProps;
 
-class EmailLoginScreen extends React.PureComponent<Props> {
+export class EmailLoginScreen extends React.PureComponent<Props> {
   public render(): React.ReactNode {
     const { t } = this.props;
     return (
@@ -36,11 +36,13 @@ class EmailLoginScreen extends React.PureComponent<Props> {
           subTitleType="large"
           subTitleColor={theme.colors.dark}
           onIconPress={this.handleIconPress}
+          testID="headerIconPress"
         />
         <LoginForm
           isEmailLogin
           handleForgotPassword={this.handleForgotPassword}
           onLoginSuccess={this.handleLoginSuccess}
+          testID="loginForm"
         />
       </View>
     );
@@ -71,7 +73,7 @@ class EmailLoginScreen extends React.PureComponent<Props> {
   };
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { login } = UserActions;
   return bindActionCreators(
     {

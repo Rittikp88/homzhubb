@@ -24,9 +24,9 @@ interface IDispatchProps {
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListSteps>;
-type Props = libraryProps & IStateProps & IDispatchProps;
+export type Props = libraryProps & IStateProps & IDispatchProps;
 
-class ServiceListSteps extends React.PureComponent<Props, {}> {
+export class ServiceListSteps extends React.PureComponent<Props, {}> {
   public componentDidMount(): void {
     const {
       getServiceStepsDetails,
@@ -60,7 +60,13 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
               <Text type="regular" textType="semiBold" style={styles.listingTitle}>
                 {params.name}
               </Text>
-              <Label type="large" textType="semiBold" style={styles.label} onPress={this.navigateBack}>
+              <Label
+                type="large"
+                textType="semiBold"
+                style={styles.label}
+                onPress={this.navigateBack}
+                testID="lblNavigate"
+              >
                 {t('common:change')}
               </Label>
             </View>
@@ -78,6 +84,7 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
             title={t('common:getStarted')}
             containerStyle={styles.buttonStyle}
             onPress={this.onContinue}
+            testID="btnContinue"
           />
         </WithShadowView>
       </View>
@@ -125,14 +132,14 @@ class ServiceListSteps extends React.PureComponent<Props, {}> {
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   const { getServiceSteps } = PropertySelector;
   return {
     serviceSteps: getServiceSteps(state),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getServiceStepsDetails } = PropertyActions;
   return bindActionCreators(
     {

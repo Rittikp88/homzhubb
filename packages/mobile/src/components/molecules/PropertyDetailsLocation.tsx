@@ -5,7 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components';
 
-interface IProps {
+export interface IProps {
   propertyName: string;
   propertyAddress: string;
   onNavigate: () => void;
@@ -33,7 +33,7 @@ const PropertyDetailsLocation = (props: Props): React.ReactElement => {
         </Label>
       </View>
       <View style={styles.navigation}>
-        <Label type="large" textType="semiBold" style={styles.label} onPress={navigateToMaps}>
+        <Label type="large" textType="semiBold" style={styles.label} onPress={navigateToMaps} testID="lblChange">
           {t('common:change')}
         </Label>
       </View>

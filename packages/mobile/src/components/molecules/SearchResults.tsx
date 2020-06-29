@@ -5,7 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components';
 import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
-interface IProps extends WithTranslation {
+export interface IProps extends WithTranslation {
   results: GooglePlaceData[];
   onResultPress: (item: GooglePlaceData) => void;
 }

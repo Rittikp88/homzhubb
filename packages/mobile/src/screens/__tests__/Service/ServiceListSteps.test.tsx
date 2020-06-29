@@ -1,41 +1,76 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import configureStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { I18nextProvider } from 'react-i18next';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
+import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
-import ServiceListSteps from '@homzhub/mobile/src/screens/Service/ServiceListSteps';
+import {
+  ServiceListSteps,
+  mapStateToProps,
+  mapDispatchToProps,
+} from '@homzhub/mobile/src/screens/Service/ServiceListSteps';
 
-const mockStore = configureStore([]);
+const mock = jest.fn();
 
 describe('Service List Steps Screen', () => {
-  let store: any;
-  let component: any;
+  let component: ShallowWrapper;
   let props: any;
-  beforeEach(async () => {
-    store = mockStore({
-      property: {
-        servicesSteps: ServiceSteps[0],
-      },
-    });
+
+  beforeEach(() => {
     props = {
+      serviceSteps: ServiceSteps,
+      getServiceStepsDetails: mock,
       navigation: {
-        navigate: jest.fn(),
+        navigate: mock,
+        goBack: mock,
       },
     };
-    await I18nService.init();
     component = shallow(
-      <Provider store={store}>
-        <I18nextProvider i18n={I18nService.instance}>
-          <ServiceListSteps {...props} />
-        </I18nextProvider>
-      </Provider>
+      <ServiceListSteps
+        {...props}
+        t={(key: string): string => key}
+        route={{ params: { name: 'Some Listing', id: 1 }, isExact: true, path: '', url: '' }}
+      />
     );
   });
 
   it('should render snapshot', () => {
-    expect(toJson(component.dive().dive().dive())).toMatchSnapshot();
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should navigate on Continue', () => {
+    // @ts-ignore
+    component.find('[testID="btnContinue"]').prop('onPress')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should navigate back', () => {
+    // @ts-ignore
+    component.find('[testID="lblNavigate"]').prop('onPress')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should return service steps', () => {
+    const mockedState = {
+      user: {
+        ...initialUserState,
+      },
+      property: {
+        ...initialPropertyState,
+        servicesSteps: ServiceSteps,
+      },
+    };
+    const state = mapStateToProps(mockedState);
+    expect(state.serviceSteps).toBe(ServiceSteps);
+  });
+
+  it('should dispatch getServiceStepsDetails', () => {
+    const dispatch = jest.fn();
+    mapDispatchToProps(dispatch).getServiceStepsDetails(1);
+    expect(dispatch.mock.calls[0][0]).toEqual({
+      type: PropertyActionTypes.GET.SERVICE_STEPS,
+      payload: 1,
+    });
   });
 });

@@ -10,13 +10,14 @@ interface ICarouselProps<T> {
   currentSlide: (index: number) => void;
   bubbleRef?: (ref: any) => void;
   contentStyle?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
   private carouselRef: any;
 
   public render = (): React.ReactElement => {
-    const { carouselData, activeSlide, contentStyle } = this.props;
+    const { carouselData, activeSlide, contentStyle, testID } = this.props;
     return (
       <Carousel
         onLayout={this.updateRef}
@@ -31,7 +32,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
         ref={(c: any): void => {
           this.carouselRef = c;
         }}
-        testID="carsl"
+        testID={testID}
       />
     );
   };

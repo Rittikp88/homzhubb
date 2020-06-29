@@ -16,6 +16,7 @@ import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAn
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface ISignUpFormProps extends WithTranslation {
+  testID?: string;
   onSubmitFormSuccess: (payload: ISignUpPayload, ref: () => FormTextInput | null) => void;
 }
 
@@ -50,7 +51,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
   };
 
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const { t, testID } = this.props;
     const { user, countryCode, isBottomSheetVisible, countryCodeData } = this.state;
     const formData = { ...user };
 
@@ -120,6 +121,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   type="primary"
                   title={t('auth:signup')}
                   containerStyle={styles.submitStyle}
+                  testID={testID}
                 />
               </>
             );

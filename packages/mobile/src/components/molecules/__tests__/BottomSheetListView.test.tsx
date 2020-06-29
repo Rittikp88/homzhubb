@@ -4,13 +4,16 @@ import toJson from 'enzyme-to-json';
 import { CountryWithCode } from '@homzhub/common/src/mocks/countryWithCode';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
+const mock = jest.fn();
+
 const createTestProps = (testProps: any): object => ({
   data: CountryWithCode,
   selectedValue: 'abc',
   listTitle: 'Title',
   isBottomSheetVisible: true,
-  onCloseDropDown: jest.fn(),
-  onSelectItem: jest.fn(),
+  onCloseDropDown: mock,
+  onSelectItem: mock,
+  testID: 'btmshList',
   ...testProps,
 });
 let props: any;

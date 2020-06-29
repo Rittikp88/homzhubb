@@ -7,9 +7,9 @@ import { Button, DetailedHeader } from '@homzhub/common/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
-type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.ResetPassword>;
+export type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.ResetPassword>;
 
-class SuccessResetPassword extends Component<Props, {}> {
+export class SuccessResetPassword extends Component<Props, {}> {
   public render(): React.ReactNode {
     const { t } = this.props;
     return (

@@ -1,28 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SignUp Screen should render signup screen 1`] = `
+exports[`Login Screen should render login screen 1`] = `
 <AnimatedHeader
-  linkText="login"
+  linkText="auth:signup"
   onIconPress={[Function]}
   onLinkPress={[Function]}
-  subTitle="auth:alreadyRegistered"
+  subTitle="auth:newAroundHere"
   testID="headerEvents"
-  title="signUp"
+  title="login"
 >
-  <withI18nextTranslation(SignUpForm)
-    onSubmitFormSuccess={[Function]}
-    testID="signupForm"
+  <withI18nextTranslation(LoginForm)
+    onLoginSuccess={[Function]}
+    testID="loginForm"
   />
   <withI18nextTranslation(SocialMediaComponent)
-    isFromLogin={false}
+    isFromLogin={true}
     navigation={
       Object {
         "goBack": [MockFunction],
         "navigate": [MockFunction],
       }
     }
+    onEmailLogin={[Function]}
     onLoginSuccessAction={[MockFunction]}
     socialMediaItems={Array []}
+    testID="socialEmailLogin"
   />
 </AnimatedHeader>
 `;

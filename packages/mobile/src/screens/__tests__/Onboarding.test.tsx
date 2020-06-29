@@ -1,49 +1,97 @@
 import React from 'react';
-import configureStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { I18nextProvider } from 'react-i18next';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import OnBoarding from '@homzhub/mobile/src/screens/OnBoarding';
+import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
+import { OnBoarding, mapDispatchToProps } from '@homzhub/mobile/src/screens/OnBoarding';
 
-const createTestProps = (testProps: object): any => ({
-  ...testProps,
-});
-
-const mockStore = configureStore([]);
 const mock = jest.fn();
 
 describe('Onboarding Screen', () => {
-  let store: any;
-  let component: any;
+  let component: ShallowWrapper;
   let props: any;
+  let instance: any;
 
-  beforeEach(async () => {
-    store = mockStore();
-    props = createTestProps({
-      data: OnboardingData,
-      activeSlide: 0,
-      ref: {},
-      getOnboardingDetail: mock,
+  beforeEach(() => {
+    props = {
       navigation: { navigate: mock },
-    });
-    await I18nService.init();
-    component = mount(
-      <Provider store={store}>
-        <I18nextProvider i18n={I18nService.instance}>
-          <OnBoarding {...props} />
-        </I18nextProvider>
-      </Provider>
-    );
+      updateOnBoarding: mock,
+    };
+    component = shallow(<OnBoarding {...props} t={(key: string): string => key} />);
+    instance = component.instance();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should match snapshot', () => {
     expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should render with data in state', () => {
+    instance.setState({ data: OnboardingData, activeSlide: 0 });
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should render without data in state', () => {
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should render got it button for active slide', () => {
+    instance.setState({ data: OnboardingData, activeSlide: 2 });
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should call render next frame on button press with navigation to Getting started', () => {
+    instance.setState({ data: OnboardingData, activeSlide: 0 });
+    // @ts-ignore
+    component.find('[testID="btnNextFrame"]').prop('onPress')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should call render next frame on button press', () => {
+    instance.setState({
+      data: OnboardingData,
+      activeSlide: 0,
+      ref: {
+        snapToNext: mock,
+      },
+    });
+    // @ts-ignore
+    component.find('[testID="btnNextFrame"]').prop('onPress')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should call the update on boarding', () => {
+    const dispatch = jest.fn();
+    mapDispatchToProps(dispatch).updateOnBoarding(true);
+    expect(dispatch.mock.calls[0][0]).toEqual({
+      type: UserActionTypes.UPDATE_ONBOARDING,
+      payload: true,
+    });
+  });
+
+  it('should call change slide', () => {
+    instance.setState({ data: OnboardingData, activeSlide: 0 });
+    // @ts-ignore
+    component.find('[testID="carsl"]').prop('currentSlide')(1);
+    expect(component.state('activeSlide')).toBe(1);
+  });
+
+  it('should call update ref', () => {
+    instance.setState({ data: OnboardingData, activeSlide: 0 });
+    // @ts-ignore
+    component.find('[testID="carsl"]').prop('bubbleRef')(null);
+    expect(component.state('ref')).toBe(null);
+  });
+
+  it('should call get onboarding data', async () => {
+    jest.spyOn(UserRepository, 'getOnboarding').mockImplementation(async () => Promise.resolve(OnboardingData));
+    await instance.componentDidMount();
+    const response = await UserRepository.getOnboarding();
+    instance.setState({ data: response });
+    expect(component.state('data')).toBe(OnboardingData);
   });
 });

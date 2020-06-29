@@ -18,7 +18,7 @@ interface IResetPasswordState {
   password: string;
 }
 
-class ResetPassword extends Component<Props, IResetPasswordState> {
+export class ResetPassword extends Component<Props, IResetPasswordState> {
   public state = {
     password: '',
   };
@@ -35,6 +35,7 @@ class ResetPassword extends Component<Props, IResetPasswordState> {
           subTitleColor={theme.colors.dark}
           onIconPress={this.handleIconPress}
           headerContainerStyle={styles.headerContainer}
+          testID="headerIconPress"
         />
         <View style={styles.content}>
           <Formik onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)} initialValues={formData}>

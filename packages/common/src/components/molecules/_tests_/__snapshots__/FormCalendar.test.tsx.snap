@@ -1059,6 +1059,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                     </Divider>
                                     <Calendar
                                       current="202020-06-29"
+                                      enableSwipeMonths={false}
                                       hideArrows={true}
                                       key="202020-06-29"
                                       markedDates={
@@ -1077,7 +1078,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
                                         }
                                       }
                                       markingType="custom"
-                                      minDate={2020-06-29T11:32:44.991Z}
+                                      minDate={2020-06-29T12:22:51.033Z}
                                       onDayPress={[Function]}
                                       renderHeader={[Function]}
                                       style={
@@ -10550,6 +10551,7 @@ exports[`Test cases for FormCalendar should render snapshot when availableFrom i
                                     </Divider>
                                     <Calendar
                                       current="2022-08-29"
+                                      enableSwipeMonths={false}
                                       hideArrows={true}
                                       key="2022-08-29"
                                       markedDates={
@@ -10568,7 +10570,7 @@ exports[`Test cases for FormCalendar should render snapshot when availableFrom i
                                         }
                                       }
                                       markingType="custom"
-                                      minDate={2020-06-29T11:32:45.795Z}
+                                      minDate={2020-06-29T12:22:51.648Z}
                                       onDayPress={[Function]}
                                       renderHeader={[Function]}
                                       style={

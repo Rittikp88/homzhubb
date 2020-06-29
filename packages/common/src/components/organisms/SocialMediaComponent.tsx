@@ -24,12 +24,13 @@ interface ISocialMediaProps extends WithTranslation {
   socialMediaItems: ISocialMediaProvider[];
   onEmailLogin?: () => void;
   onLoginSuccessAction: (data: IUser) => void;
+  testID?: string;
   navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
 }
 
 class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
   public render(): React.ReactNode {
-    const { onEmailLogin } = this.props;
+    const { onEmailLogin, testID } = this.props;
     return (
       <View style={styles.buttonContainer}>
         <View style={styles.lineContainer}>
@@ -52,6 +53,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
             iconSize={17}
             iconStyle={styles.iconStyle}
             titleStyle={styles.buttonText}
+            testID={testID}
           />
         )}
         {this.renderButtons()}

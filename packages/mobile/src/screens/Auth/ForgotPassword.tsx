@@ -18,7 +18,7 @@ interface IForgotPasswordState {
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.ForgotPassword>;
 
-class ForgotPassword extends Component<Props, IForgotPasswordState> {
+export class ForgotPassword extends Component<Props, IForgotPasswordState> {
   public state = {
     email: '',
   };

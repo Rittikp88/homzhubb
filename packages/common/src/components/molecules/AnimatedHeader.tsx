@@ -22,13 +22,14 @@ interface IHeaderProps {
   onIconPress?: () => void;
   onLinkPress?: () => void;
   headerContainerStyle?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 const PARALLAX_HEADER_HEIGHT = 200;
 const STICKY_HEADER_HEIGHT = 100;
 
 export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
-  const { children, title, subTitle, linkText, onIconPress, onLinkPress } = props;
+  const { children, title, subTitle, linkText, onIconPress, onLinkPress, testID } = props;
 
   const stickyHeader = (): React.ReactElement => {
     return (
@@ -44,7 +45,7 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
 
   const fixedHeader = (): React.ReactElement => {
     return (
-      <View key="fixed-header" style={styles.fixedSection}>
+      <View key="fixed-header" style={styles.fixedSection} testID={testID}>
         <Icon name={icons.close} size={22} color={theme.colors.darkTint4} onPress={onIconPress} />
       </View>
     );
@@ -57,7 +58,13 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
       parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
       backgroundSpeed={10}
       renderForeground={(): React.ReactElement => (
-        <DetailedHeader title={title} subTitle={subTitle} linkText={linkText} onLinkPress={onLinkPress} />
+        <DetailedHeader
+          title={title}
+          subTitle={subTitle}
+          linkText={linkText}
+          onLinkPress={onLinkPress}
+          testID={testID}
+        />
       )}
       renderStickyHeader={(): React.ReactElement => stickyHeader()}
       renderFixedHeader={(): React.ReactElement => fixedHeader()}

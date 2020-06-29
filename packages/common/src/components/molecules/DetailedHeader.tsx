@@ -17,6 +17,7 @@ interface IProps {
   onIconPress?: () => void;
   onLinkPress?: () => void;
   headerContainerStyle?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 export const DetailedHeader = (props: IProps): React.ReactElement => {
@@ -32,13 +33,14 @@ export const DetailedHeader = (props: IProps): React.ReactElement => {
     onIconPress,
     onLinkPress,
     headerContainerStyle,
+    testID,
   } = props;
   const isHeaderContentVisible = !!(title || subTitle);
   const customStyle = customizedStyles(subTitleColor, isHeaderContentVisible, icon);
 
   return (
     <View style={customStyle.mainContainer}>
-      <View style={[customStyle.headerContainer, headerContainerStyle]}>
+      <View style={[customStyle.headerContainer, headerContainerStyle]} testID={testID}>
         {icon && (
           <Icon
             name={icon}

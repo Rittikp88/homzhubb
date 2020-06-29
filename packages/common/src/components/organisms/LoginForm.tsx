@@ -18,6 +18,7 @@ interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
   handleForgotPassword?: () => void;
   onLoginSuccess: (payload: ILoginFormData, ref: () => FormTextInput | null) => void;
+  testID?: string;
 }
 
 interface ILoginFormState {
@@ -53,7 +54,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
   }
 
   public render(): React.ReactNode {
-    const { t, handleForgotPassword } = this.props;
+    const { t, handleForgotPassword, testID } = this.props;
     const { user, countryCode, isBottomSheetVisible, countryCodeData } = this.state;
     const formData = { ...user };
     return (
@@ -78,6 +79,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
                   textSize="small"
                   onPress={handleForgotPassword}
                   containerStyle={styles.forgotButtonStyle}
+                  testID={testID}
                 />
               )}
             </>
