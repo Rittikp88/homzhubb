@@ -7,45 +7,45 @@ exports[`CardBody should match snapshot 1`] = `
   detailedData={
     Array [
       Object {
-        "description": "Some Dummy Description",
+        "description": "Some Dummy Description1",
         "id": 1,
         "is_covered": true,
-        "label": "Property Listing on Homzhub",
+        "label": "Property Listing on Homzhub1",
         "name": "HOMZHUB_LISTING1",
       },
       Object {
-        "description": "Some Dummy Description",
+        "description": "Some Dummy Description1",
         "id": 2,
         "is_covered": false,
-        "label": "Assisted Site-Visits",
+        "label": "Assisted Site-Visits1",
         "name": "SITE_VISITS1",
       },
       Object {
-        "description": "Some Dummy Description",
+        "description": "Some Dummy Description1",
         "id": 3,
         "is_covered": false,
-        "label": "Assisted Negotiation",
+        "label": "Assisted Negotiation1",
         "name": "ASSISTED_NEGOTIATION1",
       },
       Object {
-        "description": "Some Dummy Description",
+        "description": "Some Dummy Description1",
         "id": 4,
         "is_covered": false,
-        "label": "Tenant Screening",
+        "label": "Tenant Screening1",
         "name": "TENANT_SCREENING1",
       },
       Object {
-        "description": "Some Dummy Description",
+        "description": "Some Dummy Description1",
         "id": 5,
         "is_covered": false,
-        "label": "Tenant Background Check",
+        "label": "Tenant Background Check1",
         "name": "TENANT_BACKGROUND_CHECK1",
       },
       Object {
-        "description": "Some Dummy Description",
+        "description": "Some Dummy Description1",
         "id": 6,
         "is_covered": false,
-        "label": "Door step agreement delivery",
+        "label": "Door step agreement delivery1",
         "name": "DOOR_STEP_AGREEMENT_DELIVERY1",
       },
     ]
@@ -60,45 +60,45 @@ exports[`CardBody should match snapshot 1`] = `
     detailedData={
       Array [
         Object {
-          "description": "Some Dummy Description",
+          "description": "Some Dummy Description1",
           "id": 1,
           "is_covered": true,
-          "label": "Property Listing on Homzhub",
+          "label": "Property Listing on Homzhub1",
           "name": "HOMZHUB_LISTING1",
         },
         Object {
-          "description": "Some Dummy Description",
+          "description": "Some Dummy Description1",
           "id": 2,
           "is_covered": false,
-          "label": "Assisted Site-Visits",
+          "label": "Assisted Site-Visits1",
           "name": "SITE_VISITS1",
         },
         Object {
-          "description": "Some Dummy Description",
+          "description": "Some Dummy Description1",
           "id": 3,
           "is_covered": false,
-          "label": "Assisted Negotiation",
+          "label": "Assisted Negotiation1",
           "name": "ASSISTED_NEGOTIATION1",
         },
         Object {
-          "description": "Some Dummy Description",
+          "description": "Some Dummy Description1",
           "id": 4,
           "is_covered": false,
-          "label": "Tenant Screening",
+          "label": "Tenant Screening1",
           "name": "TENANT_SCREENING1",
         },
         Object {
-          "description": "Some Dummy Description",
+          "description": "Some Dummy Description1",
           "id": 5,
           "is_covered": false,
-          "label": "Tenant Background Check",
+          "label": "Tenant Background Check1",
           "name": "TENANT_BACKGROUND_CHECK1",
         },
         Object {
-          "description": "Some Dummy Description",
+          "description": "Some Dummy Description1",
           "id": 6,
           "is_covered": false,
-          "label": "Door step agreement delivery",
+          "label": "Door step agreement delivery1",
           "name": "DOOR_STEP_AGREEMENT_DELIVERY1",
         },
       ]
@@ -639,7 +639,7 @@ exports[`CardBody should match snapshot 1`] = `
                     ]
                   }
                 >
-                  Property Listing on Homzhub
+                  Property Listing on Homzhub1
                 </Text>
               </Text>
             </Text>
@@ -758,7 +758,7 @@ exports[`CardBody should match snapshot 1`] = `
                     ]
                   }
                 >
-                  Assisted Site-Visits
+                  Assisted Site-Visits1
                 </Text>
               </Text>
             </Text>
@@ -877,7 +877,7 @@ exports[`CardBody should match snapshot 1`] = `
                     ]
                   }
                 >
-                  Assisted Negotiation
+                  Assisted Negotiation1
                 </Text>
               </Text>
             </Text>
@@ -996,7 +996,7 @@ exports[`CardBody should match snapshot 1`] = `
                     ]
                   }
                 >
-                  Tenant Screening
+                  Tenant Screening1
                 </Text>
               </Text>
             </Text>
@@ -1115,7 +1115,7 @@ exports[`CardBody should match snapshot 1`] = `
                     ]
                   }
                 >
-                  Tenant Background Check
+                  Tenant Background Check1
                 </Text>
               </Text>
             </Text>
@@ -1234,7 +1234,7 @@ exports[`CardBody should match snapshot 1`] = `
                     ]
                   }
                 >
-                  Door step agreement delivery
+                  Door step agreement delivery1
                 </Text>
               </Text>
             </Text>

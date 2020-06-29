@@ -44,3 +44,79 @@ exports[`HorizontalPicker should match snapshot 1`] = `
   />
 </View>
 `;
+
+exports[`Item should match snapshot when selected is false 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "borderWidth": 0.5,
+        "height": 40,
+        "justifyContent": "center",
+        "marginBottom": 3,
+        "marginTop": 3,
+      },
+      Object {
+        "borderBottomColor": "transparent",
+        "borderColor": "transparent",
+        "borderTopColor": "transparent",
+        "opacity": 0,
+        "width": 50,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#9A99A2",
+      }
+    }
+    textType="regular"
+    type="small"
+  />
+</View>
+`;
+
+exports[`Item should match snapshot when selected is true 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "borderWidth": 0.5,
+        "height": 40,
+        "justifyContent": "center",
+        "marginBottom": 3,
+        "marginTop": 3,
+      },
+      Object {
+        "borderBottomColor": "transparent",
+        "borderColor": "#808D9B",
+        "borderTopColor": "transparent",
+        "opacity": 0,
+        "width": 50,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#0084F8",
+      }
+    }
+    textType="bold"
+    type="regular"
+  />
+</View>
+`;
+
+exports[`Item to Render should match snapshot 1`] = `
+<Item
+  opacity={0.8}
+  selected={false}
+  value={0}
+/>
+`;

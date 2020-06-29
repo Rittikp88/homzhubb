@@ -9,3 +9,114 @@ exports[`Test cases for LoginForm should render snapshot 1`] = `
   tReady={false}
 />
 `;
+
+exports[`Test cases for LoginForm should render snapshot for dropdown selection 1`] = `
+LoginForm {
+  "context": Object {},
+  "email": null,
+  "formSchema": [Function],
+  "handleDropdown": [Function],
+  "handleSelection": [Function],
+  "handleSubmit": [Function],
+  "onCloseDropDown": [Function],
+  "password": null,
+  "phone": null,
+  "props": Object {
+    "i18n": Object {},
+    "isEmailLogin": true,
+    "onLoginSuccess": [MockFunction],
+    "t": [Function],
+    "tReady": false,
+  },
+  "refs": Object {},
+  "renderLoginFields": [Function],
+  "setState": [Function],
+  "state": Object {
+    "countryCode": "+91",
+    "countryCodeData": Array [],
+    "isBottomSheetVisible": false,
+    "user": Object {
+      "email": "",
+      "isEmailFlow": true,
+      "password": "",
+      "phone": "",
+    },
+  },
+  "updater": Updater {
+    "_callbacks": Array [],
+    "_renderer": ReactShallowRenderer {
+      "_context": Object {},
+      "_didScheduleRenderPhaseUpdate": false,
+      "_dispatcher": Object {
+        "readContext": [Function],
+        "useCallback": [Function],
+        "useContext": [Function],
+        "useDebugValue": [Function],
+        "useDeferredValue": [Function],
+        "useEffect": [Function],
+        "useImperativeHandle": [Function],
+        "useLayoutEffect": [Function],
+        "useMemo": [Function],
+        "useReducer": [Function],
+        "useRef": [Function],
+        "useResponder": [Function],
+        "useState": [Function],
+        "useTransition": [Function],
+      },
+      "_element": <LoginForm
+        i18n={Object {}}
+        isEmailLogin={true}
+        onLoginSuccess={[MockFunction]}
+        t={[Function]}
+        tReady={false}
+      />,
+      "_firstWorkInProgressHook": null,
+      "_forcedUpdate": false,
+      "_instance": [Circular],
+      "_isReRender": false,
+      "_newState": null,
+      "_numberOfReRenders": 0,
+      "_renderPhaseUpdates": null,
+      "_rendered": <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 24,
+            "paddingTop": 10,
+          }
+        }
+      >
+        <Formik
+          enableReinitialize={false}
+          initialValues={
+            Object {
+              "email": "",
+              "isEmailFlow": true,
+              "password": "",
+              "phone": "",
+            }
+          }
+          isInitialValid={false}
+          onSubmit={[Function]}
+          validate={[Function]}
+          validateOnBlur={true}
+          validateOnChange={true}
+        >
+          [Function]
+        </Formik>
+        <BottomSheetListView
+          data={Array []}
+          isBottomSheetVisible={false}
+          listTitle="auth:countryRegion"
+          onCloseDropDown={[Function]}
+          onSelectItem={[Function]}
+          selectedValue="+91"
+        />
+      </View>,
+      "_rendering": false,
+      "_updater": [Circular],
+      "_workInProgressHook": null,
+    },
+  },
+}
+`;

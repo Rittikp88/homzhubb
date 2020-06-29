@@ -23,7 +23,7 @@ interface IProps {
 
 const data = [...Array(10).keys()];
 
-const Item = (props: IItemProps): React.ReactElement => {
+export const Item = (props: IItemProps): React.ReactElement => {
   const { opacity, selected, value } = props;
   const conditionalStyle = createConditionalStyles(opacity, selected);
   return (
@@ -39,7 +39,7 @@ const Item = (props: IItemProps): React.ReactElement => {
   );
 };
 
-const ItemToRender = ({ item, index }: IItem, indexSelected: number): React.ReactElement => {
+export const ItemToRender = ({ item, index }: IItem, indexSelected: number): React.ReactElement => {
   const selected = index === indexSelected;
   return <Item opacity={selected ? 1 : 0.8} selected={selected} value={item} />;
 };

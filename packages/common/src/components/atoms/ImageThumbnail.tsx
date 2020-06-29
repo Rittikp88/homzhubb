@@ -4,7 +4,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 
-interface IProps {
+export interface IProps {
   imageUrl: null | string;
   onIconPress?: () => void;
   dataLength?: number;
