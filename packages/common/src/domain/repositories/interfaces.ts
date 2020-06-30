@@ -137,6 +137,11 @@ export interface IUserPayload {
   refresh_token: string;
 }
 
+export interface IRefreshToken {
+  access_token: string;
+  refresh_token: string;
+}
+
 export interface IRefreshTokenPayload {
   refresh_token: string;
 }

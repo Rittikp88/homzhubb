@@ -27,9 +27,9 @@ const createClient = (apiClient: IApiClient): AxiosInstance => {
   // Add Request & Response Interceptors
   // see: https://interglobalmedia.gitbooks.io/react-notes/adding-interceptors-to-execute-code-globally.html?q=
   const requestInterceptor = Interceptor.request();
-  // const responseInterceptor = Interceptor.response();
+  const responseInterceptor = Interceptor.response();
   axiosInstance.interceptors.request.use(requestInterceptor.onFulfilled, requestInterceptor.onRejected);
-  // axiosInstance.interceptors.response.use(responseInterceptor.onFulfilled, responseInterceptor.onRejected);
+  axiosInstance.interceptors.response.use(responseInterceptor.onFulfilled, responseInterceptor.onRejected);
   return axiosInstance;
 };
 
