@@ -14,6 +14,7 @@ describe('Property Details Component', () => {
       propertyName: 'Property A',
       propertyAddress: 'Property Address',
       onNavigate: mock,
+      testID: 'lblChange',
     };
     component = shallow(<PropertyDetailsLocation {...props} />);
   });

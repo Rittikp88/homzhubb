@@ -28,7 +28,7 @@ interface IDispatchProps {
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyPostLandingScreen>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
-class LandingScreen extends React.PureComponent<Props, {}> {
+export class LandingScreen extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
     const { t, user } = this.props;
     return (
@@ -92,13 +92,13 @@ class LandingScreen extends React.PureComponent<Props, {}> {
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   return {
     user: UserSelector.getUserDetails(state),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { logout } = UserActions;
   return bindActionCreators(
     {

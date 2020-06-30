@@ -1,34 +1,22 @@
 import React from 'react';
-import configureStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { I18nextProvider } from 'react-i18next';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
+import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
+import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import {
+  LandingScreen,
+  mapStateToProps,
+  mapDispatchToProps,
+} from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
 
 const mock = jest.fn();
 
-const mockStore = configureStore([]);
-
 describe('Landing Screen Component', () => {
-  let store: any;
-  let component: any;
+  let component: ShallowWrapper;
   let props: any;
 
-  beforeEach(async () => {
-    store = mockStore({
-      user: {
-        user: {
-          full_name: 'John Doe',
-          email: 'johndoe@gmail.com',
-          country_code: 'IN',
-          phone_number: '9876543210',
-          access_token: 'accesstoken',
-          refresh_token: 'refreshtoken',
-        },
-      },
-    });
+  beforeEach(() => {
     props = {
       user: {
         full_name: 'John Doe',
@@ -43,18 +31,7 @@ describe('Landing Screen Component', () => {
         navigate: mock,
       },
     };
-    await I18nService.init();
-    component = mount(
-      <Provider store={store}>
-        <I18nextProvider i18n={I18nService.instance}>
-          <LandingScreen {...props} />
-        </I18nextProvider>
-      </Provider>
-    );
-  });
-
-  afterAll(() => {
-    jest.clearAllMocks();
+    component = shallow(<LandingScreen {...props} t={(key: string): string => key} />);
   });
 
   it('should render landing screen', () => {
@@ -62,12 +39,48 @@ describe('Landing Screen Component', () => {
   });
 
   it('should navigate to Add Property Screen', () => {
-    component.find('[testID="btnAddProperty"]').at(0).prop('onPress')();
+    // @ts-ignore
+    component.find('[testID="btnAddProperty"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should call logout', () => {
-    component.find('[testID="lblLogout"]').at(1).prop('onPress')();
+    // @ts-ignore
+    component.find('[testID="lblLogout"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
+  });
+
+  it('should verify data from mapStateToProps', () => {
+    const user = {
+      full_name: 'John Doe',
+      email: 'johndoe@gmail.com',
+      country_code: '+91',
+      phone_number: '9876543210',
+      access_token: 'access_token',
+      refresh_token: 'refresh_token',
+    };
+    const mockedState = {
+      user: {
+        ...initialUserState,
+        user,
+      },
+      property: {
+        ...initialPropertyState,
+      },
+    };
+    const state = mapStateToProps(mockedState);
+    expect(state.user).toBe(user);
+  });
+
+  it('should dispatch logout', () => {
+    const dispatch = jest.fn();
+    const logoutPayload = {
+      refresh_token: 'refresh_token',
+    };
+    mapDispatchToProps(dispatch).logout(logoutPayload);
+    expect(dispatch.mock.calls[0][0]).toEqual({
+      type: UserActionTypes.AUTH.LOGOUT,
+      payload: logoutPayload,
+    });
   });
 });

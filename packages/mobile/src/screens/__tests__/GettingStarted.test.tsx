@@ -1,29 +1,19 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import { I18nextProvider } from 'react-i18next';
 import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
 
 const mock = jest.fn();
 describe('Getting started Screen', () => {
   let component: ShallowWrapper;
   let props: any;
-  beforeEach(async () => {
+  beforeEach(() => {
     props = {
       navigation: {
         navigate: mock,
       },
     };
-    await I18nService.init();
-    component = shallow(
-      <I18nextProvider i18n={I18nService.instance}>
-        <GettingStarted {...props} />
-      </I18nextProvider>
-    )
-      .dive()
-      .dive()
-      .dive();
+    component = shallow(<GettingStarted {...props} t={(key: string): string => key} />);
   });
 
   it('should render the getting started screen', () => {

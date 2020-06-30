@@ -17,6 +17,7 @@ interface ICommonHeaderProps {
   titleFontType?: FontWeightType;
   title?: string;
   titleStyle?: StyleProp<TextStyle>;
+  testID?: string;
 }
 const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight;
 
@@ -34,13 +35,14 @@ class Header extends React.PureComponent<ICommonHeaderProps, {}> {
       titleType,
       titleFontType,
       titleStyle = {},
+      testID,
     } = this.props;
     return (
       <>
         <View style={{ height: STATUSBAR_HEIGHT, backgroundColor }}>
           <StatusBar translucent backgroundColor={backgroundColor} barStyle="light-content" />
         </View>
-        <View style={styles.container}>
+        <View style={styles.container} testID={testID}>
           <Icon
             name={icon}
             size={iconSize || 22}

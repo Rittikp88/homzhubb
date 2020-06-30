@@ -49,7 +49,7 @@ interface IPropertyDetailsState {
   carpetAreaError: boolean;
 }
 
-class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> {
+export class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> {
   public state = {
     projectName: '',
     propertyGroupSelectedIndex: 0,
@@ -105,6 +105,7 @@ class PropertyDetails extends React.PureComponent<Props, IPropertyDetailsState> 
             propertyName={address.primaryAddress}
             propertyAddress={address.secondaryAddress}
             onNavigate={this.onNavigateToMaps}
+            testID="propertyLocation"
           />
           <PropertyDetailsItems
             data={property}

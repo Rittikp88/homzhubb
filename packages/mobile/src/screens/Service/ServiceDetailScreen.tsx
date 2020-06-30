@@ -43,7 +43,7 @@ interface IServiceDetailState {
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceDetailScreen>;
 type Props = libraryProps & IStateProps;
 
-class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
+export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   public constructor(props: Props) {
     super(props);
     const {
@@ -69,6 +69,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
           titleType="large"
           titleTextType="regular"
           onIconPress={this.handleIconPress}
+          testID="animatedServiceList"
         >
           <View style={styles.cardView}>
             <View style={styles.cardHeader}>
@@ -91,6 +92,7 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
               activeSlide={activeSlide}
               currentSlide={this.changeSlide}
               contentStyle={styles.carouselStyle}
+              testID="carsl"
             />
           </View>
         </AnimatedServiceList>
@@ -224,13 +226,13 @@ class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   return {
     services: PropertySelector.getServiceDetails(state),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentServiceCategoryId } = PropertyActions;
   return bindActionCreators(
     {

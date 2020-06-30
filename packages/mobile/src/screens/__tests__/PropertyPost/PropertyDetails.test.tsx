@@ -1,49 +1,56 @@
 import React from 'react';
-import configureStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { I18nextProvider } from 'react-i18next';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
 import { PropertyAssetGroupData, ResidentialPropertyTypeData } from '@homzhub/common/src/mocks/PropertyDetails';
+import { PropertyDetails } from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
+import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
 
-const mockStore = configureStore([]);
+const mock = jest.fn();
 
 describe('Property Details Screen Component', () => {
-  let store: any;
-  let component: any;
+  let component: ShallowWrapper;
   let props: any;
 
-  beforeEach(async () => {
-    store = mockStore({
-      property: {
-        propertyDetails: {
-          propertyGroup: PropertyAssetGroupData,
-          propertyGroupSpaceAvailable: ResidentialPropertyTypeData,
-        },
-      },
-    });
+  beforeEach(() => {
     props = {
       getPropertyDetails: jest.fn(),
       getPropertyDetailsById: jest.fn(),
       property: PropertyAssetGroupData,
       spaceAvailable: ResidentialPropertyTypeData,
       navigation: {
-        navigate: jest.fn(),
+        navigate: mock,
+        goBack: mock,
       },
     };
-    await I18nService.init();
-    component = shallow(
-      <Provider store={store}>
-        <I18nextProvider i18n={I18nService.instance}>
-          <PropertyDetails {...props} />
-        </I18nextProvider>
-      </Provider>
-    );
+    component = shallow(<PropertyDetails {...props} t={(key: string): string => key} />);
   });
 
   it('should render property details screen', () => {
-    expect(toJson(component.dive().dive().dive())).toMatchSnapshot();
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should navigate to previos screen', () => {
+    // @ts-ignore
+    component.find('[testID="propertyLocation"]').prop('onNavigate')();
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('should call the project name', async () => {
+    const data = {
+      project_name: 'Project A',
+      unit_number: '12',
+      block_number: 'A',
+      latitude: '109.12',
+      longitude: '110.12',
+      carpet_area: '1000',
+      carpet_area_unit: 'Sq.ft',
+      floor_number: 1,
+      total_floors: 2,
+      asset_type: 0,
+    };
+    jest.spyOn(PropertyRepository, 'getAssetById').mockImplementation(() => Promise.resolve(data));
+    const response = await PropertyRepository.getAssetById(1);
+    component.setState({ projectName: response.project_name });
+    expect(component.state('projectName')).toStrictEqual(data.project_name);
   });
 });

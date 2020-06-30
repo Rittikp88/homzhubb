@@ -28,7 +28,7 @@ interface IPropertyDetailsItemsProps {
 
 type Props = IPropertyDetailsItemsProps & WithTranslation;
 
-class PropertyDetailsItems extends React.PureComponent<Props, {}> {
+export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
     const { data, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
     return (

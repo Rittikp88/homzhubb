@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Property Payment Component should render button 1`] = `
+<Fragment>
+  <Button
+    containerStyle={
+      Object {
+        "flex": 0,
+        "margin": 16,
+      }
+    }
+    onPress={[MockFunction]}
+    title="Pay Now"
+    type="primary"
+  />
+</Fragment>
+`;
+
+exports[`Property Payment Component should render property payment component 1`] = `
+<Fragment>
+  <PaymentSuccess
+    onClickLink={[MockFunction]}
+  />
+</Fragment>
+`;

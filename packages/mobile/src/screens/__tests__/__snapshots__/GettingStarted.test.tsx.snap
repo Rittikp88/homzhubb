@@ -33,7 +33,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
     textType="semiBold"
     type="regular"
   >
-    Simplifying Real Estate for Owners
+    header
   </Text>
   <View
     style={
@@ -52,7 +52,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
       onPress={[Function]}
       testID="btnGettingStarted"
       textSize="small"
-      title="Get Started"
+      title="getStarted"
       type="primary"
     />
     <Button
@@ -64,7 +64,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
       }
       onPress={[Function]}
       testID="btnLogin"
-      title="Login"
+      title="login"
       type="secondary"
     />
     <Label
@@ -76,7 +76,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
       textType="regular"
       type="large"
     >
-      New around here?
+      newAroundHere
         
       <Label
         onPress={[Function]}
@@ -89,7 +89,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
         textType="bold"
         type="large"
       >
-        Sign Up
+        signUp
       </Label>
     </Label>
   </View>

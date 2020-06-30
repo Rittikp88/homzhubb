@@ -9,7 +9,7 @@ import { Text, Button, Label, Image } from '@homzhub/common/src/components';
 
 type IProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp> & WithTranslation;
 
-class GettingStarted extends React.PureComponent<IProps> {
+export class GettingStarted extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
     const { t } = this.props;
     return (
@@ -66,8 +66,7 @@ class GettingStarted extends React.PureComponent<IProps> {
     navigation.navigate(ScreensKeys.SignUp);
   };
 }
-const HOC = withTranslation()(GettingStarted);
-export { HOC as GettingStarted };
+export default withTranslation()(GettingStarted);
 const styles = StyleSheet.create({
   container: {
     flex: 1,

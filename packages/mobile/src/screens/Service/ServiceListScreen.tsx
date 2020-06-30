@@ -25,7 +25,7 @@ interface IStateProps {
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListScreen>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
-class ServiceListScreen extends Component<Props> {
+export class ServiceListScreen extends Component<Props> {
   public componentDidMount(): void {
     const {
       getServiceDetails,
@@ -42,12 +42,19 @@ class ServiceListScreen extends Component<Props> {
         title={t('timeToSelect')}
         subTitle="Eu at id arcu fermentum aliquam arcu nasce" // TODO: Change once proper text decide
         onIconPress={this.handleIconPress}
+        testID="animatedServiceHeader"
       >
         <>
           {services.map((item: IServiceDetail, index: number) => {
             const handlePress = (): void => this.navigateToServiceDetail(index);
             return (
-              <TouchableOpacity style={styles.cardView} key={index} activeOpacity={0.7} onPress={handlePress}>
+              <TouchableOpacity
+                style={styles.cardView}
+                key={index}
+                activeOpacity={0.7}
+                onPress={handlePress}
+                testID="toPress"
+              >
                 <CardBody
                   title={item.title}
                   badgeTitle={item.label}
@@ -73,13 +80,13 @@ class ServiceListScreen extends Component<Props> {
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   return {
     services: PropertySelector.getServiceDetails(state),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getServiceDetails } = PropertyActions;
   return bindActionCreators(
     {

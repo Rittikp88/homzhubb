@@ -106,6 +106,7 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
           }
         >
           <View
+            key="0"
             style={
               Object {
                 "alignItems": "center",
@@ -171,6 +172,7 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
           }
         >
           <View
+            key="1"
             style={
               Object {
                 "alignItems": "center",
@@ -236,6 +238,7 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
           }
         >
           <View
+            key="2"
             style={
               Object {
                 "alignItems": "center",
@@ -301,6 +304,7 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
           }
         >
           <View
+            key="3"
             style={
               Object {
                 "alignItems": "center",

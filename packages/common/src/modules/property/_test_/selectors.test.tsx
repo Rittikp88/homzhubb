@@ -23,7 +23,7 @@ const state: IState = {
     servicesInfo: ServicesData,
     servicesSteps: ServiceSteps,
     currentPropertyId: 1,
-    currentLeaseTermId: 1,
+    termId: 1,
     currentServiceCategoryId: 1,
   },
 };
@@ -42,7 +42,7 @@ describe('Property Selector', () => {
   });
 
   it('should return current lease term id', () => {
-    expect(PropertySelector.getCurrentLeaseTermId(state)).toBe(1);
+    expect(PropertySelector.getTermId(state)).toBe(1);
   });
 
   it('should return current service id', () => {

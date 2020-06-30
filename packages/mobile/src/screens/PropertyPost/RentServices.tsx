@@ -36,7 +36,7 @@ interface IRentServicesState {
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.RentServicesScreen>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
-class RentServices extends Component<Props, IRentServicesState> {
+export class RentServices extends Component<Props, IRentServicesState> {
   public state = {
     isSelected: false,
     selectedItem: -1,
@@ -58,6 +58,7 @@ class RentServices extends Component<Props, IRentServicesState> {
           icon={icons.leftArrow}
           iconColor={theme.colors.white}
           onIconPress={this.handleBackPress}
+          testID="headerIconPress"
         />
         <View style={styles.container}>
           <View style={styles.content}>
@@ -82,6 +83,7 @@ class RentServices extends Component<Props, IRentServicesState> {
               disabled={!isSelected}
               containerStyle={styles.buttonStyle}
               onPress={this.onContinue}
+              testID="btnContinue"
             />
           </WithShadowView>
         </View>
@@ -113,9 +115,21 @@ class RentServices extends Component<Props, IRentServicesState> {
           </Label>
         </View>
         {isSelect ? (
-          <Icon name={icons.circleFilled} size={18} color={theme.colors.primaryColor} />
+          <Icon
+            name={icons.circleFilled}
+            size={18}
+            color={theme.colors.primaryColor}
+            onPress={handleSelectedItem}
+            testID="icoFilled"
+          />
         ) : (
-          <Icon name={icons.circleOutline} size={18} color={theme.colors.disabled} />
+          <Icon
+            name={icons.circleOutline}
+            size={18}
+            color={theme.colors.disabled}
+            onPress={handlePress}
+            testID="icoDisabled"
+          />
         )}
       </TouchableOpacity>
     );
@@ -152,14 +166,14 @@ class RentServices extends Component<Props, IRentServicesState> {
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   return {
     user: UserSelector.getUserDetails(state),
     serviceList: PropertySelector.getRentServicesList(state),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getRentServiceList, setTypeOfSale } = PropertyActions;
   return bindActionCreators(
     {

@@ -81,9 +81,7 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
   }
 
   private renderCarouselItem = (item: any): React.ReactElement => {
-    return (
-      <SVGUri width={400} height={220} viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.image_url} />
-    );
+    return <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.image_url} />;
   };
 
   public renderNextFrame = async (): Promise<void> => {
@@ -151,6 +149,7 @@ const styles = StyleSheet.create({
   },
   carousel: {
     flex: 1,
+    alignSelf: 'center',
   },
   textContainer: {
     flex: 1,

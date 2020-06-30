@@ -1,179 +1,241 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Service Detail Screen should render snapshot 1`] = `
-<Connect(withI18nextTranslation(ServiceDetailScreen))
-  navigation={
-    Object {
-      "navigate": [MockFunction],
-      "route": Object {
-        "params": Object {
-          "index": 1,
-        },
-      },
-    }
-  }
-  services={
-    Array [
-      Object {
-        "description": "Rhoncus lacus nunc.",
-        "id": 1,
-        "label": "",
-        "name": "FREE_LISTING",
-        "service_cost": "No Cost - Free",
-        "service_info": "markdown",
-        "service_items": Array [
+<Fragment>
+  <AnimatedServiceList
+    headerTitle="services"
+    onIconPress={[Function]}
+    testID="animatedServiceList"
+    title="pleaseConfirm"
+    titleTextType="regular"
+    titleType="large"
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 8,
+          "marginHorizontal": 16,
+          "marginVertical": 14,
+          "paddingVertical": 24,
+        }
+      }
+    >
+      <View
+        style={
           Object {
-            "description": "Some Dummy Description1",
-            "id": 1,
-            "is_covered": true,
-            "label": "Property Listing on Homzhub1",
-            "name": "HOMZHUB_LISTING1",
-          },
+            "alignContent": "center",
+            "flexDirection": "row",
+            "height": 25,
+            "justifyContent": "space-between",
+            "marginBottom": 18,
+            "marginHorizontal": 20,
+          }
+        }
+      >
+        <PaginationComponent
+          activeSlide={1}
+          containerStyle={
+            Object {
+              "paddingHorizontal": 0,
+              "paddingVertical": 0,
+            }
+          }
+          dotsLength={3}
+        />
+        <Badge
+          badgeColor="#FBC02D"
+          badgeStyle={
+            Object {
+              "marginBottom": 4,
+            }
+          }
+          title="RECOMMENDED"
+        />
+      </View>
+      <SnapCarousel
+        activeSlide={1}
+        carouselData={
+          Array [
+            Object {
+              "description": "Rhoncus lacus nunc.",
+              "id": 1,
+              "label": "",
+              "name": "FREE_LISTING",
+              "service_cost": "No Cost - Free",
+              "service_info": "markdown",
+              "service_items": Array [
+                Object {
+                  "description": "Some Dummy Description1",
+                  "id": 1,
+                  "is_covered": true,
+                  "label": "Property Listing on Homzhub1",
+                  "name": "HOMZHUB_LISTING1",
+                },
+                Object {
+                  "description": "Some Dummy Description1",
+                  "id": 2,
+                  "is_covered": false,
+                  "label": "Assisted Site-Visits1",
+                  "name": "SITE_VISITS1",
+                },
+                Object {
+                  "description": "Some Dummy Description1",
+                  "id": 3,
+                  "is_covered": false,
+                  "label": "Assisted Negotiation1",
+                  "name": "ASSISTED_NEGOTIATION1",
+                },
+                Object {
+                  "description": "Some Dummy Description1",
+                  "id": 4,
+                  "is_covered": false,
+                  "label": "Tenant Screening1",
+                  "name": "TENANT_SCREENING1",
+                },
+                Object {
+                  "description": "Some Dummy Description1",
+                  "id": 5,
+                  "is_covered": false,
+                  "label": "Tenant Background Check1",
+                  "name": "TENANT_BACKGROUND_CHECK1",
+                },
+                Object {
+                  "description": "Some Dummy Description1",
+                  "id": 6,
+                  "is_covered": false,
+                  "label": "Door step agreement delivery1",
+                  "name": "DOOR_STEP_AGREEMENT_DELIVERY1",
+                },
+              ],
+              "title": "Free Listing",
+            },
+            Object {
+              "description": "Vestibulum eu",
+              "id": 2,
+              "label": "RECOMMENDED",
+              "name": "ASSISTED_LISTING",
+              "service_cost": "9% of Agreement Value.",
+              "service_info": "markdown",
+              "service_items": Array [
+                Object {
+                  "description": "Some Dummy Description2",
+                  "id": 1,
+                  "is_covered": true,
+                  "label": "Property Listing on Homzhub2",
+                  "name": "HOMZHUB_LISTING2",
+                },
+                Object {
+                  "description": "Some Dummy Description2",
+                  "id": 2,
+                  "is_covered": true,
+                  "label": "Assisted Site-Visits2",
+                  "name": "SITE VISITS2",
+                },
+                Object {
+                  "description": "Some Dummy Description2",
+                  "id": 3,
+                  "is_covered": true,
+                  "label": "Assisted Negotiation2",
+                  "name": "ASSISTED_NEGOTIATION2",
+                },
+                Object {
+                  "description": "Some Dummy Description2",
+                  "id": 4,
+                  "is_covered": true,
+                  "label": "Tenant Screening2",
+                  "name": "TENANT_SCREENING2",
+                },
+                Object {
+                  "description": "Some Dummy Description2",
+                  "id": 5,
+                  "is_covered": true,
+                  "label": "Tenant Background Check2",
+                  "name": "TENANT_BACKGROUND_CHECK2",
+                },
+                Object {
+                  "description": "Some Dummy Description2",
+                  "id": 6,
+                  "is_covered": true,
+                  "label": "Door step agreement delivery2",
+                  "name": "DOOR_STEP_AGREEMENT_DELIVERY2",
+                },
+              ],
+              "title": "Assisted Listing",
+            },
+            Object {
+              "description": "tristique donec aenean faucibus",
+              "id": 3,
+              "label": "",
+              "name": "BOOSTED_LISTING",
+              "service_cost": "9% of Agreement Value.",
+              "service_info": "markdown",
+              "service_items": Array [
+                Object {
+                  "description": "Some Dummy Description3",
+                  "id": 1,
+                  "is_covered": true,
+                  "label": "Property Listing on Homzhub3",
+                  "name": "HOMZHUB_LISTING3",
+                },
+                Object {
+                  "description": "Some Dummy Description3",
+                  "id": 2,
+                  "is_covered": true,
+                  "label": "Assisted Site-Visits3",
+                  "name": "SITE VISITS3",
+                },
+                Object {
+                  "description": "Some Dummy Description3",
+                  "id": 3,
+                  "is_covered": true,
+                  "label": "Assisted Negotiation3",
+                  "name": "ASSISTED_NEGOTIATION3",
+                },
+                Object {
+                  "description": "Some Dummy Description3",
+                  "id": 4,
+                  "is_covered": true,
+                  "label": "Tenant Screening3",
+                  "name": "TENANT_SCREENING3",
+                },
+                Object {
+                  "description": "Some Dummy Description3",
+                  "id": 5,
+                  "is_covered": false,
+                  "label": "Tenant Background Check3",
+                  "name": "TENANT_BACKGROUND_CHECK3",
+                },
+                Object {
+                  "description": "Some Dummy Description3",
+                  "id": 6,
+                  "is_covered": false,
+                  "label": "Door step agreement delivery3",
+                  "name": "DOOR_STEP_AGREEMENT_DELIVERY3",
+                },
+              ],
+              "title": "Boosted Listing",
+            },
+          ]
+        }
+        carouselItem={[Function]}
+        contentStyle={
           Object {
-            "description": "Some Dummy Description1",
-            "id": 2,
-            "is_covered": false,
-            "label": "Assisted Site-Visits1",
-            "name": "SITE_VISITS1",
-          },
-          Object {
-            "description": "Some Dummy Description1",
-            "id": 3,
-            "is_covered": false,
-            "label": "Assisted Negotiation1",
-            "name": "ASSISTED_NEGOTIATION1",
-          },
-          Object {
-            "description": "Some Dummy Description1",
-            "id": 4,
-            "is_covered": false,
-            "label": "Tenant Screening1",
-            "name": "TENANT_SCREENING1",
-          },
-          Object {
-            "description": "Some Dummy Description1",
-            "id": 5,
-            "is_covered": false,
-            "label": "Tenant Background Check1",
-            "name": "TENANT_BACKGROUND_CHECK1",
-          },
-          Object {
-            "description": "Some Dummy Description1",
-            "id": 6,
-            "is_covered": false,
-            "label": "Door step agreement delivery1",
-            "name": "DOOR_STEP_AGREEMENT_DELIVERY1",
-          },
-        ],
-        "title": "Free Listing",
-      },
-      Object {
-        "description": "Vestibulum eu",
-        "id": 2,
-        "label": "RECOMMENDED",
-        "name": "ASSISTED_LISTING",
-        "service_cost": "9% of Agreement Value.",
-        "service_info": "markdown",
-        "service_items": Array [
-          Object {
-            "description": "Some Dummy Description2",
-            "id": 1,
-            "is_covered": true,
-            "label": "Property Listing on Homzhub2",
-            "name": "HOMZHUB_LISTING2",
-          },
-          Object {
-            "description": "Some Dummy Description2",
-            "id": 2,
-            "is_covered": true,
-            "label": "Assisted Site-Visits2",
-            "name": "SITE VISITS2",
-          },
-          Object {
-            "description": "Some Dummy Description2",
-            "id": 3,
-            "is_covered": true,
-            "label": "Assisted Negotiation2",
-            "name": "ASSISTED_NEGOTIATION2",
-          },
-          Object {
-            "description": "Some Dummy Description2",
-            "id": 4,
-            "is_covered": true,
-            "label": "Tenant Screening2",
-            "name": "TENANT_SCREENING2",
-          },
-          Object {
-            "description": "Some Dummy Description2",
-            "id": 5,
-            "is_covered": true,
-            "label": "Tenant Background Check2",
-            "name": "TENANT_BACKGROUND_CHECK2",
-          },
-          Object {
-            "description": "Some Dummy Description2",
-            "id": 6,
-            "is_covered": true,
-            "label": "Door step agreement delivery2",
-            "name": "DOOR_STEP_AGREEMENT_DELIVERY2",
-          },
-        ],
-        "title": "Assisted Listing",
-      },
-      Object {
-        "description": "tristique donec aenean faucibus",
-        "id": 3,
-        "label": "",
-        "name": "BOOSTED_LISTING",
-        "service_cost": "9% of Agreement Value.",
-        "service_info": "markdown",
-        "service_items": Array [
-          Object {
-            "description": "Some Dummy Description3",
-            "id": 1,
-            "is_covered": true,
-            "label": "Property Listing on Homzhub3",
-            "name": "HOMZHUB_LISTING3",
-          },
-          Object {
-            "description": "Some Dummy Description3",
-            "id": 2,
-            "is_covered": true,
-            "label": "Assisted Site-Visits3",
-            "name": "SITE VISITS3",
-          },
-          Object {
-            "description": "Some Dummy Description3",
-            "id": 3,
-            "is_covered": true,
-            "label": "Assisted Negotiation3",
-            "name": "ASSISTED_NEGOTIATION3",
-          },
-          Object {
-            "description": "Some Dummy Description3",
-            "id": 4,
-            "is_covered": true,
-            "label": "Tenant Screening3",
-            "name": "TENANT_SCREENING3",
-          },
-          Object {
-            "description": "Some Dummy Description3",
-            "id": 5,
-            "is_covered": false,
-            "label": "Tenant Background Check3",
-            "name": "TENANT_BACKGROUND_CHECK3",
-          },
-          Object {
-            "description": "Some Dummy Description3",
-            "id": 6,
-            "is_covered": false,
-            "label": "Door step agreement delivery3",
-            "name": "DOOR_STEP_AGREEMENT_DELIVERY3",
-          },
-        ],
-        "title": "Boosted Listing",
-      },
-    ]
-  }
-/>
+            "paddingLeft": 0,
+            "paddingRight": 20,
+          }
+        }
+        currentSlide={[Function]}
+        testID="carsl"
+      />
+    </View>
+  </AnimatedServiceList>
+  <BottomSheet
+    headerTitle=""
+    isShadowView={false}
+    onCloseSheet={[Function]}
+    sheetHeight={500}
+    visible={false}
+  />
+</Fragment>
 `;

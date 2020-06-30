@@ -13,6 +13,7 @@ interface IProps {
   titleTextType?: FontWeightType;
   subTitle?: string;
   onIconPress: () => void;
+  testID?: string;
 }
 
 export class AnimatedServiceList extends Component<IProps> {
@@ -22,7 +23,7 @@ export class AnimatedServiceList extends Component<IProps> {
 
   public render(): React.ReactNode {
     const { scrollY } = this.state;
-    const { children, title, subTitle, headerTitle, onIconPress, titleType, titleTextType } = this.props;
+    const { children, title, subTitle, headerTitle, onIconPress, titleType, titleTextType, testID } = this.props;
     const headerHeight = scrollY.interpolate({
       inputRange: [0, 80],
       outputRange: [140, 60],
@@ -38,6 +39,7 @@ export class AnimatedServiceList extends Component<IProps> {
           titleStyle={styles.headerTitle}
           backgroundColor={theme.colors.primaryColor}
           onIconPress={onIconPress}
+          testID={testID}
         />
         <Animated.View style={[styles.headingView, { height: headerHeight }]} />
         <ScrollView

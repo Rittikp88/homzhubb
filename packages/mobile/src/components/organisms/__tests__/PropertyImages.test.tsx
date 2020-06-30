@@ -1,8 +1,6 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { I18nextProvider } from 'react-i18next';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 
@@ -39,36 +37,38 @@ describe('Property Images Component', () => {
   let props: any;
   let instance: any;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     props = {
       propertyId: 1,
       updateStep: mock,
     };
-    await I18nService.init();
-    component = shallow(
-      <I18nextProvider i18n={I18nService.instance}>
-        <PropertyImages {...props} />
-      </I18nextProvider>
-    );
-    instance = component.dive().dive().dive().instance();
+    component = shallow(<PropertyImages {...props} t={(key: string): string => key} />).dive();
+    instance = component.instance();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should render the PropertyImages component', () => {
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should fetch the property images by id', async () => {
     jest
       .spyOn(ServiceRepository, 'getPropertyImagesByPropertyId')
       .mockImplementation(async () => Promise.resolve(PropertyImagesByPropertyId));
     await instance.componentDidMount();
     const response = await ServiceRepository.getPropertyImagesByPropertyId(1);
     instance.setState({ selectedImages: response });
+    expect(component.state('selectedImages')).toStrictEqual(PropertyImagesByPropertyId);
   });
 
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    instance.setState({ selectedImages: [] });
-  });
-
-  it('should render the PropertyImages component', () => {
-    expect(toJson(component)).toMatchSnapshot();
+  it('should fetch empty data from the property images by id', async () => {
+    jest.spyOn(ServiceRepository, 'getPropertyImagesByPropertyId').mockImplementation(async () => Promise.resolve([]));
+    await instance.componentDidMount();
+    const response = await ServiceRepository.getPropertyImagesByPropertyId(1);
+    instance.setState({ selectedImages: response });
+    expect(component.state('selectedImages')).toStrictEqual([]);
   });
 });

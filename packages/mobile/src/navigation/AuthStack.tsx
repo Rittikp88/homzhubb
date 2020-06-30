@@ -4,7 +4,7 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
-import { GettingStarted } from '@homzhub/mobile/src/screens/GettingStarted';
+import GettingStarted from '@homzhub/mobile/src/screens/GettingStarted';
 import LoginScreen from '@homzhub/mobile/src/screens/Auth/LoginScreen';
 import MobileVerificationScreen from '@homzhub/mobile/src/screens/Auth/MobileVerificationScreen';
 import OnBoarding from '@homzhub/mobile/src/screens/OnBoarding';
