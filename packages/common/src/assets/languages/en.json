@@ -135,6 +135,7 @@
     "minimumLeasePeriod": "Minimum lease period",
     "utilityBy": "Utilities By",
     "furnishing": "Furnishing",
+    "maintenance": "Maintenance",
     "maintenanceBy": "Maintenance By",
     "securityDepositPlaceholder": "e.g. 25000",
     "monthlyRentPlaceholder": "e.g. 5000",
@@ -172,6 +173,15 @@
     "paymentSuccessful": "Your payment is completed!",
     "reviewProperty": "Your property is under review.",
     "expectCall": "Our executives will call you in the next 24 hours.",
-    "visitInfo": "Homzhub team will visit the property to onboard your property."
+    "visitInfo": "Homzhub team will visit the property to onboard your property.",
+    "expectedPrice": "Expected price",
+    "expectedPriceRequired": "Expected price cannot be empty",
+    "expectedPricePlaceholder": "Enter money",
+    "bookingAmount": "Booking amount",
+    "bookingAmountRequired": "Booking amount cannot be empty",
+    "bookingAmountPlaceholder": "Enter money",
+    "yearOfConstruction": "Year of construction",
+    "yearOfConstructionRequired": "Year of construction cannot be empty",
+    "yearOfConstructionPlaceholder": "e.g. 2015"
   }
 }

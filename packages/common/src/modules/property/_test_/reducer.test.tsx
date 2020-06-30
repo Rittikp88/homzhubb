@@ -102,7 +102,7 @@ describe('Property Reducer', () => {
   });
 
   it('should handle set current lease term id', () => {
-    const state = reducer(initialPropertyState, PropertyActions.setCurrentLeaseTermId(1));
+    const state = reducer(initialPropertyState, PropertyActions.setTermId(1));
     expect(state).toStrictEqual({
       ...initialPropertyState,
       ['currentLeaseTermId']: 1,

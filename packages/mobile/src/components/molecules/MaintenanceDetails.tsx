@@ -43,7 +43,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           maxLength={12}
           formProps={formProps}
           inputGroupSuffixText={currency}
-          onChangeText={onMaintenanceAmountChanged}
+          onValueChange={onMaintenanceAmountChanged}
         />
       </View>
       <View style={styles.dropdownContainer}>

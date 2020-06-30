@@ -1,10 +1,11 @@
-import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData, IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
 
 export interface IPropertyState {
   currentPropertyId: number;
-  currentLeaseTermId: number;
+  termId: number;
   currentServiceCategoryId: number;
+  typeOfSale: TypeOfSale;
   propertyDetails: {
     propertyGroup: IPropertyDetailsData[] | null;
     rentServices: IRentServiceList[] | null;

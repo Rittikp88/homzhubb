@@ -6,6 +6,8 @@ export const DateFormats = {
   ISO: 'YYYY-MM-DDTHH:mm:ss.sss[Z]',
   ddd: 'ddd',
   DD: 'DD',
+  y: 'y',
+  years: 'years',
   DDMMYYYY: 'DD-MM-YYYY',
   DDMMMYYYY: 'DD MMM YYYY',
   DoMMMYYYY: 'Do MMM YYYY',

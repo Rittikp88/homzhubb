@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
+import { FormikProps, FormikValues } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -9,8 +10,9 @@ import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomShee
 import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
 
 interface IFormCalendarProps extends WithTranslation {
-  availableFrom: string;
-  onSelectDate: (day: string) => void;
+  name: string;
+  formProps: FormikProps<FormikValues>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IFormCalendarState {
@@ -23,53 +25,67 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   };
 
   public render(): React.ReactNode {
-    const { t, availableFrom } = this.props;
+    const {
+      t,
+      name,
+      formProps: { values },
+      containerStyle = {},
+    } = this.props;
     const { isCalendarVisible } = this.state;
-    const availableDate = availableFrom === moment().format('YYYY-MM-DD') ? 'Today' : availableFrom;
+    const availableDate = values[name] === moment().format('YYYY-MM-DD') ? 'Today' : values[name];
+
     return (
-      <>
+      <View style={[styles.container, containerStyle]}>
         <Label type="regular" textType="regular" style={styles.label}>
           {t('common:availableFrom')}
         </Label>
-        <View style={styles.dateView}>
+        <TouchableOpacity testID="toCalenderInput" style={styles.dateView} onPress={this.onCalendarOpen}>
           <View style={styles.dateLeft}>
-            <Icon name={icons.calendar} color={theme.colors.darkTint5} size={18} onPress={this.handleOnPress} />
+            <Icon name={icons.calendar} color={theme.colors.darkTint5} size={18} />
             <Text type="small" textType="regular" style={styles.dateText}>
               {availableDate}
             </Text>
           </View>
-          <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} onPress={this.handleOnPress} />
-        </View>
+          <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} />
+        </TouchableOpacity>
         <BottomSheet
           visible={isCalendarVisible}
-          onCloseSheet={this.closeBottomSheet}
+          onCloseSheet={this.onCalendarClose}
           headerTitle={t('common:availableFrom')}
           isShadowView
           sheetHeight={580}
         >
-          <CalendarComponent onSelect={this.handleCalendar} selectedDate={availableFrom} />
+          <CalendarComponent onSelect={this.onDateSelected} selectedDate={values[name]} />
         </BottomSheet>
-      </>
+      </View>
     );
   }
 
-  private handleOnPress = (): void => {
+  private onDateSelected = (day: string): void => {
+    const {
+      name,
+      formProps: { setFieldValue, setFieldTouched },
+    } = this.props;
+    this.setState({ isCalendarVisible: false });
+
+    setFieldValue(name, day);
+    setFieldTouched(name);
+  };
+
+  private onCalendarOpen = (): void => {
     const { isCalendarVisible } = this.state;
     this.setState({ isCalendarVisible: !isCalendarVisible });
   };
 
-  private closeBottomSheet = (): void => {
+  private onCalendarClose = (): void => {
     this.setState({ isCalendarVisible: false });
-  };
-
-  private handleCalendar = (day: string): void => {
-    const { onSelectDate } = this.props;
-    this.setState({ isCalendarVisible: false });
-    onSelectDate(day);
   };
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 16,
+  },
   dateView: {
     borderWidth: 1,
     borderColor: theme.colors.disabled,

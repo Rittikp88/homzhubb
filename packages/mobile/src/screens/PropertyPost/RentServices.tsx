@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/compone
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IRentServiceList } from '@homzhub/common/src/domain/models/Property';
+import { IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IStateProps {
@@ -25,6 +25,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   getRentServiceList: () => void;
+  setTypeOfSale: (typeOfSale: TypeOfSale) => void;
 }
 
 interface IRentServicesState {
@@ -95,7 +96,11 @@ class RentServices extends Component<Props, IRentServicesState> {
     const isSelect = isSelected && selectedItem === item.id;
     const customStyle = customizedStyles(isSelect);
     return (
-      <View style={customStyle.services} key={item.label}>
+      <TouchableOpacity
+        style={customStyle.services}
+        key={item.label}
+        onPress={isSelect ? handleSelectedItem : handlePress}
+      >
         <View style={styles.serviceContent}>
           <Icon
             name={item.icon}
@@ -108,11 +113,11 @@ class RentServices extends Component<Props, IRentServicesState> {
           </Label>
         </View>
         {isSelect ? (
-          <Icon name={icons.circleFilled} size={18} color={theme.colors.primaryColor} onPress={handleSelectedItem} />
+          <Icon name={icons.circleFilled} size={18} color={theme.colors.primaryColor} />
         ) : (
-          <Icon name={icons.circleOutline} size={18} color={theme.colors.disabled} onPress={handlePress} />
+          <Icon name={icons.circleOutline} size={18} color={theme.colors.disabled} />
         )}
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -126,8 +131,18 @@ class RentServices extends Component<Props, IRentServicesState> {
   };
 
   private onContinue = (): void => {
-    const { navigation } = this.props;
+    const { navigation, serviceList, setTypeOfSale } = this.props;
     const { selectedItem } = this.state;
+
+    if (!serviceList) {
+      return;
+    }
+
+    const selectedType = serviceList.find((service) => service.id === selectedItem);
+    if (selectedType) {
+      setTypeOfSale(selectedType.name);
+    }
+
     navigation.navigate(ScreensKeys.ServiceListScreen, { serviceId: selectedItem });
   };
 
@@ -145,10 +160,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getRentServiceList } = PropertyActions;
+  const { getRentServiceList, setTypeOfSale } = PropertyActions;
   return bindActionCreators(
     {
       getRentServiceList,
+      setTypeOfSale,
     },
     dispatch
   );

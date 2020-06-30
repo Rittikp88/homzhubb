@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -13,7 +14,6 @@ import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/sr
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 interface IStateProps {
   serviceSteps: IServiceListStepsDetail[];
@@ -98,7 +98,7 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
       return (
         <>
           <View key={index} style={styles.stepView}>
-            <View style={styles.stepItem}>
+            <View style={styles.stepItem} key={index}>
               <Text type="small" textType="regular" key={`stepNo${index}`}>
                 {index + 1}
               </Text>

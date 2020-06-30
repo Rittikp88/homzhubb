@@ -19,6 +19,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IStringForStep {
@@ -34,13 +35,14 @@ interface IScreenState {
 
 interface IStateProps {
   steps: ServiceStepTypes[];
+  typeOfSale: TypeOfSale;
   propertyId: number;
-  leaseTermId: number;
+  termId: number;
   serviceCategoryId: number;
 }
 
 interface IDispatchProps {
-  setCurrentLeaseTermId: (leaseTermId: number) => void;
+  setTermId: (termId: number) => void;
 }
 
 type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceCheckoutSteps>;
@@ -124,7 +126,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderContent = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
-    const { propertyId, leaseTermId, setCurrentLeaseTermId, serviceCategoryId, steps } = this.props;
+    const { propertyId, termId, setTermId, serviceCategoryId, steps, typeOfSale } = this.props;
 
     const currentStepId = steps[currentStep];
     switch (currentStepId) {
@@ -132,9 +134,9 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
         return (
           <CheckoutAssetDetails
             propertyId={propertyId}
-            leaseTermId={leaseTermId}
-            setLeaseTermId={setCurrentLeaseTermId}
-            isLeaseFlow
+            termId={termId}
+            setTermId={setTermId}
+            isLeaseFlow={typeOfSale === TypeOfSale.FIND_TENANT}
             onStepSuccess={this.onProceedToNextStep}
           />
         );
@@ -152,7 +154,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
       case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
         return (
           <PropertyPayment
-            onPayNow={this.handlePayNow}
+            onPayNow={this.onPaymentSuccess}
             isSuccess={isPaymentSuccess}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
           />
@@ -171,9 +173,25 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
     this.setState({ currentStep: currentStep + 1 });
   };
 
+  private onPaymentSuccess = (): void => {
+    const { isPaymentSuccess } = this.state;
+    this.setState({ isPaymentSuccess: !isPaymentSuccess });
+  };
+
   private fetchStepLabels = (): string[] => {
     const { steps } = this.props;
     return steps.map((serviceStep) => this.getTitleStringsForStep(serviceStep).stepLabel);
+  };
+
+  public navigateToPropertyHelper = (markdownKey: MarkdownType): void => {
+    const { navigation } = this.props;
+    const title = markdownKey === 'verification' ? 'Property Verification' : '';
+    navigation.navigate(ScreensKeys.MarkdownScreen, { title, isFrom: markdownKey });
+  };
+
+  public handleBackPress = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 
   private getTitleStringsForStep = (serviceStep: ServiceStepTypes): IStringForStep => {
@@ -211,42 +229,28 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
         };
     }
   };
-
-  public navigateToPropertyHelper = (markdownKey: MarkdownType): void => {
-    const { navigation } = this.props;
-    const title = markdownKey === 'verification' ? 'Property Verification' : '';
-    navigation.navigate(ScreensKeys.MarkdownScreen, { title, isFrom: markdownKey });
-  };
-
-  public handleBackPress = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
-  };
-
-  private handlePayNow = (): void => {
-    const { isPaymentSuccess } = this.state;
-    this.setState({ isPaymentSuccess: !isPaymentSuccess });
-  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
   const {
     getCurrentPropertyId,
-    getCurrentLeaseTermId,
+    getTermId,
     getCurrentServiceCategoryId,
     getServiceStepsDetails,
+    getTypeOfSale,
   } = PropertySelector;
   return {
     propertyId: getCurrentPropertyId(state),
-    leaseTermId: getCurrentLeaseTermId(state),
+    termId: getTermId(state),
     serviceCategoryId: getCurrentServiceCategoryId(state),
     steps: getServiceStepsDetails(state),
+    typeOfSale: getTypeOfSale(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setCurrentLeaseTermId } = PropertyActions;
-  return bindActionCreators({ setCurrentLeaseTermId }, dispatch);
+  const { setTermId } = PropertyActions;
+  return bindActionCreators({ setTermId }, dispatch);
 };
 
 const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState>(

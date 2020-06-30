@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData, IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
 
 const actionTypePrefix = 'Property/';
@@ -23,8 +23,9 @@ export const PropertyActionTypes = {
   },
   SET: {
     CURRENT_PROPERTY_ID: `${actionTypePrefix}CURRENT_PROPERTY_ID`,
-    CURRENT_LEASE_TERM_ID: `${actionTypePrefix}CURRENT_LEASE_TERM_ID`,
+    TERM_ID: `${actionTypePrefix}TERM_ID`,
     CURRENT_SERVICE_CATEGORY_ID: `${actionTypePrefix}CURRENT_SERVICE_CATEGORY_ID`,
+    TYPE_OF_SALE: `${actionTypePrefix}TYPE_OF_SALE`,
   },
 };
 
@@ -73,8 +74,13 @@ const setCurrentPropertyId = (payload: number): IFluxStandardAction<number> => (
   payload,
 });
 
-const setCurrentLeaseTermId = (payload: number): IFluxStandardAction<number> => ({
-  type: PropertyActionTypes.SET.CURRENT_LEASE_TERM_ID,
+const setTermId = (payload: number): IFluxStandardAction<number> => ({
+  type: PropertyActionTypes.SET.TERM_ID,
+  payload,
+});
+
+const setTypeOfSale = (payload: TypeOfSale): IFluxStandardAction<TypeOfSale> => ({
+  type: PropertyActionTypes.SET.TYPE_OF_SALE,
   payload,
 });
 
@@ -130,6 +136,7 @@ const setCurrentServiceCategoryId = (payload: number): IFluxStandardAction<numbe
 export type PropertyPayloadTypes =
   | string
   | number
+  | TypeOfSale
   | IPropertyDetailsData[]
   | IRentServiceList[]
   | IServiceDetail[]
@@ -143,7 +150,7 @@ export const PropertyActions = {
   getRentServiceListSuccess,
   getRentServiceListFailure,
   setCurrentPropertyId,
-  setCurrentLeaseTermId,
+  setTermId,
   getServiceDetails,
   getServiceDetailsSuccess,
   getServiceDetailsFailure,
@@ -151,4 +158,5 @@ export const PropertyActions = {
   getServiceStepsDetailsSuccess,
   getServiceStepsDetailsFailure,
   setCurrentServiceCategoryId,
+  setTypeOfSale,
 };

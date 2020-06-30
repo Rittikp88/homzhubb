@@ -108,9 +108,9 @@ describe('Property Actions', () => {
   });
 
   it('should call set current lease term id', () => {
-    const action = PropertyActions.setCurrentLeaseTermId(1);
+    const action = PropertyActions.setTermId(1);
     expect(action).toStrictEqual({
-      type: PropertyActionTypes.SET.CURRENT_LEASE_TERM_ID,
+      type: PropertyActionTypes.SET.TERM_ID,
       payload: 1,
     });
   });

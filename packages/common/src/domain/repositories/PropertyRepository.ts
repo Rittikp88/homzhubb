@@ -12,16 +12,24 @@ import {
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
+import {
+  ICreateSaleTermDetails,
+  ISaleDetails,
+  IUpdateSaleTermDetails,
+} from '@homzhub/common/src/domain/models/SaleTerms';
 
 const ENDPOINTS = {
-  getAssetById: (propertyId: number): string => `assets/${propertyId}`,
+  getAssetById: (propertyId: number): string => `assets/${propertyId}/`,
   getPropertyDetails: (): string => 'asset-groups/',
   createAsset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
   getRentServices: (): string => 'services/',
   leaseTerms: (propertyId: number): string => `assets/${propertyId}/lease-terms/`,
   updateLeaseTerms: (propertyId: number, leaseTermId: number): string =>
-    `assets/${propertyId}/lease-terms/${leaseTermId}`,
+    `assets/${propertyId}/lease-terms/${leaseTermId}/`,
+  saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-terms/`,
+  updateSaleTerms: (propertyId: number, leaseTermId: number): string =>
+    `assets/${propertyId}/sale-terms/${leaseTermId}/`,
 };
 
 class PropertyRepository {
@@ -64,6 +72,22 @@ class PropertyRepository {
     leaseTerms: IUpdateLeaseTermDetails
   ): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.updateLeaseTerms(propertyId, leaseTermId), leaseTerms);
+  };
+
+  public getSaleTerms = async (propertyId: number): Promise<ISaleDetails[]> => {
+    return await this.apiClient.get(ENDPOINTS.saleTerms(propertyId));
+  };
+
+  public createSaleTerms = async (propertyId: number, saleTerms: ICreateSaleTermDetails): Promise<{ id: number }> => {
+    return await this.apiClient.post(ENDPOINTS.saleTerms(propertyId), saleTerms);
+  };
+
+  public updateSaleTerms = async (
+    propertyId: number,
+    saleTermId: number,
+    saleTerms: IUpdateSaleTermDetails
+  ): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.updateSaleTerms(propertyId, saleTermId), saleTerms);
   };
 
   public getRentServices = async (): Promise<IRentServiceList[]> => {

@@ -165,6 +165,7 @@
     ],
     "object-curly-newline": "off",
     "no-console": "warn",
+    "no-param-reassign": "off",
     "global-require": "off",
     "no-underscore-dangle": "off",
     "no-return-await": "off",

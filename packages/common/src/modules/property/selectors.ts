@@ -1,5 +1,5 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData, IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { IServiceDetail, IServiceListStepsDetail, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 
 const getPropertyDetails = (state: IState): IPropertyDetailsData[] | null => {
@@ -18,11 +18,11 @@ const getCurrentPropertyId = (state: IState): number => {
   return currentPropertyId;
 };
 
-const getCurrentLeaseTermId = (state: IState): number => {
+const getTermId = (state: IState): number => {
   const {
-    property: { currentLeaseTermId },
+    property: { termId },
   } = state;
-  return currentLeaseTermId;
+  return termId;
 };
 
 const getRentServicesList = (state: IState): IRentServiceList[] | null => {
@@ -60,13 +60,21 @@ const getCurrentServiceCategoryId = (state: IState): number => {
   return currentServiceCategoryId;
 };
 
+const getTypeOfSale = (state: IState): TypeOfSale => {
+  const {
+    property: { typeOfSale },
+  } = state;
+  return typeOfSale;
+};
+
 export const PropertySelector = {
   getPropertyDetails,
   getRentServicesList,
   getCurrentPropertyId,
   getServiceDetails,
   getServiceSteps,
-  getCurrentLeaseTermId,
+  getTermId,
   getCurrentServiceCategoryId,
   getServiceStepsDetails,
+  getTypeOfSale,
 };

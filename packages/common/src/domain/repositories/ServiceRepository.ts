@@ -20,7 +20,7 @@ const ENDPOINTS = {
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}`,
   postVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
-  getAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments`,
+  getAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,
   postAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,
   markAttachmentAsCoverImage: (propertyId: number, attachmentId: number): string =>
     `assets/${propertyId}/attachments/${attachmentId}/cover-image`,

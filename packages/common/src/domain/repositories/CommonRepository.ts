@@ -5,7 +5,7 @@ import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
 
 const ENDPOINTS = {
   getCountryCodes: (): string => 'countries',
-  getCurrencyCodes: (): string => 'currency-codes',
+  getCurrencyCodes: (): string => 'currency-codes/',
   carpetAreaUnits: (): string => 'carpet-area-units/',
 };
 

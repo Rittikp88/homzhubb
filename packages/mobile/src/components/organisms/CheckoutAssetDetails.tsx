@@ -8,6 +8,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Text } from '@homzhub/common/src/components';
 import { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
+import { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import {
@@ -15,18 +16,24 @@ import {
   ILeaseTermDetails,
   IUpdateLeaseTermDetails,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
+import {
+  ICreateSaleTermDetails,
+  ISaleDetails,
+  IUpdateSaleTermDetails,
+} from '@homzhub/common/src/domain/models/SaleTerms';
 
 interface IState {
   currency: string;
   currencyData: PickerItemProps[];
   initialLeaseTerms: ILeaseTermDetails | null;
+  initialResaleTerms: ISaleDetails | null;
 }
 
 interface IOwnProps extends WithTranslation {
   propertyId: number;
-  leaseTermId: number;
+  termId: number;
   isLeaseFlow: boolean;
-  setLeaseTermId: (leaseTermId: number) => void;
+  setTermId: (leaseTermId: number) => void;
   onStepSuccess: () => void;
 }
 class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
@@ -34,16 +41,27 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     currencyData: [],
     currency: 'INR',
     initialLeaseTerms: null,
+    initialResaleTerms: null,
   };
 
   public componentDidMount = async (): Promise<void> => {
-    await this.getLeaseDetails();
+    const { isLeaseFlow } = this.props;
     await this.getCurrencyCodes();
+    if (isLeaseFlow) {
+      await this.getLeaseDetails();
+    } else {
+      await this.getResaleDetails();
+    }
   };
 
   public render = (): React.ReactNode => {
     const { t, isLeaseFlow } = this.props;
-    const { currency, currencyData, initialLeaseTerms } = this.state;
+    const { currency, currencyData, initialLeaseTerms, initialResaleTerms } = this.state;
+
+    const selectedCurrency: PickerItemProps | undefined = currencyData.find(
+      (item: PickerItemProps) => item.value === currency
+    );
+
     return (
       <>
         <View style={styles.titleRow}>
@@ -61,7 +79,21 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
             containerStyle={styles.dropdownContainer}
           />
         </View>
-        <LeaseDetailsForm initialValues={initialLeaseTerms} currency={currency} onSubmit={this.onLeaseFormSubmit} />
+        {isLeaseFlow ? (
+          <LeaseDetailsForm
+            initialValues={initialLeaseTerms}
+            // @ts-ignore
+            currency={selectedCurrency?.label ?? currency}
+            onSubmit={this.onLeaseFormSubmit}
+          />
+        ) : (
+          <ResaleDetailsForm
+            // @ts-ignore
+            currency={selectedCurrency?.label ?? currency}
+            onSubmit={this.onResaleSubmit}
+            initialValues={initialResaleTerms}
+          />
+        )}
       </>
     );
   };
@@ -70,37 +102,85 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     this.setState({ currency: value as string });
   };
 
-  private onLeaseFormSubmit = async (data: ICreateLeaseTermDetails | IUpdateLeaseTermDetails): Promise<void> => {
-    const { propertyId, leaseTermId, setLeaseTermId, onStepSuccess } = this.props;
+  private onLeaseFormSubmit = async (data: ICreateLeaseTermDetails): Promise<void> => {
+    const { propertyId, termId, setTermId, onStepSuccess } = this.props;
+    const { currency } = this.state;
+    data = { ...data, currency_code: currency };
 
-    if (leaseTermId) {
+    if (termId) {
       await this.updateLeaseTerms(data as IUpdateLeaseTermDetails);
       return;
     }
 
     try {
-      const response = await PropertyRepository.createLeaseTerms(propertyId, data as ICreateLeaseTermDetails);
-      setLeaseTermId(response.id);
+      const response = await PropertyRepository.createLeaseTerms(propertyId, data);
+      setTermId(response.id);
       onStepSuccess();
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
   };
 
+  private onResaleSubmit = async (data: ICreateSaleTermDetails): Promise<void> => {
+    const { propertyId, termId, setTermId, onStepSuccess } = this.props;
+    const { currency } = this.state;
+    data = { ...data, currency_code: currency };
+
+    if (termId) {
+      await this.updateResaleTerms(data);
+      return;
+    }
+
+    try {
+      const response = await PropertyRepository.createSaleTerms(propertyId, data);
+      setTermId(response.id);
+      onStepSuccess();
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
+
+  // LEASE APIs
   private getLeaseDetails = async (): Promise<void> => {
     const { propertyId } = this.props;
     try {
       const response = await PropertyRepository.getLeaseTerms(propertyId);
-      this.setState({ initialLeaseTerms: response[0] });
+      if (response.length > 0) {
+        this.setState({ initialLeaseTerms: response[0] });
+      }
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
   };
 
   private updateLeaseTerms = async (data: IUpdateLeaseTermDetails): Promise<void> => {
-    const { propertyId, leaseTermId, onStepSuccess } = this.props;
+    const { propertyId, termId, onStepSuccess } = this.props;
     try {
-      await PropertyRepository.updateLeaseTerms(propertyId, leaseTermId, data);
+      await PropertyRepository.updateLeaseTerms(propertyId, termId, data);
+      onStepSuccess();
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
+
+  // RESALE APIs
+
+  private getResaleDetails = async (): Promise<void> => {
+    const { propertyId } = this.props;
+    try {
+      const response = await PropertyRepository.getSaleTerms(propertyId);
+      if (response.length > 0) {
+        this.setState({ initialResaleTerms: response[0] });
+      }
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
+
+  private updateResaleTerms = async (data: IUpdateSaleTermDetails): Promise<void> => {
+    const { propertyId, termId, onStepSuccess } = this.props;
+    try {
+      await PropertyRepository.updateSaleTerms(propertyId, termId, data);
       onStepSuccess();
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -113,7 +193,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
       this.setState({
         currencyData: response.map(
           (currency: ICurrency): PickerItemProps => ({
-            label: currency.currency_code,
+            label: `${currency.currency_code} ${currency.currency_symbol}`,
             value: currency.currency_code,
           })
         ),
