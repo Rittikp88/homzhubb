@@ -3,7 +3,10 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { RNVideo } from '@homzhub/common/src/components';
 
-describe('Badge', () => {
+jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
+jest.mock('@react-native-community/google-signin', () => {});
+
+describe('Video', () => {
   const props = {
     uri: 'videoUrl',
     onBuffer: jest.fn(),
