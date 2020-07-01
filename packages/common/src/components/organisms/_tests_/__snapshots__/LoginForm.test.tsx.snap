@@ -3,7 +3,6 @@
 exports[`Test cases for LoginForm should render snapshot 1`] = `
 <LoginForm
   i18n={Object {}}
-  isEmailLogin={true}
   onLoginSuccess={[MockFunction]}
   t={[Function]}
   tReady={false}
@@ -23,7 +22,6 @@ LoginForm {
   "phone": null,
   "props": Object {
     "i18n": Object {},
-    "isEmailLogin": true,
     "onLoginSuccess": [MockFunction],
     "t": [Function],
     "tReady": false,
@@ -37,7 +35,7 @@ LoginForm {
     "isBottomSheetVisible": false,
     "user": Object {
       "email": "",
-      "isEmailFlow": true,
+      "isEmailFlow": false,
       "password": "",
       "phone": "",
     },
@@ -65,7 +63,6 @@ LoginForm {
       },
       "_element": <LoginForm
         i18n={Object {}}
-        isEmailLogin={true}
         onLoginSuccess={[MockFunction]}
         t={[Function]}
         tReady={false}
@@ -91,7 +88,7 @@ LoginForm {
           initialValues={
             Object {
               "email": "",
-              "isEmailFlow": true,
+              "isEmailFlow": false,
               "password": "",
               "phone": "",
             }

@@ -1,3 +1,5 @@
+import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
+
 export const PropertyAssetGroupData = [
   {
     id: 1,
@@ -171,5 +173,48 @@ export const assetGroups = [
         name: 'Bathroom',
       },
     ],
+  },
+];
+
+export const assetDetail = {
+  project_name: 'Project',
+  unit_number: '12',
+  block_number: '#12',
+  latitude: 0.9999,
+  longitude: 0.24444,
+  carpet_area: '12',
+  carpet_area_unit: 'Sqt',
+  floor_number: 2,
+  total_floors: 5,
+  asset_type: 'Commercial Showroom',
+};
+
+export const leaseTermDetail = [
+  {
+    id: 1,
+    currency_code: '+91',
+    monthly_rent_price: 1200,
+    security_deposit_price: 15000,
+    annual_increment_percentage: 5,
+    minimum_lease_period: 2,
+    furnishing_status: 'SEMI',
+    available_from_date: '2020-09-12',
+    maintenance_paid_by: 'OWNER',
+    utility_paid_by: 'OWNER',
+    maintenance_amount: 1,
+    maintenance_schedule: 'MONTHLY',
+  },
+];
+
+export const saleTerm = [
+  {
+    id: 1,
+    currency_code: '+91',
+    expected_price: 1200,
+    booking_amount: 500,
+    year_of_construction: 1,
+    available_from_date: '2020-09-12',
+    maintenance_amount: 200,
+    maintenance_schedule: ScheduleTypes.MONTHLY,
   },
 ];

@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ServiceRepository Should fetch existing verification document types 1`] = `
+Array [
+  Object {
+    "header": "Upload ID proof",
+    "icon": "id-proof",
+    "id": 1,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "",
+    "title": "ID Proof",
+  },
+  Object {
+    "header": "Capture Your Selfie",
+    "icon": "selfie",
+    "id": 2,
+    "subHeader": "Note: Feugiat sed morbi feuiat enim.",
+    "subTitle": "Please ensure that the ID is clearly visible in your photo",
+    "title": "Click a selfie with the ID proof",
+  },
+  Object {
+    "header": "Upload Document",
+    "icon": "document",
+    "id": 3,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "You can upload Electricity bill or Property tax reciepts which mentions your name and the property address",
+    "title": "Upload Ownership Verification Document",
+  },
+]
+`;
+
 exports[`ServiceRepository Should fetch list of all services 1`] = `
 Array [
   Object {
@@ -160,6 +189,60 @@ Array [
       },
     ],
     "title": "Boosted Listing",
+  },
+]
+`;
+
+exports[`ServiceRepository Should fetch service steps details 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "name": "LEASE_DETAILS",
+    "title": "Enter the Lease details",
+  },
+  Object {
+    "id": 2,
+    "name": "PROPERTY_IMAGES",
+    "title": "Add Property Images",
+  },
+  Object {
+    "id": 3,
+    "name": "PROPERTY_VERIFICATIONS",
+    "title": "Complete property verification",
+  },
+  Object {
+    "id": 4,
+    "name": "PAYMENT_TOKEN_AMOUNT",
+    "title": "Payment of token amount",
+  },
+]
+`;
+
+exports[`ServiceRepository Should fetch verification document types 1`] = `
+Array [
+  Object {
+    "header": "Upload ID proof",
+    "icon": "id-proof",
+    "id": 1,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "",
+    "title": "ID Proof",
+  },
+  Object {
+    "header": "Capture Your Selfie",
+    "icon": "selfie",
+    "id": 2,
+    "subHeader": "Note: Feugiat sed morbi feuiat enim.",
+    "subTitle": "Please ensure that the ID is clearly visible in your photo",
+    "title": "Click a selfie with the ID proof",
+  },
+  Object {
+    "header": "Upload Document",
+    "icon": "document",
+    "id": 3,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "You can upload Electricity bill or Property tax reciepts which mentions your name and the property address",
+    "title": "Upload Ownership Verification Document",
   },
 ]
 `;

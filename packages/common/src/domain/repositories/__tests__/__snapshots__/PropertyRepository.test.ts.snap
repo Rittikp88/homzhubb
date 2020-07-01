@@ -77,6 +77,40 @@ Array [
 ]
 `;
 
+exports[`PropertyRepository should fetch a asset detail 1`] = `
+Object {
+  "asset_type": "Commercial Showroom",
+  "block_number": "#12",
+  "carpet_area": "12",
+  "carpet_area_unit": "Sqt",
+  "floor_number": 2,
+  "latitude": 0.9999,
+  "longitude": 0.24444,
+  "project_name": "Project",
+  "total_floors": 5,
+  "unit_number": "12",
+}
+`;
+
+exports[`PropertyRepository should fetch a lease term 1`] = `
+Array [
+  Object {
+    "annual_increment_percentage": 5,
+    "available_from_date": "2020-09-12",
+    "currency_code": "+91",
+    "furnishing_status": "SEMI",
+    "id": 1,
+    "maintenance_amount": 1,
+    "maintenance_paid_by": "OWNER",
+    "maintenance_schedule": "MONTHLY",
+    "minimum_lease_period": 2,
+    "monthly_rent_price": 1200,
+    "security_deposit_price": 15000,
+    "utility_paid_by": "OWNER",
+  },
+]
+`;
+
 exports[`PropertyRepository should fetch a list of rent services 1`] = `
 Array [
   Object {
@@ -96,6 +130,21 @@ Array [
     "id": 3,
     "label": "I already have found a tenant",
     "name": "TENANT_FOUND",
+  },
+]
+`;
+
+exports[`PropertyRepository should fetch a sale term 1`] = `
+Array [
+  Object {
+    "available_from_date": "2020-09-12",
+    "booking_amount": 500,
+    "currency_code": "+91",
+    "expected_price": 1200,
+    "id": 1,
+    "maintenance_amount": 200,
+    "maintenance_schedule": "MONTHLY",
+    "year_of_construction": 1,
   },
 ]
 `;

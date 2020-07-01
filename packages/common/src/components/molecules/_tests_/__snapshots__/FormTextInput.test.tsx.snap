@@ -58,7 +58,6 @@ Array [
       onBlur={[Function]}
       onChangeText={[Function]}
       onFocus={[Function]}
-      onValueChange={[MockFunction]}
       placeholderTextColor="#C9D6DF"
       rejectResponderTermination={true}
       style={
@@ -160,7 +159,6 @@ Array [
       onBlur={[Function]}
       onChangeText={[Function]}
       onFocus={[Function]}
-      onValueChange={[MockFunction]}
       placeholderTextColor="#C9D6DF"
       rejectResponderTermination={true}
       style={
@@ -309,7 +307,6 @@ Array [
       onBlur={[Function]}
       onChangeText={[Function]}
       onFocus={[Function]}
-      onValueChange={[MockFunction]}
       placeholderTextColor="#C9D6DF"
       rejectResponderTermination={true}
       secureTextEntry={true}

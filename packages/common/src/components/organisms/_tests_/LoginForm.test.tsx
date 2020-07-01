@@ -8,17 +8,21 @@ jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageS
 jest.mock('@react-native-community/google-signin', () => {});
 
 describe('Test cases for LoginForm', () => {
-  const props = {
+  const testProps = (Props: any): any => ({
+    ...Props,
     onLoginSuccess: jest.fn(),
-    isEmailLogin: true,
-  };
+  });
+
+  let props: any;
 
   it('should render snapshot', () => {
+    props = testProps({});
     const wrapper = shallow(<LoginForm {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('should render snapshot for dropdown selection', () => {
+    props = testProps({});
     const wrapper = shallow(<LoginForm {...props} />);
     const instance = wrapper.dive().instance();
     instance.onCloseDropDown();

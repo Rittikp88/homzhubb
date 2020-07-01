@@ -15,6 +15,8 @@ describe('Test cases for FormTextInput', () => {
     touched: {
       name: 'test',
     },
+    setFieldValue: jest.fn(),
+    setFieldTouched: jest.fn(),
   };
 
   const mockFunction = jest.fn();
@@ -24,7 +26,6 @@ describe('Test cases for FormTextInput', () => {
     name: 'test',
     children: null,
     formProps: formValues,
-    onValueChange: mockFunction,
   });
 
   let props: IFormTextInputProps;
@@ -33,6 +34,7 @@ describe('Test cases for FormTextInput', () => {
       inputType: 'name',
     });
     const wrapper = shallow(<FormTextInput {...props} />);
+    wrapper.instance().handleTextChange('abc');
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -44,6 +46,7 @@ describe('Test cases for FormTextInput', () => {
     });
 
     const wrapper = shallow(<FormTextInput {...props} />);
+    wrapper.instance().handleTextChange('abc@yopmail.com');
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -71,6 +74,7 @@ describe('Test cases for FormTextInput', () => {
   it('should render snapshot and call handleChange when inputPrefixText is not there', () => {
     props = testProps({
       inputType: 'phone',
+      onBlur: mockFunction,
     });
 
     const wrapper = shallow(<FormTextInput {...props} />);
@@ -80,9 +84,11 @@ describe('Test cases for FormTextInput', () => {
   it('should render snapshot and call handleChange when input type is number', () => {
     props = testProps({
       inputType: 'number',
+      onValueChange: mockFunction,
     });
 
     const wrapper = shallow(<FormTextInput {...props} />);
+    wrapper.instance().handleTextChange('123');
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -121,6 +127,7 @@ describe('Test cases for FormTextInput', () => {
     const instance = wrapper.instance();
     instance.focus();
     instance.handleBlur();
+    wrapper.instance().handleTextChange('abc');
     expect(instance.state.isFocused).toBe(false);
     instance.handleFocus();
     expect(instance.state.isFocused).toBe(true);
