@@ -3,7 +3,7 @@ import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 export interface ICreateSaleTermDetails {
   currency_code: string;
   expected_price: number;
-  booking_amount: number;
+  expected_booking_amount: number;
   year_of_construction: number;
   available_from_date: string;
   maintenance_amount: number;
@@ -13,7 +13,7 @@ export interface ICreateSaleTermDetails {
 export interface IUpdateSaleTermDetails {
   currency_code?: string;
   expected_price?: number;
-  booking_amount?: number;
+  expected_booking_amount?: number;
   year_of_construction?: number;
   available_from_date?: string;
   maintenance_amount?: number;

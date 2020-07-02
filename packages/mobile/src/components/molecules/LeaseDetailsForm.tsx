@@ -315,7 +315,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
       [LeaseFormKeys.securityDeposit]: yup
         .string()
         .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
-        .required(t('securityDepositRentRequired')),
+        .required(t('securityDepositRequired')),
       [LeaseFormKeys.annualIncrement]: yup.string().when('showMore', {
         is: true,
         then: yup
@@ -328,9 +328,9 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
         then: yup
           .string()
           .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
-          .required(t('maintenanceAmountRentRequired')),
+          .required(t('maintenanceAmountRequired')),
       }),
-      [LeaseFormKeys.maintenanceSchedule]: yup.string(),
+      [LeaseFormKeys.maintenanceSchedule]: yup.string<ScheduleTypes>().required(t('maintenanceScheduleRequired')),
     });
   };
 }

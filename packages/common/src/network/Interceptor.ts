@@ -39,6 +39,7 @@ class Interceptor implements IApiInterceptor {
       const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
 
       // If not a token expiry error, proceed as usual
+      // TODO (Aditya 01/07/2020): Revisit on error code finalization
       if (error.response?.status !== HttpStatusCode.Unauthorized || !user) {
         throw error;
       }
@@ -66,6 +67,7 @@ class Interceptor implements IApiInterceptor {
 
         return await this.client.request(originalRequest);
       } catch (e) {
+        // TODO (Aditya 01/07/2020): Handle logout on refresh token expiry
         throw e;
       }
     };

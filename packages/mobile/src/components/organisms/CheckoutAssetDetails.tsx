@@ -142,11 +142,14 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
 
   // LEASE APIs
   private getLeaseDetails = async (): Promise<void> => {
-    const { propertyId } = this.props;
+    const { propertyId, termId } = this.props;
     try {
       const response = await PropertyRepository.getLeaseTerms(propertyId);
       if (response.length > 0) {
-        this.setState({ initialLeaseTerms: response[0] });
+        const details = response.find((term) => term.id === termId) ?? response[0];
+        this.setState({
+          initialLeaseTerms: termId ? details : response[0],
+        });
       }
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -166,11 +169,14 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   // RESALE APIs
 
   private getResaleDetails = async (): Promise<void> => {
-    const { propertyId } = this.props;
+    const { propertyId, termId } = this.props;
     try {
       const response = await PropertyRepository.getSaleTerms(propertyId);
       if (response.length > 0) {
-        this.setState({ initialResaleTerms: response[0] });
+        const details = response.find((term) => term.id === termId) ?? response[0];
+        this.setState({
+          initialResaleTerms: termId ? details : response[0],
+        });
       }
     } catch (e) {
       AlertHelper.error({ message: e.message });

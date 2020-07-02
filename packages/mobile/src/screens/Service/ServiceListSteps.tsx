@@ -96,7 +96,7 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
     return serviceSteps.map((stepItem: IServiceListStepsDetail, index: number) => {
       const isLast = serviceSteps.length - 1 === index;
       return (
-        <>
+        <View key={`stepContainer${index}`}>
           <View key={index} style={styles.stepView}>
             <View style={styles.stepItem} key={index}>
               <Text type="small" textType="regular" key={`stepNo${index}`}>
@@ -116,7 +116,7 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
             </Text>
           </View>
           {!isLast && <Divider containerStyles={styles.divider} key={`divider-${index}`} />}
-        </>
+        </View>
       );
     });
   }

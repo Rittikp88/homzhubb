@@ -28,8 +28,7 @@ const ENDPOINTS = {
   updateLeaseTerms: (propertyId: number, leaseTermId: number): string =>
     `assets/${propertyId}/lease-terms/${leaseTermId}/`,
   saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-terms/`,
-  updateSaleTerms: (propertyId: number, leaseTermId: number): string =>
-    `assets/${propertyId}/sale-terms/${leaseTermId}/`,
+  updateSaleTerms: (propertyId: number, saleTermId: number): string => `assets/${propertyId}/sale-terms/${saleTermId}/`,
 };
 
 class PropertyRepository {

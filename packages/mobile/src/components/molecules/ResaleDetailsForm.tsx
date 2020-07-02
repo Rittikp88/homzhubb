@@ -43,7 +43,7 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
     if (prevProps.initialValues !== initialValues && initialValues) {
       const {
         available_from_date,
-        booking_amount,
+        expected_booking_amount,
         expected_price,
         maintenance_amount,
         maintenance_schedule,
@@ -53,7 +53,7 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         expectedPrice: expected_price.toString(),
-        bookingAmount: booking_amount.toString(),
+        bookingAmount: expected_booking_amount.toString(),
         yearOfConstruction: year_of_construction.toString(),
         availableFrom: available_from_date,
         maintenanceAmount: maintenance_amount.toString(),
@@ -130,7 +130,7 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
     const payload: ICreateSaleTermDetails = {
       currency_code: currency,
       expected_price: parseInt(values.expectedPrice, 10),
-      booking_amount: parseInt(values.bookingAmount, 10),
+      expected_booking_amount: parseInt(values.bookingAmount, 10),
       year_of_construction: parseInt(values.yearOfConstruction, 10),
       available_from_date: values.availableFrom,
       maintenance_amount: parseInt(values.maintenanceAmount, 10),
@@ -160,10 +160,21 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
     return yup.object().shape({
       expectedPrice: yup
         .string()
+        .min(3, t('minimumAmount'))
         .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
         .required(t('expectedPriceRequired')),
       bookingAmount: yup
         .string()
+        .test({
+          name: 'test-bookingAmount-greater',
+          exclusive: true,
+          test(bookingAmount: string) {
+            const { expectedPrice } = this.parent;
+            return parseInt(bookingAmount, 10) <= parseInt(expectedPrice, 10);
+          },
+          message: t('bookingAmountExceeded'),
+        })
+        .min(3, t('minimumAmount'))
         .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
         .required(t('bookingAmountRequired')),
       yearOfConstruction: yup
@@ -173,8 +184,8 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
       maintenanceAmount: yup
         .string()
         .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
-        .required(t('maintenanceAmountRentRequired')),
-      maintenanceSchedule: yup.string(),
+        .required(t('maintenanceAmountRequired')),
+      maintenanceSchedule: yup.string<ScheduleTypes>().required(t('maintenanceScheduleRequired')),
       availableFrom: yup.string(),
     });
   };

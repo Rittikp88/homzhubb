@@ -7,7 +7,7 @@ export const DisallowedInputCharacters = {
 class FormUtils {
   public nameRegex = /^[a-zA-Z ]*$/;
 
-  public digitRegex = /^[0-9]*$/;
+  public digitRegex = /^[0-9]*[1-9][0-9]*$/;
 
   public percentageRegex = /[0-9]{1,2}(.[0-9])*/;
 

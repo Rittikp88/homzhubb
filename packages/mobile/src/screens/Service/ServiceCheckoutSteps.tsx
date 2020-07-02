@@ -195,13 +195,20 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   };
 
   private getTitleStringsForStep = (serviceStep: ServiceStepTypes): IStringForStep => {
-    const { t } = this.props;
+    const { t, typeOfSale } = this.props;
     switch (serviceStep) {
       case ServiceStepTypes.LEASE_DETAILS:
+        if (typeOfSale === TypeOfSale.FIND_TENANT) {
+          return {
+            stepLabel: t('common:details'),
+            title: t('enterLeaseDetails'),
+            screenTitle: t('leaseDetails'),
+          };
+        }
         return {
           stepLabel: t('common:details'),
-          title: t('enterLeaseDetails'),
-          screenTitle: t('leaseDetails'),
+          title: t('enterSaleDetails'),
+          screenTitle: t('resaleDetails'),
         };
       case ServiceStepTypes.PROPERTY_IMAGES:
         return {
