@@ -71,7 +71,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
           <Text type="small" textType="semiBold" style={styles.link} onPress={this.navigateToHelper}>
             {t('helperNavigationText')}
           </Text>
-          <Divider containerStyles={styles.divider}/>
+          <Divider containerStyles={styles.divider} />
         </View>
         <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
         <WithShadowView outerViewStyle={styles.shadowView}>
@@ -126,11 +126,11 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
             {currentDocument.name || fileType || [0]}
           </Text>
           <TouchableOpacity style={styles.iconContainer} onPress={onDeleteImageThumbnail}>
-            <Icon name={icons.close} size={22} color={theme.colors.shadow}/>
+            <Icon name={icons.close} size={22} color={theme.colors.shadow} />
           </TouchableOpacity>
         </View>
       ) : (
-        <ImageThumbnail imageUrl={thumbnailImage} onIconPress={onDeleteImageThumbnail}/>
+        <ImageThumbnail imageUrl={thumbnailImage} onIconPress={onDeleteImageThumbnail} />
       );
     }
     return (
@@ -253,7 +253,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public deleteDocument = async (
     document: IVerificationDocumentList,
-    isLocalDocument: boolean | undefined,
+    isLocalDocument: boolean | undefined
   ): Promise<void> => {
     const { existingDocuments, localDocuments, verificationTypes } = this.state;
     const clonedDocuments = isLocalDocument ? cloneDeep(localDocuments) : cloneDeep(existingDocuments);
@@ -285,7 +285,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   public updateLocalDocuments = (
     documentId: number,
     source: { uri: string; type: string | undefined; name: string | undefined },
-    verificationDocumentId: number,
+    verificationDocumentId: number
   ): void => {
     const imageObject: IVerificationDocumentList = {
       verification_document_type_id: verificationDocumentId,
