@@ -18,7 +18,7 @@ const ENDPOINTS = {
     `service-categories/${categoryId}/verification-document-types`,
   existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents`,
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
-    `assets/${propertyId}/verification-documents/${documentId}`,
+    `assets/${propertyId}/verification-documents/${documentId}/`,
   postVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   getAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,
   postAssetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,

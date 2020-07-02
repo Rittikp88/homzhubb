@@ -42,27 +42,5 @@ exports[`Property Images Component should render the PropertyImages component 1`
       }
     />
   </BottomSheet>
-  <WithShadowView
-    outerViewStyle={
-      Object {
-        "marginBottom": 20,
-        "paddingBottom": 0,
-        "paddingTop": 10,
-      }
-    }
-  >
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "margin": 16,
-        }
-      }
-      disabled={true}
-      onPress={[Function]}
-      title="common:continue"
-      type="primary"
-    />
-  </WithShadowView>
 </View>
 `;

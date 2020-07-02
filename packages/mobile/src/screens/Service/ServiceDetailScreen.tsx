@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
   confirmationView: {
     marginHorizontal: 24,
     marginVertical: 16,
+    justifyContent: 'space-around',
   },
   confirmationContent: {
     alignItems: 'center',
@@ -282,6 +283,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     lineHeight: 33,
     color: theme.colors.darkTint1,
+    textAlign: 'center',
   },
   info: {
     marginTop: 20,
@@ -289,7 +291,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    marginTop: 12,
+    marginTop: 20,
   },
   carouselStyle: {
     paddingLeft: 0,

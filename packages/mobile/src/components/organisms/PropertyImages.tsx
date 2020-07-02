@@ -61,15 +61,17 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         >
           <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
         </BottomSheet>
-        <WithShadowView outerViewStyle={styles.shadowView}>
-          <Button
-            type="primary"
-            title={t('common:continue')}
-            disabled={selectedImages.length === 0}
-            containerStyle={styles.buttonStyle}
-            onPress={this.postAttachmentsForProperty}
-          />
-        </WithShadowView>
+        {selectedImages.length > 0 && (
+          <WithShadowView outerViewStyle={styles.shadowView}>
+            <Button
+              type="primary"
+              title={t('common:continue')}
+              disabled={selectedImages.length === 0}
+              containerStyle={styles.buttonStyle}
+              onPress={this.postAttachmentsForProperty}
+            />
+          </WithShadowView>
+        )}
       </View>
     );
   }
