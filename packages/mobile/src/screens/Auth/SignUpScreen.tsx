@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { AnimatedHeader, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
@@ -120,7 +121,7 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
 
   private fetchSocialMedia = async (): Promise<void> => {
     try {
-      const response = await UserRepository.getSocialMedia();
+      const response = await CommonRepository.getSocialMedia();
       this.setState({ socialMediaProviders: response });
     } catch (e) {
       AlertHelper.error({ message: e.message });

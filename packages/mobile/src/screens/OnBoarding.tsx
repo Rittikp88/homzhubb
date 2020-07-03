@@ -6,7 +6,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -116,7 +116,7 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
 
   public getOnboardingData = async (): Promise<void> => {
     try {
-      const response = await UserRepository.getOnboarding();
+      const response = await CommonRepository.getOnboarding();
       this.setState({
         data: response,
       });

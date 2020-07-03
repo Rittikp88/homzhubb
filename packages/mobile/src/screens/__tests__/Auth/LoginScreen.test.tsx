@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { LoginScreen, mapDispatchToProps } from '@homzhub/mobile/src/screens/Auth/LoginScreen';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
 
 const mock = jest.fn();
@@ -77,9 +77,9 @@ describe('Login Screen', () => {
   });
 
   it('should fetch the social media data', async () => {
-    jest.spyOn(UserRepository, 'getSocialMedia').mockImplementation(() => Promise.resolve(SocialMediaData));
+    jest.spyOn(CommonRepository, 'getSocialMedia').mockImplementation(() => Promise.resolve(SocialMediaData));
     await instance.componentDidMount();
-    const response = await UserRepository.getSocialMedia();
+    const response = await CommonRepository.getSocialMedia();
     component.setState({ socialMediaProviders: response });
     expect(component.state('socialMediaProviders')).toStrictEqual(SocialMediaData);
   });

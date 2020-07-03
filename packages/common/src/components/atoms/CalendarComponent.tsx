@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, DateObject } from 'react-native-calendars';
 import { View, FlatList, TouchableOpacity, StyleSheet, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import moment from 'moment';
 import { DateFormats, DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
@@ -49,10 +49,16 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const newMonth = moment(selectedDate).month();
     const newYear = moment(selectedDate).year();
     const updateMonth = DateUtils.getFullMonthName(newMonth || month, DateFormats.MMMM);
+
     return (
       <>
         <View style={styles.headerContainer}>
-          <Icon name={icons.leftArrow} size={22} color={theme.colors.primaryColor} onPress={this.handleBackPress} />
+          <Icon
+            name={icons.leftArrow}
+            onPress={this.handleBackPress}
+            size={22}
+            color={month === moment().month() ? theme.colors.disabled : theme.colors.primaryColor}
+          />
           <Text
             type="small"
             textType="semiBold"
@@ -146,8 +152,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     this.getSelectedDate(index, Number(year));
   };
 
-  // TODO: (Shikha: 18/06/2020) - Need to add day type
-  private onDayPress = (day: any): void => {
+  private onDayPress = (day: DateObject): void => {
     this.setState({ selectedDate: day.dateString });
   };
 
@@ -163,6 +168,11 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
 
   private handleBackPress = (): void => {
     const { year, isMonthView, month } = this.state;
+
+    if (month === moment().month()) {
+      return;
+    }
+
     if (isMonthView) {
       const previousYear = Number(year) - 1;
       this.getSelectedDate(month, previousYear);

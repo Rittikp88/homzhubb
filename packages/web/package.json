@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prestart": "yarn workspace @homzhub/common build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "CI=true react-app-rewired test --coverage --env=jsdom",

@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "compile": "tsc -b --incremental",
-    "clean": "shx rm -f *.tsbuildinfo && shx rm -rf dist/*",
-    "build": "yarn clean && yarn compile",
     "test": "jest --coverage --env=jsdom",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",

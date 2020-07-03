@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, PickerItemProps } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -113,7 +113,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     }
 
     try {
-      const response = await PropertyRepository.createLeaseTerms(propertyId, data);
+      const response = await AssetRepository.createLeaseTerms(propertyId, data);
       setTermId(response.id);
       onStepSuccess();
     } catch (e) {
@@ -132,7 +132,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     }
 
     try {
-      const response = await PropertyRepository.createSaleTerms(propertyId, data);
+      const response = await AssetRepository.createSaleTerms(propertyId, data);
       setTermId(response.id);
       onStepSuccess();
     } catch (e) {
@@ -144,9 +144,9 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   private getLeaseDetails = async (): Promise<void> => {
     const { propertyId, termId } = this.props;
     try {
-      const response = await PropertyRepository.getLeaseTerms(propertyId);
+      const response = await AssetRepository.getLeaseTerms(propertyId);
       if (response.length > 0) {
-        const details = response.find((term) => term.id === termId) ?? response[0];
+        const details = response.find((term: ILeaseTermDetails) => term.id === termId) ?? response[0];
         this.setState({
           initialLeaseTerms: termId ? details : response[0],
         });
@@ -159,7 +159,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   private updateLeaseTerms = async (data: IUpdateLeaseTermDetails): Promise<void> => {
     const { propertyId, termId, onStepSuccess } = this.props;
     try {
-      await PropertyRepository.updateLeaseTerms(propertyId, termId, data);
+      await AssetRepository.updateLeaseTerms(propertyId, termId, data);
       onStepSuccess();
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -171,9 +171,9 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   private getResaleDetails = async (): Promise<void> => {
     const { propertyId, termId } = this.props;
     try {
-      const response = await PropertyRepository.getSaleTerms(propertyId);
+      const response = await AssetRepository.getSaleTerms(propertyId);
       if (response.length > 0) {
-        const details = response.find((term) => term.id === termId) ?? response[0];
+        const details = response.find((term: ISaleDetails) => term.id === termId) ?? response[0];
         this.setState({
           initialResaleTerms: termId ? details : response[0],
         });
@@ -186,7 +186,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   private updateResaleTerms = async (data: IUpdateSaleTermDetails): Promise<void> => {
     const { propertyId, termId, onStepSuccess } = this.props;
     try {
-      await PropertyRepository.updateSaleTerms(propertyId, termId, data);
+      await AssetRepository.updateSaleTerms(propertyId, termId, data);
       onStepSuccess();
     } catch (e) {
       AlertHelper.error({ message: e.message });

@@ -12,18 +12,14 @@ import {
   ISocialLoginPayload,
   ISocialSignUpPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
-import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 
 const ENDPOINTS = {
-  onboarding: (): string => 'onboardings',
-  socialMedia: (): string => 'social-providers/',
   signUp: (): string => 'users/',
   socialSignUp: (): string => 'users/social-signup/',
   login: (): string => 'users/login/',
+  socialLogin: (): string => 'users/social-login/',
   otp: (): string => 'otp/verifications/',
   forgotPasswordEmail: (): string => 'users/reset-password/',
-  socialLogin: (): string => 'users/social-login/',
   emailExists: (emailId: string): string => `users/emails/${emailId}`,
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
   logout: (): string => 'users/logout/',
@@ -35,14 +31,6 @@ class UserRepository {
   public constructor() {
     this.apiClient = BootstrapAppService.clientInstance;
   }
-
-  public getOnboarding = async (): Promise<IOnboardingData[]> => {
-    return await this.apiClient.get(ENDPOINTS.onboarding());
-  };
-
-  public getSocialMedia = async (): Promise<ISocialMediaProvider[]> => {
-    return await this.apiClient.get(ENDPOINTS.socialMedia());
-  };
 
   public signUp = async (payload: ISignUpPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.signUp(), payload);

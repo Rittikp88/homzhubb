@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CommonRepository should fetch OnBoarding screen data 1`] = `
+Array [
+  Object {
+    "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+    "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+    "title": "Search",
+  },
+  Object {
+    "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+    "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+    "title": "Post",
+  },
+  Object {
+    "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+    "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+    "title": "Maintain",
+  },
+]
+`;
+
 exports[`CommonRepository should fetch a list of county codes 1`] = `
 Array [
   Object {
@@ -19,6 +39,23 @@ Array [
     "country": "AUSTRALIA",
     "country_code": "+36",
     "id": 3,
+  },
+]
+`;
+
+exports[`CommonRepository should fetch a list of currency codes 1`] = `
+Array [
+  Object {
+    "currency_code": "AUD",
+    "currency_symbol": "$",
+  },
+  Object {
+    "currency_code": "INR",
+    "currency_symbol": "₹",
+  },
+  Object {
+    "currency_code": "SGD",
+    "currency_symbol": "$",
   },
 ]
 `;
@@ -56,6 +93,26 @@ Array [
   Object {
     "label": "Kattha",
     "value": "KATTHA",
+  },
+]
+`;
+
+exports[`CommonRepository should fetch social media data 1`] = `
+Array [
+  Object {
+    "clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
+    "description": "with Google",
+    "provider": "GOOGLE",
+  },
+  Object {
+    "clientID": "",
+    "description": "with Facebook",
+    "provider": "FACEBOOK",
+  },
+  Object {
+    "clientID": "",
+    "description": "with Linkedin",
+    "provider": "LINKEDIN",
   },
 ]
 `;

@@ -8,6 +8,7 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { MathUtils } from '@homzhub/common/src/utils/MathUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -20,7 +21,6 @@ import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
 import { ICreateAssetDetails, IUpdateAssetDetails } from '@homzhub/common/src/domain/repositories/interfaces';
 import { bindActionCreators, Dispatch } from 'redux';
 
@@ -220,10 +220,10 @@ class AddPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
       };
 
       if (propertyId) {
-        await PropertyRepository.updateAsset(propertyId, requestBody as IUpdateAssetDetails);
+        await AssetRepository.updateAsset(propertyId, requestBody as IUpdateAssetDetails);
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-        const property = await PropertyRepository.createAsset(requestBody as ICreateAssetDetails);
+        const property = await AssetRepository.createAsset(requestBody as ICreateAssetDetails);
         setCurrentPropertyId(property.id);
       }
 

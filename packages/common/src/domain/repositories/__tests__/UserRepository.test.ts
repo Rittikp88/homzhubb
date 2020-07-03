@@ -1,9 +1,7 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
 import { LoginTypes, OtpActionTypes, OtpTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { emailExists, loginData, otpSent, otpVerify, socialLogin } from '@homzhub/common/src/mocks/UserRepositoryMocks';
-import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -11,13 +9,6 @@ jest.mock('@react-native-community/google-signin', () => {});
 describe('UserRepository', () => {
   afterEach(() => {
     jest.restoreAllMocks();
-  });
-
-  it('should fetch social media data', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => SocialMediaData);
-    const response = await UserRepository.getSocialMedia();
-    expect(response).toMatchSnapshot();
   });
 
   it('should call signUp API', async () => {
@@ -163,23 +154,5 @@ describe('UserRepository', () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => emailExists);
     const response = await UserRepository.phoneExists('90000000000');
     expect(response).toMatchSnapshot();
-  });
-
-  it('should fetch OnBoarding screen data', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => OnboardingData);
-    const response = await UserRepository.getOnboarding();
-    expect(response).toMatchSnapshot();
-  });
-
-  it('should throw an error in case of getDetails API failure', async () => {
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => {
-      throw new Error('Test Error');
-    });
-    try {
-      await UserRepository.getOnboarding();
-    } catch (e) {
-      expect(e).toBeTruthy();
-    }
   });
 });

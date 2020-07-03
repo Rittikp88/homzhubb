@@ -1,6 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PropertyRepository should fetch a asset data 1`] = `
+exports[`AssetRepository Should fetch existing verification document types 1`] = `
+Array [
+  Object {
+    "header": "Upload ID proof",
+    "icon": "id-proof",
+    "id": 1,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "",
+    "title": "ID Proof",
+  },
+  Object {
+    "header": "Capture Your Selfie",
+    "icon": "selfie",
+    "id": 2,
+    "subHeader": "Note: Feugiat sed morbi feuiat enim.",
+    "subTitle": "Please ensure that the ID is clearly visible in your photo",
+    "title": "Click a selfie with the ID proof",
+  },
+  Object {
+    "header": "Upload Document",
+    "icon": "document",
+    "id": 3,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "You can upload Electricity bill or Property tax reciepts which mentions your name and the property address",
+    "title": "Upload Ownership Verification Document",
+  },
+]
+`;
+
+exports[`AssetRepository should fetch a asset data 1`] = `
 Array [
   Object {
     "asset_types": Array [
@@ -77,7 +106,7 @@ Array [
 ]
 `;
 
-exports[`PropertyRepository should fetch a asset detail 1`] = `
+exports[`AssetRepository should fetch a asset detail 1`] = `
 Object {
   "asset_type": "Commercial Showroom",
   "block_number": "#12",
@@ -92,7 +121,7 @@ Object {
 }
 `;
 
-exports[`PropertyRepository should fetch a lease term 1`] = `
+exports[`AssetRepository should fetch a lease term 1`] = `
 Array [
   Object {
     "annual_increment_percentage": 5,
@@ -111,30 +140,7 @@ Array [
 ]
 `;
 
-exports[`PropertyRepository should fetch a list of rent services 1`] = `
-Array [
-  Object {
-    "icon": "home-search",
-    "id": 1,
-    "label": "I want to find tenants",
-    "name": "FIND_TENANT",
-  },
-  Object {
-    "icon": "home-calculus",
-    "id": 2,
-    "label": "I want to sell my property",
-    "name": "SELL_PROPERTY",
-  },
-  Object {
-    "icon": "home-person",
-    "id": 3,
-    "label": "I already have found a tenant",
-    "name": "TENANT_FOUND",
-  },
-]
-`;
-
-exports[`PropertyRepository should fetch a sale term 1`] = `
+exports[`AssetRepository should fetch a sale term 1`] = `
 Array [
   Object {
     "available_from_date": "2020-09-12",

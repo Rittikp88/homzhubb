@@ -7,7 +7,7 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -270,12 +270,12 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       this.setState({ selectedImages: clonedSelectedImages });
       return;
     }
-    await ServiceRepository.deletePropertyImage(selectedImage.attachment);
+    await AssetRepository.deletePropertyImage(selectedImage.attachment);
     await this.getPropertyImagesByPropertyId(propertyId);
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
-    const response = await ServiceRepository.getPropertyImagesByPropertyId(propertyId);
+    const response = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
     const coverImageIndex = findIndex(response, (image) => {
       return image.is_cover_image;
     });
@@ -305,7 +305,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       });
       return;
     }
-    await ServiceRepository.markAttachmentAsCoverImage(propertyId, selectedImage.id);
+    await AssetRepository.markAttachmentAsCoverImage(propertyId, selectedImage.id);
     await this.getPropertyImagesByPropertyId(propertyId);
   };
 
@@ -316,7 +316,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     selectedImages.forEach((selectedImage: IPropertySelectedImages) =>
       attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.is_cover_image })
     );
-    await ServiceRepository.postAttachmentsForProperty(propertyId, attachmentIds);
+    await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
     updateStep();
   };
 }

@@ -19,6 +19,21 @@ export const countryCodes = [
   },
 ];
 
+export const currencyCodes = [
+  {
+    currency_code: 'AUD',
+    currency_symbol: '$',
+  },
+  {
+    currency_code: 'INR',
+    currency_symbol: '₹',
+  },
+  {
+    currency_code: 'SGD',
+    currency_symbol: '$',
+  },
+];
+
 export const carpetAreaUnits = [
   {
     label: 'Sq.ft',

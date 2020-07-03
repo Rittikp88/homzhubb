@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
-import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PropertyActions, PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 
 export function* getPropertyDetails() {
   try {
-    const data = yield call(PropertyRepository.getDetails);
+    const data = yield call(AssetRepository.getDetails);
     yield put(PropertyActions.getPropertyDetailsSuccess(data));
   } catch (e) {
     yield put(PropertyActions.getPropertyDetailsFailure(e.message));
@@ -16,7 +16,7 @@ export function* getPropertyDetails() {
 
 export function* getRentServicesList() {
   try {
-    const data = yield call(PropertyRepository.getRentServices);
+    const data = yield call(ServiceRepository.getRentServices);
     yield put(PropertyActions.getRentServiceListSuccess(data));
   } catch (e) {
     yield put(PropertyActions.getRentServiceListFailure(e.message));

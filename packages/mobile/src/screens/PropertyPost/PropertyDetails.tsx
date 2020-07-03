@@ -7,7 +7,7 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -206,13 +206,13 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
           total_floors: totalFloors,
         };
         if (carpetArea) {
-          await PropertyRepository.updateAsset(propertyId, requestPayload);
+          await AssetRepository.updateAsset(propertyId, requestPayload);
           navigation.navigate(ScreensKeys.RentServicesScreen);
         } else {
           this.setState({ carpetAreaError: true });
         }
       } else {
-        await PropertyRepository.updateAsset(propertyId, requestPayload);
+        await AssetRepository.updateAsset(propertyId, requestPayload);
         navigation.navigate(ScreensKeys.RentServicesScreen);
       }
     } catch (e) {
@@ -278,7 +278,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
   private getProjectName = async (): Promise<void> => {
     const { propertyId } = this.props;
     try {
-      const response = await PropertyRepository.getAssetById(propertyId);
+      const response = await AssetRepository.getAssetById(propertyId);
       this.setState({ projectName: response.project_name });
     } catch (e) {
       AlertHelper.error({ message: e.message });

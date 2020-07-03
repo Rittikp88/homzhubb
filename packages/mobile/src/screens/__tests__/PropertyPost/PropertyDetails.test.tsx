@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PropertyAssetGroupData, ResidentialPropertyTypeData } from '@homzhub/common/src/mocks/PropertyDetails';
 import { PropertyDetails } from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
-import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
 
 const mock = jest.fn();
 
@@ -48,8 +48,8 @@ describe('Property Details Screen Component', () => {
       total_floors: 2,
       asset_type: 0,
     };
-    jest.spyOn(PropertyRepository, 'getAssetById').mockImplementation(() => Promise.resolve(data));
-    const response = await PropertyRepository.getAssetById(1);
+    jest.spyOn(AssetRepository, 'getAssetById').mockImplementation(() => Promise.resolve(data));
+    const response = await AssetRepository.getAssetById(1);
     component.setState({ projectName: response.project_name });
     expect(component.state('projectName')).toStrictEqual(data.project_name);
   });

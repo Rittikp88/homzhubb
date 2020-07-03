@@ -16,6 +16,7 @@ import {
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -190,7 +191,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public getExistingDocuments = async (propertyId: number): Promise<void> => {
     try {
-      const response = await ServiceRepository.getExistingVerificationDocuments(propertyId);
+      const response = await AssetRepository.getExistingVerificationDocuments(propertyId);
       this.setState({
         existingDocuments: response,
       });
@@ -245,7 +246,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
             });
           }
         });
-        await ServiceRepository.postVerificationDocuments(propertyId, postRequestBody);
+        await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
         await this.getExistingDocuments(propertyId);
         updateStep();
       });
@@ -274,7 +275,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     } else {
       const { propertyId } = this.props;
       try {
-        await ServiceRepository.deleteVerificationDocument(propertyId, document.id);
+        await AssetRepository.deleteVerificationDocument(propertyId, document.id);
         await this.getExistingDocuments(propertyId);
       } catch (error) {
         AlertHelper.error({ message: error.message });

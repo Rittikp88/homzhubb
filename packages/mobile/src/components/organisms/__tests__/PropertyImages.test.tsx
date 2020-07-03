@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 
 const mock = jest.fn();
 jest.mock('react-native-image-crop-picker', () => {
@@ -56,18 +56,18 @@ describe('Property Images Component', () => {
 
   it('should fetch the property images by id', async () => {
     jest
-      .spyOn(ServiceRepository, 'getPropertyImagesByPropertyId')
+      .spyOn(AssetRepository, 'getPropertyImagesByPropertyId')
       .mockImplementation(async () => Promise.resolve(PropertyImagesByPropertyId));
     await instance.componentDidMount();
-    const response = await ServiceRepository.getPropertyImagesByPropertyId(1);
+    const response = await AssetRepository.getPropertyImagesByPropertyId(1);
     instance.setState({ selectedImages: response });
     expect(component.state('selectedImages')).toStrictEqual(PropertyImagesByPropertyId);
   });
 
   it('should fetch empty data from the property images by id', async () => {
-    jest.spyOn(ServiceRepository, 'getPropertyImagesByPropertyId').mockImplementation(async () => Promise.resolve([]));
+    jest.spyOn(AssetRepository, 'getPropertyImagesByPropertyId').mockImplementation(async () => Promise.resolve([]));
     await instance.componentDidMount();
-    const response = await ServiceRepository.getPropertyImagesByPropertyId(1);
+    const response = await AssetRepository.getPropertyImagesByPropertyId(1);
     instance.setState({ selectedImages: response });
     expect(component.state('selectedImages')).toStrictEqual([]);
   });

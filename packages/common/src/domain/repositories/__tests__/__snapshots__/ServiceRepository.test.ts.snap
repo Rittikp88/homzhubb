@@ -1,34 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ServiceRepository Should fetch existing verification document types 1`] = `
-Array [
-  Object {
-    "header": "Upload ID proof",
-    "icon": "id-proof",
-    "id": 1,
-    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
-    "subTitle": "",
-    "title": "ID Proof",
-  },
-  Object {
-    "header": "Capture Your Selfie",
-    "icon": "selfie",
-    "id": 2,
-    "subHeader": "Note: Feugiat sed morbi feuiat enim.",
-    "subTitle": "Please ensure that the ID is clearly visible in your photo",
-    "title": "Click a selfie with the ID proof",
-  },
-  Object {
-    "header": "Upload Document",
-    "icon": "document",
-    "id": 3,
-    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
-    "subTitle": "You can upload Electricity bill or Property tax reciepts which mentions your name and the property address",
-    "title": "Upload Ownership Verification Document",
-  },
-]
-`;
-
 exports[`ServiceRepository Should fetch list of all services 1`] = `
 Array [
   Object {
@@ -243,6 +214,29 @@ Array [
     "subHeader": "Supports: JPG, JPEG, PNG, PDF",
     "subTitle": "You can upload Electricity bill or Property tax reciepts which mentions your name and the property address",
     "title": "Upload Ownership Verification Document",
+  },
+]
+`;
+
+exports[`ServiceRepository should fetch a list of rent services 1`] = `
+Array [
+  Object {
+    "icon": "home-search",
+    "id": 1,
+    "label": "I want to find tenants",
+    "name": "FIND_TENANT",
+  },
+  Object {
+    "icon": "home-calculus",
+    "id": 2,
+    "label": "I want to sell my property",
+    "name": "SELL_PROPERTY",
+  },
+  Object {
+    "icon": "home-person",
+    "id": 3,
+    "label": "I already have found a tenant",
+    "name": "TENANT_FOUND",
   },
 ]
 `;

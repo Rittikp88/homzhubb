@@ -1,5 +1,5 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
-import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   ICreateAssetDetails,
@@ -17,21 +17,35 @@ import {
   ISaleDetails,
   IUpdateSaleTermDetails,
 } from '@homzhub/common/src/domain/models/SaleTerms';
+import {
+  IMarkCoverImageAttachment,
+  IPostVerificationDocuments,
+  IPropertyImagesPostPayload,
+  IPropertySelectedImages,
+  IVerificationDocumentList,
+} from '@homzhub/common/src/domain/models/Service';
 
 const ENDPOINTS = {
-  getAssetById: (propertyId: number): string => `assets/${propertyId}/`,
-  getPropertyDetails: (): string => 'asset-groups/',
   createAsset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
-  getRentServices: (): string => 'services/',
+  getAssetById: (propertyId: number): string => `assets/${propertyId}/`,
   leaseTerms: (propertyId: number): string => `assets/${propertyId}/lease-terms/`,
   updateLeaseTerms: (propertyId: number, leaseTermId: number): string =>
     `assets/${propertyId}/lease-terms/${leaseTermId}/`,
   saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-terms/`,
   updateSaleTerms: (propertyId: number, saleTermId: number): string => `assets/${propertyId}/sale-terms/${saleTermId}/`,
+  existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents`,
+  deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
+    `assets/${propertyId}/verification-documents/${documentId}/`,
+  assetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,
+  postVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
+  markAttachmentAsCoverImage: (propertyId: number, attachmentId: number): string =>
+    `assets/${propertyId}/attachments/${attachmentId}/cover-image`,
+  getPropertyDetails: (): string => 'asset-groups/',
+  deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
 };
 
-class PropertyRepository {
+class AssetRepository {
   private apiClient: IApiClient;
 
   public constructor() {
@@ -89,10 +103,43 @@ class PropertyRepository {
     return await this.apiClient.put(ENDPOINTS.updateSaleTerms(propertyId, saleTermId), saleTerms);
   };
 
-  public getRentServices = async (): Promise<IRentServiceList[]> => {
-    return await this.apiClient.get(ENDPOINTS.getRentServices());
+  public getExistingVerificationDocuments = async (propertyId: number): Promise<IVerificationDocumentList[]> => {
+    return await this.apiClient.get(ENDPOINTS.existingVerificationDocuments(propertyId));
+  };
+
+  public deleteVerificationDocument = async (propertyId: number, documentId: number): Promise<any> => {
+    return await this.apiClient.delete(ENDPOINTS.deleteExistingVerificationDocuments(propertyId, documentId));
+  };
+
+  public getPropertyImagesByPropertyId = async (propertyId: number): Promise<IPropertySelectedImages[]> => {
+    return await this.apiClient.get(ENDPOINTS.assetAttachments(propertyId));
+  };
+
+  public markAttachmentAsCoverImage = async (
+    propertyId: number,
+    attachmentId: number
+  ): Promise<IMarkCoverImageAttachment> => {
+    return await this.apiClient.put(ENDPOINTS.markAttachmentAsCoverImage(propertyId, attachmentId));
+  };
+
+  public postAttachmentsForProperty = async (
+    propertyId: number,
+    requestBody: IPropertyImagesPostPayload[]
+  ): Promise<any> => {
+    return await this.apiClient.post(ENDPOINTS.assetAttachments(propertyId), requestBody);
+  };
+
+  public postVerificationDocuments = async (
+    propertyId: number,
+    requestBody: IPostVerificationDocuments[]
+  ): Promise<any> => {
+    return await this.apiClient.post(ENDPOINTS.postVerificationDocuments(propertyId), requestBody);
+  };
+
+  public deletePropertyImage = async (attachmentId: number): Promise<any> => {
+    return await this.apiClient.delete(ENDPOINTS.deletePropertyAttachment(attachmentId));
   };
 }
 
-const propertyRepository = new PropertyRepository();
-export { propertyRepository as PropertyRepository };
+const propertyRepository = new AssetRepository();
+export { propertyRepository as AssetRepository };

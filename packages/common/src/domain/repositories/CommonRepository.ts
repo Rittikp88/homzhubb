@@ -2,11 +2,15 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { ICountryCode, ICarpetAreaUnit } from '@homzhub/common/src/domain/models/CountryCode';
 import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
+import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
+import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const ENDPOINTS = {
   getCountryCodes: (): string => 'countries',
   getCurrencyCodes: (): string => 'currency-codes/',
   carpetAreaUnits: (): string => 'carpet-area-units/',
+  onboarding: (): string => 'onboardings',
+  socialMedia: (): string => 'social-providers/',
 };
 
 class CommonRepository {
@@ -26,6 +30,14 @@ class CommonRepository {
 
   public getCarpetAreaUnits = async (): Promise<ICarpetAreaUnit[]> => {
     return await this.apiClient.get(ENDPOINTS.carpetAreaUnits());
+  };
+
+  public getOnboarding = async (): Promise<IOnboardingData[]> => {
+    return await this.apiClient.get(ENDPOINTS.onboarding());
+  };
+
+  public getSocialMedia = async (): Promise<ISocialMediaProvider[]> => {
+    return await this.apiClient.get(ENDPOINTS.socialMedia());
   };
 }
 

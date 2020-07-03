@@ -1,15 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "include": ["src/**/*", "src/*.json", "src/styles/font.ts"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "experimentalDecorators": true,
-    "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
     "isolatedModules": false,
-    "outDir": "dist",
-    "rootDir": "src",
-    "typeRoots": ["@types", "../../node_modules/@types"]
-  },
-  "exclude": ["node_modules", "dist"]
+    "typeRoots": ["@types", "../../node_modules/@types"],
+    "rootDir": "src"
+  }
 }
