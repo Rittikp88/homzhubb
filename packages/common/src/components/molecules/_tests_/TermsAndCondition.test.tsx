@@ -6,7 +6,7 @@ jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageS
 jest.mock('@react-native-community/google-signin', () => {});
 describe('Test cases for TermsAndCondition', () => {
   it('should render snapshot', () => {
-    const tree = renderer.create(<TermsCondition />).toJSON();
+    const tree = renderer.create(<TermsCondition t={(key: string): string => key} />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

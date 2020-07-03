@@ -3,7 +3,6 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
-import { PropertyVerificationTypes } from '@homzhub/common/src/mocks/PropertyVerification';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
@@ -46,13 +45,6 @@ describe('ServiceRepository', () => {
     // @ts-ignore
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => ServiceSteps);
     const response = await ServiceRepository.getServiceStepsDetails(1);
-    expect(response).toMatchSnapshot();
-  });
-
-  it('Should fetch verification document types', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => PropertyVerificationTypes);
-    const response = await ServiceRepository.getVerificationDocumentTypes(1);
     expect(response).toMatchSnapshot();
   });
 });

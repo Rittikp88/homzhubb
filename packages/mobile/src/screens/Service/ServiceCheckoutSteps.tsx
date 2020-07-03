@@ -126,7 +126,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderContent = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
-    const { propertyId, termId, setTermId, serviceCategoryId, steps, typeOfSale } = this.props;
+    const { propertyId, termId, setTermId, steps, typeOfSale } = this.props;
 
     const currentStepId = steps[currentStep];
     switch (currentStepId) {
@@ -155,7 +155,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
         return (
           <PropertyVerification
             propertyId={propertyId}
-            serviceCategoryId={serviceCategoryId}
+            typeOfFlow={typeOfSale === TypeOfSale.FIND_TENANT ? TypeOfSale.RENT : TypeOfSale.SALE}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
             updateStep={this.onProceedToNextStep}
           />

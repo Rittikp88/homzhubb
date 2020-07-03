@@ -86,6 +86,15 @@ export interface IForgotPasswordPayload {
   };
 }
 
+export interface IResetPasswordData {
+  email_exists: boolean;
+  token: string;
+}
+
+export interface IUserExistsData {
+  is_exists: boolean;
+}
+
 export interface IUserPayload {
   full_name: string;
   email: string;

@@ -29,6 +29,7 @@ exports[`Test cases for SocialMediaComponent should render snapshot 1`] = `
       },
     ]
   }
+  t={[Function]}
 >
   <SocialMediaComponent
     i18n={Object {}}
@@ -1389,6 +1390,7 @@ exports[`Test cases for SocialMediaComponent should render snapshot from email l
       },
     ]
   }
+  t={[Function]}
 >
   <SocialMediaComponent
     i18n={Object {}}

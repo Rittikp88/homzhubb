@@ -17,13 +17,13 @@ describe('Test cases for LoginForm', () => {
 
   it('should render snapshot', () => {
     props = testProps({});
-    const wrapper = shallow(<LoginForm {...props} />);
+    const wrapper = shallow(<LoginForm {...props} t={(key: string): string => key} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('should render snapshot for dropdown selection', () => {
     props = testProps({});
-    const wrapper = shallow(<LoginForm {...props} />);
+    const wrapper = shallow(<LoginForm {...props} t={(key: string): string => key} />);
     const instance = wrapper.dive().instance();
     instance.onCloseDropDown();
     instance.handleSelection('+91');

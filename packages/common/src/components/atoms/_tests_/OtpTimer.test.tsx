@@ -8,7 +8,7 @@ describe('OtpTimer', () => {
     onResentPress: jest.fn(),
   };
 
-  const wrapper = mount(<OtpTimer {...props} />);
+  const wrapper = mount(<OtpTimer {...props} t={(key: string): string => key} />);
 
   it('should match snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();

@@ -16,7 +16,7 @@ describe('Test cases for SocialMediaComponent', () => {
     navigation: { navigate: jest.fn() },
   };
   // @ts-ignore
-  const wrapper = mount(<SocialMediaComponent {...props} />);
+  const wrapper = mount(<SocialMediaComponent {...props} t={(key: string): string => key} />);
 
   it('should render snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();

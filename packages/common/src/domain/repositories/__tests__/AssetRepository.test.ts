@@ -2,7 +2,7 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { assetDetail, assetGroups, leaseTermDetail, saleTerm } from '@homzhub/common/src/mocks/PropertyDetails';
 import { FurnishingType, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { PropertyVerificationTypes } from '../../../mocks/PropertyVerification';
+import { PropertyVerificationTypes } from '@homzhub/common/src/mocks/PropertyVerification';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -155,6 +155,13 @@ describe('AssetRepository', () => {
     // @ts-ignore
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => PropertyVerificationTypes);
     const response = await AssetRepository.getExistingVerificationDocuments(1);
+    expect(response).toMatchSnapshot();
+  });
+
+  it('Should fetch verification document types', async () => {
+    // @ts-ignore
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => PropertyVerificationTypes);
+    const response = await AssetRepository.getVerificationDocumentTypes();
     expect(response).toMatchSnapshot();
   });
 });

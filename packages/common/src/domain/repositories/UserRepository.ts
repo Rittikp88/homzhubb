@@ -7,10 +7,13 @@ import {
   IOtpLoginPayload,
   IOtpVerify,
   IOtpVerifyResponse,
+  IResetPasswordData,
   ISignUpPayload,
   ISocialLogin,
   ISocialLoginPayload,
   ISocialSignUpPayload,
+  IRefreshTokenPayload,
+  IUserExistsData,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
@@ -73,20 +76,19 @@ class UserRepository {
     return await this.apiClient.post(ENDPOINTS.otp(), requestPayload);
   };
 
-  public resetPassword = async (payload: IForgotPasswordPayload): Promise<any> => {
+  public resetPassword = async (payload: IForgotPasswordPayload): Promise<IResetPasswordData> => {
     return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
   };
 
-  public emailExists = async (emailId: string): Promise<any> => {
+  public emailExists = async (emailId: string): Promise<IUserExistsData> => {
     return await this.apiClient.get(ENDPOINTS.emailExists(emailId));
   };
 
-  public phoneExists = async (phone: string): Promise<any> => {
+  public phoneExists = async (phone: string): Promise<IUserExistsData> => {
     return await this.apiClient.get(ENDPOINTS.phoneExists(phone));
   };
 
-  public logout = async (payload: any): Promise<any> => {
-    // TODO: Add the return type of promise once the api is completely ready
+  public logout = async (payload: IRefreshTokenPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.logout(), payload);
   };
 }

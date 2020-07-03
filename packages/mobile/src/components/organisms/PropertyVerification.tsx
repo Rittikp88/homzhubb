@@ -17,7 +17,6 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
@@ -39,9 +38,9 @@ interface IPropertyVerificationState {
 
 interface IProps {
   navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
+  typeOfFlow: string;
   updateStep: () => void;
   propertyId: number;
-  serviceCategoryId: number;
 }
 
 type Props = WithTranslation & IProps;
@@ -54,14 +53,14 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { propertyId, serviceCategoryId } = this.props;
-    await this.getVerificationTypes(serviceCategoryId);
+    const { propertyId } = this.props;
+    await this.getVerificationTypes();
     await this.getExistingDocuments(propertyId);
   };
 
   public render(): React.ReactElement {
     const { t } = this.props;
-    const { existingDocuments, localDocuments } = this.state;
+    const { verificationTypes, existingDocuments, localDocuments } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
     return (
       <View style={styles.container}>
@@ -79,7 +78,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
           <Button
             type="primary"
             title={t('common:saveAndContinue')}
-            disabled={totalDocuments.length < 3}
+            disabled={totalDocuments.length < verificationTypes.length}
             containerStyle={styles.buttonStyle}
             onPress={this.postPropertyVerificationDocuments}
           />
@@ -113,18 +112,18 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     const onPress = async (): Promise<void> => this.handleVerificationDocumentUploads(currentData);
     const totalDocuments = existingDocuments.concat(localDocuments);
     const thumbnailIndex = findIndex(totalDocuments, (document: IVerificationDocumentList) => {
-      return currentData.id === document.verification_document_type_id;
+      return currentData.id === document.verification_document_type.id;
     });
     if (thumbnailIndex !== -1) {
       const currentDocument: IVerificationDocumentList = totalDocuments[thumbnailIndex];
-      const thumbnailImage = currentDocument.document_link;
-      const fileType = currentDocument.document_link.split('/')?.pop()?.split('.');
+      const thumbnailImage = currentDocument.document.link;
+      const fileType = currentDocument.document.link.split('/')?.pop()?.split('.');
       const onDeleteImageThumbnail = (): Promise<void> =>
         this.deleteDocument(currentDocument, currentDocument.is_local_document);
-      return currentDocument.type === 'application/pdf' || !fileType || fileType[1] === 'pdf' ? (
+      return currentDocument.document.mime_type === 'application/pdf' || !fileType || fileType[1] === 'pdf' ? (
         <View style={styles.pdfContainer}>
           <Text type="small" textType="regular" style={styles.pdfName}>
-            {currentDocument.name || fileType || [0]}
+            {currentDocument.document.name || fileType || [0]}
           </Text>
           <TouchableOpacity style={styles.iconContainer} onPress={onDeleteImageThumbnail}>
             <Icon name={icons.close} size={22} color={theme.colors.shadow} />
@@ -145,15 +144,15 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     );
   };
 
-  public uploadDocument = async (documentId: number, verificationDocumentId: number): Promise<void> => {
+  public uploadDocument = async (verificationDocumentId: number, data: IVerificationTypes): Promise<void> => {
     const response = await DocumentPicker.pick({
       type: [DocumentPicker.types.allFiles],
     });
     const source = { uri: response.uri, type: response.type, name: response.name };
-    this.updateLocalDocuments(documentId, source, verificationDocumentId);
+    this.updateLocalDocuments(verificationDocumentId, source, data);
   };
 
-  public captureSelfie = (documentId: number, verificationDocumentId: number): void => {
+  public captureSelfie = (verificationDocumentId: number, data: IVerificationTypes): void => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 400,
       compressImageMaxHeight: 400,
@@ -165,24 +164,29 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
         type: image.mime,
         name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
       };
-      this.updateLocalDocuments(documentId, source, verificationDocumentId);
+      this.updateLocalDocuments(verificationDocumentId, source, data);
     });
   };
 
   public handleVerificationDocumentUploads = async (data: IVerificationTypes): Promise<void> => {
-    if (data.name === VerificationDocumentTypes.SELFIE_ID_PROOF) {
-      this.captureSelfie(data.id, 2);
+    const verificationDocumentId = data.id;
+    const verificationDocumentType = data.name;
+    if (verificationDocumentType === VerificationDocumentTypes.SELFIE_ID_PROOF) {
+      this.captureSelfie(verificationDocumentId, data);
     } else {
-      const verificationDocumentId = data.name === VerificationDocumentTypes.ID_PROOF ? 1 : 3;
-      await this.uploadDocument(data.id, verificationDocumentId);
+      await this.uploadDocument(verificationDocumentId, data);
     }
   };
 
-  public getVerificationTypes = async (categoryId: number): Promise<void> => {
+  public getVerificationTypes = async (): Promise<void> => {
+    const { typeOfFlow } = this.props;
     try {
-      const response = await ServiceRepository.getVerificationDocumentTypes(categoryId);
+      const response = await AssetRepository.getVerificationDocumentTypes();
+      const filteredResponse = response.filter((data: IVerificationTypes) => {
+        return data.category === typeOfFlow || data.category === 'IDENTITY';
+      });
       this.setState({
-        verificationTypes: response,
+        verificationTypes: filteredResponse,
       });
     } catch (error) {
       AlertHelper.error({ message: error.message });
@@ -191,9 +195,13 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
 
   public getExistingDocuments = async (propertyId: number): Promise<void> => {
     try {
-      const response = await AssetRepository.getExistingVerificationDocuments(propertyId);
+      let existingDocuments = [];
+      existingDocuments = await AssetRepository.getExistingVerificationDocuments(propertyId);
+      if (existingDocuments.length === 0) {
+        existingDocuments = await AssetRepository.getAssetIdentityDocuments();
+      }
       this.setState({
-        existingDocuments: response,
+        existingDocuments,
       });
     } catch (error) {
       AlertHelper.error({ message: error.message });
@@ -211,10 +219,10 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     localDocuments.forEach((document: IVerificationDocumentList) => {
       formData.append('files[]', {
         // @ts-ignore
-        name: document.name,
-        uri: document.document_link,
+        name: document.document.name,
+        uri: document.document.link,
         // @ts-ignore
-        type: document.type,
+        type: document.document.mime_type,
       });
     });
     const baseUrl = ConfigHelper.getBaseUrl();
@@ -234,15 +242,15 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
         const postRequestBody: IPostVerificationDocuments[] = [];
         localDocuments.forEach((document: IVerificationDocumentList, index: number) => {
           postRequestBody.push({
-            verification_document_type_id: document.verification_document_type_id,
+            verification_document_type_id: document.verification_document_type.id,
             document_id: data[index].id,
           });
         });
         existingDocuments.forEach((document: IVerificationDocumentList) => {
           if (!document.id) {
             postRequestBody.push({
-              verification_document_type_id: document.verification_document_type_id,
-              document_id: document.document_id,
+              verification_document_type_id: document.verification_document_type.id,
+              document_id: document.document.id,
             });
           }
         });
@@ -260,7 +268,7 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
     const clonedDocuments = isLocalDocument ? cloneDeep(localDocuments) : cloneDeep(existingDocuments);
     if (!document.id) {
       const documentIndex = findIndex(clonedDocuments, (existingDocument: IVerificationDocumentList) => {
-        return existingDocument.verification_document_type_id === document.verification_document_type_id;
+        return existingDocument.verification_document_type.id === document.verification_document_type.id;
       });
       if (documentIndex !== -1) {
         clonedDocuments.splice(documentIndex, 1);
@@ -284,16 +292,20 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 
   public updateLocalDocuments = (
-    documentId: number,
-    source: { uri: string; type: string | undefined; name: string | undefined },
-    verificationDocumentId: number
+    verificationDocumentId: number,
+    source: { uri: string; type: string; name: string },
+    data: IVerificationTypes
   ): void => {
     const imageObject: IVerificationDocumentList = {
-      verification_document_type_id: verificationDocumentId,
-      document_id: documentId,
-      document_link: source.uri,
-      type: source.type,
-      name: source.name,
+      id: null,
+      verification_document_type: data,
+      document: {
+        id: data.id,
+        name: source.name,
+        attachment_type: source.type,
+        mime_type: source.type,
+        link: source.uri,
+      },
       is_local_document: true,
     };
     const { localDocuments } = this.state;

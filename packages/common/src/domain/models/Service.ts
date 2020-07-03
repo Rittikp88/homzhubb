@@ -34,19 +34,24 @@ export interface IVerificationTypes {
   id: number;
   name: string;
   title: string;
+  category: string;
   description: string;
   label: string;
   help_text: string;
   icon: string;
 }
+export interface IDocument {
+  id: number;
+  name: string;
+  attachment_type: string;
+  mime_type: string;
+  link: string;
+}
 
 export interface IVerificationDocumentList {
-  verification_document_type_id: number;
-  document_id: number;
-  document_link: string;
-  name?: string;
-  type?: string;
-  id?: number | null;
+  id: number | null;
+  verification_document_type: IVerificationTypes;
+  document: IDocument;
   is_local_document?: boolean;
 }
 

@@ -187,6 +187,7 @@
     "bookingAmountPlaceholder": "Enter money",
     "yearOfConstruction": "Year of construction",
     "yearOfConstructionRequired": "Year of construction cannot be empty",
-    "yearOfConstructionPlaceholder": "e.g. 2015"
+    "yearOfConstructionPlaceholder": "e.g. 2015",
+    "verification": "Verification"
   }
 }

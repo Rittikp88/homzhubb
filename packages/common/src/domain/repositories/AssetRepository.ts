@@ -23,6 +23,7 @@ import {
   IPropertyImagesPostPayload,
   IPropertySelectedImages,
   IVerificationDocumentList,
+  IVerificationTypes,
 } from '@homzhub/common/src/domain/models/Service';
 
 const ENDPOINTS = {
@@ -43,6 +44,8 @@ const ENDPOINTS = {
     `assets/${propertyId}/attachments/${attachmentId}/cover-image`,
   getPropertyDetails: (): string => 'asset-groups/',
   deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
+  assetIdentityDocuments: (): string => 'asset-identity-documents/',
+  getVerificationDocumentDetails: (): string => 'verification-document-types',
 };
 
 class AssetRepository {
@@ -107,7 +110,7 @@ class AssetRepository {
     return await this.apiClient.get(ENDPOINTS.existingVerificationDocuments(propertyId));
   };
 
-  public deleteVerificationDocument = async (propertyId: number, documentId: number): Promise<any> => {
+  public deleteVerificationDocument = async (propertyId: number, documentId: number): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.deleteExistingVerificationDocuments(propertyId, documentId));
   };
 
@@ -125,19 +128,27 @@ class AssetRepository {
   public postAttachmentsForProperty = async (
     propertyId: number,
     requestBody: IPropertyImagesPostPayload[]
-  ): Promise<any> => {
+  ): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.assetAttachments(propertyId), requestBody);
   };
 
   public postVerificationDocuments = async (
     propertyId: number,
     requestBody: IPostVerificationDocuments[]
-  ): Promise<any> => {
+  ): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.postVerificationDocuments(propertyId), requestBody);
   };
 
-  public deletePropertyImage = async (attachmentId: number): Promise<any> => {
+  public deletePropertyImage = async (attachmentId: number): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.deletePropertyAttachment(attachmentId));
+  };
+
+  public getAssetIdentityDocuments = async (): Promise<IVerificationDocumentList[]> => {
+    return await this.apiClient.get(ENDPOINTS.assetIdentityDocuments());
+  };
+
+  public getVerificationDocumentTypes = async (): Promise<IVerificationTypes[]> => {
+    return await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
   };
 }
 

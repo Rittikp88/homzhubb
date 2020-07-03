@@ -12,11 +12,11 @@ describe('Test cases for SignUpForm', () => {
     onSubmitFormSuccess: jest.fn(),
   };
   it('should render snapshot', () => {
-    const tree = shallow(<SignUpForm {...props} />);
+    const tree = shallow(<SignUpForm {...props} t={(key: string): string => key} />);
     expect(toJson(tree)).toMatchSnapshot();
   });
   it('should render snapshot for dropdown selection', () => {
-    const wrapper = shallow(<SignUpForm {...props} />);
+    const wrapper = shallow(<SignUpForm {...props} t={(key: string): string => key} />);
     const instance = wrapper.dive().instance();
     instance.onCloseDropDown();
     instance.handleSelection('+91');

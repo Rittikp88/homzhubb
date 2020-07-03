@@ -29,6 +29,35 @@ Array [
 ]
 `;
 
+exports[`AssetRepository Should fetch verification document types 1`] = `
+Array [
+  Object {
+    "header": "Upload ID proof",
+    "icon": "id-proof",
+    "id": 1,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "",
+    "title": "ID Proof",
+  },
+  Object {
+    "header": "Capture Your Selfie",
+    "icon": "selfie",
+    "id": 2,
+    "subHeader": "Note: Feugiat sed morbi feuiat enim.",
+    "subTitle": "Please ensure that the ID is clearly visible in your photo",
+    "title": "Click a selfie with the ID proof",
+  },
+  Object {
+    "header": "Upload Document",
+    "icon": "document",
+    "id": 3,
+    "subHeader": "Supports: JPG, JPEG, PNG, PDF",
+    "subTitle": "You can upload Electricity bill or Property tax reciepts which mentions your name and the property address",
+    "title": "Upload Ownership Verification Document",
+  },
+]
+`;
+
 exports[`AssetRepository should fetch a asset data 1`] = `
 Array [
   Object {
