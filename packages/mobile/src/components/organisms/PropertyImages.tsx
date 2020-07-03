@@ -13,10 +13,16 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
+import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
   propertyId: number;
   updateStep: () => void;
+  totalSteps: number;
+  isSuccess: boolean;
+  onPressContinue: () => void;
+  navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
 }
 
 type OwnProps = WithTranslation;
@@ -39,6 +45,11 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public render(): React.ReactNode {
+    const { navigateToPropertyHelper, isSuccess } = this.props;
+    return <>{isSuccess ? <PaymentSuccess onClickLink={navigateToPropertyHelper} /> : this.renderImageContent()}</>;
+  }
+
+  private renderImageContent = (): React.ReactElement => {
     const { t } = this.props;
     const { selectedImages, isBottomSheetVisible } = this.state;
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
@@ -74,7 +85,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         )}
       </View>
     );
-  }
+  };
 
   public renderImages = (): React.ReactNode => {
     const { t } = this.props;
@@ -310,13 +321,16 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
-    const { propertyId, updateStep } = this.props;
+    const { propertyId, updateStep, totalSteps, onPressContinue } = this.props;
     const { selectedImages } = this.state;
     const attachmentIds: IPropertyImagesPostPayload[] = [];
     selectedImages.forEach((selectedImage: IPropertySelectedImages) =>
       attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.is_cover_image })
     );
     await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
+    if (totalSteps === 2) {
+      onPressContinue();
+    }
     updateStep();
   };
 }

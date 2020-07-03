@@ -141,7 +141,16 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           />
         );
       case ServiceStepTypes.PROPERTY_IMAGES:
-        return <PropertyImages propertyId={propertyId} updateStep={this.onProceedToNextStep} />;
+        return (
+          <PropertyImages
+            propertyId={propertyId}
+            updateStep={this.onProceedToNextStep}
+            onPressContinue={this.onSuccess}
+            totalSteps={steps.length}
+            isSuccess={isPaymentSuccess}
+            navigateToPropertyHelper={this.navigateToPropertyHelper}
+          />
+        );
       case ServiceStepTypes.PROPERTY_VERIFICATIONS:
         return (
           <PropertyVerification
@@ -154,7 +163,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
       case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
         return (
           <PropertyPayment
-            onPayNow={this.onPaymentSuccess}
+            onPayNow={this.onSuccess}
             isSuccess={isPaymentSuccess}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
           />
@@ -170,10 +179,15 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private onProceedToNextStep = (): void => {
     const { currentStep } = this.state;
+    const { steps } = this.props;
+    if (currentStep >= steps.length - 1) {
+      return;
+    }
+
     this.setState({ currentStep: currentStep + 1 });
   };
 
-  private onPaymentSuccess = (): void => {
+  private onSuccess = (): void => {
     const { isPaymentSuccess } = this.state;
     this.setState({ isPaymentSuccess: !isPaymentSuccess });
   };

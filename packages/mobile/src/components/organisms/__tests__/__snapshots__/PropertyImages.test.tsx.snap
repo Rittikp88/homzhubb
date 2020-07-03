@@ -1,46 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Property Images Component should render the PropertyImages component 1`] = `
-<View
-  style={
-    Object {
-      "flex": 1,
-    }
-  }
->
-  <UploadBox
-    containerStyle={
-      Object {
-        "marginTop": 20,
-      }
-    }
-    header="property:addPhotos"
-    icon="gallery"
-    onPress={[Function]}
-    subHeader="property:supportedImageFormats"
-  />
+<Fragment>
   <View
     style={
       Object {
         "flex": 1,
-        "marginTop": 20,
       }
     }
-  />
-  <BottomSheet
-    headerTitle="property:propertyImages"
-    isShadowView={true}
-    onCloseSheet={[Function]}
-    sheetHeight={650}
-    visible={false}
   >
-    <ScrollViewMock
+    <UploadBox
+      containerStyle={
+        Object {
+          "marginTop": 20,
+        }
+      }
+      header="property:addPhotos"
+      icon="gallery"
+      onPress={[Function]}
+      subHeader="property:supportedImageFormats"
+    />
+    <View
       style={
         Object {
           "flex": 1,
+          "marginTop": 20,
         }
       }
     />
-  </BottomSheet>
-</View>
+    <BottomSheet
+      headerTitle="property:propertyImages"
+      isShadowView={true}
+      onCloseSheet={[Function]}
+      sheetHeight={650}
+      visible={false}
+    >
+      <ScrollViewMock
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+    </BottomSheet>
+  </View>
+</Fragment>
 `;
