@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';

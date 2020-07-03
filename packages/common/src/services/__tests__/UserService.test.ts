@@ -1,6 +1,6 @@
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { OtpActionTypes, OtpTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { OtpActionTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -13,13 +13,8 @@ describe('UserService', () => {
     expect(repoSpy).toHaveBeenCalledWith({
       action: OtpActionTypes.SEND,
       payload: {
-        media: [OtpTypes.PHONE],
-        destination_details: [
-          {
-            country_code: '+01',
-            phone_number: '9000000000',
-          },
-        ],
+        country_code: '+01',
+        phone_number: '9000000000',
       },
     });
     repoSpy.mockRestore();
@@ -33,13 +28,8 @@ describe('UserService', () => {
       action: OtpActionTypes.VERIFY,
       payload: {
         otp: '123456',
-        media: [OtpTypes.PHONE],
-        destination_details: [
-          {
-            country_code: '+01',
-            phone_number: '9000000000',
-          },
-        ],
+        country_code: '+01',
+        phone_number: '9000000000',
       },
     });
     repoSpy.mockRestore();

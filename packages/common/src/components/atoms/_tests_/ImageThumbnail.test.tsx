@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -41,6 +40,7 @@ describe('Image Thumbnail', () => {
       onIconPress: jest.fn(),
     };
     const wrapper: ShallowWrapper = shallow(<ImageThumbnail {...props} />);
+    // @ts-ignore
     wrapper.instance().handleIconPress();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
@@ -50,6 +50,7 @@ describe('Image Thumbnail', () => {
       imageUrl: 'image',
     };
     const wrapper: ShallowWrapper = shallow(<ImageThumbnail {...props} />);
+    // @ts-ignore
     wrapper.instance().handleIconPress();
     expect(toJson(wrapper)).toMatchSnapshot();
   });

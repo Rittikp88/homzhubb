@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   icon: string;

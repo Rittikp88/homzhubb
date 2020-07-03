@@ -1,4 +1,3 @@
-// @ts-nocheck
 import mockAxios from 'axios';
 import ApiResponseHandler from '@homzhub/common/src/network/ApiResponseHandler';
 import { ApiClient } from '@homzhub/common/src/network/ApiClient';
@@ -39,6 +38,7 @@ describe('ApiClient', () => {
 
       invalidUrls.forEach((url) => {
         try {
+          // @ts-ignore
           // eslint-disable-next-line no-new
           new ApiClient({ baseUrl: url });
         } catch (e) {
@@ -77,6 +77,7 @@ describe('ApiClient', () => {
 
   describe('Requests', () => {
     beforeEach(() => {
+      // @ts-ignore
       mockAxios.request.mockImplementationOnce(() => {
         return Promise.resolve({});
       });
@@ -160,6 +161,7 @@ describe('ApiClient', () => {
         params: { flag: true },
       };
 
+      // @ts-ignore
       apiClient.request(requestPayload);
 
       // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -226,6 +228,7 @@ describe('ApiClient', () => {
 
   describe('Response handling - error', () => {
     beforeEach(() => {
+      // @ts-ignore
       mockAxios.request.mockImplementationOnce(() => {
         // eslint-disable-next-line prefer-promise-reject-errors
         return Promise.reject({});

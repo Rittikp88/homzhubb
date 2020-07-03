@@ -1,4 +1,4 @@
-import { IOtpVerify, OtpActionTypes, OtpTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IOtpVerify, OtpActionTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 
 class UserService {
@@ -6,13 +6,8 @@ class UserService {
     const requestBody: IOtpVerify = {
       action: OtpActionTypes.SEND,
       payload: {
-        media: [OtpTypes.PHONE],
-        destination_details: [
-          {
-            country_code,
-            phone_number,
-          },
-        ],
+        country_code,
+        phone_number,
       },
     };
 
@@ -24,13 +19,8 @@ class UserService {
       action: OtpActionTypes.VERIFY,
       payload: {
         otp,
-        media: [OtpTypes.PHONE],
-        destination_details: [
-          {
-            country_code,
-            phone_number,
-          },
-        ],
+        country_code,
+        phone_number,
       },
     };
 

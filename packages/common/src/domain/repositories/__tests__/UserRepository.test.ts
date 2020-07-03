@@ -1,6 +1,6 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { LoginTypes, OtpActionTypes, OtpTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { LoginTypes, OtpActionTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { emailExists, loginData, otpSent, otpVerify, socialLogin } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
@@ -86,13 +86,8 @@ describe('UserRepository', () => {
     const response = await UserRepository.Otp({
       action: OtpActionTypes.SEND,
       payload: {
-        media: [OtpTypes.PHONE],
-        destination_details: [
-          {
-            country_code: 'IN',
-            phone_number: '90000000000',
-          },
-        ],
+        country_code: 'IN',
+        phone_number: '90000000000',
       },
     });
     expect(response).toMatchSnapshot();
@@ -105,13 +100,8 @@ describe('UserRepository', () => {
       action: OtpActionTypes.VERIFY,
       payload: {
         otp: '1233344',
-        media: [OtpTypes.PHONE],
-        destination_details: [
-          {
-            country_code: 'IN',
-            phone_number: '90000000000',
-          },
-        ],
+        country_code: 'IN',
+        phone_number: '90000000000',
       },
     });
     expect(response).toMatchSnapshot();

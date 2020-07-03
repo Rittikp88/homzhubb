@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   text: string;

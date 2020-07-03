@@ -1,3 +1,4 @@
+// ENUMS
 export enum LoginTypes {
   OTP = 'OTP_LOGIN',
   EMAIL = 'EMAIL_LOGIN',
@@ -9,11 +10,6 @@ export enum OtpActionTypes {
   VERIFY = 'VERIFY_OTP',
 }
 
-export enum OtpTypes {
-  PHONE = 'PHONE',
-  EMAIL = 'EMAIL',
-}
-
 export enum SpaceAvailableTypes {
   BATHROOM = 'Bathroom',
   BEDROOM = 'Bedroom',
@@ -21,24 +17,9 @@ export enum SpaceAvailableTypes {
   FLOOR_NUMBER = 'Floor number',
   BALCONY = 'Balcony',
 }
+// ENUMS - END
 
-export interface ISpaceAvailable {
-  bedroom: number;
-  bathroom: number;
-  balcony: number;
-  floorNumber: number;
-  totalFloors: number;
-  carpetArea: string;
-  areaUnit: string;
-}
-
-export interface ISpaceAvailablePayload {
-  id: string | number;
-  name?: string;
-  value?: number;
-  count?: number;
-}
-
+// USER AUTH - START
 export interface ISignUpPayload {
   full_name: string;
   email: string;
@@ -105,29 +86,6 @@ export interface IForgotPasswordPayload {
   };
 }
 
-interface IOtpPhoneVerifyPayload {
-  country_code: string;
-  phone_number: string;
-}
-
-interface IOtpEmailVerifyPayload {
-  email: string;
-}
-
-export interface IOtpVerify {
-  action: OtpActionTypes;
-  payload: {
-    otp?: string;
-    media: [OtpTypes];
-    destination_details: [IOtpPhoneVerifyPayload | IOtpEmailVerifyPayload];
-  };
-}
-
-export interface IOtpVerifyResponse {
-  otp_verify?: boolean;
-  otp_sent?: boolean;
-}
-
 export interface IUserPayload {
   full_name: string;
   email: string;
@@ -136,7 +94,30 @@ export interface IUserPayload {
   access_token: string;
   refresh_token: string;
 }
+// USER AUTH - END
 
+// OTP - START
+export interface IOtpSendPayload {
+  country_code: string;
+  phone_number: string;
+}
+
+export interface IOtpVerifyPayload extends IOtpSendPayload {
+  otp: string;
+}
+
+export interface IOtpVerify {
+  action: OtpActionTypes;
+  payload: IOtpSendPayload | IOtpVerifyPayload;
+}
+
+export interface IOtpVerifyResponse {
+  otp_verify?: boolean;
+  otp_sent?: boolean;
+}
+// OTP - END
+
+// REFRESH TOKEN - START
 export interface IRefreshToken {
   access_token: string;
   refresh_token: string;
@@ -145,13 +126,33 @@ export interface IRefreshToken {
 export interface IRefreshTokenPayload {
   refresh_token: string;
 }
+// REFRESH TOKEN - END
 
+// USER LOGOUT - START
 export interface IUserLogoutPayload {
   action: string;
   payload: IRefreshTokenPayload;
 }
+// USER LOGOUT - END
 
-// POST PROPERTY
+// ASSET - START
+export interface ISpaceAvailable {
+  bedroom: number;
+  bathroom: number;
+  balcony: number;
+  floorNumber: number;
+  totalFloors: number;
+  carpetArea: string;
+  areaUnit: string;
+}
+
+export interface ISpaceAvailablePayload {
+  id: string | number;
+  name?: string;
+  value?: number;
+  count?: number;
+}
+
 export interface ICreateAssetDetails {
   project_name: string;
   unit_number: string;
@@ -177,3 +178,4 @@ export interface IUpdateAssetDetails {
   asset_type?: number;
   spaces?: ISpaceAvailablePayload[];
 }
+// ASSET - END

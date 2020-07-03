@@ -1,6 +1,6 @@
-// @ts-nocheck
 /* eslint-disable import/no-unresolved */
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
+// @ts-ignore
 import { Geolocation } from '@homzhub/common/src/services/Geolocation/index';
 
 jest.mock('@homzhub/common/src/services/Geolocation/index', () => {
@@ -19,7 +19,7 @@ describe('Geolocation Service', () => {
   const error = jest.fn();
 
   it('Should fetch geolocation data and invoke the success callback', () => {
-    Geolocation.getCurrentPosition.mockImplementation((successCallback, errorCallback) => {
+    Geolocation.getCurrentPosition.mockImplementation((successCallback: any, errorCallback: any) => {
       successCallback();
     });
     GeolocationService.getCurrentPosition(success, error);
@@ -27,7 +27,7 @@ describe('Geolocation Service', () => {
   });
 
   it('Should fetch geolocation data and invoke the error callback in case of errors', () => {
-    Geolocation.getCurrentPosition.mockImplementation((successCallback, errorCallback) => {
+    Geolocation.getCurrentPosition.mockImplementation((successCallback: any, errorCallback: any) => {
       errorCallback();
     });
     GeolocationService.getCurrentPosition(success, error);

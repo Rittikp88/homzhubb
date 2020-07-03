@@ -1,10 +1,10 @@
-// @ts-nocheck
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import { IEmailLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { loginPayload, userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 
 describe('User Actions', () => {
   it('should call login action', () => {
-    const action = UserActions.login(loginPayload);
+    const action = UserActions.login(loginPayload as IEmailLoginPayload);
     expect(action).toStrictEqual({
       type: UserActionTypes.AUTH.LOGIN,
       payload: loginPayload,
