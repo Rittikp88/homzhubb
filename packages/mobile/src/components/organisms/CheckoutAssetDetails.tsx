@@ -108,7 +108,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     data = { ...data, currency_code: currency };
 
     if (termId) {
-      await this.updateLeaseTerms(data as IUpdateLeaseTermDetails);
+      await this.updateLeaseTerms(data);
       return;
     }
 
