@@ -11,7 +11,7 @@ export interface IPropertyState {
     rentServices: IRentServiceList[] | null;
   };
   servicesInfo: IServiceDetail[];
-  servicesSteps: IServiceListStepsDetail[];
+  servicesSteps: IServiceListStepsDetail;
   error: {
     property: string;
     service: string;

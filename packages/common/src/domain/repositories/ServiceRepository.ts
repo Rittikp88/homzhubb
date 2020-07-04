@@ -6,7 +6,8 @@ import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/dom
 const ENDPOINTS = {
   getRentServices: (): string => 'services/',
   getServiceData: (serviceId: number): string => `service-categories/${serviceId}/services`,
-  getServiceSteps: (serviceId: number): string => `service-categories/services/${serviceId}/steps`,
+  getServiceSteps: (serviceCategoryId: number, serviceId: number): string =>
+    `service-categories/${serviceCategoryId}/services/${serviceId}/steps`,
 };
 
 class ServiceRepository {
@@ -24,8 +25,11 @@ class ServiceRepository {
     return await this.apiClient.get(ENDPOINTS.getServiceData(serviceId));
   };
 
-  public getServiceStepsDetails = async (serviceId: number): Promise<IServiceListStepsDetail[]> => {
-    return await this.apiClient.get(ENDPOINTS.getServiceSteps(serviceId));
+  public getServiceStepsDetails = async (
+    serviceCategoryId: number,
+    serviceId: number
+  ): Promise<IServiceListStepsDetail[]> => {
+    return await this.apiClient.get(ENDPOINTS.getServiceSteps(serviceCategoryId, serviceId));
   };
 }
 

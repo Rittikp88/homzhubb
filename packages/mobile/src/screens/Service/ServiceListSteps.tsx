@@ -3,24 +3,31 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { remove } from 'lodash';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import {
+  IServiceListSteps,
+  IServiceListStepsDetail,
+  IServiceListStepsPayload,
+} from '@homzhub/common/src/domain/models/Service';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
-import { IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 interface IStateProps {
-  serviceSteps: IServiceListStepsDetail[];
+  serviceSteps: IServiceListStepsDetail;
+  typeOfSale: TypeOfSale;
 }
 
 interface IDispatchProps {
-  getServiceStepsDetails: (id: number) => void;
+  getServiceStepsDetails: (data: IServiceListStepsPayload) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListSteps>;
@@ -30,9 +37,13 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
   public componentDidMount(): void {
     const {
       getServiceStepsDetails,
+      typeOfSale,
       route: { params },
     } = this.props;
-    getServiceStepsDetails(params.id);
+    // TODO: Rishabh - Add the selected id to the reducer
+    // eslint-disable-next-line no-nested-ternary
+    const serviceCategoryId = typeOfSale === TypeOfSale.FIND_TENANT ? 1 : TypeOfSale.SELL_PROPERTY ? 2 : 3;
+    getServiceStepsDetails({ serviceCategoryId, serviceId: params.id });
   }
 
   public render(): React.ReactNode {
@@ -92,9 +103,22 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
   }
 
   public renderSteps(): React.ReactNode {
-    const { serviceSteps } = this.props;
-    return serviceSteps.map((stepItem: IServiceListStepsDetail, index: number) => {
-      const isLast = serviceSteps.length - 1 === index;
+    const {
+      serviceSteps: { steps, PROPERTY_VERIFICATIONS, PAYMENT_TOKEN_AMOUNT },
+    } = this.props;
+    // Filter the steps based on boolean flags
+    if (!PROPERTY_VERIFICATIONS) {
+      remove(steps, (stepItem: IServiceListSteps) => {
+        return stepItem.name === 'PROPERTY_VERIFICATIONS';
+      });
+    }
+    if (!PAYMENT_TOKEN_AMOUNT) {
+      remove(steps, (stepItem: IServiceListSteps) => {
+        return stepItem.name === 'PAYMENT_TOKEN_AMOUNT';
+      });
+    }
+    return steps.map((stepItem: IServiceListSteps, index: number) => {
+      const isLast = steps.length - 1 === index;
       return (
         <View key={`stepContainer${index}`}>
           <View key={index} style={styles.stepView}>
@@ -133,9 +157,10 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
-  const { getServiceSteps } = PropertySelector;
+  const { getServiceSteps, getTypeOfSale } = PropertySelector;
   return {
     serviceSteps: getServiceSteps(state),
+    typeOfSale: getTypeOfSale(state),
   };
 };
 

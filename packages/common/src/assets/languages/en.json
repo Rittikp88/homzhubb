@@ -30,7 +30,10 @@
     "allDone": "All Done!",
     "why": "Why?",
     "availableFrom": "Available from",
-    "saveAndContinue": "Save & Continue"
+    "saveAndContinue": "Save & Continue",
+    "noCost": "No Cost",
+    "requestQuote": "Request Quote",
+    "recommended": "RECOMMENDED"
   },
   "auth": {
     "verifyNumber": "Verify your number",

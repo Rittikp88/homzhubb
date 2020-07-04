@@ -14,7 +14,11 @@ export const initialPropertyState: IPropertyState = {
     rentServices: null,
   },
   servicesInfo: [],
-  servicesSteps: [],
+  servicesSteps: {
+    steps: [],
+    PROPERTY_VERIFICATIONS: false,
+    PAYMENT_TOKEN_AMOUNT: false,
+  },
   error: {
     property: '',
     service: '',
@@ -86,7 +90,7 @@ export const propertyReducer = (
     case PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS:
       return {
         ...state,
-        ['servicesSteps']: action.payload as IServiceListStepsDetail[],
+        ['servicesSteps']: action.payload as IServiceListStepsDetail,
         ['loaders']: { ...state.loaders, ['service']: false },
       };
     case PropertyActionTypes.GET.SERVICE_DETAILS_FAILURE:

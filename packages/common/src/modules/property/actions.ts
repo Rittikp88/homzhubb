@@ -2,7 +2,11 @@
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyDetailsData, IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
-import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
+import {
+  IServiceDetail,
+  IServiceListStepsDetail,
+  IServiceListStepsPayload,
+} from '@homzhub/common/src/domain/models/Service';
 
 const actionTypePrefix = 'Property/';
 
@@ -105,7 +109,7 @@ const getServiceDetailsFailure = (error: string): IFluxStandardAction<string> =>
   };
 };
 
-const getServiceStepsDetails = (payload: number): IFluxStandardAction<number> => {
+const getServiceStepsDetails = (payload: IServiceListStepsPayload): IFluxStandardAction<IServiceListStepsPayload> => {
   return {
     type: PropertyActionTypes.GET.SERVICE_STEPS,
     payload,
@@ -113,8 +117,8 @@ const getServiceStepsDetails = (payload: number): IFluxStandardAction<number> =>
 };
 
 const getServiceStepsDetailsSuccess = (
-  payload: IServiceListStepsDetail[]
-): IFluxStandardAction<IServiceListStepsDetail[]> => {
+  payload: IServiceListStepsDetail
+): IFluxStandardAction<IServiceListStepsDetail> => {
   return {
     type: PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS,
     payload,
@@ -140,7 +144,7 @@ export type PropertyPayloadTypes =
   | IPropertyDetailsData[]
   | IRentServiceList[]
   | IServiceDetail[]
-  | IServiceListStepsDetail[]
+  | IServiceListStepsDetail
   | undefined;
 export const PropertyActions = {
   getPropertyDetails,

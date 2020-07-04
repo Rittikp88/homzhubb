@@ -57,7 +57,7 @@ export class ServiceListScreen extends Component<Props> {
               >
                 <CardBody
                   title={item.title}
-                  badgeTitle={item.label}
+                  badgeTitle={item.label ? t('common:recommended') : ''}
                   description={item.description}
                   serviceCost={item.service_cost}
                 />

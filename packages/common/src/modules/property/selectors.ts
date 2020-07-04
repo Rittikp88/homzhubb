@@ -41,7 +41,7 @@ const getServiceDetails = (state: IState): IServiceDetail[] => {
   return servicesInfo;
 };
 
-const getServiceSteps = (state: IState): IServiceListStepsDetail[] => {
+const getServiceSteps = (state: IState): IServiceListStepsDetail => {
   const {
     property: { servicesSteps },
   } = state;
@@ -49,8 +49,8 @@ const getServiceSteps = (state: IState): IServiceListStepsDetail[] => {
 };
 
 const getServiceStepsDetails = (state: IState): ServiceStepTypes[] => {
-  const steps = getServiceSteps(state);
-  return steps.map((serviceStep) => serviceStep.name);
+  const serviceSteps = getServiceSteps(state);
+  return serviceSteps.steps.map((serviceStep) => serviceStep.name);
 };
 
 const getCurrentServiceCategoryId = (state: IState): number => {

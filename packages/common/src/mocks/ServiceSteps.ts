@@ -1,24 +1,32 @@
 import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 
-export const ServiceSteps = [
-  {
-    id: 1,
-    name: ServiceStepTypes.LEASE_DETAILS,
-    title: 'Enter the Lease details',
-  },
-  {
-    id: 2,
-    name: ServiceStepTypes.PROPERTY_IMAGES,
-    title: 'Add Property Images',
-  },
-  {
-    id: 3,
-    name: ServiceStepTypes.PROPERTY_VERIFICATIONS,
-    title: 'Complete property verification',
-  },
-  {
-    id: 4,
-    name: ServiceStepTypes.PAYMENT_TOKEN_AMOUNT,
-    title: 'Payment of token amount',
-  },
-];
+export const ServiceSteps = {
+  PROPERTY_VERIFICATIONS: false,
+  PAYMENT_TOKEN_AMOUNT: false,
+  steps: [
+    {
+      id: 1,
+      name: ServiceStepTypes.LEASE_DETAILS,
+      title: 'Enter the Lease details',
+      label: 'Label 1',
+    },
+    {
+      id: 2,
+      name: ServiceStepTypes.PROPERTY_IMAGES,
+      title: 'Add Property Images',
+      label: 'Label 2',
+    },
+    {
+      id: 3,
+      name: ServiceStepTypes.PROPERTY_VERIFICATIONS,
+      title: 'Complete property verification',
+      label: 'Label 3',
+    },
+    {
+      id: 4,
+      name: ServiceStepTypes.PAYMENT_TOKEN_AMOUNT,
+      title: 'Payment of token amount',
+      label: 'Label 4',
+    },
+  ],
+};

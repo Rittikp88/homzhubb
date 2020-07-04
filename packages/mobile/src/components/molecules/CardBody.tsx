@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, Label, Text, Badge } from '@homzhub/common/src/components';
+import { Badge, Button, Label, Text } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IServiceItems } from '@homzhub/common/src/domain/models/Service';
 
@@ -11,7 +11,7 @@ interface ICardProps {
   title: string;
   badgeTitle?: string;
   description: string;
-  serviceCost: string;
+  serviceCost: number;
   isDetailView?: boolean;
   detailedData?: IServiceItems[];
   onPressInfo?: () => void;
@@ -24,7 +24,7 @@ const CardBody = (props: Props): React.ReactElement => {
   const { t, title, description, serviceCost, isDetailView, badgeTitle, detailedData, onPressInfo, onConfirm } = props;
 
   const renderDetailedData = (item: IServiceItems, index: number): React.ReactElement => {
-    const isIncluded = item.is_covered;
+    const isIncluded = true;
     return (
       <View style={styles.detailContent} key={index}>
         <Icon
@@ -33,10 +33,23 @@ const CardBody = (props: Props): React.ReactElement => {
           size={22}
         />
         <Text type="small" textType="regular" style={styles.listTitle}>
-          {item.label}
+          {item.title}
         </Text>
       </View>
     );
+  };
+
+  const costOfPackage = (cost: number): string | number => {
+    switch (cost) {
+      case 0:
+        // @ts-ignore
+        return t('common:noCost');
+      case -1:
+        // @ts-ignore
+        return t('common:requestQuote');
+      default:
+        return cost;
+    }
   };
 
   return (
@@ -58,7 +71,7 @@ const CardBody = (props: Props): React.ReactElement => {
         </Label>
         <View style={styles.costView}>
           <Text type="large" textType="light" style={styles.feeDesc}>
-            {serviceCost}
+            {costOfPackage(serviceCost)}
           </Text>
           {isDetailView && <Icon name={icons.info} color={theme.colors.primaryColor} size={22} onPress={onPressInfo} />}
         </View>

@@ -165,28 +165,36 @@ Array [
 `;
 
 exports[`ServiceRepository Should fetch service steps details 1`] = `
-Array [
-  Object {
-    "id": 1,
-    "name": "LEASE_DETAILS",
-    "title": "Enter the Lease details",
-  },
-  Object {
-    "id": 2,
-    "name": "PROPERTY_IMAGES",
-    "title": "Add Property Images",
-  },
-  Object {
-    "id": 3,
-    "name": "PROPERTY_VERIFICATIONS",
-    "title": "Complete property verification",
-  },
-  Object {
-    "id": 4,
-    "name": "PAYMENT_TOKEN_AMOUNT",
-    "title": "Payment of token amount",
-  },
-]
+Object {
+  "PAYMENT_TOKEN_AMOUNT": false,
+  "PROPERTY_VERIFICATIONS": false,
+  "steps": Array [
+    Object {
+      "id": 1,
+      "label": "Label 1",
+      "name": "LEASE_DETAILS",
+      "title": "Enter the Lease details",
+    },
+    Object {
+      "id": 2,
+      "label": "Label 2",
+      "name": "PROPERTY_IMAGES",
+      "title": "Add Property Images",
+    },
+    Object {
+      "id": 3,
+      "label": "Label 3",
+      "name": "PROPERTY_VERIFICATIONS",
+      "title": "Complete property verification",
+    },
+    Object {
+      "id": 4,
+      "label": "Label 4",
+      "name": "PAYMENT_TOKEN_AMOUNT",
+      "title": "Payment of token amount",
+    },
+  ],
+}
 `;
 
 exports[`ServiceRepository should fetch a list of rent services 1`] = `

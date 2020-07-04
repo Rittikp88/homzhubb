@@ -9,25 +9,40 @@ export interface IServiceDetail {
   id: number;
   name: string;
   title: string;
+  label: boolean;
   description: string;
-  service_cost: string;
-  service_info: string;
-  label: string;
-  service_items: IServiceItems[];
+  number: number;
+  info: string;
+  service_cost: number;
+  service_bundle_items: IServiceItems[];
 }
 
 export interface IServiceItems {
   id: number;
   name: string;
+  title: string;
+  category: string;
   description: string;
-  label: string;
-  is_covered: boolean;
+  position: number;
+  item_label: string;
 }
 
-export interface IServiceListStepsDetail {
+export interface IServiceListSteps {
   id: number;
   name: ServiceStepTypes;
   title: string;
+  label: string;
+}
+
+export interface IServiceListStepsDetail {
+  steps: IServiceListSteps[];
+  PROPERTY_VERIFICATIONS: boolean;
+  PAYMENT_TOKEN_AMOUNT: boolean;
+}
+
+export interface IServiceListStepsPayload {
+  serviceCategoryId: number;
+  serviceId: number;
 }
 
 export interface IVerificationTypes {

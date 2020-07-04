@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { bindActionCreators, Dispatch } from 'redux';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -23,7 +20,6 @@ import { CardBody } from '@homzhub/mobile/src/components/molecules/CardBody';
 import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IDispatchProps {
   setCurrentServiceCategoryId: (id: number) => void;
@@ -78,9 +74,9 @@ export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
                 activeSlide={activeSlide}
                 containerStyle={styles.pagination}
               />
-              {activeItem && !!activeItem.label && (
+              {activeItem && activeItem.label && (
                 <Badge
-                  title={activeItem.label}
+                  title={activeItem.label ? t('common:recommended') : ''}
                   badgeColor={theme.colors.mediumPriority}
                   badgeStyle={styles.badgeStyle}
                 />
@@ -102,7 +98,7 @@ export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   }
 
   private renderCarouselItem = (item: IServiceDetail): React.ReactElement => {
-    const onPressIcon = (): Promise<void> => this.handleMoreInfo(item.name);
+    const onPressIcon = (): void => this.handleMoreInfo(item.info);
     return (
       <CardBody
         key={item.id}
@@ -110,7 +106,7 @@ export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
         isDetailView
         description={item.description}
         serviceCost={item.service_cost}
-        detailedData={item.service_items}
+        detailedData={item.service_bundle_items}
         onPressInfo={onPressIcon}
         onConfirm={this.onConfirmService}
       />
@@ -192,24 +188,9 @@ export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
     this.closeBottomSheet();
   };
 
-  // TODO: (Shikha: 22/06/2020) - Remove axios call once get api response correctly
-  private handleMoreInfo = async (serviceName: string): Promise<void> => {
+  private handleMoreInfo = (info: string): void => {
     const { isInfoSheet } = this.state;
-    const baseUrl = ConfigHelper.getBaseUrl();
-    const user: IUser | null = await StorageService.get(StorageKeys.USER);
-    if (user) {
-      axios
-        .get(`${baseUrl}markdown/${serviceName}/`, {
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${user.access_token}`,
-          },
-        })
-        .then((res) => {
-          this.setState({ serviceInfo: res.data });
-        });
-    }
-    this.setState({ isInfoSheet: !isInfoSheet });
+    this.setState({ isInfoSheet: !isInfoSheet, serviceInfo: info });
   };
 
   private closeBottomSheet = (): void => {

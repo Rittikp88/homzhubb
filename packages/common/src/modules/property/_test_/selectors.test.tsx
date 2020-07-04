@@ -6,7 +6,7 @@ import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetail
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
-import { ServiceStepTypes } from '../../../domain/models/Service';
+import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 
 const state: IState = {
   user: {

@@ -4,6 +4,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { PropertyActions, PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { IServiceListStepsPayload } from '@homzhub/common/src/domain/models/Service';
 
 export function* getPropertyDetails() {
   try {
@@ -33,10 +34,11 @@ export function* getServiceDetails(action: IFluxStandardAction<number>) {
   }
 }
 
-export function* getServiceStepsDetails(action: IFluxStandardAction<number>) {
+export function* getServiceStepsDetails(action: IFluxStandardAction<IServiceListStepsPayload>) {
   const { payload } = action;
   try {
-    const data = yield call(ServiceRepository.getServiceStepsDetails, payload as number);
+    // @ts-ignore
+    const data = yield call(ServiceRepository.getServiceStepsDetails, payload.serviceCategoryId, payload.serviceId);
     yield put(PropertyActions.getServiceStepsDetailsSuccess(data));
   } catch (e) {
     yield put(PropertyActions.getServiceStepsDetailsFailure(e.message));
