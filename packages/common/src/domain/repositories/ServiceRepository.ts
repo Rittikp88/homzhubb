@@ -5,7 +5,7 @@ import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/dom
 
 const ENDPOINTS = {
   getRentServices: (): string => 'services/',
-  getServiceData: (serviceId: number): string => `service-categories/${serviceId}/services`,
+  getServiceData: (serviceId: number): string => `service-categories/${serviceId}/services/`,
   getServiceSteps: (serviceCategoryId: number, serviceId: number): string =>
     `service-categories/${serviceCategoryId}/services/${serviceId}/steps`,
 };
