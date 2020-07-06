@@ -3,13 +3,8 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
-import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
-import {
-  ServiceDetailScreen,
-  mapStateToProps,
-  mapDispatchToProps,
-} from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
+import { ServiceDetailScreen, mapStateToProps } from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
 
 const mock = jest.fn();
 describe('Service Detail Screen', () => {
@@ -62,14 +57,5 @@ describe('Service Detail Screen', () => {
     };
     const state = mapStateToProps(mockedState);
     expect(state.services).toStrictEqual(ServicesData);
-  });
-
-  it('should handle mapDispatchToProps', () => {
-    const dispatch = jest.fn();
-    mapDispatchToProps(dispatch).setCurrentServiceCategoryId(1);
-    expect(dispatch.mock.calls[0][0]).toStrictEqual({
-      type: PropertyActionTypes.SET.CURRENT_SERVICE_CATEGORY_ID,
-      payload: 1,
-    });
   });
 });

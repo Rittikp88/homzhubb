@@ -4,6 +4,7 @@ import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 import {
   ServiceListSteps,
@@ -20,6 +21,7 @@ describe('Service List Steps Screen', () => {
   beforeEach(() => {
     props = {
       serviceSteps: ServiceSteps,
+      serviceCategory: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
       getServiceStepsDetails: mock,
       navigation: {
         navigate: mock,
@@ -67,10 +69,10 @@ describe('Service List Steps Screen', () => {
 
   it('should dispatch getServiceStepsDetails', () => {
     const dispatch = jest.fn();
-    mapDispatchToProps(dispatch).getServiceStepsDetails(1);
+    mapDispatchToProps(dispatch).getServiceStepsDetails({ serviceCategoryId: 1, serviceId: 1 });
     expect(dispatch.mock.calls[0][0]).toEqual({
       type: PropertyActionTypes.GET.SERVICE_STEPS,
-      payload: 1,
+      payload: { serviceCategoryId: 1, serviceId: 1 },
     });
   });
 });

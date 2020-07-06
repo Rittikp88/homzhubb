@@ -2,13 +2,15 @@ import { IPropertyState } from '@homzhub/common/src/modules/property/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActionTypes, PropertyPayloadTypes } from '@homzhub/common/src/modules/property/actions';
 import { IPropertyDetailsData, IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
-import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
+import { IServiceCategory, IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
 
 export const initialPropertyState: IPropertyState = {
   currentPropertyId: 0,
   termId: 0,
-  currentServiceCategoryId: 0,
-  typeOfSale: TypeOfSale.FIND_TENANT,
+  serviceCategory: {
+    id: 0,
+    typeOfSale: TypeOfSale.FIND_TENANT,
+  },
   propertyDetails: {
     propertyGroup: null,
     rentServices: null,
@@ -70,10 +72,8 @@ export const propertyReducer = (
       return { ...state, ['currentPropertyId']: action.payload as number };
     case PropertyActionTypes.SET.TERM_ID:
       return { ...state, ['termId']: action.payload as number };
-    case PropertyActionTypes.SET.TYPE_OF_SALE:
-      return { ...state, ['typeOfSale']: action.payload as TypeOfSale };
-    case PropertyActionTypes.SET.CURRENT_SERVICE_CATEGORY_ID:
-      return { ...state, ['currentServiceCategoryId']: action.payload as number };
+    case PropertyActionTypes.SET.SERVICE_CATEGORY:
+      return { ...state, ['serviceCategory']: action.payload as IServiceCategory };
     case PropertyActionTypes.GET.SERVICE_DETAILS:
     case PropertyActionTypes.GET.SERVICE_STEPS:
       return {

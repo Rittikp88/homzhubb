@@ -15,8 +15,9 @@ import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/compone
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
+import { IRentServiceList } from '@homzhub/common/src/domain/models/Property';
 import { IUser } from '@homzhub/common/src/domain/models/User';
+import { IServiceCategory } from '@homzhub/common/src/domain/models/Service';
 
 interface IStateProps {
   user: IUser | null;
@@ -25,7 +26,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   getRentServiceList: () => void;
-  setTypeOfSale: (typeOfSale: TypeOfSale) => void;
+  setServiceCategory: (data: IServiceCategory) => void;
 }
 
 interface IRentServicesState {
@@ -145,7 +146,7 @@ export class RentServices extends Component<Props, IRentServicesState> {
   };
 
   private onContinue = (): void => {
-    const { navigation, serviceList, setTypeOfSale } = this.props;
+    const { navigation, serviceList, setServiceCategory } = this.props;
     const { selectedItem } = this.state;
 
     if (!serviceList) {
@@ -154,7 +155,7 @@ export class RentServices extends Component<Props, IRentServicesState> {
 
     const selectedType = serviceList.find((service) => service.id === selectedItem);
     if (selectedType) {
-      setTypeOfSale(selectedType.name);
+      setServiceCategory({ id: selectedType.id, typeOfSale: selectedType.name });
     }
 
     navigation.navigate(ScreensKeys.ServiceListScreen, { serviceId: selectedItem });
@@ -174,11 +175,11 @@ export const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getRentServiceList, setTypeOfSale } = PropertyActions;
+  const { getRentServiceList, setServiceCategory } = PropertyActions;
   return bindActionCreators(
     {
       getRentServiceList,
-      setTypeOfSale,
+      setServiceCategory,
     },
     dispatch
   );

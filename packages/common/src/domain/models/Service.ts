@@ -1,8 +1,15 @@
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
+
 export enum ServiceStepTypes {
   LEASE_DETAILS = 'LEASE_DETAILS',
   PROPERTY_IMAGES = 'PROPERTY_IMAGES',
   PROPERTY_VERIFICATIONS = 'PROPERTY_VERIFICATIONS',
   PAYMENT_TOKEN_AMOUNT = 'PAYMENT_TOKEN_AMOUNT',
+}
+
+export interface IServiceCategory {
+  id: number;
+  typeOfSale: TypeOfSale;
 }
 
 export interface IServiceDetail {

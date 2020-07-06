@@ -27,7 +27,7 @@ exports[`Service List Screen should render snapshot 1`] = `
     <withI18nextTranslation(CardBody)
       badgeTitle=""
       description="Rhoncus lacus nunc."
-      serviceCost="No Cost - Free"
+      serviceCost={0}
       title="Free Listing"
     />
   </ForwardRef>
@@ -48,9 +48,9 @@ exports[`Service List Screen should render snapshot 1`] = `
     testID="toPress"
   >
     <withI18nextTranslation(CardBody)
-      badgeTitle="RECOMMENDED"
+      badgeTitle="common:recommended"
       description="Vestibulum eu"
-      serviceCost="9% of Agreement Value."
+      serviceCost={3000}
       title="Assisted Listing"
     />
   </ForwardRef>
@@ -73,7 +73,7 @@ exports[`Service List Screen should render snapshot 1`] = `
     <withI18nextTranslation(CardBody)
       badgeTitle=""
       description="tristique donec aenean faucibus"
-      serviceCost="9% of Agreement Value."
+      serviceCost={-1}
       title="Boosted Listing"
     />
   </ForwardRef>

@@ -18,7 +18,7 @@ import PropertyVerification from '@homzhub/mobile/src/components/organisms/Prope
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
+import { IServiceCategory, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -35,10 +35,9 @@ interface IScreenState {
 
 interface IStateProps {
   steps: ServiceStepTypes[];
-  typeOfSale: TypeOfSale;
   propertyId: number;
   termId: number;
-  serviceCategoryId: number;
+  serviceCategory: IServiceCategory;
 }
 
 interface IDispatchProps {
@@ -126,7 +125,13 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 
   private renderContent = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
-    const { propertyId, termId, setTermId, steps, typeOfSale } = this.props;
+    const {
+      propertyId,
+      termId,
+      setTermId,
+      steps,
+      serviceCategory: { typeOfSale },
+    } = this.props;
 
     const currentStepId = steps[currentStep];
     switch (currentStepId) {
@@ -209,7 +214,10 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   };
 
   private getTitleStringsForStep = (serviceStep: ServiceStepTypes): IStringForStep => {
-    const { t, typeOfSale } = this.props;
+    const {
+      t,
+      serviceCategory: { typeOfSale },
+    } = this.props;
     switch (serviceStep) {
       case ServiceStepTypes.LEASE_DETAILS:
         if (typeOfSale === TypeOfSale.FIND_TENANT) {
@@ -253,19 +261,12 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const {
-    getCurrentPropertyId,
-    getTermId,
-    getCurrentServiceCategoryId,
-    getServiceStepsDetails,
-    getTypeOfSale,
-  } = PropertySelector;
+  const { getCurrentPropertyId, getTermId, getServiceStepsDetails, getServiceCategory } = PropertySelector;
   return {
     propertyId: getCurrentPropertyId(state),
     termId: getTermId(state),
-    serviceCategoryId: getCurrentServiceCategoryId(state),
     steps: getServiceStepsDetails(state),
-    typeOfSale: getTypeOfSale(state),
+    serviceCategory: getServiceCategory(state),
   };
 };
 

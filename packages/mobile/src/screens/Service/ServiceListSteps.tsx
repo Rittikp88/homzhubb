@@ -9,13 +9,14 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
+  IServiceCategory,
   IServiceListSteps,
   IServiceListStepsDetail,
   IServiceListStepsPayload,
+  ServiceStepTypes,
 } from '@homzhub/common/src/domain/models/Service';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
-import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/src/components';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -23,7 +24,7 @@ import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 interface IStateProps {
   serviceSteps: IServiceListStepsDetail;
-  typeOfSale: TypeOfSale;
+  serviceCategory: IServiceCategory;
 }
 
 interface IDispatchProps {
@@ -37,13 +38,10 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
   public componentDidMount(): void {
     const {
       getServiceStepsDetails,
-      typeOfSale,
+      serviceCategory,
       route: { params },
     } = this.props;
-    // TODO: Rishabh - Add the selected id to the reducer
-    // eslint-disable-next-line no-nested-ternary
-    const serviceCategoryId = typeOfSale === TypeOfSale.FIND_TENANT ? 1 : TypeOfSale.SELL_PROPERTY ? 2 : 3;
-    getServiceStepsDetails({ serviceCategoryId, serviceId: params.id });
+    getServiceStepsDetails({ serviceCategoryId: serviceCategory.id, serviceId: params.id });
   }
 
   public render(): React.ReactNode {
@@ -109,12 +107,12 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
     // Filter the steps based on boolean flags
     if (!PROPERTY_VERIFICATIONS) {
       remove(steps, (stepItem: IServiceListSteps) => {
-        return stepItem.name === 'PROPERTY_VERIFICATIONS';
+        return stepItem.name === ServiceStepTypes.PROPERTY_VERIFICATIONS;
       });
     }
     if (!PAYMENT_TOKEN_AMOUNT) {
       remove(steps, (stepItem: IServiceListSteps) => {
-        return stepItem.name === 'PAYMENT_TOKEN_AMOUNT';
+        return stepItem.name === ServiceStepTypes.PAYMENT_TOKEN_AMOUNT;
       });
     }
     return steps.map((stepItem: IServiceListSteps, index: number) => {
@@ -157,10 +155,10 @@ export class ServiceListSteps extends React.PureComponent<Props, {}> {
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
-  const { getServiceSteps, getTypeOfSale } = PropertySelector;
+  const { getServiceSteps, getServiceCategory } = PropertySelector;
   return {
     serviceSteps: getServiceSteps(state),
-    typeOfSale: getTypeOfSale(state),
+    serviceCategory: getServiceCategory(state),
   };
 };
 

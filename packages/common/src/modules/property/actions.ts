@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyDetailsData, IRentServiceList, TypeOfSale } from '@homzhub/common/src/domain/models/Property';
+import { IPropertyDetailsData, IRentServiceList } from '@homzhub/common/src/domain/models/Property';
 import {
   IServiceDetail,
   IServiceListStepsDetail,
   IServiceListStepsPayload,
+  IServiceCategory,
 } from '@homzhub/common/src/domain/models/Service';
 
 const actionTypePrefix = 'Property/';
@@ -28,8 +29,7 @@ export const PropertyActionTypes = {
   SET: {
     CURRENT_PROPERTY_ID: `${actionTypePrefix}CURRENT_PROPERTY_ID`,
     TERM_ID: `${actionTypePrefix}TERM_ID`,
-    CURRENT_SERVICE_CATEGORY_ID: `${actionTypePrefix}CURRENT_SERVICE_CATEGORY_ID`,
-    TYPE_OF_SALE: `${actionTypePrefix}TYPE_OF_SALE`,
+    SERVICE_CATEGORY: `${actionTypePrefix}SERVICE_CATEGORY`,
   },
 };
 
@@ -83,8 +83,8 @@ const setTermId = (payload: number): IFluxStandardAction<number> => ({
   payload,
 });
 
-const setTypeOfSale = (payload: TypeOfSale): IFluxStandardAction<TypeOfSale> => ({
-  type: PropertyActionTypes.SET.TYPE_OF_SALE,
+const setServiceCategory = (payload: IServiceCategory): IFluxStandardAction<IServiceCategory> => ({
+  type: PropertyActionTypes.SET.SERVICE_CATEGORY,
   payload,
 });
 
@@ -132,19 +132,14 @@ const getServiceStepsDetailsFailure = (error: string): IFluxStandardAction<strin
   };
 };
 
-const setCurrentServiceCategoryId = (payload: number): IFluxStandardAction<number> => ({
-  type: PropertyActionTypes.SET.CURRENT_SERVICE_CATEGORY_ID,
-  payload,
-});
-
 export type PropertyPayloadTypes =
   | string
   | number
-  | TypeOfSale
   | IPropertyDetailsData[]
   | IRentServiceList[]
   | IServiceDetail[]
   | IServiceListStepsDetail
+  | IServiceCategory
   | undefined;
 export const PropertyActions = {
   getPropertyDetails,
@@ -153,14 +148,13 @@ export const PropertyActions = {
   getRentServiceList,
   getRentServiceListSuccess,
   getRentServiceListFailure,
-  setCurrentPropertyId,
-  setTermId,
   getServiceDetails,
   getServiceDetailsSuccess,
   getServiceDetailsFailure,
   getServiceStepsDetails,
   getServiceStepsDetailsSuccess,
   getServiceStepsDetailsFailure,
-  setCurrentServiceCategoryId,
-  setTypeOfSale,
+  setCurrentPropertyId,
+  setTermId,
+  setServiceCategory,
 };

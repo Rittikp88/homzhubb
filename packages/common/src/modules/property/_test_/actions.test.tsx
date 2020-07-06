@@ -3,6 +3,7 @@ import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetail
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 
 describe('Property Actions', () => {
   it('should call get property detail action', () => {
@@ -53,10 +54,10 @@ describe('Property Actions', () => {
   });
 
   it('should call get service steps action', () => {
-    const action = PropertyActions.getServiceStepsDetails(1);
+    const action = PropertyActions.getServiceStepsDetails({ serviceCategoryId: 1, serviceId: 1 });
     expect(action).toStrictEqual({
       type: PropertyActionTypes.GET.SERVICE_STEPS,
-      payload: 1,
+      payload: { serviceCategoryId: 1, serviceId: 1 },
     });
   });
 
@@ -115,11 +116,11 @@ describe('Property Actions', () => {
     });
   });
 
-  it('should call set current service id', () => {
-    const action = PropertyActions.setCurrentServiceCategoryId(1);
+  it('should call set current service category', () => {
+    const action = PropertyActions.setServiceCategory({ id: 1, typeOfSale: TypeOfSale.FIND_TENANT });
     expect(action).toStrictEqual({
-      type: PropertyActionTypes.SET.CURRENT_SERVICE_CATEGORY_ID,
-      payload: 1,
+      type: PropertyActionTypes.SET.SERVICE_CATEGORY,
+      payload: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
     });
   });
 });

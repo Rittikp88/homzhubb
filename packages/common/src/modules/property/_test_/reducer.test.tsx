@@ -1,9 +1,10 @@
-import { propertyReducer as reducer, initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { initialPropertyState, propertyReducer as reducer } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 
 describe('Property Reducer', () => {
   it('should return the initial state', () => {
@@ -109,11 +110,17 @@ describe('Property Reducer', () => {
     });
   });
 
-  it('should handle set current service category id', () => {
-    const state = reducer(initialPropertyState, PropertyActions.setCurrentServiceCategoryId(1));
+  it('should handle set current service category', () => {
+    const state = reducer(
+      initialPropertyState,
+      PropertyActions.setServiceCategory({
+        id: 1,
+        typeOfSale: TypeOfSale.FIND_TENANT,
+      })
+    );
     expect(state).toStrictEqual({
       ...initialPropertyState,
-      ['currentServiceCategoryId']: 1,
+      ['serviceCategory']: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
     });
   });
 });

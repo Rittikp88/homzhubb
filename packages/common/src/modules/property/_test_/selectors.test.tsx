@@ -7,6 +7,7 @@ import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 
 const state: IState = {
   user: {
@@ -23,7 +24,7 @@ const state: IState = {
     servicesSteps: ServiceSteps,
     currentPropertyId: 1,
     termId: 1,
-    currentServiceCategoryId: 1,
+    serviceCategory: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
   },
 };
 
@@ -44,8 +45,8 @@ describe('Property Selector', () => {
     expect(PropertySelector.getTermId(state)).toBe(1);
   });
 
-  it('should return current service id', () => {
-    expect(PropertySelector.getCurrentServiceCategoryId(state)).toBe(1);
+  it('should return current service category', () => {
+    expect(PropertySelector.getServiceCategory(state)).toStrictEqual({ id: 1, typeOfSale: TypeOfSale.FIND_TENANT });
   });
 
   it('should return the service list', () => {
