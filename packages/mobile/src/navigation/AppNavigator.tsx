@@ -7,12 +7,12 @@ import {
   IServiceDataProps,
   IMarkdownProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
-import { AddPropertyMap } from '@homzhub/mobile/src/screens/PropertyPost/AddPropertyMap';
+import AddPropertyMap from '@homzhub/mobile/src/screens/PropertyPost/AddPropertyMap';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
 import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
 import RentServices from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
 import { SearchProperty } from '@homzhub/mobile/src/screens/PropertyPost/SearchProperty';
-import { ServiceCheckoutSteps } from '@homzhub/mobile/src/screens/Service/ServiceCheckoutSteps';
+import ServiceCheckoutSteps from '@homzhub/mobile/src/screens/Service/ServiceCheckoutSteps';
 import ServiceDetailScreen from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
 import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
 import ServiceListSteps from '@homzhub/mobile/src/screens/Service/ServiceListSteps';

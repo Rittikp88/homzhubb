@@ -5,7 +5,7 @@ import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
-import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
+import { ServiceSteps, ServiceStepsWithVerification } from '@homzhub/common/src/mocks/ServiceSteps';
 import {
   ServiceListSteps,
   mapStateToProps,
@@ -38,6 +38,27 @@ describe('Service List Steps Screen', () => {
   });
 
   it('should render snapshot', () => {
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should render snapshot', () => {
+    props = {
+      serviceSteps: ServiceStepsWithVerification,
+      serviceCategory: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
+      getServiceStepsDetails: mock,
+      navigation: {
+        navigate: mock,
+        goBack: mock,
+      },
+    };
+
+    component = shallow(
+      <ServiceListSteps
+        {...props}
+        t={(key: string): string => key}
+        route={{ params: { name: 'Some Listing', id: 1 }, isExact: true, path: '', url: '' }}
+      />
+    );
     expect(toJson(component)).toMatchSnapshot();
   });
 

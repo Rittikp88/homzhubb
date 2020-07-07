@@ -43,7 +43,7 @@ interface IAddPropertyState {
   };
 }
 
-class AddPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
+export class AddPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
   private mapRef: MapView | null = null;
   public constructor(props: Props) {
     super(props);
@@ -117,6 +117,7 @@ class AddPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
           titleFontType="semiBold"
           titleStyle={styles.textColor}
           backgroundColor={theme.colors.primaryColor}
+          testID="location"
         />
         <View style={styles.titleContainer}>
           <Text type="small" textType="semiBold" style={[styles.titlePrimary, styles.textColor]}>
@@ -266,14 +267,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   const { getCurrentPropertyId } = PropertySelector;
   return {
     propertyId: getCurrentPropertyId(state),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentPropertyId } = PropertyActions;
   return bindActionCreators(
     {
@@ -283,9 +284,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(AddPropertyMap);
-const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState>(
+export default connect<IStateProps, IDispatchProps, OwnProps, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(HOC);
-export { connectedComponent as AddPropertyMap };
+)(withTranslation(LocaleConstants.namespacesKey.property)(AddPropertyMap));

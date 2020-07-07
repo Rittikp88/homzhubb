@@ -1,0 +1,755 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Service List Steps Screen should render snapshot 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot for LEASE_DETAILS title 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot for LEASE_DETAILS title 2`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot for PAYMENT_TOKEN_AMOUNT title 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot for PROPERTY_IMAGES title 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot for PROPERTY_VERIFICATIONS title 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot for markdown navigation 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot for next steps 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={5}
+    isPaymentSuccess={true}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+  <WithShadowView
+    outerViewStyle={
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "margin": 16,
+        }
+      }
+      title="previewProperty"
+      type="primary"
+    />
+  </WithShadowView>
+</Fragment>
+`;
+
+exports[`Service List Steps Screen should render snapshot with state values 1`] = `
+<Fragment>
+  <Header
+    backgroundColor="#0084F8"
+    icon="left-arrow"
+    iconColor="#FFFFFF"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    titleFontType="semiBold"
+    titleType="small"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={2}
+    isPaymentSuccess={true}
+    labels={
+      Array [
+        "",
+        "",
+        "",
+        "",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+      <Text
+        onPress={[Function]}
+        style={
+          Object {
+            "color": "#0084F8",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        skipForNow
+      </Text>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+  <WithShadowView
+    outerViewStyle={
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "margin": 16,
+        }
+      }
+      title="previewProperty"
+      type="primary"
+    />
+  </WithShadowView>
+</Fragment>
+`;

@@ -246,3 +246,390 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
   </WithShadowView>
 </View>
 `;
+
+exports[`Service List Steps Screen should render snapshot 2`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <Header
+      backgroundColor="#0084F8"
+      icon="left-arrow"
+      iconColor="white"
+      iconStyle={
+        Object {
+          "flex": 1,
+        }
+      }
+      isHeadingVisible={true}
+      onIconPress={[Function]}
+      title="property:listProperty"
+      titleFontType="semiBold"
+      titleStyle={
+        Object {
+          "color": "#FFFFFF",
+        }
+      }
+      titleType="regular"
+    />
+    <ScrollViewMock
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "margin": 24,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+          textType="semiBold"
+          type="regular"
+        >
+          Some Listing
+        </Text>
+        <Label
+          onPress={[Function]}
+          style={
+            Object {
+              "color": "#0084F8",
+            }
+          }
+          testID="lblNavigate"
+          textType="semiBold"
+          type="large"
+        >
+          common:change
+        </Label>
+      </View>
+      <View
+        style={
+          Object {
+            "margin": 24,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#4C5F72",
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          property:subHeader
+        </Text>
+        <View
+          key="stepContainer0"
+        >
+          <View
+            key="0"
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "marginTop": 25,
+              }
+            }
+          >
+            <View
+              key="0"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#4C5F72",
+                  "borderRadius": 17.5,
+                  "borderWidth": 2,
+                  "height": 35,
+                  "justifyContent": "center",
+                  "width": 35,
+                }
+              }
+            >
+              <Text
+                key="stepNo0"
+                textType="regular"
+                type="small"
+              >
+                1
+              </Text>
+            </View>
+            <Text
+              adjustsFontSizeToFit={true}
+              key="stepTitle0"
+              minimumFontScale={0.5}
+              numberOfLines={1}
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "flex": 1,
+                  "marginLeft": 20,
+                }
+              }
+              textType="regular"
+              type="small"
+            >
+              Enter the Lease details
+            </Text>
+          </View>
+          <Divider
+            containerStyles={
+              Object {
+                "borderColor": "#C9D6DF",
+                "borderWidth": 1,
+                "marginTop": 25,
+                "transform": Array [
+                  Object {
+                    "rotate": "90deg",
+                  },
+                ],
+                "width": 35,
+              }
+            }
+            key="divider-0"
+          />
+        </View>
+        <View
+          key="stepContainer1"
+        >
+          <View
+            key="1"
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "marginTop": 25,
+              }
+            }
+          >
+            <View
+              key="1"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#4C5F72",
+                  "borderRadius": 17.5,
+                  "borderWidth": 2,
+                  "height": 35,
+                  "justifyContent": "center",
+                  "width": 35,
+                }
+              }
+            >
+              <Text
+                key="stepNo1"
+                textType="regular"
+                type="small"
+              >
+                2
+              </Text>
+            </View>
+            <Text
+              adjustsFontSizeToFit={true}
+              key="stepTitle1"
+              minimumFontScale={0.5}
+              numberOfLines={1}
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "flex": 1,
+                  "marginLeft": 20,
+                }
+              }
+              textType="regular"
+              type="small"
+            >
+              Add Property Images
+            </Text>
+          </View>
+          <Divider
+            containerStyles={
+              Object {
+                "borderColor": "#C9D6DF",
+                "borderWidth": 1,
+                "marginTop": 25,
+                "transform": Array [
+                  Object {
+                    "rotate": "90deg",
+                  },
+                ],
+                "width": 35,
+              }
+            }
+            key="divider-1"
+          />
+        </View>
+        <View
+          key="stepContainer2"
+        >
+          <View
+            key="2"
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "marginTop": 25,
+              }
+            }
+          >
+            <View
+              key="2"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#4C5F72",
+                  "borderRadius": 17.5,
+                  "borderWidth": 2,
+                  "height": 35,
+                  "justifyContent": "center",
+                  "width": 35,
+                }
+              }
+            >
+              <Text
+                key="stepNo2"
+                textType="regular"
+                type="small"
+              >
+                3
+              </Text>
+            </View>
+            <Text
+              adjustsFontSizeToFit={true}
+              key="stepTitle2"
+              minimumFontScale={0.5}
+              numberOfLines={1}
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "flex": 1,
+                  "marginLeft": 20,
+                }
+              }
+              textType="regular"
+              type="small"
+            >
+              Complete property verification
+            </Text>
+          </View>
+          <Divider
+            containerStyles={
+              Object {
+                "borderColor": "#C9D6DF",
+                "borderWidth": 1,
+                "marginTop": 25,
+                "transform": Array [
+                  Object {
+                    "rotate": "90deg",
+                  },
+                ],
+                "width": 35,
+              }
+            }
+            key="divider-2"
+          />
+        </View>
+        <View
+          key="stepContainer3"
+        >
+          <View
+            key="3"
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "marginTop": 25,
+              }
+            }
+          >
+            <View
+              key="3"
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#4C5F72",
+                  "borderRadius": 17.5,
+                  "borderWidth": 2,
+                  "height": 35,
+                  "justifyContent": "center",
+                  "width": 35,
+                }
+              }
+            >
+              <Text
+                key="stepNo3"
+                textType="regular"
+                type="small"
+              >
+                4
+              </Text>
+            </View>
+            <Text
+              adjustsFontSizeToFit={true}
+              key="stepTitle3"
+              minimumFontScale={0.5}
+              numberOfLines={1}
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "flex": 1,
+                  "marginLeft": 20,
+                }
+              }
+              textType="regular"
+              type="small"
+            >
+              Payment of token amount
+            </Text>
+          </View>
+        </View>
+      </View>
+    </ScrollViewMock>
+  </View>
+  <WithShadowView
+    outerViewStyle={
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "margin": 16,
+        }
+      }
+      onPress={[Function]}
+      testID="btnContinue"
+      title="common:getStarted"
+      type="primary"
+    />
+  </WithShadowView>
+</View>
+`;

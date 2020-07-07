@@ -30,3 +30,34 @@ export const ServiceSteps = {
     },
   ],
 };
+
+export const ServiceStepsWithVerification = {
+  PROPERTY_VERIFICATIONS: true,
+  PAYMENT_TOKEN_AMOUNT: true,
+  steps: [
+    {
+      id: 1,
+      name: ServiceStepTypes.LEASE_DETAILS,
+      title: 'Enter the Lease details',
+      label: 'Label 1',
+    },
+    {
+      id: 2,
+      name: ServiceStepTypes.PROPERTY_IMAGES,
+      title: 'Add Property Images',
+      label: 'Label 2',
+    },
+    {
+      id: 3,
+      name: ServiceStepTypes.PROPERTY_VERIFICATIONS,
+      title: 'Complete property verification',
+      label: 'Label 3',
+    },
+    {
+      id: 4,
+      name: ServiceStepTypes.PAYMENT_TOKEN_AMOUNT,
+      title: 'Payment of token amount',
+      label: 'Label 4',
+    },
+  ],
+};

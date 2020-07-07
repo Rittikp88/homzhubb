@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -32,15 +33,20 @@ describe('Service Detail Screen', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
+  it('should render snapshot for continue', () => {
+    component.instance().onPressContinue('test', 1);
+    component.instance().handleMoreInfo('More Info');
+    component.instance().onConfirmService();
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
   it('should navigate to previous screen', () => {
-    // @ts-ignore
     component.find('[testID="animatedServiceList"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should change slide number for carosuel', () => {
     component.setState({ activeSlide: 0 });
-    // @ts-ignore
     component.find('[testID="carsl"]').prop('currentSlide')(1);
     expect(component.state('activeSlide')).toBe(1);
   });

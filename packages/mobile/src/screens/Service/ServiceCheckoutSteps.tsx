@@ -47,7 +47,7 @@ interface IDispatchProps {
 type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceCheckoutSteps>;
 type Props = OwnProps & IStateProps & IDispatchProps;
 
-class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
+export class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   public state = {
     currentStep: 0,
     isPaymentSuccess: false,
@@ -87,6 +87,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
           titleType="small"
           titleFontType="semiBold"
           backgroundColor={theme.colors.primaryColor}
+          testID="lblNavigate"
         />
         <StepIndicatorComponent
           stepCount={steps.length}
@@ -260,7 +261,7 @@ class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   const { getCurrentPropertyId, getTermId, getServiceStepsDetails, getServiceCategory } = PropertySelector;
   return {
     propertyId: getCurrentPropertyId(state),
@@ -270,7 +271,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setTermId } = PropertyActions;
   return bindActionCreators({ setTermId }, dispatch);
 };
@@ -279,8 +280,7 @@ const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState
   mapStateToProps,
   mapDispatchToProps
 )(ServiceCheckoutSteps);
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(connectedComponent);
-export { HOC as ServiceCheckoutSteps };
+export default withTranslation(LocaleConstants.namespacesKey.property)(connectedComponent);
 
 const styles = StyleSheet.create({
   scrollView: {
