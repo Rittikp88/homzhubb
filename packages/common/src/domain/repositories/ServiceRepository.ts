@@ -7,7 +7,7 @@ const ENDPOINTS = {
   getRentServices: (): string => 'services/',
   getServiceData: (serviceId: number): string => `service-categories/${serviceId}/services/`,
   getServiceSteps: (serviceCategoryId: number, serviceId: number): string =>
-    `service-categories/${serviceCategoryId}/services/${serviceId}/steps`,
+    `service-categories/${serviceCategoryId}/services/${serviceId}/steps/`,
 };
 
 class ServiceRepository {

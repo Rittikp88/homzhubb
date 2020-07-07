@@ -45,7 +45,7 @@ interface IProps {
 
 type Props = WithTranslation & IProps;
 
-class PropertyVerification extends React.PureComponent<Props, IPropertyVerificationState> {
+export class PropertyVerification extends React.PureComponent<Props, IPropertyVerificationState> {
   public state = {
     verificationTypes: [],
     existingDocuments: [],
@@ -145,11 +145,23 @@ class PropertyVerification extends React.PureComponent<Props, IPropertyVerificat
   };
 
   public uploadDocument = async (verificationDocumentId: number, data: IVerificationTypes): Promise<void> => {
-    const response = await DocumentPicker.pick({
+    const document = await DocumentPicker.pick({
       type: [DocumentPicker.types.allFiles],
     });
-    const source = { uri: response.uri, type: response.type, name: response.name };
-    this.updateLocalDocuments(verificationDocumentId, source, data);
+    const allowedFormats = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'public.image',
+      'com.adobe.pdf',
+      DocumentPicker.types.pdf,
+    ];
+    if (allowedFormats.includes(document.type)) {
+      const source = { uri: document.uri, type: document.type, name: document.name };
+      this.updateLocalDocuments(verificationDocumentId, source, data);
+    } else {
+      AlertHelper.error({ message: data.help_text });
+    }
   };
 
   public captureSelfie = (verificationDocumentId: number, data: IVerificationTypes): void => {

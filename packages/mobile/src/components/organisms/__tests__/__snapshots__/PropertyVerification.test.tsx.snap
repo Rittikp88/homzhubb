@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Property Verification should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "marginBottom": 20,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 10,
+        }
+      }
+      textType="regular"
+      type="large"
+    >
+      propertyVerificationSubTitle
+    </Label>
+    <Text
+      onPress={[Function]}
+      style={
+        Object {
+          "color": "#0084F8",
+          "marginVertical": 10,
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      helperNavigationText
+    </Text>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 0.5,
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <WithShadowView
+    outerViewStyle={
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "margin": 16,
+        }
+      }
+      disabled={false}
+      onPress={[Function]}
+      title="common:saveAndContinue"
+      type="primary"
+    />
+  </WithShadowView>
+</View>
+`;
