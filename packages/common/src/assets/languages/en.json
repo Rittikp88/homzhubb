@@ -33,7 +33,8 @@
     "saveAndContinue": "Save & Continue",
     "noCost": "No Cost",
     "requestQuote": "Request Quote",
-    "recommended": "RECOMMENDED"
+    "recommended": "RECOMMENDED",
+    "searchProperties": "Search Properties"
   },
   "auth": {
     "verifyNumber": "Verify your number",

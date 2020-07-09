@@ -50,9 +50,9 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
         }
       }
       onPress={[Function]}
-      testID="btnGettingStarted"
+      testID="btnSearchProperty"
       textSize="small"
-      title="getStarted"
+      title="common:searchProperties"
       type="primary"
     />
     <Button

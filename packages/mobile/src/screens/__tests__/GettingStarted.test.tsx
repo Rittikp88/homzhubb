@@ -22,7 +22,7 @@ describe('Getting started Screen', () => {
 
   it('should navigate to Property Search Screen', () => {
     // @ts-ignore
-    component.find('[testID="btnGettingStarted"]').prop('onPress')();
+    component.find('[testID="btnSearchProperty"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 

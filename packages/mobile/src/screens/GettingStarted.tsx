@@ -20,12 +20,12 @@ export class GettingStarted extends React.PureComponent<IProps> {
         </Text>
         <View style={styles.buttonContainer}>
           <Button
-            title={t('getStarted')}
+            title={t('common:searchProperties')}
             type="primary"
             textSize="small"
-            containerStyle={styles.getStarted}
-            onPress={this.getStarted}
-            testID="btnGettingStarted"
+            containerStyle={styles.searchProperty}
+            onPress={this.searchProperty}
+            testID="btnSearchProperty"
           />
           <Button
             title={t('login')}
@@ -51,7 +51,7 @@ export class GettingStarted extends React.PureComponent<IProps> {
     );
   }
 
-  public getStarted = (): void => {
+  public searchProperty = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.PropertySearch);
   };
@@ -66,6 +66,7 @@ export class GettingStarted extends React.PureComponent<IProps> {
     navigation.navigate(ScreensKeys.SignUp);
   };
 }
+
 export default withTranslation()(GettingStarted);
 const styles = StyleSheet.create({
   container: {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     marginHorizontal: 20,
   },
-  getStarted: {
+  searchProperty: {
     flex: 0,
   },
   login: {

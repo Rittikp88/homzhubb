@@ -10,6 +10,7 @@ export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';
 export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
 export { RNSlider } from '@homzhub/common/src/components/atoms/Slider';
 export { RNVideo } from '@homzhub/common/src/components/atoms/Video';
+export { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 export { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 export { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
