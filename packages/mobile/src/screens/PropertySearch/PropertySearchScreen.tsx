@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Text } from '@homzhub/common/src/components';
 import ToggleButton from '@homzhub/common/src/components/atoms/ToggleButton';
 
 interface IState {

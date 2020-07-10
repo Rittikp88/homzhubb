@@ -8,6 +8,7 @@ export { ImageRound, ImageSquare, Image } from '@homzhub/common/src/components/a
 export { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
 export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';
 export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
+export { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 export { RNSlider } from '@homzhub/common/src/components/atoms/Slider';
 export { RNVideo } from '@homzhub/common/src/components/atoms/Video';
 export { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';

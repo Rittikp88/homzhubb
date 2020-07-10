@@ -1,0 +1,286 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CalendarComponent should match snapshot when isMonthView is false 1`] = `
+CalendarComponent {
+  "context": Object {},
+  "getSelectedDate": [Function],
+  "handleBackPress": [Function],
+  "handleMonthPress": [Function],
+  "handleNextPress": [Function],
+  "handleSelect": [Function],
+  "headerView": [Function],
+  "onDayPress": [Function],
+  "onSelectMonth": [Function],
+  "props": Object {
+    "onSelect": [MockFunction] {
+      "calls": Array [
+        Array [
+          "",
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    },
+    "selectedDate": "",
+  },
+  "refs": Object {},
+  "renderCalendar": [Function],
+  "renderHeader": [Function],
+  "renderItem": [Function],
+  "renderKeyExtractor": [Function],
+  "renderMonthView": [Function],
+  "setState": [Function],
+  "state": Object {
+    "day": "10",
+    "isMonthView": false,
+    "month": 6,
+    "selectedDate": "",
+    "year": "2020",
+  },
+  "updater": Updater {
+    "_callbacks": Array [],
+    "_renderer": ReactShallowRenderer {
+      "_context": Object {},
+      "_didScheduleRenderPhaseUpdate": false,
+      "_dispatcher": Object {
+        "readContext": [Function],
+        "useCallback": [Function],
+        "useContext": [Function],
+        "useDebugValue": [Function],
+        "useDeferredValue": [Function],
+        "useEffect": [Function],
+        "useImperativeHandle": [Function],
+        "useLayoutEffect": [Function],
+        "useMemo": [Function],
+        "useReducer": [Function],
+        "useRef": [Function],
+        "useResponder": [Function],
+        "useState": [Function],
+        "useTransition": [Function],
+      },
+      "_element": <CalendarComponent
+        onSelect={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                "",
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        }
+        selectedDate=""
+      />,
+      "_firstWorkInProgressHook": null,
+      "_forcedUpdate": false,
+      "_instance": [Circular],
+      "_isReRender": false,
+      "_newState": null,
+      "_numberOfReRenders": 0,
+      "_renderPhaseUpdates": null,
+      "_rendered": <View>
+        <React.Fragment>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "paddingHorizontal": 24,
+                "paddingVertical": 20,
+              }
+            }
+          >
+            <Icon
+              allowFontScaling={false}
+              color="#C9D6DF"
+              name="left-arrow"
+              onPress={[Function]}
+              size={22}
+            />
+            <Text
+              onPress={[Function]}
+              style={
+                Object {
+                  "color": "#0084F8",
+                }
+              }
+              textType="semiBold"
+              type="small"
+            >
+              July 2020
+            </Text>
+            <Icon
+              allowFontScaling={false}
+              color="#0084F8"
+              name="right-arrow"
+              onPress={[Function]}
+              size={22}
+            />
+          </View>
+          <Divider />
+        </React.Fragment>
+        <React.Fragment>
+          <Calendar
+            current="Fri Jul 10 2020"
+            enableSwipeMonths={false}
+            hideArrows={true}
+            markedDates={
+              Object {
+                "Fri Jul 10 2020": Object {
+                  "customStyles": Object {
+                    "container": Object {
+                      "backgroundColor": "#0084F8",
+                      "borderRadius": 4,
+                    },
+                    "text": Object {
+                      "color": "#FFFFFF",
+                    },
+                  },
+                },
+              }
+            }
+            markingType="custom"
+            minDate={2020-07-10T07:28:33.071Z}
+            onDayPress={[Function]}
+            renderHeader={[Function]}
+            style={
+              Object {
+                "height": 310,
+              }
+            }
+            theme={Object {}}
+          />
+          <WithShadowView
+            outerViewStyle={
+              Object {
+                "marginBottom": 20,
+                "paddingBottom": 0,
+                "paddingTop": 10,
+              }
+            }
+          >
+            <Button
+              containerStyle={
+                Object {
+                  "flex": 0,
+                  "margin": 16,
+                }
+              }
+              onPress={[Function]}
+              title="Select"
+              type="primary"
+            />
+          </WithShadowView>
+        </React.Fragment>
+      </View>,
+      "_rendering": false,
+      "_updater": [Circular],
+      "_workInProgressHook": null,
+    },
+  },
+}
+`;
+
+exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "paddingHorizontal": 24,
+        "paddingVertical": 20,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="left-arrow"
+      onPress={[Function]}
+      size={22}
+    />
+    <Text
+      onPress={[Function]}
+      style={
+        Object {
+          "color": "#0084F8",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      June 2020
+    </Text>
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="right-arrow"
+      onPress={[Function]}
+      size={22}
+    />
+  </View>
+  <Divider />
+  <Calendar
+    current="2020-06-19"
+    enableSwipeMonths={false}
+    hideArrows={true}
+    key="2020-06-19"
+    markedDates={
+      Object {
+        "2020-06-19": Object {
+          "customStyles": Object {
+            "container": Object {
+              "backgroundColor": "#0084F8",
+              "borderRadius": 4,
+            },
+            "text": Object {
+              "color": "#FFFFFF",
+            },
+          },
+        },
+      }
+    }
+    markingType="custom"
+    minDate={2020-07-10T07:28:33.048Z}
+    onDayPress={[Function]}
+    renderHeader={[Function]}
+    style={
+      Object {
+        "height": 310,
+      }
+    }
+    theme={Object {}}
+  />
+  <WithShadowView
+    outerViewStyle={
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "margin": 16,
+        }
+      }
+      onPress={[Function]}
+      title="Select"
+      type="primary"
+    />
+  </WithShadowView>
+</View>
+`;

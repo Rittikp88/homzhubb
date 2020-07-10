@@ -52,4 +52,6 @@ export const icons = {
   bathTub: 'bath-tub',
   bed: 'bed',
   map: 'map',
+  checkboxOn: 'checkbox-on',
+  checkboxOff: 'checkbox-off',
 };

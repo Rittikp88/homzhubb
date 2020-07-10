@@ -185,6 +185,7 @@
         "allowFunctions": false,
         "allowBind": false
       }
-    ]
+    ],
+    "react/display-name": "off"
   }
 }

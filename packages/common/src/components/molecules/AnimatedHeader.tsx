@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -21,7 +21,6 @@ interface IHeaderProps {
   linkText?: string;
   onIconPress?: () => void;
   onLinkPress?: () => void;
-  headerContainerStyle?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
@@ -29,7 +28,20 @@ const PARALLAX_HEADER_HEIGHT = 200;
 const STICKY_HEADER_HEIGHT = 100;
 
 export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
-  const { children, title, subTitle, linkText, onIconPress, onLinkPress, testID } = props;
+  const {
+    children,
+    title,
+    subTitle,
+    linkText,
+    onIconPress,
+    onLinkPress,
+    testID,
+    icon = icons.close,
+    iconSize = 22,
+    iconColor = theme.colors.darkTint4,
+    subTitleColor,
+    subTitleType,
+  } = props;
 
   const stickyHeader = (): React.ReactElement => {
     return (
@@ -46,7 +58,7 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
   const fixedHeader = (): React.ReactElement => {
     return (
       <View key="fixed-header" style={styles.fixedSection} testID={testID}>
-        <Icon name={icons.close} size={22} color={theme.colors.darkTint4} onPress={onIconPress} />
+        <Icon name={icon} size={iconSize} color={iconColor} onPress={onIconPress} />
       </View>
     );
   };
@@ -61,6 +73,8 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
         <DetailedHeader
           title={title}
           subTitle={subTitle}
+          subTitleColor={subTitleColor}
+          subTitleType={subTitleType}
           linkText={linkText}
           onLinkPress={onLinkPress}
           testID={testID}
