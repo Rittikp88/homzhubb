@@ -35,6 +35,9 @@ export enum ScreensKeys {
   ServiceListSteps = 'ServiceListSteps',
   ServiceCheckoutSteps = 'ServiceCheckoutSteps',
   MarkdownScreen = 'Markdown',
+
+  // Search
+  PropertyTabsScreen = 'PropertyTabsScreen',
 }
 
 // Tab keys

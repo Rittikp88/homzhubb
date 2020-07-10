@@ -19,6 +19,7 @@ import {
   IVerificationProps,
   IResetPasswordProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
+import PropertyTabsScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertyTabsScreen';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
@@ -33,6 +34,7 @@ export type AuthStackParamList = {
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
   [ScreensKeys.SuccessResetPassword]: undefined;
   [ScreensKeys.PropertySearch]: undefined;
+  [ScreensKeys.PropertyTabsScreen]: undefined;
 };
 
 export function AuthStack(): React.ReactElement {
@@ -63,6 +65,7 @@ export function AuthStack(): React.ReactElement {
       <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.PropertySearch} component={PropertySearch} />
+      <AuthStackNavigator.Screen name={ScreensKeys.PropertyTabsScreen} component={PropertyTabsScreen} />
     </AuthStackNavigator.Navigator>
   );
 }

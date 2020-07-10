@@ -45,4 +45,11 @@ export const icons = {
   calendar: 'calendar',
   starFilled: 'filled-star',
   starUnfilled: 'unfilled-star',
+  heartOutline: 'heart-outline',
+  threeDots: 'three-dots',
+  list: 'list',
+  filter: 'filter',
+  bathTub: 'bath-tub',
+  bed: 'bed',
+  map: 'map',
 };
