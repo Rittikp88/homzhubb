@@ -34,6 +34,9 @@
     "noCost": "No Cost",
     "requestQuote": "Request Quote",
     "recommended": "RECOMMENDED",
+    "nearMe": "Near Me",
+    "enableLocationPermission": "Please enable location permission",
+    "errorFetchingLocation": "Error fetching your current location",
     "searchProperties": "Search Properties"
   },
   "auth": {
@@ -89,7 +92,6 @@
     "searchProject": "Search for project or street name",
     "addProperty": "Add property",
     "logoutHelperText": "If it's not you?",
-    "autoDetect": "Auto-Detect Current Location",
     "congratsUser": "Congratulations {{name}}",
     "propertyAddedMsg": "Your Property is added to your Dashboard",
     "serviceNeed": "What service do you need today?",
@@ -193,5 +195,10 @@
     "yearOfConstructionRequired": "Year of construction cannot be empty",
     "yearOfConstructionPlaceholder": "e.g. 2015",
     "verification": "Verification"
+  },
+  "propertySearch": {
+    "findingRightProperty": "Finding the right property",
+    "madeEasy": "Made Easy",
+    "enterLocation": "Enter location to begin"
   }
 }

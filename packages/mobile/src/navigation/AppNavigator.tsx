@@ -7,11 +7,11 @@ import {
   IServiceDataProps,
   IMarkdownProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
-import AddPropertyMap from '@homzhub/mobile/src/screens/PropertyPost/AddPropertyMap';
+import PostPropertyMap from '@homzhub/mobile/src/screens/PropertyPost/PostPropertyMap';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
 import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
 import RentServices from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
-import { SearchProperty } from '@homzhub/mobile/src/screens/PropertyPost/SearchProperty';
+import { PostPropertySearch } from '@homzhub/mobile/src/screens/PropertyPost/PostPropertySearch';
 import ServiceCheckoutSteps from '@homzhub/mobile/src/screens/Service/ServiceCheckoutSteps';
 import ServiceDetailScreen from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
 import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
@@ -20,8 +20,8 @@ import { MarkdownView } from '@homzhub/mobile/src/screens/MarkdownView';
 
 export type AppStackParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
-  [ScreensKeys.SearchPropertyOwner]: undefined;
-  [ScreensKeys.AddProperty]: IAddPropertyMapProps;
+  [ScreensKeys.PostPropertySearch]: undefined;
+  [ScreensKeys.PostPropertyMap]: IAddPropertyMapProps;
   [ScreensKeys.PropertyDetailsScreen]: undefined;
   [ScreensKeys.RentServicesScreen]: undefined;
   [ScreensKeys.ServiceListScreen]: IServiceDataProps;
@@ -42,8 +42,8 @@ export function AppNavigator(): React.ReactElement {
       }}
     >
       <AppStackNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={LandingScreen} />
-      <AppStackNavigator.Screen name={ScreensKeys.SearchPropertyOwner} component={SearchProperty} />
-      <AppStackNavigator.Screen name={ScreensKeys.AddProperty} component={AddPropertyMap} />
+      <AppStackNavigator.Screen name={ScreensKeys.PostPropertySearch} component={PostPropertySearch} />
+      <AppStackNavigator.Screen name={ScreensKeys.PostPropertyMap} component={PostPropertyMap} />
       <AppStackNavigator.Screen name={ScreensKeys.PropertyDetailsScreen} component={PropertyDetails} />
       <AppStackNavigator.Screen name={ScreensKeys.RentServicesScreen} component={RentServices} />
       <AppStackNavigator.Screen name={ScreensKeys.ServiceListScreen} component={ServiceListScreen} />

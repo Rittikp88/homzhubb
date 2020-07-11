@@ -66,14 +66,14 @@ exports[`Test cases for SocialMediaComponent should render snapshot 1`] = `
     <View
       style={
         Object {
-          "padding": 24,
+          "padding": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "padding": 24,
+            "padding": 16,
           }
         }
       >
@@ -1427,14 +1427,14 @@ exports[`Test cases for SocialMediaComponent should render snapshot from email l
     <View
       style={
         Object {
-          "padding": 24,
+          "padding": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "padding": 24,
+            "padding": 16,
           }
         }
       >

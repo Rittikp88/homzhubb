@@ -7,7 +7,7 @@ exports[`Getting started Screen should render the getting started screen 1`] = `
       "backgroundColor": "#F0F5F9",
       "flex": 1,
       "justifyContent": "space-around",
-      "padding": 24,
+      "padding": 16,
     }
   }
 >

@@ -64,7 +64,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         "alignItems": "center",
         "flex": 1,
         "justifyContent": "space-around",
-        "padding": 24,
+        "padding": 16,
         "textAlign": "center",
       }
     }
@@ -179,7 +179,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         "alignItems": "center",
         "flex": 1,
         "justifyContent": "space-around",
-        "padding": 24,
+        "padding": 16,
         "textAlign": "center",
       }
     }

@@ -1,15 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
-import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label } from '@homzhub/common/src/components';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
@@ -23,9 +21,9 @@ interface IState {
   suggestions: GooglePlaceData[];
   showAutoDetect: boolean;
 }
-type Props = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.SearchPropertyOwner>;
+type Props = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PostPropertySearch>;
 
-class SearchProperty extends React.PureComponent<Props, IState> {
+class PostPropertySearch extends React.PureComponent<Props, IState> {
   public state = {
     searchString: '',
     suggestions: [],
@@ -59,12 +57,7 @@ class SearchProperty extends React.PureComponent<Props, IState> {
           <SearchResults results={suggestions} onResultPress={this.onSuggestionPress} />
         )}
         {showAutoDetect && searchString.length <= 0 && (
-          <TouchableOpacity onPress={this.onAutoDetectPress} style={styles.autoDetectTextContainer}>
-            <Icon name={icons.location} size={16} color={theme.colors.primaryColor} />
-            <Label type="large" textType="semiBold" style={styles.autoDetectText}>
-              {t('autoDetect')}
-            </Label>
-          </TouchableOpacity>
+          <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
         )}
       </View>
     );
@@ -80,7 +73,7 @@ class SearchProperty extends React.PureComponent<Props, IState> {
   };
 
   private onToggleAutoDetect = (showAutoDetect: boolean): void => {
-    this.setState({ showAutoDetect });
+    this.setState({ showAutoDetect: !showAutoDetect });
   };
 
   private onBackPress = (): void => {
@@ -88,19 +81,6 @@ class SearchProperty extends React.PureComponent<Props, IState> {
       navigation: { goBack },
     } = this.props;
     goBack();
-  };
-
-  private onAutoDetectPress = async (): Promise<void> => {
-    const isLocationEnabled = await PermissionsService.checkPermission(PERMISSION_TYPE.location);
-
-    if (!isLocationEnabled) {
-      AlertHelper.error({ message: 'Please enable location permission' });
-      return;
-    }
-
-    GeolocationService.getCurrentPosition(this.onGetCurrentPositionSuccess, (error) => {
-      AlertHelper.error({ message: 'Error fetching your current location' });
-    });
   };
 
   private onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
@@ -149,7 +129,7 @@ class SearchProperty extends React.PureComponent<Props, IState> {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate(ScreensKeys.AddProperty, options);
+    navigate(ScreensKeys.PostPropertyMap, options);
   };
 
   private displayError = (e: Error): void => {
@@ -161,22 +141,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  autoDetectTextContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: theme.colors.white,
-  },
   navTitle: {
     color: theme.colors.white,
   },
-  autoDetectText: {
-    marginStart: 8,
-    color: theme.colors.primaryColor,
-  },
 });
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(SearchProperty);
-export { HOC as SearchProperty };
+const HOC = withTranslation(LocaleConstants.namespacesKey.property)(PostPropertySearch);
+export { HOC as PostPropertySearch };

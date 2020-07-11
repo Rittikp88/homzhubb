@@ -9,9 +9,9 @@ exports[`Landing Screen Component should render landing screen 1`] = `
         "borderRadius": 8,
         "elevation": 20,
         "flex": 1,
-        "margin": 24,
+        "margin": 16,
         "maxHeight": 1234,
-        "paddingHorizontal": 24,
+        "paddingHorizontal": 16,
         "shadowColor": "#000",
         "shadowOffset": Object {
           "height": 10,

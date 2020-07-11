@@ -30,7 +30,7 @@ interface IStateProps {
 interface IDispatchProps {
   setCurrentPropertyId: (propertyId: number) => void;
 }
-type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.AddProperty>;
+type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PostPropertyMap>;
 type Props = OwnProps & IStateProps & IDispatchProps;
 
 interface IAddPropertyState {
@@ -43,7 +43,7 @@ interface IAddPropertyState {
   };
 }
 
-export class AddPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
+export class PostPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
   private mapRef: MapView | null = null;
   public constructor(props: Props) {
     super(props);
@@ -287,4 +287,4 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, OwnProps, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(AddPropertyMap));
+)(withTranslation(LocaleConstants.namespacesKey.property)(PostPropertyMap));

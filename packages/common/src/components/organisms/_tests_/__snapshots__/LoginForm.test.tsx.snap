@@ -78,7 +78,7 @@ LoginForm {
         style={
           Object {
             "flex": 1,
-            "paddingHorizontal": 24,
+            "paddingHorizontal": 16,
             "paddingTop": 10,
           }
         }

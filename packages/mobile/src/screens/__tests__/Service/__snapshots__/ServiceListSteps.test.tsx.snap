@@ -48,7 +48,7 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
           Object {
             "alignItems": "center",
             "flexDirection": "row",
-            "margin": 24,
+            "margin": 16,
           }
         }
       >
@@ -80,7 +80,7 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
       <View
         style={
           Object {
-            "margin": 24,
+            "margin": 16,
           }
         }
       >
@@ -295,7 +295,7 @@ exports[`Service List Steps Screen should render snapshot 2`] = `
           Object {
             "alignItems": "center",
             "flexDirection": "row",
-            "margin": 24,
+            "margin": 16,
           }
         }
       >
@@ -327,7 +327,7 @@ exports[`Service List Steps Screen should render snapshot 2`] = `
       <View
         style={
           Object {
-            "margin": 24,
+            "margin": 16,
           }
         }
       >

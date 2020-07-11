@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -6,10 +5,10 @@ import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import {
-  AddPropertyMap,
+  PostPropertyMap,
   mapStateToProps,
   mapDispatchToProps,
-} from '@homzhub/mobile/src/screens/PropertyPost/AddPropertyMap';
+} from '@homzhub/mobile/src/screens/PropertyPost/PostPropertyMap';
 
 const mock = jest.fn();
 
@@ -27,7 +26,7 @@ describe('Add property Map Screen Component', () => {
       },
     };
     component = shallow(
-      <AddPropertyMap
+      <PostPropertyMap
         {...props}
         t={(key: string): string => key}
         route={{
@@ -41,12 +40,15 @@ describe('Add property Map Screen Component', () => {
   });
 
   it('should render snapshot for states', () => {
+    // @ts-ignore
     component.instance().onPressSetLocation();
     expect(toJson(component)).toMatchSnapshot();
   });
 
   it('should navigate to previous screen', () => {
+    // @ts-ignore
     component.instance().onClose();
+    // @ts-ignore
     component.find('[testID="location"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { FlatList, StyleProp, StyleSheet, TextStyle, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components';
@@ -8,6 +8,7 @@ import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/inter
 export interface IProps extends WithTranslation {
   results: GooglePlaceData[];
   onResultPress: (item: GooglePlaceData) => void;
+  listTitleStyle?: StyleProp<TextStyle>;
 }
 
 class SearchResults extends React.PureComponent<IProps, {}> {
@@ -25,9 +26,9 @@ class SearchResults extends React.PureComponent<IProps, {}> {
   };
 
   private renderListHeader = (): React.ReactElement => {
-    const { t } = this.props;
+    const { t, listTitleStyle = {} } = this.props;
     return (
-      <Label type="large" textType="semiBold" style={styles.listTitle}>
+      <Label type="large" textType="semiBold" style={[styles.listTitle, listTitleStyle]}>
         {t('common:searchResults')}
       </Label>
     );

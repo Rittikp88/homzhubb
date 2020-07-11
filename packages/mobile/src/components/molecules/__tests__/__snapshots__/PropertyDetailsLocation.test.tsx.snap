@@ -6,7 +6,7 @@ exports[`Property Details Component should render PropertyDetails 1`] = `
     Object {
       "flex": 1,
       "flexDirection": "row",
-      "margin": 24,
+      "margin": 16,
     }
   }
 >

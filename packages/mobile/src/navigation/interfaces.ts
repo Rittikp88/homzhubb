@@ -20,12 +20,12 @@ export enum ScreensKeys {
   ResetPassword = 'ResetPassword',
 
   // Tenant
-  PropertySearch = 'PropertySearch',
+  PropertySearchLanding = 'PropertySearchLanding',
 
   // Post Property
   PropertyPostLandingScreen = 'PropertyPost',
-  SearchPropertyOwner = 'SearchPropertyOwner',
-  AddProperty = 'AddProperty',
+  PostPropertySearch = 'PostPropertySearch',
+  PostPropertyMap = 'PostPropertyMap',
   PropertyDetailsScreen = 'PropertyDetails',
   RentServicesScreen = 'RentServices',
 

@@ -75,7 +75,7 @@ export class LandingScreen extends React.PureComponent<Props, {}> {
 
   public onAddProperty = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SearchPropertyOwner);
+    navigation.navigate(ScreensKeys.PostPropertySearch);
   };
 
   public logout = async (): Promise<void> => {

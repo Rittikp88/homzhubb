@@ -9,8 +9,10 @@ interface IProps {
   placeholder: string;
   value: string;
   updateValue: (value: string) => void;
-  onFocusChange?: (showAutoDetect: boolean) => void;
+  onRef?: (ref: SearchBar) => void;
+  onFocusChange?: (isFocus: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  searchBarStyle?: StyleProp<ViewStyle>;
   cancelButtonStyle?: StyleProp<ViewStyle>;
   cancelTextStyle?: StyleProp<TextStyle>;
 }
@@ -26,13 +28,28 @@ class SearchBar extends React.PureComponent<Props, IState> {
     showCancel: false,
   };
 
+  public componentDidMount = (): void => {
+    const { onRef } = this.props;
+    if (onRef) {
+      onRef(this);
+    }
+  };
+
   public render = (): React.ReactNode => {
-    const { placeholder, value, t, containerStyle = {}, cancelButtonStyle = {}, cancelTextStyle = {} } = this.props;
+    const {
+      placeholder,
+      value,
+      t,
+      containerStyle = {},
+      cancelButtonStyle = {},
+      cancelTextStyle = {},
+      searchBarStyle = {},
+    } = this.props;
     const { showCancel } = this.state;
 
     return (
       <View style={[styles.container, containerStyle]}>
-        <View style={styles.textInputContainer}>
+        <View style={[styles.textInputContainer, searchBarStyle]}>
           <Button
             type="primary"
             icon={icons.search}
@@ -83,7 +100,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
   private onFocus = (): void => {
     const { onFocusChange } = this.props;
     if (onFocusChange) {
-      onFocusChange(false);
+      onFocusChange(true);
     }
     this.setState({ showCancel: true });
   };
@@ -91,7 +108,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
   private onBlur = (): void => {
     const { onFocusChange } = this.props;
     if (onFocusChange) {
-      onFocusChange(true);
+      onFocusChange(false);
     }
     this.setState({ showCancel: false });
   };
@@ -130,7 +147,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 4,
     paddingHorizontal: 8,
     backgroundColor: theme.colors.secondaryColor,
   },
@@ -153,7 +170,7 @@ const styles = StyleSheet.create({
     flex: 0,
   },
   searchIcon: {
-    marginEnd: 8,
+    marginEnd: 16,
   },
 });
 
