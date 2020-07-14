@@ -170,7 +170,7 @@ exports[`Test cases for FormCalendar should render snapshot when initial date to
   >
     <CalendarComponent
       onSelect={[Function]}
-      selectedDate="2020-07-10"
+      selectedDate="2020-07-14"
     />
   </BottomSheet>
 </View>

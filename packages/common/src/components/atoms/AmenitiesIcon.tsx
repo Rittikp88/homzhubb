@@ -3,20 +3,22 @@ import { StyleSheet, View } from 'react-native';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 
 interface IProps {
-  isColumn: boolean;
+  direction: 'row' | 'column';
   icon: string;
   iconSize?: number;
   iconColor?: string;
   label: string;
+  isLastIndex?: boolean;
 }
 
 const AmenitiesIcon = (props: IProps): React.ReactElement => {
-  const { isColumn, icon, iconSize = 40, iconColor = theme.colors.darkTint3, label } = props;
+  const { direction, icon, iconSize = 40, iconColor = theme.colors.darkTint3, label, isLastIndex = false } = props;
 
   const renderText = (): React.ReactElement => {
-    const labelStyle = isColumn ? styles.columnLabel : styles.rowLabel;
+    const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
     return (
       <Text type="small" textType="regular" style={[styles.label, labelStyle]}>
         {label}
@@ -26,10 +28,13 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
 
   const renderColumn = (): React.ReactElement => {
     return (
-      <View style={styles.columnContainer}>
-        <Icon name={icon} size={iconSize} color={iconColor} />
-        {renderText()}
-      </View>
+      <>
+        <View style={styles.columnContainer}>
+          <Icon name={icon} size={iconSize} color={iconColor} />
+          {renderText()}
+        </View>
+        {!isLastIndex && direction === 'column' && <Divider containerStyles={styles.divider} />}
+      </>
     );
   };
 
@@ -42,7 +47,7 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
     );
   };
 
-  return isColumn ? renderColumn() : renderRow();
+  return direction === 'column' ? renderColumn() : renderRow();
 };
 
 export { AmenitiesIcon };
@@ -50,7 +55,9 @@ export { AmenitiesIcon };
 const styles = StyleSheet.create({
   columnContainer: {
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -65,5 +72,10 @@ const styles = StyleSheet.create({
   },
   rowLabel: {
     marginStart: 10,
+  },
+  divider: {
+    borderWidth: 1,
+    borderColor: theme.colors.background,
+    height: 25,
   },
 });

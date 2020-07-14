@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { AmenitiesIcon, Divider, PricePerUnit, Text, PropertyAddress } from '@homzhub/common/src/components';
+import { Divider, PricePerUnit, Text, PropertyAddress } from '@homzhub/common/src/components';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
+import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 
 interface IProps {
   data: any[];
@@ -44,27 +45,33 @@ class PropertyListCard extends React.Component<Props, {}> {
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
+    const amenitiesData = [
+      {
+        icon: icons.bed,
+        iconSize: 20,
+        iconColor: theme.colors.darkTint3,
+        label: '3',
+      },
+      {
+        icon: icons.bathTub,
+        iconSize: 20,
+        iconColor: theme.colors.darkTint3,
+        label: '2',
+      },
+      {
+        icon: icons.star,
+        iconSize: 30,
+        iconColor: theme.colors.darkTint3,
+        label: '1200 Sqft',
+      },
+    ];
     return (
-      <View style={styles.amenities}>
-        <PricePerUnit price={32000} prefix="₹" label="mo" />
-        <View style={styles.apartmentContainer}>
-          <AmenitiesIcon isColumn={false} icon={icons.bed} iconSize={20} iconColor={theme.colors.darkTint3} label="3" />
-          <AmenitiesIcon
-            isColumn={false}
-            icon={icons.bathTub}
-            iconSize={20}
-            iconColor={theme.colors.darkTint3}
-            label="2"
-          />
-          <AmenitiesIcon
-            isColumn={false}
-            icon={icons.star}
-            iconSize={30}
-            iconColor={theme.colors.darkTint3}
-            label="1200 Sqft"
-          />
+      <>
+        <View style={styles.amenities}>
+          <PricePerUnit price={32000} prefix="₹" label="mo" />
+          <PropertyAmenities data={amenitiesData} direction="row" />
         </View>
-      </View>
+      </>
     );
   };
 
