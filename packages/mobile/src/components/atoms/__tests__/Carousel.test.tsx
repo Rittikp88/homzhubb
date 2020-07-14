@@ -16,10 +16,10 @@ describe('Carousel Atom', () => {
   beforeEach(() => {
     props = createTestProps({
       carouselData: OnboardingData,
-      activeSlide: 0,
+      activeIndex: 0,
       carouselItem: OnboardingData[0],
       bubbleRef: mock,
-      currentSlide: mock,
+      onSnapItem: mock,
       testID: 'carsl',
     });
     component = shallow(<SnapCarousel {...props} />);
@@ -30,29 +30,22 @@ describe('Carousel Atom', () => {
   it('should match snapshot', () => {
     props = createTestProps({
       carouselData: OnboardingData,
-      activeSlide: 0,
+      activeIndex: 0,
       carouselItem: mock,
       bubbleRef: mock,
-      currentSlide: mock,
+      onSnapItem: mock,
       testID: 'carsl',
     });
-    component = shallow(<SnapCarousel {...props} />);
     expect(toJson(component)).toMatchSnapshot();
-  });
-
-  it('should update the current slide', () => {
-    // @ts-ignore
-    component.dive().find('[testID="carsl"]').prop('onSnapToItem')();
-    expect(mock).toHaveBeenCalled();
   });
 
   it('should not call the bubbleref', () => {
     // @ts-ignore
     props = createTestProps({
       carouselData: OnboardingData,
-      activeSlide: 0,
+      activeIndex: 0,
       carouselItem: OnboardingData[0],
-      currentSlide: mock,
+      onSnapItem: mock,
       testID: 'carsl',
     });
     const wrapper = shallow(<SnapCarousel {...props} />);

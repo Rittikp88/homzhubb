@@ -6,29 +6,48 @@ import { theme } from '@homzhub/common/src/styles/theme';
 interface ICarouselProps<T> {
   carouselData: T[];
   carouselItem: (item: T) => React.ReactElement;
-  activeSlide: number;
-  currentSlide: (index: number) => void;
+  activeIndex: number;
+  onSnapToItem: (index: number) => void;
+  sliderWidth?: number;
+  initialNumToRender?: number;
+  itemWidth?: number;
   bubbleRef?: (ref: any) => void;
   contentStyle?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   testID?: string;
 }
+
+const ACTIVE_SLIDE_OFFSET = 20;
 
 export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
   private carouselRef: any;
 
   public render = (): React.ReactElement => {
-    const { carouselData, activeSlide, contentStyle, testID } = this.props;
+    const {
+      carouselData,
+      activeIndex,
+      containerStyle,
+      contentStyle,
+      testID,
+      onSnapToItem,
+      initialNumToRender = 10,
+      sliderWidth = theme.viewport.width,
+      itemWidth = theme.viewport.width - 20,
+    } = this.props;
     return (
       <Carousel
         onLayout={this.updateRef}
         data={carouselData}
-        firstItem={activeSlide}
-        sliderWidth={theme.viewport.width}
-        itemWidth={theme.viewport.width - 20}
+        firstItem={activeIndex}
+        sliderWidth={sliderWidth}
+        itemWidth={itemWidth}
         renderItem={this.renderItem}
-        activeSlideOffset={20}
-        onSnapToItem={this.updateSlideIndex}
+        activeSlideOffset={ACTIVE_SLIDE_OFFSET}
+        onSnapToItem={onSnapToItem}
         contentContainerCustomStyle={contentStyle}
+        containerCustomStyle={containerStyle}
+        removeClippedSubviews
+        initialNumToRender={initialNumToRender}
         ref={(c: any): void => {
           this.carouselRef = c;
         }}
@@ -40,11 +59,6 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
   public renderItem = ({ item }: { item: T }): React.ReactElement => {
     const { carouselItem } = this.props;
     return carouselItem(item);
-  };
-
-  public updateSlideIndex = (index: number): void => {
-    const { currentSlide } = this.props;
-    currentSlide(index);
   };
 
   public updateRef = (): void => {

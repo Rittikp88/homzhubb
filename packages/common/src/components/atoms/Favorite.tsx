@@ -19,7 +19,7 @@ const Favorite = (props: IProps): React.ReactElement => {
   return (
     <Icon
       name={favorite ? icons.bed : icons.info}
-      size={50}
+      size={32}
       color={theme.colors.primaryColor}
       onPress={onFavoritePress}
     />

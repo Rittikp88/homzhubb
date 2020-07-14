@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
@@ -9,10 +9,11 @@ import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/inter
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
-import { Text } from '@homzhub/common/src/components';
+import { Button, Text, WithShadowView } from '@homzhub/common/src/components';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IState {
   searchString: string;
@@ -30,15 +31,24 @@ class PropertySearchLanding extends React.PureComponent<WithTranslation, IState>
 
   public render(): React.ReactElement {
     const { isSearchBarFocused } = this.state;
+    const { t } = this.props;
     return (
       <>
         <View style={styles.statusBar}>
           <StatusBar translucent backgroundColor={theme.colors.background} barStyle="dark-content" />
         </View>
-        <SafeAreaView style={styles.screen}>
+        <View style={styles.screen}>
           {this.renderHeader()}
           {isSearchBarFocused && this.renderSearchResults()}
-        </SafeAreaView>
+        </View>
+        <WithShadowView outerViewStyle={styles.shadowView}>
+          <Button
+            type="primary"
+            title={t('showProperties')}
+            containerStyle={styles.buttonStyle}
+            onPress={this.onShowProperties}
+          />
+        </WithShadowView>
       </>
     );
   }
@@ -112,6 +122,11 @@ class PropertySearchLanding extends React.PureComponent<WithTranslation, IState>
     console.log(latitude, longitude);
   };
 
+  private onShowProperties = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.PropertyTabsScreen);
+  };
+
   // eslint-disable-next-line react/sort-comp
   private getAutocompleteSuggestions = debounce((): void => {
     const { searchString } = this.state;
@@ -159,5 +174,14 @@ const styles = StyleSheet.create({
   },
   madeEasy: {
     marginTop: 6,
+  },
+  shadowView: {
+    paddingTop: 10,
+    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
+    paddingBottom: 0,
+  },
+  buttonStyle: {
+    flex: 0,
+    margin: 16,
   },
 });

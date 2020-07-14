@@ -4,15 +4,19 @@ exports[`Toggle Button should match snapshot 1`] = `
 <ForwardRef
   onPress={[MockFunction]}
   style={
-    Object {
-      "alignItems": "center",
-      "borderColor": "#0084F8",
-      "borderRadius": 4,
-      "borderWidth": 1,
-      "flexDirection": "row",
-      "paddingHorizontal": 6,
-      "paddingVertical": 4,
-    }
+    Array [
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#0084F8",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "paddingHorizontal": 6,
+        "paddingVertical": 4,
+      },
+      undefined,
+    ]
   }
 >
   <Text

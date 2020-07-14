@@ -47,7 +47,7 @@ describe('Service Detail Screen', () => {
 
   it('should change slide number for carosuel', () => {
     component.setState({ activeSlide: 0 });
-    component.find('[testID="carsl"]').prop('currentSlide')(1);
+    component.find('[testID="carsl"]').prop('onSnapToItem')(1);
     expect(component.state('activeSlide')).toBe(1);
   });
 

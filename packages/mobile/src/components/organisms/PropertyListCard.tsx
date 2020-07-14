@@ -68,7 +68,7 @@ class PropertyListCard extends React.Component<Props, {}> {
     return (
       <>
         <View style={styles.amenities}>
-          <PricePerUnit price={32000} prefix="₹" label="mo" />
+          <PricePerUnit price={32000} currency="₹" unit="mo" />
           <PropertyAmenities data={amenitiesData} direction="row" />
         </View>
       </>

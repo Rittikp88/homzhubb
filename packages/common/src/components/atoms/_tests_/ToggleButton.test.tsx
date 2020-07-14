@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { icons } from '@homzhub/common/src/assets/icon';
-import ToggleButton from '@homzhub/common/src/components/atoms/ToggleButton';
+import { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
 
 describe('Toggle Button', () => {
   const props = {

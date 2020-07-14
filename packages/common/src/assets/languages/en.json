@@ -29,6 +29,8 @@
     "month": "Month",
     "allDone": "All Done!",
     "why": "Why?",
+    "map": "Map",
+    "list": "List",
     "availableFrom": "Available from",
     "saveAndContinue": "Save & Continue",
     "noCost": "No Cost",
@@ -197,6 +199,7 @@
     "verification": "Verification"
   },
   "propertySearch": {
+    "showProperties": "Show Properties",
     "findingRightProperty": "Finding the right property",
     "madeEasy": "Made Easy",
     "enterLocation": "Enter location to begin"

@@ -38,7 +38,7 @@ const styles: IStyle = StyleSheet.create<IStyle>({
       rtl: 14,
       ltr: 14,
     }),
-    lineHeight: 21,
+    lineHeight: 22,
     textAlign: 'left',
   },
   textSmall: {

@@ -76,11 +76,11 @@ export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
                 />
               )}
             </View>
-            <SnapCarousel
+            <SnapCarousel<IServiceDetail>
               carouselData={services}
               carouselItem={this.renderCarouselItem}
-              activeSlide={activeSlide}
-              currentSlide={this.changeSlide}
+              activeIndex={activeSlide}
+              onSnapToItem={this.onSnapToItem}
               contentStyle={styles.carouselStyle}
               testID="carsl"
             />
@@ -180,6 +180,10 @@ export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
     this.closeBottomSheet();
   };
 
+  private onSnapToItem = (slideNumber: number): void => {
+    this.setState({ activeSlide: slideNumber });
+  };
+
   private handleMoreInfo = (info: string): void => {
     const { isInfoSheet } = this.state;
     this.setState({ isInfoSheet: !isInfoSheet, serviceInfo: info });
@@ -192,10 +196,6 @@ export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   private handleIconPress = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
-  };
-
-  private changeSlide = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
   };
 }
 

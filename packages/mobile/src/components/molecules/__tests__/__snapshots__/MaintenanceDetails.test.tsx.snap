@@ -248,7 +248,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                           Array [
                             Object {
                               "fontSize": 14,
-                              "lineHeight": 21,
+                              "lineHeight": 22,
                               "textAlign": "left",
                             },
                             Object {
@@ -270,7 +270,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                             Array [
                               Object {
                                 "fontSize": 14,
-                                "lineHeight": 21,
+                                "lineHeight": 22,
                                 "textAlign": "left",
                               },
                               Object {
@@ -634,7 +634,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                       Array [
                                         Object {
                                           "fontSize": 14,
-                                          "lineHeight": 21,
+                                          "lineHeight": 22,
                                           "textAlign": "left",
                                         },
                                         Object {
@@ -650,7 +650,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                         Array [
                                           Object {
                                             "fontSize": 14,
-                                            "lineHeight": 21,
+                                            "lineHeight": 22,
                                             "textAlign": "left",
                                           },
                                           Object {
@@ -1297,7 +1297,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                     Array [
                                                                       Object {
                                                                         "fontSize": 14,
-                                                                        "lineHeight": 21,
+                                                                        "lineHeight": 22,
                                                                         "textAlign": "left",
                                                                       },
                                                                       Object {
@@ -1316,7 +1316,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                       Array [
                                                                         Object {
                                                                           "fontSize": 14,
-                                                                          "lineHeight": 21,
+                                                                          "lineHeight": 22,
                                                                           "textAlign": "left",
                                                                         },
                                                                         Object {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -8,11 +8,12 @@ interface IProps {
   onToggle: () => void;
   title: string;
   icon: string;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
-const ToggleButton = ({ onToggle, title, icon }: IProps): React.ReactElement => {
+export const ToggleButton = ({ onToggle, title, icon, containerStyle }: IProps): React.ReactElement => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onToggle}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle}>
       <Text type="small" style={styles.title}>
         {title}
       </Text>
@@ -21,14 +22,13 @@ const ToggleButton = ({ onToggle, title, icon }: IProps): React.ReactElement => 
   );
 };
 
-export default ToggleButton;
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: theme.colors.primaryColor,
+    backgroundColor: theme.colors.white,
     borderRadius: 4,
     paddingVertical: 4,
     paddingHorizontal: 6,

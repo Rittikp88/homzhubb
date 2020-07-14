@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 5,
   },
   label: {
     color: theme.colors.darkTint3,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rowLabel: {
-    marginStart: 10,
+    marginStart: 6,
   },
   divider: {
     borderWidth: 1,

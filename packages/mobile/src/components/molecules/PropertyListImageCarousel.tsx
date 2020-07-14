@@ -31,8 +31,8 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
           bubbleRef={this.updateRef}
           carouselData={data}
           carouselItem={this.renderCarouselItem}
-          activeSlide={activeSlide}
-          currentSlide={this.changeSlide}
+          activeIndex={activeSlide}
+          onSnapToItem={this.onSnapToItem}
         />
         <View style={styles.overlay}>
           <View style={styles.favoriteContainer}>
@@ -61,12 +61,12 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
     return <SVGUri viewBox="0 10 360 220" uri={item.image_url} />;
   };
 
-  public updateRef = (ref: any): void => {
-    this.setState({ ref });
+  public onSnapToItem = (slideNumber: number): void => {
+    this.setState({ activeSlide: slideNumber });
   };
 
-  public changeSlide = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
+  public updateRef = (ref: any): void => {
+    this.setState({ ref });
   };
 
   public previousSlide = (): void => {

@@ -54,7 +54,7 @@ exports[`Service Detail Screen should render snapshot 1`] = `
         />
       </View>
       <SnapCarousel
-        activeSlide={1}
+        activeIndex={1}
         carouselData={
           Array [
             Object {
@@ -264,7 +264,7 @@ exports[`Service Detail Screen should render snapshot 1`] = `
             "paddingRight": 20,
           }
         }
-        currentSlide={[Function]}
+        onSnapToItem={[Function]}
         testID="carsl"
       />
     </View>
@@ -333,7 +333,7 @@ exports[`Service Detail Screen should render snapshot for continue 1`] = `
         />
       </View>
       <SnapCarousel
-        activeSlide={1}
+        activeIndex={1}
         carouselData={
           Array [
             Object {
@@ -543,7 +543,7 @@ exports[`Service Detail Screen should render snapshot for continue 1`] = `
             "paddingRight": 20,
           }
         }
-        currentSlide={[Function]}
+        onSnapToItem={[Function]}
         testID="carsl"
       />
     </View>

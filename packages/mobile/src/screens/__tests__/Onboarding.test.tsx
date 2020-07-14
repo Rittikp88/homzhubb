@@ -76,7 +76,7 @@ describe('Onboarding Screen', () => {
   it('should call change slide', () => {
     instance.setState({ data: OnboardingData, activeSlide: 0 });
     // @ts-ignore
-    component.find('[testID="carsl"]').prop('currentSlide')(1);
+    component.find('[testID="carsl"]').prop('onSnapToItem')(1);
     expect(component.state('activeSlide')).toBe(1);
   });
 

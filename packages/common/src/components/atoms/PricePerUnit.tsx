@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle } from 'react-native';
 import { FontWeightType, Label, Text, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   price: number;
-  label: string;
-  prefix: string;
+  unit: string;
+  currency: string;
   labelStyle?: StyleProp<TextStyle>;
   textSizeType?: TextSizeType;
   textFontWeight?: FontWeightType;
@@ -13,20 +13,20 @@ interface IProps {
 }
 
 const PricePerUnit = (props: IProps): React.ReactElement => {
-  const { price, label, prefix, labelStyle, textStyle, textSizeType = 'regular', textFontWeight = 'semiBold' } = props;
+  const { price, unit, currency, labelStyle, textStyle, textSizeType = 'regular', textFontWeight = 'semiBold' } = props;
 
-  const priceWithCurrency = `${prefix} ${price.toLocaleString()}`;
+  const priceWithCurrency = `${currency} ${price.toLocaleString()}`;
 
   const renderLabel = (): React.ReactElement => {
     return (
       <Label type="large" textType="regular" style={labelStyle}>
-        / {label}
+        / {unit}
       </Label>
     );
   };
 
   return (
-    <Text type={textSizeType} textType={textFontWeight} style={[styles.text, textStyle]}>
+    <Text type={textSizeType} textType={textFontWeight} style={textStyle}>
       {priceWithCurrency}
       {renderLabel()}
     </Text>
@@ -34,9 +34,3 @@ const PricePerUnit = (props: IProps): React.ReactElement => {
 };
 
 export { PricePerUnit };
-
-const styles = StyleSheet.create({
-  text: {
-    padding: 10,
-  },
-});

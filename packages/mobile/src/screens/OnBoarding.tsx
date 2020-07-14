@@ -55,8 +55,8 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
             bubbleRef={this.updateRef}
             carouselData={data}
             carouselItem={this.renderCarouselItem}
-            activeSlide={activeSlide}
-            currentSlide={this.changeSlide}
+            activeIndex={activeSlide}
+            onSnapToItem={this.onSnapToItem}
             testID="carsl"
           />
           <PaginationComponent dotsLength={data.length} activeSlide={activeSlide} />
@@ -114,6 +114,10 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
     );
   };
 
+  public onSnapToItem = (slideNumber: number): void => {
+    this.setState({ activeSlide: slideNumber });
+  };
+
   public getOnboardingData = async (): Promise<void> => {
     try {
       const response = await CommonRepository.getOnboarding();
@@ -130,10 +134,6 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
     updateOnBoarding(true);
     await StorageService.set(StorageKeys.IS_ONBOARDING_COMPLETED, true);
     navigation.navigate(ScreensKeys.GettingStarted);
-  };
-
-  public changeSlide = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
   };
 
   public updateRef = (ref: any): void => {
