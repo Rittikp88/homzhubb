@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import moment from 'moment';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormTextInput, Label, RNSlider, Text, FormButton } from '@homzhub/common/src/components';
+import { FormTextInput, Text, FormButton, Slider } from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
@@ -233,22 +233,12 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
           <Text type="small" textType="semiBold" style={styles.headerTitle}>
             {t('minimumLeasePeriod')}
           </Text>
-          <View style={styles.currentMonth}>
-            <Text type="regular" textType="regular">
-              {values[LeaseFormKeys.minimumLeasePeriod]}
-            </Text>
-            <Label type="regular" textType="regular">
-              {` ${values[LeaseFormKeys.minimumLeasePeriod] === 1 ? t('common:month') : t('common:months')}`}
-            </Label>
-          </View>
-          <RNSlider
-            minimumValue={MINIMUM_LEASE_PERIOD}
-            maximumValue={MAXIMUM_LEASE_PERIOD}
-            minimumTrackTintColor={theme.colors.active}
-            thumbTintColor={theme.colors.active}
-            maximumTrackTintColor={theme.colors.disabled}
-            onValueChange={onSliderChange}
-            value={values[LeaseFormKeys.minimumLeasePeriod]}
+          <Slider
+            onSliderChange={onSliderChange}
+            minSliderRange={MINIMUM_LEASE_PERIOD}
+            maxSliderRange={MAXIMUM_LEASE_PERIOD}
+            isLabelRequired
+            labelText="Months"
           />
         </>
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
@@ -342,11 +332,6 @@ const styles = StyleSheet.create({
   continue: {
     flex: 0,
     marginVertical: 28,
-  },
-  currentMonth: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
   },
   showMore: {
     marginTop: 8,

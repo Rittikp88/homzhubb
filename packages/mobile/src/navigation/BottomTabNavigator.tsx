@@ -50,6 +50,16 @@ export const BottomTabs = (): React.ReactElement => {
         }}
       />
       <Tab.Screen
+        name="Compare"
+        component={SearchStackScreen}
+        options={{
+          tabBarLabel: 'Compare',
+          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
+            <Icon name={icons.compare} color={color} size={22} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Tenancies"
         component={SearchStackScreen}
         options={{

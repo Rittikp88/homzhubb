@@ -12,7 +12,7 @@ export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';
 export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
 export { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 export { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
-export { RNSlider } from '@homzhub/common/src/components/atoms/Slider';
+export { Slider } from '@homzhub/common/src/components/atoms/Slider';
 export { RNVideo } from '@homzhub/common/src/components/atoms/Video';
 export { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 export { SVGUri } from '@homzhub/common/src/components/atoms/Svg';

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@homzhub/common": "0.0.1",
+    "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-community/async-storage": "^1.10.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/google-signin": "^4.0.3",

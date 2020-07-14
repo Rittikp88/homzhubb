@@ -52,6 +52,11 @@ export const icons = {
   bathTub: 'bath-tub',
   bed: 'bed',
   map: 'map',
-  checkboxOn: 'checkbox-on',
-  checkboxOff: 'checkbox-off',
+  checkboxOn: 'square-check',
+  checkboxOff: 'square-box',
+  roundFilled: 'round-filled',
+  roundOutline: 'round-outline',
+  direction: 'direction',
+  badge: 'badge',
+  compare: 'compare',
 };
