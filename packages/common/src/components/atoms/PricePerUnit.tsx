@@ -15,7 +15,7 @@ interface IProps {
 const PricePerUnit = (props: IProps): React.ReactElement => {
   const { price, unit, currency, labelStyle, textStyle, textSizeType = 'regular', textFontWeight = 'semiBold' } = props;
 
-  const priceWithCurrency = `${currency} ${price.toLocaleString()}`;
+  const priceWithCurrency = `${currency}${price.toLocaleString()}`;
 
   const renderLabel = (): React.ReactElement => {
     return (

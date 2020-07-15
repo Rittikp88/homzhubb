@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { AmenitiesIcon } from '@homzhub/common/src/components';
 
 interface IAmenitiesData {
@@ -12,6 +12,7 @@ interface IAmenitiesData {
 interface IProps {
   data: IAmenitiesData[];
   direction: 'row' | 'column';
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 class PropertyAmenities extends React.PureComponent<IProps, {}> {
@@ -20,7 +21,7 @@ class PropertyAmenities extends React.PureComponent<IProps, {}> {
   }
 
   public renderIcons = (): React.ReactNode => {
-    const { data, direction } = this.props;
+    const { data, direction, containerStyle } = this.props;
     return data.map((amenity: IAmenitiesData, index: number) => {
       const isLastIndex = index === data.length - 1;
       return (
@@ -32,6 +33,7 @@ class PropertyAmenities extends React.PureComponent<IProps, {}> {
           iconColor={amenity.iconColor}
           iconSize={amenity.iconSize}
           isLastIndex={isLastIndex}
+          containerStyle={containerStyle}
         />
       );
     });

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, StyleProp, TextStyle } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   primaryAddress: string;
@@ -19,10 +19,10 @@ const PropertyAddress = (props: IProps): React.ReactElement => {
         {primaryAddress}
       </Text>
       <View style={styles.flexRow}>
-        <Icon name={icons.location} size={40} color={theme.colors.darkTint5} />
-        <Text type="small" textType="regular" style={[styles.subAddress, subAddressStyle]}>
+        <Icon name={icons.locationMarker} size={25} color={theme.colors.darkTint3} />
+        <Label type="large" textType="regular" style={[styles.subAddress, subAddressStyle]}>
           {subAddress}
-        </Text>
+        </Label>
       </View>
     </View>
   );
@@ -40,9 +40,11 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   subAddress: {
-    color: theme.colors.darkTint5,
-    marginVertical: 10,
+    color: theme.colors.darkTint3,
+    marginVertical: 6,
+    marginHorizontal: 10,
   },
 });

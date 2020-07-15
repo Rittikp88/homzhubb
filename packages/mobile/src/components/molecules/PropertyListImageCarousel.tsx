@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Favorite, SVGUri } from '@homzhub/common/src/components';
+import { Favorite } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 
 interface IProps {
-  data: any;
+  images: string[];
   isFavorite: boolean;
   onFavorite: () => void;
 }
@@ -23,15 +23,16 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
   };
 
   public render(): React.ReactElement {
-    const { data, isFavorite, onFavorite } = this.props;
+    const { images, isFavorite, onFavorite } = this.props;
     const { activeSlide } = this.state;
     return (
       <View style={styles.carouselContainer}>
         <SnapCarousel
           bubbleRef={this.updateRef}
-          carouselData={data}
+          carouselData={images}
           carouselItem={this.renderCarouselItem}
           activeIndex={activeSlide}
+          sliderWidth={360}
           onSnapToItem={this.onSnapToItem}
         />
         <View style={styles.overlay}>
@@ -40,15 +41,15 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
           </View>
           <View style={styles.arrowContainer}>
             <Icon
-              name={icons.map}
-              size={50}
-              color={activeSlide === 0 ? theme.colors.darkTint10 : theme.colors.shadow}
+              name={icons.leftArrow}
+              size={25}
+              color={activeSlide === 0 ? theme.colors.disabledPreference : theme.colors.white}
               onPress={this.previousSlide}
             />
             <Icon
-              name={icons.star}
-              size={50}
-              color={activeSlide === data.length - 1 ? theme.colors.darkTint10 : theme.colors.shadow}
+              name={icons.rightArrow}
+              size={25}
+              color={activeSlide === images.length - 1 ? theme.colors.disabledPreference : theme.colors.white}
               onPress={this.nextSlide}
             />
           </View>
@@ -57,8 +58,8 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
     );
   }
 
-  private renderCarouselItem = (item: any): React.ReactElement => {
-    return <SVGUri viewBox="0 10 360 220" uri={item.image_url} />;
+  private renderCarouselItem = (item: string): React.ReactElement => {
+    return <Image source={{ uri: item }} style={styles.carouselImage} />;
   };
 
   public onSnapToItem = (slideNumber: number): void => {
@@ -86,11 +87,9 @@ export default PropertyListImageCarousel;
 
 const styles = StyleSheet.create({
   carouselContainer: {
-    position: 'relative',
     borderRadius: 4,
-    height: 250,
-    borderColor: theme.colors.darkTint5,
-    borderWidth: 1,
+    height: 210,
+    overflow: 'hidden',
   },
   favoriteContainer: {
     flexDirection: 'row-reverse',
@@ -100,13 +99,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 8,
-    marginVertical: 20,
+    marginVertical: 40,
   },
   overlay: {
     position: 'absolute',
+    flex: 1,
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
+    backgroundColor: theme.colors.carouselCardOpacity,
+  },
+  carouselImage: {
+    height: '100%',
+    width: '100%',
   },
 });

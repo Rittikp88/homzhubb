@@ -39,7 +39,8 @@
     "nearMe": "Near Me",
     "enableLocationPermission": "Please enable location permission",
     "errorFetchingLocation": "Error fetching your current location",
-    "searchProperties": "Search Properties"
+    "searchProperties": "Search Properties",
+    "loginToContinue": "Please login to continue"
   },
   "auth": {
     "verifyNumber": "Verify your number",

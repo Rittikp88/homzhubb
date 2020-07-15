@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -12,10 +12,19 @@ interface IProps {
   iconColor?: string;
   label: string;
   isLastIndex?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const AmenitiesIcon = (props: IProps): React.ReactElement => {
-  const { direction, icon, iconSize = 40, iconColor = theme.colors.darkTint3, label, isLastIndex = false } = props;
+  const {
+    direction,
+    icon,
+    iconSize = 40,
+    iconColor = theme.colors.darkTint3,
+    label,
+    isLastIndex = false,
+    containerStyle,
+  } = props;
 
   const renderText = (): React.ReactElement => {
     const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
@@ -40,7 +49,7 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
 
   const renderRow = (): React.ReactElement => {
     return (
-      <View style={styles.rowContainer}>
+      <View style={[styles.rowContainer, containerStyle]}>
         <Icon name={icon} size={iconSize} color={iconColor} />
         {renderText()}
       </View>

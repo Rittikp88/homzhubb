@@ -28,8 +28,8 @@ const amenitiesData = [
     label: '2',
   },
   {
-    icon: icons.star,
-    iconSize: 30,
+    icon: icons.direction,
+    iconSize: 20,
     iconColor: theme.colors.darkTint3,
     label: '1200 Sqft',
   },

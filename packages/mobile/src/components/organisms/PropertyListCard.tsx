@@ -1,28 +1,36 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { WithTranslation, withTranslation } from 'react-i18next';
+import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, PricePerUnit, Text, PropertyAddress } from '@homzhub/common/src/components';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { Divider, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 
 interface IProps {
-  data: any[];
+  property: any;
   propertyId: number;
   isFavorite: boolean;
   onFavorite: (index: number) => void;
 }
 
-type Props = IProps;
+type libraryProps = WithTranslation;
+type Props = libraryProps & IProps;
 
 class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
-    const { data, isFavorite } = this.props;
+    const {
+      property: { image_url, project_name, unit_number, block_number },
+      isFavorite,
+    } = this.props;
     return (
       <View style={styles.container}>
-        <PropertyListImageCarousel data={data} isFavorite={isFavorite} onFavorite={this.onFavorite} />
+        <PropertyListImageCarousel images={image_url} isFavorite={isFavorite} onFavorite={this.onFavorite} />
         {this.renderPropertyTypeAndBadges()}
-        <PropertyAddress primaryAddress="Selway Apartments" subAddress="2972 Westheimer Rd. Sanata Ana, NY" />
+        <PropertyAddress primaryAddress={project_name} subAddress={`${block_number ?? ''} ${unit_number ?? ''}`} />
         <Divider containerStyles={styles.divider} />
         {this.renderPriceAndAmenities()}
       </View>
@@ -30,22 +38,55 @@ class PropertyListCard extends React.Component<Props, {}> {
   }
 
   public renderPropertyTypeAndBadges = (): React.ReactElement => {
+    const {
+      property: {
+        asset_type: { name },
+      },
+    } = this.props;
     return (
       <View style={styles.apartmentContainer}>
         <Text type="small" textType="regular" style={styles.propertyTypeText}>
-          Apartment
+          {name}
         </Text>
-        <View style={styles.badges}>
-          <Icon name={icons.biometric} size={33} color={theme.colors.warning} />
-          <Icon name={icons.biometric} size={33} color={theme.colors.warning} />
-          <Icon name={icons.biometric} size={33} color={theme.colors.darkTint5} />
+        <View style={styles.badgesContainer}>
+          <Icon name={icons.badge} size={23} color={theme.colors.warning} style={styles.badges} />
+          <Icon name={icons.badge} size={23} color={theme.colors.warning} style={styles.badges} />
+          <Icon name={icons.badge} size={23} color={theme.colors.disabledPreference} style={styles.badges} />
         </View>
       </View>
     );
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
-    const amenitiesData = [
+    const {
+      property: {
+        terms: { expected_monthly_rent_price, currency_code },
+      },
+    } = this.props;
+    const amenitiesData = this.getAmenities();
+    return (
+      <View style={styles.amenities}>
+        <PricePerUnit price={expected_monthly_rent_price} currency={currency_code} unit="mo" />
+        <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
+      </View>
+    );
+  };
+
+  public onFavorite = async (): Promise<void> => {
+    const { onFavorite, propertyId, t } = this.props;
+    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
+    if (!user) {
+      AlertHelper.error({ message: t('common:loginToContinue') });
+      return;
+    }
+    onFavorite(propertyId);
+  };
+
+  public getAmenities = (): any[] => {
+    const {
+      property: { carpet_area, carpet_area_unit },
+    } = this.props;
+    return [
       {
         icon: icons.bed,
         iconSize: 20,
@@ -56,38 +97,24 @@ class PropertyListCard extends React.Component<Props, {}> {
         icon: icons.bathTub,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: '2',
+        label: '1',
       },
       {
-        icon: icons.star,
-        iconSize: 30,
+        icon: icons.direction,
+        iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: '1200 Sqft',
+        label: `${carpet_area.toLocaleString()} ${carpet_area_unit}`,
       },
     ];
-    return (
-      <>
-        <View style={styles.amenities}>
-          <PricePerUnit price={32000} currency="₹" unit="mo" />
-          <PropertyAmenities data={amenitiesData} direction="row" />
-        </View>
-      </>
-    );
-  };
-
-  public onFavorite = (): void => {
-    const { onFavorite, propertyId } = this.props;
-    onFavorite(propertyId);
   };
 }
 
-export default PropertyListCard;
+export default withTranslation()(PropertyListCard);
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
     padding: 10,
-    justifyContent: 'space-between',
     borderRadius: 4,
     marginVertical: 10,
   },
@@ -95,11 +122,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 8,
+  },
+  badgesContainer: {
+    flexDirection: 'row',
   },
   badges: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    marginHorizontal: 3,
   },
   propertyTypeText: {
     color: theme.colors.primaryColor,
@@ -107,11 +136,15 @@ const styles = StyleSheet.create({
   divider: {
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: theme.colors.disabled,
+    marginVertical: 6,
   },
   amenities: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 6,
+  },
+  amenitiesContainer: {
+    marginStart: 15,
   },
 });

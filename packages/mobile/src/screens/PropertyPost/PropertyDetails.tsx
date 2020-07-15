@@ -241,7 +241,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
     };
     property?.[propertyGroupSelectedIndex].space_types.forEach((spaceType) => {
       spaces.push({
-        id: spaceType.id,
+        space_type: spaceType.id,
         count: countOfSpace(spaceType.name),
       });
     });

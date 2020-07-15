@@ -156,7 +156,7 @@ export interface ISpaceAvailable {
 }
 
 export interface ISpaceAvailablePayload {
-  id: string | number;
+  space_type: string | number;
   name?: string;
   value?: number;
   count?: number;

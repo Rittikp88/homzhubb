@@ -15,6 +15,7 @@ const namedColors = {
   background: '#F0F5F9',
   shadow: '#000',
   transparent: 'transparent',
+  disabledPreference: '#B3BBC3',
 };
 
 const tintColors = {
@@ -55,6 +56,7 @@ const opacity = {
   crossIconContainer: 'rgba(0, 0, 0, 0.2)',
   imageThumbnailBackground: 'rgba(0, 27, 54, 0.6)',
   markerOpacity: 'rgba(0, 132, 248, 0.3)',
+  carouselCardOpacity: 'rgba(0, 27, 54, 0.25)',
 };
 
 export const colors = {

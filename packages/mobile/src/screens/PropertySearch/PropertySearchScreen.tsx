@@ -4,6 +4,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Label, ToggleButton } from '@homzhub/common/src/components';
 import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
+import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 
 interface IState {
   isMapView: boolean;
@@ -16,9 +17,10 @@ class PropertySearchScreen extends Component<{}, IState> {
 
   public render(): React.ReactNode {
     const { isMapView } = this.state;
+    const containerStyle = isMapView ? styles.container : styles.listContainer;
     return (
-      <SafeAreaView style={styles.container}>
-        {isMapView && <PropertySearchMap />}
+      <SafeAreaView style={containerStyle}>
+        {isMapView ? <PropertySearchMap /> : <PropertySearchList />}
         {this.renderBar()}
       </SafeAreaView>
     );
@@ -35,8 +37,8 @@ class PropertySearchScreen extends Component<{}, IState> {
         </View>
         <ToggleButton
           onToggle={this.handleToggle}
-          title={isMapView ? 'Map' : 'List'}
-          icon={isMapView ? icons.map : icons.list}
+          title={isMapView ? 'List' : 'Map'}
+          icon={isMapView ? icons.list : icons.map}
         />
       </View>
     );
@@ -77,7 +79,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-
     elevation: 3,
+  },
+  listContainer: {
+    flex: 1,
+    margin: theme.layout.screenPadding,
   },
 });
