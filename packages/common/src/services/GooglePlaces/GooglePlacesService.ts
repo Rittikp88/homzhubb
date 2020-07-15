@@ -62,6 +62,11 @@ class GooglePlacesService {
 
   public getSplitAddress = (address: string): { primaryAddress: string; secondaryAddress: string } => {
     const secondIndex = address.indexOf(',', address.indexOf(',') + 1);
+
+    if (secondIndex === -1) {
+      return { primaryAddress: address, secondaryAddress: '' };
+    }
+
     return {
       primaryAddress: address.substr(0, secondIndex),
       secondaryAddress: address.substr(secondIndex + 1).trimStart(),
