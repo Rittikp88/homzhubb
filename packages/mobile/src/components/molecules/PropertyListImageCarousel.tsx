@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { IImages } from '@homzhub/common/src/domain/models/Search';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Favorite } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 
 interface IProps {
-  images: string[];
+  images: IImages[];
   isFavorite: boolean;
   onFavorite: () => void;
 }
@@ -25,11 +26,15 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
   public render(): React.ReactElement {
     const { images, isFavorite, onFavorite } = this.props;
     const { activeSlide } = this.state;
+    const sortedImages = images.sort((a, b) => {
+      // @ts-ignore
+      return b.is_cover_image - a.is_cover_image;
+    });
     return (
       <View style={styles.carouselContainer}>
         <SnapCarousel
           bubbleRef={this.updateRef}
-          carouselData={images}
+          carouselData={sortedImages}
           carouselItem={this.renderCarouselItem}
           activeIndex={activeSlide}
           sliderWidth={360}
@@ -58,8 +63,8 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
     );
   }
 
-  private renderCarouselItem = (item: string): React.ReactElement => {
-    return <Image source={{ uri: item }} style={styles.carouselImage} />;
+  private renderCarouselItem = (item: IImages): React.ReactElement => {
+    return <Image source={{ uri: item.link }} style={styles.carouselImage} />;
   };
 
   public onSnapToItem = (slideNumber: number): void => {

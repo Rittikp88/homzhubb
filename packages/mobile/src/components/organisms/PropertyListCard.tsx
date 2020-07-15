@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUserPayload, SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { IAmenitiesIcons, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { Divider, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 
 interface IProps {
-  property: any;
+  property: IProperties;
   propertyId: number;
   isFavorite: boolean;
   onFavorite: (index: number) => void;
@@ -23,12 +24,12 @@ type Props = libraryProps & IProps;
 class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
-      property: { image_url, project_name, unit_number, block_number },
+      property: { images, project_name, unit_number, block_number },
       isFavorite,
     } = this.props;
     return (
       <View style={styles.container}>
-        <PropertyListImageCarousel images={image_url} isFavorite={isFavorite} onFavorite={this.onFavorite} />
+        <PropertyListImageCarousel images={images} isFavorite={isFavorite} onFavorite={this.onFavorite} />
         {this.renderPropertyTypeAndBadges()}
         <PropertyAddress primaryAddress={project_name} subAddress={`${block_number ?? ''} ${unit_number ?? ''}`} />
         <Divider containerStyles={styles.divider} />
@@ -60,13 +61,13 @@ class PropertyListCard extends React.Component<Props, {}> {
   public renderPriceAndAmenities = (): React.ReactElement => {
     const {
       property: {
-        terms: { expected_monthly_rent_price, currency_code },
+        lease_term: { expected_price, currency_code },
       },
     } = this.props;
-    const amenitiesData = this.getAmenities();
+    const amenitiesData: IAmenitiesIcons[] = this.getAmenities();
     return (
       <View style={styles.amenities}>
-        <PricePerUnit price={expected_monthly_rent_price} currency={currency_code} unit="mo" />
+        <PricePerUnit price={parseInt(expected_price, 10)} currency={currency_code} unit="mo" />
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
       </View>
     );
@@ -82,22 +83,28 @@ class PropertyListCard extends React.Component<Props, {}> {
     onFavorite(propertyId);
   };
 
-  public getAmenities = (): any[] => {
+  public getAmenities = (): IAmenitiesIcons[] => {
     const {
-      property: { carpet_area, carpet_area_unit },
+      property: { carpet_area, carpet_area_unit, spaces },
     } = this.props;
+    const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+      return space.name === SpaceAvailableTypes.BEDROOM;
+    });
+    const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+      return space.name === SpaceAvailableTypes.BATHROOM;
+    });
     return [
       {
         icon: icons.bed,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: '3',
+        label: bedroom[0].count.toString() ?? '-',
       },
       {
         icon: icons.bathTub,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: '1',
+        label: bathroom[0].count.toString() ?? '-',
       },
       {
         icon: icons.direction,

@@ -33,6 +33,29 @@ export interface IFilters {
   transaction_type: ITransactionType[];
 }
 
+export interface ISpaces extends IAssetTypes {
+  count: number;
+}
+
+export interface ILeaseTerm {
+  id: number;
+  expected_price: string;
+  currency_code: string;
+}
+
+export interface IImages {
+  file_name: string;
+  is_cover_image: boolean;
+  link: string;
+}
+
+export interface IAmenitiesIcons {
+  icon: string;
+  iconSize: number;
+  iconColor: string;
+  label: string;
+}
+
 export interface IFilterDetails {
   currency: ICurrency[];
   asset_group_list: IAssetGroupList[];
@@ -57,4 +80,26 @@ export interface IFilter {
   bath_count: number;
   is_verified: boolean;
   asset_group: number;
+}
+
+export interface IProperties {
+  id: number;
+  asset_group: IAssetTypes;
+  project_name: string;
+  unit_number: string;
+  block_number: string;
+  latitude: string;
+  longitude: string;
+  carpet_area: string;
+  carpet_area_unit: string;
+  floor_number: number;
+  total_floors: number;
+  asset_type: IAssetTypes;
+  spaces: ISpaces[];
+  lease_term: ILeaseTerm;
+  images: IImages[];
+}
+
+export interface IPropertiesObject {
+  [key: number]: IProperties;
 }

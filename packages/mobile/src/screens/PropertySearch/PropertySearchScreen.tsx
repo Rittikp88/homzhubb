@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Label, ToggleButton } from '@homzhub/common/src/components';
 import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 
-interface IState {
+interface IStateProps {
+  properties: IPropertiesObject;
+}
+
+interface IPropertySearchScreenState {
   isMapView: boolean;
 }
 
-class PropertySearchScreen extends Component<{}, IState> {
+type Props = IStateProps;
+
+class PropertySearchScreen extends Component<Props, IPropertySearchScreenState> {
   public state = {
     isMapView: true,
   };
 
   public render(): React.ReactNode {
     const { isMapView } = this.state;
+    const { properties } = this.props;
     const containerStyle = isMapView ? styles.container : styles.listContainer;
     return (
       <SafeAreaView style={containerStyle}>
-        {isMapView ? <PropertySearchMap /> : <PropertySearchList />}
+        {/* // TODO: Pass the properties to search map component for getting data */}
+        {isMapView ? <PropertySearchMap /> : <PropertySearchList properties={properties} />}
         {this.renderBar()}
       </SafeAreaView>
     );
@@ -52,7 +64,14 @@ class PropertySearchScreen extends Component<{}, IState> {
   };
 }
 
-export default PropertySearchScreen;
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getProperties } = SearchSelector;
+  return {
+    properties: getProperties(state),
+  };
+};
+
+export default connect(mapStateToProps, null)(PropertySearchScreen);
 
 const styles = StyleSheet.create({
   container: {

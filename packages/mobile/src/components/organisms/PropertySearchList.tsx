@@ -1,36 +1,29 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData';
-import { Text } from '@homzhub/common/src/components';
+import { IProperties, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
 
-type Props = WithTranslation;
-
-// TODO: to get the data from props once the redux is set
-interface IPropertySearchListState {
-  propertyList: any[];
-  propertyId: number;
+interface IProps {
+  properties: IPropertiesObject;
 }
 
-class PropertySearchList extends React.PureComponent<Props, IPropertySearchListState> {
-  public state = {
-    propertyList: PropertySearchData,
-    propertyId: 63,
-  };
+type Props = IProps;
 
+class PropertySearchList extends React.PureComponent<Props, {}> {
   public render(): React.ReactElement {
-    const { propertyList, propertyId } = this.state;
+    const { properties } = this.props;
+    const propertyList: IProperties[] = Object.values(properties);
     return (
       <FlatList
         data={propertyList}
-        renderItem={({ item }): React.ReactElement => {
+        renderItem={({ item }: { item: IProperties }): React.ReactElement => {
           const onFavorite = (): void => console.log('call the onfavorite from props');
           return (
             <PropertyListCard
               property={item}
-              propertyId={propertyId}
-              isFavorite={false}
+              propertyId={item.id}
+              isFavorite={false} // TODO: Get the value of isFavorite from api response
               onFavorite={onFavorite}
               key={item.id}
             />
@@ -44,16 +37,12 @@ class PropertySearchList extends React.PureComponent<Props, IPropertySearchListS
   }
 
   private renderFooter = (): React.ReactElement => {
-    return (
-      <Text type="small" textType="regular">
-        Loading ...
-      </Text>
-    );
+    return <Loader />;
   };
 
-  private renderKeyExtractor = (item: any, index: number): string => {
+  private renderKeyExtractor = (item: IProperties, index: number): string => {
     return `${item.id}-${index}`;
   };
 }
 
-export default withTranslation()(PropertySearchList);
+export default PropertySearchList;
