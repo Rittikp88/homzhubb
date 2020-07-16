@@ -3,6 +3,7 @@ import { PickerItemProps, StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Label, Slider, Text } from '@homzhub/common/src/components';
+import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 
 interface IRange {
   min: number;
@@ -24,8 +25,9 @@ export const PriceRange = (props: IProps): React.ReactElement => {
   const onCurrencyChange = (value: string | number): void => {
     setCurrency(value as string);
   };
-  const maxValue = maxChangedValue > 0 ? `${currencySymbol}${maxChangedValue}` : 'Any';
-  const minValue = minChangedValue > 0 ? `${currencySymbol}${minChangedValue}` : 'Any';
+  const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(currency, value);
+  const maxValue = maxChangedValue > 0 ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}` : 'Any';
+  const minValue = minChangedValue > 0 ? `${currencySymbol}${getCurrencyValue(minChangedValue)}` : 'Any';
 
   return (
     <>
