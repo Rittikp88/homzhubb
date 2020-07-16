@@ -18,10 +18,14 @@ interface ISliderState {
 }
 
 export class Slider extends Component<ISliderProps, ISliderState> {
-  public state = {
-    multiSliderValue: [0, 10],
-    singleSliderValue: [0],
-  };
+  public constructor(props: ISliderProps) {
+    super(props);
+    const { minSliderRange, maxSliderRange } = props;
+    this.state = {
+      multiSliderValue: [minSliderRange || 0, maxSliderRange || 10],
+      singleSliderValue: [0],
+    };
+  }
 
   public render(): React.ReactNode {
     const { isMultipleSlider } = this.props;
@@ -30,15 +34,17 @@ export class Slider extends Component<ISliderProps, ISliderState> {
 
   private renderMultipleSlider = (): React.ReactElement => {
     const { multiSliderValue } = this.state;
-    const { maxSliderRange = 10, minSliderRange = 0 } = this.props;
+    const { maxSliderRange = 10, minSliderRange = 0, isLabelRequired } = this.props;
     return (
       <MultiSlider
         values={[multiSliderValue[0], multiSliderValue[1]]}
-        sliderLength={230}
+        sliderLength={360}
         onValuesChange={this.multiSliderValuesChange}
         min={minSliderRange}
         max={maxSliderRange}
+        step={maxSliderRange * 0.001}
         snapped
+        enableLabel={isLabelRequired}
         isMarkersSeparated
         customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
         customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
@@ -48,7 +54,7 @@ export class Slider extends Component<ISliderProps, ISliderState> {
 
   private renderSingleSlider = (): React.ReactElement => {
     const { singleSliderValue } = this.state;
-    const { isLabelRequired = false, maxSliderRange = 10, minSliderRange = 0 } = this.props;
+    const { isLabelRequired = false, maxSliderRange, minSliderRange } = this.props;
     return (
       <MultiSlider
         values={singleSliderValue}

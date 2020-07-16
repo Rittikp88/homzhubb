@@ -25,6 +25,7 @@ import {
   IVerificationDocumentList,
   IVerificationTypes,
 } from '@homzhub/common/src/domain/models/Service';
+import { IFilterDetails } from '@homzhub/common/src/domain/models/Search';
 
 const ENDPOINTS = {
   createAsset: (): string => 'assets/',
@@ -35,7 +36,7 @@ const ENDPOINTS = {
     `assets/${propertyId}/lease-terms/${leaseTermId}/`,
   saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-terms/`,
   updateSaleTerms: (propertyId: number, saleTermId: number): string => `assets/${propertyId}/sale-terms/${saleTermId}/`,
-  existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents`,
+  existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}/`,
   assetAttachments: (propertyId: number): string => `assets/${propertyId}/attachments/`,
@@ -45,7 +46,8 @@ const ENDPOINTS = {
   getPropertyDetails: (): string => 'asset-groups/',
   deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
-  getVerificationDocumentDetails: (): string => 'verification-document-types',
+  getVerificationDocumentDetails: (): string => 'verification-document-types/',
+  getFilterData: (): string => 'asset-filters',
 };
 
 class AssetRepository {
@@ -149,6 +151,10 @@ class AssetRepository {
 
   public getVerificationDocumentTypes = async (): Promise<IVerificationTypes[]> => {
     return await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
+  };
+
+  public getFilterDetails = async (): Promise<IFilterDetails> => {
+    return await this.apiClient.get(ENDPOINTS.getFilterData());
   };
 }
 

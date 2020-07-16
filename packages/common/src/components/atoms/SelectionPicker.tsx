@@ -75,11 +75,10 @@ const styles = StyleSheet.create({
     height: 38,
   },
   optionWrapper: {
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
     borderRadius: 4,
+    width: 180,
   },
   item: {
     flexDirection: 'row',

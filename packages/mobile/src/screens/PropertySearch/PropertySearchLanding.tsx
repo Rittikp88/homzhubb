@@ -3,35 +3,67 @@ import { View, StyleSheet, StatusBar } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
-import { Button, Text, WithShadowView } from '@homzhub/common/src/components';
+import { PriceRange } from '@homzhub/mobile/src/components/molecules/PriceRange';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { ICurrency, IFilterDetails } from '@homzhub/common/src/domain/models/Search';
 
-interface IState {
+interface IStateProps {
+  filterData: IFilterDetails | null;
+}
+
+interface IDispatchProps {
+  getFilterDetails: () => void;
+}
+
+type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyPostLandingScreen>;
+type Props = IStateProps & IDispatchProps & libraryProps;
+
+interface ILandingState {
   searchString: string;
   isSearchBarFocused: boolean;
   suggestions: GooglePlaceData[];
+  selectedPropertyType: number;
+  selectedLookingType: number;
+  maxPriceRange: number;
+  minPriceRange: number;
 }
 
-class PropertySearchLanding extends React.PureComponent<WithTranslation, IState> {
+class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   private searchBar: typeof SearchBar | null = null;
   public state = {
     searchString: '',
     isSearchBarFocused: false,
     suggestions: [],
+    selectedPropertyType: 0,
+    selectedLookingType: 0,
+    maxPriceRange: 0,
+    minPriceRange: 0,
+  };
+
+  public componentDidMount = (): void => {
+    const { getFilterDetails } = this.props;
+    getFilterDetails();
   };
 
   public render(): React.ReactElement {
     const { isSearchBarFocused } = this.state;
-    const { t } = this.props;
+    const { t, filterData } = this.props;
     return (
       <>
         <View style={styles.statusBar}>
@@ -40,6 +72,7 @@ class PropertySearchLanding extends React.PureComponent<WithTranslation, IState>
         <View style={styles.screen}>
           {this.renderHeader()}
           {isSearchBarFocused && this.renderSearchResults()}
+          {!isSearchBarFocused && filterData && this.renderContent(filterData)}
         </View>
         <WithShadowView outerViewStyle={styles.shadowView}>
           <Button
@@ -52,6 +85,60 @@ class PropertySearchLanding extends React.PureComponent<WithTranslation, IState>
       </>
     );
   }
+
+  private renderContent = (filterData: IFilterDetails): React.ReactElement => {
+    const { selectedPropertyType, selectedLookingType, minPriceRange, maxPriceRange } = this.state;
+    const {
+      currency,
+      asset_group_list,
+      filters: { transaction_type },
+    } = filterData;
+    let priceRange = { min: 0, max: 0 };
+    let currencySymbol = '';
+
+    const assetGroup = asset_group_list.map((item, index) => {
+      return { title: item.title, value: index };
+    });
+
+    const currencyData = currency.map((item: ICurrency) => {
+      currencySymbol = item.currency_symbol;
+      return {
+        label: item.currency_code,
+        value: item.currency_code,
+      };
+    });
+
+    const assetTransaction = transaction_type.map((item, index) => {
+      return { title: item.title, value: index };
+    });
+
+    transaction_type.forEach((item, index) => {
+      if (index === selectedLookingType) {
+        priceRange = { min: item.min_price, max: item.max_price };
+      }
+    });
+
+    return (
+      <View style={styles.content}>
+        <Text type="small" textType="semiBold" style={styles.label}>
+          Property Type
+        </Text>
+        <SelectionPicker data={assetGroup} selectedItem={selectedPropertyType} onValueChange={this.onChangeProperty} />
+        <Text type="small" textType="semiBold" style={styles.label}>
+          Looking For
+        </Text>
+        <SelectionPicker data={assetTransaction} selectedItem={selectedLookingType} onValueChange={this.onChangeFlow} />
+        <PriceRange
+          currencyData={currencyData}
+          currencySymbol={currencySymbol}
+          onChangeSlide={this.onSliderValueChange}
+          range={priceRange}
+          minChangedValue={minPriceRange}
+          maxChangedValue={maxPriceRange}
+        />
+      </View>
+    );
+  };
 
   private renderHeader = (): React.ReactNode => {
     const { t } = this.props;
@@ -138,9 +225,43 @@ class PropertySearchLanding extends React.PureComponent<WithTranslation, IState>
         AlertHelper.error({ message: e.message });
       });
   }, 300);
+
+  private onSliderValueChange = (value1: number, value2?: number): void => {
+    this.setState({
+      minPriceRange: value1,
+      maxPriceRange: value2 || 0,
+    });
+  };
+
+  private onChangeProperty = (value: number): void => {
+    this.setState({ selectedPropertyType: value, minPriceRange: 0, maxPriceRange: 0 });
+  };
+
+  private onChangeFlow = (value: number): void => {
+    this.setState({ selectedLookingType: value, minPriceRange: 0, maxPriceRange: 0 });
+  };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.propertySearch)(PropertySearchLanding);
+export const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    filterData: SearchSelector.getFilterDetail(state),
+  };
+};
+
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getFilterDetails } = SearchActions;
+  return bindActionCreators(
+    {
+      getFilterDetails,
+    },
+    dispatch
+  );
+};
+
+export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.propertySearch)(PropertySearchLanding));
 
 const styles = StyleSheet.create({
   screen: {
@@ -183,5 +304,14 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     margin: 16,
+  },
+  content: {
+    backgroundColor: theme.colors.white,
+    paddingTop: 20,
+    paddingHorizontal: 10,
+  },
+  label: {
+    color: theme.colors.darkTint4,
+    paddingHorizontal: 14,
   },
 });

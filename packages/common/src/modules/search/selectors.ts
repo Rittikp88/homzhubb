@@ -1,5 +1,12 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { IPropertiesObject, IFilterDetails } from '@homzhub/common/src/domain/models/Search';
+
+const getFilterDetail = (state: IState): IFilterDetails | null => {
+  const {
+    search: { filterDetails },
+  } = state;
+  return filterDetails;
+};
 
 const getProperties = (state: IState): IPropertiesObject => {
   const {
@@ -10,4 +17,5 @@ const getProperties = (state: IState): IPropertiesObject => {
 
 export const SearchSelector = {
   getProperties,
+  getFilterDetail,
 };
