@@ -45,8 +45,12 @@ export const PriceRange = (props: IProps): React.ReactElement => {
         />
       </View>
       <View style={styles.sliderView}>
-        <Text type="regular" style={{ color: theme.colors.darkTint1 }}>
-          {minValue} <Label type="regular">to</Label> {maxValue}
+        <Text type="regular" style={styles.sliderValue}>
+          {minValue}{' '}
+          <Label type="regular" textType="regular">
+            to
+          </Label>{' '}
+          {maxValue}
         </Text>
         <Slider
           key={range.max}
@@ -67,7 +71,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 14,
   },
   dropdownContainer: {
     borderWidth: 0,
@@ -79,6 +82,10 @@ const styles = StyleSheet.create({
     marginEnd: 6,
   },
   sliderView: {
-    paddingHorizontal: 16,
+    marginHorizontal: 10,
+  },
+  sliderValue: {
+    color: theme.colors.darkTint1,
+    paddingTop: 10,
   },
 });

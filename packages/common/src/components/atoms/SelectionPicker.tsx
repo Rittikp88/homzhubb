@@ -18,6 +18,7 @@ interface IProps {
   data: ISelectionPicker[];
   selectedItem: number;
   onValueChange: (selectedValue: number) => void;
+  optionWidth?: number;
   testID?: string;
 }
 
@@ -38,16 +39,19 @@ class SelectionPicker extends React.PureComponent<IProps, {}> {
   }
 
   public renderItem({ item, index }: IItem): React.ReactElement {
-    const { onValueChange, data, selectedItem } = this.props;
+    const { onValueChange, data, selectedItem, optionWidth = (theme.viewport.width - 35) / 2 } = this.props;
     const selected = item.value === selectedItem;
     const dataLength = data.length;
     const isLastIndex = index === dataLength - 1;
-    const conditionalStyle = createConditionalStyles(selected);
+    const conditionalStyle = createConditionalStyles(selected, optionWidth);
     const onPress = (): void => onValueChange(item.value);
     return (
       <TouchableOpacity onPress={onPress} style={styles.item}>
-        <View style={[styles.optionWrapper, conditionalStyle.selectedItem]} key={`item-${index}`}>
-          <Text type="regular" textType="semiBold" style={conditionalStyle.itemStyle}>
+        <View
+          style={[styles.optionWrapper, conditionalStyle.selectedItem, conditionalStyle.itemWidth]}
+          key={`item-${index}`}
+        >
+          <Text type="small" textType="semiBold" style={conditionalStyle.itemStyle}>
             {item.title}
           </Text>
         </View>
@@ -66,30 +70,31 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primaryColor,
     borderWidth: 1,
     borderRadius: 4,
-    margin: theme.layout.screenPadding,
   },
   divider: {
     borderColor: theme.colors.disabled,
-    borderWidth: 0.8,
-    marginTop: 5,
-    height: 38,
+    borderWidth: 0.5,
+    marginTop: 6,
+    height: 25,
   },
   optionWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
-    width: 180,
+    padding: 7,
   },
   item: {
     flexDirection: 'row',
   },
 });
 
-const createConditionalStyles = (isSelected: boolean): any => ({
+const createConditionalStyles = (isSelected: boolean, optionWidth?: number): any => ({
   itemStyle: {
     color: isSelected ? theme.colors.white : theme.colors.darkTint4,
   },
   selectedItem: {
     backgroundColor: isSelected ? theme.colors.primaryColor : theme.colors.white,
+  },
+  itemWidth: {
+    width: optionWidth,
   },
 });

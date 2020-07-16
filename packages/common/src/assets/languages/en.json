@@ -206,6 +206,8 @@
     "madeEasy": "Made Easy",
     "enterLocation": "Enter location to begin",
     "type": "Type",
+    "beds": "Beds",
+    "baths": "Baths",
     "rooms": "Rooms",
     "price": "Price"
   }

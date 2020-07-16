@@ -1,38 +1,42 @@
 import React from 'react';
-import { FlatList } from 'react-native';
-import { IProperties, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { FlatList, View, StyleSheet } from 'react-native';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
+import { IProperties, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   properties: IPropertiesObject;
+  onFavorite: (propertyId: number) => void;
 }
 
 type Props = IProps;
 
 class PropertySearchList extends React.PureComponent<Props, {}> {
   public render(): React.ReactElement {
-    const { properties } = this.props;
+    const { properties, onFavorite } = this.props;
     const propertyList: IProperties[] = Object.values(properties);
     return (
-      <FlatList
-        data={propertyList}
-        renderItem={({ item }: { item: IProperties }): React.ReactElement => {
-          const onFavorite = (): void => console.log('call the onfavorite from props');
-          return (
-            <PropertyListCard
-              property={item}
-              propertyId={item.id}
-              isFavorite={false} // TODO: Get the value of isFavorite from api response
-              onFavorite={onFavorite}
-              key={item.id}
-            />
-          );
-        }}
-        keyExtractor={this.renderKeyExtractor}
-        ListFooterComponent={this.renderFooter}
-        onEndReachedThreshold={0.8}
-      />
+      <View style={styles.container}>
+        <FlatList
+          data={propertyList}
+          renderItem={({ item }: { item: IProperties }): React.ReactElement => {
+            const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
+            return (
+              <PropertyListCard
+                property={item}
+                propertyId={item.id}
+                isFavorite={false} // TODO: Get the value of isFavorite from api response
+                onFavorite={onUpdateFavoritePropertyId}
+                key={item.id}
+              />
+            );
+          }}
+          keyExtractor={this.renderKeyExtractor}
+          ListFooterComponent={this.renderFooter}
+          onEndReachedThreshold={0.8}
+        />
+      </View>
     );
   }
 
@@ -46,3 +50,10 @@ class PropertySearchList extends React.PureComponent<Props, {}> {
 }
 
 export default PropertySearchList;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: theme.layout.screenPadding,
+  },
+});

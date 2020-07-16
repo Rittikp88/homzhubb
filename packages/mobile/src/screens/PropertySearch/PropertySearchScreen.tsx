@@ -1,16 +1,18 @@
 import React, { PureComponent } from 'react';
+import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, ButtonType, FontWeightType, Label, ToggleButton } from '@homzhub/common/src/components';
+import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton } from '@homzhub/common/src/components';
 import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 
 enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -26,6 +28,7 @@ interface IStateProps {
 interface IPropertySearchScreenState {
   isMapView: boolean;
   selectedOnScreenFilter: OnScreenFilters | string;
+  isMenuTrayCollapsed: boolean;
 }
 
 type Props = WithTranslation & IStateProps;
@@ -34,29 +37,55 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   public state = {
     isMapView: true,
     selectedOnScreenFilter: '',
+    isMenuTrayCollapsed: false,
   };
 
   public render(): React.ReactNode {
-    const { isMapView } = this.state;
+    const { isMapView, isMenuTrayCollapsed } = this.state;
     const { properties } = this.props;
-    const containerStyle = isMapView ? styles.container : styles.listContainer;
     return (
-      <SafeAreaView style={containerStyle}>
-        {this.renderFilterTray()}
-        {/* // TODO: Pass the properties to search map component for getting data */}
-        {isMapView ? <PropertySearchMap /> : <PropertySearchList properties={properties} />}
-        {this.renderBar()}
-      </SafeAreaView>
+      <>
+        <View style={styles.statusBar}>
+          <StatusBar translucent backgroundColor={theme.colors.background} barStyle="dark-content" />
+        </View>
+        <SafeAreaView style={styles.container}>
+          {this.renderFilterTray()}
+          <Divider />
+          {isMenuTrayCollapsed && <View style={styles.trayContainer}>{this.renderCollapsibleTray()}</View>}
+          {isMapView ? (
+            <PropertySearchMap />
+          ) : (
+            <PropertySearchList properties={properties} onFavorite={this.onFavoriteProperty} />
+          )}
+          {this.renderBar()}
+        </SafeAreaView>
+      </>
     );
   }
 
+  private renderCollapsibleTray = (): React.ReactNode => {
+    const { selectedOnScreenFilter } = this.state;
+    switch (selectedOnScreenFilter) {
+      case OnScreenFilters.ROOMS:
+        return (
+          <RoomsFilter
+            bedCount={-1}
+            bathroomCount={-1}
+            onSelection={(type: string, value: number): void => console.log(type)}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   private renderFilterTray = (): React.ReactNode => {
     const { t } = this.props;
-    const { selectedOnScreenFilter } = this.state;
+    const { selectedOnScreenFilter, isMenuTrayCollapsed } = this.state;
     const onScreenFilters = [
       { type: OnScreenFilters.TYPE, label: t('type') },
-      { type: OnScreenFilters.ROOMS, label: t('rooms') },
       { type: OnScreenFilters.PRICE, label: t('price') },
+      { type: OnScreenFilters.ROOMS, label: t('rooms') },
       { type: OnScreenFilters.MORE, label: icons.filter },
     ];
     return (
@@ -72,7 +101,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
             iconColor = theme.colors.secondaryColor;
           }
 
-          const onPress = () => this.setState({ selectedOnScreenFilter: type });
+          const onPress = (): void =>
+            this.setState({ selectedOnScreenFilter: type, isMenuTrayCollapsed: !isMenuTrayCollapsed });
+
+          const navigateToFilters = (): void => console.log('Navigate to Filters');
 
           if (index === 3) {
             return (
@@ -82,7 +114,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
                 icon={label}
                 iconColor={iconColor}
                 iconSize={20}
-                onPress={onPress}
+                onPress={navigateToFilters}
                 iconStyle={styles.menuButtonText}
                 containerStyle={styles.filterButtons}
               />
@@ -107,7 +139,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private renderBar = (): React.ReactNode => {
-    const { isMapView } = this.state;
+    const { isMapView, isMenuTrayCollapsed } = this.state;
+    if (isMenuTrayCollapsed) {
+      return null;
+    }
     return (
       <View style={styles.bar}>
         <View style={styles.propertiesFound}>
@@ -123,6 +158,8 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       </View>
     );
   };
+
+  public onFavoriteProperty = (propertyId: number): void => {};
 
   private handleToggle = (): void => {
     const { isMapView } = this.state;
@@ -147,6 +184,10 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  statusBar: {
+    height: PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight,
+    backgroundColor: theme.colors.background,
   },
   bar: {
     position: 'absolute',
@@ -185,8 +226,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 3,
   },
-  listContainer: {
-    flex: 1,
-    margin: theme.layout.screenPadding,
+  trayContainer: {
+    backgroundColor: theme.colors.white,
+    padding: 20,
+    paddingTop: 0,
+    borderRadius: 4,
+    zIndex: 999,
   },
 });

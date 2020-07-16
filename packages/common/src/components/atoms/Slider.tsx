@@ -46,6 +46,7 @@ export class Slider extends Component<ISliderProps, ISliderState> {
         snapped
         enableLabel={isLabelRequired}
         isMarkersSeparated
+        selectedStyle={styles.selectedStyle}
         customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
         customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
       />
@@ -129,4 +130,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.active,
   },
+  selectedStyle: { backgroundColor: theme.colors.primaryColor },
 });

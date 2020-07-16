@@ -14,6 +14,7 @@ import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetP
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import PropertySearchLanding from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchLanding';
 import PropertyTabsScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertyTabsScreen';
+import PropertyFilters from '@homzhub/mobile/src/screens/PropertySearch/PropertyFilters';
 import {
   IOtpNavProps,
   ScreensKeys,
@@ -35,6 +36,7 @@ export type AuthStackParamList = {
   [ScreensKeys.SuccessResetPassword]: undefined;
   [ScreensKeys.PropertySearchLanding]: undefined;
   [ScreensKeys.PropertyTabsScreen]: undefined;
+  [ScreensKeys.PropertyFilters]: undefined;
 };
 
 export function AuthStack(): React.ReactElement {
@@ -66,6 +68,7 @@ export function AuthStack(): React.ReactElement {
       <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.PropertySearchLanding} component={PropertySearchLanding} />
       <AuthStackNavigator.Screen name={ScreensKeys.PropertyTabsScreen} component={PropertyTabsScreen} />
+      <AuthStackNavigator.Screen name={ScreensKeys.PropertyFilters} component={PropertyFilters} />
     </AuthStackNavigator.Navigator>
   );
 }

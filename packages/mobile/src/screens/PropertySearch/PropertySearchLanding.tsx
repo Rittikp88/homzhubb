@@ -20,8 +20,8 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { ICurrency, IFilterDetails } from '@homzhub/common/src/domain/models/Search';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
 interface IStateProps {
   filterData: IFilterDetails | null;
@@ -31,7 +31,7 @@ interface IDispatchProps {
   getFilterDetails: () => void;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyPostLandingScreen>;
+type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.PropertySearchLanding>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
 interface ILandingState {
@@ -307,11 +307,10 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: theme.colors.white,
-    paddingTop: 20,
-    paddingHorizontal: 10,
+    margin: theme.layout.screenPadding,
   },
   label: {
     color: theme.colors.darkTint4,
-    paddingHorizontal: 14,
+    marginVertical: 20,
   },
 });

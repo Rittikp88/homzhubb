@@ -19,9 +19,6 @@ export enum ScreensKeys {
   SuccessResetPassword = 'SuccessResetPassword',
   ResetPassword = 'ResetPassword',
 
-  // Tenant
-  PropertySearchLanding = 'PropertySearchLanding',
-
   // Post Property
   PropertyPostLandingScreen = 'PropertyPost',
   PostPropertySearch = 'PostPropertySearch',
@@ -38,6 +35,8 @@ export enum ScreensKeys {
 
   // Search
   PropertyTabsScreen = 'PropertyTabsScreen',
+  PropertySearchLanding = 'PropertySearchLanding',
+  PropertyFilters = 'PropertyFilters',
 }
 
 // Tab keys
