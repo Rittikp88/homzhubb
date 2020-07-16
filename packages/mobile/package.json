@@ -33,6 +33,7 @@
     "@react-navigation/stack": "^5.3.3",
     "react-dom": "16",
     "react-native": "0.62.2",
+    "react-native-collapsible": "^1.5.2",
     "react-native-crypto-js": "^1.0.0",
     "react-native-document-picker": "^3.5.1",
     "react-native-easy-markdown": "^2.0.0",
@@ -62,6 +63,7 @@
   },
   "devDependencies": {
     "@types/react-native": "^0.62.7",
+    "@types/react-native-collapsible": "^0.11.0",
     "@types/react-native-fbsdk": "^1.1.0",
     "@types/react-native-linear-gradient": "^2.4.0",
     "@types/react-native-maps": "^0.24.0",

@@ -204,6 +204,9 @@
     "showProperties": "Show Properties",
     "findingRightProperty": "Finding the right property",
     "madeEasy": "Made Easy",
-    "enterLocation": "Enter location to begin"
+    "enterLocation": "Enter location to begin",
+    "type": "Type",
+    "rooms": "Rooms",
+    "price": "Price"
   }
 }
