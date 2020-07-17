@@ -69,8 +69,8 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       case OnScreenFilters.ROOMS:
         return (
           <RoomsFilter
-            bedCount={-1}
-            bathroomCount={-1}
+            bedCount={[1, 2]}
+            bathroomCount={[3]}
             onSelection={(type: string, value: number): void => console.log(type)}
           />
         );

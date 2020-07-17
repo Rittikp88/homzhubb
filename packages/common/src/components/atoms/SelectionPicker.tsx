@@ -16,7 +16,7 @@ interface IItem {
 
 interface IProps {
   data: ISelectionPicker[];
-  selectedItem: number;
+  selectedItem: number[];
   onValueChange: (selectedValue: number) => void;
   optionWidth?: number;
   testID?: string;
@@ -40,7 +40,7 @@ class SelectionPicker extends React.PureComponent<IProps, {}> {
 
   public renderItem({ item, index }: IItem): React.ReactElement {
     const { onValueChange, data, selectedItem, optionWidth = (theme.viewport.width - 35) / 2 } = this.props;
-    const selected = item.value === selectedItem;
+    const selected = selectedItem.includes(item.value);
     const dataLength = data.length;
     const isLastIndex = index === dataLength - 1;
     const conditionalStyle = createConditionalStyles(selected, optionWidth);

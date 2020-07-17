@@ -123,11 +123,19 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
         <Text type="small" textType="semiBold" style={styles.label}>
           Property Type
         </Text>
-        <SelectionPicker data={assetGroup} selectedItem={selectedPropertyType} onValueChange={this.onChangeProperty} />
+        <SelectionPicker
+          data={assetGroup}
+          selectedItem={[selectedPropertyType]}
+          onValueChange={this.onChangeProperty}
+        />
         <Text type="small" textType="semiBold" style={styles.label}>
           Looking For
         </Text>
-        <SelectionPicker data={assetTransaction} selectedItem={selectedLookingType} onValueChange={this.onChangeFlow} />
+        <SelectionPicker
+          data={assetTransaction}
+          selectedItem={[selectedLookingType]}
+          onValueChange={this.onChangeFlow}
+        />
         <PriceRange
           currencyData={currencyData}
           currencySymbol={currencySymbol}

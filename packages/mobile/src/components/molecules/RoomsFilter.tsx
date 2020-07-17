@@ -6,8 +6,8 @@ import { SelectionPicker, Text } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
-  bedCount: number;
-  bathroomCount: number;
+  bedCount: number[];
+  bathroomCount: number[];
   onSelection: (type: string, value: number) => void;
 }
 
