@@ -10,15 +10,18 @@ interface IProps {
   value: string;
   updateValue: (value: string) => void;
   onRef?: (ref: SearchBar) => void;
+  autoFocus?: boolean;
   onFocusChange?: (isFocus: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
   searchBarStyle?: StyleProp<ViewStyle>;
   cancelButtonStyle?: StyleProp<ViewStyle>;
   cancelTextStyle?: StyleProp<TextStyle>;
 }
+
 interface IState {
   showCancel: boolean;
 }
+
 type Props = WithTranslation & IProps;
 
 class SearchBar extends React.PureComponent<Props, IState> {
@@ -44,6 +47,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
       cancelButtonStyle = {},
       cancelTextStyle = {},
       searchBarStyle = {},
+      autoFocus = false,
     } = this.props;
     const { showCancel } = this.state;
 
@@ -67,6 +71,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
             placeholder={placeholder}
             placeholderTextColor={theme.colors.darkTint7}
             autoCorrect={false}
+            autoFocus={autoFocus}
             numberOfLines={1}
             returnKeyType="done"
             onChangeText={this.onChangeText}

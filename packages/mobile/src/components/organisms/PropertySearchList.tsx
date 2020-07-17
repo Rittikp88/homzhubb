@@ -3,23 +3,22 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
-import { IProperties, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
-  properties: IPropertiesObject;
+  properties: IProperties[];
   onFavorite: (propertyId: number) => void;
 }
 
 type Props = IProps;
 
-class PropertySearchList extends React.PureComponent<Props, {}> {
+export class PropertySearchList extends React.PureComponent<Props, {}> {
   public render(): React.ReactElement {
     const { properties, onFavorite } = this.props;
-    const propertyList: IProperties[] = Object.values(properties);
     return (
       <View style={styles.container}>
         <FlatList
-          data={propertyList}
+          data={properties}
           renderItem={({ item }: { item: IProperties }): React.ReactElement => {
             const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
             return (
@@ -48,8 +47,6 @@ class PropertySearchList extends React.PureComponent<Props, {}> {
     return `${item.id}-${index}`;
   };
 }
-
-export default PropertySearchList;
 
 const styles = StyleSheet.create({
   container: {
