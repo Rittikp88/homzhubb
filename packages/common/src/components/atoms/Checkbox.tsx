@@ -7,13 +7,13 @@ import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 interface ICheckboxOptions {
   selected: boolean;
   label: string;
+  onToggle: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   iconSize?: number;
   iconStyle?: object;
   iconSelectedStyle?: object;
   labelType?: TextSizeType;
-  onToggle: () => void;
 }
 
 const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
@@ -22,10 +22,10 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
     selected = false,
     containerStyle = {},
     labelStyle = {},
-    iconSize = 20,
+    iconSize = 22,
     iconStyle = {},
     iconSelectedStyle = {},
-    labelType = 'regular',
+    labelType = 'large',
     onToggle,
   } = props;
   return (
@@ -34,7 +34,7 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
         <Icon
           name={selected ? icons.checkboxOn : icons.checkboxOff}
           size={iconSize}
-          color={selected ? theme.colors.primaryColor : theme.colors.transparent}
+          color={selected ? theme.colors.primaryColor : theme.colors.disabled}
           style={selected ? iconSelectedStyle : iconStyle}
         />
       </TouchableOpacity>
@@ -50,11 +50,9 @@ export { RNCheckbox };
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   label: {
-    justifyContent: 'flex-start',
-    marginStart: 8,
-    alignItems: 'center',
+    marginStart: 12,
   },
 });

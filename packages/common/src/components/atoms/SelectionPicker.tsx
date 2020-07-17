@@ -4,7 +4,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 
-interface ISelectionPicker {
+export interface ISelectionPicker {
   title: string;
   value: number;
 }

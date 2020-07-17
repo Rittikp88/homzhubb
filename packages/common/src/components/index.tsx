@@ -14,7 +14,7 @@ export { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit'
 export { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 export { Slider } from '@homzhub/common/src/components/atoms/Slider';
 export { RNVideo } from '@homzhub/common/src/components/atoms/Video';
-export { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
+export { SelectionPicker, ISelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 export { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 export { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 export { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
@@ -22,6 +22,7 @@ export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowV
 
 // Molecules
 export { AnimatedHeader } from '@homzhub/common/src/components/molecules/AnimatedHeader';
+export { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 export { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 export { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';

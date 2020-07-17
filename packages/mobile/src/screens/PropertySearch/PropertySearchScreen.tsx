@@ -2,17 +2,18 @@ import React, { PureComponent } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { IFilterDetails, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton } from '@homzhub/common/src/components';
+import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
+import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 
 enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -23,6 +24,7 @@ enum OnScreenFilters {
 
 interface IStateProps {
   properties: IPropertiesObject;
+  filterData: IFilterDetails | null;
 }
 
 interface IPropertySearchScreenState {
@@ -65,6 +67,12 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderCollapsibleTray = (): React.ReactNode => {
     const { selectedOnScreenFilter } = this.state;
+    const { filterData } = this.props;
+
+    if (!filterData) {
+      return null;
+    }
+
     switch (selectedOnScreenFilter) {
       case OnScreenFilters.ROOMS:
         return (
@@ -74,6 +82,8 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
             onSelection={(type: string, value: number): void => console.log(type)}
           />
         );
+      case OnScreenFilters.TYPE:
+        return <AssetTypeFilter filterData={filterData} />;
       default:
         return null;
     }
@@ -173,6 +183,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   const { getProperties } = SearchSelector;
   return {
     properties: getProperties(state),
+    filterData: SearchSelector.getFilterDetail(state),
   };
 };
 
@@ -198,8 +209,9 @@ const styles = StyleSheet.create({
     width: theme.viewport.width,
     paddingHorizontal: theme.layout.screenPadding,
   },
-  filterButtons: {
-    flex: 0,
+  trayContainer: {
+    backgroundColor: theme.colors.white,
+    padding: 16,
   },
   menuTrayContainer: {
     flexDirection: 'row',
@@ -207,6 +219,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     paddingHorizontal: theme.layout.screenPadding,
     paddingVertical: 12,
+  },
+  filterButtons: {
+    flex: 0,
   },
   menuButtonText: {
     marginVertical: 8,
@@ -225,12 +240,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-  },
-  trayContainer: {
-    backgroundColor: theme.colors.white,
-    padding: 20,
-    paddingTop: 0,
-    borderRadius: 4,
-    zIndex: 999,
   },
 });
