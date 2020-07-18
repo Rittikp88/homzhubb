@@ -42,6 +42,7 @@ interface IStateProps {
 // TODO: (Shikha) Need to add types
 interface IDispatchProps {
   setFilter: (payload: any) => void;
+  getProperties: () => void;
 }
 
 interface IPropertySearchScreenState {
@@ -117,6 +118,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       filterData,
       filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price },
       setFilter,
+      getProperties,
     } = this.props;
     let currencySymbol = '';
     const priceRange = { min: 0, max: 0 };
@@ -135,6 +137,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
     const updateFilter = (type: string, value: number | number[]): void => {
       setFilter({ [type]: value });
+      getProperties();
     };
 
     switch (selectedOnScreenFilter) {
@@ -293,6 +296,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderBar = (): React.ReactNode => {
     const { isMapView, isMenuTrayCollapsed, isSearchBarFocused } = this.state;
+    const { t } = this.props;
     if (isMenuTrayCollapsed || isSearchBarFocused) {
       return null;
     }
@@ -300,7 +304,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       <View style={styles.bar}>
         <View style={styles.propertiesFound}>
           <Label type="regular" textType="regular">
-            102 Properties found
+            {t('propertiesFound')}
           </Label>
         </View>
         <ToggleButton
@@ -372,10 +376,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter } = SearchActions;
+  const { setFilter, getProperties } = SearchActions;
   return bindActionCreators(
     {
       setFilter,
+      getProperties,
     },
     dispatch
   );

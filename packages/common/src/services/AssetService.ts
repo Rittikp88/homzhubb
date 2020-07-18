@@ -8,8 +8,8 @@ class AssetService {
       asset_type,
       // min_price,
       // max_price,
-      room_count,
-      bath_count,
+      // room_count,
+      // bath_count,
       asset_group,
     } = filter;
     return {
@@ -19,9 +19,9 @@ class AssetService {
       price__lt: 100000,
       // latitude: search_latitude,
       // longitude: search_longitude,
-      asset_type__in: asset_type,
-      bedroom: room_count,
-      bathroom: bath_count,
+      asset_type__in: asset_type.toString(),
+      bedroom: 1,
+      bathroom: 1,
     };
   };
 }

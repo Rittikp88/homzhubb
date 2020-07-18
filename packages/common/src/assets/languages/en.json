@@ -215,6 +215,7 @@
     "rooms": "Rooms",
     "price": "Price",
     "propertyType": "Property Type",
-    "lookingFor": "Looking For"
+    "lookingFor": "Looking For",
+    "propertiesFound": "Properties Found"
   }
 }

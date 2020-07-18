@@ -85,7 +85,11 @@ class PropertyListCard extends React.Component<Props, {}> {
 
   public getAmenities = (): IAmenitiesIcons[] => {
     const {
-      property: { carpet_area, carpet_area_unit, spaces },
+      property: {
+        // carpet_area,
+        // carpet_area_unit,
+        spaces,
+      },
     } = this.props;
     const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BEDROOM;
@@ -110,7 +114,8 @@ class PropertyListCard extends React.Component<Props, {}> {
         icon: icons.direction,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: `${carpet_area.toLocaleString()} ${carpet_area_unit}`,
+        // label: `${carpet_area.toLocaleString()} ${carpet_area_unit}`,
+        label: '1000 Sqft',
       },
     ];
   };

@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
 import MapView, { Marker, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
-import { IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
+import { IImages, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
   currentSlide: number;
@@ -104,10 +103,14 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
     const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
+    const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
     return (
       <PropertyMapCard
         source={{
-          uri: images[0].link,
+          uri:
+            image.length > 0
+              ? image[0].link
+              : 'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
         }}
         name={project_name}
         currency={currency_code}
@@ -115,7 +118,7 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
         priceUnit="month"
         bedroom={bedroom[0].count.toString() ?? '-'}
         bathroom={bathroom[0].count.toString() ?? '-'}
-        carpetArea={`${carpet_area} ${carpet_area_unit}`}
+        carpetArea="1000 Sqft"
         onFavorite={this.onFavorite}
       />
     );

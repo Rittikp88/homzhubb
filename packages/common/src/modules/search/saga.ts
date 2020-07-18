@@ -4,7 +4,7 @@ import { select } from 'redux-saga/effects';
 import { SearchRepository } from '@homzhub/common/src/domain/repositories/SearchRepository';
 import { SearchActions, SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
 import { IFluxStandardAction, IState } from '@homzhub/common/src/modules/interfaces';
-import { AssetService } from '../../services/AssetService';
+import { AssetService } from '@homzhub/common/src/services/AssetService';
 
 const getFilters = (state: IState) => state.search.filter;
 
