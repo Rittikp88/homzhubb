@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
-import { SearchRepository } from '@homzhub/common/src/domain/repositories/SearchRepository';
-import { SearchActions, SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
 import { IFluxStandardAction, IState } from '@homzhub/common/src/modules/interfaces';
+import { SearchActions, SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
+import { IFilters } from '@homzhub/common/src/domain/models/Search';
+import { SearchRepository } from '@homzhub/common/src/domain/repositories/SearchRepository';
 
 const getFilters = (state: IState) => state.search.filter;
 
-export function* getFilterDetails(action: IFluxStandardAction<any>) {
+export function* getFilterDetails(action: IFluxStandardAction<IFilters>) {
   try {
     const data = yield call(SearchRepository.getFilterDetails, action.payload);
     yield put(SearchActions.getFilterDetailsSuccess(data));

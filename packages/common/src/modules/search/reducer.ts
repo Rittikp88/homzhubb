@@ -1,6 +1,7 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
-import { SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
+import { SearchActionTypes, SearchPayloadTypes } from '@homzhub/common/src/modules/search/actions';
+import { IFilterDetails, IFilter, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -29,7 +30,7 @@ export const initialSearchState: ISearchState = {
 
 export const searchReducer = (
   state: ISearchState = initialSearchState,
-  action: IFluxStandardAction<any> // TODO: To be added
+  action: IFluxStandardAction<SearchPayloadTypes>
 ): ISearchState => {
   switch (action.type) {
     case SearchActionTypes.GET.FILTER_DETAILS:
@@ -42,7 +43,7 @@ export const searchReducer = (
     case SearchActionTypes.GET.FILTER_DETAILS_SUCCESS:
       return {
         ...state,
-        ['filterDetails']: action.payload,
+        ['filterDetails']: action.payload as IFilterDetails,
         ['loaders']: { ...state.loaders, ['search']: false },
       };
     case SearchActionTypes.GET.FILTER_DETAILS_FAILURE:
@@ -55,14 +56,13 @@ export const searchReducer = (
     case SearchActionTypes.GET.PROPERTIES_SUCCESS:
       return {
         ...state,
-        ['properties']: action.payload,
+        ['properties']: action.payload as IPropertiesObject,
         ['loaders']: { ...state.loaders, ['search']: false },
       };
     case SearchActionTypes.SET.FILTER:
-      console.log(action.payload, 'reducer');
       return {
         ...state,
-        ['filter']: { ...state.filter, ...action.payload },
+        ['filter']: { ...state.filter, ...(action.payload as IFilter) },
         ['loaders']: { ...state.loaders, ['search']: false },
       };
     default:

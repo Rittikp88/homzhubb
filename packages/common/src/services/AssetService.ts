@@ -1,13 +1,15 @@
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+
 class AssetService {
-  // TODO: Return type to be added
-  public constructAssetSearchPayload = (filter: any): any => {
+  public constructAssetSearchPayload = (filter: IFilter): IPropertySearchPayload => {
     const {
-      // search_latitude,
-      // search_longitude,
+      search_latitude,
+      search_longitude,
       asset_transaction_type,
       asset_type,
-      // min_price,
-      // max_price,
+      min_price,
+      max_price,
       // room_count,
       // bath_count,
       asset_group,
@@ -15,13 +17,13 @@ class AssetService {
     return {
       asset_group,
       txn_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
-      price__gt: 1000,
-      price__lt: 100000,
-      // latitude: search_latitude,
-      // longitude: search_longitude,
+      price__gt: min_price,
+      price__lt: max_price,
+      latitude: search_latitude,
+      longitude: search_longitude,
       asset_type__in: asset_type.toString(),
-      bedroom: 1,
-      bathroom: 1,
+      // bedroom: room_count.toString(),
+      // bathroom: bath_count,
     };
   };
 }

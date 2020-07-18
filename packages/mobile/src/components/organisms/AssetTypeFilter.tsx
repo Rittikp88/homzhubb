@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { remove } from 'lodash';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import {
@@ -47,13 +48,17 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
   private onAssetGroupListChanged = (selectedItem: number): void => {
     const { updateAssetFilter } = this.props;
     updateAssetFilter('asset_group', selectedItem);
-    updateAssetFilter('min_price', -1);
-    updateAssetFilter('max_price', -1);
+    updateAssetFilter('asset_type', selectedItem === 1 ? [1] : [7]);
   };
 
-  private onAssetGroupChecked = (assetTypeId: number): void => {
-    const { updateAssetFilter } = this.props;
-    updateAssetFilter('asset_type', [assetTypeId]);
+  private onAssetGroupChecked = (assetTypeId: number, isSelected: boolean): void => {
+    const { updateAssetFilter, asset_type } = this.props;
+    if (!isSelected) {
+      remove(asset_type, (asset) => asset === assetTypeId);
+      updateAssetFilter('asset_type', [...asset_type]);
+    } else {
+      updateAssetFilter('asset_type', [...asset_type, assetTypeId]);
+    }
     updateAssetFilter('min_price', -1);
     updateAssetFilter('max_price', -1);
   };
@@ -75,11 +80,12 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
           asset_group: { asset_types },
         },
       },
+      asset_type,
     } = this.props;
-    return asset_types.map((assetGroupType: IAssetTypes, index: number) => ({
+    return asset_types.map((assetGroupType: IAssetTypes) => ({
       id: assetGroupType.id,
       label: assetGroupType.name,
-      isSelected: false,
+      isSelected: asset_type.includes(assetGroupType.id),
     }));
   };
 }

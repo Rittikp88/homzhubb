@@ -2,9 +2,9 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 export const Loader = (): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
@@ -29,7 +29,7 @@ export const Loader = (): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.overlay,
+    backgroundColor: theme.colors.transparent,
     position: 'absolute',
     top: 0,
     bottom: 0,

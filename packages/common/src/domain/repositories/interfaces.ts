@@ -188,3 +188,16 @@ export interface IUpdateAssetDetails {
   spaces?: ISpaceAvailablePayload[];
 }
 // ASSET - END
+
+// Property Search
+export interface IPropertySearchPayload {
+  latitude?: number;
+  longitude?: number;
+  txn_type?: string;
+  asset_type__in?: string;
+  price__lt?: number;
+  price__gt?: number;
+  bedroom?: string;
+  bathroom?: number;
+  asset_group?: number;
+}

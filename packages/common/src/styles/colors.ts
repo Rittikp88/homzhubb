@@ -16,6 +16,7 @@ const namedColors = {
   shadow: '#000',
   transparent: 'transparent',
   disabledPreference: '#B3BBC3',
+  disabledSearch: '#80C1FC',
 };
 
 const tintColors = {

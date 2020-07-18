@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
-import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
-import { IImages, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
+import { IImages, IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
   currentSlide: number;
@@ -29,12 +28,9 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
   public render = (): React.ReactNode => {
     const { currentSlide } = this.state;
     const { properties } = this.props;
-    if (properties.length === 0) {
-      return null;
-    }
     const initialMarker: LatLng = {
-      latitude: Number(properties[0].latitude),
-      longitude: Number(properties[0].longitude),
+      latitude: properties.length > 0 ? Number(properties[0].latitude) : 12.9716,
+      longitude: properties.length > 0 ? Number(properties[0].longitude) : 77.5946,
     };
     return (
       <>
@@ -92,15 +88,17 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
     const {
       images,
       project_name,
-      spaces,
+      // carpet_area,
+      // carpet_area_unit,
+      // spaces,
       lease_term: { expected_price, currency_code },
     } = item;
-    const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-      return space.name === SpaceAvailableTypes.BEDROOM;
-    });
-    const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-      return space.name === SpaceAvailableTypes.BATHROOM;
-    });
+    // const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+    //   return space.name === SpaceAvailableTypes.BEDROOM;
+    // });
+    // const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+    //   return space.name === SpaceAvailableTypes.BATHROOM;
+    // });
     const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
     return (
       <PropertyMapCard
@@ -114,8 +112,10 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
         currency={currency_code}
         price={Number(expected_price)}
         priceUnit="month"
-        bedroom={bedroom[0].count.toString() ?? '-'}
-        bathroom={bathroom[0].count.toString() ?? '-'}
+        // bedroom={bedroom[0].count.toString() ?? '-'}
+        // bathroom={bathroom[0].count.toString() ?? '-'}
+        bedroom="2"
+        bathroom="3"
         carpetArea="1000 Sqft"
         onFavorite={this.onFavorite}
       />

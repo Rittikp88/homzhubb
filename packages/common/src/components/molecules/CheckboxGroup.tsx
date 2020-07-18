@@ -10,7 +10,7 @@ export interface ICheckboxGroupData {
 
 interface IProps {
   data: ICheckboxGroupData[];
-  onToggle: (id: number) => void;
+  onToggle: (id: number, isSelected: boolean) => void;
   numColumns?: number;
   labelStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
@@ -39,7 +39,7 @@ export class CheckboxGroup extends React.PureComponent<IProps, {}> {
       checkboxContainerStyle = StyleSheet.flatten([styles.checkboxContainer, { marginBottom: 0 }]);
     }
 
-    const onCheckboxToggle = (): void => onToggle(item.id);
+    const onCheckboxToggle = (): void => onToggle(item.id, !isSelected);
 
     return (
       <RNCheckbox

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, PickerItemProps } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, ScrollView, PickerItemProps } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -16,10 +16,11 @@ import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton, Text } from '@homzhub/common/src/components';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 import { PriceRange } from '@homzhub/mobile/src/components/molecules/PriceRange';
-import { PropertySearchList } from '@homzhub/mobile/src/components/organisms/PropertySearchList';
+import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
@@ -43,6 +44,7 @@ interface IStateProps {
   properties: IPropertiesObject;
   filterData: IFilterDetails | null;
   filters: IFilter;
+  isLoading: boolean;
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
 }
@@ -74,6 +76,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   public render(): React.ReactNode {
+    const { isLoading } = this.props;
+    if (isLoading) {
+      return <Loader />;
+    }
     return (
       <>
         <View style={styles.statusBar}>
@@ -109,13 +115,28 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
           <>
             <PropertySearchMap properties={properties.results} />
             {this.renderMenuTray()}
+            {this.renderNoResults()}
           </>
         ) : (
-          <>
+          <ScrollView style={styles.flexOne}>
             <PropertySearchList properties={properties.results} onFavorite={this.onFavoriteProperty} />
             {this.renderMenuTray()}
-          </>
+          </ScrollView>
         )}
+      </View>
+    );
+  };
+
+  private renderNoResults = (): React.ReactNode => {
+    const { properties } = this.props;
+    if (properties.count > 0) {
+      return null;
+    }
+    return (
+      <View style={styles.noResultsContainer}>
+        <Text type="small" textType="regular" style={styles.noResults}>
+          No results found, try zooming or changing your filters
+        </Text>
       </View>
     );
   };
@@ -143,8 +164,16 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     });
 
     const updateFilter = (type: string, value: number | number[]): void => {
-      setFilter({ [type]: value });
-      getProperties();
+      console.log(type, value);
+      if (type === 'min_price' || type === 'max_price') {
+        setFilter({ [type]: value });
+        setTimeout(() => {
+          getProperties();
+        }, 500);
+      } else {
+        setFilter({ [type]: value });
+        getProperties();
+      }
     };
 
     switch (selectedOnScreenFilter) {
@@ -193,7 +222,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
           }}
           placeholder={t('enterLocation')}
           updateValue={this.onSearchStringUpdate}
-          value={search_address}
+          value={search_address ?? ''}
           autoFocus
           containerStyle={styles.searchBarContainer}
           cancelButtonStyle={styles.cancelButtonStyle}
@@ -302,20 +331,24 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderBar = (): React.ReactNode => {
     const { isMapView, isMenuTrayCollapsed, isSearchBarFocused } = this.state;
-    const { t } = this.props;
+    const { t, properties } = this.props;
+    if (!properties) return null;
     if (isMenuTrayCollapsed || isSearchBarFocused) {
       return null;
     }
+    const conditionalStyle = isMapView ? styles.flexRow : styles.flexRowReverse;
     return (
-      <View style={styles.bar}>
-        <View style={styles.propertiesFound}>
-          <Label type="regular" textType="regular">
-            {t('propertiesFound')}
-          </Label>
-        </View>
+      <View style={[styles.bar, conditionalStyle]}>
+        {isMapView && (
+          <View style={styles.propertiesFound}>
+            <Label type="regular" textType="regular">
+              {(properties && properties.count) ?? 0} {t('propertiesFound')}
+            </Label>
+          </View>
+        )}
         <ToggleButton
           onToggle={this.handleToggle}
-          title={isMapView ? 'List' : 'Map'}
+          title={isMapView ? t('common:list') : t('common:map')}
           icon={isMapView ? icons.list : icons.map}
         />
       </View>
@@ -373,11 +406,19 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getProperties, getFilters, getFilterDetail, getCurrencyData, getPriceRange } = SearchSelector;
+  const {
+    getProperties,
+    getFilters,
+    getFilterDetail,
+    getLoadingState,
+    getCurrencyData,
+    getPriceRange,
+  } = SearchSelector;
   return {
     properties: getProperties(state),
     filterData: getFilterDetail(state),
     filters: getFilters(state),
+    isLoading: getLoadingState(state),
     currencyData: getCurrencyData(state),
     priceRange: getPriceRange(state),
   };
@@ -406,13 +447,15 @@ const styles = StyleSheet.create({
   flexFour: {
     flex: 4,
   },
+  flexOne: {
+    flex: 1,
+  },
   statusBar: {
     height: PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight,
     backgroundColor: theme.colors.background,
   },
   bar: {
     position: 'absolute',
-    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     top: theme.viewport.height * 0.2,
@@ -450,6 +493,7 @@ const styles = StyleSheet.create({
   trayContainer: {
     backgroundColor: theme.colors.white,
     padding: 20,
+    paddingTop: 10,
     position: 'absolute',
     top: 0,
     borderRadius: 4,
@@ -491,5 +535,24 @@ const styles = StyleSheet.create({
   address: {
     marginStart: 15,
     width: 300,
+  },
+  flexRow: {
+    flexDirection: 'row',
+  },
+  flexRowReverse: {
+    flexDirection: 'row-reverse',
+  },
+  noResults: {
+    textAlign: 'center',
+    color: theme.colors.darkTint4,
+  },
+  noResultsContainer: {
+    position: 'absolute',
+    bottom: 20,
+    padding: 7,
+    width: 250,
+    alignSelf: 'center',
+    borderRadius: 4,
+    backgroundColor: theme.colors.white,
   },
 });

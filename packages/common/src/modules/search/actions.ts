@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IFilterDetails } from '@homzhub/common/src/domain/models/Search';
+import { IFilterDetails, IFilter, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
 
 const actionTypePrefix = 'Search/';
 
@@ -41,8 +41,7 @@ const getFilterDetailsFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-// TODO: Type to be added
-const setFilter = (payload: any): IFluxStandardAction<any> => {
+const setFilter = (payload: IFilter): IFluxStandardAction<IFilter> => {
   return {
     type: SearchActionTypes.SET.FILTER,
     payload,
@@ -55,7 +54,7 @@ const getProperties = (): IFluxStandardAction => {
   };
 };
 
-const getPropertiesSuccess = (data: any): IFluxStandardAction<any> => {
+const getPropertiesSuccess = (data: IPropertiesObject): IFluxStandardAction<IPropertiesObject> => {
   return {
     type: SearchActionTypes.GET.PROPERTIES_SUCCESS,
     payload: data,
@@ -68,6 +67,8 @@ const getPropertiesFailure = (error: string): IFluxStandardAction => {
     error,
   };
 };
+
+export type SearchPayloadTypes = string | number | IPropertiesObject | IFilter | IFilterDetails | undefined;
 
 export const SearchActions = {
   getFilterDetails,

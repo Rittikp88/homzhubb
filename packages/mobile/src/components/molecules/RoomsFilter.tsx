@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { remove } from 'lodash';
@@ -71,7 +71,6 @@ const OPTION_WIDTH = (theme.viewport.width - 40) / 6;
 
 export const RoomsFilter = (props: IProps): React.ReactElement => {
   const { bedCount, bathroomCount, onSelection } = props;
-  const [bedroomCount, setBedroomCount] = useState(bedCount);
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
 
@@ -79,12 +78,12 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
 
   const onUpdateBedroomCount = (value: number): void => {
     if (value !== -1) {
-      remove(bedroomCount, (count: number) => count === -1);
-      setBedroomCount([...bedroomCount, value]);
-      bubbleSelectedValue('room_count', bedroomCount);
+      remove(bedCount, (count: number) => count === -1);
+      const newBedroomCount = bedCount.concat(value);
+      bubbleSelectedValue('room_count', newBedroomCount);
     } else {
-      setBedroomCount([-1]);
-      bubbleSelectedValue('room_count', bedroomCount);
+      const newBedroomCount = [-1];
+      bubbleSelectedValue('room_count', newBedroomCount);
     }
   };
 
@@ -97,7 +96,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
       </Text>
       <SelectionPicker
         data={bedroom}
-        selectedItem={bedroomCount}
+        selectedItem={bedCount}
         onValueChange={onUpdateBedroomCount}
         optionWidth={OPTION_WIDTH}
       />

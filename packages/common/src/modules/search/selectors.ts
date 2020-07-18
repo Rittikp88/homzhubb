@@ -29,6 +29,15 @@ const getProperties = (state: IState): any => {
   return properties;
 };
 
+const getLoadingState = (state: IState): boolean => {
+  const {
+    search: {
+      loaders: { search },
+    },
+  } = state;
+  return search;
+};
+
 const getCurrencyData = (state: IState): PickerItemProps[] => {
   const {
     search: { filterDetails },
@@ -69,6 +78,7 @@ export const SearchSelector = {
   getProperties,
   getFilterDetail,
   getFilters,
+  getLoadingState,
   getCurrencyData,
   getPriceRange,
 };
