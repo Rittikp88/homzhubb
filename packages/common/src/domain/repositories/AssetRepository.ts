@@ -25,7 +25,6 @@ import {
   IVerificationDocumentList,
   IVerificationTypes,
 } from '@homzhub/common/src/domain/models/Service';
-import { IFilterDetails } from '@homzhub/common/src/domain/models/Search';
 
 const ENDPOINTS = {
   createAsset: (): string => 'assets/',
@@ -47,7 +46,6 @@ const ENDPOINTS = {
   deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
   getVerificationDocumentDetails: (): string => 'verification-document-types/',
-  getFilterData: (): string => 'asset-filters',
 };
 
 class AssetRepository {
@@ -151,10 +149,6 @@ class AssetRepository {
 
   public getVerificationDocumentTypes = async (): Promise<IVerificationTypes[]> => {
     return await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
-  };
-
-  public getFilterDetails = async (): Promise<IFilterDetails> => {
-    return await this.apiClient.get(ENDPOINTS.getFilterData());
   };
 }
 

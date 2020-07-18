@@ -20,15 +20,18 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ICurrency, IFilterDetails } from '@homzhub/common/src/domain/models/Search';
+import { ICurrency, IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
 interface IStateProps {
   filterData: IFilterDetails | null;
+  filters: IFilter;
 }
 
+// TODO: (Shikha) Need to add types
 interface IDispatchProps {
-  getFilterDetails: () => void;
+  getFilterDetails: (payload: any) => void;
+  setFilter: (payload: any) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.PropertySearchLanding>;
@@ -46,6 +49,7 @@ interface ILandingState {
 
 class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   private searchBar: typeof SearchBar | null = null;
+
   public state = {
     searchString: '',
     isSearchBarFocused: false,
@@ -57,8 +61,25 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   public componentDidMount = (): void => {
-    const { getFilterDetails } = this.props;
-    getFilterDetails();
+    const { getFilterDetails, filters } = this.props;
+    const { asset_group, asset_transaction_type } = filters;
+    this.setState({
+      selectedPropertyType: asset_group,
+      selectedLookingType: asset_transaction_type,
+    });
+    getFilterDetails({ asset_group: filters.asset_group });
+  };
+
+  public componentDidUpdate = (prevProps: Props): void => {
+    const { filters, getFilterDetails } = this.props;
+    if (prevProps.filters.asset_group !== filters.asset_group) {
+      getFilterDetails({ asset_group: filters.asset_group });
+    }
+    // eslint-disable-next-line react/no-did-update-set-state
+    this.setState({
+      selectedPropertyType: filters.asset_group,
+      selectedLookingType: filters.asset_transaction_type,
+    });
   };
 
   public render(): React.ReactElement {
@@ -88,6 +109,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
 
   private renderContent = (filterData: IFilterDetails): React.ReactElement => {
     const { selectedPropertyType, selectedLookingType, minPriceRange, maxPriceRange } = this.state;
+    const { t } = this.props;
     const {
       currency,
       asset_group_list,
@@ -97,7 +119,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
     let currencySymbol = '';
 
     const assetGroup = asset_group_list.map((item, index) => {
-      return { title: item.title, value: index };
+      return { title: item.title, value: item.id };
     });
 
     const currencyData = currency.map((item: ICurrency) => {
@@ -121,7 +143,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
     return (
       <View style={styles.content}>
         <Text type="small" textType="semiBold" style={styles.label}>
-          Property Type
+          {t('propertyType')}
         </Text>
         <SelectionPicker
           data={assetGroup}
@@ -129,7 +151,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
           onValueChange={this.onChangeProperty}
         />
         <Text type="small" textType="semiBold" style={styles.label}>
-          Looking For
+          {t('lookingFor')}
         </Text>
         <SelectionPicker
           data={assetTransaction}
@@ -242,25 +264,31 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   private onChangeProperty = (value: number): void => {
-    this.setState({ selectedPropertyType: value, minPriceRange: 0, maxPriceRange: 0 });
+    const { setFilter } = this.props;
+    this.setState({ minPriceRange: 0, maxPriceRange: 0 });
+    setFilter({ asset_group: value });
   };
 
   private onChangeFlow = (value: number): void => {
-    this.setState({ selectedLookingType: value, minPriceRange: 0, maxPriceRange: 0 });
+    const { setFilter } = this.props;
+    this.setState({ minPriceRange: 0, maxPriceRange: 0 });
+    setFilter({ asset_transaction_type: 0 });
   };
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
   return {
     filterData: SearchSelector.getFilterDetail(state),
+    filters: SearchSelector.getFilters(state),
   };
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getFilterDetails } = SearchActions;
+  const { getFilterDetails, setFilter } = SearchActions;
   return bindActionCreators(
     {
       getFilterDetails,
+      setFilter,
     },
     dispatch
   );

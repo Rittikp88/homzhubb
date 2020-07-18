@@ -41,7 +41,11 @@
     "enableLocationPermission": "Please enable location permission",
     "errorFetchingLocation": "Error fetching your current location",
     "searchProperties": "Search Properties",
-    "loginToContinue": "Please login to continue"
+    "loginToContinue": "Please login to continue",
+    "priceRange": "Price Range",
+    "to": "to",
+    "min": "Min",
+    "max": "Max"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -209,6 +213,8 @@
     "beds": "Beds",
     "baths": "Baths",
     "rooms": "Rooms",
-    "price": "Price"
+    "price": "Price",
+    "propertyType": "Property Type",
+    "lookingFor": "Looking For"
   }
 }

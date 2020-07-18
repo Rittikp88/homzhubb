@@ -16,8 +16,9 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton } from '@homzhub/common/src/components';
 import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
-import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
+import { PriceRange } from '@homzhub/mobile/src/components/molecules/PriceRange';
 import { PropertySearchList } from '@homzhub/mobile/src/components/organisms/PropertySearchList';
+import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
@@ -110,6 +111,18 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     }
 
     switch (selectedOnScreenFilter) {
+      case OnScreenFilters.PRICE:
+        // TODO:(Shikha) Need to Refactor
+        return (
+          <PriceRange
+            currencyData={[]}
+            range={{ min: 0, max: 10 }}
+            currencySymbol="$"
+            minChangedValue={1}
+            maxChangedValue={1}
+            onChangeSlide={(value1, value2): void => console.log(value1)}
+          />
+        );
       case OnScreenFilters.ROOMS:
         return (
           <RoomsFilter

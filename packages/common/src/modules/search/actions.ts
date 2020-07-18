@@ -11,11 +11,16 @@ export const SearchActionTypes = {
     FILTER_DETAILS_SUCCESS: `${actionTypePrefix}FILTER_DETAILS_SUCCESS`,
     FILTER_DETAILS_FAILURE: `${actionTypePrefix}FILTER_DETAILS_FAILURE`,
   },
+  SET: {
+    FILTER: `${actionTypePrefix}FILTER`,
+  },
 };
 
-const getFilterDetails = (): IFluxStandardAction => {
+// TODO: Type to be added
+const getFilterDetails = (payload: any): IFluxStandardAction<any> => {
   return {
     type: SearchActionTypes.GET.FILTER_DETAILS,
+    payload,
   };
 };
 
@@ -33,8 +38,17 @@ const getFilterDetailsFailure = (error: string): IFluxStandardAction => {
   };
 };
 
+// TODO: Type to be added
+const setFilter = (payload: any): IFluxStandardAction<any> => {
+  return {
+    type: SearchActionTypes.SET.FILTER,
+    payload,
+  };
+};
+
 export const SearchActions = {
   getFilterDetails,
   getFilterDetailsSuccess,
   getFilterDetailsFailure,
+  setFilter,
 };

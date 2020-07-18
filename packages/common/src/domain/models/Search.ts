@@ -65,14 +65,8 @@ export interface IFilterDetails {
 export interface IFilter {
   search_latitude: number;
   search_longitude: number;
-  asset_transaction_type: string;
-  device_type: string;
-  browser_type: string;
+  asset_transaction_type: number;
   asset_type: number[];
-  user_location_latitude: number;
-  user_location_longitude: number;
-  ip_address: string;
-  search_output_count: number;
   min_price: number;
   max_price: number;
   furnishing_status: string;

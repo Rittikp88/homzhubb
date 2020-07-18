@@ -1,7 +1,7 @@
 import { IFilter, IFilterDetails, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
 
 export interface ISearchState {
-  filter: IFilter | null;
+  filter: IFilter;
   filterDetails: IFilterDetails | null;
   properties: IPropertiesObject;
   error: {

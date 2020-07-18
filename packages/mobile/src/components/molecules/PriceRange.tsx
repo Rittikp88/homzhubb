@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { PickerItemProps, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Label, Slider, Text } from '@homzhub/common/src/components';
-import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 
 interface IRange {
   min: number;
@@ -21,6 +22,7 @@ interface IProps {
 
 export const PriceRange = (props: IProps): React.ReactElement => {
   const { currencyData, onChangeSlide, range, minChangedValue, maxChangedValue, currencySymbol } = props;
+  const { t } = useTranslation();
   const [currency, setCurrency] = useState('INR');
   const onCurrencyChange = (value: string | number): void => {
     setCurrency(value as string);
@@ -33,7 +35,7 @@ export const PriceRange = (props: IProps): React.ReactElement => {
     <>
       <View style={styles.rangeRow}>
         <Text type="small" textType="semiBold" style={{ color: theme.colors.darkTint4 }}>
-          Price Range
+          {t('priceRange')}
         </Text>
         <Dropdown
           data={currencyData}
@@ -50,7 +52,7 @@ export const PriceRange = (props: IProps): React.ReactElement => {
         <Text type="regular" style={styles.sliderValue}>
           {minValue}{' '}
           <Label type="regular" textType="regular">
-            to
+            {t('to')}
           </Label>{' '}
           {maxValue}
         </Text>
@@ -61,6 +63,14 @@ export const PriceRange = (props: IProps): React.ReactElement => {
           minSliderRange={range.min}
           maxSliderRange={range.max}
         />
+        <View style={styles.rangeText}>
+          <Label type="large" style={styles.rangeLabel}>
+            {t('min')}
+          </Label>
+          <Label type="large" style={styles.rangeLabel}>
+            {t('max')}
+          </Label>
+        </View>
       </View>
     </>
   );
@@ -89,5 +99,12 @@ const styles = StyleSheet.create({
   sliderValue: {
     color: theme.colors.darkTint1,
     paddingTop: 10,
+  },
+  rangeText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  rangeLabel: {
+    color: theme.colors.darkTint5,
   },
 });
