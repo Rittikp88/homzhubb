@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
+import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { FontWeightType, Label, Text, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
@@ -14,8 +15,9 @@ interface IProps {
 
 const PricePerUnit = (props: IProps): React.ReactElement => {
   const { price, unit, currency, labelStyle, textStyle, textSizeType = 'regular', textFontWeight = 'semiBold' } = props;
-
-  const priceWithCurrency = `${currency}${price.toLocaleString()}`;
+  const transformedPrice = CurrencyUtils.getCurrency(currency, price);
+  const transformedCurrency = currency === 'INR' ? '₹' : '$';
+  const priceWithCurrency = `${transformedCurrency}${transformedPrice}`;
 
   const renderLabel = (): React.ReactElement => {
     return (

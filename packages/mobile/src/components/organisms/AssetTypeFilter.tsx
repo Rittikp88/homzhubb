@@ -14,19 +14,16 @@ import { IAssetGroupList, IAssetTypes, IFilterDetails } from '@homzhub/common/sr
 
 interface IProps {
   filterData: IFilterDetails;
+  asset_group: number;
+  asset_type: number[];
+  updateAssetFilter: (type: string, value: number | number[]) => void;
 }
+
 type Props = WithTranslation & IProps;
 
 class AssetTypeFilter extends React.PureComponent<Props, {}> {
   public render = (): React.ReactNode => {
-    const {
-      t,
-      filterData: {
-        filters: {
-          asset_group: { id: selectedAssetGroupId },
-        },
-      },
-    } = this.props;
+    const { t, asset_group } = this.props;
     return (
       <View>
         <Text type="small" textType="semiBold" style={styles.title}>
@@ -34,7 +31,7 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
         </Text>
         <SelectionPicker
           data={this.assetGroupsListPickerData()}
-          selectedItem={[selectedAssetGroupId]}
+          selectedItem={[asset_group]}
           onValueChange={this.onAssetGroupListChanged}
         />
         <CheckboxGroup
@@ -48,11 +45,13 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
   };
 
   private onAssetGroupListChanged = (selectedItem: number): void => {
-    console.log(selectedItem);
+    const { updateAssetFilter } = this.props;
+    updateAssetFilter('asset_group', selectedItem);
   };
 
   private onAssetGroupChecked = (assetTypeId: number): void => {
-    console.log(assetTypeId);
+    const { updateAssetFilter } = this.props;
+    updateAssetFilter('asset_type', [assetTypeId]);
   };
 
   private assetGroupsListPickerData = (): ISelectionPicker[] => {
@@ -72,8 +71,9 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
           asset_group: { asset_types },
         },
       },
+      asset_type,
     } = this.props;
-    return asset_types.map((assetGroupType: IAssetTypes) => ({
+    return asset_types.map((assetGroupType: IAssetTypes, index: number) => ({
       id: assetGroupType.id,
       label: assetGroupType.name,
       isSelected: false,

@@ -1,5 +1,5 @@
-export const PropertySearchData = {
-  1: {
+export const PropertySearchData = [
+  {
     id: 1,
     asset_group: {
       id: 1,
@@ -50,7 +50,7 @@ export const PropertySearchData = {
       },
     ],
   },
-  2: {
+  {
     id: 2,
     asset_group: {
       id: 1,
@@ -101,4 +101,4 @@ export const PropertySearchData = {
       },
     ],
   },
-};
+];

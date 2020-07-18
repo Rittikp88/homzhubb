@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { remove } from 'lodash';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SelectionPicker, Text } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -8,7 +9,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps {
   bedCount: number[];
   bathroomCount: number[];
-  onSelection: (type: string, value: number) => void;
+  onSelection: (type: string, value: number | number[]) => void;
 }
 
 // TODO: To be moved either in redux or constants?
@@ -70,10 +71,25 @@ const OPTION_WIDTH = (theme.viewport.width - 40) / 6;
 
 export const RoomsFilter = (props: IProps): React.ReactElement => {
   const { bedCount, bathroomCount, onSelection } = props;
+  const [bedroomCount, setBedroomCount] = useState(bedCount);
+
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
-  const bubbleSelectedValue = (type: string, value: number): void => onSelection(type, value);
-  const onUpdateBedroomCount = (value: number): void => bubbleSelectedValue('BEDS', value);
-  const onUpdateBathroomCount = (value: number): void => bubbleSelectedValue('BATHS', value);
+
+  const bubbleSelectedValue = (type: string, value: number | number[]): void => onSelection(type, value);
+
+  const onUpdateBedroomCount = (value: number): void => {
+    if (value !== -1) {
+      remove(bedroomCount, (count: number) => count === -1);
+      setBedroomCount([...bedroomCount, value]);
+      bubbleSelectedValue('room_count', bedroomCount);
+    } else {
+      setBedroomCount([-1]);
+      bubbleSelectedValue('room_count', bedroomCount);
+    }
+  };
+
+  const onUpdateBathroomCount = (value: number): void => bubbleSelectedValue('bath_count', value);
+
   return (
     <View style={styles.container}>
       <Text type="small" textType="semiBold" style={styles.textStyle}>
@@ -81,7 +97,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
       </Text>
       <SelectionPicker
         data={bedroom}
-        selectedItem={bedCount}
+        selectedItem={bedroomCount}
         onValueChange={onUpdateBedroomCount}
         optionWidth={OPTION_WIDTH}
       />

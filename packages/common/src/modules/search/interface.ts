@@ -3,7 +3,7 @@ import { IFilter, IFilterDetails, IPropertiesObject } from '@homzhub/common/src/
 export interface ISearchState {
   filter: IFilter;
   filterDetails: IFilterDetails | null;
-  properties: IPropertiesObject;
+  properties: IPropertiesObject | null;
   error: {
     search: string;
   };

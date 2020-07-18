@@ -32,13 +32,13 @@ interface IStateProps {
 interface IDispatchProps {
   getFilterDetails: (payload: any) => void;
   setFilter: (payload: any) => void;
+  getProperties: () => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.PropertySearchLanding>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
 interface ILandingState {
-  searchString: string;
   isSearchBarFocused: boolean;
   suggestions: GooglePlaceData[];
   selectedPropertyType: number;
@@ -51,7 +51,6 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   private searchBar: typeof SearchBar | null = null;
 
   public state = {
-    searchString: '',
     isSearchBarFocused: false,
     suggestions: [],
     selectedPropertyType: 0,
@@ -171,8 +170,10 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   private renderHeader = (): React.ReactNode => {
-    const { t } = this.props;
-    const { searchString } = this.state;
+    const {
+      t,
+      filters: { search_address },
+    } = this.props;
     return (
       <View style={styles.header}>
         <Text type="regular">{t('findingRightProperty')}</Text>
@@ -186,7 +187,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
           }}
           placeholder={t('enterLocation')}
           updateValue={this.onSearchStringUpdate}
-          value={searchString}
+          value={search_address}
           containerStyle={styles.searchBarContainer}
           cancelButtonStyle={styles.cancelButtonStyle}
           cancelTextStyle={styles.cancelTextStyle}
@@ -197,11 +198,14 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   private renderSearchResults = (): React.ReactNode => {
-    const { searchString, suggestions } = this.state;
+    const {
+      filters: { search_address },
+    } = this.props;
+    const { suggestions } = this.state;
     return (
       <>
         <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
-        {suggestions.length > 0 && searchString.length > 0 && (
+        {suggestions.length > 0 && search_address.length > 0 && (
           <SearchResults
             results={suggestions}
             onResultPress={this.onSuggestionPress}
@@ -217,15 +221,14 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   private onSearchStringUpdate = (searchString: string): void => {
-    this.setState({ searchString }, () => {
-      if (searchString.length <= 0) {
-        return;
-      }
-      this.getAutocompleteSuggestions();
-    });
+    const { setFilter } = this.props;
+    setFilter({ search_address: searchString });
+    this.getAutocompleteSuggestions();
   };
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
+    const { setFilter } = this.props;
+    setFilter({ search_address: place.description });
     if (this.searchBar) {
       // @ts-ignore
       this.searchBar.SearchTextInput.blur();
@@ -240,14 +243,17 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   private onShowProperties = (): void => {
-    const { navigation } = this.props;
+    const { navigation, getProperties } = this.props;
+    getProperties();
     navigation.navigate(ScreensKeys.PropertyTabsScreen);
   };
 
   // eslint-disable-next-line react/sort-comp
   private getAutocompleteSuggestions = debounce((): void => {
-    const { searchString } = this.state;
-    GooglePlacesService.autoComplete(searchString)
+    const {
+      filters: { search_address },
+    } = this.props;
+    GooglePlacesService.autoComplete(search_address)
       .then((suggestions: GooglePlaceData[]) => {
         this.setState({ suggestions });
       })
@@ -272,7 +278,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   private onChangeFlow = (value: number): void => {
     const { setFilter } = this.props;
     this.setState({ minPriceRange: 0, maxPriceRange: 0 });
-    setFilter({ asset_transaction_type: 0 });
+    setFilter({ asset_transaction_type: value });
   };
 }
 
@@ -284,11 +290,12 @@ export const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getFilterDetails, setFilter } = SearchActions;
+  const { getFilterDetails, setFilter, getProperties } = SearchActions;
   return bindActionCreators(
     {
       getFilterDetails,
       setFilter,
+      getProperties,
     },
     dispatch
   );

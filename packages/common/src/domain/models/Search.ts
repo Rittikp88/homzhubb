@@ -70,10 +70,11 @@ export interface IFilter {
   min_price: number;
   max_price: number;
   furnishing_status: string;
-  room_count: number;
+  room_count: number[];
   bath_count: number;
   is_verified: boolean;
   asset_group: number;
+  search_address: string;
 }
 
 export interface IProperties {
@@ -95,5 +96,10 @@ export interface IProperties {
 }
 
 export interface IPropertiesObject {
-  [key: number]: IProperties;
+  count: number;
+  links: {
+    next: string | null;
+    previous: string | null;
+  };
+  results: IProperties[];
 }

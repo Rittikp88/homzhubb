@@ -1,7 +1,6 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 import { SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
-import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -9,16 +8,17 @@ export const initialSearchState: ISearchState = {
     asset_transaction_type: 0,
     search_latitude: 0,
     search_longitude: 0,
-    asset_type: [0],
-    min_price: 0,
-    max_price: 0,
+    asset_type: [1],
+    min_price: -1,
+    max_price: -1,
     furnishing_status: '',
-    room_count: 0,
-    bath_count: 0,
+    room_count: [-1],
+    bath_count: -1,
     is_verified: false,
+    search_address: '',
   },
   filterDetails: null,
-  properties: PropertySearchData, // TODO: To be remove once the api call is set
+  properties: null,
   error: {
     search: '',
   },
@@ -33,6 +33,7 @@ export const searchReducer = (
 ): ISearchState => {
   switch (action.type) {
     case SearchActionTypes.GET.FILTER_DETAILS:
+    case SearchActionTypes.GET.PROPERTIES:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['search']: true },
@@ -45,10 +46,17 @@ export const searchReducer = (
         ['loaders']: { ...state.loaders, ['search']: false },
       };
     case SearchActionTypes.GET.FILTER_DETAILS_FAILURE:
+    case SearchActionTypes.GET.PROPERTIES_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['search']: false },
         ['error']: { ...state.error, ['search']: action.error as string },
+      };
+    case SearchActionTypes.GET.PROPERTIES_SUCCESS:
+      return {
+        ...state,
+        ['properties']: action.payload,
+        ['loaders']: { ...state.loaders, ['search']: false },
       };
     case SearchActionTypes.SET.FILTER:
       return {

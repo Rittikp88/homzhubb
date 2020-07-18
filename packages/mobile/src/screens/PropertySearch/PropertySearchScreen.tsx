@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -11,9 +12,10 @@ import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/inter
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton } from '@homzhub/common/src/components';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton, Text } from '@homzhub/common/src/components';
 import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 import { PriceRange } from '@homzhub/mobile/src/components/molecules/PriceRange';
@@ -22,7 +24,7 @@ import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/Prop
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
-import { IFilterDetails, IProperties } from '@homzhub/common/src/domain/models/Search';
+import { ICurrency, IFilter, IFilterDetails, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -32,20 +34,25 @@ export enum OnScreenFilters {
 }
 
 interface IStateProps {
-  properties: IProperties[];
+  properties: IPropertiesObject;
   filterData: IFilterDetails | null;
+  filters: IFilter;
+}
+
+// TODO: (Shikha) Need to add types
+interface IDispatchProps {
+  setFilter: (payload: any) => void;
 }
 
 interface IPropertySearchScreenState {
   isMapView: boolean;
   selectedOnScreenFilter: OnScreenFilters | string;
   isMenuTrayCollapsed: boolean;
-  searchString: string;
   isSearchBarFocused: boolean;
   suggestions: GooglePlaceData[];
 }
 
-type Props = WithTranslation & IStateProps;
+type Props = WithTranslation & IStateProps & IDispatchProps;
 
 class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
   private searchBar: typeof SearchBar | null = null;
@@ -54,7 +61,6 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     selectedOnScreenFilter: '',
     isMenuTrayCollapsed: false,
     suggestions: [],
-    searchString: '',
     isSearchBarFocused: false,
   };
 
@@ -85,16 +91,19 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   private renderContent = (): React.ReactNode => {
     const { isMapView } = this.state;
     const { properties } = this.props;
+    if (!properties) {
+      return null;
+    }
     return (
       <View style={styles.flexFour}>
         {isMapView ? (
           <>
-            <PropertySearchMap />
+            <PropertySearchMap properties={properties.results} />
             {this.renderMenuTray()}
           </>
         ) : (
           <>
-            <PropertySearchList properties={properties} onFavorite={this.onFavoriteProperty} />
+            <PropertySearchList properties={properties.results} onFavorite={this.onFavoriteProperty} />
             {this.renderMenuTray()}
           </>
         )}
@@ -104,42 +113,64 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderCollapsibleTray = (): React.ReactNode => {
     const { selectedOnScreenFilter } = this.state;
-    const { filterData } = this.props;
+    const {
+      filterData,
+      filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price },
+      setFilter,
+    } = this.props;
+    let currencySymbol = '';
+    const priceRange = { min: 0, max: 0 };
 
     if (!filterData) {
       return null;
     }
+
+    const currencyData = filterData.currency.map((item: ICurrency) => {
+      currencySymbol = item.currency_symbol;
+      return {
+        label: item.currency_code,
+        value: item.currency_code,
+      };
+    });
+
+    const updateFilter = (type: string, value: number | number[]): void => {
+      setFilter({ [type]: value });
+    };
 
     switch (selectedOnScreenFilter) {
       case OnScreenFilters.PRICE:
         // TODO:(Shikha) Need to Refactor
         return (
           <PriceRange
-            currencyData={[]}
-            range={{ min: 0, max: 10 }}
-            currencySymbol="$"
-            minChangedValue={1}
-            maxChangedValue={1}
-            onChangeSlide={(value1, value2): void => console.log(value1)}
+            currencyData={currencyData}
+            range={priceRange}
+            currencySymbol={currencySymbol}
+            minChangedValue={min_price}
+            maxChangedValue={max_price}
+            onChangeSlide={() => console.log('here')}
           />
         );
       case OnScreenFilters.ROOMS:
+        return <RoomsFilter bedCount={room_count} bathroomCount={[bath_count]} onSelection={updateFilter} />;
+      case OnScreenFilters.TYPE:
         return (
-          <RoomsFilter
-            bedCount={[1, 2]}
-            bathroomCount={[3]}
-            onSelection={(type: string, value: number): void => console.log(type)}
+          <AssetTypeFilter
+            filterData={filterData}
+            asset_group={asset_group}
+            asset_type={asset_type}
+            updateAssetFilter={updateFilter}
           />
         );
-      case OnScreenFilters.TYPE:
-        return <AssetTypeFilter filterData={filterData} />;
       default:
         return null;
     }
   };
 
   private renderSearchContainer = (): React.ReactNode => {
-    const { isSearchBarFocused, searchString } = this.state;
+    const { isSearchBarFocused } = this.state;
+    const {
+      filters: { search_address },
+    } = this.props;
     const { t } = this.props;
     if (!isSearchBarFocused) {
       return null;
@@ -153,7 +184,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
           }}
           placeholder={t('enterLocation')}
           updateValue={this.onSearchStringUpdate}
-          value={searchString}
+          value={search_address}
           autoFocus
           containerStyle={styles.searchBarContainer}
           cancelButtonStyle={styles.cancelButtonStyle}
@@ -166,26 +197,29 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private renderFilterTray = (): React.ReactNode => {
-    const { t } = this.props;
-    const { selectedOnScreenFilter, isMenuTrayCollapsed } = this.state;
+    const {
+      t,
+      filters: { search_address },
+    } = this.props;
+    const { selectedOnScreenFilter, isMenuTrayCollapsed, isSearchBarFocused } = this.state;
     const onScreenFilters = [
       { type: OnScreenFilters.TYPE, label: t('type') },
       { type: OnScreenFilters.PRICE, label: t('price') },
       { type: OnScreenFilters.ROOMS, label: t('rooms') },
       { type: OnScreenFilters.MORE, label: icons.filter },
     ];
+    const toggleSearchBar = (): void => this.setState({ isSearchBarFocused: !isSearchBarFocused });
     return (
       <>
         <View style={styles.filterTray}>
-          {/* TODO: To be changed to search bar component */}
-          <Label
-            type="large"
-            textType="regular"
-            // @ts-ignore
-            onPress={this.onSearchBarFocusChange}
-          >
-            Selected Address
-          </Label>
+          <TouchableOpacity onPress={toggleSearchBar}>
+            <View style={styles.addressContainer}>
+              <Icon name={icons.search} size={20} color={theme.colors.darkTint5} />
+              <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
+                {search_address}
+              </Text>
+            </View>
+          </TouchableOpacity>
           <View style={styles.menuTrayContainer}>
             {onScreenFilters.map((item: { type: OnScreenFilters; label: string }, index: number) => {
               const { type, label } = item;
@@ -239,11 +273,14 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private renderSearchResults = (): React.ReactNode => {
-    const { searchString, suggestions } = this.state;
+    const { suggestions } = this.state;
+    const {
+      filters: { search_address },
+    } = this.props;
     return (
       <>
         <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
-        {suggestions.length > 0 && searchString.length > 0 && (
+        {suggestions.length > 0 && search_address.length > 0 && (
           <SearchResults
             results={suggestions}
             onResultPress={this.onSuggestionPress}
@@ -278,12 +315,9 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   public onFavoriteProperty = (propertyId: number): void => {};
 
   private onSearchStringUpdate = (searchString: string): void => {
-    this.setState({ searchString }, () => {
-      if (searchString.length <= 0) {
-        return;
-      }
-      this.getAutocompleteSuggestions();
-    });
+    const { setFilter } = this.props;
+    setFilter({ search_address: searchString });
+    this.getAutocompleteSuggestions();
   };
 
   private onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
@@ -294,20 +328,24 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
+    const { setFilter } = this.props;
+    setFilter({ search_address: place.description });
     if (this.searchBar) {
       // @ts-ignore
       this.searchBar.SearchTextInput.blur();
     }
   };
 
-  private onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
+  public onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
     this.setState({ isSearchBarFocused });
   };
 
   // eslint-disable-next-line react/sort-comp
   private getAutocompleteSuggestions = debounce((): void => {
-    const { searchString } = this.state;
-    GooglePlacesService.autoComplete(searchString)
+    const {
+      filters: { search_address },
+    } = this.props;
+    GooglePlacesService.autoComplete(search_address)
       .then((suggestions: GooglePlaceData[]) => {
         this.setState({ suggestions });
       })
@@ -325,16 +363,27 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getPropertiesArray } = SearchSelector;
+  const { getProperties, getFilters, getFilterDetail } = SearchSelector;
   return {
-    properties: getPropertiesArray(state),
-    filterData: SearchSelector.getFilterDetail(state),
+    properties: getProperties(state),
+    filterData: getFilterDetail(state),
+    filters: getFilters(state),
   };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setFilter } = SearchActions;
+  return bindActionCreators(
+    {
+      setFilter,
+    },
+    dispatch
+  );
 };
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.propertySearch)(PropertySearchScreen));
 
 const styles = StyleSheet.create({
@@ -415,6 +464,19 @@ const styles = StyleSheet.create({
   filterTray: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+  },
+  addressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: theme.colors.darkTint12,
+    borderWidth: 1,
+    margin: theme.layout.screenPadding,
+    padding: 8,
+  },
+  address: {
+    marginStart: 15,
+    width: 300,
   },
 });

@@ -10,6 +10,9 @@ export const SearchActionTypes = {
     FILTER_DETAILS: `${actionTypePrefix}FILTER_DETAILS`,
     FILTER_DETAILS_SUCCESS: `${actionTypePrefix}FILTER_DETAILS_SUCCESS`,
     FILTER_DETAILS_FAILURE: `${actionTypePrefix}FILTER_DETAILS_FAILURE`,
+    PROPERTIES: `${actionTypePrefix}PROPERTIES`,
+    PROPERTIES_SUCCESS: `${actionTypePrefix}PROPERTIES_SUCCESS`,
+    PROPERTIES_FAILURE: `${actionTypePrefix}PROPERTIES_FAILURE`,
   },
   SET: {
     FILTER: `${actionTypePrefix}FILTER`,
@@ -46,9 +49,32 @@ const setFilter = (payload: any): IFluxStandardAction<any> => {
   };
 };
 
+const getProperties = (): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.GET.PROPERTIES,
+  };
+};
+
+const getPropertiesSuccess = (data: any): IFluxStandardAction<any> => {
+  return {
+    type: SearchActionTypes.GET.PROPERTIES_SUCCESS,
+    payload: data,
+  };
+};
+
+const getPropertiesFailure = (error: string): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.GET.PROPERTIES_FAILURE,
+    error,
+  };
+};
+
 export const SearchActions = {
   getFilterDetails,
   getFilterDetailsSuccess,
   getFilterDetailsFailure,
   setFilter,
+  getProperties,
+  getPropertiesSuccess,
+  getPropertiesFailure,
 };
