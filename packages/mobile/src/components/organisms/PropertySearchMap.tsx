@@ -92,8 +92,6 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
     const {
       images,
       project_name,
-      carpet_area,
-      carpet_area_unit,
       spaces,
       lease_term: { expected_price, currency_code },
     } = item;

@@ -47,11 +47,15 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
   private onAssetGroupListChanged = (selectedItem: number): void => {
     const { updateAssetFilter } = this.props;
     updateAssetFilter('asset_group', selectedItem);
+    updateAssetFilter('min_price', -1);
+    updateAssetFilter('max_price', -1);
   };
 
   private onAssetGroupChecked = (assetTypeId: number): void => {
     const { updateAssetFilter } = this.props;
     updateAssetFilter('asset_type', [assetTypeId]);
+    updateAssetFilter('min_price', -1);
+    updateAssetFilter('max_price', -1);
   };
 
   private assetGroupsListPickerData = (): ISelectionPicker[] => {
@@ -71,7 +75,6 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
           asset_group: { asset_types },
         },
       },
-      asset_type,
     } = this.props;
     return asset_types.map((assetGroupType: IAssetTypes, index: number) => ({
       id: assetGroupType.id,

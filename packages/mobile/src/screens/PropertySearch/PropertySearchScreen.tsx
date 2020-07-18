@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, PickerItemProps } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -24,7 +24,13 @@ import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/Prop
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
-import { ICurrency, IFilter, IFilterDetails, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import {
+  ICurrency,
+  IFilter,
+  IFilterDetails,
+  IPropertiesObject,
+  ITransactionRange,
+} from '@homzhub/common/src/domain/models/Search';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -37,6 +43,8 @@ interface IStateProps {
   properties: IPropertiesObject;
   filterData: IFilterDetails | null;
   filters: IFilter;
+  currencyData: PickerItemProps[];
+  priceRange: ITransactionRange;
 }
 
 // TODO: (Shikha) Need to add types
@@ -118,21 +126,20 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       filterData,
       filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price },
       setFilter,
+      currencyData,
       getProperties,
+      priceRange,
     } = this.props;
     let currencySymbol = '';
-    const priceRange = { min: 0, max: 0 };
 
     if (!filterData) {
       return null;
     }
 
-    const currencyData = filterData.currency.map((item: ICurrency) => {
+    const { currency } = filterData;
+
+    currency.forEach((item: ICurrency) => {
       currencySymbol = item.currency_symbol;
-      return {
-        label: item.currency_code,
-        value: item.currency_code,
-      };
     });
 
     const updateFilter = (type: string, value: number | number[]): void => {
@@ -142,7 +149,6 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
     switch (selectedOnScreenFilter) {
       case OnScreenFilters.PRICE:
-        // TODO:(Shikha) Need to Refactor
         return (
           <PriceRange
             currencyData={currencyData}
@@ -150,7 +156,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
             currencySymbol={currencySymbol}
             minChangedValue={min_price}
             maxChangedValue={max_price}
-            onChangeSlide={() => console.log('here')}
+            onChangeSlide={updateFilter}
           />
         );
       case OnScreenFilters.ROOMS:
@@ -367,11 +373,13 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getProperties, getFilters, getFilterDetail } = SearchSelector;
+  const { getProperties, getFilters, getFilterDetail, getCurrencyData, getPriceRange } = SearchSelector;
   return {
     properties: getProperties(state),
     filterData: getFilterDetail(state),
     filters: getFilters(state),
+    currencyData: getCurrencyData(state),
+    priceRange: getPriceRange(state),
   };
 };
 

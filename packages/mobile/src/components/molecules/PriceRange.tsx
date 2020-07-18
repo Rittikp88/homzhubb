@@ -17,7 +17,7 @@ interface IProps {
   currencySymbol: string;
   minChangedValue: number;
   maxChangedValue: number;
-  onChangeSlide: (value1: number, value2?: number) => void;
+  onChangeSlide: (type: string, value: number | number[]) => void;
 }
 
 export const PriceRange = (props: IProps): React.ReactElement => {
@@ -30,6 +30,11 @@ export const PriceRange = (props: IProps): React.ReactElement => {
   const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(currency, value);
   const maxValue = maxChangedValue > 0 ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}` : 'Any';
   const minValue = minChangedValue > 0 ? `${currencySymbol}${getCurrencyValue(minChangedValue)}` : 'Any';
+
+  const onUpdatePrice = (value1: number, value2?: number): void => {
+    onChangeSlide('min_price', value1);
+    onChangeSlide('max_price', value2 || 0);
+  };
 
   return (
     <>
@@ -58,10 +63,12 @@ export const PriceRange = (props: IProps): React.ReactElement => {
         </Text>
         <Slider
           key={range.max}
-          onSliderChange={onChangeSlide}
+          onSliderChange={onUpdatePrice}
           isMultipleSlider
           minSliderRange={range.min}
           maxSliderRange={range.max}
+          minSliderValue={minChangedValue}
+          maxSliderValue={maxChangedValue}
         />
         <View style={styles.rangeText}>
           <Label type="large" style={styles.rangeLabel}>

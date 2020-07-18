@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar, PickerItemProps } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
@@ -20,12 +20,14 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ICurrency, IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
+import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
 interface IStateProps {
   filterData: IFilterDetails | null;
   filters: IFilter;
+  currencyData: PickerItemProps[];
+  priceRange: ITransactionRange;
 }
 
 // TODO: (Shikha) Need to add types
@@ -61,23 +63,31 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
 
   public componentDidMount = (): void => {
     const { getFilterDetails, filters } = this.props;
-    const { asset_group, asset_transaction_type } = filters;
+    const { asset_group, asset_transaction_type, min_price, max_price } = filters;
     this.setState({
       selectedPropertyType: asset_group,
       selectedLookingType: asset_transaction_type,
+      minPriceRange: min_price,
+      maxPriceRange: max_price,
     });
     getFilterDetails({ asset_group: filters.asset_group });
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
-    const { filters, getFilterDetails } = this.props;
-    if (prevProps.filters.asset_group !== filters.asset_group) {
-      getFilterDetails({ asset_group: filters.asset_group });
+    const {
+      filters: { asset_group, max_price, min_price, search_latitude, search_longitude, asset_transaction_type },
+      getFilterDetails,
+    } = this.props;
+
+    if (prevProps.filters.asset_group !== asset_group || prevProps.filters.search_latitude !== search_latitude) {
+      getFilterDetails({ latitude: search_latitude, longitute: search_longitude, asset_group });
     }
     // eslint-disable-next-line react/no-did-update-set-state
     this.setState({
-      selectedPropertyType: filters.asset_group,
-      selectedLookingType: filters.asset_transaction_type,
+      selectedPropertyType: asset_group,
+      selectedLookingType: asset_transaction_type,
+      minPriceRange: min_price,
+      maxPriceRange: max_price,
     });
   };
 
@@ -113,35 +123,24 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
 
   private renderContent = (filterData: IFilterDetails): React.ReactElement => {
     const { selectedPropertyType, selectedLookingType, minPriceRange, maxPriceRange } = this.state;
-    const { t } = this.props;
+    const { t, currencyData, priceRange } = this.props;
     const {
       currency,
       asset_group_list,
       filters: { transaction_type },
     } = filterData;
-    let priceRange = { min: 0, max: 0 };
     let currencySymbol = '';
 
     const assetGroup = asset_group_list.map((item, index) => {
       return { title: item.title, value: item.id };
     });
 
-    const currencyData = currency.map((item: ICurrency) => {
+    currency.forEach((item: ICurrency) => {
       currencySymbol = item.currency_symbol;
-      return {
-        label: item.currency_code,
-        value: item.currency_code,
-      };
     });
 
     const assetTransaction = transaction_type.map((item, index) => {
       return { title: item.title, value: index };
-    });
-
-    transaction_type.forEach((item, index) => {
-      if (index === selectedLookingType) {
-        priceRange = { min: item.min_price, max: item.max_price };
-      }
     });
 
     return (
@@ -165,7 +164,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
         <PriceRange
           currencyData={currencyData}
           currencySymbol={currencySymbol}
-          onChangeSlide={this.onSliderValueChange}
+          onChangeSlide={this.updateFilter}
           range={priceRange}
           minChangedValue={minPriceRange}
           maxChangedValue={maxPriceRange}
@@ -233,7 +232,15 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
     const { setFilter } = this.props;
-    setFilter({ search_address: place.description });
+    GooglePlacesService.getPlaceDetail(place.place_id)
+      .then((placeDetail: GooglePlaceDetail) => {
+        setFilter({
+          search_address: place.description,
+          search_latitude: placeDetail.geometry.location.lat,
+          search_longitude: placeDetail.geometry.location.lng,
+        });
+      })
+      .catch(this.displayError);
     if (this.searchBar) {
       // @ts-ignore
       this.searchBar.SearchTextInput.blur();
@@ -267,23 +274,23 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
       });
   }, 300);
 
-  private onSliderValueChange = (value1: number, value2?: number): void => {
-    this.setState({
-      minPriceRange: value1,
-      maxPriceRange: value2 || 0,
-    });
-  };
-
   private onChangeProperty = (value: number): void => {
     const { setFilter } = this.props;
-    this.setState({ minPriceRange: 0, maxPriceRange: 0 });
-    setFilter({ asset_group: value });
+    setFilter({ asset_group: value, min_price: -1, max_price: -1, asset_transaction_type: 0 });
   };
 
   private onChangeFlow = (value: number): void => {
     const { setFilter } = this.props;
-    this.setState({ minPriceRange: 0, maxPriceRange: 0 });
-    setFilter({ asset_transaction_type: value });
+    setFilter({ asset_transaction_type: value, min_price: -1, max_price: -1 });
+  };
+
+  private updateFilter = (type: string, value: number | number[]): void => {
+    const { setFilter } = this.props;
+    setFilter({ [type]: value });
+  };
+
+  private displayError = (e: Error): void => {
+    AlertHelper.error({ message: e.message });
   };
 }
 
@@ -291,6 +298,8 @@ export const mapStateToProps = (state: IState): IStateProps => {
   return {
     filterData: SearchSelector.getFilterDetail(state),
     filters: SearchSelector.getFilters(state),
+    currencyData: SearchSelector.getCurrencyData(state),
+    priceRange: SearchSelector.getPriceRange(state),
   };
 };
 

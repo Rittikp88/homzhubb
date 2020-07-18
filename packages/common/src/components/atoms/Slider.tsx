@@ -8,6 +8,8 @@ interface ISliderProps {
   isLabelRequired?: boolean;
   maxSliderRange?: number;
   minSliderRange?: number;
+  minSliderValue?: number;
+  maxSliderValue?: number;
   onSliderChange: (val1: number, val2?: number) => void;
   labelText?: string;
 }
@@ -20,9 +22,10 @@ interface ISliderState {
 export class Slider extends Component<ISliderProps, ISliderState> {
   public constructor(props: ISliderProps) {
     super(props);
-    const { minSliderRange, maxSliderRange } = props;
+    const { minSliderValue, maxSliderValue, maxSliderRange } = props;
+    const max = maxSliderValue && maxSliderValue > 0 ? maxSliderValue : maxSliderRange || 10;
     this.state = {
-      multiSliderValue: [minSliderRange || 0, maxSliderRange || 10],
+      multiSliderValue: [minSliderValue || 0, max],
       singleSliderValue: [0],
     };
   }

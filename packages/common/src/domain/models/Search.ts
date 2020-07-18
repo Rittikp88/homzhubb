@@ -28,6 +28,11 @@ export interface ITransactionType {
   max_price: number;
 }
 
+export interface ITransactionRange {
+  min: number;
+  max: number;
+}
+
 export interface IFilters {
   asset_group: IAssetGroup;
   transaction_type: ITransactionType[];

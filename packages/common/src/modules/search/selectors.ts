@@ -1,5 +1,12 @@
+import { PickerItemProps } from 'react-native';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
+import {
+  IFilterDetails,
+  IFilter,
+  ICurrency,
+  ITransactionRange,
+  ITransactionType,
+} from '@homzhub/common/src/domain/models/Search';
 
 const getFilterDetail = (state: IState): IFilterDetails | null => {
   const {
@@ -22,8 +29,46 @@ const getProperties = (state: IState): any => {
   return properties;
 };
 
+const getCurrencyData = (state: IState): PickerItemProps[] => {
+  const {
+    search: { filterDetails },
+  } = state;
+  if (!filterDetails) {
+    return [];
+  }
+  return filterDetails.currency.map((item: ICurrency) => {
+    return {
+      label: item.currency_code,
+      value: item.currency_code,
+    };
+  });
+};
+
+const getPriceRange = (state: IState): ITransactionRange => {
+  const {
+    search: { filterDetails, filter },
+  } = state;
+  let priceRange = { min: 0, max: 10 };
+
+  if (filterDetails) {
+    const {
+      filters: { transaction_type },
+    } = filterDetails;
+
+    transaction_type.forEach((item: ITransactionType, index: number) => {
+      if (index === filter.asset_transaction_type) {
+        priceRange = { min: item.min_price, max: item.max_price };
+      }
+    });
+  }
+
+  return priceRange;
+};
+
 export const SearchSelector = {
   getProperties,
   getFilterDetail,
   getFilters,
+  getCurrencyData,
+  getPriceRange,
 };

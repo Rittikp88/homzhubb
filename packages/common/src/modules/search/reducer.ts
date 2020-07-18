@@ -59,6 +59,7 @@ export const searchReducer = (
         ['loaders']: { ...state.loaders, ['search']: false },
       };
     case SearchActionTypes.SET.FILTER:
+      console.log(action.payload, 'reducer');
       return {
         ...state,
         ['filter']: { ...state.filter, ...action.payload },
