@@ -79,8 +79,14 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
   const onUpdateBedroomCount = (value: number): void => {
     if (value !== -1) {
       remove(bedCount, (count: number) => count === -1);
-      const newBedroomCount = bedCount.concat(value);
-      bubbleSelectedValue('room_count', newBedroomCount);
+      if (bedCount.includes(value)) {
+        remove(bedCount, (count: number) => count === value);
+        const newBedroomCount = bedCount.length === 0 ? [-1] : bedCount;
+        bubbleSelectedValue('room_count', newBedroomCount);
+      } else {
+        const newBedroomCount = bedCount.concat(value);
+        bubbleSelectedValue('room_count', newBedroomCount);
+      }
     } else {
       const newBedroomCount = [-1];
       bubbleSelectedValue('room_count', newBedroomCount);
@@ -116,6 +122,8 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flex: 0,
+    paddingHorizontal: 2,
+    paddingTop: 0,
   },
   textStyle: {
     color: theme.colors.darkTint4,

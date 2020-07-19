@@ -68,7 +68,7 @@ export { SelectionPicker };
 const styles = StyleSheet.create({
   container: {
     borderColor: theme.colors.primaryColor,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderRadius: 4,
   },
   divider: {

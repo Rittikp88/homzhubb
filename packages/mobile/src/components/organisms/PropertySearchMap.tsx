@@ -1,10 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { Marker, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { IUserPayload, SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
-import { IImages, IProperties } from '@homzhub/common/src/domain/models/Search';
+import { IImages, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
   currentSlide: number;
@@ -14,10 +18,11 @@ interface IProps {
   properties: IProperties[];
 }
 
+type Props = IProps & WithTranslation;
 const SLIDER_WIDTH = theme.viewport.width - 60;
 const MAP_DELTA = 0.1;
 
-export class PropertySearchMap extends React.PureComponent<IProps, IState> {
+class PropertySearchMap extends React.PureComponent<Props, IState> {
   private mapRef: MapView | null = null;
   private carouselRef = null;
 
@@ -85,20 +90,15 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
   };
 
   private renderCarouselItem = (item: IProperties): React.ReactElement => {
-    const {
-      images,
-      project_name,
-      // carpet_area,
-      // carpet_area_unit,
-      // spaces,
-      lease_term: { expected_price, currency_code },
-    } = item;
-    // const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-    //   return space.name === SpaceAvailableTypes.BEDROOM;
-    // });
-    // const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-    //   return space.name === SpaceAvailableTypes.BATHROOM;
-    // });
+    const { images, project_name, carpet_area, carpet_area_unit, spaces, lease_term } = item;
+    const currency = !lease_term ? 'INR' : lease_term.currency_code;
+    const price = !lease_term ? 0 : lease_term.expected_price;
+    const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+      return space.name === SpaceAvailableTypes.BEDROOM;
+    });
+    const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+      return space.name === SpaceAvailableTypes.BATHROOM;
+    });
     const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
     return (
       <PropertyMapCard
@@ -109,21 +109,25 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
               : 'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
         }}
         name={project_name}
-        currency={currency_code}
-        price={Number(expected_price)}
+        currency={currency}
+        price={Number(price) ?? 0}
         priceUnit="month"
-        // bedroom={bedroom[0].count.toString() ?? '-'}
-        // bathroom={bathroom[0].count.toString() ?? '-'}
-        bedroom="2"
-        bathroom="3"
-        carpetArea="1000 Sqft"
+        isFavorite={false}
+        bedroom={bedroom.length > 0 ? bedroom[0].count.toString() : '-'}
+        bathroom={bathroom.length > 0 ? bathroom[0].count.toString() : '-'}
+        carpetArea={`${carpet_area} ${carpet_area_unit}`}
         onFavorite={this.onFavorite}
       />
     );
   };
 
-  private onFavorite = (): void => {
-    // TODO (Aditya 14/7/2020): Do we require a favourite service?
+  private onFavorite = async (): Promise<void> => {
+    const { t } = this.props;
+    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
+    if (!user) {
+      AlertHelper.error({ message: t('common:loginToContinue') });
+    }
+    // TODO: Call the api from favorite service
   };
 
   public onSnapToItem = (currentSlide: number): void => {
@@ -149,6 +153,7 @@ export class PropertySearchMap extends React.PureComponent<IProps, IState> {
   };
 }
 
+export default withTranslation()(PropertySearchMap);
 const styles = StyleSheet.create({
   mapView: {
     flex: 1,

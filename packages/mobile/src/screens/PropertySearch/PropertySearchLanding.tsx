@@ -75,12 +75,24 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
 
   public componentDidUpdate = (prevProps: Props): void => {
     const {
-      filters: { asset_group, max_price, min_price, search_latitude, search_longitude, asset_transaction_type },
+      filters: {
+        asset_group,
+        max_price,
+        min_price,
+        search_latitude,
+        search_longitude,
+        asset_transaction_type,
+        search_address,
+      },
       getFilterDetails,
     } = this.props;
 
     if (prevProps.filters.asset_group !== asset_group || prevProps.filters.search_latitude !== search_latitude) {
       getFilterDetails({ latitude: search_latitude, longitute: search_longitude, asset_group });
+    }
+
+    if (prevProps.filters.search_address !== search_address) {
+      this.getAutocompleteSuggestions();
     }
     // eslint-disable-next-line react/no-did-update-set-state
     this.setState({
@@ -248,10 +260,21 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   private onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
+    const { setFilter } = this.props;
     const {
       coords: { latitude, longitude },
     } = data;
-    console.log(latitude, longitude);
+    GooglePlacesService.getLocationData({ lng: longitude, lat: latitude })
+      .then((locData) => {
+        const { formatted_address } = locData;
+        const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
+        setFilter({
+          search_address: `${primaryAddress} ${secondaryAddress}`,
+          search_latitude: latitude,
+          search_longitude: longitude,
+        });
+      })
+      .catch(this.displayError);
   };
 
   private onShowProperties = (): void => {
@@ -365,6 +388,7 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: theme.colors.white,
     margin: theme.layout.screenPadding,
+    flex: 1,
   },
   label: {
     color: theme.colors.darkTint4,

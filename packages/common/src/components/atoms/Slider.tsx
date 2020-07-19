@@ -50,6 +50,7 @@ export class Slider extends Component<ISliderProps, ISliderState> {
         enableLabel={isLabelRequired}
         isMarkersSeparated
         selectedStyle={styles.selectedStyle}
+        markerContainerStyle={styles.markerContainer}
         customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
         customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
       />
@@ -134,4 +135,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.active,
   },
   selectedStyle: { backgroundColor: theme.colors.primaryColor },
+  markerContainer: {
+    justifyContent: 'center',
+  },
 });

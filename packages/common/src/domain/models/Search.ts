@@ -96,7 +96,7 @@ export interface IProperties {
   total_floors: number;
   asset_type: IAssetTypes;
   spaces: ISpaces[];
-  lease_term: ILeaseTerm;
+  lease_term: ILeaseTerm | null;
   images: IImages[];
 }
 

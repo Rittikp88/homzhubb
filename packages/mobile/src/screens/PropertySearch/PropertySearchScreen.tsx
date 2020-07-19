@@ -21,7 +21,7 @@ import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilte
 import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 import { PriceRange } from '@homzhub/mobile/src/components/molecules/PriceRange';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
-import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
+import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
@@ -75,6 +75,15 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     isSearchBarFocused: false,
   };
 
+  public componentDidUpdate = (prevProps: Props): void => {
+    const {
+      filters: { search_address },
+    } = this.props;
+    if (prevProps.filters.search_address !== search_address) {
+      this.getAutocompleteSuggestions();
+    }
+  };
+
   public render(): React.ReactNode {
     const { isLoading } = this.props;
     if (isLoading) {
@@ -119,7 +128,11 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
           </>
         ) : (
           <ScrollView style={styles.flexOne}>
-            <PropertySearchList properties={properties.results} onFavorite={this.onFavoriteProperty} />
+            <PropertySearchList
+              properties={properties.results}
+              propertyCount={properties.count}
+              onFavorite={this.onFavoriteProperty}
+            />
             {this.renderMenuTray()}
           </ScrollView>
         )}
@@ -164,14 +177,12 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     });
 
     const updateFilter = (type: string, value: number | number[]): void => {
-      console.log(type, value);
+      setFilter({ [type]: value });
       if (type === 'min_price' || type === 'max_price') {
-        setFilter({ [type]: value });
         setTimeout(() => {
           getProperties();
         }, 500);
       } else {
-        setFilter({ [type]: value });
         getProperties();
       }
     };
@@ -364,10 +375,21 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
+    const { setFilter } = this.props;
     const {
       coords: { latitude, longitude },
     } = data;
-    console.log(latitude, longitude);
+    GooglePlacesService.getLocationData({ lng: longitude, lat: latitude })
+      .then((locData) => {
+        const { formatted_address } = locData;
+        const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
+        setFilter({
+          search_address: `${primaryAddress} ${secondaryAddress}`,
+          search_latitude: latitude,
+          search_longitude: longitude,
+        });
+      })
+      .catch(this.displayError);
   };
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
@@ -381,6 +403,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   public onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
     this.setState({ isSearchBarFocused });
+  };
+
+  private displayError = (e: Error): void => {
+    AlertHelper.error({ message: e.message });
   };
 
   // eslint-disable-next-line react/sort-comp
@@ -464,10 +490,8 @@ const styles = StyleSheet.create({
   },
   menuTrayContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: theme.colors.white,
-    paddingHorizontal: theme.layout.screenPadding,
-    paddingVertical: 12,
+    justifyContent: 'space-around',
+    marginHorizontal: 5,
   },
   filterButtons: {
     flex: 0,
@@ -492,8 +516,8 @@ const styles = StyleSheet.create({
   },
   trayContainer: {
     backgroundColor: theme.colors.white,
-    padding: 20,
-    paddingTop: 10,
+    padding: 15,
+    paddingTop: 0,
     position: 'absolute',
     top: 0,
     borderRadius: 4,
@@ -530,6 +554,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint12,
     borderWidth: 1,
     margin: theme.layout.screenPadding,
+    marginBottom: 0,
     padding: 8,
   },
   address: {

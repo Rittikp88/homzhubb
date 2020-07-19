@@ -11,6 +11,7 @@ import { IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   properties: IProperties[];
+  propertyCount: number;
   onFavorite: (propertyId: number) => void;
 }
 
@@ -18,8 +19,8 @@ type Props = IProps & WithTranslation;
 
 class PropertySearchList extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
-    const { properties, onFavorite, t } = this.props;
-    if (properties.length === 0) {
+    const { properties, propertyCount, onFavorite, t } = this.props;
+    if (propertyCount === 0) {
       return (
         <View style={styles.noResultsContainer}>
           <Icon name={icons.search} size={30} color={theme.colors.disabledSearch} />
@@ -44,7 +45,7 @@ class PropertySearchList extends React.PureComponent<Props, {}> {
     return (
       <View style={styles.container}>
         <Label type="large" textType="semiBold" style={styles.label}>
-          {properties.length ?? 0} {t('propertiesFound')}
+          {propertyCount ?? 0} {t('propertiesFound')}
         </Label>
         <FlatList
           data={properties}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUserPayload, SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { IAmenitiesIcons, IProperties } from '@homzhub/common/src/domain/models/Search';
+import { IAmenitiesIcons, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { Divider, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
@@ -60,14 +60,14 @@ class PropertyListCard extends React.Component<Props, {}> {
 
   public renderPriceAndAmenities = (): React.ReactElement => {
     const {
-      property: {
-        lease_term: { expected_price, currency_code },
-      },
+      property: { lease_term },
     } = this.props;
+    const currency = !lease_term ? 'INR' : lease_term.currency_code;
+    const price = !lease_term ? '0' : lease_term.expected_price;
     const amenitiesData: IAmenitiesIcons[] = this.getAmenities();
     return (
       <View style={styles.amenities}>
-        <PricePerUnit price={parseInt(expected_price, 10)} currency={currency_code} unit="mo" />
+        <PricePerUnit price={parseInt(price, 10) ?? 0} currency={currency} unit="mo" textStyle={styles.price} />
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
       </View>
     );
@@ -84,38 +84,33 @@ class PropertyListCard extends React.Component<Props, {}> {
   };
 
   public getAmenities = (): IAmenitiesIcons[] => {
-    // const {
-    //   property: {
-    //     // carpet_area,
-    //     // carpet_area_unit,
-    //     // spaces,
-    //   },
-    // } = this.props;
-    // const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-    //   return space.name === SpaceAvailableTypes.BEDROOM;
-    // });
-    // const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-    //   return space.name === SpaceAvailableTypes.BATHROOM;
-    // });
+    const {
+      property: { carpet_area, carpet_area_unit, spaces },
+    } = this.props;
+    const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+      return space.name === SpaceAvailableTypes.BEDROOM;
+    });
+    const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+      return space.name === SpaceAvailableTypes.BATHROOM;
+    });
     return [
       {
         icon: icons.bed,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: '3',
+        label: bedroom.length > 0 ? bedroom[0].count.toString() : '-',
       },
       {
         icon: icons.bathTub,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: '2',
+        label: bathroom.length > 0 ? bathroom[0].count.toString() : '-',
       },
       {
         icon: icons.direction,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        // label: `${carpet_area.toLocaleString()} ${carpet_area_unit}`,
-        label: '1000 Sqft',
+        label: `${carpet_area.toLocaleString()} ${carpet_area_unit}`,
       },
     ];
   };
@@ -158,5 +153,8 @@ const styles = StyleSheet.create({
   },
   amenitiesContainer: {
     marginStart: 15,
+  },
+  price: {
+    width: 130,
   },
 });

@@ -60,6 +60,7 @@ const opacity = {
   imageThumbnailBackground: 'rgba(0, 27, 54, 0.6)',
   markerOpacity: 'rgba(0, 132, 248, 0.3)',
   carouselCardOpacity: 'rgba(0, 27, 54, 0.25)',
+  favoriteBackground: 'rgba(25, 50, 74, 0.25)',
 };
 
 export const colors = {

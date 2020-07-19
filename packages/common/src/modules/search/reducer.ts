@@ -9,7 +9,7 @@ export const initialSearchState: ISearchState = {
     asset_transaction_type: 0,
     search_latitude: 0,
     search_longitude: 0,
-    asset_type: [1],
+    asset_type: [],
     min_price: -1,
     max_price: -1,
     furnishing_status: '',

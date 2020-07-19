@@ -48,7 +48,7 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
   private onAssetGroupListChanged = (selectedItem: number): void => {
     const { updateAssetFilter } = this.props;
     updateAssetFilter('asset_group', selectedItem);
-    updateAssetFilter('asset_type', selectedItem === 1 ? [1] : [7]);
+    updateAssetFilter('asset_type', []);
   };
 
   private onAssetGroupChecked = (assetTypeId: number, isSelected: boolean): void => {

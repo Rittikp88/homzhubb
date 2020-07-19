@@ -37,9 +37,9 @@ export const PriceRange = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.rangeRow}>
-        <Text type="small" textType="semiBold" style={{ color: theme.colors.darkTint4 }}>
+        <Text type="small" textType="semiBold" style={styles.priceRange}>
           {t('priceRange')}
         </Text>
         <Dropdown
@@ -79,14 +79,17 @@ export const PriceRange = (props: IProps): React.ReactElement => {
           </Label>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
   rangeRow: {
-    marginTop: 24,
-    marginBottom: 16,
+    marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -114,4 +117,5 @@ const styles = StyleSheet.create({
   rangeLabel: {
     color: theme.colors.darkTint5,
   },
+  priceRange: { color: theme.colors.darkTint4 },
 });

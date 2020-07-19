@@ -15,7 +15,7 @@ const PropertyAddress = (props: IProps): React.ReactElement => {
   const { primaryAddress, subAddress, primaryAddressStyle, subAddressStyle } = props;
   return (
     <View style={styles.propertyAddressContainer}>
-      <Text type="regular" textType="semiBold" style={[styles.propertyNameText, primaryAddressStyle]}>
+      <Text type="regular" textType="semiBold" style={[styles.propertyNameText, primaryAddressStyle]} numberOfLines={1}>
         {primaryAddress}
       </Text>
       <View style={styles.flexRow}>

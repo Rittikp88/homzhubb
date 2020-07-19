@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { call, put, takeEvery } from '@redux-saga/core/effects';
+import { call, put, takeEvery, debounce } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { IFluxStandardAction, IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchActions, SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
@@ -30,5 +30,5 @@ export function* getPropertiesDetails() {
 
 export function* watchSearch() {
   yield takeEvery(SearchActionTypes.GET.FILTER_DETAILS, getFilterDetails);
-  yield takeEvery(SearchActionTypes.GET.PROPERTIES, getPropertiesDetails);
+  yield debounce(100, SearchActionTypes.GET.PROPERTIES, getPropertiesDetails);
 }

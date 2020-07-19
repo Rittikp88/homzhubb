@@ -14,17 +14,18 @@ class AssetService {
       // bath_count,
       asset_group,
     } = filter;
-    return {
+    const finalPayload = {
       asset_group,
       txn_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
       price__gt: min_price,
       price__lt: max_price,
       latitude: search_latitude,
       longitude: search_longitude,
-      asset_type__in: asset_type.toString(),
-      // bedroom: room_count.toString(),
-      // bathroom: bath_count,
     };
+    if (asset_type.length > 0) {
+      Object.assign(finalPayload, { asset_type__in: asset_type.toString() });
+    }
+    return finalPayload;
   };
 }
 
