@@ -47,6 +47,7 @@ interface ILandingState {
   selectedLookingType: number;
   maxPriceRange: number;
   minPriceRange: number;
+  isLocationSelected: boolean;
 }
 
 class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
@@ -59,6 +60,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
     selectedLookingType: 0,
     maxPriceRange: 0,
     minPriceRange: 0,
+    isLocationSelected: false,
   };
 
   public componentDidMount = (): void => {
@@ -104,12 +106,8 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   };
 
   public render(): React.ReactElement {
-    const { isSearchBarFocused } = this.state;
-    const {
-      t,
-      filterData,
-      filters: { search_address },
-    } = this.props;
+    const { isSearchBarFocused, isLocationSelected } = this.state;
+    const { t, filterData } = this.props;
     return (
       <>
         <View style={styles.statusBar}>
@@ -124,7 +122,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
           <Button
             type="primary"
             title={t('showProperties')}
-            disabled={search_address.length <= 0}
+            disabled={!isLocationSelected}
             containerStyle={styles.buttonStyle}
             onPress={this.onShowProperties}
           />
@@ -246,6 +244,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
     const { setFilter } = this.props;
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
+        this.setState({ isLocationSelected: true });
         setFilter({
           search_address: place.description,
           search_latitude: placeDetail.geometry.location.lat,

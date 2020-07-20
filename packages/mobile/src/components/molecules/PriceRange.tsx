@@ -28,7 +28,10 @@ export const PriceRange = (props: IProps): React.ReactElement => {
     setCurrency(value as string);
   };
   const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(currency, value);
-  const maxValue = maxChangedValue > 0 ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}` : 'Any';
+  const maxValue =
+    maxChangedValue > 0 && maxChangedValue < range.max
+      ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}`
+      : 'Any';
   const minValue = minChangedValue > 0 ? `${currencySymbol}${getCurrencyValue(minChangedValue)}` : 'Any';
 
   const onUpdatePrice = (value1: number, value2?: number): void => {
@@ -86,10 +89,10 @@ export const PriceRange = (props: IProps): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
   },
   rangeRow: {
-    marginVertical: 10,
+    marginTop: 30,
+    marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
