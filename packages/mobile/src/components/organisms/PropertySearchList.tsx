@@ -23,7 +23,16 @@ type Props = IProps & WithTranslation;
 
 class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
-    const { properties, propertyCount, onFavorite, resetFilters, getProperties, isSearchBarFocused, t } = this.props;
+    const {
+      properties,
+      propertyCount,
+      onFavorite,
+      resetFilters,
+      getProperties,
+      isSearchBarFocused,
+      filters,
+      t,
+    } = this.props;
     const resetFilterAndProperties = (): void => {
       resetFilters();
       getProperties();
@@ -61,6 +70,7 @@ class PropertySearchList extends React.PureComponent<Props> {
                 isFavorite={false} // TODO: Get the value of isFavorite from api response
                 onFavorite={onUpdateFavoritePropertyId}
                 key={item.id}
+                transaction_type={filters.asset_transaction_type}
               />
             );
           }}

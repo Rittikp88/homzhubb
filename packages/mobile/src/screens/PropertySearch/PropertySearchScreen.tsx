@@ -124,7 +124,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       <View style={styles.flexFour}>
         {isMapView ? (
           <>
-            <PropertySearchMap properties={properties.results} />
+            <PropertySearchMap properties={properties.results} transaction_type={filters.asset_transaction_type} />
             {this.renderMenuTray()}
             {this.renderNoResults()}
           </>
@@ -399,7 +399,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
-    const { setFilter } = this.props;
+    const { setFilter, getProperties } = this.props;
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
         setFilter({
@@ -407,6 +407,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
           search_latitude: placeDetail.geometry.location.lat,
           search_longitude: placeDetail.geometry.location.lng,
         });
+        getProperties();
       })
       .catch(this.displayError);
     if (this.searchBar) {

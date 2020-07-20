@@ -16,6 +16,7 @@ interface IProps {
   propertyId: number;
   isFavorite: boolean;
   onFavorite: (index: number) => void;
+  transaction_type: number;
 }
 
 type libraryProps = WithTranslation;
@@ -59,12 +60,13 @@ class PropertyListCard extends React.Component<Props, {}> {
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
+    const { transaction_type } = this.props;
     const currency: string = this.getCurrency();
     const price: number = this.getPrice();
     const amenitiesData: IAmenitiesIcons[] = this.getAmenities();
     return (
       <View style={styles.amenities}>
-        <PricePerUnit price={price} currency={currency} unit="mo" />
+        <PricePerUnit price={price} currency={currency} unit={transaction_type === 0 ? 'month' : ''} />
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
       </View>
     );
@@ -90,9 +92,9 @@ class PropertyListCard extends React.Component<Props, {}> {
     const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
-    const carpetArea = `${carpet_area.toLocaleString()} ${carpet_area_unit}`
-      ? '-'
-      : `${carpet_area} ${carpet_area_unit}`;
+    const carpetArea = `${carpet_area} ${carpet_area_unit}`
+      ? `${carpet_area.toLocaleString()} ${carpet_area_unit}`
+      : '-';
     return [
       {
         icon: icons.bed,

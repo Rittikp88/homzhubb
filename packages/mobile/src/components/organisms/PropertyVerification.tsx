@@ -6,13 +6,6 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { IUser } from '@homzhub/common/src/domain/models/User';
-import {
-  IVerificationTypes,
-  IVerificationDocumentList,
-  VerificationDocumentTypes,
-  IPostVerificationDocuments,
-} from '@homzhub/common/src/domain/models/Service';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
@@ -29,11 +22,20 @@ import {
   Button,
   WithShadowView,
 } from '@homzhub/common/src/components';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { IUser } from '@homzhub/common/src/domain/models/User';
+import {
+  IVerificationTypes,
+  IVerificationDocumentList,
+  VerificationDocumentTypes,
+  IPostVerificationDocuments,
+} from '@homzhub/common/src/domain/models/Service';
 
 interface IPropertyVerificationState {
   verificationTypes: IVerificationTypes[];
   existingDocuments: IVerificationDocumentList[];
   localDocuments: IVerificationDocumentList[];
+  isLoading: boolean;
 }
 
 interface IProps {
@@ -50,6 +52,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     verificationTypes: [],
     existingDocuments: [],
     localDocuments: [],
+    isLoading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -60,7 +63,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public render(): React.ReactElement {
     const { t } = this.props;
-    const { verificationTypes, existingDocuments, localDocuments } = this.state;
+    const { verificationTypes, existingDocuments, localDocuments, isLoading } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
     return (
       <View style={styles.container}>
@@ -78,7 +81,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           <Button
             type="primary"
             title={t('common:saveAndContinue')}
-            disabled={totalDocuments.length < verificationTypes.length}
+            disabled={totalDocuments.length < verificationTypes.length || isLoading}
             containerStyle={styles.buttonStyle}
             onPress={this.postPropertyVerificationDocuments}
           />
@@ -239,6 +242,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     });
     const baseUrl = ConfigHelper.getBaseUrl();
     const user: IUser | null = await StorageService.get(StorageKeys.USER);
+    this.setState({ isLoading: true });
     fetch(`${baseUrl}attachments/upload/`, {
       method: 'POST',
       headers: {
@@ -267,6 +271,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           }
         });
         await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
+        // this.setState({ isLoading: false });
         await this.getExistingDocuments(propertyId);
         updateStep();
       });
@@ -276,7 +281,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     document: IVerificationDocumentList,
     isLocalDocument: boolean | undefined
   ): Promise<void> => {
-    const { existingDocuments, localDocuments, verificationTypes } = this.state;
+    const { existingDocuments, localDocuments, verificationTypes, isLoading } = this.state;
     const clonedDocuments = isLocalDocument ? cloneDeep(localDocuments) : cloneDeep(existingDocuments);
     if (!document.id) {
       const documentIndex = findIndex(clonedDocuments, (existingDocument: IVerificationDocumentList) => {
@@ -290,6 +295,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           localDocuments,
           verificationTypes,
           [key]: clonedDocuments,
+          isLoading,
         });
       }
     } else {

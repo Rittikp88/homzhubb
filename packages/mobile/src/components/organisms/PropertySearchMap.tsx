@@ -16,6 +16,7 @@ interface IState {
 
 interface IProps {
   properties: IProperties[];
+  transaction_type: number;
 }
 
 type Props = IProps & WithTranslation;
@@ -45,6 +46,12 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
           }}
           provider={PROVIDER_GOOGLE}
           style={styles.mapView}
+          region={{
+            latitude: initialMarker.latitude,
+            longitude: initialMarker.longitude,
+            latitudeDelta: MAP_DELTA,
+            longitudeDelta: MAP_DELTA,
+          }}
           initialRegion={{
             latitude: initialMarker.latitude,
             longitude: initialMarker.longitude,
@@ -62,7 +69,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
               this.onMarkerPress(index);
             };
             return (
-              <Marker key={property.project_name} coordinate={{ latitude, longitude }} onPress={onMarkerPress}>
+              <Marker key={property.id} coordinate={{ latitude, longitude }} onPress={onMarkerPress}>
                 {index === currentSlide ? (
                   <View style={styles.selectedMarker}>
                     <View style={styles.marker} />
@@ -90,6 +97,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
   };
 
   private renderCarouselItem = (item: IProperties): React.ReactElement => {
+    const { transaction_type } = this.props;
     const { images, project_name, carpet_area, carpet_area_unit, spaces } = item;
     const currency = this.getCurrency(item);
     const price = this.getPrice(item);
@@ -99,7 +107,9 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
-    const carpetArea = `${carpet_area.toLocaleString} ${carpet_area_unit}` ? '-' : `${carpet_area} ${carpet_area_unit}`;
+    const carpetArea = `${carpet_area} ${carpet_area_unit}`
+      ? `${carpet_area.toLocaleString()} ${carpet_area_unit}`
+      : '-';
     const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
     return (
       <PropertyMapCard
@@ -112,7 +122,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
         name={project_name}
         currency={currency}
         price={price}
-        priceUnit="month"
+        priceUnit={transaction_type === 0 ? 'month' : ''}
         isFavorite={false}
         bedroom={bedroom.length > 0 ? bedroom[0].count.toString() : '-'}
         bathroom={bathroom.length > 0 ? bathroom[0].count.toString() : '-'}
