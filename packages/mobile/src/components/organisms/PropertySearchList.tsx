@@ -13,13 +13,20 @@ interface IProps {
   properties: IProperties[];
   propertyCount: number;
   onFavorite: (propertyId: number) => void;
+  resetFilters: () => void;
+  getProperties: () => void;
+  isSearchBarFocused: () => void;
 }
 
 type Props = IProps & WithTranslation;
 
 class PropertySearchList extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
-    const { properties, propertyCount, onFavorite, t } = this.props;
+    const { properties, propertyCount, onFavorite, resetFilters, getProperties, isSearchBarFocused, t } = this.props;
+    const resetFilterAndProperties = (): void => {
+      resetFilters();
+      getProperties();
+    };
     if (propertyCount === 0) {
       return (
         <View style={styles.noResultsContainer}>
@@ -30,13 +37,8 @@ class PropertySearchList extends React.PureComponent<Props, {}> {
           <Label type="large" textType="regular" style={styles.helperText}>
             {t('noResultHelper')}
           </Label>
-          <Button
-            type="primary"
-            title={t('searchAgain')}
-            containerStyle={styles.button}
-            onPress={(): void => console.log('here')}
-          />
-          <Label type="large" textType="semiBold" style={styles.resetFilters} onPress={(): void => console.log('here')}>
+          <Button type="primary" title={t('searchAgain')} containerStyle={styles.button} onPress={isSearchBarFocused} />
+          <Label type="large" textType="semiBold" style={styles.resetFilters} onPress={resetFilterAndProperties}>
             {t('resetFilters')}
           </Label>
         </View>

@@ -1,3 +1,4 @@
+import { remove, cloneDeep } from 'lodash';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -10,10 +11,12 @@ class AssetService {
       asset_type,
       min_price,
       max_price,
-      // room_count,
-      // bath_count,
+      room_count,
+      bath_count,
       asset_group,
     } = filter;
+    const bedroomCount = cloneDeep(room_count);
+    remove(bedroomCount, (count: number) => count === -1);
     const finalPayload = {
       asset_group,
       txn_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
@@ -24,6 +27,12 @@ class AssetService {
     };
     if (asset_type.length > 0) {
       Object.assign(finalPayload, { asset_type__in: asset_type.toString() });
+    }
+    if (bedroomCount.length > 0) {
+      Object.assign(finalPayload, { bedroom__in: bedroomCount.toString() });
+    }
+    if (bath_count !== -1) {
+      Object.assign(finalPayload, { bathroom: bath_count });
     }
     return finalPayload;
   };

@@ -237,6 +237,9 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   private onSearchStringUpdate = (searchString: string): void => {
     const { setFilter } = this.props;
     setFilter({ search_address: searchString });
+    if (searchString.length === 0) {
+      this.setState({ isLocationSelected: false });
+    }
     this.getAutocompleteSuggestions();
   };
 
@@ -272,6 +275,11 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
           search_latitude: latitude,
           search_longitude: longitude,
         });
+        this.setState({ isLocationSelected: true });
+        if (this.searchBar) {
+          // @ts-ignore
+          this.searchBar.SearchTextInput.blur();
+        }
       })
       .catch(this.displayError);
   };

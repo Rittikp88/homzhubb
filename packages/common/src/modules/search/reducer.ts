@@ -32,6 +32,9 @@ export const searchReducer = (
   state: ISearchState = initialSearchState,
   action: IFluxStandardAction<SearchPayloadTypes>
 ): ISearchState => {
+  // Handle the reset filter but not deleting the lat, long and address
+  const { search_latitude, search_longitude, search_address } = state.filter;
+  const filterData = { search_latitude, search_longitude, search_address };
   switch (action.type) {
     case SearchActionTypes.GET.FILTER_DETAILS:
     case SearchActionTypes.GET.PROPERTIES:
@@ -65,6 +68,8 @@ export const searchReducer = (
         ['filter']: { ...state.filter, ...(action.payload as IFilter) },
         ['loaders']: { ...state.loaders, ['search']: false },
       };
+    case SearchActionTypes.SET.INITIAL_STATE:
+      return { ...state, ['filter']: { ...state.filter, ...filterData } };
     default:
       return state;
   }

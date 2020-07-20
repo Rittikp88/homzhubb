@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
@@ -53,6 +53,7 @@ interface IStateProps {
 interface IDispatchProps {
   setFilter: (payload: any) => void;
   getProperties: () => void;
+  setInitialState: () => void;
 }
 
 interface IPropertySearchScreenState {
@@ -114,7 +115,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderContent = (): React.ReactNode => {
     const { isMapView } = this.state;
-    const { properties } = this.props;
+    const { properties, setInitialState, getProperties } = this.props;
     if (!properties) {
       return null;
     }
@@ -131,7 +132,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
             <PropertySearchList
               properties={properties.results}
               propertyCount={properties.count}
+              resetFilters={setInitialState}
+              getProperties={getProperties}
               onFavorite={this.onFavoriteProperty}
+              isSearchBarFocused={this.toggleSearchBar}
             />
             {this.renderMenuTray()}
           </ScrollView>
@@ -250,18 +254,17 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       t,
       filters: { search_address },
     } = this.props;
-    const { selectedOnScreenFilter, isMenuTrayCollapsed, isSearchBarFocused } = this.state;
+    const { selectedOnScreenFilter, isMenuTrayCollapsed } = this.state;
     const onScreenFilters = [
       { type: OnScreenFilters.TYPE, label: t('type') },
       { type: OnScreenFilters.PRICE, label: t('price') },
       { type: OnScreenFilters.ROOMS, label: t('rooms') },
       { type: OnScreenFilters.MORE, label: icons.filter },
     ];
-    const toggleSearchBar = (): void => this.setState({ isSearchBarFocused: !isSearchBarFocused });
     return (
       <>
         <View style={styles.filterTray}>
-          <TouchableOpacity onPress={toggleSearchBar}>
+          <TouchableOpacity onPress={this.toggleSearchBar}>
             <View style={styles.addressContainer}>
               <Icon name={icons.search} size={20} color={theme.colors.darkTint5} />
               <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
@@ -394,7 +397,15 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
     const { setFilter } = this.props;
-    setFilter({ search_address: place.description });
+    GooglePlacesService.getPlaceDetail(place.place_id)
+      .then((placeDetail: GooglePlaceDetail) => {
+        setFilter({
+          search_address: place.description,
+          search_latitude: placeDetail.geometry.location.lat,
+          search_longitude: placeDetail.geometry.location.lng,
+        });
+      })
+      .catch(this.displayError);
     if (this.searchBar) {
       // @ts-ignore
       this.searchBar.SearchTextInput.blur();
@@ -403,6 +414,11 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   public onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
     this.setState({ isSearchBarFocused });
+  };
+
+  public toggleSearchBar = (): void => {
+    const { isSearchBarFocused } = this.state;
+    this.setState({ isSearchBarFocused: !isSearchBarFocused });
   };
 
   private displayError = (e: Error): void => {
@@ -451,11 +467,12 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, getProperties } = SearchActions;
+  const { setFilter, getProperties, setInitialState } = SearchActions;
   return bindActionCreators(
     {
       setFilter,
       getProperties,
+      setInitialState,
     },
     dispatch
   );

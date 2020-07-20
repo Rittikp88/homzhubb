@@ -90,15 +90,16 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
   };
 
   private renderCarouselItem = (item: IProperties): React.ReactElement => {
-    const { images, project_name, carpet_area, carpet_area_unit, spaces, lease_term } = item;
-    const currency = !lease_term ? 'INR' : lease_term.currency_code;
-    const price = !lease_term ? 0 : lease_term.expected_price;
+    const { images, project_name, carpet_area, carpet_area_unit, spaces } = item;
+    const currency = this.getCurrency(item);
+    const price = this.getPrice(item);
     const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BEDROOM;
     });
     const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
+    const carpetArea = `${carpet_area.toLocaleString} ${carpet_area_unit}` ? '-' : `${carpet_area} ${carpet_area_unit}`;
     const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
     return (
       <PropertyMapCard
@@ -110,12 +111,12 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
         }}
         name={project_name}
         currency={currency}
-        price={Number(price) ?? 0}
+        price={price}
         priceUnit="month"
         isFavorite={false}
         bedroom={bedroom.length > 0 ? bedroom[0].count.toString() : '-'}
         bathroom={bathroom.length > 0 ? bathroom[0].count.toString() : '-'}
-        carpetArea={`${carpet_area} ${carpet_area_unit}`}
+        carpetArea={carpetArea}
         onFavorite={this.onFavorite}
       />
     );
@@ -150,6 +151,28 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
   private onMarkerPress = (index: number): void => {
     // @ts-ignore
     this.carouselRef.snapToItem(index);
+  };
+
+  public getCurrency = (item: IProperties): string => {
+    const { lease_term, sale_term } = item;
+    if (lease_term) {
+      return lease_term.currency_code;
+    }
+    if (sale_term) {
+      return sale_term.currency_code;
+    }
+    return 'INR';
+  };
+
+  public getPrice = (item: IProperties): number => {
+    const { lease_term, sale_term } = item;
+    if (lease_term) {
+      return Number(lease_term.expected_price);
+    }
+    if (sale_term) {
+      return Number(sale_term.expected_price);
+    }
+    return 0;
   };
 }
 

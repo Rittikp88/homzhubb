@@ -21,14 +21,14 @@ const PricePerUnit = (props: IProps): React.ReactElement => {
 
   const renderLabel = (): React.ReactElement => {
     return (
-      <Label type="large" textType="regular" style={labelStyle}>
+      <Label type="large" textType="regular" style={labelStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
         / {unit}
       </Label>
     );
   };
 
   return (
-    <Text type={textSizeType} textType={textFontWeight} style={textStyle}>
+    <Text type={textSizeType} textType={textFontWeight} style={textStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
       {priceWithCurrency}
       {renderLabel()}
     </Text>

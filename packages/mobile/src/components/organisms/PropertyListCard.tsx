@@ -7,7 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { IAmenitiesIcons, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { Divider, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
+import { Divider, Label, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 
@@ -46,7 +46,13 @@ class PropertyListCard extends React.Component<Props, {}> {
     } = this.props;
     return (
       <View style={styles.apartmentContainer}>
-        <Text type="small" textType="regular" style={styles.propertyTypeText}>
+        <Text
+          type="small"
+          textType="regular"
+          style={styles.propertyTypeText}
+          minimumFontScale={0.5}
+          adjustsFontSizeToFit
+        >
           {name}
         </Text>
         <View style={styles.badgesContainer}>
@@ -59,15 +65,12 @@ class PropertyListCard extends React.Component<Props, {}> {
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
-    const {
-      property: { lease_term },
-    } = this.props;
-    const currency = !lease_term ? 'INR' : lease_term.currency_code;
-    const price = !lease_term ? '0' : lease_term.expected_price;
+    const currency: string = this.getCurrency();
+    const price: number = this.getPrice();
     const amenitiesData: IAmenitiesIcons[] = this.getAmenities();
     return (
       <View style={styles.amenities}>
-        <PricePerUnit price={parseInt(price, 10) ?? 0} currency={currency} unit="mo" textStyle={styles.price} />
+        <PricePerUnit price={price} currency={currency} unit="mo" />
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
       </View>
     );
@@ -93,6 +96,9 @@ class PropertyListCard extends React.Component<Props, {}> {
     const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
+    const carpetArea = `${carpet_area.toLocaleString()} ${carpet_area_unit}`
+      ? '-'
+      : `${carpet_area} ${carpet_area_unit}`;
     return [
       {
         icon: icons.bed,
@@ -110,9 +116,35 @@ class PropertyListCard extends React.Component<Props, {}> {
         icon: icons.direction,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: `${carpet_area.toLocaleString()} ${carpet_area_unit}`,
+        label: carpetArea,
       },
     ];
+  };
+
+  public getCurrency = (): string => {
+    const {
+      property: { lease_term, sale_term },
+    } = this.props;
+    if (lease_term) {
+      return lease_term.currency_code;
+    }
+    if (sale_term) {
+      return sale_term.currency_code;
+    }
+    return 'INR';
+  };
+
+  public getPrice = (): number => {
+    const {
+      property: { lease_term, sale_term },
+    } = this.props;
+    if (lease_term) {
+      return Number(lease_term.expected_price);
+    }
+    if (sale_term) {
+      return Number(sale_term.expected_price);
+    }
+    return 0;
   };
 }
 
@@ -153,8 +185,5 @@ const styles = StyleSheet.create({
   },
   amenitiesContainer: {
     marginStart: 15,
-  },
-  price: {
-    width: 130,
   },
 });

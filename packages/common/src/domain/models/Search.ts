@@ -42,7 +42,7 @@ export interface ISpaces extends IAssetTypes {
   count: number;
 }
 
-export interface ILeaseTerm {
+export interface IPropertyTerm {
   id: number;
   expected_price: string;
   currency_code: string;
@@ -96,7 +96,8 @@ export interface IProperties {
   total_floors: number;
   asset_type: IAssetTypes;
   spaces: ISpaces[];
-  lease_term: ILeaseTerm | null;
+  lease_term?: IPropertyTerm | null;
+  sale_term?: IPropertyTerm | null;
   images: IImages[];
 }
 
