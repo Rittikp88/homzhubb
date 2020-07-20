@@ -29,11 +29,23 @@
     "month": "Month",
     "allDone": "All Done!",
     "why": "Why?",
+    "map": "Map",
+    "list": "List",
+    "loading": "Loading...",
     "availableFrom": "Available from",
     "saveAndContinue": "Save & Continue",
     "noCost": "No Cost",
     "requestQuote": "Request Quote",
-    "recommended": "RECOMMENDED"
+    "recommended": "RECOMMENDED",
+    "nearMe": "Near Me",
+    "enableLocationPermission": "Please enable location permission",
+    "errorFetchingLocation": "Error fetching your current location",
+    "searchProperties": "Search Properties",
+    "loginToContinue": "Please login to continue",
+    "priceRange": "Price Range",
+    "to": "to",
+    "min": "Min",
+    "max": "Max"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -88,7 +100,6 @@
     "searchProject": "Search for project or street name",
     "addProperty": "Add property",
     "logoutHelperText": "If it's not you?",
-    "autoDetect": "Auto-Detect Current Location",
     "congratsUser": "Congratulations {{name}}",
     "propertyAddedMsg": "Your Property is added to your Dashboard",
     "serviceNeed": "What service do you need today?",
@@ -192,5 +203,23 @@
     "yearOfConstructionRequired": "Year of construction cannot be empty",
     "yearOfConstructionPlaceholder": "e.g. 2015",
     "verification": "Verification"
+  },
+  "propertySearch": {
+    "showProperties": "Show Properties",
+    "findingRightProperty": "Finding the right property",
+    "madeEasy": "Made Easy",
+    "enterLocation": "Enter location to begin",
+    "type": "Type",
+    "beds": "Beds",
+    "baths": "Baths",
+    "rooms": "Rooms",
+    "price": "Price",
+    "propertyType": "Property Type",
+    "lookingFor": "Looking For",
+    "propertiesFound": "Properties Found",
+    "noResultsFound": "No Results Found",
+    "noResultHelper": "We did not find any properties for your search",
+    "searchAgain": "Search Again",
+    "resetFilters": "Reset Filters"
   }
 }

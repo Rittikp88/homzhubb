@@ -30,6 +30,22 @@ export class Slider extends Component<ISliderProps, ISliderState> {
     };
   }
 
+  public componentDidUpdate = (prevProps: Readonly<ISliderProps>, prevState: Readonly<ISliderState>): void => {
+    const { maxSliderRange, minSliderValue } = this.props;
+    if (maxSliderRange !== prevState.multiSliderValue[1]) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        multiSliderValue: [prevState.multiSliderValue[0], maxSliderRange || -1],
+      });
+    }
+    if (minSliderValue !== prevState.multiSliderValue[0]) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        multiSliderValue: [minSliderValue || -1, prevProps.maxSliderRange || -1],
+      });
+    }
+  };
+
   public render(): React.ReactNode {
     const { isMultipleSlider } = this.props;
     return <>{isMultipleSlider ? this.renderMultipleSlider() : this.renderSingleSlider()}</>;
@@ -41,7 +57,7 @@ export class Slider extends Component<ISliderProps, ISliderState> {
     return (
       <MultiSlider
         values={[multiSliderValue[0], multiSliderValue[1]]}
-        sliderLength={360}
+        sliderLength={theme.viewport.width > 350 ? 360 : 260}
         onValuesChange={this.multiSliderValuesChange}
         min={minSliderRange}
         max={maxSliderRange}
@@ -63,7 +79,7 @@ export class Slider extends Component<ISliderProps, ISliderState> {
     return (
       <MultiSlider
         values={singleSliderValue}
-        sliderLength={360}
+        sliderLength={theme.viewport.width > 350 ? 360 : 260}
         min={minSliderRange}
         max={maxSliderRange}
         isMarkersSeparated

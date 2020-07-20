@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, PickerItemProps } from 'react-native';
+import { View, StyleSheet, StatusBar, PickerItemProps, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
@@ -154,7 +154,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
     });
 
     return (
-      <View style={styles.content}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <Text type="small" textType="semiBold" style={styles.label}>
           {t('propertyType')}
         </Text>
@@ -179,7 +179,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
           minChangedValue={minPriceRange}
           maxChangedValue={maxPriceRange}
         />
-      </View>
+      </ScrollView>
     );
   };
 
@@ -247,12 +247,12 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
     const { setFilter } = this.props;
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
-        this.setState({ isLocationSelected: true });
         setFilter({
           search_address: place.description,
           search_latitude: placeDetail.geometry.location.lat,
           search_longitude: placeDetail.geometry.location.lng,
         });
+        this.setState({ isLocationSelected: true });
       })
       .catch(this.displayError);
     if (this.searchBar) {
