@@ -14,6 +14,8 @@ class AssetService {
       room_count,
       bath_count,
       asset_group,
+      limit,
+      offset,
     } = filter;
     const bedroomCount = cloneDeep(room_count);
     remove(bedroomCount, (count: number) => count === -1);
@@ -24,6 +26,9 @@ class AssetService {
       price__lt: max_price,
       latitude: search_latitude,
       longitude: search_longitude,
+      search_radius: 10,
+      limit,
+      offset,
     };
     if (asset_type.length > 0) {
       Object.assign(finalPayload, { asset_type__in: asset_type.toString() });

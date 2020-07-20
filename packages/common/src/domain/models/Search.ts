@@ -80,6 +80,8 @@ export interface IFilter {
   is_verified: boolean;
   asset_group: number;
   search_address: string;
+  limit: number;
+  offset: number;
 }
 
 export interface IProperties {

@@ -35,6 +35,7 @@ interface IDispatchProps {
   getFilterDetails: (payload: any) => void;
   setFilter: (payload: any) => void;
   getProperties: () => void;
+  setInitialState: () => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.PropertySearchLanding>;
@@ -103,6 +104,11 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
       minPriceRange: min_price,
       maxPriceRange: max_price,
     });
+  };
+
+  public componentWillUnmount = (): void => {
+    const { setInitialState } = this.props;
+    setInitialState();
   };
 
   public render(): React.ReactElement {
@@ -334,12 +340,13 @@ export const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getFilterDetails, setFilter, getProperties } = SearchActions;
+  const { getFilterDetails, setFilter, getProperties, setInitialState } = SearchActions;
   return bindActionCreators(
     {
       getFilterDetails,
       setFilter,
       getProperties,
+      setInitialState,
     },
     dispatch
   );

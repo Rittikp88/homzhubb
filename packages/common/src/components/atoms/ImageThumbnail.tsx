@@ -54,18 +54,19 @@ export class ImageThumbnail extends React.PureComponent<IProps, {}> {
               </TouchableOpacity>
             )}
             {isCoverPhotoContainer && (
-              <View style={styles.coverPhotoContainer}>
-                <Text type="small" textType="regular" style={styles.coverPhoto}>
-                  {coverPhotoTitle}
-                </Text>
-                <Icon
-                  name={isFavorite ? icons.starFilled : icons.starUnfilled}
-                  size={20}
-                  color={theme.colors.white}
-                  style={styles.starIcon}
-                  onPress={markFavorite}
-                />
-              </View>
+              <TouchableOpacity style={styles.touchableContainer} onPress={markFavorite}>
+                <View style={styles.coverPhotoContainer}>
+                  <Text type="small" textType="regular" style={styles.coverPhoto}>
+                    {coverPhotoTitle}
+                  </Text>
+                  <Icon
+                    name={isFavorite ? icons.starFilled : icons.starUnfilled}
+                    size={20}
+                    color={theme.colors.white}
+                    style={styles.starIcon}
+                  />
+                </View>
+              </TouchableOpacity>
             )}
             {isLastThumbnail && (
               <View style={styles.lastThumbnailContainer}>
@@ -113,14 +114,16 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: theme.colors.crossIconContainer,
   },
-  coverPhotoContainer: {
-    flexDirection: 'row',
-    backgroundColor: theme.colors.imageThumbnailBackground,
-    opacity: 0.5,
+  touchableContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  coverPhotoContainer: {
+    flexDirection: 'row',
+    backgroundColor: theme.colors.imageThumbnailBackground,
+    opacity: 0.5,
     height: 35,
     alignItems: 'center',
     paddingLeft: 10,

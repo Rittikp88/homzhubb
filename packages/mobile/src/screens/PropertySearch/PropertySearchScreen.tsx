@@ -53,6 +53,7 @@ interface IStateProps {
 interface IDispatchProps {
   setFilter: (payload: any) => void;
   getProperties: () => void;
+  setInitialFilters: () => void;
   setInitialState: () => void;
 }
 
@@ -115,7 +116,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderContent = (): React.ReactNode => {
     const { isMapView } = this.state;
-    const { properties, setInitialState, getProperties } = this.props;
+    const { properties, setInitialFilters, getProperties, setFilter, filters } = this.props;
     if (!properties) {
       return null;
     }
@@ -132,7 +133,9 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
             <PropertySearchList
               properties={properties.results}
               propertyCount={properties.count}
-              resetFilters={setInitialState}
+              filters={filters}
+              setFilter={setFilter}
+              resetFilters={setInitialFilters}
               getProperties={getProperties}
               onFavorite={this.onFavoriteProperty}
               isSearchBarFocused={this.toggleSearchBar}
@@ -467,11 +470,12 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, getProperties, setInitialState } = SearchActions;
+  const { setFilter, getProperties, setInitialFilters, setInitialState } = SearchActions;
   return bindActionCreators(
     {
       setFilter,
       getProperties,
+      setInitialFilters,
       setInitialState,
     },
     dispatch

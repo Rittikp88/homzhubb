@@ -7,7 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { IAmenitiesIcons, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { Divider, Label, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
+import { Divider, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 
@@ -46,13 +46,7 @@ class PropertyListCard extends React.Component<Props, {}> {
     } = this.props;
     return (
       <View style={styles.apartmentContainer}>
-        <Text
-          type="small"
-          textType="regular"
-          style={styles.propertyTypeText}
-          minimumFontScale={0.5}
-          adjustsFontSizeToFit
-        >
+        <Text type="small" textType="regular" style={styles.propertyTypeText}>
           {name}
         </Text>
         <View style={styles.badgesContainer}>

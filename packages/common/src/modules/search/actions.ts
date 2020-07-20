@@ -16,6 +16,7 @@ export const SearchActionTypes = {
   },
   SET: {
     FILTER: `${actionTypePrefix}FILTER`,
+    INITIAL_FILTERS: `${actionTypePrefix}INITIAL_FILTERS`,
     INITIAL_STATE: `${actionTypePrefix}INITIAL_STATE`,
   },
 };
@@ -69,6 +70,12 @@ const getPropertiesFailure = (error: string): IFluxStandardAction => {
   };
 };
 
+const setInitialFilters = (): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.SET.INITIAL_FILTERS,
+  };
+};
+
 const setInitialState = (): IFluxStandardAction => {
   return {
     type: SearchActionTypes.SET.INITIAL_STATE,
@@ -85,5 +92,6 @@ export const SearchActions = {
   getProperties,
   getPropertiesSuccess,
   getPropertiesFailure,
+  setInitialFilters,
   setInitialState,
 };

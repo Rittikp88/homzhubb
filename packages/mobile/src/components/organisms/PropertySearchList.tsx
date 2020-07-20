@@ -5,9 +5,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text, Button } from '@homzhub/common/src/components';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
-import { IProperties } from '@homzhub/common/src/domain/models/Search';
+import { IFilter, IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   properties: IProperties[];
@@ -16,11 +15,13 @@ interface IProps {
   resetFilters: () => void;
   getProperties: () => void;
   isSearchBarFocused: () => void;
+  setFilter: (payload: any) => void;
+  filters: IFilter;
 }
 
 type Props = IProps & WithTranslation;
 
-class PropertySearchList extends React.PureComponent<Props, {}> {
+class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
     const { properties, propertyCount, onFavorite, resetFilters, getProperties, isSearchBarFocused, t } = this.props;
     const resetFilterAndProperties = (): void => {
@@ -64,7 +65,8 @@ class PropertySearchList extends React.PureComponent<Props, {}> {
             );
           }}
           keyExtractor={this.renderKeyExtractor}
-          ListFooterComponent={this.renderFooter}
+          // ListFooterComponent={this.renderFooter}
+          // onEndReached={this.loadMoreProperties}
           onEndReachedThreshold={0.8}
         />
       </View>
@@ -72,11 +74,25 @@ class PropertySearchList extends React.PureComponent<Props, {}> {
   }
 
   private renderFooter = (): React.ReactElement => {
-    return <Loader />;
+    return (
+      <Text type="regular" textType="regular">
+        Loading...
+      </Text>
+    );
   };
 
   private renderKeyExtractor = (item: IProperties, index: number): string => {
     return `${item.id}-${index}`;
+  };
+
+  public loadMoreProperties = (): void => {
+    const {
+      setFilter,
+      getProperties,
+      filters: { offset, limit },
+    } = this.props;
+    setFilter({ offset: offset + limit });
+    getProperties();
   };
 }
 

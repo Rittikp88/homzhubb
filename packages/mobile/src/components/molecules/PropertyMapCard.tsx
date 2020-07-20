@@ -31,7 +31,7 @@ export class PropertyMapCard extends React.PureComponent<IProps> {
             <PricePerUnit price={price} unit={priceUnit} currency={currency} />
             <Favorite onFavorite={onFavorite} containerStyle={isFavorite ? styles.favorite : styles.nonFavorite} />
           </View>
-          <Label type="large" textType="semiBold" numberOfLines={1} minimumFontScale={0.5} adjustsFontSizeToFit>
+          <Label type="large" textType="semiBold" numberOfLines={1}>
             {name}
           </Label>
           <PropertyAmenities data={amenitiesData} direction="row" />

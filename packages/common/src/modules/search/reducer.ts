@@ -17,6 +17,8 @@ export const initialSearchState: ISearchState = {
     bath_count: -1,
     is_verified: false,
     search_address: '',
+    limit: 10,
+    offset: 0,
   },
   filterDetails: null,
   properties: null,
@@ -33,8 +35,20 @@ export const searchReducer = (
   action: IFluxStandardAction<SearchPayloadTypes>
 ): ISearchState => {
   // Handle the reset filter but not deleting the lat, long and address
+  // TODO: Need a better way for resetting the filter
   const { search_latitude, search_longitude, search_address } = state.filter;
-  const filterData = { search_latitude, search_longitude, search_address };
+  const filterData = {
+    search_latitude,
+    search_longitude,
+    search_address,
+    room_count: [-1],
+    bath_count: -1,
+    min_price: -1,
+    max_price: -1,
+    asset_type: [],
+    limit: 10,
+    offset: 0,
+  };
   switch (action.type) {
     case SearchActionTypes.GET.FILTER_DETAILS:
     case SearchActionTypes.GET.PROPERTIES:
@@ -68,8 +82,11 @@ export const searchReducer = (
         ['filter']: { ...state.filter, ...(action.payload as IFilter) },
         ['loaders']: { ...state.loaders, ['search']: false },
       };
-    case SearchActionTypes.SET.INITIAL_STATE:
+    case SearchActionTypes.SET.INITIAL_FILTERS:
       return { ...state, ['filter']: { ...state.filter, ...filterData } };
+    case SearchActionTypes.SET.INITIAL_STATE: {
+      return { ...initialSearchState };
+    }
     default:
       return state;
   }
