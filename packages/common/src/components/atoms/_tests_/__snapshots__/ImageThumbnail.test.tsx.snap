@@ -185,48 +185,55 @@ exports[`Image Thumbnail should match snapshot for isCoverPhotoContainer 1`] = `
         size={22}
       />
     </ForwardRef>
-    <View
+    <ForwardRef
       style={
         Object {
-          "alignItems": "center",
-          "backgroundColor": "rgba(0, 27, 54, 0.6)",
-          "borderRadius": 4,
           "bottom": 0,
-          "flexDirection": "row",
-          "height": 35,
           "left": 0,
-          "opacity": 0.5,
-          "paddingLeft": 10,
           "position": "absolute",
           "right": 0,
         }
       }
     >
-      <Text
+      <View
         style={
           Object {
-            "color": "#FFFFFF",
-            "flex": 7,
-            "opacity": 1,
+            "alignItems": "center",
+            "backgroundColor": "rgba(0, 27, 54, 0.6)",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "height": 35,
+            "opacity": 0.5,
+            "paddingLeft": 10,
           }
         }
-        textType="regular"
-        type="small"
       >
-        Cover Photo
-      </Text>
-      <Icon
-        allowFontScaling={false}
-        color="#FFFFFF"
-        name="unfilled-star"
-        size={20}
-        style={
-          Object {
-            "flex": 1,
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "flex": 7,
+              "opacity": 1,
+            }
           }
-        }
-      />
-    </View>
+          textType="regular"
+          type="small"
+        >
+          Cover Photo
+        </Text>
+        <Icon
+          allowFontScaling={false}
+          color="#FFFFFF"
+          name="unfilled-star"
+          size={20}
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        />
+      </View>
+    </ForwardRef>
   </ImageBackground>
 </View>
 `;
@@ -290,48 +297,55 @@ exports[`Image Thumbnail should match snapshot for isCoverPhotoContainer when is
         size={22}
       />
     </ForwardRef>
-    <View
+    <ForwardRef
       style={
         Object {
-          "alignItems": "center",
-          "backgroundColor": "rgba(0, 27, 54, 0.6)",
-          "borderRadius": 4,
           "bottom": 0,
-          "flexDirection": "row",
-          "height": 35,
           "left": 0,
-          "opacity": 0.5,
-          "paddingLeft": 10,
           "position": "absolute",
           "right": 0,
         }
       }
     >
-      <Text
+      <View
         style={
           Object {
-            "color": "#FFFFFF",
-            "flex": 7,
-            "opacity": 1,
+            "alignItems": "center",
+            "backgroundColor": "rgba(0, 27, 54, 0.6)",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "height": 35,
+            "opacity": 0.5,
+            "paddingLeft": 10,
           }
         }
-        textType="regular"
-        type="small"
       >
-        Cover Photo
-      </Text>
-      <Icon
-        allowFontScaling={false}
-        color="#FFFFFF"
-        name="filled-star"
-        size={20}
-        style={
-          Object {
-            "flex": 1,
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "flex": 7,
+              "opacity": 1,
+            }
           }
-        }
-      />
-    </View>
+          textType="regular"
+          type="small"
+        >
+          Cover Photo
+        </Text>
+        <Icon
+          allowFontScaling={false}
+          color="#FFFFFF"
+          name="filled-star"
+          size={20}
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        />
+      </View>
+    </ForwardRef>
   </ImageBackground>
 </View>
 `;

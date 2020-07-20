@@ -31,18 +31,20 @@ export class Slider extends Component<ISliderProps, ISliderState> {
   }
 
   public componentDidUpdate = (prevProps: Readonly<ISliderProps>, prevState: Readonly<ISliderState>): void => {
-    const { maxSliderRange, minSliderValue } = this.props;
-    if (maxSliderRange !== prevState.multiSliderValue[1]) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        multiSliderValue: [prevState.multiSliderValue[0], maxSliderRange || -1],
-      });
-    }
-    if (minSliderValue !== prevState.multiSliderValue[0]) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        multiSliderValue: [minSliderValue || -1, prevProps.maxSliderRange || -1],
-      });
+    const { maxSliderRange, minSliderValue, isMultipleSlider } = this.props;
+    if (isMultipleSlider) {
+      if (maxSliderRange !== prevState.multiSliderValue[1]) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({
+          multiSliderValue: [prevState.multiSliderValue[0], maxSliderRange || -1],
+        });
+      }
+      if (minSliderValue !== prevState.multiSliderValue[0]) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({
+          multiSliderValue: [minSliderValue || -1, prevProps.maxSliderRange || -1],
+        });
+      }
     }
   };
 
