@@ -9,7 +9,7 @@ import { FormTextInput, AnimatedHeader, LoginForm, SocialMediaComponent } from '
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -18,7 +18,7 @@ interface IDispatchProps {
 }
 
 interface ILoginScreenState {
-  socialMediaProviders: ISocialMediaProvider[];
+  socialMediaProviders: SocialMediaProvider[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.Login>;

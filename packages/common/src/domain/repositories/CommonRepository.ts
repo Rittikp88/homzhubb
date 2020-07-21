@@ -1,9 +1,10 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { ICountryCode, ICarpetAreaUnit } from '@homzhub/common/src/domain/models/CountryCode';
 import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
-import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const ENDPOINTS = {
   getCountryCodes: (): string => 'countries',
@@ -36,8 +37,9 @@ class CommonRepository {
     return await this.apiClient.get(ENDPOINTS.onboarding());
   };
 
-  public getSocialMedia = async (): Promise<ISocialMediaProvider[]> => {
-    return await this.apiClient.get(ENDPOINTS.socialMedia());
+  public getSocialMedia = async (): Promise<SocialMediaProvider[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.socialMedia());
+    return ObjectMapper.deserializeArray(SocialMediaProvider, response);
   };
 }
 
