@@ -86,6 +86,11 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     }
   };
 
+  public componentWillUnmount = (): void => {
+    const { setInitialState } = this.props;
+    setInitialState();
+  };
+
   public render(): React.ReactNode {
     const { isLoading } = this.props;
     return (
@@ -537,7 +542,7 @@ const styles = StyleSheet.create({
   trayContainer: {
     backgroundColor: theme.colors.white,
     padding: 15,
-    paddingTop: 0,
+    paddingTop: 10,
     position: 'absolute',
     top: 0,
     borderRadius: 4,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PickerItemProps, StyleSheet, View } from 'react-native';
+import { PickerItemProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -18,10 +18,19 @@ interface IProps {
   minChangedValue: number;
   maxChangedValue: number;
   onChangeSlide: (type: string, value: number | number[]) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const PriceRange = (props: IProps): React.ReactElement => {
-  const { currencyData, onChangeSlide, range, minChangedValue, maxChangedValue, currencySymbol } = props;
+  const {
+    currencyData,
+    onChangeSlide,
+    range,
+    minChangedValue,
+    maxChangedValue,
+    currencySymbol,
+    containerStyle,
+  } = props;
   const { t } = useTranslation();
   const [currency, setCurrency] = useState('INR');
   const onCurrencyChange = (value: string | number): void => {
@@ -40,7 +49,7 @@ export const PriceRange = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <View style={styles.rangeRow}>
         <Text type="small" textType="semiBold" style={styles.priceRange}>
           {t('priceRange')}
@@ -91,7 +100,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   rangeRow: {
-    marginTop: 30,
     marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',

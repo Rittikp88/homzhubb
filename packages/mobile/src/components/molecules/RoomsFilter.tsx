@@ -35,7 +35,7 @@ const bedroom = [
     value: 4,
   },
   {
-    title: '5',
+    title: '5+',
     value: 5,
   },
 ];
@@ -106,7 +106,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         onValueChange={onUpdateBedroomCount}
         optionWidth={OPTION_WIDTH}
       />
-      <Text type="small" textType="semiBold" style={styles.textStyle}>
+      <Text type="small" textType="semiBold" style={[styles.textStyle, styles.pickerMargin]}>
         {t('baths')}
       </Text>
       <SelectionPicker
@@ -127,6 +127,8 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: theme.colors.darkTint4,
+  },
+  pickerMargin: {
     marginVertical: 15,
   },
 });

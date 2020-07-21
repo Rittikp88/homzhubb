@@ -29,11 +29,15 @@ class AssetService {
     if (asset_type.length > 0) {
       Object.assign(finalPayload, { asset_type__in: asset_type.toString() });
     }
+    if (bedroomCount.includes(5)) {
+      Object.assign(finalPayload, { bedroom__gte: 5 });
+      remove(bedroomCount, (count: number) => count === 5);
+    }
     if (bedroomCount.length > 0) {
       Object.assign(finalPayload, { bedroom__in: bedroomCount.toString() });
     }
     if (bath_count !== -1) {
-      Object.assign(finalPayload, { bathroom: bath_count });
+      Object.assign(finalPayload, { bathroom__gte: bath_count });
     }
     return finalPayload;
   };

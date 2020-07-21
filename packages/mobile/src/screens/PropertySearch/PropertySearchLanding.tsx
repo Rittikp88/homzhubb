@@ -184,6 +184,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
           range={priceRange}
           minChangedValue={minPriceRange}
           maxChangedValue={maxPriceRange}
+          containerStyle={styles.priceRange}
         />
       </ScrollView>
     );
@@ -407,5 +408,8 @@ const styles = StyleSheet.create({
   label: {
     color: theme.colors.darkTint4,
     marginVertical: 20,
+  },
+  priceRange: {
+    marginVertical: 30,
   },
 });
