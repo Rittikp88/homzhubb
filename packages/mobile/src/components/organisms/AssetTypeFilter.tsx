@@ -59,8 +59,6 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
     } else {
       updateAssetFilter('asset_type', [...asset_type, assetTypeId]);
     }
-    updateAssetFilter('min_price', -1);
-    updateAssetFilter('max_price', -1);
   };
 
   private assetGroupsListPickerData = (): ISelectionPicker[] => {

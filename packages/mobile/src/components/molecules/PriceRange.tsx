@@ -120,5 +120,7 @@ const styles = StyleSheet.create({
   rangeLabel: {
     color: theme.colors.darkTint5,
   },
-  priceRange: { color: theme.colors.darkTint4 },
+  priceRange: {
+    color: theme.colors.darkTint4,
+  },
 });

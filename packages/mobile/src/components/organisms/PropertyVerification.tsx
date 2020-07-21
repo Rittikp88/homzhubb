@@ -22,7 +22,6 @@ import {
   Button,
   WithShadowView,
 } from '@homzhub/common/src/components';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import {
   IVerificationTypes,

@@ -14,52 +14,25 @@ interface ISliderProps {
   labelText?: string;
 }
 
-interface ISliderState {
-  multiSliderValue: number[];
-  singleSliderValue: number[];
-}
+const higherLength = theme.viewport.width > 400 ? 350 : 310;
+const SLIDER_LENGTH = theme.viewport.width > 350 ? higherLength : 260;
 
-export class Slider extends Component<ISliderProps, ISliderState> {
-  public constructor(props: ISliderProps) {
-    super(props);
-    const { minSliderValue, maxSliderValue, maxSliderRange } = props;
-    const max = maxSliderValue && maxSliderValue > 0 ? maxSliderValue : maxSliderRange || 10;
-    this.state = {
-      multiSliderValue: [minSliderValue || 0, max],
-      singleSliderValue: [0],
-    };
-  }
-
-  public componentDidUpdate = (prevProps: Readonly<ISliderProps>, prevState: Readonly<ISliderState>): void => {
-    const { maxSliderRange, minSliderValue, isMultipleSlider } = this.props;
-    if (isMultipleSlider) {
-      if (maxSliderRange !== prevState.multiSliderValue[1]) {
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({
-          multiSliderValue: [prevState.multiSliderValue[0], maxSliderRange || -1],
-        });
-      }
-      if (minSliderValue !== prevState.multiSliderValue[0]) {
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({
-          multiSliderValue: [minSliderValue || -1, prevProps.maxSliderRange || -1],
-        });
-      }
-    }
-  };
-
+export class Slider extends Component<ISliderProps> {
   public render(): React.ReactNode {
     const { isMultipleSlider } = this.props;
     return <>{isMultipleSlider ? this.renderMultipleSlider() : this.renderSingleSlider()}</>;
   }
 
   private renderMultipleSlider = (): React.ReactElement => {
-    const { multiSliderValue } = this.state;
-    const { maxSliderRange = 10, minSliderRange = 0, isLabelRequired } = this.props;
+    let { maxSliderValue = 0 } = this.props;
+    const { maxSliderRange = 10, minSliderRange = 0, isLabelRequired, minSliderValue = 0 } = this.props;
+    if (maxSliderValue && maxSliderValue <= 0) {
+      maxSliderValue = maxSliderRange;
+    }
     return (
       <MultiSlider
-        values={[multiSliderValue[0], multiSliderValue[1]]}
-        sliderLength={theme.viewport.width > 350 ? 360 : 260}
+        values={[minSliderValue, maxSliderValue]}
+        sliderLength={SLIDER_LENGTH}
         onValuesChange={this.multiSliderValuesChange}
         min={minSliderRange}
         max={maxSliderRange}
@@ -71,17 +44,17 @@ export class Slider extends Component<ISliderProps, ISliderState> {
         markerContainerStyle={styles.markerContainer}
         customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
         customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
+        containerStyle={styles.slider}
       />
     );
   };
 
   private renderSingleSlider = (): React.ReactElement => {
-    const { singleSliderValue } = this.state;
-    const { isLabelRequired = false, maxSliderRange, minSliderRange } = this.props;
+    const { isLabelRequired = false, maxSliderRange, minSliderRange, minSliderValue = 0 } = this.props;
     return (
       <MultiSlider
-        values={singleSliderValue}
-        sliderLength={theme.viewport.width > 350 ? 360 : 260}
+        values={[minSliderValue]}
+        sliderLength={SLIDER_LENGTH}
         min={minSliderRange}
         max={maxSliderRange}
         isMarkersSeparated
@@ -112,19 +85,11 @@ export class Slider extends Component<ISliderProps, ISliderState> {
 
   private multiSliderValuesChange = (values: number[]): void => {
     const { onSliderChange } = this.props;
-    this.setState({
-      multiSliderValue: values,
-    });
-
     onSliderChange(values[0], values[1]);
   };
 
   private singleSliderValuesChange = (value: number[]): void => {
     const { onSliderChange } = this.props;
-    this.setState({
-      singleSliderValue: value,
-    });
-
     onSliderChange(value[0]);
   };
 }
@@ -155,5 +120,8 @@ const styles = StyleSheet.create({
   selectedStyle: { backgroundColor: theme.colors.primaryColor },
   markerContainer: {
     justifyContent: 'center',
+  },
+  slider: {
+    paddingHorizontal: 4,
   },
 });

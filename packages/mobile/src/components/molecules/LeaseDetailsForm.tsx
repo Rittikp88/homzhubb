@@ -209,6 +209,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
 
   private renderNonFormikInputs = (formProps: FormikProps<IState>): React.ReactNode => {
     const { t } = this.props;
+    const { minimumLeasePeriod } = this.state;
     const { values, setFieldValue } = formProps;
 
     const onSliderChange = (value: number): void => {
@@ -237,6 +238,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
             onSliderChange={onSliderChange}
             minSliderRange={MINIMUM_LEASE_PERIOD}
             maxSliderRange={MAXIMUM_LEASE_PERIOD}
+            minSliderValue={minimumLeasePeriod}
             isLabelRequired
             labelText="Months"
           />
