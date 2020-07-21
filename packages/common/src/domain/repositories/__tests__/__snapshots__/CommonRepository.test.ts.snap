@@ -99,20 +99,20 @@ Array [
 
 exports[`CommonRepository should fetch social media data 1`] = `
 Array [
-  Object {
-    "clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
-    "description": "with Google",
-    "provider": "GOOGLE",
+  SocialMediaProvider {
+    "_clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
+    "_description": "with Google",
+    "_provider": "GOOGLE",
   },
-  Object {
-    "clientID": "",
-    "description": "with Facebook",
-    "provider": "FACEBOOK",
+  SocialMediaProvider {
+    "_clientID": "",
+    "_description": "with Facebook",
+    "_provider": "FACEBOOK",
   },
-  Object {
-    "clientID": "",
-    "description": "with Linkedin",
-    "provider": "LINKEDIN",
+  SocialMediaProvider {
+    "_clientID": "",
+    "_description": "with Linkedin",
+    "_provider": "LINKEDIN",
   },
 ]
 `;

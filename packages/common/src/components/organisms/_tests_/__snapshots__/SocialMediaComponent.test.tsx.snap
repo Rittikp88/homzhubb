@@ -13,17 +13,17 @@ exports[`Test cases for SocialMediaComponent should render snapshot 1`] = `
   socialMediaItems={
     Array [
       Object {
-        "clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
+        "client_id": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
         "description": "with Google",
         "provider": "GOOGLE",
       },
       Object {
-        "clientID": "",
+        "client_id": "",
         "description": "with Facebook",
         "provider": "FACEBOOK",
       },
       Object {
-        "clientID": "",
+        "client_id": "",
         "description": "with Linkedin",
         "provider": "LINKEDIN",
       },
@@ -44,17 +44,17 @@ exports[`Test cases for SocialMediaComponent should render snapshot 1`] = `
     socialMediaItems={
       Array [
         Object {
-          "clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
+          "client_id": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
           "description": "with Google",
           "provider": "GOOGLE",
         },
         Object {
-          "clientID": "",
+          "client_id": "",
           "description": "with Facebook",
           "provider": "FACEBOOK",
         },
         Object {
-          "clientID": "",
+          "client_id": "",
           "description": "with Linkedin",
           "provider": "LINKEDIN",
         },
@@ -1374,17 +1374,17 @@ exports[`Test cases for SocialMediaComponent should render snapshot from email l
   socialMediaItems={
     Array [
       Object {
-        "clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
+        "client_id": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
         "description": "with Google",
         "provider": "GOOGLE",
       },
       Object {
-        "clientID": "",
+        "client_id": "",
         "description": "with Facebook",
         "provider": "FACEBOOK",
       },
       Object {
-        "clientID": "",
+        "client_id": "",
         "description": "with Linkedin",
         "provider": "LINKEDIN",
       },
@@ -1405,17 +1405,17 @@ exports[`Test cases for SocialMediaComponent should render snapshot from email l
     socialMediaItems={
       Array [
         Object {
-          "clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
+          "client_id": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
           "description": "with Google",
           "provider": "GOOGLE",
         },
         Object {
-          "clientID": "",
+          "client_id": "",
           "description": "with Facebook",
           "provider": "FACEBOOK",
         },
         Object {
-          "clientID": "",
+          "client_id": "",
           "description": "with Linkedin",
           "provider": "LINKEDIN",
         },

@@ -31,6 +31,24 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     currentSlide: 0,
   };
 
+  public componentDidUpdate = (prevProps: Props): void => {
+    const { properties } = this.props;
+    if (prevProps.properties.length <= 0 || properties.length <= 0) {
+      return;
+    }
+
+    const { latitude, longitude } = prevProps.properties[0];
+    const { latitude: newLat, longitude: newLong } = properties[0];
+    if (newLat !== latitude || newLong !== longitude) {
+      this.mapRef?.animateCamera({
+        center: {
+          longitude: Number(newLong),
+          latitude: Number(newLat),
+        },
+      });
+    }
+  };
+
   public render = (): React.ReactNode => {
     const { currentSlide } = this.state;
     const { properties } = this.props;

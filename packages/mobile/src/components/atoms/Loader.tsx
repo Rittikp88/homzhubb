@@ -29,7 +29,7 @@ export const Loader = (): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.transparent,
+    backgroundColor: theme.colors.overlay,
     position: 'absolute',
     top: 0,
     bottom: 0,

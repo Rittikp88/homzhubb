@@ -88,9 +88,6 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   public render(): React.ReactNode {
     const { isLoading } = this.props;
-    if (isLoading) {
-      return <Loader />;
-    }
     return (
       <>
         <View style={styles.statusBar}>
@@ -102,6 +99,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
           {this.renderSearchContainer()}
           {this.renderBar()}
         </SafeAreaView>
+        {isLoading && <Loader />}
       </>
     );
   }

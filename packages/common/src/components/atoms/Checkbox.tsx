@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
@@ -29,19 +29,17 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
     onToggle,
   } = props;
   return (
-    <View style={[styles.container, containerStyle]}>
-      <TouchableOpacity onPress={onToggle}>
-        <Icon
-          name={selected ? icons.checkboxOn : icons.checkboxOff}
-          size={iconSize}
-          color={selected ? theme.colors.primaryColor : theme.colors.disabled}
-          style={selected ? iconSelectedStyle : iconStyle}
-        />
-      </TouchableOpacity>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle}>
+      <Icon
+        name={selected ? icons.checkboxOn : icons.checkboxOff}
+        size={iconSize}
+        color={selected ? theme.colors.primaryColor : theme.colors.disabled}
+        style={selected ? iconSelectedStyle : iconStyle}
+      />
       <Label type={labelType} textType="regular" style={[styles.label, labelStyle]}>
         {label}
       </Label>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -4,7 +4,7 @@ exports[`Loader should match snapshot for android 1`] = `
 <View
   style={
     Object {
-      "backgroundColor": "transparent",
+      "backgroundColor": "rgba(0, 0, 0, 0.25)",
       "bottom": 0,
       "flex": 1,
       "left": 0,
@@ -71,7 +71,7 @@ exports[`Loader should match snapshot for ios 1`] = `
 <View
   style={
     Object {
-      "backgroundColor": "transparent",
+      "backgroundColor": "rgba(0, 0, 0, 0.25)",
       "bottom": 0,
       "flex": 1,
       "left": 0,
