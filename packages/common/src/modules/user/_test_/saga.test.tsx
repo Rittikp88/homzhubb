@@ -7,7 +7,7 @@ jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageS
 jest.mock('@react-native-community/google-signin', () => {});
 
 describe('User Saga', () => {
-  it('should dispatch action login success and login failure with result from API', () => {
+  it.skip('should dispatch action login success and login failure with result from API', () => {
     const mockResponse = userData;
     const mockError = 'Error';
     const generator = login({ type: UserActionTypes.AUTH.LOGIN_SUCCESS });
