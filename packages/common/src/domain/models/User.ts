@@ -12,16 +12,16 @@ export interface IUser {
 @JsonObject('User')
 export class User {
   @JsonProperty('full_name', String)
-  private fullName = '';
+  private _fullName = '';
 
   @JsonProperty('email', String)
   private _email = '';
 
   @JsonProperty('country_code', String)
-  private countryCode = '';
+  private _countryCode = '';
 
   @JsonProperty('phone_number', String)
-  private phoneNumber = '';
+  private _phoneNumber = '';
 
   @JsonProperty('refresh_token', String)
   private _refreshToken = '';
@@ -35,5 +35,9 @@ export class User {
 
   get accessToken(): string {
     return this._accessToken;
+  }
+
+  get fullName(): string {
+    return this._fullName ?? '';
   }
 }

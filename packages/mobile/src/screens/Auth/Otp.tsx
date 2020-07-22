@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -14,7 +15,7 @@ import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/compo
 import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { User, IUser } from '@homzhub/common/src/domain/models/User';
 import { IEmailLoginPayload, IOtpLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -190,12 +191,13 @@ class Otp extends React.PureComponent<IProps, IState> {
     }
 
     try {
-      const data: IUser = await UserRepository.socialSignUp({
+      const data: User = await UserRepository.socialSignUp({
         otp,
         user_details: userData,
       });
-      loginSuccess(data);
-      await StorageService.set<IUser>('@user', data);
+      const serializedUser = ObjectMapper.serialize(data);
+      loginSuccess(serializedUser);
+      await StorageService.set<IUser>('@user', serializedUser);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

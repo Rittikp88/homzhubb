@@ -16,11 +16,11 @@ import Header from '@homzhub/mobile/src/components/molecules/Header';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRentServiceList } from '@homzhub/common/src/domain/models/Property';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { IServiceCategory } from '@homzhub/common/src/domain/models/Service';
 
 interface IStateProps {
-  user: IUser | null;
+  user: User | null;
   serviceList: IRentServiceList[] | null;
 }
 
@@ -51,7 +51,6 @@ export class RentServices extends Component<Props, IRentServicesState> {
   public render(): React.ReactNode {
     const { isSelected } = this.state;
     const { user, t, serviceList } = this.props;
-    const name = user ? user.full_name : '';
     return (
       <>
         <Header
@@ -64,7 +63,7 @@ export class RentServices extends Component<Props, IRentServicesState> {
         <View style={styles.container}>
           <View style={styles.content}>
             <Text type="large" textType="semiBold" style={styles.title}>
-              {t('congratsUser', { name })}
+              {t('congratsUser', { name: user?.fullName })}
             </Text>
             <Label type="large" style={styles.subTitle}>
               {t('propertyAddedMsg')}

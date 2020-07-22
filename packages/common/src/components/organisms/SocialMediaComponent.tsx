@@ -4,7 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager, LoginResult } from 'react-native-fbsdk';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -12,6 +12,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ISocialUserData, SocialMediaKeys } from '@homzhub/common/src/assets/constants';
 import { ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -111,8 +112,9 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
         });
         return;
       }
-      onLoginSuccessAction(response as IUser);
-      await StorageService.set<IUser>('@user', response as IUser);
+      const serializedUser = ObjectMapper.serialize(response);
+      onLoginSuccessAction(serializedUser as IUser);
+      await StorageService.set<IUser>('@user', serializedUser as IUser);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
