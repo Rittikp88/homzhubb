@@ -3,7 +3,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { ICountryCode, ICarpetAreaUnit } from '@homzhub/common/src/domain/models/CountryCode';
 import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
-import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
+import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 const ENDPOINTS = {
@@ -33,8 +33,9 @@ class CommonRepository {
     return await this.apiClient.get(ENDPOINTS.carpetAreaUnits());
   };
 
-  public getOnboarding = async (): Promise<IOnboardingData[]> => {
-    return await this.apiClient.get(ENDPOINTS.onboarding());
+  public getOnboarding = async (): Promise<Onboarding[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.onboarding());
+    return ObjectMapper.deserializeArray(Onboarding, response);
   };
 
   public getSocialMedia = async (): Promise<SocialMediaProvider[]> => {

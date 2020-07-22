@@ -11,9 +11,9 @@ import { StorageService, StorageKeys } from '@homzhub/common/src/services/storag
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
+import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { IOnboardingData } from '@homzhub/common/src/domain/models/Onboarding';
 
 interface IDispatchProps {
   updateOnBoarding: (isOnBoardingCompleted: boolean) => void;
@@ -22,7 +22,7 @@ interface IDispatchProps {
 interface IOnBoardingScreenState {
   activeSlide: number;
   ref: any;
-  data: IOnboardingData[];
+  data: Onboarding[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.OnBoarding>;
@@ -42,11 +42,13 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
   public render(): React.ReactNode {
     const { t } = this.props;
     const { data, activeSlide } = this.state;
+
     if (data.length === 0) {
       return null;
     }
+
     const buttonText = activeSlide === data.length - 1 ? t('common:gotIt') : t('common:next');
-    const currentSlide: IOnboardingData = data[activeSlide];
+    const currentSlide: Onboarding = data[activeSlide];
     return (
       <SafeAreaView style={styles.container}>
         {this.renderSkipButton()}
