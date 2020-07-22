@@ -1,11 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
-export interface IOnboardingData {
-  title: string;
-  description: string;
-  image_url: string;
-}
-
 @JsonObject('Onboarding')
 export class Onboarding {
   @JsonProperty('title', String)

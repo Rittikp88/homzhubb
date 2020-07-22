@@ -1,15 +1,15 @@
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { ICountryCode } from '@homzhub/common/src/domain/models/CountryCode';
+import { CountryCode } from '@homzhub/common/src/domain/models/CountryCode';
 
 class CommonService {
   public getCountryWithCode = async (): Promise<IDropdownOption[]> => {
     const response = await CommonRepository.getCountryCodes();
     const countryCodeOptions: IDropdownOption[] = [];
-    response.forEach((obj: ICountryCode) => {
+    response.forEach((obj: CountryCode) => {
       const data = {
-        label: `${obj.country} (${obj.country_code})`,
-        value: obj.country_code,
+        label: `${obj.country} (${obj.countryCode})`,
+        value: obj.countryCode,
       };
       countryCodeOptions.push(data);
     });

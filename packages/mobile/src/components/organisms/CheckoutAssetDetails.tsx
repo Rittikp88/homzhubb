@@ -10,7 +10,7 @@ import { Dropdown, Text } from '@homzhub/common/src/components';
 import { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
 import { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import {
   ICreateLeaseTermDetails,
   ILeaseTermDetails,
@@ -198,9 +198,9 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
       const response = await CommonRepository.getCurrencyCodes();
       this.setState({
         currencyData: response.map(
-          (currency: ICurrency): PickerItemProps => ({
-            label: `${currency.currency_code} ${currency.currency_symbol}`,
-            value: currency.currency_code,
+          (currency: Currency): PickerItemProps => ({
+            label: `${currency.currencyCode} ${currency.currencySymbol}`,
+            value: currency.currencyCode,
           })
         ),
       });
