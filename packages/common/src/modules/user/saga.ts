@@ -17,7 +17,7 @@ export function* login(action: IFluxStandardAction<IEmailLoginPayload | IOtpLogi
   try {
     const data: User = yield call(UserRepository.login, payload as IEmailLoginPayload | IOtpLoginPayload);
 
-    const serializedUser = ObjectMapper.serialize(data);
+    const serializedUser = ObjectMapper.serialize<User, IUser>(data);
 
     yield put(UserActions.loginSuccess(serializedUser));
     yield StorageService.set<IUser>('@user', serializedUser);

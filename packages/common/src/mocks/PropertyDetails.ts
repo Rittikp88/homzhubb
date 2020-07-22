@@ -177,16 +177,16 @@ export const assetGroups = [
 ];
 
 export const assetDetail = {
+  id: 4,
   project_name: 'Project',
   unit_number: '12',
   block_number: '#12',
-  latitude: 0.9999,
-  longitude: 0.24444,
+  latitude: '0.9999',
+  longitude: '0.24444',
   carpet_area: '12',
   carpet_area_unit: 'Sqt',
   floor_number: 2,
   total_floors: 5,
-  asset_type: 'Commercial Showroom',
 };
 
 export const leaseTermDetail = [

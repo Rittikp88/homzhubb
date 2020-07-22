@@ -2,60 +2,60 @@
 
 exports[`CommonRepository should fetch OnBoarding screen data 1`] = `
 Array [
-  Object {
-    "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-    "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-    "title": "Search",
+  Onboarding {
+    "_description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+    "_image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+    "_title": "Search",
   },
-  Object {
-    "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-    "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-    "title": "Post",
+  Onboarding {
+    "_description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+    "_image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+    "_title": "Post",
   },
-  Object {
-    "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-    "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-    "title": "Maintain",
+  Onboarding {
+    "_description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+    "_image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+    "_title": "Maintain",
   },
 ]
 `;
 
 exports[`CommonRepository should fetch a list of county codes 1`] = `
 Array [
-  Object {
-    "alpha_code": "IN",
-    "country": "INDIA",
-    "country_code": "+91",
-    "id": 1,
+  CountryCode {
+    "_alphaCode": "IN",
+    "_country": "INDIA",
+    "_countryCode": "+91",
+    "_id": 1,
   },
-  Object {
-    "alpha_code": "SG",
-    "country": "SINGAPORE",
-    "country_code": "+65",
-    "id": 2,
+  CountryCode {
+    "_alphaCode": "SG",
+    "_country": "SINGAPORE",
+    "_countryCode": "+65",
+    "_id": 2,
   },
-  Object {
-    "alpha_code": "AU",
-    "country": "AUSTRALIA",
-    "country_code": "+36",
-    "id": 3,
+  CountryCode {
+    "_alphaCode": "AU",
+    "_country": "AUSTRALIA",
+    "_countryCode": "+36",
+    "_id": 3,
   },
 ]
 `;
 
 exports[`CommonRepository should fetch a list of currency codes 1`] = `
 Array [
-  Object {
-    "currency_code": "AUD",
-    "currency_symbol": "$",
+  Currency {
+    "_currencyCode": "AUD",
+    "_currencySymbol": "$",
   },
-  Object {
-    "currency_code": "INR",
-    "currency_symbol": "₹",
+  Currency {
+    "_currencyCode": "INR",
+    "_currencySymbol": "₹",
   },
-  Object {
-    "currency_code": "SGD",
-    "currency_symbol": "$",
+  Currency {
+    "_currencyCode": "SGD",
+    "_currencySymbol": "$",
   },
 ]
 `;

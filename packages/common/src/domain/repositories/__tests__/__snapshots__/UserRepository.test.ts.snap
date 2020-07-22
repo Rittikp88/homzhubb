@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UserRepository should call login API for OTP and return response 1`] = `
-Object {
-  "access_token": "access_token",
-  "country_code": "IN",
-  "email": "r@gmail.com",
-  "full_name": "Rishabh Modi",
-  "phone_number": "99999999",
-  "refresh_token": "refresh_token",
+User {
+  "_accessToken": "access_token",
+  "_countryCode": "IN",
+  "_email": "r@gmail.com",
+  "_fullName": "Rishabh Modi",
+  "_phoneNumber": "99999999",
+  "_refreshToken": "refresh_token",
 }
 `;
 
 exports[`UserRepository should call login API for email and return response 1`] = `
-Object {
-  "access_token": "access_token",
-  "country_code": "IN",
-  "email": "r@gmail.com",
-  "full_name": "Rishabh Modi",
-  "phone_number": "99999999",
-  "refresh_token": "refresh_token",
+User {
+  "_accessToken": "access_token",
+  "_countryCode": "IN",
+  "_email": "r@gmail.com",
+  "_fullName": "Rishabh Modi",
+  "_phoneNumber": "99999999",
+  "_refreshToken": "refresh_token",
 }
 `;
 
@@ -35,15 +35,13 @@ Object {
 `;
 
 exports[`UserRepository should call socialLogin and return response 1`] = `
-Object {
-  "access_token": "",
-  "refresh_token": "",
-  "user": Object {
-    "country_code": "IN",
-    "email": "r@gmail.com",
-    "full_name": "Rishabh Modi",
-    "phone_number": "99999999",
-  },
+User {
+  "_accessToken": "access_token",
+  "_countryCode": "IN",
+  "_email": "r@gmail.com",
+  "_fullName": "Rishabh Modi",
+  "_phoneNumber": "99999999",
+  "_refreshToken": "refresh_token",
 }
 `;
 

@@ -29,7 +29,7 @@ describe('CommonRepository', () => {
   it('should fetch a list of currency codes', async () => {
     // @ts-ignore
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => currencyCodes);
-    const response = await CommonRepository.getCountryCodes();
+    const response = await CommonRepository.getCurrencyCodes();
     expect(response).toMatchSnapshot();
   });
 
