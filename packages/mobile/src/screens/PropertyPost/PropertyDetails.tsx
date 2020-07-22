@@ -279,7 +279,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
     const { propertyId } = this.props;
     try {
       const response = await AssetRepository.getAssetById(propertyId);
-      this.setState({ projectName: response.project_name });
+      this.setState({ projectName: response.projectName });
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

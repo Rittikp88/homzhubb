@@ -81,6 +81,7 @@
         "args": "none"
       }
     ],
+    "max-classes-per-file": "off",
     "max-len": [
       "warn",
       {
