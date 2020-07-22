@@ -1,15 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { IUserPayload, SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { IAmenitiesIcons, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { Divider, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
+import { IAmenitiesIcons, IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   property: IProperties;
@@ -60,10 +61,10 @@ class PropertyListCard extends React.Component<Props, {}> {
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
-    const { transaction_type } = this.props;
+    const { transaction_type, property } = this.props;
     const currency: string = this.getCurrency();
     const price: number = this.getPrice();
-    const amenitiesData: IAmenitiesIcons[] = this.getAmenities();
+    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(property);
     return (
       <View style={styles.amenities}>
         <PricePerUnit price={price} currency={currency} unit={transaction_type === 0 ? 'month' : ''} />
@@ -80,41 +81,6 @@ class PropertyListCard extends React.Component<Props, {}> {
       return;
     }
     onFavorite(propertyId);
-  };
-
-  public getAmenities = (): IAmenitiesIcons[] => {
-    const {
-      property: { carpet_area, carpet_area_unit, spaces },
-    } = this.props;
-    const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-      return space.name === SpaceAvailableTypes.BEDROOM;
-    });
-    const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-      return space.name === SpaceAvailableTypes.BATHROOM;
-    });
-    const carpetArea = `${carpet_area} ${carpet_area_unit}`
-      ? `${carpet_area.toLocaleString()} ${carpet_area_unit}`
-      : '-';
-    return [
-      {
-        icon: icons.bed,
-        iconSize: 20,
-        iconColor: theme.colors.darkTint3,
-        label: bedroom.length > 0 ? bedroom[0].count.toString() : '-',
-      },
-      {
-        icon: icons.bathTub,
-        iconSize: 20,
-        iconColor: theme.colors.darkTint3,
-        label: bathroom.length > 0 ? bathroom[0].count.toString() : '-',
-      },
-      {
-        icon: icons.direction,
-        iconSize: 20,
-        iconColor: theme.colors.darkTint3,
-        label: carpetArea,
-      },
-    ];
   };
 
   public getCurrency = (): string => {

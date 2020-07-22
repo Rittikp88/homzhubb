@@ -207,6 +207,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
             minChangedValue={min_price}
             maxChangedValue={max_price}
             onChangeSlide={updateFilter}
+            containerStyle={styles.priceRange}
           />
         );
       case OnScreenFilters.ROOMS:
@@ -604,5 +605,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 4,
     backgroundColor: theme.colors.white,
+  },
+  priceRange: {
+    width: theme.viewport.width,
+    paddingRight: 30,
   },
 });
