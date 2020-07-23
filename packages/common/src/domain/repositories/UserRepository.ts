@@ -1,5 +1,5 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IEmailLoginPayload,
@@ -15,6 +15,7 @@ import {
   IRefreshTokenPayload,
   IUserExistsData,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ObjectMapper } from '../../utils/ObjectMapper';
 
 const ENDPOINTS = {
   signUp: (): string => 'users/',
@@ -39,25 +40,25 @@ class UserRepository {
     return await this.apiClient.post(ENDPOINTS.signUp(), payload);
   };
 
-  public socialSignUp = async (payload: ISocialSignUpPayload): Promise<IUser> => {
+  public socialSignUp = async (payload: ISocialSignUpPayload): Promise<User> => {
     const response = await this.apiClient.post(ENDPOINTS.socialSignUp(), payload);
-    return {
+    return ObjectMapper.deserialize(User, {
       ...response.user,
       access_token: response.access_token,
       refresh_token: response.refresh_token,
-    };
+    });
   };
 
-  public login = async (payload: IEmailLoginPayload | IOtpLoginPayload): Promise<IUser> => {
+  public login = async (payload: IEmailLoginPayload | IOtpLoginPayload): Promise<User> => {
     const response = await this.apiClient.post(ENDPOINTS.login(), payload);
-    return {
+    return ObjectMapper.deserialize(User, {
       ...response.user,
       access_token: response.access_token,
       refresh_token: response.refresh_token,
-    };
+    });
   };
 
-  public socialLogin = async (payload: ISocialLoginPayload): Promise<IUser | { is_new_user: boolean }> => {
+  public socialLogin = async (payload: ISocialLoginPayload): Promise<User | { is_new_user: boolean }> => {
     const response: ISocialLogin = await this.apiClient.post(ENDPOINTS.socialLogin(), payload);
     if (!response.user) {
       return {
@@ -65,11 +66,11 @@ class UserRepository {
       } as { is_new_user: boolean };
     }
 
-    return {
+    return ObjectMapper.deserialize(User, {
       ...response.user,
-      access_token: response.access_token ?? '',
-      refresh_token: response.refresh_token ?? '',
-    } as IUser;
+      access_token: response.access_token,
+      refresh_token: response.refresh_token,
+    });
   };
 
   public Otp = async (requestPayload: IOtpVerify): Promise<IOtpVerifyResponse> => {

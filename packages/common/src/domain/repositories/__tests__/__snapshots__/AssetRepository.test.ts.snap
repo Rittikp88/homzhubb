@@ -188,17 +188,29 @@ Array [
 `;
 
 exports[`AssetRepository should fetch a asset detail 1`] = `
-Object {
-  "asset_type": "Commercial Showroom",
-  "block_number": "#12",
-  "carpet_area": "12",
-  "carpet_area_unit": "Sqt",
-  "floor_number": 2,
-  "latitude": 0.9999,
-  "longitude": 0.24444,
-  "project_name": "Project",
-  "total_floors": 5,
-  "unit_number": "12",
+Asset {
+  "_assetGroup": Data {
+    "_count": 0,
+    "_id": "",
+    "_name": "",
+  },
+  "_assetType": Data {
+    "_count": 0,
+    "_id": "",
+    "_name": "",
+  },
+  "_blockNumber": "#12",
+  "_carpetArea": "12",
+  "_carpetAreaUnit": "Sqt",
+  "_floorNumber": 2,
+  "_id": 4,
+  "_images": Array [],
+  "_latitude": "0.9999",
+  "_longitude": "0.24444",
+  "_projectName": "Project",
+  "_spaces": Array [],
+  "_totalFloors": 5,
+  "_unitNumber": "12",
 }
 `;
 

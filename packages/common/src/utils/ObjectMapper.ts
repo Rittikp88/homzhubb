@@ -2,14 +2,14 @@
 import { JsonObject, JsonProperty, JsonConvert, OperationMode } from 'json2typescript';
 
 class ObjectMapper {
-  public static serialize<T>(instance: T): any {
+  public static serialize<T, J>(instance: T): J {
     const jsonConvert: JsonConvert = new JsonConvert();
     jsonConvert.operationMode = OperationMode.ENABLE;
 
     return jsonConvert.serializeObject<T>(instance);
   }
 
-  public static serializeArray<T>(instanceArray: T[]): any {
+  public static serializeArray<T, J>(instanceArray: T[]): J[] {
     const jsonConvert: JsonConvert = new JsonConvert();
     jsonConvert.operationMode = OperationMode.ENABLE;
     return jsonConvert.serializeArray<T>(instanceArray);

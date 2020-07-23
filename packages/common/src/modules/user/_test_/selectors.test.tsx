@@ -1,8 +1,10 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 const state: IState = {
   user: {
@@ -25,6 +27,7 @@ describe('User Selector', () => {
   });
 
   it('should return user Detail', () => {
-    expect(UserSelector.getUserDetails(state)).toBe(userData);
+    const user = ObjectMapper.deserialize(User, userData);
+    expect(UserSelector.getUserDetails(state)).toEqual(user);
   });
 });

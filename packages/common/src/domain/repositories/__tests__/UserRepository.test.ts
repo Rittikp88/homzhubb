@@ -26,7 +26,7 @@ describe('UserRepository', () => {
 
   it('should call social signUp API', async () => {
     // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => true);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => loginData);
     const response = await UserRepository.socialSignUp({
       otp: '123',
       user_details: {

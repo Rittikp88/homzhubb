@@ -1,4 +1,5 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
@@ -6,7 +7,7 @@ import {
   ICreateAssetResult,
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IAssetDetails } from '@homzhub/common/src/domain/models/Asset';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import {
   ILeaseTermDetails,
   ICreateLeaseTermDetails,
@@ -55,8 +56,9 @@ class AssetRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getAssetById = async (propertyId: number): Promise<IAssetDetails> => {
-    return this.apiClient.get(ENDPOINTS.getAssetById(propertyId));
+  public getAssetById = async (propertyId: number): Promise<Asset> => {
+    const response = await this.apiClient.get(ENDPOINTS.getAssetById(propertyId));
+    return ObjectMapper.deserialize(Asset, response);
   };
 
   public getDetails = async (): Promise<IPropertyDetailsData[]> => {

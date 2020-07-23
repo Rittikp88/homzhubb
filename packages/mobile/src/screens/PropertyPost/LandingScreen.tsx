@@ -4,7 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
@@ -18,7 +18,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 interface IStateProps {
-  user: IUser | null;
+  user: User | null;
 }
 
 interface IDispatchProps {
@@ -37,7 +37,7 @@ export class LandingScreen extends React.PureComponent<Props, {}> {
           <View style={styles.imagesContainer}>
             <Image source={images.landingScreenLogo} />
             <Text type="regular" textType="semiBold">
-              {t('welcomeUser', { username: user?.full_name ?? '' })}
+              {t('welcomeUser', { username: user?.fullName })}
             </Text>
             <Text type="small" textType="regular" style={styles.description}>
               {t('description')}

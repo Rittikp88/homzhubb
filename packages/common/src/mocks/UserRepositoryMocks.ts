@@ -13,7 +13,7 @@ export const loginData = {
 
 export const socialLogin = {
   is_new_user: false,
-  user: loginData,
+  ...loginData,
 };
 
 export const otpSent = {
