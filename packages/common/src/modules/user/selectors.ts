@@ -1,6 +1,6 @@
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { ObjectMapper } from '../../utils/ObjectMapper';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const isLoggedIn = (state: IState): boolean => {
   return !!state.user.user;
