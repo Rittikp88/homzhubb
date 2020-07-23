@@ -59,4 +59,7 @@ export const icons = {
   direction: 'direction',
   badge: 'badge',
   compare: 'compare',
+  area: 'area',
+  floor: 'floor',
+  washroom: 'washroom',
 };

@@ -3,12 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { Marker, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { IUserPayload, SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
-import { IImages, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
+import { IImages, IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
   currentSlide: number;
@@ -116,18 +117,10 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
 
   private renderCarouselItem = (item: IProperties): React.ReactElement => {
     const { transaction_type } = this.props;
-    const { images, project_name, carpet_area, carpet_area_unit, spaces } = item;
+    const { images, project_name } = item;
     const currency = this.getCurrency(item);
     const price = this.getPrice(item);
-    const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-      return space.name === SpaceAvailableTypes.BEDROOM;
-    });
-    const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
-      return space.name === SpaceAvailableTypes.BATHROOM;
-    });
-    const carpetArea = `${carpet_area} ${carpet_area_unit}`
-      ? `${carpet_area.toLocaleString()} ${carpet_area_unit}`
-      : '-';
+    const amenities = PropertyUtils.getAmenities(item);
     const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
     return (
       <PropertyMapCard
@@ -142,9 +135,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
         price={price}
         priceUnit={transaction_type === 0 ? 'month' : ''}
         isFavorite={false}
-        bedroom={bedroom.length > 0 ? bedroom[0].count.toString() : '-'}
-        bathroom={bathroom.length > 0 ? bathroom[0].count.toString() : '-'}
-        carpetArea={carpetArea}
+        amenitiesData={amenities}
         onFavorite={this.onFavorite}
       />
     );
