@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
@@ -9,6 +10,7 @@ import {
   mapStateToProps,
   mapDispatchToProps,
 } from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 const mock = jest.fn();
 
@@ -69,7 +71,8 @@ describe('Landing Screen Component', () => {
       },
     };
     const state = mapStateToProps(mockedState);
-    expect(state.user).toBe(user);
+    const deserializedUser = ObjectMapper.deserialize(User, user);
+    expect(state.user).toStrictEqual(deserializedUser);
   });
 
   it('should dispatch logout', () => {

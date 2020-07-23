@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
@@ -10,6 +11,7 @@ import {
   mapStateToProps,
   mapDispatchToProps,
 } from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 const mock = jest.fn();
 describe('Rent Services Screen Component', () => {
@@ -83,7 +85,8 @@ describe('Rent Services Screen Component', () => {
       },
     };
     const state = mapStateToProps(mockedState);
-    expect(state.user).toStrictEqual(userData);
+    const deserializedUser = ObjectMapper.deserialize(User, userData);
+    expect(state.user).toStrictEqual(deserializedUser);
     expect(state.serviceList).toStrictEqual(RentServicesData);
   });
 
