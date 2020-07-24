@@ -14,6 +14,8 @@ class AssetService {
       room_count,
       bath_count,
       asset_group,
+      min_area,
+      max_area,
     } = filter;
     const bedroomCount = cloneDeep(room_count);
     remove(bedroomCount, (count: number) => count === -1);
@@ -22,6 +24,8 @@ class AssetService {
       txn_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
       price__gt: min_price,
       price__lt: max_price,
+      carpet_area__lt: min_area,
+      carpet_area__gt: max_area,
       latitude: search_latitude,
       longitude: search_longitude,
       search_radius: 50,

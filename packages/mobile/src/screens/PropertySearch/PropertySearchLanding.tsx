@@ -12,7 +12,7 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
-import { PriceRange } from '@homzhub/mobile/src/components/molecules/PriceRange';
+import { Range } from '@homzhub/mobile/src/components/molecules/Range';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -177,8 +177,9 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
           selectedItem={[selectedLookingType]}
           onValueChange={this.onChangeFlow}
         />
-        <PriceRange
-          currencyData={currencyData}
+        <Range
+          dropdownData={currencyData}
+          isPriceRange
           currencySymbol={currencySymbol}
           onChangeSlide={this.updateFilter}
           range={priceRange}

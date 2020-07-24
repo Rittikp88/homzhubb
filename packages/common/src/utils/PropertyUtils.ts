@@ -35,7 +35,7 @@ class PropertyUtils {
         icon: name === 'Residential' ? icons.bed : icons.floor,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: name === 'Residential' ? bedroom[0].count.toString() : floor_number.toString(),
+        label: name === 'Residential' && bedroom.length > 0 ? bedroom[0].count.toString() : floor_number.toString(),
       },
       {
         icon: name === 'Residential' ? icons.bathTub : icons.washroom,

@@ -15,11 +15,13 @@ import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton, Text } from '@homzhub/common/src/components';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
-import { PriceRange } from '@homzhub/mobile/src/components/molecules/PriceRange';
+import { Range } from '@homzhub/mobile/src/components/molecules/Range';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
@@ -32,11 +34,13 @@ import {
   IPropertiesObject,
   ITransactionRange,
 } from '@homzhub/common/src/domain/models/Search';
+import { CarpetAreaUnit } from '@homzhub/common/src/mocks/AreaUnit';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
   PRICE = 'PRICE',
   ROOMS = 'ROOMS',
+  AREA = 'AREA',
   MORE = 'MORE',
 }
 
@@ -63,6 +67,8 @@ interface IPropertySearchScreenState {
   isMenuTrayCollapsed: boolean;
   isSearchBarFocused: boolean;
   suggestions: GooglePlaceData[];
+  areaUnits: IDropdownOption[];
+  selectedUnit: string;
 }
 
 type Props = WithTranslation & IStateProps & IDispatchProps;
@@ -75,6 +81,19 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     isMenuTrayCollapsed: false,
     suggestions: [],
     isSearchBarFocused: false,
+    areaUnits: [],
+    selectedUnit: 'SQ_FT',
+  };
+
+  public componentDidMount = async (): Promise<void> => {
+    try {
+      const response = await CommonRepository.getCarpetAreaUnits();
+      this.setState({
+        areaUnits: response,
+      });
+    } catch (error) {
+      AlertHelper.error({ message: error.message });
+    }
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
@@ -165,16 +184,17 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private renderCollapsibleTray = (): React.ReactNode => {
-    const { selectedOnScreenFilter } = this.state;
+    const { selectedOnScreenFilter, areaUnits, selectedUnit } = this.state;
     const {
       filterData,
-      filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price },
+      filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price, min_area, max_area },
       setFilter,
       currencyData,
       getProperties,
       priceRange,
     } = this.props;
     let currencySymbol = '';
+    let areaRange = { min: 0, max: 10 };
 
     if (!filterData) {
       return null;
@@ -188,7 +208,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
     const updateFilter = (type: string, value: number | number[]): void => {
       setFilter({ [type]: value });
-      if (type === 'min_price' || type === 'max_price') {
+      if (type === 'min_price' || type === 'max_price' || type === 'min_area' || type === 'max_area') {
         setTimeout(() => {
           getProperties();
         }, 500);
@@ -197,16 +217,41 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       }
     };
 
+    // TODO: Remove once carpet area data issue fix
+    CarpetAreaUnit.forEach((units: any) => {
+      if (units.area === selectedUnit) {
+        areaRange = {
+          min: units.min_value,
+          max: units.max_value,
+        };
+      }
+    });
+
     switch (selectedOnScreenFilter) {
       case OnScreenFilters.PRICE:
         return (
-          <PriceRange
-            currencyData={currencyData}
+          <Range
+            dropdownData={currencyData}
+            selectedUnit="INR"
+            isPriceRange
             range={priceRange}
             currencySymbol={currencySymbol}
             minChangedValue={min_price}
             maxChangedValue={max_price}
             onChangeSlide={updateFilter}
+            containerStyle={styles.priceRange}
+          />
+        );
+      case OnScreenFilters.AREA:
+        return (
+          <Range
+            dropdownData={areaUnits}
+            selectedUnit={selectedUnit}
+            range={areaRange}
+            minChangedValue={min_area}
+            maxChangedValue={max_area}
+            onChangeSlide={updateFilter}
+            onDropdownValueChange={this.handleDropdownValue}
             containerStyle={styles.priceRange}
           />
         );
@@ -260,12 +305,25 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     const {
       t,
       filters: { search_address },
+      filterData,
     } = this.props;
+    let propertyType = '';
+    if (filterData) {
+      const {
+        filters: {
+          asset_group: { name },
+        },
+      } = filterData;
+      propertyType = name;
+    }
     const { selectedOnScreenFilter, isMenuTrayCollapsed } = this.state;
     const onScreenFilters = [
       { type: OnScreenFilters.TYPE, label: t('type') },
       { type: OnScreenFilters.PRICE, label: t('price') },
-      { type: OnScreenFilters.ROOMS, label: t('rooms') },
+      {
+        type: propertyType === 'RESIDENTIAL' ? OnScreenFilters.ROOMS : OnScreenFilters.AREA,
+        label: propertyType === 'RESIDENTIAL' ? t('rooms') : t('area'),
+      },
       { type: OnScreenFilters.MORE, label: icons.filter },
     ];
     return (
@@ -291,8 +349,14 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
                 iconColor = theme.colors.secondaryColor;
               }
 
-              const onPress = (): void =>
-                this.setState({ selectedOnScreenFilter: type, isMenuTrayCollapsed: !isMenuTrayCollapsed });
+              const onPress = (): void => {
+                this.setState({ selectedOnScreenFilter: type, isMenuTrayCollapsed: true });
+                if (type === selectedOnScreenFilter && isMenuTrayCollapsed) {
+                  this.setState({
+                    isMenuTrayCollapsed: false,
+                  });
+                }
+              };
 
               const navigateToFilters = (): void => console.log('Navigate to Filters');
 
@@ -452,6 +516,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     this.setState({
       isMapView: !isMapView,
     });
+  };
+
+  private handleDropdownValue = (value: string | number): void => {
+    this.setState({ selectedUnit: value as string });
   };
 }
 

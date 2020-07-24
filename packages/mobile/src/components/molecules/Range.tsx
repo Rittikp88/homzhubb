@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PickerItemProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
@@ -12,56 +12,82 @@ interface IRange {
 }
 
 interface IProps {
-  currencyData: PickerItemProps[];
+  dropdownData: PickerItemProps[];
+  selectedUnit?: string;
+  isPriceRange?: boolean;
   range: IRange;
-  currencySymbol: string;
+  currencySymbol?: string;
   minChangedValue: number;
   maxChangedValue: number;
   onChangeSlide: (type: string, value: number | number[]) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  onDropdownValueChange?: (value: string | number) => void;
 }
 
-export const PriceRange = (props: IProps): React.ReactElement => {
+export const Range = (props: IProps): React.ReactElement => {
   const {
-    currencyData,
+    dropdownData,
     onChangeSlide,
     range,
     minChangedValue,
     maxChangedValue,
     currencySymbol,
     containerStyle,
+    isPriceRange,
+    selectedUnit,
+    onDropdownValueChange,
   } = props;
   const { t } = useTranslation();
-  const [currency, setCurrency] = useState('INR');
-  const onCurrencyChange = (value: string | number): void => {
-    setCurrency(value as string);
+  const [dropdownValue, setValue] = useState('');
+  useEffect(() => {
+    if (selectedUnit) {
+      setValue(selectedUnit);
+    }
+  }, [selectedUnit]);
+  const onUnitChange = (value: string | number): void => {
+    setValue(value as string);
+    if (onDropdownValueChange) {
+      onDropdownValueChange(value);
+    }
   };
-  const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(currency, value);
-  const maxValue =
-    maxChangedValue > 0 && maxChangedValue < range.max
-      ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}`
-      : 'Any';
-  const minValue = minChangedValue > 0 ? `${currencySymbol}${getCurrencyValue(minChangedValue)}` : 'Any';
+  const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(dropdownValue, value);
+  const getAreaValue = (value: number): string => CurrencyUtils.getAreaUnit(dropdownValue, value);
+
+  const maxChanged = isPriceRange
+    ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}`
+    : getAreaValue(maxChangedValue);
+
+  const minChanged = isPriceRange
+    ? `${currencySymbol}${getCurrencyValue(minChangedValue)}`
+    : getAreaValue(minChangedValue);
+
+  const maxValue = maxChangedValue > 0 && maxChangedValue < range.max ? maxChanged : 'Any';
+  const minValue = minChangedValue > 0 ? minChanged : 'Any';
 
   const onUpdatePrice = (value1: number, value2?: number): void => {
-    onChangeSlide('min_price', value1);
-    onChangeSlide('max_price', value2 || 0);
+    if (isPriceRange) {
+      onChangeSlide('min_price', value1);
+      onChangeSlide('max_price', value2 || 0);
+    } else {
+      onChangeSlide('min_area', value1);
+      onChangeSlide('max_area', value2 || 0);
+    }
   };
 
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.rangeRow}>
         <Text type="small" textType="semiBold" style={styles.priceRange}>
-          {t('priceRange')}
+          {isPriceRange ? t('priceRange') : t('propertySearch:carpetArea')}
         </Text>
         <Dropdown
-          data={currencyData}
+          data={dropdownData}
           icon={icons.downArrow}
           iconColor={theme.colors.darkTint5}
           iconSize={8}
           textStyle={styles.dropdownTextStyle}
-          value={currency}
-          onDonePress={onCurrencyChange}
+          value={dropdownValue}
+          onDonePress={onUnitChange}
           containerStyle={styles.dropdownContainer}
         />
       </View>

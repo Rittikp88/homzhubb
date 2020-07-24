@@ -133,7 +133,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
         name={project_name}
         currency={currency}
         price={price}
-        priceUnit={transaction_type === 0 ? 'month' : ''}
+        priceUnit={transaction_type === 0 ? 'mo' : ''}
         isFavorite={false}
         amenitiesData={amenities}
         onFavorite={this.onFavorite}

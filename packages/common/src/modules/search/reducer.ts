@@ -12,6 +12,8 @@ export const initialSearchState: ISearchState = {
     asset_type: [],
     min_price: -1,
     max_price: -1,
+    min_area: -1,
+    max_area: -1,
     furnishing_status: '',
     room_count: [-1],
     bath_count: -1,

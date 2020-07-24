@@ -32,3 +32,8 @@ export const AreaUnit = [
     value: 'kattha',
   },
 ];
+
+export const CarpetAreaUnit = [
+  { area: 'SQ_FT', min_value: 100, max_value: 1000 },
+  { area: 'SQ_YARD', min_value: 100, max_value: 1000 },
+];

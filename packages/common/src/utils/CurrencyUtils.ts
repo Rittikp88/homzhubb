@@ -38,6 +38,17 @@ class CurrencyUtils {
         return `${currency} ${value.toLocaleString()}`;
     }
   };
+
+  public getAreaUnit = (unit: string, value: number): string => {
+    switch (unit) {
+      case 'SQ_FT':
+        return `${value}Sqft`;
+      case 'SQ_YARD':
+        return `${value}SqYard`;
+      default:
+        return `${value.toLocaleString()}${unit}`;
+    }
+  };
 }
 
 const currencyUtils = new CurrencyUtils();

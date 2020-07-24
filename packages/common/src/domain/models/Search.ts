@@ -74,6 +74,8 @@ export interface IFilter {
   asset_type: number[];
   min_price: number;
   max_price: number;
+  min_area: number;
+  max_area: number;
   furnishing_status: string;
   room_count: number[];
   bath_count: number;

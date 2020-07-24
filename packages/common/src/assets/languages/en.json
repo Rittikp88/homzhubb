@@ -214,12 +214,14 @@
     "baths": "Baths",
     "rooms": "Rooms",
     "price": "Price",
+    "area": "Area",
     "propertyType": "Property Type",
     "lookingFor": "Looking For",
     "propertiesFound": "Properties Found",
     "noResultsFound": "No Results Found",
     "noResultHelper": "We did not find any properties for your search",
     "searchAgain": "Search Again",
-    "resetFilters": "Reset Filters"
+    "resetFilters": "Reset Filters",
+    "carpetArea": "Carpet Area"
   }
 }
