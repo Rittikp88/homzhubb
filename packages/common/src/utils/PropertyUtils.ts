@@ -12,8 +12,10 @@ class PropertyUtils {
       floor_number,
       asset_group: { name },
     } = property;
-
     let amenities: IAmenitiesIcons[] = [];
+    if (spaces.length === 0) {
+      return [];
+    }
     const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
       return space.name === SpaceAvailableTypes.BEDROOM;
     });

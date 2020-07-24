@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { IImages } from '@homzhub/common/src/domain/models/Search';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Favorite } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
+import { IImages } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   images: IImages[];

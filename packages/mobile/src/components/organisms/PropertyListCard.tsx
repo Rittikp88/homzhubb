@@ -14,8 +14,6 @@ import { IAmenitiesIcons, IProperties } from '@homzhub/common/src/domain/models/
 
 interface IProps {
   property: IProperties;
-  propertyId: number;
-  isFavorite: boolean;
   onFavorite: (index: number) => void;
   transaction_type: number;
 }
@@ -26,12 +24,11 @@ type Props = libraryProps & IProps;
 class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
-      property: { images, project_name, unit_number, block_number },
-      isFavorite,
+      property: { images, project_name, unit_number, block_number, is_favorite },
     } = this.props;
     return (
       <View style={styles.container}>
-        <PropertyListImageCarousel images={images} isFavorite={isFavorite} onFavorite={this.onFavorite} />
+        <PropertyListImageCarousel images={images} isFavorite={is_favorite ?? false} onFavorite={this.onFavorite} />
         {this.renderPropertyTypeAndBadges()}
         <PropertyAddress primaryAddress={project_name} subAddress={`${block_number ?? ''} ${unit_number ?? ''}`} />
         <Divider containerStyles={styles.divider} />
@@ -74,13 +71,17 @@ class PropertyListCard extends React.Component<Props, {}> {
   };
 
   public onFavorite = async (): Promise<void> => {
-    const { onFavorite, propertyId, t } = this.props;
+    const {
+      onFavorite,
+      property: { id },
+      t,
+    } = this.props;
     const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
     if (!user) {
       AlertHelper.error({ message: t('common:loginToContinue') });
       return;
     }
-    onFavorite(propertyId);
+    onFavorite(id);
   };
 
   public getCurrency = (): string => {

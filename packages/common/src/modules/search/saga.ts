@@ -28,7 +28,18 @@ export function* getPropertiesDetails() {
   }
 }
 
+export function* getPropertiesListViewDetails() {
+  try {
+    const filter = AssetService.constructAssetSearchPayload(yield select(getFilters));
+    const data = yield call(SearchRepository.getProperties, filter);
+    yield put(SearchActions.getPropertiesListViewSuccess(data));
+  } catch (e) {
+    yield put(SearchActions.getPropertiesListViewFailure(e.message));
+  }
+}
+
 export function* watchSearch() {
   yield takeEvery(SearchActionTypes.GET.FILTER_DETAILS, getFilterDetails);
   yield debounce(100, SearchActionTypes.GET.PROPERTIES, getPropertiesDetails);
+  yield debounce(100, SearchActionTypes.GET.PROPERTIES_LIST_VIEW, getPropertiesListViewDetails);
 }

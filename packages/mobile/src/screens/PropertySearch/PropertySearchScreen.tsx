@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, ScrollView, PickerItemProps } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, PickerItemProps } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -57,6 +57,7 @@ interface IStateProps {
 interface IDispatchProps {
   setFilter: (payload: any) => void;
   getProperties: () => void;
+  getPropertiesListView: () => void;
   setInitialFilters: () => void;
   setInitialState: () => void;
 }
@@ -138,7 +139,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderContent = (): React.ReactNode => {
     const { isMapView } = this.state;
-    const { properties, setInitialFilters, getProperties, setFilter, filters } = this.props;
+    const { properties, setFilter, filters, getPropertiesListView } = this.props;
     if (!properties) {
       return null;
     }
@@ -151,34 +152,54 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
             {this.renderNoResults()}
           </>
         ) : (
-          <ScrollView style={styles.flexOne}>
+          <>
             <PropertySearchList
-              properties={properties.results}
-              propertyCount={properties.count}
+              properties={properties}
               filters={filters}
               setFilter={setFilter}
-              resetFilters={setInitialFilters}
-              getProperties={getProperties}
+              getPropertiesListView={getPropertiesListView}
               onFavorite={this.onFavoriteProperty}
-              isSearchBarFocused={this.toggleSearchBar}
             />
             {this.renderMenuTray()}
-          </ScrollView>
+            {this.renderNoResultsListView()}
+          </>
         )}
       </View>
     );
   };
 
   private renderNoResults = (): React.ReactNode => {
-    const { properties } = this.props;
+    const { properties, t } = this.props;
     if (properties.count > 0) {
       return null;
     }
     return (
       <View style={styles.noResultsContainer}>
         <Text type="small" textType="regular" style={styles.noResults}>
-          No results found, try zooming or changing your filters
+          {t('noResultsMapView')}
         </Text>
+      </View>
+    );
+  };
+
+  private renderNoResultsListView = (): React.ReactNode => {
+    const { properties, t } = this.props;
+    if (properties.count > 0) {
+      return null;
+    }
+    return (
+      <View style={styles.noResultsListContainer}>
+        <Icon name={icons.search} size={30} color={theme.colors.disabledSearch} />
+        <Text type="small" textType="semiBold" style={styles.noResultText}>
+          {t('noResultsFound')}
+        </Text>
+        <Label type="large" textType="regular" style={styles.helperText}>
+          {t('noResultHelper')}
+        </Label>
+        <Button type="primary" title={t('searchAgain')} containerStyle={styles.button} onPress={this.toggleSearchBar} />
+        <Label type="large" textType="semiBold" style={styles.resetFilters} onPress={this.resetFilterAndProperties}>
+          {t('resetFilters')}
+        </Label>
       </View>
     );
   };
@@ -521,6 +542,12 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   private handleDropdownValue = (value: string | number): void => {
     this.setState({ selectedUnit: value as string });
   };
+
+  public resetFilterAndProperties = (): void => {
+    const { getProperties, setInitialFilters } = this.props;
+    setInitialFilters();
+    getProperties();
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -543,13 +570,14 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, getProperties, setInitialFilters, setInitialState } = SearchActions;
+  const { setFilter, getProperties, setInitialFilters, setInitialState, getPropertiesListView } = SearchActions;
   return bindActionCreators(
     {
       setFilter,
       getProperties,
       setInitialFilters,
       setInitialState,
+      getPropertiesListView,
     },
     dispatch
   );
@@ -566,9 +594,6 @@ const styles = StyleSheet.create({
   },
   flexFour: {
     flex: 4,
-  },
-  flexOne: {
-    flex: 1,
   },
   statusBar: {
     height: PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight,
@@ -677,5 +702,28 @@ const styles = StyleSheet.create({
   priceRange: {
     width: theme.viewport.width,
     paddingRight: 30,
+  },
+  noResultsListContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noResultText: {
+    color: theme.colors.darkTint3,
+    marginVertical: 10,
+  },
+  helperText: {
+    color: theme.colors.darkTint6,
+    textAlign: 'center',
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  resetFilters: {
+    color: theme.colors.primaryColor,
+    marginVertical: 10,
+  },
+  button: {
+    flex: 0,
+    marginVertical: 10,
   },
 });

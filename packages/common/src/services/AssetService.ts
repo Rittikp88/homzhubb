@@ -14,6 +14,8 @@ class AssetService {
       room_count,
       bath_count,
       asset_group,
+      limit,
+      offset,
       min_area,
       max_area,
     } = filter;
@@ -29,6 +31,8 @@ class AssetService {
       latitude: search_latitude,
       longitude: search_longitude,
       search_radius: 50,
+      limit,
+      offset,
     };
     if (asset_type.length > 0) {
       Object.assign(finalPayload, { asset_type__in: asset_type.toString() });

@@ -8,6 +8,7 @@ export { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 export { HorizontalPicker } from '@homzhub/common/src/components/atoms/HorizontalPicker';
 export { ImageRound, ImageSquare, Image } from '@homzhub/common/src/components/atoms/Image';
 export { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+export { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';
 export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';
 export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
 export { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';

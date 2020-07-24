@@ -103,6 +103,7 @@ export interface IProperties {
   lease_term?: IPropertyTerm | null;
   sale_term?: IPropertyTerm | null;
   images: IImages[];
+  is_favorite?: boolean;
 }
 
 export interface IPropertiesObject {

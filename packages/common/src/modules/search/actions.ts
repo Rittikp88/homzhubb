@@ -13,6 +13,9 @@ export const SearchActionTypes = {
     PROPERTIES: `${actionTypePrefix}PROPERTIES`,
     PROPERTIES_SUCCESS: `${actionTypePrefix}PROPERTIES_SUCCESS`,
     PROPERTIES_FAILURE: `${actionTypePrefix}PROPERTIES_FAILURE`,
+    PROPERTIES_LIST_VIEW: `${actionTypePrefix}PROPERTIES_LIST_VIEW`,
+    PROPERTIES_LIST_VIEW_SUCCESS: `${actionTypePrefix}PROPERTIES_LIST_VIEW_SUCCESS`,
+    PROPERTIES_LIST_VIEW_FAILURE: `${actionTypePrefix}PROPERTIES_LIST_VIEW_FAILURE`,
   },
   SET: {
     FILTER: `${actionTypePrefix}FILTER`,
@@ -82,6 +85,26 @@ const setInitialState = (): IFluxStandardAction => {
   };
 };
 
+const getPropertiesListView = (): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.GET.PROPERTIES_LIST_VIEW,
+  };
+};
+
+const getPropertiesListViewSuccess = (data: IPropertiesObject): IFluxStandardAction<IPropertiesObject> => {
+  return {
+    type: SearchActionTypes.GET.PROPERTIES_LIST_VIEW_SUCCESS,
+    payload: data,
+  };
+};
+
+const getPropertiesListViewFailure = (error: string): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.GET.PROPERTIES_LIST_VIEW_FAILURE,
+    error,
+  };
+};
+
 export type SearchPayloadTypes = string | number | IPropertiesObject | IFilter | IFilterDetails | undefined;
 
 export const SearchActions = {
@@ -94,4 +117,7 @@ export const SearchActions = {
   getPropertiesFailure,
   setInitialFilters,
   setInitialState,
+  getPropertiesListView,
+  getPropertiesListViewSuccess,
+  getPropertiesListViewFailure,
 };
