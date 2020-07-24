@@ -84,6 +84,7 @@ describe('Rent Services Screen Component', () => {
         },
       },
     };
+    // @ts-ignore
     const state = mapStateToProps(mockedState);
     const deserializedUser = ObjectMapper.deserialize(User, userData);
     expect(state.user).toStrictEqual(deserializedUser);

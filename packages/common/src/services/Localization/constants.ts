@@ -18,6 +18,7 @@ enum namespacesKey {
   auth = 'auth',
   property = 'property',
   propertySearch = 'propertySearch',
+  assetDescription = 'assetDescription',
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;

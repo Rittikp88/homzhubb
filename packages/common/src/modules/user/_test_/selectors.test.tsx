@@ -6,6 +6,7 @@ import { userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { User } from '@homzhub/common/src/domain/models/User';
 
+// @ts-ignore
 const state: IState = {
   user: {
     ...initialUserState,

@@ -45,7 +45,8 @@
     "priceRange": "Price Range",
     "to": "to",
     "min": "Min",
-    "max": "Max"
+    "max": "Max",
+    "readMore": "Read More"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -223,5 +224,9 @@
     "searchAgain": "Search Again",
     "resetFilters": "Reset Filters",
     "carpetArea": "Carpet Area"
+  },
+  "assetDescription": {
+    "reviewsRatings": "Reviews and ratings",
+    "readReviews": "Read reviews"
   }
 }

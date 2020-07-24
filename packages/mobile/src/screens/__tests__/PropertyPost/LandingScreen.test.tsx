@@ -70,6 +70,7 @@ describe('Landing Screen Component', () => {
         ...initialPropertyState,
       },
     };
+    // @ts-ignore
     const state = mapStateToProps(mockedState);
     const deserializedUser = ObjectMapper.deserialize(User, user);
     expect(state.user).toStrictEqual(deserializedUser);

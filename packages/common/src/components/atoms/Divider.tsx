@@ -8,8 +8,8 @@ interface IProps {
 
 class Divider extends React.PureComponent<IProps> {
   public render(): React.ReactNode {
-    const { containerStyles } = this.props;
-    const dividerStyles = containerStyles ?? styles.separator;
+    const { containerStyles = {} } = this.props;
+    const dividerStyles = [styles.separator, containerStyles];
     return <View style={dividerStyles} />;
   }
 }

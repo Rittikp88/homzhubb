@@ -1813,18 +1813,24 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                           <Divider>
                                                                             <View
                                                                               style={
-                                                                                Object {
-                                                                                  "borderColor": "#C9D6DF",
-                                                                                  "borderWidth": 0.5,
-                                                                                }
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "borderColor": "#C9D6DF",
+                                                                                    "borderWidth": 0.5,
+                                                                                  },
+                                                                                  Object {},
+                                                                                ]
                                                                               }
                                                                             >
                                                                               <View
                                                                                 style={
-                                                                                  Object {
-                                                                                    "borderColor": "#C9D6DF",
-                                                                                    "borderWidth": 0.5,
-                                                                                  }
+                                                                                  Array [
+                                                                                    Object {
+                                                                                      "borderColor": "#C9D6DF",
+                                                                                      "borderWidth": 0.5,
+                                                                                    },
+                                                                                    Object {},
+                                                                                  ]
                                                                                 }
                                                                               />
                                                                             </View>
@@ -2122,18 +2128,24 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                           <Divider>
                                                                             <View
                                                                               style={
-                                                                                Object {
-                                                                                  "borderColor": "#C9D6DF",
-                                                                                  "borderWidth": 0.5,
-                                                                                }
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "borderColor": "#C9D6DF",
+                                                                                    "borderWidth": 0.5,
+                                                                                  },
+                                                                                  Object {},
+                                                                                ]
                                                                               }
                                                                             >
                                                                               <View
                                                                                 style={
-                                                                                  Object {
-                                                                                    "borderColor": "#C9D6DF",
-                                                                                    "borderWidth": 0.5,
-                                                                                  }
+                                                                                  Array [
+                                                                                    Object {
+                                                                                      "borderColor": "#C9D6DF",
+                                                                                      "borderWidth": 0.5,
+                                                                                    },
+                                                                                    Object {},
+                                                                                  ]
                                                                                 }
                                                                               />
                                                                             </View>
@@ -2431,18 +2443,24 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                           <Divider>
                                                                             <View
                                                                               style={
-                                                                                Object {
-                                                                                  "borderColor": "#C9D6DF",
-                                                                                  "borderWidth": 0.5,
-                                                                                }
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "borderColor": "#C9D6DF",
+                                                                                    "borderWidth": 0.5,
+                                                                                  },
+                                                                                  Object {},
+                                                                                ]
                                                                               }
                                                                             >
                                                                               <View
                                                                                 style={
-                                                                                  Object {
-                                                                                    "borderColor": "#C9D6DF",
-                                                                                    "borderWidth": 0.5,
-                                                                                  }
+                                                                                  Array [
+                                                                                    Object {
+                                                                                      "borderColor": "#C9D6DF",
+                                                                                      "borderWidth": 0.5,
+                                                                                    },
+                                                                                    Object {},
+                                                                                  ]
                                                                                 }
                                                                               />
                                                                             </View>

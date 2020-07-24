@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { createStackNavigator } from '@react-navigation/stack';
+import AssetDescription from '@homzhub/mobile/src/screens/AssetDescription';
 import PropertySearchScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchScreen';
 
 const SearchStack = createStackNavigator();
@@ -15,6 +16,7 @@ const SearchStackScreen = (): React.ReactElement => {
       }}
     >
       <SearchStack.Screen name="Search" component={PropertySearchScreen} />
+      <SearchStack.Screen name="AssetDescription" component={AssetDescription} />
     </SearchStack.Navigator>
   );
 };

@@ -8,6 +8,7 @@ import {
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import {
   ILeaseTermDetails,
   ICreateLeaseTermDetails,
@@ -47,6 +48,7 @@ const ENDPOINTS = {
   deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
   getVerificationDocumentDetails: (): string => 'verification-document-types/',
+  getRatings: (id: number): string => `assets/${id}/ratings`,
 };
 
 class AssetRepository {
@@ -151,6 +153,11 @@ class AssetRepository {
 
   public getVerificationDocumentTypes = async (): Promise<IVerificationTypes[]> => {
     return await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
+  };
+
+  public getRatings = async (id: number): Promise<AssetReview[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getRatings(id));
+    return ObjectMapper.deserializeArray(AssetReview, response);
   };
 }
 

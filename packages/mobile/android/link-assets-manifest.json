@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "../common/src/assets/fonts/.DS_Store",
+      "sha1": "6db2ac6dd8b23062587a9b99c377565c8d2738b1"
+    },
+    {
       "path": "../common/src/assets/fonts/OpenSans-Bold.ttf",
       "sha1": "1e3704ee48b5ff7e582488ead87b05249f14dc1c"
     },
@@ -39,7 +43,7 @@
     },
     {
       "path": "../common/src/assets/fonts/icomoon.ttf",
-      "sha1": "caae90b2b318002b8fab8e029047df18e2464847"
+      "sha1": "224cf673260d1e022f6d94da50041906f419b303"
     }
   ]
 }

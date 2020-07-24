@@ -61,6 +61,8 @@ const opacity = {
   markerOpacity: 'rgba(0, 132, 248, 0.3)',
   carouselCardOpacity: 'rgba(0, 27, 54, 0.25)',
   favoriteBackground: 'rgba(25, 50, 74, 0.25)',
+  ratingLow: 'rgba(242, 61, 6, 0.12)',
+  ratingHigh: 'rgba(71, 194, 178, 0.12)',
 };
 
 export const colors = {
