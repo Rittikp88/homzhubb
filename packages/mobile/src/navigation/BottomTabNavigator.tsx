@@ -15,8 +15,8 @@ const SearchStackScreen = (): React.ReactElement => {
         headerShown: false,
       }}
     >
-      <SearchStack.Screen name="Search" component={PropertySearchScreen} />
       <SearchStack.Screen name="AssetDescription" component={AssetDescription} />
+      <SearchStack.Screen name="Search" component={PropertySearchScreen} />
     </SearchStack.Navigator>
   );
 };

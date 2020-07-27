@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Video, { OnProgressData, OnLoadData } from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
+import Orientation from 'react-native-orientation-locker';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 
 interface IProps {
   uri: string;
   volume?: number;
+  onToggleFullScreenVideoPlayer?: () => void;
+  isFullScreenCarousel?: boolean;
 }
 
 interface IRNVideoState {
@@ -28,14 +32,21 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
     isLoading: true,
     paused: false,
     playerState: PLAYER_STATES.PLAYING,
-    screenType: 'content',
+    screenType: 'cover',
   };
 
   public render(): React.ReactElement {
-    const { uri, volume = 1 } = this.props;
+    const { uri, volume = 1, isFullScreenCarousel } = this.props;
     const { currentTime, duration, isFullScreen, isLoading, paused, playerState, screenType } = this.state;
     return (
       <View style={styles.container}>
+        {isFullScreenCarousel && (
+          <View style={styles.backButtonWrapper}>
+            <TouchableOpacity onPress={this.goBack}>
+              <Icon name={icons.leftArrow} size={22} color={theme.colors.white} />
+            </TouchableOpacity>
+          </View>
+        )}
         <Video
           onEnd={this.onEnd}
           onLoad={this.onLoad}
@@ -50,7 +61,7 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
           onFullScreen={isFullScreen}
           source={{ uri }}
           style={styles.mediaPlayer}
-          volume={volume}
+          volume={Math.max(Math.min(1, volume), 0)}
         />
         <MediaControls
           duration={duration}
@@ -104,13 +115,30 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
   public onEnd = (): void => this.setState({ playerState: PLAYER_STATES.ENDED });
 
   public onFullScreen = (): void => {
-    const { screenType } = this.state;
-    if (screenType === 'content') this.setState({ screenType: 'cover' });
-    else this.setState({ screenType: 'content' });
+    const { onToggleFullScreenVideoPlayer, isFullScreenCarousel } = this.props;
+    if (isFullScreenCarousel) {
+      Orientation.lockToLandscapeLeft();
+      return;
+    }
+    if (onToggleFullScreenVideoPlayer) {
+      onToggleFullScreenVideoPlayer();
+    }
   };
 
   public onSeeking = (currentTime: number): void => this.setState({ currentTime });
+
+  public goBack = (): void => {
+    const { isFullScreenCarousel, onToggleFullScreenVideoPlayer } = this.props;
+    if (isFullScreenCarousel) {
+      if (onToggleFullScreenVideoPlayer) {
+        onToggleFullScreenVideoPlayer();
+      }
+      Orientation.lockToPortrait();
+    }
+  };
 }
+
+export { RNVideo };
 
 const styles = StyleSheet.create({
   container: {
@@ -122,7 +150,14 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    backgroundColor: theme.colors.shadow,
+    backgroundColor: theme.colors.transparent,
+  },
+  backButtonWrapper: {
+    backgroundColor: theme.colors.transparent,
+    left: 20,
+    top: 20,
+    position: 'absolute',
+    zIndex: 1,
+    alignSelf: 'flex-start',
   },
 });
-export { RNVideo };

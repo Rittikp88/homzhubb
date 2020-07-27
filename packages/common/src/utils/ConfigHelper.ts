@@ -12,6 +12,8 @@ class ConfigHelper {
   public getStorageSecret = (): string => config.storage_secret;
 
   public getRazorApiKey = (): string => config.RAZOR_API_KEY;
+
+  public getYoutubeApiKey = (): string => config.YOUTUBE_API_KEY;
 }
 
 const configHelper = new ConfigHelper();

@@ -4,5 +4,6 @@
   "PLACES_API_KEY": "AIzaSyAxmAMQxzq9rG52lulvRexqkDxZlqN52GE",
   "RAZOR_API_KEY": "rzp_test_i3k6SWZsfTo9Wq",
   "OTP_LENGTH": 6,
-  "storage_secret": "secret"
+  "storage_secret": "secret",
+  "YOUTUBE_API_KEY": "AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo"
 }

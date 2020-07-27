@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import Collapsible from 'react-native-collapsible';
-import ImageZoom from 'react-native-image-pan-zoom';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Image, ImageVideoPagination, Label, Text, WithShadowView } from '@homzhub/common/src/components';
+import { Divider, Text, Label, WithShadowView } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { PropertyDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyDetailsImageCarousel';
+import { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
+import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 
@@ -41,17 +41,52 @@ const { width, height } = theme.viewport;
 const realWidth = height > width ? width : height;
 const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
-const PARALLAX_HEADER_HEIGHT = 200;
+const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 60;
 
 type Props = IStateProps & IDispatchProps & WithTranslation;
 // TODO: Get from redux once set up
 const IMAGES = [
-  'https://homepages.cae.wisc.edu/~ece533/images/airplane.png',
-  'https://homepages.cae.wisc.edu/~ece533/images/arctichare.png',
-  'https://homepages.cae.wisc.edu/~ece533/images/baboon.png',
-  'https://homepages.cae.wisc.edu/~ece533/images/boat.png',
-  'https://homepages.cae.wisc.edu/~ece533/images/monarch.png',
+  {
+    id: 1,
+    name: 'image1.png',
+    link: 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png',
+    attachment_type: 'IMAGE',
+    mime_type: 'Image/Jpeg',
+    is_cover_image: true,
+  },
+  {
+    id: 2,
+    name: 'image2.png',
+    link: 'https://www.youtube.com/watch?v=L7OLY4HCctQ',
+    attachment_type: 'VIDEO',
+    mime_type: 'Image/Jpeg',
+    is_cover_image: true,
+  },
+  {
+    id: 3,
+    name: 'image3.png',
+    link: 'https://homepages.cae.wisc.edu/~ece533/images/baboon.png',
+    attachment_type: 'IMAGE',
+    mime_type: 'Image/Jpeg',
+    is_cover_image: true,
+  },
+  {
+    id: 4,
+    name: 'image4.png',
+    link: 'https://homepages.cae.wisc.edu/~ece533/images/boat.png',
+    attachment_type: 'IMAGE',
+    mime_type: 'Image/Jpeg',
+    is_cover_image: true,
+  },
+  {
+    id: 5,
+    name: 'image5.png',
+    link: 'https://homepages.cae.wisc.edu/~ece533/images/monarch.png',
+    attachment_type: 'IMAGE',
+    mime_type: 'Image/Jpeg',
+    is_cover_image: true,
+  },
 ];
 
 interface ICollapsibleSectionProps {
@@ -170,8 +205,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private renderCarousel = (): React.ReactElement => {
     const { activeSlide } = this.state;
     return (
-      <PropertyDetailsImageCarousel
-        toggleImage={this.onFullScreenToggle}
+      <AssetDetailsImageCarousel
+        enterFullScreen={this.onFullScreenToggle}
         images={IMAGES}
         activeSlide={activeSlide}
         updateSlide={this.updateSlide}
@@ -180,69 +215,16 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderFullscreenCarousel = (): React.ReactNode => {
-    const { isFullScreen } = this.state;
+    const { isFullScreen, activeSlide } = this.state;
     if (!isFullScreen) return null;
     return (
-      <View style={styles.fullscreen}>
-        {this.renderListHeader()}
-        {this.renderImageAndVideo()}
-      </View>
-    );
-  };
-
-  public renderListHeader = (): React.ReactElement => {
-    const { activeSlide } = this.state;
-    return (
-      <View style={styles.fullscreenContainer}>
-        <Icon name={icons.close} size={20} color={theme.colors.white} onPress={this.onFullScreenToggle} />
-        <ImageVideoPagination currentSlide={activeSlide} totalSlides={IMAGES.length} type="image" />
-        <Icon name={icons.star} size={40} color={theme.colors.white} onPress={this.onFullScreenToggle} />
-      </View>
-    );
-  };
-
-  public renderImageAndVideo = (): React.ReactElement => {
-    const { activeSlide } = this.state;
-    const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>): void => {
-      const pageNumber =
-        Math.min(
-          Math.max(Math.floor(e.nativeEvent.contentOffset.x / theme.viewport.width + 0.5) + 1, 0),
-          IMAGES.length
-        ) - 1;
-      this.setState({ activeSlide: pageNumber });
-    };
-    return (
-      <FlatList
-        data={IMAGES} // TODO: Get the value from redux
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        renderItem={this.renderItem}
-        onMomentumScrollEnd={onScrollEnd}
-        keyExtractor={this.renderKeyExtractor}
-        initialScrollIndex={activeSlide}
+      <FullScreenAssetDetailsCarousel
+        onFullScreenToggle={this.onFullScreenToggle}
+        activeSlide={activeSlide}
+        data={IMAGES}
+        updateSlide={this.updateSlide}
       />
     );
-  };
-
-  public renderItem = (item: any): React.ReactElement => {
-    return (
-      <ImageZoom
-        cropWidth={theme.viewport.width}
-        cropHeight={theme.viewport.height}
-        imageWidth={theme.viewport.width}
-        imageHeight={500}
-        enableSwipeDown
-        useHardwareTextureAndroid
-        onSwipeDown={this.onFullScreenToggle}
-      >
-        <Image source={{ uri: item.item }} style={styles.carouselImage} />
-      </ImageZoom>
-    );
-  };
-
-  private renderKeyExtractor = (item: any, index: number): string => {
-    return `${item}-${index}`;
   };
 
   private onFullScreenToggle = (): void => {
@@ -320,29 +302,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginTop: 24,
-  },
-  fullscreen: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-    backgroundColor: theme.colors.darkTint1,
-    flexGrow: 1,
-  },
-  fullscreenContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 10,
-    margin: theme.layout.screenPadding,
-  },
-  carouselImage: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: theme.viewport.height / 2,
-    width: theme.viewport.width,
   },
   description: {
     color: theme.colors.darkTint4,

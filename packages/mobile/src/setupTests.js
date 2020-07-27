@@ -6,3 +6,4 @@ require('../../../setupTests');
 jest.mock('@react-native-community/google-signin', () => {});
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@ptomasroos/react-native-multi-slider', () => {});
+jest.mock('react-native-orientation-locker', () => {});

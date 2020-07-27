@@ -14,12 +14,12 @@ export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
 export { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 export { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 export { Slider } from '@homzhub/common/src/components/atoms/Slider';
-export { RNVideo } from '@homzhub/common/src/components/atoms/Video';
 export { SelectionPicker, ISelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 export { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 export { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 export { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
 export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+export { YoutubeVideo } from '@homzhub/common/src/components/atoms/YoutubeVideo';
 
 // Molecules
 export { AnimatedHeader } from '@homzhub/common/src/components/molecules/AnimatedHeader';
