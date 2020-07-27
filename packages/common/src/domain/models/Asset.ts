@@ -1,9 +1,14 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Image } from '@homzhub/common/src/domain/models/Image';
+import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
+import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
+import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 
 export interface IAsset {
   project_name: string;
   unit_number: string;
+  posted_on: string;
+  available_from: string;
+  description: string;
   block_number: string;
   latitude: string;
   longitude: string;
@@ -11,12 +16,24 @@ export interface IAsset {
   carpet_area_unit: string;
   floor_number: number;
   total_floors: number;
-  asset_type: number;
+  asset_type: IData;
+  asset_group: IData;
+  spaces: IData[];
+  amenities: IData[];
+  attachments: IAttachment[];
+  highlights: IAssetHighlight[];
+  features: IAssetFeature[];
+}
+
+export interface IData {
+  id: number;
+  name: string;
+  count?: number;
 }
 
 @JsonObject('Data')
 class Data {
-  @JsonProperty('id', String)
+  @JsonProperty('id', Number)
   private _id = '';
 
   @JsonProperty('name', String)
@@ -64,17 +81,35 @@ export class Asset {
   @JsonProperty('carpet_area', String)
   private _carpetArea = '';
 
+  @JsonProperty('posted_on', String)
+  private _postedOn = '';
+
+  @JsonProperty('available_from', String)
+  private _availableFrom = '';
+
+  @JsonProperty('description', String)
+  private _description = '';
+
   @JsonProperty('floor_number', Number)
   private _floorNumber = '';
 
   @JsonProperty('total_floors', Number)
   private _totalFloors = '';
 
-  @JsonProperty('images', [Image], true)
-  private _images: Image[] = [];
+  @JsonProperty('attachments', [Attachment], true)
+  private _attachments: Attachment[] = [];
+
+  @JsonProperty('highlights', [AssetHighlight], true)
+  private _highlights: AssetHighlight[] = [];
+
+  @JsonProperty('features', [AssetFeature], true)
+  private _features: AssetFeature[] = [];
 
   @JsonProperty('spaces', [Data], true)
   private _spaces: Data[] = [];
+
+  @JsonProperty('amenities', [Data], true)
+  private _amenities: Data[] = [];
 
   @JsonProperty('asset_type', Data, true)
   private _assetType: Data = new Data();
@@ -122,12 +157,36 @@ export class Asset {
     return this._id;
   }
 
-  get images(): Image[] {
-    return this._images;
+  get attachments(): Attachment[] {
+    return this._attachments;
+  }
+
+  get postedOn(): string {
+    return this._postedOn;
+  }
+
+  get availableFrom(): string {
+    return this._availableFrom;
+  }
+
+  get description(): string {
+    return this._description;
+  }
+
+  get highlights(): AssetHighlight[] {
+    return this._highlights;
+  }
+
+  get features(): AssetFeature[] {
+    return this._features;
   }
 
   get spaces(): Data[] {
     return this._spaces;
+  }
+
+  get amenities(): Data[] {
+    return this._amenities;
   }
 
   get assetType(): Data {

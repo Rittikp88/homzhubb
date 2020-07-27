@@ -189,27 +189,100 @@ Array [
 
 exports[`AssetRepository should fetch a asset detail 1`] = `
 Asset {
+  "_amenities": Array [
+    Data {
+      "_count": 0,
+      "_id": 1,
+      "_name": "Gym",
+    },
+  ],
   "_assetGroup": Data {
     "_count": 0,
-    "_id": "",
-    "_name": "",
+    "_id": 1,
+    "_name": "Residential",
   },
   "_assetType": Data {
     "_count": 0,
-    "_id": "",
-    "_name": "",
+    "_id": 1,
+    "_name": "Farm House",
   },
-  "_blockNumber": "#12",
-  "_carpetArea": "12",
-  "_carpetAreaUnit": "Sqt",
-  "_floorNumber": 2,
-  "_id": 4,
-  "_images": Array [],
-  "_latitude": "0.9999",
-  "_longitude": "0.24444",
-  "_projectName": "Project",
-  "_spaces": Array [],
-  "_totalFloors": 5,
+  "_attachments": Array [
+    Attachment {
+      "_attachmentType": "IMAGE",
+      "_id": 1,
+      "_isCoverImage": true,
+      "_link": "http://image.png",
+      "_mime_type": "Image/Jpeg",
+      "_name": "image1.png",
+    },
+    Attachment {
+      "_attachmentType": "VIDEO",
+      "_id": 2,
+      "_isCoverImage": false,
+      "_link": "http://video.mp4",
+      "_mime_type": "video/mp4",
+      "_name": "video1.mp4",
+    },
+  ],
+  "_availableFrom": "2020-10-14",
+  "_blockNumber": "32",
+  "_carpetArea": "1000",
+  "_carpetAreaUnit": "Sq.ft",
+  "_description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \\"de Finibus Bonorum et Malorum\\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \\"Lorem ipsum dolor sit amet..\\", comes from a line in section 1.10.32.
+
+The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \\"de Finibus Bonorum et Malorum\\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
+  "_features": Array [
+    AssetFeature {
+      "_localeKey": "booking_amount",
+      "_name": "Booking Amount",
+      "_value": 10000,
+    },
+  ],
+  "_floorNumber": 4,
+  "_highlights": Array [
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power packup",
+    },
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power packup",
+    },
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power packup",
+    },
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power packup",
+    },
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power packup",
+    },
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power packup",
+    },
+  ],
+  "_id": 1,
+  "_latitude": "87.833",
+  "_longitude": "87.833",
+  "_postedOn": "2020-03-12",
+  "_projectName": "Here",
+  "_spaces": Array [
+    Data {
+      "_count": 5,
+      "_id": 1,
+      "_name": "Beds",
+    },
+    Data {
+      "_count": 10,
+      "_id": 2,
+      "_name": "Baths",
+    },
+  ],
+  "_totalFloors": 10,
   "_unitNumber": "12",
 }
 `;

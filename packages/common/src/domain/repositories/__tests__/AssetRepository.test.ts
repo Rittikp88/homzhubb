@@ -1,8 +1,9 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { assetDetail, assetGroups, leaseTermDetail, saleTerm } from '@homzhub/common/src/mocks/PropertyDetails';
+import { assetGroups, leaseTermDetail, saleTerm } from '@homzhub/common/src/mocks/PropertyDetails';
 import { FurnishingType, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { PropertyVerificationTypes } from '@homzhub/common/src/mocks/PropertyVerification';
+import { mockAsset } from '@homzhub/common/src/mocks/AssetDescription';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -64,7 +65,7 @@ describe('AssetRepository', () => {
 
   it('should fetch a asset detail', async () => {
     // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => assetDetail);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => mockAsset);
     const response = await AssetRepository.getAssetById(1);
     expect(response).toMatchSnapshot();
   });

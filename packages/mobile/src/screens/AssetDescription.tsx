@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -13,14 +13,17 @@ import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Image, ImageVideoPagination, Text, WithShadowView } from '@homzhub/common/src/components';
+import { Divider, Image, ImageVideoPagination, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { PropertyDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyDetailsImageCarousel';
+import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 
 interface IStateProps {
   reviews: AssetReview[];
+  assetDetails: Asset | null;
 }
 
 interface IDispatchProps {
@@ -28,9 +31,9 @@ interface IDispatchProps {
 }
 
 interface IOwnState {
-  isRatingCollapsed: boolean;
   isFullScreen: boolean;
   activeSlide: number;
+  descriptionShowMore: boolean;
   isScroll: boolean;
 }
 
@@ -51,10 +54,37 @@ const IMAGES = [
   'https://homepages.cae.wisc.edu/~ece533/images/monarch.png',
 ];
 
+interface ICollapsibleSectionProps {
+  title: string;
+  children: React.ReactNode;
+  initialCollapsedValue?: boolean;
+}
+const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement => {
+  const { title, children, initialCollapsedValue = false } = props;
+  const [isCollapsed, setIsCollapsed] = useState(initialCollapsedValue);
+
+  const onPress = (): void => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  return (
+    <>
+      <TouchableOpacity style={styles.ratingsHeading} onPress={onPress}>
+        <Text type="small" textType="semiBold" style={styles.textColor}>
+          {title}
+        </Text>
+        <Icon name={isCollapsed ? icons.plus : icons.minus} size={20} color={theme.colors.darkTint4} />
+      </TouchableOpacity>
+      <Collapsible collapsed={isCollapsed}>{children}</Collapsible>
+      <Divider containerStyles={styles.divider} />
+    </>
+  );
+};
+
 class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = {
-    isRatingCollapsed: false,
     isFullScreen: false,
+    descriptionShowMore: false,
     activeSlide: 0,
     isScroll: true,
   };
@@ -65,6 +95,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
+    const { t, reviews } = this.props;
+
     return (
       <>
         <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent />
@@ -78,10 +110,60 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           renderStickyHeader={(): React.ReactElement => this.stickyHeader()}
           renderFixedHeader={(): React.ReactElement => this.fixedHeader()}
         >
-          <View style={styles.screen}>{this.renderReviews()}</View>
+          <View style={styles.screen}>
+            <CollapsibleSection title={t('description')}>{this.renderAssetDescription()}</CollapsibleSection>
+            <CollapsibleSection title={t('highlights')}>{this.renderAssetHighlights()}</CollapsibleSection>
+            <CollapsibleSection title={t('Amenities')}>
+              <AssetRatings reviews={reviews} />
+            </CollapsibleSection>
+          </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
       </>
+    );
+  };
+
+  private renderAssetDescription = (): React.ReactNode => {
+    const { t, assetDetails } = this.props;
+    const { descriptionShowMore } = this.state;
+
+    const onPress = (): void => {
+      this.setState({ descriptionShowMore: !descriptionShowMore });
+    };
+
+    return (
+      <>
+        <Label
+          type="large"
+          textType="regular"
+          style={styles.description}
+          numberOfLines={descriptionShowMore ? undefined : 3}
+        >
+          {assetDetails?.description}
+        </Label>
+        <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
+          {descriptionShowMore ? t('property:showLess') : t('property:showMore')}
+        </Label>
+      </>
+    );
+  };
+
+  private renderAssetHighlights = (): React.ReactNode => {
+    const { assetDetails } = this.props;
+    return (
+      <FlatList<AssetHighlight>
+        data={assetDetails?.highlights}
+        numColumns={2}
+        contentContainerStyle={styles.highlightsContainer}
+        renderItem={({ item }: { item: AssetHighlight }): React.ReactElement => (
+          <View style={styles.highlightItemContainer}>
+            <Icon name={icons.check} color={theme.colors.completed} size={22} />
+            <Label type="large" textType="regular" style={styles.highlightText}>
+              {item.name}
+            </Label>
+          </View>
+        )}
+      />
     );
   };
 
@@ -159,32 +241,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderReviews = (): React.ReactNode => {
-    const { t, reviews } = this.props;
-    const { isRatingCollapsed } = this.state;
-    return (
-      <>
-        <TouchableOpacity style={styles.ratingsHeading} onPress={this.onReviewsToggle}>
-          <Text type="small" textType="semiBold" style={styles.sectionHeading}>
-            {t('reviewsRatings')}
-          </Text>
-          <Icon name={isRatingCollapsed ? icons.plus : icons.minus} size={20} color={theme.colors.darkTint4} />
-        </TouchableOpacity>
-        <Collapsible collapsed={isRatingCollapsed}>
-          <AssetRatings reviews={reviews} />
-        </Collapsible>
-        <Divider containerStyles={styles.divider} />
-      </>
-    );
-  };
-
   private renderKeyExtractor = (item: any, index: number): string => {
     return `${item}-${index}`;
-  };
-
-  private onReviewsToggle = (): void => {
-    const { isRatingCollapsed } = this.state;
-    this.setState({ isRatingCollapsed: !isRatingCollapsed });
   };
 
   private onFullScreenToggle = (): void => {
@@ -228,6 +286,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     reviews: AssetSelectors.getAssetReviews(state),
+    assetDetails: AssetSelectors.getAsset(state),
   };
 };
 
@@ -250,8 +309,13 @@ const styles = StyleSheet.create({
   ratingsHeading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 24,
   },
-  sectionHeading: {
+  highlightsContainer: {
+    marginTop: 16,
+  },
+  highlightItemContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  textColor: {
     color: theme.colors.darkTint4,
   },
   divider: {
@@ -279,6 +343,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: theme.viewport.height / 2,
     width: theme.viewport.width,
+  },
+  description: {
+    color: theme.colors.darkTint4,
+    marginTop: 12,
+  },
+  helperText: {
+    marginTop: 12,
+    color: theme.colors.active,
+  },
+  highlightText: {
+    color: theme.colors.darkTint4,
+    marginStart: 16,
   },
   headerLeftIcon: {
     position: 'absolute',

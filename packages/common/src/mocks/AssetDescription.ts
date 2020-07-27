@@ -15,3 +15,130 @@ export const mockReviews = [
     rating: 49,
   },
 ];
+
+export const mockAsset = {
+  id: 1,
+  project_name: 'Here',
+  unit_number: '12',
+  block_number: '32',
+  carpet_area: '1000',
+  carpet_area_unit: 'Sq.ft',
+  latitude: '87.833',
+  longitude: '87.833',
+  floor_number: 4,
+  total_floors: 10,
+  posted_on: '2020-03-12',
+  available_from: '2020-10-14',
+  description:
+    'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n' +
+    '\n' +
+    'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
+  asset_group: {
+    id: 1,
+    name: 'Residential',
+  },
+  asset_type: {
+    id: 1,
+    name: 'Farm House',
+  },
+  spaces: [
+    {
+      id: 1,
+      name: 'Beds',
+      count: 5,
+    },
+    {
+      id: 2,
+      name: 'Baths',
+      count: 10,
+    },
+  ],
+  attachments: [
+    {
+      id: 1,
+      name: 'image1.png',
+      link: 'http://image.png',
+      attachment_type: 'IMAGE',
+      mime_type: 'Image/Jpeg',
+      is_cover_image: true,
+    },
+    {
+      id: 2,
+      name: 'video1.mp4',
+      link: 'http://video.mp4',
+      attachment_type: 'VIDEO',
+      mime_type: 'video/mp4',
+      is_cover_image: false,
+    },
+  ],
+  lease_term: {
+    id: 1,
+    expected_price: 18888,
+    maintenance_paid_by: 'OWNER|TENANT',
+    utility_paid_by: 'OWNER|TENANT',
+    maintenance_amount: 5000,
+    maintenance_schedule: 'ANNUALLY|MONTHLY|QUARTERLY',
+  },
+  sale_term: {
+    id: 2,
+    expected_price: 133830,
+    expected_booking_amount: 10000.0,
+    available_from_date: 2020 - 8 - 19,
+    maintenance_amount: 5000,
+    maintenance_schedule: 'ANNUALLY|MONTHLY|QUARTERLY',
+  },
+  verification: {
+    code: 3,
+    description: '',
+  },
+  features: [
+    {
+      name: 'Booking Amount',
+      locale_key: 'booking_amount',
+      value: 10000,
+    },
+  ],
+  amenities: [
+    {
+      id: 1,
+      name: 'Gym',
+      category: {
+        id: 1,
+        name: 'Fitness',
+      },
+    },
+  ],
+  highlights: [
+    {
+      name: 'Power packup',
+      covered: true,
+    },
+    {
+      name: 'Power packup',
+      covered: true,
+    },
+    {
+      name: 'Power packup',
+      covered: true,
+    },
+    {
+      name: 'Power packup',
+      covered: true,
+    },
+    {
+      name: 'Power packup',
+      covered: true,
+    },
+    {
+      name: 'Power packup',
+      covered: true,
+    },
+  ],
+  contact: {
+    id: 1,
+    name: 'Foobar',
+    email: 'Johndoe@mail.com',
+    country_code: '+91',
+    phone_number: '9839478859',
+  },
+};

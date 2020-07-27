@@ -229,6 +229,9 @@
   },
   "assetDescription": {
     "reviewsRatings": "Reviews and ratings",
-    "readReviews": "Read reviews"
+    "readReviews": "Read reviews",
+    "description": "Description",
+    "amenities": "Amenities",
+    "highlights": "Highlights"
   }
 }
