@@ -67,6 +67,18 @@ class PropertyUtils {
 
     return amenities;
   };
+
+  public getAreaUnit = (unit: string, value: number): string => {
+    const newValue = value.toFixed(2);
+    switch (unit) {
+      case 'SQ_FT':
+        return `${newValue}Sqft`;
+      case 'SQ_YARD':
+        return `${newValue}SqYard`;
+      default:
+        return `${newValue.toLocaleString()}${unit}`;
+    }
+  };
 }
 
 const propertyUtils = new PropertyUtils();

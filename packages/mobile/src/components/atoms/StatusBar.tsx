@@ -11,7 +11,7 @@ interface IProps {
 const StatusBarComponent = (props: IProps): React.ReactElement => {
   const { isTranslucent, backgroundColor, barStyle = 'dark-content' } = props;
   return (
-    <View style={styles.statusBar}>
+    <View style={[styles.statusBar, { backgroundColor }]}>
       <StatusBar translucent={isTranslucent} backgroundColor={backgroundColor} barStyle={barStyle} />
     </View>
   );

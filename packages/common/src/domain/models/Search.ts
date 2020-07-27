@@ -36,6 +36,13 @@ export interface ITransactionRange {
 export interface IFilters {
   asset_group: IAssetGroup;
   transaction_type: ITransactionType[];
+  carpet_area: ICarpetArea[];
+}
+
+export interface ICarpetArea {
+  carpet_area_unit: string;
+  max_area: number;
+  min_area: number;
 }
 
 export interface ISpaces extends IAssetTypes {
@@ -76,6 +83,7 @@ export interface IFilter {
   max_price: number;
   min_area: number;
   max_area: number;
+  area_unit: string;
   furnishing_status: string;
   room_count: number[];
   bath_count: number;

@@ -1,5 +1,7 @@
 import React from 'react';
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
+// @ts-ignore
+import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -11,7 +13,7 @@ import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Image, ImageVideoPagination, Text } from '@homzhub/common/src/components';
+import { Divider, Image, ImageVideoPagination, Text, WithShadowView } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
 import { PropertyDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyDetailsImageCarousel';
@@ -29,7 +31,15 @@ interface IOwnState {
   isRatingCollapsed: boolean;
   isFullScreen: boolean;
   activeSlide: number;
+  isScroll: boolean;
 }
+
+const { width, height } = theme.viewport;
+const realWidth = height > width ? width : height;
+const relativeWidth = (num: number): number => (realWidth * num) / 100;
+
+const PARALLAX_HEADER_HEIGHT = 200;
+const STICKY_HEADER_HEIGHT = 60;
 
 type Props = IStateProps & IDispatchProps & WithTranslation;
 // TODO: Get from redux once set up
@@ -46,6 +56,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     isRatingCollapsed: false,
     isFullScreen: false,
     activeSlide: 0,
+    isScroll: true,
   };
 
   public componentDidMount = (): void => {
@@ -56,9 +67,19 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public render = (): React.ReactNode => {
     return (
       <>
-        <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent={false} />
-        <View style={styles.carousel}>{this.renderCarousel()}</View>
-        <View style={styles.screen}>{this.renderReviews()}</View>
+        <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent />
+        <ParallaxScrollView
+          backgroundColor={theme.colors.white}
+          stickyHeaderHeight={STICKY_HEADER_HEIGHT}
+          parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
+          backgroundSpeed={10}
+          onChangeHeaderVisibility={(isChanged: boolean): void => this.setState({ isScroll: isChanged })}
+          renderForeground={(): React.ReactElement => this.renderCarousel()}
+          renderStickyHeader={(): React.ReactElement => this.stickyHeader()}
+          renderFixedHeader={(): React.ReactElement => this.fixedHeader()}
+        >
+          <View style={styles.screen}>{this.renderReviews()}</View>
+        </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
       </>
     );
@@ -171,6 +192,34 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.setState({ isFullScreen: !isFullScreen });
   };
 
+  public fixedHeader = (): React.ReactElement => {
+    const { isScroll } = this.state;
+    const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
+    return (
+      <View key="fixed-header" style={styles.fixedSection}>
+        <View style={styles.headerLeftIcon}>
+          <Icon name={icons.leftArrow} size={22} color={color} />
+        </View>
+        <View style={styles.headerRightIcon}>
+          <Icon name={icons.heartOutline} size={22} color={color} />
+          <Icon name={icons.compare} size={22} color={color} />
+        </View>
+      </View>
+    );
+  };
+
+  public stickyHeader = (): React.ReactElement => {
+    return (
+      <WithShadowView outerViewStyle={styles.shadowView}>
+        <View key="sticky-header" style={styles.stickySection}>
+          <Text type="regular" textType="semiBold" style={styles.headerTitle}>
+            Property Name
+          </Text>
+        </View>
+      </WithShadowView>
+    );
+  };
+
   public updateSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
@@ -198,9 +247,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     paddingHorizontal: theme.layout.screenPadding,
   },
-  carousel: {
-    height: 200,
-  },
   ratingsHeading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -225,6 +271,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 10,
     margin: theme.layout.screenPadding,
   },
   carouselImage: {
@@ -232,5 +279,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: theme.viewport.height / 2,
     width: theme.viewport.width,
+  },
+  headerLeftIcon: {
+    position: 'absolute',
+    left: relativeWidth(2),
+  },
+  headerRightIcon: {
+    flexDirection: 'row',
+    position: 'absolute',
+    justifyContent: 'space-between',
+    right: relativeWidth(4),
+    width: 80,
+  },
+  fixedSection: {
+    position: 'absolute',
+    width: theme.viewport.width,
+    top: 20,
+    flexDirection: 'row',
+  },
+  stickySection: {
+    paddingBottom: 10,
+    width: 300,
+    justifyContent: 'flex-end',
+  },
+  shadowView: {
+    marginTop: 15,
+  },
+  headerTitle: {
+    marginLeft: 40,
+    color: theme.colors.darkTint1,
   },
 });

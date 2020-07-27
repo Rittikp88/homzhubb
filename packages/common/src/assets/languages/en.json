@@ -46,7 +46,8 @@
     "to": "to",
     "min": "Min",
     "max": "Max",
-    "readMore": "Read More"
+    "readMore": "Read More",
+    "any": "Any"
   },
   "auth": {
     "verifyNumber": "Verify your number",

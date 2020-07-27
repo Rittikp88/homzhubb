@@ -28,13 +28,13 @@ import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 import {
+  ICarpetArea,
   ICurrency,
   IFilter,
   IFilterDetails,
   IPropertiesObject,
   ITransactionRange,
 } from '@homzhub/common/src/domain/models/Search';
-import { CarpetAreaUnit } from '@homzhub/common/src/mocks/AreaUnit';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -69,7 +69,6 @@ interface IPropertySearchScreenState {
   isSearchBarFocused: boolean;
   suggestions: GooglePlaceData[];
   areaUnits: IDropdownOption[];
-  selectedUnit: string;
 }
 
 type Props = WithTranslation & IStateProps & IDispatchProps;
@@ -83,7 +82,6 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     suggestions: [],
     isSearchBarFocused: false,
     areaUnits: [],
-    selectedUnit: 'SQ_FT',
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -205,10 +203,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private renderCollapsibleTray = (): React.ReactNode => {
-    const { selectedOnScreenFilter, areaUnits, selectedUnit } = this.state;
+    const { selectedOnScreenFilter, areaUnits } = this.state;
     const {
       filterData,
-      filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price, min_area, max_area },
+      filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price, min_area, max_area, area_unit },
       setFilter,
       currencyData,
       getProperties,
@@ -221,7 +219,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       return null;
     }
 
-    const { currency } = filterData;
+    const {
+      currency,
+      filters: { carpet_area },
+    } = filterData;
 
     currency.forEach((item: ICurrency) => {
       currencySymbol = item.currency_symbol;
@@ -238,15 +239,16 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       }
     };
 
-    // TODO: Remove once carpet area data issue fix
-    CarpetAreaUnit.forEach((units: any) => {
-      if (units.area === selectedUnit) {
-        areaRange = {
-          min: units.min_value,
-          max: units.max_value,
-        };
-      }
-    });
+    if (carpet_area) {
+      carpet_area.forEach((units: ICarpetArea) => {
+        if (units.carpet_area_unit === area_unit) {
+          areaRange = {
+            min: units.min_area,
+            max: units.max_area,
+          };
+        }
+      });
+    }
 
     switch (selectedOnScreenFilter) {
       case OnScreenFilters.PRICE:
@@ -267,7 +269,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
         return (
           <Range
             dropdownData={areaUnits}
-            selectedUnit={selectedUnit}
+            selectedUnit={area_unit}
             range={areaRange}
             minChangedValue={min_area}
             maxChangedValue={max_area}
@@ -540,7 +542,11 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
   };
 
   private handleDropdownValue = (value: string | number): void => {
-    this.setState({ selectedUnit: value as string });
+    const { setFilter, getProperties } = this.props;
+    setFilter({ area_unit: value });
+    setFilter({ min_area: -1 });
+    setFilter({ max_area: -1 });
+    getProperties();
   };
 
   public resetFilterAndProperties = (): void => {

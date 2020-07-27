@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PickerItemProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Label, Slider, Text } from '@homzhub/common/src/components';
@@ -51,7 +52,7 @@ export const Range = (props: IProps): React.ReactElement => {
     }
   };
   const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(dropdownValue, value);
-  const getAreaValue = (value: number): string => CurrencyUtils.getAreaUnit(dropdownValue, value);
+  const getAreaValue = (value: number): string => PropertyUtils.getAreaUnit(dropdownValue, value);
 
   const maxChanged = isPriceRange
     ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}`
@@ -61,8 +62,8 @@ export const Range = (props: IProps): React.ReactElement => {
     ? `${currencySymbol}${getCurrencyValue(minChangedValue)}`
     : getAreaValue(minChangedValue);
 
-  const maxValue = maxChangedValue > 0 && maxChangedValue < range.max ? maxChanged : 'Any';
-  const minValue = minChangedValue > 0 ? minChanged : 'Any';
+  const maxValue = maxChangedValue > 0 && maxChangedValue < range.max ? maxChanged : t('any');
+  const minValue = minChangedValue > 0 && minChangedValue > range.min ? minChanged : t('any');
 
   const onUpdatePrice = (value1: number, value2?: number): void => {
     if (isPriceRange) {
