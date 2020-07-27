@@ -18,13 +18,13 @@ export const mockReviews = [
 
 export const mockAsset = {
   id: 1,
-  project_name: 'Here',
+  project_name: '2972 Westheimer Rd. Santa Ana, NY',
   unit_number: '12',
   block_number: '32',
   carpet_area: '1000',
   carpet_area_unit: 'Sq.ft',
-  latitude: '87.833',
-  longitude: '87.833',
+  latitude: '13.77',
+  longitude: '77.833',
   floor_number: 4,
   total_floors: 10,
   posted_on: '2020-03-12',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { Marker, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -7,6 +7,7 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { CustomMarker } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 import { IImages, IProperties } from '@homzhub/common/src/domain/models/Search';
@@ -89,13 +90,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
             };
             return (
               <Marker key={property.id} coordinate={{ latitude, longitude }} onPress={onMarkerPress}>
-                {index === currentSlide ? (
-                  <View style={styles.selectedMarker}>
-                    <View style={styles.marker} />
-                  </View>
-                ) : (
-                  <View style={styles.marker} />
-                )}
+                <CustomMarker selected={index === currentSlide} />
               </Marker>
             );
           })}
@@ -199,20 +194,6 @@ export default withTranslation()(PropertySearchMap);
 const styles = StyleSheet.create({
   mapView: {
     flex: 1,
-  },
-  marker: {
-    width: 16,
-    height: 16,
-    borderRadius: 16 / 2,
-    backgroundColor: theme.colors.primaryColor,
-  },
-  selectedMarker: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
-    backgroundColor: theme.colors.markerOpacity,
   },
   carouselStyle: {
     paddingBottom: 10,

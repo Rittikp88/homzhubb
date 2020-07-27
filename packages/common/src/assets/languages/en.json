@@ -232,6 +232,8 @@
     "readReviews": "Read reviews",
     "description": "Description",
     "amenities": "Amenities",
+    "exploreNeighbourhood": "Explore Neighbourhood",
+    "exploreMap": "Explore Map",
     "highlights": "Highlights"
   }
 }

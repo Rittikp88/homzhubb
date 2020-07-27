@@ -6,13 +6,22 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import Collapsible from 'react-native-collapsible';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Text, Label, WithShadowView } from '@homzhub/common/src/components';
+import {
+  CustomMarker,
+  Divider,
+  Image,
+  ImageVideoPagination,
+  Label,
+  Text,
+  WithShadowView,
+} from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -148,7 +157,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <View style={styles.screen}>
             <CollapsibleSection title={t('description')}>{this.renderAssetDescription()}</CollapsibleSection>
             <CollapsibleSection title={t('highlights')}>{this.renderAssetHighlights()}</CollapsibleSection>
-            <CollapsibleSection title={t('Amenities')}>
+            {this.renderMapSection()}
+            <CollapsibleSection title={t('reviewsRatings')}>
               <AssetRatings reviews={reviews} />
             </CollapsibleSection>
           </View>
@@ -199,6 +209,45 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         )}
       />
+    );
+  };
+
+  private renderMapSection = (): React.ReactNode => {
+    const { t, assetDetails } = this.props;
+
+    if (!assetDetails) return null;
+    const { latitude, longitude } = assetDetails;
+
+    return (
+      <View style={styles.neighborhoodContainer}>
+        <Text type="small" textType="semiBold" style={styles.textColor}>
+          {t('exploreNeighbourhood')}
+        </Text>
+        <Label type="large" textType="regular" style={styles.neighborhoodAddress}>
+          {assetDetails?.projectName}
+        </Label>
+        <MapView
+          pointerEvents="none"
+          provider={PROVIDER_GOOGLE}
+          style={styles.mapView}
+          initialRegion={{
+            latitude,
+            longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          }}
+        >
+          <Marker coordinate={{ latitude, longitude }}>
+            <CustomMarker selected />
+          </Marker>
+        </MapView>
+        <View style={styles.exploreMapContainer}>
+          <Label type="regular" textType="regular" style={styles.exploreMap}>
+            {t('exploreMap')}
+          </Label>
+        </View>
+        <Divider containerStyles={styles.divider} />
+      </View>
     );
   };
 
@@ -300,6 +349,14 @@ const styles = StyleSheet.create({
   textColor: {
     color: theme.colors.darkTint4,
   },
+  neighborhoodContainer: {
+    marginTop: 24,
+  },
+  mapView: {
+    flex: 1,
+    marginTop: 12,
+    height: 180,
+  },
   divider: {
     marginTop: 24,
   },
@@ -343,5 +400,21 @@ const styles = StyleSheet.create({
   headerTitle: {
     marginLeft: 40,
     color: theme.colors.darkTint1,
+  },
+  neighborhoodAddress: {
+    marginTop: 12,
+    color: theme.colors.darkTint3,
+  },
+  exploreMapContainer: {
+    position: 'absolute',
+    bottom: 36,
+    alignSelf: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 4,
+    backgroundColor: theme.colors.white,
+  },
+  exploreMap: {
+    color: theme.colors.primaryColor,
   },
 });
