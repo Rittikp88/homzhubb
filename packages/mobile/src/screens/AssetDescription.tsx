@@ -11,6 +11,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images'; // TODO: To be removed once api integrated
@@ -33,6 +34,7 @@ import {
   StatusBarComponent,
   ShieldGroup,
 } from '@homzhub/mobile/src/components';
+import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
@@ -424,8 +426,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public renderSimilarProperties = (): React.ReactElement => {
-    return <View />;
-    // return <SimilarProperties onFavorite={this.onFavorite} data={PropertySearchData} />;
+    return <SimilarProperties onFavorite={this.onFavorite} data={PropertySearchData} />;
   };
 
   private onFullScreenToggle = (): void => {

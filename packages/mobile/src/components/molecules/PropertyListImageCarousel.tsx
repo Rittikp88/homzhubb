@@ -10,6 +10,7 @@ interface IProps {
   images: IImages[];
   isFavorite: boolean;
   onFavorite: () => void;
+  isCarousel: boolean;
 }
 
 interface IPropertyListImageCarouselState {
@@ -24,7 +25,7 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
   };
 
   public render(): React.ReactElement {
-    const { images, isFavorite, onFavorite } = this.props;
+    const { images, isFavorite, onFavorite, isCarousel } = this.props;
     const { activeSlide } = this.state;
     const sortedImages = images.sort((a, b) => {
       // @ts-ignore
@@ -40,32 +41,38 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
     }
     return (
       <View style={styles.carouselContainer}>
-        <SnapCarousel
-          bubbleRef={this.updateRef}
-          carouselData={sortedImages}
-          carouselItem={this.renderCarouselItem}
-          activeIndex={activeSlide}
-          sliderWidth={360}
-          onSnapToItem={this.onSnapToItem}
-        />
+        {!isCarousel ? (
+          this.renderCarouselItem(sortedImages[0])
+        ) : (
+          <SnapCarousel
+            bubbleRef={this.updateRef}
+            carouselData={sortedImages}
+            carouselItem={this.renderCarouselItem}
+            activeIndex={activeSlide}
+            sliderWidth={360}
+            onSnapToItem={this.onSnapToItem}
+          />
+        )}
         <View style={styles.overlay}>
           <View style={styles.favoriteContainer}>
             <Favorite onFavorite={onFavorite} containerStyle={isFavorite ? styles.favorite : styles.nonFavorite} />
           </View>
-          <View style={styles.arrowContainer}>
-            <Icon
-              name={icons.leftArrow}
-              size={25}
-              color={activeSlide === 0 ? theme.colors.disabledPreference : theme.colors.white}
-              onPress={this.previousSlide}
-            />
-            <Icon
-              name={icons.rightArrow}
-              size={25}
-              color={activeSlide === images.length - 1 ? theme.colors.disabledPreference : theme.colors.white}
-              onPress={this.nextSlide}
-            />
-          </View>
+          {isCarousel && (
+            <View style={styles.arrowContainer}>
+              <Icon
+                name={icons.leftArrow}
+                size={25}
+                color={activeSlide === 0 ? theme.colors.disabledPreference : theme.colors.white}
+                onPress={this.previousSlide}
+              />
+              <Icon
+                name={icons.rightArrow}
+                size={25}
+                color={activeSlide === images.length - 1 ? theme.colors.disabledPreference : theme.colors.white}
+                onPress={this.nextSlide}
+              />
+            </View>
+          )}
         </View>
       </View>
     );

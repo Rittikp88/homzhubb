@@ -17,6 +17,7 @@ interface IProps {
   onFavorite: (index: number) => void;
   transaction_type: number;
   containerStyle?: StyleProp<ViewStyle>;
+  isCarousel: boolean;
 }
 
 type libraryProps = WithTranslation;
@@ -27,10 +28,16 @@ class PropertyListCard extends React.Component<Props, {}> {
     const {
       property: { images, project_name, unit_number, block_number, is_favorite = false },
       containerStyle,
+      isCarousel,
     } = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
-        <PropertyListImageCarousel images={images} isFavorite={is_favorite} onFavorite={this.onFavorite} />
+        <PropertyListImageCarousel
+          images={images}
+          isFavorite={is_favorite}
+          onFavorite={this.onFavorite}
+          isCarousel={isCarousel}
+        />
         {this.renderPropertyTypeAndBadges()}
         <PropertyAddress
           isIcon

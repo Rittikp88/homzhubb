@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
 
@@ -28,17 +28,15 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
     const { activeSlide } = this.state;
     return (
       <View style={styles.container}>
-        <Label type="large" textType="semiBold" style={styles.similarProperties}>
+        <Text type="small" textType="semiBold" style={styles.similarProperties}>
           {t('similarProperties')}
-        </Label>
+        </Text>
         <SnapCarousel
           carouselData={data}
           carouselItem={this.renderCarouselItem}
           activeIndex={activeSlide}
-          itemWidth={theme.viewport.width - 65}
-          sliderWidth={theme.viewport.width - 61}
+          itemWidth={theme.viewport.width - 20}
           onSnapToItem={this.onSnapToItem}
-          containerStyle={styles.carouselContainer}
         />
       </View>
     );
@@ -53,7 +51,8 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
         onFavorite={onUpdateFavoritePropertyId}
         key={item.id}
         transaction_type={0} // TODO: To be checked
-        containerStyle={styles.containerStyle}
+        isCarousel={false}
+        containerStyle={styles.propertyCard}
       />
     );
   };
@@ -67,18 +66,21 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDescription)(S
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: theme.colors.white,
-    marginVertical: 20,
+    marginVertical: 22,
   },
   similarProperties: {
     color: theme.colors.darkTint4,
   },
-  containerStyle: {
-    borderColor: theme.colors.darkTint4,
-    borderWidth: 1,
-  },
-  carouselContainer: {
-    width: theme.viewport.width - 50,
+  propertyCard: {
+    width: theme.viewport.width * 0.9,
+    shadowColor: theme.colors.shadow,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
 });

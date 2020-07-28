@@ -38,6 +38,7 @@ class PropertySearchList extends React.PureComponent<Props> {
                 onFavorite={onUpdateFavoritePropertyId}
                 key={item.id}
                 transaction_type={filters.asset_transaction_type}
+                isCarousel
               />
             );
           }}
