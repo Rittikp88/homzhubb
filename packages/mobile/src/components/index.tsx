@@ -30,6 +30,7 @@ export { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilte
 export { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 export { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 export { SetLocationForm } from '@homzhub/mobile/src/components/molecules/SetLocationForm';
+export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 export { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
 export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 

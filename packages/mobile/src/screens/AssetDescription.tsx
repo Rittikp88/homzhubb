@@ -31,8 +31,8 @@ import {
   FullScreenAssetDetailsCarousel,
   PropertyAmenities,
   StatusBarComponent,
+  ShieldGroup,
 } from '@homzhub/mobile/src/components';
-import ShieldGroup from '@homzhub/common/src/components/molecules/ShieldGroup';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
@@ -198,7 +198,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     return (
       <View style={styles.headerContainer}>
-        <ShieldGroup text={propertyType} />
+        <ShieldGroup text={propertyType} isInfoRequired />
         <View style={styles.apartmentContainer}>
           <PricePerUnit price={term.expectedPrice || 0} currency="INR" unit="month" />
           <View style={styles.textIcon}>

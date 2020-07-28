@@ -7,9 +7,9 @@ import { StorageKeys, StorageService } from '@homzhub/common/src/services/storag
 import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider, PricePerUnit, PropertyAddress } from '@homzhub/common/src/components';
+import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 import { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
-import ShieldGroup from '@homzhub/common/src/components/molecules/ShieldGroup';
 import { IAmenitiesIcons, IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
