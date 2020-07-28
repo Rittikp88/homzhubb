@@ -1,42 +1,43 @@
-import React, { useState } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import Collapsible from 'react-native-collapsible';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-// import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images'; // TODO: To be removed once api integrated
 import {
-  CustomMarker, 
-  Divider, 
-  Label, 
+  CustomMarker,
+  Divider,
+  Label,
   PricePerUnit,
   PropertyAddress,
   Text,
-  WithShadowView
+  WithShadowView,
+  SVGUri,
 } from '@homzhub/common/src/components';
 import {
   AssetRatings,
   AssetDetailsImageCarousel,
+  CollapsibleSection,
   FullScreenAssetDetailsCarousel,
   PropertyAmenities,
   StatusBarComponent,
 } from '@homzhub/mobile/src/components';
-// import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import ShieldGroup from '@homzhub/common/src/components/molecules/ShieldGroup';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
+import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
@@ -52,6 +53,7 @@ interface IOwnState {
   isFullScreen: boolean;
   activeSlide: number;
   descriptionShowMore: boolean;
+  amenitiesShowAll: boolean;
   isScroll: boolean;
 }
 
@@ -108,38 +110,11 @@ const IMAGES = [
   },
 ];
 
-interface ICollapsibleSectionProps {
-  title: string;
-  children: React.ReactNode;
-  initialCollapsedValue?: boolean;
-}
-
-const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement => {
-  const { title, children, initialCollapsedValue = false } = props;
-  const [isCollapsed, setIsCollapsed] = useState(initialCollapsedValue);
-
-  const onPress = (): void => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  return (
-    <>
-      <TouchableOpacity style={styles.ratingsHeading} onPress={onPress}>
-        <Text type="small" textType="semiBold" style={styles.textColor}>
-          {title}
-        </Text>
-        <Icon name={isCollapsed ? icons.plus : icons.minus} size={20} color={theme.colors.darkTint4} />
-      </TouchableOpacity>
-      <Collapsible collapsed={isCollapsed}>{children}</Collapsible>
-      <Divider containerStyles={styles.divider} />
-    </>
-  );
-};
-
 class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = {
     isFullScreen: false,
     descriptionShowMore: false,
+    amenitiesShowAll: false,
     activeSlide: 0,
     isScroll: true,
   };
@@ -168,6 +143,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <View style={styles.screen}>
             {this.renderHeaderSection()}
             <CollapsibleSection title={t('description')}>{this.renderAssetDescription()}</CollapsibleSection>
+            <CollapsibleSection title={t('factsFeatures')}>{this.renderFactsAndFeatures()}</CollapsibleSection>
+            {this.renderAmenities()}
             <CollapsibleSection title={t('highlights')}>{this.renderAssetHighlights()}</CollapsibleSection>
             {this.renderMapSection()}
             <CollapsibleSection title={t('reviewsRatings')}>
@@ -300,13 +277,76 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  private renderFactsAndFeatures = (): React.ReactNode => {
+    const { assetDetails } = this.props;
+    return (
+      <FlatList<AssetFeature>
+        numColumns={2}
+        contentContainerStyle={styles.listContainer}
+        data={assetDetails?.features}
+        renderItem={({ item }: { item: AssetFeature }): React.ReactElement => (
+          <View style={styles.featureItem}>
+            <Label type="large" textType="regular" style={styles.featureTitle}>
+              {item.name}
+            </Label>
+            <Label type="large" textType="semiBold">
+              {item.value}
+            </Label>
+          </View>
+        )}
+      />
+    );
+  };
+
+  private renderAmenities = (): React.ReactNode => {
+    const { t, assetDetails } = this.props;
+    const { amenitiesShowAll } = this.state;
+    const length = assetDetails?.amenities.length ?? 0;
+    let data = assetDetails?.amenities ?? [];
+
+    if (length > 6 && !amenitiesShowAll) {
+      data = data.slice(0, 6);
+    }
+
+    const onPress = (): void => {
+      this.setState({ amenitiesShowAll: !amenitiesShowAll });
+    };
+
+    return (
+      <View style={styles.sectionContainer}>
+        <Text type="small" textType="semiBold" style={styles.textColor}>
+          {t('amenities')}
+        </Text>
+        <FlatList
+          numColumns={3}
+          contentContainerStyle={styles.listContainer}
+          data={data}
+          renderItem={({ item }: { item: Amenity }): React.ReactElement => (
+            <View style={styles.amenityItem}>
+              <SVGUri uri={item.attachment.link} height={30} width={30} />
+              <Label type="regular" textType="regular" style={styles.amenityText}>
+                {item.name}
+              </Label>
+            </View>
+          )}
+        />
+        {length > 6 && (
+          <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
+            {amenitiesShowAll ? t('property:showLess') : t('property:showAll', { total: length })}
+          </Label>
+        )}
+        <Divider containerStyles={styles.divider} />
+      </View>
+    );
+  };
+
   private renderAssetHighlights = (): React.ReactNode => {
     const { assetDetails } = this.props;
     return (
       <FlatList<AssetHighlight>
         data={assetDetails?.highlights}
         numColumns={2}
-        contentContainerStyle={styles.highlightsContainer}
+        contentContainerStyle={styles.listContainer}
         renderItem={({ item }: { item: AssetHighlight }): React.ReactElement => (
           <View style={styles.highlightItemContainer}>
             <Icon name={icons.check} color={theme.colors.completed} size={22} />
@@ -326,7 +366,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { latitude, longitude } = assetDetails;
 
     return (
-      <View style={styles.neighborhoodContainer}>
+      <View style={styles.sectionContainer}>
         <Text type="small" textType="semiBold" style={styles.textColor}>
           {t('exploreNeighbourhood')}
         </Text>
@@ -457,24 +497,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.darkTint10,
   },
-  ratingsHeading: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 24,
-  },
-  highlightsContainer: {
+  listContainer: {
     marginTop: 16,
   },
-  highlightItemContainer: {
+  featureItem: {
     flex: 1,
-    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  amenityItem: {
+    width: (theme.viewport.width - 32) / 3,
     alignItems: 'center',
     marginBottom: 16,
   },
+  highlightItemContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
   textColor: {
     color: theme.colors.darkTint4,
   },
-  neighborhoodContainer: {
+  sectionContainer: {
     marginTop: 24,
   },
   mapView: {
@@ -550,6 +589,14 @@ const styles = StyleSheet.create({
   neighborhoodAddress: {
     marginTop: 12,
     color: theme.colors.darkTint3,
+  },
+  featureTitle: {
+    color: theme.colors.darkTint4,
+    marginBottom: 4,
+  },
+  amenityText: {
+    color: theme.colors.darkTint4,
+    marginTop: 4,
   },
   exploreMapContainer: {
     position: 'absolute',

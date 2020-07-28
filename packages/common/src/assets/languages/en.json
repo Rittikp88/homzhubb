@@ -146,6 +146,7 @@
     "monthlyRent": "Monthly Rent",
     "securityDeposit": "Security Deposit",
     "showMore": "Show more",
+    "showAll": "Show all {{total}}",
     "showLess": "Show less",
     "annualIncrement": "Increment %",
     "duration": "Duration",
@@ -235,6 +236,7 @@
     "exploreNeighbourhood": "Explore Neighbourhood",
     "exploreMap": "Explore Map",
     "highlights": "Highlights",
+    "factsFeatures": "Facts and Features",
     "similarProperties": "Similar Properties",
     "bookTour": "Book a Tour"
   }

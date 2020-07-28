@@ -4,9 +4,9 @@ export interface IAttachment {
   id: number;
   name: string;
   link: string;
-  attachment_type: string;
-  mime_type: string;
-  is_cover_image: boolean;
+  attachment_type?: string;
+  mime_type?: string;
+  is_cover_image?: boolean;
 }
 
 @JsonObject('Attachment')
@@ -20,13 +20,13 @@ export class Attachment {
   @JsonProperty('link', String)
   private _link = '';
 
-  @JsonProperty('attachment_type', String)
+  @JsonProperty('attachment_type', String, true)
   private _attachmentType = '';
 
-  @JsonProperty('mime_type', String)
+  @JsonProperty('mime_type', String, true)
   private _mime_type = '';
 
-  @JsonProperty('is_cover_image', Boolean)
+  @JsonProperty('is_cover_image', Boolean, true)
   private _isCoverImage = false;
 
   get id(): number {

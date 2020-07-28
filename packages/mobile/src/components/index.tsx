@@ -12,6 +12,7 @@ export { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomShee
 export { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 export { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 export { CardBody } from '@homzhub/mobile/src/components/molecules/CardBody';
+export { CollapsibleSection } from '@homzhub/mobile/src/components/molecules/CollapsibleSection';
 export { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 export { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
 export { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';

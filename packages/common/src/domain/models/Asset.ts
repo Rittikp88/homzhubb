@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { IAmenity, Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
@@ -21,7 +22,7 @@ export interface IAsset {
   asset_type: IData;
   asset_group: IData;
   spaces: IData[];
-  amenities: IData[];
+  amenities: IAmenity[];
   attachments: IAttachment[];
   highlights: IAssetHighlight[];
   features: IAssetFeature[];
@@ -110,8 +111,8 @@ export class Asset {
   @JsonProperty('spaces', [Data], true)
   private _spaces: Data[] = [];
 
-  @JsonProperty('amenities', [Data], true)
-  private _amenities: Data[] = [];
+  @JsonProperty('amenities', [Amenity], true)
+  private _amenities: Amenity[] = [];
 
   @JsonProperty('asset_type', Data, true)
   private _assetType: Data = new Data();
@@ -193,7 +194,7 @@ export class Asset {
     return this._spaces;
   }
 
-  get amenities(): Data[] {
+  get amenities(): Amenity[] {
     return this._amenities;
   }
 

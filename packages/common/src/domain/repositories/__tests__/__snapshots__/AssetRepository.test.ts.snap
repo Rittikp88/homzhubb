@@ -190,10 +190,89 @@ Array [
 exports[`AssetRepository should fetch a asset detail 1`] = `
 Asset {
   "_amenities": Array [
-    Data {
-      "_count": 0,
-      "_id": 1,
-      "_name": "Gym",
+    Amenity {
+      "_attachment": Attachment {
+        "_attachmentType": "",
+        "_id": 39,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg",
+        "_mime_type": "",
+        "_name": "gym.svg",
+      },
+      "_id": 37,
+      "_name": "Gymnasium",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_attachmentType": "",
+        "_id": 40,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg",
+        "_mime_type": "",
+        "_name": "pool.svg",
+      },
+      "_id": 38,
+      "_name": "Swimming Pool",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_attachmentType": "",
+        "_id": 41,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg",
+        "_mime_type": "",
+        "_name": "cctv.svg",
+      },
+      "_id": 39,
+      "_name": "CCTV Security",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_attachmentType": "",
+        "_id": 42,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg",
+        "_mime_type": "",
+        "_name": "parking.svg",
+      },
+      "_id": 40,
+      "_name": "Parking",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_attachmentType": "",
+        "_id": 43,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg",
+        "_mime_type": "",
+        "_name": "wifi.svg",
+      },
+      "_id": 41,
+      "_name": "Wifi",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_attachmentType": "",
+        "_id": 44,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg",
+        "_mime_type": "",
+        "_name": "intercom.svg",
+      },
+      "_id": 42,
+      "_name": "Intercom",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_attachmentType": "",
+        "_id": 45,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg",
+        "_mime_type": "",
+        "_name": "balcony.svg",
+      },
+      "_id": 43,
+      "_name": "Balcony",
     },
   ],
   "_assetGroup": Data {
@@ -232,6 +311,16 @@ Asset {
 
 The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \\"de Finibus Bonorum et Malorum\\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
   "_features": Array [
+    AssetFeature {
+      "_localeKey": "booking_amount",
+      "_name": "Booking Amount",
+      "_value": 10000,
+    },
+    AssetFeature {
+      "_localeKey": "booking_amount",
+      "_name": "Booking Amount",
+      "_value": 10000,
+    },
     AssetFeature {
       "_localeKey": "booking_amount",
       "_name": "Booking Amount",

@@ -90,14 +90,107 @@ export const mockAsset = {
       locale_key: 'booking_amount',
       value: 10000,
     },
+    {
+      name: 'Booking Amount',
+      locale_key: 'booking_amount',
+      value: 10000,
+    },
+    {
+      name: 'Booking Amount',
+      locale_key: 'booking_amount',
+      value: 10000,
+    },
   ],
   amenities: [
     {
-      id: 1,
-      name: 'Gym',
+      id: 37,
+      name: 'Gymnasium',
       category: {
-        id: 1,
-        name: 'Fitness',
+        id: 13,
+        name: 'General',
+      },
+      attachment: {
+        id: 39,
+        name: 'gym.svg',
+        link: 'https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg',
+      },
+    },
+    {
+      id: 38,
+      name: 'Swimming Pool',
+      category: {
+        id: 13,
+        name: 'General',
+      },
+      attachment: {
+        id: 40,
+        name: 'pool.svg',
+        link: 'https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg',
+      },
+    },
+    {
+      id: 39,
+      name: 'CCTV Security',
+      category: {
+        id: 13,
+        name: 'General',
+      },
+      attachment: {
+        id: 41,
+        name: 'cctv.svg',
+        link: 'https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg',
+      },
+    },
+    {
+      id: 40,
+      name: 'Parking',
+      category: {
+        id: 13,
+        name: 'General',
+      },
+      attachment: {
+        id: 42,
+        name: 'parking.svg',
+        link: 'https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg',
+      },
+    },
+    {
+      id: 41,
+      name: 'Wifi',
+      category: {
+        id: 13,
+        name: 'General',
+      },
+      attachment: {
+        id: 43,
+        name: 'wifi.svg',
+        link: 'https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg',
+      },
+    },
+    {
+      id: 42,
+      name: 'Intercom',
+      category: {
+        id: 13,
+        name: 'General',
+      },
+      attachment: {
+        id: 44,
+        name: 'intercom.svg',
+        link: 'https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg',
+      },
+    },
+    {
+      id: 43,
+      name: 'Balcony',
+      category: {
+        id: 13,
+        name: 'General',
+      },
+      attachment: {
+        id: 45,
+        name: 'balcony.svg',
+        link: 'https://homzhub-bucket.s3.amazonaws.com/Group+2428gym.svg',
       },
     },
   ],
