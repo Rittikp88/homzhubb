@@ -74,14 +74,18 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           imageWidth={theme.viewport.width}
           imageHeight={500}
           enableSwipeDown
+          pinchToZoom
+          panToMove
           onSwipeDown={onFullScreenToggle}
+          useHardwareTextureAndroid
           key={link}
         >
           <Image source={{ uri: link }} style={styles.carouselImage} />
         </ImageZoom>
       );
     }
-    return <YoutubeVideo url={link} play key={link} />;
+    // For now it is recommended to re-mount a new <YouTube /> instance each time. That's why used Math.random()
+    return <YoutubeVideo url={link} play key={Math.random()} />;
   };
 
   private renderKeyExtractor = (item: any, index: number): string => {

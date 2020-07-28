@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 4,
   },
   label: {
     color: theme.colors.darkTint3,

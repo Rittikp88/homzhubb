@@ -6,7 +6,7 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, PricePerUnit, PropertyAddress } from '@homzhub/common/src/components';
+import { Divider, PricePerUnit, PropertyAddress, TextSizeType } from '@homzhub/common/src/components';
 import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 import { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
@@ -18,6 +18,7 @@ interface IProps {
   transaction_type: number;
   containerStyle?: StyleProp<ViewStyle>;
   isCarousel: boolean;
+  textSizeType?: TextSizeType;
 }
 
 type libraryProps = WithTranslation;
@@ -60,7 +61,7 @@ class PropertyListCard extends React.Component<Props, {}> {
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
-    const { transaction_type, property } = this.props;
+    const { transaction_type, property, textSizeType = 'regular' } = this.props;
     const {
       carpet_area,
       carpet_area_unit,
@@ -79,7 +80,12 @@ class PropertyListCard extends React.Component<Props, {}> {
     );
     return (
       <View style={styles.amenities}>
-        <PricePerUnit price={price} currency={currency} unit={transaction_type === 0 ? 'month' : ''} />
+        <PricePerUnit
+          price={price}
+          currency={currency}
+          unit={transaction_type === 0 ? 'mo' : ''}
+          textSizeType={textSizeType}
+        />
         <PropertyAmenities data={amenitiesData} direction="row" contentContainerStyle={styles.amenitiesContainer} />
       </View>
     );
@@ -145,8 +151,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 6,
+    overflow: 'hidden',
   },
   amenitiesContainer: {
-    marginStart: 15,
+    marginStart: 5,
   },
 });

@@ -448,7 +448,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     return (
       <View key="fixed-header" style={styles.fixedSection}>
         <View style={styles.headerLeftIcon}>
-          <Icon name={icons.leftArrow} size={22} color={color} />
+          <Icon name={icons.leftArrow} size={22} color={color} onPress={this.goBack} />
         </View>
         <View style={styles.headerRightIcon}>
           <Icon name={icons.heartOutline} size={22} color={color} />
@@ -469,6 +469,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       </WithShadowView>
     );
   };
+
+  public goBack = (): void => {};
 }
 
 const mapStateToProps = (state: IState): IStateProps => {

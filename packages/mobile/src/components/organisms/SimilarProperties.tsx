@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
-import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
 
 interface IProps {
@@ -12,31 +11,23 @@ interface IProps {
   onFavorite: (propertyId: number) => void;
 }
 
-interface ISimilarPropertiesState {
-  activeSlide: number;
-}
-
 type Props = WithTranslation & IProps;
 
-class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesState> {
-  public state = {
-    activeSlide: 0,
-  };
-
+class SimilarProperties extends React.PureComponent<Props> {
   public render(): React.ReactElement {
     const { data, t } = this.props;
-    const { activeSlide } = this.state;
     return (
       <View style={styles.container}>
         <Text type="small" textType="semiBold" style={styles.similarProperties}>
           {t('similarProperties')}
         </Text>
-        <SnapCarousel
-          carouselData={data}
-          carouselItem={this.renderCarouselItem}
-          activeIndex={activeSlide}
-          itemWidth={theme.viewport.width - 20}
-          onSnapToItem={this.onSnapToItem}
+        <FlatList
+          data={data}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }: { item: any }): React.ReactElement => this.renderCarouselItem(item)}
+          removeClippedSubviews
+          keyExtractor={this.renderKeyExtractor}
         />
       </View>
     );
@@ -53,12 +44,13 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
         transaction_type={0} // TODO: To be checked
         isCarousel={false}
         containerStyle={styles.propertyCard}
+        textSizeType="small"
       />
     );
   };
 
-  public onSnapToItem = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
+  private renderKeyExtractor = (item: any, index: number): string => {
+    return `${item.id}-${index}`;
   };
 }
 
@@ -66,21 +58,22 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDescription)(S
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.white,
-    marginVertical: 22,
+    flex: 1,
+    marginVertical: 24,
   },
   similarProperties: {
     color: theme.colors.darkTint4,
   },
   propertyCard: {
-    width: theme.viewport.width * 0.9,
+    width: theme.viewport.width - 80,
+    marginHorizontal: 10,
     shadowColor: theme.colors.shadow,
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 3,
     },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
     elevation: 3,
   },
 });

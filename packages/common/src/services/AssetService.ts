@@ -27,9 +27,6 @@ class AssetService {
       txn_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
       price__gt: min_price,
       price__lt: max_price,
-      carpet_area__lt: min_area,
-      carpet_area__gt: max_area,
-      carpet_area_unit: area_unit,
       latitude: search_latitude,
       longitude: search_longitude,
       search_radius: 50,
@@ -48,6 +45,14 @@ class AssetService {
     }
     if (bath_count !== -1) {
       Object.assign(finalPayload, { bathroom__gte: bath_count });
+    }
+    if (asset_group === 2) {
+      // Apply only for Commercial Properties
+      Object.assign(finalPayload, {
+        carpet_area__lt: Number(max_area),
+        carpet_area__gt: Number(min_area),
+        carpet_area_unit: area_unit,
+      });
     }
     return finalPayload;
   };
