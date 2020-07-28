@@ -4,20 +4,20 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
+import { Header } from '@homzhub/mobile/src/components';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRentServiceList } from '@homzhub/common/src/domain/models/Property';
-import { User } from '@homzhub/common/src/domain/models/User';
 import { IServiceCategory } from '@homzhub/common/src/domain/models/Service';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 interface IStateProps {
   user: User | null;

@@ -1,32 +1,42 @@
 import React, { PureComponent } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, PickerItemProps } from 'react-native';
-import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { Button, ButtonType, Divider, FontWeightType, Label, ToggleButton, Text } from '@homzhub/common/src/components';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
-import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
-import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
-import { Range } from '@homzhub/mobile/src/components/molecules/Range';
+import {
+  Button,
+  ButtonType,
+  Divider,
+  FontWeightType,
+  IDropdownOption,
+  Label,
+  ToggleButton,
+  Text,
+} from '@homzhub/common/src/components';
+import {
+  AssetTypeFilter,
+  CurrentLocation,
+  Loader,
+  Range,
+  RoomsFilter,
+  SearchBar,
+  SearchResults,
+} from '@homzhub/mobile/src/components';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
-import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
-import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
-import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 import {
   ICarpetArea,
   ICurrency,

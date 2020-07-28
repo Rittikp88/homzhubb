@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { remove } from 'lodash';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SelectionPicker, Text } from '@homzhub/common/src/components';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   bedCount: number[];

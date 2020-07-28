@@ -5,10 +5,10 @@ import axios from 'axios';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { Header } from '@homzhub/mobile/src/components';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';

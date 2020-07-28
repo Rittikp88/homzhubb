@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 

@@ -5,13 +5,13 @@ import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import moment from 'moment';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormDropdown, FormTextInput, Text } from '@homzhub/common/src/components';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { ICreateSaleTermDetails } from '@homzhub/common/src/domain/models/SaleTerms';
+import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 interface IProps extends WithTranslation {
   initialValues: ICreateSaleTermDetails | null;

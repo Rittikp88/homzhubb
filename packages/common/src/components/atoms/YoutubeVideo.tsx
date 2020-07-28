@@ -13,19 +13,9 @@ interface IProps {
   url: string;
 }
 
-interface IYoutubeVideoState {
-  height: number;
-}
-
-class YoutubeVideo extends React.PureComponent<IProps, IYoutubeVideoState> {
-  public state = {
-    height: 185,
-  };
-
+class YoutubeVideo extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { height } = this.state;
     const { play = true, isFullScreen = false, loop = false, url } = this.props;
-    const conditionalStyle = createConditionalStyles(height);
     return (
       <View style={styles.container}>
         <YouTube
@@ -35,31 +25,26 @@ class YoutubeVideo extends React.PureComponent<IProps, IYoutubeVideoState> {
           play={play}
           fullscreen={isFullScreen}
           loop={loop}
-          style={[styles.youtube, conditionalStyle.video]}
+          style={styles.youtube}
           onError={this.onError}
           resumePlayAndroid={false}
           controls={1}
-          onReady={this.handleReady}
         />
       </View>
     );
   }
 
   public onError = (e: any): void => {
-    console.log(e);
-  };
-
-  public handleReady = (): void => {
-    setTimeout(() => this.setState({ height: 186 }), 500);
+    // TODO: To put the alert in case of error
   };
 
   public getVideoId = (url: string): string => {
-    let video_id = url.split('v=')[1];
-    const ampersandPosition = video_id.indexOf('&');
+    let videoId = url.split('v=')[1];
+    const ampersandPosition = videoId.indexOf('&');
     if (ampersandPosition !== -1) {
-      video_id = video_id.substring(0, ampersandPosition);
+      videoId = videoId.substring(0, ampersandPosition);
     }
-    return video_id;
+    return videoId;
   };
 }
 
@@ -71,12 +56,7 @@ const styles = StyleSheet.create({
   },
   youtube: {
     alignSelf: 'stretch',
+    height: '100%',
     width: theme.viewport.width,
-  },
-});
-
-const createConditionalStyles = (height: number): any => ({
-  video: {
-    height,
   },
 });

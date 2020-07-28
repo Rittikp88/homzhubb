@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import SetLocationForm from '@homzhub/mobile/src/components/molecules/SetLocationForm';
+import { SetLocationForm } from '@homzhub/mobile/src/components/molecules/SetLocationForm';
 
 const createTestProps = (testProps: any): object => ({
   formData: {

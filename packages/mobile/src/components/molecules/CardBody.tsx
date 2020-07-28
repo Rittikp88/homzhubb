@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { Badge, Button, Label, Text } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Badge, Button, Label, Text } from '@homzhub/common/src/components';
 import { IServiceItems } from '@homzhub/common/src/domain/models/Service';
 
 interface ICardProps {

@@ -5,4 +5,5 @@ export const images = {
   flag: require('@homzhub/common/src/assets/images/flag.png'),
   landingScreenLogo: require('@homzhub/common/src/assets/images/landingScreenLogo.png'),
   round: require('@homzhub/common/src/assets/images/round.png'),
+  video: require('@homzhub/common/src/assets/images/video.png'),
 };

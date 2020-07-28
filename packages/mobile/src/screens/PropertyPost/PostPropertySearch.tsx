@@ -3,17 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
-import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
-import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
-import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
+import { CurrentLocation, Header, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
-import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys, IAddPropertyMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IState {

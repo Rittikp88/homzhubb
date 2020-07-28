@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ImageSourcePropType } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Favorite, Image, Label, PricePerUnit } from '@homzhub/common/src/components';
-import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
+import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {

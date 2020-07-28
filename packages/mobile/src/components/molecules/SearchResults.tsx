@@ -1,9 +1,9 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, TextStyle, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components';
-import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 export interface IProps extends WithTranslation {
   results: GooglePlaceData[];

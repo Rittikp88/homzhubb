@@ -4,20 +4,21 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
-import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
-import { Badge } from '@homzhub/common/src/components/atoms/Badge';
-import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
-import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import { CardBody } from '@homzhub/mobile/src/components/molecules/CardBody';
-import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Badge, Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
+import {
+  AnimatedServiceList,
+  CardBody,
+  BottomSheet,
+  PaginationComponent,
+  SnapCarousel,
+} from '@homzhub/mobile/src/components';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
 
 interface IStateProps {
   services: IServiceDetail[];

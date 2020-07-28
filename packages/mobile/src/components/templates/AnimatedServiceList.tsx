@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, View, Animated } from 'react-native';
-import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
+import { Header } from '@homzhub/mobile/src/components/molecules/Header';
 
 interface IProps {
   children: React.ReactElement;

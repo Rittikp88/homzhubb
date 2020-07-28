@@ -4,14 +4,14 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { FormTextInput, AnimatedHeader, LoginForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IDispatchProps {
   loginSuccess: (data: IUser) => void;

@@ -5,14 +5,14 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { AnimatedHeader, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
-import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IDispatchProps {
   loginSuccess: (data: IUser) => void;

@@ -4,8 +4,6 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { IUser } from '@homzhub/common/src/domain/models/User';
-import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
@@ -15,6 +13,8 @@ import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhu
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
+import { IUser } from '@homzhub/common/src/domain/models/User';
+import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 
 interface IProps {
   propertyId: number;

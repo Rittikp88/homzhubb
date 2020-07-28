@@ -3,21 +3,21 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { UserService } from '@homzhub/common/src/services/UserService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { UserService } from '@homzhub/common/src/services/UserService';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { IEmailLoginPayload, IOtpLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
-import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { OtpInputs } from '@homzhub/mobile/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { User, IUser } from '@homzhub/common/src/domain/models/User';
-import { IEmailLoginPayload, IOtpLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { User, IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IDispatchProps {
   login: (payload: IEmailLoginPayload | IOtpLoginPayload) => void;

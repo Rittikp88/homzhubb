@@ -1,21 +1,22 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider, PricePerUnit, PropertyAddress } from '@homzhub/common/src/components';
+import { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
+import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 import ShieldGroup from '@homzhub/common/src/components/molecules/ShieldGroup';
-import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
-import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 import { IAmenitiesIcons, IProperties } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   property: IProperties;
   onFavorite: (index: number) => void;
   transaction_type: number;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 type libraryProps = WithTranslation;
@@ -24,11 +25,12 @@ type Props = libraryProps & IProps;
 class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
-      property: { images, project_name, unit_number, block_number, is_favorite },
+      property: { images, project_name, unit_number, block_number, is_favorite = false },
+      containerStyle,
     } = this.props;
     return (
-      <View style={styles.container}>
-        <PropertyListImageCarousel images={images} isFavorite={is_favorite ?? false} onFavorite={this.onFavorite} />
+      <View style={[styles.container, containerStyle]}>
+        <PropertyListImageCarousel images={images} isFavorite={is_favorite} onFavorite={this.onFavorite} />
         {this.renderPropertyTypeAndBadges()}
         <PropertyAddress
           isIcon

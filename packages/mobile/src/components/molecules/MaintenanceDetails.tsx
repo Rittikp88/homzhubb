@@ -2,8 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
-import { FormTextInput, FormDropdown } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { FormTextInput, FormDropdown } from '@homzhub/common/src/components';
 import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 interface IProps {

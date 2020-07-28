@@ -17,7 +17,7 @@ interface IPropertyListImageCarouselState {
   activeSlide: number;
 }
 
-class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyListImageCarouselState> {
+export class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyListImageCarouselState> {
   public state = {
     activeSlide: 0,
     ref: null,
@@ -102,8 +102,6 @@ class PropertyListImageCarousel extends React.PureComponent<IProps, IPropertyLis
     ref.snapToNext();
   };
 }
-
-export default PropertyListImageCarousel;
 
 const styles = StyleSheet.create({
   carouselContainer: {

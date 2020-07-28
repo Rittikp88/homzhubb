@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, PickerItemProps } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Text } from '@homzhub/common/src/components';
 import { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
 import { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import {
   ICreateLeaseTermDetails,

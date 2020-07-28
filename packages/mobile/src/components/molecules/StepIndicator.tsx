@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Label } from '@homzhub/common/src/components';
 
 enum StepStatus {
   finished = 'finished',

@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Text } from '@homzhub/common/src/components';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {

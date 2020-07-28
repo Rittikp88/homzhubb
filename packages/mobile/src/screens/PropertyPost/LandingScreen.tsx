@@ -3,19 +3,19 @@ import { StyleSheet, View, Image } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { User } from '@homzhub/common/src/domain/models/User';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
+import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import { Text, Label, Button, SVGUri } from '@homzhub/common/src/components';
-import { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
+import { GradientBackground } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 interface IStateProps {
   user: User | null;

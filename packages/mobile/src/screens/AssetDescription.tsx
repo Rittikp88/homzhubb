@@ -12,23 +12,28 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+// import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { images } from '@homzhub/common/src/assets/images'; // TODO: To be removed once api integrated
 import {
-  CustomMarker,
-  Divider,
-  Label,
+  CustomMarker, 
+  Divider, 
+  Label, 
   PricePerUnit,
   PropertyAddress,
   Text,
-  WithShadowView,
+  WithShadowView
 } from '@homzhub/common/src/components';
-import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
-import { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
+import {
+  AssetRatings,
+  AssetDetailsImageCarousel,
+  FullScreenAssetDetailsCarousel,
+  PropertyAmenities,
+  StatusBarComponent,
+} from '@homzhub/mobile/src/components';
+// import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import ShieldGroup from '@homzhub/common/src/components/molecules/ShieldGroup';
-import { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
-import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
-import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
@@ -72,6 +77,7 @@ const IMAGES = [
     id: 2,
     name: 'image2.png',
     link: 'https://www.youtube.com/watch?v=L7OLY4HCctQ',
+    thumbnail_url: images.video,
     attachment_type: 'VIDEO',
     mime_type: 'Image/Jpeg',
     is_cover_image: true,
@@ -107,6 +113,7 @@ interface ICollapsibleSectionProps {
   children: React.ReactNode;
   initialCollapsedValue?: boolean;
 }
+
 const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement => {
   const { title, children, initialCollapsedValue = false } = props;
   const [isCollapsed, setIsCollapsed] = useState(initialCollapsedValue);
@@ -166,6 +173,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
             <CollapsibleSection title={t('reviewsRatings')}>
               <AssetRatings reviews={reviews} />
             </CollapsibleSection>
+            {this.renderSimilarProperties()}
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
@@ -375,9 +383,22 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  public renderSimilarProperties = (): React.ReactElement => {
+    return <View />;
+    // return <SimilarProperties onFavorite={this.onFavorite} data={PropertySearchData} />;
+  };
+
   private onFullScreenToggle = (): void => {
     const { isFullScreen } = this.state;
     this.setState({ isFullScreen: !isFullScreen });
+  };
+
+  public onFavorite = (propertyId: number): void => {
+    // TODO: add the logic of favorite property
+  };
+
+  public updateSlide = (slideNumber: number): void => {
+    this.setState({ activeSlide: slideNumber });
   };
 
   private fixedHeader = (): React.ReactElement => {
@@ -406,10 +427,6 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         </View>
       </WithShadowView>
     );
-  };
-
-  public updateSlide = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
   };
 }
 

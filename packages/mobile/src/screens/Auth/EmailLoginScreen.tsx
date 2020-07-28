@@ -13,8 +13,7 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
-import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
+import { DetailedHeader, LoginForm } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 

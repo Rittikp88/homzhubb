@@ -6,13 +6,12 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 import {
   Text,
   Label,
@@ -22,6 +21,7 @@ import {
   Button,
   WithShadowView,
 } from '@homzhub/common/src/components';
+import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import {
   IVerificationTypes,

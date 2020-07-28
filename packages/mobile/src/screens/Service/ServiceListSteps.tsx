@@ -4,10 +4,16 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { remove } from 'lodash';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
+import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/src/components';
+import { Header } from '@homzhub/mobile/src/components';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import {
   IServiceCategory,
   IServiceListSteps,
@@ -15,12 +21,6 @@ import {
   IServiceListStepsPayload,
   ServiceStepTypes,
 } from '@homzhub/common/src/domain/models/Service';
-import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
-import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
-import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/src/components';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 interface IStateProps {
   serviceSteps: IServiceListStepsDetail;

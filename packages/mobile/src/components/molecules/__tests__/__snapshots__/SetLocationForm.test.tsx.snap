@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BottomSheetListView should render snapshot 1`] = `
-<Memo(SetLocationForm)
+<SetLocationForm
   formData={
     Object {
       "blockNo": "2",
@@ -1089,5 +1089,5 @@ exports[`BottomSheetListView should render snapshot 1`] = `
       </View>
     </WithShadowView>
   </Formik>
-</Memo(SetLocationForm)>
+</SetLocationForm>
 `;

@@ -16,7 +16,7 @@ interface IProps {
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-class PropertyAmenities extends React.PureComponent<IProps, {}> {
+export class PropertyAmenities extends React.PureComponent<IProps, {}> {
   public render(): React.ReactNode {
     const { containerStyle } = this.props;
     return <View style={[styles.rowContainer, containerStyle]}>{this.renderIcons()}</View>;
@@ -41,8 +41,6 @@ class PropertyAmenities extends React.PureComponent<IProps, {}> {
     });
   };
 }
-
-export default PropertyAmenities;
 
 const styles = StyleSheet.create({
   rowContainer: {

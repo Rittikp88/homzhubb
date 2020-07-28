@@ -12,7 +12,7 @@ describe('CardBody', () => {
       serviceCost: 'Free',
       isDetailView: true,
       badgeTitle: 'label',
-      detailedData: ServicesData[0].service_items,
+      detailedData: ServicesData[0].service_bundle_items,
     };
     const wrapper = mount(<CardBody {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();

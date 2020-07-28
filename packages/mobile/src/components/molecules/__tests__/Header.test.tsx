@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
+import { Header } from '@homzhub/mobile/src/components/molecules/Header';
 
 const createTestProps = (testProps: any): object => ({
   backgroundColor: theme.colors.primaryColor,

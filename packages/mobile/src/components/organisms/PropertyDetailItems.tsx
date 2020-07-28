@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
+import { theme } from '@homzhub/common/src/styles/theme';
 import {
   SpaceAvailableTypes,
   ISpaceAvailable,
   ISpaceAvailablePayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { HorizontalPicker, Label, Text, Dropdown } from '@homzhub/common/src/components';
+import { HorizontalPicker, IDropdownOption, Label, Text, Dropdown } from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
+import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 
 interface IPropertyDetailsItemsProps {
   data: IPropertyDetailsData[];

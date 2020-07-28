@@ -3,30 +3,28 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
+import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import {
   IUpdateAssetDetails,
   SpaceAvailableTypes,
   ISpaceAvailable,
   ISpaceAvailablePayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { Button, WithShadowView } from '@homzhub/common/src/components';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
-import { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { Button, IDropdownOption, WithShadowView } from '@homzhub/common/src/components';
+import { Header, PropertyDetailsLocation } from '@homzhub/mobile/src/components';
 import PropertyDetailsItems from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 
 interface IDispatchProps {
   getPropertyDetails: () => void;

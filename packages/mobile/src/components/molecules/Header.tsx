@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar, StyleProp, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Text, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
 
@@ -21,7 +21,7 @@ interface ICommonHeaderProps {
 }
 const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight;
 
-class Header extends React.PureComponent<ICommonHeaderProps, {}> {
+export class Header extends React.PureComponent<ICommonHeaderProps, {}> {
   public render(): React.ReactNode {
     const {
       backgroundColor,
@@ -60,8 +60,6 @@ class Header extends React.PureComponent<ICommonHeaderProps, {}> {
     );
   }
 }
-
-export default Header;
 
 const styles = StyleSheet.create({
   container: {

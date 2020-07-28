@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { ImageVideoPagination, YoutubeVideo } from '@homzhub/common/src/components';
+import { ImageVideoPagination } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 
 interface IProps {
@@ -25,37 +24,32 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
           itemWidth={theme.viewport.width}
           onSnapToItem={this.onSnapToItem}
         />
-        {images[activeSlide].attachment_type === 'IMAGE' && (
-          <View style={styles.overlay}>
-            <ImageVideoPagination
-              currentSlide={activeSlide}
-              totalSlides={images.length}
-              type={images[activeSlide].attachment_type}
-            />
-          </View>
-        )}
+        <View style={styles.overlay}>
+          <ImageVideoPagination
+            currentSlide={activeSlide}
+            totalSlides={images.length}
+            type={images[activeSlide].attachment_type}
+          />
+        </View>
       </View>
     );
   }
 
   private renderCarouselItem = (item: any): React.ReactElement => {
     const { enterFullScreen } = this.props;
-    if (item.attachment_type === 'IMAGE') {
-      return (
-        <TouchableOpacity onPress={enterFullScreen}>
+    return (
+      <TouchableOpacity onPress={enterFullScreen}>
+        {item.attachment_type === 'IMAGE' && (
           <Image
             source={{
               uri: item.link,
             }}
             style={styles.carouselImage}
           />
-        </TouchableOpacity>
-      );
-    }
-    return (
-      <View style={styles.carouselVideo}>
-        <YoutubeVideo url={item.link} play={false} />
-      </View>
+        )}
+        {/* TODO: Remove once the api is integrated */}
+        {item.attachment_type === 'VIDEO' && <Image source={item.thumbnail_url} style={styles.carouselImage} />}
+      </TouchableOpacity>
     );
   };
 
@@ -80,8 +74,5 @@ const styles = StyleSheet.create({
   carouselImage: {
     height: '100%',
     width: '100%',
-  },
-  carouselVideo: {
-    marginTop: PlatformUtils.isAndroid() ? 65 : 30,
   },
 });

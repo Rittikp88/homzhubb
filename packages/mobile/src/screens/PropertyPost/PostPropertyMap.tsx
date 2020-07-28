@@ -1,28 +1,26 @@
 import React from 'react';
 import { View, StyleSheet, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { LatLng, MapEvent, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { FormikActions, FormikValues } from 'formik';
-import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { MathUtils } from '@homzhub/common/src/utils/MathUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import { ICreateAssetDetails, IUpdateAssetDetails } from '@homzhub/common/src/domain/repositories/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import SetLocationForm from '@homzhub/mobile/src/components/molecules/SetLocationForm';
-import Header from '@homzhub/mobile/src/components/molecules/Header';
+import { BottomSheet, Header, SetLocationForm } from '@homzhub/mobile/src/components';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { ICreateAssetDetails, IUpdateAssetDetails } from '@homzhub/common/src/domain/repositories/interfaces';
-import { bindActionCreators, Dispatch } from 'redux';
 
 interface IStateProps {
   propertyId: number;

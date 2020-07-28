@@ -121,7 +121,7 @@ exports[`Add property Map Screen Component should render property details screen
     sheetHeight={400}
     visible={false}
   >
-    <Memo(SetLocationForm)
+    <SetLocationForm
       formData={
         Object {
           "blockNo": "",
@@ -256,7 +256,7 @@ exports[`Add property Map Screen Component should render snapshot for states 1`]
     sheetHeight={400}
     visible={true}
   >
-    <Memo(SetLocationForm)
+    <SetLocationForm
       formData={
         Object {
           "blockNo": "",

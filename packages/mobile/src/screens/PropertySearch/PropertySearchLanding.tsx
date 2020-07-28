@@ -1,27 +1,24 @@
 import React from 'react';
 import { View, StyleSheet, StatusBar, PickerItemProps, ScrollView } from 'react-native';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
-import { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
-import { Range } from '@homzhub/mobile/src/components/molecules/Range';
-import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
-import { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
+import { CurrentLocation, Range, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
   filterData: IFilterDetails | null;

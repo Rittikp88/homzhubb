@@ -9,11 +9,10 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
-import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
-import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
-import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
+import { SnapCarousel, PaginationComponent } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
 
 interface IDispatchProps {
   updateOnBoarding: (isOnBoardingCompleted: boolean) => void;

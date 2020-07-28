@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { FormButton, FormTextInput, WithShadowView } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { FormButton, FormTextInput, WithShadowView } from '@homzhub/common/src/components';
 
 interface IProps {
   formData: {
@@ -17,7 +17,7 @@ interface IProps {
   onSubmit: any;
 }
 
-const SetLocationForm = (props: IProps): React.ReactElement => {
+export const SetLocationForm = (props: IProps): React.ReactElement => {
   const { formData, onSubmit } = props;
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
 
@@ -114,5 +114,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-export default React.memo(SetLocationForm);
