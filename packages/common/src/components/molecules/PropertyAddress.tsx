@@ -6,20 +6,21 @@ import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   primaryAddress: string;
+  isIcon?: boolean;
   subAddress: string;
   primaryAddressStyle?: StyleProp<TextStyle>;
   subAddressStyle?: StyleProp<TextStyle>;
 }
 
 const PropertyAddress = (props: IProps): React.ReactElement => {
-  const { primaryAddress, subAddress, primaryAddressStyle, subAddressStyle } = props;
+  const { primaryAddress, subAddress, primaryAddressStyle, subAddressStyle, isIcon } = props;
   return (
     <View style={styles.propertyAddressContainer}>
       <Text type="regular" textType="semiBold" style={[styles.propertyNameText, primaryAddressStyle]} numberOfLines={1}>
         {primaryAddress}
       </Text>
       <View style={styles.flexRow}>
-        <Icon name={icons.locationMarker} size={25} color={theme.colors.darkTint3} />
+        {isIcon && <Icon name={icons.locationMarker} size={25} color={theme.colors.darkTint3} />}
         <Label type="large" textType="regular" style={[styles.subAddress, subAddressStyle]}>
           {subAddress}
         </Label>

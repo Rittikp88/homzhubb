@@ -13,15 +13,17 @@ interface IProps {
   data: IAmenitiesData[];
   direction: 'row' | 'column';
   containerStyle?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 class PropertyAmenities extends React.PureComponent<IProps, {}> {
   public render(): React.ReactNode {
-    return <View style={styles.rowContainer}>{this.renderIcons()}</View>;
+    const { containerStyle } = this.props;
+    return <View style={[styles.rowContainer, containerStyle]}>{this.renderIcons()}</View>;
   }
 
   public renderIcons = (): React.ReactNode => {
-    const { data, direction, containerStyle } = this.props;
+    const { data, direction, contentContainerStyle } = this.props;
     return data.map((amenity: IAmenitiesData, index: number) => {
       const isLastIndex = index === data.length - 1;
       return (
@@ -33,7 +35,7 @@ class PropertyAmenities extends React.PureComponent<IProps, {}> {
           iconColor={amenity.iconColor}
           iconSize={amenity.iconSize}
           isLastIndex={isLastIndex}
-          containerStyle={containerStyle}
+          containerStyle={contentContainerStyle}
         />
       );
     });

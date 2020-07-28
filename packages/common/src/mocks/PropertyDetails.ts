@@ -178,6 +178,10 @@ export const assetGroups = [
 
 export const assetDetail = {
   id: 4,
+  asset_group: {
+    id: 1,
+    name: 'Residential',
+  },
   project_name: 'Project',
   unit_number: '12',
   block_number: '#12',

@@ -135,6 +135,9 @@ PODS:
     - Folly (= 2018.10.22.00)
     - RCTRequired (= 0.62.2)
     - React-Core (= 0.62.2)
+  - RCTYouTube (2.0.1):
+    - React
+    - YoutubePlayer-in-WKWebView (~> 0.3.1)
   - React (0.62.2):
     - React-Core (= 0.62.2)
     - React-Core/DevSupport (= 0.62.2)
@@ -312,6 +315,8 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
+  - react-native-orientation-locker (1.1.8):
+    - React
   - react-native-razorpay (2.1.33):
     - razorpay-pod
     - React
@@ -417,6 +422,7 @@ PODS:
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
+  - YoutubePlayer-in-WKWebView (0.3.4)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../../../node_modules/react-native-linear-gradient`)
@@ -450,6 +456,7 @@ DEPENDENCIES:
   - Permission-LocationWhenInUse (from `../../../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec`)
   - RCTRequired (from `../../../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../../../node_modules/react-native/Libraries/TypeSafety`)
+  - RCTYouTube (from `../../../node_modules/react-native-youtube`)
   - React (from `../../../node_modules/react-native/`)
   - React-Core (from `../../../node_modules/react-native/`)
   - React-Core/DevSupport (from `../../../node_modules/react-native/`)
@@ -463,6 +470,7 @@ DEPENDENCIES:
   - react-native-fbsdk (from `../../../node_modules/react-native-fbsdk`)
   - "react-native-geolocation (from `../../../node_modules/@react-native-community/geolocation`)"
   - react-native-maps (from `../../../node_modules/react-native-maps`)
+  - react-native-orientation-locker (from `../../../node_modules/react-native-orientation-locker`)
   - react-native-razorpay (from `../../../node_modules/react-native-razorpay`)
   - react-native-restart (from `../../../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../../../node_modules/react-native-safe-area-context`)
@@ -516,6 +524,7 @@ SPEC REPOS:
     - razorpay-pod
     - TOCropViewController
     - YogaKit
+    - YoutubePlayer-in-WKWebView
 
 EXTERNAL SOURCES:
   BVLinearGradient:
@@ -538,6 +547,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
     :path: "../../../node_modules/react-native/Libraries/TypeSafety"
+  RCTYouTube:
+    :path: "../../../node_modules/react-native-youtube"
   React:
     :path: "../../../node_modules/react-native/"
   React-Core:
@@ -560,6 +571,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/@react-native-community/geolocation"
   react-native-maps:
     :path: "../../../node_modules/react-native-maps"
+  react-native-orientation-locker:
+    :path: "../../../node_modules/react-native-orientation-locker"
   react-native-razorpay:
     :path: "../../../node_modules/react-native-razorpay"
   react-native-restart:
@@ -645,6 +658,7 @@ SPEC CHECKSUMS:
   razorpay-pod: 31dd24ddb70275d82be12527b45001f9bc9f1be2
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
+  RCTYouTube: 4509d59a7de050dd0c7c6cb1f427d37678d63b5c
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
   React-Core: b12bffb3f567fdf99510acb716ef1abd426e0e05
   React-CoreModules: 4a9b87bbe669d6c3173c0132c3328e3b000783d0
@@ -656,6 +670,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
+  react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-razorpay: fb2411102f375adb0818da2f65759a16438dcdb4
   react-native-restart: fff228304625f55de2ebd4de43938110f4c888ed
   react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
@@ -684,6 +699,7 @@ SPEC CHECKSUMS:
   TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
+  YoutubePlayer-in-WKWebView: af2f5929fc78882d94bfdfeea999b661b78d9717
 
 PODFILE CHECKSUM: 86fd5b5a1d40ac626793a4adc788d5ffac4a1f22
 

@@ -112,10 +112,18 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
 
   private renderCarouselItem = (item: IProperties): React.ReactElement => {
     const { transaction_type } = this.props;
-    const { images, project_name } = item;
+    const {
+      images,
+      project_name,
+      floor_number,
+      spaces,
+      carpet_area_unit,
+      carpet_area,
+      asset_group: { name },
+    } = item;
     const currency = this.getCurrency(item);
     const price = this.getPrice(item);
-    const amenities = PropertyUtils.getAmenities(item);
+    const amenities = PropertyUtils.getAmenities(carpet_area, carpet_area_unit, spaces, floor_number, name);
     const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
     return (
       <PropertyMapCard

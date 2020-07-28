@@ -177,6 +177,7 @@
     "react/no-array-index-key": "off",
     "class-methods-use-this": "off",
     "no-useless-computed-key": "off",
+    "no-nested-ternary": "off",
     "react/jsx-no-bind": [
       "error",
       {

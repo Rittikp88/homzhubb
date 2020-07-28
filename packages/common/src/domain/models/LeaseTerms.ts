@@ -1,3 +1,5 @@
+import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+
 export enum PaidByTypes {
   TENANT = 'TENANT',
   OWNER = 'OWNER',
@@ -45,4 +47,49 @@ export interface ICreateLeaseTermDetails {
 
 export interface ILeaseTermDetails extends ICreateLeaseTermDetails {
   id: number;
+}
+
+@JsonObject('LeaseTerms')
+export class LeaseTerms {
+  @JsonProperty('id', Number)
+  private _id = '';
+
+  @JsonProperty('available_from_date', String, true)
+  private _availableFromDate = '';
+
+  @JsonProperty('maintenance_paid_by', String, true)
+  private _maintenancePaidBy = '';
+
+  @JsonProperty('utility_paid_by', String, true)
+  private _utilityPaidBy = '';
+
+  @JsonProperty('expected_price', Number, true)
+  private _expectedPrice = 0;
+
+  @JsonProperty('maintenance_schedule', String, true)
+  private _maintenanceSchedule = '';
+
+  get id(): string {
+    return this._id;
+  }
+
+  get availableFromDate(): string {
+    return this._availableFromDate;
+  }
+
+  get maintenancePaidBy(): string {
+    return this._maintenancePaidBy;
+  }
+
+  get utilityPaidBy(): string {
+    return this._utilityPaidBy;
+  }
+
+  get expectedPrice(): number {
+    return this._expectedPrice;
+  }
+
+  get maintenanceSchedule(): string {
+    return this._maintenanceSchedule;
+  }
 }

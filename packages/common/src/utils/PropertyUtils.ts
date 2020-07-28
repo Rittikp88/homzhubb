@@ -1,26 +1,28 @@
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IAmenitiesIcons, IProperties, ISpaces } from '@homzhub/common/src/domain/models/Search';
+import { IData } from '@homzhub/common/src/domain/models/Asset';
+import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 class PropertyUtils {
-  public getAmenities = (property: IProperties): IAmenitiesIcons[] => {
-    const {
-      carpet_area,
-      carpet_area_unit,
-      spaces,
-      floor_number,
-      asset_group: { name },
-    } = property;
+  public getAmenities = (
+    carpet_area: string,
+    carpet_area_unit: string,
+    spaces: IData[],
+    floor_number: number,
+    name: string,
+    isFullDetail?: boolean
+  ): IAmenitiesIcons[] => {
     let amenities: IAmenitiesIcons[] = [];
     if (spaces.length === 0) {
       return [];
     }
-    const bedroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+    const bedroom: IData[] = spaces.filter((space: IData) => {
       return space.name === SpaceAvailableTypes.BEDROOM;
     });
 
-    const bathroom: ISpaces[] = spaces.filter((space: ISpaces) => {
+    const bathroom: IData[] = spaces.filter((space: IData) => {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
 
@@ -28,22 +30,26 @@ class PropertyUtils {
       ? `${carpet_area.toLocaleString()} ${carpet_area_unit}`
       : '-';
 
-    const balcony: ISpaces[] = spaces.filter((space: ISpaces) => {
+    const balcony: IData[] = spaces.filter((space: IData) => {
       return space.name === SpaceAvailableTypes.BALCONY;
     });
+
+    const bedFloor =
+      name === 'Residential' && bedroom.length > 0 ? bedroom[0].count.toString() : floor_number.toString();
+    const baths = bathroom.length > 0 ? bathroom[0].count.toString() : '-';
 
     amenities = [
       {
         icon: name === 'Residential' ? icons.bed : icons.floor,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: name === 'Residential' && bedroom.length > 0 ? bedroom[0].count.toString() : floor_number.toString(),
+        label: isFullDetail ? (name === 'Residential' ? `${bedFloor} Beds` : `${bedFloor}th Floor`) : bedFloor,
       },
       {
         icon: name === 'Residential' ? icons.bathTub : icons.washroom,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: bathroom.length > 0 ? bathroom[0].count.toString() : '-',
+        label: isFullDetail ? (name === 'Residential' ? `${baths} Baths` : `${baths} Washrooms`) : baths,
       },
     ];
 
@@ -58,10 +64,10 @@ class PropertyUtils {
 
     if (balcony.length > 0) {
       amenities.push({
-        icon: icons.homeCalculus, // TODO: Need to change once icon is update in style-guide
+        icon: icons.balcony,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: balcony[0].count.toString(),
+        label: balcony[0].count ? balcony[0].count.toString() : '-',
       });
     }
 
@@ -77,6 +83,46 @@ class PropertyUtils {
         return `${newValue}SqYard`;
       default:
         return `${newValue.toLocaleString()}${unit}`;
+    }
+  };
+
+  // TODO: (Shikha) - Need to add proper data once api integrate
+  public getPropertyTimelineData = (
+    name: string,
+    leaseTerm: LeaseTerms,
+    saleTerm: any,
+    postedOn: string,
+    availableFrom: string
+  ): any[] => {
+    switch (name) {
+      case 'Residential':
+        if (leaseTerm) {
+          return [
+            { label: 'Posted on', value: postedOn },
+            { label: 'Available from', value: availableFrom },
+          ];
+        }
+        return [
+          { label: 'Posted on', value: postedOn },
+          { label: 'Possession', value: availableFrom },
+          { label: 'Tenanted till', value: 'Immediately' },
+        ];
+
+      case 'Commercial':
+        if (leaseTerm) {
+          return [
+            { label: 'Posted on', value: postedOn },
+            { label: 'Available from', value: availableFrom },
+          ];
+        }
+        return [
+          { label: 'Posted on', value: postedOn },
+          { label: 'Available from', value: availableFrom },
+          { label: 'Tenanted till', value: 'Immediatily' },
+        ];
+
+      default:
+        return [];
     }
   };
 }

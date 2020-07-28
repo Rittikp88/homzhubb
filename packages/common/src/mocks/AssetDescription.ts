@@ -21,14 +21,14 @@ export const mockAsset = {
   project_name: '2972 Westheimer Rd. Santa Ana, NY',
   unit_number: '12',
   block_number: '32',
-  carpet_area: '1000',
+  carpet_area: '123',
   carpet_area_unit: 'Sq.ft',
   latitude: '13.77',
   longitude: '77.833',
   floor_number: 4,
   total_floors: 10,
-  posted_on: '2020-03-12',
-  available_from: '2020-10-14',
+  posted_on: '21 Aug 2020',
+  available_from: 'Immediately',
   description:
     'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n' +
     '\n' +
@@ -44,12 +44,12 @@ export const mockAsset = {
   spaces: [
     {
       id: 1,
-      name: 'Beds',
+      name: 'Bedroom',
       count: 5,
     },
     {
       id: 2,
-      name: 'Baths',
+      name: 'Bathroom',
       count: 10,
     },
   ],
@@ -74,19 +74,12 @@ export const mockAsset = {
   lease_term: {
     id: 1,
     expected_price: 18888,
-    maintenance_paid_by: 'OWNER|TENANT',
-    utility_paid_by: 'OWNER|TENANT',
+    maintenance_paid_by: 'OWNER',
+    utility_paid_by: 'OWNER',
     maintenance_amount: 5000,
-    maintenance_schedule: 'ANNUALLY|MONTHLY|QUARTERLY',
+    maintenance_schedule: 'MONTHLY',
   },
-  sale_term: {
-    id: 2,
-    expected_price: 133830,
-    expected_booking_amount: 10000.0,
-    available_from_date: 2020 - 8 - 19,
-    maintenance_amount: 5000,
-    maintenance_schedule: 'ANNUALLY|MONTHLY|QUARTERLY',
-  },
+  sale_term: null,
   verification: {
     code: 3,
     description: '',

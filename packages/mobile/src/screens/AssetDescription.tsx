@@ -7,28 +7,32 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import Collapsible from 'react-native-collapsible';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
 import {
   CustomMarker,
   Divider,
-  Image,
-  ImageVideoPagination,
   Label,
+  PricePerUnit,
+  PropertyAddress,
   Text,
   WithShadowView,
 } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import ShieldGroup from '@homzhub/common/src/components/molecules/ShieldGroup';
 import { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
 import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
+import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -155,6 +159,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           renderFixedHeader={(): React.ReactElement => this.fixedHeader()}
         >
           <View style={styles.screen}>
+            {this.renderHeaderSection()}
             <CollapsibleSection title={t('description')}>{this.renderAssetDescription()}</CollapsibleSection>
             <CollapsibleSection title={t('highlights')}>{this.renderAssetHighlights()}</CollapsibleSection>
             {this.renderMapSection()}
@@ -164,6 +169,100 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
+      </>
+    );
+  };
+
+  private renderHeaderSection = (): React.ReactElement | null => {
+    const { assetDetails, t } = this.props;
+    if (!assetDetails) {
+      return null;
+    }
+    const {
+      spaces,
+      carpetArea,
+      carpetAreaUnit,
+      floorNumber,
+      assetType,
+      leaseTerm,
+      saleTerm,
+      postedOn,
+      availableFrom,
+      projectName,
+      assetGroup: { name },
+    } = assetDetails;
+    const propertyType = assetType ? assetDetails.assetType.name : '';
+    const term = leaseTerm || saleTerm;
+
+    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
+      carpetArea,
+      carpetAreaUnit,
+      spaces,
+      floorNumber,
+      name,
+      true
+    );
+
+    const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
+      name,
+      leaseTerm,
+      saleTerm,
+      postedOn,
+      availableFrom
+    );
+
+    return (
+      <View style={styles.headerContainer}>
+        <ShieldGroup text={propertyType} />
+        <View style={styles.apartmentContainer}>
+          <PricePerUnit price={term.expectedPrice || 0} currency="INR" unit="month" />
+          <View style={styles.textIcon}>
+            <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
+            <Text type="small" textType="regular" style={styles.primaryText}>
+              {t('bookTour')}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.apartmentContainer}>
+          <PropertyAddress
+            isIcon={false}
+            primaryAddress="Eaton Garth Manor" // TODO: (Shikha) - remove once api integrate
+            subAddress={projectName}
+            subAddressStyle={styles.subAddress}
+          />
+          <View style={styles.textIcon}>
+            <View style={styles.verticalDivider} />
+            <Icon name={icons.houseMarker} size={30} color={theme.colors.blue} style={styles.iconStyle} />
+          </View>
+        </View>
+        <PropertyAmenities
+          data={amenitiesData}
+          direction="row"
+          containerStyle={styles.amenitiesContainer}
+          contentContainerStyle={styles.amenitiesContent}
+        />
+        <Divider />
+        <View style={styles.timelineContainer}>{this.renderPropertyTimelines(propertyTimelineData)}</View>
+      </View>
+    );
+  };
+
+  // TODO: (Shikha) - Add type once api integrate
+  private renderPropertyTimelines = (data: any): React.ReactElement => {
+    return (
+      <>
+        {data.map((item: any, index: number) => {
+          return (
+            <View key={index} style={styles.utilityItem}>
+              <Label type="large" textType="regular" style={{ color: theme.colors.darkTint4 }}>
+                {item.label}
+              </Label>
+              <Label type="large" textType="semiBold" style={{ color: theme.colors.darkTint2 }}>
+                {item.value}
+              </Label>
+            </View>
+          );
+        })}
       </>
     );
   };
@@ -281,7 +380,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.setState({ isFullScreen: !isFullScreen });
   };
 
-  public fixedHeader = (): React.ReactElement => {
+  private fixedHeader = (): React.ReactElement => {
     const { isScroll } = this.state;
     const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
     return (
@@ -297,12 +396,12 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  public stickyHeader = (): React.ReactElement => {
+  private stickyHeader = (): React.ReactElement => {
     return (
       <WithShadowView outerViewStyle={styles.shadowView}>
         <View key="sticky-header" style={styles.stickySection}>
           <Text type="regular" textType="semiBold" style={styles.headerTitle}>
-            Property Name
+            Eaton Garth Manor
           </Text>
         </View>
       </WithShadowView>
@@ -337,6 +436,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     paddingHorizontal: theme.layout.screenPadding,
   },
+  headerContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.darkTint10,
+  },
   ratingsHeading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -345,7 +448,12 @@ const styles = StyleSheet.create({
   highlightsContainer: {
     marginTop: 16,
   },
-  highlightItemContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  highlightItemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   textColor: {
     color: theme.colors.darkTint4,
   },
@@ -359,6 +467,23 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginTop: 24,
+  },
+  apartmentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 8,
+  },
+  timelineContainer: {
+    paddingVertical: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  iconStyle: {
+    marginHorizontal: 6,
+  },
+  primaryText: {
+    color: theme.colors.primaryColor,
   },
   description: {
     color: theme.colors.darkTint4,
@@ -401,6 +526,10 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     color: theme.colors.darkTint1,
   },
+  utilityItem: {
+    marginRight: 20,
+    marginLeft: 4,
+  },
   neighborhoodAddress: {
     marginTop: 12,
     color: theme.colors.darkTint3,
@@ -416,5 +545,24 @@ const styles = StyleSheet.create({
   },
   exploreMap: {
     color: theme.colors.primaryColor,
+  },
+  textIcon: {
+    flexDirection: 'row',
+  },
+  subAddress: {
+    marginHorizontal: 0,
+  },
+  verticalDivider: {
+    borderWidth: 1,
+    height: 30,
+    marginRight: 14,
+    borderColor: theme.colors.darkTint10,
+  },
+  amenitiesContainer: {
+    justifyContent: 'flex-start',
+    marginBottom: 14,
+  },
+  amenitiesContent: {
+    marginRight: 16,
   },
 });

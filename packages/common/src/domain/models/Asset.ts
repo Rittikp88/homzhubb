@@ -2,6 +2,8 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
+import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 
 export interface IAsset {
   project_name: string;
@@ -28,13 +30,13 @@ export interface IAsset {
 export interface IData {
   id: number;
   name: string;
-  count?: number;
+  count: number;
 }
 
 @JsonObject('Data')
 class Data {
   @JsonProperty('id', Number)
-  private _id = '';
+  private _id = 0;
 
   @JsonProperty('name', String)
   private _name = '';
@@ -42,7 +44,7 @@ class Data {
   @JsonProperty('count', Number, true)
   private _count = 0;
 
-  get id(): string {
+  get id(): number {
     return this._id;
   }
 
@@ -91,10 +93,10 @@ export class Asset {
   private _description = '';
 
   @JsonProperty('floor_number', Number)
-  private _floorNumber = '';
+  private _floorNumber = 0;
 
   @JsonProperty('total_floors', Number)
-  private _totalFloors = '';
+  private _totalFloors = 0;
 
   @JsonProperty('attachments', [Attachment], true)
   private _attachments: Attachment[] = [];
@@ -116,6 +118,12 @@ export class Asset {
 
   @JsonProperty('asset_group', Data, true)
   private _assetGroup: Data = new Data();
+
+  @JsonProperty('lease_term', LeaseTerms, true)
+  private _leaseTerm: LeaseTerms = new LeaseTerms();
+
+  @JsonProperty('sale_term', SaleTerms, true)
+  private _saleTerm: SaleTerms = new SaleTerms();
 
   get projectName(): string {
     return this._projectName;
@@ -145,11 +153,11 @@ export class Asset {
     return this._carpetArea;
   }
 
-  get floorNumber(): string {
+  get floorNumber(): number {
     return this._floorNumber;
   }
 
-  get totalFloors(): string {
+  get totalFloors(): number {
     return this._totalFloors;
   }
 
@@ -195,5 +203,13 @@ export class Asset {
 
   get assetGroup(): Data {
     return this._assetGroup;
+  }
+
+  get leaseTerm(): LeaseTerms {
+    return this._leaseTerm;
+  }
+
+  get saleTerm(): SaleTerms {
+    return this._saleTerm;
   }
 }

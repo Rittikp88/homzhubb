@@ -3,11 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { Divider, PricePerUnit, PropertyAddress, Text } from '@homzhub/common/src/components';
+import { Divider, PricePerUnit, PropertyAddress } from '@homzhub/common/src/components';
+import ShieldGroup from '@homzhub/common/src/components/molecules/ShieldGroup';
 import PropertyListImageCarousel from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import PropertyAmenities from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 import { IAmenitiesIcons, IProperties } from '@homzhub/common/src/domain/models/Search';
@@ -30,7 +30,11 @@ class PropertyListCard extends React.Component<Props, {}> {
       <View style={styles.container}>
         <PropertyListImageCarousel images={images} isFavorite={is_favorite ?? false} onFavorite={this.onFavorite} />
         {this.renderPropertyTypeAndBadges()}
-        <PropertyAddress primaryAddress={project_name} subAddress={`${block_number ?? ''} ${unit_number ?? ''}`} />
+        <PropertyAddress
+          isIcon
+          primaryAddress={project_name}
+          subAddress={`${block_number ?? ''} ${unit_number ?? ''}`}
+        />
         <Divider containerStyles={styles.divider} />
         {this.renderPriceAndAmenities()}
       </View>
@@ -43,29 +47,31 @@ class PropertyListCard extends React.Component<Props, {}> {
         asset_type: { name },
       },
     } = this.props;
-    return (
-      <View style={styles.apartmentContainer}>
-        <Text type="small" textType="regular" style={styles.propertyTypeText}>
-          {name}
-        </Text>
-        <View style={styles.badgesContainer}>
-          <Icon name={icons.badge} size={23} color={theme.colors.warning} style={styles.badges} />
-          <Icon name={icons.badge} size={23} color={theme.colors.warning} style={styles.badges} />
-          <Icon name={icons.badge} size={23} color={theme.colors.disabledPreference} style={styles.badges} />
-        </View>
-      </View>
-    );
+    return <ShieldGroup text={name} />;
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
     const { transaction_type, property } = this.props;
+    const {
+      carpet_area,
+      carpet_area_unit,
+      spaces,
+      floor_number,
+      asset_group: { name },
+    } = property;
     const currency: string = this.getCurrency();
     const price: number = this.getPrice();
-    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(property);
+    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
+      carpet_area,
+      carpet_area_unit,
+      spaces,
+      floor_number,
+      name
+    );
     return (
       <View style={styles.amenities}>
         <PricePerUnit price={price} currency={currency} unit={transaction_type === 0 ? 'month' : ''} />
-        <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
+        <PropertyAmenities data={amenitiesData} direction="row" contentContainerStyle={styles.amenitiesContainer} />
       </View>
     );
   };
@@ -119,21 +125,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4,
     marginVertical: 10,
-  },
-  apartmentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 8,
-  },
-  badgesContainer: {
-    flexDirection: 'row',
-  },
-  badges: {
-    marginHorizontal: 3,
-  },
-  propertyTypeText: {
-    color: theme.colors.primaryColor,
   },
   divider: {
     borderWidth: StyleSheet.hairlineWidth,
