@@ -10,4 +10,9 @@ export class StringUtils {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   };
+
+  public static getInitials = (fullName: string): string => {
+    const initials = fullName.match(/\b\w/g) || [];
+    return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+  };
 }

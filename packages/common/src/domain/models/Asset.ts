@@ -5,6 +5,7 @@ import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/mode
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
 
 export interface IAsset {
   project_name: string;
@@ -26,6 +27,7 @@ export interface IAsset {
   attachments: IAttachment[];
   highlights: IAssetHighlight[];
   features: IAssetFeature[];
+  contact?: IUser;
 }
 
 export interface IData {
@@ -126,6 +128,9 @@ export class Asset {
   @JsonProperty('sale_term', SaleTerms, true)
   private _saleTerm: SaleTerms = new SaleTerms();
 
+  @JsonProperty('contact', User, true)
+  private _contact: User = new User();
+
   get projectName(): string {
     return this._projectName;
   }
@@ -212,5 +217,9 @@ export class Asset {
 
   get saleTerm(): SaleTerms {
     return this._saleTerm;
+  }
+
+  get contact(): User {
+    return this._contact;
   }
 }

@@ -78,4 +78,8 @@ export const icons = {
   wifi: 'wifi',
   intercom: 'intercom',
   balcony: 'balcony',
+  phone: 'phone',
+  envelope: 'envelope',
+  whatsapp: 'whatsapp',
+  share: 'share',
 };

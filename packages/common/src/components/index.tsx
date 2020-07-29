@@ -24,7 +24,9 @@ export { YoutubeVideo } from '@homzhub/common/src/components/atoms/YoutubeVideo'
 
 // Molecules
 export { AnimatedHeader } from '@homzhub/common/src/components/molecules/AnimatedHeader';
+export { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 export { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+export { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 export { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 export { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';

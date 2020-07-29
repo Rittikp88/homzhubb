@@ -220,11 +220,11 @@ export const mockAsset = {
       covered: true,
     },
   ],
-  contact: {
+  contacts: {
     id: 1,
-    name: 'Foobar',
-    email: 'Johndoe@mail.com',
+    full_name: 'Anuvrat Somnath',
+    email: 'anuvrat.somnath@nineleaps.com',
     country_code: '+91',
-    phone_number: '9839478859',
+    phone_number: '7903470293',
   },
 };
