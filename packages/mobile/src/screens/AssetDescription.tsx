@@ -23,6 +23,7 @@ import {
   Text,
   WithShadowView,
   SVGUri,
+  ContactPerson,
 } from '@homzhub/common/src/components';
 import {
   AssetRatings,
@@ -140,7 +141,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { t, reviews } = this.props;
+    const { t, reviews, assetDetails } = this.props;
 
     return (
       <>
@@ -169,6 +170,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
+        <ContactPerson fullName={assetDetails?.contacts.fullName ?? ''} designation="Owner" />
       </>
     );
   };
@@ -187,7 +189,6 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       leaseTerm,
       saleTerm,
       postedOn,
-      availableFrom,
       projectName,
       assetGroup: { name },
     } = assetDetails;
@@ -203,13 +204,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       true
     );
 
-    const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
-      name,
-      leaseTerm,
-      saleTerm,
-      postedOn,
-      availableFrom
-    );
+    const propertyTimelineData = PropertyUtils.getPropertyTimelineData(name, leaseTerm, saleTerm, postedOn, '');
 
     return (
       <View style={styles.headerContainer}>

@@ -11,7 +11,6 @@ export interface IAsset {
   project_name: string;
   unit_number: string;
   posted_on: string;
-  available_from: string;
   description: string;
   block_number: string;
   latitude: string;
@@ -27,13 +26,13 @@ export interface IAsset {
   attachments: IAttachment[];
   highlights: IAssetHighlight[];
   features: IAssetFeature[];
-  contact?: IUser;
+  contacts?: IUser;
 }
 
 export interface IData {
   id: number;
   name: string;
-  count: number;
+  count?: number;
 }
 
 @JsonObject('Data')
@@ -89,9 +88,6 @@ export class Asset {
   @JsonProperty('posted_on', String)
   private _postedOn = '';
 
-  @JsonProperty('available_from', String)
-  private _availableFrom = '';
-
   @JsonProperty('description', String)
   private _description = '';
 
@@ -128,8 +124,8 @@ export class Asset {
   @JsonProperty('sale_term', SaleTerms, true)
   private _saleTerm: SaleTerms = new SaleTerms();
 
-  @JsonProperty('contact', User, true)
-  private _contact: User = new User();
+  @JsonProperty('contacts', User, true)
+  private _contacts: User = new User();
 
   get projectName(): string {
     return this._projectName;
@@ -179,10 +175,6 @@ export class Asset {
     return this._postedOn;
   }
 
-  get availableFrom(): string {
-    return this._availableFrom;
-  }
-
   get description(): string {
     return this._description;
   }
@@ -219,7 +211,7 @@ export class Asset {
     return this._saleTerm;
   }
 
-  get contact(): User {
-    return this._contact;
+  get contacts(): User {
+    return this._contacts;
   }
 }

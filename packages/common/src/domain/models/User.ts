@@ -5,8 +5,8 @@ export interface IUser {
   email: string;
   country_code: string;
   phone_number: string;
-  access_token: string;
-  refresh_token: string;
+  access_token?: string;
+  refresh_token?: string;
 }
 
 @JsonObject('User')
@@ -23,10 +23,10 @@ export class User {
   @JsonProperty('phone_number', String)
   private _phoneNumber = '';
 
-  @JsonProperty('refresh_token', String)
+  @JsonProperty('refresh_token', String, true)
   private _refreshToken = '';
 
-  @JsonProperty('access_token', String)
+  @JsonProperty('access_token', String, true)
   private _accessToken = '';
 
   get refreshToken(): string {

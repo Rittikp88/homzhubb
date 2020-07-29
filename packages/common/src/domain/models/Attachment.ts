@@ -1,30 +1,27 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
 export interface IAttachment {
-  id: number;
-  name: string;
-  link: string;
-  attachment_type?: string;
-  mime_type?: string;
+  id?: number;
+  name?: string;
+  file_name?: string;
+  link?: string;
   is_cover_image?: boolean;
+  media_type?: string;
 }
 
 @JsonObject('Attachment')
 export class Attachment {
-  @JsonProperty('id', Number)
+  @JsonProperty('id', Number, true)
   private _id = 0;
 
-  @JsonProperty('name', String)
+  @JsonProperty('file_name', String, true)
+  private _fileName = '';
+
+  @JsonProperty('name', String, true)
   private _name = '';
 
-  @JsonProperty('link', String)
+  @JsonProperty('link', String, true)
   private _link = '';
-
-  @JsonProperty('attachment_type', String, true)
-  private _attachmentType = '';
-
-  @JsonProperty('mime_type', String, true)
-  private _mime_type = '';
 
   @JsonProperty('is_cover_image', Boolean, true)
   private _isCoverImage = false;
@@ -33,20 +30,16 @@ export class Attachment {
     return this._id;
   }
 
+  get fileName(): string {
+    return this._fileName;
+  }
+
   get name(): string {
     return this._name;
   }
 
   get link(): string {
     return this._link;
-  }
-
-  get attachmentType(): string {
-    return this._attachmentType;
-  }
-
-  get mime_type(): string {
-    return this._mime_type;
   }
 
   get isCoverImage(): boolean {

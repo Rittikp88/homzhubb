@@ -3,7 +3,7 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 export interface IAssetFeature {
   name: string;
   locale_key: string;
-  value: number;
+  value: string;
 }
 
 @JsonObject('AssetFeature')
@@ -14,8 +14,8 @@ export class AssetFeature {
   @JsonProperty('locale_key', String)
   private _localeKey = '';
 
-  @JsonProperty('value', Number)
-  private _value = 0;
+  @JsonProperty('value', String)
+  private _value = '';
 
   get name(): string {
     return this._name;
@@ -25,7 +25,7 @@ export class AssetFeature {
     return this._localeKey;
   }
 
-  get value(): number {
+  get value(): string {
     return this._value;
   }
 }
