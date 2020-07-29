@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery, debounce } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
-import { IFluxStandardAction, IState } from '@homzhub/common/src/modules/interfaces';
-import { SearchActions, SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
-import { AssetService } from '@homzhub/common/src/services/AssetService';
-import { IFilters } from '@homzhub/common/src/domain/models/Search';
 import { SearchRepository } from '@homzhub/common/src/domain/repositories/SearchRepository';
-
-const getFilters = (state: IState) => state.search.filter;
+import { AssetService } from '@homzhub/common/src/services/AssetService';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { SearchActions, SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { IFilters } from '@homzhub/common/src/domain/models/Search';
 
 export function* getFilterDetails(action: IFluxStandardAction<IFilters>) {
   try {
@@ -20,7 +19,7 @@ export function* getFilterDetails(action: IFluxStandardAction<IFilters>) {
 
 export function* getPropertiesDetails() {
   try {
-    const filter = AssetService.constructAssetSearchPayload(yield select(getFilters));
+    const filter = AssetService.constructAssetSearchPayload(yield select(SearchSelector.getFilters));
     const data = yield call(SearchRepository.getProperties, filter);
     yield put(SearchActions.getPropertiesSuccess(data));
   } catch (e) {
@@ -30,7 +29,7 @@ export function* getPropertiesDetails() {
 
 export function* getPropertiesListViewDetails() {
   try {
-    const filter = AssetService.constructAssetSearchPayload(yield select(getFilters));
+    const filter = AssetService.constructAssetSearchPayload(yield select(SearchSelector.getFilters));
     const data = yield call(SearchRepository.getProperties, filter);
     yield put(SearchActions.getPropertiesListViewSuccess(data));
   } catch (e) {

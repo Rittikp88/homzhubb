@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
@@ -19,6 +19,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   isCarousel: boolean;
   textSizeType?: TextSizeType;
+  onSelectedProperty: () => void;
 }
 
 type libraryProps = WithTranslation;
@@ -30,6 +31,7 @@ class PropertyListCard extends React.Component<Props, {}> {
       property: { images, project_name, unit_number, block_number, is_favorite = false },
       containerStyle,
       isCarousel,
+      onSelectedProperty,
     } = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
@@ -40,13 +42,15 @@ class PropertyListCard extends React.Component<Props, {}> {
           isCarousel={isCarousel}
         />
         {this.renderPropertyTypeAndBadges()}
-        <PropertyAddress
-          isIcon
-          primaryAddress={project_name}
-          subAddress={`${block_number ?? ''} ${unit_number ?? ''}`}
-        />
-        <Divider containerStyles={styles.divider} />
-        {this.renderPriceAndAmenities()}
+        <TouchableOpacity onPress={onSelectedProperty}>
+          <PropertyAddress
+            isIcon
+            primaryAddress={project_name}
+            subAddress={`${block_number ?? ''} ${unit_number ?? ''}`}
+          />
+          <Divider containerStyles={styles.divider} />
+          {this.renderPriceAndAmenities()}
+        </TouchableOpacity>
       </View>
     );
   }

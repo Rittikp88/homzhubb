@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ImageSourcePropType } from 'react-native';
+import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Favorite, Image, Label, PricePerUnit } from '@homzhub/common/src/components';
 import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
@@ -14,14 +14,27 @@ interface IProps {
   priceUnit: string;
   isFavorite: boolean;
   onFavorite: () => void;
+  onSelectedProperty: () => void;
 }
 
 export class PropertyMapCard extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { source, name, isFavorite, onFavorite, currency, price, priceUnit, amenitiesData } = this.props;
+    const {
+      source,
+      name,
+      isFavorite,
+      onFavorite,
+      currency,
+      price,
+      priceUnit,
+      amenitiesData,
+      onSelectedProperty,
+    } = this.props;
     return (
       <View style={styles.container}>
-        <Image source={source} style={styles.image} borderBottomLeftRadius={4} borderTopLeftRadius={4} />
+        <TouchableOpacity onPress={onSelectedProperty}>
+          <Image source={source} style={styles.image} borderBottomLeftRadius={4} borderTopLeftRadius={4} />
+        </TouchableOpacity>
         <View style={styles.detailsContainer}>
           <View style={styles.row}>
             <PricePerUnit price={price} unit={priceUnit} currency={currency} />

@@ -19,6 +19,7 @@ interface IState {
 interface IProps {
   properties: IProperties[];
   transaction_type: number;
+  onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
 }
 
 type Props = IProps & WithTranslation;
@@ -111,7 +112,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
   };
 
   private renderCarouselItem = (item: IProperties): React.ReactElement => {
-    const { transaction_type } = this.props;
+    const { transaction_type, onSelectedProperty } = this.props;
     const {
       images,
       project_name,
@@ -125,6 +126,15 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     const price = this.getPrice(item);
     const amenities = PropertyUtils.getAmenities(carpet_area, carpet_area_unit, spaces, floor_number, name);
     const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
+    const navigateToAssetDetails = (): void => {
+      const { lease_term, sale_term, id } = item;
+      if (lease_term) {
+        onSelectedProperty(lease_term.id, id);
+      }
+      if (sale_term) {
+        onSelectedProperty(sale_term.id, id);
+      }
+    };
     return (
       <PropertyMapCard
         source={{
@@ -140,6 +150,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
         isFavorite={false}
         amenitiesData={amenities}
         onFavorite={this.onFavorite}
+        onSelectedProperty={navigateToAssetDetails}
       />
     );
   };

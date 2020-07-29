@@ -11,7 +11,6 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images'; // TODO: To be removed once api integrated
@@ -41,6 +40,8 @@ import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -49,6 +50,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   getAssetReviews: (id: number) => void;
+  getAsset: (id: number) => void;
 }
 
 interface IOwnState {
@@ -66,7 +68,8 @@ const relativeWidth = (num: number): number => (realWidth * num) / 100;
 const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 60;
 
-type Props = IStateProps & IDispatchProps & WithTranslation;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
+type Props = IStateProps & IDispatchProps & libraryProps;
 // TODO: Get from redux once set up
 const IMAGES = [
   {
@@ -122,8 +125,18 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public componentDidMount = (): void => {
-    // const { getAssetReviews } = this.props;
-    // getAssetReviews(1);
+    const {
+      // getAssetReviews,
+      getAsset,
+      route: {
+        params: {
+          propertyTermId,
+          // propertyId
+        },
+      },
+    } = this.props;
+    // getAssetReviews(propertyId);
+    getAsset(propertyTermId);
   };
 
   public render = (): React.ReactNode => {
@@ -426,7 +439,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public renderSimilarProperties = (): React.ReactElement => {
-    return <SimilarProperties onFavorite={this.onFavorite} data={PropertySearchData} />;
+    const propertyId = 1; // TODO: Get the propertyId from route params
+    return <SimilarProperties onFavorite={this.onFavorite} propertyId={propertyId} />;
   };
 
   private onFullScreenToggle = (): void => {
@@ -470,7 +484,10 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  public goBack = (): void => {};
+  public goBack = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -481,8 +498,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetReviews } = AssetActions;
-  return bindActionCreators({ getAssetReviews }, dispatch);
+  const { getAssetReviews, getAsset } = AssetActions;
+  return bindActionCreators({ getAssetReviews, getAsset }, dispatch);
 };
 
 export default connect(

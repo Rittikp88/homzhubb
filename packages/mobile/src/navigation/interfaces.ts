@@ -36,6 +36,8 @@ export enum ScreensKeys {
   // Search
   PropertyTabsScreen = 'PropertyTabsScreen',
   PropertySearchLanding = 'PropertySearchLanding',
+  PropertySearchScreen = 'PropertySearchScreen',
+  PropertyAssetDescription = 'PropertyAssetDescription',
   PropertyFilters = 'PropertyFilters',
 }
 
@@ -109,4 +111,10 @@ export type MarkdownType = 'visit' | 'verification';
 export interface IMarkdownProps {
   title?: string;
   isFrom: MarkdownType;
+}
+
+// Property Search Start
+export interface IAssetDescriptionProps {
+  propertyTermId: number;
+  propertyId: number;
 }

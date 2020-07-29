@@ -53,7 +53,7 @@ export class GettingStarted extends React.PureComponent<IProps> {
 
   public searchProperty = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.PropertySearchLanding);
+    navigation.navigate(ScreensKeys.PropertyTabsScreen);
   };
 
   public login = (): void => {

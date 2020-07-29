@@ -13,13 +13,14 @@ interface IProps {
   getPropertiesListView: () => void;
   setFilter: (payload: any) => void;
   filters: IFilter;
+  onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
 }
 
 type Props = IProps & WithTranslation;
 
 class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
-    const { properties, onFavorite, filters, t } = this.props;
+    const { properties, onFavorite, filters, onSelectedProperty, t } = this.props;
     if (properties.count === 0) {
       return null;
     }
@@ -32,6 +33,15 @@ class PropertySearchList extends React.PureComponent<Props> {
           data={properties.results}
           renderItem={({ item }: { item: IProperties }): React.ReactElement => {
             const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
+            const navigateToAssetDescription = (): void => {
+              const { lease_term, sale_term, id } = item;
+              if (lease_term) {
+                onSelectedProperty(lease_term.id, id);
+              }
+              if (sale_term) {
+                onSelectedProperty(sale_term.id, id);
+              }
+            };
             return (
               <PropertyListCard
                 property={item}
@@ -39,6 +49,7 @@ class PropertySearchList extends React.PureComponent<Props> {
                 key={item.id}
                 transaction_type={filters.asset_transaction_type}
                 isCarousel
+                onSelectedProperty={navigateToAssetDescription}
               />
             );
           }}

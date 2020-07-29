@@ -12,15 +12,13 @@ import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
-import PropertySearchLanding from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchLanding';
-import PropertyTabsScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertyTabsScreen';
-import PropertyFilters from '@homzhub/mobile/src/screens/PropertySearch/PropertyFilters';
 import {
   IOtpNavProps,
   ScreensKeys,
   IVerificationProps,
   IResetPasswordProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
+import PropertyTabsScreen from '../screens/PropertySearch/PropertyTabsScreen';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
@@ -33,10 +31,8 @@ export type AuthStackParamList = {
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.ForgotPassword]: undefined;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
-  [ScreensKeys.SuccessResetPassword]: undefined;
-  [ScreensKeys.PropertySearchLanding]: undefined;
   [ScreensKeys.PropertyTabsScreen]: undefined;
-  [ScreensKeys.PropertyFilters]: undefined;
+  [ScreensKeys.SuccessResetPassword]: undefined;
 };
 
 export function AuthStack(): React.ReactElement {
@@ -66,9 +62,7 @@ export function AuthStack(): React.ReactElement {
       <AuthStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
-      <AuthStackNavigator.Screen name={ScreensKeys.PropertySearchLanding} component={PropertySearchLanding} />
       <AuthStackNavigator.Screen name={ScreensKeys.PropertyTabsScreen} component={PropertyTabsScreen} />
-      <AuthStackNavigator.Screen name={ScreensKeys.PropertyFilters} component={PropertyFilters} />
     </AuthStackNavigator.Navigator>
   );
 }

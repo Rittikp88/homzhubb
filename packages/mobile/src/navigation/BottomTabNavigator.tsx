@@ -1,29 +1,41 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { createStackNavigator } from '@react-navigation/stack';
 import AssetDescription from '@homzhub/mobile/src/screens/AssetDescription';
 import PropertySearchScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchScreen';
+import PropertySearchLanding from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchLanding';
+import PropertyFilters from '@homzhub/mobile/src/screens/PropertySearch/PropertyFilters';
+import { ScreensKeys, IAssetDescriptionProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 const SearchStack = createStackNavigator();
 
-const SearchStackScreen = (): React.ReactElement => {
+export type SearchStackParamList = {
+  [ScreensKeys.PropertySearchLanding]: undefined;
+  [ScreensKeys.PropertySearchScreen]: undefined;
+  [ScreensKeys.PropertyFilters]: undefined;
+  [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
+};
+
+export const SearchStackScreen = (): React.ReactElement => {
   return (
     <SearchStack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <SearchStack.Screen name="Search" component={PropertySearchScreen} />
-      <SearchStack.Screen name="AssetDescription" component={AssetDescription} />
+      <SearchStack.Screen name={ScreensKeys.PropertySearchLanding} component={PropertySearchLanding} />
+      <SearchStack.Screen name={ScreensKeys.PropertySearchScreen} component={PropertySearchBottomTabs} />
+      <SearchStack.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
+      <SearchStack.Screen name={ScreensKeys.PropertyFilters} component={PropertyFilters} />
     </SearchStack.Navigator>
   );
 };
 
 const Tab = createBottomTabNavigator();
 
-export const BottomTabs = (): React.ReactElement => {
+export const PropertySearchBottomTabs = (): React.ReactElement => {
   return (
     <Tab.Navigator
       initialRouteName="Search"
@@ -33,7 +45,7 @@ export const BottomTabs = (): React.ReactElement => {
     >
       <Tab.Screen
         name="Search"
-        component={SearchStackScreen}
+        component={PropertySearchScreen}
         options={{
           tabBarLabel: 'Search',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -43,7 +55,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="Saved"
-        component={SearchStackScreen}
+        component={PropertySearchScreen}
         options={{
           tabBarLabel: 'Saved',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -53,7 +65,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="Compare"
-        component={SearchStackScreen}
+        component={PropertySearchScreen}
         options={{
           tabBarLabel: 'Compare',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -63,7 +75,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="Tenancies"
-        component={SearchStackScreen}
+        component={PropertySearchScreen}
         options={{
           tabBarLabel: 'Tenancies',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -73,7 +85,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="More"
-        component={SearchStackScreen}
+        component={PropertySearchScreen}
         options={{
           tabBarLabel: 'More',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (

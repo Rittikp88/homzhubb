@@ -37,6 +37,8 @@ import {
 } from '@homzhub/mobile/src/components';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
 import {
   ICarpetArea,
   ICurrency,
@@ -81,7 +83,8 @@ interface IPropertySearchScreenState {
   areaUnits: IDropdownOption[];
 }
 
-type Props = WithTranslation & IStateProps & IDispatchProps;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertySearchScreen>;
+type Props = libraryProps & IStateProps & IDispatchProps;
 
 class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
   private searchBar: typeof SearchBar | null = null;
@@ -155,7 +158,11 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
       <View style={styles.flexFour}>
         {isMapView ? (
           <>
-            <PropertySearchMap properties={properties.results} transaction_type={filters.asset_transaction_type} />
+            <PropertySearchMap
+              properties={properties.results}
+              transaction_type={filters.asset_transaction_type}
+              onSelectedProperty={this.navigateToAssetDetails}
+            />
             {this.renderMenuTray()}
             {this.renderNoResults()}
           </>
@@ -167,6 +174,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
               setFilter={setFilter}
               getPropertiesListView={getPropertiesListView}
               onFavorite={this.onFavoriteProperty}
+              onSelectedProperty={this.navigateToAssetDetails}
             />
             {this.renderMenuTray()}
             {this.renderNoResultsListView()}
@@ -391,7 +399,10 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
                 }
               };
 
-              const navigateToFilters = (): void => console.log('Navigate to Filters');
+              const navigateToFilters = (): void => {
+                const { navigation } = this.props;
+                navigation.navigate(ScreensKeys.PropertyFilters);
+              };
 
               if (index === 3) {
                 return (
@@ -563,6 +574,14 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     const { getProperties, setInitialFilters } = this.props;
     setInitialFilters();
     getProperties();
+  };
+
+  public navigateToAssetDetails = (propertyTermId: number, propertyId: number): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+      propertyTermId,
+      propertyId,
+    });
   };
 }
 

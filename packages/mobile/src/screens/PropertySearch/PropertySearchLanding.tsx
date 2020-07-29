@@ -15,9 +15,9 @@ import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
-import { CurrentLocation, Range, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
+import { CurrentLocation, Loader, Range, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
 import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
@@ -25,6 +25,7 @@ interface IStateProps {
   filters: IFilter;
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
+  isLoading: boolean;
 }
 
 // TODO: (Shikha) Need to add types
@@ -35,7 +36,7 @@ interface IDispatchProps {
   setInitialState: () => void;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.PropertySearchLanding>;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertySearchLanding>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
 interface ILandingState {
@@ -110,7 +111,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
 
   public render(): React.ReactElement {
     const { isSearchBarFocused, isLocationSelected } = this.state;
-    const { t, filterData } = this.props;
+    const { t, filterData, isLoading } = this.props;
     return (
       <>
         <View style={styles.statusBar}>
@@ -130,6 +131,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
             onPress={this.onShowProperties}
           />
         </WithShadowView>
+        {isLoading && <Loader />}
       </>
     );
   }
@@ -292,7 +294,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
   private onShowProperties = (): void => {
     const { navigation, getProperties } = this.props;
     getProperties();
-    navigation.navigate(ScreensKeys.PropertyTabsScreen);
+    navigation.navigate(ScreensKeys.PropertySearchScreen);
   };
 
   // eslint-disable-next-line react/sort-comp
@@ -335,6 +337,7 @@ export const mapStateToProps = (state: IState): IStateProps => {
     filters: SearchSelector.getFilters(state),
     currencyData: SearchSelector.getCurrencyData(state),
     priceRange: SearchSelector.getPriceRange(state),
+    isLoading: SearchSelector.getLoadingState(state),
   };
 };
 

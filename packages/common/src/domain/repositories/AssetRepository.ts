@@ -49,6 +49,9 @@ const ENDPOINTS = {
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
   getVerificationDocumentDetails: (): string => 'verification-document-types/',
   getRatings: (id: number): string => `assets/${id}/ratings`,
+  getLeaseListing: (propertyId: number): string => `lease-listing/${propertyId}`,
+  getSaleListing: (propertyId: number): string => `sale-listing/${propertyId}`,
+  getSimilarProperties: (propertyId: number): string => `assets/similar-properties/${propertyId}`,
 };
 
 class AssetRepository {
@@ -158,6 +161,21 @@ class AssetRepository {
   public getRatings = async (id: number): Promise<AssetReview[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getRatings(id));
     return ObjectMapper.deserializeArray(AssetReview, response);
+  };
+
+  public getLeaseListing = async (propertyId: number): Promise<Asset> => {
+    const response = await this.apiClient.get(ENDPOINTS.getLeaseListing(propertyId));
+    return ObjectMapper.deserialize(Asset, response);
+  };
+
+  public getSaleListing = async (propertyId: number): Promise<Asset> => {
+    const response = await this.apiClient.get(ENDPOINTS.getSaleListing(propertyId));
+    return ObjectMapper.deserialize(Asset, response);
+  };
+
+  public getSimilarProperties = async (propertyId: number): Promise<Asset[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getSimilarProperties(propertyId));
+    return ObjectMapper.deserializeArray(Asset, response);
   };
 }
 

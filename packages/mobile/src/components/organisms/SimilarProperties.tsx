@@ -1,28 +1,43 @@
 import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
 
 interface IProps {
-  data: any[];
+  propertyId: number;
   onFavorite: (propertyId: number) => void;
 }
 
 type Props = WithTranslation & IProps;
 
-class SimilarProperties extends React.PureComponent<Props> {
+interface ISimilarPropertiesState {
+  similarProperties: any[];
+}
+
+class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesState> {
+  public state = {
+    similarProperties: [],
+  };
+
+  public componentDidMount(): void {
+    // const { propertyId } = this.props;
+    // await this.getSimilarProperties(propertyId);
+  }
+
   public render(): React.ReactElement {
-    const { data, t } = this.props;
+    const { t } = this.props;
+    const { similarProperties } = this.state;
     return (
       <View style={styles.container}>
         <Text type="small" textType="semiBold" style={styles.similarProperties}>
           {t('similarProperties')}
         </Text>
         <FlatList
-          data={data}
+          data={similarProperties}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }: { item: any }): React.ReactElement => this.renderCarouselItem(item)}
@@ -51,6 +66,11 @@ class SimilarProperties extends React.PureComponent<Props> {
 
   private renderKeyExtractor = (item: any, index: number): string => {
     return `${item.id}-${index}`;
+  };
+
+  public getSimilarProperties = async (propertyId: number): Promise<void> => {
+    const response = await AssetRepository.getSimilarProperties(propertyId);
+    this.setState({ similarProperties: response });
   };
 }
 
