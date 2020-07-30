@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
   },
   propertyNameText: {
     color: theme.colors.shadow,
+    width: (theme.viewport.width - 10) / 1.3,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   flexRow: {
     flexDirection: 'row',

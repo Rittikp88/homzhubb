@@ -29,7 +29,13 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
   const renderText = (): React.ReactElement => {
     const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
     return (
-      <Text type="small" textType="regular" style={[styles.label, labelStyle]}>
+      <Text
+        type="small"
+        textType="regular"
+        style={[styles.label, labelStyle]}
+        minimumFontScale={0.5}
+        adjustsFontSizeToFit
+      >
         {label}
       </Text>
     );

@@ -11,6 +11,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 interface IProps {
   propertyTermId: number;
   onFavorite: (propertyId: number) => void;
+  onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
   transaction_type: number;
 }
 
@@ -30,9 +31,12 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
     await this.getSimilarProperties(propertyTermId);
   };
 
-  public render(): React.ReactElement {
+  public render(): React.ReactNode {
     const { t } = this.props;
     const { similarProperties } = this.state;
+    if (similarProperties.length === 0) {
+      return null;
+    }
     return (
       <View style={styles.container}>
         <Text type="small" textType="semiBold" style={styles.similarProperties}>
@@ -51,8 +55,17 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
   }
 
   public renderCarouselItem = (item: Asset): React.ReactElement => {
-    const { onFavorite, transaction_type } = this.props;
+    const { onFavorite, transaction_type, onSelectedProperty } = this.props;
+    const { leaseTerm, saleTerm, id } = item;
     const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
+    const navigateToSelectedProperty = (): void => {
+      if (leaseTerm) {
+        onSelectedProperty(leaseTerm.id, id);
+      }
+      if (saleTerm) {
+        onSelectedProperty(saleTerm.id, id);
+      }
+    };
     return (
       <PropertyListCard
         property={item}
@@ -62,7 +75,7 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
         isCarousel={false}
         containerStyle={styles.propertyCard}
         textSizeType="small"
-        onSelectedProperty={(): void => console.log('clicked')}
+        onSelectedProperty={navigateToSelectedProperty}
       />
     );
   };

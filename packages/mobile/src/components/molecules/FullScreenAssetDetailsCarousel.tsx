@@ -80,7 +80,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           pinchToZoom
           panToMove
           onSwipeDown={onFullScreenToggle}
-          useHardwareTextureAndroid
+          useHardwareTextureAndroid={false}
           key={link}
         >
           <Image source={{ uri: link }} style={styles.carouselImage} />

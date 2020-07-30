@@ -33,6 +33,10 @@ class DateUtils {
   public getFormattedDate = (day: string, month: string, year: string, format: string): Date => {
     return moment(`${year}-${month}-${day}`, format).toDate();
   };
+
+  public getDisplayDate = (date: string, format: string): string => {
+    return moment(date).format(format);
+  };
 }
 
 const dateUtils = new DateUtils();

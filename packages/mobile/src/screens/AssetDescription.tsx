@@ -179,10 +179,9 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
       name,
-      leaseTerm,
-      saleTerm,
       postedOn,
-      (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? ''
+      (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? '',
+      asset_transaction_type
     );
 
     return (
@@ -213,12 +212,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
             <Icon name={icons.houseMarker} size={30} color={theme.colors.blue} style={styles.iconStyle} />
           </View>
         </View>
-        <PropertyAmenities
-          data={amenitiesData}
-          direction="row"
-          containerStyle={styles.amenitiesContainer}
-          contentContainerStyle={styles.amenitiesContent}
-        />
+        <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         <Divider />
         <View style={styles.timelineContainer}>{this.renderPropertyTimelines(propertyTimelineData)}</View>
       </View>
@@ -444,6 +438,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         onFavorite={this.onFavorite}
         propertyTermId={propertyTermId}
         transaction_type={asset_transaction_type}
+        onSelectedProperty={this.loadSimilarProperty}
       />
     );
   };
@@ -484,7 +479,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     return (
       <WithShadowView outerViewStyle={styles.shadowView}>
         <View key="sticky-header" style={styles.stickySection}>
-          <Text type="regular" textType="semiBold" style={styles.headerTitle}>
+          <Text type="regular" textType="semiBold" style={styles.headerTitle} numberOfLines={1}>
             {assetDetails?.projectName ?? ''}
           </Text>
         </View>
@@ -495,6 +490,15 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public goBack = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  public loadSimilarProperty = (propertyTermId: number, propertyId: number): void => {
+    console.log('Work on this logic- Aditya');
+    // const { navigation } = this.props;
+    // navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+    //   propertyTermId,
+    //   propertyId,
+    // });
   };
 }
 
@@ -601,15 +605,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   stickySection: {
-    paddingBottom: 10,
-    width: 300,
-    justifyContent: 'flex-end',
+    alignSelf: 'center',
+    overflow: 'hidden',
+    width: 200,
   },
   shadowView: {
     marginTop: 15,
   },
   headerTitle: {
-    marginLeft: 40,
     color: theme.colors.darkTint1,
   },
   utilityItem: {
@@ -653,10 +656,8 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint10,
   },
   amenitiesContainer: {
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
     marginBottom: 14,
-  },
-  amenitiesContent: {
-    marginRight: 16,
   },
 });
