@@ -47,7 +47,8 @@
     "min": "Min",
     "max": "Max",
     "readMore": "Read More",
-    "any": "Any"
+    "any": "Any",
+    "whatsappMessage": "Hey {{fullName}}, I would like to know more about this property ad you posted on www.homzhub.com"
   },
   "auth": {
     "verifyNumber": "Verify your number",

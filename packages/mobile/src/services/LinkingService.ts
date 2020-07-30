@@ -2,11 +2,27 @@ import { Linking } from 'react-native';
 
 class LinkingService {
   public openDialer = async (phoneNumber: string): Promise<void> => {
-    await Linking.openURL(`tel:${phoneNumber}`);
+    const url = `tel:${phoneNumber}`;
+    if (!(await this.canOpenURL(url))) {
+      return;
+    }
+    await Linking.openURL(url);
   };
 
   public whatsappMessage = async (phoneNumber: string, message: string): Promise<void> => {
-    await Linking.openURL(`whatsapp://send?phone=${phoneNumber}&text=Hey`);
+    const url = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+    if (!(await this.canOpenURL(url))) {
+      return;
+    }
+    await Linking.openURL(url);
+  };
+
+  private canOpenURL = async (url: string): Promise<boolean> => {
+    try {
+      return await Linking.openURL(url);
+    } catch (e) {
+      return false;
+    }
   };
 }
 

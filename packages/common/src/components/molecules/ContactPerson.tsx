@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -26,6 +27,7 @@ const OPTIONS = [
 
 const ContactPerson = (props: IProps): React.ReactElement => {
   const { fullName, designation, phoneNumber, onMailClicked } = props;
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Avatar fullName={fullName} designation={designation} />
@@ -45,7 +47,7 @@ const ContactPerson = (props: IProps): React.ReactElement => {
             }
 
             if (id === Actions.WHATSAPP) {
-              await LinkingService.whatsappMessage(phoneNumber, 'Hey');
+              await LinkingService.whatsappMessage(phoneNumber, t('whatsappMessage', { fullName }));
               return;
             }
 
