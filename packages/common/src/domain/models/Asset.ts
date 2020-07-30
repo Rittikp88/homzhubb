@@ -87,10 +87,10 @@ export class Asset {
   @JsonProperty('carpet_area', String)
   private _carpetArea = '';
 
-  @JsonProperty('posted_on', String)
+  @JsonProperty('posted_on', String, true)
   private _postedOn = '';
 
-  @JsonProperty('description', String)
+  @JsonProperty('description', String, true)
   private _description = '';
 
   @JsonProperty('floor_number', Number)
@@ -121,16 +121,19 @@ export class Asset {
   private _assetGroup: Data = new Data();
 
   @JsonProperty('lease_term', LeaseTerms, true)
-  private _leaseTerm: LeaseTerms = new LeaseTerms();
+  private _leaseTerm: LeaseTerms | null = null;
 
   @JsonProperty('sale_term', SaleTerms, true)
-  private _saleTerm: SaleTerms = new SaleTerms();
+  private _saleTerm: SaleTerms | null = null;
 
   @JsonProperty('contacts', User, true)
   private _contacts: User = new User();
 
   @JsonProperty('verifications', Verification, true)
   private _verifications: Verification = new Verification();
+
+  @JsonProperty('is_favorite', Boolean, true)
+  private _isFavorite = false;
 
   get projectName(): string {
     return this._projectName;
@@ -208,11 +211,11 @@ export class Asset {
     return this._assetGroup;
   }
 
-  get leaseTerm(): LeaseTerms {
+  get leaseTerm(): LeaseTerms | null {
     return this._leaseTerm;
   }
 
-  get saleTerm(): SaleTerms {
+  get saleTerm(): SaleTerms | null {
     return this._saleTerm;
   }
 
@@ -222,5 +225,9 @@ export class Asset {
 
   get verifications(): Verification {
     return this._verifications;
+  }
+
+  get isFavorite(): boolean {
+    return this._isFavorite;
   }
 }

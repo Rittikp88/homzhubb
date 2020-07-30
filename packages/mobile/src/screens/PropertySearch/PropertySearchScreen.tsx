@@ -44,9 +44,9 @@ import {
   ICurrency,
   IFilter,
   IFilterDetails,
-  IPropertiesObject,
   ITransactionRange,
 } from '@homzhub/common/src/domain/models/Search';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -57,7 +57,7 @@ export enum OnScreenFilters {
 }
 
 interface IStateProps {
-  properties: IPropertiesObject;
+  properties: AssetSearch;
   filterData: IFilterDetails | null;
   filters: IFilter;
   isLoading: boolean;
@@ -117,11 +117,6 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
     }
   };
 
-  public componentWillUnmount = (): void => {
-    const { setInitialState } = this.props;
-    setInitialState();
-  };
-
   public render(): React.ReactNode {
     const { isLoading } = this.props;
     return (
@@ -163,8 +158,8 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
               transaction_type={filters.asset_transaction_type}
               onSelectedProperty={this.navigateToAssetDetails}
             />
-            {this.renderMenuTray()}
             {this.renderNoResults()}
+            {this.renderMenuTray()}
           </>
         ) : (
           <>
@@ -176,8 +171,8 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
               onFavorite={this.onFavoriteProperty}
               onSelectedProperty={this.navigateToAssetDetails}
             />
-            {this.renderMenuTray()}
             {this.renderNoResultsListView()}
+            {this.renderMenuTray()}
           </>
         )}
       </View>

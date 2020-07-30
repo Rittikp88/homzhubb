@@ -7,7 +7,7 @@ import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomShee
 
 interface IProps {
   propertyType?: string;
-  text: string;
+  text?: string;
   isInfoRequired?: boolean;
 }
 
@@ -22,7 +22,7 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.Reac
   const handleClose = (): void => {
     setVisible(false);
   };
-  const customStyle = customizedStyles(!!text);
+  const customStyle = customizedStyles(!!propertyType);
   return (
     <View style={customStyle.container}>
       {propertyType && (
@@ -48,7 +48,7 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.Reac
         isShadowView
         sheetHeight={500}
       >
-        <Text type="small" textType="regular" style={styles.propertyTypeText}>
+        <Text type="small" textType="regular" style={styles.markdownText}>
           {text}
         </Text>
       </BottomSheet>
@@ -66,6 +66,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
   },
   propertyTypeText: {
+    color: theme.colors.primaryColor,
+  },
+  markdownText: {
     color: theme.colors.primaryColor,
     padding: theme.layout.screenPadding,
   },

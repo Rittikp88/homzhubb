@@ -5,10 +5,12 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
-import { IFilter, IProperties, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 interface IProps {
-  properties: IPropertiesObject;
+  properties: AssetSearch;
   onFavorite: (propertyId: number) => void;
   getPropertiesListView: () => void;
   setFilter: (payload: any) => void;
@@ -31,15 +33,15 @@ class PropertySearchList extends React.PureComponent<Props> {
         </Label>
         <FlatList
           data={properties.results}
-          renderItem={({ item }: { item: IProperties }): React.ReactElement => {
+          renderItem={({ item }: { item: Asset }): React.ReactElement => {
             const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
             const navigateToAssetDescription = (): void => {
-              const { lease_term, sale_term, id } = item;
-              if (lease_term) {
-                onSelectedProperty(lease_term.id, id);
+              const { leaseTerm, saleTerm, id } = item;
+              if (leaseTerm) {
+                onSelectedProperty(leaseTerm.id, id);
               }
-              if (sale_term) {
-                onSelectedProperty(sale_term.id, id);
+              if (saleTerm) {
+                onSelectedProperty(saleTerm.id, id);
               }
             };
             return (
@@ -75,7 +77,7 @@ class PropertySearchList extends React.PureComponent<Props> {
     );
   };
 
-  private renderKeyExtractor = (item: IProperties, index: number): string => {
+  private renderKeyExtractor = (item: Asset, index: number): string => {
     return `${item.id}-${index}`;
   };
 

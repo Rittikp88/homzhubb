@@ -30,7 +30,7 @@ class AssetService {
       longitude: search_longitude,
       search_radius: 50,
       limit,
-      offset,
+      // offset,
     };
     if (asset_type.length > 0) {
       Object.assign(finalPayload, { asset_type__in: asset_type.toString() });

@@ -1,6 +1,8 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFilterDetails } from '@homzhub/common/src/domain/models/Search';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 const ENDPOINTS = {
   getFilterData: (): string => 'asset-filters/',
@@ -19,9 +21,9 @@ class SearchRepository {
     return await this.apiClient.get(ENDPOINTS.getFilterData(), requestBody);
   };
 
-  // TODO: (Rishabh) Type to be added
-  public getProperties = async (requestBody: any): Promise<any> => {
-    return await this.apiClient.get(ENDPOINTS.getProperties(), requestBody);
+  public getProperties = async (requestBody: any): Promise<AssetSearch> => {
+    const response = await this.apiClient.get(ENDPOINTS.getProperties(), requestBody);
+    return ObjectMapper.deserialize(AssetSearch, response);
   };
 }
 

@@ -114,15 +114,6 @@ export interface IProperties {
   spaces: ISpaces[];
   lease_term?: IPropertyTerm | null;
   sale_term?: IPropertyTerm | null;
-  images: IImages[];
+  attachments: IImages[];
   is_favorite?: boolean;
-}
-
-export interface IPropertiesObject {
-  count: number;
-  links: {
-    next: string | null;
-    previous: string | null;
-  };
-  results: IProperties[];
 }

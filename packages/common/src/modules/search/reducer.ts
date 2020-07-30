@@ -1,7 +1,8 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 import { SearchActionTypes, SearchPayloadTypes } from '@homzhub/common/src/modules/search/actions';
-import { IFilterDetails, IFilter, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
+import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -96,13 +97,13 @@ export const searchReducer = (
     case SearchActionTypes.GET.PROPERTIES_SUCCESS:
       return {
         ...state,
-        ['properties']: action.payload as IPropertiesObject,
+        ['properties']: action.payload as IAssetSearch,
         ['loaders']: { ...state.loaders, ['search']: false },
       };
     case SearchActionTypes.GET.PROPERTIES_LIST_VIEW_SUCCESS:
       if (!action.payload) return state;
       // eslint-disable-next-line no-case-declarations
-      const { count, links, results } = action.payload as IPropertiesObject;
+      const { count, links, results } = action.payload as IAssetSearch;
       return {
         ...state,
         ['properties']: {

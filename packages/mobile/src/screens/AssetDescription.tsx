@@ -36,14 +36,14 @@ import {
   Loader,
 } from '@homzhub/mobile/src/components';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -143,7 +143,11 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderHeaderSection = (): React.ReactElement | null => {
-    const { assetDetails, t } = this.props;
+    const {
+      assetDetails,
+      t,
+      filters: { asset_transaction_type },
+    } = this.props;
     if (!assetDetails) {
       return null;
     }
@@ -163,7 +167,6 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       assetGroup: { name },
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
-    const term = leaseTerm || saleTerm;
 
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       carpetArea,
@@ -179,14 +182,18 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       leaseTerm,
       saleTerm,
       postedOn,
-      term.availableFromDate
+      (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? ''
     );
 
     return (
       <View style={styles.headerContainer}>
         <ShieldGroup propertyType={propertyType} text={description} isInfoRequired />
         <View style={styles.apartmentContainer}>
-          <PricePerUnit price={term.monthlyRentPrice || 0} currency="INR" unit="mo" />
+          <PricePerUnit
+            price={(Number(leaseTerm?.expectedPrice) || saleTerm?.expectedPrice) ?? 0}
+            currency={(leaseTerm?.currencyCode || saleTerm?.currencyCode) ?? 'INR'}
+            unit={asset_transaction_type === 0 ? 'mo' : ''}
+          />
           <View style={styles.textIcon}>
             <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
             <Text type="small" textType="regular" style={styles.primaryText}>

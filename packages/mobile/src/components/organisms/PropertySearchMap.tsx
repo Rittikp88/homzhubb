@@ -10,14 +10,15 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { CustomMarker } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
-import { IImages, IProperties } from '@homzhub/common/src/domain/models/Search';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IState {
   currentSlide: number;
 }
 
 interface IProps {
-  properties: IProperties[];
+  properties: Asset[];
   transaction_type: number;
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
 }
@@ -80,7 +81,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
             longitudeDelta: MAP_DELTA,
           }}
         >
-          {properties.map((property: IProperties, index) => {
+          {properties.map((property: Asset, index: number) => {
             const marker: LatLng = {
               latitude: Number(property.latitude),
               longitude: Number(property.longitude),
@@ -111,28 +112,30 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     );
   };
 
-  private renderCarouselItem = (item: IProperties): React.ReactElement => {
+  private renderCarouselItem = (item: Asset): React.ReactElement => {
     const { transaction_type, onSelectedProperty } = this.props;
     const {
-      images,
-      project_name,
-      floor_number,
+      attachments,
+      projectName,
+      floorNumber,
       spaces,
-      carpet_area_unit,
-      carpet_area,
-      asset_group: { name },
+      carpetAreaUnit,
+      carpetArea,
+      assetGroup: { name },
+      leaseTerm,
+      saleTerm,
+      id,
     } = item;
     const currency = this.getCurrency(item);
     const price = this.getPrice(item);
-    const amenities = PropertyUtils.getAmenities(carpet_area, carpet_area_unit, spaces, floor_number, name);
-    const image = images.filter((currentImage: IImages) => currentImage.is_cover_image);
+    const amenities = PropertyUtils.getAmenities(carpetArea, carpetAreaUnit, spaces, floorNumber, name);
+    const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
     const navigateToAssetDetails = (): void => {
-      const { lease_term, sale_term, id } = item;
-      if (lease_term) {
-        onSelectedProperty(lease_term.id, id);
+      if (leaseTerm) {
+        onSelectedProperty(leaseTerm.id, id);
       }
-      if (sale_term) {
-        onSelectedProperty(sale_term.id, id);
+      if (saleTerm) {
+        onSelectedProperty(saleTerm.id, id);
       }
     };
     return (
@@ -143,7 +146,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
               ? image[0].link
               : 'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
         }}
-        name={project_name}
+        name={projectName}
         currency={currency}
         price={price}
         priceUnit={transaction_type === 0 ? 'mo' : ''}
@@ -166,7 +169,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
 
   public onSnapToItem = (currentSlide: number): void => {
     const { properties } = this.props;
-    const currentProperty: IProperties = properties[currentSlide];
+    const currentProperty: Asset = properties[currentSlide];
     const marker: LatLng = {
       latitude: Number(currentProperty.latitude),
       longitude: Number(currentProperty.longitude),
@@ -186,24 +189,24 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     this.carouselRef.snapToItem(index);
   };
 
-  public getCurrency = (item: IProperties): string => {
-    const { lease_term, sale_term } = item;
-    if (lease_term) {
-      return lease_term.currency_code;
+  public getCurrency = (item: Asset): string => {
+    const { leaseTerm, saleTerm } = item;
+    if (leaseTerm) {
+      return leaseTerm.currencyCode;
     }
-    if (sale_term) {
-      return sale_term.currency_code;
+    if (saleTerm) {
+      return saleTerm.currencyCode;
     }
     return 'INR';
   };
 
-  public getPrice = (item: IProperties): number => {
-    const { lease_term, sale_term } = item;
-    if (lease_term) {
-      return Number(lease_term.expected_price);
+  public getPrice = (item: Asset): number => {
+    const { leaseTerm, saleTerm } = item;
+    if (leaseTerm) {
+      return Number(leaseTerm.expectedPrice);
     }
-    if (sale_term) {
-      return Number(sale_term.expected_price);
+    if (saleTerm) {
+      return Number(saleTerm.expectedPrice);
     }
     return 0;
   };

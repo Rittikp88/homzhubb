@@ -49,11 +49,12 @@ const ENDPOINTS = {
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
   getVerificationDocumentDetails: (): string => 'verification-document-types/',
   getRatings: (id: number): string => `assets/${id}/ratings`,
-  getLeaseListing: (propertyTermId: number): string => `lease-listing/${propertyTermId}`,
-  getSaleListing: (propertyTermId: number): string => `sale-listing/${propertyTermId}`,
+  getLeaseListing: (propertyTermId: number): string => `lease-listings/${propertyTermId}`,
+  getSaleListing: (propertyTermId: number): string => `sale-listings/${propertyTermId}`,
   getSimilarPropertiesForLease: (propertyTermId: number): string =>
-    `lease-listing/${propertyTermId}/similar-properties`,
-  getSimilarPropertiesForSale: (propertyTermId: number): string => `sale-listing/${propertyTermId}/similar-properties`,
+    `lease-listings/${propertyTermId}/similar-properties/`,
+  getSimilarPropertiesForSale: (propertyTermId: number): string =>
+    `sale-listings/${propertyTermId}/similar-properties/`,
 };
 
 class AssetRepository {

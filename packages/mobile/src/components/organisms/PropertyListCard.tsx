@@ -10,10 +10,11 @@ import { Divider, PricePerUnit, PropertyAddress, TextSizeType } from '@homzhub/c
 import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 import { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
-import { IAmenitiesIcons, IProperties } from '@homzhub/common/src/domain/models/Search';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
 interface IProps {
-  property: IProperties;
+  property: Asset;
   onFavorite: (index: number) => void;
   transaction_type: number;
   containerStyle?: StyleProp<ViewStyle>;
@@ -28,7 +29,7 @@ type Props = libraryProps & IProps;
 class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
-      property: { images, project_name, unit_number, block_number, is_favorite = false },
+      property: { attachments, projectName, unitNumber, blockNumber, isFavorite = false },
       containerStyle,
       isCarousel,
       onSelectedProperty,
@@ -36,8 +37,8 @@ class PropertyListCard extends React.Component<Props, {}> {
     return (
       <View style={[styles.container, containerStyle]}>
         <PropertyListImageCarousel
-          images={images}
-          isFavorite={is_favorite}
+          images={attachments}
+          isFavorite={isFavorite}
           onFavorite={this.onFavorite}
           isCarousel={isCarousel}
         />
@@ -45,8 +46,8 @@ class PropertyListCard extends React.Component<Props, {}> {
         <TouchableOpacity onPress={onSelectedProperty}>
           <PropertyAddress
             isIcon
-            primaryAddress={project_name}
-            subAddress={`${block_number ?? ''} ${unit_number ?? ''}`}
+            primaryAddress={projectName}
+            subAddress={`${blockNumber ?? ''} ${unitNumber ?? ''}`}
           />
           <Divider containerStyles={styles.divider} />
           {this.renderPriceAndAmenities()}
@@ -58,28 +59,28 @@ class PropertyListCard extends React.Component<Props, {}> {
   public renderPropertyTypeAndBadges = (): React.ReactElement => {
     const {
       property: {
-        asset_type: { name },
+        assetType: { name },
       },
     } = this.props;
-    return <ShieldGroup text={name} />;
+    return <ShieldGroup propertyType={name} />;
   };
 
   public renderPriceAndAmenities = (): React.ReactElement => {
     const { transaction_type, property, textSizeType = 'regular' } = this.props;
     const {
-      carpet_area,
-      carpet_area_unit,
+      carpetArea,
+      carpetAreaUnit,
       spaces,
-      floor_number,
-      asset_group: { name },
+      floorNumber,
+      assetGroup: { name },
     } = property;
     const currency: string = this.getCurrency();
     const price: number = this.getPrice();
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-      carpet_area,
-      carpet_area_unit,
+      carpetArea,
+      carpetAreaUnit,
       spaces,
-      floor_number,
+      floorNumber,
       name
     );
     return (
@@ -111,26 +112,26 @@ class PropertyListCard extends React.Component<Props, {}> {
 
   public getCurrency = (): string => {
     const {
-      property: { lease_term, sale_term },
+      property: { leaseTerm, saleTerm },
     } = this.props;
-    if (lease_term) {
-      return lease_term.currency_code;
+    if (leaseTerm) {
+      return leaseTerm.currencyCode;
     }
-    if (sale_term) {
-      return sale_term.currency_code;
+    if (saleTerm) {
+      return saleTerm.currencyCode;
     }
     return 'INR';
   };
 
   public getPrice = (): number => {
     const {
-      property: { lease_term, sale_term },
+      property: { leaseTerm, saleTerm },
     } = this.props;
-    if (lease_term) {
-      return Number(lease_term.expected_price);
+    if (leaseTerm) {
+      return Number(leaseTerm.expectedPrice);
     }
-    if (sale_term) {
-      return Number(sale_term.expected_price);
+    if (saleTerm) {
+      return Number(saleTerm.expectedPrice);
     }
     return 0;
   };

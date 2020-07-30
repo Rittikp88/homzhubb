@@ -46,6 +46,9 @@ export class SaleTerms {
   @JsonProperty('maintenance_schedule', String, true)
   private _maintenanceSchedule = '';
 
+  @JsonProperty('currency_code', String, true)
+  private _currencyCode = 'INR';
+
   get id(): number {
     return this._id;
   }
@@ -68,5 +71,9 @@ export class SaleTerms {
 
   get maintenanceAmount(): number {
     return this._maintenanceAmount;
+  }
+
+  get currencyCode(): string {
+    return this._currencyCode;
   }
 }

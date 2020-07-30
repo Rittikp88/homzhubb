@@ -6,6 +6,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
 interface IProps {
   propertyTermId: number;
@@ -16,7 +17,7 @@ interface IProps {
 type Props = WithTranslation & IProps;
 
 interface ISimilarPropertiesState {
-  similarProperties: any[];
+  similarProperties: Asset[];
 }
 
 class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesState> {
@@ -24,10 +25,10 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
     similarProperties: [],
   };
 
-  public componentDidMount(): void {
-    // const { propertyId } = this.props;
-    // await this.getSimilarProperties(propertyId);
-  }
+  public componentDidMount = async (): Promise<void> => {
+    const { propertyTermId } = this.props;
+    await this.getSimilarProperties(propertyTermId);
+  };
 
   public render(): React.ReactElement {
     const { t } = this.props;
@@ -49,15 +50,15 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
     );
   }
 
-  public renderCarouselItem = (item: any): React.ReactElement => {
-    const { onFavorite } = this.props;
+  public renderCarouselItem = (item: Asset): React.ReactElement => {
+    const { onFavorite, transaction_type } = this.props;
     const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
     return (
       <PropertyListCard
         property={item}
         onFavorite={onUpdateFavoritePropertyId}
         key={item.id}
-        transaction_type={0} // TODO: To be checked
+        transaction_type={transaction_type}
         isCarousel={false}
         containerStyle={styles.propertyCard}
         textSizeType="small"

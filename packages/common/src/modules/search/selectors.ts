@@ -1,4 +1,5 @@
 import { PickerItemProps } from 'react-native';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IFilterDetails,
@@ -7,6 +8,7 @@ import {
   ITransactionRange,
   ITransactionType,
 } from '@homzhub/common/src/domain/models/Search';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 const getFilterDetail = (state: IState): IFilterDetails | null => {
   const {
@@ -22,11 +24,11 @@ const getFilters = (state: IState): IFilter => {
   return filter;
 };
 
-const getProperties = (state: IState): any => {
+const getProperties = (state: IState): AssetSearch => {
   const {
     search: { properties },
   } = state;
-  return properties;
+  return ObjectMapper.deserialize(AssetSearch, properties);
 };
 
 const getLoadingState = (state: IState): boolean => {

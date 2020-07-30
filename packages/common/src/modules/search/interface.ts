@@ -1,9 +1,10 @@
-import { IFilter, IFilterDetails, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { IFilter, IFilterDetails } from '@homzhub/common/src/domain/models/Search';
+import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 export interface ISearchState {
   filter: IFilter;
   filterDetails: IFilterDetails | null;
-  properties: IPropertiesObject;
+  properties: IAssetSearch;
   error: {
     search: string;
   };

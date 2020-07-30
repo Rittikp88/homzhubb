@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IFilterDetails, IFilter, IPropertiesObject } from '@homzhub/common/src/domain/models/Search';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
+import { IAssetSearch, AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 const actionTypePrefix = 'Search/';
 
@@ -59,10 +61,10 @@ const getProperties = (): IFluxStandardAction => {
   };
 };
 
-const getPropertiesSuccess = (data: IPropertiesObject): IFluxStandardAction<IPropertiesObject> => {
+const getPropertiesSuccess = (asset: AssetSearch): IFluxStandardAction<IAssetSearch> => {
   return {
     type: SearchActionTypes.GET.PROPERTIES_SUCCESS,
-    payload: data,
+    payload: ObjectMapper.serialize(asset),
   };
 };
 
@@ -91,10 +93,10 @@ const getPropertiesListView = (): IFluxStandardAction => {
   };
 };
 
-const getPropertiesListViewSuccess = (data: IPropertiesObject): IFluxStandardAction<IPropertiesObject> => {
+const getPropertiesListViewSuccess = (asset: AssetSearch): IFluxStandardAction<IAssetSearch> => {
   return {
     type: SearchActionTypes.GET.PROPERTIES_LIST_VIEW_SUCCESS,
-    payload: data,
+    payload: ObjectMapper.serialize(asset),
   };
 };
 
@@ -105,7 +107,7 @@ const getPropertiesListViewFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-export type SearchPayloadTypes = string | number | IPropertiesObject | IFilter | IFilterDetails | undefined;
+export type SearchPayloadTypes = string | number | IAssetSearch | IFilter | IFilterDetails | undefined;
 
 export const SearchActions = {
   getFilterDetails,

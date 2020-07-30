@@ -5,10 +5,10 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Favorite } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
-import { IImages } from '@homzhub/common/src/domain/models/Search';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IProps {
-  images: IImages[];
+  images: Attachment[];
   isFavorite: boolean;
   onFavorite: () => void;
   isCarousel: boolean;
@@ -29,7 +29,7 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
     const { images, isFavorite, onFavorite, isCarousel } = this.props;
     const { activeSlide } = this.state;
     const clonedImages = cloneDeep(images);
-    remove(clonedImages, (image: IImages) => image.media_type === 'VIDEO');
+    remove(clonedImages, (image: Attachment) => image.mediaType === 'VIDEO');
     const sortedImages = clonedImages.sort((a, b) => {
       // @ts-ignore
       return b.is_cover_image - a.is_cover_image;
@@ -38,10 +38,11 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
       sortedImages.push({
         link:
           'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
-        is_cover_image: true,
-        file_name: 'sample',
-        media_type: 'IMAGE',
-        media_attributes: null,
+        isCoverImage: true,
+        fileName: 'sample',
+        mediaType: 'IMAGE',
+        // @ts-ignore
+        mediaAttributes: {},
       });
     }
     return (
@@ -83,7 +84,7 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
     );
   }
 
-  private renderCarouselItem = (item: IImages): React.ReactElement => {
+  private renderCarouselItem = (item: Attachment): React.ReactElement => {
     return (
       <Image
         source={{

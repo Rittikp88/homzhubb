@@ -28,7 +28,7 @@ class PropertyUtils {
     });
 
     const carpetArea = `${carpet_area} ${carpet_area_unit}`
-      ? `${carpet_area.toLocaleString()} ${carpet_area_unit}`
+      ? `${parseInt(carpet_area, 10).toLocaleString()} ${carpet_area_unit}`
       : '-';
 
     const balcony: IData[] = spaces.filter((space: IData) => {
@@ -54,8 +54,7 @@ class PropertyUtils {
       },
     ];
 
-    // TODO: Have to talk to backend team for this
-    if (carpet_area !== '0.0000') {
+    if (parseInt(carpet_area, 10) !== 0) {
       amenities.push({
         icon: icons.area,
         iconSize: 20,
@@ -69,7 +68,7 @@ class PropertyUtils {
         icon: icons.balcony,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: balcony[0].count ? `${balcony[0].count.toString()} Balcony` : '-',
+        label: balcony[0].count ? `${balcony[0].count.toString()}` : '-',
       });
     }
 
@@ -91,10 +90,10 @@ class PropertyUtils {
   // TODO: (Shikha) - Need to add proper data once api integrate
   public getPropertyTimelineData = (
     name: string,
-    leaseTerm: LeaseTerms,
-    saleTerm: SaleTerms,
+    leaseTerm: LeaseTerms | null,
+    saleTerm: SaleTerms | null,
     postedOn: string,
-    availableFrom: string
+    availableFrom: string | null
   ): any[] => {
     switch (name) {
       case 'Residential':
