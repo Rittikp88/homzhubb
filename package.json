@@ -30,6 +30,7 @@
     "ios:clean": "yarn workspace @homzhub/mobile run ios:clean",
     "format": "yarn workspaces run format",
     "sonar": "yarn workspaces run sonar",
+    "premerge": "yarn format && yarn lint && yarn test -u --passWithNoTests",
     "postinstall": "jetify"
   },
   "dependencies": {

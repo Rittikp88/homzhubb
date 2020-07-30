@@ -45,7 +45,9 @@
     "priceRange": "Price Range",
     "to": "to",
     "min": "Min",
-    "max": "Max"
+    "max": "Max",
+    "readMore": "Read More",
+    "any": "Any"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -144,6 +146,7 @@
     "monthlyRent": "Monthly Rent",
     "securityDeposit": "Security Deposit",
     "showMore": "Show more",
+    "showAll": "Show all {{total}}",
     "showLess": "Show less",
     "annualIncrement": "Increment %",
     "duration": "Duration",
@@ -214,12 +217,27 @@
     "baths": "Baths",
     "rooms": "Rooms",
     "price": "Price",
+    "area": "Area",
     "propertyType": "Property Type",
     "lookingFor": "Looking For",
     "propertiesFound": "Properties Found",
     "noResultsFound": "No Results Found",
     "noResultHelper": "We did not find any properties for your search",
     "searchAgain": "Search Again",
-    "resetFilters": "Reset Filters"
+    "resetFilters": "Reset Filters",
+    "noResultsMapView": "No results found, try zooming or changing your filters",
+    "carpetArea": "Carpet Area"
+  },
+  "assetDescription": {
+    "reviewsRatings": "Reviews and ratings",
+    "readReviews": "Read reviews",
+    "description": "Description",
+    "amenities": "Amenities",
+    "exploreNeighbourhood": "Explore Neighbourhood",
+    "exploreMap": "Explore Map",
+    "highlights": "Highlights",
+    "factsFeatures": "Facts and Features",
+    "similarProperties": "Similar Properties",
+    "bookTour": "Book a Tour"
   }
 }

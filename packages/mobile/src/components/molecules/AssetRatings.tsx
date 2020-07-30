@@ -14,7 +14,7 @@ const AssetRatings = (props: IProps): React.ReactElement => {
   const { reviews } = props;
   const { t } = useTranslation();
 
-  const renderRating = ({ item }: { item: AssetReview }): React.ReactElement => {
+  const renderRating = ({ item, index }: { item: AssetReview; index: number }): React.ReactElement => {
     let backgroundColor = theme.colors.ratingHigh;
     let color = theme.colors.completed;
     let icon = icons.thumbsUp;
@@ -26,7 +26,7 @@ const AssetRatings = (props: IProps): React.ReactElement => {
     }
 
     return (
-      <View style={styles.itemContainer}>
+      <View style={styles.itemContainer} key={`${item.id}-${index}`}>
         <View style={[styles.iconContainer, { backgroundColor }]}>
           <Icon name={icon} size={20} color={color} />
           <Label type="large" textType="semiBold" style={[styles.experienceText, { color }]}>
@@ -40,9 +40,16 @@ const AssetRatings = (props: IProps): React.ReactElement => {
     );
   };
 
+  const keyExtractor = (item: AssetReview, index: number): string => `${item.id}-${index}`;
+
   return (
     <>
-      <FlatList<AssetReview> data={reviews} renderItem={renderRating} contentContainerStyle={styles.contentContainer} />
+      <FlatList<AssetReview>
+        keyExtractor={keyExtractor}
+        data={reviews}
+        renderItem={renderRating}
+        contentContainerStyle={styles.contentContainer}
+      />
       <Label type="large" textType="semiBold" style={styles.readMore}>
         {t('readMore')}
       </Label>
@@ -60,9 +67,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   iconContainer: {
-    borderRadius: 4,
     flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 4,
     padding: 8,
+    width: 80,
   },
   experienceText: {
     marginStart: 12,

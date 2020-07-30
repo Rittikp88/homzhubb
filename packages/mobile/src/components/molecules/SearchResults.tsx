@@ -20,6 +20,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
         data={results}
         renderItem={this.renderSearchResult}
         ListHeaderComponent={this.renderListHeader}
+        keyExtractor={this.keyExtractor}
         contentContainerStyle={styles.contentContainer}
       />
     );
@@ -42,13 +43,15 @@ class SearchResults extends React.PureComponent<IProps, {}> {
     };
 
     return (
-      <TouchableOpacity style={styles.listItemContainer} onPress={onPress}>
+      <TouchableOpacity key={item.id} style={styles.listItemContainer} onPress={onPress}>
         <Label type="large" style={styles.listItemTitle} numberOfLines={2}>
           {item.description}
         </Label>
       </TouchableOpacity>
     );
   };
+
+  private keyExtractor = (item: GooglePlaceData): string => item.id;
 }
 
 const styles = StyleSheet.create({

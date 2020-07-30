@@ -470,7 +470,7 @@ Asset {
   ],
   "_totalFloors": 4,
   "_unitNumber": "41",
-  "_verifications": ShieldVerification {
+  "_verifications": Verification {
     "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
     "_verificationStatus": 3,
   },

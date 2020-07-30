@@ -98,6 +98,9 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { t, reviews, assetDetails, isLoading } = this.props;
     const { isFullScreen } = this.state;
     if (!assetDetails) return null;
+    const {
+      contacts: { fullName, phoneNumber, countryCode },
+    } = assetDetails;
 
     return (
       <>
@@ -126,7 +129,14 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
-        {!isFullScreen && <ContactPerson fullName={assetDetails?.contacts.fullName ?? ''} designation="Owner" />}
+        {!isFullScreen && (
+          <ContactPerson
+            fullName={fullName}
+            phoneNumber={`${countryCode}${phoneNumber}`}
+            designation="Owner"
+            onMailClicked={this.onContactMailClicked}
+          />
+        )}
         {isLoading && <Loader />}
       </>
     );
@@ -232,6 +242,13 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { t, assetDetails } = this.props;
     const { descriptionShowMore } = this.state;
 
+    let hideMessage = true;
+    const onLayout = (event: any): void => {
+      if (event.nativeEvent.lines.length > 3) {
+        hideMessage = false;
+      }
+    };
+
     const onPress = (): void => {
       this.setState({ descriptionShowMore: !descriptionShowMore });
     };
@@ -242,13 +259,17 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           type="large"
           textType="regular"
           style={styles.description}
+          // @ts-ignore
+          onTextLayout={onLayout}
           numberOfLines={descriptionShowMore ? undefined : 3}
         >
           {assetDetails?.description}
         </Label>
-        <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
-          {descriptionShowMore ? t('property:showLess') : t('property:showMore')}
-        </Label>
+        {!hideMessage && (
+          <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
+            {descriptionShowMore ? t('property:showLess') : t('property:showMore')}
+          </Label>
+        )}
       </>
     );
   };
@@ -260,6 +281,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         data={assetDetails?.features}
+        keyExtractor={(item: AssetFeature): string => item.name}
         renderItem={({ item }: { item: AssetFeature }): React.ReactElement => (
           <View style={styles.featureItem}>
             <Label type="large" textType="regular" style={styles.featureTitle}>
@@ -297,6 +319,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           numColumns={3}
           contentContainerStyle={styles.listContainer}
           data={data}
+          keyExtractor={(item: Amenity): string => `${item.id}`}
           renderItem={({ item }: { item: Amenity }): React.ReactElement => (
             <View style={styles.amenityItem}>
               <SVGUri uri={item.attachment.link} height={30} width={30} />
@@ -323,6 +346,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         data={assetDetails?.highlights}
         numColumns={2}
         contentContainerStyle={styles.listContainer}
+        keyExtractor={(item: AssetHighlight): string => `${item.name}`}
         renderItem={({ item }: { item: AssetHighlight }): React.ReactElement => (
           <View style={styles.highlightItemContainer}>
             <Icon name={icons.check} color={theme.colors.completed} size={22} />
@@ -421,6 +445,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { isFullScreen } = this.state;
     this.setState({ isFullScreen: !isFullScreen });
   };
+
+  private onContactMailClicked = (): void => {};
 
   public onFavorite = (propertyId: number): void => {
     // TODO: add the logic of favorite property

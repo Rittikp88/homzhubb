@@ -40,4 +40,16 @@ export class User {
   get fullName(): string {
     return this._fullName ?? '';
   }
+
+  get email(): string {
+    return this._email;
+  }
+
+  get countryCode(): string {
+    return this._countryCode;
+  }
+
+  get phoneNumber(): string {
+    return this._phoneNumber;
+  }
 }
