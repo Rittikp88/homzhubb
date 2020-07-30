@@ -1,3 +1,5 @@
+import { IMediaAttributes } from '@homzhub/common/src/domain/models/Attachment';
+
 export interface ICurrency {
   currency_code: string;
   currency_symbol: string;
@@ -59,6 +61,8 @@ export interface IImages {
   file_name: string;
   is_cover_image: boolean;
   link: string;
+  media_type: string;
+  media_attributes: IMediaAttributes;
 }
 
 export interface IAmenitiesIcons {

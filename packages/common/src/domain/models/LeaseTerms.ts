@@ -51,7 +51,8 @@ export interface ILeaseTermDetails extends ICreateLeaseTermDetails {
 
 @JsonObject('LeaseTerms')
 export class LeaseTerms {
-  @JsonProperty('id', Number)
+  // TODO: Ask the backend team to send an empty object for Lease Term in case of Sale terms data
+  @JsonProperty('id', Number, true)
   private _id = '';
 
   @JsonProperty('available_from_date', String, true)
@@ -63,8 +64,8 @@ export class LeaseTerms {
   @JsonProperty('utility_paid_by', String, true)
   private _utilityPaidBy = '';
 
-  @JsonProperty('expected_price', Number, true)
-  private _expectedPrice = 0;
+  @JsonProperty('monthly_rent_price', Number, true)
+  private _monthlyRentPrice = 0;
 
   @JsonProperty('maintenance_schedule', String, true)
   private _maintenanceSchedule = '';
@@ -85,8 +86,8 @@ export class LeaseTerms {
     return this._utilityPaidBy;
   }
 
-  get expectedPrice(): number {
-    return this._expectedPrice;
+  get monthlyRentPrice(): number {
+    return this._monthlyRentPrice;
   }
 
   get maintenanceSchedule(): string {

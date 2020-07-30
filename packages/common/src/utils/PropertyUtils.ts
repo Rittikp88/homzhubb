@@ -1,9 +1,10 @@
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
 import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 
 class PropertyUtils {
   public getAmenities = (
@@ -53,7 +54,8 @@ class PropertyUtils {
       },
     ];
 
-    if (carpet_area) {
+    // TODO: Have to talk to backend team for this
+    if (carpet_area !== '0.0000') {
       amenities.push({
         icon: icons.area,
         iconSize: 20,
@@ -67,7 +69,7 @@ class PropertyUtils {
         icon: icons.balcony,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: balcony[0].count ? balcony[0].count.toString() : '-',
+        label: balcony[0].count ? `${balcony[0].count.toString()} Balcony` : '-',
       });
     }
 
@@ -90,7 +92,7 @@ class PropertyUtils {
   public getPropertyTimelineData = (
     name: string,
     leaseTerm: LeaseTerms,
-    saleTerm: any,
+    saleTerm: SaleTerms,
     postedOn: string,
     availableFrom: string
   ): any[] => {

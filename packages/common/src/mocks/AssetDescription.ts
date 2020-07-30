@@ -73,7 +73,7 @@ export const mockAsset = {
   },
   description: 'It is a long established fact that the readable content of a page when looking at its layout.',
   verifications: {
-    verification_count: 3,
+    verification_status: 3,
     description: 'It was popularised in the 1960s with the release of Letraset sheets.',
   },
   posted_on: '2020-06-03',

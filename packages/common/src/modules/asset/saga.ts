@@ -23,10 +23,12 @@ function* getAssetDetails(action: IFluxStandardAction<number>) {
       // RENT FLOW
       const response = yield call(AssetRepository.getLeaseListing, action.payload as number);
       yield put(AssetActions.getAssetSuccess(response));
+      yield put(AssetActions.getAssetReviews(response.id));
     } else {
       // SALE FLOW
       const response = yield call(AssetRepository.getSaleListing, action.payload as number);
       yield put(AssetActions.getAssetSuccess(response));
+      yield put(AssetActions.getAssetReviews(response.id));
     }
   } catch (err) {
     yield put(AssetActions.getAssetFailure(err.message));

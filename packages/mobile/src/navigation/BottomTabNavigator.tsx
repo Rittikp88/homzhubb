@@ -9,7 +9,7 @@ import PropertySearchLanding from '@homzhub/mobile/src/screens/PropertySearch/Pr
 import PropertyFilters from '@homzhub/mobile/src/screens/PropertySearch/PropertyFilters';
 import { ScreensKeys, IAssetDescriptionProps } from '@homzhub/mobile/src/navigation/interfaces';
 
-const SearchStack = createStackNavigator();
+const SearchStack = createStackNavigator<SearchStackParamList>();
 
 export type SearchStackParamList = {
   [ScreensKeys.PropertySearchLanding]: undefined;

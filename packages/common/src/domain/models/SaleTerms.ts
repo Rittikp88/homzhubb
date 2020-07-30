@@ -27,8 +27,9 @@ export interface ISaleDetails extends ICreateSaleTermDetails {
 
 @JsonObject('SaleTerms')
 export class SaleTerms {
-  @JsonProperty('id', Number)
-  private _id = '';
+  // TODO: Ask the backend team to send an empty object for Sale Term in case of Lease terms data
+  @JsonProperty('id', Number, true)
+  private _id = 0;
 
   @JsonProperty('available_from_date', String, true)
   private _availableFromDate = '';
@@ -45,7 +46,7 @@ export class SaleTerms {
   @JsonProperty('maintenance_schedule', String, true)
   private _maintenanceSchedule = '';
 
-  get id(): string {
+  get id(): number {
     return this._id;
   }
 

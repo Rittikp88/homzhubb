@@ -8,8 +8,9 @@ import { Text } from '@homzhub/common/src/components';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
 
 interface IProps {
-  propertyId: number;
+  propertyTermId: number;
   onFavorite: (propertyId: number) => void;
+  transaction_type: number;
 }
 
 type Props = WithTranslation & IProps;
@@ -60,6 +61,7 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
         isCarousel={false}
         containerStyle={styles.propertyCard}
         textSizeType="small"
+        onSelectedProperty={(): void => console.log('clicked')}
       />
     );
   };
@@ -68,8 +70,9 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
     return `${item.id}-${index}`;
   };
 
-  public getSimilarProperties = async (propertyId: number): Promise<void> => {
-    const response = await AssetRepository.getSimilarProperties(propertyId);
+  public getSimilarProperties = async (propertyTermId: number): Promise<void> => {
+    const { transaction_type } = this.props;
+    const response = await AssetRepository.getSimilarProperties(propertyTermId, transaction_type);
     this.setState({ similarProperties: response });
   };
 }

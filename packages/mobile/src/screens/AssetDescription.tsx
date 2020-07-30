@@ -10,10 +10,10 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images'; // TODO: To be removed once api integrated
 import {
   CustomMarker,
   Divider,
@@ -33,6 +33,7 @@ import {
   PropertyAmenities,
   StatusBarComponent,
   ShieldGroup,
+  Loader,
 } from '@homzhub/mobile/src/components';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -40,13 +41,15 @@ import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
-import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
 
 interface IStateProps {
   reviews: AssetReview[];
   assetDetails: Asset | null;
+  isLoading: boolean;
+  filters: IFilter;
 }
 
 interface IDispatchProps {
@@ -71,50 +74,6 @@ const STICKY_HEADER_HEIGHT = 60;
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
-// TODO: Get from redux once set up
-const IMAGES = [
-  {
-    id: 1,
-    name: 'image1.png',
-    link: 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png',
-    attachment_type: 'IMAGE',
-    mime_type: 'Image/Jpeg',
-    is_cover_image: true,
-  },
-  {
-    id: 2,
-    name: 'image2.png',
-    link: 'https://www.youtube.com/watch?v=L7OLY4HCctQ',
-    thumbnail_url: images.video,
-    attachment_type: 'VIDEO',
-    mime_type: 'Image/Jpeg',
-    is_cover_image: true,
-  },
-  {
-    id: 3,
-    name: 'image3.png',
-    link: 'https://homepages.cae.wisc.edu/~ece533/images/baboon.png',
-    attachment_type: 'IMAGE',
-    mime_type: 'Image/Jpeg',
-    is_cover_image: true,
-  },
-  {
-    id: 4,
-    name: 'image4.png',
-    link: 'https://homepages.cae.wisc.edu/~ece533/images/boat.png',
-    attachment_type: 'IMAGE',
-    mime_type: 'Image/Jpeg',
-    is_cover_image: true,
-  },
-  {
-    id: 5,
-    name: 'image5.png',
-    link: 'https://homepages.cae.wisc.edu/~ece533/images/monarch.png',
-    attachment_type: 'IMAGE',
-    mime_type: 'Image/Jpeg',
-    is_cover_image: true,
-  },
-];
 
 class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = {
@@ -127,21 +86,18 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   public componentDidMount = (): void => {
     const {
-      // getAssetReviews,
       getAsset,
       route: {
-        params: {
-          propertyTermId,
-          // propertyId
-        },
+        params: { propertyTermId },
       },
     } = this.props;
-    // getAssetReviews(propertyId);
     getAsset(propertyTermId);
   };
 
   public render = (): React.ReactNode => {
-    const { t, reviews, assetDetails } = this.props;
+    const { t, reviews, assetDetails, isLoading } = this.props;
+    const { isFullScreen } = this.state;
+    if (!assetDetails) return null;
 
     return (
       <>
@@ -170,7 +126,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
-        <ContactPerson fullName={assetDetails?.contacts.fullName ?? ''} designation="Owner" />
+        {!isFullScreen && <ContactPerson fullName={assetDetails?.contacts.fullName ?? ''} designation="Owner" />}
+        {isLoading && <Loader />}
       </>
     );
   };
@@ -190,6 +147,9 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       saleTerm,
       postedOn,
       projectName,
+      unitNumber,
+      blockNumber,
+      verifications: { description },
       assetGroup: { name },
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
@@ -204,13 +164,19 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       true
     );
 
-    const propertyTimelineData = PropertyUtils.getPropertyTimelineData(name, leaseTerm, saleTerm, postedOn, '');
+    const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
+      name,
+      leaseTerm,
+      saleTerm,
+      postedOn,
+      term.availableFromDate
+    );
 
     return (
       <View style={styles.headerContainer}>
-        <ShieldGroup text={propertyType} isInfoRequired />
+        <ShieldGroup propertyType={propertyType} text={description} isInfoRequired />
         <View style={styles.apartmentContainer}>
-          <PricePerUnit price={term.expectedPrice || 0} currency="INR" unit="month" />
+          <PricePerUnit price={term.monthlyRentPrice || 0} currency="INR" unit="mo" />
           <View style={styles.textIcon}>
             <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
             <Text type="small" textType="regular" style={styles.primaryText}>
@@ -221,8 +187,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         <View style={styles.apartmentContainer}>
           <PropertyAddress
             isIcon={false}
-            primaryAddress="Eaton Garth Manor" // TODO: (Shikha) - remove once api integrate
-            subAddress={projectName}
+            primaryAddress={projectName}
+            subAddress={`${unitNumber ?? ''} ${blockNumber ?? ''}`}
             subAddressStyle={styles.subAddress}
           />
           <View style={styles.textIcon}>
@@ -409,11 +375,12 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderCarousel = (): React.ReactElement => {
+    const { assetDetails } = this.props;
     const { activeSlide } = this.state;
     return (
       <AssetDetailsImageCarousel
         enterFullScreen={this.onFullScreenToggle}
-        images={IMAGES}
+        data={assetDetails?.attachments ?? []}
         activeSlide={activeSlide}
         updateSlide={this.updateSlide}
       />
@@ -422,20 +389,32 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private renderFullscreenCarousel = (): React.ReactNode => {
     const { isFullScreen, activeSlide } = this.state;
+    const { assetDetails } = this.props;
     if (!isFullScreen) return null;
     return (
       <FullScreenAssetDetailsCarousel
         onFullScreenToggle={this.onFullScreenToggle}
         activeSlide={activeSlide}
-        data={IMAGES}
+        data={assetDetails?.attachments ?? []}
         updateSlide={this.updateSlide}
       />
     );
   };
 
   public renderSimilarProperties = (): React.ReactElement => {
-    const propertyId = 1; // TODO: Get the propertyId from route params
-    return <SimilarProperties onFavorite={this.onFavorite} propertyId={propertyId} />;
+    const {
+      route: {
+        params: { propertyTermId },
+      },
+      filters: { asset_transaction_type },
+    } = this.props;
+    return (
+      <SimilarProperties
+        onFavorite={this.onFavorite}
+        propertyTermId={propertyTermId}
+        transaction_type={asset_transaction_type}
+      />
+    );
   };
 
   private onFullScreenToggle = (): void => {
@@ -461,18 +440,19 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         </View>
         <View style={styles.headerRightIcon}>
           <Icon name={icons.heartOutline} size={22} color={color} />
-          <Icon name={icons.compare} size={22} color={color} />
+          <Icon name={icons.share} size={22} color={color} />
         </View>
       </View>
     );
   };
 
   private stickyHeader = (): React.ReactElement => {
+    const { assetDetails } = this.props;
     return (
       <WithShadowView outerViewStyle={styles.shadowView}>
         <View key="sticky-header" style={styles.stickySection}>
           <Text type="regular" textType="semiBold" style={styles.headerTitle}>
-            Eaton Garth Manor
+            {assetDetails?.projectName ?? ''}
           </Text>
         </View>
       </WithShadowView>
@@ -489,6 +469,8 @@ const mapStateToProps = (state: IState): IStateProps => {
   return {
     reviews: AssetSelectors.getAssetReviews(state),
     assetDetails: AssetSelectors.getAsset(state),
+    isLoading: AssetSelectors.getLoadingState(state),
+    filters: SearchSelector.getFilters(state),
   };
 };
 

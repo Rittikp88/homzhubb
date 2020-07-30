@@ -19,11 +19,20 @@ const getAsset = (state: IState): Asset | null => {
   } = state;
 
   if (!asset) return null;
-
   return ObjectMapper.deserialize(Asset, asset);
+};
+
+const getLoadingState = (state: IState): boolean => {
+  const {
+    asset: {
+      loaders: { asset },
+    },
+  } = state;
+  return asset;
 };
 
 export const AssetSelectors = {
   getAssetReviews,
   getAsset,
+  getLoadingState,
 };

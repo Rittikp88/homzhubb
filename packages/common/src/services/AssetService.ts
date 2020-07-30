@@ -18,7 +18,6 @@ class AssetService {
       offset,
       min_area,
       max_area,
-      area_unit,
     } = filter;
     const bedroomCount = cloneDeep(room_count);
     remove(bedroomCount, (count: number) => count === -1);
@@ -51,7 +50,7 @@ class AssetService {
       Object.assign(finalPayload, {
         carpet_area__lt: Number(max_area),
         carpet_area__gt: Number(min_area),
-        carpet_area_unit: area_unit,
+        // carpet_area_unit: area_unit,
       });
     }
     return finalPayload;

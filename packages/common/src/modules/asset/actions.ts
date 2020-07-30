@@ -28,7 +28,7 @@ const getAssetReviewsSuccess = (payload: AssetReview[]): IFluxStandardAction<IAs
 });
 
 const getAssetReviewsFailure = (error: string): IFluxStandardAction => ({
-  type: AssetActionTypes.GET.REVIEWS,
+  type: AssetActionTypes.GET.REVIEWS_FAILURE,
   error,
 });
 

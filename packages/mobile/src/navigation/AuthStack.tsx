@@ -12,13 +12,13 @@ import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
+import { SearchStackScreen } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
 import {
   IOtpNavProps,
   ScreensKeys,
   IVerificationProps,
   IResetPasswordProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
-import PropertyTabsScreen from '../screens/PropertySearch/PropertyTabsScreen';
 
 const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 export type AuthStackParamList = {
@@ -31,7 +31,7 @@ export type AuthStackParamList = {
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.ForgotPassword]: undefined;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
-  [ScreensKeys.PropertyTabsScreen]: undefined;
+  [ScreensKeys.SearchStack]: undefined;
   [ScreensKeys.SuccessResetPassword]: undefined;
 };
 
@@ -62,7 +62,7 @@ export function AuthStack(): React.ReactElement {
       <AuthStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
-      <AuthStackNavigator.Screen name={ScreensKeys.PropertyTabsScreen} component={PropertyTabsScreen} />
+      <AuthStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStackScreen} />
     </AuthStackNavigator.Navigator>
   );
 }

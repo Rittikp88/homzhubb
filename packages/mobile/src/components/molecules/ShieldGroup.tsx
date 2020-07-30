@@ -6,13 +6,14 @@ import { Text } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
 interface IProps {
-  text?: string;
+  propertyType?: string;
+  text: string;
   isInfoRequired?: boolean;
 }
 
 // TODO: (Shikha) - Need to add proper bottom - sheet data once api integrate
 
-const ShieldGroup = ({ text, isInfoRequired }: IProps): React.ReactElement => {
+const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.ReactElement => {
   const [isVisible, setVisible] = useState(false);
 
   const handleInfo = (): void => {
@@ -24,9 +25,9 @@ const ShieldGroup = ({ text, isInfoRequired }: IProps): React.ReactElement => {
   const customStyle = customizedStyles(!!text);
   return (
     <View style={customStyle.container}>
-      {text && (
+      {propertyType && (
         <Text type="small" textType="regular" style={styles.propertyTypeText}>
-          {text}
+          {propertyType}
         </Text>
       )}
       <View style={styles.badgesContainer}>
@@ -48,7 +49,7 @@ const ShieldGroup = ({ text, isInfoRequired }: IProps): React.ReactElement => {
         sheetHeight={500}
       >
         <Text type="small" textType="regular" style={styles.propertyTypeText}>
-          Verified
+          {text}
         </Text>
       </BottomSheet>
     </View>
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
   },
   propertyTypeText: {
     color: theme.colors.primaryColor,
+    padding: theme.layout.screenPadding,
   },
 });
 

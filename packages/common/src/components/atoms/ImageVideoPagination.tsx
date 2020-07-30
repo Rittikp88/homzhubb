@@ -4,30 +4,21 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
-enum SlideTypes {
-  IMAGE = 'IMAGE',
-  VIDEO = 'VIDEO',
-}
-
 interface IProps {
   currentSlide: number;
   totalSlides: number;
-  type: SlideTypes;
+  type: string;
 }
 
 const ImageVideoPagination = (props: IProps): React.ReactElement => {
   const { currentSlide, totalSlides, type } = props;
   return (
     <View style={styles.container}>
-      <Icon
-        name={icons.camera}
-        size={20}
-        color={type === SlideTypes.IMAGE ? theme.colors.white : theme.colors.darkTint5}
-      />
+      <Icon name={icons.camera} size={20} color={type === 'IMAGE' ? theme.colors.white : theme.colors.darkTint5} />
       <Icon
         name={icons.video}
         size={20}
-        color={type === SlideTypes.VIDEO ? theme.colors.white : theme.colors.darkTint5}
+        color={type === 'VIDEO' ? theme.colors.white : theme.colors.darkTint5}
         style={styles.video}
       />
       <Label type="large" textType="regular" style={styles.label}>

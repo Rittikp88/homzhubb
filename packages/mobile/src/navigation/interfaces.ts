@@ -34,7 +34,7 @@ export enum ScreensKeys {
   MarkdownScreen = 'Markdown',
 
   // Search
-  PropertyTabsScreen = 'PropertyTabsScreen',
+  SearchStack = 'SearchStack',
   PropertySearchLanding = 'PropertySearchLanding',
   PropertySearchScreen = 'PropertySearchScreen',
   PropertyAssetDescription = 'PropertyAssetDescription',

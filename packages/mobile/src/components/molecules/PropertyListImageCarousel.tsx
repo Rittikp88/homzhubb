@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
+import { cloneDeep, remove } from 'lodash';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Favorite } from '@homzhub/common/src/components';
@@ -27,7 +28,9 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
   public render(): React.ReactElement {
     const { images, isFavorite, onFavorite, isCarousel } = this.props;
     const { activeSlide } = this.state;
-    const sortedImages = images.sort((a, b) => {
+    const clonedImages = cloneDeep(images);
+    remove(clonedImages, (image: IImages) => image.media_type === 'VIDEO');
+    const sortedImages = clonedImages.sort((a, b) => {
       // @ts-ignore
       return b.is_cover_image - a.is_cover_image;
     });
@@ -37,6 +40,8 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
           'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
         is_cover_image: true,
         file_name: 'sample',
+        media_type: 'IMAGE',
+        media_attributes: null,
       });
     }
     return (
@@ -68,7 +73,7 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
               <Icon
                 name={icons.rightArrow}
                 size={25}
-                color={activeSlide === images.length - 1 ? theme.colors.disabledPreference : theme.colors.white}
+                color={activeSlide === sortedImages.length - 1 ? theme.colors.disabledPreference : theme.colors.white}
                 onPress={this.nextSlide}
               />
             </View>

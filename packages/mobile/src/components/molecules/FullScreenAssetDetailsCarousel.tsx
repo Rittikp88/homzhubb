@@ -4,10 +4,11 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Image, ImageVideoPagination, YoutubeVideo } from '@homzhub/common/src/components';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IProps {
   activeSlide: number;
-  data: any[];
+  data: Attachment[];
   onFullScreenToggle: () => void;
   updateSlide: (index: number) => void;
 }
@@ -31,9 +32,9 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           currentSlide={activeSlide}
           totalSlides={data.length}
           // @ts-ignore
-          type={data[activeSlide].attachment_type}
+          type={data[activeSlide].mediaType}
         />
-        <Icon name={icons.star} size={40} color={theme.colors.white} onPress={onFullScreenToggle} />
+        <Icon name={icons.share} size={23} color={theme.colors.white} onPress={onFullScreenToggle} />
       </View>
     );
   };
@@ -61,12 +62,14 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
     );
   };
 
-  public renderItem = (item: any): React.ReactElement => {
+  public renderItem = ({ item }: { item: Attachment }): React.ReactElement => {
     const { onFullScreenToggle } = this.props;
     const {
-      item: { link, attachment_type },
+      link,
+      mediaType,
+      mediaAttributes: { videoId },
     } = item;
-    if (attachment_type === 'IMAGE') {
+    if (mediaType === 'IMAGE') {
       return (
         <ImageZoom
           cropWidth={theme.viewport.width}
@@ -85,7 +88,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
       );
     }
     // For now it is recommended to re-mount a new <YouTube /> instance each time. That's why used Math.random()
-    return <YoutubeVideo url={link} play key={Math.random()} />;
+    return <YoutubeVideo videoId={videoId} play key={Math.random()} />;
   };
 
   private renderKeyExtractor = (item: any, index: number): string => {

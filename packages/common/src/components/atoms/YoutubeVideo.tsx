@@ -10,18 +10,18 @@ interface IProps {
   isFullScreen?: boolean;
   play?: boolean;
   loop?: boolean;
-  url: string;
+  videoId: string;
 }
 
 class YoutubeVideo extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { play = true, isFullScreen = false, loop = false, url } = this.props;
+    const { play = true, isFullScreen = false, loop = false, videoId } = this.props;
     return (
       <View style={styles.container}>
         <YouTube
           // @ts-ignore
           apiKey={YOUTUBE_API_KEY}
-          videoId={this.getVideoId(url)}
+          videoId={videoId}
           play={play}
           fullscreen={isFullScreen}
           loop={loop}
@@ -36,15 +36,6 @@ class YoutubeVideo extends React.PureComponent<IProps> {
 
   public onError = (e: any): void => {
     // TODO: To put the alert in case of error
-  };
-
-  public getVideoId = (url: string): string => {
-    let videoId = url.split('v=')[1];
-    const ampersandPosition = videoId.indexOf('&');
-    if (ampersandPosition !== -1) {
-      videoId = videoId.substring(0, ampersandPosition);
-    }
-    return videoId;
   };
 }
 

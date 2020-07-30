@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImageVideoPagination } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IProps {
-  images: any;
+  data: Attachment[];
   enterFullScreen: () => void;
   updateSlide: (index: number) => void;
   activeSlide: number;
@@ -13,11 +15,12 @@ interface IProps {
 
 export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { activeSlide, images } = this.props;
+    const { activeSlide, data } = this.props;
+    const currentSlide: Attachment = data[activeSlide];
     return (
       <View style={styles.carouselContainer}>
         <SnapCarousel
-          carouselData={images}
+          carouselData={data}
           carouselItem={this.renderCarouselItem}
           activeIndex={activeSlide}
           sliderWidth={theme.viewport.width}
@@ -25,21 +28,18 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
           onSnapToItem={this.onSnapToItem}
         />
         <View style={styles.overlay}>
-          <ImageVideoPagination
-            currentSlide={activeSlide}
-            totalSlides={images.length}
-            type={images[activeSlide].attachment_type}
-          />
+          <ImageVideoPagination currentSlide={activeSlide} totalSlides={data.length} type={currentSlide.mediaType} />
         </View>
       </View>
     );
   }
 
-  private renderCarouselItem = (item: any): React.ReactElement => {
+  private renderCarouselItem = (item: Attachment): React.ReactElement => {
     const { enterFullScreen } = this.props;
+    const { mediaType } = item;
     return (
       <TouchableOpacity onPress={enterFullScreen}>
-        {item.attachment_type === 'IMAGE' && (
+        {mediaType === 'IMAGE' && (
           <Image
             source={{
               uri: item.link,
@@ -47,8 +47,17 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
             style={styles.carouselImage}
           />
         )}
-        {/* TODO: Remove once the api is integrated */}
-        {item.attachment_type === 'VIDEO' && <Image source={item.thumbnail_url} style={styles.carouselImage} />}
+        {mediaType === 'VIDEO' && (
+          <>
+            <Image
+              source={{ uri: item.mediaAttributes.thumbnailHD ?? item.mediaAttributes.thumbnail }}
+              style={styles.carouselImage}
+            />
+            <View style={styles.playButton}>
+              <Icon name={icons.play} size={60} color={theme.colors.white} />
+            </View>
+          </>
+        )}
       </TouchableOpacity>
     );
   };
@@ -74,5 +83,15 @@ const styles = StyleSheet.create({
   carouselImage: {
     height: '100%',
     width: '100%',
+  },
+  playButton: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.carouselCardOpacity,
   },
 });

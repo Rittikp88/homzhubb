@@ -3,7 +3,6 @@ import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 import { AssetActionTypes, AssetPayloadTypes } from '@homzhub/common/src/modules/asset/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
-import { mockReviews, mockAsset } from '@homzhub/common/src/mocks/AssetDescription';
 
 const initialAssetState: IAssetState = {
   error: {
@@ -14,8 +13,8 @@ const initialAssetState: IAssetState = {
     reviews: false,
     asset: false,
   },
-  asset: mockAsset,
-  reviews: mockReviews,
+  asset: null,
+  reviews: [],
 };
 
 export const assetReducer = (
@@ -45,7 +44,7 @@ export const assetReducer = (
     case AssetActionTypes.GET.ASSET:
       return {
         ...state,
-        ['asset']: mockAsset,
+        asset: null,
         ['loaders']: { ...state.loaders, ['asset']: true },
         ['error']: { ...state.error, ['asset']: '' },
       };

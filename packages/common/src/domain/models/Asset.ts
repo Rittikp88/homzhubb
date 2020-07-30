@@ -6,6 +6,7 @@ import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/A
 import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 
 export interface IAsset {
   project_name: string;
@@ -27,6 +28,7 @@ export interface IAsset {
   highlights: IAssetHighlight[];
   features: IAssetFeature[];
   contacts?: IUser;
+  verifications: IVerifications;
 }
 
 export interface IData {
@@ -127,6 +129,9 @@ export class Asset {
   @JsonProperty('contacts', User, true)
   private _contacts: User = new User();
 
+  @JsonProperty('verifications', Verification, true)
+  private _verifications: Verification = new Verification();
+
   get projectName(): string {
     return this._projectName;
   }
@@ -213,5 +218,9 @@ export class Asset {
 
   get contacts(): User {
     return this._contacts;
+  }
+
+  get verifications(): Verification {
+    return this._verifications;
   }
 }
