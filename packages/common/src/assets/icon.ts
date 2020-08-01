@@ -82,4 +82,8 @@ export const icons = {
   envelope: 'envelope',
   whatsapp: 'whatsapp',
   share: 'share',
+  sunRise: 'sun-rise',
+  sunSet: 'sun-set',
+  sun: 'sun',
+  moon: 'moon',
 };

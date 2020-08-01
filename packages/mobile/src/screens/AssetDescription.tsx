@@ -7,6 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -70,7 +71,7 @@ const realWidth = height > width ? width : height;
 const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
 const PARALLAX_HEADER_HEIGHT = 250;
-const STICKY_HEADER_HEIGHT = 60;
+const STICKY_HEADER_HEIGHT = 100;
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
@@ -96,17 +97,24 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   public render = (): React.ReactNode => {
     const { t, reviews, assetDetails, isLoading } = this.props;
-    const { isFullScreen } = this.state;
+    const { isFullScreen, isScroll } = this.state;
     if (!assetDetails) return null;
     const {
       contacts: { fullName, phoneNumber, countryCode },
     } = assetDetails;
 
+    const statusBarHeight = isScroll ? 0 : PlatformUtils.isIOS() ? 55 : 40;
+
     return (
       <>
-        <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent />
+        <StatusBarComponent
+          backgroundColor={!isScroll ? theme.colors.white : 'transparent'}
+          isTranslucent
+          statusBarStyle={{ height: statusBarHeight }}
+          barStyle={isScroll ? 'light-content' : 'dark-content'}
+        />
         <ParallaxScrollView
-          backgroundColor={theme.colors.white}
+          backgroundColor={theme.colors.transparent}
           stickyHeaderHeight={STICKY_HEADER_HEIGHT}
           parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
           backgroundSpeed={10}
@@ -448,7 +456,20 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.setState({ isFullScreen: !isFullScreen });
   };
 
-  private onContactMailClicked = (): void => {};
+  private onContactMailClicked = (): void => {
+    const {
+      navigation,
+      assetDetails,
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+
+    // TODO: Need to add isLoggedIn condition
+
+    if (!assetDetails) return;
+    navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails.contacts, propertyTermId });
+  };
 
   public onFavorite = (propertyId: number): void => {
     // TODO: add the logic of favorite property
@@ -461,8 +482,9 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private fixedHeader = (): React.ReactElement => {
     const { isScroll } = this.state;
     const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
+    const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
     return (
-      <View key="fixed-header" style={styles.fixedSection}>
+      <View key="fixed-header" style={sectionStyle}>
         <View style={styles.headerLeftIcon}>
           <Icon name={icons.leftArrow} size={22} color={color} onPress={this.goBack} />
         </View>
@@ -543,7 +565,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  highlightItemContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  highlightItemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   textColor: {
     color: theme.colors.darkTint4,
   },
@@ -601,18 +628,21 @@ const styles = StyleSheet.create({
   fixedSection: {
     position: 'absolute',
     width: theme.viewport.width,
-    top: 20,
+    top: PlatformUtils.isIOS() ? 5 : 15,
     flexDirection: 'row',
   },
+  initialSection: {
+    top: PlatformUtils.isIOS() ? 50 : 40,
+  },
   stickySection: {
-    alignSelf: 'center',
-    overflow: 'hidden',
-    width: 200,
+    paddingBottom: 10,
   },
   shadowView: {
-    marginTop: 15,
+    marginTop: 0,
   },
   headerTitle: {
+    marginLeft: 40,
+    marginTop: PlatformUtils.isIOS() ? 0 : 10,
     color: theme.colors.darkTint1,
   },
   utilityItem: {

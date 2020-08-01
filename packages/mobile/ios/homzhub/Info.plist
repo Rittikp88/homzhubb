@@ -60,6 +60,7 @@
 	<string>$(PRODUCT_NAME) requires access to the photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>icomoon.ttf</string>
 		<string>Raleway-Medium.ttf</string>
 		<string>Raleway-Light.ttf</string>
 		<string>Raleway-Bold.ttf</string>
@@ -84,7 +85,6 @@
 		<string>Evillcons.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>AntDesign.ttf</string>
-		<string>icomoon.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

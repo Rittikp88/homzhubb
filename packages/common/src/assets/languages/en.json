@@ -48,6 +48,14 @@
     "max": "Max",
     "readMore": "Read More",
     "any": "Any",
+    "iAm": "I am a",
+    "lookingFor": "You are looking for",
+    "preferredTime": "Preferred time for call back",
+    "message": "Message",
+    "typeYourMessage": "Type your message here....",
+    "sendMessage": "Send Message",
+    "youContacting": "You are contacting",
+    "contact": "Contact",
     "whatsappMessage": "Hey {{fullName}}, I would like to know more about this property ad you posted on www.homzhub.com"
   },
   "auth": {

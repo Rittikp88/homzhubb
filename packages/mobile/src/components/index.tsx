@@ -32,6 +32,7 @@ export { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchRe
 export { SetLocationForm } from '@homzhub/mobile/src/components/molecules/SetLocationForm';
 export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 export { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
+export { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 
 // Organisms

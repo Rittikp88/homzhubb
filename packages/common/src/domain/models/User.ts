@@ -29,6 +29,9 @@ export class User {
   @JsonProperty('access_token', String, true)
   private _accessToken = '';
 
+  @JsonProperty('id', Number, true)
+  private _id = 0;
+
   get refreshToken(): string {
     return this._refreshToken;
   }
@@ -51,5 +54,9 @@ export class User {
 
   get phoneNumber(): string {
     return this._phoneNumber;
+  }
+
+  get id(): number {
+    return this._id;
   }
 }

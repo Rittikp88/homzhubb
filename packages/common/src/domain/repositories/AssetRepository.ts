@@ -5,6 +5,7 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   ICreateAssetDetails,
   ICreateAssetResult,
+  ILeadPayload,
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -55,6 +56,8 @@ const ENDPOINTS = {
     `lease-listings/${propertyTermId}/similar-properties/`,
   getSimilarPropertiesForSale: (propertyTermId: number): string =>
     `sale-listings/${propertyTermId}/similar-properties/`,
+  postLeaseLead: (propertyTermId: number): string => `lease-listings/${propertyTermId}/lead/`,
+  postSaleLead: (propertyTermId: number): string => `sale-listings/${propertyTermId}/lead/`,
 };
 
 class AssetRepository {
@@ -185,6 +188,18 @@ class AssetRepository {
     // SALE FLOW
     const response = await this.apiClient.get(ENDPOINTS.getSimilarPropertiesForSale(propertyTermId));
     return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  // TODO: Need to verify return body and type after signup flow
+  public postLeaseLeadDetail = async (payload: ILeadPayload): Promise<any> => {
+    const { propertyTermId, data } = payload;
+    return await this.apiClient.post(ENDPOINTS.postLeaseLead(propertyTermId), data);
+  };
+
+  // TODO: Need to verify return body and type after signup flow
+  public postSaleLeadDetail = async (payload: ILeadPayload): Promise<any> => {
+    const { propertyTermId, data } = payload;
+    return await this.apiClient.post(ENDPOINTS.postSaleLead(propertyTermId), data);
   };
 }
 

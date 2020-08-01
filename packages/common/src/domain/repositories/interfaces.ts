@@ -201,3 +201,16 @@ export interface IPropertySearchPayload {
   bathroom?: number;
   asset_group?: number;
 }
+
+// Lead
+export interface ILeadPayload {
+  propertyTermId: number;
+  data: {
+    spaces?: any;
+    contact_person_type?: string;
+    lead_type: string;
+    message?: string;
+    person_contacted?: number;
+    preferred_contact_time?: any;
+  };
+}

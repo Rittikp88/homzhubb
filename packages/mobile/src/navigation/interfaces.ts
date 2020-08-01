@@ -3,6 +3,7 @@ import { RouteProp } from '@react-navigation/native';
 import { ISocialUserData } from '@homzhub/common/src/assets/constants';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 // Route keys
 export enum ScreensKeys {
@@ -39,6 +40,13 @@ export enum ScreensKeys {
   PropertySearchScreen = 'PropertySearchScreen',
   PropertyAssetDescription = 'PropertyAssetDescription',
   PropertyFilters = 'PropertyFilters',
+
+  // Main
+  Main = 'Main',
+  ContactSignup = 'ContactSignup',
+
+  // Contact
+  ContactForm = 'ContactForm',
 }
 
 // Tab keys
@@ -117,4 +125,9 @@ export interface IMarkdownProps {
 export interface IAssetDescriptionProps {
   propertyTermId: number;
   propertyId: number;
+}
+
+export interface IContactProps {
+  contactDetail: User;
+  propertyTermId: number;
 }

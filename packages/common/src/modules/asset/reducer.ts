@@ -55,10 +55,23 @@ export const assetReducer = (
         ['asset']: action.payload as IAsset,
       };
     case AssetActionTypes.GET.ASSET_FAILURE:
+    case AssetActionTypes.POST.LEAD_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['asset']: false },
         ['error']: { ...state.error, ['asset']: action.error as string },
+      };
+    case AssetActionTypes.POST.LEAD:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['asset']: true },
+        ['error']: { ...state.error, ['asset']: '' },
+      };
+    case AssetActionTypes.POST.LEAD_SUCCESS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['asset']: false },
+        ['error']: { ...state.error, ['asset']: '' },
       };
     case AssetActionTypes.CLEAR_ASSET:
       return initialAssetState;

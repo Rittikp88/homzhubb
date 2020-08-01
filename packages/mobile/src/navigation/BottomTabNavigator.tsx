@@ -4,10 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import AssetDescription from '@homzhub/mobile/src/screens/AssetDescription';
+import ContactForm from '@homzhub/mobile/src/screens/ContactForm';
 import PropertySearchScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchScreen';
 import PropertySearchLanding from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchLanding';
 import PropertyFilters from '@homzhub/mobile/src/screens/PropertySearch/PropertyFilters';
-import { ScreensKeys, IAssetDescriptionProps } from '@homzhub/mobile/src/navigation/interfaces';
+import { ScreensKeys, IAssetDescriptionProps, IContactProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 const SearchStack = createStackNavigator<SearchStackParamList>();
 
@@ -16,6 +17,7 @@ export type SearchStackParamList = {
   [ScreensKeys.PropertySearchScreen]: undefined;
   [ScreensKeys.PropertyFilters]: undefined;
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
+  [ScreensKeys.ContactForm]: IContactProps;
 };
 
 export const SearchStackScreen = (): React.ReactElement => {
@@ -30,6 +32,24 @@ export const SearchStackScreen = (): React.ReactElement => {
       <SearchStack.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
       <SearchStack.Screen name={ScreensKeys.PropertyFilters} component={PropertyFilters} />
     </SearchStack.Navigator>
+  );
+};
+
+const RootStack = createStackNavigator();
+
+// TODO: Need to refactor stack
+
+export const RootStackScreen = (): React.ReactElement => {
+  return (
+    <RootStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      mode="modal"
+    >
+      <RootStack.Screen name={ScreensKeys.Main} component={SearchStackScreen} />
+      <RootStack.Screen name={ScreensKeys.ContactForm} component={ContactForm} />
+    </RootStack.Navigator>
   );
 };
 

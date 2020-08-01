@@ -179,6 +179,7 @@ class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
         <Range
           dropdownData={currencyData}
           isPriceRange
+          selectedUnit="INR"
           currencySymbol={currencySymbol}
           onChangeSlide={this.updateFilter}
           range={priceRange}

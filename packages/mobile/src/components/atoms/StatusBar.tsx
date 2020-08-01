@@ -1,17 +1,18 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, StatusBarStyle } from 'react-native';
+import { View, StyleSheet, StatusBar, StatusBarStyle, StyleProp, ViewStyle } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 interface IProps {
   backgroundColor: string;
   isTranslucent: boolean;
   barStyle?: StatusBarStyle;
+  statusBarStyle?: StyleProp<ViewStyle>;
 }
 
 const StatusBarComponent = (props: IProps): React.ReactElement => {
-  const { isTranslucent, backgroundColor, barStyle = 'dark-content' } = props;
+  const { isTranslucent, backgroundColor, barStyle = 'dark-content', statusBarStyle = {} } = props;
   return (
-    <View style={[styles.statusBar, { backgroundColor }]}>
+    <View style={[styles.statusBar, { backgroundColor }, statusBarStyle]}>
       <StatusBar translucent={isTranslucent} backgroundColor={backgroundColor} barStyle={barStyle} />
     </View>
   );

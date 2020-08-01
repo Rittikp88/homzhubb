@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetReview, IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 
@@ -13,6 +14,11 @@ export const AssetActionTypes = {
     REVIEWS: `${actionTypePrefix}REVIEW`,
     REVIEWS_SUCCESS: `${actionTypePrefix}REVIEW_SUCCESS`,
     REVIEWS_FAILURE: `${actionTypePrefix}REVIEW_FAILURE`,
+  },
+  POST: {
+    LEAD: `${actionTypePrefix}LEAD`,
+    LEAD_SUCCESS: `${actionTypePrefix}LEAD_SUCCESS`,
+    LEAD_FAILURE: `${actionTypePrefix}LEAD_FAILURE`,
   },
   CLEAR_ASSET: `${actionTypePrefix}CLEAR_ASSET`,
 };
@@ -51,6 +57,20 @@ const clearAsset = (): IFluxStandardAction => ({
   type: AssetActionTypes.CLEAR_ASSET,
 });
 
+const postLead = (payload: ILeadPayload): IFluxStandardAction<ILeadPayload> => ({
+  type: AssetActionTypes.POST.LEAD,
+  payload,
+});
+
+const postLeadSuccess = (): IFluxStandardAction => ({
+  type: AssetActionTypes.POST.LEAD_SUCCESS,
+});
+
+const postLeadFailure = (error: string): IFluxStandardAction<string> => ({
+  type: AssetActionTypes.POST.LEAD_FAILURE,
+  error,
+});
+
 export type AssetPayloadTypes = number | IAssetReview[] | IAsset;
 
 export const AssetActions = {
@@ -61,4 +81,7 @@ export const AssetActions = {
   getAsset,
   getAssetSuccess,
   getAssetFailure,
+  postLead,
+  postLeadSuccess,
+  postLeadFailure,
 };
