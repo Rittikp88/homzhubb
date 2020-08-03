@@ -95,6 +95,23 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     getAsset(propertyTermId);
   };
 
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>, snapshot?: any): void {
+    const { getAsset } = this.props;
+    const {
+      route: {
+        params: { propertyTermId: oldPropertyTermId },
+      },
+    } = prevProps;
+    const {
+      route: {
+        params: { propertyTermId: newPropertyTermId },
+      },
+    } = this.props;
+    if (oldPropertyTermId !== newPropertyTermId) {
+      getAsset(newPropertyTermId);
+    }
+  }
+
   public render = (): React.ReactNode => {
     const { t, reviews, assetDetails, isLoading } = this.props;
     const { isFullScreen, isScroll } = this.state;
@@ -515,12 +532,11 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public loadSimilarProperty = (propertyTermId: number, propertyId: number): void => {
-    console.log('Work on this logic- Aditya');
-    // const { navigation } = this.props;
-    // navigation.navigate(ScreensKeys.PropertyAssetDescription, {
-    //   propertyTermId,
-    //   propertyId,
-    // });
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+      propertyTermId,
+      propertyId,
+    });
   };
 }
 
@@ -643,6 +659,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     marginLeft: 40,
     marginTop: PlatformUtils.isIOS() ? 0 : 10,
+    width: theme.viewport.width / 2,
     color: theme.colors.darkTint1,
   },
   utilityItem: {

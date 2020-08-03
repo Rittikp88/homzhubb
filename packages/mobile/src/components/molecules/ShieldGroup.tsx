@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
@@ -48,9 +48,11 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.Reac
         isShadowView
         sheetHeight={500}
       >
-        <Text type="small" textType="regular" style={styles.markdownText}>
-          {text}
-        </Text>
+        <ScrollView style={styles.flexOne}>
+          <Text type="small" textType="regular" style={styles.markdownText}>
+            {text}
+          </Text>
+        </ScrollView>
       </BottomSheet>
     </View>
   );
@@ -67,6 +69,9 @@ const styles = StyleSheet.create({
   },
   propertyTypeText: {
     color: theme.colors.primaryColor,
+  },
+  flexOne: {
+    flex: 1,
   },
   markdownText: {
     color: theme.colors.primaryColor,
