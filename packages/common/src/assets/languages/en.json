@@ -56,7 +56,8 @@
     "sendMessage": "Send Message",
     "youContacting": "You are contacting",
     "contact": "Contact",
-    "whatsappMessage": "Hey {{fullName}}, I would like to know more about this property ad you posted on www.homzhub.com"
+    "whatsappMessage": "Hey {{fullName}}, I would like to know more about this property ad you posted on www.homzhub.com",
+    "installWhatsapp": "Please install WhatsApp!"
   },
   "auth": {
     "verifyNumber": "Verify your number",
