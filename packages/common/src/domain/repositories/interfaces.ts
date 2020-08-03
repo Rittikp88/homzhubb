@@ -1,4 +1,5 @@
 // ENUMS
+
 export enum LoginTypes {
   OTP = 'OTP_LOGIN',
   EMAIL = 'EMAIL_LOGIN',

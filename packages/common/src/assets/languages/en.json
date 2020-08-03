@@ -57,7 +57,8 @@
     "youContacting": "You are contacting",
     "contact": "Contact",
     "whatsappMessage": "Hey {{fullName}}, I would like to know more about this property ad you posted on www.homzhub.com",
-    "installWhatsapp": "Please install WhatsApp!"
+    "installWhatsapp": "Please install WhatsApp!",
+    "pleaseSignup": "Please signup to continue"
   },
   "auth": {
     "verifyNumber": "Verify your number",

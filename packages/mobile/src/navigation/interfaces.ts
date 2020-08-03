@@ -124,7 +124,7 @@ export interface IMarkdownProps {
 // Property Search Start
 export interface IAssetDescriptionProps {
   propertyTermId: number;
-  propertyId: number;
+  propertyId?: number;
 }
 
 export interface IContactProps {

@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { remove, find, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -20,18 +19,22 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
 import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/mocks/ContactFormData';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 interface ISlot {
-  from: number;
-  to: number;
+  from_time: number;
+  to_time: number;
 }
 
 export interface IRadiaButtonGroupData {
   id: number;
   label: string;
+  value: string;
 }
 
 interface IStateProps {
+  filters: IFilter;
   isLoggedIn: boolean;
 }
 
@@ -190,13 +193,14 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
     this.setState({ message: value });
   };
 
-  private handleSubmit = (): void => {
+  private handleSubmit = async (): Promise<void> => {
     const {
       isLoggedIn,
-      postLead,
+      filters: { asset_transaction_type },
       route: {
         params: { contactDetail, propertyTermId },
       },
+      t,
     } = this.props;
     if (!contactDetail) return;
     const { userType, selectedTime, selectedSpaces, message } = this.state;
@@ -207,8 +211,8 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
       TimeSlot.forEach((item) => {
         if (item.id === id) {
           const slot = {
-            from: item.from,
-            to: item.to,
+            from_time: item.from,
+            to_time: item.to,
           };
           const slotObject = find(timeSlot, slot);
           if (!slotObject) {
@@ -223,18 +227,18 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
         propertyTermId,
         data: {
           spaces: selectedSpaces,
-          contact_person_type: personType.label,
+          contact_person_type: personType.value,
           lead_type: 'MAIL',
           message,
           person_contacted: contactDetail.id,
           preferred_contact_time: timeSlot,
         },
       };
-      // TODO: Need to move this logic on Asset Description Screen
+
       if (isLoggedIn) {
-        postLead(payload);
+        await LeadService.postLeadDetail(asset_transaction_type, payload);
       } else {
-        AlertHelper.error({ message: 'Login required' });
+        AlertHelper.error({ message: t('pleaseSignup') });
       }
     }
   };
@@ -247,16 +251,12 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
+    filters: SearchSelector.getFilters(state),
     isLoggedIn: UserSelector.isLoggedIn(state),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { postLead } = AssetActions;
-  return bindActionCreators({ postLead }, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ContactForm));
+export default connect(mapStateToProps, null)(withTranslation()(ContactForm));
 
 const styles = StyleSheet.create({
   flexOne: {

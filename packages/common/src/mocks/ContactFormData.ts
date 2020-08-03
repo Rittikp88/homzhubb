@@ -9,21 +9,21 @@ export const TimeSlot = [
   {
     id: 2,
     from: 12,
-    to: 3,
+    to: 15,
     formatted: '12 PM - 3 PM',
     icon: 'sun',
   },
   {
     id: 3,
-    from: 3,
-    to: 6,
+    from: 15,
+    to: 18,
     formatted: '3 PM - 6 PM',
     icon: 'sun-set',
   },
   {
     id: 4,
-    from: 6,
-    to: 9,
+    from: 18,
+    to: 21,
     formatted: '6 PM - 9 PM',
     icon: 'moon',
   },
@@ -33,10 +33,12 @@ export const UserType = [
   {
     id: 1,
     label: 'Tenant',
+    value: 'TENANT',
   },
   {
     id: 2,
     label: 'Property Agent',
+    value: 'PROPERTY_AGENT',
   },
 ];
 
@@ -51,7 +53,7 @@ export const BedroomType = [
   },
   {
     title: '3BHK',
-    value: '3 BHK',
+    value: '3BHK',
   },
   {
     title: '4BHK',

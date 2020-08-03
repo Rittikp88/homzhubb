@@ -7,6 +7,7 @@ import { Storage, CryptoJS } from './index';
 export enum StorageKeys {
   IS_ONBOARDING_COMPLETED = '@is_onBoarding_completed',
   USER = '@user',
+  IS_FROM = '@isFrom',
 }
 
 class StorageService {

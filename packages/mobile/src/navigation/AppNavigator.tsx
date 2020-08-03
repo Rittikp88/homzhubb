@@ -6,6 +6,7 @@ import {
   IServiceStepProps,
   IServiceDataProps,
   IMarkdownProps,
+  IContactProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import PostPropertyMap from '@homzhub/mobile/src/screens/PropertyPost/PostPropertyMap';
 import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
@@ -29,6 +30,8 @@ export type AppStackParamList = {
   [ScreensKeys.ServiceListSteps]: IServiceStepProps;
   [ScreensKeys.ServiceCheckoutSteps]: undefined;
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
+  [ScreensKeys.SearchStack]: undefined;
+  [ScreensKeys.ContactForm]: IContactProps;
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();

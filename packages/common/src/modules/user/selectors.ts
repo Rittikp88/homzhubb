@@ -22,8 +22,13 @@ const getUserDetails = (state: IState): User | null => {
   return ObjectMapper.deserialize(User, user);
 };
 
+const getIsFrom = (state: IState): string => {
+  return state.user.isFrom;
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
   getUserDetails,
+  getIsFrom,
 };
