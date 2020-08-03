@@ -1,5 +1,6 @@
 import { PickerItemProps } from 'react-native';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IFilterDetails,
@@ -76,6 +77,19 @@ const getPriceRange = (state: IState): ITransactionRange => {
   return priceRange;
 };
 
+const getSearchLocationLatLong = (state: IState): Point => {
+  const {
+    search: {
+      filter: { search_latitude, search_longitude },
+    },
+  } = state;
+
+  return {
+    lat: search_latitude,
+    lng: search_longitude,
+  };
+};
+
 export const SearchSelector = {
   getProperties,
   getFilterDetail,
@@ -83,4 +97,5 @@ export const SearchSelector = {
   getLoadingState,
   getCurrencyData,
   getPriceRange,
+  getSearchLocationLatLong,
 };

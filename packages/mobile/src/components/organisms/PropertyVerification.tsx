@@ -150,14 +150,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const document = await DocumentPicker.pick({
       type: [DocumentPicker.types.allFiles],
     });
-    const allowedFormats = [
-      'image/jpeg',
-      'image/jpg',
-      'image/png',
-      'public.image',
-      'com.adobe.pdf',
-      DocumentPicker.types.pdf,
-    ];
+    const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'public.image', 'com.adobe.pdf', 'application/pdf'];
     if (allowedFormats.includes(document.type)) {
       const source = { uri: document.uri, type: document.type, name: document.name };
       this.updateLocalDocuments(verificationDocumentId, source, data);

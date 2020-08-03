@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import MapView, { Marker, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -18,6 +19,7 @@ interface IState {
 }
 
 interface IProps {
+  searchLocation: Point;
   properties: Asset[];
   transaction_type: number;
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
@@ -46,8 +48,8 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     if (newLat !== latitude || newLong !== longitude) {
       this.mapRef?.animateCamera({
         center: {
-          longitude: Number(newLong),
-          latitude: Number(newLat),
+          longitude: newLong,
+          latitude: newLat,
         },
       });
     }
@@ -55,11 +57,14 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
 
   public render = (): React.ReactNode => {
     const { currentSlide } = this.state;
-    const { properties } = this.props;
-    const initialMarker: LatLng = {
-      latitude: properties.length > 0 ? Number(properties[0].latitude) : 12.9716,
-      longitude: properties.length > 0 ? Number(properties[0].longitude) : 77.5946,
-    };
+    const { properties, searchLocation } = this.props;
+    let { lat: initLatitude, lng: initLongitude } = searchLocation;
+
+    if (properties.length > 0) {
+      initLatitude = properties[0].latitude;
+      initLongitude = properties[0].longitude;
+    }
+
     return (
       <>
         <MapView
@@ -68,25 +73,15 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
           }}
           provider={PROVIDER_GOOGLE}
           style={styles.mapView}
-          region={{
-            latitude: initialMarker.latitude,
-            longitude: initialMarker.longitude,
-            latitudeDelta: MAP_DELTA,
-            longitudeDelta: MAP_DELTA,
-          }}
           initialRegion={{
-            latitude: initialMarker.latitude,
-            longitude: initialMarker.longitude,
+            latitude: initLatitude,
+            longitude: initLongitude,
             latitudeDelta: MAP_DELTA,
             longitudeDelta: MAP_DELTA,
           }}
         >
           {properties.map((property: Asset, index: number) => {
-            const marker: LatLng = {
-              latitude: Number(property.latitude),
-              longitude: Number(property.longitude),
-            };
-            const { latitude, longitude } = marker;
+            const { latitude, longitude } = property;
             const onMarkerPress = (): void => {
               this.onMarkerPress(index);
             };
@@ -169,12 +164,8 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
 
   public onSnapToItem = (currentSlide: number): void => {
     const { properties } = this.props;
-    const currentProperty: Asset = properties[currentSlide];
-    const marker: LatLng = {
-      latitude: Number(currentProperty.latitude),
-      longitude: Number(currentProperty.longitude),
-    };
-    const { latitude, longitude } = marker;
+    const { latitude, longitude } = properties[currentSlide];
+
     this.mapRef?.animateCamera({
       center: {
         longitude,

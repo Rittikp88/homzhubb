@@ -62,6 +62,7 @@ interface IOwnState {
   isFullScreen: boolean;
   activeSlide: number;
   descriptionShowMore: boolean;
+  descriptionHide: boolean;
   amenitiesShowAll: boolean;
   isScroll: boolean;
 }
@@ -80,6 +81,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = {
     isFullScreen: false,
     descriptionShowMore: false,
+    descriptionHide: true,
     amenitiesShowAll: false,
     activeSlide: 0,
     isScroll: true,
@@ -266,12 +268,12 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private renderAssetDescription = (): React.ReactNode => {
     const { t, assetDetails } = this.props;
-    const { descriptionShowMore } = this.state;
+    const { descriptionShowMore, descriptionHide } = this.state;
 
-    let hideMessage = true;
     const onLayout = (event: any): void => {
-      if (event.nativeEvent.lines.length > 3) {
-        hideMessage = false;
+      const { lines } = event.nativeEvent;
+      if (lines.length > 3 || (lines.length === 3 && lines[2].text.includes('\n'))) {
+        this.setState({ descriptionHide: false });
       }
     };
 
@@ -291,7 +293,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         >
           {assetDetails?.description}
         </Label>
-        {!hideMessage && (
+        {!descriptionHide && (
           <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
             {descriptionShowMore ? t('property:showLess') : t('property:showMore')}
           </Label>

@@ -9,7 +9,7 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { GooglePlaceData, GooglePlaceDetail, Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
@@ -63,6 +63,7 @@ interface IStateProps {
   isLoading: boolean;
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
+  searchLocation: Point;
 }
 
 // TODO: (Shikha) Need to add types
@@ -145,7 +146,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
 
   private renderContent = (): React.ReactNode => {
     const { isMapView } = this.state;
-    const { properties, setFilter, filters, getPropertiesListView } = this.props;
+    const { properties, setFilter, filters, getPropertiesListView, searchLocation } = this.props;
     if (!properties) {
       return null;
     }
@@ -157,6 +158,7 @@ class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenSta
               properties={properties.results}
               transaction_type={filters.asset_transaction_type}
               onSelectedProperty={this.navigateToAssetDetails}
+              searchLocation={searchLocation}
             />
             {this.renderNoResults()}
             {this.renderMenuTray()}
@@ -588,6 +590,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     getLoadingState,
     getCurrencyData,
     getPriceRange,
+    getSearchLocationLatLong,
   } = SearchSelector;
   return {
     properties: getProperties(state),
@@ -596,6 +599,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     isLoading: getLoadingState(state),
     currencyData: getCurrencyData(state),
     priceRange: getPriceRange(state),
+    searchLocation: getSearchLocationLatLong(state),
   };
 };
 
