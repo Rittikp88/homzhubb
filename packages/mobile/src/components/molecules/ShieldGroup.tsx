@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+// @ts-ignore
+import Markdown from 'react-native-easy-markdown';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
@@ -49,9 +51,9 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.Reac
         sheetHeight={500}
       >
         <ScrollView style={styles.flexOne}>
-          <Text type="small" textType="regular" style={styles.markdownText}>
-            {text}
-          </Text>
+          <View style={styles.markdownText}>
+            <Markdown>{text}</Markdown>
+          </View>
         </ScrollView>
       </BottomSheet>
     </View>
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   markdownText: {
-    color: theme.colors.primaryColor,
     padding: theme.layout.screenPadding,
   },
 });

@@ -21,6 +21,11 @@ interface IProps {
 type Props = IProps & WithTranslation;
 
 class PropertySearchList extends React.PureComponent<Props> {
+  public componentWillUnmount(): void {
+    const { setFilter } = this.props;
+    setFilter({ offset: 0 });
+  }
+
   public render(): React.ReactNode {
     const { properties, onFavorite, filters, onSelectedProperty, t } = this.props;
     if (properties.count === 0) {

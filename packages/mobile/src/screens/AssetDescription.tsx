@@ -111,6 +111,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     if (oldPropertyTermId !== newPropertyTermId) {
       getAsset(newPropertyTermId);
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ isScroll: true });
     }
   }
 
