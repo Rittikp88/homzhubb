@@ -4,9 +4,9 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { CustomMarker } from '@homzhub/common/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
@@ -38,20 +38,16 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
-    const { properties } = this.props;
-    if (prevProps.properties.length <= 0 || properties.length <= 0) {
+    const { properties, searchLocation } = this.props;
+    if (properties.length <= 0) {
+      this.animateCamera(searchLocation.lat, searchLocation.lng);
       return;
     }
 
-    const { latitude, longitude } = prevProps.properties[0];
-    const { latitude: newLat, longitude: newLong } = properties[0];
-    if (newLat !== latitude || newLong !== longitude) {
-      this.mapRef?.animateCamera({
-        center: {
-          longitude: newLong,
-          latitude: newLat,
-        },
-      });
+    if (prevProps.properties.length !== properties.length) {
+      this.animateCamera(properties[0].latitude, properties[0].longitude);
+      // @ts-ignore
+      this.carouselRef.snapToItem(0);
     }
   };
 
@@ -166,18 +162,22 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     const { properties } = this.props;
     const { latitude, longitude } = properties[currentSlide];
 
-    this.mapRef?.animateCamera({
-      center: {
-        longitude,
-        latitude,
-      },
-    });
+    this.animateCamera(latitude, longitude);
     this.setState({ currentSlide });
   };
 
   private onMarkerPress = (index: number): void => {
     // @ts-ignore
     this.carouselRef.snapToItem(index);
+  };
+
+  private animateCamera = (latitude: number, longitude: number): void => {
+    this.mapRef?.animateCamera({
+      center: {
+        longitude,
+        latitude,
+      },
+    });
   };
 
   public getCurrency = (item: Asset): string => {
