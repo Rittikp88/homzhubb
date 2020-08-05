@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { AssetMetricsData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { AssetMetricsData, AssetSubscriptionPlanData, MarketTrendsData } from '@homzhub/common/src/mocks/AssetMetrics';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetSummary } from '@homzhub/common/src/components';
-import { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
+import { AssetMarketTrends, AssetMetricsList, AssetSubscriptionPlan } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LoggedInBottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
@@ -14,13 +14,21 @@ export class Dashboard extends React.PureComponent<Props, {}> {
   public render = (): React.ReactElement => {
     return (
       <View style={styles.screen}>
-        <AssetMetricsList
-          assetCount={10}
-          data={AssetMetricsData}
-          subscription="Homzhub Pro"
-          containerStyle={styles.assetCards}
-        />
-        <AssetSummary notification={10} serviceTickets={20} dues={30} containerStyle={styles.assetCards} />
+        <ScrollView style={styles.flexOne} showsVerticalScrollIndicator={false}>
+          <AssetMetricsList
+            assetCount={10}
+            data={AssetMetricsData}
+            subscription="Homzhub Pro"
+            containerStyle={styles.assetCards}
+          />
+          <AssetSummary notification={10} serviceTickets={20} dues={30} containerStyle={styles.assetCards} />
+          <AssetMarketTrends data={MarketTrendsData} containerStyle={styles.assetCards} />
+          <AssetSubscriptionPlan
+            data={AssetSubscriptionPlanData}
+            planName="Homzhub PRO"
+            containerStyle={styles.assetCards}
+          />
+        </ScrollView>
       </View>
     );
   };
@@ -33,5 +41,8 @@ const styles = StyleSheet.create({
   },
   assetCards: {
     marginVertical: 10,
+  },
+  flexOne: {
+    flex: 1,
   },
 });

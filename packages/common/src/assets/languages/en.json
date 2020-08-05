@@ -255,6 +255,10 @@
   "assetDashboard": {
     "notification": "Notification",
     "serviceTickets": "Service Tickets",
-    "dues": "Dues"
+    "dues": "Dues",
+    "subscribedFor": "You have subscribed for",
+    "marketTrends": "Market Trends",
+    "viewAll": "View all",
+    "noTrends": "No Trends"
   }
 }

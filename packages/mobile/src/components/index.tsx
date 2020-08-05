@@ -7,7 +7,9 @@ export { RNVideo } from '@homzhub/mobile/src/components/atoms/Video';
 
 // Molecules
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
+export { AssetMarketTrends } from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 export { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
+export { AssetSubscriptionPlan } from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';
 export { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 export { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 export { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
@@ -37,6 +39,7 @@ export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 
 // Organisms
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
+export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 export { PropertyDetailsItems } from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
