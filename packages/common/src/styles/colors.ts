@@ -66,10 +66,22 @@ const opacity = {
   ratingHigh: 'rgba(71, 194, 178, 0.12)',
 };
 
+const gradientAssetMetrics = {
+  gradientA: '#61D773',
+  gradientB: '#94EF90',
+  gradientC: '#FDB113',
+  gradientD: '#FFDB8F',
+  gradientE: '#D9AB65',
+  gradientF: '#ECCFB4',
+  gradientG: '#FD8313',
+  gradientH: '#FFD2A9',
+};
+
 export const colors = {
   ...namedColors,
   ...themedColors,
   ...gradientColors,
   ...tintColors,
   ...opacity,
+  ...gradientAssetMetrics,
 };
