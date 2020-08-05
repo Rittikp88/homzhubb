@@ -17,6 +17,7 @@ const namedColors = {
   transparent: 'transparent',
   disabledPreference: '#B3BBC3',
   disabledSearch: '#80C1FC',
+  danger: '#D60D31',
 };
 
 const tintColors = {

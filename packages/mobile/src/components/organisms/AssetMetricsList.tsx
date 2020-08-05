@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -17,18 +17,27 @@ interface IProps {
   assetCount?: number;
   subscription: string;
   data: IAssetMetrics[];
+  containerStyle?: StyleProp<ViewStyle>;
+  isPortfolio?: boolean;
+  onPlusIconClicked?: () => void;
 }
 
 const AssetMetricsList = (props: IProps): React.ReactElement => {
-  const { assetCount = 0, subscription, data } = props;
+  const { assetCount = 0, subscription, data, isPortfolio = false, onPlusIconClicked, containerStyle } = props;
   const { t } = useTranslation();
 
   const renderKeyExtractor = (item: IAssetMetrics, index: number): string => {
     return `${item.id}-${index}`;
   };
 
+  const bubblePlusIcon = (): void => {
+    if (onPlusIconClicked) {
+      onPlusIconClicked();
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <View style={styles.property}>
         <View style={styles.logo}>
           <Icon name={icons.heartOutline} color={theme.colors.darkTint4} size={40} />
@@ -44,6 +53,11 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
             {subscription}
           </Text>
         </View>
+        {isPortfolio && (
+          <View style={styles.plusIcon}>
+            <Icon name={icons.plus} color={theme.colors.primaryColor} size={40} onPress={bubblePlusIcon} />
+          </View>
+        )}
       </View>
       <View style={styles.assetMetrics}>
         <FlatList
@@ -94,5 +108,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     flex: 1,
+  },
+  plusIcon: {
+    flexDirection: 'row-reverse',
   },
 });

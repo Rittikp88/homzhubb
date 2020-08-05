@@ -252,4 +252,9 @@
     "similarProperties": "Similar Properties",
     "bookTour": "Book a Tour"
   },
+  "assetDashboard": {
+    "notification": "Notification",
+    "serviceTickets": "Service Tickets",
+    "dues": "Dues"
+  }
 }

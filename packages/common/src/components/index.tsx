@@ -25,6 +25,7 @@ export { YoutubeVideo } from '@homzhub/common/src/components/atoms/YoutubeVideo'
 // Molecules
 export { AnimatedHeader } from '@homzhub/common/src/components/molecules/AnimatedHeader';
 export { AssetMetrics } from '@homzhub/common/src/components/molecules/AssetMetrics';
+export { AssetSummary } from '@homzhub/common/src/components/molecules/AssetSummary';
 export { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 export { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 export { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
