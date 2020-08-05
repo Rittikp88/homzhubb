@@ -3,43 +3,51 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import AssetDescription from '@homzhub/mobile/src/screens/AssetDescription';
-import ContactForm from '@homzhub/mobile/src/screens/ContactForm';
+import AssetDescription from '@homzhub/mobile/src/screens/PropertySearch/AssetDescription';
+import ContactForm from '@homzhub/mobile/src/screens/PropertySearch/ContactForm';
 import PropertySearchScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchScreen';
 import PropertySearchLanding from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchLanding';
 import PropertyFilters from '@homzhub/mobile/src/screens/PropertySearch/PropertyFilters';
-import { ScreensKeys, IAssetDescriptionProps, IContactProps } from '@homzhub/mobile/src/navigation/interfaces';
-
-const SearchStack = createStackNavigator<SearchStackParamList>();
+import {
+  ScreensKeys,
+  IAssetDescriptionProps,
+  IContactProps,
+  NestedNavigatorParams,
+} from '@homzhub/mobile/src/navigation/interfaces';
+import { AuthStack, AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
 export type SearchStackParamList = {
   [ScreensKeys.PropertySearchLanding]: undefined;
   [ScreensKeys.PropertySearchScreen]: undefined;
-  [ScreensKeys.PropertyFilters]: undefined;
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
-  [ScreensKeys.ContactForm]: IContactProps;
+  [ScreensKeys.PropertyFilters]: undefined;
 };
 
-export const SearchStackScreen = (): React.ReactElement => {
+export type RootStackParamList = {
+  [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
+  [ScreensKeys.ContactForm]: IContactProps;
+  [ScreensKeys.AuthStack]: NestedNavigatorParams<AuthStackParamList>;
+};
+
+const SearchStackNavigator = createStackNavigator<SearchStackParamList>();
+const RootStack = createStackNavigator<RootStackParamList>();
+
+export const SearchStack = (): React.ReactElement => {
   return (
-    <SearchStack.Navigator
+    <SearchStackNavigator.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <SearchStack.Screen name={ScreensKeys.PropertySearchLanding} component={PropertySearchLanding} />
-      <SearchStack.Screen name={ScreensKeys.PropertySearchScreen} component={PropertySearchBottomTabs} />
-      <SearchStack.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
-      <SearchStack.Screen name={ScreensKeys.PropertyFilters} component={PropertyFilters} />
-    </SearchStack.Navigator>
+      <SearchStackNavigator.Screen name={ScreensKeys.PropertySearchLanding} component={PropertySearchLanding} />
+      <SearchStackNavigator.Screen name={ScreensKeys.PropertySearchScreen} component={PropertySearchBottomTabs} />
+      <SearchStackNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
+      <SearchStackNavigator.Screen name={ScreensKeys.PropertyFilters} component={PropertyFilters} />
+    </SearchStackNavigator.Navigator>
   );
 };
 
-const RootStack = createStackNavigator();
-
-// TODO: Need to refactor stack
-
-export const RootStackScreen = (): React.ReactElement => {
+export const RootSearchStackNavigator = (): React.ReactElement => {
   return (
     <RootStack.Navigator
       screenOptions={{
@@ -47,8 +55,9 @@ export const RootStackScreen = (): React.ReactElement => {
       }}
       mode="modal"
     >
-      <RootStack.Screen name={ScreensKeys.Main} component={SearchStackScreen} />
+      <RootStack.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
       <RootStack.Screen name={ScreensKeys.ContactForm} component={ContactForm} />
+      <RootStack.Screen name={ScreensKeys.AuthStack} component={AuthStack} />
     </RootStack.Navigator>
   );
 };

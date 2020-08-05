@@ -23,7 +23,7 @@ import { Button, IDropdownOption, WithShadowView } from '@homzhub/common/src/com
 import { Header, PropertyDetailsLocation } from '@homzhub/mobile/src/components';
 import PropertyDetailsItems from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 
 interface IDispatchProps {
@@ -35,8 +35,8 @@ interface IStateProps {
   property: IPropertyDetailsData[] | null;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyDetailsScreen>;
-type Props = IDispatchProps & IStateProps & libraryProps;
+type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PropertyDetailsScreen>;
+type Props = IDispatchProps & IStateProps & libraryProps & WithTranslation;
 
 interface IPropertyDetailsState {
   projectName: string;

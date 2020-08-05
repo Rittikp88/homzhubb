@@ -14,7 +14,7 @@ import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/compone
 import { PropertyPayment, CheckoutAssetDetails, Header, StepIndicatorComponent } from '@homzhub/mobile/src/components';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IServiceCategory, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
@@ -41,7 +41,7 @@ interface IDispatchProps {
   setTermId: (termId: number) => void;
 }
 
-type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceCheckoutSteps>;
+type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.ServiceCheckoutSteps>;
 type Props = OwnProps & IStateProps & IDispatchProps;
 
 export class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {

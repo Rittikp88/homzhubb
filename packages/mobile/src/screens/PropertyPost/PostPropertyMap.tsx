@@ -19,7 +19,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet, Header, SetLocationForm } from '@homzhub/mobile/src/components';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IStateProps {
@@ -28,7 +28,7 @@ interface IStateProps {
 interface IDispatchProps {
   setCurrentPropertyId: (propertyId: number) => void;
 }
-type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PostPropertyMap>;
+type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostPropertyMap>;
 type Props = OwnProps & IStateProps & IDispatchProps;
 
 interface IAddPropertyState {

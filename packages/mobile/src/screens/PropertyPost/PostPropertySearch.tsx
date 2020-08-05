@@ -10,7 +10,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { CurrentLocation, Header, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys, IAddPropertyMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IState {
@@ -18,7 +18,7 @@ interface IState {
   suggestions: GooglePlaceData[];
   showAutoDetect: boolean;
 }
-type Props = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PostPropertySearch>;
+type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostPropertySearch>;
 
 class PostPropertySearch extends React.PureComponent<Props, IState> {
   public state = {

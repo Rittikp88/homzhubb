@@ -9,11 +9,11 @@ import { StorageKeys, StorageService } from '@homzhub/common/src/services/storag
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header } from '@homzhub/mobile/src/components';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
-type OwnProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.MarkdownScreen>;
+type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.MarkdownScreen>;
 type Props = OwnProps;
 
 interface IMarkdownState {

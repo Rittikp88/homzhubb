@@ -7,19 +7,19 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Label, WithShadowView, Text, Divider, Avatar, Button } from '@homzhub/common/src/components';
-import { StatusBarComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
+import { StatusBarComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
+import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/mocks/ContactFormData';
-import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 interface ISlot {
@@ -49,7 +49,7 @@ interface IContactState {
   message: string;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.ContactForm>;
+type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.ContactForm>;
 type Props = libraryProps & IDispatchProps & IStateProps;
 
 class ContactForm extends React.PureComponent<Props, IContactState> {

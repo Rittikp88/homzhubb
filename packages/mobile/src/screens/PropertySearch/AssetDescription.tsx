@@ -6,6 +6,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { CommonActions } from '@react-navigation/native';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -38,7 +39,7 @@ import {
 } from '@homzhub/mobile/src/components';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
@@ -489,7 +490,12 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     // TODO: Need to add isLoggedIn condition
 
     if (!assetDetails) return;
-    navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails.contacts, propertyTermId });
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: ScreensKeys.ContactForm,
+        params: { contactDetail: assetDetails.contacts, propertyTermId },
+      })
+    );
   };
 
   public onFavorite = (propertyId: number): void => {

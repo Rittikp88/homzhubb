@@ -61,6 +61,13 @@ export class LandingScreen extends React.PureComponent<Props, {}> {
               containerStyle={styles.addProperty}
               testID="btnAddProperty"
             />
+            {/* TODO: To be removed once the logic is in place */}
+            <Button
+              title="Switch View"
+              type="secondary"
+              onPress={this.onSwitchProperty}
+              containerStyle={styles.addProperty}
+            />
             <Label type="large" textType="regular" style={styles.logoutContainer}>
               {t('logoutHelperText')} &nbsp;
               <Label type="large" textType="bold" style={styles.logout} onPress={this.logout} testID="lblLogout">
@@ -75,7 +82,12 @@ export class LandingScreen extends React.PureComponent<Props, {}> {
 
   public onAddProperty = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.PostPropertySearch);
+    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.PostPropertySearch });
+  };
+
+  public onSwitchProperty = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.LoggedInBottomTabs);
   };
 
   public logout = async (): Promise<void> => {

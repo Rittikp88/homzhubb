@@ -38,7 +38,7 @@ import {
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/BottomTabNavigator';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
 import {
   ICarpetArea,
   ICurrency,

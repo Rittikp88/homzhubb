@@ -5,72 +5,74 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 
+export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
+  navigation: StackNavigationProp<S, T>;
+  route: RouteProp<S, T>;
+};
+
+export type NestedNavigatorParams<ParamList> = {
+  [K in keyof ParamList]: undefined extends ParamList[K]
+    ? { screen: K; params?: ParamList[K] }
+    : { screen: K; params: ParamList[K] };
+}[keyof ParamList];
+
 // Route keys
 export enum ScreensKeys {
-  // Auth
+  // Stacks
+  AuthStack = 'AuthStack',
+  SearchStack = 'SearchStack',
+
+  // Main Stack
   OnBoarding = 'OnBoarding',
-  Home = 'Home',
   GettingStarted = 'GettingStarted',
+
+  // Auth Stack Flow
   SignUp = 'SignUp',
-  OTP = 'OTP',
   MobileVerification = 'MobileVerification',
   Login = 'Login',
   EmailLogin = 'EmailLogin',
+  OTP = 'OTP',
   ForgotPassword = 'ForgotPassword',
-  SuccessResetPassword = 'SuccessResetPassword',
   ResetPassword = 'ResetPassword',
+  SuccessResetPassword = 'SuccessResetPassword',
 
-  // Post Property
+  // App Navigator Logged In
   PropertyPostLandingScreen = 'PropertyPost',
+  LoggedInBottomTabs = 'LoggedInBottomTabs',
+  PropertyPostStack = 'PropertyPostStack',
+
+  // LoggedIn Bottom Tabs
+  Portfolio = 'Portfolio',
+  Financials = 'Financials',
+  Dashboard = 'Dashboard',
+  Search = 'Search',
+  More = 'More',
+
+  // PropertyPostStack
   PostPropertySearch = 'PostPropertySearch',
   PostPropertyMap = 'PostPropertyMap',
   PropertyDetailsScreen = 'PropertyDetails',
   RentServicesScreen = 'RentServices',
-
-  // Service
   ServiceListScreen = 'ServiceList',
   ServiceDetailScreen = 'ServiceDetail',
   ServiceListSteps = 'ServiceListSteps',
   ServiceCheckoutSteps = 'ServiceCheckoutSteps',
   MarkdownScreen = 'Markdown',
 
-  // Search
-  SearchStack = 'SearchStack',
+  // Search Stack
   PropertySearchLanding = 'PropertySearchLanding',
   PropertySearchScreen = 'PropertySearchScreen',
   PropertyAssetDescription = 'PropertyAssetDescription',
   PropertyFilters = 'PropertyFilters',
-
-  // Main
-  Main = 'Main',
   ContactSignup = 'ContactSignup',
-
-  // Contact
   ContactForm = 'ContactForm',
 }
-
-// Tab keys
-export enum TabKeys {
-  Home = 'Home',
-  Profile = 'Profile',
-}
-
-// To be used as Titles in tab bar
-export const ScreensTitles = {
-  [ScreensKeys.Home]: 'Home',
-  [ScreensKeys.SignUp]: 'Sign Up',
-};
 
 export enum OtpNavTypes {
   Login = 'Login',
   SignUp = 'SignUp',
   SocialMedia = 'SocialMedia',
 }
-
-export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
-  navigation: StackNavigationProp<S, T>;
-  route: RouteProp<S, T>;
-};
 
 export interface IOtpNavProps {
   type: OtpNavTypes;

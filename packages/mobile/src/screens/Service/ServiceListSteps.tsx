@@ -13,7 +13,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/src/components';
 import { Header } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import {
   IServiceCategory,
   IServiceListSteps,
@@ -31,7 +31,7 @@ interface IDispatchProps {
   getServiceStepsDetails: (data: IServiceListStepsPayload) => void;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceListSteps>;
+type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.ServiceListSteps>;
 export type Props = libraryProps & IStateProps & IDispatchProps;
 
 export class ServiceListSteps extends React.PureComponent<Props, {}> {

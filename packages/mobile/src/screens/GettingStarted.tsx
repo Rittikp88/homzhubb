@@ -1,53 +1,57 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import { Text, Button, Label, Image } from '@homzhub/common/src/components';
+import { StatusBarComponent } from '@homzhub/mobile/src/components';
+import { MainStackParamList } from '@homzhub/mobile/src/navigation/MainStackNavigator';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
-type IProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp> & WithTranslation;
+type IProps = NavigationScreenProps<MainStackParamList, ScreensKeys.GettingStarted> & WithTranslation;
 
 export class GettingStarted extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
     const { t } = this.props;
     return (
-      <View style={styles.container}>
-        <Image source={images.gettingStarted} style={styles.image} />
-        <Text type="regular" textType="semiBold" style={styles.header}>
-          {t('header')}
-        </Text>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={t('common:searchProperties')}
-            type="primary"
-            textSize="small"
-            containerStyle={styles.searchProperty}
-            onPress={this.searchProperty}
-            testID="btnSearchProperty"
-          />
-          <Button
-            title={t('login')}
-            type="secondary"
-            containerStyle={styles.login}
-            onPress={this.login}
-            testID="btnLogin"
-          />
-          <Label type="large" textType="regular" style={styles.image}>
-            {t('newAroundHere')} &nbsp;
-            <Label
-              type="large"
-              textType="bold"
-              style={styles.signUpLink}
-              onPress={this.navigateToSignUp}
-              testID="lblSignup"
-            >
-              {t('signUp')}
+      <>
+        <StatusBarComponent backgroundColor={theme.colors.background} isTranslucent />
+        <View style={styles.container}>
+          <Image source={images.gettingStarted} style={styles.image} />
+          <Text type="regular" textType="semiBold" style={styles.header}>
+            {t('header')}
+          </Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              title={t('common:searchProperties')}
+              type="primary"
+              textSize="small"
+              containerStyle={styles.searchProperty}
+              onPress={this.searchProperty}
+              testID="btnSearchProperty"
+            />
+            <Button
+              title={t('login')}
+              type="secondary"
+              containerStyle={styles.login}
+              onPress={this.login}
+              testID="btnLogin"
+            />
+            <Label type="large" textType="regular" style={styles.image}>
+              {t('newAroundHere')} &nbsp;
+              <Label
+                type="large"
+                textType="bold"
+                style={styles.signUpLink}
+                onPress={this.navigateToSignUp}
+                testID="lblSignup"
+              >
+                {t('signUp')}
+              </Label>
             </Label>
-          </Label>
+          </View>
         </View>
-      </View>
+      </>
     );
   }
 
@@ -58,12 +62,12 @@ export class GettingStarted extends React.PureComponent<IProps> {
 
   public login = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.Login);
+    navigation.navigate(ScreensKeys.AuthStack, { screen: ScreensKeys.Login });
   };
 
   public navigateToSignUp = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SignUp);
+    navigation.navigate(ScreensKeys.AuthStack, { screen: ScreensKeys.SignUp });
   };
 }
 

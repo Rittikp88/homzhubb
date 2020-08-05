@@ -16,7 +16,7 @@ import {
   PaginationComponent,
   SnapCarousel,
 } from '@homzhub/mobile/src/components';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
 
@@ -31,8 +31,8 @@ interface IServiceDetailState {
   serviceInfo: string;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.ServiceDetailScreen>;
-type Props = libraryProps & IStateProps;
+type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.ServiceDetailScreen>;
+type Props = libraryProps & WithTranslation & IStateProps;
 
 export class ServiceDetailScreen extends Component<Props, IServiceDetailState> {
   public constructor(props: Props) {

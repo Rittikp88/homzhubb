@@ -90,6 +90,16 @@ exports[`Landing Screen Component should render landing screen 1`] = `
         title="addProperty"
         type="primary"
       />
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+          }
+        }
+        onPress={[Function]}
+        title="Switch View"
+        type="secondary"
+      />
       <Label
         style={
           Object {
