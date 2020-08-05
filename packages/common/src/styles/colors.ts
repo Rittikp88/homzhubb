@@ -71,10 +71,12 @@ const gradientAssetMetrics = {
   gradientB: '#94EF90',
   gradientC: '#FDB113',
   gradientD: '#FFDB8F',
-  gradientE: '#D9AB65',
-  gradientF: '#ECCFB4',
+  gradientE: '#6CCEC1',
+  gradientF: '#84ECE4',
   gradientG: '#FD8313',
   gradientH: '#FFD2A9',
+  gradientI: '#aa7474',
+  gradientJ: '#fc3b3b',
 };
 
 export const colors = {

@@ -1,5 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { AssetMetricsData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LoggedInBottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
@@ -10,7 +13,7 @@ export class Dashboard extends React.PureComponent<Props, {}> {
   public render = (): React.ReactElement => {
     return (
       <View style={styles.screen}>
-        <Text>Dashboard Screen</Text>
+        <AssetMetricsList assetCount={10} data={AssetMetricsData} subscription="Homzhub Pro" />
       </View>
     );
   };
@@ -19,7 +22,6 @@ export class Dashboard extends React.PureComponent<Props, {}> {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    margin: theme.layout.screenPadding,
   },
 });

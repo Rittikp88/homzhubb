@@ -58,7 +58,8 @@
     "contact": "Contact",
     "whatsappMessage": "Hey {{fullName}}, I would like to know more about this property ad you posted on www.homzhub.com",
     "installWhatsapp": "Please install WhatsApp!",
-    "pleaseSignup": "Please signup to continue"
+    "pleaseSignup": "Please signup to continue",
+    "properties": "Properties"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -250,5 +251,5 @@
     "factsFeatures": "Facts and Features",
     "similarProperties": "Similar Properties",
     "bookTour": "Book a Tour"
-  }
+  },
 }
