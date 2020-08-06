@@ -38,7 +38,7 @@ const AssetMarketTrends = (props: IProps): React.ReactElement => {
     }
     return (
       <FlatList
-        data={data}
+        data={data.slice(0, 2)} // TODO: Logic to be checked
         renderItem={({ item }: { item: IMarketTrends }): React.ReactElement => {
           const { header, date } = item;
           const onLinkPress = (): void => {

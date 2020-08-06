@@ -91,3 +91,20 @@ export const MarketTrendsData = [
     date: '05/07/2020',
   },
 ];
+
+export const AssetAdvertisementData = [
+  {
+    id: 1,
+    image_url: 'https://www.bookadsnow.com/images/mobile/Newspaper-banner_3.jpg',
+  },
+  {
+    id: 2,
+    image_url:
+      'https://is1-3.housingcdn.com/4f2250e8/6ec86b0c4555a4f83e0ea77c552db2a0/v0/fs/vessella_meadows-narsingi-hyderabad-vessella_group.jpg',
+  },
+  {
+    id: 3,
+    image_url:
+      'https://www.icicibank.com/managed-assets/images/blog/big/how-is-tax-on-sale-of-inherited-property-calculated.jpg',
+  },
+];

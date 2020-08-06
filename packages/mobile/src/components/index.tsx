@@ -7,6 +7,7 @@ export { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusB
 export { RNVideo } from '@homzhub/mobile/src/components/atoms/Video';
 
 // Molecules
+export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecules/AssetAdvertisementBanner';
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
 export { AssetMarketTrends } from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 export { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';

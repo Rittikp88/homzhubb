@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   summary: {
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    width: theme.viewport.width / 3.5,
   },
   notification: {
     color: theme.colors.green,

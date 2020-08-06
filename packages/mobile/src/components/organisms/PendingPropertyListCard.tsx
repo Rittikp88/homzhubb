@@ -37,10 +37,20 @@ class PendingPropertyListCard extends Component<Props, IState> {
           </View>
           <View style={styles.headingContent}>
             <TouchableOpacity style={styles.iconStyle}>
-              <Icon name={icons.leftArrow} size={16} onPress={this.handlePrevious} color={theme.colors.blue} />
+              <Icon
+                name={icons.leftArrow}
+                size={16}
+                onPress={this.handlePrevious}
+                color={currentPropertyIndex === 0 ? theme.colors.darkTint4 : theme.colors.primaryColor}
+              />
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconStyle}>
-              <Icon name={icons.rightArrow} size={16} onPress={this.handleNext} color={theme.colors.blue} />
+              <Icon
+                name={icons.rightArrow}
+                size={16}
+                onPress={this.handleNext}
+                color={currentPropertyIndex === total - 1 ? theme.colors.darkTint4 : theme.colors.primaryColor}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -59,7 +69,7 @@ class PendingPropertyListCard extends Component<Props, IState> {
       status,
       address,
     } = item;
-    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(spaces, 0, item.asset_group.name);
+    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(spaces, 0, item.asset_group.name, '', '', true);
     return (
       <View style={styles.cardContainer}>
         <Text type="small" style={styles.heading}>

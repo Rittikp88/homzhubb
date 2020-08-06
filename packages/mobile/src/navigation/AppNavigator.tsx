@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -114,9 +113,7 @@ export const LoggedInBottomTabs = (): React.ReactElement => {
         options={{
           tabBarLabel: 'Dashboard',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <View style={styles.dashboardBump}>
-              <Icon name={icons.compare} color={color} size={30} />
-            </View>
+            <Icon name={icons.compare} color={color} size={30} />
           ),
         }}
       />
@@ -125,10 +122,9 @@ export const LoggedInBottomTabs = (): React.ReactElement => {
         component={RootSearchStackNavigator}
         options={{
           tabBarLabel: 'Search',
-          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <Icon name={icons.search} color={color} size={22} />
-          ),
-          tabBarVisible: false,
+          tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
+            return <Icon name={icons.search} color={color} size={22} />;
+          },
         }}
       />
       <LoggedInBottomTabNavigator.Screen
@@ -159,15 +155,3 @@ export function AppNavigator(): React.ReactElement {
     </AppStackNavigator.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  dashboardBump: {
-    borderRadius: Math.round(150 * 0.5 + 150 * 0.5) / 2,
-    width: 150 * 0.5,
-    height: 150 * 0.5,
-    backgroundColor: theme.colors.white,
-    flex: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
