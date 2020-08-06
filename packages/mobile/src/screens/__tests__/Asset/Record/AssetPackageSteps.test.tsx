@@ -3,14 +3,16 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { ServiceSteps, ServiceStepsWithVerification } from '@homzhub/common/src/mocks/ServiceSteps';
 import {
-  ServiceListSteps,
+  AssetPackageSteps,
   mapStateToProps,
   mapDispatchToProps,
-} from '@homzhub/mobile/src/screens/Service/ServiceListSteps';
+} from '@homzhub/mobile/src/screens/Asset/Record/AssetPackageSteps';
 
 const mock = jest.fn();
 
@@ -29,7 +31,7 @@ describe('Service List Steps Screen', () => {
       },
     };
     component = shallow(
-      <ServiceListSteps
+      <AssetPackageSteps
         {...props}
         t={(key: string): string => key}
         route={{ params: { name: 'Some Listing', id: 1 }, isExact: true, path: '', url: '' }}
@@ -53,7 +55,7 @@ describe('Service List Steps Screen', () => {
     };
 
     component = shallow(
-      <ServiceListSteps
+      <AssetPackageSteps
         {...props}
         t={(key: string): string => key}
         route={{ params: { name: 'Some Listing', id: 1 }, isExact: true, path: '', url: '' }}
@@ -82,6 +84,12 @@ describe('Service List Steps Screen', () => {
       property: {
         ...initialPropertyState,
         servicesSteps: ServiceSteps,
+      },
+      search: {
+        ...initialSearchState,
+      },
+      asset: {
+        ...initialAssetState,
       },
     };
     const state = mapStateToProps(mockedState);

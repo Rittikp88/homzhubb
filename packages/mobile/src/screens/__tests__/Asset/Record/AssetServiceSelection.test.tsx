@@ -7,10 +7,10 @@ import { initialPropertyState } from '@homzhub/common/src/modules/property/reduc
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import {
-  RentServices,
+  AssetServiceSelection,
   mapStateToProps,
   mapDispatchToProps,
-} from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
+} from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceSelection';
 import { User } from '@homzhub/common/src/domain/models/User';
 
 const mock = jest.fn();
@@ -35,7 +35,7 @@ describe('Rent Services Screen Component', () => {
         goBack: mock,
       },
     };
-    component = shallow(<RentServices {...props} t={(key: string): string => key} />);
+    component = shallow(<AssetServiceSelection {...props} t={(key: string): string => key} />);
     component.setState({ isSelected: true, selectedItem: 1 });
   });
 

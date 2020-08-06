@@ -119,7 +119,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     } = item;
     const currency = this.getCurrency(item);
     const price = this.getPrice(item);
-    const amenities = PropertyUtils.getAmenities(carpetArea, carpetAreaUnit, spaces, floorNumber, name);
+    const amenities = PropertyUtils.getAmenities(spaces, floorNumber, name, carpetArea, carpetAreaUnit);
     const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
     const navigateToAssetDetails = (): void => {
       if (leaseTerm) {

@@ -4,7 +4,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PropertyAssetGroupData, ResidentialPropertyTypeData } from '@homzhub/common/src/mocks/PropertyDetails';
-import { PropertyDetails } from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
+import { PropertyDetails } from '@homzhub/mobile/src/screens/Asset/Record/PropertyDetails';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const mock = jest.fn();

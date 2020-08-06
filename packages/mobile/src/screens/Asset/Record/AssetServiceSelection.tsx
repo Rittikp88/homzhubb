@@ -37,7 +37,7 @@ interface IRentServicesState {
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.RentServicesScreen>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
-export class RentServices extends Component<Props, IRentServicesState> {
+export class AssetServiceSelection extends Component<Props, IRentServicesState> {
   public state = {
     isSelected: false,
     selectedItem: -1,
@@ -187,7 +187,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(RentServices));
+)(withTranslation(LocaleConstants.namespacesKey.property)(AssetServiceSelection));
 
 const styles = StyleSheet.create({
   container: {

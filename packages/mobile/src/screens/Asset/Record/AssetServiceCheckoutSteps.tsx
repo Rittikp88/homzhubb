@@ -44,7 +44,7 @@ interface IDispatchProps {
 type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.ServiceCheckoutSteps>;
 type Props = OwnProps & IStateProps & IDispatchProps;
 
-export class ServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
+export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScreenState> {
   public state = {
     currentStep: 0,
     isPaymentSuccess: false,
@@ -276,7 +276,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(ServiceCheckoutSteps);
+)(AssetServiceCheckoutSteps);
 export default withTranslation(LocaleConstants.namespacesKey.property)(connectedComponent);
 
 const styles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
+import PropertyDetails from '@homzhub/mobile/src/screens/Asset/Record/PropertyDetails';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';

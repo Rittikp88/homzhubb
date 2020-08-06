@@ -6,10 +6,10 @@ import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import {
-  LandingScreen,
+  AssetLandingScreen,
   mapStateToProps,
   mapDispatchToProps,
-} from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
+} from '@homzhub/mobile/src/screens/Asset/AssetLandingScreen';
 import { User } from '@homzhub/common/src/domain/models/User';
 
 const mock = jest.fn();
@@ -33,7 +33,7 @@ describe('Landing Screen Component', () => {
         navigate: mock,
       },
     };
-    component = shallow(<LandingScreen {...props} t={(key: string): string => key} />);
+    component = shallow(<AssetLandingScreen {...props} t={(key: string): string => key} />);
   });
 
   it('should render landing screen', () => {

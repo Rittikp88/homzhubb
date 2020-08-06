@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { RadioButton } from '@homzhub/common/src/components/atoms/RadioButton';
-import { IRadiaButtonGroupData } from '@homzhub/mobile/src/screens/PropertySearch/ContactForm';
+import { IRadiaButtonGroupData } from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
 
 interface IProps {
   data: IRadiaButtonGroupData[];

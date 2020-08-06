@@ -3,49 +3,26 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import AssetDescription from '@homzhub/mobile/src/screens/PropertySearch/AssetDescription';
-import ContactForm from '@homzhub/mobile/src/screens/PropertySearch/ContactForm';
-import PropertySearchScreen from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchScreen';
-import PropertySearchLanding from '@homzhub/mobile/src/screens/PropertySearch/PropertySearchLanding';
-import PropertyFilters from '@homzhub/mobile/src/screens/PropertySearch/PropertyFilters';
-import {
-  ScreensKeys,
-  IAssetDescriptionProps,
-  IContactProps,
-  NestedNavigatorParams,
-} from '@homzhub/mobile/src/navigation/interfaces';
-import { AuthStack, AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { ScreensKeys, IAssetDescriptionProps, IContactProps } from '@homzhub/mobile/src/navigation/interfaces';
+import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
+import ContactForm from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
+import AssetSearchScreen from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchScreen';
+import AssetSearchLanding from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchLanding';
+import AssetFilters from '@homzhub/mobile/src/screens/Asset/Search/AssetFilters';
+import { Saved } from '@homzhub/mobile/src/screens/Asset/Search/Saved';
+import { Compare } from '@homzhub/mobile/src/screens/Asset/Search/Compare';
+import { Tenancies } from '@homzhub/mobile/src/screens/Asset/Search/Tenancies';
+import { AssetSearchMore } from '@homzhub/mobile/src/screens/Asset/Search/More';
 
-export type SearchStackParamList = {
+export type RootStackParamList = {
   [ScreensKeys.PropertySearchLanding]: undefined;
   [ScreensKeys.PropertySearchScreen]: undefined;
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
   [ScreensKeys.PropertyFilters]: undefined;
-};
-
-export type RootStackParamList = {
-  [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.ContactForm]: IContactProps;
-  [ScreensKeys.AuthStack]: NestedNavigatorParams<AuthStackParamList>;
 };
 
-const SearchStackNavigator = createStackNavigator<SearchStackParamList>();
 const RootStack = createStackNavigator<RootStackParamList>();
-
-export const SearchStack = (): React.ReactElement => {
-  return (
-    <SearchStackNavigator.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <SearchStackNavigator.Screen name={ScreensKeys.PropertySearchLanding} component={PropertySearchLanding} />
-      <SearchStackNavigator.Screen name={ScreensKeys.PropertySearchScreen} component={PropertySearchBottomTabs} />
-      <SearchStackNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
-      <SearchStackNavigator.Screen name={ScreensKeys.PropertyFilters} component={PropertyFilters} />
-    </SearchStackNavigator.Navigator>
-  );
-};
 
 export const RootSearchStackNavigator = (): React.ReactElement => {
   return (
@@ -55,9 +32,11 @@ export const RootSearchStackNavigator = (): React.ReactElement => {
       }}
       mode="modal"
     >
-      <RootStack.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
+      <RootStack.Screen name={ScreensKeys.PropertySearchLanding} component={AssetSearchLanding} />
+      <RootStack.Screen name={ScreensKeys.PropertySearchScreen} component={PropertySearchBottomTabs} />
+      <RootStack.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
+      <RootStack.Screen name={ScreensKeys.PropertyFilters} component={AssetFilters} />
       <RootStack.Screen name={ScreensKeys.ContactForm} component={ContactForm} />
-      <RootStack.Screen name={ScreensKeys.AuthStack} component={AuthStack} />
     </RootStack.Navigator>
   );
 };
@@ -74,7 +53,7 @@ export const PropertySearchBottomTabs = (): React.ReactElement => {
     >
       <Tab.Screen
         name="Search"
-        component={PropertySearchScreen}
+        component={AssetSearchScreen}
         options={{
           tabBarLabel: 'Search',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -84,7 +63,7 @@ export const PropertySearchBottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="Saved"
-        component={PropertySearchScreen}
+        component={Saved}
         options={{
           tabBarLabel: 'Saved',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -94,7 +73,7 @@ export const PropertySearchBottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="Compare"
-        component={PropertySearchScreen}
+        component={Compare}
         options={{
           tabBarLabel: 'Compare',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -104,7 +83,7 @@ export const PropertySearchBottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="Tenancies"
-        component={PropertySearchScreen}
+        component={Tenancies}
         options={{
           tabBarLabel: 'Tenancies',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -114,7 +93,7 @@ export const PropertySearchBottomTabs = (): React.ReactElement => {
       />
       <Tab.Screen
         name="More"
-        component={PropertySearchScreen}
+        component={AssetSearchMore}
         options={{
           tabBarLabel: 'More',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (

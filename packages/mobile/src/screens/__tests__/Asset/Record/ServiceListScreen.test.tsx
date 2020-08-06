@@ -3,13 +3,15 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import {
   ServiceListScreen,
   mapStateToProps,
   mapDispatchToProps,
-} from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
+} from '@homzhub/mobile/src/screens/Asset/Record/ServiceListScreen';
 
 const mock = jest.fn();
 describe('Service List Screen', () => {
@@ -58,6 +60,12 @@ describe('Service List Screen', () => {
       property: {
         ...initialPropertyState,
         servicesInfo: ServicesData,
+      },
+      asset: {
+        ...initialAssetState,
+      },
+      search: {
+        ...initialSearchState,
       },
     };
     const state = mapStateToProps(mockedState);

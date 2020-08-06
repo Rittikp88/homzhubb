@@ -38,7 +38,7 @@ import {
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
 import {
   ICarpetArea,
   ICurrency,
@@ -84,10 +84,10 @@ interface IPropertySearchScreenState {
   areaUnits: IDropdownOption[];
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertySearchScreen>;
+type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertySearchScreen>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
-class PropertySearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
+class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
   private searchBar: typeof SearchBar | null = null;
   public state = {
     isMapView: true,
@@ -620,7 +620,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.propertySearch)(PropertySearchScreen));
+)(withTranslation(LocaleConstants.namespacesKey.propertySearch)(AssetSearchScreen));
 
 const styles = StyleSheet.create({
   container: {

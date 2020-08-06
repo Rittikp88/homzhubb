@@ -20,7 +20,7 @@ interface IState {
 }
 type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostPropertySearch>;
 
-class PostPropertySearch extends React.PureComponent<Props, IState> {
+class AssetLocationSearch extends React.PureComponent<Props, IState> {
   public state = {
     searchString: '',
     suggestions: [],
@@ -143,5 +143,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(PostPropertySearch);
-export { HOC as PostPropertySearch };
+const HOC = withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch);
+export { HOC as AssetLocationSearch };

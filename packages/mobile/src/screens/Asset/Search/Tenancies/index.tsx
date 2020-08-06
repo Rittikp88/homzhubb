@@ -1,17 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-class PropertyFilters extends React.PureComponent<{}, {}> {
+export class Tenancies extends React.PureComponent<{}, {}> {
   public render = (): React.ReactElement => {
     return (
       <View style={styles.screen}>
-        <Text>Property Filters</Text>
+        <Text>Tenancies Screen</Text>
       </View>
     );
   };
 }
-
-export default PropertyFilters;
 
 const styles = StyleSheet.create({
   screen: {

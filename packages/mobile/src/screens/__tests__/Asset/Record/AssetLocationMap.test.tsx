@@ -3,12 +3,14 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import {
-  PostPropertyMap,
+  AssetLocationMap,
   mapStateToProps,
   mapDispatchToProps,
-} from '@homzhub/mobile/src/screens/PropertyPost/PostPropertyMap';
+} from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
 
 const mock = jest.fn();
 
@@ -26,7 +28,7 @@ describe('Add property Map Screen Component', () => {
       },
     };
     component = shallow(
-      <PostPropertyMap
+      <AssetLocationMap
         {...props}
         t={(key: string): string => key}
         route={{
@@ -61,6 +63,12 @@ describe('Add property Map Screen Component', () => {
       property: {
         ...initialPropertyState,
         currentPropertyId: 1,
+      },
+      asset: {
+        ...initialAssetState,
+      },
+      search: {
+        ...initialSearchState,
       },
     };
     const state = mapStateToProps(mockedState);

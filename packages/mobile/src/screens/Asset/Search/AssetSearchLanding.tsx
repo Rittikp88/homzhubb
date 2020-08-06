@@ -17,7 +17,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
 import { CurrentLocation, Loader, Range, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
 import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
@@ -36,7 +36,7 @@ interface IDispatchProps {
   setInitialState: () => void;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertySearchLanding>;
+type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertySearchLanding>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
 interface ILandingState {
@@ -49,7 +49,7 @@ interface ILandingState {
   isLocationSelected: boolean;
 }
 
-class PropertySearchLanding extends React.PureComponent<Props, ILandingState> {
+class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
   private searchBar: typeof SearchBar | null = null;
 
   public state = {
@@ -358,7 +358,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.propertySearch)(PropertySearchLanding));
+)(withTranslation(LocaleConstants.namespacesKey.propertySearch)(AssetSearchLanding));
 
 const styles = StyleSheet.create({
   screen: {

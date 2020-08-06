@@ -77,11 +77,11 @@ class PropertyListCard extends React.Component<Props, {}> {
     const currency: string = this.getCurrency();
     const price: number = this.getPrice();
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-      carpetArea,
-      carpetAreaUnit,
       spaces,
       floorNumber,
-      name
+      name,
+      carpetArea,
+      carpetAreaUnit
     );
     return (
       <View style={styles.amenities}>

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: theme.layout.screenPadding,
-    paddingVertical: 20,
+    paddingVertical: 30,
   },
   title: {
     color: theme.colors.white,

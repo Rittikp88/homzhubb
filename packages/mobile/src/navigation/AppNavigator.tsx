@@ -11,20 +11,20 @@ import {
   IMarkdownProps,
   NestedNavigatorParams,
 } from '@homzhub/mobile/src/navigation/interfaces';
-import PostPropertyMap from '@homzhub/mobile/src/screens/PropertyPost/PostPropertyMap';
-import LandingScreen from '@homzhub/mobile/src/screens/PropertyPost/LandingScreen';
-import PropertyDetails from '@homzhub/mobile/src/screens/PropertyPost/PropertyDetails';
-import RentServices from '@homzhub/mobile/src/screens/PropertyPost/RentServices';
-import { PostPropertySearch } from '@homzhub/mobile/src/screens/PropertyPost/PostPropertySearch';
-import ServiceCheckoutSteps from '@homzhub/mobile/src/screens/Service/ServiceCheckoutSteps';
-import ServiceDetailScreen from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
-import ServiceListScreen from '@homzhub/mobile/src/screens/Service/ServiceListScreen';
-import ServiceListSteps from '@homzhub/mobile/src/screens/Service/ServiceListSteps';
-import { MarkdownView } from '@homzhub/mobile/src/screens/MarkdownView';
-import { Portfolio } from '@homzhub/mobile/src/screens/LoggedInFlow/Portfolio';
-import { Financials } from '@homzhub/mobile/src/screens/LoggedInFlow/Financials';
-import Dashboard from '@homzhub/mobile/src/screens/LoggedInFlow/Dashboard';
-import { More } from '@homzhub/mobile/src/screens/LoggedInFlow/More';
+import AssetLandingScreen from '@homzhub/mobile/src/screens/Asset/AssetLandingScreen';
+import { MarkdownView } from '@homzhub/mobile/src/screens/Asset/MarkdownView';
+import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
+import { AssetLocationSearch } from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
+import AssetPackageSteps from '@homzhub/mobile/src/screens/Asset/Record/AssetPackageSteps';
+import AssetServiceCheckoutSteps from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceCheckoutSteps';
+import AssetServiceSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceSelection';
+import PropertyDetails from '@homzhub/mobile/src/screens/Asset/Record/PropertyDetails';
+import ServiceDetailScreen from '@homzhub/mobile/src/screens/Asset/Record/ServiceDetailScreen';
+import ServiceListScreen from '@homzhub/mobile/src/screens/Asset/Record/ServiceListScreen';
+import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
+import { Financials } from '@homzhub/mobile/src/screens/Asset/Financials';
+import { More } from '@homzhub/mobile/src/screens/Asset/More';
+import { Portfolio } from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import { RootSearchStackNavigator } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
 
 export type AppStackParamList = {
@@ -65,14 +65,17 @@ export const PropertyPostStack = (): React.ReactElement => {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.PostPropertySearch} component={PostPropertySearch} />
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.PostPropertyMap} component={PostPropertyMap} />
+      <PropertyPostStackNavigator.Screen name={ScreensKeys.PostPropertySearch} component={AssetLocationSearch} />
+      <PropertyPostStackNavigator.Screen name={ScreensKeys.PostPropertyMap} component={AssetLocationMap} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.PropertyDetailsScreen} component={PropertyDetails} />
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.RentServicesScreen} component={RentServices} />
+      <PropertyPostStackNavigator.Screen name={ScreensKeys.RentServicesScreen} component={AssetServiceSelection} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.ServiceListScreen} component={ServiceListScreen} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.ServiceDetailScreen} component={ServiceDetailScreen} />
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.ServiceListSteps} component={ServiceListSteps} />
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.ServiceCheckoutSteps} component={ServiceCheckoutSteps} />
+      <PropertyPostStackNavigator.Screen name={ScreensKeys.ServiceListSteps} component={AssetPackageSteps} />
+      <PropertyPostStackNavigator.Screen
+        name={ScreensKeys.ServiceCheckoutSteps}
+        component={AssetServiceCheckoutSteps}
+      />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.MarkdownScreen} component={MarkdownView} />
     </PropertyPostStackNavigator.Navigator>
   );
@@ -125,6 +128,7 @@ export const LoggedInBottomTabs = (): React.ReactElement => {
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
             return <Icon name={icons.search} color={color} size={22} />;
           },
+          tabBarVisible: false,
         }}
       />
       <LoggedInBottomTabNavigator.Screen
@@ -149,7 +153,7 @@ export function AppNavigator(): React.ReactElement {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <AppStackNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={LandingScreen} />
+      <AppStackNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.LoggedInBottomTabs} component={LoggedInBottomTabs} />
       <AppStackNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
     </AppStackNavigator.Navigator>

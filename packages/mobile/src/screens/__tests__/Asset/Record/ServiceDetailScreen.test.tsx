@@ -5,7 +5,7 @@ import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
-import { ServiceDetailScreen, mapStateToProps } from '@homzhub/mobile/src/screens/Service/ServiceDetailScreen';
+import { ServiceDetailScreen, mapStateToProps } from '@homzhub/mobile/src/screens/Asset/Record/ServiceDetailScreen';
 
 const mock = jest.fn();
 describe('Service Detail Screen', () => {

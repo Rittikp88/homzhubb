@@ -34,7 +34,7 @@ interface IDispatchProps {
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.ServiceListSteps>;
 export type Props = libraryProps & IStateProps & IDispatchProps;
 
-export class ServiceListSteps extends React.PureComponent<Props, {}> {
+export class AssetPackageSteps extends React.PureComponent<Props, {}> {
   public componentDidMount(): void {
     const {
       getServiceStepsDetails,
@@ -175,7 +175,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation()(ServiceListSteps));
+)(withTranslation()(AssetPackageSteps));
 
 const styles = StyleSheet.create({
   container: {

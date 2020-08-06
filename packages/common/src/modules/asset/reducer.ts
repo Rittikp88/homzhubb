@@ -4,7 +4,7 @@ import { AssetActionTypes, AssetPayloadTypes } from '@homzhub/common/src/modules
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 
-const initialAssetState: IAssetState = {
+export const initialAssetState: IAssetState = {
   error: {
     reviews: '',
     asset: '',

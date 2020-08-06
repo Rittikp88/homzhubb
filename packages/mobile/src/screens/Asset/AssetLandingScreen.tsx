@@ -28,7 +28,7 @@ interface IDispatchProps {
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyPostLandingScreen>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
-export class LandingScreen extends React.PureComponent<Props, {}> {
+export class AssetLandingScreen extends React.PureComponent<Props, {}> {
   public render(): React.ReactNode {
     const { t, user } = this.props;
     return (
@@ -123,7 +123,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(LandingScreen));
+)(withTranslation(LocaleConstants.namespacesKey.property)(AssetLandingScreen));
 
 const styles = StyleSheet.create({
   container: {

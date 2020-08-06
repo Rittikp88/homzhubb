@@ -6,7 +6,6 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { CommonActions } from '@react-navigation/native';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -39,7 +38,7 @@ import {
 } from '@homzhub/mobile/src/components';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
@@ -75,7 +74,7 @@ const relativeWidth = (num: number): number => (realWidth * num) / 100;
 const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 100;
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
+type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
 class AssetDescription extends React.PureComponent<Props, IOwnState> {
@@ -199,11 +198,11 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const propertyType = assetType ? assetDetails.assetType.name : '';
 
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-      carpetArea,
-      carpetAreaUnit,
       spaces,
       floorNumber,
       name,
+      carpetArea,
+      carpetAreaUnit,
       true
     );
 
@@ -490,12 +489,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     // TODO: Need to add isLoggedIn condition
 
     if (!assetDetails) return;
-    navigation.dispatch(
-      CommonActions.navigate({
-        name: ScreensKeys.ContactForm,
-        params: { contactDetail: assetDetails.contacts, propertyTermId },
-      })
-    );
+    navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails.contacts, propertyTermId });
   };
 
   public onFavorite = (propertyId: number): void => {

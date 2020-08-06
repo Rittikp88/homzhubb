@@ -41,7 +41,7 @@ interface IAddPropertyState {
   };
 }
 
-export class PostPropertyMap extends React.PureComponent<Props, IAddPropertyState> {
+export class AssetLocationMap extends React.PureComponent<Props, IAddPropertyState> {
   private mapRef: MapView | null = null;
   public constructor(props: Props) {
     super(props);
@@ -285,4 +285,4 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect<IStateProps, IDispatchProps, OwnProps, IState>(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(PostPropertyMap));
+)(withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationMap));
