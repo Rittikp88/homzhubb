@@ -1,26 +1,29 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { AssetMetricsData, AssetSubscriptionPlanData, MarketTrendsData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LoggedInBottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetSummary } from '@homzhub/common/src/components';
 import {
-  AssetAdvertisementBanner,
   AssetMarketTrends,
   AssetMetricsList,
   AssetSubscriptionPlan,
+  AssetAdvertisementBanner,
+  AnimatedProfileHeader,
 } from '@homzhub/mobile/src/components';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 
-type libraryProps = NavigationScreenProps<LoggedInBottomTabNavigatorParamList, ScreensKeys.Dashboard>;
+type libraryProps = WithTranslation & NavigationScreenProps<LoggedInBottomTabNavigatorParamList, ScreensKeys.Dashboard>;
 type Props = libraryProps;
 
-export class Dashboard extends React.PureComponent<Props, {}> {
+class Dashboard extends React.PureComponent<Props, {}> {
   public render = (): React.ReactElement => {
+    const { t } = this.props;
     return (
-      <SafeAreaView style={styles.flexOne}>
-        <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
+      <AnimatedProfileHeader title={t('dashboard')}>
+        <>
           <AssetMetricsList
             assetCount={10}
             data={AssetMetricsData}
@@ -36,21 +39,16 @@ export class Dashboard extends React.PureComponent<Props, {}> {
             planName="Homzhub PRO"
             containerStyle={styles.assetCards}
           />
-        </ScrollView>
-      </SafeAreaView>
+        </>
+      </AnimatedProfileHeader>
     );
   };
 }
 
+export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Dashboard);
+
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    margin: theme.layout.screenPadding,
-  },
   assetCards: {
     marginVertical: 12,
-  },
-  flexOne: {
-    flex: 1,
   },
 });

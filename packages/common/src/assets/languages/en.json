@@ -263,6 +263,7 @@
     "pendingProperties": "Pending Properties ({{total}})",
     "completeProperty": "Complete property details to serve you better",
     "completionStatus": "{{status}}% Complete",
-    "completeDetails": "Complete Details"
+    "completeDetails": "Complete Details",
+    "dashboard": "Dashboard"
   }
 }

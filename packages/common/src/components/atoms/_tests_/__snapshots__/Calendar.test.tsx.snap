@@ -35,7 +35,7 @@ CalendarComponent {
   "renderMonthView": [Function],
   "setState": [Function],
   "state": Object {
-    "day": "05",
+    "day": "06",
     "isMonthView": false,
     "month": 6,
     "selectedDate": "",
@@ -130,11 +130,11 @@ CalendarComponent {
         </React.Fragment>
         <React.Fragment>
           <Calendar
-            current="Sun Jul 05 2020"
+            current="Mon Jul 06 2020"
             hideArrows={true}
             markedDates={
               Object {
-                "Sun Jul 05 2020": Object {
+                "Mon Jul 06 2020": Object {
                   "customStyles": Object {
                     "container": Object {
                       "backgroundColor": "#0084F8",
@@ -148,7 +148,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2020-08-05T17:54:09.625Z}
+            minDate={2020-08-06T07:06:56.437Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -249,7 +249,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2020-08-05T17:54:09.602Z}
+    minDate={2020-08-06T07:06:56.412Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={

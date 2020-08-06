@@ -23,7 +23,7 @@ import ServiceListSteps from '@homzhub/mobile/src/screens/Service/ServiceListSte
 import { MarkdownView } from '@homzhub/mobile/src/screens/MarkdownView';
 import { Portfolio } from '@homzhub/mobile/src/screens/LoggedInFlow/Portfolio';
 import { Financials } from '@homzhub/mobile/src/screens/LoggedInFlow/Financials';
-import { Dashboard } from '@homzhub/mobile/src/screens/LoggedInFlow/Dashboard';
+import Dashboard from '@homzhub/mobile/src/screens/LoggedInFlow/Dashboard';
 import { More } from '@homzhub/mobile/src/screens/LoggedInFlow/More';
 import { RootSearchStackNavigator } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
 
