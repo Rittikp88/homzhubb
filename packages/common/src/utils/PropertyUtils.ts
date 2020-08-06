@@ -7,11 +7,11 @@ import { IData } from '@homzhub/common/src/domain/models/Asset';
 
 class PropertyUtils {
   public getAmenities = (
-    carpetArea: string,
-    carpetAreaUnit: string,
     spaces: IData[],
     floorNumber: number,
     name: string,
+    carpetArea?: string,
+    carpetAreaUnit?: string,
     isFullDetail?: boolean
   ): IAmenitiesIcons[] => {
     let amenities: IAmenitiesIcons[] = [];
@@ -57,7 +57,7 @@ class PropertyUtils {
       },
     ];
 
-    if (parseInt(carpetAreaValue, 10) !== 0) {
+    if (carpetArea && parseInt(carpetAreaValue, 10) !== 0) {
       amenities.push({
         icon: icons.area,
         iconSize: 20,

@@ -9,6 +9,7 @@ jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageS
 jest.mock('@ptomasroos/react-native-multi-slider', () => {});
 jest.mock('react-native-orientation-locker', () => {});
 jest.mock('@react-native-community/geolocation', () => {});
+jest.mock('react-native-progress', () => {});
 jest.mock('react-native-permissions', () => {
   return {
     request: jest.fn(),

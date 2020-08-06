@@ -28,7 +28,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       style={[styles.container, containerStyle]}
     >
       <View style={styles.summary}>
-        <Icon name={icons.share} color={theme.colors.green} size={40} />
+        <Icon name={icons.bell} color={theme.colors.green} size={40} />
         <Text type="small" textType="semiBold" style={styles.notification}>
           {t('notification')}
         </Text>
@@ -38,7 +38,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       </View>
       <Divider />
       <View style={styles.summary}>
-        <Icon name={icons.heartOutline} color={theme.colors.warning} size={40} />
+        <Icon name={icons.headPhone} color={theme.colors.warning} size={40} />
         <Text type="small" textType="semiBold" style={styles.serviceTickets}>
           {t('serviceTickets')}
         </Text>
@@ -48,7 +48,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       </View>
       <Divider />
       <View style={styles.summary}>
-        <Icon name={icons.star} color={theme.colors.danger} size={40} />
+        <Icon name={icons.decrease} color={theme.colors.danger} size={40} />
         <Text type="small" textType="semiBold" style={styles.dues}>
           {t('dues')}
         </Text>

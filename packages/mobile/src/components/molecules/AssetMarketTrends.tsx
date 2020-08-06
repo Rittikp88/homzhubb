@@ -67,7 +67,7 @@ const AssetMarketTrends = (props: IProps): React.ReactElement => {
     <View style={[styles.container, containerStyle]}>
       <View style={styles.header}>
         <View style={styles.marketTrends}>
-          <Icon name={icons.share} color={theme.colors.darkTint4} size={20} />
+          <Icon name={icons.increase} color={theme.colors.darkTint4} size={20} />
           <Text type="regular" textType="semiBold" style={styles.headerText}>
             {t('marketTrends')}
           </Text>

@@ -86,4 +86,10 @@ export const icons = {
   sunSet: 'sun-set',
   sun: 'sun',
   moon: 'moon',
+  increase: 'increase',
+  decrease: 'decrease',
+  logo: 'logo',
+  bell: 'bell',
+  headPhone: 'head-phone',
+  warning: 'warning',
 };

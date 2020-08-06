@@ -259,6 +259,10 @@
     "subscribedFor": "You have subscribed for",
     "marketTrends": "Market Trends",
     "viewAll": "View all",
-    "noTrends": "No Trends"
+    "noTrends": "No Trends",
+    "pendingProperties": "Pending Properties ({{total}})",
+    "completeProperty": "Complete property details to serve you better",
+    "completionStatus": "{{status}}% Complete",
+    "completeDetails": "Complete Details"
   }
 }
