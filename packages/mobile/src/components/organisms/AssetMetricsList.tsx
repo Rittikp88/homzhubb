@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 0,
     backgroundColor: theme.colors.white,
     borderRadius: 10,
-    height: 220,
+    minHeight: 220,
   },
   property: {
     flexDirection: 'row',

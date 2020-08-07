@@ -113,7 +113,7 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Pen
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
-    height: 355,
+    minHeight: 355,
     borderRadius: 10,
     marginTop: 12,
     padding: 16,

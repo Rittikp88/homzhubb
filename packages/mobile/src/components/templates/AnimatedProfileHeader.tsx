@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     position: 'absolute',
-    top: '13%',
+    top: theme.viewport.width > 400 ? '13%' : '18%',
     bottom: 0,
     paddingHorizontal: theme.layout.screenPadding,
   },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: theme.layout.screenPadding,
-    paddingVertical: 30,
+    paddingVertical: theme.viewport.width > 400 ? 30 : 10,
   },
   title: {
     color: theme.colors.white,

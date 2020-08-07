@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   noData: {
     flex: 1,
-    height: 100,
+    minHeight: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   trendHeader: {
     color: theme.colors.primaryColor,
-    width: 320,
+    minWidth: 320,
   },
   trendDate: {
     color: theme.colors.darkTint4,

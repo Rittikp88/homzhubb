@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
     padding: 5,
-    width: theme.viewport.width / 3.5,
+    minWidth: theme.viewport.width / 3.5,
     shadowColor: theme.colors.shadow,
     shadowOffset: {
       width: 0,
