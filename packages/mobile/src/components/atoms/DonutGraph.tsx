@@ -5,6 +5,8 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 
 const INNER_RADIUS = '45%';
+const HEIGHT = theme.viewport.height * 0.25;
+
 const DonutGraph = (): React.ReactElement => {
   const data = [
     {
@@ -37,11 +39,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   pieChart: {
     flex: 1,
     marginEnd: 16,
-    height: theme.viewport.height * 0.25,
+    height: HEIGHT,
   },
 });
 

@@ -65,16 +65,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   rowContainer: {
-    marginVertical: 24,
+    flexWrap: 'wrap',
+    marginTop: 16,
   },
   legendContainerRow: {
-    marginEnd: 24,
+    marginBottom: 16,
+    marginHorizontal: 12,
   },
   legendContainerColumn: {
     marginVertical: 16,
   },
   color: {
-    marginEnd: 4,
+    marginEnd: 6,
     marginTop: 4,
     ...(theme.circleCSS(12) as object),
   },
