@@ -7,11 +7,12 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { LoggedInBottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { AssetSummary } from '@homzhub/common/src/components';
 import {
+  AnimatedProfileHeader,
   AssetMarketTrends,
   AssetMetricsList,
   AssetSubscriptionPlan,
   AssetAdvertisementBanner,
-  AnimatedProfileHeader,
+  FinanceOverview,
 } from '@homzhub/mobile/src/components';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 
@@ -32,6 +33,7 @@ class Dashboard extends React.PureComponent<Props, {}> {
           />
           <AssetSummary notification={10} serviceTickets={20} dues={30} containerStyle={styles.assetCards} />
           <PendingPropertyListCard />
+          <FinanceOverview />
           <AssetMarketTrends data={MarketTrendsData} containerStyle={styles.assetCards} />
           <AssetAdvertisementBanner />
           <AssetSubscriptionPlan

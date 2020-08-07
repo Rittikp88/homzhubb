@@ -264,6 +264,8 @@
     "completeProperty": "Complete property details to serve you better",
     "completionStatus": "{{status}}% Complete",
     "completeDetails": "Complete Details",
+    "expense": "Expense",
+    "cashFlow": "Cash Flow",
     "dashboard": "Dashboard"
   }
 }

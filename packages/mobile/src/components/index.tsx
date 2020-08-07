@@ -1,5 +1,7 @@
 // Atoms
 export { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
+export { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
+export { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
 export { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 export { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 export { ProgressBar } from '@homzhub/mobile/src/components/atoms/ProgressBar';
@@ -43,6 +45,7 @@ export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 // Organisms
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
+export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 export { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 export { PropertyDetailsItems } from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';

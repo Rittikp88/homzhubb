@@ -1,5 +1,5 @@
 // Add commonly used style based strings here to avoid duplication
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { colors } from '@homzhub/common/src/styles/colors';
 
 export const styleConstants = {
@@ -29,4 +29,10 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+});
+
+export const circleCSS = (radius: number): StyleProp<ViewStyle> => ({
+  height: radius,
+  width: radius,
+  borderRadius: radius / 2,
 });

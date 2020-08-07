@@ -4,7 +4,7 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
-import { StatusBarComponent } from '@homzhub/mobile/src/components';
+import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 
 interface IProps {
   children: React.ReactElement;

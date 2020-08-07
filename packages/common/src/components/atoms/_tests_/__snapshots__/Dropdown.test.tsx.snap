@@ -16,7 +16,7 @@ exports[`Dropdown should match snapshot 1`] = `
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingHorizontal": 16,
-          "paddingVertical": 12,
+          "paddingVertical": 8,
         },
         Object {},
       ]
@@ -34,6 +34,14 @@ exports[`Dropdown should match snapshot 1`] = `
       color="#C9D6DF"
       name="down-arrow-filled"
       size={16}
+      style={
+        Array [
+          Object {
+            "marginStart": 8,
+          },
+          undefined,
+        ]
+      }
     />
   </ForwardRef>
   <BottomSheetListView
@@ -118,7 +126,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingHorizontal": 16,
-          "paddingVertical": 12,
+          "paddingVertical": 8,
         },
         Object {},
       ]
@@ -136,6 +144,14 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
       color="#C9D6DF"
       name="down-arrow-filled"
       size={16}
+      style={
+        Array [
+          Object {
+            "marginStart": 8,
+          },
+          undefined,
+        ]
+      }
     />
   </ForwardRef>
   <BottomSheetListView
@@ -165,7 +181,7 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingHorizontal": 16,
-          "paddingVertical": 12,
+          "paddingVertical": 8,
         },
         Object {},
       ]
@@ -183,6 +199,14 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
       color="#C9D6DF"
       name="down-arrow-filled"
       size={16}
+      style={
+        Array [
+          Object {
+            "marginStart": 8,
+          },
+          undefined,
+        ]
+      }
     />
   </ForwardRef>
   <BottomSheetListView

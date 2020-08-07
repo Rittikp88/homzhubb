@@ -489,7 +489,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                             "flexDirection": "row",
                             "justifyContent": "space-between",
                             "paddingHorizontal": 16,
-                            "paddingVertical": 12,
+                            "paddingVertical": 8,
                           },
                           Object {},
                         ]
@@ -508,7 +508,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                               "flexDirection": "row",
                               "justifyContent": "space-between",
                               "paddingHorizontal": 16,
-                              "paddingVertical": 12,
+                              "paddingVertical": 8,
                             },
                             Object {},
                           ]
@@ -535,7 +535,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                   "flexDirection": "row",
                                   "justifyContent": "space-between",
                                   "paddingHorizontal": 16,
-                                  "paddingVertical": 12,
+                                  "paddingVertical": 8,
                                 },
                                 Object {},
                               ],
@@ -566,7 +566,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                     "flexDirection": "row",
                                     "justifyContent": "space-between",
                                     "paddingHorizontal": 16,
-                                    "paddingVertical": 12,
+                                    "paddingVertical": 8,
                                   },
                                   Object {},
                                 ],
@@ -596,7 +596,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                   "justifyContent": "space-between",
                                   "opacity": 1,
                                   "paddingHorizontal": 16,
-                                  "paddingVertical": 12,
+                                  "paddingVertical": 8,
                                 }
                               }
                             >
@@ -620,7 +620,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                     "justifyContent": "space-between",
                                     "opacity": 1,
                                     "paddingHorizontal": 16,
-                                    "paddingVertical": 12,
+                                    "paddingVertical": 8,
                                   }
                                 }
                               >
@@ -668,6 +668,14 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                   color="#99A4AF"
                                   name="down-arrow-filled"
                                   size={16}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "marginStart": 8,
+                                      },
+                                      undefined,
+                                    ]
+                                  }
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -677,7 +685,12 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                           "color": "#99A4AF",
                                           "fontSize": 16,
                                         },
-                                        undefined,
+                                        Array [
+                                          Object {
+                                            "marginStart": 8,
+                                          },
+                                          undefined,
+                                        ],
                                         Object {
                                           "fontFamily": "icomoon",
                                           "fontStyle": "normal",
@@ -695,7 +708,12 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                             "color": "#99A4AF",
                                             "fontSize": 16,
                                           },
-                                          undefined,
+                                          Array [
+                                            Object {
+                                              "marginStart": 8,
+                                            },
+                                            undefined,
+                                          ],
                                           Object {
                                             "fontFamily": "icomoon",
                                             "fontStyle": "normal",

@@ -68,7 +68,12 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
           <Label type="large" textType="regular" style={textStyle}>
             {selectedItem?.label ?? placeholder}
           </Label>
-          <Icon name={icon} size={iconSize ?? 16} color={iconColor ?? theme.colors.disabled} style={iconStyle} />
+          <Icon
+            name={icon}
+            size={iconSize ?? 16}
+            color={iconColor ?? theme.colors.disabled}
+            style={[styles.iconStyle, iconStyle]}
+          />
         </TouchableOpacity>
         <BottomSheetListView
           data={data}
@@ -106,9 +111,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 8,
     borderWidth: 1,
     borderRadius: 4,
     borderColor: theme.colors.disabled,
+  },
+  iconStyle: {
+    marginStart: 8,
   },
 });
