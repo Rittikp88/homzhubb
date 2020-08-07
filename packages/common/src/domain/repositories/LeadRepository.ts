@@ -3,8 +3,8 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  postLeaseLead: (propertyTermId: number): string => `lease-listings/${propertyTermId}/lead/`,
-  postSaleLead: (propertyTermId: number): string => `sale-listings/${propertyTermId}/lead/`,
+  postLeaseLead: (propertyTermId: number): string => `lease-listings/${propertyTermId}/leads/`,
+  postSaleLead: (propertyTermId: number): string => `sale-listings/${propertyTermId}/leads/`,
 };
 
 class LeadRepository {
