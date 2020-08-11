@@ -19,7 +19,7 @@ interface ICommonHeaderProps {
   titleStyle?: StyleProp<TextStyle>;
   testID?: string;
 }
-const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight;
+const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 34 : StatusBar.currentHeight;
 
 export class Header extends React.PureComponent<ICommonHeaderProps, {}> {
   public render(): React.ReactNode {
@@ -63,11 +63,9 @@ export class Header extends React.PureComponent<ICommonHeaderProps, {}> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0,
     flexDirection: 'row',
-    paddingTop: 30,
-    paddingBottom: 16,
-    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 12,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.primaryColor,

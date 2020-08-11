@@ -5,6 +5,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ScreensKeys, IAssetDescriptionProps, IContactProps } from '@homzhub/mobile/src/navigation/interfaces';
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
+import { AssetNeighbourhood } from '@homzhub/mobile/src/screens/Asset/Search/AssetNeighbourhood';
 import ContactForm from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
 import AssetSearchScreen from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchScreen';
 import AssetSearchLanding from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchLanding';
@@ -18,6 +19,7 @@ export type RootStackParamList = {
   [ScreensKeys.PropertySearchLanding]: undefined;
   [ScreensKeys.PropertySearchScreen]: undefined;
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
+  [ScreensKeys.AssetNeighbourhood]: undefined;
   [ScreensKeys.PropertyFilters]: undefined;
   [ScreensKeys.ContactForm]: IContactProps;
 };
@@ -35,6 +37,7 @@ export const RootSearchStackNavigator = (): React.ReactElement => {
       <RootStack.Screen name={ScreensKeys.PropertySearchLanding} component={AssetSearchLanding} />
       <RootStack.Screen name={ScreensKeys.PropertySearchScreen} component={PropertySearchBottomTabs} />
       <RootStack.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
+      <RootStack.Screen name={ScreensKeys.AssetNeighbourhood} component={AssetNeighbourhood} />
       <RootStack.Screen name={ScreensKeys.PropertyFilters} component={AssetFilters} />
       <RootStack.Screen name={ScreensKeys.ContactForm} component={ContactForm} />
     </RootStack.Navigator>

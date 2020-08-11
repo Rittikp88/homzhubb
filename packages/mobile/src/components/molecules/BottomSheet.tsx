@@ -11,14 +11,24 @@ export interface IBottomSheetProps {
   visible: boolean;
   headerTitle?: string;
   isShadowView?: boolean;
-  onCloseSheet: () => void;
+  renderHeader?: boolean;
+  onCloseSheet?: () => void;
   sheetHeight?: number;
   sheetContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
   const rbSheet = useRef();
-  const { children, sheetContainerStyle, sheetHeight, visible, onCloseSheet, isShadowView, headerTitle = '' } = props;
+  const {
+    children,
+    sheetContainerStyle,
+    sheetHeight,
+    visible,
+    onCloseSheet,
+    isShadowView,
+    headerTitle = '',
+    renderHeader = true,
+  } = props;
 
   useEffect(() => {
     if (visible) {
@@ -32,7 +42,9 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
   const onCloseBottomSheet = (): void => {
     // @ts-ignore
     rbSheet.current.close();
-    onCloseSheet();
+    if (onCloseSheet) {
+      onCloseSheet();
+    }
   };
 
   const header = (): React.ReactElement => {
@@ -65,12 +77,12 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
       <View style={[styles.sheetContainer, sheetContainerStyle]}>
         {isShadowView ? (
           <>
-            <WithShadowView>{header()}</WithShadowView>
+            {renderHeader && <WithShadowView>{header()}</WithShadowView>}
             {children}
           </>
         ) : (
           <>
-            {header()}
+            {renderHeader && header()}
             {children}
           </>
         )}

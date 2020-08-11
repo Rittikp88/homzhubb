@@ -270,7 +270,9 @@
     "highlights": "Highlights",
     "factsFeatures": "Facts and Features",
     "similarProperties": "Similar Properties",
-    "bookTour": "Book a Tour"
+    "bookTour": "Book a Tour",
+    "nearby": "Nearby",
+    "commute": "Commute"
   },
   "assetDashboard": {
     "notification": "Notification",

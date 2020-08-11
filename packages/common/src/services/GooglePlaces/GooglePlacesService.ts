@@ -5,13 +5,18 @@ import {
   GooglePlaceData,
   GooglePlaceDetail,
   Point,
+  PointOfInterest,
 } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { ResponseHelper } from './ResponseHelper';
 
 const ENDPOINTS = {
   autoComplete: (): string => 'place/autocomplete/json',
   getPlaceDetail: (): string => 'place/details/json',
+  getNearbyPlaces: (): string => 'place/nearbysearch/json',
   getLocationData: (): string => 'geocode/json',
 };
+const NEARBY_RADIUS = 5000;
+const ZERO_RESULTS = 'ZERO_RESULTS';
 
 class GooglePlacesService {
   private axiosInstance = axios.create({
@@ -58,6 +63,25 @@ class GooglePlacesService {
     this.checkError(response.data);
 
     return response.data.results[0];
+  };
+
+  public getPOIs = async (
+    point: { latitude: number; longitude: number },
+    type: string,
+    radius = NEARBY_RADIUS
+  ): Promise<PointOfInterest[]> => {
+    const response = await this.axiosInstance.get(ENDPOINTS.getNearbyPlaces(), {
+      params: {
+        key: this.apiKey,
+        location: `${point.latitude},${point.longitude}`,
+        radius,
+        type,
+      },
+    });
+
+    this.checkError(response.data);
+    if (response.data.status === ZERO_RESULTS) return [];
+    return ResponseHelper.transformPOIs(response.data.results);
   };
 
   public getSplitAddress = (address: string): { primaryAddress: string; secondaryAddress: string } => {

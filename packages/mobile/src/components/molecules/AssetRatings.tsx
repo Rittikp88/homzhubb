@@ -48,7 +48,7 @@ const AssetRatings = (props: IProps): React.ReactElement => {
         keyExtractor={keyExtractor}
         data={reviews}
         renderItem={renderRating}
-        contentContainerStyle={styles.contentContainer}
+        contentContainerStyle={styles.sectionsContainer}
       />
       <Label type="large" textType="semiBold" style={styles.readMore}>
         {t('readMore')}
@@ -58,7 +58,7 @@ const AssetRatings = (props: IProps): React.ReactElement => {
 };
 
 const styles = StyleSheet.create({
-  contentContainer: {
+  sectionsContainer: {
     marginTop: 16,
   },
   itemContainer: {

@@ -21,7 +21,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
         renderItem={this.renderSearchResult}
         ListHeaderComponent={this.renderListHeader}
         keyExtractor={this.keyExtractor}
-        contentContainerStyle={styles.contentContainer}
+        contentContainerStyle={styles.sectionsContainer}
       />
     );
   };
@@ -55,7 +55,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
+  sectionsContainer: {
     backgroundColor: theme.colors.secondaryColor,
   },
   listItemContainer: {

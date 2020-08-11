@@ -112,3 +112,10 @@ export interface GoogleGeocodeData {
   types: PlaceType[];
   formatted_address: string;
 }
+
+export interface PointOfInterest {
+  placeId: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+}

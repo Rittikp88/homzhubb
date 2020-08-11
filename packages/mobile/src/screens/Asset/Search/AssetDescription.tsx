@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -154,8 +154,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           backgroundSpeed={10}
           onChangeHeaderVisibility={(isChanged: boolean): void => this.setState({ isScroll: isChanged })}
           renderForeground={(): React.ReactElement => this.renderCarousel()}
-          renderStickyHeader={(): React.ReactElement => this.stickyHeader()}
-          renderFixedHeader={(): React.ReactElement => this.fixedHeader()}
+          renderStickyHeader={(): React.ReactElement => this.renderStickyHeader()}
+          renderFixedHeader={(): React.ReactElement => this.renderFixedHeader()}
         >
           <View style={styles.screen}>
             {this.renderHeaderSection()}
@@ -248,10 +248,10 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
             subAddress={`${unitNumber ?? ''} ${blockNumber ?? ''}`}
             subAddressStyle={styles.subAddress}
           />
-          <View style={styles.textIcon}>
+          <TouchableOpacity style={styles.textIcon} onPress={this.onExploreNeighborhood}>
             <View style={styles.verticalDivider} />
             <Icon name={icons.houseMarker} size={30} color={theme.colors.blue} style={styles.iconStyle} />
-          </View>
+          </TouchableOpacity>
         </View>
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         <Divider />
@@ -430,11 +430,11 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
             <CustomMarker selected />
           </Marker>
         </MapView>
-        <View style={styles.exploreMapContainer}>
+        <TouchableOpacity style={styles.exploreMapContainer} onPress={this.onExploreNeighborhood}>
           <Label type="regular" textType="regular" style={styles.exploreMap}>
             {t('exploreMap')}
           </Label>
-        </View>
+        </TouchableOpacity>
         <Divider containerStyles={styles.divider} />
       </View>
     );
@@ -484,6 +484,36 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  private renderFixedHeader = (): React.ReactElement => {
+    const { isScroll } = this.state;
+    const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
+    const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
+    return (
+      <View key="fixed-header" style={sectionStyle}>
+        <View style={styles.headerLeftIcon}>
+          <Icon name={icons.leftArrow} size={22} color={color} onPress={this.onGoBack} />
+        </View>
+        <View style={styles.headerRightIcon}>
+          <Icon name={icons.heartOutline} size={22} color={color} />
+          <Icon name={icons.share} size={22} color={color} />
+        </View>
+      </View>
+    );
+  };
+
+  private renderStickyHeader = (): React.ReactElement => {
+    const { assetDetails } = this.props;
+    return (
+      <WithShadowView outerViewStyle={styles.shadowView}>
+        <View key="sticky-header" style={styles.stickySection}>
+          <Text type="regular" textType="semiBold" style={styles.headerTitle} numberOfLines={1}>
+            {assetDetails?.projectName ?? ''}
+          </Text>
+        </View>
+      </WithShadowView>
+    );
+  };
+
   public onGetAssetCallback = ({ status }: { status: boolean }): void => {
     const { navigation } = this.props;
     if (!status) {
@@ -515,43 +545,20 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     // TODO: add the logic of favorite property
   };
 
-  public updateSlide = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
-  };
-
-  private fixedHeader = (): React.ReactElement => {
-    const { isScroll } = this.state;
-    const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
-    const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
-    return (
-      <View key="fixed-header" style={sectionStyle}>
-        <View style={styles.headerLeftIcon}>
-          <Icon name={icons.leftArrow} size={22} color={color} onPress={this.goBack} />
-        </View>
-        <View style={styles.headerRightIcon}>
-          <Icon name={icons.heartOutline} size={22} color={color} />
-          <Icon name={icons.share} size={22} color={color} />
-        </View>
-      </View>
-    );
-  };
-
-  private stickyHeader = (): React.ReactElement => {
-    const { assetDetails } = this.props;
-    return (
-      <WithShadowView outerViewStyle={styles.shadowView}>
-        <View key="sticky-header" style={styles.stickySection}>
-          <Text type="regular" textType="semiBold" style={styles.headerTitle} numberOfLines={1}>
-            {assetDetails?.projectName ?? ''}
-          </Text>
-        </View>
-      </WithShadowView>
-    );
-  };
-
-  public goBack = (): void => {
+  private onGoBack = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  private onExploreNeighborhood = (): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.AssetNeighbourhood);
+  };
+
+  public updateSlide = (slideNumber: number): void => {
+    this.setState({ activeSlide: slideNumber });
   };
 
   public loadSimilarProperty = (propertyTermId: number, propertyId: number): void => {

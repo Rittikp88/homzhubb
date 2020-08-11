@@ -230,4 +230,11 @@ export class Asset {
   get isFavorite(): boolean {
     return this._isFavorite;
   }
+
+  get assetLocation(): { latitude: number; longitude: number } {
+    return {
+      longitude: this.longitude,
+      latitude: this.latitude,
+    };
+  }
 }
