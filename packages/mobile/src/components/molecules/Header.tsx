@@ -1,57 +1,46 @@
 import React from 'react';
-import { StatusBar, StyleProp, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
-import { Text, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components';
 
 interface ICommonHeaderProps {
-  backgroundColor: string;
   icon: string;
-  iconSize?: number;
-  iconColor?: string;
-  iconStyle?: StyleProp<ViewStyle>;
   onIconPress?: () => void;
+  type?: 'primary' | 'secondary';
   isHeadingVisible?: boolean;
-  titleType?: TextSizeType;
-  titleFontType?: FontWeightType;
   title?: string;
-  titleStyle?: StyleProp<TextStyle>;
   testID?: string;
 }
 const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 34 : StatusBar.currentHeight;
 
 export class Header extends React.PureComponent<ICommonHeaderProps, {}> {
   public render(): React.ReactNode {
-    const {
-      backgroundColor,
-      icon,
-      iconSize,
-      iconColor,
-      iconStyle,
-      onIconPress,
-      isHeadingVisible,
-      title,
-      titleType,
-      titleFontType,
-      titleStyle = {},
-      testID,
-    } = this.props;
+    const { type = 'primary', icon, onIconPress, isHeadingVisible = true, title, testID } = this.props;
+
+    let backgroundColor = theme.colors.primaryColor;
+    let barStyle = 'light-content';
+    let textColor = theme.colors.white;
+    if (type === 'secondary') {
+      backgroundColor = theme.colors.white;
+      textColor = theme.colors.darkTint1;
+      barStyle = 'dark-content';
+    }
+
     return (
       <>
         <View style={{ height: STATUSBAR_HEIGHT, backgroundColor }}>
-          <StatusBar translucent backgroundColor={backgroundColor} barStyle="light-content" />
-        </View>
-        <View style={styles.container} testID={testID}>
-          <Icon
-            name={icon}
-            size={iconSize || 22}
-            color={iconColor || theme.colors.darkTint4}
-            style={[styles.icon, iconStyle]}
-            onPress={onIconPress}
+          <StatusBar
+            translucent
+            backgroundColor={backgroundColor}
+            barStyle={barStyle as 'light-content' | 'dark-content'}
           />
+        </View>
+        <View style={[styles.container, { backgroundColor }]} testID={testID}>
+          <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
           {isHeadingVisible && (
-            <Text type={titleType || 'small'} textType={titleFontType || 'semiBold'} style={[styles.text, titleStyle]}>
+            <Text numberOfLines={1} type="small" textType="semiBold" style={[styles.title, { color: textColor }]}>
               {title ?? ''}
             </Text>
           )}
@@ -61,21 +50,21 @@ export class Header extends React.PureComponent<ICommonHeaderProps, {}> {
   }
 }
 
+const BOTTOM_PADDING = 12;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    paddingBottom: BOTTOM_PADDING,
     paddingTop: 20,
-    paddingBottom: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.primaryColor,
+  },
+  title: {
+    width: 300,
   },
   icon: {
     position: 'absolute',
-    bottom: 16,
+    bottom: BOTTOM_PADDING,
     left: 16,
-  },
-  text: {
-    color: theme.colors.white,
   },
 });

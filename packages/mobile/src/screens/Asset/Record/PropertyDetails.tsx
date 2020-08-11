@@ -94,15 +94,11 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
     return (
       <View style={styles.container}>
         <Header
-          backgroundColor={theme.colors.primaryColor}
+          type="primary"
           icon={icons.leftArrow}
-          iconColor="white"
           onIconPress={this.handleIconPress}
           isHeadingVisible
           title={t('property:headerTitle')}
-          titleType="small"
-          titleFontType="semiBold"
-          titleStyle={styles.headerTitle}
         />
         <ScrollView style={styles.scrollContainer}>
           <PropertyDetailsLocation
@@ -321,9 +317,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-  },
-  headerTitle: {
-    color: theme.colors.white,
   },
   shadowView: {
     paddingTop: 10,

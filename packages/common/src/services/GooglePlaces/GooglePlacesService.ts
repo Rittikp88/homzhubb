@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import {
   GoogleGeocodeData,
   GooglePlaceData,
@@ -7,7 +8,6 @@ import {
   Point,
   PointOfInterest,
 } from '@homzhub/common/src/services/GooglePlaces/interfaces';
-import { ResponseHelper } from './ResponseHelper';
 
 const ENDPOINTS = {
   autoComplete: (): string => 'place/autocomplete/json',

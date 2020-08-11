@@ -24,23 +24,16 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
       }
     >
       <Header
-        backgroundColor="#0084F8"
         icon="left-arrow"
-        iconColor="#FFFFFF"
-        isHeadingVisible={true}
         onIconPress={[MockFunction]}
         title="Animated List"
-        titleStyle={
-          Object {
-            "color": "#FFFFFF",
-          }
-        }
+        type="primary"
       >
         <View
           style={
             Object {
               "backgroundColor": "#0084F8",
-              "height": 30,
+              "height": 34,
             }
           }
         >
@@ -48,7 +41,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
             style={
               Object {
                 "backgroundColor": "#0084F8",
-                "height": 30,
+                "height": 34,
               }
             }
           >
@@ -63,30 +56,34 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
         </View>
         <View
           style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "#0084F8",
-              "flex": 0,
-              "flexDirection": "row",
-              "justifyContent": "center",
-              "paddingBottom": 16,
-              "paddingHorizontal": 16,
-              "paddingTop": 30,
-            }
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "paddingBottom": 12,
+                "paddingTop": 20,
+              },
+              Object {
+                "backgroundColor": "#0084F8",
+              },
+            ]
           }
         >
           <View
             style={
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "#0084F8",
-                "flex": 0,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingBottom": 16,
-                "paddingHorizontal": 16,
-                "paddingTop": 30,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingBottom": 12,
+                  "paddingTop": 20,
+                },
+                Object {
+                  "backgroundColor": "#0084F8",
+                },
+              ]
             }
           >
             <Icon
@@ -96,14 +93,11 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               onPress={[MockFunction]}
               size={22}
               style={
-                Array [
-                  Object {
-                    "bottom": 16,
-                    "left": 16,
-                    "position": "absolute",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "bottom": 16,
+                  "left": 16,
+                  "position": "absolute",
+                }
               }
             >
               <Text
@@ -115,14 +109,11 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       "color": "#FFFFFF",
                       "fontSize": 22,
                     },
-                    Array [
-                      Object {
-                        "bottom": 16,
-                        "left": 16,
-                        "position": "absolute",
-                      },
-                      undefined,
-                    ],
+                    Object {
+                      "bottom": 16,
+                      "left": 16,
+                      "position": "absolute",
+                    },
                     Object {
                       "fontFamily": "icomoon",
                       "fontStyle": "normal",
@@ -141,14 +132,11 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                         "color": "#FFFFFF",
                         "fontSize": 22,
                       },
-                      Array [
-                        Object {
-                          "bottom": 16,
-                          "left": 16,
-                          "position": "absolute",
-                        },
-                        undefined,
-                      ],
+                      Object {
+                        "bottom": 16,
+                        "left": 16,
+                        "position": "absolute",
+                      },
                       Object {
                         "fontFamily": "icomoon",
                         "fontStyle": "normal",
@@ -164,14 +152,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
             </Icon>
             <Text
               style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                  },
-                  Object {
-                    "color": "#FFFFFF",
-                  },
-                ]
+                Object {
+                  "color": "#FFFFFF",
+                }
               }
               textType="semiBold"
               type="small"
@@ -188,14 +171,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       "fontFamily": "OpenSans-SemiBold",
                       "fontWeight": "600",
                     },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                      },
-                      Object {
-                        "color": "#FFFFFF",
-                      },
-                    ],
+                    Object {
+                      "color": "#FFFFFF",
+                    },
                   ]
                 }
               >
@@ -211,14 +189,9 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                         "fontFamily": "OpenSans-SemiBold",
                         "fontWeight": "600",
                       },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                        },
-                        Object {
-                          "color": "#FFFFFF",
-                        },
-                      ],
+                      Object {
+                        "color": "#FFFFFF",
+                      },
                     ]
                   }
                 >

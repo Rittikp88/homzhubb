@@ -76,14 +76,10 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
     return (
       <>
         <Header
+          type="primary"
           icon={icons.leftArrow}
-          iconColor={theme.colors.white}
           onIconPress={this.handleBackPress}
-          isHeadingVisible
           title={this.getTitleStringsForStep(steps[currentStep]).screenTitle}
-          titleType="small"
-          titleFontType="semiBold"
-          backgroundColor={theme.colors.primaryColor}
           testID="lblNavigate"
         />
         <StepIndicatorComponent

@@ -12,19 +12,11 @@ exports[`Property Details Screen Component should render property details screen
       }
     >
       <Header
-        backgroundColor="#0084F8"
         icon="left-arrow"
-        iconColor="white"
         isHeadingVisible={true}
         onIconPress={[Function]}
         title="property:headerTitle"
-        titleFontType="semiBold"
-        titleStyle={
-          Object {
-            "color": "#FFFFFF",
-          }
-        }
-        titleType="small"
+        type="primary"
       />
       <ScrollViewMock
         style={
@@ -173,19 +165,11 @@ exports[`Property Details Screen Component should render property details screen
       }
     >
       <Header
-        backgroundColor="#0084F8"
         icon="left-arrow"
-        iconColor="white"
         isHeadingVisible={true}
         onIconPress={[Function]}
         title="property:headerTitle"
-        titleFontType="semiBold"
-        titleStyle={
-          Object {
-            "color": "#FFFFFF",
-          }
-        }
-        titleType="small"
+        type="primary"
       />
       <ScrollViewMock
         style={

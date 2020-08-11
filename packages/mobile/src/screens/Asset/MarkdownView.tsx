@@ -55,16 +55,11 @@ export class MarkdownView extends PureComponent<Props, IMarkdownState> {
     return (
       <View style={styles.container}>
         <Header
-          backgroundColor={theme.colors.primaryColor}
+          type="primary"
           icon={icons.leftArrow}
-          iconColor="white"
-          iconStyle={styles.iconStyle}
           onIconPress={this.navigateBack}
           isHeadingVisible
           title={params.title ?? ''}
-          titleType="regular"
-          titleFontType="semiBold"
-          titleStyle={styles.headerTitle}
         />
         <ScrollView style={styles.scrollView}>
           <View style={styles.markdownContainer}>
@@ -86,12 +81,6 @@ export class MarkdownView extends PureComponent<Props, IMarkdownState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  iconStyle: {
-    flex: 1,
-  },
-  headerTitle: {
-    color: theme.colors.white,
   },
   scrollView: {
     flex: 1,

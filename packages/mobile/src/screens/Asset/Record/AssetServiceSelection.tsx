@@ -53,13 +53,7 @@ export class AssetServiceSelection extends Component<Props, IRentServicesState> 
     const { user, t, serviceList } = this.props;
     return (
       <>
-        <Header
-          backgroundColor={theme.colors.primaryColor}
-          icon={icons.leftArrow}
-          iconColor={theme.colors.white}
-          onIconPress={this.handleBackPress}
-          testID="headerIconPress"
-        />
+        <Header type="primary" icon={icons.leftArrow} onIconPress={this.handleBackPress} testID="headerIconPress" />
         <View style={styles.container}>
           <View style={styles.content}>
             <Text type="large" textType="semiBold" style={styles.title}>

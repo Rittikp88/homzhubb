@@ -8,28 +8,34 @@ exports[`PaginationComponent should match snapshot 1`] = `
   animatedTension={50}
   delayPressInDot={0}
   dotStyle={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "borderColor": "#0084F8",
-      "borderRadius": 5,
-      "borderStyle": "solid",
-      "borderWidth": 3,
-      "height": 10,
-      "marginHorizontal": 2,
-      "width": 10,
-    }
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#0084F8",
+        "borderRadius": 5,
+        "borderStyle": "solid",
+        "borderWidth": 3,
+        "height": 10,
+        "marginHorizontal": 2,
+        "width": 10,
+      },
+      undefined,
+    ]
   }
   dotsLength={0}
   inactiveDotOpacity={1}
   inactiveDotScale={1}
   inactiveDotStyle={
-    Object {
-      "backgroundColor": "#0084F8",
-      "borderRadius": 5,
-      "height": 10,
-      "marginHorizontal": 2,
-      "width": 10,
-    }
+    Array [
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderRadius": 5,
+        "height": 10,
+        "marginHorizontal": 2,
+        "width": 10,
+      },
+      undefined,
+    ]
   }
   tappableDots={false}
   vertical={false}

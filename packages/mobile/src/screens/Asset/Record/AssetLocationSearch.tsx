@@ -7,7 +7,6 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { CurrentLocation, Header, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
@@ -34,15 +33,11 @@ class AssetLocationSearch extends React.PureComponent<Props, IState> {
     return (
       <View style={styles.container}>
         <Header
+          type="primary"
           icon={icons.leftArrow}
-          iconColor={theme.colors.white}
           onIconPress={this.onBackPress}
           isHeadingVisible
           title={t('common:location')}
-          titleType="small"
-          titleFontType="semiBold"
-          titleStyle={styles.navTitle}
-          backgroundColor={theme.colors.primaryColor}
         />
         <SearchBar
           placeholder={t('searchProject')}
@@ -137,9 +132,6 @@ class AssetLocationSearch extends React.PureComponent<Props, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  navTitle: {
-    color: theme.colors.white,
   },
 });
 

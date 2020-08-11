@@ -10,20 +10,11 @@ exports[`Add property Map Screen Component should render property details screen
   }
 >
   <Header
-    backgroundColor="#0084F8"
     icon="left-arrow"
-    iconColor="#FFFFFF"
-    isHeadingVisible={true}
     onIconPress={[Function]}
     testID="location"
     title="common:location"
-    titleFontType="semiBold"
-    titleStyle={
-      Object {
-        "color": "#FFFFFF",
-      }
-    }
-    titleType="small"
+    type="primary"
   />
   <View
     style={
@@ -145,20 +136,11 @@ exports[`Add property Map Screen Component should render snapshot for states 1`]
   }
 >
   <Header
-    backgroundColor="#0084F8"
     icon="left-arrow"
-    iconColor="#FFFFFF"
-    isHeadingVisible={true}
     onIconPress={[Function]}
     testID="location"
     title="common:location"
-    titleFontType="semiBold"
-    titleStyle={
-      Object {
-        "color": "#FFFFFF",
-      }
-    }
-    titleType="small"
+    type="primary"
   />
   <View
     style={

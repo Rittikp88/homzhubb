@@ -106,15 +106,10 @@ export class AssetLocationMap extends React.PureComponent<Props, IAddPropertySta
     return (
       <>
         <Header
+          type="primary"
           icon={icons.leftArrow}
-          iconColor={theme.colors.white}
           onIconPress={this.onBackPress}
-          isHeadingVisible
           title={t('common:location')}
-          titleType="small"
-          titleFontType="semiBold"
-          titleStyle={styles.textColor}
-          backgroundColor={theme.colors.primaryColor}
           testID="location"
         />
         <View style={styles.titleContainer}>

@@ -6,7 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Divider, Label, Text } from '@homzhub/common/src/components';
 
-interface ISection {
+interface IPlaceTypeData {
   key: PlaceTypes;
   label: string;
   icon: string;
@@ -14,55 +14,55 @@ interface ISection {
 }
 
 interface IProps {
-  sections: ISection[];
-  selectedPlaceType: PlaceTypes;
-  selectedPlaceId: string;
-  onSectionChange: (newSection: PlaceTypes) => void;
+  placeTypes: IPlaceTypeData[];
+  selectedPlaceType: IPlaceTypeData;
+  onPlaceTypePress: (newSection: PlaceTypes) => void;
+  pointsOfInterest: PointOfInterest[];
+  selectedPoiId: string;
   onPoiPress: (poi: PointOfInterest) => void;
-  results: PointOfInterest[];
 }
 
 class ExploreSections extends React.PureComponent<IProps> {
   public render = (): React.ReactNode => {
-    const { sections, results, selectedPlaceType, selectedPlaceId } = this.props;
+    const { placeTypes, pointsOfInterest, selectedPlaceType, selectedPoiId } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.shadowContainer}>
-          <FlatList<ISection>
+          <FlatList<IPlaceTypeData>
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={sections}
+            data={placeTypes}
             renderItem={this.renderSectionItem}
             contentContainerStyle={styles.sectionsContainer}
-            extraData={selectedPlaceType}
+            extraData={selectedPlaceType.key}
             keyExtractor={this.keyExtractorSections}
           />
         </View>
         <FlatList<PointOfInterest>
           showsVerticalScrollIndicator={false}
-          data={results}
+          data={pointsOfInterest}
           ListHeaderComponent={this.renderListHeader}
-          renderItem={this.renderResult}
+          renderItem={this.renderPOI}
           contentContainerStyle={styles.resultContainer}
-          extraData={selectedPlaceId}
+          extraData={selectedPoiId}
           keyExtractor={this.keyExtractorResult}
         />
       </View>
     );
   };
 
-  private renderSectionItem = ({ item }: { item: ISection }): React.ReactElement => {
-    const { selectedPlaceType, onSectionChange } = this.props;
+  private renderSectionItem = ({ item }: { item: IPlaceTypeData }): React.ReactElement => {
+    const { selectedPlaceType, onPlaceTypePress } = this.props;
     const { icon, key } = item;
     let backgroundColor = theme.colors.background;
     let iconColor = theme.colors.active;
 
-    if (key === selectedPlaceType) {
+    if (key === selectedPlaceType.key) {
       backgroundColor = theme.colors.active;
       iconColor = theme.colors.white;
     }
 
-    const onPress = (): void => onSectionChange(key);
+    const onPress = (): void => onPlaceTypePress(key);
 
     return (
       <TouchableOpacity onPress={onPress} style={[styles.iconContainer, { backgroundColor }]}>
@@ -72,15 +72,14 @@ class ExploreSections extends React.PureComponent<IProps> {
   };
 
   private renderListHeader = (): React.ReactElement => {
-    const { selectedPlaceType, sections } = this.props;
-    const x = sections.find((section) => section.key === selectedPlaceType);
+    const { selectedPlaceType, pointsOfInterest } = this.props;
 
     return (
       <>
         <View style={styles.listHeader}>
-          <Icon name={x?.icon} size={24} color={theme.colors.darkTint4} />
+          <Icon name={selectedPlaceType.icon} size={24} color={theme.colors.darkTint4} />
           <Text type="small" style={styles.title}>
-            Some Title
+            {`${pointsOfInterest.length} ${selectedPlaceType.label}`}
           </Text>
         </View>
         <Divider containerStyles={styles.divider} />
@@ -88,12 +87,11 @@ class ExploreSections extends React.PureComponent<IProps> {
     );
   };
 
-  private renderResult = ({ item }: { item: PointOfInterest }): React.ReactElement => {
-    const { selectedPlaceType, selectedPlaceId, sections, onPoiPress } = this.props;
-    const x = sections.find((section) => section.key === selectedPlaceType);
-    let color;
+  private renderPOI = ({ item }: { item: PointOfInterest }): React.ReactElement => {
+    const { selectedPlaceType, selectedPoiId, onPoiPress } = this.props;
 
-    if (selectedPlaceId === item.placeId) {
+    let color = theme.colors.darkTint5;
+    if (selectedPoiId === item.placeId) {
       color = theme.colors.active;
     }
 
@@ -104,16 +102,12 @@ class ExploreSections extends React.PureComponent<IProps> {
     return (
       <TouchableOpacity onPress={onResultPress} style={styles.resultItem}>
         <View style={styles.resultNameContainer}>
-          <Icon
-            name={x?.mapMarker}
-            size={16}
-            color={selectedPlaceId === item.placeId ? theme.colors.active : theme.colors.darkTint5}
-          />
+          <Icon name={selectedPlaceType.mapMarker} size={16} color={color} />
           <Label type="large" style={[styles.title, { color }]} numberOfLines={1}>
             {item.name}
           </Label>
         </View>
-        <Label type="regular" style={[styles.resultDistance, { color }]}>
+        <Label type="regular" style={{ color }}>
           2.11 miles
         </Label>
       </TouchableOpacity>
@@ -121,7 +115,7 @@ class ExploreSections extends React.PureComponent<IProps> {
   };
 
   private keyExtractorResult = (item: PointOfInterest): string => item.placeId;
-  private keyExtractorSections = (item: ISection, index: number): string => `${item.key}-${index}`;
+  private keyExtractorSections = (item: IPlaceTypeData, index: number): string => `${item.key}-${index}`;
 }
 
 const styles = StyleSheet.create({
@@ -174,9 +168,6 @@ const styles = StyleSheet.create({
     width: 232,
     paddingStart: 12,
     color: theme.colors.darkTint4,
-  },
-  resultDistance: {
-    color: theme.colors.darkTint5,
   },
 });
 

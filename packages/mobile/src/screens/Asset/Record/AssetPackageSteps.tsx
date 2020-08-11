@@ -53,16 +53,11 @@ export class AssetPackageSteps extends React.PureComponent<Props, {}> {
       <View style={styles.container}>
         <View style={styles.flexOne}>
           <Header
-            backgroundColor={theme.colors.primaryColor}
+            type="primary"
             icon={icons.leftArrow}
-            iconColor="white"
-            iconStyle={styles.flexOne}
             onIconPress={this.navigateBack}
             isHeadingVisible
             title={t('property:listProperty')}
-            titleType="regular"
-            titleFontType="semiBold"
-            titleStyle={styles.headerTitle}
           />
           <ScrollView style={styles.flexOne}>
             <View style={styles.listing}>
@@ -184,9 +179,6 @@ const styles = StyleSheet.create({
   },
   flexOne: {
     flex: 1,
-  },
-  headerTitle: {
-    color: theme.colors.white,
   },
   listing: {
     flexDirection: 'row',

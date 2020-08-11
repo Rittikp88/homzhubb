@@ -31,16 +31,7 @@ export class AnimatedServiceList extends Component<IProps> {
     });
     return (
       <View style={styles.container}>
-        <Header
-          isHeadingVisible
-          title={headerTitle}
-          icon={icons.leftArrow}
-          iconColor={theme.colors.white}
-          titleStyle={styles.headerTitle}
-          backgroundColor={theme.colors.primaryColor}
-          onIconPress={onIconPress}
-          testID={testID}
-        />
+        <Header type="primary" title={headerTitle} icon={icons.leftArrow} onIconPress={onIconPress} testID={testID} />
         <Animated.View style={[styles.headingView, { height: headerHeight }]} />
         <ScrollView
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
@@ -68,9 +59,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-  },
-  headerTitle: {
-    color: theme.colors.white,
   },
   scrollView: {
     width: '100%',

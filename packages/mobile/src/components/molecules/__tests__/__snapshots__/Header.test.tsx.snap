@@ -2,16 +2,14 @@
 
 exports[`Header should match snapshot 1`] = `
 <Header
-  backgroundColor="#0084F8"
   icon="left-arrow"
-  isHeadingVisible={true}
   onIconPress={[MockFunction]}
 >
   <View
     style={
       Object {
         "backgroundColor": "#0084F8",
-        "height": 30,
+        "height": 34,
       }
     }
   >
@@ -19,7 +17,7 @@ exports[`Header should match snapshot 1`] = `
       style={
         Object {
           "backgroundColor": "#0084F8",
-          "height": 30,
+          "height": 34,
         }
       }
     >
@@ -34,47 +32,48 @@ exports[`Header should match snapshot 1`] = `
   </View>
   <View
     style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#0084F8",
-        "flex": 0,
-        "flexDirection": "row",
-        "justifyContent": "center",
-        "paddingBottom": 16,
-        "paddingHorizontal": 16,
-        "paddingTop": 30,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingBottom": 12,
+          "paddingTop": 20,
+        },
+        Object {
+          "backgroundColor": "#0084F8",
+        },
+      ]
     }
   >
     <View
       style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#0084F8",
-          "flex": 0,
-          "flexDirection": "row",
-          "justifyContent": "center",
-          "paddingBottom": 16,
-          "paddingHorizontal": 16,
-          "paddingTop": 30,
-        }
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingBottom": 12,
+            "paddingTop": 20,
+          },
+          Object {
+            "backgroundColor": "#0084F8",
+          },
+        ]
       }
     >
       <Icon
         allowFontScaling={false}
-        color="#4C5F72"
+        color="#FFFFFF"
         name="left-arrow"
         onPress={[MockFunction]}
         size={22}
         style={
-          Array [
-            Object {
-              "bottom": 16,
-              "left": 16,
-              "position": "absolute",
-            },
-            undefined,
-          ]
+          Object {
+            "bottom": 16,
+            "left": 16,
+            "position": "absolute",
+          }
         }
       >
         <Text
@@ -83,17 +82,14 @@ exports[`Header should match snapshot 1`] = `
           style={
             Array [
               Object {
-                "color": "#4C5F72",
+                "color": "#FFFFFF",
                 "fontSize": 22,
               },
-              Array [
-                Object {
-                  "bottom": 16,
-                  "left": 16,
-                  "position": "absolute",
-                },
-                undefined,
-              ],
+              Object {
+                "bottom": 16,
+                "left": 16,
+                "position": "absolute",
+              },
               Object {
                 "fontFamily": "icomoon",
                 "fontStyle": "normal",
@@ -109,17 +105,14 @@ exports[`Header should match snapshot 1`] = `
             style={
               Array [
                 Object {
-                  "color": "#4C5F72",
+                  "color": "#FFFFFF",
                   "fontSize": 22,
                 },
-                Array [
-                  Object {
-                    "bottom": 16,
-                    "left": 16,
-                    "position": "absolute",
-                  },
-                  undefined,
-                ],
+                Object {
+                  "bottom": 16,
+                  "left": 16,
+                  "position": "absolute",
+                },
                 Object {
                   "fontFamily": "icomoon",
                   "fontStyle": "normal",
@@ -135,12 +128,9 @@ exports[`Header should match snapshot 1`] = `
       </Icon>
       <Text
         style={
-          Array [
-            Object {
-              "color": "#FFFFFF",
-            },
-            Object {},
-          ]
+          Object {
+            "color": "#FFFFFF",
+          }
         }
         textType="semiBold"
         type="small"
@@ -157,12 +147,9 @@ exports[`Header should match snapshot 1`] = `
                 "fontFamily": "OpenSans-SemiBold",
                 "fontWeight": "600",
               },
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                },
-                Object {},
-              ],
+              Object {
+                "color": "#FFFFFF",
+              },
             ]
           }
         >
@@ -178,12 +165,9 @@ exports[`Header should match snapshot 1`] = `
                   "fontFamily": "OpenSans-SemiBold",
                   "fontWeight": "600",
                 },
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                  },
-                  Object {},
-                ],
+                Object {
+                  "color": "#FFFFFF",
+                },
               ]
             }
           />
@@ -194,34 +178,34 @@ exports[`Header should match snapshot 1`] = `
 </Header>
 `;
 
-exports[`Header should match snapshot without title 1`] = `
+exports[`Header should match snapshot for secondary theme 1`] = `
 <Header
-  backgroundColor="#0084F8"
   icon="left-arrow"
   isHeadingVisible={true}
   onIconPress={[MockFunction]}
   title="Header"
+  type="secondary"
 >
   <View
     style={
       Object {
-        "backgroundColor": "#0084F8",
-        "height": 30,
+        "backgroundColor": "#FFFFFF",
+        "height": 34,
       }
     }
   >
     <View
       style={
         Object {
-          "backgroundColor": "#0084F8",
-          "height": 30,
+          "backgroundColor": "#FFFFFF",
+          "height": 34,
         }
       }
     >
       <StatusBar
         animated={false}
-        backgroundColor="#0084F8"
-        barStyle="light-content"
+        backgroundColor="#FFFFFF"
+        barStyle="dark-content"
         showHideTransition="fade"
         translucent={true}
       />
@@ -229,47 +213,48 @@ exports[`Header should match snapshot without title 1`] = `
   </View>
   <View
     style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#0084F8",
-        "flex": 0,
-        "flexDirection": "row",
-        "justifyContent": "center",
-        "paddingBottom": 16,
-        "paddingHorizontal": 16,
-        "paddingTop": 30,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingBottom": 12,
+          "paddingTop": 20,
+        },
+        Object {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   >
     <View
       style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#0084F8",
-          "flex": 0,
-          "flexDirection": "row",
-          "justifyContent": "center",
-          "paddingBottom": 16,
-          "paddingHorizontal": 16,
-          "paddingTop": 30,
-        }
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingBottom": 12,
+            "paddingTop": 20,
+          },
+          Object {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
       }
     >
       <Icon
         allowFontScaling={false}
-        color="#4C5F72"
+        color="#001B36"
         name="left-arrow"
         onPress={[MockFunction]}
         size={22}
         style={
-          Array [
-            Object {
-              "bottom": 16,
-              "left": 16,
-              "position": "absolute",
-            },
-            undefined,
-          ]
+          Object {
+            "bottom": 16,
+            "left": 16,
+            "position": "absolute",
+          }
         }
       >
         <Text
@@ -278,17 +263,14 @@ exports[`Header should match snapshot without title 1`] = `
           style={
             Array [
               Object {
-                "color": "#4C5F72",
+                "color": "#001B36",
                 "fontSize": 22,
               },
-              Array [
-                Object {
-                  "bottom": 16,
-                  "left": 16,
-                  "position": "absolute",
-                },
-                undefined,
-              ],
+              Object {
+                "bottom": 16,
+                "left": 16,
+                "position": "absolute",
+              },
               Object {
                 "fontFamily": "icomoon",
                 "fontStyle": "normal",
@@ -304,17 +286,14 @@ exports[`Header should match snapshot without title 1`] = `
             style={
               Array [
                 Object {
-                  "color": "#4C5F72",
+                  "color": "#001B36",
                   "fontSize": 22,
                 },
-                Array [
-                  Object {
-                    "bottom": 16,
-                    "left": 16,
-                    "position": "absolute",
-                  },
-                  undefined,
-                ],
+                Object {
+                  "bottom": 16,
+                  "left": 16,
+                  "position": "absolute",
+                },
                 Object {
                   "fontFamily": "icomoon",
                   "fontStyle": "normal",
@@ -330,12 +309,9 @@ exports[`Header should match snapshot without title 1`] = `
       </Icon>
       <Text
         style={
-          Array [
-            Object {
-              "color": "#FFFFFF",
-            },
-            Object {},
-          ]
+          Object {
+            "color": "#001B36",
+          }
         }
         textType="semiBold"
         type="small"
@@ -352,12 +328,9 @@ exports[`Header should match snapshot without title 1`] = `
                 "fontFamily": "OpenSans-SemiBold",
                 "fontWeight": "600",
               },
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                },
-                Object {},
-              ],
+              Object {
+                "color": "#001B36",
+              },
             ]
           }
         >
@@ -373,12 +346,191 @@ exports[`Header should match snapshot without title 1`] = `
                   "fontFamily": "OpenSans-SemiBold",
                   "fontWeight": "600",
                 },
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                  },
-                  Object {},
-                ],
+                Object {
+                  "color": "#001B36",
+                },
+              ]
+            }
+          >
+            Header
+          </Text>
+        </Text>
+      </Text>
+    </View>
+  </View>
+</Header>
+`;
+
+exports[`Header should match snapshot without title 1`] = `
+<Header
+  icon="left-arrow"
+  isHeadingVisible={true}
+  onIconPress={[MockFunction]}
+  title="Header"
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#0084F8",
+        "height": 34,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#0084F8",
+          "height": 34,
+        }
+      }
+    >
+      <StatusBar
+        animated={false}
+        backgroundColor="#0084F8"
+        barStyle="light-content"
+        showHideTransition="fade"
+        translucent={true}
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingBottom": 12,
+          "paddingTop": 20,
+        },
+        Object {
+          "backgroundColor": "#0084F8",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingBottom": 12,
+            "paddingTop": 20,
+          },
+          Object {
+            "backgroundColor": "#0084F8",
+          },
+        ]
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#FFFFFF"
+        name="left-arrow"
+        onPress={[MockFunction]}
+        size={22}
+        style={
+          Object {
+            "bottom": 16,
+            "left": 16,
+            "position": "absolute",
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          onPress={[MockFunction]}
+          style={
+            Array [
+              Object {
+                "color": "#FFFFFF",
+                "fontSize": 22,
+              },
+              Object {
+                "bottom": 16,
+                "left": 16,
+                "position": "absolute",
+              },
+              Object {
+                "fontFamily": "icomoon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            onPress={[MockFunction]}
+            style={
+              Array [
+                Object {
+                  "color": "#FFFFFF",
+                  "fontSize": 22,
+                },
+                Object {
+                  "bottom": 16,
+                  "left": 16,
+                  "position": "absolute",
+                },
+                Object {
+                  "fontFamily": "icomoon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </Text>
+      </Icon>
+      <Text
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "fontSize": 16,
+                "lineHeight": 24,
+                "textAlign": "left",
+              },
+              Object {
+                "fontFamily": "OpenSans-SemiBold",
+                "fontWeight": "600",
+              },
+              Object {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontSize": 16,
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                Object {
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontWeight": "600",
+                },
+                Object {
+                  "color": "#FFFFFF",
+                },
               ]
             }
           >

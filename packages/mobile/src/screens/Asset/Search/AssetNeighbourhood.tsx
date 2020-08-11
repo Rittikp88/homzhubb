@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -25,26 +26,74 @@ enum Tabs {
   Nearby = 0,
   Commute = 1,
 }
-const COMMUTE = [
-  { key: PlaceTypes.Railway, label: 'Railway Station', icon: icons.train, mapMarker: icons.trainMarker },
-  { key: PlaceTypes.BusStation, label: 'Bus Station', icon: icons.bus, mapMarker: icons.busMarker },
-  { key: PlaceTypes.Airport, label: 'Airport', icon: icons.airport, mapMarker: icons.airportMarker },
-];
-const NEARBY = [
-  { key: PlaceTypes.School, label: 'School', icon: icons.school, mapMarker: icons.schoolMarker },
-  { key: PlaceTypes.Mall, label: 'Mall', icon: icons.mall, mapMarker: icons.mallMarker },
-  { key: PlaceTypes.Restaurant, label: 'Restaurant', icon: icons.restaurant, mapMarker: icons.restaurantMarker },
-  { key: PlaceTypes.GasStation, label: 'Fuel Station', icon: icons.fuel, mapMarker: icons.fuelMarker },
-  { key: PlaceTypes.Hospital, label: 'Hospital', icon: icons.hospital, mapMarker: icons.hospitalMarker },
-  { key: PlaceTypes.Groceries, label: 'Groceries', icon: icons.grocery, mapMarker: icons.groceryMarker },
-  { key: PlaceTypes.Park, label: 'Park', icon: icons.park, mapMarker: icons.parkMarker },
-  { key: PlaceTypes.FilmTheater, label: 'Theater', icon: icons.cinema, mapMarker: icons.cinemaMarker },
-  { key: PlaceTypes.Atm, label: 'ATM', icon: icons.bank, mapMarker: icons.bankMarker },
-  { key: PlaceTypes.Chemist, label: 'Chemist', icon: icons.chemist, mapMarker: icons.chemistMarker },
-  { key: PlaceTypes.Lodging, label: 'Hotel', icon: icons.lodge, mapMarker: icons.lodgeMarker },
-];
 
-const EXPANDED = theme.viewport.height * 0.5;
+const PLACES_DATA = {
+  [Tabs.Commute]: {
+    [PlaceTypes.Railway]: {
+      key: PlaceTypes.Railway,
+      label: 'Railway Station',
+      icon: icons.train,
+      mapMarker: icons.trainMarker,
+    },
+    [PlaceTypes.BusStation]: {
+      key: PlaceTypes.BusStation,
+      label: 'Bus Station',
+      icon: icons.bus,
+      mapMarker: icons.busMarker,
+    },
+    [PlaceTypes.Airport]: {
+      key: PlaceTypes.Airport,
+      label: 'Airport',
+      icon: icons.airport,
+      mapMarker: icons.airportMarker,
+    },
+  },
+  [Tabs.Nearby]: {
+    [PlaceTypes.School]: { key: PlaceTypes.School, label: 'School', icon: icons.school, mapMarker: icons.schoolMarker },
+    [PlaceTypes.Mall]: { key: PlaceTypes.Mall, label: 'Mall', icon: icons.mall, mapMarker: icons.mallMarker },
+    [PlaceTypes.Restaurant]: {
+      key: PlaceTypes.Restaurant,
+      label: 'Restaurant',
+      icon: icons.restaurant,
+      mapMarker: icons.restaurantMarker,
+    },
+    [PlaceTypes.GasStation]: {
+      key: PlaceTypes.GasStation,
+      label: 'Fuel Station',
+      icon: icons.fuel,
+      mapMarker: icons.fuelMarker,
+    },
+    [PlaceTypes.Hospital]: {
+      key: PlaceTypes.Hospital,
+      label: 'Hospital',
+      icon: icons.hospital,
+      mapMarker: icons.hospitalMarker,
+    },
+    [PlaceTypes.Groceries]: {
+      key: PlaceTypes.Groceries,
+      label: 'Groceries',
+      icon: icons.grocery,
+      mapMarker: icons.groceryMarker,
+    },
+    [PlaceTypes.Park]: { key: PlaceTypes.Park, label: 'Park', icon: icons.park, mapMarker: icons.parkMarker },
+    [PlaceTypes.FilmTheater]: {
+      key: PlaceTypes.FilmTheater,
+      label: 'Theater',
+      icon: icons.cinema,
+      mapMarker: icons.cinemaMarker,
+    },
+    [PlaceTypes.Atm]: { key: PlaceTypes.Atm, label: 'ATM', icon: icons.bank, mapMarker: icons.bankMarker },
+    [PlaceTypes.Chemist]: {
+      key: PlaceTypes.Chemist,
+      label: 'Chemist',
+      icon: icons.chemist,
+      mapMarker: icons.chemistMarker,
+    },
+    [PlaceTypes.Lodging]: { key: PlaceTypes.Lodging, label: 'Hotel', icon: icons.lodge, mapMarker: icons.lodgeMarker },
+  },
+};
+
+const EXPANDED = theme.viewport.height * 0.45;
 
 // INTERFACES & TYPES
 interface IStateProps {
@@ -56,24 +105,33 @@ interface IOwnState {
   isBottomSheetVisible: boolean;
   pointsOfInterest: PointOfInterest[];
   selectedPlaceId: string;
+  isApiActive: boolean;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.AssetNeighbourhood>;
 type Props = IStateProps & libraryProps;
 
-class AssetNeighbourhood extends React.PureComponent<Props, IOwnState> {
+class AssetNeighbourhood extends React.Component<Props, IOwnState> {
   private mapRef: MapView | null = null;
 
   public state = {
-    isBottomSheetVisible: true,
+    isBottomSheetVisible: false,
     selectedTab: Tabs.Nearby,
-    selectedPlaceType: NEARBY[0].key,
+    selectedPlaceType: Object.values(PLACES_DATA[Tabs.Nearby])[0].key,
     pointsOfInterest: [],
     selectedPlaceId: '',
+    isApiActive: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
     await this.fetchPOIs();
+    this.setState({ isBottomSheetVisible: true });
+  };
+
+  public shouldComponentUpdate = (nextProps: Props, nextState: IOwnState): boolean => {
+    const { isApiActive, selectedPlaceType, selectedTab } = nextState;
+    const { selectedPlaceType: oldType, selectedTab: oldTab } = this.state;
+    return !(isApiActive || selectedTab !== oldTab || selectedPlaceType !== oldType);
   };
 
   public render = (): React.ReactNode => {
@@ -88,13 +146,11 @@ class AssetNeighbourhood extends React.PureComponent<Props, IOwnState> {
     return (
       <View style={styles.container}>
         <Header
+          type="secondary"
           icon={icons.leftArrow}
           onIconPress={this.onBackPress}
           isHeadingVisible
           title={asset.projectName}
-          titleType="small"
-          titleFontType="semiBold"
-          backgroundColor={theme.colors.white}
         />
         <MapView
           ref={(mapRef: MapView): void => {
@@ -131,12 +187,13 @@ class AssetNeighbourhood extends React.PureComponent<Props, IOwnState> {
           onCloseSheet={this.onBottomSheetClose}
         >
           <ExploreSections
-            sections={selectedTab === Tabs.Nearby ? NEARBY : COMMUTE}
-            selectedPlaceType={selectedPlaceType}
-            selectedPlaceId={selectedPlaceId}
-            onSectionChange={this.onPlaceTypeChange}
+            placeTypes={Object.values(PLACES_DATA[selectedTab])}
+            // @ts-ignore
+            selectedPlaceType={PLACES_DATA[selectedTab][selectedPlaceType]}
+            onPlaceTypePress={this.onPlaceTypeChange}
+            selectedPoiId={selectedPlaceId}
+            pointsOfInterest={pointsOfInterest}
             onPoiPress={this.onPoiPress}
-            results={pointsOfInterest}
           />
         </BottomSheet>
       </View>
@@ -145,16 +202,13 @@ class AssetNeighbourhood extends React.PureComponent<Props, IOwnState> {
 
   private renderMarkers = (): React.ReactNode => {
     const { pointsOfInterest, selectedPlaceId, selectedTab, selectedPlaceType } = this.state;
-    let placeType = COMMUTE.find((commuteItem) => commuteItem.key === selectedPlaceType);
-
-    if (selectedTab === Tabs.Nearby) {
-      placeType = NEARBY.find((commuteItem) => commuteItem.key === selectedPlaceType);
-    }
+    // @ts-ignore
+    const placeType = PLACES_DATA[selectedTab][selectedPlaceType];
 
     return pointsOfInterest.map((point: PointOfInterest) => (
       <Marker key={point.placeId} coordinate={{ latitude: point.latitude, longitude: point.longitude }}>
         <Icon
-          name={placeType?.mapMarker}
+          name={placeType.mapMarker}
           color={selectedPlaceId === point.placeId ? theme.colors.active : theme.colors.darkTint5}
           size={24}
         />
@@ -163,13 +217,16 @@ class AssetNeighbourhood extends React.PureComponent<Props, IOwnState> {
   };
 
   private onTabChange = (selectedTab: Tabs): void => {
-    let placeTypeToUpdate = COMMUTE[0].key;
+    const { selectedTab: oldTab, selectedPlaceType } = this.state;
 
-    if (selectedTab === Tabs.Nearby) {
-      placeTypeToUpdate = NEARBY[0].key;
+    let placeTypeToUpdate = selectedPlaceType;
+    if (oldTab !== selectedTab) {
+      placeTypeToUpdate = Object.values(PLACES_DATA[selectedTab])[0].key;
     }
 
-    this.setState({ selectedTab, selectedPlaceType: placeTypeToUpdate, isBottomSheetVisible: true });
+    this.setState({ selectedTab, selectedPlaceType: placeTypeToUpdate, isBottomSheetVisible: true }, () => {
+      this.fetchPOIs().then();
+    });
   };
 
   private onPlaceTypeChange = (selectedPlaceType: PlaceTypes): void => {
@@ -205,11 +262,12 @@ class AssetNeighbourhood extends React.PureComponent<Props, IOwnState> {
     const { asset } = this.props;
 
     if (!asset) return;
+    this.setState({ isApiActive: true });
     const { assetLocation } = asset;
 
     try {
       const pointsOfInterest = await GooglePlacesService.getPOIs(assetLocation, selectedPlaceType);
-      this.setState({ pointsOfInterest });
+      this.setState({ pointsOfInterest, isApiActive: false });
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
