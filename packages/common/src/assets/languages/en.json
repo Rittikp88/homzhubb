@@ -60,7 +60,8 @@
     "installWhatsapp": "Please install WhatsApp!",
     "pleaseSignup": "Please signup to continue",
     "properties": "Properties",
-    "genericErrorMessage": "Oops! Something went wrong"
+    "genericErrorMessage": "Oops! Something went wrong",
+    "shareMessage": "Hey, I would like to share this property {{url}} that posted on www.homzhub.com"
   },
   "auth": {
     "verifyNumber": "Verify your number",

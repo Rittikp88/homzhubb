@@ -1,28 +1,22 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Switch } from 'react-native';
+import { theme } from '@homzhub/common/src/styles/theme';
 
 interface ISwitchOptions {
   selected: boolean;
   onToggle: () => void;
-  containerStyle?: StyleProp<ViewStyle>;
-  iconSize?: number;
 }
 
 const RNSwitch = (props: ISwitchOptions): React.ReactElement => {
-  const { selected, containerStyle = {}, iconSize = 22, onToggle } = props;
+  const { selected, onToggle } = props;
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle}>
-      <Icon name={selected ? icons.toggleOn : icons.toggleOff} size={iconSize} />
-    </TouchableOpacity>
+    <Switch
+      trackColor={{ false: theme.colors.disabled, true: theme.colors.primaryColor }}
+      thumbColor={theme.colors.white}
+      onValueChange={onToggle}
+      value={selected}
+    />
   );
 };
 
 export { RNSwitch };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});

@@ -1,11 +1,12 @@
 import React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -495,7 +496,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         </View>
         <View style={styles.headerRightIcon}>
           <Icon name={icons.heartOutline} size={22} color={color} />
-          <Icon name={icons.share} size={22} color={color} />
+          <Icon name={icons.share} size={22} color={color} onPress={this.handleShare} />
         </View>
       </View>
     );
@@ -545,16 +546,16 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     // TODO: add the logic of favorite property
   };
 
-  private onGoBack = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
-  };
-
   private onExploreNeighborhood = (): void => {
     const {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.AssetNeighbourhood);
+  };
+
+  private onGoBack = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 
   public updateSlide = (slideNumber: number): void => {
@@ -567,6 +568,24 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       propertyTermId,
       propertyId,
     });
+  };
+
+  public handleShare = async (): Promise<void> => {
+    const {
+      t,
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+    // TODO: Remove once will get proper url
+    const url = `www.homzhub.com/propertydetails/${propertyTermId}`;
+    try {
+      await Share.share({
+        message: t('common:shareMessage', { url }),
+      });
+    } catch (error) {
+      AlertHelper.error({ message: error });
+    }
   };
 }
 
