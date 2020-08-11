@@ -11,7 +11,7 @@ interface ICardProps {
   title: string;
   badgeTitle?: string;
   description: string;
-  serviceCost: number;
+  serviceCost: string;
   isDetailView?: boolean;
   detailedData?: IServiceItems[];
   onPressInfo?: () => void;
@@ -39,8 +39,9 @@ const CardBody = (props: Props): React.ReactElement => {
     );
   };
 
-  const costOfPackage = (cost: number): string | number => {
-    switch (cost) {
+  const costOfPackage = (cost: string): string => {
+    const parsedCost = parseInt(cost, 10);
+    switch (parsedCost) {
       case 0:
         // @ts-ignore
         return t('common:noCost');

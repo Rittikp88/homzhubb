@@ -6,4 +6,8 @@ export const images = {
   landingScreenLogo: require('@homzhub/common/src/assets/images/landingScreenLogo.png'),
   round: require('@homzhub/common/src/assets/images/round.png'),
   video: require('@homzhub/common/src/assets/images/video.png'),
+  homzhubDashboard: require('@homzhub/common/src/assets/images/homzhubDashboard.png'),
+  homzhubPlan: require('@homzhub/common/src/assets/images/homzhubPlan.png'),
+  dashboardUnfocused: require('@homzhub/common/src/assets/images/dashboardUnfocused.png'),
+  dashboardFocused: require('@homzhub/common/src/assets/images/dashboardFocused.png'),
 };

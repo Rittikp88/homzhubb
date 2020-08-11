@@ -38,7 +38,7 @@ const AssetMarketTrends = (props: IProps): React.ReactElement => {
     }
     return (
       <FlatList
-        data={data.slice(0, 2)} // TODO: Logic to be checked
+        data={data.slice(0, 2)}
         renderItem={({ item }: { item: IMarketTrends }): React.ReactElement => {
           const { header, date } = item;
           const onLinkPress = (): void => {
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    borderRadius: 10,
+    borderRadius: 4,
   },
   header: {
     flexDirection: 'row',
@@ -121,11 +121,10 @@ const styles = StyleSheet.create({
   },
   trendData: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   trendHeader: {
-    color: theme.colors.primaryColor,
-    minWidth: 320,
+    color: theme.colors.darkTint3,
+    flex: 1,
   },
   trendDate: {
     color: theme.colors.darkTint4,

@@ -1,8 +1,10 @@
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { images } from '@homzhub/common/src/assets/images';
 import {
   ScreensKeys,
   IAddPropertyMapProps,
@@ -11,6 +13,7 @@ import {
   IMarkdownProps,
   NestedNavigatorParams,
 } from '@homzhub/mobile/src/navigation/interfaces';
+import { Image } from '@homzhub/common/src/components';
 import AssetLandingScreen from '@homzhub/mobile/src/screens/Asset/AssetLandingScreen';
 import { MarkdownView } from '@homzhub/mobile/src/screens/Asset/MarkdownView';
 import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
@@ -86,6 +89,7 @@ export const LoggedInBottomTabs = (): React.ReactElement => {
   return (
     <LoggedInBottomTabNavigator.Navigator
       initialRouteName={ScreensKeys.Dashboard}
+      lazy
       tabBarOptions={{
         activeTintColor: theme.colors.primaryColor,
       }}
@@ -115,9 +119,13 @@ export const LoggedInBottomTabs = (): React.ReactElement => {
         component={Dashboard}
         options={{
           tabBarLabel: 'Dashboard',
-          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <Icon name={icons.compare} color={color} size={30} />
-          ),
+          tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
+            return (
+              <View style={styles.dashboardBump}>
+                <Image source={focused ? images.dashboardFocused : images.dashboardUnfocused} />
+              </View>
+            );
+          },
         }}
       />
       <LoggedInBottomTabNavigator.Screen
@@ -159,3 +167,15 @@ export function AppNavigator(): React.ReactElement {
     </AppStackNavigator.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  dashboardBump: {
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    backgroundColor: theme.colors.white,
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

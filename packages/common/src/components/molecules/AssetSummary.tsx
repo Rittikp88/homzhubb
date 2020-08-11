@@ -28,31 +28,31 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       style={[styles.container, containerStyle]}
     >
       <View style={styles.summary}>
-        <Icon name={icons.bell} color={theme.colors.green} size={40} />
+        <Icon name={icons.bell} color={theme.colors.notificationGreen} size={25} />
         <Text type="small" textType="semiBold" style={styles.notification}>
           {t('notification')}
         </Text>
-        <Text type="large" textType="bold" style={styles.notification}>
+        <Text type="regular" textType="bold" style={styles.notification}>
           {notification}
         </Text>
       </View>
       <Divider />
       <View style={styles.summary}>
-        <Icon name={icons.headPhone} color={theme.colors.warning} size={40} />
+        <Icon name={icons.headPhone} color={theme.colors.orange} size={25} />
         <Text type="small" textType="semiBold" style={styles.serviceTickets}>
-          {t('serviceTickets')}
+          {t('tickets')}
         </Text>
-        <Text type="large" textType="bold" style={styles.serviceTickets}>
+        <Text type="regular" textType="bold" style={styles.serviceTickets}>
           {serviceTickets}
         </Text>
       </View>
       <Divider />
       <View style={styles.summary}>
-        <Icon name={icons.decrease} color={theme.colors.danger} size={40} />
+        <Icon name={icons.decrease} color={theme.colors.danger} size={25} />
         <Text type="small" textType="semiBold" style={styles.dues}>
           {t('dues')}
         </Text>
-        <Text type="large" textType="bold" style={styles.dues}>
+        <Text type="regular" textType="bold" style={styles.dues}>
           {dues}
         </Text>
       </View>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 4,
     justifyContent: 'space-around',
   },
   summary: {
@@ -76,15 +76,12 @@ const styles = StyleSheet.create({
     width: theme.viewport.width / 3.5,
   },
   notification: {
-    color: theme.colors.green,
-    marginVertical: 2,
+    color: theme.colors.notificationGreen,
   },
   serviceTickets: {
-    color: theme.colors.warning,
-    marginVertical: 2,
+    color: theme.colors.orange,
   },
   dues: {
     color: theme.colors.danger,
-    marginVertical: 2,
   },
 });

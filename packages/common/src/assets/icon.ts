@@ -92,7 +92,7 @@ export const icons = {
   headPhone: 'head-phone',
   warning: 'warning',
   toggleOff: 'toggle-off',
-  toggleOn: 'toggle-on',
+  toggleOn: 'toogle-on',
   train: 'train',
   bus: 'bus',
   flight: 'flight',

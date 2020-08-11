@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
     minHeight: 355,
-    borderRadius: 10,
+    borderRadius: 4,
     marginTop: 12,
     padding: 16,
   },

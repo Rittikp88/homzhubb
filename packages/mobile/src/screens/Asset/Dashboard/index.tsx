@@ -28,7 +28,7 @@ class Dashboard extends React.PureComponent<Props, {}> {
           <AssetMetricsList
             assetCount={10}
             data={AssetMetricsData}
-            subscription="Homzhub Pro"
+            subscription="HomzHub Pro"
             containerStyle={styles.assetCards}
           />
           <AssetSummary notification={10} serviceTickets={20} dues={30} containerStyle={styles.assetCards} />

@@ -18,6 +18,8 @@ const namedColors = {
   disabledPreference: '#B3BBC3',
   disabledSearch: '#80C1FC',
   danger: '#D60D31',
+  orange: '#FB6E07',
+  notificationGreen: '#13AB46',
 };
 
 const tintColors = {

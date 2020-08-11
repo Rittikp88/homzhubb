@@ -22,20 +22,6 @@ export const AssetMetricsData = [
     colorA: theme.colors.gradientE,
     colorB: theme.colors.gradientF,
   },
-  {
-    id: 4,
-    header: 'Expense',
-    value: '$320,000',
-    colorA: theme.colors.gradientG,
-    colorB: theme.colors.gradientH,
-  },
-  {
-    id: 4,
-    header: 'Taxes',
-    value: '$420,0000',
-    colorA: theme.colors.gradientI,
-    colorB: theme.colors.gradientJ,
-  },
 ];
 
 export const AssetSubscriptionPlanData = [
@@ -53,7 +39,7 @@ export const AssetSubscriptionPlanData = [
   },
   {
     id: 4,
-    name: 'Tenant Onboard',
+    name: 'Tenant Onboarding and Offboarding checklist',
   },
   {
     id: 5,

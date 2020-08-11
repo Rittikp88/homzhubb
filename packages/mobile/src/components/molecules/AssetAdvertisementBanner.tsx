@@ -35,7 +35,13 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
           activeIndex={activeSlide}
           onSnapToItem={this.onSnapToItem}
         />
-        <PaginationComponent dotsLength={banners.length} activeSlide={activeSlide} containerStyle={styles.overlay} />
+        <PaginationComponent
+          dotsLength={banners.length}
+          activeSlide={activeSlide}
+          containerStyle={styles.overlay}
+          activeDotStyle={styles.activeDotStyle}
+          inactiveDotStyle={styles.inactiveDotStyle}
+        />
       </View>
     );
   }
@@ -60,7 +66,7 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 10,
+    borderRadius: 4,
     height: 180,
     overflow: 'hidden',
   },
@@ -69,10 +75,17 @@ const styles = StyleSheet.create({
     flex: 0,
     alignSelf: 'center',
     bottom: 0,
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   carouselImage: {
     height: '100%',
     width: '100%',
+  },
+  activeDotStyle: {
+    borderWidth: 1,
+  },
+  inactiveDotStyle: {
+    backgroundColor: theme.colors.darkTint6,
+    borderColor: theme.colors.transparent,
   },
 });

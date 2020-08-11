@@ -7,16 +7,18 @@ interface IPaginationProps {
   dotsLength: number;
   activeSlide: number;
   containerStyle?: StyleProp<ViewStyle>;
+  activeDotStyle?: StyleProp<ViewStyle>;
+  inactiveDotStyle?: StyleProp<ViewStyle>;
 }
 
 export const PaginationComponent = (props: IPaginationProps): React.ReactElement => {
-  const { dotsLength, activeSlide, containerStyle } = props;
+  const { dotsLength, activeSlide, containerStyle, inactiveDotStyle, activeDotStyle } = props;
   return (
     <Pagination
       dotsLength={dotsLength}
       activeDotIndex={activeSlide}
-      dotStyle={styles.dotStyle}
-      inactiveDotStyle={styles.inactiveDotStyle}
+      dotStyle={[styles.dotStyle, activeDotStyle]}
+      inactiveDotStyle={[styles.inactiveDotStyle, inactiveDotStyle]}
       inactiveDotOpacity={1}
       inactiveDotScale={1}
       containerStyle={containerStyle}

@@ -20,7 +20,7 @@ export interface IServiceDetail {
   description: string;
   number: number;
   info: string;
-  service_cost: number;
+  service_cost: string;
   service_bundle_items: IServiceItems[];
 }
 

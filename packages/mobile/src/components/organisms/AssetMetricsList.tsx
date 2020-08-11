@@ -3,7 +3,8 @@ import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, AssetMetrics } from '@homzhub/common/src/components';
+import { images } from '@homzhub/common/src/assets/images';
+import { Label, Text, AssetMetrics, Image } from '@homzhub/common/src/components';
 
 interface IAssetMetrics {
   id: number;
@@ -40,18 +41,21 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     <View style={[styles.container, containerStyle]}>
       <View style={styles.property}>
         <View style={styles.logo}>
-          <Icon name={icons.heartOutline} color={theme.colors.darkTint4} size={40} />
+          <Image source={images.homzhubDashboard} />
         </View>
-        <View style={styles.assetInfo}>
+        <View>
           <Text type="regular" textType="bold" style={styles.assetCount}>
             {assetCount}
           </Text>
-          <Text type="small" textType="semiBold" style={styles.propertyText}>
-            {t('common:properties')}
-          </Text>
-          <Text type="small" textType="light" style={styles.propertyText}>
-            {subscription}
-          </Text>
+          <View style={styles.propertiesRow}>
+            <Text type="small" textType="semiBold" style={styles.propertyText}>
+              {t('common:properties')}
+            </Text>
+            <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
+            <Label type="large" textType="regular">
+              {subscription}
+            </Label>
+          </View>
         </View>
         {isPortfolio && (
           <View style={styles.plusIcon}>
@@ -81,28 +85,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 0,
     backgroundColor: theme.colors.white,
-    borderRadius: 10,
-    minHeight: 220,
+    borderRadius: 4,
+    minHeight: 190,
   },
   property: {
     flexDirection: 'row',
     paddingVertical: 10,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   logo: {
-    flex: 0.2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  assetInfo: {
-    flex: 1,
+    flex: 0,
+    paddingHorizontal: 15,
   },
   assetCount: {
     color: theme.colors.darkTint1,
   },
   propertyText: {
     color: theme.colors.darkTint4,
+    paddingVertical: 5,
   },
   assetMetrics: {
     flexDirection: 'row',
@@ -111,5 +112,13 @@ const styles = StyleSheet.create({
   },
   plusIcon: {
     flexDirection: 'row-reverse',
+  },
+  propertiesRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  circleIcon: {
+    paddingHorizontal: 8,
+    paddingTop: 5,
   },
 });

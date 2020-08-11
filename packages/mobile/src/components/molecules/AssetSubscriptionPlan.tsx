@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, Label, Divider } from '@homzhub/common/src/components';
+import { images } from '@homzhub/common/src/assets/images';
+import { Text, Label, Divider, Image } from '@homzhub/common/src/components';
 
 interface ISubscriptionPlan {
   id: number;
@@ -29,12 +30,12 @@ const AssetSubscriptionPlan = (props: IProps): React.ReactElement => {
     return (
       <FlatList
         data={data}
-        numColumns={2}
+        numColumns={1}
         renderItem={({ item }: { item: ISubscriptionPlan }): React.ReactElement => {
           const { name } = item;
           return (
             <View style={styles.featuresData}>
-              <Icon name={icons.circularCheckFilled} color={theme.colors.green} size={35} />
+              <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />
               <Text type="small" textType="regular" style={styles.featureName}>
                 {name}
               </Text>
@@ -53,12 +54,17 @@ const AssetSubscriptionPlan = (props: IProps): React.ReactElement => {
           <Label type="large" textType="regular" style={styles.planName}>
             {t('subscribedFor')}
           </Label>
-          <Text type="regular" textType="bold" style={styles.planName}>
-            {planName}
-          </Text>
+          <View style={styles.planNameRow}>
+            <Text type="regular" textType="bold" style={styles.planName}>
+              {planName.split(' ')[0] ?? planName}
+            </Text>
+            <Text type="regular" textType="regular" style={styles.planNameCategory}>
+              {planName.split(' ')[1] ?? ''}
+            </Text>
+          </View>
         </View>
         <View style={styles.flexOne}>
-          <Icon name={icons.area} color={theme.colors.darkTint4} size={40} />
+          <Image source={images.homzhubPlan} />
         </View>
       </View>
       <Divider />
@@ -74,7 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 4,
   },
   currentSubscription: {
     flexDirection: 'row',
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
   },
   featuresData: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginVertical: 10,
   },
@@ -95,11 +101,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   planName: {
-    color: theme.colors.darkTint5,
+    color: theme.colors.darkTint3,
     marginVertical: 2,
   },
+  planNameCategory: {
+    color: theme.colors.darkTint3,
+    marginVertical: 2,
+    paddingHorizontal: 6,
+  },
   featureName: {
-    width: 125,
-    marginLeft: 5,
+    marginLeft: 15,
+    flex: 1,
+  },
+  planNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
 });

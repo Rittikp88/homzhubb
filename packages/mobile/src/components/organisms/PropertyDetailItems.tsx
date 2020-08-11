@@ -3,11 +3,7 @@ import { View, StyleSheet, TextInput } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  SpaceAvailableTypes,
-  ISpaceAvailable,
-  ISpaceAvailablePayload,
-} from '@homzhub/common/src/domain/repositories/interfaces';
+import { SpaceAvailableTypes, ISpaceAvailable } from '@homzhub/common/src/domain/repositories/interfaces';
 import { HorizontalPicker, IDropdownOption, Label, Text, Dropdown } from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
@@ -211,7 +207,7 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
     }
   };
 
-  public findSpaceTypeValue = (space: ISpaceAvailablePayload): number => {
+  public findSpaceTypeValue = (space: IPropertyTypes): number => {
     const {
       spaceAvailable: { bedroom, bathroom, balcony },
     } = this.props;
