@@ -6,8 +6,15 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
-export const Loader = (): React.ReactElement => {
+interface ILoaderProps {
+  visible: boolean;
+}
+
+export const Loader = ({ visible }: ILoaderProps): React.ReactElement | null => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
+  if (!visible) {
+    return null;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.overlay}>

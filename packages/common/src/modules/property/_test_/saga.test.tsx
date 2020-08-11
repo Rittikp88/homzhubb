@@ -15,7 +15,7 @@ import {
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
-describe('fetchAuthorsFromApi', () => {
+describe.skip('fetchAuthorsFromApi', () => {
   it('should dispatch action "PROPERTY_DETAILS_SUCCESS" and "PROPERTY_DETAILS_FAILURE" with result from API', () => {
     const mockResponse = PropertyDetails;
     const mockError = 'Error';

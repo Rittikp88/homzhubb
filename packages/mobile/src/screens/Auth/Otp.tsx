@@ -10,14 +10,20 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IEmailLoginPayload, IOtpLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
-import { OtpInputs } from '@homzhub/mobile/src/components';
+import { Loader, OtpInputs } from '@homzhub/mobile/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { User, IUser } from '@homzhub/common/src/domain/models/User';
+
+interface IStateProps {
+  isLoading: boolean;
+}
 
 interface IDispatchProps {
   login: (payload: IEmailLoginPayload | IOtpLoginPayload) => void;
@@ -25,13 +31,13 @@ interface IDispatchProps {
 }
 
 type libraryProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OTP> & WithTranslation;
-type IProps = IDispatchProps & libraryProps;
+type IProps = IDispatchProps & IStateProps & libraryProps;
 
-interface IState {
+interface IOtpState {
   error: boolean;
 }
 
-class Otp extends React.PureComponent<IProps, IState> {
+class Otp extends React.PureComponent<IProps, IOtpState> {
   public state = {
     error: false,
   };
@@ -43,6 +49,7 @@ class Otp extends React.PureComponent<IProps, IState> {
   public render = (): React.ReactNode => {
     const {
       t,
+      isLoading,
       navigation: { goBack },
       route: { params },
     } = this.props;
@@ -79,6 +86,7 @@ class Otp extends React.PureComponent<IProps, IState> {
           <OtpInputs error={error ? t('otpError') : undefined} bubbleOtp={this.verifyOtp} toggleError={toggleError} />
           <OtpTimer onResentPress={this.fetchOtp} />
         </View>
+        <Loader visible={isLoading} />
       </SafeAreaView>
     );
   };
@@ -227,6 +235,12 @@ class Otp extends React.PureComponent<IProps, IState> {
   };
 }
 
+export const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    isLoading: UserSelector.getLoadingState(state),
+  };
+};
+
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { login, loginSuccess } = UserActions;
   return bindActionCreators(
@@ -238,8 +252,8 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect<null, IDispatchProps, WithTranslation, IState>(
-  null,
+export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
+  mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.auth)(Otp));
 

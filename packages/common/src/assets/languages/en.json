@@ -59,7 +59,8 @@
     "whatsappMessage": "Hey {{fullName}}, I would like to know more about this property ad you posted on www.homzhub.com",
     "installWhatsapp": "Please install WhatsApp!",
     "pleaseSignup": "Please signup to continue",
-    "properties": "Properties"
+    "properties": "Properties",
+    "genericErrorMessage": "Oops! Something went wrong"
   },
   "auth": {
     "verifyNumber": "Verify your number",

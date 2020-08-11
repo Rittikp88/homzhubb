@@ -9,6 +9,11 @@ export interface IFluxStandardAction<Payload = undefined, Error = string> {
   error?: Error;
 }
 
+export interface ICallback {
+  status: boolean;
+  message?: string;
+}
+
 export interface IState {
   user: IUserState;
   property: IPropertyState;

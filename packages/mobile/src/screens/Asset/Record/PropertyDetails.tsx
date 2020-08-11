@@ -20,7 +20,7 @@ import {
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, IDropdownOption, WithShadowView } from '@homzhub/common/src/components';
-import { Header, PropertyDetailsLocation } from '@homzhub/mobile/src/components';
+import { Header, PropertyDetailsLocation, StateAwareComponent } from '@homzhub/mobile/src/components';
 import PropertyDetailsItems from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
@@ -33,6 +33,7 @@ interface IDispatchProps {
 interface IStateProps {
   propertyId: number;
   property: IPropertyDetailsData[] | null;
+  isLoading: boolean;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PropertyDetailsScreen>;
@@ -72,6 +73,11 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
   };
 
   public render(): React.ReactNode {
+    const { isLoading } = this.props;
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponentContent()} />;
+  }
+
+  public renderComponentContent = (): React.ReactElement | null => {
     const { property, t } = this.props;
     const {
       propertyGroupSelectedIndex,
@@ -128,7 +134,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
         </WithShadowView>
       </View>
     );
-  }
+  };
 
   public onNavigateToMaps = (): void => {
     const { navigation } = this.props;
@@ -285,10 +291,11 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentPropertyId, getPropertyDetails } = PropertySelector;
+  const { getCurrentPropertyId, getPropertyDetails, getPropertyLoadingState } = PropertySelector;
   return {
     property: getPropertyDetails(state),
     propertyId: getCurrentPropertyId(state),
+    isLoading: getPropertyLoadingState(state),
   };
 };
 

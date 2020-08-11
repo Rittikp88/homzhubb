@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetReview, IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
@@ -38,7 +39,7 @@ const getAssetReviewsFailure = (error: string): IFluxStandardAction => ({
   error,
 });
 
-const getAsset = (payload: number): IFluxStandardAction<number> => ({
+const getAsset = (payload: IGetAssetPayload): IFluxStandardAction<IGetAssetPayload> => ({
   type: AssetActionTypes.GET.ASSET,
   payload,
 });

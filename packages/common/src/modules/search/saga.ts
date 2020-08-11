@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery, debounce } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { SearchRepository } from '@homzhub/common/src/domain/repositories/SearchRepository';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -13,7 +15,9 @@ export function* getFilterDetails(action: IFluxStandardAction<IFilters>) {
     const data = yield call(SearchRepository.getFilterDetails, action.payload);
     yield put(SearchActions.getFilterDetailsSuccess(data));
   } catch (e) {
-    yield put(SearchActions.getFilterDetailsFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(SearchActions.getFilterDetailsFailure(error));
   }
 }
 
@@ -23,7 +27,9 @@ export function* getPropertiesDetails() {
     const data = yield call(SearchRepository.getProperties, filter);
     yield put(SearchActions.getPropertiesSuccess(data));
   } catch (e) {
-    yield put(SearchActions.getPropertiesFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(SearchActions.getPropertiesFailure(error));
   }
 }
 
@@ -33,7 +39,9 @@ export function* getPropertiesListViewDetails() {
     const data = yield call(SearchRepository.getProperties, filter);
     yield put(SearchActions.getPropertiesListViewSuccess(data));
   } catch (e) {
-    yield put(SearchActions.getPropertiesListViewFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(SearchActions.getPropertiesListViewFailure(error));
   }
 }
 

@@ -1,3 +1,5 @@
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IOtpVerify, OtpActionTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 
@@ -10,8 +12,12 @@ class UserService {
         phone_number,
       },
     };
-
-    await UserRepository.Otp(requestBody);
+    try {
+      await UserRepository.Otp(requestBody);
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 
   public verifyOtp = async (otp: string, phone_number: string, country_code: string): Promise<void> => {

@@ -10,6 +10,7 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -34,7 +35,7 @@ import {
   PropertyAmenities,
   StatusBarComponent,
   ShieldGroup,
-  Loader,
+  StateAwareComponent,
 } from '@homzhub/mobile/src/components';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -55,7 +56,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   getAssetReviews: (id: number) => void;
-  getAsset: (id: number) => void;
+  getAsset: (payload: IGetAssetPayload) => void;
 }
 
 interface IOwnState {
@@ -94,7 +95,11 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { propertyTermId },
       },
     } = this.props;
-    getAsset(propertyTermId);
+    const payload: IGetAssetPayload = {
+      propertyTermId,
+      onCallback: this.onGetAssetCallback,
+    };
+    getAsset(payload);
   };
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>, snapshot?: any): void {
@@ -110,14 +115,23 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       },
     } = this.props;
     if (oldPropertyTermId !== newPropertyTermId) {
-      getAsset(newPropertyTermId);
+      const payload: IGetAssetPayload = {
+        propertyTermId: newPropertyTermId,
+      };
+      getAsset(payload);
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ isScroll: true });
     }
   }
 
   public render = (): React.ReactNode => {
-    const { t, reviews, assetDetails, isLoading } = this.props;
+    const { isLoading } = this.props;
+
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+  };
+
+  private renderComponent = (): React.ReactElement | null => {
+    const { t, reviews, assetDetails } = this.props;
     const { isFullScreen, isScroll } = this.state;
     if (!assetDetails) return null;
     const {
@@ -125,7 +139,6 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
 
     const statusBarHeight = isScroll ? 0 : PlatformUtils.isIOS() ? 55 : 40;
-
     return (
       <>
         <StatusBarComponent
@@ -166,7 +179,6 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
             onMailClicked={this.onContactMailClicked}
           />
         )}
-        {isLoading && <Loader />}
       </>
     );
   };
@@ -470,6 +482,13 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         onSelectedProperty={this.loadSimilarProperty}
       />
     );
+  };
+
+  public onGetAssetCallback = ({ status }: { status: boolean }): void => {
+    const { navigation } = this.props;
+    if (!status) {
+      navigation.goBack();
+    }
   };
 
   private onFullScreenToggle = (): void => {

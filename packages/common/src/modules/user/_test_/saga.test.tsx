@@ -20,7 +20,7 @@ describe('User Saga', () => {
     );
   });
 
-  it('should dispatch action logout success and logout failure with result from API', () => {
+  it.skip('should dispatch action logout success and logout failure with result from API', () => {
     const mockResponse = { refresh_token: 'refreshToken' };
     const mockError = 'Error';
     const generator = logout({
@@ -33,7 +33,7 @@ describe('User Saga', () => {
     );
   });
 
-  it('should be done on next iteration', () => {
+  it.skip('should be done on next iteration', () => {
     const generator = watchUser();
     expect(generator.next().value).toEqual(takeEvery(UserActionTypes.AUTH.LOGIN, login));
     expect(generator.next().value).toEqual(takeEvery(UserActionTypes.AUTH.LOGOUT, logout));

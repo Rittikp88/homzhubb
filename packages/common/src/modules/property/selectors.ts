@@ -65,6 +65,15 @@ const getServiceCategory = (state: IState): IServiceCategory => {
   return serviceCategory;
 };
 
+const getPropertyLoadingState = (state: IState): boolean => {
+  const {
+    property: {
+      loaders: { property },
+    },
+  } = state;
+  return property;
+};
+
 export const PropertySelector = {
   getPropertyDetails,
   getRentServicesList,
@@ -74,4 +83,5 @@ export const PropertySelector = {
   getTermId,
   getServiceStepsDetails,
   getServiceCategory,
+  getPropertyLoadingState,
 };

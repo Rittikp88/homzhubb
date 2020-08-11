@@ -4,8 +4,13 @@ export interface IApiClientError {
   statusCode?: number;
   description?: string;
   errors?: any[];
-  original?: any;
+  original?: IError;
   errorType?: string;
+}
+
+interface IError {
+  status: string;
+  error: any[];
 }
 
 export class ApiClientError extends Error {

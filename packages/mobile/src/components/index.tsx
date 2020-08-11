@@ -55,3 +55,4 @@ export { PropertyPayment } from '@homzhub/mobile/src/components/organisms/Proper
 // Templates
 export { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
 export { AnimatedProfileHeader } from '@homzhub/mobile/src/components/templates/AnimatedProfileHeader';
+export { StateAwareComponent } from '@homzhub/mobile/src/components/templates/StateAwareComponent';

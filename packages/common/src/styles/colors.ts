@@ -80,6 +80,11 @@ const gradientAssetMetrics = {
   gradientJ: '#fc3b3b',
 };
 
+const grayShades = {
+  gray2: '#4F4F4F',
+  gray3: '#828282',
+};
+
 export const colors = {
   ...namedColors,
   ...themedColors,
@@ -87,4 +92,5 @@ export const colors = {
   ...tintColors,
   ...opacity,
   ...gradientAssetMetrics,
+  ...grayShades,
 };

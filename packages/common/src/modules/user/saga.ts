@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -22,7 +24,9 @@ export function* login(action: IFluxStandardAction<IEmailLoginPayload | IOtpLogi
     yield put(UserActions.loginSuccess(serializedUser));
     yield StorageService.set<IUser>('@user', serializedUser);
   } catch (e) {
-    yield put(UserActions.loginFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(UserActions.loginFailure(error));
   }
 }
 
@@ -33,7 +37,9 @@ export function* logout(action: IFluxStandardAction<IRefreshTokenPayload>) {
     yield put(UserActions.logoutSuccess());
     yield StorageService.remove(StorageKeys.USER);
   } catch (e) {
-    yield put(UserActions.logoutFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(UserActions.logoutFailure(error));
   }
 }
 

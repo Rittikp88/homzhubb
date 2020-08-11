@@ -131,7 +131,7 @@ class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState>
           {this.renderSearchContainer()}
           {this.renderBar()}
         </SafeAreaView>
-        {isLoading && <Loader />}
+        <Loader visible={isLoading} />
       </>
     );
   }

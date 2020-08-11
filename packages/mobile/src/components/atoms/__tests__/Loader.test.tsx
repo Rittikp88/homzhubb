@@ -7,13 +7,13 @@ import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 describe('Loader', () => {
   it('should match snapshot for android', () => {
     Platform.OS = 'android';
-    const wrapper: ShallowWrapper = shallow(<Loader />);
+    const wrapper: ShallowWrapper = shallow(<Loader visible />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('should match snapshot for ios', () => {
     Platform.OS = 'ios';
-    const wrapper: ShallowWrapper = shallow(<Loader />);
+    const wrapper: ShallowWrapper = shallow(<Loader visible />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

@@ -1,3 +1,4 @@
+import { ICallback } from '@homzhub/common/src/modules/interfaces';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 
@@ -12,4 +13,9 @@ export interface IAssetState {
     asset: boolean;
     reviews: boolean;
   };
+}
+
+export interface IGetAssetPayload {
+  propertyTermId: number;
+  onCallback?: (params: ICallback) => void;
 }

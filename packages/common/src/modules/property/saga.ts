@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PropertyActions, PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -11,7 +13,9 @@ export function* getPropertyDetails() {
     const data = yield call(AssetRepository.getDetails);
     yield put(PropertyActions.getPropertyDetailsSuccess(data));
   } catch (e) {
-    yield put(PropertyActions.getPropertyDetailsFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(PropertyActions.getPropertyDetailsFailure(error));
   }
 }
 
@@ -20,7 +24,9 @@ export function* getRentServicesList() {
     const data = yield call(ServiceRepository.getRentServices);
     yield put(PropertyActions.getRentServiceListSuccess(data));
   } catch (e) {
-    yield put(PropertyActions.getRentServiceListFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(PropertyActions.getRentServiceListFailure(error));
   }
 }
 
@@ -30,7 +36,9 @@ export function* getServiceDetails(action: IFluxStandardAction<number>) {
     const data = yield call(ServiceRepository.getServiceDetail, payload as number);
     yield put(PropertyActions.getServiceDetailsSuccess(data));
   } catch (e) {
-    yield put(PropertyActions.getServiceDetailsFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(PropertyActions.getServiceDetailsFailure(error));
   }
 }
 
@@ -41,7 +49,9 @@ export function* getServiceStepsDetails(action: IFluxStandardAction<IServiceList
     const data = yield call(ServiceRepository.getServiceStepsDetails, payload.serviceCategoryId, payload.serviceId);
     yield put(PropertyActions.getServiceStepsDetailsSuccess(data));
   } catch (e) {
-    yield put(PropertyActions.getServiceStepsDetailsFailure(e.message));
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(PropertyActions.getServiceStepsDetailsFailure(error));
   }
 }
 

@@ -131,7 +131,7 @@ class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
             onPress={this.onShowProperties}
           />
         </WithShadowView>
-        {isLoading && <Loader />}
+        <Loader visible={isLoading} />
       </>
     );
   }

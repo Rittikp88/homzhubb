@@ -80,11 +80,8 @@ class PendingPropertyListCard extends Component<Props, IState> {
           subAddress={address}
           containerStyle={styles.addressStyle}
         />
-        <ProgressBar progress={status / 100} width={340} />
-        <Label type="large" style={styles.status}>
-          {t('completionStatus', { status })}
-        </Label>
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
+        <ProgressBar progress={status} width={350} />
         <Button type="primary" title={t('completeDetails')} containerStyle={styles.buttonStyle} />
         <Label type="regular" style={styles.infoText}>
           {t('completeProperty')}
@@ -145,16 +142,13 @@ const styles = StyleSheet.create({
   heading: {
     marginBottom: 10,
   },
-  status: {
-    color: theme.colors.darkTint7,
-    marginTop: 6,
-  },
   amenitiesContainer: {
-    marginVertical: 20,
+    marginBottom: 20,
   },
   buttonStyle: {
     flex: 0,
     marginBottom: 5,
+    marginTop: 18,
   },
   infoText: {
     color: theme.colors.darkTint7,

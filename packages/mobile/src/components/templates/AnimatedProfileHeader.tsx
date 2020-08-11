@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, View, Animated } from 'react-native';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
@@ -60,7 +59,6 @@ export class AnimatedProfileHeader extends Component<IProps, IState> {
           <Text type="small" textType="regular" style={styles.initials} onPress={onIconPress}>
             {StringUtils.getInitials('User')}
           </Text>
-          <Icon name={icons.roundFilled} size={18} color={theme.colors.green} style={styles.activeIcon} />
         </View>
       </View>
     );
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     position: 'absolute',
-    top: theme.viewport.width > 400 ? '13%' : '18%',
+    top: theme.viewport.width > 400 ? '15%' : '18%',
     bottom: 0,
     paddingHorizontal: theme.layout.screenPadding,
   },
@@ -104,10 +102,5 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
-  },
-  activeIcon: {
-    position: 'absolute',
-    left: '65%',
-    top: 26,
   },
 });

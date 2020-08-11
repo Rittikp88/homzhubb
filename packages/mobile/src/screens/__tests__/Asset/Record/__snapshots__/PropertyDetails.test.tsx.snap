@@ -1,305 +1,317 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Property Details Screen Component should render property details screen 1`] = `
-<View
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-    }
+<StateAwareComponent
+  renderComponent={
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        }
+      }
+    >
+      <Header
+        backgroundColor="#0084F8"
+        icon="left-arrow"
+        iconColor="white"
+        isHeadingVisible={true}
+        onIconPress={[Function]}
+        title="property:headerTitle"
+        titleFontType="semiBold"
+        titleStyle={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
+        titleType="small"
+      />
+      <ScrollViewMock
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
+        <withI18nextTranslation(PropertyDetailsLocation)
+          onNavigate={[Function]}
+          propertyAddress=""
+          propertyName=""
+          testID="propertyLocation"
+        />
+        <withI18nextTranslation(PropertyDetailsItems)
+          areaUnits={Array []}
+          carpetAreaError={false}
+          data={
+            Array [
+              Object {
+                "asset_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Residential House",
+                  },
+                  Object {
+                    "id": 2,
+                    "name": "Apartment/Condo",
+                  },
+                  Object {
+                    "id": 3,
+                    "name": "Villa",
+                  },
+                  Object {
+                    "id": 4,
+                    "name": "Penthouse",
+                  },
+                  Object {
+                    "id": 5,
+                    "name": "Studio Apartment",
+                  },
+                  Object {
+                    "id": 6,
+                    "name": "Independent Floor",
+                  },
+                ],
+                "id": 1,
+                "name": "Residential",
+                "space_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Room",
+                  },
+                ],
+              },
+              Object {
+                "asset_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Commercial Office Space",
+                  },
+                  Object {
+                    "id": 2,
+                    "name": "Office in IT park/SEZ",
+                  },
+                  Object {
+                    "id": 3,
+                    "name": "Commercial Showroom",
+                  },
+                  Object {
+                    "id": 4,
+                    "name": "Warehouse/Godown",
+                  },
+                ],
+                "id": 2,
+                "name": "Commercial",
+                "space_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Room",
+                  },
+                ],
+              },
+            ]
+          }
+          onCommercialPropertyChange={[Function]}
+          onPropertyGroupChange={[Function]}
+          onPropertyGroupTypeChange={[Function]}
+          onSpaceAvailableValueChange={[Function]}
+          propertyGroupSelectedIndex={1}
+          propertyGroupTypeSelectedIndex={1}
+          spaceAvailable={
+            Object {
+              "areaUnit": "SQ_FT",
+              "balcony": 0,
+              "bathroom": 0,
+              "bedroom": 0,
+              "carpetArea": "",
+              "floorNumber": 0,
+              "totalFloors": 0,
+            }
+          }
+        />
+      </ScrollViewMock>
+      <WithShadowView
+        outerViewStyle={
+          Object {
+            "marginBottom": 20,
+            "paddingBottom": 0,
+            "paddingTop": 10,
+          }
+        }
+      >
+        <Button
+          containerStyle={
+            Object {
+              "flex": 0,
+              "margin": 16,
+            }
+          }
+          onPress={[Function]}
+          title="common:submit"
+          type="primary"
+        />
+      </WithShadowView>
+    </View>
   }
->
-  <Header
-    backgroundColor="#0084F8"
-    icon="left-arrow"
-    iconColor="white"
-    isHeadingVisible={true}
-    onIconPress={[Function]}
-    title="property:headerTitle"
-    titleFontType="semiBold"
-    titleStyle={
-      Object {
-        "color": "#FFFFFF",
-      }
-    }
-    titleType="small"
-  />
-  <ScrollViewMock
-    style={
-      Object {
-        "flex": 1,
-      }
-    }
-  >
-    <withI18nextTranslation(PropertyDetailsLocation)
-      onNavigate={[Function]}
-      propertyAddress=""
-      propertyName=""
-      testID="propertyLocation"
-    />
-    <withI18nextTranslation(PropertyDetailsItems)
-      areaUnits={Array []}
-      carpetAreaError={false}
-      data={
-        Array [
-          Object {
-            "asset_types": Array [
-              Object {
-                "id": 1,
-                "name": "Residential House",
-              },
-              Object {
-                "id": 2,
-                "name": "Apartment/Condo",
-              },
-              Object {
-                "id": 3,
-                "name": "Villa",
-              },
-              Object {
-                "id": 4,
-                "name": "Penthouse",
-              },
-              Object {
-                "id": 5,
-                "name": "Studio Apartment",
-              },
-              Object {
-                "id": 6,
-                "name": "Independent Floor",
-              },
-            ],
-            "id": 1,
-            "name": "Residential",
-            "space_types": Array [
-              Object {
-                "id": 1,
-                "name": "Room",
-              },
-            ],
-          },
-          Object {
-            "asset_types": Array [
-              Object {
-                "id": 1,
-                "name": "Commercial Office Space",
-              },
-              Object {
-                "id": 2,
-                "name": "Office in IT park/SEZ",
-              },
-              Object {
-                "id": 3,
-                "name": "Commercial Showroom",
-              },
-              Object {
-                "id": 4,
-                "name": "Warehouse/Godown",
-              },
-            ],
-            "id": 2,
-            "name": "Commercial",
-            "space_types": Array [
-              Object {
-                "id": 1,
-                "name": "Room",
-              },
-            ],
-          },
-        ]
-      }
-      onCommercialPropertyChange={[Function]}
-      onPropertyGroupChange={[Function]}
-      onPropertyGroupTypeChange={[Function]}
-      onSpaceAvailableValueChange={[Function]}
-      propertyGroupSelectedIndex={1}
-      propertyGroupTypeSelectedIndex={1}
-      spaceAvailable={
-        Object {
-          "areaUnit": "SQ_FT",
-          "balcony": 0,
-          "bathroom": 0,
-          "bedroom": 0,
-          "carpetArea": "",
-          "floorNumber": 0,
-          "totalFloors": 0,
-        }
-      }
-    />
-  </ScrollViewMock>
-  <WithShadowView
-    outerViewStyle={
-      Object {
-        "marginBottom": 20,
-        "paddingBottom": 0,
-        "paddingTop": 10,
-      }
-    }
-  >
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "margin": 16,
-        }
-      }
-      onPress={[Function]}
-      title="common:submit"
-      type="primary"
-    />
-  </WithShadowView>
-</View>
+/>
 `;
 
-exports[`Property Details Screen Component should render property details screen 2`] = `""`;
+exports[`Property Details Screen Component should render property details screen 2`] = `
+<StateAwareComponent
+  renderComponent={null}
+/>
+`;
 
 exports[`Property Details Screen Component should render property details screen for different index property 1`] = `
-<View
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-    }
+<StateAwareComponent
+  renderComponent={
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        }
+      }
+    >
+      <Header
+        backgroundColor="#0084F8"
+        icon="left-arrow"
+        iconColor="white"
+        isHeadingVisible={true}
+        onIconPress={[Function]}
+        title="property:headerTitle"
+        titleFontType="semiBold"
+        titleStyle={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
+        titleType="small"
+      />
+      <ScrollViewMock
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
+        <withI18nextTranslation(PropertyDetailsLocation)
+          onNavigate={[Function]}
+          propertyAddress=""
+          propertyName=""
+          testID="propertyLocation"
+        />
+        <withI18nextTranslation(PropertyDetailsItems)
+          areaUnits={Array []}
+          carpetAreaError={false}
+          data={
+            Array [
+              Object {
+                "asset_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Residential House",
+                  },
+                  Object {
+                    "id": 2,
+                    "name": "Apartment/Condo",
+                  },
+                  Object {
+                    "id": 3,
+                    "name": "Villa",
+                  },
+                  Object {
+                    "id": 4,
+                    "name": "Penthouse",
+                  },
+                  Object {
+                    "id": 5,
+                    "name": "Studio Apartment",
+                  },
+                  Object {
+                    "id": 6,
+                    "name": "Independent Floor",
+                  },
+                ],
+                "id": 1,
+                "name": "Residential",
+                "space_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Room",
+                  },
+                ],
+              },
+              Object {
+                "asset_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Commercial Office Space",
+                  },
+                  Object {
+                    "id": 2,
+                    "name": "Office in IT park/SEZ",
+                  },
+                  Object {
+                    "id": 3,
+                    "name": "Commercial Showroom",
+                  },
+                  Object {
+                    "id": 4,
+                    "name": "Warehouse/Godown",
+                  },
+                ],
+                "id": 2,
+                "name": "Commercial",
+                "space_types": Array [
+                  Object {
+                    "id": 1,
+                    "name": "Room",
+                  },
+                ],
+              },
+            ]
+          }
+          onCommercialPropertyChange={[Function]}
+          onPropertyGroupChange={[Function]}
+          onPropertyGroupTypeChange={[Function]}
+          onSpaceAvailableValueChange={[Function]}
+          propertyGroupSelectedIndex={2}
+          propertyGroupTypeSelectedIndex={0}
+          spaceAvailable={
+            Object {
+              "areaUnit": "SQ_FT",
+              "balcony": 0,
+              "bathroom": 0,
+              "bedroom": 0,
+              "carpetArea": "",
+              "floorNumber": 0,
+              "totalFloors": 0,
+            }
+          }
+        />
+      </ScrollViewMock>
+      <WithShadowView
+        outerViewStyle={
+          Object {
+            "marginBottom": 20,
+            "paddingBottom": 0,
+            "paddingTop": 10,
+          }
+        }
+      >
+        <Button
+          containerStyle={
+            Object {
+              "flex": 0,
+              "margin": 16,
+            }
+          }
+          onPress={[Function]}
+          title="common:submit"
+          type="primary"
+        />
+      </WithShadowView>
+    </View>
   }
->
-  <Header
-    backgroundColor="#0084F8"
-    icon="left-arrow"
-    iconColor="white"
-    isHeadingVisible={true}
-    onIconPress={[Function]}
-    title="property:headerTitle"
-    titleFontType="semiBold"
-    titleStyle={
-      Object {
-        "color": "#FFFFFF",
-      }
-    }
-    titleType="small"
-  />
-  <ScrollViewMock
-    style={
-      Object {
-        "flex": 1,
-      }
-    }
-  >
-    <withI18nextTranslation(PropertyDetailsLocation)
-      onNavigate={[Function]}
-      propertyAddress=""
-      propertyName=""
-      testID="propertyLocation"
-    />
-    <withI18nextTranslation(PropertyDetailsItems)
-      areaUnits={Array []}
-      carpetAreaError={false}
-      data={
-        Array [
-          Object {
-            "asset_types": Array [
-              Object {
-                "id": 1,
-                "name": "Residential House",
-              },
-              Object {
-                "id": 2,
-                "name": "Apartment/Condo",
-              },
-              Object {
-                "id": 3,
-                "name": "Villa",
-              },
-              Object {
-                "id": 4,
-                "name": "Penthouse",
-              },
-              Object {
-                "id": 5,
-                "name": "Studio Apartment",
-              },
-              Object {
-                "id": 6,
-                "name": "Independent Floor",
-              },
-            ],
-            "id": 1,
-            "name": "Residential",
-            "space_types": Array [
-              Object {
-                "id": 1,
-                "name": "Room",
-              },
-            ],
-          },
-          Object {
-            "asset_types": Array [
-              Object {
-                "id": 1,
-                "name": "Commercial Office Space",
-              },
-              Object {
-                "id": 2,
-                "name": "Office in IT park/SEZ",
-              },
-              Object {
-                "id": 3,
-                "name": "Commercial Showroom",
-              },
-              Object {
-                "id": 4,
-                "name": "Warehouse/Godown",
-              },
-            ],
-            "id": 2,
-            "name": "Commercial",
-            "space_types": Array [
-              Object {
-                "id": 1,
-                "name": "Room",
-              },
-            ],
-          },
-        ]
-      }
-      onCommercialPropertyChange={[Function]}
-      onPropertyGroupChange={[Function]}
-      onPropertyGroupTypeChange={[Function]}
-      onSpaceAvailableValueChange={[Function]}
-      propertyGroupSelectedIndex={2}
-      propertyGroupTypeSelectedIndex={0}
-      spaceAvailable={
-        Object {
-          "areaUnit": "SQ_FT",
-          "balcony": 0,
-          "bathroom": 0,
-          "bedroom": 0,
-          "carpetArea": "",
-          "floorNumber": 0,
-          "totalFloors": 0,
-        }
-      }
-    />
-  </ScrollViewMock>
-  <WithShadowView
-    outerViewStyle={
-      Object {
-        "marginBottom": 20,
-        "paddingBottom": 0,
-        "paddingTop": 10,
-      }
-    }
-  >
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "margin": 16,
-        }
-      }
-      onPress={[Function]}
-      title="common:submit"
-      type="primary"
-    />
-  </WithShadowView>
-</View>
+/>
 `;

@@ -54,7 +54,7 @@ describe('Property Details Screen Component', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should navigate to previos screen', () => {
+  it.skip('should navigate to previos screen', () => {
     // @ts-ignore
     component.find('[testID="propertyLocation"]').prop('onNavigate')();
     expect(mock).toHaveBeenCalled();

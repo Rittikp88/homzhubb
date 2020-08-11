@@ -23,5 +23,6 @@ exports[`Email Login Screen should render email login screen 1`] = `
     onLoginSuccess={[Function]}
     testID="loginForm"
   />
+  <Loader />
 </View>
 `;
