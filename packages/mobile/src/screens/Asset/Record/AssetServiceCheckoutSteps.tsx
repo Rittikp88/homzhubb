@@ -11,7 +11,13 @@ import { PropertySelector } from '@homzhub/common/src/modules/property/selectors
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
-import { PropertyPayment, CheckoutAssetDetails, Header, StepIndicatorComponent } from '@homzhub/mobile/src/components';
+import {
+  PropertyPayment,
+  CheckoutAssetDetails,
+  Header,
+  StepIndicatorComponent,
+  Loader,
+} from '@homzhub/mobile/src/components';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
@@ -28,6 +34,7 @@ interface IStringForStep {
 interface IScreenState {
   currentStep: number;
   isPaymentSuccess: boolean;
+  isLoading: boolean;
 }
 
 interface IStateProps {
@@ -48,11 +55,12 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
   public state = {
     currentStep: 0,
     isPaymentSuccess: false,
+    isLoading: false,
   };
 
   public render = (): React.ReactNode => {
     const { t } = this.props;
-    const { isPaymentSuccess } = this.state;
+    const { isPaymentSuccess, isLoading } = this.state;
     return (
       <>
         {this.renderHeader()}
@@ -65,6 +73,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             <Button type="primary" title={t('previewProperty')} containerStyle={styles.buttonStyle} />
           </WithShadowView>
         )}
+        <Loader visible={isLoading} />
       </>
     );
   };
@@ -137,6 +146,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             setTermId={setTermId}
             isLeaseFlow={typeOfSale === TypeOfSale.FIND_TENANT}
             onStepSuccess={this.onProceedToNextStep}
+            setLoading={this.setLoadingState}
           />
         );
       case ServiceStepTypes.PROPERTY_IMAGES:
@@ -148,6 +158,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             totalSteps={steps.length}
             isSuccess={isPaymentSuccess}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
+            setLoading={this.setLoadingState}
           />
         );
       case ServiceStepTypes.PROPERTY_VERIFICATIONS:
@@ -157,6 +168,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             typeOfFlow={typeOfSale === TypeOfSale.FIND_TENANT ? TypeOfSale.RENT : TypeOfSale.SALE}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
             updateStep={this.onProceedToNextStep}
+            setLoading={this.setLoadingState}
           />
         );
       case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
@@ -189,6 +201,10 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
   private onSuccess = (): void => {
     const { isPaymentSuccess } = this.state;
     this.setState({ isPaymentSuccess: !isPaymentSuccess });
+  };
+
+  private setLoadingState = (loading: boolean): void => {
+    this.setState({ isLoading: loading });
   };
 
   private fetchStepLabels = (): string[] => {

@@ -61,7 +61,8 @@
     "pleaseSignup": "Please signup to continue",
     "properties": "Properties",
     "genericErrorMessage": "Oops! Something went wrong",
-    "shareMessage": "Hey, I would like to share this property {{url}} that posted on www.homzhub.com"
+    "shareMessage": "Hey, I would like to share this property {{url}} that posted on www.homzhub.com",
+    "fileCorrupt": "File is corrupted"
   },
   "auth": {
     "verifyNumber": "Verify your number",

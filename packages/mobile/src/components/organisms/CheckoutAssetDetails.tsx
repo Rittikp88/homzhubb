@@ -35,6 +35,7 @@ interface IOwnProps extends WithTranslation {
   isLeaseFlow: boolean;
   setTermId: (leaseTermId: number) => void;
   onStepSuccess: () => void;
+  setLoading: (loading: boolean) => void;
 }
 class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   public state = {
@@ -103,9 +104,10 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   };
 
   private onLeaseFormSubmit = async (data: ICreateLeaseTermDetails): Promise<void> => {
-    const { propertyId, termId, setTermId, onStepSuccess } = this.props;
+    const { propertyId, termId, setTermId, onStepSuccess, setLoading } = this.props;
     const { currency } = this.state;
     data = { ...data, currency_code: currency };
+    setLoading(true);
 
     if (termId) {
       await this.updateLeaseTerms(data);
@@ -115,16 +117,19 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     try {
       const response = await AssetRepository.createLeaseTerms(propertyId, data);
       setTermId(response.id);
+      setLoading(false);
       onStepSuccess();
     } catch (e) {
+      setLoading(false);
       AlertHelper.error({ message: e.message });
     }
   };
 
   private onResaleSubmit = async (data: ICreateSaleTermDetails): Promise<void> => {
-    const { propertyId, termId, setTermId, onStepSuccess } = this.props;
+    const { propertyId, termId, setTermId, onStepSuccess, setLoading } = this.props;
     const { currency } = this.state;
     data = { ...data, currency_code: currency };
+    setLoading(true);
 
     if (termId) {
       await this.updateResaleTerms(data);
@@ -134,8 +139,10 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
     try {
       const response = await AssetRepository.createSaleTerms(propertyId, data);
       setTermId(response.id);
+      setLoading(false);
       onStepSuccess();
     } catch (e) {
+      setLoading(false);
       AlertHelper.error({ message: e.message });
     }
   };
@@ -157,11 +164,14 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   };
 
   private updateLeaseTerms = async (data: IUpdateLeaseTermDetails): Promise<void> => {
-    const { propertyId, termId, onStepSuccess } = this.props;
+    const { propertyId, termId, onStepSuccess, setLoading } = this.props;
+    setLoading(true);
     try {
       await AssetRepository.updateLeaseTerms(propertyId, termId, data);
+      setLoading(false);
       onStepSuccess();
     } catch (e) {
+      setLoading(false);
       AlertHelper.error({ message: e.message });
     }
   };
@@ -169,7 +179,8 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   // RESALE APIs
 
   private getResaleDetails = async (): Promise<void> => {
-    const { propertyId, termId } = this.props;
+    const { propertyId, termId, setLoading } = this.props;
+    setLoading(true);
     try {
       const response = await AssetRepository.getSaleTerms(propertyId);
       if (response.length > 0) {
@@ -177,18 +188,23 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
         this.setState({
           initialResaleTerms: termId ? details : response[0],
         });
+        setLoading(false);
       }
     } catch (e) {
+      setLoading(false);
       AlertHelper.error({ message: e.message });
     }
   };
 
   private updateResaleTerms = async (data: IUpdateSaleTermDetails): Promise<void> => {
-    const { propertyId, termId, onStepSuccess } = this.props;
+    const { propertyId, termId, onStepSuccess, setLoading } = this.props;
+    setLoading(true);
     try {
       await AssetRepository.updateSaleTerms(propertyId, termId, data);
+      setLoading(false);
       onStepSuccess();
     } catch (e) {
+      setLoading(false);
       AlertHelper.error({ message: e.message });
     }
   };

@@ -464,6 +464,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
         activeSlide={activeSlide}
         data={assetDetails?.attachments ?? []}
         updateSlide={this.updateSlide}
+        onShare={this.handleShare}
       />
     );
   };

@@ -41,6 +41,7 @@ describe('Property Images Component', () => {
     props = {
       propertyId: 1,
       updateStep: mock,
+      setLoading: mock,
     };
     component = shallow(<PropertyImages {...props} t={(key: string): string => key} />).dive();
     instance = component.instance();

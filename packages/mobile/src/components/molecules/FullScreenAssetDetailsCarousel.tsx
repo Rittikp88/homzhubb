@@ -11,6 +11,7 @@ interface IProps {
   data: Attachment[];
   onFullScreenToggle: () => void;
   updateSlide: (index: number) => void;
+  onShare: () => void;
 }
 
 export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> {
@@ -24,7 +25,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
   }
 
   public renderListHeader = (): React.ReactElement => {
-    const { activeSlide, data, onFullScreenToggle } = this.props;
+    const { activeSlide, data, onFullScreenToggle, onShare } = this.props;
     return (
       <View style={styles.fullscreenContainer}>
         <Icon name={icons.close} size={20} color={theme.colors.white} onPress={onFullScreenToggle} />
@@ -34,7 +35,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           // @ts-ignore
           type={data[activeSlide].mediaType}
         />
-        <Icon name={icons.share} size={23} color={theme.colors.white} onPress={onFullScreenToggle} />
+        <Icon name={icons.share} size={23} color={theme.colors.white} onPress={onShare} />
       </View>
     );
   };

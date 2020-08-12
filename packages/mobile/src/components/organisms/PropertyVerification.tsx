@@ -42,6 +42,7 @@ interface IProps {
   typeOfFlow: string;
   updateStep: () => void;
   propertyId: number;
+  setLoading: (loading: boolean) => void;
 }
 
 type Props = WithTranslation & IProps;
@@ -147,15 +148,29 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public uploadDocument = async (verificationDocumentId: number, data: IVerificationTypes): Promise<void> => {
-    const document = await DocumentPicker.pick({
-      type: [DocumentPicker.types.allFiles],
-    });
-    const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'public.image', 'com.adobe.pdf', 'application/pdf'];
-    if (allowedFormats.includes(document.type)) {
-      const source = { uri: document.uri, type: document.type, name: document.name };
-      this.updateLocalDocuments(verificationDocumentId, source, data);
-    } else {
-      AlertHelper.error({ message: data.help_text });
+    const { setLoading } = this.props;
+    setLoading(true);
+    try {
+      const document = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      setLoading(false);
+      const allowedFormats = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'public.image',
+        'com.adobe.pdf',
+        'application/pdf',
+      ];
+      if (allowedFormats.includes(document.type)) {
+        const source = { uri: document.uri, type: document.type, name: document.name };
+        this.updateLocalDocuments(verificationDocumentId, source, data);
+      } else {
+        AlertHelper.error({ message: data.help_text });
+      }
+    } catch (e) {
+      setLoading(false);
     }
   };
 
@@ -186,7 +201,8 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public getVerificationTypes = async (): Promise<void> => {
-    const { typeOfFlow } = this.props;
+    const { typeOfFlow, setLoading } = this.props;
+    setLoading(true);
     try {
       const response = await AssetRepository.getVerificationDocumentTypes();
       const filteredResponse = response.filter((data: IVerificationTypes) => {
@@ -195,12 +211,16 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       this.setState({
         verificationTypes: filteredResponse,
       });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       AlertHelper.error({ message: error.message });
     }
   };
 
   public getExistingDocuments = async (propertyId: number): Promise<void> => {
+    const { setLoading } = this.props;
+    setLoading(true);
     try {
       let existingDocuments = [];
       existingDocuments = await AssetRepository.getExistingVerificationDocuments(propertyId);
@@ -210,16 +230,20 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       this.setState({
         existingDocuments,
       });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       AlertHelper.error({ message: error.message });
     }
   };
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
-    const { propertyId, updateStep } = this.props;
+    const { propertyId, updateStep, setLoading, t } = this.props;
     const { localDocuments, existingDocuments } = this.state;
+    setLoading(true);
     if (localDocuments.length === 0) {
       updateStep();
+      setLoading(false);
       return;
     }
     const formData = new FormData();
@@ -235,6 +259,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const baseUrl = ConfigHelper.getBaseUrl();
     const user: IUser | null = await StorageService.get(StorageKeys.USER);
     this.setState({ isLoading: true });
+    setLoading(true);
     fetch(`${baseUrl}attachments/upload/`, {
       method: 'POST',
       headers: {
@@ -262,10 +287,19 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             });
           }
         });
-        await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
-        // this.setState({ isLoading: false });
-        await this.getExistingDocuments(propertyId);
-        updateStep();
+        setLoading(true);
+        try {
+          await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
+          await this.getExistingDocuments(propertyId);
+          setLoading(false);
+          updateStep();
+        } catch (e) {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+        AlertHelper.error({ message: t('common:fileCorrupt') });
       });
   };
 
@@ -273,7 +307,9 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     document: IVerificationDocumentList,
     isLocalDocument: boolean | undefined
   ): Promise<void> => {
+    const { setLoading } = this.props;
     const { existingDocuments, localDocuments, verificationTypes, isLoading } = this.state;
+    setLoading(true);
     const clonedDocuments = isLocalDocument ? cloneDeep(localDocuments) : cloneDeep(existingDocuments);
     if (!document.id) {
       const documentIndex = findIndex(clonedDocuments, (existingDocument: IVerificationDocumentList) => {
@@ -290,12 +326,15 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           isLoading,
         });
       }
+      setLoading(false);
     } else {
       const { propertyId } = this.props;
       try {
         await AssetRepository.deleteVerificationDocument(propertyId, document.id);
         await this.getExistingDocuments(propertyId);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         AlertHelper.error({ message: error.message });
       }
     }

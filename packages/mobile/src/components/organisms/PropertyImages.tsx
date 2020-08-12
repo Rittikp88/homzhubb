@@ -23,6 +23,7 @@ interface IProps {
   isSuccess: boolean;
   onPressContinue: () => void;
   navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 type OwnProps = WithTranslation;
@@ -198,60 +199,67 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public onPhotosUpload = async (): Promise<void> => {
-    const { propertyId } = this.props;
+    const { propertyId, setLoading } = this.props;
     const { selectedImages } = this.state;
-    // @ts-ignore
-    const images: ImagePickerResponse[] = await ImagePicker.openPicker({
-      multiple: true,
-      compressImageMaxWidth: 400,
-      compressImageMaxHeight: 400,
-      compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
-      includeBase64: true,
-      mediaType: 'photo',
-    });
-    const formData = new FormData();
-    images.forEach((image) => {
-      formData.append('files[]', {
-        // @ts-ignore
-        name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
-        uri: image.path,
-        type: image.mime,
+
+    try {
+      // @ts-ignore
+      const images: ImagePickerResponse[] = await ImagePicker.openPicker({
+        multiple: true,
+        compressImageMaxWidth: 400,
+        compressImageMaxHeight: 400,
+        compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
+        includeBase64: true,
+        mediaType: 'photo',
       });
-    });
-    const baseUrl = ConfigHelper.getBaseUrl();
-    const user: IUser | null = await StorageService.get(StorageKeys.USER);
-    fetch(`${baseUrl}attachments/upload/`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'multipart/form-data',
-        // @ts-ignore
-        Authorization: `Bearer ${user.access_token}`,
-      },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        const { data } = responseJson;
-        const localSelectedImages: IPropertySelectedImages[] = [];
-        images.forEach((image, index: number) => {
-          localSelectedImages.push({
-            id: null,
-            description: '',
-            is_cover_image: false,
-            asset: propertyId,
-            attachment: data[index].id,
-            link: data[index].link,
-            isLocalImage: true,
-          });
-        });
-        if (selectedImages.length === 0) {
-          localSelectedImages[0].is_cover_image = true;
-        }
-        this.setState({
+      setLoading(true);
+      const formData = new FormData();
+      images.forEach((image) => {
+        formData.append('files[]', {
           // @ts-ignore
-          selectedImages: selectedImages.concat(localSelectedImages),
+          name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
+          uri: image.path,
+          type: image.mime,
         });
       });
+      const baseUrl = ConfigHelper.getBaseUrl();
+      const user: IUser | null = await StorageService.get(StorageKeys.USER);
+      fetch(`${baseUrl}attachments/upload/`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'multipart/form-data',
+          // @ts-ignore
+          Authorization: `Bearer ${user.access_token}`,
+        },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          const { data } = responseJson;
+          const localSelectedImages: IPropertySelectedImages[] = [];
+          images.forEach((image, index: number) => {
+            localSelectedImages.push({
+              id: null,
+              description: '',
+              is_cover_image: false,
+              asset: propertyId,
+              attachment: data[index].id,
+              link: data[index].link,
+              isLocalImage: true,
+            });
+          });
+          if (selectedImages.length === 0) {
+            localSelectedImages[0].is_cover_image = true;
+          }
+          this.setState({
+            // @ts-ignore
+            selectedImages: selectedImages.concat(localSelectedImages),
+          });
+          setLoading(false);
+        });
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
   public onToggleBottomSheet = (): void => {
@@ -286,16 +294,23 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
-    const response = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
-    const coverImageIndex = findIndex(response, (image) => {
-      return image.is_cover_image;
-    });
-    if (coverImageIndex === -1 && response.length > 0) {
-      response[0].is_cover_image = true;
+    const { setLoading } = this.props;
+    setLoading(true);
+    try {
+      const response = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
+      const coverImageIndex = findIndex(response, (image) => {
+        return image.is_cover_image;
+      });
+      if (coverImageIndex === -1 && response.length > 0) {
+        response[0].is_cover_image = true;
+      }
+      setLoading(false);
+      this.setState({
+        selectedImages: response,
+      });
+    } catch (e) {
+      setLoading(false);
     }
-    this.setState({
-      selectedImages: response,
-    });
   };
 
   public markAttachmentAsCoverImage = async (selectedImage: IPropertySelectedImages): Promise<void> => {
@@ -321,17 +336,23 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
-    const { propertyId, updateStep, totalSteps, onPressContinue } = this.props;
+    const { propertyId, updateStep, totalSteps, onPressContinue, setLoading } = this.props;
     const { selectedImages } = this.state;
+    setLoading(true);
     const attachmentIds: IPropertyImagesPostPayload[] = [];
     selectedImages.forEach((selectedImage: IPropertySelectedImages) =>
       attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.is_cover_image })
     );
-    await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
-    if (totalSteps === 2) {
-      onPressContinue();
+    try {
+      await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
+      if (totalSteps === 2) {
+        onPressContinue();
+      }
+      setLoading(false);
+      updateStep();
+    } catch (e) {
+      setLoading(false);
     }
-    updateStep();
   };
 }
 
