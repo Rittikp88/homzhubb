@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import {
+  Coordinate,
   GoogleGeocodeData,
   GooglePlaceData,
   GooglePlaceDetail,
@@ -65,11 +66,7 @@ class GooglePlacesService {
     return response.data.results[0];
   };
 
-  public getPOIs = async (
-    point: { latitude: number; longitude: number },
-    type: string,
-    radius = NEARBY_RADIUS
-  ): Promise<PointOfInterest[]> => {
+  public getPOIs = async (point: Coordinate, type: string, radius = NEARBY_RADIUS): Promise<PointOfInterest[]> => {
     const response = await this.axiosInstance.get(ENDPOINTS.getNearbyPlaces(), {
       params: {
         key: this.apiKey,
@@ -81,7 +78,7 @@ class GooglePlacesService {
 
     this.checkError(response.data);
     if (response.data.status === ZERO_RESULTS) return [];
-    return ResponseHelper.transformPOIs(response.data.results);
+    return ResponseHelper.transformPOIs(response.data.results, point);
   };
 
   public getSplitAddress = (address: string): { primaryAddress: string; secondaryAddress: string } => {

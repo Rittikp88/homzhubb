@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IAmenity, Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
@@ -231,7 +232,7 @@ export class Asset {
     return this._isFavorite;
   }
 
-  get assetLocation(): { latitude: number; longitude: number } {
+  get assetLocation(): Coordinate {
     return {
       longitude: this.longitude,
       latitude: this.latitude,

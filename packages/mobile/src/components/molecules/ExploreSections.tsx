@@ -72,14 +72,14 @@ class ExploreSections extends React.PureComponent<IProps> {
   };
 
   private renderListHeader = (): React.ReactElement => {
-    const { selectedPlaceType, pointsOfInterest } = this.props;
+    const { selectedPlaceType } = this.props;
 
     return (
       <>
         <View style={styles.listHeader}>
           <Icon name={selectedPlaceType.icon} size={24} color={theme.colors.darkTint4} />
           <Text type="small" style={styles.title}>
-            {`${pointsOfInterest.length} ${selectedPlaceType.label}`}
+            {`${selectedPlaceType.label}`}
           </Text>
         </View>
         <Divider containerStyles={styles.divider} />
@@ -108,7 +108,7 @@ class ExploreSections extends React.PureComponent<IProps> {
           </Label>
         </View>
         <Label type="regular" style={{ color }}>
-          2.11 miles
+          {`${item.distanceFromOrigin.toFixed(2)} Km`}
         </Label>
       </TouchableOpacity>
     );

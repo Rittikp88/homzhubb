@@ -68,6 +68,11 @@ export interface Point {
   lng: number;
 }
 
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
 interface Geometry {
   location: Point;
   location_type: string;
@@ -118,4 +123,5 @@ export interface PointOfInterest {
   name: string;
   latitude: number;
   longitude: number;
+  distanceFromOrigin: number;
 }

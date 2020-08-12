@@ -70,7 +70,7 @@ exports[`Header should match snapshot 1`] = `
         size={22}
         style={
           Object {
-            "bottom": 16,
+            "bottom": 12,
             "left": 16,
             "position": "absolute",
           }
@@ -86,7 +86,7 @@ exports[`Header should match snapshot 1`] = `
                 "fontSize": 22,
               },
               Object {
-                "bottom": 16,
+                "bottom": 12,
                 "left": 16,
                 "position": "absolute",
               },
@@ -109,7 +109,7 @@ exports[`Header should match snapshot 1`] = `
                   "fontSize": 22,
                 },
                 Object {
-                  "bottom": 16,
+                  "bottom": 12,
                   "left": 16,
                   "position": "absolute",
                 },
@@ -127,15 +127,22 @@ exports[`Header should match snapshot 1`] = `
         </Text>
       </Icon>
       <Text
+        numberOfLines={1}
         style={
-          Object {
-            "color": "#FFFFFF",
-          }
+          Array [
+            Object {
+              "width": 300,
+            },
+            Object {
+              "color": "#FFFFFF",
+            },
+          ]
         }
         textType="semiBold"
         type="small"
       >
         <Text
+          numberOfLines={1}
           style={
             Array [
               Object {
@@ -147,13 +154,19 @@ exports[`Header should match snapshot 1`] = `
                 "fontFamily": "OpenSans-SemiBold",
                 "fontWeight": "600",
               },
-              Object {
-                "color": "#FFFFFF",
-              },
+              Array [
+                Object {
+                  "width": 300,
+                },
+                Object {
+                  "color": "#FFFFFF",
+                },
+              ],
             ]
           }
         >
           <Text
+            numberOfLines={1}
             style={
               Array [
                 Object {
@@ -165,9 +178,14 @@ exports[`Header should match snapshot 1`] = `
                   "fontFamily": "OpenSans-SemiBold",
                   "fontWeight": "600",
                 },
-                Object {
-                  "color": "#FFFFFF",
-                },
+                Array [
+                  Object {
+                    "width": 300,
+                  },
+                  Object {
+                    "color": "#FFFFFF",
+                  },
+                ],
               ]
             }
           />
@@ -251,7 +269,7 @@ exports[`Header should match snapshot for secondary theme 1`] = `
         size={22}
         style={
           Object {
-            "bottom": 16,
+            "bottom": 12,
             "left": 16,
             "position": "absolute",
           }
@@ -267,7 +285,7 @@ exports[`Header should match snapshot for secondary theme 1`] = `
                 "fontSize": 22,
               },
               Object {
-                "bottom": 16,
+                "bottom": 12,
                 "left": 16,
                 "position": "absolute",
               },
@@ -290,7 +308,7 @@ exports[`Header should match snapshot for secondary theme 1`] = `
                   "fontSize": 22,
                 },
                 Object {
-                  "bottom": 16,
+                  "bottom": 12,
                   "left": 16,
                   "position": "absolute",
                 },
@@ -308,15 +326,22 @@ exports[`Header should match snapshot for secondary theme 1`] = `
         </Text>
       </Icon>
       <Text
+        numberOfLines={1}
         style={
-          Object {
-            "color": "#001B36",
-          }
+          Array [
+            Object {
+              "width": 300,
+            },
+            Object {
+              "color": "#001B36",
+            },
+          ]
         }
         textType="semiBold"
         type="small"
       >
         <Text
+          numberOfLines={1}
           style={
             Array [
               Object {
@@ -328,13 +353,19 @@ exports[`Header should match snapshot for secondary theme 1`] = `
                 "fontFamily": "OpenSans-SemiBold",
                 "fontWeight": "600",
               },
-              Object {
-                "color": "#001B36",
-              },
+              Array [
+                Object {
+                  "width": 300,
+                },
+                Object {
+                  "color": "#001B36",
+                },
+              ],
             ]
           }
         >
           <Text
+            numberOfLines={1}
             style={
               Array [
                 Object {
@@ -346,9 +377,14 @@ exports[`Header should match snapshot for secondary theme 1`] = `
                   "fontFamily": "OpenSans-SemiBold",
                   "fontWeight": "600",
                 },
-                Object {
-                  "color": "#001B36",
-                },
+                Array [
+                  Object {
+                    "width": 300,
+                  },
+                  Object {
+                    "color": "#001B36",
+                  },
+                ],
               ]
             }
           >
@@ -433,7 +469,7 @@ exports[`Header should match snapshot without title 1`] = `
         size={22}
         style={
           Object {
-            "bottom": 16,
+            "bottom": 12,
             "left": 16,
             "position": "absolute",
           }
@@ -449,7 +485,7 @@ exports[`Header should match snapshot without title 1`] = `
                 "fontSize": 22,
               },
               Object {
-                "bottom": 16,
+                "bottom": 12,
                 "left": 16,
                 "position": "absolute",
               },
@@ -472,7 +508,7 @@ exports[`Header should match snapshot without title 1`] = `
                   "fontSize": 22,
                 },
                 Object {
-                  "bottom": 16,
+                  "bottom": 12,
                   "left": 16,
                   "position": "absolute",
                 },
@@ -490,15 +526,22 @@ exports[`Header should match snapshot without title 1`] = `
         </Text>
       </Icon>
       <Text
+        numberOfLines={1}
         style={
-          Object {
-            "color": "#FFFFFF",
-          }
+          Array [
+            Object {
+              "width": 300,
+            },
+            Object {
+              "color": "#FFFFFF",
+            },
+          ]
         }
         textType="semiBold"
         type="small"
       >
         <Text
+          numberOfLines={1}
           style={
             Array [
               Object {
@@ -510,13 +553,19 @@ exports[`Header should match snapshot without title 1`] = `
                 "fontFamily": "OpenSans-SemiBold",
                 "fontWeight": "600",
               },
-              Object {
-                "color": "#FFFFFF",
-              },
+              Array [
+                Object {
+                  "width": 300,
+                },
+                Object {
+                  "color": "#FFFFFF",
+                },
+              ],
             ]
           }
         >
           <Text
+            numberOfLines={1}
             style={
               Array [
                 Object {
@@ -528,9 +577,14 @@ exports[`Header should match snapshot without title 1`] = `
                   "fontFamily": "OpenSans-SemiBold",
                   "fontWeight": "600",
                 },
-                Object {
-                  "color": "#FFFFFF",
-                },
+                Array [
+                  Object {
+                    "width": 300,
+                  },
+                  Object {
+                    "color": "#FFFFFF",
+                  },
+                ],
               ]
             }
           >

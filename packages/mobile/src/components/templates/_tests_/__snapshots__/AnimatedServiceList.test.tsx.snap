@@ -94,7 +94,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               size={22}
               style={
                 Object {
-                  "bottom": 16,
+                  "bottom": 12,
                   "left": 16,
                   "position": "absolute",
                 }
@@ -110,7 +110,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       "fontSize": 22,
                     },
                     Object {
-                      "bottom": 16,
+                      "bottom": 12,
                       "left": 16,
                       "position": "absolute",
                     },
@@ -133,7 +133,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                         "fontSize": 22,
                       },
                       Object {
-                        "bottom": 16,
+                        "bottom": 12,
                         "left": 16,
                         "position": "absolute",
                       },
@@ -151,15 +151,22 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               </Text>
             </Icon>
             <Text
+              numberOfLines={1}
               style={
-                Object {
-                  "color": "#FFFFFF",
-                }
+                Array [
+                  Object {
+                    "width": 300,
+                  },
+                  Object {
+                    "color": "#FFFFFF",
+                  },
+                ]
               }
               textType="semiBold"
               type="small"
             >
               <Text
+                numberOfLines={1}
                 style={
                   Array [
                     Object {
@@ -171,13 +178,19 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       "fontFamily": "OpenSans-SemiBold",
                       "fontWeight": "600",
                     },
-                    Object {
-                      "color": "#FFFFFF",
-                    },
+                    Array [
+                      Object {
+                        "width": 300,
+                      },
+                      Object {
+                        "color": "#FFFFFF",
+                      },
+                    ],
                   ]
                 }
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Array [
                       Object {
@@ -189,9 +202,14 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                         "fontFamily": "OpenSans-SemiBold",
                         "fontWeight": "600",
                       },
-                      Object {
-                        "color": "#FFFFFF",
-                      },
+                      Array [
+                        Object {
+                          "width": 300,
+                        },
+                        Object {
+                          "color": "#FFFFFF",
+                        },
+                      ],
                     ]
                   }
                 >
