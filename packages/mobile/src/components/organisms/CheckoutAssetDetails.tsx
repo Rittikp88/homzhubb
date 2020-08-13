@@ -149,7 +149,8 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
 
   // LEASE APIs
   private getLeaseDetails = async (): Promise<void> => {
-    const { propertyId, termId } = this.props;
+    const { propertyId, termId, setLoading } = this.props;
+    setLoading(true);
     try {
       const response = await AssetRepository.getLeaseTerms(propertyId);
       if (response.length > 0) {
@@ -158,7 +159,9 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
           initialLeaseTerms: termId ? details : response[0],
         });
       }
+      setLoading(false);
     } catch (e) {
+      setLoading(false);
       AlertHelper.error({ message: e.message });
     }
   };
@@ -188,8 +191,8 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
         this.setState({
           initialResaleTerms: termId ? details : response[0],
         });
-        setLoading(false);
       }
+      setLoading(false);
     } catch (e) {
       setLoading(false);
       AlertHelper.error({ message: e.message });
