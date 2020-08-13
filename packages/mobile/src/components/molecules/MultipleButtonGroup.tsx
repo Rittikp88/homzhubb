@@ -3,15 +3,15 @@ import { TouchableOpacity, StyleSheet, View, ViewStyle, StyleProp } from 'react-
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
 
-interface IMultipleButtonGroupItem {
+interface IMultipleButtonGroupItem<T> {
   title: string;
-  value: string;
+  value: T;
 }
 
-interface IMultipleButtonGroupProps {
-  data: IMultipleButtonGroupItem[];
-  onItemSelect: (value: string) => void;
-  selectedItem: string[];
+interface IMultipleButtonGroupProps<T> {
+  data: IMultipleButtonGroupItem<T>[];
+  onItemSelect: (value: T) => void;
+  selectedItem: T[];
   containerStyle?: StyleProp<ViewStyle>;
   buttonItemStyle?: StyleProp<ViewStyle>;
   textType?: TextFieldType;
@@ -19,19 +19,19 @@ interface IMultipleButtonGroupProps {
   fontType?: FontWeightType;
 }
 
-export class MultipleButtonGroup<T> extends React.PureComponent<IMultipleButtonGroupProps> {
+export class MultipleButtonGroup<T> extends React.PureComponent<IMultipleButtonGroupProps<T>> {
   public render(): React.ReactElement {
     const { data, containerStyle = {} } = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
-        {data.map((item: IMultipleButtonGroupItem) => {
+        {data.map((item: IMultipleButtonGroupItem<T>) => {
           return this.renderItem(item);
         })}
       </View>
     );
   }
 
-  public renderItem = (item: IMultipleButtonGroupItem): React.ReactElement => {
+  public renderItem = (item: IMultipleButtonGroupItem<T>): React.ReactElement => {
     const {
       selectedItem,
       onItemSelect,
@@ -59,7 +59,7 @@ export class MultipleButtonGroup<T> extends React.PureComponent<IMultipleButtonG
     const onItemPress = (): void => onItemSelect(item.value);
 
     return (
-      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.value}>
+      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.title}>
         <TextField type={textSize} textType={fontType} style={textStyle}>
           {item.title}
         </TextField>

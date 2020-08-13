@@ -8,12 +8,25 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { AdvancedFilters } from '@homzhub/common/src/mocks/AssetAdvancedFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
-import { Button, Dropdown, RNSwitch, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
+import {
+  Button,
+  CheckboxGroup,
+  Dropdown,
+  ICheckboxGroupData,
+  RNSwitch,
+  SelectionPicker,
+  Text,
+  WithShadowView,
+} from '@homzhub/common/src/components';
+import { BottomSheet, ButtonGroup } from '@homzhub/mobile/src/components';
+import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 interface IStateProps {
   filters: IFilter;
@@ -28,15 +41,31 @@ interface IDispatchProps {
 interface IAssetFiltersState {
   agentListed: boolean;
   showVerified: boolean;
+  isFacingToggled: boolean;
+  isFurnishingToggled: boolean;
+  isPropertyAmenitiesToggled: boolean;
+  data: any; // TODO: to be removed once the data is coming from props
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertyFilters>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
 class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
+  /*eslint-disable */
+  private FURNISHING = [
+    { title: this.props.t('property:fullyFurnished'), value: FurnishingType.FULL },
+    { title: this.props.t('property:semiFurnished'), value: FurnishingType.SEMI },
+    { title: this.props.t('property:none'), value: FurnishingType.NONE },
+  ];
+  /* eslint-enable */
+
   public state = {
     agentListed: false,
     showVerified: false,
+    isFacingToggled: false,
+    isFurnishingToggled: false,
+    isPropertyAmenitiesToggled: false,
+    data: AdvancedFilters,
   };
 
   public render(): React.ReactElement {
@@ -61,6 +90,9 @@ class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
               {this.renderDateAdded()}
               {this.renderPropertyAge()}
               {this.renderMoveInDate()}
+              {this.renderFacing()}
+              {this.renderFurnishing()}
+              {this.renderPropertyAmenities()}
               {this.renderShowVerified()}
               {this.renderAgentListed()}
             </View>
@@ -98,13 +130,16 @@ class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
 
   public renderSearchRadius = (): React.ReactElement => {
     const { t } = this.props;
+    const {
+      data: { searchRadius },
+    } = this.state;
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('searchRadius')}
         </Text>
         <Dropdown
-          data={[]}
+          data={searchRadius}
           value={0}
           listTitle={t('selectSearchRadius')}
           placeholder={t('selectRadius')}
@@ -120,13 +155,16 @@ class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
 
   public renderDateAdded = (): React.ReactElement => {
     const { t } = this.props;
+    const {
+      data: { dateAdded },
+    } = this.state;
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('dateAdded')}
         </Text>
         <Dropdown
-          data={[]}
+          data={dateAdded}
           value={0}
           listTitle={t('selectDateAdded')}
           placeholder={t('selectDateAdded')}
@@ -142,13 +180,16 @@ class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
 
   public renderPropertyAge = (): React.ReactElement => {
     const { t } = this.props;
+    const {
+      data: { propertyAge },
+    } = this.state;
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('propertyAge')}
         </Text>
         <Dropdown
-          data={[]}
+          data={propertyAge}
           value={0}
           listTitle={t('selectPropertyAge')}
           placeholder={t('selectPropertyAge')}
@@ -184,13 +225,173 @@ class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
     );
   };
 
+  public renderFacing = (): React.ReactElement => {
+    const { t } = this.props;
+    const {
+      data: { facing },
+      isFacingToggled,
+    } = this.state;
+    const toggleFacing = (): void => this.setState({ isFacingToggled: !isFacingToggled });
+    const handleFacingSelection = (): void => {};
+    return (
+      <>
+        <Text type="small" textType="semiBold" style={styles.filterHeader}>
+          {t('facing', { totalFacing: 2 })}
+        </Text>
+        <View style={styles.moreRow}>
+          <MultipleButtonGroup<number>
+            data={facing.slice(0, 4)}
+            onItemSelect={handleFacingSelection}
+            selectedItem={[1, 2]}
+          />
+          <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleFacing}>
+            {t('common:more')}
+          </Text>
+        </View>
+        {isFacingToggled && (
+          <BottomSheet
+            isShadowView
+            sheetHeight={theme.viewport.height / 2}
+            headerTitle={t('selectFacing')}
+            visible={isFacingToggled}
+            onCloseSheet={toggleFacing}
+          >
+            <ScrollView style={styles.flexOne}>{this.renderFacingData()}</ScrollView>
+          </BottomSheet>
+        )}
+      </>
+    );
+  };
+
+  public renderFacingData = (): React.ReactElement => {
+    const {
+      data: { facing },
+    } = this.state;
+    const checkboxGroupData = (): ICheckboxGroupData[] => {
+      return facing.map((facingType: { title: string; value: number }) => ({
+        id: facingType.value,
+        label: facingType.title,
+        isSelected: false,
+      }));
+    };
+    return (
+      <CheckboxGroup
+        data={checkboxGroupData()}
+        onToggle={this.onSelectedFacing}
+        containerStyle={styles.checkboxGroupContainer}
+      />
+    );
+  };
+
+  public renderFurnishing = (): React.ReactElement => {
+    const { t } = this.props;
+    const { isFurnishingToggled } = this.state;
+    const toggleFurnishing = (): void => this.setState({ isFurnishingToggled: !isFurnishingToggled });
+    const handleFurnishingSelection = (): void => {};
+    return (
+      <>
+        <Text type="small" textType="semiBold" style={styles.filterHeader}>
+          {t('furnishing', { totalFurnishing: 2 })}
+        </Text>
+        <View style={styles.moreRow}>
+          <ButtonGroup<FurnishingType>
+            data={this.FURNISHING}
+            onItemSelect={handleFurnishingSelection}
+            selectedItem={FurnishingType.FULL}
+          />
+          <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleFurnishing}>
+            {t('common:more')}
+          </Text>
+        </View>
+        {isFurnishingToggled && (
+          <BottomSheet
+            isShadowView
+            sheetHeight={theme.viewport.height / 2}
+            headerTitle={t('selectFurnishing')}
+            visible={isFurnishingToggled}
+            onCloseSheet={toggleFurnishing}
+          >
+            <ScrollView style={styles.flexOne}>{this.renderFurnishingData()}</ScrollView>
+          </BottomSheet>
+        )}
+      </>
+    );
+  };
+
+  public renderFurnishingData = (): React.ReactElement => {
+    const {
+      data: { furnishing },
+    } = this.state;
+    const checkboxGroupData = (): ICheckboxGroupData[] => {
+      return furnishing.map((furnishingType: { label: string; value: number }) => ({
+        id: furnishingType.value,
+        label: furnishingType.label,
+        isSelected: false,
+      }));
+    };
+    return (
+      <CheckboxGroup
+        data={checkboxGroupData()}
+        onToggle={this.onSelectedFurnishing}
+        containerStyle={styles.checkboxGroupContainer}
+      />
+    );
+  };
+
+  public renderPropertyAmenities = (): React.ReactElement => {
+    const { t } = this.props;
+    const { isPropertyAmenitiesToggled } = this.state;
+    const toggleAmenities = (): void => this.setState({ isPropertyAmenitiesToggled: !isPropertyAmenitiesToggled });
+    return (
+      <>
+        <Text type="small" textType="semiBold" style={styles.filterHeader}>
+          {t('propertyAmenities', { totalAmenities: 2 })}
+        </Text>
+        <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleAmenities}>
+          {t('common:select')}
+        </Text>
+        {isPropertyAmenitiesToggled && (
+          <BottomSheet
+            isShadowView
+            sheetHeight={theme.viewport.height / 2}
+            headerTitle={t('selectAmenities')}
+            visible={isPropertyAmenitiesToggled}
+            onCloseSheet={toggleAmenities}
+          >
+            <ScrollView style={styles.flexOne}>{this.renderAmenitiesData()}</ScrollView>
+          </BottomSheet>
+        )}
+      </>
+    );
+  };
+
+  public renderAmenitiesData = (): React.ReactElement => {
+    const {
+      data: { propertyAmenities },
+    } = this.state;
+    const checkboxGroupData = (): ICheckboxGroupData[] => {
+      return propertyAmenities.map((amenityType: { label: string; value: number }) => ({
+        id: amenityType.value,
+        label: amenityType.label,
+        isSelected: false,
+      }));
+    };
+    return (
+      <CheckboxGroup
+        data={checkboxGroupData()}
+        onToggle={this.onSelectedAmenities}
+        containerStyle={styles.checkboxGroupContainer}
+      />
+    );
+  };
+
   public renderShowVerified = (): React.ReactElement => {
     const { t } = this.props;
     const { showVerified } = this.state;
     const updateVerified = (): void => this.setState({ showVerified: !showVerified });
     return (
       <View style={styles.toggleButton}>
-        <Text type="small" textType="semiBold">
+        <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('showVerified')}
         </Text>
         <RNSwitch selected={showVerified} onToggle={updateVerified} />
@@ -204,7 +405,7 @@ class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
     const updateAgentListed = (): void => this.setState({ agentListed: !agentListed });
     return (
       <View style={styles.toggleButton}>
-        <Text type="small" textType="semiBold">
+        <Text type="small" textType="semiBold" style={styles.agentListed}>
           {t('agentListed')}
         </Text>
         <RNSwitch selected={agentListed} onToggle={updateAgentListed} />
@@ -213,6 +414,12 @@ class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
   };
 
   public onReset = (): void => {};
+
+  public onSelectedAmenities = (id: number, isSelected: boolean): void => {};
+
+  public onSelectedFacing = (id: number, isSelected: boolean): void => {};
+
+  public onSelectedFurnishing = (id: number, isSelected: boolean): void => {};
 
   public onSelectSearchRadius = (value: string | number): void => {};
 
@@ -284,6 +491,10 @@ const styles = StyleSheet.create({
   },
   filterHeader: {
     paddingVertical: 20,
+    color: theme.colors.darkTint3,
+  },
+  agentListed: {
+    color: theme.colors.darkTint3,
   },
   shadowView: {
     paddingTop: 10,
@@ -298,6 +509,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 20,
+  },
+  selectAmenity: {
+    color: theme.colors.primaryColor,
+  },
+  moreRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxGroupContainer: {
+    margin: theme.layout.screenPadding,
   },
 });

@@ -62,8 +62,10 @@
     "properties": "Properties",
     "genericErrorMessage": "Oops! Something went wrong",
     "shareMessage": "Hey, I would like to share this property {{url}} that posted on www.homzhub.com",
-    "noResultsFound": "No Results Found",
-    "fileCorrupt": "File is corrupted"
+    "fileCorrupt": "File is corrupted",
+    "more": "+ more",
+    "select": "+ Select",
+    "noResultsFound": "No Results Found"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -256,9 +258,12 @@
     "expectedMoveInDate": "Expected Move-In Date",
     "availableFrom": "Available from",
     "selectMoveInDate": "Select Move-In Date",
-    "facing": "Facing {{totalFacing}}",
-    "furnishing": "Furnishing {{totalFurnishing}}",
-    "propertyAmenities": "Property Amenities {{totalAmeneties}}",
+    "facing": "Facing ({{totalFacing}})",
+    "selectFacing": "Select Property Facing",
+    "furnishing": "Furnishing ({{totalFurnishing}})",
+    "selectFurnishing": "Select Property Furnishing",
+    "propertyAmenities": "Property Amenities ({{totalAmenities}})",
+    "selectAmenities": "Select Property Amenities",
     "showVerified": "Show Verified",
     "agentListed": "Agent Listed"
   },

@@ -83,7 +83,7 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
             <Label type="large" textType="semiBold" style={styles.label}>
               {t('lookingFor')}
             </Label>
-            <MultipleButtonGroup
+            <MultipleButtonGroup<string>
               data={BedroomType}
               onItemSelect={this.onSelectLookingType}
               selectedItem={selectedSpaces}
