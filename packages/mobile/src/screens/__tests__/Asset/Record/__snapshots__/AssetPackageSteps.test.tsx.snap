@@ -16,7 +16,7 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
       }
     }
   >
-    <Header
+    <Memo(Header)
       icon="left-arrow"
       isHeadingVisible={true}
       onIconPress={[Function]}
@@ -250,7 +250,7 @@ exports[`Service List Steps Screen should render snapshot 2`] = `
       }
     }
   >
-    <Header
+    <Memo(Header)
       icon="left-arrow"
       isHeadingVisible={true}
       onIconPress={[Function]}

@@ -62,6 +62,7 @@
     "properties": "Properties",
     "genericErrorMessage": "Oops! Something went wrong",
     "shareMessage": "Hey, I would like to share this property {{url}} that posted on www.homzhub.com",
+    "noResultsFound": "No Results Found",
     "fileCorrupt": "File is corrupted"
   },
   "auth": {
@@ -236,7 +237,6 @@
     "propertyType": "Property Type",
     "lookingFor": "Looking For",
     "propertiesFound": "Properties Found",
-    "noResultsFound": "No Results Found",
     "noResultHelper": "We did not find any properties for your search",
     "searchAgain": "Search Again",
     "resetFilters": "Reset Filters",
@@ -274,7 +274,21 @@
     "similarProperties": "Similar Properties",
     "bookTour": "Book a Tour",
     "nearby": "Nearby",
-    "commute": "Commute"
+    "commute": "Commute",
+    "railwayStations": "Railway Stations",
+    "busStations": "Bus Stations",
+    "airports": "Airports",
+    "schools": "Schools",
+    "restaurants": "Restaurants",
+    "fuelStations": "Fuel Stations",
+    "hospitals": "Hospitals",
+    "groceryStores": "Grocery Stores",
+    "filmTheaters": "Film Theaters",
+    "pharmacies": "Pharmacies",
+    "hotels": "Hotels",
+    "parks": "Parks",
+    "atms": "ATMs",
+    "malls": "Shopping Malls"
   },
   "assetDashboard": {
     "notification": "Notification",

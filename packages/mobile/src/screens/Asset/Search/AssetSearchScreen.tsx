@@ -204,7 +204,7 @@ class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState>
       <View style={styles.noResultsListContainer}>
         <Icon name={icons.search} size={30} color={theme.colors.disabledSearch} />
         <Text type="small" textType="semiBold" style={styles.noResultText}>
-          {t('noResultsFound')}
+          {t('common:noResultsFound')}
         </Text>
         <Label type="large" textType="regular" style={styles.helperText}>
           {t('noResultHelper')}

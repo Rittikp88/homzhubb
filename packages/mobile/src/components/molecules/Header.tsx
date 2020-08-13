@@ -15,40 +15,41 @@ interface ICommonHeaderProps {
 }
 const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 34 : StatusBar.currentHeight;
 
-export class Header extends React.PureComponent<ICommonHeaderProps, {}> {
-  public render(): React.ReactNode {
-    const { type = 'primary', icon, onIconPress, isHeadingVisible = true, title, testID } = this.props;
+const Header = (props: ICommonHeaderProps): React.ReactElement => {
+  const { type = 'primary', icon, onIconPress, isHeadingVisible = true, title, testID } = props;
 
-    let backgroundColor = theme.colors.primaryColor;
-    let barStyle = 'light-content';
-    let textColor = theme.colors.white;
-    if (type === 'secondary') {
-      backgroundColor = theme.colors.white;
-      textColor = theme.colors.darkTint1;
-      barStyle = 'dark-content';
-    }
-
-    return (
-      <>
-        <View style={{ height: STATUSBAR_HEIGHT, backgroundColor }}>
-          <StatusBar
-            translucent
-            backgroundColor={backgroundColor}
-            barStyle={barStyle as 'light-content' | 'dark-content'}
-          />
-        </View>
-        <View style={[styles.container, { backgroundColor }]} testID={testID}>
-          <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
-          {isHeadingVisible && (
-            <Text numberOfLines={1} type="small" textType="semiBold" style={[styles.title, { color: textColor }]}>
-              {title ?? ''}
-            </Text>
-          )}
-        </View>
-      </>
-    );
+  let backgroundColor = theme.colors.primaryColor;
+  let barStyle = 'light-content';
+  let textColor = theme.colors.white;
+  if (type === 'secondary') {
+    backgroundColor = theme.colors.white;
+    textColor = theme.colors.darkTint1;
+    barStyle = 'dark-content';
   }
-}
+
+  return (
+    <>
+      <View style={{ height: STATUSBAR_HEIGHT, backgroundColor }}>
+        <StatusBar
+          translucent
+          backgroundColor={backgroundColor}
+          barStyle={barStyle as 'light-content' | 'dark-content'}
+        />
+      </View>
+      <View style={[styles.container, { backgroundColor }]} testID={testID}>
+        <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
+        {isHeadingVisible && (
+          <Text numberOfLines={1} type="small" textType="semiBold" style={[styles.title, { color: textColor }]}>
+            {title ?? ''}
+          </Text>
+        )}
+      </View>
+    </>
+  );
+};
+
+const memoizedComponent = React.memo(Header);
+export { memoizedComponent as Header };
 
 const BOTTOM_PADDING = 12;
 const styles = StyleSheet.create({
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    textAlign: 'center',
     width: 300,
   },
   icon: {

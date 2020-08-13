@@ -1,9 +1,11 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlaceTypes } from '@homzhub/common/src/services/GooglePlaces/constants';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Label, Text } from '@homzhub/common/src/components';
 
 interface IPlaceTypeData {
@@ -13,7 +15,7 @@ interface IPlaceTypeData {
   mapMarker: string;
 }
 
-interface IProps {
+interface IProps extends WithTranslation {
   placeTypes: IPlaceTypeData[];
   selectedPlaceType: IPlaceTypeData;
   onPlaceTypePress: (newSection: PlaceTypes) => void;
@@ -24,7 +26,7 @@ interface IProps {
 
 class ExploreSections extends React.PureComponent<IProps> {
   public render = (): React.ReactNode => {
-    const { placeTypes, pointsOfInterest, selectedPlaceType, selectedPoiId } = this.props;
+    const { placeTypes, pointsOfInterest, selectedPlaceType, selectedPoiId, t } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.shadowContainer}>
@@ -38,15 +40,24 @@ class ExploreSections extends React.PureComponent<IProps> {
             keyExtractor={this.keyExtractorSections}
           />
         </View>
-        <FlatList<PointOfInterest>
-          showsVerticalScrollIndicator={false}
-          data={pointsOfInterest}
-          ListHeaderComponent={this.renderListHeader}
-          renderItem={this.renderPOI}
-          contentContainerStyle={styles.resultContainer}
-          extraData={selectedPoiId}
-          keyExtractor={this.keyExtractorResult}
-        />
+        {pointsOfInterest.length > 0 ? (
+          <FlatList<PointOfInterest>
+            style={styles.resultContainer}
+            showsVerticalScrollIndicator={false}
+            data={pointsOfInterest}
+            ListHeaderComponent={this.renderListHeader}
+            renderItem={this.renderPOI}
+            extraData={selectedPoiId}
+            keyExtractor={this.keyExtractorResult}
+          />
+        ) : (
+          <View style={styles.noResultsContainer}>
+            <Icon name={icons.search} size={30} color={theme.colors.disabledSearch} />
+            <Text type="small" textType="semiBold" style={styles.noResultText}>
+              {t('common:noResultsFound')}
+            </Text>
+          </View>
+        )}
       </View>
     );
   };
@@ -72,14 +83,14 @@ class ExploreSections extends React.PureComponent<IProps> {
   };
 
   private renderListHeader = (): React.ReactElement => {
-    const { selectedPlaceType } = this.props;
+    const { selectedPlaceType, t } = this.props;
 
     return (
       <>
         <View style={styles.listHeader}>
           <Icon name={selectedPlaceType.icon} size={24} color={theme.colors.darkTint4} />
           <Text type="small" style={styles.title}>
-            {`${selectedPlaceType.label}`}
+            {t(selectedPlaceType.label)}
           </Text>
         </View>
         <Divider containerStyles={styles.divider} />
@@ -118,8 +129,12 @@ class ExploreSections extends React.PureComponent<IProps> {
   private keyExtractorSections = (item: IPlaceTypeData, index: number): string => `${item.key}-${index}`;
 }
 
+const HOC = withTranslation(LocaleConstants.namespacesKey.assetDescription)(ExploreSections);
+export { HOC as ExploreSections };
+
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     overflow: 'hidden',
   },
   iconContainer: {
@@ -145,8 +160,14 @@ const styles = StyleSheet.create({
     paddingStart: 16,
   },
   resultContainer: {
-    marginTop: 20,
+    flex: 1,
+    marginVertical: 20,
     marginHorizontal: 16,
+  },
+  noResultsContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   listHeader: {
     flexDirection: 'row',
@@ -169,7 +190,8 @@ const styles = StyleSheet.create({
     paddingStart: 12,
     color: theme.colors.darkTint4,
   },
+  noResultText: {
+    color: theme.colors.darkTint3,
+    marginVertical: 10,
+  },
 });
-
-const memoizedComponent = React.memo(ExploreSections);
-export { memoizedComponent as ExploreSections };

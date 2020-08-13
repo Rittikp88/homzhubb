@@ -23,7 +23,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
         }
       }
     >
-      <Header
+      <Memo(Header)
         icon="left-arrow"
         onIconPress={[MockFunction]}
         title="Animated List"
@@ -155,6 +155,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               style={
                 Array [
                   Object {
+                    "textAlign": "center",
                     "width": 300,
                   },
                   Object {
@@ -180,6 +181,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                     },
                     Array [
                       Object {
+                        "textAlign": "center",
                         "width": 300,
                       },
                       Object {
@@ -204,6 +206,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                       },
                       Array [
                         Object {
+                          "textAlign": "center",
                           "width": 300,
                         },
                         Object {
@@ -219,7 +222,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
             </Text>
           </View>
         </View>
-      </Header>
+      </Memo(Header)>
       <ForwardRef(AnimatedComponentWrapper)
         style={
           Array [

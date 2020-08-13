@@ -2,7 +2,7 @@
 
 exports[`Rent Services Screen Component should render rent services screen 1`] = `
 <Fragment>
-  <Header
+  <Memo(Header)
     icon="left-arrow"
     onIconPress={[Function]}
     testID="headerIconPress"

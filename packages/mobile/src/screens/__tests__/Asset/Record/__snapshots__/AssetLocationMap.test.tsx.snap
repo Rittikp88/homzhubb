@@ -9,7 +9,7 @@ exports[`Add property Map Screen Component should render property details screen
     }
   }
 >
-  <Header
+  <Memo(Header)
     icon="left-arrow"
     onIconPress={[Function]}
     testID="location"
@@ -135,7 +135,7 @@ exports[`Add property Map Screen Component should render snapshot for states 1`]
     }
   }
 >
-  <Header
+  <Memo(Header)
     icon="left-arrow"
     onIconPress={[Function]}
     testID="location"
