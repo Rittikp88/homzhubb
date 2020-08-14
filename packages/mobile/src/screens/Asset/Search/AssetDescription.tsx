@@ -75,19 +75,21 @@ const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
 const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 100;
+// TODO: Do we require a byId reducer here?
+const initialState = {
+  isFullScreen: false,
+  descriptionShowMore: false,
+  descriptionHide: true,
+  amenitiesShowAll: false,
+  activeSlide: 0,
+  isScroll: true,
+};
 
 type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
 class AssetDescription extends React.PureComponent<Props, IOwnState> {
-  public state = {
-    isFullScreen: false,
-    descriptionShowMore: false,
-    descriptionHide: true,
-    amenitiesShowAll: false,
-    activeSlide: 0,
-    isScroll: true,
-  };
+  public state = initialState;
 
   public componentDidMount = (): void => {
     const {
@@ -103,6 +105,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     getAsset(payload);
   };
 
+  // TODO: Do we require a byId reducer here?
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>, snapshot?: any): void {
     const { getAsset } = this.props;
     const {
@@ -121,7 +124,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       };
       getAsset(payload);
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ isScroll: true });
+      this.setState({ ...initialState });
     }
   }
 

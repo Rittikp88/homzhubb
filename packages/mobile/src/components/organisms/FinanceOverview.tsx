@@ -4,12 +4,12 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Dropdown, Label, SelectionPicker } from '@homzhub/common/src/components';
+import { Dropdown, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
 import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
 
 enum TabKeys {
-  expense = 1,
+  costBreakdown = 1,
   cashFlow = 2,
 }
 
@@ -26,7 +26,7 @@ const DROPDOWN_DATA = [
 
 class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
   public state = {
-    currentTab: TabKeys.expense,
+    currentTab: TabKeys.costBreakdown,
     selectedTimeRange: 'Monthly',
   };
 
@@ -35,9 +35,12 @@ class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
     const { currentTab, selectedTimeRange } = this.state;
     return (
       <View style={styles.container}>
+        <Text type="small" textType="semiBold" style={styles.title}>
+          {t('overallPerformance')}
+        </Text>
         <SelectionPicker
           data={[
-            { title: t('expense'), value: TabKeys.expense },
+            { title: t('costBreakdown'), value: TabKeys.costBreakdown },
             { title: t('cashFlow'), value: TabKeys.cashFlow },
           ]}
           selectedItem={[currentTab]}
@@ -92,6 +95,9 @@ const styles = StyleSheet.create({
   },
   dateSection: {
     flexDirection: 'row',
+  },
+  title: {
+    marginBottom: 16,
   },
   dateText: {
     marginStart: 8,

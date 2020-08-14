@@ -2,9 +2,11 @@ import { Logger } from '@homzhub/common/src/utils/Logger';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { ApiClientError, IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import {
-  DEFAULT_ERROR_MESSAGE,
+  TOKEN_NOT_VALID,
   HttpStatusCode,
+  DEFAULT_ERROR_MESSAGE,
   NO_INTERNET_ERROR_MESSAGE,
+  SESSION_EXPIRED_MESSAGE,
 } from '@homzhub/common/src/network/Constants';
 import { IApiError, IApiResponse, IApiResponseHandler } from '@homzhub/common/src/network/Interfaces';
 
@@ -43,8 +45,9 @@ export default class ApiResponseHandler implements IApiResponseHandler {
   public error = (error: IApiError): ApiClientError => {
     Logger.warn(`API error. Content: ${JSON.stringify(error)}`);
 
+    const errorCode = error.response?.data.error.error_code || '';
     let errorDetails: IApiClientError = {
-      message: DEFAULT_ERROR_MESSAGE,
+      message: errorCode === TOKEN_NOT_VALID ? SESSION_EXPIRED_MESSAGE : DEFAULT_ERROR_MESSAGE,
     } as IApiClientError;
 
     const netInfoErrorMessage = this.netInfoErrorMessage();

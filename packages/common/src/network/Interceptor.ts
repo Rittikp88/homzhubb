@@ -1,13 +1,15 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse, AxiosInstance } from 'axios';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { store } from '@homzhub/common/src/modules/store';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import {
   IApiInterceptor,
   IApiRequestInterceptor,
   IApiResponseInterceptor,
 } from '@homzhub/common/src/network/Interfaces';
-import { HttpStatusCode } from '@homzhub/common/src/network/Constants';
 import { IRefreshToken, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { TOKEN_NOT_VALID } from '@homzhub/common/src/network/Constants';
 
 const REFRESH_TOKEN_ENDPOINT = 'token/refresh/';
 
@@ -36,11 +38,11 @@ class Interceptor implements IApiInterceptor {
 
     const onRejected = async (error: AxiosError): Promise<any> => {
       const originalRequest: AxiosRequestConfig = error.config;
+      const errorCode = error.response?.data.error.error_code || '';
       const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
 
-      // If not a token expiry error, proceed as usual
-      // TODO (Aditya 01/07/2020): Revisit on error code finalization
-      if (error.response?.status !== HttpStatusCode.Unauthorized || !user) {
+      // If not a token expiry error, proceed as usual, or not a logged in user
+      if (errorCode !== TOKEN_NOT_VALID || !user) {
         throw error;
       }
 
@@ -67,7 +69,8 @@ class Interceptor implements IApiInterceptor {
 
         return await this.client.request(originalRequest);
       } catch (e) {
-        // TODO (Aditya 01/07/2020): Handle logout on refresh token expiry
+        store.dispatch(UserActions.logoutSuccess());
+        await StorageService.remove(StorageKeys.USER);
         throw e;
       }
     };

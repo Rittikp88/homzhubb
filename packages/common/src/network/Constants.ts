@@ -1,6 +1,8 @@
 export const DEFAULT_API_TIMEOUT = 1000;
 export const DEFAULT_ERROR_MESSAGE = 'Error from API Client';
 export const NO_INTERNET_ERROR_MESSAGE = 'We’re having trouble connecting. Please check your internet connectivity!';
+export const SESSION_EXPIRED_MESSAGE = 'Session Expired!! Please Login Again!';
+export const TOKEN_NOT_VALID = 'token_not_valid';
 
 export const HttpStatusCode = {
   Ok: 200,
