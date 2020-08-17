@@ -44,7 +44,7 @@ describe('ServiceRepository', () => {
   it('Should fetch service steps details', async () => {
     // @ts-ignore
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => ServiceSteps);
-    const response = await ServiceRepository.getServiceStepsDetails(1);
+    const response = await ServiceRepository.getServiceStepsDetails(1, 1);
     expect(response).toMatchSnapshot();
   });
 });

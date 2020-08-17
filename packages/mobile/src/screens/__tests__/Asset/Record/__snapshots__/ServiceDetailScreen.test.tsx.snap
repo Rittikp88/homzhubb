@@ -120,7 +120,7 @@ exports[`Service Detail Screen should render snapshot 1`] = `
                   "title": "Door step agreement delivery1",
                 },
               ],
-              "service_cost": 0,
+              "service_cost": "0",
               "title": "Free Listing",
             },
             Object {
@@ -186,7 +186,7 @@ exports[`Service Detail Screen should render snapshot 1`] = `
                   "title": "Door step agreement delivery2",
                 },
               ],
-              "service_cost": 3000,
+              "service_cost": "3000",
               "title": "Assisted Listing",
             },
             Object {
@@ -252,7 +252,7 @@ exports[`Service Detail Screen should render snapshot 1`] = `
                   "title": "Door step agreement delivery3",
                 },
               ],
-              "service_cost": -1,
+              "service_cost": "-1",
               "title": "Boosted Listing",
             },
           ]
@@ -399,7 +399,7 @@ exports[`Service Detail Screen should render snapshot for continue 1`] = `
                   "title": "Door step agreement delivery1",
                 },
               ],
-              "service_cost": 0,
+              "service_cost": "0",
               "title": "Free Listing",
             },
             Object {
@@ -465,7 +465,7 @@ exports[`Service Detail Screen should render snapshot for continue 1`] = `
                   "title": "Door step agreement delivery2",
                 },
               ],
-              "service_cost": 3000,
+              "service_cost": "3000",
               "title": "Assisted Listing",
             },
             Object {
@@ -531,7 +531,7 @@ exports[`Service Detail Screen should render snapshot for continue 1`] = `
                   "title": "Door step agreement delivery3",
                 },
               ],
-              "service_cost": -1,
+              "service_cost": "-1",
               "title": "Boosted Listing",
             },
           ]

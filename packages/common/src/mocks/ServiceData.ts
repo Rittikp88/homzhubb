@@ -5,7 +5,7 @@ export const ServicesData = [
     name: 'FREE_LISTING',
     title: 'Free Listing',
     description: 'Rhoncus lacus nunc.',
-    service_cost: 0,
+    service_cost: '0',
     info: 'markdown',
     number: 1,
     service_bundle_items: [
@@ -71,7 +71,7 @@ export const ServicesData = [
     name: 'ASSISTED_LISTING',
     title: 'Assisted Listing',
     description: 'Vestibulum eu',
-    service_cost: 3000,
+    service_cost: '3000',
     info: 'markdown',
     number: 2,
     service_bundle_items: [
@@ -137,7 +137,7 @@ export const ServicesData = [
     name: 'BOOSTED_LISTING',
     title: 'Boosted Listing',
     description: 'tristique donec aenean faucibus',
-    service_cost: -1,
+    service_cost: '-1',
     info: 'markdown',
     number: 3,
     service_bundle_items: [

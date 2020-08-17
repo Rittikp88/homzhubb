@@ -2,11 +2,12 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { User } from '@homzhub/common/src/domain/models/User';
 
-// @ts-ignore
 const state: IState = {
   user: {
     ...initialUserState,
@@ -15,6 +16,12 @@ const state: IState = {
   },
   property: {
     ...initialPropertyState,
+  },
+  asset: {
+    ...initialAssetState,
+  },
+  search: {
+    ...initialSearchState,
   },
 };
 

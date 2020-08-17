@@ -2,6 +2,8 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
@@ -25,6 +27,12 @@ const state: IState = {
     currentPropertyId: 1,
     termId: 1,
     serviceCategory: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
+  },
+  asset: {
+    ...initialAssetState,
+  },
+  search: {
+    ...initialSearchState,
   },
 };
 

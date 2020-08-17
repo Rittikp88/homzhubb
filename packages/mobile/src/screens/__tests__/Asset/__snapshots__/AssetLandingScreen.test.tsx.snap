@@ -83,6 +83,7 @@ exports[`Landing Screen Component should render landing screen 1`] = `
         containerStyle={
           Object {
             "flex": 0,
+            "marginVertical": 5,
           }
         }
         onPress={[Function]}
@@ -94,10 +95,11 @@ exports[`Landing Screen Component should render landing screen 1`] = `
         containerStyle={
           Object {
             "flex": 0,
+            "marginVertical": 5,
           }
         }
         onPress={[Function]}
-        title="Switch View"
+        title="Dashboard"
         type="secondary"
       />
       <Label

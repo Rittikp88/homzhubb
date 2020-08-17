@@ -38,7 +38,7 @@ class Interceptor implements IApiInterceptor {
 
     const onRejected = async (error: AxiosError): Promise<any> => {
       const originalRequest: AxiosRequestConfig = error.config;
-      const errorCode = error.response?.data.error.error_code || '';
+      const errorCode = error.response?.data?.error?.error_code || '';
       const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
 
       // If not a token expiry error, proceed as usual, or not a logged in user

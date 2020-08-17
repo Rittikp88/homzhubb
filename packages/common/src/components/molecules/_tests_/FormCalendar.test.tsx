@@ -47,6 +47,7 @@ describe('Test cases for FormCalendar', () => {
 
   it('should close bottom-sheet on close button press of bottom-sheet', () => {
     expect(wrapper.setState({ isCalendarVisible: true }));
+    // @ts-ignore
     wrapper.find(BottomSheet).prop('onCloseSheet')();
     expect(wrapper.state('isCalendarVisible')).toEqual(false);
   });

@@ -3,7 +3,6 @@
 exports[`OtpTimer should match snapshot 1`] = `
 <OtpTimer
   onResentPress={[MockFunction]}
-  t={[Function]}
 >
   <Label
     style={

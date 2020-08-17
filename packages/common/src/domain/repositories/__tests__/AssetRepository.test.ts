@@ -82,16 +82,16 @@ describe('AssetRepository', () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => ({ id: 5 }));
     const response = await AssetRepository.createLeaseTerms(1, {
       currency_code: '+91',
-      monthly_rent_price: 1200,
-      security_deposit_price: 15000,
-      annual_increment_percentage: 5,
+      expected_monthly_rent: 1200,
+      security_deposit: 15000,
+      annual_rent_increment_percentage: 5,
       minimum_lease_period: 2,
-      furnishing_status: FurnishingType.SEMI,
+      furnishing: FurnishingType.SEMI,
       available_from_date: '2020-09-12',
       maintenance_paid_by: PaidByTypes.OWNER,
       utility_paid_by: PaidByTypes.OWNER,
       maintenance_amount: 1,
-      maintenance_schedule: ScheduleTypes.MONTHLY,
+      maintenance_payment_schedule: ScheduleTypes.MONTHLY,
     });
     expect(response).toStrictEqual({ id: 5 });
   });
@@ -101,16 +101,16 @@ describe('AssetRepository', () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => ({ id: 5 }));
     const response = await AssetRepository.updateLeaseTerms(1, 1, {
       currency_code: '+91',
-      monthly_rent_price: 1200,
-      security_deposit_price: 15000,
-      annual_increment_percentage: 5,
+      expected_monthly_rent: 1200,
+      security_deposit: 15000,
+      annual_rent_increment_percentage: 5,
       minimum_lease_period: 2,
-      furnishing_status: FurnishingType.SEMI,
+      furnishing: FurnishingType.SEMI,
       available_from_date: '2020-09-12',
       maintenance_paid_by: PaidByTypes.OWNER,
       utility_paid_by: PaidByTypes.OWNER,
       maintenance_amount: 1,
-      maintenance_schedule: ScheduleTypes.MONTHLY,
+      maintenance_payment_schedule: ScheduleTypes.MONTHLY,
     });
     expect(response).toStrictEqual({ id: 5 });
   });
@@ -129,10 +129,10 @@ describe('AssetRepository', () => {
       currency_code: '+91',
       expected_price: 1200,
       expected_booking_amount: 500,
-      year_of_construction: 1,
+      construction_year: 1,
       available_from_date: '2020-09-12',
       maintenance_amount: 200,
-      maintenance_schedule: ScheduleTypes.MONTHLY,
+      maintenance_payment_schedule: ScheduleTypes.MONTHLY,
     });
     expect(response).toStrictEqual({ id: 5 });
   });
@@ -144,10 +144,10 @@ describe('AssetRepository', () => {
       currency_code: '+91',
       expected_price: 12000,
       expected_booking_amount: 5000,
-      year_of_construction: 1,
+      construction_year: 1,
       available_from_date: '2020-10-12',
       maintenance_amount: 2000,
-      maintenance_schedule: ScheduleTypes.MONTHLY,
+      maintenance_payment_schedule: ScheduleTypes.MONTHLY,
     });
     expect(response).toStrictEqual({ id: 5 });
   });

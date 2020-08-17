@@ -58,7 +58,13 @@ describe.skip('fetchAuthorsFromApi', () => {
   it('should dispatch action "SERVICE_STEPS_SUCCESS" and "SERVICE_STEPS_FAILURE" with result from API', () => {
     const mockResponse = ServiceSteps;
     const mockError = 'Error';
-    const generator = getServiceStepsDetails({ type: PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS, payload: 1 });
+    const generator = getServiceStepsDetails({
+      type: PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS,
+      payload: {
+        serviceCategoryId: 1,
+        serviceId: 1,
+      },
+    });
     generator.next();
     expect(generator.next(mockResponse).value).toEqual(
       put({ type: PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS, payload: ServiceSteps })
