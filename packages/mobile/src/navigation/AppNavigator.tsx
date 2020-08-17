@@ -100,7 +100,7 @@ export const LoggedInBottomTabs = (): React.ReactElement => {
         options={{
           tabBarLabel: 'Portfolio',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <Icon name={icons.search} color={color} size={22} />
+            <Icon name={icons.portfolio} color={color} size={22} />
           ),
         }}
       />
@@ -110,7 +110,7 @@ export const LoggedInBottomTabs = (): React.ReactElement => {
         options={{
           tabBarLabel: 'Financials',
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <Icon name={icons.heartOutline} color={color} size={22} />
+            <Icon name={icons.barChartOutline} color={color} size={22} />
           ),
         }}
       />

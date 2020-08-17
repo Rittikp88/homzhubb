@@ -93,6 +93,7 @@ export const icons = {
   warning: 'warning',
   toggleOff: 'toggle-off',
   toggleOn: 'toggle-on',
+  portfolio: 'portfolio',
 
   // COMMUTE
   train: 'train',

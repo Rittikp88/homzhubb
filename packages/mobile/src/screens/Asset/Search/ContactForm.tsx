@@ -229,7 +229,7 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
           spaces: selectedSpaces,
           contact_person_type: personType.value,
           lead_type: 'MAIL',
-          message,
+          ...(message && { message }),
           person_contacted: contactDetail.id,
           preferred_contact_time: timeSlot,
         },
