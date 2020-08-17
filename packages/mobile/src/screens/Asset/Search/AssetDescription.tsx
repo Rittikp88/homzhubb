@@ -47,6 +47,7 @@ import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -75,6 +76,18 @@ const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
 const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 100;
+
+const initialCarouselData: Attachment[] = [
+  {
+    link:
+      'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
+    isCoverImage: true,
+    fileName: 'sample',
+    mediaType: 'IMAGE',
+    // @ts-ignore
+    mediaAttributes: {},
+  },
+];
 
 // TODO: Do we require a byId reducer here?
 const initialState = {
@@ -454,12 +467,11 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderCarousel = (): React.ReactElement => {
-    const { assetDetails } = this.props;
     const { activeSlide } = this.state;
     return (
       <AssetDetailsImageCarousel
         enterFullScreen={this.onFullScreenToggle}
-        data={assetDetails?.attachments ?? []}
+        data={this.getCarouselData()}
         activeSlide={activeSlide}
         updateSlide={this.updateSlide}
       />
@@ -468,13 +480,12 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private renderFullscreenCarousel = (): React.ReactNode => {
     const { isFullScreen, activeSlide } = this.state;
-    const { assetDetails } = this.props;
     if (!isFullScreen) return null;
     return (
       <FullScreenAssetDetailsCarousel
         onFullScreenToggle={this.onFullScreenToggle}
         activeSlide={activeSlide}
-        data={assetDetails?.attachments ?? []}
+        data={this.getCarouselData()}
         updateSlide={this.updateSlide}
         onShare={this.handleShare}
       />
@@ -569,6 +580,14 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private onGoBack = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  public getCarouselData = (): Attachment[] => {
+    const { assetDetails } = this.props;
+    if (assetDetails && assetDetails?.attachments.length > 0) {
+      return assetDetails?.attachments;
+    }
+    return initialCarouselData;
   };
 
   public updateSlide = (slideNumber: number): void => {

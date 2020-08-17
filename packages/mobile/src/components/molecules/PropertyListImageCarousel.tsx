@@ -34,6 +34,17 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
       // @ts-ignore
       return b.is_cover_image - a.is_cover_image;
     });
+    if (sortedImages.length === 0) {
+      sortedImages.push({
+        link:
+          'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
+        isCoverImage: true,
+        fileName: 'sample',
+        mediaType: 'IMAGE',
+        // @ts-ignore
+        mediaAttributes: {},
+      });
+    }
     return (
       <View style={styles.carouselContainer}>
         {!isCarousel ? (

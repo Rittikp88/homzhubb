@@ -132,7 +132,10 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
     return (
       <PropertyMapCard
         source={{
-          uri: image[0].link,
+          uri:
+            image.length > 0
+              ? image[0].link
+              : 'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
         }}
         name={projectName}
         currency={currency}

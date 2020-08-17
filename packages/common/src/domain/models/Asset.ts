@@ -39,18 +39,6 @@ export interface IData {
   count?: number;
 }
 
-const initialCarouselData: Attachment[] = [
-  {
-    link:
-      'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
-    isCoverImage: true,
-    fileName: 'sample',
-    mediaType: 'IMAGE',
-    // @ts-ignore
-    mediaAttributes: {},
-  },
-];
-
 @JsonObject('Data')
 class Data {
   @JsonProperty('id', Number)
@@ -190,7 +178,7 @@ export class Asset {
   }
 
   get attachments(): Attachment[] {
-    return this._attachments.length > 0 ? this._attachments : initialCarouselData;
+    return this._attachments;
   }
 
   get postedOn(): string {
