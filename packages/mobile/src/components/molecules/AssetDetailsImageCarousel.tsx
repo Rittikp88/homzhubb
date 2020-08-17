@@ -28,7 +28,11 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
           onSnapToItem={this.onSnapToItem}
         />
         <View style={styles.overlay}>
-          <ImageVideoPagination currentSlide={activeSlide} totalSlides={data.length} type={currentSlide.mediaType} />
+          <ImageVideoPagination
+            currentSlide={activeSlide}
+            totalSlides={data.length}
+            type={currentSlide?.mediaType ?? 'IMAGE'}
+          />
         </View>
       </View>
     );

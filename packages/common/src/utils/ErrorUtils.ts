@@ -3,7 +3,7 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 
 class ErrorUtils {
   public getErrorMessage = (e: IApiClientError): string => {
-    if (e.original && e.original.error.length > 0) {
+    if (e.original && e.original.error && e.original.error.length > 0) {
       const { error } = e.original;
       return error[0].message;
     }

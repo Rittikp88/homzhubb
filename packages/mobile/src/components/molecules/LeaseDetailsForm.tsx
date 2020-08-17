@@ -87,28 +87,28 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
     const { initialValues } = this.props;
     if (prevProps.initialValues !== initialValues && initialValues) {
       const {
-        maintenance_schedule,
-        monthly_rent_price,
-        security_deposit_price,
-        annual_increment_percentage,
+        maintenance_payment_schedule,
+        expected_monthly_rent,
+        security_deposit,
+        annual_rent_increment_percentage,
         maintenance_amount,
         minimum_lease_period,
         available_from_date,
-        furnishing_status,
+        furnishing,
         maintenance_paid_by,
         utility_paid_by,
       } = initialValues;
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        showMore: !!annual_increment_percentage,
-        monthlyRent: monthly_rent_price.toString(),
-        securityDeposit: security_deposit_price.toString(),
-        annualIncrement: annual_increment_percentage?.toString() ?? '',
+        showMore: !!annual_rent_increment_percentage,
+        monthlyRent: expected_monthly_rent.toString(),
+        securityDeposit: security_deposit.toString(),
+        annualIncrement: annual_rent_increment_percentage?.toString() ?? '',
         maintenanceAmount: maintenance_amount?.toString() ?? '',
-        maintenanceSchedule: maintenance_schedule ?? ScheduleTypes.ANNUALLY,
+        maintenanceSchedule: maintenance_payment_schedule ?? ScheduleTypes.ANNUALLY,
         minimumLeasePeriod: minimum_lease_period,
         availableFrom: available_from_date,
-        furnishingStatus: furnishing_status,
+        furnishingStatus: furnishing,
         maintenanceBy: maintenance_paid_by,
         utilityBy: utility_paid_by,
       });
@@ -268,28 +268,28 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
     const { onSubmit, currency } = this.props;
 
     let maintenance_amount: number | null = parseInt(values[LeaseFormKeys.maintenanceAmount], 10);
-    let maintenance_schedule: ScheduleTypes | null = values[LeaseFormKeys.maintenanceSchedule];
-    let annual_increment_percentage: number | null = parseFloat(values[LeaseFormKeys.annualIncrement]);
+    let maintenance_payment_schedule: ScheduleTypes | null = values[LeaseFormKeys.maintenanceSchedule];
+    let annual_rent_increment_percentage: number | null = parseFloat(values[LeaseFormKeys.annualIncrement]);
     if (values[LeaseFormKeys.maintenanceBy] === PaidByTypes.OWNER) {
       maintenance_amount = null;
-      maintenance_schedule = null;
+      maintenance_payment_schedule = null;
     }
     if (!values[LeaseFormKeys.showMore]) {
-      annual_increment_percentage = null;
+      annual_rent_increment_percentage = null;
     }
 
     const leaseTerms: ICreateLeaseTermDetails = {
       currency_code: currency,
-      monthly_rent_price: parseInt(values[LeaseFormKeys.monthlyRent], 10),
-      security_deposit_price: parseInt(values[LeaseFormKeys.securityDeposit], 10),
-      annual_increment_percentage,
+      expected_monthly_rent: parseInt(values[LeaseFormKeys.monthlyRent], 10),
+      security_deposit: parseInt(values[LeaseFormKeys.securityDeposit], 10),
+      annual_rent_increment_percentage,
       minimum_lease_period: values[LeaseFormKeys.minimumLeasePeriod],
       available_from_date: values[LeaseFormKeys.availableFrom],
       maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
       utility_paid_by: values[LeaseFormKeys.utilityBy],
-      furnishing_status: values[LeaseFormKeys.furnishingStatus],
+      furnishing: values[LeaseFormKeys.furnishingStatus],
       maintenance_amount,
-      maintenance_schedule,
+      maintenance_payment_schedule,
     };
     onSubmit(leaseTerms);
     formActions.setSubmitting(false);

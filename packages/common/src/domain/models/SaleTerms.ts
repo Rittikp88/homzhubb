@@ -5,20 +5,20 @@ export interface ICreateSaleTermDetails {
   currency_code: string;
   expected_price: number;
   expected_booking_amount: number;
-  year_of_construction: number;
+  construction_year: number;
   available_from_date: string;
   maintenance_amount: number;
-  maintenance_schedule: ScheduleTypes;
+  maintenance_payment_schedule: ScheduleTypes;
 }
 
 export interface IUpdateSaleTermDetails {
   currency_code?: string;
   expected_price?: number;
   expected_booking_amount?: number;
-  year_of_construction?: number;
+  construction_year?: number;
   available_from_date?: string;
   maintenance_amount?: number;
-  maintenance_schedule?: ScheduleTypes;
+  maintenance_payment_schedule?: ScheduleTypes;
 }
 
 export interface ISaleDetails extends ICreateSaleTermDetails {
@@ -27,42 +27,39 @@ export interface ISaleDetails extends ICreateSaleTermDetails {
 
 @JsonObject('SaleTerms')
 export class SaleTerms {
-  // TODO: Ask the backend team to send an empty object for Sale Term in case of Lease terms data
-  @JsonProperty('id', Number, true)
+  @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('available_from_date', String, true)
-  private _availableFromDate = '';
-
-  @JsonProperty('expected_booking_amount', Number, true)
-  private _expectedBookingAmount = -1;
-
-  @JsonProperty('maintenance_amount', Number, true)
-  private _maintenanceAmount = -1;
-
-  @JsonProperty('expected_price', Number, true)
+  @JsonProperty('expected_price', Number)
   private _expectedPrice = 0;
 
-  @JsonProperty('maintenance_schedule', String, true)
+  @JsonProperty('expected_booking_amount', Number)
+  private _expectedBookingAmount = -1;
+
+  @JsonProperty('maintenance_amount', Number)
+  private _maintenanceAmount = -1;
+
+  @JsonProperty('maintenance_payment_schedule', String)
   private _maintenanceSchedule = '';
 
-  @JsonProperty('currency_code', String, true)
+  @JsonProperty('available_from_date', String)
+  private _availableFromDate = '';
+
+  @JsonProperty('tenanted_till', String)
+  private _tenantedTill = '';
+
+  @JsonProperty('currency_code', String)
   private _currencyCode = 'INR';
+
+  @JsonProperty('currency_symbol', String)
+  private _currencySymbol = 'INR';
 
   get id(): number {
     return this._id;
   }
 
-  get availableFromDate(): string {
-    return this._availableFromDate;
-  }
-
   get expectedPrice(): number {
     return this._expectedPrice;
-  }
-
-  get maintenanceSchedule(): string {
-    return this._maintenanceSchedule;
   }
 
   get expectedBookingAmount(): number {
@@ -73,7 +70,23 @@ export class SaleTerms {
     return this._maintenanceAmount;
   }
 
+  get maintenanceSchedule(): string {
+    return this._maintenanceSchedule;
+  }
+
+  get availableFromDate(): string {
+    return this._availableFromDate;
+  }
+
+  get tenantedTill(): string {
+    return this._tenantedTill;
+  }
+
   get currencyCode(): string {
     return this._currencyCode;
+  }
+
+  get currencySymbol(): string {
+    return this._currencySymbol;
   }
 }

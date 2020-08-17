@@ -76,20 +76,12 @@ class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
 
   public componentDidUpdate = (prevProps: Props): void => {
     const {
-      filters: {
-        asset_group,
-        max_price,
-        min_price,
-        search_latitude,
-        search_longitude,
-        asset_transaction_type,
-        search_address,
-      },
+      filters: { asset_group, max_price, min_price, search_latitude, asset_transaction_type, search_address },
       getFilterDetails,
     } = this.props;
 
     if (prevProps.filters.asset_group !== asset_group || prevProps.filters.search_latitude !== search_latitude) {
-      getFilterDetails({ latitude: search_latitude, longitute: search_longitude, asset_group });
+      getFilterDetails({ asset_group });
     }
 
     if (prevProps.filters.search_address !== search_address) {

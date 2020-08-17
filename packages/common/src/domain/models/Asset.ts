@@ -10,6 +10,7 @@ import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 
 export interface IAsset {
+  id: number;
   project_name: string;
   unit_number: string;
   posted_on: string;
@@ -37,6 +38,18 @@ export interface IData {
   name: string;
   count?: number;
 }
+
+const initialCarouselData: Attachment[] = [
+  {
+    link:
+      'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
+    isCoverImage: true,
+    fileName: 'sample',
+    mediaType: 'IMAGE',
+    // @ts-ignore
+    mediaAttributes: {},
+  },
+];
 
 @JsonObject('Data')
 class Data {
@@ -76,17 +89,17 @@ export class Asset {
   @JsonProperty('block_number', String)
   private _blockNumber = '';
 
-  @JsonProperty('latitude', String)
-  private _latitude = '';
+  @JsonProperty('latitude', Number)
+  private _latitude = 0;
 
-  @JsonProperty('longitude', String)
-  private _longitude = '';
+  @JsonProperty('longitude', Number)
+  private _longitude = 0;
 
-  @JsonProperty('carpet_area_unit', String)
-  private _carpetAreaUnit = '';
+  @JsonProperty('carpet_area_unit', String, true)
+  private _carpetAreaUnit: string | null = null;
 
-  @JsonProperty('carpet_area', String)
-  private _carpetArea = '';
+  @JsonProperty('carpet_area', Number, true)
+  private _carpetArea: number | null = null;
 
   @JsonProperty('posted_on', String, true)
   private _postedOn = '';
@@ -121,10 +134,10 @@ export class Asset {
   @JsonProperty('asset_group', Data, true)
   private _assetGroup: Data = new Data();
 
-  @JsonProperty('lease_term', LeaseTerms, true)
+  @JsonProperty('lease_listing', LeaseTerms, true)
   private _leaseTerm: LeaseTerms | null = null;
 
-  @JsonProperty('sale_term', SaleTerms, true)
+  @JsonProperty('sale_listing', SaleTerms, true)
   private _saleTerm: SaleTerms | null = null;
 
   @JsonProperty('contacts', User, true)
@@ -149,18 +162,18 @@ export class Asset {
   }
 
   get latitude(): number {
-    return Number(this._latitude);
+    return this._latitude;
   }
 
   get longitude(): number {
-    return Number(this._longitude);
+    return this._longitude;
   }
 
-  get carpetAreaUnit(): string {
+  get carpetAreaUnit(): string | null {
     return this._carpetAreaUnit;
   }
 
-  get carpetArea(): string {
+  get carpetArea(): number | null {
     return this._carpetArea;
   }
 
@@ -177,7 +190,7 @@ export class Asset {
   }
 
   get attachments(): Attachment[] {
-    return this._attachments;
+    return this._attachments.length > 0 ? this._attachments : initialCarouselData;
   }
 
   get postedOn(): string {

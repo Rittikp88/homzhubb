@@ -46,18 +46,18 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
         expected_booking_amount,
         expected_price,
         maintenance_amount,
-        maintenance_schedule,
-        year_of_construction,
+        maintenance_payment_schedule,
+        construction_year,
       } = initialValues;
 
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         expectedPrice: expected_price.toString(),
         bookingAmount: expected_booking_amount.toString(),
-        yearOfConstruction: year_of_construction.toString(),
+        yearOfConstruction: construction_year.toString(),
         availableFrom: available_from_date,
         maintenanceAmount: maintenance_amount.toString(),
-        maintenanceSchedule: maintenance_schedule,
+        maintenanceSchedule: maintenance_payment_schedule,
       });
     }
   };
@@ -131,10 +131,10 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
       currency_code: currency,
       expected_price: parseInt(values.expectedPrice, 10),
       expected_booking_amount: parseInt(values.bookingAmount, 10),
-      year_of_construction: parseInt(values.yearOfConstruction, 10),
+      construction_year: parseInt(values.yearOfConstruction, 10),
       available_from_date: values.availableFrom,
       maintenance_amount: parseInt(values.maintenanceAmount, 10),
-      maintenance_schedule: values.maintenanceSchedule,
+      maintenance_payment_schedule: values.maintenanceSchedule,
     };
     onSubmit(payload);
 

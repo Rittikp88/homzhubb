@@ -4,14 +4,15 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
+import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 
 class PropertyUtils {
   public getAmenities = (
     spaces: IData[],
     floorNumber: number,
     name: string,
-    carpetArea?: string,
-    carpetAreaUnit?: string,
+    carpetArea?: number | null,
+    carpetAreaUnit?: string | null,
     isFullDetail?: boolean
   ): IAmenitiesIcons[] => {
     let amenities: IAmenitiesIcons[] = [];
@@ -26,7 +27,7 @@ class PropertyUtils {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
 
-    const carpetAreaValue = carpetArea ? parseInt(carpetArea, 10).toLocaleString() : '-';
+    const carpetAreaValue = carpetArea ? carpetArea.toLocaleString() : '-';
 
     const balcony: IData[] = spaces.filter((space: IData) => {
       return space.name === SpaceAvailableTypes.BALCONY;
@@ -95,12 +96,14 @@ class PropertyUtils {
     name: string,
     postedOn: string,
     availableFrom: string,
-    transaction_type: number
-  ): any[] => {
+    transaction_type: number,
+    saleTerm: SaleTerms | null
+  ): { label: string; value: string }[] => {
     const currentDay = new Date();
     const availableFromDate = new Date(availableFrom);
     const formattedAvailableFrom = DateUtils.getDisplayDate(availableFrom, 'DD MMM YYYY');
     const postedOnDisplayDate = DateUtils.getDisplayDate(postedOn, 'DD MMM YYYY');
+    const tenantedTillDisplayDate = DateUtils.getDisplayDate(saleTerm?.tenantedTill ?? '', 'DD MMM YYYY');
     const availableFromDisplayDate = availableFromDate < currentDay ? 'Immediately' : formattedAvailableFrom;
     switch (transaction_type) {
       // 0 - RENT and 1 - BUY
@@ -113,7 +116,7 @@ class PropertyUtils {
         return [
           { label: 'Posted on', value: postedOnDisplayDate },
           { label: 'Possession', value: availableFromDisplayDate },
-          { label: 'Tenanted till', value: postedOnDisplayDate },
+          { label: 'Tenanted till', value: tenantedTillDisplayDate ?? '-' },
         ];
       default:
         return [];

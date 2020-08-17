@@ -6,7 +6,8 @@ import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 const ENDPOINTS = {
   getFilterData: (): string => 'asset-filters/',
-  getProperties: (): string => 'asset-search/',
+  getPropertiesForLeaseListings: (): string => 'lease-listings/search/',
+  getPropertiesForSaleListings: (): string => 'sale-listings/search/',
 };
 
 class SearchRepository {
@@ -21,8 +22,13 @@ class SearchRepository {
     return await this.apiClient.get(ENDPOINTS.getFilterData(), requestBody);
   };
 
-  public getProperties = async (requestBody: any): Promise<AssetSearch> => {
-    const response = await this.apiClient.get(ENDPOINTS.getProperties(), requestBody);
+  public getPropertiesForLeaseListings = async (requestBody: any): Promise<AssetSearch> => {
+    const response = await this.apiClient.get(ENDPOINTS.getPropertiesForLeaseListings(), requestBody);
+    return ObjectMapper.deserialize(AssetSearch, response);
+  };
+
+  public getPropertiesForSaleListings = async (requestBody: any): Promise<AssetSearch> => {
+    const response = await this.apiClient.get(ENDPOINTS.getPropertiesForSaleListings(), requestBody);
     return ObjectMapper.deserialize(AssetSearch, response);
   };
 }

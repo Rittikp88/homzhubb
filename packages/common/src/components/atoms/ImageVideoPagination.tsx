@@ -22,8 +22,7 @@ const ImageVideoPagination = (props: IProps): React.ReactElement => {
         style={styles.video}
       />
       <Label type="large" textType="regular" style={styles.label}>
-        {' '}
-        {currentSlide + 1} / {totalSlides}{' '}
+        {currentSlide + 1} / {totalSlides}
       </Label>
     </View>
   );

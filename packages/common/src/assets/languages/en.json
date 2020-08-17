@@ -293,7 +293,8 @@
     "hotels": "Hotels",
     "parks": "Parks",
     "atms": "ATMs",
-    "malls": "Shopping Malls"
+    "malls": "Shopping Malls",
+    "noDescription": "No Description"
   },
   "assetDashboard": {
     "notification": "Notification",

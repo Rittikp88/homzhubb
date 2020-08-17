@@ -32,11 +32,12 @@ const ENDPOINTS = {
   createAsset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
   getAssetById: (propertyId: number): string => `assets/${propertyId}/`,
-  leaseTerms: (propertyId: number): string => `assets/${propertyId}/lease-terms/`,
+  leaseTerms: (propertyId: number): string => `assets/${propertyId}/lease-listings/`,
   updateLeaseTerms: (propertyId: number, leaseTermId: number): string =>
-    `assets/${propertyId}/lease-terms/${leaseTermId}/`,
-  saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-terms/`,
-  updateSaleTerms: (propertyId: number, saleTermId: number): string => `assets/${propertyId}/sale-terms/${saleTermId}/`,
+    `assets/${propertyId}/lease-listings/${leaseTermId}/`,
+  saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-listings/`,
+  updateSaleTerms: (propertyId: number, saleTermId: number): string =>
+    `assets/${propertyId}/sale-listings/${saleTermId}/`,
   existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}/`,

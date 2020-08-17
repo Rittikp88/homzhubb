@@ -75,6 +75,7 @@ const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
 const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 100;
+
 // TODO: Do we require a byId reducer here?
 const initialState = {
   isFullScreen: false,
@@ -226,7 +227,8 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       name,
       postedOn,
       (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? '',
-      asset_transaction_type
+      asset_transaction_type,
+      saleTerm
     );
 
     return (
@@ -299,6 +301,13 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
       this.setState({ descriptionShowMore: !descriptionShowMore });
     };
 
+    const descriptionValue = (): string | undefined => {
+      if (assetDetails?.description === '') {
+        return t('noDescription');
+      }
+      return assetDetails?.description;
+    };
+
     return (
       <>
         <Label
@@ -309,7 +318,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           onTextLayout={onLayout}
           numberOfLines={descriptionShowMore ? undefined : 3}
         >
-          {assetDetails?.description}
+          {descriptionValue()}
         </Label>
         {!descriptionHide && (
           <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>

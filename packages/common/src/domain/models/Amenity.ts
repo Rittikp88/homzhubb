@@ -1,9 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 
+interface ICategory {
+  id: number;
+  name: string;
+}
+
 export interface IAmenity {
   id: number;
   name: string;
+  category: ICategory;
   attachment: IAttachment;
 }
 

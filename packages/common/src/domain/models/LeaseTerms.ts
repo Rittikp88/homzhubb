@@ -19,30 +19,30 @@ export enum FurnishingType {
 
 export interface IUpdateLeaseTermDetails {
   currency_code?: string;
-  monthly_rent_price?: number;
-  security_deposit_price?: number;
-  annual_increment_percentage?: number | null;
+  expected_monthly_rent?: number;
+  security_deposit?: number;
+  annual_rent_increment_percentage?: number | null;
   minimum_lease_period?: number;
-  furnishing_status?: FurnishingType;
+  furnishing?: FurnishingType;
   available_from_date?: string;
   maintenance_paid_by?: PaidByTypes;
   utility_paid_by?: PaidByTypes;
   maintenance_amount?: number | null;
-  maintenance_schedule?: ScheduleTypes | null;
+  maintenance_payment_schedule?: ScheduleTypes | null;
 }
 
 export interface ICreateLeaseTermDetails {
   currency_code: string;
-  monthly_rent_price: number;
-  security_deposit_price: number;
-  annual_increment_percentage: number | null;
+  expected_monthly_rent: number;
+  security_deposit: number;
+  annual_rent_increment_percentage: number | null;
   minimum_lease_period: number;
-  furnishing_status: FurnishingType;
+  furnishing: FurnishingType;
   available_from_date: string;
   maintenance_paid_by: PaidByTypes;
   utility_paid_by: PaidByTypes;
   maintenance_amount: number | null;
-  maintenance_schedule: ScheduleTypes | null;
+  maintenance_payment_schedule: ScheduleTypes | null;
 }
 
 export interface ILeaseTermDetails extends ICreateLeaseTermDetails {
@@ -51,30 +51,70 @@ export interface ILeaseTermDetails extends ICreateLeaseTermDetails {
 
 @JsonObject('LeaseTerms')
 export class LeaseTerms {
-  // TODO: Ask the backend team to send an empty object for Lease Term in case of Sale terms data
-  @JsonProperty('id', Number, true)
+  @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('available_from_date', String, true)
-  private _availableFromDate = '';
+  @JsonProperty('status', String)
+  private _status = '';
 
-  @JsonProperty('maintenance_paid_by', String, true)
-  private _maintenancePaidBy = '';
-
-  @JsonProperty('utility_paid_by', String, true)
-  private _utilityPaidBy = '';
-
-  @JsonProperty('expected_price', Number, true)
+  @JsonProperty('expected_monthly_rent', Number)
   private _expectedPrice = 0;
 
-  @JsonProperty('maintenance_schedule', String, true)
-  private _maintenanceSchedule = '';
+  @JsonProperty('security_deposit', Number)
+  private _securityDeposit = 0;
 
-  @JsonProperty('currency_code', String, true)
+  @JsonProperty('minimum_lease_period', Number)
+  private _minimumLeasePeriod = 0;
+
+  @JsonProperty('annual_rent_increment_percentage', Number, true)
+  private _annualRentIncrementPercentage: number | null = null;
+
+  @JsonProperty('available_from_date', String)
+  private _availableFromDate = '';
+
+  @JsonProperty('maintenance_paid_by', String)
+  private _maintenancePaidBy = '';
+
+  @JsonProperty('utility_paid_by', String)
+  private _utilityPaidBy = '';
+
+  @JsonProperty('maintenance_amount', Number, true)
+  private _maintenanceAmount: number | null = null;
+
+  @JsonProperty('maintenance_payment_schedule', String, true)
+  private _maintenanceSchedule: string | null = null;
+
+  @JsonProperty('furnishing', String)
+  private _furnishing = '';
+
+  @JsonProperty('currency_code', String)
   private _currencyCode = 'INR';
+
+  @JsonProperty('currency_symbol', String)
+  private _currencySymbol = '';
 
   get id(): number {
     return this._id;
+  }
+
+  get status(): string {
+    return this._status;
+  }
+
+  get expectedPrice(): number {
+    return this._expectedPrice;
+  }
+
+  get securityDeposit(): number {
+    return this._securityDeposit;
+  }
+
+  get minimumLeasePeriod(): number {
+    return this._minimumLeasePeriod;
+  }
+
+  get annualRentIncrementPercentage(): number | null {
+    return this._annualRentIncrementPercentage;
   }
 
   get availableFromDate(): string {
@@ -89,15 +129,23 @@ export class LeaseTerms {
     return this._utilityPaidBy;
   }
 
-  get expectedPrice(): number {
-    return this._expectedPrice;
+  get maintenanceAmount(): number | null {
+    return this._maintenanceAmount;
   }
 
-  get maintenanceSchedule(): string {
+  get maintenanceSchedule(): string | null {
     return this._maintenanceSchedule;
+  }
+
+  get furnishing(): string {
+    return this._furnishing;
   }
 
   get currencyCode(): string {
     return this._currencyCode;
+  }
+
+  get currencySymbol(): string {
+    return this._currencySymbol;
   }
 }

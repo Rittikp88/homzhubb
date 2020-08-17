@@ -23,9 +23,17 @@ export function* getFilterDetails(action: IFluxStandardAction<IFilters>) {
 
 export function* getPropertiesDetails() {
   try {
-    const filter = AssetService.constructAssetSearchPayload(yield select(SearchSelector.getFilters));
-    const data = yield call(SearchRepository.getProperties, filter);
-    yield put(SearchActions.getPropertiesSuccess(data));
+    const assetFilters = yield select(SearchSelector.getFilters);
+    const filter = AssetService.constructAssetSearchPayload(assetFilters);
+    if (assetFilters.asset_transaction_type === 0) {
+      // RENT FLOW
+      const data = yield call(SearchRepository.getPropertiesForLeaseListings, filter);
+      yield put(SearchActions.getPropertiesSuccess(data));
+    } else {
+      // SALE FLOW
+      const data = yield call(SearchRepository.getPropertiesForSaleListings, filter);
+      yield put(SearchActions.getPropertiesSuccess(data));
+    }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });
@@ -35,9 +43,17 @@ export function* getPropertiesDetails() {
 
 export function* getPropertiesListViewDetails() {
   try {
-    const filter = AssetService.constructAssetSearchPayload(yield select(SearchSelector.getFilters));
-    const data = yield call(SearchRepository.getProperties, filter);
-    yield put(SearchActions.getPropertiesListViewSuccess(data));
+    const assetFilters = yield select(SearchSelector.getFilters);
+    const filter = AssetService.constructAssetSearchPayload(assetFilters);
+    if (assetFilters.asset_transaction_type === 0) {
+      // RENT FLOW
+      const data = yield call(SearchRepository.getPropertiesForLeaseListings, filter);
+      yield put(SearchActions.getPropertiesListViewSuccess(data));
+    } else {
+      // SALE FLOW
+      const data = yield call(SearchRepository.getPropertiesForSaleListings, filter);
+      yield put(SearchActions.getPropertiesListViewSuccess(data));
+    }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });

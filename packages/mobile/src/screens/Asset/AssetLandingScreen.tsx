@@ -63,7 +63,7 @@ export class AssetLandingScreen extends React.PureComponent<Props, {}> {
             />
             {/* TODO: To be removed once the logic is in place */}
             <Button
-              title="Switch View"
+              title="Dashboard"
               type="secondary"
               onPress={this.onSwitchProperty}
               containerStyle={styles.addProperty}
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
   },
   addProperty: {
     flex: 0,
+    marginVertical: 5,
   },
   logoutContainer: {
     alignSelf: 'center',
