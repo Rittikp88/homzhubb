@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Loader } from '@homzhub/mobile/src/components';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 
 export interface IStateAwareComponentProps {
   loading: boolean;
