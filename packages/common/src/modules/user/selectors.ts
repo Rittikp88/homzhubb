@@ -31,9 +31,17 @@ const getLoadingState = (state: IState): boolean => {
   return user;
 };
 
+const getIsChangeStack = (state: IState): boolean => {
+  const {
+    user: { isChangeStack },
+  } = state;
+  return isChangeStack;
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
   getUserDetails,
   getLoadingState,
+  getIsChangeStack,
 };

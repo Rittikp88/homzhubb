@@ -42,6 +42,11 @@ export interface IEmailLoginPayload {
   };
 }
 
+export interface ILoginPayload {
+  data: IEmailLoginPayload | IOtpLoginPayload;
+  callback?: () => void;
+}
+
 export interface ISocialLogin {
   is_new_user?: boolean;
   access_token?: string;

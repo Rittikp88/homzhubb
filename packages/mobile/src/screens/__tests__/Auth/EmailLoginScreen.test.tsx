@@ -19,7 +19,17 @@ describe('Email Login Screen', () => {
       },
       login: mock,
     };
-    component = shallow(<EmailLoginScreen {...props} t={(key: string): string => key} />);
+    component = shallow(
+      <EmailLoginScreen
+        {...props}
+        t={(key: string): string => key}
+        route={{
+          params: {
+            onCallback: mock,
+          },
+        }}
+      />
+    );
   });
 
   it('should render email login screen', () => {

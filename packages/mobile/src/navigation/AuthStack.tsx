@@ -1,5 +1,12 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import {
+  IOtpNavProps,
+  ScreensKeys,
+  IVerificationProps,
+  IResetPasswordProps,
+  IScreenCallback,
+} from '@homzhub/mobile/src/navigation/interfaces';
 import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import LoginScreen from '@homzhub/mobile/src/screens/Auth/LoginScreen';
@@ -8,24 +15,19 @@ import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
-import {
-  IOtpNavProps,
-  ScreensKeys,
-  IVerificationProps,
-  IResetPasswordProps,
-} from '@homzhub/mobile/src/navigation/interfaces';
+
+export type AuthStackParamList = {
+  [ScreensKeys.SignUp]: IScreenCallback;
+  [ScreensKeys.MobileVerification]: IVerificationProps;
+  [ScreensKeys.Login]: IScreenCallback;
+  [ScreensKeys.EmailLogin]: IScreenCallback | undefined;
+  [ScreensKeys.OTP]: IOtpNavProps;
+  [ScreensKeys.ForgotPassword]: IScreenCallback;
+  [ScreensKeys.ResetPassword]: IResetPasswordProps;
+  [ScreensKeys.SuccessResetPassword]: IScreenCallback;
+};
 
 export const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
-export type AuthStackParamList = {
-  [ScreensKeys.SignUp]: undefined;
-  [ScreensKeys.MobileVerification]: IVerificationProps;
-  [ScreensKeys.Login]: undefined;
-  [ScreensKeys.EmailLogin]: undefined;
-  [ScreensKeys.OTP]: IOtpNavProps;
-  [ScreensKeys.ForgotPassword]: undefined;
-  [ScreensKeys.ResetPassword]: IResetPasswordProps;
-  [ScreensKeys.SuccessResetPassword]: undefined;
-};
 
 export function AuthStack(): React.ReactElement {
   return (

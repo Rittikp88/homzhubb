@@ -67,23 +67,36 @@ export class LoginScreen extends Component<Props, ILoginScreenState> {
   };
 
   private onEmailLoginPress = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.EmailLogin);
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    navigation.navigate(ScreensKeys.EmailLogin, onCallback);
   };
 
   private onSignUpClicked = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SignUp);
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    navigation.navigate(ScreensKeys.SignUp, onCallback);
   };
 
   private onOtpLoginPress = (values: ILoginFormData, ref: () => FormTextInput | null): void => {
-    const { navigation, t } = this.props;
+    const {
+      navigation,
+      t,
+      route: { params },
+    } = this.props;
     navigation.navigate(ScreensKeys.OTP, {
       type: OtpNavTypes.Login,
       title: t('auth:loginOtp'),
       countryCode: values.country_code,
       phone: values.phone_number,
       ref,
+      ...(params && params.onCallback && { onCallback: params.onCallback }),
     });
   };
 

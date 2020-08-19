@@ -9,11 +9,14 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -38,15 +41,15 @@ import {
   ShieldGroup,
   StateAwareComponent,
 } from '@homzhub/mobile/src/components';
-import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
-import { IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
+import { IAmenitiesIcons, IFilter, ContactActions } from '@homzhub/common/src/domain/models/Search';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IStateProps {
@@ -54,11 +57,13 @@ interface IStateProps {
   assetDetails: Asset | null;
   isLoading: boolean;
   filters: IFilter;
+  isLoggedIn: boolean;
 }
 
 interface IDispatchProps {
   getAssetReviews: (id: number) => void;
   getAsset: (payload: IGetAssetPayload) => void;
+  setChangeStack: (flag: boolean) => void;
 }
 
 interface IOwnState {
@@ -99,7 +104,7 @@ const initialState = {
   isScroll: true,
 };
 
-type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertyAssetDescription>;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
 class AssetDescription extends React.PureComponent<Props, IOwnState> {
@@ -194,7 +199,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
             fullName={fullName}
             phoneNumber={`${countryCode}${phoneNumber}`}
             designation="Owner"
-            onMailClicked={this.onContactMailClicked}
+            onContactTypeClicked={this.onContactTypeClicked}
           />
         )}
       </>
@@ -551,19 +556,55 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.setState({ isFullScreen: !isFullScreen });
   };
 
-  private onContactMailClicked = (): void => {
-    const {
-      navigation,
-      assetDetails,
-      route: {
-        params: { propertyTermId },
-      },
-    } = this.props;
+  private onContactTypeClicked = async (type: ContactActions, phoneNumber: string, message: string): Promise<void> => {
+    const { isLoggedIn, setChangeStack, navigation } = this.props;
+    const sendWhatsappMessage = async (): Promise<void> => {
+      return await LinkingService.whatsappMessage(phoneNumber, message);
+    };
+    const openDialer = async (): Promise<void> => {
+      return await LinkingService.openDialer(phoneNumber);
+    };
+    switch (type) {
+      case ContactActions.WHATSAPP:
+        if (!isLoggedIn) {
+          setChangeStack(false);
+          navigation.navigate(ScreensKeys.AuthStack, {
+            screen: ScreensKeys.SignUp,
+            params: { onCallback: sendWhatsappMessage },
+          });
+        } else {
+          await sendWhatsappMessage();
+        }
+        break;
+      case ContactActions.CALL:
+        if (!isLoggedIn) {
+          setChangeStack(false);
+          navigation.navigate(ScreensKeys.AuthStack, {
+            screen: ScreensKeys.SignUp,
+            params: { onCallback: openDialer },
+          });
+        } else {
+          await openDialer();
+        }
+        break;
+      default:
+        this.onContactMailClicked();
+    }
+  };
 
-    // TODO: Need to add isLoggedIn condition
+  private onContactMailClicked = (): void => {
+    const { navigation, assetDetails, isLoggedIn, setChangeStack } = this.props;
 
     if (!assetDetails) return;
-    navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails.contacts, propertyTermId });
+    if (!isLoggedIn) {
+      setChangeStack(false);
+      navigation.navigate(ScreensKeys.AuthStack, {
+        screen: ScreensKeys.SignUp,
+        params: { onCallback: this.navigateToContactForm },
+      });
+    } else {
+      this.navigateToContactForm();
+    }
   };
 
   public onFavorite = (propertyId: number): void => {
@@ -580,6 +621,17 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private onGoBack = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  public navigateToContactForm = (): void => {
+    const {
+      navigation,
+      assetDetails,
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+    navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails?.contacts ?? null, propertyTermId });
   };
 
   public getCarouselData = (): Attachment[] => {
@@ -627,12 +679,14 @@ const mapStateToProps = (state: IState): IStateProps => {
     assetDetails: AssetSelectors.getAsset(state),
     isLoading: AssetSelectors.getLoadingState(state),
     filters: SearchSelector.getFilters(state),
+    isLoggedIn: UserSelector.isLoggedIn(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getAssetReviews, getAsset } = AssetActions;
-  return bindActionCreators({ getAssetReviews, getAsset }, dispatch);
+  const { setChangeStack } = UserActions;
+  return bindActionCreators({ getAssetReviews, getAsset, setChangeStack }, dispatch);
 };
 
 export default connect(

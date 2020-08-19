@@ -14,7 +14,17 @@ describe('Success Password Screen', () => {
         navigate: mock,
       },
     };
-    component = shallow(<SuccessResetPassword {...props} t={(key: string): string => key} />);
+    component = shallow(
+      <SuccessResetPassword
+        {...props}
+        t={(key: string): string => key}
+        route={{
+          params: {
+            onCallback: mock,
+          },
+        }}
+      />
+    );
   });
 
   it('should render success reset password screen', () => {

@@ -6,6 +6,7 @@ import { IUser } from '@homzhub/common/src/domain/models/User';
 export const initialUserState: IUserState = {
   user: null,
   isOnBoardingCompleted: false,
+  isChangeStack: true,
   error: {
     user: '',
   },
@@ -50,6 +51,8 @@ export const userReducer = (
         ...state,
         ['isOnBoardingCompleted']: action.payload as boolean,
       };
+    case UserActionTypes.SET.CHANGE_STACK:
+      return { ...state, ['isChangeStack']: action.payload as boolean };
     default:
       return state;
   }

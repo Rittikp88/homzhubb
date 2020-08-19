@@ -294,7 +294,8 @@
     "parks": "Parks",
     "atms": "ATMs",
     "malls": "Shopping Malls",
-    "noDescription": "No Description"
+    "noDescription": "No Description",
+    "messageSent": "Message Sent Successfully"
   },
   "assetDashboard": {
     "notification": "Notification",

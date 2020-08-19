@@ -72,7 +72,10 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
   }
 
   private onSubmit = (formProps: IForgotPasswordState): void => {
-    const { navigation } = this.props;
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
     const { email } = formProps;
     const payload = {
       action: 'SEND_EMAIL',
@@ -87,6 +90,7 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
           navigation.navigate(ScreensKeys.ResetPassword, {
             token,
             email,
+            ...(params && params.onCallback && { onCallback: params.onCallback }),
           });
         } else {
           AlertHelper.error({ message: 'Email does not exists' });
@@ -99,8 +103,12 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
   };
 
   public navigateToLogin = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.EmailLogin);
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    navigation.navigate(ScreensKeys.EmailLogin, onCallback);
   };
 
   public handleIconPress = (): void => {

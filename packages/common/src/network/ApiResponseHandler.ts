@@ -45,7 +45,7 @@ export default class ApiResponseHandler implements IApiResponseHandler {
   public error = (error: IApiError): ApiClientError => {
     Logger.warn(`API error. Content: ${JSON.stringify(error)}`);
 
-    const errorCode = error.response?.data?.error?.error_code || '';
+    const errorCode = error.response?.data?.error?.error_code ?? '';
     let errorDetails: IApiClientError = {
       message: errorCode === TOKEN_NOT_VALID ? SESSION_EXPIRED_MESSAGE : DEFAULT_ERROR_MESSAGE,
     } as IApiClientError;

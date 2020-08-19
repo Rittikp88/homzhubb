@@ -33,8 +33,12 @@ export class SuccessResetPassword extends Component<Props, {}> {
   }
 
   public navigateToLogin = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.Login);
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    navigation.navigate(ScreensKeys.Login, onCallback);
   };
 }
 

@@ -87,7 +87,7 @@ export class AssetLandingScreen extends React.PureComponent<Props, {}> {
 
   public onSwitchProperty = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.LoggedInBottomTabs);
+    navigation.navigate(ScreensKeys.BottomTabs, { screen: ScreensKeys.Dashboard });
   };
 
   public logout = async (): Promise<void> => {

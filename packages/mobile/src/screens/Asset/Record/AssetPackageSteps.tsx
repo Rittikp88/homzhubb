@@ -13,7 +13,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text, Divider, Button, WithShadowView } from '@homzhub/common/src/components';
 import { Header } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import {
   IServiceCategory,
   IServiceListSteps,

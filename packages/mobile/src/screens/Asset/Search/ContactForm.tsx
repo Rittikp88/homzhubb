@@ -11,13 +11,12 @@ import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Label, WithShadowView, Text, Divider, Avatar, Button } from '@homzhub/common/src/components';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { StatusBarComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
-import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/mocks/ContactFormData';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
@@ -38,10 +37,6 @@ interface IStateProps {
   isLoggedIn: boolean;
 }
 
-interface IDispatchProps {
-  postLead: (payload: ILeadPayload) => void;
-}
-
 interface IContactState {
   selectedTime: number[];
   selectedSpaces: string[];
@@ -49,8 +44,8 @@ interface IContactState {
   message: string;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.ContactForm>;
-type Props = libraryProps & IDispatchProps & IStateProps;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.ContactForm>;
+type Props = libraryProps & IStateProps;
 
 class ContactForm extends React.PureComponent<Props, IContactState> {
   public state = {
@@ -140,14 +135,14 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
       },
     } = this.props;
 
-    const number = `${contactDetail.countryCode}${contactDetail.phoneNumber}`;
+    const number = `${contactDetail?.countryCode}${contactDetail?.phoneNumber}`;
     return (
       <>
         <Label type="large" textType="semiBold" style={styles.userType}>
           {t('youContacting')}
         </Label>
         <Avatar
-          fullName={contactDetail.fullName}
+          fullName={contactDetail?.fullName ?? ''}
           designation="Owner"
           phoneNumber={number}
           containerStyle={styles.avatarStyle}
@@ -201,6 +196,7 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
         params: { contactDetail, propertyTermId },
       },
       t,
+      navigation,
     } = this.props;
     if (!contactDetail) return;
     const { userType, selectedTime, selectedSpaces, message } = this.state;
@@ -237,6 +233,8 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
 
       if (isLoggedIn) {
         await LeadService.postLeadDetail(asset_transaction_type, payload);
+        AlertHelper.success({ message: t('assetDescription:messageSent') });
+        navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
       } else {
         AlertHelper.error({ message: t('pleaseSignup') });
       }
@@ -244,8 +242,13 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
   };
 
   private goBack = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
+    const {
+      navigation,
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+    navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
   };
 }
 

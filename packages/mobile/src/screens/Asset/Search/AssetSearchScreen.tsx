@@ -38,7 +38,7 @@ import {
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import {
   ICarpetArea,
   ICurrency,
@@ -84,7 +84,7 @@ interface IPropertySearchScreenState {
   areaUnits: IDropdownOption[];
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertySearchScreen>;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertySearchScreen>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
 class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState> {

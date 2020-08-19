@@ -16,7 +16,7 @@ import {
   PaginationComponent,
   SnapCarousel,
 } from '@homzhub/mobile/src/components';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IServiceDetail } from '@homzhub/common/src/domain/models/Service';
 

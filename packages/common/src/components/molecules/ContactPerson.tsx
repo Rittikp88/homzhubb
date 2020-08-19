@@ -1,32 +1,26 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { ContactActions } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   fullName: string;
   designation: string;
   phoneNumber: string;
-  onMailClicked: () => void;
-}
-
-enum Actions {
-  WHATSAPP = 'WHATSAPP',
-  CALL = 'CALL',
-  MAIL = 'MAIL',
+  onContactTypeClicked: (type: ContactActions, phoneNumber: string, message: string) => void;
 }
 
 const OPTIONS = [
-  { icon: icons.whatsapp, id: Actions.WHATSAPP },
-  { icon: icons.phone, id: Actions.CALL },
-  { icon: icons.envelope, id: Actions.MAIL },
+  { icon: icons.whatsapp, id: ContactActions.WHATSAPP },
+  { icon: icons.phone, id: ContactActions.CALL },
+  { icon: icons.envelope, id: ContactActions.MAIL },
 ];
 
 const ContactPerson = (props: IProps): React.ReactElement => {
-  const { fullName, designation, phoneNumber, onMailClicked } = props;
+  const { fullName, designation, phoneNumber, onContactTypeClicked } = props;
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
@@ -40,18 +34,18 @@ const ContactPerson = (props: IProps): React.ReactElement => {
             conditionalStyle = { marginHorizontal: 12 };
           }
 
-          const onPress = async (): Promise<void> => {
-            if (id === Actions.CALL) {
-              await LinkingService.openDialer(phoneNumber);
+          const onPress = (): void => {
+            if (id === ContactActions.CALL) {
+              onContactTypeClicked(ContactActions.CALL, phoneNumber, '');
               return;
             }
 
-            if (id === Actions.WHATSAPP) {
-              await LinkingService.whatsappMessage(phoneNumber, t('whatsappMessage', { fullName }));
+            if (id === ContactActions.WHATSAPP) {
+              onContactTypeClicked(ContactActions.WHATSAPP, phoneNumber, t('whatsappMessage', { fullName }));
               return;
             }
 
-            onMailClicked();
+            onContactTypeClicked(ContactActions.MAIL, '', '');
           };
 
           return (

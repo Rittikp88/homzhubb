@@ -11,7 +11,7 @@ import { StorageService, StorageKeys } from '@homzhub/common/src/services/storag
 import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { SnapCarousel, PaginationComponent } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { MainStackParamList } from '@homzhub/mobile/src/navigation/MainStackNavigator';
+import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/GuestStack';
 import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
 
 interface IDispatchProps {
@@ -24,7 +24,7 @@ interface IOnBoardingScreenState {
   data: Onboarding[];
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<MainStackParamList, ScreensKeys.OnBoarding>;
+type libraryProps = WithTranslation & NavigationScreenProps<GuestStackNavigatorParamList, ScreensKeys.OnBoarding>;
 type Props = IDispatchProps & libraryProps;
 
 export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {

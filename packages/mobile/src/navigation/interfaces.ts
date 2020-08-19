@@ -38,7 +38,7 @@ export enum ScreensKeys {
 
   // App Navigator Logged In
   PropertyPostLandingScreen = 'PropertyPost',
-  LoggedInBottomTabs = 'LoggedInBottomTabs',
+  BottomTabs = 'BottomTabs',
   PropertyPostStack = 'PropertyPostStack',
 
   // LoggedIn Bottom Tabs
@@ -75,7 +75,11 @@ export enum OtpNavTypes {
   SocialMedia = 'SocialMedia',
 }
 
-export interface IOtpNavProps {
+export interface IScreenCallback {
+  onCallback?: () => void;
+}
+
+export interface IOtpNavProps extends IScreenCallback {
   type: OtpNavTypes;
   title: string;
   countryCode: string;
@@ -84,12 +88,12 @@ export interface IOtpNavProps {
   ref: () => FormTextInput | null;
 }
 
-export interface IVerificationProps {
+export interface IVerificationProps extends IScreenCallback {
   isFromLogin: boolean;
   userData: ISocialUserData;
 }
 
-export interface IResetPasswordProps {
+export interface IResetPasswordProps extends IScreenCallback {
   token?: string | number;
   email?: string;
 }
@@ -131,6 +135,6 @@ export interface IAssetDescriptionProps {
 }
 
 export interface IContactProps {
-  contactDetail: User;
+  contactDetail: User | null;
   propertyTermId: number;
 }

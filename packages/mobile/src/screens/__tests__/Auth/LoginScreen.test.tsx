@@ -21,7 +21,17 @@ describe('Login Screen', () => {
       },
       loginSuccess: mock,
     };
-    component = shallow(<LoginScreen {...props} t={(key: string): string => key} />);
+    component = shallow(
+      <LoginScreen
+        {...props}
+        t={(key: string): string => key}
+        route={{
+          params: {
+            onCallback: mock,
+          },
+        }}
+      />
+    );
     instance = component.instance();
   });
 

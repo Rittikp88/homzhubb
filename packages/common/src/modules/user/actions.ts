@@ -1,9 +1,5 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import {
-  IEmailLoginPayload,
-  IOtpLoginPayload,
-  IRefreshTokenPayload,
-} from '@homzhub/common/src/domain/repositories/interfaces';
+import { IRefreshTokenPayload, ILoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
 const actionTypePrefix = 'User/';
@@ -17,12 +13,13 @@ export const UserActionTypes = {
     LOGOUT_SUCCESS: `${actionTypePrefix}LOGOUT_SUCCESS`,
     LOGOUT_FAILURE: `${actionTypePrefix}LOGOUT_FAILURE`,
   },
+  SET: {
+    CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
+  },
   UPDATE_ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
 };
 
-const login = (
-  payload: IEmailLoginPayload | IOtpLoginPayload
-): IFluxStandardAction<IEmailLoginPayload | IOtpLoginPayload> => {
+const login = (payload: ILoginPayload): IFluxStandardAction<ILoginPayload> => {
   return {
     type: UserActionTypes.AUTH.LOGIN,
     payload,
@@ -68,6 +65,11 @@ const updateOnBoarding = (updatedOnBoarding: boolean): IFluxStandardAction<boole
   payload: updatedOnBoarding,
 });
 
+const setChangeStack = (payload: boolean): IFluxStandardAction<boolean> => ({
+  type: UserActionTypes.SET.CHANGE_STACK,
+  payload,
+});
+
 export type UserPayloadTypes = string | boolean | IUser;
 export const UserActions = {
   login,
@@ -77,4 +79,5 @@ export const UserActions = {
   logoutSuccess,
   logoutFailure,
   updateOnBoarding,
+  setChangeStack,
 };

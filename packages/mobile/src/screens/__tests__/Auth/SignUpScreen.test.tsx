@@ -20,7 +20,17 @@ describe('SignUp Screen', () => {
         goBack: mock,
       },
     };
-    component = shallow(<SignUpScreen {...props} t={(key: string): string => key} />);
+    component = shallow(
+      <SignUpScreen
+        {...props}
+        t={(key: string): string => key}
+        route={{
+          params: {
+            onCallback: mock,
+          },
+        }}
+      />
+    );
     instance = component.instance();
   });
 

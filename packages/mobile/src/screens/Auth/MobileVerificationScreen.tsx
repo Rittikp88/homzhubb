@@ -96,13 +96,14 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
           userData: {
             user: { first_name, last_name, email },
           },
+          onCallback,
         },
       },
-      navigation: { navigate },
+      navigation,
     } = this.props;
     const { phone, countryCode } = values;
 
-    navigate(ScreensKeys.OTP, {
+    navigation.navigate(ScreensKeys.OTP, {
       ref: () => this.phone,
       type: OtpNavTypes.SocialMedia,
       title: isFromLogin ? t('loginOtp') : t('verifyNumber'),
@@ -116,6 +117,7 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
         // TODO (Aditya 10-Jun-2020): How to solve this password issue?
         password: 'RandomPassword',
       },
+      ...(onCallback && { onCallback }),
     });
   };
 

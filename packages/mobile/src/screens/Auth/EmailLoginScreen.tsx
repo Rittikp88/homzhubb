@@ -9,7 +9,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import {
   IEmailLoginPayload,
   ILoginFormData,
-  IOtpLoginPayload,
+  ILoginPayload,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -24,7 +24,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  login: (payload: IEmailLoginPayload | IOtpLoginPayload) => void;
+  login: (payload: ILoginPayload) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.EmailLogin>;
@@ -60,12 +60,19 @@ export class EmailLoginScreen extends React.PureComponent<Props> {
   };
 
   private handleForgotPassword = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.ForgotPassword);
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    navigation.navigate(ScreensKeys.ForgotPassword, onCallback);
   };
 
   private handleLoginSuccess = (values: ILoginFormData): void => {
-    const { login } = this.props;
+    const {
+      login,
+      route: { params },
+    } = this.props;
 
     const emailLoginData: IEmailLoginPayload = {
       action: LoginTypes.EMAIL,
@@ -75,7 +82,12 @@ export class EmailLoginScreen extends React.PureComponent<Props> {
       },
     };
 
-    login(emailLoginData);
+    const loginPayload: ILoginPayload = {
+      data: emailLoginData,
+      ...(params && params.onCallback && { callback: params.onCallback }),
+    };
+
+    login(loginPayload);
   };
 }
 

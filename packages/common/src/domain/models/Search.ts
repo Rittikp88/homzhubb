@@ -1,5 +1,11 @@
 import { IMediaAttributes } from '@homzhub/common/src/domain/models/Attachment';
 
+export enum ContactActions {
+  WHATSAPP = 'WHATSAPP',
+  CALL = 'CALL',
+  MAIL = 'MAIL',
+}
+
 export interface ICurrency {
   currency_code: string;
   currency_symbol: string;

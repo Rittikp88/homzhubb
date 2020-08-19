@@ -12,7 +12,7 @@ import { AdvancedFilters } from '@homzhub/common/src/mocks/AssetAdvancedFilters'
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import {
   Button,
   CheckboxGroup,
@@ -47,7 +47,7 @@ interface IAssetFiltersState {
   data: any; // TODO: to be removed once the data is coming from props
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertyFilters>;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyFilters>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
 class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {

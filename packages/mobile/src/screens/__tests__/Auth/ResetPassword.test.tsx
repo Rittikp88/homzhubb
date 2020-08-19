@@ -15,7 +15,17 @@ describe('Reset Password Screen', () => {
         navigate: mock,
       },
     };
-    component = shallow(<ResetPassword {...props} t={(key: string): string => key} />);
+    component = shallow(
+      <ResetPassword
+        {...props}
+        t={(key: string): string => key}
+        route={{
+          params: {
+            onCallback: mock,
+          },
+        }}
+      />
+    );
   });
 
   it('should render reset password screen', () => {

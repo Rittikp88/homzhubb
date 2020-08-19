@@ -9,7 +9,7 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { CurrentLocation, Header, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys, IAddPropertyMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IState {

@@ -17,7 +17,17 @@ describe('Forgot Password Screen', () => {
         goBack: mock,
       },
     };
-    component = shallow(<ForgotPassword {...props} t={(key: string): string => key} />);
+    component = shallow(
+      <ForgotPassword
+        {...props}
+        t={(key: string): string => key}
+        route={{
+          params: {
+            onCallback: mock,
+          },
+        }}
+      />
+    );
   });
 
   it('should render forgot password screen', () => {

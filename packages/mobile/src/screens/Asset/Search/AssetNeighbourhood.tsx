@@ -17,7 +17,7 @@ import { CustomMarker, SelectionPicker } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { ExploreSections } from '@homzhub/mobile/src/components/molecules/ExploreSections';
 import { Header } from '@homzhub/mobile/src/components/molecules/Header';
-import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
@@ -113,7 +113,7 @@ interface IOwnState {
   isApiActive: boolean;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.AssetNeighbourhood>;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.AssetNeighbourhood>;
 type Props = IStateProps & libraryProps;
 
 class AssetNeighbourhood extends React.Component<Props, IOwnState> {

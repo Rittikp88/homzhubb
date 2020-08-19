@@ -1,0 +1,106 @@
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { images } from '@homzhub/common/src/assets/images';
+import { Image } from '@homzhub/common/src/components';
+import { Portfolio } from '@homzhub/mobile/src/screens/Asset/Portfolio';
+import { Financials } from '@homzhub/mobile/src/screens/Asset/Financials';
+import { More } from '@homzhub/mobile/src/screens/Asset/More';
+import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchStack } from '@homzhub/mobile/src/navigation/SearchStack';
+
+export type BottomTabNavigatorParamList = {
+  [ScreensKeys.Portfolio]: undefined;
+  [ScreensKeys.Financials]: undefined;
+  [ScreensKeys.Dashboard]: undefined;
+  [ScreensKeys.Search]: undefined;
+  [ScreensKeys.More]: undefined;
+};
+
+const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
+
+export const BottomTabs = (): React.ReactElement => {
+  const isLoggedIn = useSelector(UserSelector.isLoggedIn);
+  // Initial Route for guest and logged in user gets decided here
+  return (
+    <BottomTabNavigator.Navigator
+      initialRouteName={isLoggedIn ? ScreensKeys.Dashboard : ScreensKeys.Search}
+      lazy
+      tabBarOptions={{
+        activeTintColor: theme.colors.primaryColor,
+      }}
+    >
+      <BottomTabNavigator.Screen
+        name={ScreensKeys.Portfolio}
+        component={Portfolio}
+        options={{
+          tabBarLabel: ScreensKeys.Portfolio,
+          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
+            <Icon name={icons.portfolio} color={color} size={22} />
+          ),
+        }}
+      />
+      <BottomTabNavigator.Screen
+        name={ScreensKeys.Financials}
+        component={Financials}
+        options={{
+          tabBarLabel: ScreensKeys.Financials,
+          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
+            <Icon name={icons.barChartOutline} color={color} size={22} />
+          ),
+        }}
+      />
+      <BottomTabNavigator.Screen
+        name={ScreensKeys.Dashboard}
+        component={Dashboard}
+        options={{
+          tabBarLabel: ScreensKeys.Dashboard,
+          tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
+            return (
+              <View style={styles.dashboardBump}>
+                <Image source={focused ? images.dashboardFocused : images.dashboardUnfocused} />
+              </View>
+            );
+          },
+        }}
+      />
+      <BottomTabNavigator.Screen
+        name={ScreensKeys.Search}
+        component={SearchStack}
+        options={{
+          tabBarLabel: ScreensKeys.Search,
+          tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
+            return <Icon name={icons.search} color={color} size={22} />;
+          },
+        }}
+      />
+      <BottomTabNavigator.Screen
+        name={ScreensKeys.More}
+        component={More}
+        options={{
+          tabBarLabel: ScreensKeys.More,
+          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
+            <Icon name={icons.threeDots} color={color} size={22} />
+          ),
+        }}
+      />
+    </BottomTabNavigator.Navigator>
+  );
+};
+
+const styles = StyleSheet.create({
+  dashboardBump: {
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    backgroundColor: theme.colors.white,
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

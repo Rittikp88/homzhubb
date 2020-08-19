@@ -4,7 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AssetMetricsData, AssetSubscriptionPlanData, MarketTrendsData } from '@homzhub/common/src/mocks/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { LoggedInBottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { AssetSummary } from '@homzhub/common/src/components';
 import {
   AnimatedProfileHeader,
@@ -16,7 +16,7 @@ import {
 } from '@homzhub/mobile/src/components';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 
-type libraryProps = WithTranslation & NavigationScreenProps<LoggedInBottomTabNavigatorParamList, ScreensKeys.Dashboard>;
+type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.Dashboard>;
 type Props = libraryProps;
 
 class Dashboard extends React.PureComponent<Props, {}> {

@@ -23,7 +23,7 @@ import { Button, IDropdownOption, WithShadowView } from '@homzhub/common/src/com
 import { Header, PropertyDetailsLocation, StateAwareComponent } from '@homzhub/mobile/src/components';
 import PropertyDetailsItems from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 
 interface IDispatchProps {

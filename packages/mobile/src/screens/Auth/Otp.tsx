@@ -12,7 +12,12 @@ import { UserService } from '@homzhub/common/src/services/UserService';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IEmailLoginPayload, IOtpLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IEmailLoginPayload,
+  ILoginPayload,
+  IOtpLoginPayload,
+  LoginTypes,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
@@ -26,7 +31,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  login: (payload: IEmailLoginPayload | IOtpLoginPayload) => void;
+  login: (payload: ILoginPayload) => void;
   loginSuccess: (data: IUser) => void;
 }
 
@@ -163,7 +168,7 @@ class Otp extends React.PureComponent<IProps, IOtpState> {
     const {
       login,
       route: {
-        params: { userData },
+        params: { userData, onCallback },
       },
     } = this.props;
 
@@ -180,7 +185,11 @@ class Otp extends React.PureComponent<IProps, IOtpState> {
           password: userData.password,
         },
       };
-      login(loginData);
+      const loginPayload: ILoginPayload = {
+        data: loginData,
+        ...(onCallback && { callback: onCallback }),
+      };
+      login(loginPayload);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
@@ -203,7 +212,7 @@ class Otp extends React.PureComponent<IProps, IOtpState> {
         otp,
         user_details: userData,
       });
-      const serializedUser = ObjectMapper.serialize(data);
+      const serializedUser: IUser = ObjectMapper.serialize(data);
       loginSuccess(serializedUser);
       await StorageService.set<IUser>('@user', serializedUser);
     } catch (e) {
@@ -215,7 +224,7 @@ class Otp extends React.PureComponent<IProps, IOtpState> {
     const {
       login,
       route: {
-        params: { phone, countryCode },
+        params: { phone, countryCode, onCallback },
       },
     } = this.props;
 
@@ -227,7 +236,12 @@ class Otp extends React.PureComponent<IProps, IOtpState> {
         otp,
       },
     };
-    login(loginData);
+
+    const loginPayload: ILoginPayload = {
+      data: loginData,
+      callback: onCallback,
+    };
+    login(loginPayload);
   };
 
   private toggleErrorState = (error: boolean): void => {

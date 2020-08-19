@@ -70,7 +70,7 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
     const {
       navigation,
       route: {
-        params: { token },
+        params: { token, onCallback },
       },
     } = this.props;
     const payload = {
@@ -82,7 +82,8 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
     };
     UserRepository.resetPassword(payload)
       .then(() => {
-        navigation.navigate(ScreensKeys.SuccessResetPassword);
+        const callback = onCallback ? { onCallback } : {};
+        navigation.navigate(ScreensKeys.SuccessResetPassword, callback);
         return null;
       })
       .catch((err) => {
@@ -91,8 +92,12 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
   };
 
   public handleIconPress = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.EmailLogin);
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    navigation.navigate(ScreensKeys.EmailLogin, onCallback);
   };
 
   private formSchema = (): yup.ObjectSchema<{ password: string }> => {

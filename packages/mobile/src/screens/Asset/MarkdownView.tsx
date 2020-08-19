@@ -9,7 +9,7 @@ import { StorageKeys, StorageService } from '@homzhub/common/src/services/storag
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header } from '@homzhub/mobile/src/components';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 

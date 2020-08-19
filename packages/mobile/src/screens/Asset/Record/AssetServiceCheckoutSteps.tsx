@@ -20,7 +20,7 @@ import {
 } from '@homzhub/mobile/src/components';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IServiceCategory, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';

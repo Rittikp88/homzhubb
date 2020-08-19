@@ -174,7 +174,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
     const { onLoginSuccess } = this.props;
     const { countryCode } = this.state;
     formActions.setSubmitting(true);
-    const loginFormDta: ILoginFormData = {
+    const loginFormData: ILoginFormData = {
       email: values.email,
       password: values.password,
       country_code: countryCode,
@@ -182,7 +182,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
     };
 
     const phoneRef = (): FormTextInput | null => this.phone;
-    onLoginSuccess(loginFormDta, phoneRef);
+    onLoginSuccess(loginFormData, phoneRef);
   };
 
   private formSchema = (): yup.ObjectSchema<{

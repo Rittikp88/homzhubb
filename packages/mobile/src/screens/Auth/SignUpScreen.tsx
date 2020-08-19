@@ -68,12 +68,20 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
   };
 
   private onLoginPress = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.Login);
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    navigation.navigate(ScreensKeys.Login, onCallback);
   };
 
   private onFormSubmit = (formData: ISignUpPayload, ref: () => FormTextInput | null): void => {
-    const { navigation, t } = this.props;
+    const {
+      navigation,
+      t,
+      route: { params },
+    } = this.props;
     const { isNewUser } = this.state;
     this.validateUser(formData);
 
@@ -85,6 +93,7 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
         phone: formData.phone_number,
         userData: formData,
         ref,
+        ...(params && params.onCallback && { onCallback: params.onCallback }),
       });
     }
   };

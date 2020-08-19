@@ -7,22 +7,24 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import {
-  IEmailLoginPayload,
-  IOtpLoginPayload,
-  IRefreshTokenPayload,
-} from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILoginPayload, IRefreshTokenPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User, IUser } from '@homzhub/common/src/domain/models/User';
 
-export function* login(action: IFluxStandardAction<IEmailLoginPayload | IOtpLoginPayload>) {
-  const { payload } = action;
+export function* login(action: IFluxStandardAction<ILoginPayload>) {
+  if (!action.payload) return;
+  const {
+    payload: { data, callback },
+  } = action;
   try {
-    const data: User = yield call(UserRepository.login, payload as IEmailLoginPayload | IOtpLoginPayload);
+    const userData: User = yield call(UserRepository.login, data);
 
-    const serializedUser = ObjectMapper.serialize<User, IUser>(data);
+    const serializedUser = ObjectMapper.serialize<User, IUser>(userData);
 
     yield put(UserActions.loginSuccess(serializedUser));
     yield StorageService.set<IUser>('@user', serializedUser);
+    if (callback) {
+      callback();
+    }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });

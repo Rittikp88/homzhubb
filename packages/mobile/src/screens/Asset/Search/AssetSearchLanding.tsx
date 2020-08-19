@@ -17,7 +17,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
 import { CurrentLocation, Loader, Range, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { RootStackParamList } from '@homzhub/mobile/src/navigation/SearchStackNavigator';
+import { WrapperSearchStackParamList } from '@homzhub/mobile/src/navigation/WrapperSearchStack';
 import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
@@ -36,8 +36,8 @@ interface IDispatchProps {
   setInitialState: () => void;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<RootStackParamList, ScreensKeys.PropertySearchLanding>;
-type Props = IStateProps & IDispatchProps & libraryProps;
+type libraryProps = NavigationScreenProps<WrapperSearchStackParamList, ScreensKeys.PropertySearchLanding>;
+type Props = IStateProps & IDispatchProps & libraryProps & WithTranslation;
 
 interface ILandingState {
   isSearchBarFocused: boolean;
@@ -287,7 +287,7 @@ class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
   private onShowProperties = (): void => {
     const { navigation, getProperties } = this.props;
     getProperties();
-    navigation.navigate(ScreensKeys.PropertySearchScreen);
+    navigation.navigate(ScreensKeys.BottomTabs);
   };
 
   // eslint-disable-next-line react/sort-comp

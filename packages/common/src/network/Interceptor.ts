@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse, AxiosInstance } from 'axios';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import {
   IApiInterceptor,
   IApiRequestInterceptor,
@@ -67,6 +68,7 @@ class Interceptor implements IApiInterceptor {
 
         return await this.client.request(originalRequest);
       } catch (e) {
+        StoreProviderService.logoutUser();
         await StorageService.remove(StorageKeys.USER);
         throw e;
       }
