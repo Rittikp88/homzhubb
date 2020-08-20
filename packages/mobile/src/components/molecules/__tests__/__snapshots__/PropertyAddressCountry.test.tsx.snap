@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PropertyAddressCountry should match snapshot 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+      },
+      Object {},
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../packages/common/src/assets/images/flag.png",
+        }
+      }
+    />
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "color": "#000",
+            "justifyContent": "center",
+            "marginHorizontal": 10,
+            "width": 569.2307692307692,
+          },
+          undefined,
+        ]
+      }
+      textType="semiBold"
+      type="regular"
+    >
+      2 BHK
+    </Text>
+  </View>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#33495E",
+          "marginVertical": 6,
+        },
+        undefined,
+      ]
+    }
+    textType="regular"
+    type="small"
+  >
+    Delhi
+  </Text>
+</View>
+`;

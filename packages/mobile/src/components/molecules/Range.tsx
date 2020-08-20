@@ -90,6 +90,7 @@ export const Range = (props: IProps): React.ReactElement => {
           value={dropdownValue}
           onDonePress={onUnitChange}
           containerStyle={styles.dropdownContainer}
+          testID="areaUnit"
         />
       </View>
       <View style={styles.sliderView}>
@@ -108,6 +109,7 @@ export const Range = (props: IProps): React.ReactElement => {
           maxSliderRange={range.max}
           minSliderValue={minChangedValue}
           maxSliderValue={maxChangedValue}
+          testID="slider"
         />
         <View style={styles.rangeText}>
           <Label type="large" style={styles.rangeLabel}>

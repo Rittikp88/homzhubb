@@ -51,7 +51,7 @@ export class TimeSlotGroup extends React.PureComponent<ITimeSlotProps> {
     const onItemPress = (): void => onItemSelect(item.id);
 
     return (
-      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.id}>
+      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.id} testID="selectSlot">
         <Icon name={item.icon} size={20} color={isSelected ? theme.colors.white : theme.colors.darkTint4} />
         <Label type="large" textType={fontType} style={textStyle}>
           {item.formatted}

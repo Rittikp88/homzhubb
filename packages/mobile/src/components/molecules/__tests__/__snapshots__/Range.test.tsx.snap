@@ -1,0 +1,321 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Range should match snapshot 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#4C5F72",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      propertySearch:carpetArea
+    </Text>
+    <Dropdown
+      containerStyle={
+        Object {
+          "borderWidth": 0,
+          "paddingHorizontal": 0,
+          "paddingVertical": 0,
+        }
+      }
+      data={
+        Array [
+          Object {
+            "label": "Sq.ft",
+            "value": "Sq.ft",
+          },
+          Object {
+            "label": "Sq.yard",
+            "value": "Sq.yard",
+          },
+          Object {
+            "label": "Sq.m",
+            "value": "Sq.m",
+          },
+          Object {
+            "label": "cents",
+            "value": "cents",
+          },
+          Object {
+            "label": "biswa",
+            "value": "biswa",
+          },
+          Object {
+            "label": "acres",
+            "value": "acres",
+          },
+          Object {
+            "label": "hectares",
+            "value": "hectares",
+          },
+          Object {
+            "label": "kattha",
+            "value": "kattha",
+          },
+        ]
+      }
+      icon="down-arrow"
+      iconColor="#667686"
+      iconSize={8}
+      onDonePress={[Function]}
+      testID="areaUnit"
+      textStyle={
+        Object {
+          "color": "#667686",
+          "marginEnd": 6,
+        }
+      }
+      value=""
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "marginHorizontal": 10,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#001B36",
+          "paddingTop": 10,
+        }
+      }
+      type="regular"
+    >
+      2.00
+       
+      <Label
+        textType="regular"
+        type="regular"
+      >
+        to
+      </Label>
+       
+      any
+    </Text>
+    <Slider
+      isMultipleSlider={true}
+      key="5"
+      maxSliderRange={5}
+      maxSliderValue={10}
+      minSliderRange={0}
+      minSliderValue={2}
+      onSliderChange={[Function]}
+      testID="slider"
+    />
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#667686",
+          }
+        }
+        type="large"
+      >
+        min
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#667686",
+          }
+        }
+        type="large"
+      >
+        max
+      </Label>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Range should match snapshot of priceRange 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#4C5F72",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      priceRange
+    </Text>
+    <Dropdown
+      containerStyle={
+        Object {
+          "borderWidth": 0,
+          "paddingHorizontal": 0,
+          "paddingVertical": 0,
+        }
+      }
+      data={
+        Array [
+          Object {
+            "label": "Sq.ft",
+            "value": "Sq.ft",
+          },
+          Object {
+            "label": "Sq.yard",
+            "value": "Sq.yard",
+          },
+          Object {
+            "label": "Sq.m",
+            "value": "Sq.m",
+          },
+          Object {
+            "label": "cents",
+            "value": "cents",
+          },
+          Object {
+            "label": "biswa",
+            "value": "biswa",
+          },
+          Object {
+            "label": "acres",
+            "value": "acres",
+          },
+          Object {
+            "label": "hectares",
+            "value": "hectares",
+          },
+          Object {
+            "label": "kattha",
+            "value": "kattha",
+          },
+        ]
+      }
+      icon="down-arrow"
+      iconColor="#667686"
+      iconSize={8}
+      onDonePress={[Function]}
+      testID="areaUnit"
+      textStyle={
+        Object {
+          "color": "#667686",
+          "marginEnd": 6,
+        }
+      }
+      value=""
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "marginHorizontal": 10,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#001B36",
+          "paddingTop": 10,
+        }
+      }
+      type="regular"
+    >
+      any
+       
+      <Label
+        textType="regular"
+        type="regular"
+      >
+        to
+      </Label>
+       
+      undefined 10
+    </Text>
+    <Slider
+      isMultipleSlider={true}
+      key="15"
+      maxSliderRange={15}
+      maxSliderValue={10}
+      minSliderRange={3}
+      minSliderValue={2}
+      onSliderChange={[Function]}
+      testID="slider"
+    />
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#667686",
+          }
+        }
+        type="large"
+      >
+        min
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#667686",
+          }
+        }
+        type="large"
+      >
+        max
+      </Label>
+    </View>
+  </View>
+</View>
+`;

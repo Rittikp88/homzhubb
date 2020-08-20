@@ -17,7 +17,7 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
       <View style={styles.flexRow}>
-        <Image source={images.flag} style={styles.image} />
+        <Image source={images.flag} />
         <Text
           type="regular"
           textType="semiBold"
@@ -55,8 +55,5 @@ const styles = StyleSheet.create({
   subAddress: {
     color: theme.colors.darkTint3,
     marginVertical: 6,
-  },
-  image: {
-    borderRadius: 5,
   },
 });

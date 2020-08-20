@@ -32,9 +32,9 @@ import {
   Loader,
   Range,
   RoomsFilter,
-  SearchBar,
   SearchResults,
 } from '@homzhub/mobile/src/components';
+import SearchBar from '@homzhub/mobile/src/components/molecules/SearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

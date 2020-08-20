@@ -8,7 +8,8 @@ import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { CurrentLocation, Header, SearchBar, SearchResults } from '@homzhub/mobile/src/components';
+import { CurrentLocation, Header, SearchResults } from '@homzhub/mobile/src/components';
+import SearchBar from '@homzhub/mobile/src/components/molecules/SearchBar';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys, IAddPropertyMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 

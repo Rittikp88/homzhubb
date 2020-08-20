@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lease Progress should match snapshot 1`] = `
+<Fragment>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#33495E"
+      name="calendar"
+      size={18}
+      style={
+        Object {
+          "marginRight": 8,
+        }
+      }
+    />
+    <Label
+      type="large"
+    >
+      Lease Period
+    </Label>
+  </View>
+  <Component
+    borderRadius={5}
+    color="#FF8576"
+    progress={0.7}
+    style={
+      Object {
+        "borderColor": "#F0F5F9",
+        "marginLeft": 26,
+        "marginTop": 8,
+      }
+    }
+    unfilledColor="#F0F5F9"
+  />
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 6,
+        "marginLeft": 28,
+      }
+    }
+  >
+    <Label
+      style={
+        Object {
+          "color": "#808D9B",
+          "marginTop": 6,
+        }
+      }
+      type="regular"
+    >
+      02/01/2020
+    </Label>
+    <Label
+      style={
+        Object {
+          "color": "#808D9B",
+          "marginTop": 6,
+        }
+      }
+      type="regular"
+    >
+      02/01/2020
+    </Label>
+  </View>
+  <Button
+    containerStyle={
+      Object {
+        "alignSelf": "flex-end",
+        "backgroundColor": "#F23C06",
+        "borderRadius": 2,
+        "flex": 0,
+        "marginTop": 12,
+      }
+    }
+    title="RENEW"
+    titleStyle={
+      Object {
+        "marginHorizontal": 18,
+        "marginVertical": 1,
+      }
+    }
+    type="primary"
+  />
+</Fragment>
+`;

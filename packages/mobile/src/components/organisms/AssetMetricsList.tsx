@@ -10,8 +10,8 @@ interface IAssetMetrics {
   id: number;
   header: string;
   value: string | number;
-  colorA: string;
-  colorB: string;
+  colorA?: string;
+  colorB?: string;
 }
 
 interface IProps {
@@ -39,22 +39,24 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.property}>
-        <View style={styles.logo}>
-          <Image source={images.homzhubDashboard} />
-        </View>
-        <View>
-          <Text type="regular" textType="bold" style={styles.assetCount}>
-            {assetCount}
-          </Text>
-          <View style={styles.propertiesRow}>
-            <Text type="small" textType="semiBold" style={styles.propertyText}>
-              {t('common:properties')}
+      <View style={styles.heading}>
+        <View style={styles.property}>
+          <View style={styles.logo}>
+            <Image source={images.homzhubDashboard} />
+          </View>
+          <View>
+            <Text type="regular" textType="bold" style={styles.assetCount}>
+              {assetCount}
             </Text>
-            <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
-            <Label type="large" textType="regular">
-              {subscription}
-            </Label>
+            <View style={styles.propertiesRow}>
+              <Text type="small" textType="semiBold" style={styles.propertyText}>
+                {t('common:properties')}
+              </Text>
+              <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
+              <Label type="large" textType="regular">
+                {subscription}
+              </Label>
+            </View>
           </View>
         </View>
         {isPortfolio && (
@@ -88,6 +90,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     minHeight: 190,
   },
+  heading: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   property: {
     flexDirection: 'row',
     paddingVertical: 10,
@@ -111,7 +118,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   plusIcon: {
-    flexDirection: 'row-reverse',
+    backgroundColor: theme.colors.lightGrayishBlue,
+    marginRight: 12,
   },
   propertiesRow: {
     flexDirection: 'row',

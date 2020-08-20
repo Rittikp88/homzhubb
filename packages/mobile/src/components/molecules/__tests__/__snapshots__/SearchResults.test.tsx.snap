@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchResults should match snapshot 1`] = `
+<SearchResults
+  i18n={Object {}}
+  listTitleStyle={Object {}}
+  onResultPress={[MockFunction]}
+  results={
+    Object {
+      "predictions": Array [
+        Object {
+          "description": "Skyline Drive, Front Royal, VA, USA",
+          "id": "5acbd52fbd6b0b3de0188098fe8db78a8c9da939",
+          "matched_substrings": Array [
+            Object {
+              "length": 7,
+              "offset": 0,
+            },
+          ],
+          "place_id": "EiNTa3lsaW5lIERyaXZlLCBGcm9udCBSb3lhbCwgVkEsIFVTQSIuKiwKFAoSCYHx83sTSbSJEV1IwH3456fxEhQKEgnDiLgttMW1iRF4Tul0g-os2g",
+          "reference": "EiNTa3lsaW5lIERyaXZlLCBGcm9udCBSb3lhbCwgVkEsIFVTQSIuKiwKFAoSCYHx83sTSbSJEV1IwH3456fxEhQKEgnDiLgttMW1iRF4Tul0g-os2g",
+          "structured_formatting": Object {
+            "main_text": "Skyline Drive",
+            "main_text_matched_substrings": Array [
+              Object {
+                "length": 7,
+                "offset": 0,
+              },
+            ],
+            "secondary_text": "Front Royal, VA, USA",
+          },
+          "terms": Array [
+            Object {
+              "offset": 0,
+              "value": "Skyline Drive",
+            },
+            Object {
+              "offset": 15,
+              "value": "Front Royal",
+            },
+            Object {
+              "offset": 28,
+              "value": "VA",
+            },
+            Object {
+              "offset": 32,
+              "value": "USA",
+            },
+          ],
+          "types": Array [
+            "route",
+            "geocode",
+          ],
+        },
+        Object {
+          "description": "Skyline Gate Staging Area, Skyline Boulevard, Oakland, CA, USA",
+          "id": "bd8d1f559490c3a1045c86258f0c4438d925632f",
+          "matched_substrings": Array [
+            Object {
+              "length": 7,
+              "offset": 0,
+            },
+          ],
+          "place_id": "ChIJ2dcxm-WHj4ARCb3uXMSH7bo",
+          "reference": "ChIJ2dcxm-WHj4ARCb3uXMSH7bo",
+          "structured_formatting": Object {
+            "main_text": "Skyline Gate Staging Area",
+            "main_text_matched_substrings": Array [
+              Object {
+                "length": 7,
+                "offset": 0,
+              },
+            ],
+            "secondary_text": "Skyline Boulevard, Oakland, CA, USA",
+          },
+          "terms": Array [
+            Object {
+              "offset": 0,
+              "value": "Skyline Gate Staging Area",
+            },
+            Object {
+              "offset": 27,
+              "value": "Skyline Boulevard",
+            },
+            Object {
+              "offset": 46,
+              "value": "Oakland",
+            },
+            Object {
+              "offset": 55,
+              "value": "CA",
+            },
+            Object {
+              "offset": 59,
+              "value": "USA",
+            },
+          ],
+          "types": Array [
+            "park",
+            "point_of_interest",
+            "establishment",
+          ],
+        },
+        Object {
+          "description": "Skyline Plaza Frankfurt, Europa-Allee, Frankfurt, Germany",
+          "id": "f681e75dd3dd1401050f516b6b44805328a2582a",
+          "matched_substrings": Array [
+            Object {
+              "length": 7,
+              "offset": 0,
+            },
+          ],
+          "place_id": "ChIJVVVVVVgJvUcRnLadHAeWTSA",
+          "reference": "ChIJVVVVVVgJvUcRnLadHAeWTSA",
+          "structured_formatting": Object {
+            "main_text": "Skyline Plaza Frankfurt",
+            "main_text_matched_substrings": Array [
+              Object {
+                "length": 7,
+                "offset": 0,
+              },
+            ],
+            "secondary_text": "Europa-Allee, Frankfurt, Germany",
+          },
+          "terms": Array [
+            Object {
+              "offset": 0,
+              "value": "Skyline Plaza Frankfurt",
+            },
+            Object {
+              "offset": 25,
+              "value": "Europa-Allee",
+            },
+            Object {
+              "offset": 39,
+              "value": "Frankfurt",
+            },
+            Object {
+              "offset": 50,
+              "value": "Germany",
+            },
+          ],
+          "types": Array [
+            "shopping_mall",
+            "point_of_interest",
+            "establishment",
+          ],
+        },
+        Object {
+          "description": "Skyline Drive Scenic Roadway, South Terminus, Skyline Drive, Afton, VA, USA",
+          "id": "626fe7f20feb9606114a25bb7e3a249b79e3d789",
+          "matched_substrings": Array [
+            Object {
+              "length": 7,
+              "offset": 0,
+            },
+          ],
+          "place_id": "ChIJsw6Z2TNls4kRWcVwsI36BIQ",
+          "reference": "ChIJsw6Z2TNls4kRWcVwsI36BIQ",
+          "structured_formatting": Object {
+            "main_text": "Skyline Drive Scenic Roadway, South Terminus",
+            "main_text_matched_substrings": Array [
+              Object {
+                "length": 7,
+                "offset": 0,
+              },
+            ],
+            "secondary_text": "Skyline Drive, Afton, VA, USA",
+          },
+          "terms": Array [
+            Object {
+              "offset": 0,
+              "value": "Skyline Drive Scenic Roadway, South Terminus",
+            },
+            Object {
+              "offset": 46,
+              "value": "Skyline Drive",
+            },
+            Object {
+              "offset": 61,
+              "value": "Afton",
+            },
+            Object {
+              "offset": 68,
+              "value": "VA",
+            },
+            Object {
+              "offset": 72,
+              "value": "USA",
+            },
+          ],
+          "types": Array [
+            "point_of_interest",
+            "establishment",
+          ],
+        },
+        Object {
+          "description": "Skyline Drive In Blacktown, Cricketers Arms Road, Blacktown NSW, Australia",
+          "id": "be7e42d10ebc6c1c5d66bf9aec364290834c9e57",
+          "matched_substrings": Array [
+            Object {
+              "length": 7,
+              "offset": 0,
+            },
+          ],
+          "place_id": "ChIJVVCGitOZEmsR2m8B7wkTQYs",
+          "reference": "ChIJVVCGitOZEmsR2m8B7wkTQYs",
+          "structured_formatting": Object {
+            "main_text": "Skyline Drive In Blacktown",
+            "main_text_matched_substrings": Array [
+              Object {
+                "length": 7,
+                "offset": 0,
+              },
+            ],
+            "secondary_text": "Cricketers Arms Road, Blacktown NSW, Australia",
+          },
+          "terms": Array [
+            Object {
+              "offset": 0,
+              "value": "Skyline Drive In Blacktown",
+            },
+            Object {
+              "offset": 28,
+              "value": "Cricketers Arms Road",
+            },
+            Object {
+              "offset": 50,
+              "value": "Blacktown",
+            },
+            Object {
+              "offset": 60,
+              "value": "NSW",
+            },
+            Object {
+              "offset": 65,
+              "value": "Australia",
+            },
+          ],
+          "types": Array [
+            "movie_theater",
+            "point_of_interest",
+            "establishment",
+          ],
+        },
+      ],
+      "status": "OK",
+    }
+  }
+  t={[Function]}
+  tReady={false}
+/>
+`;

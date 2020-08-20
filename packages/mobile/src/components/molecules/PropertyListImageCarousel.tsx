@@ -57,6 +57,7 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
             activeIndex={activeSlide}
             sliderWidth={360}
             onSnapToItem={this.onSnapToItem}
+            testID="snapCarousel"
           />
         )}
         <View style={styles.overlay}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, View, Animated } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
@@ -10,38 +11,21 @@ interface IProps {
   title: string;
   onIconPress?: () => void;
 }
-interface IState {
-  scrollY: Animated.Value;
-}
 
-export class AnimatedProfileHeader extends Component<IProps, IState> {
-  public state = {
-    scrollY: new Animated.Value(0),
-  };
-
+export class AnimatedProfileHeader extends Component<IProps, {}> {
   public render(): React.ReactNode {
-    const { scrollY } = this.state;
     const { children } = this.props;
-    const headerHeight = scrollY.interpolate({
-      inputRange: [0, 50],
-      outputRange: [100, 50],
-      extrapolate: 'clamp',
-    });
     return (
       <View style={styles.container}>
         <>
           <StatusBarComponent backgroundColor={theme.colors.primaryColor} isTranslucent barStyle="light-content" />
           {this.renderHeader()}
         </>
-        <Animated.View style={[styles.headingView, { height: headerHeight }]} />
-        <ScrollView
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-            useNativeDriver: false,
-          })}
-          scrollEventThrottle={16}
-          style={styles.scrollView}
-        >
-          {children}
+        <ScrollView scrollEventThrottle={16} showsVerticalScrollIndicator={false}>
+          <>
+            <View style={styles.headingView} />
+            <View style={styles.scrollView}>{children}</View>
+          </>
         </ScrollView>
       </View>
     );
@@ -71,18 +55,18 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   scrollView: {
-    position: 'absolute',
-    top: theme.viewport.width > 400 ? '15%' : '18%',
-    bottom: 0,
+    position: 'relative',
     paddingHorizontal: theme.layout.screenPadding,
+    bottom: 85,
   },
   headingView: {
     backgroundColor: theme.colors.primaryColor,
+    height: 100,
   },
   initialsContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.darkTint7,
@@ -98,7 +82,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: theme.layout.screenPadding,
-    paddingVertical: theme.viewport.width > 400 ? 30 : 10,
+    paddingTop: theme.viewport.width > 400 ? (PlatformUtils.isIOS() ? 30 : 40) : 10,
+    paddingBottom: 10,
   },
   title: {
     color: theme.colors.white,

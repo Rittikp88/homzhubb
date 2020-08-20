@@ -33,7 +33,14 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.Reac
         </Text>
       )}
       <View style={styles.badgesContainer}>
-        <Icon name={icons.badge} size={23} color={theme.colors.warning} style={styles.badges} onPress={handleInfo} />
+        <Icon
+          name={icons.badge}
+          size={23}
+          color={theme.colors.warning}
+          style={styles.badges}
+          onPress={handleInfo}
+          testID="info"
+        />
         <Icon name={icons.badge} size={23} color={theme.colors.warning} style={styles.badges} onPress={handleInfo} />
         <Icon
           name={icons.badge}

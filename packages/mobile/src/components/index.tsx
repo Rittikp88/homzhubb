@@ -24,6 +24,7 @@ export { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/m
 export { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
 export { Header } from '@homzhub/mobile/src/components/molecules/Header';
 export { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
+export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeaseProgress';
 export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
@@ -32,6 +33,7 @@ export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecule
 export { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 export { Range } from '@homzhub/mobile/src/components/molecules/Range';
+export { RentAndMaintenance } from '@homzhub/mobile/src/components/molecules/RentAndMaintenance';
 export { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
 export { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 export { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
@@ -43,6 +45,7 @@ export { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlot
 export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 
 // Organisms
+export { AssetCard } from '@homzhub/mobile/src/components/organisms/AssetCard';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';

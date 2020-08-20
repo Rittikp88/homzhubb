@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RoomsFilter should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 0,
+      "paddingHorizontal": 2,
+      "paddingTop": 0,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#4C5F72",
+      }
+    }
+    textType="semiBold"
+    type="small"
+  >
+    beds
+  </Text>
+  <SelectionPicker
+    data={
+      Array [
+        Object {
+          "title": "Any",
+          "value": -1,
+        },
+        Object {
+          "title": "1",
+          "value": 1,
+        },
+        Object {
+          "title": "2",
+          "value": 2,
+        },
+        Object {
+          "title": "3",
+          "value": 3,
+        },
+        Object {
+          "title": "4",
+          "value": 4,
+        },
+        Object {
+          "title": "5+",
+          "value": 5,
+        },
+      ]
+    }
+    onValueChange={[Function]}
+    optionWidth={118.33333333333333}
+    selectedItem={
+      Array [
+        1,
+      ]
+    }
+    testID="bedPicker"
+  />
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#4C5F72",
+        },
+        Object {
+          "marginVertical": 15,
+        },
+      ]
+    }
+    textType="semiBold"
+    type="small"
+  >
+    baths
+  </Text>
+  <SelectionPicker
+    data={
+      Array [
+        Object {
+          "title": "Any",
+          "value": -1,
+        },
+        Object {
+          "title": "1+",
+          "value": 1,
+        },
+        Object {
+          "title": "2+",
+          "value": 2,
+        },
+        Object {
+          "title": "3+",
+          "value": 3,
+        },
+        Object {
+          "title": "4+",
+          "value": 4,
+        },
+        Object {
+          "title": "5+",
+          "value": 5,
+        },
+      ]
+    }
+    onValueChange={[Function]}
+    optionWidth={118.33333333333333}
+    selectedItem={
+      Array [
+        1,
+      ]
+    }
+    testID="bathPicker"
+  />
+</View>
+`;

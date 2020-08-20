@@ -69,7 +69,14 @@ class PendingPropertyListCard extends Component<Props, IState> {
       status,
       address,
     } = item;
-    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(spaces, 0, item.asset_group.name, '', '', true);
+    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
+      spaces,
+      0,
+      item.asset_group.name,
+      null,
+      '',
+      true
+    );
     return (
       <View style={styles.cardContainer}>
         <Text type="small" style={styles.heading}>

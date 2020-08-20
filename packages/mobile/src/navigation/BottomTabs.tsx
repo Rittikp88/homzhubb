@@ -72,12 +72,13 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.Search}
         component={SearchStack}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: ScreensKeys.Search,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
             return <Icon name={icons.search} color={color} size={22} />;
           },
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.More}
@@ -91,6 +92,13 @@ export const BottomTabs = (): React.ReactElement => {
       />
     </BottomTabNavigator.Navigator>
   );
+};
+
+// TODO: Need to add type
+const getTabBarVisibility = (route: any): boolean => {
+  const routeName = route.state ? route.state.routes[route.state.index].name : '';
+
+  return !(routeName === ScreensKeys.PropertyAssetDescription || routeName === ScreensKeys.ContactForm);
 };
 
 const styles = StyleSheet.create({

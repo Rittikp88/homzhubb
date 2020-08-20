@@ -94,6 +94,8 @@ export const icons = {
   toggleOff: 'toggle-off',
   toggleOn: 'toggle-on',
   portfolio: 'portfolio',
+  verticalDots: 'vertical-dots',
+  home: 'home',
 
   // COMMUTE
   train: 'train',

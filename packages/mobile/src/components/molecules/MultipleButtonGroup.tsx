@@ -59,7 +59,7 @@ export class MultipleButtonGroup<T> extends React.PureComponent<IMultipleButtonG
     const onItemPress = (): void => onItemSelect(item.value);
 
     return (
-      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.title}>
+      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.title} testID="touchableTitle">
         <TextField type={textSize} textType={fontType} style={textStyle}>
           {item.title}
         </TextField>

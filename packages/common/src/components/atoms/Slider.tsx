@@ -12,6 +12,7 @@ interface ISliderProps {
   maxSliderValue?: number;
   onSliderChange: (val1: number, val2?: number) => void;
   labelText?: string;
+  testID?: string;
 }
 
 const higherLength = theme.viewport.width > 400 ? 350 : 310;

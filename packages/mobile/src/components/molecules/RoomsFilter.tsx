@@ -105,6 +105,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         selectedItem={bedCount}
         onValueChange={onUpdateBedroomCount}
         optionWidth={OPTION_WIDTH}
+        testID="bedPicker"
       />
       <Text type="small" textType="semiBold" style={[styles.textStyle, styles.pickerMargin]}>
         {t('baths')}
@@ -114,6 +115,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         selectedItem={bathroomCount}
         onValueChange={onUpdateBathroomCount}
         optionWidth={OPTION_WIDTH}
+        testID="bathPicker"
       />
     </View>
   );

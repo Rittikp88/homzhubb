@@ -20,6 +20,8 @@ const namedColors = {
   danger: '#D60D31',
   orange: '#FB6E07',
   notificationGreen: '#13AB46',
+  lightBlue: '#C2E4FF',
+  lightGrayishBlue: '#F7FAFC',
 };
 
 const tintColors = {
@@ -80,6 +82,7 @@ const gradientAssetMetrics = {
   gradientH: '#FFD2A9',
   gradientI: '#aa7474',
   gradientJ: '#fc3b3b',
+  gradientK: '#F1F6FA',
 };
 
 const grayShades = {

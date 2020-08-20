@@ -94,3 +94,21 @@ export const AssetAdvertisementData = [
       'https://www.icicibank.com/managed-assets/images/blog/big/how-is-tax-on-sale-of-inherited-property-calculated.jpg',
   },
 ];
+
+export const AssetPropertyTypeData = [
+  {
+    id: 1,
+    header: 'Residential',
+    value: 5,
+  },
+  {
+    id: 2,
+    header: 'Commercial',
+    value: 3,
+  },
+  {
+    id: 3,
+    header: 'Corporate',
+    value: 2,
+  },
+];

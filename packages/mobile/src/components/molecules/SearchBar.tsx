@@ -24,7 +24,7 @@ interface IState {
 
 type Props = WithTranslation & IProps;
 
-class SearchBar extends React.PureComponent<Props, IState> {
+export class SearchBar extends React.PureComponent<Props, IState> {
   public SearchTextInput: TextInput | null = null;
 
   public state = {
@@ -61,6 +61,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
             iconColor={theme.colors.darkTint6}
             containerStyle={[styles.iconButton, styles.searchIcon]}
             onPress={this.onSearchIconPress}
+            testID="btnSearch"
           />
           <TextInput
             ref={(input): void => {
@@ -77,6 +78,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
             onChangeText={this.onChangeText}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
+            testID="textInput"
           />
           {value.length > 0 && (
             <Button
@@ -86,6 +88,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
               iconColor={theme.colors.darkTint6}
               containerStyle={styles.iconButton}
               onPress={this.onCrossPress}
+              testID="btnCross"
             />
           )}
         </View>
@@ -96,6 +99,7 @@ class SearchBar extends React.PureComponent<Props, IState> {
             containerStyle={[styles.cancelButtonContainer, cancelButtonStyle]}
             titleStyle={[styles.cancelButtonText, cancelTextStyle]}
             onPress={this.onCancelPress}
+            testID="btnCancel"
           />
         )}
       </View>
@@ -179,5 +183,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const HOC = withTranslation()(SearchBar);
-export { HOC as SearchBar };
+export default withTranslation()(SearchBar);
+// export { HOC as SearchBar };
