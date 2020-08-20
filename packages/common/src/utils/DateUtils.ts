@@ -37,6 +37,10 @@ class DateUtils {
   public getDisplayDate = (date: string, format: string): string => {
     return moment(date).format(format);
   };
+
+  public getDateFromISO = (selectedDate: string, format: string): string => {
+    return moment.utc(new Date(selectedDate)).format(format);
+  };
 }
 
 const dateUtils = new DateUtils();

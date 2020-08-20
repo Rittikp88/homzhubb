@@ -20,7 +20,7 @@ class LinkingService {
     await Linking.openURL(url);
   };
 
-  private canOpenURL = async (url: string): Promise<boolean> => {
+  public canOpenURL = async (url: string): Promise<boolean> => {
     try {
       return await Linking.openURL(url);
     } catch (e) {

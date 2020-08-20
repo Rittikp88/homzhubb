@@ -48,6 +48,9 @@ export enum ScreensKeys {
   Search = 'Search',
   More = 'More',
 
+  // Dashboard Stack
+  DashboardLandingScreen = 'DashboardLandingScreen',
+  MarketTrends = 'MarketTrends',
   // PropertyPostStack
   PostPropertySearch = 'PostPropertySearch',
   PostPropertyMap = 'PostPropertyMap',

@@ -14,6 +14,7 @@ import { CommonRepository } from '@homzhub/common/src/domain/repositories/Common
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import {
@@ -73,6 +74,8 @@ interface IDispatchProps {
   getPropertiesListView: () => void;
   setInitialFilters: () => void;
   setInitialState: () => void;
+  setChangeStack: (flag: boolean) => void;
+  getFilterDetails: (payload: any) => void;
 }
 
 interface IPropertySearchScreenState {
@@ -99,6 +102,10 @@ class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState>
   };
 
   public componentDidMount = async (): Promise<void> => {
+    const { filterData, filters, getFilterDetails } = this.props;
+    if (!filterData) {
+      getFilterDetails({ asset_group: filters.asset_group });
+    }
     try {
       const response = await CommonRepository.getCarpetAreaUnits();
       this.setState({
@@ -117,6 +124,11 @@ class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState>
       this.getAutocompleteSuggestions();
     }
   };
+
+  public componentWillUnmount(): void {
+    const { setChangeStack } = this.props;
+    setChangeStack(true);
+  }
 
   public render(): React.ReactNode {
     const { isLoading } = this.props;
@@ -604,7 +616,15 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, getProperties, setInitialFilters, setInitialState, getPropertiesListView } = SearchActions;
+  const {
+    setFilter,
+    getFilterDetails,
+    getProperties,
+    setInitialFilters,
+    setInitialState,
+    getPropertiesListView,
+  } = SearchActions;
+  const { setChangeStack } = UserActions;
   return bindActionCreators(
     {
       setFilter,
@@ -612,6 +632,8 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setInitialFilters,
       setInitialState,
       getPropertiesListView,
+      setChangeStack,
+      getFilterDetails,
     },
     dispatch
   );

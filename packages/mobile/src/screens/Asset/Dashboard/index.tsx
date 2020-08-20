@@ -1,23 +1,23 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AssetMetricsData, AssetSubscriptionPlanData, MarketTrendsData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { AssetMetricsData, AssetSubscriptionPlanData } from '@homzhub/common/src/mocks/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { AssetSummary } from '@homzhub/common/src/components';
 import {
   AnimatedProfileHeader,
-  AssetMarketTrends,
   AssetMetricsList,
   AssetSubscriptionPlan,
   AssetAdvertisementBanner,
   FinanceOverview,
 } from '@homzhub/mobile/src/components';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
+import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 
-type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.Dashboard>;
-type Props = libraryProps;
+type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
+type Props = WithTranslation & libraryProps;
 
 class Dashboard extends React.PureComponent<Props, {}> {
   public render = (): React.ReactElement => {
@@ -34,7 +34,7 @@ class Dashboard extends React.PureComponent<Props, {}> {
           <AssetSummary notification={10} serviceTickets={20} dues={30} containerStyle={styles.assetCards} />
           <PendingPropertyListCard />
           <FinanceOverview />
-          <AssetMarketTrends data={MarketTrendsData} containerStyle={styles.assetCards} />
+          <AssetMarketTrends containerStyle={styles.assetCards} onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
           <AssetSubscriptionPlan
             data={AssetSubscriptionPlanData}
@@ -44,6 +44,11 @@ class Dashboard extends React.PureComponent<Props, {}> {
         </>
       </AnimatedProfileHeader>
     );
+  };
+
+  public onViewAll = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.MarketTrends);
   };
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -11,6 +12,7 @@ import { Portfolio } from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import { Financials } from '@homzhub/mobile/src/screens/Asset/Financials';
 import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
+import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStack } from '@homzhub/mobile/src/navigation/SearchStack';
 
@@ -22,7 +24,27 @@ export type BottomTabNavigatorParamList = {
   [ScreensKeys.More]: undefined;
 };
 
+export type DashboardNavigatorParamList = {
+  [ScreensKeys.DashboardLandingScreen]: undefined;
+  [ScreensKeys.MarketTrends]: undefined;
+};
+
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
+const DashboardNavigator = createStackNavigator<DashboardNavigatorParamList>();
+
+export const DashboardStack = (): React.ReactElement => {
+  return (
+    <DashboardNavigator.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
+      <DashboardNavigator.Screen name={ScreensKeys.DashboardLandingScreen} component={Dashboard} />
+      <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
+    </DashboardNavigator.Navigator>
+  );
+};
 
 export const BottomTabs = (): React.ReactElement => {
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
@@ -57,7 +79,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Dashboard}
-        component={Dashboard}
+        component={DashboardStack}
         options={{
           tabBarLabel: ScreensKeys.Dashboard,
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
@@ -97,8 +119,8 @@ export const BottomTabs = (): React.ReactElement => {
 // TODO: Need to add type
 const getTabBarVisibility = (route: any): boolean => {
   const routeName = route.state ? route.state.routes[route.state.index].name : '';
-
-  return !(routeName === ScreensKeys.PropertyAssetDescription || routeName === ScreensKeys.ContactForm);
+  const notAllowedRoutes = [ScreensKeys.PropertyAssetDescription, ScreensKeys.ContactForm, ScreensKeys.AuthStack];
+  return !notAllowedRoutes.includes(routeName);
 };
 
 const styles = StyleSheet.create({

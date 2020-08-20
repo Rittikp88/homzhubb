@@ -1,33 +1,12 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IProperties } from '@homzhub/common/src/domain/models/Search';
+import { Links, ILinks } from '@homzhub/common/src/domain/models/PaginationLinks';
 
 export interface IAssetSearch {
   count: number;
   links: ILinks;
   results: IProperties[];
-}
-
-export interface ILinks {
-  next: string | null;
-  previous: string | null;
-}
-
-@JsonObject('Links')
-export class Links {
-  @JsonProperty('next', String, true)
-  private _next = '';
-
-  @JsonProperty('previous', String, true)
-  private _previous = '';
-
-  get next(): string {
-    return this._next;
-  }
-
-  get previous(): string {
-    return this._previous;
-  }
 }
 
 @JsonObject('AssetSearch')
