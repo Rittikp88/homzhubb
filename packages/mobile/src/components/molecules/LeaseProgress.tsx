@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    backgroundColor: theme.colors.error,
+    backgroundColor: theme.colors.green,
     alignSelf: 'flex-end',
     borderRadius: 2,
     marginTop: 12,

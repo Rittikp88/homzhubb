@@ -59,6 +59,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
         keyExtractor={this.renderKeyExtractor}
         removeClippedSubviews
         initialScrollIndex={activeSlide}
+        testID="attachmentFlatList"
       />
     );
   };

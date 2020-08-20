@@ -73,10 +73,7 @@ export class AssetCard extends Component<IListProps, IListState> {
     return (
       <>
         <Divider containerStyles={styles.divider} />
-        <View style={styles.info}>
-          <Avatar fullName={contacts.full_name} designation="Tenant" />
-          <Icon name={icons.rightArrow} color={theme.colors.blue} size={18} />
-        </View>
+        <Avatar fullName={contacts.full_name} designation="Tenant" />
         {!isDetailView && (
           <>
             <Divider containerStyles={styles.divider} />
@@ -142,11 +139,6 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     borderColor: theme.colors.background,
     borderWidth: 1,
-  },
-  info: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   buttonStyle: {
     borderWidth: 0,
