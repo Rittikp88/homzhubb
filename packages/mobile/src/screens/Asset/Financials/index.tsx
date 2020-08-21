@@ -1,20 +1,51 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { cashFlowData, propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
+import { AnimatedProfileHeader, AssetMetricsList, FinanceOverview } from '@homzhub/mobile/src/components';
+import { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
+import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 
-export class Financials extends React.PureComponent<{}, {}> {
+type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.Financials>;
+type Props = libraryProps;
+
+export class Financials extends React.PureComponent<Props, {}> {
   public render = (): React.ReactElement => {
+    const { t } = this.props;
+    const { currency_symbol, totalDue, details } = propertyDues;
+    const deserializedCashFlowData: Miscellaneous[] = ObjectMapper.deserializeArray(Miscellaneous, cashFlowData);
+
     return (
-      <View style={styles.screen}>
-        <Text>Financials Screen</Text>
-      </View>
+      <AnimatedProfileHeader title={t('financial')}>
+        <>
+          <AssetMetricsList
+            showPlusIcon
+            // @ts-ignore
+            title={t('assetDashboard:cashFlow')}
+            data={deserializedCashFlowData}
+            containerStyle={styles.cashFlowContainer}
+            individualCardStyle={styles.individualCardStyle}
+          />
+          <FinanceOverview />
+          <PropertyDuesCardContainer currency={currency_symbol} totalDue={totalDue} propertyDues={details} />
+        </>
+      </AnimatedProfileHeader>
     );
   };
 }
 
+const namespace = LocaleConstants.namespacesKey;
+export default withTranslation([namespace.assetFinancial, namespace.assetDashboard])(Financials);
+
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  cashFlowContainer: {
+    marginVertical: 12,
+  },
+  individualCardStyle: {
+    paddingHorizontal: 29,
   },
 });

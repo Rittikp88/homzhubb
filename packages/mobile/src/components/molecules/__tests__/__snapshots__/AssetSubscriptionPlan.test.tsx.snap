@@ -1,121 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AssetSubscriptionPlan should match snapshot 1`] = `
-<View
-  style={
+<AssetSubscriptionPlan
+  data={
     Array [
       Object {
-        "backgroundColor": "#FFFFFF",
-        "borderRadius": 4,
-        "flex": 1,
-        "padding": 10,
+        "id": 1,
+        "name": "test",
       },
-      undefined,
     ]
   }
->
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-        "marginBottom": 10,
-      }
-    }
-  >
-    <View
-      style={
-        Object {
-          "flex": 3,
-        }
-      }
-    >
-      <Label
-        style={
-          Object {
-            "color": "#33495E",
-            "marginVertical": 2,
-          }
-        }
-        textType="regular"
-        type="large"
-      >
-        subscribedFor
-      </Label>
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "flex-start",
-          }
-        }
-      >
-        <Text
-          style={
-            Object {
-              "color": "#33495E",
-              "marginVertical": 2,
-            }
-          }
-          textType="bold"
-          type="regular"
-        />
-        <Text
-          style={
-            Object {
-              "color": "#33495E",
-              "marginVertical": 2,
-              "paddingHorizontal": 6,
-            }
-          }
-          textType="regular"
-          type="regular"
-        />
-      </View>
-    </View>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../packages/common/src/assets/images/homzhubPlan.png",
-          }
-        }
-      />
-    </View>
-  </View>
-  <Divider />
-  <FlatList
-    data={
-      Array [
-        Object {
-          "id": 1,
-          "name": "test",
-        },
-      ]
-    }
-    disableVirtualization={false}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    testID="subscriptionList"
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
-</View>
+  i18n={Object {}}
+  planName=""
+  t={[Function]}
+  tReady={false}
+/>
 `;
 
 exports[`AssetSubscriptionPlan should match snapshot for keyExtractor 1`] = `"undefined-[object Object]"`;

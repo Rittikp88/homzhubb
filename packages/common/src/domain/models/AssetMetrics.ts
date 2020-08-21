@@ -117,6 +117,9 @@ export class Miscellaneous {
   @JsonProperty('count', Number)
   private _count = 0;
 
+  @JsonProperty('currency_symbol', String, true)
+  private _currency_symbol = '';
+
   @JsonProperty('color_gradient', ColorGradient)
   private _colorGradient = new ColorGradient();
 
@@ -134,6 +137,10 @@ export class Miscellaneous {
 
   get colorGradient(): ColorGradient {
     return this._colorGradient;
+  }
+
+  get currencySymbol(): string {
+    return this._currency_symbol;
   }
 }
 

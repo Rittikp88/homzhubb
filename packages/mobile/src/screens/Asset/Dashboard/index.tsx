@@ -62,7 +62,7 @@ class Dashboard extends React.PureComponent<Props, IDashboardState> {
     return (
       <>
         <AssetMetricsList
-          assetCount={metrics?.assetMetrics?.assets?.count ?? 0}
+          title={metrics?.assetMetrics?.assets?.count ?? 0}
           data={metrics?.assetMetrics?.miscellaneous}
           subscription={metrics?.userServicePlan?.label}
           containerStyle={styles.assetCards}

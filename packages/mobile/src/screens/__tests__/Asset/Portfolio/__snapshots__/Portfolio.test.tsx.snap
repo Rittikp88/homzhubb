@@ -5,7 +5,6 @@ exports[`Portfolio Screen should render snapshot 1`] = `
   title="Portfolio"
 >
   <AssetMetricsList
-    assetCount={10}
     containerStyle={
       Object {
         "marginVertical": 12,
@@ -13,25 +12,56 @@ exports[`Portfolio Screen should render snapshot 1`] = `
     }
     data={
       Array [
-        Object {
-          "header": "Residential",
-          "id": 1,
-          "value": 5,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 3,
+          "_currency_symbol": "",
+          "_label": "Residential",
+          "_name": "Residential",
         },
-        Object {
-          "header": "Commercial",
-          "id": 2,
-          "value": 3,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 2,
+          "_currency_symbol": "",
+          "_label": "Commercial",
+          "_name": "Commercial",
         },
-        Object {
-          "header": "Corporate",
-          "id": 3,
-          "value": 2,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 1,
+          "_currency_symbol": "",
+          "_label": "Corporate",
+          "_name": "Corporate",
         },
       ]
     }
-    isPortfolio={true}
+    showPlusIcon={true}
     subscription="HomzHub Pro"
+    title={10}
   />
   <Text
     style={
@@ -338,7 +368,6 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
   title="Portfolio"
 >
   <AssetMetricsList
-    assetCount={10}
     containerStyle={
       Object {
         "marginVertical": 12,
@@ -346,25 +375,56 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
     }
     data={
       Array [
-        Object {
-          "header": "Residential",
-          "id": 1,
-          "value": 5,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 3,
+          "_currency_symbol": "",
+          "_label": "Residential",
+          "_name": "Residential",
         },
-        Object {
-          "header": "Commercial",
-          "id": 2,
-          "value": 3,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 2,
+          "_currency_symbol": "",
+          "_label": "Commercial",
+          "_name": "Commercial",
         },
-        Object {
-          "header": "Corporate",
-          "id": 3,
-          "value": 2,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 1,
+          "_currency_symbol": "",
+          "_label": "Corporate",
+          "_name": "Corporate",
         },
       ]
     }
-    isPortfolio={true}
+    showPlusIcon={true}
     subscription="HomzHub Pro"
+    title={10}
   />
   <Text
     style={
@@ -671,7 +731,6 @@ exports[`Portfolio Screen should render snapshot for state 1`] = `
   title="Portfolio"
 >
   <AssetMetricsList
-    assetCount={10}
     containerStyle={
       Object {
         "marginVertical": 12,
@@ -679,25 +738,56 @@ exports[`Portfolio Screen should render snapshot for state 1`] = `
     }
     data={
       Array [
-        Object {
-          "header": "Residential",
-          "id": 1,
-          "value": 5,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 3,
+          "_currency_symbol": "",
+          "_label": "Residential",
+          "_name": "Residential",
         },
-        Object {
-          "header": "Commercial",
-          "id": 2,
-          "value": 3,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 2,
+          "_currency_symbol": "",
+          "_label": "Commercial",
+          "_name": "Commercial",
         },
-        Object {
-          "header": "Corporate",
-          "id": 3,
-          "value": 2,
+        Miscellaneous {
+          "_colorGradient": ColorGradient {
+            "_angle": 180,
+            "_hexColorA": "#F1F6FA",
+            "_hexColorB": "#FFFFFF",
+            "_location": Array [
+              0,
+              1,
+            ],
+          },
+          "_count": 1,
+          "_currency_symbol": "",
+          "_label": "Corporate",
+          "_name": "Corporate",
         },
       ]
     }
-    isPortfolio={true}
+    showPlusIcon={true}
     subscription="HomzHub Pro"
+    title={10}
   />
   <Text
     style={

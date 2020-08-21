@@ -9,7 +9,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Image } from '@homzhub/common/src/components';
 import { Portfolio } from '@homzhub/mobile/src/screens/Asset/Portfolio';
-import { Financials } from '@homzhub/mobile/src/screens/Asset/Financials';
+import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';

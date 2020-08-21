@@ -32,8 +32,8 @@ export class Portfolio extends React.PureComponent<{}, IPortfolioState> {
       <AnimatedProfileHeader title="Portfolio">
         <>
           <AssetMetricsList
-            isPortfolio
-            assetCount={10}
+            showPlusIcon
+            title={10}
             data={assetData?.assetMetrics?.miscellaneous}
             subscription="HomzHub Pro"
             containerStyle={styles.assetCards}

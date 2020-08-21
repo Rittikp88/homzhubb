@@ -7,6 +7,7 @@ interface IProps {
   price: number;
   unit?: string;
   currency: string;
+  priceTransformation?: boolean;
   labelStyle?: StyleProp<TextStyle>;
   textSizeType?: TextSizeType;
   textFontWeight?: FontWeightType;
@@ -18,12 +19,13 @@ const PricePerUnit = (props: IProps): React.ReactElement => {
     price,
     unit = '',
     currency,
+    priceTransformation = true,
     labelStyle,
     textStyle,
     textSizeType = 'regular',
     textFontWeight = 'semiBold',
   } = props;
-  const transformedPrice = CurrencyUtils.getCurrency(currency, price);
+  const transformedPrice = priceTransformation ? CurrencyUtils.getCurrency(currency, price) : price;
   const prefix = currency === 'INR' ? '₹' : '$';
   const priceWithCurrency = `${prefix} ${transformedPrice}`;
 

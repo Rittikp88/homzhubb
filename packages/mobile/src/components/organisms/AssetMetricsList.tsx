@@ -8,16 +8,25 @@ import { Label, Text, AssetMetrics, Image } from '@homzhub/common/src/components
 import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 interface IProps {
-  assetCount?: number;
-  subscription: string;
+  title?: number | string;
+  subscription?: string;
   data: Miscellaneous[];
   containerStyle?: StyleProp<ViewStyle>;
-  isPortfolio?: boolean;
+  showPlusIcon?: boolean;
   onPlusIconClicked?: () => void;
+  individualCardStyle?: StyleProp<ViewStyle>;
 }
 
 const AssetMetricsList = (props: IProps): React.ReactElement => {
-  const { assetCount = 0, subscription, data, isPortfolio = false, onPlusIconClicked, containerStyle } = props;
+  const {
+    title = 0,
+    subscription,
+    data,
+    showPlusIcon = false,
+    onPlusIconClicked,
+    containerStyle,
+    individualCardStyle,
+  } = props;
   const { t } = useTranslation();
 
   const renderKeyExtractor = (item: Miscellaneous, index: number): string => {
@@ -39,20 +48,22 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
           </View>
           <View>
             <Text type="regular" textType="bold" style={styles.assetCount}>
-              {assetCount}
+              {title}
             </Text>
-            <View style={styles.propertiesRow}>
-              <Text type="small" textType="semiBold" style={styles.propertyText}>
-                {t('common:properties')}
-              </Text>
-              <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
-              <Label type="large" textType="regular">
-                {subscription}
-              </Label>
-            </View>
+            {subscription && (
+              <View style={styles.propertiesRow}>
+                <Text type="small" textType="semiBold" style={styles.propertyText}>
+                  {t('common:properties')}
+                </Text>
+                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
+                <Label type="large" textType="regular">
+                  {subscription}
+                </Label>
+              </View>
+            )}
           </View>
         </View>
-        {isPortfolio && (
+        {showPlusIcon && (
           <View style={styles.plusIcon}>
             <Icon name={icons.plus} color={theme.colors.primaryColor} size={40} onPress={bubblePlusIcon} />
           </View>
@@ -67,17 +78,20 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
             const {
               label,
               count,
+              currencySymbol,
               colorGradient: { hexColorA, hexColorB, location, angle },
             } = item;
             return (
               <AssetMetrics
                 header={label}
                 value={count}
+                currency={currencySymbol}
                 colorA={hexColorA}
                 colorB={hexColorB}
                 location={location}
+                cardStyle={individualCardStyle}
                 angle={angle}
-                isPortfolio={isPortfolio}
+                showPlusIcon={showPlusIcon}
               />
             );
           }}

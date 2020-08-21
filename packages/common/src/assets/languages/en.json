@@ -316,5 +316,9 @@
     "subscriptionHelper": "Upgrade to",
     "subscriptionHelperServices": "and get the following services",
     "upgrade": "Upgrade"
+  },
+  "assetFinancial": {
+    "financial": "Financials",
+    "payNow": "Pay Now"
   }
 }
