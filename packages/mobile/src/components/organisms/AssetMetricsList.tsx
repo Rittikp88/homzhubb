@@ -5,19 +5,12 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Label, Text, AssetMetrics, Image } from '@homzhub/common/src/components';
-
-interface IAssetMetrics {
-  id: number;
-  header: string;
-  value: string | number;
-  colorA?: string;
-  colorB?: string;
-}
+import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 interface IProps {
   assetCount?: number;
   subscription: string;
-  data: IAssetMetrics[];
+  data: Miscellaneous[];
   containerStyle?: StyleProp<ViewStyle>;
   isPortfolio?: boolean;
   onPlusIconClicked?: () => void;
@@ -27,8 +20,8 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
   const { assetCount = 0, subscription, data, isPortfolio = false, onPlusIconClicked, containerStyle } = props;
   const { t } = useTranslation();
 
-  const renderKeyExtractor = (item: IAssetMetrics, index: number): string => {
-    return `${item.id}-${index}`;
+  const renderKeyExtractor = (item: Miscellaneous, index: number): string => {
+    return `${item.name}-${index}`;
   };
 
   const bubblePlusIcon = (): void => {
@@ -70,9 +63,15 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }: { item: IAssetMetrics }): React.ReactElement => {
-            const { header, value, colorA, colorB } = item;
-            return <AssetMetrics header={header} value={value} colorA={colorA} colorB={colorB} />;
+          renderItem={({ item }: { item: Miscellaneous }): React.ReactElement => {
+            const {
+              label,
+              count,
+              colorGradient: { hexColorA, hexColorB, location },
+            } = item;
+            return (
+              <AssetMetrics header={label} value={count} colorA={hexColorA} colorB={hexColorB} location={location} />
+            );
           }}
           keyExtractor={renderKeyExtractor}
         />

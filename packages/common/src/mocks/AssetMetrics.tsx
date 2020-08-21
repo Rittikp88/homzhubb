@@ -1,28 +1,72 @@
-import { theme } from '@homzhub/common/src/styles/theme';
-
-export const AssetMetricsData = [
-  {
+export const AssetMetricsData = {
+  user_service_plan: {
     id: 1,
-    header: 'Occupied',
-    value: 100,
-    colorA: theme.colors.gradientA,
-    colorB: theme.colors.gradientB,
+    name: 'HOMZHUB_PRO',
+    label: 'HomzHub PRO',
   },
-  {
-    id: 2,
-    header: 'Vacant',
-    value: 100,
-    colorA: theme.colors.gradientC,
-    colorB: theme.colors.gradientD,
+  asset_metrics: {
+    assets: {
+      count: 6,
+    },
+    miscellaneous: [
+      {
+        name: 'OCCUPIED',
+        label: 'Occupied',
+        count: 5,
+        color_gradient: {
+          angle: 180,
+          location: [0, 1],
+          hex_color_a: '#61D773',
+          hex_color_b: '#94EF90',
+        },
+      },
+      {
+        name: 'VACANT',
+        label: 'Vacant',
+        count: 5,
+        color_gradient: {
+          angle: 180,
+          location: [0, 1],
+          hex_color_a: '#FDB113',
+          hex_color_b: '#FFDB8F',
+        },
+      },
+      {
+        name: 'RENEWAL',
+        label: 'Renewal',
+        count: 5,
+        color_gradient: {
+          angle: 180,
+          location: [0, 1],
+          hex_color_a: '#D9AB65',
+          hex_color_b: '#ECCFB4',
+        },
+      },
+      {
+        name: 'SELL',
+        label: 'Sell',
+        count: 5,
+        color_gradient: {
+          angle: 180,
+          location: [0, 1],
+          hex_color_a: '#FD8313',
+          hex_color_b: '#FFD2A9',
+        },
+      },
+    ],
   },
-  {
-    id: 3,
-    header: 'Renewal',
-    value: 100,
-    colorA: theme.colors.gradientE,
-    colorB: theme.colors.gradientF,
+  updates: {
+    notifications: {
+      count: 5,
+    },
+    tickets: {
+      count: 5,
+    },
+    dues: {
+      count: 5,
+    },
   },
-];
+};
 
 export const AssetSubscriptionPlanData = [
   {

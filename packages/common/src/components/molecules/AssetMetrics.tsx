@@ -7,12 +7,13 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 interface IProps {
   header: string;
   value: string | number;
+  location?: number[];
   colorA?: string;
   colorB?: string;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const { header, value, colorA, colorB } = props;
+  const { header, value, colorA, colorB, location = [0, 1] } = props;
   const [selected, onSelect] = useState(false);
   const isColorAvailable = !!colorA;
   const gradient = [colorA || theme.colors.gradientK, colorB || theme.colors.white];
@@ -27,7 +28,7 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
         useAngle
         angle={180}
         colors={gradient}
-        locations={[0, 1]}
+        locations={location}
         style={[
           styles.container,
           !isColorAvailable && selected ? styles.selectedContainer : styles.containerWithoutGradient,
