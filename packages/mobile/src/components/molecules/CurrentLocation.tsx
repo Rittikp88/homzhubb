@@ -31,7 +31,7 @@ const CurrentLocation = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <TouchableOpacity onPress={onAutoDetectPress} style={styles.autoDetectTextContainer}>
+    <TouchableOpacity onPress={onAutoDetectPress} style={styles.autoDetectTextContainer} testID="touchableNearMe">
       <Icon name={icons.location} size={16} color={theme.colors.primaryColor} />
       <Label type="large" textType="semiBold" style={styles.autoDetectText}>
         {t('nearMe')}

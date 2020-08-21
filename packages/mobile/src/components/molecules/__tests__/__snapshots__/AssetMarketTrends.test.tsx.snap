@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetMarketTrends should match snapshot for keyExtractor 1`] = `"undefined-[object Object]"`;
+
+exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
+<ForwardRef
+  onPress={[Function]}
+  style={
+    Object {
+      "padding": 10,
+    }
+  }
+  testID="linkTouch"
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+          "flex": 1,
+        }
+      }
+      textType="regular"
+      type="small"
+    />
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="right-arrow"
+      size={20}
+    />
+  </View>
+  <Label
+    style={
+      Object {
+        "color": "#4C5F72",
+      }
+    }
+    textType="regular"
+    type="large"
+  />
+</ForwardRef>
+`;
+
+exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 4,
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "padding": 5,
+        "paddingVertical": 10,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "marginLeft": 5,
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#4C5F72"
+        name="increase"
+        size={20}
+      />
+      <Text
+        style={
+          Object {
+            "marginLeft": 8,
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        marketTrends
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "minHeight": 100,
+      }
+    }
+  >
+    <Text
+      textType="regular"
+      type="small"
+    >
+      noTrends
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`AssetMarketTrends should match snapshot with results 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 4,
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "padding": 5,
+        "paddingVertical": 10,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "marginLeft": 5,
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#4C5F72"
+        name="increase"
+        size={20}
+      />
+      <Text
+        style={
+          Object {
+            "marginLeft": 8,
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        marketTrends
+      </Text>
+    </View>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        Object {
+          "borderWidth": 0,
+          "color": "#0084F8",
+          "flex": 0,
+          "marginRight": 15,
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      viewAll
+    </Text>
+  </View>
+  <FlatList
+    data={
+      Array [
+        Object {
+          "id": 0,
+          "link": "",
+          "posted_at": "",
+          "title": "",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    testID="trendsList"
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+</View>
+`;

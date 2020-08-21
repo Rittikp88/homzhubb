@@ -101,6 +101,7 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
           <Button
             type="primary"
             title={t('sendMessage')}
+            disabled={selectedTime.length === 0 || selectedSpaces.length === 0}
             icon={icons.envelope}
             iconColor={theme.colors.white}
             iconSize={22}

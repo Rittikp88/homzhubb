@@ -34,7 +34,8 @@ exports[`FullScreenAssetDetailsCarousel should match snapshot 1`] = `
     />
     <ImageVideoPagination
       currentSlide={0}
-      totalSlides={1}
+      totalSlides={2}
+      type="IMAGE"
     />
     <Icon
       allowFontScaling={false}
@@ -48,11 +49,22 @@ exports[`FullScreenAssetDetailsCarousel should match snapshot 1`] = `
     data={
       Array [
         Object {
-          "file_name": "prof.jpg",
-          "is_cover_image": true,
+          "fileName": "prof.jpg",
+          "isCoverImage": true,
           "link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
-          "media_attributes": Object {},
-          "media_type": "IMAGE",
+          "mediaAttributes": Object {
+            "videoId": 1,
+          },
+          "mediaType": "IMAGE",
+        },
+        Object {
+          "fileName": "prof.jpg",
+          "isCoverImage": true,
+          "link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+          "mediaAttributes": Object {
+            "videoId": 1,
+          },
+          "mediaType": "Video",
         },
       ]
     }
@@ -75,4 +87,66 @@ exports[`FullScreenAssetDetailsCarousel should match snapshot 1`] = `
     windowSize={21}
   />
 </View>
+`;
+
+exports[`FullScreenAssetDetailsCarousel should match snapshot for keyExtractor 1`] = `"[object Object]-[object Object]"`;
+
+exports[`FullScreenAssetDetailsCarousel should match snapshot for renderItem for IMAGE 1`] = `
+<ImageViewer
+  clickDistance={10}
+  cropHeight={1334}
+  cropWidth={750}
+  doubleClickInterval={175}
+  enableCenterFocus={true}
+  enableDoubleClickZoom={true}
+  enableSwipeDown={true}
+  horizontalOuterRangeOffset={[Function]}
+  imageHeight={500}
+  imageWidth={750}
+  key="https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg"
+  layoutChange={[Function]}
+  longPressTime={800}
+  maxOverflow={100}
+  maxScale={10}
+  minScale={0.6}
+  onClick={[Function]}
+  onDoubleClick={[Function]}
+  onDragLeft={[Function]}
+  onLongPress={[Function]}
+  onMove={[Function]}
+  onPanResponderTerminationRequest={[Function]}
+  onStartShouldSetPanResponder={[Function]}
+  onSwipeDown={[MockFunction]}
+  panToMove={true}
+  pinchToZoom={true}
+  responderRelease={[Function]}
+  style={Object {}}
+  swipeDownThreshold={230}
+  useHardwareTextureAndroid={false}
+  useNativeDriver={false}
+>
+  <Image
+    source={
+      Object {
+        "uri": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+      }
+    }
+    style={
+      Object {
+        "alignItems": "center",
+        "height": 667,
+        "justifyContent": "center",
+        "width": 750,
+      }
+    }
+  />
+</ImageViewer>
+`;
+
+exports[`FullScreenAssetDetailsCarousel should match snapshot for renderItem for VIDEO 1`] = `
+<YoutubeVideo
+  key="0.9427631109594385"
+  play={true}
+  videoId={1}
+/>
 `;

@@ -8,7 +8,8 @@ export interface IAssetData {
   type: string;
   color: string;
   images: any;
-  contacts: any;
+  contacts?: any;
+  isPropertyCompleted: boolean;
 }
 
 export const TenanciesAssetData = [
@@ -17,6 +18,7 @@ export const TenanciesAssetData = [
     property_name: '2BHK - Godrej Prime',
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'OWNER',
+    isPropertyCompleted: true,
     color: '#CE9B6C',
     images: [
       {
@@ -38,6 +40,7 @@ export const TenanciesAssetData = [
     property_name: '2BHK - Godrej Prime',
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'OWNER',
+    isPropertyCompleted: true,
     color: '#CE9B6C',
     images: [
       {
@@ -62,6 +65,7 @@ export const PortfolioAssetData = [
     property_name: '2BHK - Godrej Prime',
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'OWNER',
+    isPropertyCompleted: true,
     color: '#CE9B6C',
     images: [
       {
@@ -83,6 +87,7 @@ export const PortfolioAssetData = [
     property_name: '2BHK - Godrej Prime',
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'RENTED',
+    isPropertyCompleted: true,
     color: theme.colors.gradientE,
     images: [
       {
@@ -104,6 +109,7 @@ export const PortfolioAssetData = [
     property_name: '2BHK - Godrej Prime',
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'VACANT',
+    isPropertyCompleted: true,
     color: theme.colors.highPriority,
     images: [
       {
@@ -124,7 +130,23 @@ export const PortfolioAssetData = [
     id: 4,
     property_name: '2BHK - Godrej Prime',
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
+    type: 'VACANT',
+    isPropertyCompleted: false,
+    color: theme.colors.highPriority,
+    images: [
+      {
+        file_name: 'House-1b',
+        is_cover_image: false,
+        link: images.property,
+      },
+    ],
+  },
+  {
+    id: 5,
+    property_name: '2BHK - Godrej Prime',
+    address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'FOR SALE',
+    isPropertyCompleted: true,
     color: theme.colors.mediumPriority,
     images: [
       {
@@ -142,10 +164,11 @@ export const PortfolioAssetData = [
     },
   },
   {
-    id: 5,
+    id: 6,
     property_name: '2BHK - Godrej Prime',
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'MAINTAIN',
+    isPropertyCompleted: true,
     color: theme.colors.informational,
     images: [
       {

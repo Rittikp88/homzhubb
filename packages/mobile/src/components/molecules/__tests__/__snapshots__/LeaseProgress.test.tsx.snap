@@ -14,7 +14,7 @@ exports[`Lease Progress should match snapshot 1`] = `
       allowFontScaling={false}
       color="#33495E"
       name="calendar"
-      size={18}
+      size={20}
       style={
         Object {
           "marginRight": 8,
@@ -83,7 +83,87 @@ exports[`Lease Progress should match snapshot 1`] = `
         "marginTop": 12,
       }
     }
+    fontType="semiBold"
+    textSize="regular"
+    textType="label"
     title="RENEW"
+    titleStyle={
+      Object {
+        "marginHorizontal": 18,
+        "marginVertical": 1,
+      }
+    }
+    type="primary"
+  />
+</Fragment>
+`;
+
+exports[`Lease Progress should match snapshot 2`] = `
+<Fragment>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#33495E"
+      name="house"
+      size={20}
+      style={
+        Object {
+          "marginRight": 8,
+        }
+      }
+    />
+    <Label
+      type="large"
+    >
+      Listing Score
+    </Label>
+  </View>
+  <Component
+    borderRadius={5}
+    color="#2CBA67"
+    progress={0.7}
+    style={
+      Object {
+        "borderColor": "#F0F5F9",
+        "marginLeft": 26,
+        "marginTop": 8,
+      }
+    }
+    unfilledColor="#F0F5F9"
+  />
+  <Label
+    style={
+      Object {
+        "color": "#808D9B",
+        "marginLeft": 28,
+        "marginTop": 6,
+      }
+    }
+    type="regular"
+  >
+    Add Property highlights for +10%
+  </Label>
+  <Button
+    containerStyle={
+      Object {
+        "alignSelf": "flex-end",
+        "backgroundColor": "#2CBA67",
+        "borderRadius": 2,
+        "flex": 0,
+        "marginTop": 12,
+      }
+    }
+    fontType="semiBold"
+    textSize="regular"
+    textType="label"
+    title="COMPLETE"
     titleStyle={
       Object {
         "marginHorizontal": 18,

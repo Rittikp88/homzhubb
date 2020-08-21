@@ -17,12 +17,12 @@ interface IProps extends WithTranslation {
 }
 
 interface IMarketTrendsState {
-  data: MarketTrends | null;
+  data: MarketTrends;
 }
 
-class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> {
+export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> {
   public state = {
-    data: null,
+    data: {} as MarketTrends,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -32,9 +32,6 @@ class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> 
   public render(): React.ReactNode {
     const { containerStyle, onViewAll, t, isHeaderVisible = true } = this.props;
     const { data } = this.state;
-    if (!data) {
-      return null;
-    }
     return (
       <View style={[styles.container, containerStyle]}>
         {isHeaderVisible && (
@@ -45,8 +42,7 @@ class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> 
                 {t('marketTrends')}
               </Text>
             </View>
-            {/* TODO: Check why this null check is failing */}
-            {data.results.length > 0 && (
+            {data.results?.length > 0 && (
               <Text type="small" textType="semiBold" onPress={onViewAll} style={styles.viewAll}>
                 {t('viewAll')}
               </Text>
@@ -61,8 +57,7 @@ class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> 
   public renderTrends = (): React.ReactElement => {
     const { data } = this.state;
     const { t } = this.props;
-    // TODO: Check why this null check is failing
-    if (data.results.length === 0) {
+    if (data.results?.length === 0) {
       return (
         <View style={styles.noData}>
           <Text type="small" textType="regular">
@@ -71,7 +66,6 @@ class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> 
         </View>
       );
     }
-    // TODO: Check why this null check is failing
     return (
       <FlatList
         data={data.results ?? []}
@@ -82,7 +76,7 @@ class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> 
           };
 
           return (
-            <TouchableOpacity onPress={onLinkPress} style={styles.trendContainer}>
+            <TouchableOpacity onPress={onLinkPress} style={styles.trendContainer} testID="linkTouch">
               <View style={styles.trendData}>
                 <Text type="small" textType="regular" style={styles.trendHeader}>
                   {title}
@@ -95,6 +89,7 @@ class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> 
             </TouchableOpacity>
           );
         }}
+        testID="trendsList"
         keyExtractor={this.renderKeyExtractor}
       />
     );

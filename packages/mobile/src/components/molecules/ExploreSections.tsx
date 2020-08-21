@@ -24,7 +24,7 @@ interface IProps extends WithTranslation {
   onPoiPress: (poi: PointOfInterest) => void;
 }
 
-class ExploreSections extends React.PureComponent<IProps> {
+export class ExploreSections extends React.PureComponent<IProps> {
   public render = (): React.ReactNode => {
     const { placeTypes, pointsOfInterest, selectedPlaceType, selectedPoiId, t } = this.props;
     return (
@@ -38,6 +38,7 @@ class ExploreSections extends React.PureComponent<IProps> {
             contentContainerStyle={styles.sectionsContainer}
             extraData={selectedPlaceType.key}
             keyExtractor={this.keyExtractorSections}
+            testID="placesList"
           />
         </View>
         {pointsOfInterest.length > 0 ? (
@@ -49,6 +50,7 @@ class ExploreSections extends React.PureComponent<IProps> {
             renderItem={this.renderPOI}
             extraData={selectedPoiId}
             keyExtractor={this.keyExtractorResult}
+            testID="interestList"
           />
         ) : (
           <View style={styles.noResultsContainer}>
@@ -76,7 +78,7 @@ class ExploreSections extends React.PureComponent<IProps> {
     const onPress = (): void => onPlaceTypePress(key);
 
     return (
-      <TouchableOpacity onPress={onPress} style={[styles.iconContainer, { backgroundColor }]}>
+      <TouchableOpacity onPress={onPress} style={[styles.iconContainer, { backgroundColor }]} testID="iconPress">
         <Icon size={24} name={icon} color={iconColor} />
       </TouchableOpacity>
     );
@@ -111,7 +113,7 @@ class ExploreSections extends React.PureComponent<IProps> {
     };
 
     return (
-      <TouchableOpacity onPress={onResultPress} style={styles.resultItem}>
+      <TouchableOpacity onPress={onResultPress} style={styles.resultItem} testID="resultPress">
         <View style={styles.resultNameContainer}>
           <Icon name={selectedPlaceType.mapMarker} size={16} color={color} />
           <Label type="large" style={[styles.title, { color }]} numberOfLines={1}>
@@ -129,8 +131,7 @@ class ExploreSections extends React.PureComponent<IProps> {
   private keyExtractorSections = (item: IPlaceTypeData, index: number): string => `${item.key}-${index}`;
 }
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.assetDescription)(ExploreSections);
-export { HOC as ExploreSections };
+export default withTranslation(LocaleConstants.namespacesKey.assetDescription)(ExploreSections);
 
 const styles = StyleSheet.create({
   container: {

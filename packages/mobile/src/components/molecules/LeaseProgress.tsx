@@ -1,41 +1,61 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as Progress from 'react-native-progress';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, Label } from '@homzhub/common/src/components';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 
 interface IProgressBarProps {
   progress: number;
   width?: number;
   filledColor?: string;
+  isPropertyCompleted: boolean;
 }
 
 const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
-  const { progress, width, filledColor = theme.colors.highPriority } = props;
+  const { progress, width, filledColor = theme.colors.highPriority, isPropertyCompleted } = props;
   return (
     <>
       <View style={styles.leaseHeading}>
-        <Icon name={icons.calendar} color={theme.colors.darkTint3} size={18} style={styles.calendarIcon} />
-        <Label type="large">Lease Period</Label>
+        <Icon
+          name={isPropertyCompleted ? icons.calendar : icons.house}
+          color={theme.colors.darkTint3}
+          size={20}
+          style={styles.calendarIcon}
+        />
+        <Label type="large">{isPropertyCompleted ? 'Lease Period' : 'Listing Score'}</Label>
       </View>
       <Progress.Bar
         progress={progress / 100}
         width={width}
-        color={filledColor}
+        color={isPropertyCompleted ? filledColor : theme.colors.green}
         style={styles.barStyle}
         unfilledColor={theme.colors.background}
         borderRadius={5}
       />
-      <View style={styles.container}>
-        <Label type="regular" style={styles.date}>
-          02/01/2020
+      {isPropertyCompleted ? (
+        <View style={styles.container}>
+          <Label type="regular" style={styles.date}>
+            02/01/2020
+          </Label>
+          <Label type="regular" style={styles.date}>
+            02/01/2020
+          </Label>
+        </View>
+      ) : (
+        <Label type="regular" style={styles.helperMsg}>
+          Add Property highlights for +10%
         </Label>
-        <Label type="regular" style={styles.date}>
-          02/01/2020
-        </Label>
-      </View>
-      <Button type="primary" containerStyle={styles.buttonStyle} title="RENEW" titleStyle={styles.buttonTitle} />
+      )}
+      <Button
+        type="primary"
+        textType="label"
+        textSize="regular"
+        fontType="semiBold"
+        containerStyle={styles.buttonStyle}
+        title={isPropertyCompleted ? 'RENEW' : 'COMPLETE'}
+        titleStyle={styles.buttonTitle}
+      />
     </>
   );
 };
@@ -64,6 +84,11 @@ const styles = StyleSheet.create({
   date: {
     color: theme.colors.darkTint6,
     marginTop: 6,
+  },
+  helperMsg: {
+    color: theme.colors.darkTint6,
+    marginTop: 6,
+    marginLeft: 28,
   },
   buttonStyle: {
     flex: 0,

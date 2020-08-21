@@ -42,6 +42,7 @@ const AssetSubscriptionPlan = (props: IProps): React.ReactElement => {
             </View>
           );
         }}
+        testID="subscriptionList"
         keyExtractor={renderKeyExtractor}
       />
     );

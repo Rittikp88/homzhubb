@@ -34,6 +34,7 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
           itemWidth={theme.viewport.width}
           activeIndex={activeSlide}
           onSnapToItem={this.onSnapToItem}
+          testID="bannerSnap"
         />
         <PaginationComponent
           dotsLength={banners.length}

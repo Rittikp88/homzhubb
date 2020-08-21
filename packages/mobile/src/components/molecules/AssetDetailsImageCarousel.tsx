@@ -26,6 +26,7 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
           sliderWidth={theme.viewport.width}
           itemWidth={theme.viewport.width}
           onSnapToItem={this.onSnapToItem}
+          testID="assetSnap"
         />
         <View style={styles.overlay}>
           <ImageVideoPagination

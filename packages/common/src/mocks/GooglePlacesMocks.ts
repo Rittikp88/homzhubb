@@ -659,3 +659,22 @@ export const reverseGeocode = {
   ],
   status: 'OK',
 };
+
+export const PointsOfInterest = [
+  {
+    placeId: 'ChIJkbeSa_BfYzARphNChaFPjNc',
+    name: '',
+    latitude: 35.513327,
+    longitude: 97.39535869999999,
+    distanceFromOrigin: 56,
+  },
+];
+
+export const PlacesTypeData = [
+  {
+    key: 'atm',
+    label: 'ATM',
+    icon: '',
+    mapMarker: '',
+  },
+];

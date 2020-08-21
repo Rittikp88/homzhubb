@@ -49,6 +49,7 @@ const AssetRatings = (props: IProps): React.ReactElement => {
         data={reviews}
         renderItem={renderRating}
         contentContainerStyle={styles.sectionsContainer}
+        testID="reviewsList"
       />
       <Label type="large" textType="semiBold" style={styles.readMore}>
         {t('readMore')}

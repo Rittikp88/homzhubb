@@ -11,11 +11,22 @@ describe('FullScreenAssetDetailsCarousel', () => {
     activeSlide: 0,
     data: [
       {
-        file_name: 'prof.jpg',
-        is_cover_image: true,
+        fileName: 'prof.jpg',
+        isCoverImage: true,
         link: 'https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg',
-        media_type: 'IMAGE',
-        media_attributes: {},
+        mediaType: 'IMAGE',
+        mediaAttributes: {
+          videoId: 1,
+        },
+      },
+      {
+        fileName: 'prof.jpg',
+        isCoverImage: true,
+        link: 'https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg',
+        mediaType: 'Video',
+        mediaAttributes: {
+          videoId: 1,
+        },
       },
     ],
     onFullScreenToggle: jest.fn(),
@@ -43,5 +54,29 @@ describe('FullScreenAssetDetailsCarousel', () => {
     const wrapper = shallow(<FullScreenAssetDetailsCarousel {...props} />);
     wrapper.find('[testID="attachmentFlatList"]').prop('onMomentumScrollEnd')(e);
     expect(props.updateSlide).toBeCalled();
+  });
+
+  it('should match snapshot for renderItem for IMAGE', () => {
+    const wrapper = shallow(<FullScreenAssetDetailsCarousel {...props} />);
+    const RenderItem = wrapper.find('[testID="attachmentFlatList"]').prop('renderItem');
+    // @ts-ignore
+    const renderItemShallowWrapper = shallow(<RenderItem item={props.data[0]} />);
+    expect(toJson(renderItemShallowWrapper)).toMatchSnapshot();
+  });
+
+  it('should match snapshot for renderItem for VIDEO', () => {
+    const wrapper = shallow(<FullScreenAssetDetailsCarousel {...props} />);
+    const RenderItem = wrapper.find('[testID="attachmentFlatList"]').prop('renderItem');
+    // @ts-ignore
+    const renderItemShallowWrapper = shallow(<RenderItem item={props.data[1]} />);
+    expect(toJson(renderItemShallowWrapper)).toMatchSnapshot();
+  });
+
+  it('should match snapshot for keyExtractor', () => {
+    const wrapper = shallow(<FullScreenAssetDetailsCarousel {...props} />);
+    const KeyExtractor = wrapper.find('[testID="attachmentFlatList"]').prop('keyExtractor');
+    // @ts-ignore
+    const renderExtractorShallowWrapper = shallow(<KeyExtractor item={props.data[0]} />);
+    expect(toJson(renderExtractorShallowWrapper)).toMatchSnapshot();
   });
 });

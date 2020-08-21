@@ -15,7 +15,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { CustomMarker, SelectionPicker } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import { ExploreSections } from '@homzhub/mobile/src/components/molecules/ExploreSections';
+import ExploreSections from '@homzhub/mobile/src/components/molecules/ExploreSections';
 import { Header } from '@homzhub/mobile/src/components/molecules/Header';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

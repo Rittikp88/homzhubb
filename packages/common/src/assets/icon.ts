@@ -96,6 +96,8 @@ export const icons = {
   portfolio: 'portfolio',
   verticalDots: 'vertical-dots',
   home: 'home',
+  upArrow: 'up-arrow',
+  house: 'house',
 
   // COMMUTE
   train: 'train',

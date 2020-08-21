@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollapsibleSection should match snapshot 1`] = `
+<Fragment>
+  <ForwardRef
+    onPress={[Function]}
+    style={
+      Object {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginTop": 24,
+      }
+    }
+    testID="collapse"
+  >
+    <Text
+      style={
+        Object {
+          "color": "#4C5F72",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    />
+    <Icon
+      allowFontScaling={false}
+      color="#4C5F72"
+      name="minus"
+      size={20}
+    />
+  </ForwardRef>
+  <Collapsible
+    align="top"
+    collapsed={false}
+    collapsedHeight={0}
+    duration={300}
+    easing="easeOutCubic"
+    enablePointerEvents={false}
+    onAnimationEnd={[Function]}
+  >
+    <View />
+  </Collapsible>
+  <Divider
+    containerStyles={
+      Object {
+        "marginTop": 24,
+      }
+    }
+  />
+</Fragment>
+`;
+
+exports[`CollapsibleSection should match snapshot with press 1`] = `
+<Fragment>
+  <ForwardRef
+    onPress={[Function]}
+    style={
+      Object {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginTop": 24,
+      }
+    }
+    testID="collapse"
+  >
+    <Text
+      style={
+        Object {
+          "color": "#4C5F72",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    />
+    <Icon
+      allowFontScaling={false}
+      color="#4C5F72"
+      name="minus"
+      size={20}
+    />
+  </ForwardRef>
+  <Collapsible
+    align="top"
+    collapsed={false}
+    collapsedHeight={0}
+    duration={300}
+    easing="easeOutCubic"
+    enablePointerEvents={false}
+    onAnimationEnd={[Function]}
+  >
+    <View />
+  </Collapsible>
+  <Divider
+    containerStyles={
+      Object {
+        "marginTop": 24,
+      }
+    }
+  />
+</Fragment>
+`;

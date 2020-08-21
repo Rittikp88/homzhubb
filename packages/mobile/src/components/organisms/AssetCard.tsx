@@ -42,7 +42,12 @@ export class AssetCard extends Component<IListProps, IListState> {
                   10
                 </Label>
               </View>
-              <Icon name={icons.downArrow} color={theme.colors.blue} size={12} onPress={this.onPressArrow} />
+              <Icon
+                name={isExpanded ? icons.upArrow : icons.downArrow}
+                color={theme.colors.blue}
+                size={20}
+                onPress={this.onPressArrow}
+              />
             </View>
           )}
           {(isExpanded || isDetailView) && <Image source={images[0].link} style={styles.image} height={200} />}
@@ -58,7 +63,7 @@ export class AssetCard extends Component<IListProps, IListState> {
           <Button
             type="secondary"
             title="View Property"
-            textSize="regular"
+            textSize="small"
             containerStyle={styles.buttonStyle}
             titleStyle={styles.buttonTitle}
           />
@@ -69,19 +74,27 @@ export class AssetCard extends Component<IListProps, IListState> {
 
   private renderExpandedView = (): React.ReactElement => {
     const { isDetailView, assetData } = this.props;
-    const { contacts } = assetData;
+    const { contacts, isPropertyCompleted } = assetData;
     return (
       <>
-        <Divider containerStyles={styles.divider} />
-        <Avatar fullName={contacts.full_name} designation="Tenant" />
-        {!isDetailView && (
+        {contacts && (
+          <>
+            <Divider containerStyles={styles.divider} />
+            <Avatar fullName={contacts.full_name} designation="Tenant" />
+          </>
+        )}
+        {!isDetailView && isPropertyCompleted && (
           <>
             <Divider containerStyles={styles.divider} />
             <RentAndMaintenance />
           </>
         )}
         <Divider containerStyles={styles.divider} />
-        <LeaseProgress progress={80} width={theme.viewport.width > 400 ? 320 : 280} />
+        <LeaseProgress
+          progress={80}
+          width={theme.viewport.width > 400 ? 320 : 280}
+          isPropertyCompleted={isPropertyCompleted}
+        />
       </>
     );
   };

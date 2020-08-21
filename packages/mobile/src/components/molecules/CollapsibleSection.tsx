@@ -20,7 +20,7 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
 
   return (
     <>
-      <TouchableOpacity style={styles.ratingsHeading} onPress={onPress}>
+      <TouchableOpacity style={styles.ratingsHeading} onPress={onPress} testID="collapse">
         <Text type="small" textType="semiBold" style={styles.textColor}>
           {title}
         </Text>
