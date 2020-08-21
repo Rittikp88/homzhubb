@@ -1,5 +1,5 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
-import { User } from '@homzhub/common/src/domain/models/User';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IEmailLoginPayload,
@@ -15,7 +15,8 @@ import {
   IRefreshTokenPayload,
   IUserExistsData,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ObjectMapper } from '../../utils/ObjectMapper';
+import { User } from '@homzhub/common/src/domain/models/User';
+import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 
 const ENDPOINTS = {
   signUp: (): string => 'users/',
@@ -27,6 +28,7 @@ const ENDPOINTS = {
   emailExists: (emailId: string): string => `users/emails/${emailId}`,
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
   logout: (): string => 'users/logout/',
+  getUserSubscription: (): string => 'users/service-plan',
 };
 
 class UserRepository {
@@ -91,6 +93,11 @@ class UserRepository {
 
   public logout = async (payload: IRefreshTokenPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.logout(), payload);
+  };
+
+  public getUserSubscription = async (): Promise<UserSubscription> => {
+    const response = await this.apiClient.get(ENDPOINTS.getUserSubscription());
+    return ObjectMapper.deserialize(UserSubscription, response);
   };
 }
 

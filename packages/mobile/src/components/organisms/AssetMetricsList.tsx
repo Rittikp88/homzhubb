@@ -67,10 +67,18 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
             const {
               label,
               count,
-              colorGradient: { hexColorA, hexColorB, location },
+              colorGradient: { hexColorA, hexColorB, location, angle },
             } = item;
             return (
-              <AssetMetrics header={label} value={count} colorA={hexColorA} colorB={hexColorB} location={location} />
+              <AssetMetrics
+                header={label}
+                value={count}
+                colorA={hexColorA}
+                colorB={hexColorB}
+                location={location}
+                angle={angle}
+                isPortfolio={isPortfolio}
+              />
             );
           }}
           keyExtractor={renderKeyExtractor}
@@ -87,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 0,
     backgroundColor: theme.colors.white,
     borderRadius: 4,
-    minHeight: 190,
+    minHeight: 80,
   },
   heading: {
     justifyContent: 'space-between',

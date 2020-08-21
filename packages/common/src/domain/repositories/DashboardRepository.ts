@@ -1,6 +1,5 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { AssetMetricsData } from '@homzhub/common/src/mocks/AssetMetrics';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
@@ -23,14 +22,8 @@ class DashboardRepository {
   };
 
   public getAssetMetrics = async (): Promise<AssetMetrics> => {
-    // const response = await this.apiClient.get(ENDPOINTS.getAssetMetrics());
-    const response = await this.assetMetricsMockData();
+    const response = await this.apiClient.get(ENDPOINTS.getAssetMetrics());
     return ObjectMapper.deserialize(AssetMetrics, response);
-  };
-
-  // TODO: To be removed once api integrated
-  public assetMetricsMockData = (): any => {
-    return Promise.resolve(() => AssetMetricsData);
   };
 }
 

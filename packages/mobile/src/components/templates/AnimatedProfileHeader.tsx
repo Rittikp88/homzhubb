@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IProps {
   children: React.ReactElement;
@@ -12,7 +14,22 @@ interface IProps {
   onIconPress?: () => void;
 }
 
-export class AnimatedProfileHeader extends Component<IProps, {}> {
+interface IAnimatedProfileHeaderState {
+  user: IUser | null;
+}
+
+type Props = IProps;
+
+export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHeaderState> {
+  public state = {
+    user: {} as IUser,
+  };
+
+  public componentDidMount = async (): Promise<void> => {
+    const user: IUser | null = await StorageService.get(StorageKeys.USER);
+    this.setState({ user });
+  };
+
   public render(): React.ReactNode {
     const { children } = this.props;
     return (
@@ -31,9 +48,9 @@ export class AnimatedProfileHeader extends Component<IProps, {}> {
     );
   }
 
-  // TODO: Need to update user name
   private renderHeader = (): React.ReactElement => {
     const { title, onIconPress } = this.props;
+    const { user } = this.state;
     return (
       <View style={styles.headerContainer}>
         <Text type="regular" textType="semiBold" style={styles.title}>
@@ -41,7 +58,7 @@ export class AnimatedProfileHeader extends Component<IProps, {}> {
         </Text>
         <View style={styles.initialsContainer}>
           <Text type="small" textType="regular" style={styles.initials} onPress={onIconPress}>
-            {StringUtils.getInitials('User')}
+            {StringUtils.getInitials(user?.full_name ?? 'User')}
           </Text>
         </View>
       </View>
@@ -64,9 +81,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   initialsContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 30 / 2,
+    ...(theme.circleCSS(35) as object),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.darkTint7,

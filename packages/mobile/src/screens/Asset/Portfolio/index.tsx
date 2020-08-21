@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
@@ -11,6 +12,7 @@ import {
 } from '@homzhub/mobile/src/components';
 import { AssetFilter, IAssetData, PortfolioAssetData, TenanciesAssetData } from '@homzhub/common/src/mocks/AssetData';
 import { AssetPropertyTypeData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 interface IPortfolioState {
   isBottomSheetVisible: boolean;
@@ -25,13 +27,14 @@ export class Portfolio extends React.PureComponent<{}, IPortfolioState> {
 
   public render = (): React.ReactElement => {
     const { selectedFilter, isBottomSheetVisible } = this.state;
+    const assetData = ObjectMapper.deserialize(AssetMetrics, AssetPropertyTypeData);
     return (
       <AnimatedProfileHeader title="Portfolio">
         <>
           <AssetMetricsList
             isPortfolio
             assetCount={10}
-            data={AssetPropertyTypeData}
+            data={assetData?.assetMetrics?.miscellaneous}
             subscription="HomzHub Pro"
             containerStyle={styles.assetCards}
           />

@@ -312,6 +312,9 @@
     "costBreakdown": "Cost Breakdown",
     "cashFlow": "Cash Flow",
     "dashboard": "Dashboard",
-    "overallPerformance": "Overall Performance"
+    "overallPerformance": "Overall Performance",
+    "subscriptionHelper": "Upgrade to",
+    "subscriptionHelperServices": "and get the following services",
+    "upgrade": "Upgrade"
   }
 }

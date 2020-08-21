@@ -7,15 +7,16 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 interface IProps {
   header: string;
   value: string | number;
-  location?: number[];
-  colorA?: string;
-  colorB?: string;
+  angle: number;
+  location: number[];
+  colorA: string;
+  colorB: string;
+  isPortfolio?: boolean;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const { header, value, colorA, colorB, location = [0, 1] } = props;
+  const { header, value, angle, colorA, colorB, location, isPortfolio = false } = props;
   const [selected, onSelect] = useState(false);
-  const isColorAvailable = !!colorA;
   const gradient = [colorA || theme.colors.gradientK, colorB || theme.colors.white];
 
   const handlePress = (): void => {
@@ -26,25 +27,22 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
     <TouchableOpacity onPress={handlePress}>
       <LinearGradient
         useAngle
-        angle={180}
+        angle={angle}
         colors={gradient}
         locations={location}
-        style={[
-          styles.container,
-          !isColorAvailable && selected ? styles.selectedContainer : styles.containerWithoutGradient,
-        ]}
+        style={[styles.container, selected && isPortfolio ? styles.selectedContainer : styles.containerWithoutGradient]}
       >
         <Text
           type="small"
           textType="semiBold"
-          style={[styles.metrics, isColorAvailable ? styles.textWithGradient : styles.textWithoutGradient]}
+          style={[styles.metrics, !isPortfolio ? styles.textWithGradient : styles.textWithoutGradient]}
         >
           {header}
         </Text>
         <Text
           type="large"
           textType="semiBold"
-          style={[styles.metrics, isColorAvailable ? styles.textWithGradient : styles.valueWithoutGradient]}
+          style={[styles.metrics, !isPortfolio ? styles.textWithGradient : styles.valueWithoutGradient]}
         >
           {value}
         </Text>
