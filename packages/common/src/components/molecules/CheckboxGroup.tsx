@@ -8,7 +8,7 @@ export interface ICheckboxGroupData {
   isSelected: boolean;
 }
 
-interface IProps {
+export interface IProps {
   data: ICheckboxGroupData[];
   onToggle: (id: number, isSelected: boolean) => void;
   numColumns?: number;
@@ -26,13 +26,14 @@ export class CheckboxGroup extends React.PureComponent<IProps, {}> {
         data={data}
         renderItem={this.renderCheckbox}
         contentContainerStyle={containerStyle}
+        testID="ftlist"
       />
     );
   };
 
   private renderCheckbox = ({ item, index }: { item: ICheckboxGroupData; index: number }): React.ReactElement => {
     const { label, isSelected = false } = item;
-    const { data, onToggle, numColumns = 2, labelStyle = {} } = this.props;
+    const { data, onToggle, numColumns = 2, labelStyle = {}, testID } = this.props;
 
     let checkboxContainerStyle: { flex: number; marginBottom: number } | { marginBottom: number } =
       styles.checkboxContainer;
@@ -49,6 +50,7 @@ export class CheckboxGroup extends React.PureComponent<IProps, {}> {
         onToggle={onCheckboxToggle}
         labelStyle={labelStyle}
         containerStyle={checkboxContainerStyle}
+        testID={testID}
       />
     );
   };

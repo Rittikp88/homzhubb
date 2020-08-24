@@ -14,12 +14,13 @@ interface ICheckboxOptions {
   iconStyle?: object;
   iconSelectedStyle?: object;
   labelType?: TextSizeType;
+  testID?: string;
 }
 
 const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
   const {
-    label = '',
-    selected = false,
+    label,
+    selected,
     containerStyle = {},
     labelStyle = {},
     iconSize = 22,
@@ -27,9 +28,10 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
     iconSelectedStyle = {},
     labelType = 'large',
     onToggle,
+    testID,
   } = props;
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle} testID={testID}>
       <Icon
         name={selected ? icons.checkboxOn : icons.checkboxOff}
         size={iconSize}

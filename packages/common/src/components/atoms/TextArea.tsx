@@ -11,6 +11,7 @@ interface IProps {
   onMessageChange?: (text: string) => void;
 }
 
+// TODO: Use Translation for Optional
 export const TextArea = (props: IProps): React.ReactElement => {
   const { label, placeholder, isOptional, containerStyle = {}, onMessageChange } = props;
   return (

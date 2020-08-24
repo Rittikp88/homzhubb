@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Favorite should match snapshot for selected true 1`] = `
+<View>
+  <Icon
+    allowFontScaling={false}
+    color="#FFFFFF"
+    name="heart-outline"
+    onPress={[Function]}
+    size={32}
+    testID="icon"
+  />
+</View>
+`;

@@ -49,9 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   initialsContainer: {
-    width: 42,
-    height: 42,
-    borderRadius: 42 / 2,
+    ...(theme.circleCSS(42) as object),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.darkTint6,

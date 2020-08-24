@@ -155,22 +155,50 @@ export const MarketTrendsData = [
   },
 ];
 
-export const AssetAdvertisementData = [
-  {
-    id: 1,
-    image_url: 'https://www.bookadsnow.com/images/mobile/Newspaper-banner_3.jpg',
+export const AssetAdvertisementData = {
+  count: 1,
+  links: {
+    next: null,
+    previous: null,
   },
-  {
-    id: 2,
-    image_url:
-      'https://is1-3.housingcdn.com/4f2250e8/6ec86b0c4555a4f83e0ea77c552db2a0/v0/fs/vessella_meadows-narsingi-hyderabad-vessella_group.jpg',
-  },
-  {
-    id: 3,
-    image_url:
-      'https://www.icicibank.com/managed-assets/images/blog/big/how-is-tax-on-sale-of-inherited-property-calculated.jpg',
-  },
-];
+  results: [
+    {
+      id: 1,
+      link: 'https://www.google.com',
+      attachment: {
+        id: 14,
+        file_name: 'DjangoBackendLLD (1).jpg',
+        media_type: 'IMAGE',
+        link: 'https://www.bookadsnow.com/images/mobile/Newspaper-banner_3.jpg',
+        media_attributes: {},
+      },
+    },
+    {
+      id: 2,
+      link: 'https://www.google.com',
+      attachment: {
+        id: 14,
+        file_name: 'DjangoBackendLLD (1).jpg',
+        media_type: 'IMAGE',
+        link:
+          'https://is1-3.housingcdn.com/4f2250e8/6ec86b0c4555a4f83e0ea77c552db2a0/v0/fs/vessella_meadows-narsingi-hyderabad-vessella_group.jpg',
+        media_attributes: {},
+      },
+    },
+    {
+      id: 3,
+      link: 'https://www.google.com',
+      attachment: {
+        id: 14,
+        file_name: 'DjangoBackendLLD (1).jpg',
+        media_type: 'IMAGE',
+        link:
+          'https://www.icicibank.com/managed-assets/images/blog/big/how-is-tax-on-sale-of-inherited-property-calculated.jpg',
+        media_attributes: {},
+      },
+    },
+  ],
+};
 
 export const AssetPropertyTypeData = {
   user_service_plan: {

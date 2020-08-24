@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch should match snapshot for not selected 1`] = `
+<Switch
+  onValueChange={[MockFunction]}
+  thumbColor="#FFFFFF"
+  trackColor={
+    Object {
+      "false": "#C9D6DF",
+      "true": "#0084F8",
+    }
+  }
+  value={false}
+/>
+`;
+
+exports[`Switch should match snapshot for selected 1`] = `
+<Switch
+  onValueChange={[MockFunction]}
+  thumbColor="#FFFFFF"
+  trackColor={
+    Object {
+      "false": "#C9D6DF",
+      "true": "#0084F8",
+    }
+  }
+  value={true}
+/>
+`;

@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactPerson should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "padding": 16,
+    }
+  }
+>
+  <Memo(Avatar)
+    designation="CEO"
+    fullName="John Doe"
+  />
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <ForwardRef
+      key="WHATSAPP"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#F0F5F9",
+            "borderRadius": 4,
+            "padding": 16,
+          },
+          Object {},
+        ]
+      }
+      testID="to"
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="whatsapp"
+        size={24}
+      />
+    </ForwardRef>
+    <ForwardRef
+      key="CALL"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#F0F5F9",
+            "borderRadius": 4,
+            "padding": 16,
+          },
+          Object {
+            "marginHorizontal": 12,
+          },
+        ]
+      }
+      testID="to"
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="phone"
+        size={24}
+      />
+    </ForwardRef>
+    <ForwardRef
+      key="MAIL"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#F0F5F9",
+            "borderRadius": 4,
+            "padding": 16,
+          },
+          Object {},
+        ]
+      }
+      testID="to"
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="envelope"
+        size={24}
+      />
+    </ForwardRef>
+  </View>
+</View>
+`;

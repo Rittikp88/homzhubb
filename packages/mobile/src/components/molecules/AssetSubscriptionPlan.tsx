@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, StyleProp, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { isEmpty } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { AssetSubscriptionPlanData } from '@homzhub/common/src/mocks/AssetMetrics';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
@@ -24,18 +23,21 @@ type Props = IProps & WithTranslation;
 
 export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubscriptionPlanState> {
   public state = {
-    data: ObjectMapper.deserialize(UserSubscription, AssetSubscriptionPlanData), // TODO: To be removed once api integrated
+    data: {} as UserSubscription,
   };
 
   public componentDidMount = async (): Promise<void> => {
-    // await this.getUserSubscription();
+    await this.getUserSubscription();
   };
 
-  public render(): React.ReactElement {
+  public render(): React.ReactNode {
     const { containerStyle, t } = this.props;
     const { data } = this.state;
-    const currentPlan = data.userServicePlan.label;
-    const recommendedPlan = data.recommendedPlan.label;
+    if (isEmpty(data)) {
+      return null;
+    }
+    const currentPlan = `${t('common:homzhub')} ${data?.userServicePlan?.label}`;
+    const recommendedPlan = `${t('common:homzhub')} ${data?.recommendedPlan?.label}`;
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={styles.currentSubscription}>
@@ -45,10 +47,7 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
             </Text>
             <View style={styles.planNameRow}>
               <Text type="regular" textType="bold" style={styles.planName}>
-                {currentPlan.split(' ')[0] ?? currentPlan}
-              </Text>
-              <Text type="regular" textType="regular" style={styles.planNameCategory}>
-                {currentPlan.split(' ')[1] ?? ''}
+                {currentPlan}
               </Text>
             </View>
           </View>
@@ -142,11 +141,6 @@ const styles = StyleSheet.create({
   planName: {
     color: theme.colors.darkTint3,
     marginVertical: 2,
-  },
-  planNameCategory: {
-    color: theme.colors.darkTint3,
-    marginVertical: 2,
-    paddingHorizontal: 6,
   },
   featureName: {
     marginLeft: 15,

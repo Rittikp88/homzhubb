@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text Area should match snapshot 1`] = `
+<View
+  style={Object {}}
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginVertical": 6,
+      }
+    }
+  >
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      type="large"
+    >
+      Some label
+    </Label>
+  </View>
+  <View
+    style={
+      Object {
+        "borderColor": "#C9D6DF",
+        "borderWidth": 1,
+        "padding": 5,
+      }
+    }
+  >
+    <Component
+      allowFontScaling={true}
+      maxLength={250}
+      multiline={true}
+      placeholder="placeholder"
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "height": 150,
+          "justifyContent": "flex-start",
+          "textAlignVertical": "top",
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>
+</View>
+`;
+
+exports[`Text Area should match snapshot for optional 1`] = `
+<View
+  style={Object {}}
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginVertical": 6,
+      }
+    }
+  >
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      type="large"
+    >
+      Some label
+    </Label>
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      type="regular"
+    >
+      Optional
+    </Label>
+  </View>
+  <View
+    style={
+      Object {
+        "borderColor": "#C9D6DF",
+        "borderWidth": 1,
+        "padding": 5,
+      }
+    }
+  >
+    <Component
+      allowFontScaling={true}
+      maxLength={250}
+      multiline={true}
+      placeholder="placeholder"
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "height": 150,
+          "justifyContent": "flex-start",
+          "textAlignVertical": "top",
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>
+</View>
+`;

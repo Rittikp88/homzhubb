@@ -49,7 +49,7 @@ const ContactPerson = (props: IProps): React.ReactElement => {
           };
 
           return (
-            <TouchableOpacity key={id} style={[styles.iconButton, conditionalStyle]} onPress={onPress}>
+            <TouchableOpacity key={id} style={[styles.iconButton, conditionalStyle]} onPress={onPress} testID="to">
               <Icon name={icon} size={24} color={theme.colors.primaryColor} />
             </TouchableOpacity>
           );

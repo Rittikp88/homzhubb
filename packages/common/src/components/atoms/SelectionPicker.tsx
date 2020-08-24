@@ -33,6 +33,7 @@ class SelectionPicker extends React.PureComponent<IProps, {}> {
           data={data}
           renderItem={(item: IItem): React.ReactElement => this.renderItem(item)}
           keyExtractor={this.keyExtractor}
+          testID="ftlist"
         />
       </View>
     );
@@ -46,7 +47,7 @@ class SelectionPicker extends React.PureComponent<IProps, {}> {
     const conditionalStyle = createConditionalStyles(selected, optionWidth);
     const onPress = (): void => onValueChange(item.value);
     return (
-      <TouchableOpacity onPress={onPress} style={styles.item}>
+      <TouchableOpacity onPress={onPress} style={styles.item} testID="to">
         <View
           style={[styles.optionWrapper, conditionalStyle.selectedItem, conditionalStyle.itemWidth]}
           key={`item-${index}`}

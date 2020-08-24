@@ -22,6 +22,7 @@ export class RadioButtonGroup extends React.Component<IProps, {}> {
         renderItem={this.renderButton}
         contentContainerStyle={containerStyle}
         keyExtractor={(item): string => `${item.id}`}
+        testID="ftlist"
       />
     );
   };

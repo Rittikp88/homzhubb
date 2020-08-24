@@ -1,0 +1,321 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetSummary should match snapshot 1`] = `
+<LinearGradient
+  angle={180}
+  colors={
+    Array [
+      "#FFFFFF",
+      "#F0F5F9",
+    ]
+  }
+  end={
+    Object {
+      "x": 0.5,
+      "y": 1,
+    }
+  }
+  locations={
+    Array [
+      0,
+      1,
+    ]
+  }
+  start={
+    Object {
+      "x": 0.5,
+      "y": 0,
+    }
+  }
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 4,
+        "flexDirection": "row",
+        "justifyContent": "space-around",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+  useAngle={true}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "width": 214.28571428571428,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#13AB46"
+      name="bell"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "color": "#13AB46",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      notification
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#13AB46",
+        }
+      }
+      textType="bold"
+      type="regular"
+    >
+      10
+    </Text>
+  </View>
+  <Divider />
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "width": 214.28571428571428,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#FB6E07"
+      name="head-phone"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "color": "#FB6E07",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      tickets
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#FB6E07",
+        }
+      }
+      textType="bold"
+      type="regular"
+    >
+      10
+    </Text>
+  </View>
+  <Divider />
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "width": 214.28571428571428,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#D60D31"
+      name="decrease"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "color": "#D60D31",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      dues
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#D60D31",
+        }
+      }
+      textType="bold"
+      type="regular"
+    >
+      10
+    </Text>
+  </View>
+</LinearGradient>
+`;
+
+exports[`AssetSummary should match snapshot without values 1`] = `
+<LinearGradient
+  angle={180}
+  colors={
+    Array [
+      "#FFFFFF",
+      "#F0F5F9",
+    ]
+  }
+  end={
+    Object {
+      "x": 0.5,
+      "y": 1,
+    }
+  }
+  locations={
+    Array [
+      0,
+      1,
+    ]
+  }
+  start={
+    Object {
+      "x": 0.5,
+      "y": 0,
+    }
+  }
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 4,
+        "flexDirection": "row",
+        "justifyContent": "space-around",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+  useAngle={true}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "width": 214.28571428571428,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#13AB46"
+      name="bell"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "color": "#13AB46",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      notification
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#13AB46",
+        }
+      }
+      textType="bold"
+      type="regular"
+    >
+      0
+    </Text>
+  </View>
+  <Divider />
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "width": 214.28571428571428,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#FB6E07"
+      name="head-phone"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "color": "#FB6E07",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      tickets
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#FB6E07",
+        }
+      }
+      textType="bold"
+      type="regular"
+    >
+      0
+    </Text>
+  </View>
+  <Divider />
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "width": 214.28571428571428,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#D60D31"
+      name="decrease"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "color": "#D60D31",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      dues
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#D60D31",
+        }
+      }
+      textType="bold"
+      type="regular"
+    >
+      0
+    </Text>
+  </View>
+</LinearGradient>
+`;

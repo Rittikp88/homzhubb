@@ -60,20 +60,7 @@ exports[`AssetSubscriptionPlan should match snapshot 1`] = `
           textType="bold"
           type="regular"
         >
-          HomzHub
-        </Text>
-        <Text
-          style={
-            Object {
-              "color": "#33495E",
-              "marginVertical": 2,
-              "paddingHorizontal": 6,
-            }
-          }
-          textType="regular"
-          type="regular"
-        >
-          Pro
+          common:homzhub undefined
         </Text>
       </View>
     </View>
@@ -118,43 +105,13 @@ exports[`AssetSubscriptionPlan should match snapshot 1`] = `
       type="small"
     >
        
-      HomzHub Elite
+      common:homzhub undefined
        
     </Text>
     subscriptionHelperServices
   </Text>
   <FlatList
-    data={
-      Array [
-        ServiceBundleItems {
-          "_category": "Professional Service",
-          "_description": "Lorem Ipsum Dummy Text.",
-          "_id": 3,
-          "_itemLabel": "Valid for 30 days",
-          "_name": "WEBSITE_LISTING",
-          "_position": 1,
-          "_title": "Website Listing",
-        },
-        ServiceBundleItems {
-          "_category": "Professional Service",
-          "_description": "Lorem Ipsum Dummy Text.",
-          "_id": 5,
-          "_itemLabel": "",
-          "_name": "SOCIAL_MEDIA",
-          "_position": 2,
-          "_title": "Social Media",
-        },
-        ServiceBundleItems {
-          "_category": "Professional Service",
-          "_description": "Lorem Ipsum Dummy Text.",
-          "_id": 8,
-          "_itemLabel": "",
-          "_name": "EMAIL",
-          "_position": 3,
-          "_title": "Email",
-        },
-      ]
-    }
+    data={Array []}
     disableVirtualization={false}
     horizontal={false}
     initialNumToRender={10}
@@ -212,6 +169,8 @@ exports[`AssetSubscriptionPlan should match snapshot for renderItem 1`] = `
     }
     textType="regular"
     type="small"
-  />
+  >
+    Website Listing
+  </Text>
 </View>
 `;

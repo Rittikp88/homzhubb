@@ -24,3 +24,109 @@ exports[`Test cases for DetailedHeader should render snapshot 1`] = `
   />
 </View>
 `;
+
+exports[`Test cases for DetailedHeader should render snapshot with header content visible 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "paddingTop": 50,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#C9D6DF",
+          "borderBottomWidth": 0.5,
+          "flex": 1,
+          "paddingTop": 50,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "marginVertical": 16,
+          "paddingHorizontal": 24,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#001B36",
+            "paddingVertical": 5,
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        Some title
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#33495E",
+            "marginVertical": 6,
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        Subtitle
+         
+        <Text
+          style={
+            Object {
+              "color": "#0084F8",
+            }
+          }
+          type="small"
+        />
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Test cases for DetailedHeader should render snapshot with icon 1`] = `
+<View
+  style={
+    Object {
+      "flex": 0,
+      "paddingTop": 0,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#C9D6DF",
+          "borderBottomWidth": 0.5,
+          "flex": 0,
+          "paddingTop": 50,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#4C5F72"
+      name="sun"
+      size={22}
+      style={
+        Object {
+          "paddingHorizontal": 20,
+          "paddingVertical": 10,
+        }
+      }
+    />
+  </View>
+</View>
+`;

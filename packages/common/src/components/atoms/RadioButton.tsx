@@ -18,8 +18,8 @@ interface IRadioButtonOptions {
 
 const RadioButton = (props: IRadioButtonOptions): React.ReactElement => {
   const {
-    label = '',
-    selected = false,
+    label,
+    selected,
     containerStyle = {},
     labelStyle = {},
     iconSize = 22,
@@ -30,7 +30,7 @@ const RadioButton = (props: IRadioButtonOptions): React.ReactElement => {
   } = props;
   const textStyle = StyleSheet.flatten([styles.label, selected && styles.selectedLabelStyle, labelStyle]);
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle} testID="to">
       <Icon
         name={selected ? icons.circleFilled : icons.circleOutline}
         size={iconSize}

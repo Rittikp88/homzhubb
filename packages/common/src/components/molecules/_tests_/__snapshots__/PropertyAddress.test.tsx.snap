@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PropertyAddress should match snapshot with icon 1`] = `
+<View
+  style={
+    Object {
+      "flexDirection": "column",
+      "justifyContent": "space-between",
+    }
+  }
+>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "color": "#000",
+          "justifyContent": "center",
+          "width": 569.2307692307692,
+        },
+        undefined,
+      ]
+    }
+    textType="semiBold"
+    type="regular"
+  >
+    Primary Address
+  </Text>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#33495E"
+      name="location-marker"
+      size={25}
+    />
+    <Label
+      style={
+        Array [
+          Object {
+            "color": "#33495E",
+            "marginHorizontal": 10,
+            "marginVertical": 6,
+          },
+          undefined,
+        ]
+      }
+      textType="regular"
+      type="large"
+    >
+      Sub Address
+    </Label>
+  </View>
+</View>
+`;
+
+exports[`PropertyAddress should match snapshot without icon 1`] = `
+<View
+  style={
+    Object {
+      "flexDirection": "column",
+      "justifyContent": "space-between",
+    }
+  }
+>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "color": "#000",
+          "justifyContent": "center",
+          "width": 569.2307692307692,
+        },
+        undefined,
+      ]
+    }
+    textType="semiBold"
+    type="regular"
+  >
+    Primary Address
+  </Text>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Label
+      style={
+        Array [
+          Object {
+            "color": "#33495E",
+            "marginHorizontal": 10,
+            "marginVertical": 6,
+          },
+          undefined,
+        ]
+      }
+      textType="regular"
+      type="large"
+    >
+      Sub Address
+    </Label>
+  </View>
+</View>
+`;

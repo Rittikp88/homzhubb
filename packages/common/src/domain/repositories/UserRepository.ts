@@ -28,7 +28,7 @@ const ENDPOINTS = {
   emailExists: (emailId: string): string => `users/emails/${emailId}`,
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
   logout: (): string => 'users/logout/',
-  getUserSubscription: (): string => 'users/service-plan',
+  getUserSubscription: (): string => 'user/service-plan/',
 };
 
 class UserRepository {

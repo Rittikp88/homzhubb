@@ -1,35 +1,35 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { AssetAdvertisementData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
+import { AssetAdvertisement, AssetAdvertisementResults } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 
 interface IAssetAdvertisementBannerState {
-  banners: any[];
+  banners: AssetAdvertisement;
   activeSlide: number;
 }
 
 export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdvertisementBannerState> {
   public state = {
-    banners: AssetAdvertisementData, // TODO: Needs to be empty array once api is integrated
+    banners: {} as AssetAdvertisement,
     activeSlide: 0,
   };
 
-  // TODO: Call the api here
-  // public componentDidMount = async (): Promise<void> => {
-  //   await this.fetchAdvertisementBanners();
-  // };
+  public componentDidMount = async (): Promise<void> => {
+    await this.fetchAdvertisementBanners();
+  };
 
   public render(): React.ReactNode {
     const { banners, activeSlide } = this.state;
-    if (banners.length === 0) {
+    if (!banners) {
       return null;
     }
     return (
       <View style={styles.container}>
         <SnapCarousel
-          carouselData={banners}
+          carouselData={banners?.results ?? []}
           carouselItem={this.renderCarouselItem}
           itemWidth={theme.viewport.width}
           activeIndex={activeSlide}
@@ -37,7 +37,7 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
           testID="bannerSnap"
         />
         <PaginationComponent
-          dotsLength={banners.length}
+          dotsLength={banners?.results?.length ?? 0}
           activeSlide={activeSlide}
           containerStyle={styles.overlay}
           activeDotStyle={styles.activeDotStyle}
@@ -47,11 +47,11 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
     );
   }
 
-  private renderCarouselItem = (item: any): React.ReactElement => {
+  private renderCarouselItem = (item: AssetAdvertisementResults): React.ReactElement => {
     return (
       <Image
         source={{
-          uri: item.image_url,
+          uri: item?.attachment?.link ?? '',
         }}
         style={styles.carouselImage}
       />
@@ -62,7 +62,10 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
     this.setState({ activeSlide: slideNumber });
   };
 
-  public fetchAdvertisementBanners = async (): Promise<void> => {};
+  public fetchAdvertisementBanners = async (): Promise<void> => {
+    const response: AssetAdvertisement = await DashboardRepository.getAdvertisements();
+    this.setState({ banners: response });
+  };
 }
 
 const styles = StyleSheet.create({

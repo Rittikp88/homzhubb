@@ -17,7 +17,7 @@ const Favorite = (props: IProps): React.ReactElement => {
 
   return (
     <View style={containerStyle}>
-      <Icon name={icons.heartOutline} size={32} color={theme.colors.white} onPress={onFavoritePress} />
+      <Icon name={icons.heartOutline} size={32} color={theme.colors.white} onPress={onFavoritePress} testID="icon" />
     </View>
   );
 };
