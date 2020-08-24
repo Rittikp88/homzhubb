@@ -11,7 +11,7 @@ export interface IProps extends WithTranslation {
   listTitleStyle?: StyleProp<TextStyle>;
 }
 
-class SearchResults extends React.PureComponent<IProps, {}> {
+export class SearchResults extends React.PureComponent<IProps, {}> {
   public render = (): React.ReactNode => {
     const { results } = this.props;
     return (
@@ -22,6 +22,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
         ListHeaderComponent={this.renderListHeader}
         keyExtractor={this.keyExtractor}
         contentContainerStyle={styles.sectionsContainer}
+        testID="resultList"
       />
     );
   };
@@ -43,7 +44,7 @@ class SearchResults extends React.PureComponent<IProps, {}> {
     };
 
     return (
-      <TouchableOpacity key={item.id} style={styles.listItemContainer} onPress={onPress}>
+      <TouchableOpacity key={item.id} style={styles.listItemContainer} onPress={onPress} testID="pressResult">
         <Label type="large" style={styles.listItemTitle} numberOfLines={2}>
           {item.description}
         </Label>
@@ -76,5 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const HOC = withTranslation()(SearchResults);
-export { HOC as SearchResults };
+export default withTranslation()(SearchResults);

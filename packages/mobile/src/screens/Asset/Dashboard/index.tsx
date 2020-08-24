@@ -10,9 +10,9 @@ import {
   AnimatedProfileHeader,
   AssetMetricsList,
   AssetAdvertisementBanner,
-  FinanceOverview,
   StateAwareComponent,
 } from '@homzhub/mobile/src/components';
+import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import AssetSubscriptionPlan from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';

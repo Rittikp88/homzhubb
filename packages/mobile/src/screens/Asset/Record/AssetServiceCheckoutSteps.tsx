@@ -11,13 +11,8 @@ import { PropertySelector } from '@homzhub/common/src/modules/property/selectors
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
-import {
-  PropertyPayment,
-  CheckoutAssetDetails,
-  Header,
-  StepIndicatorComponent,
-  Loader,
-} from '@homzhub/mobile/src/components';
+import { PropertyPayment, Header, StepIndicatorComponent, Loader } from '@homzhub/mobile/src/components';
+import CheckoutAssetDetails from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';

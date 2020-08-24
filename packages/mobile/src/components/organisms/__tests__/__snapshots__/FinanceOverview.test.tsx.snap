@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FinanceOverview should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 4,
+      "flex": 1,
+      "marginTop": 20,
+      "padding": 12,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "marginBottom": 16,
+      }
+    }
+    textType="semiBold"
+    type="small"
+  >
+    overallPerformance
+  </Text>
+  <SelectionPicker
+    data={
+      Array [
+        Object {
+          "title": "costBreakdown",
+          "value": 1,
+        },
+        Object {
+          "title": "cashFlow",
+          "value": 2,
+        },
+      ]
+    }
+    onValueChange={[Function]}
+    selectedItem={
+      Array [
+        1,
+      ]
+    }
+    testID="financeSelection"
+  />
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 24,
+        "marginTop": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        name="calendar"
+        size={22}
+      />
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+            "marginStart": 8,
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        June, 2020
+      </Label>
+    </View>
+    <Dropdown
+      data={
+        Array [
+          Object {
+            "label": "Monthly",
+            "value": "Monthly",
+          },
+          Object {
+            "label": "Annually",
+            "value": "Annually",
+          },
+        ]
+      }
+      iconColor="#0084F8"
+      listHeight={400.2}
+      onDonePress={[Function]}
+      testID="drpTimeRange"
+      value="Monthly"
+    />
+  </View>
+  <Memo(DonutGraph) />
+</View>
+`;

@@ -37,6 +37,7 @@ interface IProps extends WithTranslation {
   initialValues: ILeaseTermDetails | null;
   currency: string;
   onSubmit: (data: ICreateLeaseTermDetails) => void;
+  testID?: string;
 }
 
 export enum LeaseFormKeys {
@@ -56,7 +57,7 @@ const MINIMUM_LEASE_PERIOD = 1;
 const DEFAULT_LEASE_PERIOD = 11;
 const MAXIMUM_LEASE_PERIOD = 24;
 
-class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
+export class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
   /*eslint-disable */
   private PAID_BY_OPTIONS = [
     { title: this.props.t('owner'), value: PaidByTypes.OWNER },
@@ -327,8 +328,7 @@ class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
   };
 }
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(LeaseDetailsForm);
-export { HOC as LeaseDetailsForm };
+export default withTranslation(LocaleConstants.namespacesKey.property)(LeaseDetailsForm);
 
 const styles = StyleSheet.create({
   continue: {

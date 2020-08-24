@@ -65,7 +65,13 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
         </View>
         {showPlusIcon && (
           <View style={styles.plusIcon}>
-            <Icon name={icons.plus} color={theme.colors.primaryColor} size={40} onPress={bubblePlusIcon} />
+            <Icon
+              name={icons.plus}
+              color={theme.colors.primaryColor}
+              size={40}
+              onPress={bubblePlusIcon}
+              testID="icnPlus"
+            />
           </View>
         )}
       </View>
@@ -96,6 +102,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
             );
           }}
           keyExtractor={renderKeyExtractor}
+          testID="metricList"
         />
       </View>
     </View>

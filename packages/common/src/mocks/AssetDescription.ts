@@ -18,7 +18,7 @@ export const mockReviews = [
 
 export const mockAsset = {
   id: 1,
-  asset_group: {
+  assetGroup: {
     id: 1,
     name: 'Residential',
   },
@@ -31,7 +31,7 @@ export const mockAsset = {
   carpet_area_unit: 'SQ_FT',
   floor_number: 1,
   total_floors: 4,
-  asset_type: {
+  assetType: {
     id: 2,
     name: 'Apartment / Condo',
   },
@@ -47,7 +47,7 @@ export const mockAsset = {
       count: 1,
     },
   ],
-  lease_term: {
+  leaseTerm: {
     id: 1,
     currency_code: 'INR',
     monthly_rent_price: 20000.0,
@@ -61,7 +61,7 @@ export const mockAsset = {
     maintenance_schedule: null,
     furnishing_status: 'Semi',
   },
-  sale_term: {
+  saleTerm: {
     id: 1,
     currency_code: 'INR',
     expected_price: 1234,

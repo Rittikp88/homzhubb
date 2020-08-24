@@ -16,7 +16,7 @@ interface IState {
 
 type Props = WithTranslation;
 
-class PendingPropertyListCard extends Component<Props, IState> {
+export class PendingPropertyListCard extends Component<Props, IState> {
   public state = {
     currentPropertyIndex: 0,
   };
@@ -42,6 +42,7 @@ class PendingPropertyListCard extends Component<Props, IState> {
                 size={16}
                 onPress={this.handlePrevious}
                 color={currentPropertyIndex === 0 ? theme.colors.darkTint4 : theme.colors.primaryColor}
+                testID="icnPrevious"
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconStyle}>
@@ -50,6 +51,7 @@ class PendingPropertyListCard extends Component<Props, IState> {
                 size={16}
                 onPress={this.handleNext}
                 color={currentPropertyIndex === total - 1 ? theme.colors.darkTint4 : theme.colors.primaryColor}
+                testID="icnNext"
               />
             </TouchableOpacity>
           </View>

@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetTypeFilter should match snapshot 1`] = `
+<View>
+  <Text
+    style={
+      Object {
+        "color": "#4C5F72",
+        "marginBottom": 16,
+      }
+    }
+    textType="semiBold"
+    type="small"
+  >
+    Property:propertytype
+  </Text>
+  <SelectionPicker
+    data={Array []}
+    onValueChange={[Function]}
+    selectedItem={
+      Array [
+        1,
+      ]
+    }
+    testID="assetGroupSelection"
+  />
+  <CheckboxGroup
+    containerStyle={
+      Object {
+        "marginTop": 24,
+      }
+    }
+    data={
+      Array [
+        Object {
+          "id": 1,
+          "isSelected": true,
+          "label": "",
+        },
+      ]
+    }
+    labelStyle={
+      Object {
+        "color": "#4C5F72",
+      }
+    }
+    onToggle={[Function]}
+    testID="assetGroupCheck"
+  />
+</View>
+`;

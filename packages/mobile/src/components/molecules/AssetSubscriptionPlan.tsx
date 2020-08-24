@@ -22,7 +22,7 @@ interface IAssetSubscriptionPlanState {
 
 type Props = IProps & WithTranslation;
 
-class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubscriptionPlanState> {
+export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubscriptionPlanState> {
   public state = {
     data: ObjectMapper.deserialize(UserSubscription, AssetSubscriptionPlanData), // TODO: To be removed once api integrated
   };

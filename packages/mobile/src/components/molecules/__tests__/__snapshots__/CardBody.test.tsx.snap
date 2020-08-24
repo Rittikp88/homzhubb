@@ -199,6 +199,7 @@ exports[`CardBody should match snapshot 1`] = `
                     "color": "#FFFFFF",
                   }
                 }
+                textType="semiBold"
                 type="regular"
               >
                 <Text
@@ -210,8 +211,8 @@ exports[`CardBody should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       Object {
-                        "fontFamily": "OpenSans-Regular",
-                        "fontWeight": "400",
+                        "fontFamily": "OpenSans-SemiBold",
+                        "fontWeight": "600",
                       },
                       Object {
                         "alignSelf": "center",
@@ -229,8 +230,8 @@ exports[`CardBody should match snapshot 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "fontFamily": "OpenSans-Regular",
-                          "fontWeight": "400",
+                          "fontFamily": "OpenSans-SemiBold",
+                          "fontWeight": "600",
                         },
                         Object {
                           "alignSelf": "center",

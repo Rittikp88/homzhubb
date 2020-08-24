@@ -51,6 +51,11 @@ export enum ScreensKeys {
   // Dashboard Stack
   DashboardLandingScreen = 'DashboardLandingScreen',
   MarketTrends = 'MarketTrends',
+
+  // Portfolio Stack
+  PortfolioLandingScreen = 'PortfolioLandingScreen',
+  PropertyDetailScreen = 'PropertyDetailScreen',
+
   // PropertyPostStack
   PostPropertySearch = 'PostPropertySearch',
   PostPropertyMap = 'PostPropertyMap',
@@ -140,4 +145,9 @@ export interface IAssetDescriptionProps {
 export interface IContactProps {
   contactDetail: User | null;
   propertyTermId: number;
+}
+
+// Portfolio
+export interface IPropertyDetailProps {
+  propertyData: any;
 }

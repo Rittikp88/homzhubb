@@ -22,7 +22,7 @@ interface IProps {
 
 type Props = WithTranslation & IProps;
 
-class AssetTypeFilter extends React.PureComponent<Props, {}> {
+export class AssetTypeFilter extends React.PureComponent<Props, {}> {
   public render = (): React.ReactNode => {
     const { t, asset_group } = this.props;
     return (
@@ -34,12 +34,14 @@ class AssetTypeFilter extends React.PureComponent<Props, {}> {
           data={this.assetGroupsListPickerData()}
           selectedItem={[asset_group]}
           onValueChange={this.onAssetGroupListChanged}
+          testID="assetGroupSelection"
         />
         <CheckboxGroup
           data={this.assetGroupsTypesData()}
           onToggle={this.onAssetGroupChecked}
           labelStyle={styles.checkboxLabel}
           containerStyle={styles.checkboxGroupContainer}
+          testID="assetGroupCheck"
         />
       </View>
     );
@@ -101,5 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const HOC = withTranslation()(AssetTypeFilter);
-export { HOC as AssetTypeFilter };
+export default withTranslation()(AssetTypeFilter);

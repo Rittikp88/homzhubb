@@ -24,7 +24,7 @@ const DROPDOWN_DATA = [
   { label: 'Annually', value: 'Annually' },
 ];
 
-class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
+export class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
   public state = {
     currentTab: TabKeys.costBreakdown,
     selectedTimeRange: 'Monthly',
@@ -45,6 +45,7 @@ class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
           ]}
           selectedItem={[currentTab]}
           onValueChange={this.onTabChange}
+          testID="financeSelection"
         />
         <View style={styles.dateRow}>
           <View style={styles.dateSection}>
@@ -59,6 +60,7 @@ class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
             onDonePress={this.onTimeRangeChange}
             iconColor={theme.colors.active}
             listHeight={theme.viewport.height * 0.3}
+            testID="drpTimeRange"
           />
         </View>
         {selectedTimeRange === 'Monthly' ? <DonutGraph /> : <DoubleBarGraph />}
@@ -75,8 +77,7 @@ class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
   };
 }
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.assetDashboard)(FinanceOverview);
-export { HOC as FinanceOverview };
+export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(FinanceOverview);
 
 const styles = StyleSheet.create({
   container: {

@@ -17,6 +17,7 @@ interface IProps extends WithTranslation {
   initialValues: ICreateSaleTermDetails | null;
   currency: string;
   onSubmit: (data: ICreateSaleTermDetails) => void;
+  testID?: string;
 }
 
 interface IResaleFormState {
@@ -28,7 +29,7 @@ interface IResaleFormState {
   maintenanceSchedule: ScheduleTypes;
 }
 
-class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
+export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
   public state = {
     expectedPrice: '',
     bookingAmount: '',
@@ -191,8 +192,7 @@ class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormState> {
   };
 }
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(ResaleDetailsForm);
-export { HOC as ResaleDetailsForm };
+export default withTranslation(LocaleConstants.namespacesKey.property)(ResaleDetailsForm);
 
 const styles = StyleSheet.create({
   continue: {

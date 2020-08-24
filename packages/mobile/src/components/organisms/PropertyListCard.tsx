@@ -26,7 +26,7 @@ interface IProps {
 type libraryProps = WithTranslation;
 type Props = libraryProps & IProps;
 
-class PropertyListCard extends React.Component<Props, {}> {
+export class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
       property: { attachments, projectName, unitNumber, blockNumber, isFavorite = false },

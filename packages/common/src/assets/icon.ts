@@ -99,6 +99,18 @@ export const icons = {
   upArrow: 'up-arrow',
   house: 'house',
 
+  // TABS
+  watch: 'watch',
+  mail: 'mail',
+  offers: 'offers',
+  financials: 'financials',
+  reviews: 'reviews',
+  headset: 'headset',
+  alert: 'alert',
+  documents: 'documents',
+  history: 'history',
+  detail: 'detail',
+
   // COMMUTE
   train: 'train',
   trainMarker: 'train-marker',

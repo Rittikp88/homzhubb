@@ -15,44 +15,44 @@ export const AssetMetricsData = {
         name: 'OCCUPIED',
         label: 'Occupied',
         count: 3,
-        color_gradient: {
+        colorGradient: {
           angle: 180,
           location: [0, 1],
-          hex_color_a: '#61D773',
-          hex_color_b: '#94EF90',
+          hexColorA: '#61D773',
+          hexColorB: '#94EF90',
         },
       },
       {
         name: 'VACANT',
         label: 'Vacant',
         count: 2,
-        color_gradient: {
+        colorGradient: {
           angle: 180,
           location: [0, 1],
-          hex_color_a: '#FDB113',
-          hex_color_b: '#FFDB8F',
+          hexColorA: '#FDB113',
+          hexColorB: '#FFDB8F',
         },
       },
       {
         name: 'RENEWAL',
         label: 'Renewal',
         count: 1,
-        color_gradient: {
+        colorGradient: {
           angle: 180,
           location: [0, 1],
-          hex_color_a: '#D9AB65',
-          hex_color_b: '#ECCFB4',
+          hexColorA: '#D9AB65',
+          hexColorB: '#ECCFB4',
         },
       },
       {
         name: 'SELL',
         label: 'Sell',
         count: 4,
-        color_gradient: {
+        colorGradient: {
           angle: 180,
           location: [0, 1],
-          hex_color_a: '#FD8313',
-          hex_color_b: '#FFD2A9',
+          hexColorA: '#FD8313',
+          hexColorB: '#FFD2A9',
         },
       },
     ],

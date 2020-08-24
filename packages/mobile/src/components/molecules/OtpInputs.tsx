@@ -97,6 +97,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
             style={style}
             onChangeText={onChangeText}
             onKeyPress={onKeyPress}
+            testID="otpInput"
             ref={(ref): void => {
               this.OtpTextInput[index] = ref!;
             }}

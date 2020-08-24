@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const Badge = (props: IProps): React.ReactElement => {
-  const { badgeColor, badgeStyle, title, textType } = props;
+  const { badgeColor, badgeStyle, title, textType = 'semiBold' } = props;
   return (
     <View style={[styles.badge, badgeStyle, { backgroundColor: badgeColor }]}>
       <Label type="regular" textType={textType} style={styles.title}>

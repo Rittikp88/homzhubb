@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PropertyDuesCardContainer should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 4,
+      "marginTop": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        name="bell"
+        size={20}
+      />
+      <Text
+        textType="semiBold"
+        type="regular"
+      >
+        assetDashboard:dues
+      </Text>
+    </View>
+    <PricePerUnit
+      currency="INR"
+      price={1200}
+      priceTransformation={false}
+      textStyle={
+        Object {
+          "color": "#D60D31",
+        }
+      }
+    />
+  </View>
+  <Divider />
+  <View
+    style={
+      Object {
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../packages/common/src/assets/images/flag.png",
+          }
+        }
+        style={
+          Object {
+            "marginRight": 6,
+          }
+        }
+      />
+      <Text
+        textType="semiBold"
+        type="regular"
+      >
+        Eaton Garth Manor
+      </Text>
+    </View>
+    <Text
+      type="small"
+    >
+      Sindhi Society, Chembur, Mumbai- 400071
+    </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginTop": 16,
+        }
+      }
+    >
+      <View>
+        <Text
+          type="small"
+        >
+          Plumbing fees
+        </Text>
+        <PricePerUnit
+          currency="USD"
+          price={20000}
+          priceTransformation={false}
+        />
+      </View>
+      <Button
+        containerStyle={
+          Object {
+            "marginLeft": 83,
+          }
+        }
+        title="assetFinancial:payNow"
+        titleStyle={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+        type="primary"
+      />
+    </View>
+    <Divider
+      containerStyles={
+        Object {
+          "marginVertical": 24,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../packages/common/src/assets/images/flag.png",
+          }
+        }
+        style={
+          Object {
+            "marginRight": 6,
+          }
+        }
+      />
+      <Text
+        textType="semiBold"
+        type="regular"
+      >
+        Eaton Garth Manor
+      </Text>
+    </View>
+    <Text
+      type="small"
+    >
+      Sindhi Society, Chembur, Mumbai- 400071
+    </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginTop": 16,
+        }
+      }
+    >
+      <View>
+        <Text
+          type="small"
+        >
+          Plumbing fees
+        </Text>
+        <PricePerUnit
+          currency="USD"
+          price={30000}
+          priceTransformation={false}
+        />
+      </View>
+      <Button
+        containerStyle={
+          Object {
+            "marginLeft": 83,
+          }
+        }
+        title="assetFinancial:payNow"
+        titleStyle={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+        type="primary"
+      />
+    </View>
+    <Divider
+      containerStyles={
+        Object {
+          "marginVertical": 24,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../packages/common/src/assets/images/flag.png",
+          }
+        }
+        style={
+          Object {
+            "marginRight": 6,
+          }
+        }
+      />
+      <Text
+        textType="semiBold"
+        type="regular"
+      >
+        Eaton Garth Manor
+      </Text>
+    </View>
+    <Text
+      type="small"
+    >
+      Sindhi Society, Chembur, Mumbai- 400071
+    </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginTop": 16,
+        }
+      }
+    >
+      <View>
+        <Text
+          type="small"
+        >
+          Plumbing fees
+        </Text>
+        <PricePerUnit
+          currency="USD"
+          price={20000}
+          priceTransformation={false}
+        />
+      </View>
+      <Button
+        containerStyle={
+          Object {
+            "marginLeft": 83,
+          }
+        }
+        title="assetFinancial:payNow"
+        titleStyle={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+        type="primary"
+      />
+    </View>
+  </View>
+</View>
+`;

@@ -22,6 +22,7 @@ exports[`Badge should match snapshot 1`] = `
         "color": "#FFFFFF",
       }
     }
+    textType="semiBold"
     type="regular"
   >
     Badge

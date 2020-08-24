@@ -8,8 +8,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Text } from '@homzhub/common/src/components';
-import { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
-import { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
+import LeaseDetailsForm from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
+import ResaleDetailsForm from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import {
   ICreateLeaseTermDetails,
@@ -37,7 +37,7 @@ interface IOwnProps extends WithTranslation {
   onStepSuccess: () => void;
   setLoading: (loading: boolean) => void;
 }
-class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
+export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   public state = {
     currencyData: [],
     currency: 'INR',
@@ -86,6 +86,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
             // @ts-ignore
             currency={selectedCurrency?.label ?? currency}
             onSubmit={this.onLeaseFormSubmit}
+            testID="leaseForm"
           />
         ) : (
           <ResaleDetailsForm
@@ -93,6 +94,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
             currency={selectedCurrency?.label ?? currency}
             onSubmit={this.onResaleSubmit}
             initialValues={initialResaleTerms}
+            testID="resaleForm"
           />
         )}
       </>
@@ -229,8 +231,7 @@ class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState> {
   };
 }
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(CheckoutAssetDetails);
-export { HOC as CheckoutAssetDetails };
+export default withTranslation(LocaleConstants.namespacesKey.property)(CheckoutAssetDetails);
 
 const styles = StyleSheet.create({
   titleRow: {

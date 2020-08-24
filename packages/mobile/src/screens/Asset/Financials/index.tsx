@@ -6,7 +6,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { cashFlowData, propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
-import { AnimatedProfileHeader, AssetMetricsList, FinanceOverview } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, AssetMetricsList } from '@homzhub/mobile/src/components';
+import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
 import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 

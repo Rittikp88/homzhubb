@@ -14,6 +14,7 @@ interface IProps {
   numColumns?: number;
   labelStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 export class CheckboxGroup extends React.PureComponent<IProps, {}> {

@@ -333,13 +333,13 @@ Asset {
   ],
   "_assetGroup": Data {
     "_count": 0,
-    "_id": 1,
-    "_name": "Residential",
+    "_id": 0,
+    "_name": "",
   },
   "_assetType": Data {
     "_count": 0,
-    "_id": 2,
-    "_name": "Apartment / Condo",
+    "_id": 0,
+    "_name": "",
   },
   "_attachments": Array [
     Attachment {

@@ -9,7 +9,7 @@ describe('Portfolio Screen', () => {
   let component: ShallowWrapper;
 
   beforeEach(() => {
-    component = shallow(<Portfolio />);
+    component = shallow(<Portfolio t={(key: string): string => key} />);
   });
 
   it('should render snapshot', () => {

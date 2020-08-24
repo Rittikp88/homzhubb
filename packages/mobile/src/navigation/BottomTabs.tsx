@@ -8,12 +8,13 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Image } from '@homzhub/common/src/components';
-import { Portfolio } from '@homzhub/mobile/src/screens/Asset/Portfolio';
+import Portfolio from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetailScreen';
+import { IPropertyDetailProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStack } from '@homzhub/mobile/src/navigation/SearchStack';
 
 export type BottomTabNavigatorParamList = {
@@ -29,8 +30,14 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.MarketTrends]: undefined;
 };
 
+export type PortfolioNavigatorParamList = {
+  [ScreensKeys.PortfolioLandingScreen]: undefined;
+  [ScreensKeys.PropertyDetailScreen]: IPropertyDetailProps;
+};
+
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
 const DashboardNavigator = createStackNavigator<DashboardNavigatorParamList>();
+const PortfolioNavigator = createStackNavigator<PortfolioNavigatorParamList>();
 
 export const DashboardStack = (): React.ReactElement => {
   return (
@@ -43,6 +50,20 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.DashboardLandingScreen} component={Dashboard} />
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
     </DashboardNavigator.Navigator>
+  );
+};
+
+export const PortfolioStack = (): React.ReactElement => {
+  return (
+    <PortfolioNavigator.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
+      <PortfolioNavigator.Screen name={ScreensKeys.PortfolioLandingScreen} component={Portfolio} />
+      <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
+    </PortfolioNavigator.Navigator>
   );
 };
 
@@ -59,7 +80,7 @@ export const BottomTabs = (): React.ReactElement => {
     >
       <BottomTabNavigator.Screen
         name={ScreensKeys.Portfolio}
-        component={Portfolio}
+        component={PortfolioStack}
         options={{
           tabBarLabel: ScreensKeys.Portfolio,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (

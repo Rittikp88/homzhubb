@@ -1,0 +1,368 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetCard should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "marginBottom": 14,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#FFFFFF",
+        "borderRadius": 4,
+        "borderWidth": 0.5,
+        "marginBottom": 2,
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Badge
+          badgeStyle={
+            Object {
+              "alignSelf": "flex-start",
+              "minWidth": 75,
+              "paddingHorizontal": 8,
+              "paddingVertical": 1,
+            }
+          }
+        />
+        <Icon
+          allowFontScaling={false}
+          color="#99A4AF"
+          name="round-filled"
+          size={8}
+          style={
+            Object {
+              "marginHorizontal": 12,
+              "marginTop": 8,
+            }
+          }
+        />
+        <Icon
+          allowFontScaling={false}
+          color="#0084F8"
+          name="bell"
+          size={18}
+          style={
+            Object {
+              "marginTop": 2,
+            }
+          }
+        />
+        <Label
+          style={
+            Object {
+              "color": "#0084F8",
+              "marginLeft": 6,
+            }
+          }
+          type="large"
+        >
+          10
+        </Label>
+        <Icon
+          allowFontScaling={false}
+          color="#99A4AF"
+          name="round-filled"
+          size={8}
+          style={
+            Object {
+              "marginHorizontal": 12,
+              "marginTop": 8,
+            }
+          }
+        />
+        <Icon
+          allowFontScaling={false}
+          color="#0084F8"
+          name="head-phone"
+          size={18}
+          style={
+            Object {
+              "marginTop": 2,
+            }
+          }
+        />
+        <Label
+          style={
+            Object {
+              "color": "#0084F8",
+              "marginLeft": 6,
+            }
+          }
+          type="large"
+        >
+          10
+        </Label>
+      </View>
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="down-arrow"
+        onPress={[Function]}
+        size={20}
+        testID="collapseIcon"
+      />
+    </View>
+    <PropertyAddressCountry
+      containerStyle={
+        Object {
+          "marginTop": 14,
+        }
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`AssetCard should match snapshot for detail view 1`] = `
+<View
+  style={
+    Object {
+      "marginBottom": 14,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#FFFFFF",
+        "borderRadius": 4,
+        "borderWidth": 0.5,
+        "marginBottom": 2,
+        "padding": 16,
+      }
+    }
+  >
+    <Badge
+      badgeStyle={
+        Array [
+          Object {
+            "alignSelf": "flex-start",
+            "minWidth": 75,
+            "paddingHorizontal": 8,
+            "paddingVertical": 1,
+          },
+          Object {
+            "marginTop": 12,
+          },
+        ]
+      }
+    />
+    <PropertyAddressCountry
+      containerStyle={
+        Object {
+          "marginTop": 14,
+        }
+      }
+    />
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F0F5F9",
+          "borderWidth": 1,
+          "marginVertical": 12,
+        }
+      }
+    />
+    <LeaseProgress
+      progress={80}
+      width={320}
+    />
+  </View>
+</View>
+`;
+
+exports[`AssetCard should match snapshot for expanded view 1`] = `
+<View
+  style={
+    Object {
+      "marginBottom": 14,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#FFFFFF",
+        "borderRadius": 4,
+        "borderWidth": 0.5,
+        "marginBottom": 2,
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          },
+          Object {
+            "marginBottom": 18,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Badge
+          badgeStyle={
+            Object {
+              "alignSelf": "flex-start",
+              "minWidth": 75,
+              "paddingHorizontal": 8,
+              "paddingVertical": 1,
+            }
+          }
+        />
+        <Icon
+          allowFontScaling={false}
+          color="#99A4AF"
+          name="round-filled"
+          size={8}
+          style={
+            Object {
+              "marginHorizontal": 12,
+              "marginTop": 8,
+            }
+          }
+        />
+        <Icon
+          allowFontScaling={false}
+          color="#0084F8"
+          name="bell"
+          size={18}
+          style={
+            Object {
+              "marginTop": 2,
+            }
+          }
+        />
+        <Label
+          style={
+            Object {
+              "color": "#0084F8",
+              "marginLeft": 6,
+            }
+          }
+          type="large"
+        >
+          10
+        </Label>
+        <Icon
+          allowFontScaling={false}
+          color="#99A4AF"
+          name="round-filled"
+          size={8}
+          style={
+            Object {
+              "marginHorizontal": 12,
+              "marginTop": 8,
+            }
+          }
+        />
+        <Icon
+          allowFontScaling={false}
+          color="#0084F8"
+          name="head-phone"
+          size={18}
+          style={
+            Object {
+              "marginTop": 2,
+            }
+          }
+        />
+        <Label
+          style={
+            Object {
+              "color": "#0084F8",
+              "marginLeft": 6,
+            }
+          }
+          type="large"
+        >
+          10
+        </Label>
+      </View>
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="up-arrow"
+        onPress={[Function]}
+        size={20}
+        testID="collapseIcon"
+      />
+    </View>
+    <PropertyAddressCountry
+      containerStyle={
+        Object {
+          "marginTop": 14,
+        }
+      }
+    />
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F0F5F9",
+          "borderWidth": 1,
+          "marginVertical": 12,
+        }
+      }
+    />
+    <LeaseProgress
+      progress={80}
+      width={320}
+    />
+  </View>
+  <Button
+    containerStyle={
+      Object {
+        "borderWidth": 0,
+      }
+    }
+    onPress={[Function]}
+    testID="btnPropertyView"
+    textSize="small"
+    title="View Property"
+    titleStyle={
+      Object {
+        "marginVertical": 14,
+      }
+    }
+    type="secondary"
+  />
+</View>
+`;

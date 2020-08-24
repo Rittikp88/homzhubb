@@ -27,14 +27,9 @@ import {
   ToggleButton,
   Text,
 } from '@homzhub/common/src/components';
-import {
-  AssetTypeFilter,
-  CurrentLocation,
-  Loader,
-  Range,
-  RoomsFilter,
-  SearchResults,
-} from '@homzhub/mobile/src/components';
+import { CurrentLocation, Loader, Range, RoomsFilter } from '@homzhub/mobile/src/components';
+import AssetTypeFilter from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
+import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import SearchBar from '@homzhub/mobile/src/components/molecules/SearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';

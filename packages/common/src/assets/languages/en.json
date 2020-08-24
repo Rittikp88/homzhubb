@@ -317,6 +317,9 @@
     "subscriptionHelperServices": "and get the following services",
     "upgrade": "Upgrade"
   },
+  "assetPortfolio": {
+    "portfolio": "Portfolio"
+  },
   "assetFinancial": {
     "financial": "Financials",
     "payNow": "Pay Now"

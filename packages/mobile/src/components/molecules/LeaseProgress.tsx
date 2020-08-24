@@ -30,7 +30,7 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
         width={width}
         color={isPropertyCompleted ? filledColor : theme.colors.green}
         style={styles.barStyle}
-        unfilledColor={theme.colors.background}
+        unfilledColor={isPropertyCompleted ? theme.colors.green : theme.colors.background}
         borderRadius={5}
       />
       {isPropertyCompleted ? (

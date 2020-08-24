@@ -8,6 +8,7 @@ import { IAssetData } from '@homzhub/common/src/mocks/AssetData';
 
 interface IListProps {
   assetData: IAssetData;
+  onViewProperty?: (data: any) => void;
   isDetailView?: boolean;
 }
 
@@ -21,9 +22,10 @@ export class AssetCard extends Component<IListProps, IListState> {
   };
 
   public render(): React.ReactNode {
-    const { assetData, isDetailView } = this.props;
+    const { assetData, isDetailView, onViewProperty } = this.props;
     const { isExpanded } = this.state;
     const { property_name, color, type, address, images } = assetData;
+    const handlePropertyView = (): void => onViewProperty && onViewProperty(assetData);
     return (
       <View style={styles.mainContainer}>
         <View style={styles.container}>
@@ -47,11 +49,20 @@ export class AssetCard extends Component<IListProps, IListState> {
                 color={theme.colors.blue}
                 size={20}
                 onPress={this.onPressArrow}
+                testID="collapseIcon"
               />
             </View>
           )}
-          {(isExpanded || isDetailView) && <Image source={images[0].link} style={styles.image} height={200} />}
-          {isDetailView && <Badge title={type} badgeColor={color} badgeStyle={styles.badgeStyle} />}
+          {(isExpanded || isDetailView) && images && (
+            <Image
+              source={images[0].link}
+              style={[styles.image, isDetailView && styles.detailViewImage]}
+              height={isDetailView ? 130 : 200}
+            />
+          )}
+          {isDetailView && (
+            <Badge title={type} badgeColor={color} badgeStyle={[styles.badgeStyle, styles.detailViewBadge]} />
+          )}
           <PropertyAddressCountry
             primaryAddress={property_name}
             subAddress={address}
@@ -64,8 +75,10 @@ export class AssetCard extends Component<IListProps, IListState> {
             type="secondary"
             title="View Property"
             textSize="small"
+            onPress={handlePropertyView}
             containerStyle={styles.buttonStyle}
             titleStyle={styles.buttonTitle}
+            testID="btnPropertyView"
           />
         )}
       </View>
@@ -129,10 +142,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   badgeStyle: {
-    minWidth: 70,
+    minWidth: 75,
     paddingHorizontal: 8,
     paddingVertical: 1,
     alignSelf: 'flex-start',
+  },
+  detailViewBadge: {
+    marginTop: 12,
   },
   dotStyle: {
     marginTop: 8,
@@ -161,5 +177,8 @@ const styles = StyleSheet.create({
   },
   image: {
     minWidth: theme.viewport.width > 400 ? 350 : 300,
+  },
+  detailViewImage: {
+    borderRadius: 4,
   },
 });

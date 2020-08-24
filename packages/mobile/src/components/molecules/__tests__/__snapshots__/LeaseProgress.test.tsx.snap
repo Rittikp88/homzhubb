@@ -38,7 +38,7 @@ exports[`Lease Progress should match snapshot 1`] = `
         "marginTop": 8,
       }
     }
-    unfilledColor="#F0F5F9"
+    unfilledColor="#2CBA67"
   />
   <View
     style={

@@ -2,7 +2,7 @@
 
 exports[`Portfolio Screen should render snapshot 1`] = `
 <AnimatedProfileHeader
-  title="Portfolio"
+  title="portfolio"
 >
   <AssetMetricsList
     containerStyle={
@@ -365,7 +365,7 @@ exports[`Portfolio Screen should render snapshot 1`] = `
 
 exports[`Portfolio Screen should render snapshot for functions 1`] = `
 <AnimatedProfileHeader
-  title="Portfolio"
+  title="portfolio"
 >
   <AssetMetricsList
     containerStyle={
@@ -728,7 +728,7 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
 
 exports[`Portfolio Screen should render snapshot for state 1`] = `
 <AnimatedProfileHeader
-  title="Portfolio"
+  title="portfolio"
 >
   <AssetMetricsList
     containerStyle={
