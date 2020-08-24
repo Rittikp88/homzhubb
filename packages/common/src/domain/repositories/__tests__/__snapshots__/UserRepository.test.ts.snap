@@ -36,6 +36,12 @@ Object {
 }
 `;
 
+exports[`UserRepository should call socialLogin and return for no user 1`] = `
+Object {
+  "is_new_user": false,
+}
+`;
+
 exports[`UserRepository should call socialLogin and return response 1`] = `
 User {
   "_accessToken": "access_token",
@@ -59,3 +65,69 @@ Object {
   "is_exists": true,
 }
 `;
+
+exports[`UserRepository should get user subscription 1`] = `
+UserSubscription {
+  "_recommendedPlan": SubscribedPlan {
+    "_id": 2,
+    "_label": "HomzHub Elite",
+    "_name": "HOMZHUB_ELITE",
+    "_serviceBundleItems": Array [
+      ServiceBundleItems {
+        "_category": "Professional Service",
+        "_description": "Lorem Ipsum Dummy Text.",
+        "_id": 3,
+        "_itemLabel": "Valid for 30 days",
+        "_name": "WEBSITE_LISTING",
+        "_position": 1,
+        "_title": "Website Listing",
+      },
+      ServiceBundleItems {
+        "_category": "Professional Service",
+        "_description": "Lorem Ipsum Dummy Text.",
+        "_id": 5,
+        "_itemLabel": "",
+        "_name": "SOCIAL_MEDIA",
+        "_position": 2,
+        "_title": "Social Media",
+      },
+      ServiceBundleItems {
+        "_category": "Professional Service",
+        "_description": "Lorem Ipsum Dummy Text.",
+        "_id": 8,
+        "_itemLabel": "",
+        "_name": "EMAIL",
+        "_position": 3,
+        "_title": "Email",
+      },
+    ],
+  },
+  "_userServicePlan": SubscribedPlan {
+    "_id": 1,
+    "_label": "HomzHub Pro",
+    "_name": "HOMZHUB_PRO",
+    "_serviceBundleItems": Array [
+      ServiceBundleItems {
+        "_category": "Professional Service",
+        "_description": "Lorem Ipsum Dummy Text.",
+        "_id": 1,
+        "_itemLabel": "Valid for 30 days",
+        "_name": "WEBSITE_LISTING",
+        "_position": 1,
+        "_title": "Website Listing",
+      },
+      ServiceBundleItems {
+        "_category": "Professional Service",
+        "_description": "Lorem Ipsum Dummy Text.",
+        "_id": 9,
+        "_itemLabel": "Option to boost",
+        "_name": "DIGITAL_ADVERTISEMENTS",
+        "_position": 2,
+        "_title": "Digital Advertisements",
+      },
+    ],
+  },
+}
+`;
+
+exports[`UserRepository should logout 1`] = `undefined`;

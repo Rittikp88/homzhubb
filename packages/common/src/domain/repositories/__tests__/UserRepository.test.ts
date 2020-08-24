@@ -1,7 +1,15 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { LoginTypes, OtpActionTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { emailExists, loginData, otpSent, otpVerify, socialLogin } from '@homzhub/common/src/mocks/UserRepositoryMocks';
+import {
+  emailExists,
+  loginData,
+  otpSent,
+  otpVerify,
+  socialLogin,
+  socialLoginNoUser,
+} from '@homzhub/common/src/mocks/UserRepositoryMocks';
+import { AssetSubscriptionPlanData } from '@homzhub/common/src/mocks/AssetMetrics';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -80,6 +88,19 @@ describe('UserRepository', () => {
     expect(response).toMatchSnapshot();
   });
 
+  it('should call socialLogin and return for no user', async () => {
+    // @ts-ignore
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => socialLoginNoUser);
+    const response = await UserRepository.socialLogin({
+      action: LoginTypes.SOCIAL_MEDIA,
+      payload: {
+        provider: 'GOOGLE',
+        id_token: 'tokenTest',
+      },
+    });
+    expect(response).toMatchSnapshot();
+  });
+
   it('should call otp API for fetch', async () => {
     // @ts-ignore
     jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => otpSent);
@@ -143,6 +164,23 @@ describe('UserRepository', () => {
     // @ts-ignore
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => emailExists);
     const response = await UserRepository.phoneExists('90000000000');
+    expect(response).toMatchSnapshot();
+  });
+
+  it('should logout', async () => {
+    const payload = {
+      refresh_token: 'refresh_token',
+    };
+    // @ts-ignore
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => {});
+    const response = await UserRepository.logout(payload);
+    expect(response).toMatchSnapshot();
+  });
+
+  it('should get user subscription', async () => {
+    // @ts-ignore
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => AssetSubscriptionPlanData);
+    const response = await UserRepository.getUserSubscription();
     expect(response).toMatchSnapshot();
   });
 });

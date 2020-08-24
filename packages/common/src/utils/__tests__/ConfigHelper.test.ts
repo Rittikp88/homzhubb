@@ -7,6 +7,7 @@ jest.mock('config.json', () => ({
   OTP_LENGTH: 6,
   RAZOR_API_KEY: 'razorpay',
   storage_secret: 'secret',
+  YOUTUBE_API_KEY: 'youtube',
 }));
 
 describe('Config Helper', () => {
@@ -38,5 +39,10 @@ describe('Config Helper', () => {
   it('should return razorpay api key', () => {
     const razorpayApiKey = ConfigHelper.getRazorApiKey();
     expect(razorpayApiKey).toStrictEqual('razorpay');
+  });
+
+  it('should return youtube api key', () => {
+    const youtubeApiKey = ConfigHelper.getYoutubeApiKey();
+    expect(youtubeApiKey).toStrictEqual('youtube');
   });
 });

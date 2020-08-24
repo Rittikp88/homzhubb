@@ -16,6 +16,13 @@ export const socialLogin = {
   ...loginData,
 };
 
+export const socialLoginNoUser = {
+  is_new_user: false,
+  access_token: 'access_token',
+  refresh_token: 'refresh_token',
+  user: null,
+};
+
 export const otpSent = {
   otp_sent: true,
 };

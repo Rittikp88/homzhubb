@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetMetrics should match snapshot 1`] = `
+<ForwardRef
+  onPress={[Function]}
+>
+  <LinearGradient
+    angle={180}
+    colors={
+      Array [
+        "#FFFFFF",
+        "#F0F5F9",
+      ]
+    }
+    end={
+      Object {
+        "x": 0.5,
+        "y": 1,
+      }
+    }
+    locations={
+      Array [
+        0,
+        1,
+      ]
+    }
+    start={
+      Object {
+        "x": 0.5,
+        "y": 0,
+      }
+    }
+    style={
+      Array [
+        Object {
+          "borderRadius": 8,
+          "elevation": 5,
+          "margin": 10,
+          "minWidth": 220,
+          "paddingHorizontal": 5,
+          "paddingVertical": 10,
+          "shadowColor": "#000",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.25,
+          "shadowRadius": 3.84,
+        },
+        undefined,
+        Object {
+          "borderColor": "#C2E4FF",
+          "borderWidth": 1,
+        },
+      ]
+    }
+    useAngle={true}
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "marginVertical": 5,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      header
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "marginVertical": 5,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+      textType="semiBold"
+      type="large"
+    >
+      value
+    </Text>
+  </LinearGradient>
+</ForwardRef>
+`;
+
+exports[`AssetMetrics should match snapshot for currency 1`] = `
+<ForwardRef
+  onPress={[Function]}
+>
+  <LinearGradient
+    angle={180}
+    colors={
+      Array [
+        "#FFFFFF",
+        "#F0F5F9",
+      ]
+    }
+    end={
+      Object {
+        "x": 0.5,
+        "y": 1,
+      }
+    }
+    locations={
+      Array [
+        0,
+        1,
+      ]
+    }
+    start={
+      Object {
+        "x": 0.5,
+        "y": 0,
+      }
+    }
+    style={
+      Array [
+        Object {
+          "borderRadius": 8,
+          "elevation": 5,
+          "margin": 10,
+          "minWidth": 220,
+          "paddingHorizontal": 5,
+          "paddingVertical": 10,
+          "shadowColor": "#000",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.25,
+          "shadowRadius": 3.84,
+        },
+        undefined,
+        Object {
+          "borderColor": "#C2E4FF",
+          "borderWidth": 1,
+        },
+      ]
+    }
+    useAngle={true}
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "marginVertical": 5,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#4C5F72",
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      header
+    </Text>
+    <PricePerUnit
+      currency="INR"
+      price="value"
+      priceTransformation={false}
+    />
+  </LinearGradient>
+</ForwardRef>
+`;
+
+exports[`AssetMetrics should match snapshot for show plus icon 1`] = `
+<ForwardRef
+  onPress={[Function]}
+>
+  <LinearGradient
+    angle={180}
+    colors={
+      Array [
+        "#FFFFFF",
+        "#F0F5F9",
+      ]
+    }
+    end={
+      Object {
+        "x": 0.5,
+        "y": 1,
+      }
+    }
+    locations={
+      Array [
+        0,
+        1,
+      ]
+    }
+    start={
+      Object {
+        "x": 0.5,
+        "y": 0,
+      }
+    }
+    style={
+      Array [
+        Object {
+          "borderRadius": 8,
+          "elevation": 5,
+          "margin": 10,
+          "minWidth": 220,
+          "paddingHorizontal": 5,
+          "paddingVertical": 10,
+          "shadowColor": "#000",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.25,
+          "shadowRadius": 3.84,
+        },
+        undefined,
+        Object {
+          "borderColor": "#C2E4FF",
+          "borderWidth": 1,
+        },
+      ]
+    }
+    useAngle={true}
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "marginVertical": 5,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#4C5F72",
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      header
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "marginVertical": 5,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#001B36",
+          },
+        ]
+      }
+      textType="semiBold"
+      type="large"
+    >
+      value
+    </Text>
+  </LinearGradient>
+</ForwardRef>
+`;

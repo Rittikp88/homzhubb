@@ -76,61 +76,65 @@ exports[`AssetMetricsList should match snapshot 1`] = `
     <FlatList
       data={
         Array [
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#61D773",
-              "hexColorB": "#94EF90",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#61D773",
+              "_hexColorB": "#94EF90",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 3,
-            "label": "Occupied",
-            "name": "OCCUPIED",
+            "_count": 3,
+            "_currency_symbol": "",
+            "_label": "Occupied",
+            "_name": "OCCUPIED",
           },
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#FDB113",
-              "hexColorB": "#FFDB8F",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#FDB113",
+              "_hexColorB": "#FFDB8F",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 2,
-            "label": "Vacant",
-            "name": "VACANT",
+            "_count": 2,
+            "_currency_symbol": "",
+            "_label": "Vacant",
+            "_name": "VACANT",
           },
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#D9AB65",
-              "hexColorB": "#ECCFB4",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#D9AB65",
+              "_hexColorB": "#ECCFB4",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 1,
-            "label": "Renewal",
-            "name": "RENEWAL",
+            "_count": 1,
+            "_currency_symbol": "",
+            "_label": "Renewal",
+            "_name": "RENEWAL",
           },
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#FD8313",
-              "hexColorB": "#FFD2A9",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#FD8313",
+              "_hexColorB": "#FFD2A9",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 4,
-            "label": "Sell",
-            "name": "SELL",
+            "_count": 4,
+            "_currency_symbol": "",
+            "_label": "Sell",
+            "_name": "SELL",
           },
         ]
       }
@@ -287,61 +291,65 @@ exports[`AssetMetricsList should match snapshot for optional props 1`] = `
     <FlatList
       data={
         Array [
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#61D773",
-              "hexColorB": "#94EF90",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#61D773",
+              "_hexColorB": "#94EF90",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 3,
-            "label": "Occupied",
-            "name": "OCCUPIED",
+            "_count": 3,
+            "_currency_symbol": "",
+            "_label": "Occupied",
+            "_name": "OCCUPIED",
           },
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#FDB113",
-              "hexColorB": "#FFDB8F",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#FDB113",
+              "_hexColorB": "#FFDB8F",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 2,
-            "label": "Vacant",
-            "name": "VACANT",
+            "_count": 2,
+            "_currency_symbol": "",
+            "_label": "Vacant",
+            "_name": "VACANT",
           },
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#D9AB65",
-              "hexColorB": "#ECCFB4",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#D9AB65",
+              "_hexColorB": "#ECCFB4",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 1,
-            "label": "Renewal",
-            "name": "RENEWAL",
+            "_count": 1,
+            "_currency_symbol": "",
+            "_label": "Renewal",
+            "_name": "RENEWAL",
           },
-          Object {
-            "colorGradient": Object {
-              "angle": 180,
-              "hexColorA": "#FD8313",
-              "hexColorB": "#FFD2A9",
-              "location": Array [
+          Miscellaneous {
+            "_colorGradient": ColorGradient {
+              "_angle": 180,
+              "_hexColorA": "#FD8313",
+              "_hexColorB": "#FFD2A9",
+              "_location": Array [
                 0,
                 1,
               ],
             },
-            "count": 4,
-            "label": "Sell",
-            "name": "SELL",
+            "_count": 4,
+            "_currency_symbol": "",
+            "_label": "Sell",
+            "_name": "SELL",
           },
         ]
       }
@@ -369,6 +377,7 @@ exports[`AssetMetricsList should match snapshot for renderItem 1`] = `
   angle={180}
   colorA="#61D773"
   colorB="#94EF90"
+  currency=""
   header="Occupied"
   location={
     Array [

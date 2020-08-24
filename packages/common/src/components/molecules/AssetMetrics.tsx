@@ -14,10 +14,11 @@ interface IProps {
   colorA: string;
   colorB: string;
   showPlusIcon?: boolean;
+  testID?: string;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const { header, value, angle, colorA, colorB, location, showPlusIcon = false, currency, cardStyle } = props;
+  const { header, value, angle, colorA, colorB, location, showPlusIcon = false, currency, cardStyle, testID } = props;
 
   const [selected, onSelect] = useState(false);
   const gradient = [colorA || theme.colors.gradientK, colorB || theme.colors.white];
@@ -27,7 +28,7 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity onPress={handlePress} testID={testID}>
       <LinearGradient
         useAngle
         angle={angle}

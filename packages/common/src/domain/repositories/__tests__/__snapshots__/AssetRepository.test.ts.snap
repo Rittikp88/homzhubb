@@ -1,5 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AssetRepository Should delete property image 1`] = `undefined`;
+
+exports[`AssetRepository Should delete verification document 1`] = `undefined`;
+
 exports[`AssetRepository Should fetch existing verification document types 1`] = `
 Array [
   Object {
@@ -109,6 +113,1180 @@ Array [
   },
 ]
 `;
+
+exports[`AssetRepository Should get asset identity documents 1`] = `
+Array [
+  Object {
+    "document": Object {
+      "attachment_type": "attachment_type",
+      "id": 1,
+      "link": "link",
+      "mime_type": "mime_type",
+      "name": "name",
+    },
+    "id": 1,
+    "verification_document_type": Object {
+      "category": "category",
+      "description": "description",
+      "helpText": "helpText",
+      "icon": "icon",
+      "id": 1,
+      "label": "label",
+      "name": "file.jpg",
+      "title": "title",
+    },
+  },
+]
+`;
+
+exports[`AssetRepository Should get lease listings 1`] = `
+Asset {
+  "_amenities": Array [
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 7,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "gym.svg",
+      },
+      "_id": 1,
+      "_name": "Gymnasium",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 8,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "pool.svg",
+      },
+      "_id": 2,
+      "_name": "Swimming Pool",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 9,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "cctv.svg",
+      },
+      "_id": 3,
+      "_name": "CCTV Security",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 10,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "parking.svg",
+      },
+      "_id": 4,
+      "_name": "Parking",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 11,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "wifi.svg",
+      },
+      "_id": 5,
+      "_name": "Wifi",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 12,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "intercom.svg",
+      },
+      "_id": 6,
+      "_name": "Intercom",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 13,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/19fe670df70c4ff8b9fc6de68bef8efb.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "balcony.svg",
+      },
+      "_id": 7,
+      "_name": "Balcony",
+    },
+  ],
+  "_assetGroup": Data {
+    "_count": 0,
+    "_id": 0,
+    "_name": "",
+  },
+  "_assetType": Data {
+    "_count": 0,
+    "_id": 0,
+    "_name": "",
+  },
+  "_attachments": Array [
+    Attachment {
+      "_fileName": "prof.jpg",
+      "_id": 0,
+      "_isCoverImage": true,
+      "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+      "_mediaAttributes": MediaAttributes {
+        "_duration": "",
+        "_thumbnail": "",
+        "_thumbnailHD": "",
+        "_thumbnailSD": "",
+        "_title": "",
+        "_videoId": "",
+      },
+      "_mediaType": "IMAGE",
+      "_name": "",
+    },
+    Attachment {
+      "_fileName": "DjangoBackendLLD (1).jpg",
+      "_id": 0,
+      "_isCoverImage": false,
+      "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
+      "_mediaAttributes": MediaAttributes {
+        "_duration": "",
+        "_thumbnail": "",
+        "_thumbnailHD": "",
+        "_thumbnailSD": "",
+        "_title": "",
+        "_videoId": "",
+      },
+      "_mediaType": "IMAGE",
+      "_name": "",
+    },
+  ],
+  "_blockNumber": "B",
+  "_carpetArea": 5000,
+  "_carpetAreaUnit": "SQ_FT",
+  "_contacts": User {
+    "_accessToken": "",
+    "_countryCode": "+91",
+    "_email": "anuvrat.somnath@nineleaps.com",
+    "_fullName": "Anuvrat Somnath",
+    "_id": 1,
+    "_phoneNumber": "7903470293",
+    "_refreshToken": "",
+  },
+  "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
+  "_features": Array [
+    AssetFeature {
+      "_localeKey": "security_deposit",
+      "_name": "Security Deposit",
+      "_value": "₹ 2 Lacs",
+    },
+    AssetFeature {
+      "_localeKey": "min_lease_period",
+      "_name": "Min Lease Period",
+      "_value": "3 Months",
+    },
+    AssetFeature {
+      "_localeKey": "maintenance_paid_by",
+      "_name": "Maintenance Paid By",
+      "_value": "Owner",
+    },
+    AssetFeature {
+      "_localeKey": "utilities_paid_by",
+      "_name": "Utilities Paid By",
+      "_value": "Tenant",
+    },
+    AssetFeature {
+      "_localeKey": "maintenance",
+      "_name": "Maintenance",
+      "_value": "₹ 5,000",
+    },
+    AssetFeature {
+      "_localeKey": "building_age",
+      "_name": "Building Age",
+      "_value": "5 Years",
+    },
+    AssetFeature {
+      "_localeKey": "building_type",
+      "_name": "Building Type",
+      "_value": "Apartment",
+    },
+  ],
+  "_floorNumber": 1,
+  "_highlights": Array [
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power Backup",
+    },
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Gated Society",
+    },
+  ],
+  "_id": 1,
+  "_isFavorite": false,
+  "_latitude": 25.619,
+  "_leaseTerm": null,
+  "_longitude": 85.123,
+  "_postedOn": "2020-06-03",
+  "_projectName": "Malti Kunj",
+  "_saleTerm": null,
+  "_spaces": Array [
+    Data {
+      "_count": 1,
+      "_id": 1,
+      "_name": "Bedroom",
+    },
+    Data {
+      "_count": 1,
+      "_id": 2,
+      "_name": "Bathroom",
+    },
+  ],
+  "_totalFloors": 4,
+  "_unitNumber": "41",
+  "_verifications": Verification {
+    "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
+    "_verificationStatus": 3,
+  },
+}
+`;
+
+exports[`AssetRepository Should get property images by property id 1`] = `
+Array [
+  Object {
+    "asset": 10,
+    "attachment": 14,
+    "description": "image.png",
+    "id": 1,
+    "is_cover_image": true,
+    "link": "www.google.com",
+  },
+]
+`;
+
+exports[`AssetRepository Should get ratings 1`] = `
+Array [
+  AssetReview {
+    "_experienceArea": "experience area",
+    "_id": 1,
+    "_rating": 2,
+  },
+]
+`;
+
+exports[`AssetRepository Should get sale listings 1`] = `
+Asset {
+  "_amenities": Array [
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 7,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "gym.svg",
+      },
+      "_id": 1,
+      "_name": "Gymnasium",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 8,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "pool.svg",
+      },
+      "_id": 2,
+      "_name": "Swimming Pool",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 9,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "cctv.svg",
+      },
+      "_id": 3,
+      "_name": "CCTV Security",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 10,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "parking.svg",
+      },
+      "_id": 4,
+      "_name": "Parking",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 11,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "wifi.svg",
+      },
+      "_id": 5,
+      "_name": "Wifi",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 12,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "intercom.svg",
+      },
+      "_id": 6,
+      "_name": "Intercom",
+    },
+    Amenity {
+      "_attachment": Attachment {
+        "_fileName": "",
+        "_id": 13,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/19fe670df70c4ff8b9fc6de68bef8efb.svg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "balcony.svg",
+      },
+      "_id": 7,
+      "_name": "Balcony",
+    },
+  ],
+  "_assetGroup": Data {
+    "_count": 0,
+    "_id": 0,
+    "_name": "",
+  },
+  "_assetType": Data {
+    "_count": 0,
+    "_id": 0,
+    "_name": "",
+  },
+  "_attachments": Array [
+    Attachment {
+      "_fileName": "prof.jpg",
+      "_id": 0,
+      "_isCoverImage": true,
+      "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+      "_mediaAttributes": MediaAttributes {
+        "_duration": "",
+        "_thumbnail": "",
+        "_thumbnailHD": "",
+        "_thumbnailSD": "",
+        "_title": "",
+        "_videoId": "",
+      },
+      "_mediaType": "IMAGE",
+      "_name": "",
+    },
+    Attachment {
+      "_fileName": "DjangoBackendLLD (1).jpg",
+      "_id": 0,
+      "_isCoverImage": false,
+      "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
+      "_mediaAttributes": MediaAttributes {
+        "_duration": "",
+        "_thumbnail": "",
+        "_thumbnailHD": "",
+        "_thumbnailSD": "",
+        "_title": "",
+        "_videoId": "",
+      },
+      "_mediaType": "IMAGE",
+      "_name": "",
+    },
+  ],
+  "_blockNumber": "B",
+  "_carpetArea": 5000,
+  "_carpetAreaUnit": "SQ_FT",
+  "_contacts": User {
+    "_accessToken": "",
+    "_countryCode": "+91",
+    "_email": "anuvrat.somnath@nineleaps.com",
+    "_fullName": "Anuvrat Somnath",
+    "_id": 1,
+    "_phoneNumber": "7903470293",
+    "_refreshToken": "",
+  },
+  "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
+  "_features": Array [
+    AssetFeature {
+      "_localeKey": "security_deposit",
+      "_name": "Security Deposit",
+      "_value": "₹ 2 Lacs",
+    },
+    AssetFeature {
+      "_localeKey": "min_lease_period",
+      "_name": "Min Lease Period",
+      "_value": "3 Months",
+    },
+    AssetFeature {
+      "_localeKey": "maintenance_paid_by",
+      "_name": "Maintenance Paid By",
+      "_value": "Owner",
+    },
+    AssetFeature {
+      "_localeKey": "utilities_paid_by",
+      "_name": "Utilities Paid By",
+      "_value": "Tenant",
+    },
+    AssetFeature {
+      "_localeKey": "maintenance",
+      "_name": "Maintenance",
+      "_value": "₹ 5,000",
+    },
+    AssetFeature {
+      "_localeKey": "building_age",
+      "_name": "Building Age",
+      "_value": "5 Years",
+    },
+    AssetFeature {
+      "_localeKey": "building_type",
+      "_name": "Building Type",
+      "_value": "Apartment",
+    },
+  ],
+  "_floorNumber": 1,
+  "_highlights": Array [
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Power Backup",
+    },
+    AssetHighlight {
+      "_covered": true,
+      "_name": "Gated Society",
+    },
+  ],
+  "_id": 1,
+  "_isFavorite": false,
+  "_latitude": 25.619,
+  "_leaseTerm": null,
+  "_longitude": 85.123,
+  "_postedOn": "2020-06-03",
+  "_projectName": "Malti Kunj",
+  "_saleTerm": null,
+  "_spaces": Array [
+    Data {
+      "_count": 1,
+      "_id": 1,
+      "_name": "Bedroom",
+    },
+    Data {
+      "_count": 1,
+      "_id": 2,
+      "_name": "Bathroom",
+    },
+  ],
+  "_totalFloors": 4,
+  "_unitNumber": "41",
+  "_verifications": Verification {
+    "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
+    "_verificationStatus": 3,
+  },
+}
+`;
+
+exports[`AssetRepository Should get similar properties for rent 1`] = `
+Array [
+  Asset {
+    "_amenities": Array [
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 7,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "gym.svg",
+        },
+        "_id": 1,
+        "_name": "Gymnasium",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 8,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "pool.svg",
+        },
+        "_id": 2,
+        "_name": "Swimming Pool",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 9,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "cctv.svg",
+        },
+        "_id": 3,
+        "_name": "CCTV Security",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 10,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "parking.svg",
+        },
+        "_id": 4,
+        "_name": "Parking",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 11,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "wifi.svg",
+        },
+        "_id": 5,
+        "_name": "Wifi",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 12,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "intercom.svg",
+        },
+        "_id": 6,
+        "_name": "Intercom",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 13,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/19fe670df70c4ff8b9fc6de68bef8efb.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "balcony.svg",
+        },
+        "_id": 7,
+        "_name": "Balcony",
+      },
+    ],
+    "_assetGroup": Data {
+      "_count": 0,
+      "_id": 0,
+      "_name": "",
+    },
+    "_assetType": Data {
+      "_count": 0,
+      "_id": 0,
+      "_name": "",
+    },
+    "_attachments": Array [
+      Attachment {
+        "_fileName": "prof.jpg",
+        "_id": 0,
+        "_isCoverImage": true,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "",
+      },
+      Attachment {
+        "_fileName": "DjangoBackendLLD (1).jpg",
+        "_id": 0,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "",
+      },
+    ],
+    "_blockNumber": "B",
+    "_carpetArea": 5000,
+    "_carpetAreaUnit": "SQ_FT",
+    "_contacts": User {
+      "_accessToken": "",
+      "_countryCode": "+91",
+      "_email": "anuvrat.somnath@nineleaps.com",
+      "_fullName": "Anuvrat Somnath",
+      "_id": 1,
+      "_phoneNumber": "7903470293",
+      "_refreshToken": "",
+    },
+    "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
+    "_features": Array [
+      AssetFeature {
+        "_localeKey": "security_deposit",
+        "_name": "Security Deposit",
+        "_value": "₹ 2 Lacs",
+      },
+      AssetFeature {
+        "_localeKey": "min_lease_period",
+        "_name": "Min Lease Period",
+        "_value": "3 Months",
+      },
+      AssetFeature {
+        "_localeKey": "maintenance_paid_by",
+        "_name": "Maintenance Paid By",
+        "_value": "Owner",
+      },
+      AssetFeature {
+        "_localeKey": "utilities_paid_by",
+        "_name": "Utilities Paid By",
+        "_value": "Tenant",
+      },
+      AssetFeature {
+        "_localeKey": "maintenance",
+        "_name": "Maintenance",
+        "_value": "₹ 5,000",
+      },
+      AssetFeature {
+        "_localeKey": "building_age",
+        "_name": "Building Age",
+        "_value": "5 Years",
+      },
+      AssetFeature {
+        "_localeKey": "building_type",
+        "_name": "Building Type",
+        "_value": "Apartment",
+      },
+    ],
+    "_floorNumber": 1,
+    "_highlights": Array [
+      AssetHighlight {
+        "_covered": true,
+        "_name": "Power Backup",
+      },
+      AssetHighlight {
+        "_covered": true,
+        "_name": "Gated Society",
+      },
+    ],
+    "_id": 1,
+    "_isFavorite": false,
+    "_latitude": 25.619,
+    "_leaseTerm": null,
+    "_longitude": 85.123,
+    "_postedOn": "2020-06-03",
+    "_projectName": "Malti Kunj",
+    "_saleTerm": null,
+    "_spaces": Array [
+      Data {
+        "_count": 1,
+        "_id": 1,
+        "_name": "Bedroom",
+      },
+      Data {
+        "_count": 1,
+        "_id": 2,
+        "_name": "Bathroom",
+      },
+    ],
+    "_totalFloors": 4,
+    "_unitNumber": "41",
+    "_verifications": Verification {
+      "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
+      "_verificationStatus": 3,
+    },
+  },
+]
+`;
+
+exports[`AssetRepository Should get similar properties for sale 1`] = `
+Array [
+  Asset {
+    "_amenities": Array [
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 7,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "gym.svg",
+        },
+        "_id": 1,
+        "_name": "Gymnasium",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 8,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "pool.svg",
+        },
+        "_id": 2,
+        "_name": "Swimming Pool",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 9,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "cctv.svg",
+        },
+        "_id": 3,
+        "_name": "CCTV Security",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 10,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "parking.svg",
+        },
+        "_id": 4,
+        "_name": "Parking",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 11,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "wifi.svg",
+        },
+        "_id": 5,
+        "_name": "Wifi",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 12,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "intercom.svg",
+        },
+        "_id": 6,
+        "_name": "Intercom",
+      },
+      Amenity {
+        "_attachment": Attachment {
+          "_fileName": "",
+          "_id": 13,
+          "_isCoverImage": false,
+          "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/19fe670df70c4ff8b9fc6de68bef8efb.svg",
+          "_mediaAttributes": MediaAttributes {
+            "_duration": "",
+            "_thumbnail": "",
+            "_thumbnailHD": "",
+            "_thumbnailSD": "",
+            "_title": "",
+            "_videoId": "",
+          },
+          "_mediaType": "IMAGE",
+          "_name": "balcony.svg",
+        },
+        "_id": 7,
+        "_name": "Balcony",
+      },
+    ],
+    "_assetGroup": Data {
+      "_count": 0,
+      "_id": 0,
+      "_name": "",
+    },
+    "_assetType": Data {
+      "_count": 0,
+      "_id": 0,
+      "_name": "",
+    },
+    "_attachments": Array [
+      Attachment {
+        "_fileName": "prof.jpg",
+        "_id": 0,
+        "_isCoverImage": true,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "",
+      },
+      Attachment {
+        "_fileName": "DjangoBackendLLD (1).jpg",
+        "_id": 0,
+        "_isCoverImage": false,
+        "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
+        "_mediaAttributes": MediaAttributes {
+          "_duration": "",
+          "_thumbnail": "",
+          "_thumbnailHD": "",
+          "_thumbnailSD": "",
+          "_title": "",
+          "_videoId": "",
+        },
+        "_mediaType": "IMAGE",
+        "_name": "",
+      },
+    ],
+    "_blockNumber": "B",
+    "_carpetArea": 5000,
+    "_carpetAreaUnit": "SQ_FT",
+    "_contacts": User {
+      "_accessToken": "",
+      "_countryCode": "+91",
+      "_email": "anuvrat.somnath@nineleaps.com",
+      "_fullName": "Anuvrat Somnath",
+      "_id": 1,
+      "_phoneNumber": "7903470293",
+      "_refreshToken": "",
+    },
+    "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
+    "_features": Array [
+      AssetFeature {
+        "_localeKey": "security_deposit",
+        "_name": "Security Deposit",
+        "_value": "₹ 2 Lacs",
+      },
+      AssetFeature {
+        "_localeKey": "min_lease_period",
+        "_name": "Min Lease Period",
+        "_value": "3 Months",
+      },
+      AssetFeature {
+        "_localeKey": "maintenance_paid_by",
+        "_name": "Maintenance Paid By",
+        "_value": "Owner",
+      },
+      AssetFeature {
+        "_localeKey": "utilities_paid_by",
+        "_name": "Utilities Paid By",
+        "_value": "Tenant",
+      },
+      AssetFeature {
+        "_localeKey": "maintenance",
+        "_name": "Maintenance",
+        "_value": "₹ 5,000",
+      },
+      AssetFeature {
+        "_localeKey": "building_age",
+        "_name": "Building Age",
+        "_value": "5 Years",
+      },
+      AssetFeature {
+        "_localeKey": "building_type",
+        "_name": "Building Type",
+        "_value": "Apartment",
+      },
+    ],
+    "_floorNumber": 1,
+    "_highlights": Array [
+      AssetHighlight {
+        "_covered": true,
+        "_name": "Power Backup",
+      },
+      AssetHighlight {
+        "_covered": true,
+        "_name": "Gated Society",
+      },
+    ],
+    "_id": 1,
+    "_isFavorite": false,
+    "_latitude": 25.619,
+    "_leaseTerm": null,
+    "_longitude": 85.123,
+    "_postedOn": "2020-06-03",
+    "_projectName": "Malti Kunj",
+    "_saleTerm": null,
+    "_spaces": Array [
+      Data {
+        "_count": 1,
+        "_id": 1,
+        "_name": "Bedroom",
+      },
+      Data {
+        "_count": 1,
+        "_id": 2,
+        "_name": "Bathroom",
+      },
+    ],
+    "_totalFloors": 4,
+    "_unitNumber": "41",
+    "_verifications": Verification {
+      "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
+      "_verificationStatus": 3,
+    },
+  },
+]
+`;
+
+exports[`AssetRepository Should mark attachment as cover image 1`] = `
+Object {
+  "cover_updated": true,
+}
+`;
+
+exports[`AssetRepository Should post attachment for property 1`] = `undefined`;
+
+exports[`AssetRepository Should post verification document 1`] = `undefined`;
 
 exports[`AssetRepository should fetch a asset data 1`] = `
 Array [

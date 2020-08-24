@@ -15,44 +15,44 @@ export const AssetMetricsData = {
         name: 'OCCUPIED',
         label: 'Occupied',
         count: 3,
-        colorGradient: {
+        color_gradient: {
           angle: 180,
           location: [0, 1],
-          hexColorA: '#61D773',
-          hexColorB: '#94EF90',
+          hex_color_a: '#61D773',
+          hex_color_b: '#94EF90',
         },
       },
       {
         name: 'VACANT',
         label: 'Vacant',
         count: 2,
-        colorGradient: {
+        color_gradient: {
           angle: 180,
           location: [0, 1],
-          hexColorA: '#FDB113',
-          hexColorB: '#FFDB8F',
+          hex_color_a: '#FDB113',
+          hex_color_b: '#FFDB8F',
         },
       },
       {
         name: 'RENEWAL',
         label: 'Renewal',
         count: 1,
-        colorGradient: {
+        color_gradient: {
           angle: 180,
           location: [0, 1],
-          hexColorA: '#D9AB65',
-          hexColorB: '#ECCFB4',
+          hex_color_a: '#D9AB65',
+          hex_color_b: '#ECCFB4',
         },
       },
       {
         name: 'SELL',
         label: 'Sell',
         count: 4,
-        colorGradient: {
+        color_gradient: {
           angle: 180,
           location: [0, 1],
-          hexColorA: '#FD8313',
-          hexColorB: '#FFD2A9',
+          hex_color_a: '#FD8313',
+          hex_color_b: '#FFD2A9',
         },
       },
     ],
@@ -132,28 +132,29 @@ export const AssetSubscriptionPlanData = {
   },
 };
 
-export const MarketTrendsData = [
-  {
-    id: 1,
-    header: 'How is the real estate market recovering?',
-    date: '02/07/2020',
+export const MarketTrendsData = {
+  count: 3,
+  links: {
+    next: 'http://dev.homzhub.com/api/v1/market-trends/?limit=2&offset=2',
+    previous: null,
   },
-  {
-    id: 2,
-    header: 'Highlights if COVID-19 Impact on the Housing Market',
-    date: '03/07/2020',
-  },
-  {
-    id: 3,
-    header: 'Blast in Beirut in Lebanon',
-    date: '04/07/2020',
-  },
-  {
-    id: 4,
-    header: 'Black Lives Matter',
-    date: '05/07/2020',
-  },
-];
+  results: [
+    {
+      id: 1,
+      title: 'Top 5 Real Estate Trends for 2020',
+      link:
+        'http://bwsmartcities.businessworld.in/article/Green-Homes-Still-Waiting-for-Green-Shoots-of-Revival/11-02-2020-183924',
+      posted_at: '2020-07-01T04:03:07.256216Z',
+    },
+    {
+      id: 2,
+      title: '5 emerging trends that may reshape real estate sector in 2020',
+      link:
+        'https://www.financialexpress.com/money/5-emerging-trends-that-may-reshape-real-estate-sector-in-2020/1788394/',
+      posted_at: '2020-07-01T04:03:07.256216Z',
+    },
+  ],
+};
 
 export const AssetAdvertisementData = {
   count: 1,

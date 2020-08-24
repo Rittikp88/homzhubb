@@ -242,3 +242,12 @@ export const mockAsset = {
     },
   ],
 };
+
+export const AssetSearchData = {
+  count: 1,
+  links: {
+    previous: null,
+    next: null,
+  },
+  results: [mockAsset],
+};

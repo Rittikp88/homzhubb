@@ -15,7 +15,18 @@ exports[`AssetTypeFilter should match snapshot 1`] = `
     Property:propertytype
   </Text>
   <SelectionPicker
-    data={Array []}
+    data={
+      Array [
+        Object {
+          "title": "Residential",
+          "value": 1,
+        },
+        Object {
+          "title": "Commercial",
+          "value": 2,
+        },
+      ]
+    }
     onValueChange={[Function]}
     selectedItem={
       Array [
@@ -33,9 +44,24 @@ exports[`AssetTypeFilter should match snapshot 1`] = `
     data={
       Array [
         Object {
-          "id": 1,
-          "isSelected": true,
-          "label": "",
+          "id": 7,
+          "isSelected": false,
+          "label": "Commercial Office Space",
+        },
+        Object {
+          "id": 8,
+          "isSelected": false,
+          "label": "Office in IT park/SEZ",
+        },
+        Object {
+          "id": 9,
+          "isSelected": false,
+          "label": "Commercial Showroom",
+        },
+        Object {
+          "id": 10,
+          "isSelected": false,
+          "label": "Warehouse / Godown",
         },
       ]
     }
