@@ -8,13 +8,12 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Button, Label, Text } from '@homzhub/common/src/components';
 import { PropertyAmenities, PropertyAddressCountry, ProgressBar } from '@homzhub/mobile/src/components';
-import { PendingProperties } from '@homzhub/common/src/mocks/PendingProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
   currentPropertyIndex: number;
-  // data: Asset[];
+  data: Asset[];
 }
 
 type Props = WithTranslation;
@@ -22,19 +21,18 @@ type Props = WithTranslation;
 export class PendingPropertyListCard extends Component<Props, IState> {
   public state = {
     currentPropertyIndex: 0,
-    // data: [],
+    data: [],
   };
 
-  // TODO: (Shikha) - Un-comment once api issue fix
-  // public componentDidMount = async (): Promise<void> => {
-  //   await this.getPendingProperties();
-  // };
+  public componentDidMount = async (): Promise<void> => {
+    await this.getPendingProperties();
+  };
 
   public render(): React.ReactNode {
-    const { currentPropertyIndex } = this.state;
+    const { currentPropertyIndex, data } = this.state;
     const { t } = this.props;
-    const currentProperty = PendingProperties[currentPropertyIndex];
-    const total = PendingProperties.length;
+    const currentProperty = data[currentPropertyIndex];
+    const total = data.length;
     return (
       <View style={styles.container}>
         <View style={styles.headingView}>
@@ -70,36 +68,41 @@ export class PendingPropertyListCard extends Component<Props, IState> {
     );
   }
 
-  // TODO: Add type once API integrate
-  private renderCardItem = (item: any): React.ReactElement => {
+  private renderCardItem = (item: Asset): React.ReactElement => {
     const { t } = this.props;
     const {
       spaces,
-      asset_type: { name },
-      project_name,
-      status,
-      address,
+      assetType: { name },
+      projectName,
+      progressPercentage,
+      unitNumber,
+      carpetArea,
+      carpetAreaUnit,
+      floorNumber,
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
-      0,
-      item.asset_group.name,
-      null,
-      '',
+      floorNumber,
+      item.assetGroup.name,
+      carpetArea,
+      carpetAreaUnit,
       true
     );
+
     return (
       <View style={styles.cardContainer}>
         <Text type="small" style={styles.heading}>
           {name}
         </Text>
         <PropertyAddressCountry
-          primaryAddress={project_name}
-          subAddress={address}
+          primaryAddress={projectName}
+          subAddress={unitNumber}
           containerStyle={styles.addressStyle}
         />
-        <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
-        <ProgressBar progress={status} width={350} />
+        {amenitiesData.length > 0 && (
+          <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
+        )}
+        <ProgressBar progress={progressPercentage} width={350} />
         <Button type="primary" title={t('completeDetails')} containerStyle={styles.buttonStyle} />
         <Label type="regular" style={styles.infoText}>
           {t('completeProperty')}
@@ -110,13 +113,12 @@ export class PendingPropertyListCard extends Component<Props, IState> {
 
   private getPendingProperties = async (): Promise<void> => {
     const response: Asset[] = await AssetRepository.getPendingProperties('PENDING');
-    console.log(response);
-    // this.setState({ data: response });
+    this.setState({ data: response });
   };
 
   private handleNext = (): void => {
-    const { currentPropertyIndex } = this.state;
-    if (PendingProperties.length !== currentPropertyIndex + 1) {
+    const { currentPropertyIndex, data } = this.state;
+    if (data.length !== currentPropertyIndex + 1) {
       this.setState({ currentPropertyIndex: currentPropertyIndex + 1 });
     }
   };
@@ -134,7 +136,6 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Pen
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
-    minHeight: 355,
     borderRadius: 4,
     marginTop: 12,
     padding: 16,

@@ -35,15 +35,14 @@ export class BottomSheetListView extends Component<IProps> {
     );
   }
 
-  private renderSheetItem = (data: any): React.ReactElement => {
-    const { item, index } = data;
+  private renderSheetItem = ({ item, index }: { item: PickerItemProps; index: number }): React.ReactElement => {
     const { selectedValue, onSelectItem, testID } = this.props;
     const onItemSelect = (): void => onSelectItem(item.value);
     const isCheck: boolean = selectedValue === item.value;
     return <ListItem listItem={item} isCheck={isCheck} onItemSelect={onItemSelect} key={index} testID={testID} />;
   };
 
-  private renderKeyExtractor = (item: any, index: number): string => {
+  private renderKeyExtractor = (item: PickerItemProps, index: number): string => {
     const { value } = item;
     return `${value}-${index}`;
   };

@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Data } from '@homzhub/common/src/domain/models/Asset';
 
 interface IUserServicePlan {
   id: number;
@@ -149,8 +150,11 @@ export class AssetMetricsData {
   @JsonProperty('assets', Count)
   private _assets = new Count();
 
-  @JsonProperty('miscellaneous', [Miscellaneous])
+  @JsonProperty('miscellaneous', [Miscellaneous], true)
   private _miscellaneous: Miscellaneous[] = [];
+
+  @JsonProperty('asset_groups', [Data], true)
+  private _assetGroups: Data[] = [];
 
   get assets(): Count {
     return this._assets;
@@ -158,6 +162,10 @@ export class AssetMetricsData {
 
   get miscellaneous(): Miscellaneous[] {
     return this._miscellaneous;
+  }
+
+  get assetGroups(): Data[] {
+    return this._assetGroups;
   }
 }
 
@@ -193,7 +201,7 @@ export class AssetMetrics {
   @JsonProperty('asset_metrics', AssetMetricsData)
   private _assetMetrics = new AssetMetricsData();
 
-  @JsonProperty('updates', AssetUpdates)
+  @JsonProperty('updates', AssetUpdates, true)
   private _updates = new AssetUpdates();
 
   get userServicePlan(): UserServicePlan {

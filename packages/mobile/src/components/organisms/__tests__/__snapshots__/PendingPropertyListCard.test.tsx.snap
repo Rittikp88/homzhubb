@@ -7,7 +7,6 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
       "backgroundColor": "#FFFFFF",
       "borderRadius": 4,
       "marginTop": 12,
-      "minHeight": 355,
       "padding": 16,
     }
   }
@@ -98,89 +97,6 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
         />
       </ForwardRef>
     </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 12,
-      }
-    }
-  >
-    <Text
-      style={
-        Object {
-          "marginBottom": 10,
-        }
-      }
-      type="small"
-    >
-      Farm House
-    </Text>
-    <PropertyAddressCountry
-      containerStyle={
-        Object {
-          "marginBottom": 6,
-        }
-      }
-      primaryAddress="Orbitz Corporate - Kalpataru Splend"
-      subAddress="Shankar Kalat Nagar, Maharashtra 411057"
-    />
-    <PropertyAmenities
-      containerStyle={
-        Object {
-          "marginBottom": 20,
-        }
-      }
-      data={
-        Array [
-          Object {
-            "icon": "bed",
-            "iconColor": "#33495E",
-            "iconSize": 20,
-            "label": "3 Beds",
-          },
-          Object {
-            "icon": "bath-tub",
-            "iconColor": "#33495E",
-            "iconSize": 20,
-            "label": "3 Baths",
-          },
-          Object {
-            "icon": "balcony",
-            "iconColor": "#33495E",
-            "iconSize": 20,
-            "label": "2 Balcony",
-          },
-        ]
-      }
-      direction="row"
-    />
-    <ProgressBar
-      progress={40}
-      width={350}
-    />
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "marginBottom": 5,
-          "marginTop": 18,
-        }
-      }
-      title="completeDetails"
-      type="primary"
-    />
-    <Label
-      style={
-        Object {
-          "color": "#99A4AF",
-          "textAlign": "center",
-        }
-      }
-      type="regular"
-    >
-      completeProperty
-    </Label>
   </View>
 </View>
 `;

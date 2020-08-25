@@ -5,12 +5,21 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Label, Text, AssetMetrics, Image } from '@homzhub/common/src/components';
-import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
+import { ColorGradient } from '@homzhub/common/src/domain/models/AssetMetrics';
+
+interface IMetricsData {
+  name: string;
+  count: number;
+  label?: string;
+  id?: number;
+  currencySymbol?: string;
+  colorGradient?: ColorGradient;
+}
 
 interface IProps {
   title?: number | string;
   subscription?: string;
-  data: Miscellaneous[];
+  data: IMetricsData[];
   containerStyle?: StyleProp<ViewStyle>;
   showPlusIcon?: boolean;
   onPlusIconClicked?: () => void;
@@ -29,7 +38,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
   } = props;
   const { t } = useTranslation();
 
-  const renderKeyExtractor = (item: Miscellaneous, index: number): string => {
+  const renderKeyExtractor = (item: IMetricsData, index: number): string => {
     return `${item.name}-${index}`;
   };
 
@@ -37,6 +46,22 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     if (onPlusIconClicked) {
       onPlusIconClicked();
     }
+  };
+
+  const renderItem = ({ item }: { item: IMetricsData }): React.ReactElement => {
+    return (
+      <AssetMetrics
+        header={item.label ?? item.name}
+        value={item.count}
+        currency={item.currencySymbol ?? ''}
+        colorA={item.colorGradient?.hexColorA ?? ''}
+        colorB={item.colorGradient?.hexColorB ?? ''}
+        location={item.colorGradient?.location ?? []}
+        cardStyle={individualCardStyle}
+        angle={item.colorGradient?.angle ?? 0}
+        showPlusIcon={showPlusIcon}
+      />
+    );
   };
 
   return (
@@ -76,31 +101,11 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
         )}
       </View>
       <View style={styles.assetMetrics}>
-        <FlatList
+        <FlatList<IMetricsData>
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }: { item: Miscellaneous }): React.ReactElement => {
-            const {
-              label,
-              count,
-              currencySymbol,
-              colorGradient: { hexColorA, hexColorB, location, angle },
-            } = item;
-            return (
-              <AssetMetrics
-                header={label}
-                value={count}
-                currency={currencySymbol}
-                colorA={hexColorA}
-                colorB={hexColorB}
-                location={location}
-                cardStyle={individualCardStyle}
-                angle={angle}
-                showPlusIcon={showPlusIcon}
-              />
-            );
-          }}
+          renderItem={renderItem}
           keyExtractor={renderKeyExtractor}
           testID="metricList"
         />

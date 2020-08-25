@@ -3,6 +3,7 @@
 exports[`DashboardRepository should get Asset Metrics 1`] = `
 AssetMetrics {
   "_assetMetrics": AssetMetricsData {
+    "_assetGroups": Array [],
     "_assets": Count {
       "_count": 10,
     },

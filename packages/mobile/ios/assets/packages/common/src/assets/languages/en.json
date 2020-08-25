@@ -1,5 +1,6 @@
 {
   "common": {
+    "homzhub": "Homzhub",
     "welcome": "Welcome To Homzhub",
     "login": "Login",
     "ok": "OK",
@@ -62,7 +63,10 @@
     "properties": "Properties",
     "genericErrorMessage": "Oops! Something went wrong",
     "shareMessage": "Hey, I would like to share this property {{url}} that posted on www.homzhub.com",
-    "fileCorrupt": "File is corrupted"
+    "fileCorrupt": "File is corrupted",
+    "more": "+ more",
+    "select": "+ Select",
+    "noResultsFound": "No Results Found"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -236,7 +240,6 @@
     "propertyType": "Property Type",
     "lookingFor": "Looking For",
     "propertiesFound": "Properties Found",
-    "noResultsFound": "No Results Found",
     "noResultHelper": "We did not find any properties for your search",
     "searchAgain": "Search Again",
     "resetFilters": "Reset Filters",
@@ -256,9 +259,12 @@
     "expectedMoveInDate": "Expected Move-In Date",
     "availableFrom": "Available from",
     "selectMoveInDate": "Select Move-In Date",
-    "facing": "Facing {{totalFacing}}",
-    "furnishing": "Furnishing {{totalFurnishing}}",
-    "propertyAmenities": "Property Amenities {{totalAmeneties}}",
+    "facing": "Facing ({{totalFacing}})",
+    "selectFacing": "Select Property Facing",
+    "furnishing": "Furnishing ({{totalFurnishing}})",
+    "selectFurnishing": "Select Property Furnishing",
+    "propertyAmenities": "Property Amenities ({{totalAmenities}})",
+    "selectAmenities": "Select Property Amenities",
     "showVerified": "Show Verified",
     "agentListed": "Agent Listed"
   },
@@ -274,7 +280,23 @@
     "similarProperties": "Similar Properties",
     "bookTour": "Book a Tour",
     "nearby": "Nearby",
-    "commute": "Commute"
+    "commute": "Commute",
+    "railwayStations": "Railway Stations",
+    "busStations": "Bus Stations",
+    "airports": "Airports",
+    "schools": "Schools",
+    "restaurants": "Restaurants",
+    "fuelStations": "Fuel Stations",
+    "hospitals": "Hospitals",
+    "groceryStores": "Grocery Stores",
+    "filmTheaters": "Film Theaters",
+    "pharmacies": "Pharmacies",
+    "hotels": "Hotels",
+    "parks": "Parks",
+    "atms": "ATMs",
+    "malls": "Shopping Malls",
+    "noDescription": "No Description",
+    "messageSent": "Message Sent Successfully"
   },
   "assetDashboard": {
     "notification": "Notification",
@@ -288,8 +310,19 @@
     "completeProperty": "Complete property details to serve you better",
     "completionStatus": "{{status}}% Complete",
     "completeDetails": "Complete Details",
-    "expense": "Expense",
+    "costBreakdown": "Cost Breakdown",
     "cashFlow": "Cash Flow",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "overallPerformance": "Overall Performance",
+    "subscriptionHelper": "Upgrade to",
+    "subscriptionHelperServices": "and get the following services",
+    "upgrade": "Upgrade"
+  },
+  "assetPortfolio": {
+    "portfolio": "Portfolio"
+  },
+  "assetFinancial": {
+    "financial": "Financials",
+    "payNow": "Pay Now"
   }
 }

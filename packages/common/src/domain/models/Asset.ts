@@ -40,7 +40,7 @@ export interface IData {
 }
 
 @JsonObject('Data')
-class Data {
+export class Data {
   @JsonProperty('id', Number)
   private _id = 0;
 

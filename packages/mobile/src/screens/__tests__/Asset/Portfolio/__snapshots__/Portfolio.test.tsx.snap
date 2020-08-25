@@ -10,58 +10,9 @@ exports[`Portfolio Screen should render snapshot 1`] = `
         "marginVertical": 12,
       }
     }
-    data={
-      Array [
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 3,
-          "_currency_symbol": "",
-          "_label": "Residential",
-          "_name": "Residential",
-        },
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 2,
-          "_currency_symbol": "",
-          "_label": "Commercial",
-          "_name": "Commercial",
-        },
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 1,
-          "_currency_symbol": "",
-          "_label": "Corporate",
-          "_name": "Corporate",
-        },
-      ]
-    }
+    data={Array []}
     showPlusIcon={true}
-    subscription="HomzHub Pro"
-    title={10}
+    title={0}
   />
   <Text
     style={
@@ -329,36 +280,13 @@ exports[`Portfolio Screen should render snapshot 1`] = `
     windowSize={21}
   />
   <BottomSheetListView
-    data={
-      Array [
-        Object {
-          "label": "All",
-          "value": "all",
-        },
-        Object {
-          "label": "Rented",
-          "value": "rented",
-        },
-        Object {
-          "label": "Vacant",
-          "value": "vacant",
-        },
-        Object {
-          "label": "For Sale",
-          "value": "sale",
-        },
-        Object {
-          "label": "Maintain",
-          "value": "maintain",
-        },
-      ]
-    }
+    data={Array []}
     isBottomSheetVisible={false}
     listHeight={500}
     listTitle="Filter"
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
-    selectedValue="all"
+    selectedValue="ALL"
   />
 </AnimatedProfileHeader>
 `;
@@ -373,58 +301,9 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
         "marginVertical": 12,
       }
     }
-    data={
-      Array [
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 3,
-          "_currency_symbol": "",
-          "_label": "Residential",
-          "_name": "Residential",
-        },
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 2,
-          "_currency_symbol": "",
-          "_label": "Commercial",
-          "_name": "Commercial",
-        },
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 1,
-          "_currency_symbol": "",
-          "_label": "Corporate",
-          "_name": "Corporate",
-        },
-      ]
-    }
+    data={Array []}
     showPlusIcon={true}
-    subscription="HomzHub Pro"
-    title={10}
+    title={0}
   />
   <Text
     style={
@@ -692,30 +571,7 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
     windowSize={21}
   />
   <BottomSheetListView
-    data={
-      Array [
-        Object {
-          "label": "All",
-          "value": "all",
-        },
-        Object {
-          "label": "Rented",
-          "value": "rented",
-        },
-        Object {
-          "label": "Vacant",
-          "value": "vacant",
-        },
-        Object {
-          "label": "For Sale",
-          "value": "sale",
-        },
-        Object {
-          "label": "Maintain",
-          "value": "maintain",
-        },
-      ]
-    }
+    data={Array []}
     isBottomSheetVisible={false}
     listHeight={500}
     listTitle="Filter"
@@ -736,58 +592,9 @@ exports[`Portfolio Screen should render snapshot for state 1`] = `
         "marginVertical": 12,
       }
     }
-    data={
-      Array [
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 3,
-          "_currency_symbol": "",
-          "_label": "Residential",
-          "_name": "Residential",
-        },
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 2,
-          "_currency_symbol": "",
-          "_label": "Commercial",
-          "_name": "Commercial",
-        },
-        Miscellaneous {
-          "_colorGradient": ColorGradient {
-            "_angle": 180,
-            "_hexColorA": "#F1F6FA",
-            "_hexColorB": "#FFFFFF",
-            "_location": Array [
-              0,
-              1,
-            ],
-          },
-          "_count": 1,
-          "_currency_symbol": "",
-          "_label": "Corporate",
-          "_name": "Corporate",
-        },
-      ]
-    }
+    data={Array []}
     showPlusIcon={true}
-    subscription="HomzHub Pro"
-    title={10}
+    title={0}
   />
   <Text
     style={
@@ -1055,36 +862,13 @@ exports[`Portfolio Screen should render snapshot for state 1`] = `
     windowSize={21}
   />
   <BottomSheetListView
-    data={
-      Array [
-        Object {
-          "label": "All",
-          "value": "all",
-        },
-        Object {
-          "label": "Rented",
-          "value": "rented",
-        },
-        Object {
-          "label": "Vacant",
-          "value": "vacant",
-        },
-        Object {
-          "label": "For Sale",
-          "value": "sale",
-        },
-        Object {
-          "label": "Maintain",
-          "value": "maintain",
-        },
-      ]
-    }
+    data={Array []}
     isBottomSheetVisible={true}
     listHeight={500}
     listTitle="Filter"
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
-    selectedValue="all"
+    selectedValue="ALL"
   />
 </AnimatedProfileHeader>
 `;
