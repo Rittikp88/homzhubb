@@ -69,4 +69,12 @@ describe('User Reducer', () => {
       ['isOnBoardingCompleted']: true,
     });
   });
+
+  it('should set value of change stack', () => {
+    const state = reducer(initialUserState, UserActions.setChangeStack(true));
+    expect(state).toStrictEqual({
+      ...initialUserState,
+      ['isChangeStack']: true,
+    });
+  });
 });

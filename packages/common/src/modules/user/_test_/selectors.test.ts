@@ -13,6 +13,10 @@ const state: IState = {
     ...initialUserState,
     user: userData,
     isOnBoardingCompleted: false,
+    isChangeStack: false,
+    loaders: {
+      user: true,
+    },
   },
   property: {
     ...initialPropertyState,
@@ -37,5 +41,18 @@ describe('User Selector', () => {
   it('should return user Detail', () => {
     const user = ObjectMapper.deserialize(User, userData);
     expect(UserSelector.getUserDetails(state)).toEqual(user);
+  });
+
+  it('should return null when no user', () => {
+    const updatedState = { ...state, ...{ user: { ...initialUserState, user: null } } };
+    expect(UserSelector.getUserDetails(updatedState)).toEqual(null);
+  });
+
+  it('should return logged in state', () => {
+    expect(UserSelector.getLoadingState(state)).toEqual(true);
+  });
+
+  it('should return value of change stack', () => {
+    expect(UserSelector.getIsChangeStack(state)).toEqual(false);
   });
 });

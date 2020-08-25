@@ -14,7 +14,7 @@ import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
   currentPropertyIndex: number;
-  data: Asset[];
+  // data: Asset[];
 }
 
 type Props = WithTranslation;
@@ -22,7 +22,7 @@ type Props = WithTranslation;
 export class PendingPropertyListCard extends Component<Props, IState> {
   public state = {
     currentPropertyIndex: 0,
-    data: [],
+    // data: [],
   };
 
   // TODO: (Shikha) - Un-comment once api issue fix
@@ -110,7 +110,8 @@ export class PendingPropertyListCard extends Component<Props, IState> {
 
   private getPendingProperties = async (): Promise<void> => {
     const response: Asset[] = await AssetRepository.getPendingProperties('PENDING');
-    this.setState({ data: response });
+    console.log(response);
+    // this.setState({ data: response });
   };
 
   private handleNext = (): void => {

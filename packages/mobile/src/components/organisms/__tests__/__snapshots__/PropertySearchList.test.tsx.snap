@@ -221,7 +221,7 @@ exports[`PropertySearchList should match snapshot for renderItem 1`] = `
     }
   }
   testID="listCard"
-  transaction_type={1}
+  transaction_type={0}
 />
 `;
 

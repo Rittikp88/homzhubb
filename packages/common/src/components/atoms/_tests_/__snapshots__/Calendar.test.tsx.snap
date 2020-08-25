@@ -131,6 +131,7 @@ CalendarComponent {
         <React.Fragment>
           <Calendar
             current="Sat Jul 25 2020"
+            enableSwipeMonths={false}
             hideArrows={true}
             markedDates={
               Object {
@@ -148,7 +149,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2020-08-25T03:35:40.367Z}
+            minDate={2020-08-25T07:01:08.562Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -231,6 +232,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
   <Divider />
   <Calendar
     current="2020-06-19"
+    enableSwipeMonths={false}
     hideArrows={true}
     key="2020-06-19"
     markedDates={
@@ -249,7 +251,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2020-08-25T03:35:40.353Z}
+    minDate={2020-08-25T07:01:08.545Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={

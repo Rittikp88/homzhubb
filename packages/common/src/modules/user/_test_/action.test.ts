@@ -1,13 +1,13 @@
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
-import { IEmailLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { loginPayload, userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
+import { ILoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { loginWithCallback, userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 
 describe('User Actions', () => {
   it('should call login action', () => {
-    const action = UserActions.login(loginPayload as IEmailLoginPayload);
+    const action = UserActions.login(loginWithCallback as ILoginPayload);
     expect(action).toStrictEqual({
       type: UserActionTypes.AUTH.LOGIN,
-      payload: loginPayload,
+      payload: loginWithCallback,
     });
   });
 
@@ -54,6 +54,14 @@ describe('User Actions', () => {
     const action = UserActions.updateOnBoarding(true);
     expect(action).toStrictEqual({
       type: UserActionTypes.UPDATE_ONBOARDING,
+      payload: true,
+    });
+  });
+
+  it('should set value of change stack', () => {
+    const action = UserActions.setChangeStack(true);
+    expect(action).toStrictEqual({
+      type: UserActionTypes.SET.CHANGE_STACK,
       payload: true,
     });
   });

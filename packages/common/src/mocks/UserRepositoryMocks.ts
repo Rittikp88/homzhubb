@@ -51,3 +51,7 @@ export const loginPayload = {
     password: 'Test@123',
   },
 };
+
+export const loginWithCallback = {
+  data: loginPayload,
+};

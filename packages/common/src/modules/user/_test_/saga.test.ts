@@ -1,14 +1,17 @@
 import { put, takeEvery } from 'redux-saga/effects';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { login, logout, watchUser } from '@homzhub/common/src/modules/user/saga';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
+// TODO: Remove the skipped test cases from here
 describe('User Saga', () => {
   it.skip('should dispatch action login success and login failure with result from API', () => {
-    const mockResponse = userData;
+    const mockResponse = ObjectMapper.deserialize(User, userData);
     const mockError = 'Error';
     const generator = login({ type: UserActionTypes.AUTH.LOGIN_SUCCESS });
     generator.next();
