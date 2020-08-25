@@ -10,18 +10,19 @@ import { images } from '@homzhub/common/src/assets/images';
 import { Image } from '@homzhub/common/src/components';
 import Portfolio from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
+import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
 import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetailScreen';
-import { IPropertyDetailProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStack } from '@homzhub/mobile/src/navigation/SearchStack';
+import { IPropertyDetailProps, NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 
 export type BottomTabNavigatorParamList = {
-  [ScreensKeys.Portfolio]: undefined;
-  [ScreensKeys.Financials]: undefined;
-  [ScreensKeys.Dashboard]: undefined;
-  [ScreensKeys.Search]: undefined;
+  [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
+  [ScreensKeys.Financials]: NestedNavigatorParams<FinancialsNavigatorParamList>;
+  [ScreensKeys.Dashboard]: NestedNavigatorParams<DashboardNavigatorParamList>;
+  [ScreensKeys.Search]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.More]: undefined;
 };
 
@@ -35,9 +36,15 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.PropertyDetailScreen]: IPropertyDetailProps;
 };
 
+export type FinancialsNavigatorParamList = {
+  [ScreensKeys.FinancialsLandingScreen]: undefined;
+  [ScreensKeys.AddRecordScreen]: undefined;
+};
+
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
 const DashboardNavigator = createStackNavigator<DashboardNavigatorParamList>();
 const PortfolioNavigator = createStackNavigator<PortfolioNavigatorParamList>();
+const FinancialsNavigator = createStackNavigator<FinancialsNavigatorParamList>();
 
 export const DashboardStack = (): React.ReactElement => {
   return (
@@ -67,6 +74,20 @@ export const PortfolioStack = (): React.ReactElement => {
   );
 };
 
+export const FinancialsStack = (): React.ReactElement => {
+  return (
+    <FinancialsNavigator.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
+      <FinancialsNavigator.Screen name={ScreensKeys.FinancialsLandingScreen} component={Financials} />
+      <FinancialsNavigator.Screen name={ScreensKeys.AddRecordScreen} component={AddRecordScreen} />
+    </FinancialsNavigator.Navigator>
+  );
+};
+
 export const BottomTabs = (): React.ReactElement => {
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   // Initial Route for guest and logged in user gets decided here
@@ -90,7 +111,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Financials}
-        component={Financials}
+        component={FinancialsStack}
         options={{
           tabBarLabel: ScreensKeys.Financials,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (

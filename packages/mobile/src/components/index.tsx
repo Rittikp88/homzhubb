@@ -22,6 +22,7 @@ export { CurrentLocation } from '@homzhub/mobile/src/components/molecules/Curren
 export { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
 export { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
 export { Header } from '@homzhub/mobile/src/components/molecules/Header';
+export { HeaderCard } from '@homzhub/mobile/src/components/molecules/HeaderCard';
 export { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
 export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeaseProgress';
 export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
@@ -44,6 +45,7 @@ export { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlot
 export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 
 // Organisms
+export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 export { AssetCard } from '@homzhub/mobile/src/components/organisms/AssetCard';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';

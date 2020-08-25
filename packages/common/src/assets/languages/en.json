@@ -66,7 +66,10 @@
     "fileCorrupt": "File is corrupted",
     "more": "+ more",
     "select": "+ Select",
-    "noResultsFound": "No Results Found"
+    "noResultsFound": "No Results Found",
+    "clear": "Clear",
+    "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
+    "uploadDocument": "Upload Document"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -323,6 +326,28 @@
   },
   "assetFinancial": {
     "financial": "Financials",
-    "payNow": "Pay Now"
+    "income": "Income",
+    "expense": "Expense",
+    "payNow": "Pay Now",
+    "recordsText": "Records",
+    "addRecords": "Add Records",
+    "selectProperty": "Select property",
+    "details": "Details",
+    "detailsPlaceholder": "Eg. Rent or Plumbing fees",
+    "amount": "Amount",
+    "amountPlaceholder": "Enter your money",
+    "category": "Category",
+    "categoryPlaceholder": "Select your category",
+    "addDate": "Add date",
+    "addDatePlaceholder": "Select a date",
+    "notes": "Notes",
+    "notesPlaceholder": "Type your notes here...",
+    "charactersRemaining": "Characters remaining: {{wordCount}}",
+    "addNow": "Add Now",
+    "propertyError": "Please enter your property",
+    "detailsError": "Please enter your property details",
+    "amountError": "Please enter the amount",
+    "categoryError": "Please enter the category of your property",
+    "dateError": "Please enter the date"
   }
 }

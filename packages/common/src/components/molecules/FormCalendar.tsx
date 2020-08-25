@@ -12,6 +12,8 @@ import { CalendarComponent } from '@homzhub/common/src/components/atoms/Calendar
 interface IFormCalendarProps extends WithTranslation {
   name: string;
   formProps: FormikProps<FormikValues>;
+  label?: string;
+  placeHolder?: string;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -30,6 +32,8 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       name,
       formProps: { values },
       containerStyle = {},
+      label,
+      placeHolder,
     } = this.props;
     const { isCalendarVisible } = this.state;
     const availableDate = values[name] === moment().format('YYYY-MM-DD') ? 'Today' : values[name];
@@ -37,13 +41,13 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     return (
       <View style={[styles.container, containerStyle]}>
         <Label type="regular" textType="regular" style={styles.label}>
-          {t('common:availableFrom')}
+          {label || t('common:availableFrom')}
         </Label>
         <TouchableOpacity testID="toCalenderInput" style={styles.dateView} onPress={this.onCalendarOpen}>
           <View style={styles.dateLeft}>
             <Icon name={icons.calendar} color={theme.colors.darkTint5} size={18} />
             <Text type="small" textType="regular" style={styles.dateText}>
-              {availableDate}
+              {availableDate || placeHolder}
             </Text>
           </View>
           <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} />

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { cashFlowData, propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
 import { AnimatedProfileHeader, AssetMetricsList } from '@homzhub/mobile/src/components';
@@ -11,10 +11,9 @@ import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOve
 import { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
 import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 
-type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.Financials>;
-type Props = libraryProps;
+type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
 
-export class Financials extends React.PureComponent<Props, {}> {
+export class Financials extends React.PureComponent<Props> {
   public render = (): React.ReactElement => {
     const { t } = this.props;
     const { currency_symbol, totalDue, details } = propertyDues;
@@ -25,8 +24,9 @@ export class Financials extends React.PureComponent<Props, {}> {
         <>
           <AssetMetricsList
             showPlusIcon
+            onPlusIconClicked={this.onPlusIconPress}
             // @ts-ignore
-            title={t('assetDashboard:cashFlow')}
+            title={t('assetFinancial:recordsText')}
             data={deserializedCashFlowData}
             containerStyle={styles.cashFlowContainer}
             individualCardStyle={styles.individualCardStyle}
@@ -37,10 +37,14 @@ export class Financials extends React.PureComponent<Props, {}> {
       </AnimatedProfileHeader>
     );
   };
+
+  private onPlusIconPress = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.AddRecordScreen);
+  };
 }
 
-const namespace = LocaleConstants.namespacesKey;
-export default withTranslation([namespace.assetFinancial, namespace.assetDashboard])(Financials);
+export default withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials);
 
 const styles = StyleSheet.create({
   cashFlowContainer: {
