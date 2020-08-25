@@ -21,6 +21,7 @@ interface IProps {
   isCarousel: boolean;
   textSizeType?: TextSizeType;
   onSelectedProperty: () => void;
+  testID?: string;
 }
 
 type libraryProps = WithTranslation;

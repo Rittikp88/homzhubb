@@ -1,0 +1,364 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphLegends should match snapshot 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+      },
+      Object {
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "marginTop": 16,
+      },
+    ]
+  }
+>
+  <View
+    key="legend-Total Income"
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "marginBottom": 16,
+          "marginHorizontal": 12,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 6,
+            "height": 12,
+            "marginEnd": 6,
+            "marginTop": 4,
+            "width": 12,
+          },
+          Object {
+            "backgroundColor": "#85DACF",
+          },
+        ]
+      }
+    />
+    <View>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        Total Income
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        ₹30,00,000/-
+      </Label>
+    </View>
+  </View>
+  <View
+    key="legend-Total Income"
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "marginBottom": 16,
+          "marginHorizontal": 12,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 6,
+            "height": 12,
+            "marginEnd": 6,
+            "marginTop": 4,
+            "width": 12,
+          },
+          Object {
+            "backgroundColor": "#FFC5BE",
+          },
+        ]
+      }
+    />
+    <View>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        Total Income
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        ₹30,00,000/-
+      </Label>
+    </View>
+  </View>
+  <View
+    key="legend-Total Income"
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "marginBottom": 16,
+          "marginHorizontal": 12,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 6,
+            "height": 12,
+            "marginEnd": 6,
+            "marginTop": 4,
+            "width": 12,
+          },
+          Object {
+            "backgroundColor": "#A2D2FD",
+          },
+        ]
+      }
+    />
+    <View>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        Total Income
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        ₹30,00,000/-
+      </Label>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`GraphLegends should match snapshot for column direction 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+      },
+      Object {
+        "flexDirection": "column",
+      },
+    ]
+  }
+>
+  <View
+    key="legend-Total Income"
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "marginVertical": 16,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 6,
+            "height": 12,
+            "marginEnd": 6,
+            "marginTop": 4,
+            "width": 12,
+          },
+          Object {
+            "backgroundColor": "#85DACF",
+          },
+        ]
+      }
+    />
+    <View>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        Total Income
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        ₹30,00,000/-
+      </Label>
+    </View>
+  </View>
+  <View
+    key="legend-Total Income"
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "marginVertical": 16,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 6,
+            "height": 12,
+            "marginEnd": 6,
+            "marginTop": 4,
+            "width": 12,
+          },
+          Object {
+            "backgroundColor": "#FFC5BE",
+          },
+        ]
+      }
+    />
+    <View>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        Total Income
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        ₹30,00,000/-
+      </Label>
+    </View>
+  </View>
+  <View
+    key="legend-Total Income"
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "marginVertical": 16,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 6,
+            "height": 12,
+            "marginEnd": 6,
+            "marginTop": 4,
+            "width": 12,
+          },
+          Object {
+            "backgroundColor": "#A2D2FD",
+          },
+        ]
+      }
+    />
+    <View>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        Total Income
+      </Label>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        ₹30,00,000/-
+      </Label>
+    </View>
+  </View>
+</View>
+`;

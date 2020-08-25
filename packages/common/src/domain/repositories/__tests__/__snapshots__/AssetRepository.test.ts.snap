@@ -393,7 +393,9 @@ Asset {
   "_latitude": 25.619,
   "_leaseTerm": null,
   "_longitude": 85.123,
+  "_maintenancePaymentSchedule": "",
   "_postedOn": "2020-06-03",
+  "_progressPercentage": 0,
   "_projectName": "Malti Kunj",
   "_saleTerm": null,
   "_spaces": Array [
@@ -694,7 +696,9 @@ Asset {
   "_latitude": 25.619,
   "_leaseTerm": null,
   "_longitude": 85.123,
+  "_maintenancePaymentSchedule": "",
   "_postedOn": "2020-06-03",
+  "_progressPercentage": 0,
   "_projectName": "Malti Kunj",
   "_saleTerm": null,
   "_spaces": Array [
@@ -973,7 +977,9 @@ Array [
     "_latitude": 25.619,
     "_leaseTerm": null,
     "_longitude": 85.123,
+    "_maintenancePaymentSchedule": "",
     "_postedOn": "2020-06-03",
+    "_progressPercentage": 0,
     "_projectName": "Malti Kunj",
     "_saleTerm": null,
     "_spaces": Array [
@@ -1253,7 +1259,9 @@ Array [
     "_latitude": 25.619,
     "_leaseTerm": null,
     "_longitude": 85.123,
+    "_maintenancePaymentSchedule": "",
     "_postedOn": "2020-06-03",
+    "_progressPercentage": 0,
     "_projectName": "Malti Kunj",
     "_saleTerm": null,
     "_spaces": Array [
@@ -1619,7 +1627,9 @@ Asset {
   "_latitude": 25.619,
   "_leaseTerm": null,
   "_longitude": 85.123,
+  "_maintenancePaymentSchedule": "",
   "_postedOn": "2020-06-03",
+  "_progressPercentage": 0,
   "_projectName": "Malti Kunj",
   "_saleTerm": null,
   "_spaces": Array [

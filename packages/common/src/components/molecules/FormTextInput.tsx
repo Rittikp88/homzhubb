@@ -213,8 +213,13 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     const { setFieldValue } = formProps;
     const regExp = /^\s/;
     let inputValue = text;
-    if (inputType === 'number' || inputType === 'phone') {
+    if (inputType === 'phone') {
       inputValue = text.replace(/\D/g, '');
+    } else if (inputType === 'number') {
+      inputValue = text.replace(/[^0-9.]/g, '');
+      if (inputValue.split('.').length > 2) {
+        inputValue = inputValue.replace(/\.+$/, '');
+      }
     } else if (inputType === 'name') {
       inputValue = text.replace(/\d/g, '');
     } else if (inputType === 'email') {

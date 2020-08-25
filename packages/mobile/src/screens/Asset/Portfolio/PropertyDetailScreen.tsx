@@ -15,7 +15,7 @@ import { tabName, Tabs } from '@homzhub/common/src/domain/models/Tabs';
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
 type Props = WithTranslation & libraryProps;
 
-class PropertyDetailScreen extends Component<Props> {
+export class PropertyDetailScreen extends Component<Props> {
   public render = (): React.ReactNode => {
     const {
       t,
@@ -27,7 +27,13 @@ class PropertyDetailScreen extends Component<Props> {
       <AnimatedProfileHeader title={t('portfolio')}>
         <>
           <View style={styles.header}>
-            <Icon name={icons.leftArrow} size={20} color={theme.colors.primaryColor} onPress={this.handleIconPress} />
+            <Icon
+              name={icons.leftArrow}
+              size={20}
+              color={theme.colors.primaryColor}
+              onPress={this.handleIconPress}
+              testID="icnBack"
+            />
             <Text type="small" textType="semiBold" style={styles.headerTitle}>
               Property Details
             </Text>

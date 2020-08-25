@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DonutGraph should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+    }
+  }
+>
+  <PieChart
+    data={
+      Array [
+        Object {
+          "key": 1,
+          "svg": Object {
+            "fill": "#85DACF",
+          },
+          "value": 40,
+        },
+        Object {
+          "key": 2,
+          "svg": Object {
+            "fill": "#FFC5BE",
+          },
+          "value": 40,
+        },
+        Object {
+          "key": 3,
+          "svg": Object {
+            "fill": "#A2D2FD",
+          },
+          "value": 20,
+        },
+      ]
+    }
+    endAngle={6.283185307179586}
+    height={100}
+    innerRadius="45%"
+    padAngle={0.05}
+    sort={[Function]}
+    startAngle={0}
+    style={
+      Object {
+        "flex": 1,
+        "height": 333.5,
+        "marginEnd": 16,
+      }
+    }
+    valueAccessor={[Function]}
+    width={100}
+  />
+  <Memo(GraphLegends)
+    direction="column"
+  />
+</View>
+`;

@@ -20,14 +20,14 @@ interface IProps {
 
 type Props = IProps & WithTranslation;
 
-class PropertySearchList extends React.PureComponent<Props> {
+export class PropertySearchList extends React.PureComponent<Props> {
   public componentWillUnmount(): void {
     const { setFilter } = this.props;
     setFilter({ offset: 0 });
   }
 
   public render(): React.ReactNode {
-    const { properties, onFavorite, filters, onSelectedProperty, t } = this.props;
+    const { properties, t } = this.props;
     if (properties.count === 0) {
       return null;
     }
@@ -38,37 +38,42 @@ class PropertySearchList extends React.PureComponent<Props> {
         </Label>
         <FlatList
           data={properties.results}
-          renderItem={({ item }: { item: Asset }): React.ReactElement => {
-            const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
-            const navigateToAssetDescription = (): void => {
-              const { leaseTerm, saleTerm, id } = item;
-              if (leaseTerm) {
-                onSelectedProperty(leaseTerm.id, id);
-              }
-              if (saleTerm) {
-                onSelectedProperty(saleTerm.id, id);
-              }
-            };
-            return (
-              <PropertyListCard
-                property={item}
-                onFavorite={onUpdateFavoritePropertyId}
-                key={item.id}
-                transaction_type={filters.asset_transaction_type}
-                isCarousel
-                onSelectedProperty={navigateToAssetDescription}
-              />
-            );
-          }}
+          renderItem={this.renderItem}
           keyExtractor={this.renderKeyExtractor}
           // @ts-ignore
           ListFooterComponent={this.renderFooter}
           onEndReached={this.loadMoreProperties}
           onEndReachedThreshold={0.8}
+          testID="resultList"
         />
       </View>
     );
   }
+
+  public renderItem = ({ item }: { item: Asset }): React.ReactElement => {
+    const { onFavorite, filters, onSelectedProperty } = this.props;
+    const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
+    const navigateToAssetDescription = (): void => {
+      const { leaseTerm, saleTerm, id } = item;
+      if (leaseTerm) {
+        onSelectedProperty(leaseTerm.id, id);
+      }
+      if (saleTerm) {
+        onSelectedProperty(saleTerm.id, id);
+      }
+    };
+    return (
+      <PropertyListCard
+        property={item}
+        onFavorite={onUpdateFavoritePropertyId}
+        key={item.id}
+        transaction_type={filters.asset_transaction_type}
+        isCarousel
+        onSelectedProperty={navigateToAssetDescription}
+        testID="listCard"
+      />
+    );
+  };
 
   public renderFooter = (): React.ReactNode => {
     const { t, properties } = this.props;

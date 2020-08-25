@@ -7,7 +7,7 @@ exports[`LeaseDetailsForm should match snapshot 1`] = `
     initialValues={
       Object {
         "annualIncrement": "",
-        "availableFrom": "2020-08-24",
+        "availableFrom": "2020-08-25",
         "furnishingStatus": "NONE",
         "maintenanceAmount": "",
         "maintenanceBy": "OWNER",

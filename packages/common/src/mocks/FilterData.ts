@@ -70,3 +70,23 @@ export const FilterData = {
     ],
   },
 };
+
+export const SearchFilter = {
+  search_latitude: 1,
+  search_longitude: 1,
+  asset_transaction_type: 1,
+  asset_type: [1],
+  min_price: 1,
+  max_price: 1,
+  min_area: 1,
+  max_area: 1,
+  area_unit: '',
+  furnishing_status: '',
+  room_count: [1],
+  bath_count: 1,
+  is_verified: false,
+  asset_group: 1,
+  search_address: '',
+  limit: 1,
+  offset: 1,
+};

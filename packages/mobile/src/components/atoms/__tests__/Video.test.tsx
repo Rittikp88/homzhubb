@@ -1,20 +1,51 @@
+// @ts-noCheck
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { RNVideo } from '@homzhub/mobile/src/components/atoms/Video';
 
-jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
-jest.mock('@react-native-community/google-signin', () => {});
+let props: any;
+let wrapper: ShallowWrapper;
 
 describe('Video', () => {
-  const props = {
-    uri: 'videoUrl',
-    onBuffer: jest.fn(),
-    onVideoError: jest.fn(),
-  };
-  const wrapper: ShallowWrapper = shallow(<RNVideo {...props} />);
+  const createTestProps = (testProps: any): object => ({
+    direction: 'row',
+    ...testProps,
+  });
 
   it('should match snapshot', () => {
+    props = createTestProps({});
+    wrapper = shallow(<RNVideo {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('should match snapshot for full screen', () => {
+    props = createTestProps({
+      isFullScreenCarousel: true,
+    });
+    wrapper = shallow(<RNVideo {...props} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('should validate state', () => {
+    props = createTestProps({
+      isFullScreenCarousel: true,
+      onToggleFullScreenVideoPlayer: jest.fn(),
+    });
+    const instance = shallow(<RNVideo {...props} />).instance();
+    instance.onPaused(1);
+    expect(instance.state.paused).toBe(true);
+    expect(instance.state.playerState).toBe(1);
+    instance.onLoad({ duration: 12 });
+    expect(instance.state.duration).toBe(12);
+    expect(instance.state.isLoading).toBe(false);
+    instance.onProgress({ currentTime: 15 });
+    expect(instance.state.currentTime).toBe(15);
+    instance.onLoadStart();
+    expect(instance.state.isLoading).toBe(true);
+    instance.onEnd();
+    expect(instance.state.playerState).toBe(2);
+    instance.onSeeking(12);
+    expect(instance.state.currentTime).toBe(12);
   });
 });

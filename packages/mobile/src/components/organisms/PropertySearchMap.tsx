@@ -29,7 +29,7 @@ type Props = IProps & WithTranslation;
 const SLIDER_WIDTH = theme.viewport.width - 60;
 const MAP_DELTA = 0.1;
 
-class PropertySearchMap extends React.PureComponent<Props, IState> {
+export class PropertySearchMap extends React.PureComponent<Props, IState> {
   private mapRef: MapView | null = null;
   private carouselRef = null;
 
@@ -98,6 +98,7 @@ class PropertySearchMap extends React.PureComponent<Props, IState> {
           bubbleRef={(ref): void => {
             this.carouselRef = ref;
           }}
+          testID="assetSnap"
         />
       </>
     );

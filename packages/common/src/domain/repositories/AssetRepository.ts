@@ -56,6 +56,7 @@ const ENDPOINTS = {
     `lease-listings/${propertyTermId}/similar-properties/`,
   getSimilarPropertiesForSale: (propertyTermId: number): string =>
     `sale-listings/${propertyTermId}/similar-properties/`,
+  getPendingAssets: (): string => 'assets',
 };
 
 class AssetRepository {
@@ -185,6 +186,11 @@ class AssetRepository {
     }
     // SALE FLOW
     const response = await this.apiClient.get(ENDPOINTS.getSimilarPropertiesForSale(propertyTermId));
+    return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  public getPendingProperties = async (status: string): Promise<Asset[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getPendingAssets(), { status });
     return ObjectMapper.deserializeArray(Asset, response);
   };
 }

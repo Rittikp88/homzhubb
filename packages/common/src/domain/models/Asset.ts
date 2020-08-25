@@ -137,6 +137,12 @@ export class Asset {
   @JsonProperty('is_favorite', Boolean, true)
   private _isFavorite = false;
 
+  @JsonProperty('progress_percentage', Number, true)
+  private _progressPercentage = 0;
+
+  @JsonProperty('maintenance_payment_schedule', String, true)
+  private _maintenancePaymentSchedule = '';
+
   get projectName(): string {
     return this._projectName;
   }
@@ -238,5 +244,13 @@ export class Asset {
       longitude: this.longitude,
       latitude: this.latitude,
     };
+  }
+
+  get progressPercentage(): number {
+    return this._progressPercentage;
+  }
+
+  get maintenancePaymentSchedule(): string {
+    return this._maintenancePaymentSchedule;
   }
 }

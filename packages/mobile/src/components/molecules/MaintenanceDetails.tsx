@@ -40,7 +40,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           name={maintenanceAmountKey}
           label={t('maintenanceAmount')}
           placeholder={t('maintenanceAmountPlaceholder')}
-          maxLength={6}
+          maxLength={formProps.values.maintenanceAmount && formProps.values.maintenanceAmount.includes('.') ? 13 : 12}
           formProps={formProps}
           inputGroupSuffixText={currency}
           onValueChange={onMaintenanceAmountChanged}

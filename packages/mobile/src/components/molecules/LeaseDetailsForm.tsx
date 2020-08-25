@@ -148,7 +148,7 @@ export class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                   name={LeaseFormKeys.monthlyRent}
                   label={t('monthlyRent')}
                   placeholder={t('monthlyRentPlaceholder')}
-                  maxLength={12}
+                  maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
                   formProps={formProps}
                   inputGroupSuffixText={currency}
                 />
@@ -157,7 +157,7 @@ export class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                   name={LeaseFormKeys.securityDeposit}
                   label={t('securityDeposit')}
                   placeholder={t('securityDepositPlaceholder')}
-                  maxLength={12}
+                  maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
                   formProps={formProps}
                   inputGroupSuffixText={currency}
                 />
@@ -303,11 +303,11 @@ export class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
       [LeaseFormKeys.showMore]: yup.boolean(),
       [LeaseFormKeys.monthlyRent]: yup
         .string()
-        .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
+        .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
         .required(t('monthlyRentRequired')),
       [LeaseFormKeys.securityDeposit]: yup
         .string()
-        .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
+        .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
         .required(t('securityDepositRequired')),
       [LeaseFormKeys.annualIncrement]: yup.string().when('showMore', {
         is: true,
@@ -320,7 +320,7 @@ export class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
         is: PaidByTypes.TENANT,
         then: yup
           .string()
-          .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
+          .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
           .required(t('maintenanceAmountRequired')),
       }),
       [LeaseFormKeys.maintenanceSchedule]: yup.string<ScheduleTypes>().required(t('maintenanceScheduleRequired')),

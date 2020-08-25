@@ -1,0 +1,293 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PropertyVerification should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "marginBottom": 20,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 10,
+        }
+      }
+      textType="regular"
+      type="large"
+    >
+      propertyVerificationSubTitle
+    </Label>
+    <Text
+      onPress={[Function]}
+      style={
+        Object {
+          "color": "#0084F8",
+          "marginVertical": 10,
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      helperNavigationText
+    </Text>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 0.5,
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      key="0"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        ID Proof
+      </Text>
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
+          }
+        }
+        header="Upload ID proof"
+        icon="id-proof"
+        onPress={[Function]}
+        subHeader="Supports: JPG, JPEG, PNG, PDF"
+      />
+    </View>
+    <View
+      key="1"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        Click a selfie with the ID proof
+      </Text>
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+            "marginVertical": 10,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        Please ensure that the ID is clearly visible in your photo
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
+          }
+        }
+        header="Capture Your Selfie"
+        icon="selfie"
+        onPress={[Function]}
+        subHeader="Note: Feugiat sed morbi feuiat enim."
+      />
+    </View>
+    <View
+      key="2"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        Upload Ownership Verification Document
+      </Text>
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+            "marginVertical": 10,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
+          }
+        }
+        header="Upload Document"
+        icon="document"
+        onPress={[Function]}
+        subHeader="Supports: JPG, JPEG, PNG, PDF'"
+      />
+    </View>
+    <View
+      key="3"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        Upload Occupancy Document
+      </Text>
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+            "marginVertical": 10,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
+          }
+        }
+        header="Upload Document"
+        icon="document"
+        onPress={[Function]}
+        subHeader="Supports: JPG, JPEG, PNG, PDF'"
+      />
+    </View>
+    <View
+      key="4"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        Upload Property Tax
+      </Text>
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+            "marginVertical": 10,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
+          }
+        }
+        header="Upload Document"
+        icon="document"
+        onPress={[Function]}
+        subHeader="Supports: JPG, JPEG, PNG, PDF'"
+      />
+    </View>
+  </View>
+  <WithShadowView
+    outerViewStyle={
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "margin": 16,
+        }
+      }
+      disabled={true}
+      onPress={[Function]}
+      title="common:saveAndContinue"
+      type="primary"
+    />
+  </WithShadowView>
+</View>
+`;

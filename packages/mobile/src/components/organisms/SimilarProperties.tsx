@@ -21,7 +21,7 @@ interface ISimilarPropertiesState {
   similarProperties: Asset[];
 }
 
-class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesState> {
+export class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesState> {
   public state = {
     similarProperties: [],
   };
@@ -46,15 +46,16 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
           data={similarProperties}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }: { item: any }): React.ReactElement => this.renderCarouselItem(item)}
+          renderItem={this.renderCarouselItem}
           removeClippedSubviews
           keyExtractor={this.renderKeyExtractor}
+          testID="similarPropertiesList"
         />
       </View>
     );
   }
 
-  public renderCarouselItem = (item: Asset): React.ReactElement => {
+  public renderCarouselItem = ({ item }: { item: Asset }): React.ReactElement => {
     const { onFavorite, transaction_type, onSelectedProperty } = this.props;
     const { leaseTerm, saleTerm, id } = item;
     const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
@@ -76,6 +77,7 @@ class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesSta
         containerStyle={styles.propertyCard}
         textSizeType="small"
         onSelectedProperty={navigateToSelectedProperty}
+        testID="listCard"
       />
     );
   };

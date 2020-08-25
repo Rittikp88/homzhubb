@@ -5,13 +5,16 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Button, Label, Text } from '@homzhub/common/src/components';
 import { PropertyAmenities, PropertyAddressCountry, ProgressBar } from '@homzhub/mobile/src/components';
 import { PendingProperties } from '@homzhub/common/src/mocks/PendingProperties';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
   currentPropertyIndex: number;
+  data: Asset[];
 }
 
 type Props = WithTranslation;
@@ -19,7 +22,13 @@ type Props = WithTranslation;
 export class PendingPropertyListCard extends Component<Props, IState> {
   public state = {
     currentPropertyIndex: 0,
+    data: [],
   };
+
+  // TODO: (Shikha) - Un-comment once api issue fix
+  // public componentDidMount = async (): Promise<void> => {
+  //   await this.getPendingProperties();
+  // };
 
   public render(): React.ReactNode {
     const { currentPropertyIndex } = this.state;
@@ -97,6 +106,11 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         </Label>
       </View>
     );
+  };
+
+  private getPendingProperties = async (): Promise<void> => {
+    const response: Asset[] = await AssetRepository.getPendingProperties('PENDING');
+    this.setState({ data: response });
   };
 
   private handleNext = (): void => {

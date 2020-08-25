@@ -80,7 +80,7 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
                 name="expectedPrice"
                 label={t('expectedPrice')}
                 placeholder={t('expectedPricePlaceholder')}
-                maxLength={12}
+                maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
                 formProps={formProps}
                 inputGroupSuffixText={currency}
               />
@@ -89,7 +89,7 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
                 name="bookingAmount"
                 label={t('bookingAmount')}
                 placeholder={t('bookingAmountPlaceholder')}
-                maxLength={12}
+                maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
                 formProps={formProps}
                 inputGroupSuffixText={currency}
               />
@@ -162,7 +162,7 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
       expectedPrice: yup
         .string()
         .min(3, t('minimumAmount'))
-        .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
+        .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
         .required(t('expectedPriceRequired')),
       bookingAmount: yup
         .string()
@@ -176,7 +176,7 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
           message: t('bookingAmountExceeded'),
         })
         .min(3, t('minimumAmount'))
-        .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
+        .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
         .required(t('bookingAmountRequired')),
       yearOfConstruction: yup
         .string()
@@ -184,7 +184,7 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
         .required(t('yearOfConstructionRequired')),
       maintenanceAmount: yup
         .string()
-        .matches(FormUtils.digitRegex, t('common:onlyNumeric'))
+        .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
         .required(t('maintenanceAmountRequired')),
       maintenanceSchedule: yup.string<ScheduleTypes>().required(t('maintenanceScheduleRequired')),
       availableFrom: yup.string(),
