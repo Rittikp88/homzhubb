@@ -28,7 +28,7 @@ class TransactionCardsContainer extends React.PureComponent<IProps, IState> {
   };
 
   public render(): ReactElement {
-    const {t} = this.props;
+    const { t } = this.props;
     const { shouldExpand } = this.state;
 
     return (

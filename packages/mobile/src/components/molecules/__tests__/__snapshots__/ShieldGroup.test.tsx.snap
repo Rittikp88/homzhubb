@@ -102,9 +102,12 @@ exports[`ShieldGroup should match snapshot with props 1`] = `
 >
   <Text
     style={
-      Object {
-        "color": "#0084F8",
-      }
+      Array [
+        Object {
+          "color": "#0084F8",
+        },
+        undefined,
+      ]
     }
     textType="regular"
     type="small"

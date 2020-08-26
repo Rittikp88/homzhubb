@@ -16,7 +16,7 @@ class PropertyUtils {
     carpetAreaUnit?: string | null,
     isFullDetail?: boolean
   ): IAmenitiesIcons[] => {
-    let amenities: IAmenitiesIcons[] = [];
+    const amenities: IAmenitiesIcons[] = [];
     if (spaces.length === 0) {
       return [];
     }
@@ -44,20 +44,24 @@ class PropertyUtils {
         : `${floorNumber}${isFullDetail ? ordinalSuffix(floorNumber) : ''}`;
     const baths = bathroom.length > 0 && bathroom[0].count ? bathroom[0].count.toString() : '-';
     const balconies = balcony.length > 0 && balcony[0].count ? balcony[0].count.toString() : '-';
-    amenities = [
-      {
+
+    if ((name === 'Residential' && bedroom.length > 0) || floorNumber > 0) {
+      amenities.push({
         icon: name === 'Residential' ? icons.bed : icons.floor,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
         label: isFullDetail ? (name === 'Residential' ? `${bedFloor} Beds` : `${bedFloor} Floor`) : bedFloor,
-      },
-      {
+      });
+    }
+
+    if (bathroom.length > 0) {
+      amenities.push({
         icon: name === 'Residential' ? icons.bathTub : icons.washroom,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
         label: isFullDetail ? (name === 'Residential' ? `${baths} Baths` : `${baths} Washrooms`) : baths,
-      },
-    ];
+      });
+    }
 
     if (carpetArea && parseInt(carpetAreaValue, 10) !== 0) {
       amenities.push({

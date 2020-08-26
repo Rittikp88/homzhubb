@@ -29,7 +29,7 @@ import {
 } from '@homzhub/common/src/domain/models/Service';
 
 const ENDPOINTS = {
-  createAsset: (): string => 'assets/',
+  asset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
   getAssetById: (propertyId: number): string => `assets/${propertyId}/`,
   leaseTerms: (propertyId: number): string => `assets/${propertyId}/lease-listings/`,
@@ -56,7 +56,6 @@ const ENDPOINTS = {
     `lease-listings/${propertyTermId}/similar-properties/`,
   getSimilarPropertiesForSale: (propertyTermId: number): string =>
     `sale-listings/${propertyTermId}/similar-properties/`,
-  getPendingAssets: (): string => 'assets',
 };
 
 class AssetRepository {
@@ -76,7 +75,7 @@ class AssetRepository {
   };
 
   public createAsset = async (assetDetails: ICreateAssetDetails): Promise<ICreateAssetResult> => {
-    return await this.apiClient.post(ENDPOINTS.createAsset(), assetDetails);
+    return await this.apiClient.post(ENDPOINTS.asset(), assetDetails);
   };
 
   public updateAsset = async (id: number, requestBody: IUpdateAssetDetails): Promise<void> => {
@@ -190,7 +189,7 @@ class AssetRepository {
   };
 
   public getPendingProperties = async (status: string): Promise<Asset[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.getPendingAssets(), { status });
+    const response = await this.apiClient.get(ENDPOINTS.asset(), { status });
     return ObjectMapper.deserializeArray(Asset, response);
   };
 }

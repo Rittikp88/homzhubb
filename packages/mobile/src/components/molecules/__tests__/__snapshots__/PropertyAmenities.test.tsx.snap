@@ -6,6 +6,7 @@ exports[`PropertyAmenities should match snapshot 1`] = `
     Array [
       Object {
         "flexDirection": "row",
+        "flexWrap": "wrap",
         "justifyContent": "space-between",
       },
       undefined,

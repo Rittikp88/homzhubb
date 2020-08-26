@@ -2,7 +2,6 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { debounce } from 'lodash';
 import { AssetLocationSearch } from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
 import { autocompleteMock } from '@homzhub/common/src/mocks/GooglePlacesMocks';
 
@@ -18,7 +17,6 @@ describe('Asset Location Search', () => {
         goBack: mock,
       },
     };
-    jest.useFakeTimers();
     component = shallow(<AssetLocationSearch {...props} t={(key: string): string => key} />);
   });
 
@@ -27,15 +25,8 @@ describe('Asset Location Search', () => {
   });
 
   it('should update state', () => {
-    const debouncedFunc = debounce(mock, 300);
     component.find('[testID="searchBar"]').prop('updateValue')('Kochi');
     expect(component.instance().state.searchString).toBe('Kochi');
-
-    debouncedFunc();
-    jest.runAllTimers();
-    component.setState({ suggestions: autocompleteMock.predictions });
-    expect(mock).toHaveBeenCalledTimes(1);
-
     component.find('[testID="searchBar"]').prop('updateValue')('');
     expect(component.instance().state.searchString).toBe('');
   });

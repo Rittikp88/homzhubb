@@ -76,6 +76,7 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
         />
       </ForwardRef>
       <ForwardRef
+        disabled={false}
         style={
           Object {
             "alignItems": "center",

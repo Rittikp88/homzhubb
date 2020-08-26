@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, StyleProp, TextStyle } from 'react-native';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -11,11 +11,12 @@ interface IProps {
   propertyType?: string;
   text?: string;
   isInfoRequired?: boolean;
+  propertyTypeStyle?: StyleProp<TextStyle>;
 }
 
 // TODO: (Shikha) - Need to add proper bottom - sheet data once api integrate
 
-const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.ReactElement => {
+const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: IProps): React.ReactElement => {
   const [isVisible, setVisible] = useState(false);
 
   const handleInfo = (): void => {
@@ -27,8 +28,8 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired }: IProps): React.Reac
   const customStyle = customizedStyles(!!propertyType);
   return (
     <View style={customStyle.container}>
-      {propertyType && (
-        <Text type="small" textType="regular" style={styles.propertyTypeText}>
+      {!!propertyType && (
+        <Text type="small" textType="regular" style={[styles.propertyTypeText, propertyTypeStyle]}>
           {propertyType}
         </Text>
       )}

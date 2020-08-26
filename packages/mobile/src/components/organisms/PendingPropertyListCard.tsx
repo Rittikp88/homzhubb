@@ -7,7 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Button, Label, Text } from '@homzhub/common/src/components';
-import { PropertyAmenities, PropertyAddressCountry, ProgressBar } from '@homzhub/mobile/src/components';
+import { PropertyAmenities, PropertyAddressCountry, ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
@@ -52,7 +52,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
                 testID="icnPrevious"
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconStyle}>
+            <TouchableOpacity style={styles.iconStyle} disabled={currentPropertyIndex === total - 1}>
               <Icon
                 name={icons.rightArrow}
                 size={16}
@@ -79,6 +79,8 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       carpetArea,
       carpetAreaUnit,
       floorNumber,
+      blockNumber,
+      verifications: { description },
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
@@ -91,18 +93,16 @@ export class PendingPropertyListCard extends Component<Props, IState> {
 
     return (
       <View style={styles.cardContainer}>
-        <Text type="small" style={styles.heading}>
-          {name}
-        </Text>
+        <ShieldGroup propertyType={name} propertyTypeStyle={styles.heading} text={description} isInfoRequired />
         <PropertyAddressCountry
           primaryAddress={projectName}
-          subAddress={unitNumber}
+          subAddress={`${unitNumber ?? ''} ${blockNumber ?? ''}`}
           containerStyle={styles.addressStyle}
         />
         {amenitiesData.length > 0 && (
           <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         )}
-        <ProgressBar progress={progressPercentage} width={350} />
+        <ProgressBar progress={progressPercentage} width={theme.viewport.width > 400 ? 350 : 310} />
         <Button type="primary" title={t('completeDetails')} containerStyle={styles.buttonStyle} />
         <Label type="regular" style={styles.infoText}>
           {t('completeProperty')}
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   heading: {
-    marginBottom: 10,
+    color: theme.colors.darkTint3,
   },
   amenitiesContainer: {
     marginBottom: 20,
