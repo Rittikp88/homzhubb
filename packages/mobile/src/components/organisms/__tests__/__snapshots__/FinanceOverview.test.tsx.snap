@@ -27,7 +27,7 @@ exports[`FinanceOverview should match snapshot 1`] = `
     data={
       Array [
         Object {
-          "title": "costBreakdown",
+          "title": "expenses",
           "value": 1,
         },
         Object {
@@ -37,6 +37,7 @@ exports[`FinanceOverview should match snapshot 1`] = `
       ]
     }
     onValueChange={[Function]}
+    optionWidth={347.5}
     selectedItem={
       Array [
         1,
@@ -77,29 +78,58 @@ exports[`FinanceOverview should match snapshot 1`] = `
         textType="semiBold"
         type="large"
       >
-        June, 2020
+        Aug 2020
       </Label>
     </View>
     <Dropdown
       data={
         Array [
           Object {
-            "label": "Monthly",
-            "value": "Monthly",
+            "dataGroupBy": "MONTH",
+            "endDate": "2020-08-31",
+            "label": "This month",
+            "startDate": "2020-08-01",
+            "value": 1,
           },
           Object {
-            "label": "Annually",
-            "value": "Annually",
+            "dataGroupBy": "MONTH",
+            "endDate": "2020-07-31",
+            "label": "Last month",
+            "startDate": "2020-07-01",
+            "value": 2,
+          },
+          Object {
+            "dataGroupBy": "YEAR",
+            "endDate": "2020-12-31",
+            "label": "This year",
+            "startDate": "2020-01-01",
+            "value": 3,
+          },
+          Object {
+            "dataGroupBy": "YEAR",
+            "endDate": "2021-03-31",
+            "label": "This financial year",
+            "startDate": "2020-04-01",
+            "value": 4,
+          },
+          Object {
+            "dataGroupBy": "YEAR",
+            "endDate": "2019-12-31",
+            "label": "Last year",
+            "startDate": "2019-01-01",
+            "value": 5,
           },
         ]
       }
       iconColor="#0084F8"
-      listHeight={400.2}
+      listHeight={667}
       onDonePress={[Function]}
       testID="drpTimeRange"
-      value="Monthly"
+      value={1}
     />
   </View>
-  <Memo(DonutGraph) />
+  <Memo(DonutGraph)
+    data={Array []}
+  />
 </View>
 `;

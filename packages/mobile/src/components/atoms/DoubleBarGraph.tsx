@@ -2,8 +2,18 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { BarChart, XAxis, YAxis, Grid } from 'react-native-svg-charts';
 import { PathProps } from 'react-native-svg';
+import { sum } from 'lodash';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
+import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
+
+interface IProps {
+  data: {
+    data1: number[];
+    data2: number[];
+    label: string[];
+  };
+}
 
 // SVG OPTIONS
 const SVG_FONT = { fontSize: 12, fill: theme.colors.darkTint6, fontWeight: '600' as '600' };
@@ -16,22 +26,38 @@ const Y_GRID_WIDTH = 36;
 const HEIGHT = theme.viewport.height * 0.5;
 const WIDTH = theme.viewport.width * 1.5;
 
-// TODO (Aditya - 7/8/2020): 1) Add logic to make this dynamic as per requirements 2) Figure out a way to make the horizontal positioning work with scrolling and dynamic data
-const DoubleBarGraph = (): React.ReactElement => {
-  const data1 = [10, 20, 0, 77, 43, 100, 54, 23, 11, 87, 34, 99];
-  const data2 = [24, 28, 93, 77, 52, 21, 200, 76, 12, 43, 59, 120];
+const DoubleBarGraph = (props: IProps): React.ReactElement => {
+  const {
+    data: { data1, data2, label },
+  } = props;
 
   const barData = [
     {
       data: data1,
-      svg: { fill: '#FFC5BE' } as Partial<PathProps>,
+      svg: { fill: theme.colors.expense } as Partial<PathProps>,
     },
     {
       data: data2,
-      svg: { fill: '#85DACF' } as Partial<PathProps>,
+      svg: { fill: theme.colors.income } as Partial<PathProps>,
     },
   ];
-  const label = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const barGraphLegends = (): IGeneralLedgerGraphData[] => {
+    return [
+      {
+        key: 1,
+        title: BarGraphLegends.expense,
+        value: sum(data1),
+        svg: { fill: theme.colors.expense },
+      },
+      {
+        key: 1,
+        title: BarGraphLegends.income,
+        value: sum(data2),
+        svg: { fill: theme.colors.income },
+      },
+    ];
+  };
 
   return (
     <>
@@ -52,7 +78,7 @@ const DoubleBarGraph = (): React.ReactElement => {
           />
         </View>
       </ScrollView>
-      <GraphLegends direction="row" />
+      <GraphLegends direction="row" data={barGraphLegends()} />
     </>
   );
 };
@@ -76,6 +102,7 @@ const styles = StyleSheet.create({
   xAxis: {
     marginStart: Y_GRID_WIDTH,
     width: WIDTH,
+    padding: 10,
   },
 });
 

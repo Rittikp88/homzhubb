@@ -1,10 +1,19 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 
 const createTestProps = (testProps: any): object => ({
   direction: 'row',
+  data: [
+    {
+      key: 1,
+      title: 'Some Title',
+      value: 1000,
+      svg: { fill: theme.colors.blueDonut },
+    },
+  ],
   ...testProps,
 });
 let props: any;

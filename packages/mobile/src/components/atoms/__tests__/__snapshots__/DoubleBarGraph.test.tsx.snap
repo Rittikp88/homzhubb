@@ -29,30 +29,10 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
           }
           data={
             Array [
-              10,
-              20,
-              0,
-              77,
-              43,
-              100,
-              54,
-              23,
-              11,
-              87,
-              34,
-              99,
-              24,
-              28,
-              93,
-              77,
-              52,
-              21,
-              200,
-              76,
-              12,
-              43,
-              59,
-              120,
+              1,
+              2,
+              3,
+              4,
             ]
           }
           formatLabel={[Function]}
@@ -86,18 +66,8 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
             Array [
               Object {
                 "data": Array [
-                  10,
-                  20,
-                  0,
-                  77,
-                  43,
-                  100,
-                  54,
-                  23,
-                  11,
-                  87,
-                  34,
-                  99,
+                  1,
+                  2,
                 ],
                 "svg": Object {
                   "fill": "#FFC5BE",
@@ -105,18 +75,8 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
               },
               Object {
                 "data": Array [
-                  24,
-                  28,
-                  93,
-                  77,
-                  52,
-                  21,
-                  200,
-                  76,
-                  12,
-                  43,
-                  59,
-                  120,
+                  3,
+                  4,
                 ],
                 "svg": Object {
                   "fill": "#85DACF",
@@ -156,18 +116,8 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
         }
         data={
           Array [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
+            "A",
+            "B",
           ]
         }
         formatLabel={[Function]}
@@ -177,6 +127,7 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
         style={
           Object {
             "marginStart": 36,
+            "padding": 10,
             "width": 1125,
           }
         }
@@ -192,6 +143,26 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
     </View>
   </ScrollViewMock>
   <Memo(GraphLegends)
+    data={
+      Array [
+        Object {
+          "key": 1,
+          "svg": Object {
+            "fill": "#FFC5BE",
+          },
+          "title": "Expense",
+          "value": 3,
+        },
+        Object {
+          "key": 1,
+          "svg": Object {
+            "fill": "#85DACF",
+          },
+          "title": "Income",
+          "value": 7,
+        },
+      ]
+    }
     direction="row"
   />
 </Fragment>

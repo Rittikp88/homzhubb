@@ -314,6 +314,7 @@
     "completionStatus": "{{status}}% Complete",
     "completeDetails": "Complete Details",
     "costBreakdown": "Cost Breakdown",
+    "expenses": "Expenses",
     "cashFlow": "Cash Flow",
     "dashboard": "Dashboard",
     "overallPerformance": "Overall Performance",

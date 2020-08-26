@@ -4,11 +4,13 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { AssetAdvertisement } from '@homzhub/common/src/domain/models/AssetAdvertisement';
+import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 const ENDPOINTS = {
   getMarketTrends: (): string => 'market-trends/',
   getAssetMetrics: (): string => 'dashboard/management-tab/',
   getAdvertisements: (): string => 'advertisements/',
+  getGeneralLedgers: (): string => 'general-ledgers/overall-performances/',
 };
 
 class DashboardRepository {
@@ -31,6 +33,15 @@ class DashboardRepository {
   public getAdvertisements = async (): Promise<AssetAdvertisement> => {
     const response = await this.apiClient.get(ENDPOINTS.getAdvertisements());
     return ObjectMapper.deserialize(AssetAdvertisement, response);
+  };
+
+  public getGeneralLedgers = async (requestPayload: {
+    transaction_date__lte: string;
+    transaction_date__gte: string;
+    transaction_date_group_by: string;
+  }): Promise<GeneralLedgers[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getGeneralLedgers(), requestPayload);
+    return ObjectMapper.deserializeArray(GeneralLedgers, response);
   };
 }
 

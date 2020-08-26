@@ -5,129 +5,21 @@ exports[`GraphLegends should match snapshot 1`] = `
   style={
     Array [
       Object {
-        "alignItems": "center",
-        "justifyContent": "center",
+        "alignItems": "flex-start",
+        "justifyContent": "flex-start",
       },
       Object {
+        "alignItems": "center",
         "flexDirection": "row",
         "flexWrap": "wrap",
+        "justifyContent": "center",
         "marginTop": 16,
       },
     ]
   }
 >
   <View
-    key="legend-Total Income"
-    style={
-      Array [
-        Object {
-          "flexDirection": "row",
-        },
-        Object {
-          "marginBottom": 16,
-          "marginHorizontal": 12,
-        },
-      ]
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 6,
-            "height": 12,
-            "marginEnd": 6,
-            "marginTop": 4,
-            "width": 12,
-          },
-          Object {
-            "backgroundColor": "#85DACF",
-          },
-        ]
-      }
-    />
-    <View>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="regular"
-        type="regular"
-      >
-        Total Income
-      </Label>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        ₹30,00,000/-
-      </Label>
-    </View>
-  </View>
-  <View
-    key="legend-Total Income"
-    style={
-      Array [
-        Object {
-          "flexDirection": "row",
-        },
-        Object {
-          "marginBottom": 16,
-          "marginHorizontal": 12,
-        },
-      ]
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 6,
-            "height": 12,
-            "marginEnd": 6,
-            "marginTop": 4,
-            "width": 12,
-          },
-          Object {
-            "backgroundColor": "#FFC5BE",
-          },
-        ]
-      }
-    />
-    <View>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="regular"
-        type="regular"
-      >
-        Total Income
-      </Label>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        ₹30,00,000/-
-      </Label>
-    </View>
-  </View>
-  <View
-    key="legend-Total Income"
+    key="legend-0"
     style={
       Array [
         Object {
@@ -166,19 +58,14 @@ exports[`GraphLegends should match snapshot 1`] = `
         textType="regular"
         type="regular"
       >
-        Total Income
+        Some Title
       </Label>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        ₹30,00,000/-
-      </Label>
+      <PricePerUnit
+        currency="INR"
+        price={1000}
+        textFontWeight="regular"
+        textSizeType="small"
+      />
     </View>
   </View>
 </View>
@@ -189,8 +76,8 @@ exports[`GraphLegends should match snapshot for column direction 1`] = `
   style={
     Array [
       Object {
-        "alignItems": "center",
-        "justifyContent": "center",
+        "alignItems": "flex-start",
+        "justifyContent": "flex-start",
       },
       Object {
         "flexDirection": "column",
@@ -199,115 +86,7 @@ exports[`GraphLegends should match snapshot for column direction 1`] = `
   }
 >
   <View
-    key="legend-Total Income"
-    style={
-      Array [
-        Object {
-          "flexDirection": "row",
-        },
-        Object {
-          "marginVertical": 16,
-        },
-      ]
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 6,
-            "height": 12,
-            "marginEnd": 6,
-            "marginTop": 4,
-            "width": 12,
-          },
-          Object {
-            "backgroundColor": "#85DACF",
-          },
-        ]
-      }
-    />
-    <View>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="regular"
-        type="regular"
-      >
-        Total Income
-      </Label>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        ₹30,00,000/-
-      </Label>
-    </View>
-  </View>
-  <View
-    key="legend-Total Income"
-    style={
-      Array [
-        Object {
-          "flexDirection": "row",
-        },
-        Object {
-          "marginVertical": 16,
-        },
-      ]
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "borderRadius": 6,
-            "height": 12,
-            "marginEnd": 6,
-            "marginTop": 4,
-            "width": 12,
-          },
-          Object {
-            "backgroundColor": "#FFC5BE",
-          },
-        ]
-      }
-    />
-    <View>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="regular"
-        type="regular"
-      >
-        Total Income
-      </Label>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        ₹30,00,000/-
-      </Label>
-    </View>
-  </View>
-  <View
-    key="legend-Total Income"
+    key="legend-0"
     style={
       Array [
         Object {
@@ -345,19 +124,14 @@ exports[`GraphLegends should match snapshot for column direction 1`] = `
         textType="regular"
         type="regular"
       >
-        Total Income
+        Some Title
       </Label>
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        ₹30,00,000/-
-      </Label>
+      <PricePerUnit
+        currency="INR"
+        price={1000}
+        textFontWeight="regular"
+        textSizeType="small"
+      />
     </View>
   </View>
 </View>

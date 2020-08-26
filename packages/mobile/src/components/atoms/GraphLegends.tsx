@@ -1,32 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components';
-
-const mockData = [
-  {
-    title: 'Total Income',
-    cost: '₹30,00,000/-',
-    color: '#85DACF',
-  },
-  {
-    title: 'Total Income',
-    cost: '₹30,00,000/-',
-    color: '#FFC5BE',
-  },
-  {
-    title: 'Total Income',
-    cost: '₹30,00,000/-',
-    color: '#A2D2FD',
-  },
-];
+import { Label, PricePerUnit } from '@homzhub/common/src/components';
+import { IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 interface IProps {
+  data: IGeneralLedgerGraphData[];
   direction: 'row' | 'column';
 }
 
 const GraphLegends = (props: IProps): React.ReactElement => {
-  const { direction } = props;
+  const { direction, data } = props;
   let directionStyle = {};
   let directionLegendStyle: ViewStyle = styles.legendContainerColumn;
 
@@ -39,16 +23,14 @@ const GraphLegends = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[styles.container, directionStyle]}>
-      {mockData.map((legend) => (
-        <View style={[styles.legendContainer, directionLegendStyle]} key={`legend-${legend.title}`}>
-          <View style={[styles.color, { backgroundColor: legend.color }]} />
+      {data.map((legend: IGeneralLedgerGraphData, index: number) => (
+        <View style={[styles.legendContainer, directionLegendStyle]} key={`legend-${index}`}>
+          <View style={[styles.color, { backgroundColor: legend.svg.fill }]} />
           <View>
             <Label type="regular" textType="regular" style={styles.textColor}>
               {legend.title}
             </Label>
-            <Label type="regular" textType="semiBold" style={styles.textColor}>
-              {legend.cost}
-            </Label>
+            <PricePerUnit price={legend.value} currency="INR" textSizeType="small" textFontWeight="regular" />
           </View>
         </View>
       ))}
@@ -58,8 +40,8 @@ const GraphLegends = (props: IProps): React.ReactElement => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   legendContainer: {
     flexDirection: 'row',
@@ -67,6 +49,8 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexWrap: 'wrap',
     marginTop: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   legendContainerRow: {
     marginBottom: 16,

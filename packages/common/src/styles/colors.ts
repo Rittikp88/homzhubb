@@ -22,6 +22,9 @@ const namedColors = {
   notificationGreen: '#13AB46',
   lightBlue: '#C2E4FF',
   lightGrayishBlue: '#F7FAFC',
+  expense: '#FFC5BE',
+  income: '#85DACF',
+  blueDonut: '#A2D2FD',
 };
 
 const tintColors = {
