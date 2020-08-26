@@ -51,8 +51,10 @@ export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/Asset
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 export { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
+export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
 export { PropertyDetailsItems } from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 export { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';
+export { TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 // TODO: More files to be added
 
 // Templates

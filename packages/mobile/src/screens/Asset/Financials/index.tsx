@@ -6,9 +6,13 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { cashFlowData, propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
-import { AnimatedProfileHeader, AssetMetricsList } from '@homzhub/mobile/src/components';
+import {
+  AnimatedProfileHeader,
+  AssetMetricsList,
+  PropertyDuesCardContainer,
+  TransactionCardsContainer,
+} from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
-import { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
 import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -33,6 +37,7 @@ export class Financials extends React.PureComponent<Props> {
           />
           <FinanceOverview />
           <PropertyDuesCardContainer currency={currency_symbol} totalDue={totalDue} propertyDues={details} />
+          <TransactionCardsContainer />
         </>
       </AnimatedProfileHeader>
     );

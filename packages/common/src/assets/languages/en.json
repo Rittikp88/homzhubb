@@ -328,10 +328,11 @@
   },
   "assetFinancial": {
     "financial": "Financials",
+    "recordsText": "Records",
+    "transactions": "Transactions",
     "income": "Income",
     "expense": "Expense",
     "payNow": "Pay Now",
-    "recordsText": "Records",
     "addRecords": "Add Records",
     "selectProperty": "Select property",
     "details": "Details",
@@ -350,6 +351,9 @@
     "detailsError": "Please enter your property details",
     "amountError": "Please enter the amount",
     "categoryError": "Please enter the category of your property",
-    "dateError": "Please enter the date"
+    "dateError": "Please enter the date",
+    "attachmentName": "Attachment name",
+    "paidToText": "Paid to",
+    "invoice": "Invoice"
   }
 }
