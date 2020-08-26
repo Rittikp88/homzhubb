@@ -9,7 +9,7 @@ import {
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { MarkdownView } from '@homzhub/mobile/src/screens/Asset/MarkdownView';
 import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
-import { AssetLocationSearch } from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
+import AssetLocationSearch from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
 import AssetPackageSteps from '@homzhub/mobile/src/screens/Asset/Record/AssetPackageSteps';
 import AssetServiceCheckoutSteps from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceCheckoutSteps';
 import AssetServiceSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceSelection';

@@ -60,6 +60,7 @@ export class MarkdownView extends PureComponent<Props, IMarkdownState> {
           onIconPress={this.navigateBack}
           isHeadingVisible
           title={params.title ?? ''}
+          testID="header"
         />
         <ScrollView style={styles.scrollView}>
           <View style={styles.markdownContainer}>

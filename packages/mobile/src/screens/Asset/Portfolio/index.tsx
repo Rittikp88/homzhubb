@@ -8,12 +8,8 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { Text } from '@homzhub/common/src/components';
-import {
-  AnimatedProfileHeader,
-  AssetMetricsList,
-  BottomSheetListView,
-  AssetCard,
-} from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView } from '@homzhub/mobile/src/components';
+import { AssetCard } from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { IAssetData, PortfolioAssetData, TenanciesAssetData } from '@homzhub/common/src/mocks/AssetData';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';

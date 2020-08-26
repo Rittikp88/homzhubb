@@ -31,7 +31,6 @@ export { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 export { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 export { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 export { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
-export { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 export { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';

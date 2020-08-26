@@ -11,6 +11,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   onGetCurrentPositionSuccess: (data: GeolocationResponse) => void;
+  testID?: string;
 }
 
 const CurrentLocation = (props: IProps): React.ReactElement => {

@@ -93,6 +93,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
           onPress={this.onStepPress}
           containerStyle={styles.containerStyle}
           isPaymentSuccess={isPaymentSuccess}
+          testID="stepIndicator"
         />
       </>
     );
@@ -109,7 +110,13 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             {t('step', { stepNumber: currentStep + 1, totalSteps: steps.length })}
           </Label>
           {(currentStep === 1 || currentStep === 2) && (
-            <Text type="small" textType="semiBold" style={styles.skipForNow} onPress={this.onProceedToNextStep}>
+            <Text
+              type="small"
+              textType="semiBold"
+              style={styles.skipForNow}
+              onPress={this.onProceedToNextStep}
+              testID="skip"
+            >
               {t('skipForNow')}
             </Text>
           )}
@@ -164,6 +171,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             navigateToPropertyHelper={this.navigateToPropertyHelper}
             updateStep={this.onProceedToNextStep}
             setLoading={this.setLoadingState}
+            testID="verification"
           />
         );
       case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
@@ -172,6 +180,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             onPayNow={this.onSuccess}
             isSuccess={isPaymentSuccess}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
+            testID="propertyPayment"
           />
         );
       default:

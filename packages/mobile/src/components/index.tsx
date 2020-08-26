@@ -28,7 +28,7 @@ export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeasePro
 export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
-export { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAdressCountry';
+export { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAddressCountry';
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
 export { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
@@ -46,7 +46,6 @@ export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 
 // Organisms
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
-export { AssetCard } from '@homzhub/mobile/src/components/organisms/AssetCard';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';

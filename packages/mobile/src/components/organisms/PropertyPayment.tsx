@@ -8,6 +8,7 @@ interface IPaymentProps {
   onPayNow: () => void;
   isSuccess: boolean;
   navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
+  testID?: string;
 }
 
 export const PropertyPayment = (props: IPaymentProps): React.ReactElement => {

@@ -21,7 +21,7 @@ interface IState {
 }
 type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostPropertySearch>;
 
-class AssetLocationSearch extends React.PureComponent<Props, IState> {
+export class AssetLocationSearch extends React.PureComponent<Props, IState> {
   public state = {
     searchString: '',
     suggestions: [],
@@ -40,18 +40,20 @@ class AssetLocationSearch extends React.PureComponent<Props, IState> {
           onIconPress={this.onBackPress}
           isHeadingVisible
           title={t('common:location')}
+          testID="header"
         />
         <SearchBar
           placeholder={t('searchProject')}
           value={searchString}
           updateValue={this.onUpdateSearchString}
           onFocusChange={this.onToggleAutoDetect}
+          testID="searchBar"
         />
         {suggestions.length > 0 && searchString.length > 0 && (
-          <SearchResults results={suggestions} onResultPress={this.onSuggestionPress} />
+          <SearchResults results={suggestions} onResultPress={this.onSuggestionPress} testID="searchResults" />
         )}
         {showAutoDetect && searchString.length <= 0 && (
-          <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
+          <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} testID="currentLocation" />
         )}
       </View>
     );
@@ -137,5 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch);
-export { HOC as AssetLocationSearch };
+export default withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch);

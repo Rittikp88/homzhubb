@@ -98,6 +98,8 @@ export const icons = {
   home: 'home',
   upArrow: 'up-arrow',
   house: 'house',
+  wallet: 'wallet',
+  cheque: 'cheque',
 
   // TABS
   watch: 'watch',

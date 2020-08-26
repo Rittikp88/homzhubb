@@ -1,0 +1,352 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OTP Screen should match snapshot in error 1`] = `
+<ForwardRef(SafeAreaView)
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+    }
+  }
+>
+  <DetailedHeader
+    headerContainerStyle={
+      Object {
+        "borderBottomWidth": 0,
+        "paddingTop": 0,
+      }
+    }
+    icon="left-arrow"
+    onIconPress={[MockFunction]}
+  />
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "marginHorizontal": 16,
+        "marginTop": 24,
+      }
+    }
+  >
+    <Text
+      textType="semiBold"
+      type="large"
+    >
+      Otp
+    </Text>
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 8,
+        }
+      }
+      textType="regular"
+      type="large"
+    >
+      enterOTP
+    </Label>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        textType="semiBold"
+        type="small"
+      >
+        99999999999
+      </Text>
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="note-book"
+        onPress={[Function]}
+        size={16}
+        style={
+          Object {
+            "marginStart": 8,
+          }
+        }
+        testID="icnEdit"
+      />
+    </View>
+    <OtpInputs
+      bubbleOtp={[Function]}
+      error="otpError"
+      toggleError={[Function]}
+    />
+    <OtpTimer
+      onResentPress={[Function]}
+    />
+  </View>
+  <Loader
+    visible={false}
+  />
+</ForwardRef(SafeAreaView)>
+`;
+
+exports[`OTP Screen should render snapshot 1`] = `
+<ForwardRef(SafeAreaView)
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+    }
+  }
+>
+  <DetailedHeader
+    headerContainerStyle={
+      Object {
+        "borderBottomWidth": 0,
+        "paddingTop": 0,
+      }
+    }
+    icon="left-arrow"
+    onIconPress={[MockFunction]}
+  />
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "marginHorizontal": 16,
+        "marginTop": 24,
+      }
+    }
+  >
+    <Text
+      textType="semiBold"
+      type="large"
+    >
+      Otp
+    </Text>
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 8,
+        }
+      }
+      textType="regular"
+      type="large"
+    >
+      enterOTP
+    </Label>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        textType="semiBold"
+        type="small"
+      >
+        99999999999
+      </Text>
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="note-book"
+        onPress={[Function]}
+        size={16}
+        style={
+          Object {
+            "marginStart": 8,
+          }
+        }
+        testID="icnEdit"
+      />
+    </View>
+    <OtpInputs
+      bubbleOtp={[Function]}
+      toggleError={[Function]}
+    />
+    <OtpTimer
+      onResentPress={[Function]}
+    />
+  </View>
+  <Loader
+    visible={false}
+  />
+</ForwardRef(SafeAreaView)>
+`;
+
+exports[`OTP Screen should render snapshot with userData 1`] = `
+<ForwardRef(SafeAreaView)
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+    }
+  }
+>
+  <DetailedHeader
+    headerContainerStyle={
+      Object {
+        "borderBottomWidth": 0,
+        "paddingTop": 0,
+      }
+    }
+    icon="left-arrow"
+    onIconPress={[MockFunction]}
+  />
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "marginHorizontal": 16,
+        "marginTop": 24,
+      }
+    }
+  >
+    <Text
+      textType="semiBold"
+      type="large"
+    >
+      verifyNumber
+    </Text>
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 8,
+        }
+      }
+      textType="regular"
+      type="large"
+    >
+      enterOTP
+    </Label>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        textType="semiBold"
+        type="small"
+      />
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="note-book"
+        onPress={[Function]}
+        size={16}
+        style={
+          Object {
+            "marginStart": 8,
+          }
+        }
+        testID="icnEdit"
+      />
+    </View>
+    <OtpInputs
+      bubbleOtp={[Function]}
+      toggleError={[Function]}
+    />
+    <OtpTimer
+      onResentPress={[Function]}
+    />
+  </View>
+  <Loader
+    visible={false}
+  />
+</ForwardRef(SafeAreaView)>
+`;
+
+exports[`OTP Screen should verify otp 1`] = `
+<ForwardRef(SafeAreaView)
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+    }
+  }
+>
+  <DetailedHeader
+    headerContainerStyle={
+      Object {
+        "borderBottomWidth": 0,
+        "paddingTop": 0,
+      }
+    }
+    icon="left-arrow"
+    onIconPress={[MockFunction]}
+  />
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "marginHorizontal": 16,
+        "marginTop": 24,
+      }
+    }
+  >
+    <Text
+      textType="semiBold"
+      type="large"
+    >
+      Otp
+    </Text>
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 8,
+        }
+      }
+      textType="regular"
+      type="large"
+    >
+      enterOTP
+    </Label>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        textType="semiBold"
+        type="small"
+      >
+        99999999999
+      </Text>
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="note-book"
+        onPress={[Function]}
+        size={16}
+        style={
+          Object {
+            "marginStart": 8,
+          }
+        }
+        testID="icnEdit"
+      />
+    </View>
+    <OtpInputs
+      bubbleOtp={[Function]}
+      toggleError={[Function]}
+    />
+    <OtpTimer
+      onResentPress={[Function]}
+    />
+  </View>
+  <Loader
+    visible={false}
+  />
+</ForwardRef(SafeAreaView)>
+`;

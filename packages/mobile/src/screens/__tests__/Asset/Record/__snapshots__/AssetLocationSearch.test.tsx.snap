@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Asset Location Search should render snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <Memo(Header)
+    icon="left-arrow"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    testID="header"
+    title="common:location"
+    type="primary"
+  />
+  <withI18nextTranslation(SearchBar)
+    onFocusChange={[Function]}
+    placeholder="searchProject"
+    testID="searchBar"
+    updateValue={[Function]}
+    value=""
+  />
+  <Memo(CurrentLocation)
+    onGetCurrentPositionSuccess={[Function]}
+    testID="currentLocation"
+  />
+</View>
+`;

@@ -9,7 +9,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components';
-import { AnimatedProfileHeader, AssetCard } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
+import { AssetCard } from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { tabName, Tabs } from '@homzhub/common/src/domain/models/Tabs';
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;

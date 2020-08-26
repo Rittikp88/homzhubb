@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { PricePerUnit, Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 
 interface IProps {
   header: string;

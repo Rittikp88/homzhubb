@@ -6,14 +6,8 @@ import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
-import {
-  FormButton,
-  FormDropdown,
-  FormTextInput,
-  SelectionPicker,
-  UploadBox,
-  FormCalendar,
-} from '@homzhub/common/src/components';
+import { FormButton, FormDropdown, FormTextInput, SelectionPicker, UploadBox } from '@homzhub/common/src/components';
+import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 
 enum FormType {
   Income = 1,

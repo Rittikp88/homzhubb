@@ -68,6 +68,7 @@ describe('SignUp Screen', () => {
   });
 
   it('should fetch the social media data', async () => {
+    // @ts-ignore
     jest.spyOn(CommonRepository, 'getSocialMedia').mockImplementation(() => Promise.resolve(SocialMediaData));
     await instance.componentDidMount();
     const response = await CommonRepository.getSocialMedia();

@@ -43,6 +43,7 @@ interface IProps {
   updateStep: () => void;
   propertyId: number;
   setLoading: (loading: boolean) => void;
+  testID?: string;
 }
 
 type Props = WithTranslation & IProps;

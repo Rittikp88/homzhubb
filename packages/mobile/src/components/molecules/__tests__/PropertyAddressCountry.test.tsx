@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAdressCountry';
+import { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAddressCountry';
 
 describe('PropertyAddressCountry', () => {
   const props = {

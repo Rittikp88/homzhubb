@@ -16,6 +16,7 @@ interface IProps {
   searchBarStyle?: StyleProp<ViewStyle>;
   cancelButtonStyle?: StyleProp<ViewStyle>;
   cancelTextStyle?: StyleProp<TextStyle>;
+  testID?: string;
 }
 
 interface IState {

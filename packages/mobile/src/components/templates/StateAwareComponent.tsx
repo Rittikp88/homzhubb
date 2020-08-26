@@ -4,6 +4,7 @@ import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 export interface IStateAwareComponentProps {
   loading: boolean;
   renderComponent: any;
+  testID?: string;
 }
 
 // TODO: If full screen error and empty state required then add here

@@ -24,7 +24,7 @@ interface IVerificationState {
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.MobileVerification>;
 
-class MobileVerificationScreen extends Component<Props, IVerificationState> {
+export class MobileVerificationScreen extends Component<Props, IVerificationState> {
   public phone: FormTextInput | null = null;
 
   public state = {
@@ -81,6 +81,7 @@ class MobileVerificationScreen extends Component<Props, IVerificationState> {
           isBottomSheetVisible={isBottomSheetVisible}
           onCloseDropDown={this.onCloseDropDown}
           onSelectItem={this.handleSelection}
+          testID="bottomSheet"
         />
       </View>
     );

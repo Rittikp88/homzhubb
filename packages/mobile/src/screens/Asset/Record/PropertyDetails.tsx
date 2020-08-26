@@ -74,7 +74,9 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
 
   public render(): React.ReactNode {
     const { isLoading } = this.props;
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponentContent()} />;
+    return (
+      <StateAwareComponent loading={isLoading} renderComponent={this.renderComponentContent()} testID="stateAware" />
+    );
   }
 
   public renderComponentContent = (): React.ReactElement | null => {
@@ -99,6 +101,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
           onIconPress={this.handleIconPress}
           isHeadingVisible
           title={t('property:headerTitle')}
+          testID="headerView"
         />
         <ScrollView style={styles.scrollContainer}>
           <PropertyDetailsLocation
@@ -286,7 +289,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
+export const mapStateToProps = (state: IState): IStateProps => {
   const { getCurrentPropertyId, getPropertyDetails, getPropertyLoadingState } = PropertySelector;
   return {
     property: getPropertyDetails(state),
@@ -295,7 +298,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getPropertyDetails } = PropertyActions;
   return bindActionCreators(
     {

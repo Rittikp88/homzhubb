@@ -42,7 +42,7 @@ interface IOtpState {
   error: boolean;
 }
 
-class Otp extends React.PureComponent<IProps, IOtpState> {
+export class Otp extends React.PureComponent<IProps, IOtpState> {
   public state = {
     error: false,
   };
@@ -86,6 +86,7 @@ class Otp extends React.PureComponent<IProps, IOtpState> {
               color={theme.colors.active}
               style={styles.icon}
               onPress={this.onIconPress}
+              testID="icnEdit"
             />
           </View>
           <OtpInputs error={error ? t('otpError') : undefined} bubbleOtp={this.verifyOtp} toggleError={toggleError} />
@@ -255,7 +256,7 @@ export const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { login, loginSuccess } = UserActions;
   return bindActionCreators(
     {

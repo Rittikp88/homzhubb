@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Asset Service Checkout Steps should render snapshot 1`] = `
+<Fragment>
+  <Memo(Header)
+    icon="left-arrow"
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title="leaseDetails"
+    type="primary"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "common:details",
+        "common:images",
+        "common:verification",
+        "common:payment",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+    testID="stepIndicator"
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    >
+      enterLeaseDetails
+    </Text>
+    <withI18nextTranslation(CheckoutAssetDetails)
+      isLeaseFlow={true}
+      onStepSuccess={[Function]}
+      propertyId={1}
+      setLoading={[Function]}
+      setTermId={[MockFunction]}
+      termId={1}
+    />
+  </ScrollViewMock>
+  <Loader
+    visible={false}
+  />
+</Fragment>
+`;
+
+exports[`Asset Service Checkout Steps should render snapshot when typeOfSale is not tenant 1`] = `
+<Fragment>
+  <Memo(Header)
+    icon="left-arrow"
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title="resaleDetails"
+    type="primary"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={
+      Array [
+        "common:details",
+        "common:images",
+        "common:verification",
+        "common:payment",
+      ]
+    }
+    onPress={[Function]}
+    stepCount={4}
+    testID="stepIndicator"
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    >
+      enterSaleDetails
+    </Text>
+    <withI18nextTranslation(CheckoutAssetDetails)
+      isLeaseFlow={false}
+      onStepSuccess={[Function]}
+      propertyId={1}
+      setLoading={[Function]}
+      setTermId={[MockFunction]}
+      termId={1}
+    />
+  </ScrollViewMock>
+  <Loader
+    visible={false}
+  />
+</Fragment>
+`;
+
+exports[`Asset Service Checkout Steps should render snapshot without steps 1`] = `
+<Fragment>
+  <Memo(Header)
+    icon="left-arrow"
+    onIconPress={[Function]}
+    testID="lblNavigate"
+    title=""
+    type="primary"
+  />
+  <StepIndicatorComponent
+    containerStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "paddingVertical": 12,
+      }
+    }
+    currentPosition={0}
+    isPaymentSuccess={false}
+    labels={Array []}
+    onPress={[Function]}
+    stepCount={0}
+    testID="stepIndicator"
+  />
+  <ScrollViewMock
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingHorizontal": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 6,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        step
+      </Label>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    />
+  </ScrollViewMock>
+  <Loader
+    visible={false}
+  />
+</Fragment>
+`;

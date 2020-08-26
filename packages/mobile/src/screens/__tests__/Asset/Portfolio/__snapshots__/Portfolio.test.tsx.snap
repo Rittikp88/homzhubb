@@ -118,7 +118,7 @@ exports[`Portfolio Screen should render snapshot 1`] = `
     <Icon
       allowFontScaling={false}
       color="#4C5F72"
-      name="vertical-dots"
+      name="cheque"
       onPress={[Function]}
       size={18}
       testID="menu"
@@ -409,7 +409,7 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
     <Icon
       allowFontScaling={false}
       color="#4C5F72"
-      name="vertical-dots"
+      name="cheque"
       onPress={[Function]}
       size={18}
       testID="menu"
@@ -700,7 +700,7 @@ exports[`Portfolio Screen should render snapshot for state 1`] = `
     <Icon
       allowFontScaling={false}
       color="#4C5F72"
-      name="vertical-dots"
+      name="cheque"
       onPress={[Function]}
       size={18}
       testID="menu"

@@ -59,6 +59,7 @@ interface IProps {
   customStyles?: IStepIndicatorStyles;
   containerStyle?: StyleProp<ViewStyle>;
   onPress?: (step: number) => void;
+  testID?: string;
 }
 
 export class StepIndicatorComponent extends React.PureComponent<IProps, {}> {

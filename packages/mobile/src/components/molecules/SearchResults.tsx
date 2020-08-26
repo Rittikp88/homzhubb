@@ -9,6 +9,7 @@ export interface IProps extends WithTranslation {
   results: GooglePlaceData[];
   onResultPress: (item: GooglePlaceData) => void;
   listTitleStyle?: StyleProp<TextStyle>;
+  testID?: string;
 }
 
 export class SearchResults extends React.PureComponent<IProps, {}> {
