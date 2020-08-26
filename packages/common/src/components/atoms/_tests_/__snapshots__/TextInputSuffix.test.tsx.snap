@@ -7,8 +7,8 @@ exports[`TextInputSuffix should match snapshot 1`] = `
       "bottom": 14,
       "color": "#808D9B",
       "position": "absolute",
-      "right": 16,
-      "top": 14,
+      "right": 9,
+      "top": 12,
     }
   }
   type="large"

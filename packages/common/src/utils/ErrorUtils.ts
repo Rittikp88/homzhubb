@@ -7,6 +7,10 @@ class ErrorUtils {
       const { error } = e.original;
       return error[0].message;
     }
+    if (e.original && e.original.data && e.original.data.length > 0) {
+      const { data } = e.original;
+      return `${data[0].field} - ${data[0].message}`;
+    }
 
     return I18nService.t('genericErrorMessage');
   };

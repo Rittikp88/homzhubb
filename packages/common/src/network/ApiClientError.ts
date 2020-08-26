@@ -10,7 +10,8 @@ export interface IApiClientError {
 
 interface IError {
   status: string;
-  error: any[];
+  error?: any[];
+  data?: any[];
 }
 
 export class ApiClientError extends Error {

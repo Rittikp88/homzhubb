@@ -51,7 +51,7 @@ interface ILandingState {
   isLocationSelected: boolean;
 }
 
-class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
+export class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
   private searchBar: typeof SearchBar | null = null;
 
   public state = {

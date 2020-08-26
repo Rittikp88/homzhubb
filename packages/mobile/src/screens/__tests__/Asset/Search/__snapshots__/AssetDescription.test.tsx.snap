@@ -1,0 +1,640 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markdown View should render snapshot 1`] = `
+<StateAwareComponent
+  loading={false}
+  renderComponent={null}
+/>
+`;
+
+exports[`Markdown View should render snapshot with assetDetails 1`] = `
+<StateAwareComponent
+  loading={false}
+  renderComponent={
+    <React.Fragment>
+      <UNDEFINED
+        backgroundColor="transparent"
+        barStyle="light-content"
+        isTranslucent={true}
+        statusBarStyle={
+          Object {
+            "height": 0,
+          }
+        }
+      />
+      <ParallaxScrollView
+        backgroundColor="transparent"
+        backgroundScrollSpeed={5}
+        backgroundSpeed={10}
+        contentBackgroundColor="#fff"
+        contentContainerStyle={null}
+        fadeOutForeground={true}
+        onChangeHeaderVisibility={[Function]}
+        outputScaleValue={5}
+        parallaxHeaderHeight={250}
+        renderBackground={[Function]}
+        renderContentBackground={[Function]}
+        renderFixedHeader={[Function]}
+        renderForeground={[Function]}
+        renderParallaxHeader={[Function]}
+        renderScrollComponent={[Function]}
+        renderStickyHeader={[Function]}
+        stickyHeaderHeight={100}
+        testID="parallaxView"
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#FFFFFF",
+              "flex": 1,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "borderBottomColor": "#E5E8EB",
+                "borderBottomWidth": 1,
+              }
+            }
+          >
+            <ShieldGroup
+              isInfoRequired={true}
+              propertyType="Apartment / Condo"
+              text="It was popularised in the 1960s with the release of Letraset sheets."
+            />
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "marginVertical": 8,
+                }
+              }
+            >
+              <PricePerUnit
+                currency="INR"
+                price={0}
+                unit="mo"
+              />
+              <View
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Icon
+                  allowFontScaling={false}
+                  color="#0084F8"
+                  name="timer"
+                  size={22}
+                  style={
+                    Object {
+                      "marginHorizontal": 6,
+                    }
+                  }
+                />
+                <Text
+                  style={
+                    Object {
+                      "color": "#0084F8",
+                    }
+                  }
+                  textType="regular"
+                  type="small"
+                >
+                  bookTour
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "marginVertical": 8,
+                }
+              }
+            >
+              <PropertyAddress
+                isIcon={false}
+                subAddress=" "
+                subAddressStyle={
+                  Object {
+                    "marginHorizontal": 0,
+                  }
+                }
+              />
+              <ForwardRef
+                onPress={[Function]}
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "borderColor": "#E5E8EB",
+                      "borderWidth": 1,
+                      "height": 30,
+                      "marginRight": 14,
+                    }
+                  }
+                />
+                <Icon
+                  allowFontScaling={false}
+                  color="#0084F8"
+                  name="house-marker"
+                  size={30}
+                  style={
+                    Object {
+                      "marginHorizontal": 6,
+                    }
+                  }
+                />
+              </ForwardRef>
+            </View>
+            <PropertyAmenities
+              containerStyle={
+                Object {
+                  "flexWrap": "wrap",
+                  "justifyContent": "space-between",
+                  "marginBottom": 14,
+                }
+              }
+              data={
+                Array [
+                  Object {
+                    "icon": "bed",
+                    "iconColor": "#33495E",
+                    "iconSize": 20,
+                    "label": "1 Beds",
+                  },
+                  Object {
+                    "icon": "bath-tub",
+                    "iconColor": "#33495E",
+                    "iconSize": 20,
+                    "label": "1 Baths",
+                  },
+                ]
+              }
+              direction="row"
+            />
+            <Divider />
+            <View
+              style={
+                Object {
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "paddingVertical": 16,
+                }
+              }
+            >
+              <React.Fragment>
+                <View
+                  style={
+                    Object {
+                      "marginLeft": 4,
+                      "marginRight": 20,
+                    }
+                  }
+                >
+                  <Label
+                    style={
+                      Object {
+                        "color": "#4C5F72",
+                      }
+                    }
+                    textType="regular"
+                    type="large"
+                  >
+                    Posted on
+                  </Label>
+                  <Label
+                    style={
+                      Object {
+                        "color": "#19324A",
+                      }
+                    }
+                    textType="semiBold"
+                    type="large"
+                  >
+                    26 Aug 2020
+                  </Label>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "marginLeft": 4,
+                      "marginRight": 20,
+                    }
+                  }
+                >
+                  <Label
+                    style={
+                      Object {
+                        "color": "#4C5F72",
+                      }
+                    }
+                    textType="regular"
+                    type="large"
+                  >
+                    Available from
+                  </Label>
+                  <Label
+                    style={
+                      Object {
+                        "color": "#19324A",
+                      }
+                    }
+                    textType="semiBold"
+                    type="large"
+                  >
+                    Invalid date
+                  </Label>
+                </View>
+              </React.Fragment>
+            </View>
+          </View>
+          <UNDEFINED
+            title="description"
+          >
+            <React.Fragment>
+              <Label
+                numberOfLines={3}
+                onTextLayout={[Function]}
+                style={
+                  Object {
+                    "color": "#4C5F72",
+                    "marginTop": 12,
+                  }
+                }
+                textType="regular"
+                type="large"
+              >
+                It is a long established fact that the readable content of a page when looking at its layout.
+              </Label>
+            </React.Fragment>
+          </UNDEFINED>
+          <UNDEFINED
+            title="factsFeatures"
+          >
+            <FlatList
+              contentContainerStyle={
+                Object {
+                  "marginTop": 16,
+                }
+              }
+              data={
+                Array [
+                  Object {
+                    "locale_key": "security_deposit",
+                    "name": "Security Deposit",
+                    "value": "₹ 2 Lacs",
+                  },
+                  Object {
+                    "locale_key": "min_lease_period",
+                    "name": "Min Lease Period",
+                    "value": "3 Months",
+                  },
+                  Object {
+                    "locale_key": "maintenance_paid_by",
+                    "name": "Maintenance Paid By",
+                    "value": "Owner",
+                  },
+                  Object {
+                    "locale_key": "utilities_paid_by",
+                    "name": "Utilities Paid By",
+                    "value": "Tenant",
+                  },
+                  Object {
+                    "locale_key": "maintenance",
+                    "name": "Maintenance",
+                    "value": "₹ 5,000",
+                  },
+                  Object {
+                    "locale_key": "building_age",
+                    "name": "Building Age",
+                    "value": "5 Years",
+                  },
+                  Object {
+                    "locale_key": "building_type",
+                    "name": "Building Type",
+                    "value": "Apartment",
+                  },
+                ]
+              }
+              disableVirtualization={false}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={2}
+              onEndReachedThreshold={2}
+              removeClippedSubviews={false}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />
+          </UNDEFINED>
+          <View
+            style={
+              Object {
+                "marginTop": 24,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#4C5F72",
+                }
+              }
+              textType="semiBold"
+              type="small"
+            >
+              amenities
+            </Text>
+            <FlatList
+              contentContainerStyle={
+                Object {
+                  "marginTop": 16,
+                }
+              }
+              data={
+                Array [
+                  Object {
+                    "attachment": Object {
+                      "id": 7,
+                      "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
+                      "name": "gym.svg",
+                    },
+                    "category": Object {
+                      "id": 1,
+                      "name": "General",
+                    },
+                    "id": 1,
+                    "name": "Gymnasium",
+                  },
+                  Object {
+                    "attachment": Object {
+                      "id": 8,
+                      "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
+                      "name": "pool.svg",
+                    },
+                    "category": Object {
+                      "id": 1,
+                      "name": "General",
+                    },
+                    "id": 2,
+                    "name": "Swimming Pool",
+                  },
+                  Object {
+                    "attachment": Object {
+                      "id": 9,
+                      "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
+                      "name": "cctv.svg",
+                    },
+                    "category": Object {
+                      "id": 1,
+                      "name": "General",
+                    },
+                    "id": 3,
+                    "name": "CCTV Security",
+                  },
+                  Object {
+                    "attachment": Object {
+                      "id": 10,
+                      "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
+                      "name": "parking.svg",
+                    },
+                    "category": Object {
+                      "id": 1,
+                      "name": "General",
+                    },
+                    "id": 4,
+                    "name": "Parking",
+                  },
+                  Object {
+                    "attachment": Object {
+                      "id": 11,
+                      "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
+                      "name": "wifi.svg",
+                    },
+                    "category": Object {
+                      "id": 1,
+                      "name": "General",
+                    },
+                    "id": 5,
+                    "name": "Wifi",
+                  },
+                  Object {
+                    "attachment": Object {
+                      "id": 12,
+                      "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
+                      "name": "intercom.svg",
+                    },
+                    "category": Object {
+                      "id": 1,
+                      "name": "General",
+                    },
+                    "id": 6,
+                    "name": "Intercom",
+                  },
+                ]
+              }
+              disableVirtualization={false}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={3}
+              onEndReachedThreshold={2}
+              removeClippedSubviews={false}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />
+            <Label
+              onPress={[Function]}
+              style={
+                Object {
+                  "color": "#0084F8",
+                  "marginTop": 12,
+                }
+              }
+              textType="semiBold"
+              type="large"
+            >
+              property:showAll
+            </Label>
+            <Divider
+              containerStyles={
+                Object {
+                  "marginTop": 24,
+                }
+              }
+            />
+          </View>
+          <UNDEFINED
+            title="highlights"
+          >
+            <FlatList
+              contentContainerStyle={
+                Object {
+                  "marginTop": 16,
+                }
+              }
+              data={
+                Array [
+                  Object {
+                    "covered": true,
+                    "name": "Power Backup",
+                  },
+                  Object {
+                    "covered": true,
+                    "name": "Gated Society",
+                  },
+                ]
+              }
+              disableVirtualization={false}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={2}
+              onEndReachedThreshold={2}
+              removeClippedSubviews={false}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />
+          </UNDEFINED>
+          <View
+            style={
+              Object {
+                "marginTop": 24,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#4C5F72",
+                }
+              }
+              textType="semiBold"
+              type="small"
+            >
+              exploreNeighbourhood
+            </Text>
+            <Label
+              style={
+                Object {
+                  "color": "#33495E",
+                  "marginTop": 12,
+                }
+              }
+              textType="regular"
+              type="large"
+            />
+            <MapView
+              initialRegion={
+                Object {
+                  "latitude": 25.619,
+                  "latitudeDelta": 0.01,
+                  "longitude": 85.123,
+                  "longitudeDelta": 0.01,
+                }
+              }
+              pointerEvents="none"
+              provider="google"
+              style={
+                Object {
+                  "flex": 1,
+                  "height": 180,
+                  "marginTop": 12,
+                }
+              }
+            >
+              <MapMarker
+                coordinate={
+                  Object {
+                    "latitude": 25.619,
+                    "longitude": 85.123,
+                  }
+                }
+                stopPropagation={false}
+              >
+                <UNDEFINED
+                  selected={true}
+                />
+              </MapMarker>
+            </MapView>
+            <ForwardRef
+              onPress={[Function]}
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 4,
+                  "bottom": 36,
+                  "paddingHorizontal": 12,
+                  "paddingVertical": 6,
+                  "position": "absolute",
+                }
+              }
+            >
+              <Label
+                style={
+                  Object {
+                    "color": "#0084F8",
+                  }
+                }
+                textType="regular"
+                type="regular"
+              >
+                exploreMap
+              </Label>
+            </ForwardRef>
+            <Divider
+              containerStyles={
+                Object {
+                  "marginTop": 24,
+                }
+              }
+            />
+          </View>
+          <UNDEFINED
+            title="reviewsRatings"
+          >
+            <UNDEFINED
+              reviews={Array []}
+            />
+          </UNDEFINED>
+          <withI18nextTranslation(SimilarProperties)
+            onFavorite={[Function]}
+            onSelectedProperty={[Function]}
+            propertyTermId={1}
+            transaction_type={0}
+          />
+        </View>
+      </ParallaxScrollView>
+      <UNDEFINED
+        designation="Owner"
+        onContactTypeClicked={[Function]}
+        phoneNumber="undefinedundefined"
+      />
+    </React.Fragment>
+  }
+/>
+`;

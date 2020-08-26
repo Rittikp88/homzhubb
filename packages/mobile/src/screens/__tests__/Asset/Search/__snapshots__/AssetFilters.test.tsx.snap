@@ -1,0 +1,511 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Asset filter should render snapshot 1`] = `
+<Fragment>
+  <StatusBar
+    animated={false}
+    backgroundColor="#FFFFFF"
+    barStyle="dark-content"
+    showHideTransition="fade"
+    translucent={true}
+  />
+  <ForwardRef(SafeAreaView)
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+      }
+    }
+  >
+    <ScrollViewMock
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "margin": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginBottom": 20,
+              "minHeight": 60,
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#33495E"
+            name="left-arrow"
+            onPress={[Function]}
+            size={18}
+          />
+          <Text
+            textType="semiBold"
+            type="small"
+          >
+            filters
+          </Text>
+          <Text
+            onPress={[Function]}
+            style={
+              Object {
+                "borderWidth": 0,
+                "color": "#0084F8",
+                "flex": 0,
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            reset
+          </Text>
+        </View>
+        <SelectionPicker
+          data={
+            Array [
+              Object {
+                "title": "rent",
+                "value": 0,
+              },
+              Object {
+                "title": "buy",
+                "value": 1,
+              },
+            ]
+          }
+          onValueChange={[Function]}
+          selectedItem={
+            Array [
+              0,
+            ]
+          }
+        />
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+              "paddingVertical": 20,
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          searchRadius
+        </Text>
+        <Dropdown
+          containerStyle={
+            Object {
+              "height": 45,
+            }
+          }
+          data={
+            Array [
+              Object {
+                "label": "This area only",
+                "value": 1,
+              },
+              Object {
+                "label": "Within 0.25 miles",
+                "value": 2,
+              },
+              Object {
+                "label": "Within 0.5 miles",
+                "value": 3,
+              },
+              Object {
+                "label": "Within 1 miles",
+                "value": 4,
+              },
+              Object {
+                "label": "Within 3 miles",
+                "value": 5,
+              },
+              Object {
+                "label": "Within 10 miles",
+                "value": 6,
+              },
+              Object {
+                "label": "Within 20 miles",
+                "value": 7,
+              },
+              Object {
+                "label": "Within 30 miles",
+                "value": 8,
+              },
+              Object {
+                "label": "Within 40 miles",
+                "value": 9,
+              },
+            ]
+          }
+          iconColor="#99A4AF"
+          iconSize={16}
+          listHeight={667}
+          listTitle="selectSearchRadius"
+          onDonePress={[Function]}
+          placeholder="selectRadius"
+          value={0}
+        />
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+              "paddingVertical": 20,
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          dateAdded
+        </Text>
+        <Dropdown
+          containerStyle={
+            Object {
+              "height": 45,
+            }
+          }
+          data={
+            Array [
+              Object {
+                "label": "Anytime",
+                "value": 1,
+              },
+              Object {
+                "label": "Last 3 days",
+                "value": 2,
+              },
+              Object {
+                "label": "Last 14 days",
+                "value": 3,
+              },
+              Object {
+                "label": "Last 24 hours",
+                "value": 4,
+              },
+              Object {
+                "label": "Last 7 days",
+                "value": 5,
+              },
+              Object {
+                "label": "Last 28 days",
+                "value": 6,
+              },
+            ]
+          }
+          iconColor="#99A4AF"
+          iconSize={16}
+          listHeight={667}
+          listTitle="selectDateAdded"
+          onDonePress={[Function]}
+          placeholder="selectDateAdded"
+          value={0}
+        />
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+              "paddingVertical": 20,
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          propertyAge
+        </Text>
+        <Dropdown
+          containerStyle={
+            Object {
+              "height": 45,
+            }
+          }
+          data={
+            Array [
+              Object {
+                "label": "Less than 1 year",
+                "value": 1,
+              },
+              Object {
+                "label": "Less than 5 years",
+                "value": 2,
+              },
+              Object {
+                "label": "Less than 10 years",
+                "value": 3,
+              },
+              Object {
+                "label": "Less than 15 years",
+                "value": 4,
+              },
+              Object {
+                "label": "Less than 20 years",
+                "value": 5,
+              },
+              Object {
+                "label": "More than 20 years",
+                "value": 6,
+              },
+            ]
+          }
+          iconColor="#99A4AF"
+          iconSize={16}
+          listHeight={667}
+          listTitle="selectPropertyAge"
+          onDonePress={[Function]}
+          placeholder="selectPropertyAge"
+          value={0}
+        />
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+              "paddingVertical": 20,
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          expectedMoveInDate
+        </Text>
+        <Dropdown
+          containerStyle={
+            Object {
+              "height": 45,
+            }
+          }
+          data={Array []}
+          iconColor="#99A4AF"
+          iconSize={16}
+          listHeight={667}
+          listTitle="availableFrom"
+          onDonePress={[Function]}
+          placeholder="selectMoveInDate"
+          value={0}
+        />
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+              "paddingVertical": 20,
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          facing
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <MultipleButtonGroup
+            data={
+              Array [
+                Object {
+                  "title": "East",
+                  "value": 1,
+                },
+                Object {
+                  "title": "West",
+                  "value": 2,
+                },
+                Object {
+                  "title": "North",
+                  "value": 3,
+                },
+                Object {
+                  "title": "South",
+                  "value": 4,
+                },
+              ]
+            }
+            onItemSelect={[Function]}
+            selectedItem={
+              Array [
+                1,
+                2,
+              ]
+            }
+          />
+          <Text
+            onPress={[Function]}
+            style={
+              Object {
+                "color": "#0084F8",
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            common:more
+          </Text>
+        </View>
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+              "paddingVertical": 20,
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          furnishing
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <ButtonGroup
+            data={
+              Array [
+                Object {
+                  "title": "property:fullyFurnished",
+                  "value": "FULL",
+                },
+                Object {
+                  "title": "property:semiFurnished",
+                  "value": "SEMI",
+                },
+                Object {
+                  "title": "property:none",
+                  "value": "NONE",
+                },
+              ]
+            }
+            onItemSelect={[Function]}
+            selectedItem="FULL"
+          />
+          <Text
+            onPress={[Function]}
+            style={
+              Object {
+                "color": "#0084F8",
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            common:more
+          </Text>
+        </View>
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+              "paddingVertical": 20,
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          propertyAmenities
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            Object {
+              "color": "#0084F8",
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          common:select
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#33495E",
+                "paddingVertical": 20,
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            showVerified
+          </Text>
+          <RNSwitch
+            onToggle={[Function]}
+            selected={false}
+          />
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#33495E",
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            agentListed
+          </Text>
+          <RNSwitch
+            onToggle={[Function]}
+            selected={false}
+          />
+        </View>
+      </View>
+    </ScrollViewMock>
+    <WithShadowView
+      outerViewStyle={
+        Object {
+          "marginBottom": 20,
+          "paddingBottom": 0,
+          "paddingTop": 10,
+        }
+      }
+    >
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+            "margin": 16,
+          }
+        }
+        onPress={[Function]}
+        title="Show Properties"
+        type="primary"
+      />
+    </WithShadowView>
+  </ForwardRef(SafeAreaView)>
+</Fragment>
+`;

@@ -31,6 +31,10 @@ export const mockAsset = {
   carpet_area_unit: 'SQ_FT',
   floor_number: 1,
   total_floors: 4,
+  assetLocation: {
+    latitude: 25.619,
+    longitude: 85.123,
+  },
   assetType: {
     id: 2,
     name: 'Apartment / Condo',

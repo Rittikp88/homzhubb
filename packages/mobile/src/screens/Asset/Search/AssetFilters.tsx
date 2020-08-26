@@ -50,7 +50,7 @@ interface IAssetFiltersState {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyFilters>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
-class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
+export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
   /*eslint-disable */
   private FURNISHING = [
     { title: this.props.t('property:fullyFurnished'), value: FurnishingType.FULL },

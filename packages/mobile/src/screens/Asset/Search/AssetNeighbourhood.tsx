@@ -116,7 +116,7 @@ interface IOwnState {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.AssetNeighbourhood>;
 type Props = IStateProps & libraryProps;
 
-class AssetNeighbourhood extends React.Component<Props, IOwnState> {
+export class AssetNeighbourhood extends React.Component<Props, IOwnState> {
   private mapRef: MapView | null = null;
 
   public state = {
@@ -302,8 +302,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-const connectedComponent = connect(
+export default connect(
   mapStateToProps,
   null
 )(withTranslation(LocaleConstants.namespacesKey.assetDescription)(AssetNeighbourhood));
-export { connectedComponent as AssetNeighbourhood };

@@ -8,7 +8,7 @@ import {
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStack, AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
-import { AssetNeighbourhood } from '@homzhub/mobile/src/screens/Asset/Search/AssetNeighbourhood';
+import AssetNeighbourhood from '@homzhub/mobile/src/screens/Asset/Search/AssetNeighbourhood';
 import ContactForm from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
 import AssetFilters from '@homzhub/mobile/src/screens/Asset/Search/AssetFilters';
 import AssetSearchScreen from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchScreen';

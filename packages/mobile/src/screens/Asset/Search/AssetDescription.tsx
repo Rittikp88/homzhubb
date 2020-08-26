@@ -107,7 +107,7 @@ const initialState = {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
-class AssetDescription extends React.PureComponent<Props, IOwnState> {
+export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = initialState;
 
   public componentDidMount = (): void => {
@@ -179,6 +179,7 @@ class AssetDescription extends React.PureComponent<Props, IOwnState> {
           renderForeground={(): React.ReactElement => this.renderCarousel()}
           renderStickyHeader={(): React.ReactElement => this.renderStickyHeader()}
           renderFixedHeader={(): React.ReactElement => this.renderFixedHeader()}
+          testID="parallaxView"
         >
           <View style={styles.screen}>
             {this.renderHeaderSection()}

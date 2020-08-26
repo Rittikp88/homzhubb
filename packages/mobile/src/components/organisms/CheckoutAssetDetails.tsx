@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, PickerItemProps } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -122,8 +123,9 @@ export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState>
       setLoading(false);
       onStepSuccess();
     } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
       setLoading(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -144,8 +146,9 @@ export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState>
       setLoading(false);
       onStepSuccess();
     } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
       setLoading(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -163,8 +166,9 @@ export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState>
       }
       setLoading(false);
     } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
       setLoading(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -176,8 +180,9 @@ export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState>
       setLoading(false);
       onStepSuccess();
     } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
       setLoading(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -196,8 +201,9 @@ export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState>
       }
       setLoading(false);
     } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
       setLoading(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -209,8 +215,9 @@ export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState>
       setLoading(false);
       onStepSuccess();
     } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
       setLoading(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -226,7 +233,8 @@ export class CheckoutAssetDetails extends React.PureComponent<IOwnProps, IState>
         ),
       });
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
     }
   };
 }
