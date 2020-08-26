@@ -16,6 +16,7 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { StatusBarComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
+import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/mocks/ContactFormData';
@@ -57,9 +58,9 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
 
   public render = (): React.ReactElement => {
     const { selectedTime, selectedSpaces, userType } = this.state;
-    const { t } = this.props;
+    const { t, navigation } = this.props;
     return (
-      <>
+      <HandleBack onBack={this.goBack} navigation={navigation}>
         <StatusBarComponent backgroundColor="white" isTranslucent={false} statusBarStyle={styles.statusBar} />
         <SafeAreaView style={styles.flexOne}>
           {this.renderHeader()}
@@ -110,7 +111,7 @@ class ContactForm extends React.PureComponent<Props, IContactState> {
             onPress={this.handleSubmit}
           />
         </WithShadowView>
-      </>
+      </HandleBack>
     );
   };
 

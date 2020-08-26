@@ -57,6 +57,8 @@ exports[`AssetSummary should match snapshot 1`] = `
       size={25}
     />
     <Text
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.5}
       style={
         Object {
           "color": "#13AB46",
@@ -96,6 +98,8 @@ exports[`AssetSummary should match snapshot 1`] = `
       size={25}
     />
     <Text
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.5}
       style={
         Object {
           "color": "#FB6E07",
@@ -135,6 +139,8 @@ exports[`AssetSummary should match snapshot 1`] = `
       size={25}
     />
     <Text
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.5}
       style={
         Object {
           "color": "#D60D31",
@@ -217,6 +223,8 @@ exports[`AssetSummary should match snapshot without values 1`] = `
       size={25}
     />
     <Text
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.5}
       style={
         Object {
           "color": "#13AB46",
@@ -256,6 +264,8 @@ exports[`AssetSummary should match snapshot without values 1`] = `
       size={25}
     />
     <Text
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.5}
       style={
         Object {
           "color": "#FB6E07",
@@ -295,6 +305,8 @@ exports[`AssetSummary should match snapshot without values 1`] = `
       size={25}
     />
     <Text
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.5}
       style={
         Object {
           "color": "#D60D31",

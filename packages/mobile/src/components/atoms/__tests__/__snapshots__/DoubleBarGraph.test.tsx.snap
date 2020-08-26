@@ -85,11 +85,16 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
             ]
           }
           style={
-            Object {
-              "flex": 1,
-              "height": 667,
-              "width": 1125,
-            }
+            Array [
+              Object {
+                "flex": 1,
+                "height": 667,
+                "width": 1125,
+              },
+              Object {
+                "width": 650,
+              },
+            ]
           }
         >
           <Grid
@@ -125,11 +130,16 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
         spacingInner={0.05}
         spacingOuter={0.05}
         style={
-          Object {
-            "marginStart": 36,
-            "padding": 10,
-            "width": 1125,
-          }
+          Array [
+            Object {
+              "marginStart": 36,
+              "padding": 10,
+              "width": 1125,
+            },
+            Object {
+              "width": 650,
+            },
+          ]
         }
         svg={
           Object {

@@ -232,7 +232,6 @@ exports[`AssetMetricsList should match snapshot for optional props 1`] = `
             style={
               Object {
                 "color": "#4C5F72",
-                "paddingVertical": 5,
               }
             }
             textType="semiBold"
@@ -256,7 +255,7 @@ exports[`AssetMetricsList should match snapshot for optional props 1`] = `
             textType="regular"
             type="large"
           >
-            subscribe
+            common:homzhub subscribe
           </Label>
         </View>
       </View>

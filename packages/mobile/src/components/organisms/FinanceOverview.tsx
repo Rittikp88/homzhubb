@@ -61,7 +61,7 @@ const DROPDOWN_DATA = {
     label: 'This year',
     value: DateFilter.thisYear,
     startDate: DateUtils.getCurrentYearStartDate(),
-    endDate: DateUtils.getCurrentYearLastDate(),
+    endDate: DateUtils.getCurrentDate(),
     dataGroupBy: DataGroupBy.year,
   },
   [DateFilter.thisFinancialYear]: {

@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PieChart } from 'react-native-svg-charts';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { GeneralLedgers, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -47,7 +48,8 @@ const DonutGraph = (props: IProps): React.ReactElement => {
     if (data.length === 0) {
       return (
         <View style={styles.noDataContainer}>
-          <Text type="small" textType="regular">
+          <Icon name={icons.search} size={30} color={theme.colors.disabledSearch} />
+          <Text type="small" textType="semiBold" style={styles.noResultsFound}>
             {t('common:noResultsFound')}
           </Text>
         </View>
@@ -78,9 +80,13 @@ const styles = StyleSheet.create({
   },
   noDataContainer: {
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    minHeight: 150,
+  },
+  noResultsFound: {
+    marginVertical: 15,
+    color: theme.colors.darkTint6,
   },
 });
 

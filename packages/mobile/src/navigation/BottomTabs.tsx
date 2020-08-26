@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
+import { getFocusedRouteNameFromRoute, useRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -15,15 +16,17 @@ import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetailScreen';
+import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import { IPropertyDetailProps, NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
   [ScreensKeys.Financials]: NestedNavigatorParams<FinancialsNavigatorParamList>;
-  [ScreensKeys.Dashboard]: NestedNavigatorParams<DashboardNavigatorParamList>;
+  [ScreensKeys.Dashboard]: undefined;
   [ScreensKeys.Search]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.More]: undefined;
+  [ScreensKeys.DefaultLogin]: undefined;
 };
 
 export type DashboardNavigatorParamList = {
@@ -89,19 +92,34 @@ export const FinancialsStack = (): React.ReactElement => {
 };
 
 export const BottomTabs = (): React.ReactElement => {
+  const routeName = getFocusedRouteNameFromRoute(useRoute()) ?? ScreensKeys.Dashboard;
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   // Initial Route for guest and logged in user gets decided here
+  if (isLoggedIn && routeName !== ScreensKeys.Search) {
+    StatusBar.setBackgroundColor(theme.colors.primaryColor);
+  } else {
+    StatusBar.setBackgroundColor(theme.colors.white);
+  }
+
+  // TODO: Need to add type
+  const getTabBarVisibility = (route: any): boolean => {
+    const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
+    const notAllowedRoutes = [ScreensKeys.PropertyAssetDescription, ScreensKeys.ContactForm, ScreensKeys.AuthStack];
+    return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
+  };
+
   return (
     <BottomTabNavigator.Navigator
       initialRouteName={isLoggedIn ? ScreensKeys.Dashboard : ScreensKeys.Search}
       lazy
       tabBarOptions={{
         activeTintColor: theme.colors.primaryColor,
+        keyboardHidesTabBar: true,
       }}
     >
       <BottomTabNavigator.Screen
         name={ScreensKeys.Portfolio}
-        component={PortfolioStack}
+        component={isLoggedIn ? PortfolioStack : DefaultLogin}
         options={{
           tabBarLabel: ScreensKeys.Portfolio,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -111,7 +129,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Financials}
-        component={FinancialsStack}
+        component={isLoggedIn ? FinancialsStack : DefaultLogin}
         options={{
           tabBarLabel: ScreensKeys.Financials,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -121,7 +139,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Dashboard}
-        component={DashboardStack}
+        component={isLoggedIn ? DashboardStack : DefaultLogin}
         options={{
           tabBarLabel: ScreensKeys.Dashboard,
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
@@ -146,7 +164,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.More}
-        component={More}
+        component={isLoggedIn ? More : DefaultLogin}
         options={{
           tabBarLabel: ScreensKeys.More,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -156,13 +174,6 @@ export const BottomTabs = (): React.ReactElement => {
       />
     </BottomTabNavigator.Navigator>
   );
-};
-
-// TODO: Need to add type
-const getTabBarVisibility = (route: any): boolean => {
-  const routeName = route.state ? route.state.routes[route.state.index].name : '';
-  const notAllowedRoutes = [ScreensKeys.PropertyAssetDescription, ScreensKeys.ContactForm, ScreensKeys.AuthStack];
-  return !notAllowedRoutes.includes(routeName);
 };
 
 const styles = StyleSheet.create({

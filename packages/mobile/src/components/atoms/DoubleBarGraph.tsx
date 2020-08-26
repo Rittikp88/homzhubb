@@ -30,7 +30,7 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
   const {
     data: { data1, data2, label },
   } = props;
-
+  const conditionalStyle = customizedStyles(label.length);
   const barData = [
     {
       data: data1,
@@ -65,12 +65,16 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
         <View style={styles.barGraphContainer}>
           <View style={styles.yContainer}>
             <YAxis style={styles.yGrid} contentInset={VERTICAL_INSET} data={data1.concat(data2)} svg={SVG_FONT} />
-            <BarChart contentInset={VERTICAL_INSET} style={styles.barGraph} data={barData}>
+            <BarChart
+              contentInset={VERTICAL_INSET}
+              style={[styles.barGraph, conditionalStyle.derivedWidth]}
+              data={barData}
+            >
               <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
             </BarChart>
           </View>
           <XAxis
-            style={styles.xAxis}
+            style={[styles.xAxis, conditionalStyle.derivedWidth]}
             data={label}
             contentInset={HORIZONTAL_INSET}
             svg={SVG_FONT}
@@ -103,6 +107,12 @@ const styles = StyleSheet.create({
     marginStart: Y_GRID_WIDTH,
     width: WIDTH,
     padding: 10,
+  },
+});
+
+const customizedStyles = (labelLength: number): any => ({
+  derivedWidth: {
+    width: labelLength > 3 ? WIDTH : theme.viewport.width - 100,
   },
 });
 

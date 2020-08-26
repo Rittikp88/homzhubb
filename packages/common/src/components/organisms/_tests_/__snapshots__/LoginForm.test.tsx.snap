@@ -32,7 +32,7 @@ LoginForm {
   "state": Object {
     "countryCode": "+91",
     "countryCodeData": Array [],
-    "isBottomSheetVisible": false,
+    "isBottomSheetVisible": true,
     "user": Object {
       "email": "",
       "isEmailFlow": false,
@@ -103,7 +103,7 @@ LoginForm {
         </Formik>
         <BottomSheetListView
           data={Array []}
-          isBottomSheetVisible={false}
+          isBottomSheetVisible={true}
           listTitle="auth:countryRegion"
           onCloseDropDown={[Function]}
           onSelectItem={[Function]}

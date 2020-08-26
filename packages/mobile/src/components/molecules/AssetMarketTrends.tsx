@@ -146,6 +146,8 @@ const styles = StyleSheet.create({
   },
   trendData: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   trendHeader: {
     color: theme.colors.darkTint3,

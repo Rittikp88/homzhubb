@@ -21,7 +21,7 @@ export enum ScreensKeys {
   // Stacks
   AuthStack = 'AuthStack',
   SearchStack = 'SearchStack',
-
+  DefaultLogin = 'DefaultLogin',
   // Main Stack
   OnBoarding = 'OnBoarding',
   GettingStarted = 'GettingStarted',

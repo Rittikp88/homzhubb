@@ -82,7 +82,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
                 </Text>
                 <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
                 <Label type="large" textType="regular">
-                  {subscription}
+                  {`${t('common:homzhub')} ${subscription}`}
                 </Label>
               </View>
             )}
@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
   },
   propertyText: {
     color: theme.colors.darkTint4,
-    paddingVertical: 5,
   },
   assetMetrics: {
     flexDirection: 'row',

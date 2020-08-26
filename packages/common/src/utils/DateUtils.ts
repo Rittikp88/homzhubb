@@ -93,6 +93,10 @@ class DateUtils {
     return moment().endOf('year').format('YYYY-MM-DD');
   };
 
+  public getCurrentDate = (): string => {
+    return moment.utc(new Date()).format('YYYY-MM-DD');
+  };
+
   public getPreviousYearStartDate = (): string => {
     return moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
   };

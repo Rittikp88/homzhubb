@@ -69,7 +69,8 @@
     "noResultsFound": "No Results Found",
     "clear": "Clear",
     "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
-    "uploadDocument": "Upload Document"
+    "uploadDocument": "Upload Document",
+    "toastBack": "Click Back again to exit."
   },
   "auth": {
     "verifyNumber": "Verify your number",

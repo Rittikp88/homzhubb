@@ -79,6 +79,8 @@ const styles = StyleSheet.create({
   headingView: {
     backgroundColor: theme.colors.primaryColor,
     height: 100,
+    borderBottomWidth: 8,
+    borderBottomColor: theme.colors.green,
   },
   initialsContainer: {
     ...(theme.circleCSS(35) as object),

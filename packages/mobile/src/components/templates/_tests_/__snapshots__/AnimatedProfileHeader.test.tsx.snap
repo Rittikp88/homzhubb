@@ -239,6 +239,8 @@ exports[`AnimatedProfileHeader should render snapshot 1`] = `
                   style={
                     Object {
                       "backgroundColor": "#0084F8",
+                      "borderBottomColor": "#2CBA67",
+                      "borderBottomWidth": 8,
                       "height": 100,
                     }
                   }
@@ -247,6 +249,8 @@ exports[`AnimatedProfileHeader should render snapshot 1`] = `
                     style={
                       Object {
                         "backgroundColor": "#0084F8",
+                        "borderBottomColor": "#2CBA67",
+                        "borderBottomWidth": 8,
                         "height": 100,
                       }
                     }

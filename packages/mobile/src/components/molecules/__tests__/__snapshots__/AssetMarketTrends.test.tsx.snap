@@ -15,7 +15,9 @@ exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
   <View
     style={
       Object {
+        "alignItems": "center",
         "flexDirection": "row",
+        "justifyContent": "center",
       }
     }
   >

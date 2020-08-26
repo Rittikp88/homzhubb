@@ -144,7 +144,8 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
   };
 
   private handleSelection = (value: string): void => {
-    this.setState({ countryCode: value });
+    const { isBottomSheetVisible } = this.state;
+    this.setState({ countryCode: value, isBottomSheetVisible: !isBottomSheetVisible });
   };
 
   private handleDropdown = (): void => {

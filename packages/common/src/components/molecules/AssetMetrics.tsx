@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 5,
-    minWidth: (theme.viewport.width - 90) / 3,
+    minWidth: (theme.viewport.width - 60) / 3,
     shadowColor: theme.colors.shadow,
     shadowOffset: {
       width: 0,
