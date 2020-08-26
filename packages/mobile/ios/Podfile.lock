@@ -295,7 +295,7 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
   - React-jsinspector (0.62.2)
-  - react-native-document-picker (3.5.2):
+  - react-native-document-picker (3.5.4):
     - React
   - react-native-fbsdk (2.0.0):
     - React
@@ -315,16 +315,16 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-orientation-locker (1.1.8):
+  - react-native-orientation-locker (1.2.0):
     - React
-  - react-native-razorpay (2.1.33):
+  - react-native-razorpay (2.2.0):
     - razorpay-pod
     - React
   - react-native-restart (0.0.15):
     - React
   - react-native-safe-area-context (1.0.2):
     - React
-  - react-native-slider (3.0.0):
+  - react-native-slider (3.0.3):
     - React
   - react-native-video (4.4.5):
     - React
@@ -390,29 +390,29 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
-  - RNCAsyncStorage (1.11.0):
+  - RNCAsyncStorage (1.12.0):
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.6.1):
+  - RNCPicker (1.6.6):
     - React
-  - RNGestureHandler (1.6.1):
+  - RNGestureHandler (1.7.0):
     - React
   - RNGoogleSignin (4.0.3):
     - GoogleSignIn (~> 5.0.0)
     - React
-  - RNImageCropPicker (0.32.0):
+  - RNImageCropPicker (0.32.3):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.32.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.32.3)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.32.0):
+  - RNImageCropPicker/QBImagePickerController (0.32.3):
     - React-Core
     - React-RCTImage
     - TOCropViewController
   - RNPermissions (2.1.5):
     - React
-  - RNScreens (2.8.0):
+  - RNScreens (2.10.1):
     - React
   - RNSVG (12.1.0):
     - React
@@ -666,15 +666,15 @@ SPEC CHECKSUMS:
   React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
-  react-native-document-picker: 3026780fc04e7ad27534a0f35d5daefb550aa03a
+  react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
-  react-native-razorpay: fb2411102f375adb0818da2f65759a16438dcdb4
+  react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
+  react-native-razorpay: bd4d2accdd72c60f99e12f89ca09f0bb0d8ba1f3
   react-native-restart: fff228304625f55de2ebd4de43938110f4c888ed
   react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
-  react-native-slider: 12bd76d3d568c9c5500825db54123d44b48e4ad4
+  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-video: eee541262ada11bc7ffe8ec5508e6a877937c462
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
@@ -686,14 +686,14 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
+  RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: b8c53479842804a3e7b721e01def0ce2c89ddc69
-  RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNCPicker: 494015f2b7ec4bee5484b6f235aa19691426dcdb
+  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9
-  RNImageCropPicker: fc4b4d2a4d7176eeb6442fa191ba56493c14b6d6
+  RNImageCropPicker: 54e5ea3d0e298ed51e1441a2fa0a0e7c90ee256d
   RNPermissions: ad71dd4f767ec254f2cd57592fbee02afee75467
-  RNScreens: 62211832af51e0aebcf6e8c36bcf7dd65592f244
+  RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6

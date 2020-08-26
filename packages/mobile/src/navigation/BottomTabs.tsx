@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
-import { getFocusedRouteNameFromRoute, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
