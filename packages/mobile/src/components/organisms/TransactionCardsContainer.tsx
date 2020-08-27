@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   transactionDetailContainer: {
     padding: 16,
-    backgroundColor: theme.colors.greyOne,
+    backgroundColor: theme.colors.grey1,
     flexDirection: 'column',
     justifyContent: 'space-between',
   },

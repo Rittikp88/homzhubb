@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -14,50 +14,27 @@ interface IProps {
   location?: number[];
   colorA: string;
   colorB: string;
-  showPlusIcon?: boolean;
   testID?: string;
   textStyle?: StyleProp<TextStyle>;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const {
-    header,
-    value,
-    angle,
-    colorA,
-    colorB,
-    location,
-    showPlusIcon = false,
-    currency,
-    cardStyle,
-    testID,
-    textStyle,
-  } = props;
+  const { header, value, angle, colorA, colorB, location, currency, cardStyle, testID, textStyle } = props;
 
   const [selected, onSelect] = useState(false);
-  const gradient = [colorA || theme.colors.gradientK, colorB || theme.colors.white];
+  const isGradient = colorA && colorB;
 
   const handlePress = (): void => {
     onSelect(!selected);
   };
 
-  return (
-    <TouchableOpacity onPress={handlePress} testID={testID}>
-      <LinearGradient
-        useAngle
-        angle={angle}
-        colors={gradient}
-        locations={location}
-        style={[
-          styles.container,
-          cardStyle,
-          showPlusIcon && selected ? styles.selectedContainer : styles.containerWithoutGradient,
-        ]}
-      >
+  const renderItem = (): React.ReactElement => {
+    return (
+      <>
         <Text
           type="small"
           textType="semiBold"
-          style={[styles.metrics, !showPlusIcon ? styles.textWithGradient : styles.textWithoutGradient]}
+          style={[styles.metrics, isGradient ? styles.textWithGradient : styles.textWithoutGradient]}
         >
           {header}
         </Text>
@@ -67,12 +44,34 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
           <Text
             type="large"
             textType="semiBold"
-            style={[styles.metrics, !showPlusIcon ? styles.textWithGradient : styles.valueWithoutGradient]}
+            style={[styles.metrics, isGradient ? styles.textWithGradient : styles.valueWithoutGradient]}
           >
             {value}
           </Text>
         )}
-      </LinearGradient>
+      </>
+    );
+  };
+
+  return (
+    <TouchableOpacity onPress={handlePress} testID={testID}>
+      {isGradient ? (
+        <LinearGradient
+          useAngle
+          angle={angle}
+          colors={[colorA, colorB]}
+          locations={location}
+          style={[styles.container, cardStyle]}
+        >
+          {renderItem()}
+        </LinearGradient>
+      ) : (
+        <View
+          style={[styles.container, cardStyle, styles.containerWithoutGradient, selected && styles.selectedContainer]}
+        >
+          {renderItem()}
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -98,10 +97,10 @@ const styles = StyleSheet.create({
   containerWithoutGradient: {
     borderColor: theme.colors.lightBlue,
     borderWidth: 1,
+    backgroundColor: theme.colors.gradientK,
   },
   selectedContainer: {
     borderColor: theme.colors.blue,
-    borderWidth: 1,
   },
   metrics: {
     textAlign: 'center',

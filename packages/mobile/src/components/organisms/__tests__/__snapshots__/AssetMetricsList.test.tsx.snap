@@ -19,37 +19,43 @@ exports[`AssetMetricsList should match snapshot 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "justifyContent": "space-between",
+        "justifyContent": "flex-start",
+        "paddingVertical": 10,
       }
     }
   >
     <View
       style={
         Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "flex-start",
-          "paddingVertical": 10,
+          "flex": 0,
+          "paddingHorizontal": 15,
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../packages/common/src/assets/images/homzhubDashboard.png",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 1,
         }
       }
     >
       <View
         style={
           Object {
-            "flex": 0,
-            "paddingHorizontal": 15,
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
           }
         }
       >
-        <Image
-          source={
-            Object {
-              "testUri": "../../../packages/common/src/assets/images/homzhubDashboard.png",
-            }
-          }
-        />
-      </View>
-      <View>
         <Text
           style={
             Object {
@@ -178,37 +184,43 @@ exports[`AssetMetricsList should match snapshot for optional props 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "justifyContent": "space-between",
+        "justifyContent": "flex-start",
+        "paddingVertical": 10,
       }
     }
   >
     <View
       style={
         Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "flex-start",
-          "paddingVertical": 10,
+          "flex": 0,
+          "paddingHorizontal": 15,
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../packages/common/src/assets/images/homzhubDashboard.png",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 1,
         }
       }
     >
       <View
         style={
           Object {
-            "flex": 0,
-            "paddingHorizontal": 15,
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
           }
         }
       >
-        <Image
-          source={
-            Object {
-              "testUri": "../../../packages/common/src/assets/images/homzhubDashboard.png",
-            }
-          }
-        />
-      </View>
-      <View>
         <Text
           style={
             Object {
@@ -223,59 +235,59 @@ exports[`AssetMetricsList should match snapshot for optional props 1`] = `
         <View
           style={
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
+              "backgroundColor": "#F7FAFC",
+              "marginRight": 12,
             }
           }
         >
-          <Text
-            style={
-              Object {
-                "color": "#4C5F72",
-              }
-            }
-            textType="semiBold"
-            type="small"
-          >
-            common:properties
-          </Text>
           <Icon
             allowFontScaling={false}
-            color="#99A4AF"
-            name="round-filled"
-            size={6}
-            style={
-              Object {
-                "paddingHorizontal": 8,
-                "paddingTop": 5,
-              }
-            }
+            color="#0084F8"
+            name="plus"
+            onPress={[Function]}
+            size={40}
+            testID="icnPlus"
           />
-          <Label
-            textType="regular"
-            type="large"
-          >
-            common:homzhub subscribe
-          </Label>
         </View>
       </View>
-    </View>
-    <View
-      style={
-        Object {
-          "backgroundColor": "#F7FAFC",
-          "marginRight": 12,
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
         }
-      }
-    >
-      <Icon
-        allowFontScaling={false}
-        color="#0084F8"
-        name="plus"
-        onPress={[Function]}
-        size={40}
-        testID="icnPlus"
-      />
+      >
+        <Text
+          style={
+            Object {
+              "color": "#4C5F72",
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          common:properties
+        </Text>
+        <Icon
+          allowFontScaling={false}
+          color="#99A4AF"
+          name="round-filled"
+          size={6}
+          style={
+            Object {
+              "paddingHorizontal": 8,
+              "paddingTop": 5,
+            }
+          }
+        />
+        <Label
+          textType="regular"
+          type="large"
+        >
+          common:homzhub subscribe
+        </Label>
+      </View>
     </View>
   </View>
   <View
@@ -384,7 +396,6 @@ exports[`AssetMetricsList should match snapshot for renderItem 1`] = `
       1,
     ]
   }
-  showPlusIcon={true}
   value={3}
 />
 `;

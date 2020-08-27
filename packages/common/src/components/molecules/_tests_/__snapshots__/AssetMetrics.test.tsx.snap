@@ -48,10 +48,6 @@ exports[`AssetMetrics should match snapshot 1`] = `
           "shadowRadius": 3.84,
         },
         undefined,
-        Object {
-          "borderColor": "#C2E4FF",
-          "borderWidth": 1,
-        },
       ]
     }
     useAngle={true}
@@ -142,10 +138,6 @@ exports[`AssetMetrics should match snapshot for currency 1`] = `
           "shadowRadius": 3.84,
         },
         undefined,
-        Object {
-          "borderColor": "#C2E4FF",
-          "borderWidth": 1,
-        },
       ]
     }
     useAngle={true}
@@ -158,7 +150,7 @@ exports[`AssetMetrics should match snapshot for currency 1`] = `
             "textAlign": "center",
           },
           Object {
-            "color": "#4C5F72",
+            "color": "#FFFFFF",
           },
         ]
       }
@@ -224,10 +216,6 @@ exports[`AssetMetrics should match snapshot for show plus icon 1`] = `
           "shadowRadius": 3.84,
         },
         undefined,
-        Object {
-          "borderColor": "#C2E4FF",
-          "borderWidth": 1,
-        },
       ]
     }
     useAngle={true}
@@ -240,7 +228,7 @@ exports[`AssetMetrics should match snapshot for show plus icon 1`] = `
             "textAlign": "center",
           },
           Object {
-            "color": "#4C5F72",
+            "color": "#FFFFFF",
           },
         ]
       }
@@ -257,7 +245,7 @@ exports[`AssetMetrics should match snapshot for show plus icon 1`] = `
             "textAlign": "center",
           },
           Object {
-            "color": "#001B36",
+            "color": "#FFFFFF",
           },
         ]
       }

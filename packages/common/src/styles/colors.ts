@@ -25,7 +25,6 @@ const namedColors = {
   expense: '#FFC5BE',
   income: '#85DACF',
   blueDonut: '#A2D2FD',
-  greyOne: '#F9FCFE',
 };
 
 const tintColors = {
@@ -90,6 +89,7 @@ const gradientAssetMetrics = {
 };
 
 const grayShades = {
+  grey1: '#F9FCFE',
   gray2: '#4F4F4F',
   gray3: '#828282',
 };

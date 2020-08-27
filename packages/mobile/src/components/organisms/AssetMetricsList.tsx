@@ -59,46 +59,45 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
         location={item.colorGradient?.location ?? []}
         cardStyle={individualCardStyle}
         angle={item.colorGradient?.angle ?? 0}
-        showPlusIcon={showPlusIcon}
       />
     );
   };
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.heading}>
-        <View style={styles.property}>
-          <View style={styles.logo}>
-            <Image source={images.homzhubDashboard} />
-          </View>
-          <View>
+      <View style={styles.property}>
+        <View style={styles.logo}>
+          <Image source={images.homzhubDashboard} />
+        </View>
+        <View style={styles.content}>
+          <View style={styles.topView}>
             <Text type="regular" textType="bold" style={styles.assetCount}>
               {title}
             </Text>
-            {subscription && (
-              <View style={styles.propertiesRow}>
-                <Text type="small" textType="semiBold" style={styles.propertyText}>
-                  {t('common:properties')}
-                </Text>
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
-                <Label type="large" textType="regular">
-                  {`${t('common:homzhub')} ${subscription}`}
-                </Label>
+            {showPlusIcon && (
+              <View style={styles.plusIcon}>
+                <Icon
+                  name={icons.plus}
+                  color={theme.colors.primaryColor}
+                  size={40}
+                  onPress={bubblePlusIcon}
+                  testID="icnPlus"
+                />
               </View>
             )}
           </View>
+          {subscription && (
+            <View style={styles.propertiesRow}>
+              <Text type="small" textType="semiBold" style={styles.propertyText}>
+                {t('common:properties')}
+              </Text>
+              <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={6} style={styles.circleIcon} />
+              <Label type="large" textType="regular">
+                {`${t('common:homzhub')} ${subscription}`}
+              </Label>
+            </View>
+          )}
         </View>
-        {showPlusIcon && (
-          <View style={styles.plusIcon}>
-            <Icon
-              name={icons.plus}
-              color={theme.colors.primaryColor}
-              size={40}
-              onPress={bubblePlusIcon}
-              testID="icnPlus"
-            />
-          </View>
-        )}
       </View>
       <View style={styles.assetMetrics}>
         <FlatList<IMetricsData>
@@ -123,16 +122,19 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     minHeight: 80,
   },
-  heading: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   property: {
     flexDirection: 'row',
     paddingVertical: 10,
     justifyContent: 'flex-start',
     alignItems: 'center',
+  },
+  topView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
   },
   logo: {
     flex: 0,

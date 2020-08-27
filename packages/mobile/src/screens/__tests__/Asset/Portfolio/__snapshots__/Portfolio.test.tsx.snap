@@ -11,6 +11,7 @@ exports[`Portfolio Screen should render snapshot 1`] = `
       }
     }
     data={Array []}
+    onPlusIconClicked={[Function]}
     showPlusIcon={true}
     title={0}
   />
@@ -302,6 +303,7 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
       }
     }
     data={Array []}
+    onPlusIconClicked={[Function]}
     showPlusIcon={true}
     title={0}
   />
@@ -593,6 +595,7 @@ exports[`Portfolio Screen should render snapshot for state 1`] = `
       }
     }
     data={Array []}
+    onPlusIconClicked={[Function]}
     showPlusIcon={true}
     title={0}
   />

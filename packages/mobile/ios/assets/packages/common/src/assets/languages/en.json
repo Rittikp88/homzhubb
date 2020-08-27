@@ -66,7 +66,11 @@
     "fileCorrupt": "File is corrupted",
     "more": "+ more",
     "select": "+ Select",
-    "noResultsFound": "No Results Found"
+    "noResultsFound": "No Results Found",
+    "clear": "Clear",
+    "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
+    "uploadDocument": "Upload Document",
+    "toastBack": "Click Back again to exit."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -311,6 +315,7 @@
     "completionStatus": "{{status}}% Complete",
     "completeDetails": "Complete Details",
     "costBreakdown": "Cost Breakdown",
+    "expenses": "Expenses",
     "cashFlow": "Cash Flow",
     "dashboard": "Dashboard",
     "overallPerformance": "Overall Performance",
@@ -323,6 +328,32 @@
   },
   "assetFinancial": {
     "financial": "Financials",
-    "payNow": "Pay Now"
+    "recordsText": "Records",
+    "transactions": "Transactions",
+    "income": "Income",
+    "expense": "Expense",
+    "payNow": "Pay Now",
+    "addRecords": "Add Records",
+    "selectProperty": "Select property",
+    "details": "Details",
+    "detailsPlaceholder": "Eg. Rent or Plumbing fees",
+    "amount": "Amount",
+    "amountPlaceholder": "Enter your money",
+    "category": "Category",
+    "categoryPlaceholder": "Select your category",
+    "addDate": "Add date",
+    "addDatePlaceholder": "Select a date",
+    "notes": "Notes",
+    "notesPlaceholder": "Type your notes here...",
+    "charactersRemaining": "Characters remaining: {{wordCount}}",
+    "addNow": "Add Now",
+    "propertyError": "Please enter your property",
+    "detailsError": "Please enter your property details",
+    "amountError": "Please enter the amount",
+    "categoryError": "Please enter the category of your property",
+    "dateError": "Please enter the date",
+    "attachmentName": "Attachment name",
+    "paidToText": "Paid to",
+    "invoice": "Invoice"
   }
 }

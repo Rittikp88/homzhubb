@@ -117,6 +117,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
             iconColor={theme.colors.active}
             listHeight={theme.viewport.height / 2}
             testID="drpTimeRange"
+            containerStyle={styles.dropdownStyle}
           />
         </View>
         {currentTab === TabKeys.expenses ? (
@@ -257,5 +258,8 @@ const styles = StyleSheet.create({
   dateText: {
     marginStart: 8,
     color: theme.colors.darkTint4,
+  },
+  dropdownStyle: {
+    width: 140,
   },
 });

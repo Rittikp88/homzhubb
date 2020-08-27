@@ -19,8 +19,8 @@ export const TextInputSuffix = (props: IProps): React.ReactElement => {
 const styles = StyleSheet.create({
   textInputSuffix: {
     position: 'absolute',
-    right: 9,
-    top: 12,
+    right: 6,
+    top: 13,
     bottom: 14,
     color: theme.colors.darkTint6,
   },

@@ -82,6 +82,11 @@ exports[`FinanceOverview should match snapshot 1`] = `
       </Label>
     </View>
     <Dropdown
+      containerStyle={
+        Object {
+          "width": 140,
+        }
+      }
       data={
         Array [
           Object {

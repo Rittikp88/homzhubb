@@ -39,6 +39,8 @@ interface IState {
   dropdownVisible: boolean;
 }
 
+const MAX_LABEL_COUNT = 12;
+
 export class Dropdown extends React.PureComponent<IProps, IState> {
   public state = {
     dropdownVisible: false,
@@ -62,11 +64,15 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
     } = this.props;
     const { dropdownVisible } = this.state;
     const selectedItem = data.find((d: PickerItemProps) => d.value === value);
+    const label =
+      selectedItem?.label && selectedItem?.label.length > MAX_LABEL_COUNT
+        ? `${(selectedItem?.label).substring(0, MAX_LABEL_COUNT)}...`
+        : selectedItem?.label;
     return (
       <View pointerEvents={disable ? 'none' : 'auto'}>
         <TouchableOpacity onPress={this.openDropdown} style={[styles.container, containerStyle]}>
           <Label type="large" textType="regular" style={textStyle}>
-            {selectedItem?.label ?? placeholder}
+            {label ?? placeholder}
           </Label>
           <Icon
             name={icon}

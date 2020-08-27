@@ -47,6 +47,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             title={metrics?.assetMetrics?.assets?.count ?? 0}
             data={metrics?.assetMetrics?.assetGroups ?? []}
             subscription={metrics?.userServicePlan?.label}
+            onPlusIconClicked={this.handleAddProperty}
             containerStyle={styles.assetCards}
           />
           {this.renderTenancies()}
@@ -135,6 +136,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private handleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
+
+  private handleAddProperty = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.PostPropertySearch });
   };
 }
 
