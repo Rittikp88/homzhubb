@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateStyle: {
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: theme.colors.shadow,
     borderRadius: 4,

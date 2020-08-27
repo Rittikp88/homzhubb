@@ -1,5 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export enum LedgerTypes {
+  debit = 'DEBIT',
+  credit = 'CREDIT',
+}
+
+export enum DataGroupBy {
+  year = 'YEAR',
+  month = 'MONTH',
+}
+
 export enum BarGraphLegends {
   income = 'Income',
   expense = 'Expense',

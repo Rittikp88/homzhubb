@@ -220,3 +220,9 @@ export interface ILeadPayload {
     preferred_contact_time?: any;
   };
 }
+
+export interface IGeneralLedgerPayload {
+  transaction_date__lte: string;
+  transaction_date__gte: string;
+  transaction_date_group_by: string;
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -10,16 +10,29 @@ interface IProps {
   value: string | number;
   currency?: string;
   cardStyle?: StyleProp<ViewStyle>;
-  angle: number;
-  location: number[];
+  angle?: number;
+  location?: number[];
   colorA: string;
   colorB: string;
   showPlusIcon?: boolean;
   testID?: string;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const { header, value, angle, colorA, colorB, location, showPlusIcon = false, currency, cardStyle, testID } = props;
+  const {
+    header,
+    value,
+    angle,
+    colorA,
+    colorB,
+    location,
+    showPlusIcon = false,
+    currency,
+    cardStyle,
+    testID,
+    textStyle,
+  } = props;
 
   const [selected, onSelect] = useState(false);
   const gradient = [colorA || theme.colors.gradientK, colorB || theme.colors.white];
@@ -49,7 +62,7 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
           {header}
         </Text>
         {currency ? (
-          <PricePerUnit priceTransformation={false} currency={currency} price={value as number} />
+          <PricePerUnit textStyle={textStyle} priceTransformation={false} currency={currency} price={value as number} />
         ) : (
           <Text
             type="large"

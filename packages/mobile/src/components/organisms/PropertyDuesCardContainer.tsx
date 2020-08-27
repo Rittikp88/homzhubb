@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   payNowBtnStyles: {
-    marginLeft: 83,
+    marginLeft: 70,
   },
   payNowTitleStyles: {
     flexDirection: 'row',

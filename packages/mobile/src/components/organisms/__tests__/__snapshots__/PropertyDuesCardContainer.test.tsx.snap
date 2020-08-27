@@ -116,7 +116,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 83,
+            "marginLeft": 70,
           }
         }
         title="assetFinancial:payNow"
@@ -192,7 +192,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 83,
+            "marginLeft": 70,
           }
         }
         title="assetFinancial:payNow"
@@ -268,7 +268,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 83,
+            "marginLeft": 70,
           }
         }
         title="assetFinancial:payNow"

@@ -48,6 +48,7 @@ export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
+export { FinancialHeaderContainer } from '@homzhub/mobile/src/components/organisms/FinancialHeaderContainer';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 export { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';

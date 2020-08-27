@@ -3,14 +3,15 @@ import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { mapValues, groupBy, sumBy } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
 import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
-import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { GeneralLedgers, DataGroupBy, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 enum TabKeys {
   expenses = 1,
@@ -23,22 +24,6 @@ enum DateFilter {
   thisYear = 3,
   thisFinancialYear = 4,
   lastYear = 5,
-}
-
-enum DataGroupBy {
-  year = 'YEAR',
-  month = 'MONTH',
-}
-
-enum LedgerTypes {
-  debit = 'DEBIT',
-  credit = 'CREDIT',
-}
-
-interface IState {
-  currentTab: TabKeys;
-  selectedTimeRange: DateFilter;
-  data: GeneralLedgers[];
 }
 
 // TODO: Figure out how to get these label values from translations
@@ -82,6 +67,12 @@ const DROPDOWN_DATA = {
 
 const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+interface IState {
+  currentTab: TabKeys;
+  selectedTimeRange: DateFilter;
+  data: GeneralLedgers[];
+}
+
 export class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
   public state = {
     currentTab: TabKeys.expenses,
@@ -95,7 +86,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
 
   public render = (): React.ReactNode => {
     const { t } = this.props;
-    const { currentTab, selectedTimeRange } = this.state;
+    const { currentTab, selectedTimeRange, data } = this.state;
     return (
       <View style={styles.container}>
         <Text type="small" textType="semiBold" style={styles.title}>
@@ -129,7 +120,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
           />
         </View>
         {currentTab === TabKeys.expenses ? (
-          <DonutGraph data={this.getLedgerDataFromType(LedgerTypes.debit)} />
+          <DonutGraph data={LedgerUtils.getLedgerDataOfType(LedgerTypes.debit, data)} />
         ) : (
           <DoubleBarGraph data={this.getBarGraphData()} />
         )}
@@ -158,38 +149,28 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
   public getGeneralLedgers = async (): Promise<void> => {
     const { selectedTimeRange, currentTab } = this.state;
     const { endDate, startDate, dataGroupBy } = DROPDOWN_DATA[selectedTimeRange];
-    const getTransactionGroupBy = (): string => {
+    const getTransactionGroupBy = (): DataGroupBy => {
       if (currentTab === TabKeys.cashFlow) {
         // For bar graph, we need all data by months
         return DataGroupBy.month;
       }
       return dataGroupBy;
     };
-    const requestPayload = {
-      transaction_date__lte: endDate,
-      transaction_date__gte: startDate,
-      transaction_date_group_by: getTransactionGroupBy(),
-    };
-    this.setState({ data: [] }); // Empty the data before adding new
-    const response: GeneralLedgers[] = await DashboardRepository.getGeneralLedgers(requestPayload);
+    /* Empty the data before adding new */
+    this.setState({ data: [] });
+    const response: GeneralLedgers[] = await LedgerService.getAllGeneralLedgers(
+      startDate,
+      endDate,
+      getTransactionGroupBy()
+    );
     this.setState({ data: response });
-  };
-
-  public getLedgerDataFromType = (type: string): GeneralLedgers[] => {
-    const { data } = this.state;
-    return data.filter((ledger: GeneralLedgers) => ledger.entryType === type);
-  };
-
-  public getSumOfValuesForType = (type: string): number[] => {
-    const category: GeneralLedgers[] = this.getLedgerDataFromType(type);
-    return [sumBy(category, (ledger: GeneralLedgers) => ledger.amount)];
   };
 
   public getBarGraphData = (): { data1: number[]; data2: number[]; label: string[] } => {
     const { selectedTimeRange, data } = this.state;
 
-    const sumForMonth = (type: string): number[] => {
-      return this.getSumOfValuesForType(type);
+    const sumForMonth = (type: LedgerTypes): number[] => {
+      return LedgerUtils.getAllTransactionsOfType(type, data);
     };
 
     const groupByTransactionDate = mapValues(groupBy(data, 'transactionDateLabel'));
