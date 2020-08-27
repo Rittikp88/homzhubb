@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import React, { PureComponent } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -24,6 +24,7 @@ export interface IFormDropdownProps {
   onChange?: (value: string, props?: FormikProps<FormikValues>) => void;
   onError?: () => void;
   optionalText?: string;
+  dropdownContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
@@ -39,6 +40,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
       label,
       listTitle,
       listHeight,
+      dropdownContainerStyle = {},
     } = this.props;
     const { values, errors, touched, setFieldValue, setFieldTouched } = formProps;
 
@@ -80,6 +82,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
           placeholder={placeholder}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
+          containerStyle={dropdownContainerStyle}
         />
       </WithFieldError>
     );

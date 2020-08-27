@@ -21,7 +21,7 @@ exports[`Asset Service Checkout Steps should render snapshot 1`] = `
     labels={
       Array [
         "common:details",
-        "common:images",
+        "",
         "common:verification",
         "common:payment",
       ]
@@ -75,10 +75,14 @@ exports[`Asset Service Checkout Steps should render snapshot 1`] = `
     </Text>
     <withI18nextTranslation(CheckoutAssetDetails)
       isLeaseFlow={true}
+      isPaymentSuccess={false}
+      navigateToPropertyHelper={[Function]}
+      onPaymentSuccess={[Function]}
       onStepSuccess={[Function]}
       propertyId={1}
       setLoading={[Function]}
       setTermId={[MockFunction]}
+      stepsLength={4}
       termId={1}
     />
   </ScrollViewMock>
@@ -109,7 +113,7 @@ exports[`Asset Service Checkout Steps should render snapshot when typeOfSale is 
     labels={
       Array [
         "common:details",
-        "common:images",
+        "",
         "common:verification",
         "common:payment",
       ]
@@ -163,10 +167,14 @@ exports[`Asset Service Checkout Steps should render snapshot when typeOfSale is 
     </Text>
     <withI18nextTranslation(CheckoutAssetDetails)
       isLeaseFlow={false}
+      isPaymentSuccess={false}
+      navigateToPropertyHelper={[Function]}
+      onPaymentSuccess={[Function]}
       onStepSuccess={[Function]}
       propertyId={1}
       setLoading={[Function]}
       setTermId={[MockFunction]}
+      stepsLength={4}
       termId={1}
     />
   </ScrollViewMock>
@@ -184,20 +192,6 @@ exports[`Asset Service Checkout Steps should render snapshot without steps 1`] =
     testID="lblNavigate"
     title=""
     type="primary"
-  />
-  <StepIndicatorComponent
-    containerStyle={
-      Object {
-        "backgroundColor": "#0084F8",
-        "paddingVertical": 12,
-      }
-    }
-    currentPosition={0}
-    isPaymentSuccess={false}
-    labels={Array []}
-    onPress={[Function]}
-    stepCount={0}
-    testID="stepIndicator"
   />
   <ScrollViewMock
     showsVerticalScrollIndicator={false}
@@ -218,19 +212,7 @@ exports[`Asset Service Checkout Steps should render snapshot without steps 1`] =
           "marginTop": 20,
         }
       }
-    >
-      <Label
-        style={
-          Object {
-            "color": "#33495E",
-          }
-        }
-        textType="semiBold"
-        type="large"
-      >
-        step
-      </Label>
-    </View>
+    />
     <Text
       style={
         Object {

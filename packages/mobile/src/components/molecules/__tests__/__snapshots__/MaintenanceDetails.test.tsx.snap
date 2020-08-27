@@ -315,6 +315,11 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
           }
         >
           <FormDropdown
+            dropdownContainerStyle={
+              Object {
+                "height": 48,
+              }
+            }
             formProps={
               Object {
                 "touched": Object {
@@ -448,6 +453,11 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                 </Text>
               </Label>
               <Dropdown
+                containerStyle={
+                  Object {
+                    "height": 48,
+                  }
+                }
                 data={
                   Array [
                     Object {
@@ -491,7 +501,9 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                             "paddingHorizontal": 16,
                             "paddingVertical": 8,
                           },
-                          Object {},
+                          Object {
+                            "height": 48,
+                          },
                         ]
                       }
                     >
@@ -510,7 +522,9 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                               "paddingHorizontal": 16,
                               "paddingVertical": 8,
                             },
-                            Object {},
+                            Object {
+                              "height": 48,
+                            },
                           ]
                         }
                       >
@@ -537,7 +551,9 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                   "paddingHorizontal": 16,
                                   "paddingVertical": 8,
                                 },
-                                Object {},
+                                Object {
+                                  "height": 48,
+                                },
                               ],
                               Object {
                                 "opacity": 1,
@@ -568,7 +584,9 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                     "paddingHorizontal": 16,
                                     "paddingVertical": 8,
                                   },
-                                  Object {},
+                                  Object {
+                                    "height": 48,
+                                  },
                                 ],
                                 Object {
                                   "opacity": 1,
@@ -593,6 +611,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                   "borderRadius": 4,
                                   "borderWidth": 1,
                                   "flexDirection": "row",
+                                  "height": 48,
                                   "justifyContent": "space-between",
                                   "opacity": 1,
                                   "paddingHorizontal": 16,
@@ -617,6 +636,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                     "borderRadius": 4,
                                     "borderWidth": 1,
                                     "flexDirection": "row",
+                                    "height": 48,
                                     "justifyContent": "space-between",
                                     "opacity": 1,
                                     "paddingHorizontal": 16,

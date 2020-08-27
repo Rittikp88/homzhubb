@@ -1,29 +1,24 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, SafeAreaView, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
-import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 
 interface IProps {
   propertyId: number;
-  updateStep: () => void;
-  totalSteps: number;
-  isSuccess: boolean;
   onPressContinue: () => void;
-  navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
-  setLoading: (loading: boolean) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 type OwnProps = WithTranslation;
@@ -46,47 +41,44 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public render(): React.ReactNode {
-    const { navigateToPropertyHelper, isSuccess } = this.props;
-    return <>{isSuccess ? <PaymentSuccess onClickLink={navigateToPropertyHelper} /> : this.renderImageContent()}</>;
-  }
-
-  private renderImageContent = (): React.ReactElement => {
-    const { t } = this.props;
+    const { t, containerStyle } = this.props;
     const { selectedImages, isBottomSheetVisible } = this.state;
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
     return (
-      <View style={styles.container}>
-        <UploadBox
-          icon={icons.gallery}
-          header={header}
-          subHeader={t('property:supportedImageFormats')}
-          onPress={this.onPhotosUpload}
-          containerStyle={styles.uploadBox}
-        />
-        <View style={styles.imagesContainer}>{this.renderImages()}</View>
-        <BottomSheet
-          isShadowView
-          sheetHeight={650}
-          headerTitle={t('property:propertyImages')}
-          visible={isBottomSheetVisible}
-          onCloseSheet={this.onCloseBottomSheet}
-        >
-          <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
-        </BottomSheet>
-        {selectedImages.length > 0 && (
-          <WithShadowView outerViewStyle={styles.shadowView}>
-            <Button
-              type="primary"
-              title={t('common:continue')}
-              disabled={selectedImages.length === 0}
-              containerStyle={styles.buttonStyle}
-              onPress={this.postAttachmentsForProperty}
+      <>
+        <View style={[styles.container, containerStyle]}>
+          <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+            <UploadBox
+              icon={icons.gallery}
+              header={header}
+              subHeader={t('property:supportedImageFormats')}
+              onPress={this.onPhotosUpload}
+              containerStyle={styles.uploadBox}
             />
-          </WithShadowView>
-        )}
-      </View>
+            <View style={styles.imagesContainer}>{this.renderImages()}</View>
+          </ScrollView>
+          <BottomSheet
+            isShadowView
+            sheetHeight={650}
+            headerTitle={t('property:propertyImages')}
+            visible={isBottomSheetVisible}
+            onCloseSheet={this.onCloseBottomSheet}
+          >
+            <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
+          </BottomSheet>
+        </View>
+        <WithShadowView outerViewStyle={styles.shadowView}>
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            disabled={selectedImages.length === 0}
+            containerStyle={styles.buttonStyle}
+            onPress={this.postAttachmentsForProperty}
+          />
+        </WithShadowView>
+      </>
     );
-  };
+  }
 
   public renderImages = (): React.ReactNode => {
     const { t } = this.props;
@@ -199,7 +191,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public onPhotosUpload = async (): Promise<void> => {
-    const { propertyId, setLoading } = this.props;
+    const { propertyId } = this.props;
     const { selectedImages } = this.state;
 
     try {
@@ -212,7 +204,6 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         includeBase64: true,
         mediaType: 'photo',
       });
-      setLoading(true);
       const formData = new FormData();
       images.forEach((image) => {
         formData.append('files[]', {
@@ -255,10 +246,9 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
             // @ts-ignore
             selectedImages: selectedImages.concat(localSelectedImages),
           });
-          setLoading(false);
         });
     } catch (e) {
-      setLoading(false);
+      AlertHelper.error({ message: e.message });
     }
   };
 
@@ -294,8 +284,6 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
-    const { setLoading } = this.props;
-    setLoading(true);
     try {
       const response = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
       const coverImageIndex = findIndex(response, (image) => {
@@ -304,12 +292,11 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       if (coverImageIndex === -1 && response.length > 0) {
         response[0].is_cover_image = true;
       }
-      setLoading(false);
       this.setState({
         selectedImages: response,
       });
     } catch (e) {
-      setLoading(false);
+      AlertHelper.error({ message: e.message });
     }
   };
 
@@ -336,22 +323,17 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
-    const { propertyId, updateStep, totalSteps, onPressContinue, setLoading } = this.props;
+    const { propertyId, onPressContinue } = this.props;
     const { selectedImages } = this.state;
-    setLoading(true);
     const attachmentIds: IPropertyImagesPostPayload[] = [];
     selectedImages.forEach((selectedImage: IPropertySelectedImages) =>
       attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.is_cover_image })
     );
     try {
       await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
-      if (totalSteps === 2) {
-        onPressContinue();
-      }
-      setLoading(false);
-      updateStep();
+      onPressContinue();
     } catch (e) {
-      setLoading(false);
+      AlertHelper.error({ message: e.message });
     }
   };
 }

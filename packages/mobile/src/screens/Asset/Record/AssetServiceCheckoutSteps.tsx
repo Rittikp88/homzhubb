@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { CommonActions } from '@react-navigation/native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -13,7 +14,6 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
 import { PropertyPayment, Header, StepIndicatorComponent, Loader } from '@homzhub/mobile/src/components';
 import CheckoutAssetDetails from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
-import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -65,7 +65,12 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
         </ScrollView>
         {isPaymentSuccess && (
           <WithShadowView outerViewStyle={styles.shadowView}>
-            <Button type="primary" title={t('previewProperty')} containerStyle={styles.buttonStyle} />
+            <Button
+              type="primary"
+              title={t('previewProperty')}
+              containerStyle={styles.buttonStyle}
+              onPress={this.previewProperty}
+            />
           </WithShadowView>
         )}
         <Loader visible={isLoading} />
@@ -76,7 +81,6 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
   private renderHeader = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
     const { steps } = this.props;
-
     return (
       <>
         <Header
@@ -86,15 +90,17 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
           title={this.getTitleStringsForStep(steps[currentStep]).screenTitle}
           testID="lblNavigate"
         />
-        <StepIndicatorComponent
-          stepCount={steps.length}
-          labels={this.fetchStepLabels()}
-          currentPosition={currentStep}
-          onPress={this.onStepPress}
-          containerStyle={styles.containerStyle}
-          isPaymentSuccess={isPaymentSuccess}
-          testID="stepIndicator"
-        />
+        {steps.length > 1 && (
+          <StepIndicatorComponent
+            stepCount={steps.length}
+            labels={this.fetchStepLabels()}
+            currentPosition={currentStep}
+            onPress={this.onStepPress}
+            containerStyle={styles.containerStyle}
+            isPaymentSuccess={isPaymentSuccess}
+            testID="stepIndicator"
+          />
+        )}
       </>
     );
   };
@@ -106,9 +112,11 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
     return (
       <>
         <View style={styles.headingRow}>
-          <Label type="large" textType="semiBold" style={styles.textColor}>
-            {t('step', { stepNumber: currentStep + 1, totalSteps: steps.length })}
-          </Label>
+          {steps.length > 1 && (
+            <Label type="large" textType="semiBold" style={styles.textColor}>
+              {t('step', { stepNumber: currentStep + 1, totalSteps: steps.length })}
+            </Label>
+          )}
           {(currentStep === 1 || currentStep === 2) && (
             <Text
               type="small"
@@ -147,20 +155,12 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             termId={termId}
             setTermId={setTermId}
             isLeaseFlow={typeOfSale === TypeOfSale.FIND_TENANT}
+            stepsLength={steps.length}
             onStepSuccess={this.onProceedToNextStep}
             setLoading={this.setLoadingState}
-          />
-        );
-      case ServiceStepTypes.PROPERTY_IMAGES:
-        return (
-          <PropertyImages
-            propertyId={propertyId}
-            updateStep={this.onProceedToNextStep}
-            onPressContinue={this.onSuccess}
-            totalSteps={steps.length}
-            isSuccess={isPaymentSuccess}
+            isPaymentSuccess={isPaymentSuccess}
+            onPaymentSuccess={this.onPaymentSuccess}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
-            setLoading={this.setLoadingState}
           />
         );
       case ServiceStepTypes.PROPERTY_VERIFICATIONS:
@@ -177,7 +177,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
       case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
         return (
           <PropertyPayment
-            onPayNow={this.onSuccess}
+            onPayNow={this.onPaymentSuccess}
             isSuccess={isPaymentSuccess}
             navigateToPropertyHelper={this.navigateToPropertyHelper}
             testID="propertyPayment"
@@ -202,9 +202,14 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
     this.setState({ currentStep: currentStep + 1 });
   };
 
-  private onSuccess = (): void => {
+  private onPaymentSuccess = (): void => {
     const { isPaymentSuccess } = this.state;
     this.setState({ isPaymentSuccess: !isPaymentSuccess });
+  };
+
+  public previewProperty = (): void => {
+    const { navigation } = this.props;
+    navigation.dispatch(CommonActions.navigate({ name: ScreensKeys.BottomTabs }));
   };
 
   private setLoadingState = (loading: boolean): void => {
@@ -245,12 +250,6 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
           stepLabel: t('common:details'),
           title: t('enterSaleDetails'),
           screenTitle: t('resaleDetails'),
-        };
-      case ServiceStepTypes.PROPERTY_IMAGES:
-        return {
-          stepLabel: t('common:images'),
-          title: t('addPropertyImages'),
-          screenTitle: t('propertyImages'),
         };
       case ServiceStepTypes.PROPERTY_VERIFICATIONS:
         return {

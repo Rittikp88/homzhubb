@@ -70,6 +70,7 @@ export enum ScreensKeys {
   ServiceListSteps = 'ServiceListSteps',
   ServiceCheckoutSteps = 'ServiceCheckoutSteps',
   MarkdownScreen = 'Markdown',
+  AssetPropertyImages = 'AssetPropertyImages',
 
   // Search Stack
   PropertySearchLanding = 'PropertySearchLanding',

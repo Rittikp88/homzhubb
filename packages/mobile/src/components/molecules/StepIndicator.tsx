@@ -122,15 +122,11 @@ const styles = StyleSheet.create({
   stepIndicator: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 28,
-    height: 28,
-    borderRadius: 28 / 2,
+    ...(theme.circleCSS(28) as object),
     backgroundColor: theme.colors.whiteOpacity,
   },
   inner: {
-    width: 10,
-    height: 10,
-    borderRadius: 10 / 2,
+    ...(theme.circleCSS(10) as object),
     backgroundColor: theme.colors.secondaryColor,
   },
   label: {

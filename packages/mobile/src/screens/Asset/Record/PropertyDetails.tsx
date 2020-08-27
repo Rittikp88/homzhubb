@@ -70,6 +70,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
     const { getPropertyDetails } = this.props;
     getPropertyDetails();
     await this.getProjectName();
+    await this.getCarpetAreaUnits();
   };
 
   public render(): React.ReactNode {
@@ -140,7 +141,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
     navigation.goBack();
   };
 
-  public onPropertyGroupChange = async (index: string | number): Promise<void> => {
+  public onPropertyGroupChange = (index: string | number): void => {
     const { spaceAvailable } = this.state;
     this.setState({
       propertyGroupSelectedIndex: index,
@@ -148,11 +149,9 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
       spaceAvailable: {
         ...spaceAvailable,
         bathroom: 0,
+        carpetArea: '',
       },
     });
-    if (index === 1) {
-      await this.getCarpetAreaUnits();
-    }
   };
 
   public onPropertyGroupTypeChange = (index: string | number): void => {
@@ -199,25 +198,21 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
       let requestPayload: IUpdateAssetDetails = {
         asset_type: Number(property[propertyGroupSelectedIndex].asset_types[propertyGroupTypeSelectedIndex].id),
         spaces,
+        carpet_area: carpetArea.toString(),
+        carpet_area_unit: areaUnit,
       };
+      if (!carpetArea) {
+        this.setState({ carpetAreaError: true });
+      }
       if (propertyGroupSelectedIndex === 1) {
         requestPayload = {
           ...requestPayload,
-          carpet_area: carpetArea.toString(),
-          carpet_area_unit: areaUnit,
           floor_number: floorNumber,
           total_floors: totalFloors,
         };
-        if (carpetArea) {
-          await AssetRepository.updateAsset(propertyId, requestPayload);
-          navigation.navigate(ScreensKeys.RentServicesScreen);
-        } else {
-          this.setState({ carpetAreaError: true });
-        }
-      } else {
-        await AssetRepository.updateAsset(propertyId, requestPayload);
-        navigation.navigate(ScreensKeys.RentServicesScreen);
       }
+      await AssetRepository.updateAsset(propertyId, requestPayload);
+      navigation.navigate(ScreensKeys.AssetPropertyImages);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

@@ -4,7 +4,14 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes, ISpaceAvailable } from '@homzhub/common/src/domain/repositories/interfaces';
-import { HorizontalPicker, IDropdownOption, Label, Text, Dropdown } from '@homzhub/common/src/components';
+import {
+  HorizontalPicker,
+  IDropdownOption,
+  Label,
+  Text,
+  Dropdown,
+  SelectionPicker,
+} from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 
@@ -28,15 +35,10 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
     const { data, propertyGroupSelectedIndex, propertyGroupTypeSelectedIndex } = this.props;
     return (
       <View style={styles.container}>
-        <ButtonGroup<number>
+        <SelectionPicker
           data={this.fetchButtonGroupData<IPropertyDetailsData>(data)}
-          onItemSelect={this.onPropertyGroupSelect}
-          selectedItem={propertyGroupSelectedIndex}
-          textType="text"
-          textSize="small"
-          fontType="semiBold"
-          containerStyle={styles.buttonGroupContainer}
-          buttonItemStyle={styles.propertyTypeButton}
+          selectedItem={[propertyGroupSelectedIndex]}
+          onValueChange={this.onPropertyGroupSelect}
           testID="btngrpPropertyGroup"
         />
         <ButtonGroup<number>
@@ -50,10 +52,8 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           buttonItemStyle={styles.assetTypeButton}
           testID="btngrpPropertyGroupType"
         />
-        <View style={styles.propertyContainer}>
-          {this.renderSpaceAvailable()}
-          {this.renderCarpetArea()}
-        </View>
+        {this.renderSpaceAvailable()}
+        {this.renderCarpetArea()}
       </View>
     );
   }
@@ -127,12 +127,11 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   public renderCarpetArea = (): React.ReactNode => {
     const {
       t,
-      propertyGroupSelectedIndex,
       areaUnits,
       carpetAreaError,
       spaceAvailable: { carpetArea, areaUnit },
     } = this.props;
-    if (propertyGroupSelectedIndex === 0 || areaUnits.length === 0) {
+    if (areaUnits.length === 0) {
       return null;
     }
     const labelStyles = { ...theme.form.formLabel };
@@ -239,12 +238,7 @@ const styles = StyleSheet.create({
   },
   typeProperty: {
     color: theme.colors.darkTint4,
-    marginBottom: 15,
-  },
-  propertyContainer: {
-    marginHorizontal: 10,
-    marginTop: 0,
-    flexDirection: 'column',
+    marginBottom: 5,
   },
   textInput: {
     textAlign: 'left',
@@ -267,11 +261,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   carpetArea: {
-    flex: 0.5,
+    flex: 1,
     marginRight: 20,
   },
   areaUnit: {
-    flex: 0.5,
+    flex: 1,
   },
   picker: {
     flex: 1,
@@ -280,7 +274,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   label: {
-    flex: 0.8,
+    flex: 0,
+    width: theme.viewport.width / 2.5,
     alignSelf: 'center',
     color: theme.colors.darkTint4,
   },
@@ -289,11 +284,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   buttonGroupContainer: {
-    marginBottom: 28,
-  },
-  propertyTypeButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    marginVertical: 25,
   },
   assetTypeButton: {
     marginBottom: 12,

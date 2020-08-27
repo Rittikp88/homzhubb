@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { BarChart, XAxis, YAxis, Grid } from 'react-native-svg-charts';
 import { PathProps } from 'react-native-svg';
 import { sum } from 'lodash';
+import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -22,7 +23,7 @@ const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7 };
 const VERTICAL_INSET = { top: 8, bottom: 8 };
 const HORIZONTAL_INSET = { left: 24, right: 24 };
 // VIEWPORT CONSTANTS
-const Y_GRID_WIDTH = 36;
+const Y_GRID_WIDTH = 50;
 const HEIGHT = theme.viewport.height * 0.5;
 const WIDTH = theme.viewport.width * 1.5;
 
@@ -64,7 +65,13 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.barGraphContainer}>
           <View style={styles.yContainer}>
-            <YAxis style={styles.yGrid} contentInset={VERTICAL_INSET} data={data1.concat(data2)} svg={SVG_FONT} />
+            <YAxis
+              style={styles.yGrid}
+              contentInset={VERTICAL_INSET}
+              data={data1.concat(data2)}
+              svg={SVG_FONT}
+              formatLabel={(value: number): string => `₹ ${CurrencyUtils.getCurrency('INR', value)}`}
+            />
             <BarChart
               contentInset={VERTICAL_INSET}
               style={[styles.barGraph, conditionalStyle.derivedWidth]}
@@ -78,7 +85,7 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
             data={label}
             contentInset={HORIZONTAL_INSET}
             svg={SVG_FONT}
-            formatLabel={(value, index): string => label[index]}
+            formatLabel={(value, index: number): string => label[index]}
           />
         </View>
       </ScrollView>

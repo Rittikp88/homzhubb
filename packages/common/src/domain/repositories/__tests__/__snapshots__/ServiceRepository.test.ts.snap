@@ -217,7 +217,7 @@ Object {
     Object {
       "id": 2,
       "label": "Label 2",
-      "name": "PROPERTY_IMAGES",
+      "name": undefined,
       "title": "Add Property Images",
     },
     Object {

@@ -43,7 +43,7 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
           style={
             Object {
               "alignItems": "flex-start",
-              "width": 36,
+              "width": 50,
             }
           }
           svg={
@@ -132,7 +132,7 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
         style={
           Array [
             Object {
-              "marginStart": 36,
+              "marginStart": 50,
               "padding": 10,
               "width": 1125,
             },

@@ -22,6 +22,7 @@ exports[`Test cases for FormDropdown should render snapshot 1`] = `
     />
   </Label>
   <Dropdown
+    containerStyle={Object {}}
     disable={false}
     iconColor="#99A4AF"
     iconSize={16}

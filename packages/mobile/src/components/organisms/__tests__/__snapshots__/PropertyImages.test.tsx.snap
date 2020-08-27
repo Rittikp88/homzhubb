@@ -4,30 +4,42 @@ exports[`Property Images Component should render the PropertyImages component 1`
 <Fragment>
   <View
     style={
-      Object {
-        "flex": 1,
-      }
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+      ]
     }
   >
-    <UploadBox
-      containerStyle={
-        Object {
-          "marginTop": 20,
-        }
-      }
-      header="property:addPhotos"
-      icon="gallery"
-      onPress={[Function]}
-      subHeader="property:supportedImageFormats"
-    />
-    <View
+    <ScrollViewMock
+      showsVerticalScrollIndicator={false}
       style={
         Object {
           "flex": 1,
-          "marginTop": 20,
         }
       }
-    />
+    >
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
+          }
+        }
+        header="property:addPhotos"
+        icon="gallery"
+        onPress={[Function]}
+        subHeader="property:supportedImageFormats"
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "marginTop": 20,
+          }
+        }
+      />
+    </ScrollViewMock>
     <BottomSheet
       headerTitle="property:propertyImages"
       isShadowView={true}
@@ -44,5 +56,27 @@ exports[`Property Images Component should render the PropertyImages component 1`
       />
     </BottomSheet>
   </View>
+  <WithShadowView
+    outerViewStyle={
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "margin": 16,
+        }
+      }
+      disabled={true}
+      onPress={[Function]}
+      title="common:continue"
+      type="primary"
+    />
+  </WithShadowView>
 </Fragment>
 `;

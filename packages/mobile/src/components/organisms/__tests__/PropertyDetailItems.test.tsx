@@ -46,7 +46,7 @@ describe('Property Details Item Component', () => {
     props = { ...props, data: PropertyAssetGroupData };
     component = shallow(<PropertyDetailsItems {...props} t={(key: string): string => key} />);
     // @ts-ignore
-    component.find('[testID="btngrpPropertyGroup"]').prop('onItemSelect')();
+    component.find('[testID="btngrpPropertyGroup"]').prop('onValueChange')();
     expect(mock).toHaveBeenCalled();
   });
 

@@ -9,18 +9,7 @@ exports[`Property Details Item Component should render property details items co
     }
   }
 >
-  <ButtonGroup
-    buttonItemStyle={
-      Object {
-        "paddingHorizontal": 12,
-        "paddingVertical": 12,
-      }
-    }
-    containerStyle={
-      Object {
-        "marginBottom": 28,
-      }
-    }
+  <SelectionPicker
     data={
       Array [
         Object {
@@ -33,12 +22,13 @@ exports[`Property Details Item Component should render property details items co
         },
       ]
     }
-    fontType="semiBold"
-    onItemSelect={[Function]}
-    selectedItem={0}
+    onValueChange={[Function]}
+    selectedItem={
+      Array [
+        0,
+      ]
+    }
     testID="btngrpPropertyGroup"
-    textSize="small"
-    textType="text"
   />
   <ButtonGroup
     buttonItemStyle={
@@ -48,7 +38,7 @@ exports[`Property Details Item Component should render property details items co
     }
     containerStyle={
       Object {
-        "marginBottom": 28,
+        "marginVertical": 25,
       }
     }
     data={
@@ -86,56 +76,170 @@ exports[`Property Details Item Component should render property details items co
     textSize="regular"
     textType="label"
   />
-  <View
+  <Text
     style={
       Object {
-        "flexDirection": "column",
-        "marginHorizontal": 10,
-        "marginTop": 0,
+        "color": "#4C5F72",
+        "marginBottom": 5,
+      }
+    }
+    textType="semiBold"
+    type="regular"
+  >
+    spaceAvailable
+  </Text>
+  <View
+    key="Residential-0"
+    style={
+      Object {
+        "flex": 1,
+        "flexDirection": "row",
+        "marginBottom": 10,
+        "marginTop": 10,
       }
     }
   >
-    <Text
+    <Label
       style={
         Object {
+          "alignSelf": "center",
           "color": "#4C5F72",
-          "marginBottom": 15,
+          "flex": 0,
+          "width": 300,
         }
       }
-      textType="semiBold"
-      type="regular"
+      textType="regular"
+      type="large"
     >
-      spaceAvailable
-    </Text>
-    <View
+      Room
+    </Label>
+    <HorizontalPicker
       key="Residential-0"
+      onValueChange={[Function]}
+      testID="ftlist"
+      value={0}
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "marginBottom": 20,
+      }
+    }
+  >
+    <View
       style={
         Object {
           "flex": 1,
-          "flexDirection": "row",
-          "marginBottom": 10,
-          "marginTop": 10,
+          "marginRight": 20,
         }
       }
     >
       <Label
         style={
           Object {
-            "alignSelf": "center",
-            "color": "#4C5F72",
-            "flex": 0.8,
+            "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
           }
         }
         textType="regular"
-        type="large"
+        type="regular"
       >
-        Room
+        carpetArea
       </Label>
-      <HorizontalPicker
-        key="Residential-0"
-        onValueChange={[Function]}
-        testID="ftlist"
-        value={0}
+      <Component
+        allowFontScaling={true}
+        key="carpetArea"
+        keyboardType="number-pad"
+        maxLength={5}
+        onChangeText={[Function]}
+        placeholder="enterCarpetArea"
+        rejectResponderTermination={true}
+        style={
+          Object {
+            "borderColor": "#C9D6DF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "paddingHorizontal": 14,
+            "paddingVertical": 12,
+            "textAlign": "left",
+          }
+        }
+        testID="txtipCarpetArea"
+        underlineColorAndroid="transparent"
+        value="1000"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        areaUnit
+      </Label>
+      <Dropdown
+        containerStyle={
+          Object {
+            "height": 54,
+          }
+        }
+        data={
+          Array [
+            Object {
+              "label": "Sq.ft",
+              "value": "Sq.ft",
+            },
+            Object {
+              "label": "Sq.yard",
+              "value": "Sq.yard",
+            },
+            Object {
+              "label": "Sq.m",
+              "value": "Sq.m",
+            },
+            Object {
+              "label": "cents",
+              "value": "cents",
+            },
+            Object {
+              "label": "biswa",
+              "value": "biswa",
+            },
+            Object {
+              "label": "acres",
+              "value": "acres",
+            },
+            Object {
+              "label": "hectares",
+              "value": "hectares",
+            },
+            Object {
+              "label": "kattha",
+              "value": "kattha",
+            },
+          ]
+        }
+        iconColor="#99A4AF"
+        iconSize={16}
+        listTitle="selectAreaUnit"
+        onDonePress={[Function]}
+        testID="dpnAreaUnit"
+        value="Sq.ft"
       />
     </View>
   </View>

@@ -56,6 +56,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           formProps={formProps}
           // @ts-ignore
           onChange={onMaintenanceScheduleChanged}
+          dropdownContainerStyle={styles.dropdownContainerStyle}
         />
       </View>
     </View>
@@ -75,5 +76,8 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     flex: 0.5,
     marginStart: 16,
+  },
+  dropdownContainerStyle: {
+    height: 48,
   },
 });

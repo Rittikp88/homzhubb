@@ -179,12 +179,10 @@ export const BottomTabs = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   dashboardBump: {
-    borderRadius: 30,
-    width: 60,
-    height: 60,
-    backgroundColor: theme.colors.white,
     flex: 0,
+    backgroundColor: theme.colors.white,
     justifyContent: 'center',
     alignItems: 'center',
+    ...(theme.circleCSS(60) as object),
   },
 });

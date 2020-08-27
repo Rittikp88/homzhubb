@@ -3,7 +3,7 @@ class CurrencyUtils {
     switch (currency) {
       case 'INR':
         if (value < 100000) {
-          return value.toLocaleString();
+          return value.toString().replace(/(\d)(?=(\d\d\d)+$)/g, '$1,');
         }
         if (value >= 100000 && value < 10000000) {
           return `${(value / 100000).toFixed(2)}L`;

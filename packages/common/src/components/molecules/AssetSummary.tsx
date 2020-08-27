@@ -29,7 +29,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
     >
       <View style={styles.summary}>
         <Icon name={icons.bell} color={theme.colors.notificationGreen} size={25} />
-        <Text type="small" textType="semiBold" style={styles.notification} minimumFontScale={0.5} adjustsFontSizeToFit>
+        <Text type="small" textType="semiBold" style={styles.notification} minimumFontScale={0.1} adjustsFontSizeToFit>
           {t('notification')}
         </Text>
         <Text type="regular" textType="bold" style={styles.notification}>
@@ -43,7 +43,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
           type="small"
           textType="semiBold"
           style={styles.serviceTickets}
-          minimumFontScale={0.5}
+          minimumFontScale={0.1}
           adjustsFontSizeToFit
         >
           {t('tickets')}
@@ -55,7 +55,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       <Divider />
       <View style={styles.summary}>
         <Icon name={icons.decrease} color={theme.colors.danger} size={25} />
-        <Text type="small" textType="semiBold" style={styles.dues} minimumFontScale={0.5} adjustsFontSizeToFit>
+        <Text type="small" textType="semiBold" style={styles.dues} minimumFontScale={0.1} adjustsFontSizeToFit>
           {t('dues')}
         </Text>
         <Text type="regular" textType="bold" style={styles.dues}>
