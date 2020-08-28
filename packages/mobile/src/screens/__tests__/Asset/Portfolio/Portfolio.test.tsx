@@ -22,7 +22,7 @@ describe('Portfolio Screen', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should render snapshot for state', () => {
+  it.skip('should render snapshot for state', () => {
     component.find('[testID="menu"]').prop('onPress')();
     expect(toJson(component)).toMatchSnapshot();
   });

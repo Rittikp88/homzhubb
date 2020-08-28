@@ -146,7 +146,7 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
             key="carpetArea"
             value={carpetArea}
             keyboardType="number-pad"
-            style={carpetAreaError ? styles.errorTextInput : styles.textInput}
+            style={[styles.textInput, carpetAreaError && styles.errorTextInput]}
             placeholder={t('enterCarpetArea')}
             onChangeText={this.onCarpetAreaChange}
             maxLength={5}
@@ -242,6 +242,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     textAlign: 'left',
+    height: 54,
     borderWidth: 1,
     borderRadius: 4,
     paddingHorizontal: 14,
@@ -249,11 +250,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.disabled,
   },
   errorTextInput: {
-    textAlign: 'left',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
     ...theme.form.fieldError,
   },
   formContainer: {

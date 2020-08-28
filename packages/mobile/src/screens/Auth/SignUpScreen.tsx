@@ -50,7 +50,11 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
         testID="headerEvents"
       >
         <>
-          <SignUpForm onSubmitFormSuccess={this.onFormSubmit} testID="signupForm" />
+          <SignUpForm
+            onSubmitFormSuccess={this.onFormSubmit}
+            onPressLink={this.handleTermsCondition}
+            testID="signupForm"
+          />
           <SocialMediaComponent
             isFromLogin={false}
             socialMediaItems={socialMediaProviders}
@@ -96,6 +100,12 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
         ...(params && params.onCallback && { onCallback: params.onCallback }),
       });
     }
+  };
+
+  // TODO: (Shikha) - Replace url once BE ready
+  private handleTermsCondition = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
   };
 
   private validateUser = (formData: ISignUpPayload): void => {

@@ -80,6 +80,10 @@ export enum ScreensKeys {
   PropertyFilters = 'PropertyFilters',
   ContactSignup = 'ContactSignup',
   ContactForm = 'ContactForm',
+
+  // Common Screens
+
+  WebViewScreen = 'WebViewScreen',
 }
 
 export enum OtpNavTypes {
@@ -155,4 +159,9 @@ export interface IContactProps {
 // Portfolio
 export interface IPropertyDetailProps {
   propertyData: any;
+}
+
+// Webview
+export interface IWebviewProps {
+  url: string;
 }

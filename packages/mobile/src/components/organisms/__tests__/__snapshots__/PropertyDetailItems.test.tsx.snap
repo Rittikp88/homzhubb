@@ -158,14 +158,18 @@ exports[`Property Details Item Component should render property details items co
         placeholder="enterCarpetArea"
         rejectResponderTermination={true}
         style={
-          Object {
-            "borderColor": "#C9D6DF",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
-            "textAlign": "left",
-          }
+          Array [
+            Object {
+              "borderColor": "#C9D6DF",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "height": 54,
+              "paddingHorizontal": 14,
+              "paddingVertical": 12,
+              "textAlign": "left",
+            },
+            false,
+          ]
         }
         testID="txtipCarpetArea"
         underlineColorAndroid="transparent"

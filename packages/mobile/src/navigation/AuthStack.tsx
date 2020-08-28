@@ -6,6 +6,7 @@ import {
   IVerificationProps,
   IResetPasswordProps,
   IScreenCallback,
+  IWebviewProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
@@ -15,6 +16,7 @@ import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import SignUpScreen from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
+import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 
 export type AuthStackParamList = {
   [ScreensKeys.SignUp]: IScreenCallback;
@@ -25,6 +27,7 @@ export type AuthStackParamList = {
   [ScreensKeys.ForgotPassword]: IScreenCallback;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
   [ScreensKeys.SuccessResetPassword]: IScreenCallback;
+  [ScreensKeys.WebViewScreen]: IWebviewProps;
 };
 
 export const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
@@ -45,6 +48,7 @@ export function AuthStack(): React.ReactElement {
       <AuthStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
+      <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
     </AuthStackNavigator.Navigator>
   );
 }

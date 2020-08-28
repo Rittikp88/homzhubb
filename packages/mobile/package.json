@@ -65,6 +65,7 @@
     "react-native-svg-transformer": "^0.14.3",
     "react-native-vector-icons": "6.6.0",
     "react-native-video": "^4.4.5",
+    "react-native-webview": "^10.8.2",
     "react-native-youtube": "^2.0.1"
   },
   "devDependencies": {

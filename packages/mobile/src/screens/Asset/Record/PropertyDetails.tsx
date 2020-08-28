@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
@@ -128,6 +129,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
           <Button
             type="primary"
             title={t('common:submit')}
+            disabled={!spaceAvailable.carpetArea}
             containerStyle={styles.buttonStyle}
             onPress={this.onSubmit}
           />
@@ -214,7 +216,8 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
       await AssetRepository.updateAsset(propertyId, requestPayload);
       navigation.navigate(ScreensKeys.AssetPropertyImages);
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -252,8 +255,9 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
       this.setState({
         areaUnits: response,
       });
-    } catch (error) {
-      AlertHelper.error({ message: error.message });
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
     }
   };
 
@@ -279,7 +283,8 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
       const response = await AssetRepository.getAssetById(propertyId);
       this.setState({ projectName: response.projectName });
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
     }
   };
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
@@ -11,6 +13,7 @@ import {
   AnimatedProfileHeader,
   FinancialHeaderContainer,
   PropertyDuesCardContainer,
+  StateAwareComponent,
   TransactionCardsContainer,
 } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
@@ -19,6 +22,7 @@ import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/do
 
 interface IState {
   ledgerData: GeneralLedgers[];
+  isLoading: boolean;
 }
 
 type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -26,6 +30,7 @@ type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamLis
 export class Financials extends React.PureComponent<Props, IState> {
   public state = {
     ledgerData: [],
+    isLoading: false,
   };
 
   public async componentDidMount(): Promise<void> {
@@ -33,6 +38,11 @@ export class Financials extends React.PureComponent<Props, IState> {
   }
 
   public render = (): React.ReactElement => {
+    const { isLoading } = this.state;
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+  };
+
+  private renderComponent = (): React.ReactElement => {
     const { t } = this.props;
     const { ledgerData } = this.state;
     const { currency_symbol, totalDue, details } = propertyDues;
@@ -64,13 +74,20 @@ export class Financials extends React.PureComponent<Props, IState> {
   };
 
   private getGeneralLedgers = async (): Promise<void> => {
-    const response: GeneralLedgers[] = await LedgerService.getAllGeneralLedgers(
-      DateUtils.getCurrentYearStartDate(),
-      DateUtils.getCurrentYearLastDate(),
-      DataGroupBy.year
-    );
+    this.setState({ isLoading: true });
+    try {
+      const response: GeneralLedgers[] = await LedgerService.getAllGeneralLedgers(
+        DateUtils.getCurrentYearStartDate(),
+        DateUtils.getCurrentYearLastDate(),
+        DataGroupBy.year
+      );
 
-    this.setState({ ledgerData: response });
+      this.setState({ ledgerData: response, isLoading: false });
+    } catch (e) {
+      this.setState({ isLoading: false });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 }
 

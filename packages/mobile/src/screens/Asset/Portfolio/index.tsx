@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, FlatList, View, PickerItemProps } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -8,7 +10,12 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { Text } from '@homzhub/common/src/components';
-import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView } from '@homzhub/mobile/src/components';
+import {
+  AnimatedProfileHeader,
+  AssetMetricsList,
+  BottomSheetListView,
+  StateAwareComponent,
+} from '@homzhub/mobile/src/components';
 import { AssetCard } from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { IAssetData, PortfolioAssetData, TenanciesAssetData } from '@homzhub/common/src/mocks/AssetData';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -19,6 +26,7 @@ interface IPortfolioState {
   selectedFilter: string;
   metrics: AssetMetrics;
   filters: PickerItemProps[];
+  isLoading: boolean;
 }
 
 type Props = WithTranslation & NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
@@ -29,6 +37,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     selectedFilter: Filters.ALL,
     metrics: {} as AssetMetrics,
     filters: [],
+    isLoading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -37,6 +46,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   public render = (): React.ReactElement => {
+    const { isLoading } = this.state;
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+  };
+
+  private renderComponent = (): React.ReactElement => {
     const { t } = this.props;
     const { selectedFilter, isBottomSheetVisible, metrics, filters } = this.state;
     return (
@@ -112,21 +126,35 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private getAssetMetrics = async (): Promise<void> => {
-    const response: AssetMetrics = await PortfolioRepository.getAssetMetrics();
-    this.setState({ metrics: response });
+    this.setState({ isLoading: true });
+    try {
+      const response: AssetMetrics = await PortfolioRepository.getAssetMetrics();
+      this.setState({ metrics: response, isLoading: false });
+    } catch (e) {
+      this.setState({ isLoading: false });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 
   private getAssetFilters = async (): Promise<void> => {
-    const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
-    const filterData: PickerItemProps[] = response.map(
-      (item): PickerItemProps => {
-        return {
-          label: item.title,
-          value: item.label,
-        };
-      }
-    );
-    this.setState({ filters: filterData });
+    this.setState({ isLoading: true });
+    try {
+      const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
+      const filterData: PickerItemProps[] = response.map(
+        (item): PickerItemProps => {
+          return {
+            label: item.title,
+            value: item.label,
+          };
+        }
+      );
+      this.setState({ filters: filterData, isLoading: false });
+    } catch (e) {
+      this.setState({ isLoading: false });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 
   private closeBottomSheet = (): void => {

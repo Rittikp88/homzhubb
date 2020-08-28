@@ -5,18 +5,19 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
+  onPressLink: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const TermsCondition = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { containerStyle = {} } = props;
+  const { onPressLink, containerStyle = {} } = props;
 
   return (
     <View style={[styles.container, containerStyle]}>
       <Label type="regular" style={styles.text}>
         {t('auth:signUpConfirm')}{' '}
-        <Label type="regular" style={styles.inLineText}>
+        <Label type="regular" style={styles.inLineText} onPress={onPressLink}>
           {t('termsCondition')}
         </Label>
       </Label>

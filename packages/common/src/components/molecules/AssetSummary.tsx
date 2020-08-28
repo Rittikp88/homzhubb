@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -12,12 +12,13 @@ interface IProps {
   notification?: number;
   serviceTickets?: number;
   dues?: number;
+  onPressDue?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const AssetSummary = (props: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
-  const { notification = 0, serviceTickets = 0, dues = 0, containerStyle } = props;
+  const { notification = 0, serviceTickets = 0, dues = 0, containerStyle, onPressDue } = props;
 
   return (
     <LinearGradient
@@ -53,7 +54,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         </Text>
       </View>
       <Divider />
-      <View style={styles.summary}>
+      <TouchableOpacity style={styles.summary} onPress={onPressDue}>
         <Icon name={icons.decrease} color={theme.colors.danger} size={25} />
         <Text type="small" textType="semiBold" style={styles.dues} minimumFontScale={0.1} adjustsFontSizeToFit>
           {t('dues')}
@@ -61,7 +62,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         <Text type="regular" textType="bold" style={styles.dues}>
           {dues}
         </Text>
-      </View>
+      </TouchableOpacity>
     </LinearGradient>
   );
 };

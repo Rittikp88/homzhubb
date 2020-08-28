@@ -139,6 +139,7 @@ exports[`Property Details Screen Component should render on space value change 1
               "margin": 16,
             }
           }
+          disabled={true}
           onPress={[Function]}
           title="common:submit"
           type="primary"
@@ -289,6 +290,7 @@ exports[`Property Details Screen Component should render property details screen
               "margin": 16,
             }
           }
+          disabled={true}
           onPress={[Function]}
           title="common:submit"
           type="primary"
@@ -446,6 +448,7 @@ exports[`Property Details Screen Component should render property details screen
               "margin": 16,
             }
           }
+          disabled={true}
           onPress={[Function]}
           title="common:submit"
           type="primary"

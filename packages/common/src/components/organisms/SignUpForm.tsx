@@ -17,6 +17,7 @@ import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfac
 
 interface ISignUpFormProps extends WithTranslation {
   testID?: string;
+  onPressLink: () => void;
   onSubmitFormSuccess: (payload: ISignUpPayload, ref: () => FormTextInput | null) => void;
 }
 
@@ -51,7 +52,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
   };
 
   public render(): React.ReactNode {
-    const { t, testID } = this.props;
+    const { t, testID, onPressLink } = this.props;
     const { user, countryCode, isBottomSheetVisible, countryCodeData } = this.state;
     const formData = { ...user };
 
@@ -113,7 +114,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   helpText={t('auth:passwordValidation')}
                   formProps={formProps}
                 />
-                <TermsCondition />
+                <TermsCondition onPressLink={onPressLink} />
                 <FormButton
                   // @ts-ignore
                   onPress={formProps.handleSubmit}

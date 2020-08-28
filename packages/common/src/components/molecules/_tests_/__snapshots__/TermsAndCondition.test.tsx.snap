@@ -33,6 +33,7 @@ exports[`Test cases for TermsAndCondition should render snapshot 1`] = `
     auth:signUpConfirm
      
     <Text
+      onPress={[MockFunction]}
       style={
         Array [
           Object {

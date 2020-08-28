@@ -10,6 +10,7 @@ exports[`SignUp Screen should render signup screen 1`] = `
   title="signUp"
 >
   <withI18nextTranslation(SignUpForm)
+    onPressLink={[Function]}
     onSubmitFormSuccess={[Function]}
     testID="signupForm"
   />
