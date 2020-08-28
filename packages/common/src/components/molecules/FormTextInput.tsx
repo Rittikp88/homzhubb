@@ -80,7 +80,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
     const { values, setFieldTouched } = formProps;
     const { showPassword, isFocused } = this.state;
-    const optionalText: string | null = isOptional ? '(optional)' : null;
+    const optionalText: string | null = isOptional ? 'Optional' : null;
 
     // @ts-ignore
     const inputFieldStyles = { ...theme.form.input, ...style };
@@ -181,12 +181,14 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
 
     return (
       <WithFieldError error={error} hideError={hideError}>
-        <Label type="regular" style={labelStyles}>
-          {label}
+        <View style={styles.labelsContainer}>
+          <Label type="regular" style={labelStyles}>
+            {label}
+          </Label>
           <Label type="small" style={styles.optionalText}>
             {optionalText}
           </Label>
-        </Label>
+        </View>
         <View style={containerStyle}>
           <RNTextInput
             ref={(input): void => {
@@ -294,8 +296,13 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
     marginTop: 6,
   },
+  labelsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   optionalText: {
-    color: theme.colors.darkTint3,
+    ...theme.form.formLabel,
   },
   flagStyle: {
     marginEnd: 6,

@@ -17,6 +17,7 @@ enum FormType {
 interface IFormData {
   property: string;
   details: string;
+  tellerName?: string;
   amount: string;
   category: string;
   date: string;
@@ -45,6 +46,7 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     formValues: {
       property: '',
       details: '',
+      tellerName: '',
       amount: '',
       category: '',
       date: '',
@@ -87,6 +89,14 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   placeholder={t('detailsPlaceholder')}
                 />
                 <FormTextInput
+                  isOptional
+                  formProps={formProps}
+                  inputType="default"
+                  name="teller"
+                  label={selectedFormType === FormType.Income ? t('receivedFrom') : t('paidTo')}
+                  placeholder={t('tellerPlaceholder')}
+                />
+                <FormTextInput
                   formProps={formProps}
                   inputType="default"
                   name="amount"
@@ -105,12 +115,14 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   placeholder={t('categoryPlaceholder')}
                 />
                 <FormCalendar
+                  allowPastDates
                   formProps={formProps}
                   name="date"
                   label={t('addDate')}
                   placeHolder={t('addDatePlaceholder')}
                 />
                 <FormTextInput
+                  isOptional
                   formProps={formProps}
                   inputType="default"
                   name="notes"
@@ -154,6 +166,7 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     return yup.object().shape({
       property: yup.string().required(t('propertyError')),
       details: yup.string().required(t('detailsError')),
+      tellerName: yup.string().optional(),
       amount: yup.string().required(t('amountError')),
       category: yup.string().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
@@ -185,6 +198,9 @@ export { addRecordForm as AddRecordForm };
 const styles = StyleSheet.create({
   inputStyle: {
     height: 100,
+    justifyContent: 'flex-start',
+    textAlignVertical: 'top',
+    paddingTop: 10,
   },
   uploadBox: {
     marginVertical: 24,

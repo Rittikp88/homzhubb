@@ -14,6 +14,7 @@ interface IFormCalendarProps extends WithTranslation {
   formProps: FormikProps<FormikValues>;
   label?: string;
   placeHolder?: string;
+  allowPastDates?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -34,6 +35,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       containerStyle = {},
       label,
       placeHolder,
+      allowPastDates,
     } = this.props;
     const { isCalendarVisible } = this.state;
     const availableDate = values[name] === moment().format('YYYY-MM-DD') ? 'Today' : values[name];
@@ -59,7 +61,11 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
           isShadowView
           sheetHeight={580}
         >
-          <CalendarComponent onSelect={this.onDateSelected} selectedDate={values[name]} />
+          <CalendarComponent
+            allowPastDates={allowPastDates}
+            onSelect={this.onDateSelected}
+            selectedDate={values[name]}
+          />
         </BottomSheet>
       </View>
     );

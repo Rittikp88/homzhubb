@@ -70,7 +70,8 @@
     "clear": "Clear",
     "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
     "uploadDocument": "Upload Document",
-    "toastBack": "Click Back again to exit."
+    "toastBack": "Click Back again to exit.",
+    "optional": "Optional"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -354,6 +355,9 @@
     "dateError": "Please enter the date",
     "attachmentName": "Attachment name",
     "paidToText": "Paid to",
-    "invoice": "Invoice"
+    "invoice": "Invoice",
+    "paidTo": "Paid To",
+    "receivedFrom": "Received From",
+    "tellerPlaceholder": "Eg. Suresh Raina"
   }
 }

@@ -8,26 +8,35 @@ exports[`Test cases for FormTextInput should render snapshot and call handleChan
 
 exports[`Test cases for FormTextInput should render snapshot when input type is decimal 1`] = `
 Array [
-  <Text
+  <View
     style={
-      Array [
-        Object {
-          "fontSize": 12,
-          "lineHeight": 18,
-          "textAlign": "left",
-        },
-        Object {
-          "fontFamily": "OpenSans-Regular",
-          "fontWeight": "400",
-        },
-        Object {
-          "color": "#33495E",
-          "marginBottom": 6,
-          "marginTop": 16,
-        },
-      ]
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
     }
   >
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+            "lineHeight": 18,
+            "textAlign": "left",
+          },
+          Object {
+            "fontFamily": "OpenSans-Regular",
+            "fontWeight": "400",
+          },
+          Object {
+            "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
+          },
+        ]
+      }
+    />
     <Text
       style={
         Array [
@@ -42,11 +51,13 @@ Array [
           },
           Object {
             "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
           },
         ]
       }
     />
-  </Text>,
+  </View>,
   <View
     style={Object {}}
   >
@@ -109,26 +120,35 @@ exports[`Test cases for FormTextInput should render snapshot when input type is 
 
 exports[`Test cases for FormTextInput should render snapshot when input type is phone 1`] = `
 Array [
-  <Text
+  <View
     style={
-      Array [
-        Object {
-          "fontSize": 12,
-          "lineHeight": 18,
-          "textAlign": "left",
-        },
-        Object {
-          "fontFamily": "OpenSans-Regular",
-          "fontWeight": "400",
-        },
-        Object {
-          "color": "#33495E",
-          "marginBottom": 6,
-          "marginTop": 16,
-        },
-      ]
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
     }
   >
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+            "lineHeight": 18,
+            "textAlign": "left",
+          },
+          Object {
+            "fontFamily": "OpenSans-Regular",
+            "fontWeight": "400",
+          },
+          Object {
+            "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
+          },
+        ]
+      }
+    />
     <Text
       style={
         Array [
@@ -143,11 +163,13 @@ Array [
           },
           Object {
             "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
           },
         ]
       }
     />
-  </Text>,
+  </View>,
   <View
     style={Object {}}
   >
@@ -258,26 +280,35 @@ Array [
 
 exports[`Test cases for FormTextInput should render snapshot when password revealer is hide 1`] = `
 Array [
-  <Text
+  <View
     style={
-      Array [
-        Object {
-          "fontSize": 12,
-          "lineHeight": 18,
-          "textAlign": "left",
-        },
-        Object {
-          "fontFamily": "OpenSans-Regular",
-          "fontWeight": "400",
-        },
-        Object {
-          "color": "#33495E",
-          "marginBottom": 6,
-          "marginTop": 16,
-        },
-      ]
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
     }
   >
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+            "lineHeight": 18,
+            "textAlign": "left",
+          },
+          Object {
+            "fontFamily": "OpenSans-Regular",
+            "fontWeight": "400",
+          },
+          Object {
+            "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
+          },
+        ]
+      }
+    />
     <Text
       style={
         Array [
@@ -292,11 +323,13 @@ Array [
           },
           Object {
             "color": "#33495E",
+            "marginBottom": 6,
+            "marginTop": 16,
           },
         ]
       }
     />
-  </Text>,
+  </View>,
   <View
     style={Object {}}
   >

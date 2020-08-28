@@ -11,6 +11,7 @@ import { Divider, Button, Text, Label, WithShadowView } from '@homzhub/common/sr
 interface ICalendarProps {
   onSelect: (day: string) => void;
   selectedDate: string;
+  allowPastDates?: boolean;
 }
 
 interface ICalendarState {
@@ -45,6 +46,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   }
 
   private renderHeader = (): React.ReactElement => {
+    const { allowPastDates } = this.props;
     const { year, month, isMonthView, selectedDate } = this.state;
     const newMonth = moment(selectedDate).month();
     const newYear = moment(selectedDate).year();
@@ -57,7 +59,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
             name={icons.leftArrow}
             onPress={this.handleBackPress}
             size={22}
-            color={month === moment().month() ? theme.colors.disabled : theme.colors.primaryColor}
+            color={!allowPastDates && month === moment().month() ? theme.colors.disabled : theme.colors.primaryColor}
           />
           <Text
             type="small"
@@ -108,6 +110,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   };
 
   private renderCalendar = (): React.ReactElement => {
+    const { allowPastDates } = this.props;
     const { day, month, year, selectedDate } = this.state;
     const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMM);
     const date =
@@ -118,7 +121,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           hideArrows
           // @ts-ignore
           renderHeader={this.headerView}
-          minDate={new Date()}
+          minDate={allowPastDates ? undefined : new Date()}
           current={date}
           key={date}
           style={styles.calendarStyle}
@@ -167,9 +170,10 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   };
 
   private handleBackPress = (): void => {
+    const { allowPastDates } = this.props;
     const { year, isMonthView, month } = this.state;
 
-    if (month === moment().month()) {
+    if (!allowPastDates && month === moment().month()) {
       return;
     }
 

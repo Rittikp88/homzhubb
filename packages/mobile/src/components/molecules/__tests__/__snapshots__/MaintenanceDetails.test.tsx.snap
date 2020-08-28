@@ -69,64 +69,107 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
             placeholder="maintenanceAmountPlaceholder"
           >
             <WithFieldError>
-              <Label
+              <View
                 style={
                   Object {
-                    "color": "#33495E",
-                    "marginBottom": 6,
-                    "marginTop": 16,
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
-                type="regular"
               >
-                <Text
+                <View
                   style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "fontFamily": "OpenSans-Regular",
-                        "fontWeight": "400",
-                      },
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                    }
+                  }
+                >
+                  <Label
+                    style={
                       Object {
                         "color": "#33495E",
                         "marginBottom": 6,
                         "marginTop": 16,
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "fontSize": 12,
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "fontFamily": "OpenSans-Regular",
-                          "fontWeight": "400",
-                        },
-                        Object {
-                          "color": "#33495E",
-                          "marginBottom": 6,
-                          "marginTop": 16,
-                        },
-                      ]
-                    }
-                  >
-                    maintenanceAmount
-                    <Label
-                      style={
-                        Object {
-                          "color": "#33495E",
-                        }
                       }
-                      type="small"
+                    }
+                    type="regular"
+                  >
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "fontSize": 12,
+                            "lineHeight": 18,
+                            "textAlign": "left",
+                          },
+                          Object {
+                            "fontFamily": "OpenSans-Regular",
+                            "fontWeight": "400",
+                          },
+                          Object {
+                            "color": "#33495E",
+                            "marginBottom": 6,
+                            "marginTop": 16,
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "fontSize": 12,
+                              "lineHeight": 18,
+                              "textAlign": "left",
+                            },
+                            Object {
+                              "fontFamily": "OpenSans-Regular",
+                              "fontWeight": "400",
+                            },
+                            Object {
+                              "color": "#33495E",
+                              "marginBottom": 6,
+                              "marginTop": 16,
+                            },
+                          ]
+                        }
+                      >
+                        maintenanceAmount
+                      </Text>
+                    </Text>
+                  </Label>
+                  <Label
+                    style={
+                      Object {
+                        "color": "#33495E",
+                        "marginBottom": 6,
+                        "marginTop": 16,
+                      }
+                    }
+                    type="small"
+                  >
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "fontSize": 10,
+                            "lineHeight": 15,
+                            "textAlign": "left",
+                          },
+                          Object {
+                            "fontFamily": "OpenSans-Regular",
+                            "fontWeight": "400",
+                          },
+                          Object {
+                            "color": "#33495E",
+                            "marginBottom": 6,
+                            "marginTop": 16,
+                          },
+                        ]
+                      }
                     >
                       <Text
                         style={
@@ -142,33 +185,16 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                             },
                             Object {
                               "color": "#33495E",
+                              "marginBottom": 6,
+                              "marginTop": 16,
                             },
                           ]
                         }
-                      >
-                        <Text
-                          style={
-                            Array [
-                              Object {
-                                "fontSize": 10,
-                                "lineHeight": 15,
-                                "textAlign": "left",
-                              },
-                              Object {
-                                "fontFamily": "OpenSans-Regular",
-                                "fontWeight": "400",
-                              },
-                              Object {
-                                "color": "#33495E",
-                              },
-                            ]
-                          }
-                        />
-                      </Text>
-                    </Label>
-                  </Text>
-                </Text>
-              </Label>
+                      />
+                    </Text>
+                  </Label>
+                </View>
+              </View>
               <View
                 style={Object {}}
               >

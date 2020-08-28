@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
     borderRadius: 4,
+    minHeight: 80,
   },
   heading: {
     justifyContent: 'space-between',
