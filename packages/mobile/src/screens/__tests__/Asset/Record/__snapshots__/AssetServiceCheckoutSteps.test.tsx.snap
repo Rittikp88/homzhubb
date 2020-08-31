@@ -213,15 +213,6 @@ exports[`Asset Service Checkout Steps should render snapshot without steps 1`] =
         }
       }
     />
-    <Text
-      style={
-        Object {
-          "color": "#33495E",
-        }
-      }
-      textType="semiBold"
-      type="regular"
-    />
   </ScrollViewMock>
   <Loader
     visible={false}

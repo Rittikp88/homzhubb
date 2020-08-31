@@ -29,7 +29,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       style={[styles.container, containerStyle]}
     >
       <View style={styles.summary}>
-        <Icon name={icons.bell} color={theme.colors.notificationGreen} size={25} />
+        <Icon name={icons.alert} color={theme.colors.notificationGreen} size={25} />
         <Text type="small" textType="semiBold" style={styles.notification} minimumFontScale={0.1} adjustsFontSizeToFit>
           {t('notification')}
         </Text>
@@ -55,7 +55,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       </View>
       <Divider />
       <TouchableOpacity style={styles.summary} onPress={onPressDue}>
-        <Icon name={icons.decrease} color={theme.colors.danger} size={25} />
+        <Icon name={icons.wallet} color={theme.colors.danger} size={25} />
         <Text type="small" textType="semiBold" style={styles.dues} minimumFontScale={0.1} adjustsFontSizeToFit>
           {t('dues')}
         </Text>

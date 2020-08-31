@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { placeHolderImage } from '@homzhub/common/src/styles/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Avatar, Badge, Button, Divider, Image, Label } from '@homzhub/common/src/components';
+import { Avatar, Badge, Button, Divider, Label } from '@homzhub/common/src/components';
 import { PropertyAddressCountry, LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -104,9 +104,9 @@ export class AssetCard extends Component<Props> {
 
   private renderAttachmentView = (attachments: Attachment[]): React.ReactElement => {
     const { isDetailView, enterFullScreen } = this.props;
-    let item: Attachment = {} as Attachment;
+    let item;
     let handleFullScreen;
-    if (attachments.length > 0) {
+    if (attachments && attachments.length > 0) {
       // eslint-disable-next-line prefer-destructuring
       item = attachments[0];
       handleFullScreen = (): void => enterFullScreen && enterFullScreen(attachments);
@@ -123,7 +123,6 @@ export class AssetCard extends Component<Props> {
               uri: item.link,
             }}
             style={[styles.image, isDetailView && styles.detailViewImage]}
-            height={isDetailView ? 130 : 200}
           />
         )}
         {item.mediaType === 'VIDEO' && (
@@ -131,7 +130,6 @@ export class AssetCard extends Component<Props> {
             <Image
               source={{ uri: item.mediaAttributes.thumbnailHD ?? item.mediaAttributes.thumbnail }}
               style={[styles.image, isDetailView && styles.detailViewImage]}
-              height={isDetailView ? 130 : 200}
             />
           </>
         )}
@@ -140,7 +138,7 @@ export class AssetCard extends Component<Props> {
   };
 
   private renderExpandedView = (): React.ReactElement => {
-    const { isDetailView, assetData } = this.props;
+    const { assetData } = this.props;
     const {
       assetStatusInfo: {
         tag: { label },
@@ -149,7 +147,6 @@ export class AssetCard extends Component<Props> {
       },
       formattedPercentage,
     } = assetData;
-    const isRentVisible = !!(rent && securityDeposit) || false;
     return (
       <>
         {!!leaseTenantInfo.fullName && (
@@ -158,10 +155,10 @@ export class AssetCard extends Component<Props> {
             <Avatar fullName={leaseTenantInfo.fullName} designation="Tenant" />
           </>
         )}
-        {!isDetailView && isRentVisible && (
+        {rent && securityDeposit && (
           <>
             <Divider containerStyles={styles.divider} />
-            <RentAndMaintenance />
+            <RentAndMaintenance rentData={rent} depositData={securityDeposit} />
           </>
         )}
         {label !== 'FOR SALE' && (
@@ -243,8 +240,10 @@ const styles = StyleSheet.create({
   },
   image: {
     minWidth: theme.viewport.width > 400 ? 350 : 300,
+    height: 200,
   },
   detailViewImage: {
     borderRadius: 4,
+    height: 130,
   },
 });

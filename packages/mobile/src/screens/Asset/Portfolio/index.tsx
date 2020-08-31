@@ -64,6 +64,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     await this.getTenancies();
     await this.getPortfolioProperty();
     this.verifyData();
+    this.updateFilter();
   };
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IPortfolioState>): void {
@@ -185,7 +186,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private onSelectFilter = (value: string): void => {
-    this.setState({ selectedFilter: value }, (): void => {
+    this.setState({ selectedFilter: value, expandedAssetId: 0 }, (): void => {
       this.getPortfolioProperty(true).then();
     });
     this.closeBottomSheet();
@@ -220,7 +221,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private updateFilter = (): void => {
     const { route } = this.props;
     if (route && route.params && route.params.filter) {
-      this.setState({ selectedFilter: route.params.filter }, () => {
+      this.setState({ selectedFilter: route.params.filter, expandedAssetId: 0 }, () => {
         this.getPortfolioProperty().then();
       });
     }

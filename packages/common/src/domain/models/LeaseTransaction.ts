@@ -19,7 +19,7 @@ export class LabelColor {
 }
 
 @JsonObject('Transaction')
-class Transaction {
+export class Transaction {
   @JsonProperty('label', String)
   private _label = '';
 

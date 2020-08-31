@@ -3,32 +3,39 @@ import { View, StyleSheet } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components';
+import { Transaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
-export const RentAndMaintenance = (): React.ReactElement => {
+interface IProps {
+  rentData: Transaction;
+  depositData: Transaction;
+}
+
+export const RentAndMaintenance = ({ rentData, depositData }: IProps): React.ReactElement => {
+  const { label, currencySymbol, amount, status } = rentData;
   return (
     <View style={styles.container}>
       <View>
         <View style={styles.contentView}>
-          <Icon name={icons.home} color={theme.colors.darkTint3} size={18} style={styles.iconStyle} />
-          <Label type="large">Rent: </Label>
+          <Icon name={icons.home} color={theme.colors.darkTint3} size={20} style={styles.iconStyle} />
+          <Label type="large">{label}: </Label>
           <Label type="large" textType="semiBold" style={styles.status}>
-            Paid
+            {status}
           </Label>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
-          $ 2700/-
+          {`${currencySymbol} ${amount}`}
         </Text>
       </View>
       <View>
         <View style={styles.contentView}>
-          <Icon name={icons.settingOutline} color={theme.colors.darkTint3} size={18} style={styles.iconStyle} />
-          <Label type="large">Maintenance: </Label>
+          <Icon name={icons.settingOutline} color={theme.colors.darkTint3} size={20} style={styles.iconStyle} />
+          <Label type="large">{depositData.label}: </Label>
           <Label type="large" textType="semiBold" style={styles.status}>
-            Due
+            {depositData.status}
           </Label>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
-          $ 7500/-
+          {`${depositData.currencySymbol} ${depositData.amount}`}
         </Text>
       </View>
     </View>

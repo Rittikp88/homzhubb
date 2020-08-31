@@ -106,7 +106,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
   };
 
   private renderTitle = (): React.ReactNode => {
-    const { currentStep } = this.state;
+    const { currentStep, isPaymentSuccess } = this.state;
     const { t, steps } = this.props;
 
     return (
@@ -129,9 +129,11 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             </Text>
           )}
         </View>
-        <Text type="regular" textType="semiBold" style={styles.textColor}>
-          {this.getTitleStringsForStep(steps[currentStep]).title}
-        </Text>
+        {steps.length > 1 && !isPaymentSuccess && (
+          <Text type="regular" textType="semiBold" style={styles.textColor}>
+            {this.getTitleStringsForStep(steps[currentStep]).title}
+          </Text>
+        )}
       </>
     );
   };

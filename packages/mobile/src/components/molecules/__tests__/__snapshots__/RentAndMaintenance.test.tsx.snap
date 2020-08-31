@@ -22,7 +22,7 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
         allowFontScaling={false}
         color="#33495E"
         name="home"
-        size={18}
+        size={20}
         style={
           Object {
             "marginRight": 8,
@@ -32,7 +32,8 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
       <Label
         type="large"
       >
-        Rent: 
+        Rent
+        : 
       </Label>
       <Label
         style={
@@ -56,7 +57,7 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
       textType="semiBold"
       type="small"
     >
-      $ 2700/-
+       2700
     </Text>
   </View>
   <View>
@@ -72,7 +73,7 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
         allowFontScaling={false}
         color="#33495E"
         name="setting-outline"
-        size={18}
+        size={20}
         style={
           Object {
             "marginRight": 8,
@@ -82,7 +83,8 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
       <Label
         type="large"
       >
-        Maintenance: 
+        Deposit
+        : 
       </Label>
       <Label
         style={
@@ -106,7 +108,7 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
       textType="semiBold"
       type="small"
     >
-      $ 7500/-
+       5000
     </Text>
   </View>
 </View>

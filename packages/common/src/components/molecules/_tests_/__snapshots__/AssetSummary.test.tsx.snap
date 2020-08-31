@@ -53,7 +53,7 @@ exports[`AssetSummary should match snapshot 1`] = `
     <Icon
       allowFontScaling={false}
       color="#13AB46"
-      name="bell"
+      name="alert"
       size={25}
     />
     <Text
@@ -135,7 +135,7 @@ exports[`AssetSummary should match snapshot 1`] = `
     <Icon
       allowFontScaling={false}
       color="#D60D31"
-      name="decrease"
+      name="wallet"
       size={25}
     />
     <Text
@@ -219,7 +219,7 @@ exports[`AssetSummary should match snapshot without values 1`] = `
     <Icon
       allowFontScaling={false}
       color="#13AB46"
-      name="bell"
+      name="alert"
       size={25}
     />
     <Text
@@ -301,7 +301,7 @@ exports[`AssetSummary should match snapshot without values 1`] = `
     <Icon
       allowFontScaling={false}
       color="#D60D31"
-      name="decrease"
+      name="wallet"
       size={25}
     />
     <Text

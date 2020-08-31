@@ -25,6 +25,7 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -51,6 +52,7 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -62,7 +64,7 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
             "height": 30,
             "justifyContent": "center",
             "marginRight": 6,
-            "width": 30,
+            "width": 32,
           }
         }
       >
@@ -84,7 +86,7 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
             "height": 30,
             "justifyContent": "center",
             "marginRight": 6,
-            "width": 30,
+            "width": 32,
           }
         }
       >

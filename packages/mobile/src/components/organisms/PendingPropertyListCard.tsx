@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetService, PropertyStatus } from '@homzhub/common/src/services/Property/AssetService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -148,14 +149,15 @@ const styles = StyleSheet.create({
   headingContent: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: 40,
   },
   label: {
     color: theme.colors.darkTint1,
     marginLeft: 10,
   },
   iconStyle: {
-    width: 30,
-    height: 30,
+    width: PlatformUtils.isIOS() ? 32 : 38,
+    height: PlatformUtils.isIOS() ? 30 : 35,
     backgroundColor: theme.colors.background,
     alignItems: 'center',
     justifyContent: 'center',

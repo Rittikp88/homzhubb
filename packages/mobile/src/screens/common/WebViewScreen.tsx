@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { Header } from '@homzhub/mobile/src/components';
+import { Header, Loader } from '@homzhub/mobile/src/components';
 
 type Props = NavigationScreenProps<AuthStackParamList, ScreensKeys.WebViewScreen>;
 
@@ -21,10 +21,15 @@ export const WebViewScreen = (props: Props): React.ReactElement => {
     navigation.goBack();
   };
 
+  const ActivityIndicatorLoadingView = (): React.ReactElement => {
+    // making a view to show to while loading the webpage
+    return <Loader visible />;
+  };
+
   return (
     <View style={styles.container}>
       <Header icon={icons.leftArrow} onIconPress={handleBackPress} />
-      <WebView source={{ uri: url }} />
+      <WebView source={{ uri: url }} renderLoading={ActivityIndicatorLoadingView} startInLoadingState />
     </View>
   );
 };
