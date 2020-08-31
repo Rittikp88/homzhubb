@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { AssetService } from '@homzhub/common/src/services/Property/AssetService';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -73,6 +74,7 @@ class AddRecordScreen extends React.PureComponent<IProps, IState> {
         clear={clearForm}
         onFormClear={this.onClearPress}
         containerStyles={styles.addFormContainer}
+        onSubmitFormSuccess={this.onSubmitFormSuccess}
       />
     );
   };
@@ -80,6 +82,12 @@ class AddRecordScreen extends React.PureComponent<IProps, IState> {
   private onClearPress = (): void => {
     const { clearForm } = this.state;
     this.setState({ clearForm: !clearForm });
+  };
+
+  private onSubmitFormSuccess = (): void => {
+    const { t } = this.props;
+    AlertHelper.success({ message: t('addedSuccessfullyMessage') });
+    this.goBack();
   };
 
   private goBack = (): void => {

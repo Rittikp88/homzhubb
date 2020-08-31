@@ -30,8 +30,13 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
     >
       <Icon
         allowFontScaling={false}
-        name="bell"
+        name="wallet"
         size={20}
+        style={
+          Object {
+            "marginRight": 10,
+          }
+        }
       />
       <Text
         textType="semiBold"
@@ -116,7 +121,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 70,
+            "marginLeft": 60,
           }
         }
         title="assetFinancial:payNow"
@@ -192,7 +197,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 70,
+            "marginLeft": 60,
           }
         }
         title="assetFinancial:payNow"
@@ -268,7 +273,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 70,
+            "marginLeft": 60,
           }
         }
         title="assetFinancial:payNow"

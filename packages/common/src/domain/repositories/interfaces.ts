@@ -226,3 +226,20 @@ export interface IGeneralLedgerPayload {
   transaction_date__gte: string;
   transaction_date_group_by: string;
 }
+
+export interface IAddGeneralLedgerPayload {
+  asset: number;
+  entry_type: string;
+  detail: string;
+  payer_name?: string;
+  receiver_name?: string;
+  amount: number;
+  category: number;
+  transaction_date: string;
+  notes: string | null;
+  attachment: number | null;
+}
+
+export interface ICreateLedgerResult {
+  id: number;
+}

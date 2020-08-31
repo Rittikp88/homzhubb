@@ -30,7 +30,7 @@ export const PropertyDuesCardContainer = ({ ...props }: IProps): ReactElement =>
     <View style={styles.containerStyle}>
       <View style={styles.heading}>
         <View style={styles.duesText}>
-          <Icon name={icons.bell} size={20} />
+          <Icon style={styles.walletIconStyle} name={icons.wallet} size={20} />
           <Text type="regular" textType="semiBold">
             {t('assetDashboard:dues')}
           </Text>
@@ -113,9 +113,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   payNowBtnStyles: {
-    marginLeft: 70,
+    marginLeft: 60,
   },
   payNowTitleStyles: {
     flexDirection: 'row',
+  },
+  walletIconStyle: {
+    marginRight: 10,
   },
 });

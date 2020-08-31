@@ -12,7 +12,7 @@ export class LedgerCategory {
   private _name = '';
 
   get id(): string {
-    return this._entryType;
+    return this._id;
   }
 
   get entryType(): string {

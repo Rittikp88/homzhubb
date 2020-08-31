@@ -365,6 +365,7 @@
     "invoice": "Invoice",
     "paidTo": "Paid To",
     "receivedFrom": "Received From",
-    "tellerPlaceholder": "Eg. Suresh Raina"
+    "tellerPlaceholder": "Eg. Suresh Raina",
+    "addedSuccessfullyMessage": "Added successfully"
   }
 }

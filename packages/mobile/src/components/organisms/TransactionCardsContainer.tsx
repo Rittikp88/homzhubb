@@ -34,7 +34,7 @@ class TransactionCardsContainer extends React.PureComponent<IProps, IState> {
     return (
       <View style={styles.container}>
         <View style={styles.transactionHeader}>
-          <Icon name={icons.bell} size={20} />
+          <Icon style={styles.chequeIconStyle} name={icons.cheque} size={20} />
           <Text type="regular" textType="semiBold">
             {t('transactions')}
           </Text>
@@ -166,5 +166,8 @@ const styles = StyleSheet.create({
   },
   invoiceStyle: {
     marginVertical: 24,
+  },
+  chequeIconStyle: {
+    marginRight: 10,
   },
 });

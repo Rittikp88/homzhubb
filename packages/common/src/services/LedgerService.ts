@@ -1,4 +1,5 @@
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
+import { IAddGeneralLedgerPayload, ICreateLedgerResult } from '@homzhub/common/src/domain/repositories/interfaces';
 import { GeneralLedgers, DataGroupBy } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 
@@ -25,6 +26,10 @@ class LedgerService {
 
   public getAllLedgerCategories = async (): Promise<LedgerCategory[]> => {
     return await this.repository.getLedgerCategories();
+  };
+
+  public postGeneralLedgers = async (payload: IAddGeneralLedgerPayload): Promise<ICreateLedgerResult> => {
+    return await this.repository.postGeneralLedgers(payload);
   };
 }
 

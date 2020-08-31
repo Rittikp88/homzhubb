@@ -1,10 +1,12 @@
 import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
 import {
@@ -44,8 +46,7 @@ interface IState {
 interface IOwnProps extends WithTranslation {
   properties: Asset[];
   ledgerCategories: LedgerCategory[];
-  // Todo (Sriram- 2020.08.25) Add an interface in place of type any
-  onSubmitFormSuccess?: (payload: any) => void;
+  onSubmitFormSuccess?: () => void;
   clear: boolean;
   onFormClear: () => void;
   containerStyles?: StyleProp<ViewStyle>;
@@ -118,7 +119,7 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   isOptional
                   formProps={formProps}
                   inputType="default"
-                  name="teller"
+                  name="tellerName"
                   label={selectedFormType === FormType.Income ? t('receivedFrom') : t('paidTo')}
                   placeholder={t('tellerPlaceholder')}
                 />
@@ -137,6 +138,7 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   label={t('category')}
                   options={this.loadCategories()}
                   placeholder={t('categoryPlaceholder')}
+                  maxLabelLength={36}
                 />
                 <FormCalendar
                   allowPastDates
@@ -243,8 +245,41 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     /* Write Upload logic here */
   };
 
-  private handleSubmit = (values: FormikValues): void => {
-    /* handle submit logic here */
+  private handleSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
+    const { property, details, tellerName, amount, category, date, notes } = values;
+    const { selectedFormType } = this.state;
+
+    formActions.setSubmitting(true);
+
+    const tellerInfo =
+      selectedFormType === FormType.Income ? { payer_name: tellerName } : { receiver_name: tellerName };
+
+    const payload = {
+      asset: property,
+      entry_type: selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit,
+      detail: details,
+      ...tellerInfo,
+      amount,
+      category,
+      transaction_date: date,
+      notes,
+      /* Todo (Sriram- 2020.08.31) Add a attachment ID */
+      attachment: null,
+    };
+
+    try {
+      await LedgerService.postGeneralLedgers(payload);
+      formActions.setSubmitting(false);
+
+      const { onSubmitFormSuccess } = this.props;
+      if (onSubmitFormSuccess) {
+        onSubmitFormSuccess();
+      }
+    } catch (e) {
+      formActions.setSubmitting(false);
+      formActions.resetForm({});
+      AlertHelper.error({ message: e.message });
+    }
   };
 }
 
