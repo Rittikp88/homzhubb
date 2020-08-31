@@ -2,10 +2,10 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 
 export enum Filters {
   ALL = 'ALL',
-  RENTED = 'RENTED',
-  FOR_RENT = 'FOR_RENT',
+  OCCUPIED = 'OCCUPIED',
+  VACANT = 'VACANT',
   FOR_SALE = 'FOR_SALE',
-  FOR_MAINTENANCE = 'FOR_MAINTENANCE',
+  RENEWAL = 'RENEWAL',
 }
 
 @JsonObject('AssetFilter')

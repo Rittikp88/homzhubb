@@ -18,7 +18,12 @@ import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
-import { IPropertyDetailProps, NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  ILandingScreenProps,
+  IPropertyDetailProps,
+  NestedNavigatorParams,
+  ScreensKeys,
+} from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 
@@ -37,7 +42,7 @@ export type DashboardNavigatorParamList = {
 };
 
 export type PortfolioNavigatorParamList = {
-  [ScreensKeys.PortfolioLandingScreen]: undefined;
+  [ScreensKeys.PortfolioLandingScreen]: ILandingScreenProps;
   [ScreensKeys.PropertyDetailScreen]: IPropertyDetailProps;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
 };

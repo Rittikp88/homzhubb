@@ -69,6 +69,7 @@ class Dashboard extends React.PureComponent<Props, IDashboardState> {
           data={metrics?.assetMetrics?.miscellaneous}
           subscription={metrics?.userServicePlan?.label}
           containerStyle={styles.assetCards}
+          onMetricsClicked={this.handleMetricsNavigation}
         />
         <AssetSummary
           notification={metrics?.updates?.notifications?.count ?? 0}
@@ -81,12 +82,12 @@ class Dashboard extends React.PureComponent<Props, IDashboardState> {
     );
   };
 
-  public onViewAll = (): void => {
+  private onViewAll = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.MarketTrends);
   };
 
-  public handleDues = (): void => {
+  private handleDues = (): void => {
     const { navigation } = this.props;
     navigation.dispatch(
       CommonActions.reset({
@@ -96,7 +97,16 @@ class Dashboard extends React.PureComponent<Props, IDashboardState> {
     );
   };
 
-  public getAssetMetrics = async (): Promise<void> => {
+  private handleMetricsNavigation = (name: string): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.Portfolio, {
+      screen: ScreensKeys.PortfolioLandingScreen,
+      params: { filter: name },
+    });
+  };
+
+  private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
       const response: AssetMetrics = await DashboardRepository.getAssetMetrics();

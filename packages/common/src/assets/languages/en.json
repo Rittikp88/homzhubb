@@ -325,7 +325,14 @@
     "upgrade": "Upgrade"
   },
   "assetPortfolio": {
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "tenancies": "Tenancies",
+    "propertyPortfolio": "Property Portfolio",
+    "viewProperty": "View Property",
+    "complete": "COMPLETE",
+    "listingScore": "Listing Score",
+    "leasePeriod": "Lease Period",
+    "addPropertyHighlights": "Add Property highlights for +10%"
   },
   "assetFinancial": {
     "financial": "Financials",

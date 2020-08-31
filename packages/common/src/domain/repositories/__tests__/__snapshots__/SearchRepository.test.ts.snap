@@ -231,6 +231,26 @@ AssetSearch {
         "_id": 0,
         "_name": "",
       },
+      "_assetStatusInfo": AssetStatusInfo {
+        "_leaseTenantInfo": User {
+          "_accessToken": "",
+          "_countryCode": "",
+          "_email": "",
+          "_fullName": "",
+          "_id": 0,
+          "_phoneNumber": "",
+          "_refreshToken": "",
+        },
+        "_leaseTransaction": LeaseTransaction {
+          "_leasePeriod": null,
+          "_rent": null,
+          "_securityDeposit": null,
+        },
+        "_tag": LabelColor {
+          "_color": "",
+          "_label": "",
+        },
+      },
       "_assetType": Data {
         "_count": 0,
         "_id": 0,
@@ -321,6 +341,7 @@ AssetSearch {
         },
       ],
       "_floorNumber": 1,
+      "_furnishing": "",
       "_highlights": Array [
         AssetHighlight {
           "_covered": true,
@@ -337,10 +358,16 @@ AssetSearch {
       "_leaseTerm": null,
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
+      "_notifications": Count {
+        "_count": 0,
+      },
       "_postedOn": "2020-06-03",
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
       "_saleTerm": null,
+      "_serviceTickets": Count {
+        "_count": 0,
+      },
       "_spaces": Array [
         Data {
           "_count": 1,
@@ -520,6 +547,26 @@ AssetSearch {
         "_id": 0,
         "_name": "",
       },
+      "_assetStatusInfo": AssetStatusInfo {
+        "_leaseTenantInfo": User {
+          "_accessToken": "",
+          "_countryCode": "",
+          "_email": "",
+          "_fullName": "",
+          "_id": 0,
+          "_phoneNumber": "",
+          "_refreshToken": "",
+        },
+        "_leaseTransaction": LeaseTransaction {
+          "_leasePeriod": null,
+          "_rent": null,
+          "_securityDeposit": null,
+        },
+        "_tag": LabelColor {
+          "_color": "",
+          "_label": "",
+        },
+      },
       "_assetType": Data {
         "_count": 0,
         "_id": 0,
@@ -610,6 +657,7 @@ AssetSearch {
         },
       ],
       "_floorNumber": 1,
+      "_furnishing": "",
       "_highlights": Array [
         AssetHighlight {
           "_covered": true,
@@ -626,10 +674,16 @@ AssetSearch {
       "_leaseTerm": null,
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
+      "_notifications": Count {
+        "_count": 0,
+      },
       "_postedOn": "2020-06-03",
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
       "_saleTerm": null,
+      "_serviceTickets": Count {
+        "_count": 0,
+      },
       "_spaces": Array [
         Data {
           "_count": 1,

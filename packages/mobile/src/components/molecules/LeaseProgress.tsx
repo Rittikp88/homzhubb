@@ -1,61 +1,80 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import * as Progress from 'react-native-progress';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Button, Label } from '@homzhub/common/src/components';
+import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
 interface IProgressBarProps {
-  progress: number;
+  progress?: number;
+  fromDate?: string;
+  toDate?: string;
   width?: number;
   filledColor?: string;
-  isPropertyCompleted: boolean;
+  buttonAction?: LabelColor | null;
+  isPropertyVacant: boolean;
 }
 
 const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
-  const { progress, width, filledColor = theme.colors.highPriority, isPropertyCompleted } = props;
+  const {
+    progress,
+    width,
+    filledColor = theme.colors.highPriority,
+    isPropertyVacant,
+    fromDate,
+    toDate,
+    buttonAction,
+  } = props;
+
+  const { t } = useTranslation(LocaleConstants.namespacesKey.assetPortfolio);
+
   return (
     <>
       <View style={styles.leaseHeading}>
         <Icon
-          name={isPropertyCompleted ? icons.calendar : icons.house}
+          name={isPropertyVacant ? icons.house : icons.calendar}
           color={theme.colors.darkTint3}
           size={20}
           style={styles.calendarIcon}
         />
-        <Label type="large">{isPropertyCompleted ? 'Lease Period' : 'Listing Score'}</Label>
+        <Label type="large">{isPropertyVacant ? t('listingScore') : t('leasePeriod')}</Label>
       </View>
       <Progress.Bar
-        progress={progress / 100}
+        progress={progress}
         width={width}
-        color={isPropertyCompleted ? filledColor : theme.colors.green}
+        color={isPropertyVacant ? theme.colors.green : filledColor}
         style={styles.barStyle}
-        unfilledColor={isPropertyCompleted ? theme.colors.green : theme.colors.background}
+        unfilledColor={isPropertyVacant ? theme.colors.background : theme.colors.green}
         borderRadius={5}
       />
-      {isPropertyCompleted ? (
+      {isPropertyVacant ? (
+        <Label type="regular" style={styles.helperMsg}>
+          {t('addPropertyHighlights')}
+        </Label>
+      ) : (
         <View style={styles.container}>
           <Label type="regular" style={styles.date}>
-            02/01/2020
+            {fromDate}
           </Label>
           <Label type="regular" style={styles.date}>
-            02/01/2020
+            {toDate}
           </Label>
         </View>
-      ) : (
-        <Label type="regular" style={styles.helperMsg}>
-          Add Property highlights for +10%
-        </Label>
       )}
-      <Button
-        type="primary"
-        textType="label"
-        textSize="regular"
-        fontType="semiBold"
-        containerStyle={styles.buttonStyle}
-        title={isPropertyCompleted ? 'RENEW' : 'COMPLETE'}
-        titleStyle={styles.buttonTitle}
-      />
+      {(buttonAction || isPropertyVacant) && (
+        <Button
+          type="primary"
+          textType="label"
+          textSize="regular"
+          fontType="semiBold"
+          containerStyle={[styles.buttonStyle, { backgroundColor: buttonAction?.color ?? theme.colors.green }]}
+          title={buttonAction?.label ?? t('complete')}
+          titleStyle={styles.buttonTitle}
+        />
+      )}
     </>
   );
 };
@@ -92,7 +111,6 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    backgroundColor: theme.colors.green,
     alignSelf: 'flex-end',
     borderRadius: 2,
     marginTop: 12,

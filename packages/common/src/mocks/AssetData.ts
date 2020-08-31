@@ -14,47 +14,67 @@ export interface IAssetData {
 
 export const TenanciesAssetData = [
   {
-    id: 1,
-    property_name: '2BHK - Godrej Prime',
-    address: 'Sindhi Society, Chembur, Mumbai- 400071',
-    type: 'OWNER',
-    isPropertyCompleted: true,
-    color: '#CE9B6C',
-    images: [
-      {
-        file_name: 'House-1b',
-        is_cover_image: false,
-        link: images.property,
-      },
-    ],
-    contacts: {
-      id: 1,
-      full_name: 'Anuvrat Somnath',
-      email: 'anuvrat.somnath@nineleaps.com',
-      country_code: '+91',
-      phone_number: '7903470293',
+    id: 5,
+    project_name: 'House 2',
+    unit_number: '103',
+    block_number: 'B',
+    latitude: 25.6207722,
+    longitude: 85.1280892,
+    carpet_area: 2500.0,
+    carpet_area_unit: 'SQ_FT',
+    floor_number: 2,
+    total_floors: 3,
+    asset_type: {
+      id: 5,
+      name: 'Studio Apartment',
     },
-  },
-  {
-    id: 2,
-    property_name: '2BHK - Godrej Prime',
-    address: 'Sindhi Society, Chembur, Mumbai- 400071',
-    type: 'OWNER',
-    isPropertyCompleted: true,
-    color: '#CE9B6C',
-    images: [
+    spaces: [
       {
-        file_name: 'House-1b',
-        is_cover_image: false,
-        link: images.property,
+        id: 1,
+        name: 'Bedroom',
+        count: 2,
+      },
+      {
+        id: 2,
+        name: 'Bathroom',
+        count: 1,
       },
     ],
-    contacts: {
+    asset_group: {
       id: 1,
-      full_name: 'Anuvrat Somnath',
-      email: 'anuvrat.somnath@nineleaps.com',
-      country_code: '+91',
-      phone_number: '7903470293',
+      name: 'Residential',
+    },
+    digital_id: '8fad8389-6893-411a-bd4a-4b1575523d4a',
+    construction_year: null,
+    is_gated: null,
+    description: '',
+    furnishing: 'SEMI',
+    attachments: [
+      {
+        file_name: 'prof.jpg',
+        is_cover_image: true,
+        link: 'https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg',
+        media_type: 'IMAGE',
+        media_attributes: {},
+      },
+    ],
+    verification_documents: [],
+    verifications: {
+      verification_status: 2,
+      description:
+        '**What is this verification?**\nSed ut perspiciatis unde omnis iste natus error sit voluptatem\naccusantium doloremque laudantium.\n\nNemo enim ipsam voluptatem quia voluptas sit aspernatur\naut odit aut fugit. Neque porro quisquam est,\nqui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,\nsed quia non numquam eius modi tempora incidunt ut labore et dolore\nmagnam aliquam quaerat voluptatem.',
+    },
+    progress_percentage: 74.0,
+    notifications: {
+      count: 5,
+    },
+    serviceTickets: {
+      count: 0,
+    },
+    assetStatusInfo: {
+      tag: {},
+      leaseTransaction: {},
+      leaseTenantInfo: {},
     },
   },
 ];

@@ -10,11 +10,9 @@ import { GeneralLedgers, IGeneralLedgerGraphData } from '@homzhub/common/src/dom
 
 const INNER_RADIUS = '45%';
 const HEIGHT = theme.viewport.height * 0.25;
-
 interface IProps {
   data: GeneralLedgers[];
 }
-
 const COLOR_BAND = [
   theme.colors.income,
   theme.colors.expense,
@@ -24,12 +22,15 @@ const COLOR_BAND = [
   theme.colors.darkTint3,
   theme.colors.darkTint4,
   theme.colors.darkTint5,
+  theme.colors.darkTint6,
+  theme.colors.darkTint7,
+  theme.colors.darkTint9,
+  theme.colors.darkTint10,
+  theme.colors.darkTint11,
 ];
-
 const DonutGraph = (props: IProps): React.ReactElement => {
   const { data } = props;
   const { t } = useTranslation();
-
   const transformDonutData = (): IGeneralLedgerGraphData[] => {
     const transformedData: IGeneralLedgerGraphData[] = [];
     data.forEach((ledger: GeneralLedgers, index: number) => {
@@ -43,7 +44,6 @@ const DonutGraph = (props: IProps): React.ReactElement => {
     });
     return transformedData;
   };
-
   const render = (): React.ReactElement => {
     if (data.length === 0) {
       return (
@@ -62,10 +62,8 @@ const DonutGraph = (props: IProps): React.ReactElement => {
       </View>
     );
   };
-
   return render();
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -89,6 +87,5 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint6,
   },
 });
-
 const memoizedComponent = React.memo(DonutGraph);
 export { memoizedComponent as DonutGraph };

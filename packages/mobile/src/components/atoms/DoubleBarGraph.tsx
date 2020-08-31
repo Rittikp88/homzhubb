@@ -15,7 +15,6 @@ interface IProps {
     label: string[];
   };
 }
-
 // SVG OPTIONS
 const SVG_FONT = { fontSize: 12, fill: theme.colors.darkTint6, fontWeight: '600' as '600' };
 const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7 };
@@ -23,10 +22,9 @@ const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7 };
 const VERTICAL_INSET = { top: 8, bottom: 8 };
 const HORIZONTAL_INSET = { left: 24, right: 24 };
 // VIEWPORT CONSTANTS
-const Y_GRID_WIDTH = 50;
+const Y_GRID_WIDTH = theme.viewport.width / 7;
 const HEIGHT = theme.viewport.height * 0.5;
 const WIDTH = theme.viewport.width * 1.5;
-
 const DoubleBarGraph = (props: IProps): React.ReactElement => {
   const {
     data: { data1, data2, label },
@@ -42,7 +40,6 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
       svg: { fill: theme.colors.income } as Partial<PathProps>,
     },
   ];
-
   const barGraphLegends = (): IGeneralLedgerGraphData[] => {
     return [
       {
@@ -59,7 +56,6 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
       },
     ];
   };
-
   return (
     <>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -93,7 +89,6 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
     </>
   );
 };
-
 const styles = StyleSheet.create({
   barGraphContainer: {
     flexDirection: 'column',
@@ -116,12 +111,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
 const customizedStyles = (labelLength: number): any => ({
   derivedWidth: {
     width: labelLength > 3 ? WIDTH : theme.viewport.width - 100,
   },
 });
-
 const memoizedComponent = React.memo(DoubleBarGraph);
 export { memoizedComponent as DoubleBarGraph };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, NativeSyntheticEvent, NativeScrollEvent, FlatList } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Image, ImageVideoPagination, YoutubeVideo } from '@homzhub/common/src/components';
@@ -11,8 +12,10 @@ interface IProps {
   data: Attachment[];
   onFullScreenToggle: () => void;
   updateSlide: (index: number) => void;
-  onShare: () => void;
+  onShare?: () => void;
 }
+
+const heightValue = PlatformUtils.isIOS() ? (theme.viewport.width > 400 ? 3 : 2) : 2;
 
 export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
@@ -35,7 +38,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           // @ts-ignore
           type={data[activeSlide].mediaType}
         />
-        <Icon name={icons.share} size={23} color={theme.colors.white} onPress={onShare} />
+        {onShare && <Icon name={icons.share} size={23} color={theme.colors.white} onPress={onShare} />}
       </View>
     );
   };
@@ -112,13 +115,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: theme.viewport.width > 400 ? 30 : 10,
     margin: theme.layout.screenPadding,
   },
   carouselImage: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: theme.viewport.height / 2,
+    height: theme.viewport.height / heightValue,
     width: theme.viewport.width,
   },
 });

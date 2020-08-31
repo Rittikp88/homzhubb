@@ -331,6 +331,8 @@ PODS:
     - react-native-video/Video (= 4.4.5)
   - react-native-video/Video (4.4.5):
     - React
+  - react-native-viewpager (4.1.6):
+    - React
   - react-native-webview (10.8.2):
     - React
   - React-RCTActionSheet (0.62.2):
@@ -478,6 +480,7 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../../../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../../../node_modules/@react-native-community/slider`)"
   - react-native-video (from `../../../node_modules/react-native-video`)
+  - "react-native-viewpager (from `../../../node_modules/@react-native-community/viewpager`)"
   - react-native-webview (from `../../../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../../../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../../../node_modules/react-native/Libraries/NativeAnimation`)
@@ -586,6 +589,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/@react-native-community/slider"
   react-native-video:
     :path: "../../../node_modules/react-native-video"
+  react-native-viewpager:
+    :path: "../../../node_modules/@react-native-community/viewpager"
   react-native-webview:
     :path: "../../../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -681,6 +686,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-video: eee541262ada11bc7ffe8ec5508e6a877937c462
+  react-native-viewpager: f44c9e21c37d4cb76d38841c8a450e3891923461
   react-native-webview: 0e49a2e85f42b20ea5579928a8b254a07fa901dc
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0

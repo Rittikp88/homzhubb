@@ -23,6 +23,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   showPlusIcon?: boolean;
   onPlusIconClicked?: () => void;
+  onMetricsClicked?: (name: string) => void;
   individualCardStyle?: StyleProp<ViewStyle>;
 }
 
@@ -35,6 +36,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     onPlusIconClicked,
     containerStyle,
     individualCardStyle,
+    onMetricsClicked,
   } = props;
   const { t } = useTranslation();
 
@@ -49,6 +51,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
   };
 
   const renderItem = ({ item }: { item: IMetricsData }): React.ReactElement => {
+    const handlePress = (): void => onMetricsClicked && onMetricsClicked(item.name);
     return (
       <AssetMetrics
         header={item.label ?? item.name}
@@ -59,6 +62,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
         location={item.colorGradient?.location ?? []}
         cardStyle={individualCardStyle}
         angle={item.colorGradient?.angle ?? 0}
+        onPressMetrics={handlePress}
       />
     );
   };

@@ -2,8 +2,9 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IAmenity, Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
-import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
+import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
+import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
@@ -57,6 +58,16 @@ export class Data {
   get name(): string {
     return this._name;
   }
+
+  get count(): number {
+    return this._count;
+  }
+}
+
+@JsonObject('Count')
+export class Count {
+  @JsonProperty('count', Number)
+  private _count = 0;
 
   get count(): number {
     return this._count;
@@ -142,6 +153,18 @@ export class Asset {
 
   @JsonProperty('maintenance_payment_schedule', String, true)
   private _maintenancePaymentSchedule = '';
+
+  @JsonProperty('furnishing', String, true)
+  private _furnishing = '';
+
+  @JsonProperty('notifications', Count, true)
+  private _notifications: Count = new Count();
+
+  @JsonProperty('service_tickets', Count, true)
+  private _serviceTickets: Count = new Count();
+
+  @JsonProperty('asset_status_info', AssetStatusInfo, true)
+  private _assetStatusInfo: AssetStatusInfo = new AssetStatusInfo();
 
   get projectName(): string {
     return this._projectName;
@@ -250,7 +273,27 @@ export class Asset {
     return this._progressPercentage;
   }
 
+  get formattedPercentage(): number {
+    return this.progressPercentage / 100;
+  }
+
   get maintenancePaymentSchedule(): string {
     return this._maintenancePaymentSchedule;
+  }
+
+  get furnishing(): string {
+    return this._furnishing;
+  }
+
+  get notifications(): Count {
+    return this._notifications;
+  }
+
+  get serviceTickets(): Count {
+    return this._serviceTickets;
+  }
+
+  get assetStatusInfo(): AssetStatusInfo {
+    return this._assetStatusInfo;
   }
 }

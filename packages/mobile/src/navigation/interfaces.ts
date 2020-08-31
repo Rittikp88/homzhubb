@@ -161,6 +161,10 @@ export interface IPropertyDetailProps {
   propertyData: any;
 }
 
+export interface ILandingScreenProps {
+  filter?: string;
+}
+
 // Webview
 export interface IWebviewProps {
   url: string;

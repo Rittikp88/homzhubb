@@ -16,16 +16,32 @@ interface IProps {
   colorB: string;
   testID?: string;
   textStyle?: StyleProp<TextStyle>;
+  onPressMetrics?: () => void;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const { header, value, angle, colorA, colorB, location, currency, cardStyle, testID, textStyle } = props;
+  const {
+    header,
+    value,
+    angle,
+    colorA,
+    colorB,
+    location,
+    currency,
+    cardStyle,
+    testID,
+    textStyle,
+    onPressMetrics,
+  } = props;
 
   const [selected, onSelect] = useState(false);
   const isGradient = colorA && colorB;
 
   const handlePress = (): void => {
     onSelect(!selected);
+    if (onPressMetrics) {
+      onPressMetrics();
+    }
   };
 
   const renderItem = (): React.ReactElement => {
