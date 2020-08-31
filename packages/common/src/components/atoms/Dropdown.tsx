@@ -14,6 +14,8 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
+const MAX_LABEL_COUNT = 12;
+
 export interface IProps {
   data: PickerItemProps[];
   value: number | string;
@@ -33,13 +35,12 @@ export interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   testID?: string;
+  maxLabelLength?: number;
 }
 
 interface IState {
   dropdownVisible: boolean;
 }
-
-const MAX_LABEL_COUNT = 12;
 
 export class Dropdown extends React.PureComponent<IProps, IState> {
   public state = {
@@ -61,13 +62,15 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
       textStyle = {},
       icon = icons.downArrowFilled,
       testID,
+      maxLabelLength = MAX_LABEL_COUNT,
     } = this.props;
     const { dropdownVisible } = this.state;
     const selectedItem = data.find((d: PickerItemProps) => d.value === value);
     const label =
-      selectedItem?.label && selectedItem?.label.length > MAX_LABEL_COUNT
-        ? `${(selectedItem?.label).substring(0, MAX_LABEL_COUNT)}...`
+      selectedItem?.label && selectedItem?.label.length > maxLabelLength
+        ? `${(selectedItem?.label).substring(0, maxLabelLength)}...`
         : selectedItem?.label;
+
     return (
       <View pointerEvents={disable ? 'none' : 'auto'}>
         <TouchableOpacity onPress={this.openDropdown} style={[styles.container, containerStyle]}>

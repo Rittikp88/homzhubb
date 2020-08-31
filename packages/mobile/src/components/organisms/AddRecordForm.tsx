@@ -1,13 +1,24 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { FormButton, FormDropdown, FormTextInput, SelectionPicker, UploadBox } from '@homzhub/common/src/components';
+import {
+  FormButton,
+  FormDropdown,
+  FormTextInput,
+  IDropdownOption,
+  SelectionPicker,
+  UploadBox,
+} from '@homzhub/common/src/components';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 
 enum FormType {
   Income = 1,
@@ -24,22 +35,28 @@ interface IFormData {
   notes?: string;
 }
 
-interface IOwnProps extends WithTranslation {
-  containerStyles?: StyleProp<ViewStyle>;
-  testID?: string;
-  // Todo (Sriram- 2020.08.25) Add an interface in place of type any
-  onSubmitFormSuccess?: (payload: any) => void;
-}
-
 interface IState {
   selectedFormType: FormType;
   wordCount: number;
   formValues: IFormData;
 }
 
+interface IOwnProps extends WithTranslation {
+  properties: Asset[];
+  ledgerCategories: LedgerCategory[];
+  // Todo (Sriram- 2020.08.25) Add an interface in place of type any
+  onSubmitFormSuccess?: (payload: any) => void;
+  clear: boolean;
+  onFormClear: () => void;
+  containerStyles?: StyleProp<ViewStyle>;
+  testID?: string;
+}
+
 const MAX_WORD_COUNT = 200;
 
 class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
+  private resetForm: ((nextValues?: FormikValues) => void) | undefined;
+
   public state = {
     selectedFormType: FormType.Income,
     wordCount: MAX_WORD_COUNT,
@@ -55,9 +72,13 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 
   public render(): ReactElement {
-    const { containerStyles, t } = this.props;
+    const { containerStyles, t, clear } = this.props;
     const { selectedFormType, formValues, wordCount } = this.state;
 
+    if (clear) {
+      this.clearForm();
+    }
+    // @ts-ignore
     return (
       <View style={containerStyles}>
         <SelectionPicker
@@ -68,18 +89,23 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
           selectedItem={[selectedFormType]}
           onValueChange={this.onFormTypeChange}
         />
-        <Formik onSubmit={this.handleSubmit} initialValues={formValues} validate={FormUtils.validate(this.formSchema)}>
+        <Formik
+          onSubmit={this.handleSubmit}
+          initialValues={formValues}
+          validate={FormUtils.validate(this.formSchema)}
+          enableReinitialize
+        >
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
+            this.initializeReset(formProps);
+
             return (
               <>
                 <FormDropdown
                   formProps={formProps}
                   name="property"
-                  options={[
-                    { value: 'Property 1', label: 'Property 1' },
-                    { value: 'Property 2', label: 'Property 2' },
-                  ]}
+                  options={this.loadPropertyNames()}
                   placeholder={t('selectProperty')}
+                  maxLabelLength={36}
                 />
                 <FormTextInput
                   formProps={formProps}
@@ -98,20 +124,18 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                 />
                 <FormTextInput
                   formProps={formProps}
-                  inputType="default"
+                  inputType="number"
                   name="amount"
                   label={t('amount')}
                   placeholder={t('amountPlaceholder')}
+                  inputPrefixText="₹"
                   inputGroupSuffixText="INR"
                 />
                 <FormDropdown
                   formProps={formProps}
                   name="category"
                   label={t('category')}
-                  options={[
-                    { value: 'Category 1', label: 'Category 1' },
-                    { value: 'Category 2', label: 'Category 2' },
-                  ]}
+                  options={this.loadCategories()}
                   placeholder={t('categoryPlaceholder')}
                 />
                 <FormCalendar
@@ -158,6 +182,39 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 
   private onFormTypeChange = (selectedType: number): void => {
     this.setState({ selectedFormType: selectedType });
+  };
+
+  private initializeReset = (formProps: FormikProps<FormikValues>): void => {
+    if (!this.resetForm) {
+      this.resetForm = formProps.resetForm;
+    }
+  };
+
+  private clearForm = (): void => {
+    const { onFormClear } = this.props;
+
+    if (this.resetForm && onFormClear) {
+      this.resetForm();
+      onFormClear();
+    }
+  };
+
+  private loadPropertyNames = (): IDropdownOption[] => {
+    const { properties } = this.props;
+
+    return properties.map((property: Asset) => {
+      return { value: property.id, label: property.projectName };
+    });
+  };
+
+  private loadCategories = (): IDropdownOption[] => {
+    const { ledgerCategories } = this.props;
+    const { selectedFormType } = this.state;
+    const entryType = selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit;
+
+    return LedgerUtils.filterLegerCategoryOn(entryType, ledgerCategories).map((category: LedgerCategory) => {
+      return { value: category.id, label: category.name };
+    });
   };
 
   private formSchema = (): yup.ObjectSchema<IFormData> => {

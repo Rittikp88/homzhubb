@@ -9,6 +9,7 @@ interface IOwnProps {
   subTitle?: string;
   onIconPress?: () => void;
   onClearPress?: () => void;
+  clear?: boolean;
   containerStyles?: StyleProp<ViewStyle>;
   renderItem?: () => ReactElement;
 }

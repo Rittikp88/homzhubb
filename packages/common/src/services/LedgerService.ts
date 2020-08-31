@@ -1,5 +1,6 @@
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { GeneralLedgers, DataGroupBy } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 
 class LedgerService {
   private repository: typeof LedgerRepository;
@@ -20,6 +21,10 @@ class LedgerService {
     };
 
     return await this.repository.getGeneralLedgers(requestPayload);
+  };
+
+  public getAllLedgerCategories = async (): Promise<LedgerCategory[]> => {
+    return await this.repository.getLedgerCategories();
   };
 }
 

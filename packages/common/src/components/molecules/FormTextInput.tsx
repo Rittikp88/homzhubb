@@ -44,6 +44,7 @@ export interface IFormTextInputProps extends TextInputProps {
 }
 
 interface IFormTextInputState {
+  showCurrencySymbol: boolean;
   showPassword: boolean;
   isFocused: boolean;
 }
@@ -52,6 +53,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
   public inputText: RNTextInput | null = null;
 
   public state = {
+    showCurrencySymbol: false,
     showPassword: false,
     isFocused: false,
   };
@@ -79,7 +81,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
     const { values, setFieldTouched } = formProps;
-    const { showPassword, isFocused } = this.state;
+    const { showPassword, isFocused, showCurrencySymbol } = this.state;
     const optionalText: string | null = isOptional ? 'Optional' : null;
 
     // @ts-ignore
@@ -110,6 +112,25 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
         break;
       case 'number':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
+        if (inputPrefixText.length > 0 && showCurrencySymbol) {
+          inputGroupPrefix = (
+            <View style={styles.currencyPrefix}>
+              <Label type="regular" style={styles.currencyPrefixText}>
+                {inputPrefixText}
+              </Label>
+            </View>
+          );
+
+          const prefixFieldStyles = {
+            ...inputProps.style,
+            ...{ paddingStart: 38 },
+          };
+
+          inputProps = {
+            ...inputProps,
+            style: prefixFieldStyles,
+          };
+        }
         break;
       case 'decimal':
         inputProps = { ...inputProps, ...{ keyboardType: 'numeric' } };
@@ -222,6 +243,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       if (inputValue.split('.').length > 2) {
         inputValue = inputValue.replace(/\.+$/, '');
       }
+      this.setState({ showCurrencySymbol: text.length > 0 });
     } else if (inputType === 'name') {
       inputValue = text.replace(/\d/g, '');
     } else if (inputType === 'email') {
@@ -272,6 +294,19 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
     borderRightWidth: StyleSheet.hairlineWidth,
     borderRightColor: theme.colors.disabled,
+  },
+  currencyPrefix: {
+    position: 'absolute',
+    left: 1,
+    marginTop: 5,
+    width: 46,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  currencyPrefixText: {
+    fontSize: 18,
   },
   inputPrefixText: {
     color: theme.colors.darkTint4,

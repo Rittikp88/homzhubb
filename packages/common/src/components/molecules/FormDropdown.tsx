@@ -25,6 +25,7 @@ export interface IFormDropdownProps {
   onError?: () => void;
   optionalText?: string;
   dropdownContainerStyle?: StyleProp<ViewStyle>;
+  maxLabelLength?: number;
 }
 
 export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
@@ -41,6 +42,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
       listTitle,
       listHeight,
       dropdownContainerStyle = {},
+      maxLabelLength,
     } = this.props;
     const { values, errors, touched, setFieldValue, setFieldTouched } = formProps;
 
@@ -83,6 +85,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
           iconSize={16}
           iconColor={theme.colors.darkTint7}
           containerStyle={dropdownContainerStyle}
+          maxLabelLength={maxLabelLength}
         />
       </WithFieldError>
     );

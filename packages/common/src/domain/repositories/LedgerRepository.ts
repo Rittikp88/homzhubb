@@ -3,9 +3,11 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { IGeneralLedgerPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 
 const ENDPOINTS = {
   getGeneralLedgers: (): string => 'general-ledgers/overall-performances/',
+  getLedgerCategories: (): string => 'general-ledger-categories',
 };
 
 class LedgerRepository {
@@ -18,6 +20,11 @@ class LedgerRepository {
   public getGeneralLedgers = async (requestPayload: IGeneralLedgerPayload): Promise<GeneralLedgers[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getGeneralLedgers(), requestPayload);
     return ObjectMapper.deserializeArray(GeneralLedgers, response);
+  };
+
+  public getLedgerCategories = async (): Promise<LedgerCategory[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getLedgerCategories());
+    return ObjectMapper.deserializeArray(LedgerCategory, response);
   };
 }
 

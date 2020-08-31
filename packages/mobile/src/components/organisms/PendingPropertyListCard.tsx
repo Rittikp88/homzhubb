@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { AssetService, PropertyStatus } from '@homzhub/common/src/services/Property/AssetService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Button, Label, Text } from '@homzhub/common/src/components';
 import { PropertyAmenities, PropertyAddressCountry, ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -112,7 +112,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
   };
 
   private getPendingProperties = async (): Promise<void> => {
-    const response: Asset[] = await AssetRepository.getPendingProperties('PENDING');
+    const response: Asset[] = await AssetService.getPropertiesByStatus(PropertyStatus.PENDING);
     this.setState({ data: response });
   };
 

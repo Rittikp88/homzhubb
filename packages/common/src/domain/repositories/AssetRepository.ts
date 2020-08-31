@@ -188,7 +188,7 @@ class AssetRepository {
     return ObjectMapper.deserializeArray(Asset, response);
   };
 
-  public getPendingProperties = async (status: string): Promise<Asset[]> => {
+  public getPropertiesByStatus = async (status?: string): Promise<Asset[]> => {
     const response = await this.apiClient.get(ENDPOINTS.asset(), { status });
     return ObjectMapper.deserializeArray(Asset, response);
   };
