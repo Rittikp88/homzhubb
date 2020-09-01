@@ -11,7 +11,7 @@ import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory
 
 const ENDPOINTS = {
   getGeneralLedgers: (): string => 'general-ledgers/overall-performances/',
-  getLedgerCategories: (): string => 'general-ledger-categories',
+  getLedgerCategories: (): string => 'general-ledger-categories/',
   postLedgers: (): string => 'general-ledgers/',
 };
 

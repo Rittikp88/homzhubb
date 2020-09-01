@@ -78,7 +78,7 @@ exports[`FinanceOverview should match snapshot 1`] = `
         textType="semiBold"
         type="large"
       >
-        Aug 2020
+        Sep 2020
       </Label>
     </View>
     <Dropdown
@@ -91,21 +91,21 @@ exports[`FinanceOverview should match snapshot 1`] = `
         Array [
           Object {
             "dataGroupBy": "MONTH",
-            "endDate": "2020-08-31",
+            "endDate": "2020-09-30",
             "label": "This month",
-            "startDate": "2020-08-01",
+            "startDate": "2020-09-01",
             "value": 1,
           },
           Object {
             "dataGroupBy": "MONTH",
-            "endDate": "2020-07-31",
+            "endDate": "2020-08-31",
             "label": "Last month",
-            "startDate": "2020-07-01",
+            "startDate": "2020-08-01",
             "value": 2,
           },
           Object {
             "dataGroupBy": "YEAR",
-            "endDate": "2020-08-31",
+            "endDate": "2020-09-01",
             "label": "This year",
             "startDate": "2020-01-01",
             "value": 3,

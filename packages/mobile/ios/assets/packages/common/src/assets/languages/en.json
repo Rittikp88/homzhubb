@@ -70,7 +70,8 @@
     "clear": "Clear",
     "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
     "uploadDocument": "Upload Document",
-    "toastBack": "Click Back again to exit."
+    "toastBack": "Click Back again to exit.",
+    "optional": "Optional"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -324,7 +325,14 @@
     "upgrade": "Upgrade"
   },
   "assetPortfolio": {
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "tenancies": "Tenancies",
+    "propertyPortfolio": "Property Portfolio",
+    "viewProperty": "View Property",
+    "complete": "COMPLETE",
+    "listingScore": "Listing Score",
+    "leasePeriod": "Lease Period",
+    "addPropertyHighlights": "Add Property highlights for +10%"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -354,6 +362,10 @@
     "dateError": "Please enter the date",
     "attachmentName": "Attachment name",
     "paidToText": "Paid to",
-    "invoice": "Invoice"
+    "invoice": "Invoice",
+    "paidTo": "Paid To",
+    "receivedFrom": "Received From",
+    "tellerPlaceholder": "Eg. Suresh Raina",
+    "addedSuccessfullyMessage": "Added successfully"
   }
 }

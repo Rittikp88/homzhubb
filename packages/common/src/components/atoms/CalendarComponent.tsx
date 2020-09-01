@@ -47,10 +47,13 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
 
   private renderHeader = (): React.ReactElement => {
     const { allowPastDates } = this.props;
-    const { year, month, isMonthView, selectedDate } = this.state;
-    const newMonth = moment(selectedDate).month();
+    const { year, isMonthView, selectedDate } = this.state;
     const newYear = moment(selectedDate).year();
-    const updateMonth = DateUtils.getFullMonthName(newMonth || month, DateFormats.MMMM);
+    let { month } = this.state;
+    if (selectedDate) {
+      month = moment(selectedDate).month();
+    }
+    const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMMM);
 
     return (
       <>
@@ -113,8 +116,9 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const { allowPastDates } = this.props;
     const { day, month, year, selectedDate } = this.state;
     const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMM);
-    const date =
-      selectedDate || DateUtils.getFormattedDate(day, updateMonth, year, DateFormats.YYYYMMMDD).toDateString();
+    const date = selectedDate || moment(`${year}-${updateMonth}-${day}`).format('YYYY-MM-DD');
+    const markedDate = !selectedDate ? moment().format('YYYY-MM-DD') : date;
+
     return (
       <>
         <Calendar
@@ -129,7 +133,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           markingType="custom"
           theme={{}}
           markedDates={{
-            [date]: {
+            [markedDate]: {
               customStyles: {
                 container: {
                   backgroundColor: theme.colors.primaryColor,
@@ -171,7 +175,11 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
 
   private handleBackPress = (): void => {
     const { allowPastDates } = this.props;
-    const { year, isMonthView, month } = this.state;
+    const { year, isMonthView, selectedDate } = this.state;
+    let { month } = this.state;
+    if (selectedDate) {
+      month = moment(selectedDate).month();
+    }
 
     if (!allowPastDates && month === moment().month()) {
       return;
@@ -189,7 +197,12 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   };
 
   private handleNextPress = (): void => {
-    const { year, isMonthView, month } = this.state;
+    const { year, isMonthView, selectedDate } = this.state;
+
+    let { month } = this.state;
+    if (selectedDate) {
+      month = moment(selectedDate).month();
+    }
 
     if (isMonthView) {
       const nextYear = Number(year) + 1;

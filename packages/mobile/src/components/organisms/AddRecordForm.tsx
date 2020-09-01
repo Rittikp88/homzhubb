@@ -262,7 +262,7 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       amount,
       category,
       transaction_date: date,
-      notes,
+      ...(notes && { notes }),
       /* Todo (Sriram- 2020.08.31) Add a attachment ID */
       attachment: null,
     };

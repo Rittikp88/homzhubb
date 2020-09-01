@@ -5,7 +5,6 @@ import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/int
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
 import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
-import { Tabs } from '@homzhub/common/src/domain/models/Tabs';
 
 class PropertyUtils {
   public getAmenities = (
@@ -125,33 +124,6 @@ class PropertyUtils {
         ];
       default:
         return [];
-    }
-  };
-
-  public getTabIcons = (name: string): string => {
-    switch (name) {
-      case Tabs.NOTIFICATIONS:
-        return icons.alert;
-      case Tabs.TICKETS:
-        return icons.headset;
-      case Tabs.OFFERS:
-        return icons.offers;
-      case Tabs.REVIEWS:
-        return icons.reviews;
-      case Tabs.SITE_VISITS:
-        return icons.watch;
-      case Tabs.FINANCIALS:
-        return icons.financials;
-      case Tabs.MESSAGES:
-        return icons.mail;
-      case Tabs.DOCUMENTS:
-        return icons.documents;
-      case Tabs.TENANT_HISTORY:
-        return icons.history;
-      case Tabs.DETAILS:
-        return icons.detail;
-      default:
-        return '';
     }
   };
 }

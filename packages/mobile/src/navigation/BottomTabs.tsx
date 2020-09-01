@@ -16,7 +16,7 @@ import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRec
 import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
-import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetailScreen';
+import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
   ILandingScreenProps,

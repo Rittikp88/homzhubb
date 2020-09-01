@@ -416,6 +416,8 @@ PODS:
     - TOCropViewController
   - RNPermissions (2.1.5):
     - React
+  - RNReanimated (1.13.0):
+    - React
   - RNScreens (2.10.1):
     - React
   - RNSVG (12.1.0):
@@ -500,6 +502,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../../../node_modules/@react-native-community/google-signin`)"
   - RNImageCropPicker (from `../../../node_modules/react-native-image-crop-picker`)
   - RNPermissions (from `../../../node_modules/react-native-permissions`)
+  - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNSVG (from `../../../node_modules/react-native-svg`)
   - RNVectorIcons (from `../../../node_modules/react-native-vector-icons`)
@@ -627,6 +630,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-image-crop-picker"
   RNPermissions:
     :path: "../../../node_modules/react-native-permissions"
+  RNReanimated:
+    :path: "../../../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../../../node_modules/react-native-screens"
   RNSVG:
@@ -705,6 +710,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9
   RNImageCropPicker: 54e5ea3d0e298ed51e1441a2fa0a0e7c90ee256d
   RNPermissions: ad71dd4f767ec254f2cd57592fbee02afee75467
+  RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
