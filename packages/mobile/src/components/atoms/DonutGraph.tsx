@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PieChart } from 'react-native-svg-charts';
@@ -13,25 +13,13 @@ const HEIGHT = theme.viewport.height * 0.25;
 interface IProps {
   data: GeneralLedgers[];
 }
-const COLOR_BAND = [
-  theme.colors.income,
-  theme.colors.expense,
-  theme.colors.blueDonut,
-  theme.colors.darkTint1,
-  theme.colors.darkTint2,
-  theme.colors.darkTint3,
-  theme.colors.darkTint4,
-  theme.colors.darkTint5,
-  theme.colors.darkTint6,
-  theme.colors.darkTint7,
-  theme.colors.darkTint9,
-  theme.colors.darkTint10,
-  theme.colors.darkTint11,
-];
+
 const DonutGraph = (props: IProps): React.ReactElement => {
   const { data } = props;
+  const [donutData, setDonutData] = useState<IGeneralLedgerGraphData[]>([]);
   const { t } = useTranslation();
-  const transformDonutData = (): IGeneralLedgerGraphData[] => {
+
+  useEffect(() => {
     const transformedData: IGeneralLedgerGraphData[] = [];
     data.forEach((ledger: GeneralLedgers, index: number) => {
       const { category, amount } = ledger;
@@ -39,11 +27,12 @@ const DonutGraph = (props: IProps): React.ReactElement => {
         key: index,
         title: category,
         value: amount,
-        svg: { fill: COLOR_BAND[index] },
+        svg: { fill: theme.randomHex() },
       });
     });
-    return transformedData;
-  };
+    setDonutData(transformedData);
+  }, [data]);
+
   const render = (): React.ReactElement => {
     if (data.length === 0) {
       return (
@@ -57,8 +46,8 @@ const DonutGraph = (props: IProps): React.ReactElement => {
     }
     return (
       <View style={styles.container}>
-        <PieChart style={styles.pieChart} data={transformDonutData()} innerRadius={INNER_RADIUS} />
-        <GraphLegends direction="column" data={transformDonutData()} />
+        <PieChart style={styles.pieChart} data={donutData} innerRadius={INNER_RADIUS} />
+        <GraphLegends direction="column" data={donutData} />
       </View>
     );
   };

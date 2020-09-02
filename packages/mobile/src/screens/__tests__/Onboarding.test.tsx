@@ -1,10 +1,12 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
 import { OnBoarding, mapDispatchToProps } from '@homzhub/mobile/src/screens/OnBoarding';
+import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
 
 const mock = jest.fn();
 
@@ -88,10 +90,11 @@ describe('Onboarding Screen', () => {
   });
 
   it('should call get onboarding data', async () => {
-    jest.spyOn(CommonRepository, 'getOnboarding').mockImplementation(async () => Promise.resolve(OnboardingData));
+    const deserializedData = ObjectMapper.deserializeArray(Onboarding, OnboardingData);
+    jest.spyOn(CommonRepository, 'getOnboarding').mockImplementation(async () => Promise.resolve(deserializedData));
     await instance.componentDidMount();
     const response = await CommonRepository.getOnboarding();
     instance.setState({ data: response });
-    expect(component.state('data')).toBe(OnboardingData);
+    expect(component.state('data')).toBe(deserializedData);
   });
 });

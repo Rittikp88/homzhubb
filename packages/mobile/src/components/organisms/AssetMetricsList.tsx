@@ -63,6 +63,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
         cardStyle={individualCardStyle}
         angle={item.colorGradient?.angle ?? 0}
         onPressMetrics={handlePress}
+        itemsLength={data.length}
       />
     );
   };

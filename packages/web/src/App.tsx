@@ -1,12 +1,16 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import { store } from '@homzhub/common/src/modules/store';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { configureStore } from '@homzhub/common/src/modules/store';
 import { MainRouter } from '@homzhub/web/src/router/MainRouter';
 
 interface IState {
   isLocalizationInitialised: boolean;
 }
+
+StoreProviderService.init(configureStore);
+const store = StoreProviderService.getStore();
 
 export class App extends React.PureComponent<{}, IState> {
   public state = {

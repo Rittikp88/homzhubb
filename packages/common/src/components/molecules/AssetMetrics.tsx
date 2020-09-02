@@ -16,6 +16,7 @@ interface IProps {
   colorB: string;
   testID?: string;
   textStyle?: StyleProp<TextStyle>;
+  itemsLength?: number;
   onPressMetrics?: () => void;
 }
 
@@ -32,11 +33,12 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
     testID,
     textStyle,
     onPressMetrics,
+    itemsLength = 3,
   } = props;
 
   const [selected, onSelect] = useState(false);
   const isGradient = colorA && colorB;
-
+  const customStyle = customizedStyles(itemsLength);
   const handlePress = (): void => {
     onSelect(!selected);
     if (onPressMetrics) {
@@ -77,7 +79,7 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
           angle={angle}
           colors={[colorA, colorB]}
           locations={location}
-          style={[styles.container, cardStyle]}
+          style={[styles.container, cardStyle, customStyle.itemWidth]}
         >
           {renderItem()}
         </LinearGradient>
@@ -100,7 +102,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 5,
-    minWidth: (theme.viewport.width - 60) / 3,
     shadowColor: theme.colors.shadow,
     shadowOffset: {
       width: 0,
@@ -130,5 +131,12 @@ const styles = StyleSheet.create({
   },
   valueWithoutGradient: {
     color: theme.colors.darkTint1,
+  },
+});
+
+// TODO: Add the return type
+const customizedStyles = (itemLength: number): any => ({
+  itemWidth: {
+    minWidth: itemLength > 3 ? (theme.viewport.width - 60) / 3 : (theme.viewport.width - 90) / 3,
   },
 });
