@@ -6,6 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
+import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
 import { Tabs } from '@homzhub/common/src/domain/models/Tabs';
 
 export type TopTabNavigatorParamList = {
@@ -37,7 +38,7 @@ export const TopTabs = (): React.ReactElement => {
     >
       <TopTabNavigator.Screen
         name={ScreensKeys.NotificationTab}
-        component={DummyView}
+        component={NotificationTab}
         options={{
           tabBarLabel: Tabs.NOTIFICATIONS,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
@@ -141,6 +142,7 @@ export const TopTabs = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   container: {
+    borderRadius: 4,
     marginTop: 14,
   },
 });

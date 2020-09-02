@@ -40,6 +40,17 @@ export class SearchBar extends React.PureComponent<IProps> {
             onChangeText={this.onChangeText}
             testID="textInput"
           />
+          {value.length > 0 && (
+            <Button
+              type="primary"
+              icon={icons.circularCrossFilled}
+              iconSize={20}
+              iconColor={theme.colors.darkTint6}
+              containerStyle={styles.iconButton}
+              onPress={this.onCrossPress}
+              testID="btnCross"
+            />
+          )}
         </View>
       </View>
     );
@@ -48,6 +59,10 @@ export class SearchBar extends React.PureComponent<IProps> {
   private onChangeText = (value: string): void => {
     const { updateValue } = this.props;
     updateValue(value);
+  };
+
+  private onCrossPress = (): void => {
+    this.onChangeText('');
   };
 }
 

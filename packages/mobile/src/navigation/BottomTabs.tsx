@@ -16,6 +16,7 @@ import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRec
 import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
+import AssetNotifications from '@homzhub/mobile/src/screens/Asset/Dashboard/AssetNotifications';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
@@ -31,7 +32,7 @@ const MORE_STACK = [
   {
     id: 1,
     title: 'Profile',
-    icon: icons.badge,
+    icon: icons.user,
   },
   {
     id: 2,
@@ -41,22 +42,22 @@ const MORE_STACK = [
   {
     id: 3,
     title: 'Documents',
-    icon: icons.bed,
+    icon: icons.documents,
   },
   {
     id: 4,
     title: 'Tickets',
-    icon: icons.map,
+    icon: icons.ticket,
   },
   {
     id: 5,
     title: 'New launches',
-    icon: icons.area,
+    icon: icons.newLaunch,
   },
   {
     id: 6,
     title: 'Value Added Services',
-    icon: icons.floor,
+    icon: icons.settingOutline,
   },
   {
     id: 7,
@@ -71,27 +72,27 @@ const MORE_STACK = [
   {
     id: 9,
     title: 'Support',
-    icon: icons.camera,
+    icon: icons.headset,
   },
   {
     id: 10,
     title: 'Settings',
-    icon: icons.video,
+    icon: icons.setting,
   },
   {
     id: 11,
     title: 'Refer a friend',
-    icon: icons.sun,
+    icon: icons.refer,
   },
   {
     id: 12,
     title: 'Payment Methods',
-    icon: icons.moon,
+    icon: icons.payment,
   },
   {
     id: 13,
     title: 'Logout',
-    icon: icons.airport,
+    icon: icons.logOut,
   },
 ];
 
@@ -107,12 +108,14 @@ export type BottomTabNavigatorParamList = {
 export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
   [ScreensKeys.MarketTrends]: undefined;
+  [ScreensKeys.AssetNotifications]: undefined;
 };
 
 export type PortfolioNavigatorParamList = {
   [ScreensKeys.PortfolioLandingScreen]: ILandingScreenProps;
   [ScreensKeys.PropertyDetailScreen]: IPropertyDetailProps;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
+  [ScreensKeys.PropertyDetailsNotifications]: undefined;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -135,6 +138,7 @@ export const DashboardStack = (): React.ReactElement => {
     >
       <DashboardNavigator.Screen name={ScreensKeys.DashboardLandingScreen} component={Dashboard} />
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
+      <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={AssetNotifications} />
     </DashboardNavigator.Navigator>
   );
 };

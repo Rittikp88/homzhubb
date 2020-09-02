@@ -34,7 +34,7 @@ export class PropertyDetailScreen extends Component<Props> {
               testID="icnBack"
             />
             <Text type="small" textType="semiBold" style={styles.headerTitle}>
-              Property Details
+              {t('propertyDetails')}
             </Text>
           </View>
           <AssetCard assetData={propertyData} isDetailView />
@@ -57,8 +57,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    padding: 10,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0,
   },
   headerTitle: {
     color: theme.colors.darkTint1,

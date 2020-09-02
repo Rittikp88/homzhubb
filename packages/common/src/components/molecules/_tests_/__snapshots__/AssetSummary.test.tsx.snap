@@ -41,7 +41,7 @@ exports[`AssetSummary should match snapshot 1`] = `
   }
   useAngle={true}
 >
-  <View
+  <ForwardRef
     style={
       Object {
         "alignItems": "center",
@@ -80,7 +80,7 @@ exports[`AssetSummary should match snapshot 1`] = `
     >
       10
     </Text>
-  </View>
+  </ForwardRef>
   <Divider />
   <View
     style={
@@ -207,7 +207,7 @@ exports[`AssetSummary should match snapshot without values 1`] = `
   }
   useAngle={true}
 >
-  <View
+  <ForwardRef
     style={
       Object {
         "alignItems": "center",
@@ -246,7 +246,7 @@ exports[`AssetSummary should match snapshot without values 1`] = `
     >
       0
     </Text>
-  </View>
+  </ForwardRef>
   <Divider />
   <View
     style={

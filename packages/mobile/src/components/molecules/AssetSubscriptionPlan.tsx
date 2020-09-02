@@ -17,6 +17,7 @@ interface IProps {
 
 interface IAssetSubscriptionPlanState {
   data: UserSubscription;
+  isMoreToggled: boolean;
 }
 
 type Props = IProps & WithTranslation;
@@ -24,6 +25,7 @@ type Props = IProps & WithTranslation;
 export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubscriptionPlanState> {
   public state = {
     data: {} as UserSubscription,
+    isMoreToggled: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -32,7 +34,7 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
 
   public render(): React.ReactNode {
     const { containerStyle, t } = this.props;
-    const { data } = this.state;
+    const { data, isMoreToggled } = this.state;
     if (isEmpty(data)) {
       return null;
     }
@@ -65,6 +67,11 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
           {`${t('subscriptionHelperServices')}`}
         </Text>
         {this.renderFeatures()}
+        {data?.recommendedPlan?.serviceBundleItems.length > 5 && (
+          <Text type="small" textType="semiBold" style={styles.more} onPress={this.toggleMore}>
+            {isMoreToggled ? t('common:less') : t('common:more')}
+          </Text>
+        )}
         <Button
           title={t('upgrade')}
           type="secondary"
@@ -81,10 +88,13 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
   };
 
   public renderFeatures = (): React.ReactElement => {
-    const { data } = this.state;
+    const { data, isMoreToggled } = this.state;
+    const bundleItems = isMoreToggled
+      ? data?.recommendedPlan?.serviceBundleItems
+      : data?.recommendedPlan?.serviceBundleItems.slice(0, 5);
     return (
       <FlatList
-        data={data?.recommendedPlan?.serviceBundleItems ?? []}
+        data={bundleItems ?? []}
         numColumns={1}
         renderItem={({ item }: { item: ServiceBundleItems }): React.ReactElement => {
           const { title } = item;
@@ -108,6 +118,11 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
   public getUserSubscription = async (): Promise<void> => {
     const response: UserSubscription = await UserRepository.getUserSubscription();
     this.setState({ data: response });
+  };
+
+  public toggleMore = (): void => {
+    const { isMoreToggled } = this.state;
+    this.setState({ isMoreToggled: !isMoreToggled });
   };
 }
 
@@ -158,5 +173,9 @@ const styles = StyleSheet.create({
   subscriptionHelper: {
     marginVertical: 10,
     color: theme.colors.darkTint3,
+  },
+  more: {
+    color: theme.colors.primaryColor,
+    alignSelf: 'flex-end',
   },
 });

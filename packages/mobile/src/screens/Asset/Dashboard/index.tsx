@@ -77,6 +77,7 @@ class Dashboard extends React.PureComponent<Props, IDashboardState> {
           dues={metrics?.updates?.dues?.count ?? 0}
           containerStyle={styles.assetCards}
           onPressDue={this.handleDues}
+          onPressNotification={this.handleNotification}
         />
       </>
     );
@@ -95,6 +96,11 @@ class Dashboard extends React.PureComponent<Props, IDashboardState> {
         routes: [{ name: ScreensKeys.Financials }],
       })
     );
+  };
+
+  private handleNotification = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.AssetNotifications);
   };
 
   private handleMetricsNavigation = (name: string): void => {

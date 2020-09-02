@@ -25,6 +25,7 @@ const namedColors = {
   expense: '#FFC5BE',
   income: '#85DACF',
   blueDonut: '#A2D2FD',
+  unreadNotification: '#F2F9FF',
 };
 
 const tintColors = {

@@ -65,6 +65,7 @@
     "shareMessage": "Hey, I would like to share this property {{url}} that posted on www.homzhub.com",
     "fileCorrupt": "File is corrupted",
     "more": "+ more",
+    "less": "- less",
     "select": "+ Select",
     "noResultsFound": "No Results Found",
     "clear": "Clear",
@@ -304,7 +305,7 @@
     "messageSent": "Message Sent Successfully"
   },
   "assetDashboard": {
-    "notification": "Notification",
+    "notification": "Notifications",
     "tickets": "Tickets",
     "dues": "Dues",
     "subscribedFor": "You have subscribed for",
@@ -322,7 +323,9 @@
     "overallPerformance": "Overall Performance",
     "subscriptionHelper": "Upgrade to",
     "subscriptionHelperServices": "and get the following services",
-    "upgrade": "Upgrade"
+    "upgrade": "Upgrade",
+    "newNotification": "{{count}} new notifications",
+    "searchByKeyword": "Search by keyword"
   },
   "assetPortfolio": {
     "portfolio": "Portfolio",
@@ -332,7 +335,8 @@
     "complete": "COMPLETE",
     "listingScore": "Listing Score",
     "leasePeriod": "Lease Period",
-    "addPropertyHighlights": "Add Property highlights for +10%"
+    "addPropertyHighlights": "Add Property highlights for +10%",
+    "propertyDetails": "Property Details"
   },
   "assetFinancial": {
     "financial": "Financials",

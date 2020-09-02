@@ -112,6 +112,13 @@ class DateUtils {
   public getMonthIndex = (date: string): number => {
     return moment(date).month();
   };
+
+  public timeDifference = (givenTime: string): string => {
+    const day = moment(givenTime).date();
+    const month = moment(givenTime).month();
+    const year = moment(givenTime).year();
+    return moment([year, month, day]).fromNow();
+  };
 }
 
 const dateUtils = new DateUtils();

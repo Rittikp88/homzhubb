@@ -9,9 +9,10 @@ exports[`Property Detail Screen should render snapshot 1`] = `
       Object {
         "alignItems": "center",
         "backgroundColor": "#FFFFFF",
+        "borderBottomLeftRadius": 0,
+        "borderBottomRightRadius": 0,
         "flexDirection": "row",
-        "paddingHorizontal": 16,
-        "paddingTop": 16,
+        "padding": 10,
       }
     }
   >
@@ -33,7 +34,7 @@ exports[`Property Detail Screen should render snapshot 1`] = `
       textType="semiBold"
       type="small"
     >
-      Property Details
+      propertyDetails
     </Text>
   </View>
   <withI18nextTranslation(AssetCard)

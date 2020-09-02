@@ -13,12 +13,13 @@ interface IProps {
   serviceTickets?: number;
   dues?: number;
   onPressDue?: () => void;
+  onPressNotification?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const AssetSummary = (props: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
-  const { notification = 0, serviceTickets = 0, dues = 0, containerStyle, onPressDue } = props;
+  const { notification = 0, serviceTickets = 0, dues = 0, containerStyle, onPressDue, onPressNotification } = props;
 
   return (
     <LinearGradient
@@ -28,7 +29,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       locations={[0, 1]}
       style={[styles.container, containerStyle]}
     >
-      <View style={styles.summary}>
+      <TouchableOpacity style={styles.summary} onPress={onPressNotification}>
         <Icon name={icons.alert} color={theme.colors.notificationGreen} size={25} />
         <Text type="small" textType="semiBold" style={styles.notification} minimumFontScale={0.1} adjustsFontSizeToFit>
           {t('notification')}
@@ -36,7 +37,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         <Text type="regular" textType="bold" style={styles.notification}>
           {notification}
         </Text>
-      </View>
+      </TouchableOpacity>
       <Divider />
       <View style={styles.summary}>
         <Icon name={icons.headPhone} color={theme.colors.orange} size={25} />

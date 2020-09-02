@@ -10,6 +10,7 @@ const ENDPOINTS = {
   getAssetMetrics: (): string => 'dashboard/management-tab/',
   getAdvertisements: (): string => 'advertisements/',
   getGeneralLedgers: (): string => 'general-ledgers/overall-performances/',
+  getAssetNotifications: (): string => 'asset-notifications/',
 };
 
 class DashboardRepository {
@@ -32,6 +33,11 @@ class DashboardRepository {
   public getAdvertisements = async (): Promise<AssetAdvertisement> => {
     const response = await this.apiClient.get(ENDPOINTS.getAdvertisements());
     return ObjectMapper.deserialize(AssetAdvertisement, response);
+  };
+
+  // TODO: Return type to be added once the api is ready
+  public getAssetNotifications = async (): Promise<any> => {
+    return await this.apiClient.get(ENDPOINTS.getAssetNotifications());
   };
 }
 
