@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -15,9 +16,10 @@ import {
   FormTextInput,
   IDropdownOption,
   SelectionPicker,
-  UploadBox,
 } from '@homzhub/common/src/components';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
+import { UploadBoxComponent } from '@homzhub/mobile/src/components';
+import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
@@ -33,7 +35,8 @@ interface IFormData {
   tellerName?: string;
   amount: string;
   category: string;
-  date: string;
+  // TODO (Sriram 2020.09.02 Remove optional)
+  date?: string;
   notes?: string;
 }
 
@@ -41,6 +44,7 @@ interface IState {
   selectedFormType: FormType;
   wordCount: number;
   formValues: IFormData;
+  attachment?: IDocumentSource;
 }
 
 interface IOwnProps extends WithTranslation {
@@ -51,6 +55,7 @@ interface IOwnProps extends WithTranslation {
   onFormClear: () => void;
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
+  shouldLoad: (isLoading: boolean) => void;
 }
 
 const MAX_WORD_COUNT = 200;
@@ -61,6 +66,7 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   public state = {
     selectedFormType: FormType.Income,
     wordCount: MAX_WORD_COUNT,
+    attachment: undefined,
     formValues: {
       property: '',
       details: '',
@@ -160,11 +166,12 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   multiline
                   maxLength={MAX_WORD_COUNT}
                 />
-                <UploadBox
+                <UploadBoxComponent
                   icon={icons.document}
                   header={t('common:uploadDocument')}
                   subHeader={t('common:uploadDocHelperText')}
-                  onPress={this.handleUpload}
+                  onCapture={this.handleUpload}
+                  onDelete={this.handleDocumentDelete}
                   containerStyle={styles.uploadBox}
                 />
                 <FormButton
@@ -228,7 +235,8 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       tellerName: yup.string().optional(),
       amount: yup.string().required(t('amountError')),
       category: yup.string().required(t('categoryError')),
-      date: yup.string().required(t('dateError')),
+      // TODO (Sriram 2020.09.02 Remove optional)
+      date: yup.string().optional(),
       notes: yup.string().optional(),
     });
   };
@@ -241,34 +249,57 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     }));
   };
 
-  private handleUpload = (): void => {
-    /* Write Upload logic here */
+  private handleUpload = (attachment: IDocumentSource): void => {
+    this.setState({ attachment });
+  };
+
+  private handleDocumentDelete = (): void => {
+    this.setState({
+      attachment: {
+        uri: '',
+        type: '',
+        name: '',
+      },
+    });
   };
 
   private handleSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
-    const { property, details, tellerName, amount, category, date, notes } = values;
-    const { selectedFormType } = this.state;
-
-    formActions.setSubmitting(true);
-
-    const tellerInfo =
-      selectedFormType === FormType.Income ? { payer_name: tellerName } : { receiver_name: tellerName };
-
-    const payload = {
-      asset: property,
-      entry_type: selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit,
-      detail: details,
-      ...tellerInfo,
-      amount,
-      category,
-      transaction_date: date,
-      ...(notes && { notes }),
-      /* Todo (Sriram- 2020.08.31) Add a attachment ID */
-      attachment: null,
-    };
+    const { property, details, tellerName, amount, category, notes } = values;
+    const { selectedFormType, attachment } = this.state;
+    const { shouldLoad } = this.props;
+    let attachmentId = 0;
+    shouldLoad(true);
 
     try {
+      if (attachment) {
+        /* Make an API call for uploading the document and extract the doc Id */
+        const formData = new FormData();
+        // @ts-ignore
+        formData.append('files[]', attachment);
+        const response = await AttachmentService.uploadImage(formData);
+        const { data } = response;
+        attachmentId = data[0].id;
+      }
+
+      formActions.setSubmitting(true);
+
+      const tellerInfo =
+        selectedFormType === FormType.Income ? { payer_name: tellerName } : { receiver_name: tellerName };
+
+      const payload = {
+        asset: property,
+        entry_type: selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit,
+        detail: details,
+        ...tellerInfo,
+        amount,
+        category,
+        // TODO (Sriram 2020.09.02 Replace string with date)
+        transaction_date: '2020-08-11',
+        ...(notes && { notes }),
+        attachment: attachmentId || null,
+      };
       await LedgerService.postGeneralLedgers(payload);
+      shouldLoad(false);
       formActions.setSubmitting(false);
 
       const { onSubmitFormSuccess } = this.props;
@@ -276,6 +307,8 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         onSubmitFormSuccess();
       }
     } catch (e) {
+      shouldLoad(false);
+
       formActions.setSubmitting(false);
       formActions.resetForm({});
       AlertHelper.error({ message: e.message });

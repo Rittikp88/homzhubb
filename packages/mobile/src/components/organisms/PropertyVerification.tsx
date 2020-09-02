@@ -5,11 +5,14 @@ import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import {
+  AttachmentService,
+  AttachmentError,
+  AllowedAttachmentFormats,
+} from '@homzhub/common/src/services/AttachmentService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import {
@@ -22,7 +25,6 @@ import {
   WithShadowView,
 } from '@homzhub/common/src/components';
 import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import {
   IVerificationTypes,
   IVerificationDocumentList,
@@ -113,18 +115,25 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public renderImageOrUploadBox = (currentData: IVerificationTypes): React.ReactElement => {
     const { existingDocuments, localDocuments } = this.state;
+
     const onPress = async (): Promise<void> => this.handleVerificationDocumentUploads(currentData);
+
     const totalDocuments = existingDocuments.concat(localDocuments);
     const thumbnailIndex = findIndex(totalDocuments, (document: IVerificationDocumentList) => {
       return currentData.id === document.verification_document_type.id;
     });
+
     if (thumbnailIndex !== -1) {
       const currentDocument: IVerificationDocumentList = totalDocuments[thumbnailIndex];
       const thumbnailImage = currentDocument.document.link;
       const fileType = currentDocument.document.link.split('/')?.pop()?.split('.');
+
       const onDeleteImageThumbnail = (): Promise<void> =>
         this.deleteDocument(currentDocument, currentDocument.is_local_document);
-      return currentDocument.document.mime_type === 'application/pdf' || !fileType || fileType[1] === 'pdf' ? (
+
+      const { mime_type } = currentDocument.document;
+
+      return mime_type === AllowedAttachmentFormats.AppPdf || !fileType || fileType[1] === 'pdf' ? (
         <View style={styles.pdfContainer}>
           <Text type="small" textType="regular" style={styles.pdfName}>
             {currentDocument.document.name || fileType || [0]}
@@ -137,6 +146,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
         <ImageThumbnail imageUrl={thumbnailImage} onIconPress={onDeleteImageThumbnail} />
       );
     }
+
     return (
       <UploadBox
         icon={currentData.icon}
@@ -156,15 +166,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
         type: [DocumentPicker.types.allFiles],
       });
       setLoading(false);
-      const allowedFormats = [
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-        'public.image',
-        'com.adobe.pdf',
-        'application/pdf',
-      ];
-      if (allowedFormats.includes(document.type)) {
+      if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
         const source = { uri: document.uri, type: document.type, name: document.name };
         this.updateLocalDocuments(verificationDocumentId, source, data);
       } else {
@@ -257,51 +259,44 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
         type: document.document.mime_type,
       });
     });
-    const baseUrl = ConfigHelper.getBaseUrl();
-    const user: IUser | null = await StorageService.get(StorageKeys.USER);
+
     this.setState({ isLoading: true });
     setLoading(true);
-    fetch(`${baseUrl}attachments/upload/`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'multipart/form-data',
-        // @ts-ignore
-        Authorization: `Bearer ${user.access_token}`,
-      },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then(async (responseJson) => {
-        const { data } = responseJson;
-        const postRequestBody: IPostVerificationDocuments[] = [];
-        localDocuments.forEach((document: IVerificationDocumentList, index: number) => {
+
+    try {
+      const response = await AttachmentService.uploadImage(formData);
+
+      const { data } = response;
+      const postRequestBody: IPostVerificationDocuments[] = [];
+
+      localDocuments.forEach((document: IVerificationDocumentList, index: number) => {
+        postRequestBody.push({
+          verification_document_type_id: document.verification_document_type.id,
+          document_id: data[index].id,
+        });
+      });
+
+      existingDocuments.forEach((document: IVerificationDocumentList) => {
+        if (!document.id) {
           postRequestBody.push({
             verification_document_type_id: document.verification_document_type.id,
-            document_id: data[index].id,
+            document_id: document.document.id,
           });
-        });
-        existingDocuments.forEach((document: IVerificationDocumentList) => {
-          if (!document.id) {
-            postRequestBody.push({
-              verification_document_type_id: document.verification_document_type.id,
-              document_id: document.document.id,
-            });
-          }
-        });
-        setLoading(true);
-        try {
-          await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
-          await this.getExistingDocuments(propertyId);
-          setLoading(false);
-          updateStep();
-        } catch (e) {
-          setLoading(false);
         }
-      })
-      .catch(() => {
-        setLoading(false);
-        AlertHelper.error({ message: t('common:fileCorrupt') });
       });
+
+      setLoading(true);
+      await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
+      await this.getExistingDocuments(propertyId);
+      setLoading(false);
+      updateStep();
+    } catch (e) {
+      setLoading(false);
+
+      if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
+        AlertHelper.error({ message: t('common:fileCorrupt') });
+      }
+    }
   };
 
   public deleteDocument = async (

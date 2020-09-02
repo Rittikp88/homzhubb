@@ -75,6 +75,7 @@ class AddRecordScreen extends React.PureComponent<IProps, IState> {
         onFormClear={this.onClearPress}
         containerStyles={styles.addFormContainer}
         onSubmitFormSuccess={this.onSubmitFormSuccess}
+        shouldLoad={this.toggleLoading}
       />
     );
   };
@@ -88,6 +89,10 @@ class AddRecordScreen extends React.PureComponent<IProps, IState> {
     const { t } = this.props;
     AlertHelper.success({ message: t('addedSuccessfullyMessage') });
     this.goBack();
+  };
+
+  private toggleLoading = (isLoading: boolean): void => {
+    this.setState({ isLoading });
   };
 
   private goBack = (): void => {

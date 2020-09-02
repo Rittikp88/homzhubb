@@ -46,6 +46,7 @@ export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGrou
 export { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
 export { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
+export { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 
 // Organisms
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';

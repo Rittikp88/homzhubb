@@ -7,11 +7,11 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 // our packages that will now be included in the CRA build step
-const appIncludes = override(babelInclude[
-  resolveApp('src'),
-    resolveApp('../common/src'),
-    resolveApp('../../node_modules/react-native-vector-icons')
-  ]);
+const appIncludes = override(
+  babelInclude[
+    (resolveApp('src'), resolveApp('../common/src'), resolveApp('../../node_modules/react-native-vector-icons'))
+  ]
+);
 
 module.exports = function override(config, env) {
   // allow importing from outside of src folder
