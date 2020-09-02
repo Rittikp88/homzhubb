@@ -30,7 +30,7 @@ class DateUtils {
     return moment().month(monthIndex).format(format);
   };
 
-  public getFormattedDate = (day: string, month: string, year: string, format: string): Date => {
+  public getFormattedDate = (day: string, month: number, year: string, format: string): Date => {
     return moment(`${year}-${month}-${day}`, format).toDate();
   };
 

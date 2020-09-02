@@ -115,8 +115,8 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   private renderCalendar = (): React.ReactElement => {
     const { allowPastDates } = this.props;
     const { day, month, year, selectedDate } = this.state;
-    const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMM);
-    const date = selectedDate || moment(`${year}-${updateMonth}-${day}`).format('YYYY-MM-DD');
+    const updateMonth = month + 1;
+    const date = selectedDate || DateUtils.getFormattedDate(day, updateMonth, year, 'YYYY-MM-DD').toDateString();
     const markedDate = !selectedDate ? moment().format('YYYY-MM-DD') : date;
 
     return (
