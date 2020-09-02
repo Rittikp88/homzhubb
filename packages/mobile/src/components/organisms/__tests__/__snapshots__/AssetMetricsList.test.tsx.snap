@@ -390,6 +390,7 @@ exports[`AssetMetricsList should match snapshot for renderItem 1`] = `
   colorB="#94EF90"
   currency=""
   header="Occupied"
+  itemsLength={4}
   location={
     Array [
       0,

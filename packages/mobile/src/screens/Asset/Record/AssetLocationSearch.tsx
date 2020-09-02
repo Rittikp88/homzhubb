@@ -10,7 +10,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { icons } from '@homzhub/common/src/assets/icon';
 import { CurrentLocation, Header } from '@homzhub/mobile/src/components';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
-import SearchBar from '@homzhub/mobile/src/components/molecules/SearchBar';
+import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys, IAddPropertyMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -42,7 +42,7 @@ export class AssetLocationSearch extends React.PureComponent<Props, IState> {
           title={t('common:location')}
           testID="header"
         />
-        <SearchBar
+        <GoogleSearchBar
           placeholder={t('searchProject')}
           value={searchString}
           updateValue={this.onUpdateSearchString}

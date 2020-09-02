@@ -12,58 +12,7 @@ exports[`DonutGraph should match snapshot 1`] = `
   }
 >
   <PieChart
-    data={
-      Array [
-        Object {
-          "key": 0,
-          "svg": Object {
-            "fill": "#85DACF",
-          },
-          "title": "Repair",
-          "value": 12037,
-        },
-        Object {
-          "key": 1,
-          "svg": Object {
-            "fill": "#FFC5BE",
-          },
-          "title": "Repair",
-          "value": 13029,
-        },
-        Object {
-          "key": 2,
-          "svg": Object {
-            "fill": "#A2D2FD",
-          },
-          "title": "Maintenance",
-          "value": 11329,
-        },
-        Object {
-          "key": 3,
-          "svg": Object {
-            "fill": "#001B36",
-          },
-          "title": "Taxes",
-          "value": 12273,
-        },
-        Object {
-          "key": 4,
-          "svg": Object {
-            "fill": "#19324A",
-          },
-          "title": "Maintenance",
-          "value": 22112,
-        },
-        Object {
-          "key": 5,
-          "svg": Object {
-            "fill": "#33495E",
-          },
-          "title": "Taxes",
-          "value": 11100,
-        },
-      ]
-    }
+    data={Array []}
     endAngle={6.283185307179586}
     height={100}
     innerRadius="45%"
@@ -81,58 +30,7 @@ exports[`DonutGraph should match snapshot 1`] = `
     width={100}
   />
   <Memo(GraphLegends)
-    data={
-      Array [
-        Object {
-          "key": 0,
-          "svg": Object {
-            "fill": "#85DACF",
-          },
-          "title": "Repair",
-          "value": 12037,
-        },
-        Object {
-          "key": 1,
-          "svg": Object {
-            "fill": "#FFC5BE",
-          },
-          "title": "Repair",
-          "value": 13029,
-        },
-        Object {
-          "key": 2,
-          "svg": Object {
-            "fill": "#A2D2FD",
-          },
-          "title": "Maintenance",
-          "value": 11329,
-        },
-        Object {
-          "key": 3,
-          "svg": Object {
-            "fill": "#001B36",
-          },
-          "title": "Taxes",
-          "value": 12273,
-        },
-        Object {
-          "key": 4,
-          "svg": Object {
-            "fill": "#19324A",
-          },
-          "title": "Maintenance",
-          "value": 22112,
-        },
-        Object {
-          "key": 5,
-          "svg": Object {
-            "fill": "#33495E",
-          },
-          "title": "Taxes",
-          "value": 11100,
-        },
-      ]
-    }
+    data={Array []}
     direction="column"
   />
 </View>

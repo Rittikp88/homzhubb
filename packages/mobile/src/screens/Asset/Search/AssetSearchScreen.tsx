@@ -30,7 +30,7 @@ import {
 import { CurrentLocation, Loader, Range, RoomsFilter } from '@homzhub/mobile/src/components';
 import AssetTypeFilter from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
-import SearchBar from '@homzhub/mobile/src/components/molecules/SearchBar';
+import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -86,7 +86,7 @@ type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList
 type Props = libraryProps & IStateProps & IDispatchProps;
 
 class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
-  private searchBar: typeof SearchBar | null = null;
+  private searchBar: typeof GoogleSearchBar | null = null;
   public state = {
     isMapView: true,
     selectedOnScreenFilter: '',
@@ -327,7 +327,7 @@ class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState>
     }
     return (
       <View style={styles.searchLocation}>
-        <SearchBar
+        <GoogleSearchBar
           // @ts-ignore
           onRef={(input: SearchBar): void => {
             this.searchBar = input;

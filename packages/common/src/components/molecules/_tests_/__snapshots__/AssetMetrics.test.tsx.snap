@@ -36,7 +36,6 @@ exports[`AssetMetrics should match snapshot 1`] = `
           "borderRadius": 8,
           "elevation": 5,
           "margin": 10,
-          "minWidth": 230,
           "paddingHorizontal": 5,
           "paddingVertical": 10,
           "shadowColor": "#000",
@@ -48,6 +47,9 @@ exports[`AssetMetrics should match snapshot 1`] = `
           "shadowRadius": 3.84,
         },
         undefined,
+        Object {
+          "minWidth": 220,
+        },
       ]
     }
     useAngle={true}
@@ -126,7 +128,6 @@ exports[`AssetMetrics should match snapshot for currency 1`] = `
           "borderRadius": 8,
           "elevation": 5,
           "margin": 10,
-          "minWidth": 230,
           "paddingHorizontal": 5,
           "paddingVertical": 10,
           "shadowColor": "#000",
@@ -138,6 +139,9 @@ exports[`AssetMetrics should match snapshot for currency 1`] = `
           "shadowRadius": 3.84,
         },
         undefined,
+        Object {
+          "minWidth": 220,
+        },
       ]
     }
     useAngle={true}
@@ -204,7 +208,6 @@ exports[`AssetMetrics should match snapshot for show plus icon 1`] = `
           "borderRadius": 8,
           "elevation": 5,
           "margin": 10,
-          "minWidth": 230,
           "paddingHorizontal": 5,
           "paddingVertical": 10,
           "shadowColor": "#000",
@@ -216,6 +219,9 @@ exports[`AssetMetrics should match snapshot for show plus icon 1`] = `
           "shadowRadius": 3.84,
         },
         undefined,
+        Object {
+          "minWidth": 220,
+        },
       ]
     }
     useAngle={true}

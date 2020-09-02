@@ -17,7 +17,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
 import { CurrentLocation, Loader, Range } from '@homzhub/mobile/src/components';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
-import SearchBar from '@homzhub/mobile/src/components/molecules/SearchBar';
+import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { WrapperSearchStackParamList } from '@homzhub/mobile/src/navigation/WrapperSearchStack';
 import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
@@ -52,7 +52,7 @@ interface ILandingState {
 }
 
 export class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
-  private searchBar: typeof SearchBar | null = null;
+  private searchBar: typeof GoogleSearchBar | null = null;
 
   public state = {
     isSearchBarFocused: false,
@@ -196,7 +196,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
         <Text type="regular" textType="bold" style={styles.madeEasy}>
           {t('madeEasy')}
         </Text>
-        <SearchBar
+        <GoogleSearchBar
           // @ts-ignore
           onRef={(input: SearchBar): void => {
             this.searchBar = input;

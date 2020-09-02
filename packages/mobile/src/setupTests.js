@@ -12,8 +12,8 @@ jest.mock('@react-native-community/geolocation', () => {});
 jest.mock('react-native-progress', () => {});
 jest.mock('@react-navigation/material-top-tabs', () => {
   return {
-    createMaterialTopTabNavigator: jest.fn()
-  }
+    createMaterialTopTabNavigator: jest.fn(),
+  };
 });
 jest.mock('react-native-permissions', () => {
   return {

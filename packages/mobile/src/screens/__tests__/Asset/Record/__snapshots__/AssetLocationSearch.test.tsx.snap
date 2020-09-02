@@ -16,7 +16,7 @@ exports[`Asset Location Search should render snapshot 1`] = `
     title="common:location"
     type="primary"
   />
-  <withI18nextTranslation(SearchBar)
+  <withI18nextTranslation(GoogleSearchBar)
     onFocusChange={[Function]}
     placeholder="searchProject"
     testID="searchBar"

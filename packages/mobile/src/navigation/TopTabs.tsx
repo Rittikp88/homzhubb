@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import { Tabs } from '@homzhub/common/src/domain/models/Tabs';
 
@@ -106,7 +107,7 @@ export const TopTabs = (): React.ReactElement => {
       />
       <TopTabNavigator.Screen
         name={ScreensKeys.DocumentsTab}
-        component={DummyView}
+        component={Documents}
         options={{
           tabBarLabel: Tabs.DOCUMENTS,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
@@ -140,7 +141,6 @@ export const TopTabs = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 400,
     marginTop: 14,
   },
 });

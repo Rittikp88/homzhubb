@@ -52,7 +52,7 @@ exports[`Asset Search Landing Screen should render snapshot 1`] = `
       >
         madeEasy
       </Text>
-      <withI18nextTranslation(SearchBar)
+      <withI18nextTranslation(GoogleSearchBar)
         cancelButtonStyle={
           Object {
             "backgroundColor": "#F0F5F9",

@@ -229,3 +229,36 @@ export const AssetFilter = [
     value: 'maintain',
   },
 ];
+
+export const DocumentsData = [
+  {
+    id: 1,
+    name: 'Quarterly Inspection Report',
+    uploaded_on: '02/07/2020',
+    uploaded_by: 'HomzHub',
+  },
+  {
+    id: 2,
+    name: 'Rent',
+    uploaded_on: '02/07/2020',
+    uploaded_by: 'HomzHub',
+  },
+  {
+    id: 3,
+    name: 'Electricity bill',
+    uploaded_on: '02/07/2020',
+    uploaded_by: 'HomzHub',
+  },
+  {
+    id: 4,
+    name: 'Water charges',
+    uploaded_on: '02/07/2020',
+    uploaded_by: 'HomzHub',
+  },
+  {
+    id: 5,
+    name: 'Maintenance Charges',
+    uploaded_on: '02/07/2020',
+    uploaded_by: 'HomzHub',
+  },
+];

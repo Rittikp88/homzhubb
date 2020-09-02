@@ -100,8 +100,13 @@ export const icons = {
   house: 'house',
   wallet: 'wallet',
   cheque: 'cheque',
-
-  // TABS
+  user: 'user',
+  refer: 'refer',
+  favourite: 'favourite',
+  trash: 'trash',
+  download: 'download',
+  doc: 'doc',
+  ticket: 'ticket',
   watch: 'watch',
   mail: 'mail',
   offers: 'offers',
@@ -112,6 +117,12 @@ export const icons = {
   documents: 'documents',
   history: 'history',
   detail: 'detail',
+  attachment: 'attachment',
+  setting: 'setting',
+  logOut: 'log-out',
+  newLaunch: 'new-launch',
+  payment: 'payment',
+  shareFilled: 'share-filled',
 
   // COMMUTE
   train: 'train',

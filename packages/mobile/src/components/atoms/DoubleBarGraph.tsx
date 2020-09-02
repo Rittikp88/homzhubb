@@ -1,14 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { BarChart, XAxis, YAxis, Grid } from 'react-native-svg-charts';
-import { useTranslation } from 'react-i18next';
 import { PathProps } from 'react-native-svg';
 import { sum } from 'lodash';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
+import { EmptyState } from '@homzhub/mobile/src/components';
 import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 interface IProps {
@@ -29,7 +27,6 @@ const Y_GRID_WIDTH = theme.viewport.width / 7;
 const HEIGHT = theme.viewport.height * 0.5;
 const WIDTH = theme.viewport.width * 1.5;
 const DoubleBarGraph = (props: IProps): React.ReactElement => {
-  const { t } = useTranslation();
   const {
     data: { data1, data2, label },
   } = props;
@@ -65,14 +62,7 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
     const isData1Empty = data1.every((value) => value === 0);
     const isData2Empty = data2.every((value) => value === 0);
     if (isData1Empty && isData2Empty) {
-      return (
-        <View style={styles.noDataContainer}>
-          <Icon name={icons.search} size={30} color={theme.colors.disabledSearch} />
-          <Text type="small" textType="semiBold" style={styles.noResultsFound}>
-            {t('common:noResultsFound')}
-          </Text>
-        </View>
-      );
+      return <EmptyState />;
     }
 
     return (
@@ -131,16 +121,6 @@ const styles = StyleSheet.create({
     marginStart: Y_GRID_WIDTH,
     width: WIDTH,
     padding: 10,
-  },
-  noDataContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: 150,
-  },
-  noResultsFound: {
-    marginVertical: 15,
-    color: theme.colors.darkTint6,
   },
 });
 const customizedStyles = (labelLength: number): any => ({
