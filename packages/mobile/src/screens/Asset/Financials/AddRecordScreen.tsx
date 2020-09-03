@@ -7,7 +7,8 @@ import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { AnimatedProfileHeader, HeaderCard, AddRecordForm, StateAwareComponent } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, HeaderCard, StateAwareComponent } from '@homzhub/mobile/src/components';
+import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 
@@ -21,7 +22,7 @@ interface IState {
 type libraryProps = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.AddRecordScreen>;
 type IProps = libraryProps;
 
-class AddRecordScreen extends React.PureComponent<IProps, IState> {
+export class AddRecordScreen extends React.PureComponent<IProps, IState> {
   public state = {
     ledgerCategories: [],
     properties: [],

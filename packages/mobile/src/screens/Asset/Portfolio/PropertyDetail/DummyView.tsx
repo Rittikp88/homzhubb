@@ -7,7 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 const DummyView = (): React.ReactElement => {
   return (
     <View style={styles.container}>
-      <Text type="large">Coming Soon</Text>
+      <Text type="large">Coming Soon...</Text>
     </View>
   );
 };
@@ -17,8 +17,8 @@ export default DummyView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 50,
     backgroundColor: theme.colors.white,
   },
 });

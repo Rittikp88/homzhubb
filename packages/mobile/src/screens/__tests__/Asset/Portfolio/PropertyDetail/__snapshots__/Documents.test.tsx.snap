@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Documents Screen should render snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "padding": 16,
+    }
+  }
+>
+  <UploadBox
+    containerStyle={
+      Object {
+        "paddingVertical": 16,
+      }
+    }
+    header="Upload Document"
+    icon="document"
+    onPress={[Function]}
+    subHeader="Supports: JPG, JPEG, PNG, PDF "
+  />
+  <SearchBar
+    containerStyle={
+      Object {
+        "marginTop": 16,
+      }
+    }
+    placeholder="Search by document name"
+    updateValue={[Function]}
+    value=""
+  />
+  <FlatList
+    ItemSeparatorComponent={[Function]}
+    data={
+      Array [
+        Object {
+          "id": 1,
+          "name": "Quarterly Inspection Report",
+          "uploaded_by": "HomzHub",
+          "uploaded_on": "02/07/2020",
+        },
+        Object {
+          "id": 2,
+          "name": "Rent",
+          "uploaded_by": "HomzHub",
+          "uploaded_on": "02/07/2020",
+        },
+        Object {
+          "id": 3,
+          "name": "Electricity bill",
+          "uploaded_by": "HomzHub",
+          "uploaded_on": "02/07/2020",
+        },
+        Object {
+          "id": 4,
+          "name": "Water charges",
+          "uploaded_by": "HomzHub",
+          "uploaded_on": "02/07/2020",
+        },
+        Object {
+          "id": 5,
+          "name": "Maintenance Charges",
+          "uploaded_by": "HomzHub",
+          "uploaded_on": "02/07/2020",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+  <Loader
+    visible={false}
+  />
+</View>
+`;

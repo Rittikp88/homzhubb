@@ -29,7 +29,7 @@ interface IDashboardState {
   isLoading: boolean;
 }
 
-class Dashboard extends React.PureComponent<Props, IDashboardState> {
+export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   public state = {
     metrics: {} as AssetMetrics,
     isLoading: false,

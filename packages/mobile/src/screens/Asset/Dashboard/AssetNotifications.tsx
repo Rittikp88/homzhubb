@@ -19,7 +19,7 @@ interface IAssetNotificationsState {
   searchText: string;
 }
 
-class AssetNotifications extends React.PureComponent<Props, IAssetNotificationsState> {
+export class AssetNotifications extends React.PureComponent<Props, IAssetNotificationsState> {
   public state = {
     notifications: AssetNotificationsData,
     searchText: '',

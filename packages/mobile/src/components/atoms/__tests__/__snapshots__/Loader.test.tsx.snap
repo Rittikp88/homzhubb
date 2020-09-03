@@ -133,3 +133,5 @@ exports[`Loader should match snapshot for ios 1`] = `
   </View>
 </View>
 `;
+
+exports[`Loader should match snapshot for visible false 1`] = `""`;

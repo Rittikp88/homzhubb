@@ -16,4 +16,10 @@ describe('Loader', () => {
     const wrapper: ShallowWrapper = shallow(<Loader visible />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
+
+  it('should match snapshot for visible false', () => {
+    Platform.OS = 'ios';
+    const wrapper: ShallowWrapper = shallow(<Loader visible={false} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { AssetSearchLanding } from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchLanding';
-import { SearchFilter } from '@homzhub/common/src/mocks/FilterData';
+import { FilterData, SearchFilter } from '@homzhub/common/src/mocks/FilterData';
 
 describe('Asset Search Landing Screen', () => {
   let component: ShallowWrapper;
@@ -28,6 +28,21 @@ describe('Asset Search Landing Screen', () => {
 
   it('should render snapshot', () => {
     component = shallow(<AssetSearchLanding {...props} t={(key: string): string => key} />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should render snapshot with filterData', () => {
+    props = {
+      ...props,
+      filterData: FilterData,
+    };
+    component = shallow(<AssetSearchLanding {...props} t={(key: string): string => key} />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should render snapshot for search bar focused', () => {
+    component = shallow(<AssetSearchLanding {...props} t={(key: string): string => key} />);
+    component.setState({ isSearchBarFocused: true });
     expect(toJson(component)).toMatchSnapshot();
   });
 });

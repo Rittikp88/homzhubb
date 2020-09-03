@@ -1,0 +1,382 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentCard should match snapshot 1`] = `
+<DocumentCard
+  document={Object {}}
+  handleShare={[MockFunction]}
+>
+  <View
+    style={
+      Object {
+        "marginHorizontal": 6,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "marginHorizontal": 6,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginVertical": 18,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginVertical": 18,
+            }
+          }
+        >
+          <View
+            style={Object {}}
+          >
+            <View
+              style={Object {}}
+            >
+              <Label
+                style={
+                  Object {
+                    "color": "#33495E",
+                  }
+                }
+                textType="semiBold"
+                type="large"
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontSize": 14,
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "fontFamily": "OpenSans-SemiBold",
+                        "fontWeight": "600",
+                      },
+                      Object {
+                        "color": "#33495E",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 14,
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "fontFamily": "OpenSans-SemiBold",
+                          "fontWeight": "600",
+                        },
+                        Object {
+                          "color": "#33495E",
+                        },
+                      ]
+                    }
+                  />
+                </Text>
+              </Label>
+              <Label
+                style={
+                  Object {
+                    "color": "#667686",
+                  }
+                }
+                type="regular"
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "fontFamily": "OpenSans-Regular",
+                        "fontWeight": "400",
+                      },
+                      Object {
+                        "color": "#667686",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "fontFamily": "OpenSans-Regular",
+                          "fontWeight": "400",
+                        },
+                        Object {
+                          "color": "#667686",
+                        },
+                      ]
+                    }
+                  >
+                    Uploaded on: undefined, by undefined
+                  </Text>
+                </Text>
+              </Label>
+            </View>
+          </View>
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="doc"
+            size={35}
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#78B7FA",
+                    "fontSize": 35,
+                  },
+                  undefined,
+                  Object {
+                    "fontFamily": "icomoon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "#78B7FA",
+                      "fontSize": 35,
+                    },
+                    undefined,
+                    Object {
+                      "fontFamily": "icomoon",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </Text>
+          </Icon>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#0084F8"
+            name="trash"
+            size={22}
+            style={
+              Object {
+                "marginEnd": 28,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#0084F8",
+                    "fontSize": 22,
+                  },
+                  Object {
+                    "marginEnd": 28,
+                  },
+                  Object {
+                    "fontFamily": "icomoon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "#0084F8",
+                      "fontSize": 22,
+                    },
+                    Object {
+                      "marginEnd": 28,
+                    },
+                    Object {
+                      "fontFamily": "icomoon",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </Text>
+          </Icon>
+          <Icon
+            allowFontScaling={false}
+            color="#0084F8"
+            name="share-filled"
+            onPress={[MockFunction]}
+            size={22}
+            style={
+              Object {
+                "marginEnd": 28,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              onPress={[MockFunction]}
+              style={
+                Array [
+                  Object {
+                    "color": "#0084F8",
+                    "fontSize": 22,
+                  },
+                  Object {
+                    "marginEnd": 28,
+                  },
+                  Object {
+                    "fontFamily": "icomoon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                onPress={[MockFunction]}
+                style={
+                  Array [
+                    Object {
+                      "color": "#0084F8",
+                      "fontSize": 22,
+                    },
+                    Object {
+                      "marginEnd": 28,
+                    },
+                    Object {
+                      "fontFamily": "icomoon",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </Text>
+          </Icon>
+          <Icon
+            allowFontScaling={false}
+            color="#0084F8"
+            name="download"
+            size={22}
+            style={
+              Object {
+                "marginEnd": 28,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#0084F8",
+                    "fontSize": 22,
+                  },
+                  Object {
+                    "marginEnd": 28,
+                  },
+                  Object {
+                    "fontFamily": "icomoon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "#0084F8",
+                      "fontSize": 22,
+                    },
+                    Object {
+                      "marginEnd": 28,
+                    },
+                    Object {
+                      "fontFamily": "icomoon",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </Text>
+          </Icon>
+        </View>
+      </View>
+    </View>
+  </View>
+</DocumentCard>
+`;

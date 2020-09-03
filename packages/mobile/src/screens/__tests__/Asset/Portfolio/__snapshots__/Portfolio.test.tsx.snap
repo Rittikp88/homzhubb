@@ -36,10 +36,11 @@ exports[`Portfolio Screen should render snapshot 1`] = `
       />
     </React.Fragment>
   }
+  testID="stateAware"
 />
 `;
 
-exports[`Portfolio Screen should render snapshot for functions 1`] = `
+exports[`Portfolio Screen should render snapshot for isFullScreenView 1`] = `
 <StateAwareComponent
   loading={true}
   renderComponent={
@@ -66,7 +67,242 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
             listTitle="propertySearch:filters"
             onCloseDropDown={[Function]}
             onSelectItem={[Function]}
-            selectedValue="rent"
+            selectedValue="ALL"
+          />
+        </React.Fragment>
+      </AnimatedProfileHeader>
+      <FullScreenAssetDetailsCarousel
+        activeSlide={1}
+        data={Array []}
+        onFullScreenToggle={[Function]}
+        updateSlide={[Function]}
+      />
+      <Loader
+        visible={false}
+      />
+    </React.Fragment>
+  }
+  testID="stateAware"
+/>
+`;
+
+exports[`Portfolio Screen should render snapshot for properties 1`] = `
+<StateAwareComponent
+  loading={true}
+  renderComponent={
+    <React.Fragment>
+      <AnimatedProfileHeader
+        title="portfolio"
+      >
+        <React.Fragment>
+          <AssetMetricsList
+            containerStyle={
+              Object {
+                "marginVertical": 12,
+              }
+            }
+            data={Array []}
+            onPlusIconClicked={[Function]}
+            showPlusIcon={true}
+            title={0}
+          />
+          <React.Fragment>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#001B36",
+                    "marginBottom": 16,
+                    "marginTop": 4,
+                  }
+                }
+                textType="semiBold"
+                type="small"
+              >
+                propertyPortfolio
+              </Text>
+              <Icon
+                allowFontScaling={false}
+                color="#4C5F72"
+                name="vertical-dots"
+                onPress={[Function]}
+                size={18}
+                testID="menu"
+              />
+            </View>
+            <FlatList
+              data={
+                Array [
+                  Object {
+                    "address": "Sindhi Society, Chembur, Mumbai- 400071",
+                    "color": "#CE9B6C",
+                    "contacts": Object {
+                      "country_code": "+91",
+                      "email": "anuvrat.somnath@nineleaps.com",
+                      "full_name": "Anuvrat Somnath",
+                      "id": 1,
+                      "phone_number": "7903470293",
+                    },
+                    "id": 1,
+                    "images": Array [
+                      Object {
+                        "file_name": "House-1b",
+                        "is_cover_image": false,
+                        "link": Object {
+                          "testUri": "../../../packages/common/src/assets/images/property.png",
+                        },
+                      },
+                    ],
+                    "isPropertyCompleted": true,
+                    "property_name": "2BHK - Godrej Prime",
+                    "type": "OWNER",
+                  },
+                  Object {
+                    "address": "Sindhi Society, Chembur, Mumbai- 400071",
+                    "color": "#6CCEC1",
+                    "contacts": Object {
+                      "country_code": "+91",
+                      "email": "anuvrat.somnath@nineleaps.com",
+                      "full_name": "Anuvrat Somnath",
+                      "id": 1,
+                      "phone_number": "7903470293",
+                    },
+                    "id": 2,
+                    "images": Array [
+                      Object {
+                        "file_name": "House-1b",
+                        "is_cover_image": false,
+                        "link": Object {
+                          "testUri": "../../../packages/common/src/assets/images/property.png",
+                        },
+                      },
+                    ],
+                    "isPropertyCompleted": true,
+                    "property_name": "2BHK - Godrej Prime",
+                    "type": "RENTED",
+                  },
+                  Object {
+                    "address": "Sindhi Society, Chembur, Mumbai- 400071",
+                    "color": "#FF8576",
+                    "contacts": Object {
+                      "country_code": "+91",
+                      "email": "anuvrat.somnath@nineleaps.com",
+                      "full_name": "Anuvrat Somnath",
+                      "id": 1,
+                      "phone_number": "7903470293",
+                    },
+                    "id": 3,
+                    "images": Array [
+                      Object {
+                        "file_name": "House-1b",
+                        "is_cover_image": false,
+                        "link": Object {
+                          "testUri": "../../../packages/common/src/assets/images/property.png",
+                        },
+                      },
+                    ],
+                    "isPropertyCompleted": true,
+                    "property_name": "2BHK - Godrej Prime",
+                    "type": "VACANT",
+                  },
+                  Object {
+                    "address": "Sindhi Society, Chembur, Mumbai- 400071",
+                    "color": "#FF8576",
+                    "id": 4,
+                    "images": Array [
+                      Object {
+                        "file_name": "House-1b",
+                        "is_cover_image": false,
+                        "link": Object {
+                          "testUri": "../../../packages/common/src/assets/images/property.png",
+                        },
+                      },
+                    ],
+                    "isPropertyCompleted": false,
+                    "property_name": "2BHK - Godrej Prime",
+                    "type": "VACANT",
+                  },
+                  Object {
+                    "address": "Sindhi Society, Chembur, Mumbai- 400071",
+                    "color": "#FBC02D",
+                    "contacts": Object {
+                      "country_code": "+91",
+                      "email": "anuvrat.somnath@nineleaps.com",
+                      "full_name": "Anuvrat Somnath",
+                      "id": 1,
+                      "phone_number": "7903470293",
+                    },
+                    "id": 5,
+                    "images": Array [
+                      Object {
+                        "file_name": "House-1b",
+                        "is_cover_image": false,
+                        "link": Object {
+                          "testUri": "../../../packages/common/src/assets/images/property.png",
+                        },
+                      },
+                    ],
+                    "isPropertyCompleted": true,
+                    "property_name": "2BHK - Godrej Prime",
+                    "type": "FOR SALE",
+                  },
+                  Object {
+                    "address": "Sindhi Society, Chembur, Mumbai- 400071",
+                    "color": "#58C2f1",
+                    "contacts": Object {
+                      "country_code": "+91",
+                      "email": "anuvrat.somnath@nineleaps.com",
+                      "full_name": "Anuvrat Somnath",
+                      "id": 1,
+                      "phone_number": "7903470293",
+                    },
+                    "id": 6,
+                    "images": Array [
+                      Object {
+                        "file_name": "House-1b",
+                        "is_cover_image": false,
+                        "link": Object {
+                          "testUri": "../../../packages/common/src/assets/images/property.png",
+                        },
+                      },
+                    ],
+                    "isPropertyCompleted": true,
+                    "property_name": "2BHK - Godrej Prime",
+                    "type": "MAINTAIN",
+                  },
+                ]
+              }
+              disableVirtualization={false}
+              extraData={0}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={1}
+              onEndReachedThreshold={2}
+              removeClippedSubviews={false}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />
+          </React.Fragment>
+          <BottomSheetListView
+            data={Array []}
+            isBottomSheetVisible={false}
+            listHeight={500}
+            listTitle="propertySearch:filters"
+            onCloseDropDown={[Function]}
+            onSelectItem={[Function]}
+            selectedValue="ALL"
           />
         </React.Fragment>
       </AnimatedProfileHeader>
@@ -75,297 +311,151 @@ exports[`Portfolio Screen should render snapshot for functions 1`] = `
       />
     </React.Fragment>
   }
+  testID="stateAware"
 />
 `;
 
-exports[`Portfolio Screen should render snapshot for state 1`] = `
-<AnimatedProfileHeader
-  title="portfolio"
->
-  <AssetMetricsList
-    containerStyle={
-      Object {
-        "marginVertical": 12,
-      }
-    }
-    data={Array []}
-    onPlusIconClicked={[Function]}
-    showPlusIcon={true}
-    title={0}
-  />
-  <Text
-    style={
-      Object {
-        "color": "#001B36",
-        "marginBottom": 16,
-        "marginTop": 4,
-      }
-    }
-    textType="semiBold"
-    type="small"
-  >
-    Tenancies
-  </Text>
-  <FlatList
-    data={
-      Array [
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#CE9B6C",
-          "contacts": Object {
-            "country_code": "+91",
-            "email": "anuvrat.somnath@nineleaps.com",
-            "full_name": "Anuvrat Somnath",
-            "id": 1,
-            "phone_number": "7903470293",
-          },
-          "id": 1,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": true,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "OWNER",
-        },
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#CE9B6C",
-          "contacts": Object {
-            "country_code": "+91",
-            "email": "anuvrat.somnath@nineleaps.com",
-            "full_name": "Anuvrat Somnath",
-            "id": 1,
-            "phone_number": "7903470293",
-          },
-          "id": 2,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": true,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "OWNER",
-        },
-      ]
-    }
-    disableVirtualization={false}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-      }
-    }
-  >
-    <Text
-      style={
-        Object {
-          "color": "#001B36",
-          "marginBottom": 16,
-          "marginTop": 4,
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      Property Portfolio
-    </Text>
-    <Icon
-      allowFontScaling={false}
-      color="#4C5F72"
-      name="vertical-dots"
-      onPress={[Function]}
-      size={18}
-      testID="menu"
-    />
-  </View>
-  <FlatList
-    data={
-      Array [
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#CE9B6C",
-          "contacts": Object {
-            "country_code": "+91",
-            "email": "anuvrat.somnath@nineleaps.com",
-            "full_name": "Anuvrat Somnath",
-            "id": 1,
-            "phone_number": "7903470293",
-          },
-          "id": 1,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": true,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "OWNER",
-        },
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#6CCEC1",
-          "contacts": Object {
-            "country_code": "+91",
-            "email": "anuvrat.somnath@nineleaps.com",
-            "full_name": "Anuvrat Somnath",
-            "id": 1,
-            "phone_number": "7903470293",
-          },
-          "id": 2,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": true,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "RENTED",
-        },
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#FF8576",
-          "contacts": Object {
-            "country_code": "+91",
-            "email": "anuvrat.somnath@nineleaps.com",
-            "full_name": "Anuvrat Somnath",
-            "id": 1,
-            "phone_number": "7903470293",
-          },
-          "id": 3,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": true,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "VACANT",
-        },
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#FF8576",
-          "id": 4,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": false,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "VACANT",
-        },
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#FBC02D",
-          "contacts": Object {
-            "country_code": "+91",
-            "email": "anuvrat.somnath@nineleaps.com",
-            "full_name": "Anuvrat Somnath",
-            "id": 1,
-            "phone_number": "7903470293",
-          },
-          "id": 5,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": true,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "FOR SALE",
-        },
-        Object {
-          "address": "Sindhi Society, Chembur, Mumbai- 400071",
-          "color": "#58C2f1",
-          "contacts": Object {
-            "country_code": "+91",
-            "email": "anuvrat.somnath@nineleaps.com",
-            "full_name": "Anuvrat Somnath",
-            "id": 1,
-            "phone_number": "7903470293",
-          },
-          "id": 6,
-          "images": Array [
-            Object {
-              "file_name": "House-1b",
-              "is_cover_image": false,
-              "link": Object {
-                "testUri": "../../../packages/common/src/assets/images/property.png",
-              },
-            },
-          ],
-          "isPropertyCompleted": true,
-          "property_name": "2BHK - Godrej Prime",
-          "type": "MAINTAIN",
-        },
-      ]
-    }
-    disableVirtualization={false}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
-  <BottomSheetListView
-    data={Array []}
-    isBottomSheetVisible={true}
-    listHeight={500}
-    listTitle="Filter"
-    onCloseDropDown={[Function]}
-    onSelectItem={[Function]}
-    selectedValue="ALL"
-  />
-</AnimatedProfileHeader>
+exports[`Portfolio Screen should render snapshot for tenancies 1`] = `
+<StateAwareComponent
+  loading={true}
+  renderComponent={
+    <React.Fragment>
+      <AnimatedProfileHeader
+        title="portfolio"
+      >
+        <React.Fragment>
+          <AssetMetricsList
+            containerStyle={
+              Object {
+                "marginVertical": 12,
+              }
+            }
+            data={Array []}
+            onPlusIconClicked={[Function]}
+            showPlusIcon={true}
+            title={0}
+          />
+          <React.Fragment>
+            <Text
+              style={
+                Object {
+                  "color": "#001B36",
+                  "marginBottom": 16,
+                  "marginTop": 4,
+                }
+              }
+              textType="semiBold"
+              type="small"
+            >
+              tenancies
+            </Text>
+            <FlatList
+              data={
+                Array [
+                  Object {
+                    "assetStatusInfo": Object {
+                      "leaseTenantInfo": Object {},
+                      "leaseTransaction": Object {},
+                      "tag": Object {},
+                    },
+                    "asset_group": Object {
+                      "id": 1,
+                      "name": "Residential",
+                    },
+                    "asset_type": Object {
+                      "id": 5,
+                      "name": "Studio Apartment",
+                    },
+                    "attachments": Array [
+                      Object {
+                        "file_name": "prof.jpg",
+                        "is_cover_image": true,
+                        "link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+                        "media_attributes": Object {},
+                        "media_type": "IMAGE",
+                      },
+                    ],
+                    "block_number": "B",
+                    "carpet_area": 2500,
+                    "carpet_area_unit": "SQ_FT",
+                    "construction_year": null,
+                    "description": "",
+                    "digital_id": "8fad8389-6893-411a-bd4a-4b1575523d4a",
+                    "floor_number": 2,
+                    "furnishing": "SEMI",
+                    "id": 5,
+                    "is_gated": null,
+                    "latitude": 25.6207722,
+                    "longitude": 85.1280892,
+                    "notifications": Object {
+                      "count": 5,
+                    },
+                    "progress_percentage": 74,
+                    "project_name": "House 2",
+                    "serviceTickets": Object {
+                      "count": 0,
+                    },
+                    "spaces": Array [
+                      Object {
+                        "count": 2,
+                        "id": 1,
+                        "name": "Bedroom",
+                      },
+                      Object {
+                        "count": 1,
+                        "id": 2,
+                        "name": "Bathroom",
+                      },
+                    ],
+                    "total_floors": 3,
+                    "unit_number": "103",
+                    "verification_documents": Array [],
+                    "verifications": Object {
+                      "description": "**What is this verification?**
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+accusantium doloremque laudantium.
+
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur
+aut odit aut fugit. Neque porro quisquam est,
+qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
+sed quia non numquam eius modi tempora incidunt ut labore et dolore
+magnam aliquam quaerat voluptatem.",
+                      "verification_status": 2,
+                    },
+                  },
+                ]
+              }
+              disableVirtualization={false}
+              extraData={1}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={1}
+              onEndReachedThreshold={2}
+              removeClippedSubviews={false}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />
+          </React.Fragment>
+          <BottomSheetListView
+            data={Array []}
+            isBottomSheetVisible={false}
+            listHeight={500}
+            listTitle="propertySearch:filters"
+            onCloseDropDown={[Function]}
+            onSelectItem={[Function]}
+            selectedValue="ALL"
+          />
+        </React.Fragment>
+      </AnimatedProfileHeader>
+      <Loader
+        visible={false}
+      />
+    </React.Fragment>
+  }
+  testID="stateAware"
+/>
 `;

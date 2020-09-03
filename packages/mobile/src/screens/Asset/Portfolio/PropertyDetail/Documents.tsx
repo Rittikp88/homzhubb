@@ -16,7 +16,7 @@ interface IDocumentState {
   isLoading: boolean;
 }
 
-class Documents extends Component<{}, IDocumentState> {
+export class Documents extends Component<{}, IDocumentState> {
   public state = {
     searchValue: '',
     documents: DocumentsData,

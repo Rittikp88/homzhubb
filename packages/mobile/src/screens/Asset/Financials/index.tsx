@@ -14,9 +14,9 @@ import {
   FinancialHeaderContainer,
   PropertyDuesCardContainer,
   StateAwareComponent,
-  TransactionCardsContainer,
 } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
+import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import { propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 

@@ -11,7 +11,7 @@ import { Button, Text } from '@homzhub/common/src/components';
 type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.DefaultLogin>;
 type IProps = libraryProps;
 
-class DefaultLogin extends React.PureComponent<IProps> {
+export class DefaultLogin extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
     const { t } = this.props;
     return (

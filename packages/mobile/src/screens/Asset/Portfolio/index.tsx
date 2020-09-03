@@ -76,7 +76,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   public render = (): React.ReactElement => {
     const { isLoading } = this.state;
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} testID="stateAware" />;
   };
 
   private renderComponent = (): React.ReactElement => {

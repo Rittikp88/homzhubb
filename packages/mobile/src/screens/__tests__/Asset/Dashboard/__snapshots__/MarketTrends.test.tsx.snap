@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Market Trends Screen should render snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <Memo(Header)
+    icon="left-arrow"
+    isHeadingVisible={true}
+    onIconPress={[Function]}
+    title="marketTrends"
+    type="primary"
+  />
+  <withI18nextTranslation(AssetMarketTrends)
+    containerStyle={
+      Object {
+        "padding": 16,
+      }
+    }
+    isHeaderVisible={false}
+    limit={100}
+  />
+</View>
+`;

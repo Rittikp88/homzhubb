@@ -16,7 +16,7 @@ interface IAssetNotificationsState {
   notifications: any[];
 }
 
-class NotificationTab extends React.PureComponent<Props, IAssetNotificationsState> {
+export class NotificationTab extends React.PureComponent<Props, IAssetNotificationsState> {
   public state = {
     notifications: AssetNotificationsData,
   };

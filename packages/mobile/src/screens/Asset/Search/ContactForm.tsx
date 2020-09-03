@@ -48,7 +48,7 @@ interface IContactState {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.ContactForm>;
 type Props = libraryProps & IStateProps;
 
-class ContactForm extends React.PureComponent<Props, IContactState> {
+export class ContactForm extends React.PureComponent<Props, IContactState> {
   public state = {
     selectedTime: [],
     selectedSpaces: [],

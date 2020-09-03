@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { CommonActions } from '@react-navigation/native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -211,7 +210,8 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
 
   public previewProperty = (): void => {
     const { navigation } = this.props;
-    navigation.dispatch(CommonActions.navigate({ name: ScreensKeys.BottomTabs }));
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs, { screen: ScreensKeys.Portfolio });
   };
 
   private setLoadingState = (loading: boolean): void => {

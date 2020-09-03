@@ -85,7 +85,7 @@ interface IPropertySearchScreenState {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertySearchScreen>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
-class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
+export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
   private searchBar: typeof GoogleSearchBar | null = null;
   public state = {
     isMapView: true,

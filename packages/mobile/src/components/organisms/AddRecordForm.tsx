@@ -60,7 +60,7 @@ interface IOwnProps extends WithTranslation {
 
 const MAX_WORD_COUNT = 200;
 
-class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
+export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   private resetForm: ((nextValues?: FormikValues) => void) | undefined;
 
   public state = {
@@ -317,8 +317,7 @@ class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 }
 
 const namespace = LocaleConstants.namespacesKey;
-const addRecordForm = withTranslation([namespace.assetFinancial, namespace.common])(AddRecordForm);
-export { addRecordForm as AddRecordForm };
+export default withTranslation([namespace.assetFinancial, namespace.common])(AddRecordForm);
 
 const styles = StyleSheet.create({
   inputStyle: {

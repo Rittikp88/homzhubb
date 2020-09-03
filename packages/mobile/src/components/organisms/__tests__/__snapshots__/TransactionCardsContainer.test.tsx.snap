@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TransactionCardsContainer should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "marginTop": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "padding": 16,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      name="cheque"
+      size={20}
+      style={
+        Object {
+          "marginRight": 10,
+        }
+      }
+    />
+    <Text
+      textType="semiBold"
+      type="regular"
+    >
+      transactions
+    </Text>
+  </View>
+  <Divider />
+  <ForwardRef
+    onPress={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "borderColor": "#000",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginRight": 12,
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          textType="bold"
+          type="regular"
+        >
+          12
+        </Text>
+        <Text
+          type="regular"
+        >
+          May
+        </Text>
+      </View>
+      <View>
+        <Text
+          type="small"
+        >
+          Maintenance
+        </Text>
+        <Text
+          textType="bold"
+          type="regular"
+        >
+          Rent
+        </Text>
+        <Text
+          type="regular"
+        >
+          Manor
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <PricePerUnit
+        currency="INR"
+        price={20000}
+        priceTransformation={false}
+      />
+      <Icon
+        allowFontScaling={false}
+        name="down-arrow"
+        size={24}
+        style={
+          Object {
+            "marginLeft": 10,
+          }
+        }
+      />
+    </View>
+  </ForwardRef>
+</View>
+`;

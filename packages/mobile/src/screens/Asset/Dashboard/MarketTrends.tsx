@@ -12,7 +12,7 @@ import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMar
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.MarketTrends>;
 type Props = WithTranslation & libraryProps;
 
-class MarketTrends extends React.PureComponent<Props> {
+export class MarketTrends extends React.PureComponent<Props> {
   public render = (): React.ReactElement => {
     const { t } = this.props;
     return (

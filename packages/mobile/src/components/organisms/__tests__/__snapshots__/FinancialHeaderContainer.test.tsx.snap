@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FinancialHeaderContainer should match snapshot 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 4,
+        "minHeight": 80,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "flex-start",
+          "paddingVertical": 10,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 0,
+            "paddingHorizontal": 15,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../packages/common/src/assets/images/homzhubDashboard.png",
+            }
+          }
+        />
+      </View>
+      <View>
+        <Text
+          style={
+            Object {
+              "color": "#001B36",
+            }
+          }
+          textType="bold"
+          type="regular"
+        >
+          0
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "marginLeft": 6,
+      }
+    }
+  >
+    <AssetMetrics
+      colorA="#61D773"
+      colorB="#94EF90"
+      currency="INR"
+      header="assetFinancial:income"
+      textStyle={
+        Object {
+          "color": "#FFFFFF",
+        }
+      }
+      value="0/-"
+    />
+    <AssetMetrics
+      colorA="#FDB113"
+      colorB="#FFDB8F"
+      currency="INR"
+      header="assetFinancial:expense"
+      textStyle={
+        Object {
+          "color": "#FFFFFF",
+        }
+      }
+      value="0/-"
+    />
+  </View>
+</View>
+`;

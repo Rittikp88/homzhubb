@@ -22,7 +22,7 @@ interface IProps extends WithTranslation {
   data?: ITransaction[];
 }
 
-class TransactionCardsContainer extends React.PureComponent<IProps, IState> {
+export class TransactionCardsContainer extends React.PureComponent<IProps, IState> {
   public state = {
     shouldExpand: false,
   };
@@ -113,10 +113,7 @@ class TransactionCardsContainer extends React.PureComponent<IProps, IState> {
   };
 }
 
-const transactionCardsContainer = withTranslation(LocaleConstants.namespacesKey.assetFinancial)(
-  TransactionCardsContainer
-);
-export { transactionCardsContainer as TransactionCardsContainer };
+export default withTranslation(LocaleConstants.namespacesKey.assetFinancial)(TransactionCardsContainer);
 
 const styles = StyleSheet.create({
   container: {
