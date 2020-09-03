@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tenant History Screen should render snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 4,
+      "padding": 16,
+    }
+  }
+>
+  <SearchBar
+    containerStyle={
+      Object {
+        "marginBottom": 6,
+      }
+    }
+    placeholder="assetPortfolio:searchByName"
+    updateValue={[Function]}
+    value=""
+  />
+  <FlatList
+    ItemSeparatorComponent={[Function]}
+    data={
+      Array [
+        Object {
+          "id": 1,
+          "lease_listing": 1,
+          "lease_transaction": Object {
+            "id": 1,
+            "lease_end_date": "2021-07-14T09:55:52.115420Z",
+            "lease_start_date": "2020-08-14T09:55:52.115420Z",
+            "remaining_lease_period": "314 05:39:40.503404",
+            "total_lease_period": "334 00:00:00",
+          },
+          "tenant_user": Object {
+            "country_code": "+91",
+            "email": "abhijeet.shah@nineleaps.com",
+            "full_name": "Abhijeet Anand Shah",
+            "id": 1,
+            "phone_number": "9031666258",
+          },
+        },
+        Object {
+          "id": 4,
+          "lease_listing": 10,
+          "lease_transaction": Object {
+            "id": 4,
+            "lease_end_date": "2021-07-14T09:55:52.115420Z",
+            "lease_start_date": "2020-08-14T09:55:52.115420Z",
+            "remaining_lease_period": "314 05:39:40.486645",
+            "total_lease_period": "334 00:00:00",
+          },
+          "tenant_user": Object {
+            "country_code": "+91",
+            "email": "rishumodi95@gmail.com",
+            "full_name": "rishumodi",
+            "id": 3,
+            "phone_number": "9108305412",
+          },
+        },
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+  <Loader
+    visible={false}
+  />
+</View>
+`;

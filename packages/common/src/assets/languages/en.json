@@ -336,7 +336,9 @@
     "listingScore": "Listing Score",
     "leasePeriod": "Lease Period",
     "addPropertyHighlights": "Add Property highlights for +10%",
-    "propertyDetails": "Property Details"
+    "propertyDetails": "Property Details",
+    "rentalReceipts": "Rental Receipts",
+    "searchByName": "Search by name"
   },
   "assetFinancial": {
     "financial": "Financials",

@@ -262,3 +262,42 @@ export const DocumentsData = [
     uploaded_by: 'HomzHub',
   },
 ];
+
+export const TenantHistoryData = [
+  {
+    id: 1,
+    lease_listing: 1,
+    lease_transaction: {
+      id: 1,
+      lease_start_date: '2020-08-14T09:55:52.115420Z',
+      lease_end_date: '2021-07-14T09:55:52.115420Z',
+      total_lease_period: '334 00:00:00',
+      remaining_lease_period: '314 05:39:40.503404',
+    },
+    tenant_user: {
+      id: 1,
+      full_name: 'Abhijeet Anand Shah',
+      email: 'abhijeet.shah@nineleaps.com',
+      country_code: '+91',
+      phone_number: '9031666258',
+    },
+  },
+  {
+    id: 4,
+    lease_listing: 10,
+    lease_transaction: {
+      id: 4,
+      lease_start_date: '2020-08-14T09:55:52.115420Z',
+      lease_end_date: '2021-07-14T09:55:52.115420Z',
+      total_lease_period: '334 00:00:00',
+      remaining_lease_period: '314 05:39:40.486645',
+    },
+    tenant_user: {
+      id: 3,
+      full_name: 'rishumodi',
+      email: 'rishumodi95@gmail.com',
+      country_code: '+91',
+      phone_number: '9108305412',
+    },
+  },
+];

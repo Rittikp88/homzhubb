@@ -7,6 +7,7 @@ import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
+import TenantHistory from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistory';
 import { Tabs } from '@homzhub/common/src/domain/models/Tabs';
 
 export type TopTabNavigatorParamList = {
@@ -118,7 +119,7 @@ export const TopTabs = (): React.ReactElement => {
       />
       <TopTabNavigator.Screen
         name={ScreensKeys.TenantHistoryTab}
-        component={DummyView}
+        component={TenantHistory}
         options={{
           tabBarLabel: Tabs.TENANT_HISTORY,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => {

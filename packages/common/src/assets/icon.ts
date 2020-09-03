@@ -123,6 +123,9 @@ export const icons = {
   newLaunch: 'new-launch',
   payment: 'payment',
   shareFilled: 'share-filled',
+  docFilled: 'doc-filled',
+  upload: 'upload',
+  files: 'files',
 
   // COMMUTE
   train: 'train',

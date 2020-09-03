@@ -3,7 +3,7 @@
   "data": [
     {
       "path": "../common/src/assets/fonts/.DS_Store",
-      "sha1": "7c74106ec0945c9e48ccaf152a20ee9099d180e0"
+      "sha1": "3c2ab2ff275db556e0c7d5c7048daf7745261c11"
     },
     {
       "path": "../common/src/assets/fonts/OpenSans-Bold.ttf",
@@ -43,7 +43,7 @@
     },
     {
       "path": "../common/src/assets/fonts/icomoon.ttf",
-      "sha1": "866b805e90a91d4d4881a4c7b4a0319672c37d82"
+      "sha1": "2b5ba628cd6e8ae01aa09933f5f84f067a0b03f6"
     }
   ]
 }

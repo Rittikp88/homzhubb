@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Progress from 'react-native-progress';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -13,9 +13,12 @@ interface IProgressBarProps {
   fromDate?: string;
   toDate?: string;
   width?: number;
+  iconColor?: string;
   filledColor?: string;
   buttonAction?: LabelColor | null;
-  isPropertyVacant: boolean;
+  isPropertyVacant?: boolean;
+  labelStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
@@ -26,21 +29,26 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
     isPropertyVacant,
     fromDate,
     toDate,
+    iconColor,
     buttonAction,
+    labelStyle = {},
+    containerStyle = {},
   } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetPortfolio);
 
   return (
-    <>
+    <View style={containerStyle}>
       <View style={styles.leaseHeading}>
         <Icon
           name={isPropertyVacant ? icons.house : icons.calendar}
-          color={theme.colors.darkTint3}
-          size={20}
+          color={iconColor || theme.colors.darkTint3}
+          size={22}
           style={styles.calendarIcon}
         />
-        <Label type="large">{isPropertyVacant ? t('listingScore') : t('leasePeriod')}</Label>
+        <Label type="large" style={[styles.label, labelStyle]}>
+          {isPropertyVacant ? t('listingScore') : t('leasePeriod')}
+        </Label>
       </View>
       <Progress.Bar
         progress={progress}
@@ -75,7 +83,7 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
           titleStyle={styles.buttonTitle}
         />
       )}
-    </>
+    </View>
   );
 };
 
@@ -118,5 +126,8 @@ const styles = StyleSheet.create({
   buttonTitle: {
     marginVertical: 1,
     marginHorizontal: 18,
+  },
+  label: {
+    color: theme.colors.darkTint3,
   },
 });

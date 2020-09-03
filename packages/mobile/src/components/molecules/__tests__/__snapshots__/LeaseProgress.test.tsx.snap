@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Lease Progress should match snapshot 1`] = `
-<Fragment>
+<View
+  style={Object {}}
+>
   <View
     style={
       Object {
@@ -14,7 +16,7 @@ exports[`Lease Progress should match snapshot 1`] = `
       allowFontScaling={false}
       color="#33495E"
       name="calendar"
-      size={20}
+      size={22}
       style={
         Object {
           "marginRight": 8,
@@ -22,6 +24,14 @@ exports[`Lease Progress should match snapshot 1`] = `
       }
     />
     <Label
+      style={
+        Array [
+          Object {
+            "color": "#33495E",
+          },
+          Object {},
+        ]
+      }
       type="large"
     >
       leasePeriod
@@ -69,11 +79,13 @@ exports[`Lease Progress should match snapshot 1`] = `
       type="regular"
     />
   </View>
-</Fragment>
+</View>
 `;
 
 exports[`Lease Progress should match snapshot 2`] = `
-<Fragment>
+<View
+  style={Object {}}
+>
   <View
     style={
       Object {
@@ -86,7 +98,7 @@ exports[`Lease Progress should match snapshot 2`] = `
       allowFontScaling={false}
       color="#33495E"
       name="calendar"
-      size={20}
+      size={22}
       style={
         Object {
           "marginRight": 8,
@@ -94,6 +106,14 @@ exports[`Lease Progress should match snapshot 2`] = `
       }
     />
     <Label
+      style={
+        Array [
+          Object {
+            "color": "#33495E",
+          },
+          Object {},
+        ]
+      }
       type="large"
     >
       leasePeriod
@@ -141,5 +161,5 @@ exports[`Lease Progress should match snapshot 2`] = `
       type="regular"
     />
   </View>
-</Fragment>
+</View>
 `;
