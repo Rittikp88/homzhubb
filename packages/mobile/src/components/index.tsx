@@ -2,7 +2,6 @@
 export { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 export { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
 export { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
-export { EmptyState } from '@homzhub/mobile/src/components/atoms/EmptyState';
 export { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 export { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 export { ProgressBar } from '@homzhub/mobile/src/components/atoms/ProgressBar';

@@ -2,22 +2,14 @@ import React from 'react';
 import { FlatList, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-
-interface INotificationData {
-  id: number;
-  project_name: string;
-  user: string;
-  posted_at: string;
-  description: string;
-  is_read: boolean;
-}
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Notifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 interface IProps {
-  data: INotificationData[];
+  data: Notifications[];
   onPress: (id: number) => void;
   isTitle?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
@@ -27,13 +19,12 @@ const NotificationBox = (props: IProps): React.ReactElement => {
   const { data, onPress, isTitle = true, containerStyle } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
 
-  const count = data.filter((obj: any) => obj.is_read).length;
+  const count = data.filter((obj: Notifications) => !obj.isRead).length;
 
-  const renderItem = ({ item }: { item: any }): React.ReactElement => {
-    const { id, project_name, user, posted_at, description, is_read } = item;
+  const renderItem = ({ item }: { item: Notifications }): React.ReactElement => {
     let notificationStyle = {};
 
-    if (!is_read) {
+    if (!item.isRead) {
       notificationStyle = styles.unreadNotification;
     } else {
       notificationStyle = {
@@ -43,33 +34,31 @@ const NotificationBox = (props: IProps): React.ReactElement => {
     }
 
     const onBubblePress = (): void => {
-      onPress(id);
+      onPress(item.id);
     };
 
     return (
       <TouchableOpacity style={[styles.container, notificationStyle]} onPress={onBubblePress}>
         {isTitle && (
           <Label type="large" textType="semiBold">
-            {project_name}
+            {item.title}
           </Label>
         )}
         <View style={styles.infoContainer}>
           <View style={styles.initialsContainer}>
-            <Text type="small" textType="regular" style={styles.initials}>
-              {StringUtils.getInitials(user ?? 'User')}
-            </Text>
+            <Icon name={icons.alert} size={20} color={theme.colors.primaryColor} testID="icnBack" />
           </View>
           <View style={styles.description}>
             <View style={styles.nameAndTimeContainer}>
               <Label type="regular" textType="regular" style={styles.labels}>
-                {user}
+                {item.notificationType}
               </Label>
               <Label type="regular" textType="regular" style={styles.labels}>
-                {DateUtils.timeDifference(posted_at)}
+                {DateUtils.timeDifference(item.createdAt)}
               </Label>
             </View>
             <Label type="large" textType="regular" style={styles.descriptionText}>
-              {description}
+              {item.message}
             </Label>
           </View>
         </View>
@@ -77,7 +66,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
     );
   };
 
-  const keyExtractor = (item: any, index: number): string => index.toString();
+  const keyExtractor = (item: Notifications, index: number): string => index.toString();
 
   return (
     <View style={[styles.notificationsContainer, containerStyle]}>
@@ -104,15 +93,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  initials: {
-    color: theme.colors.shadow,
-  },
   initialsContainer: {
     ...(theme.circleCSS(40) as object),
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 15,
-    backgroundColor: theme.colors.darkTint7,
+    backgroundColor: theme.colors.reminderBackground,
     borderColor: theme.colors.white,
     borderWidth: 1,
   },

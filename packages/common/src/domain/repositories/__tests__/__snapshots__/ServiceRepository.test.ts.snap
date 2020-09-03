@@ -215,12 +215,6 @@ Object {
       "title": "Enter the Lease details",
     },
     Object {
-      "id": 2,
-      "label": "Label 2",
-      "name": undefined,
-      "title": "Add Property Images",
-    },
-    Object {
       "id": 3,
       "label": "Label 3",
       "name": "PROPERTY_VERIFICATIONS",

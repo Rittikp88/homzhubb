@@ -202,6 +202,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private onViewProperty = (data: Asset): void => {
     const { navigation } = this.props;
+    // TODO: Rishabh- Need to discuss with shikha for saving current selected property in redux
     navigation.navigate(ScreensKeys.PropertyDetailScreen, { propertyData: data });
   };
 

@@ -5,8 +5,8 @@ import { PathProps } from 'react-native-svg';
 import { sum } from 'lodash';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { EmptyState } from '@homzhub/common/src/components';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
-import { EmptyState } from '@homzhub/mobile/src/components';
 import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 interface IProps {

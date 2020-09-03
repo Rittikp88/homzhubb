@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { EmptyState } from '@homzhub/mobile/src/components/atoms/EmptyState';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 
 describe('EmptyState', () => {
   it('should match snapshot', () => {

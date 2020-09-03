@@ -135,76 +135,6 @@ exports[`Service List Steps Screen should render snapshot 1`] = `
               Enter the Lease details
             </Text>
           </View>
-          <Divider
-            containerStyles={
-              Object {
-                "borderColor": "#C9D6DF",
-                "borderWidth": 1,
-                "marginTop": 25,
-                "transform": Array [
-                  Object {
-                    "rotate": "90deg",
-                  },
-                ],
-                "width": 35,
-              }
-            }
-            key="divider-0"
-          />
-        </View>
-        <View
-          key="stepContainer1"
-        >
-          <View
-            key="1"
-            style={
-              Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "marginTop": 25,
-              }
-            }
-          >
-            <View
-              key="1"
-              style={
-                Object {
-                  "alignItems": "center",
-                  "borderColor": "#4C5F72",
-                  "borderRadius": 17.5,
-                  "borderWidth": 2,
-                  "height": 35,
-                  "justifyContent": "center",
-                  "width": 35,
-                }
-              }
-            >
-              <Text
-                key="stepNo1"
-                textType="regular"
-                type="small"
-              >
-                2
-              </Text>
-            </View>
-            <Text
-              adjustsFontSizeToFit={true}
-              key="stepTitle1"
-              minimumFontScale={0.5}
-              numberOfLines={1}
-              style={
-                Object {
-                  "alignSelf": "center",
-                  "flex": 1,
-                  "marginLeft": 20,
-                }
-              }
-              textType="regular"
-              type="small"
-            >
-              Add Property Images
-            </Text>
-          </View>
         </View>
       </View>
     </ScrollViewMock>
@@ -436,7 +366,7 @@ exports[`Service List Steps Screen should render snapshot 2`] = `
               textType="regular"
               type="small"
             >
-              Add Property Images
+              Complete property verification
             </Text>
           </View>
           <Divider
@@ -494,76 +424,6 @@ exports[`Service List Steps Screen should render snapshot 2`] = `
             <Text
               adjustsFontSizeToFit={true}
               key="stepTitle2"
-              minimumFontScale={0.5}
-              numberOfLines={1}
-              style={
-                Object {
-                  "alignSelf": "center",
-                  "flex": 1,
-                  "marginLeft": 20,
-                }
-              }
-              textType="regular"
-              type="small"
-            >
-              Complete property verification
-            </Text>
-          </View>
-          <Divider
-            containerStyles={
-              Object {
-                "borderColor": "#C9D6DF",
-                "borderWidth": 1,
-                "marginTop": 25,
-                "transform": Array [
-                  Object {
-                    "rotate": "90deg",
-                  },
-                ],
-                "width": 35,
-              }
-            }
-            key="divider-2"
-          />
-        </View>
-        <View
-          key="stepContainer3"
-        >
-          <View
-            key="3"
-            style={
-              Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "marginTop": 25,
-              }
-            }
-          >
-            <View
-              key="3"
-              style={
-                Object {
-                  "alignItems": "center",
-                  "borderColor": "#4C5F72",
-                  "borderRadius": 17.5,
-                  "borderWidth": 2,
-                  "height": 35,
-                  "justifyContent": "center",
-                  "width": 35,
-                }
-              }
-            >
-              <Text
-                key="stepNo3"
-                textType="regular"
-                type="small"
-              >
-                4
-              </Text>
-            </View>
-            <Text
-              adjustsFontSizeToFit={true}
-              key="stepTitle3"
               minimumFontScale={0.5}
               numberOfLines={1}
               style={

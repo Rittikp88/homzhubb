@@ -18,8 +18,7 @@ import {
   SelectionPicker,
 } from '@homzhub/common/src/components';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { UploadBoxComponent } from '@homzhub/mobile/src/components';
-import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
+import { IDocumentSource, UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';

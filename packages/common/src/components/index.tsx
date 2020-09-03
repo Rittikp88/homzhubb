@@ -5,6 +5,7 @@ export { Badge } from '@homzhub/common/src/components/atoms/Badge';
 export { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker';
 export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 export { Divider } from '@homzhub/common/src/components/atoms/Divider';
+export { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 export { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 export { HorizontalPicker } from '@homzhub/common/src/components/atoms/HorizontalPicker';
 export { ImageRound, ImageSquare, Image } from '@homzhub/common/src/components/atoms/Image';

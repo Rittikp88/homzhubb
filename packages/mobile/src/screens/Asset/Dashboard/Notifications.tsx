@@ -7,28 +7,27 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { Text, NotificationBox } from '@homzhub/common/src/components';
+import { Text, NotificationBox, EmptyState } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
-import { AssetNotificationsData } from '@homzhub/common/src/mocks/AssetNotifications';
+import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
 type Props = WithTranslation & libraryProps;
 
 interface IAssetNotificationsState {
-  notifications: any[];
+  notifications: AssetNotifications;
   searchText: string;
 }
 
-export class AssetNotifications extends React.PureComponent<Props, IAssetNotificationsState> {
+export class Notifications extends React.PureComponent<Props, IAssetNotificationsState> {
   public state = {
-    notifications: AssetNotificationsData,
+    notifications: {} as AssetNotifications,
     searchText: '',
   };
 
-  // TODO: To be uncommented when the api is ready
-  // public componentDidMount = async (): Promise<void> => {
-  //   await this.getAssetNotifications();
-  // };
+  public componentDidMount = async (): Promise<void> => {
+    await this.getAssetNotifications();
+  };
 
   public render = (): React.ReactNode => {
     const { t } = this.props;
@@ -60,7 +59,7 @@ export class AssetNotifications extends React.PureComponent<Props, IAssetNotific
     );
   };
 
-  public renderNotifications = (): React.ReactElement => {
+  public renderNotifications = (): React.ReactNode => {
     const { t } = this.props;
     const { notifications, searchText } = this.state;
     return (
@@ -71,15 +70,22 @@ export class AssetNotifications extends React.PureComponent<Props, IAssetNotific
           updateValue={this.onUpdateSearchText}
           containerStyle={styles.searchbar}
         />
-        <NotificationBox data={notifications} onPress={this.onNotificationClicked} />
+        {notifications?.results && notifications?.results.length === 0 && <EmptyState />}
+        {notifications?.results && notifications?.results.length > 0 && (
+          <NotificationBox data={notifications?.results ?? []} onPress={this.onNotificationClicked} />
+        )}
       </View>
     );
   };
 
   public onNotificationClicked = (id: number): void => {};
 
-  public onUpdateSearchText = (value: string): void => {
-    this.setState({ searchText: value });
+  // eslint-disable-next-line @typescript-eslint/require-await
+  public onUpdateSearchText = async (value: string): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    this.setState({ searchText: value }, async () => {
+      await this.getAssetNotifications();
+    });
   };
 
   public handleIconPress = (): void => {
@@ -88,12 +94,13 @@ export class AssetNotifications extends React.PureComponent<Props, IAssetNotific
   };
 
   public getAssetNotifications = async (): Promise<void> => {
-    const response = await DashboardRepository.getAssetNotifications();
+    const { searchText } = this.state;
+    const response = await DashboardRepository.getAssetNotifications(50, 0, searchText);
     this.setState({ notifications: response });
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(AssetNotifications);
+export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Notifications);
 
 const styles = StyleSheet.create({
   header: {

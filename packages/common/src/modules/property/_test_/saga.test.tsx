@@ -10,7 +10,7 @@ import {
   getRentServicesList,
   getServiceStepsDetails,
   watchProperty,
-} from '../saga';
+} from '@homzhub/common/src/modules/property/saga';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});

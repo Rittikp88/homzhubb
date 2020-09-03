@@ -16,7 +16,7 @@ import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRec
 import { More } from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
-import AssetNotifications from '@homzhub/mobile/src/screens/Asset/Dashboard/AssetNotifications';
+import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notifications';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
@@ -138,7 +138,7 @@ export const DashboardStack = (): React.ReactElement => {
     >
       <DashboardNavigator.Screen name={ScreensKeys.DashboardLandingScreen} component={Dashboard} />
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
-      <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={AssetNotifications} />
+      <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
     </DashboardNavigator.Navigator>
   );
 };

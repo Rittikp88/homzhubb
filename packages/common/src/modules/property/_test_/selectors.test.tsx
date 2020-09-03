@@ -27,6 +27,10 @@ const state: IState = {
     currentPropertyId: 1,
     termId: 1,
     serviceCategory: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
+    loaders: {
+      ...initialPropertyState.loaders,
+      property: true,
+    },
   },
   asset: {
     ...initialAssetState,
@@ -68,10 +72,13 @@ describe('Property Selector', () => {
   it('should return the service steps details', () => {
     const types = [
       ServiceStepTypes.LEASE_DETAILS,
-      ServiceStepTypes.PROPERTY_IMAGES,
       ServiceStepTypes.PROPERTY_VERIFICATIONS,
       ServiceStepTypes.PAYMENT_TOKEN_AMOUNT,
     ];
     expect(PropertySelector.getServiceStepsDetails(state)).toStrictEqual(types);
+  });
+
+  it('should return property loading state', () => {
+    expect(PropertySelector.getPropertyLoadingState(state)).toStrictEqual(true);
   });
 });

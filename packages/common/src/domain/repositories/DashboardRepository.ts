@@ -4,13 +4,14 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { AssetAdvertisement } from '@homzhub/common/src/domain/models/AssetAdvertisement';
+import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 const ENDPOINTS = {
   getMarketTrends: (): string => 'market-trends/',
   getAssetMetrics: (): string => 'dashboard/management-tab/',
   getAdvertisements: (): string => 'advertisements/',
   getGeneralLedgers: (): string => 'general-ledgers/overall-performances/',
-  getAssetNotifications: (): string => 'asset-notifications/',
+  getAssetNotifications: (): string => 'notifications/',
 };
 
 class DashboardRepository {
@@ -35,9 +36,17 @@ class DashboardRepository {
     return ObjectMapper.deserialize(AssetAdvertisement, response);
   };
 
-  // TODO: Return type to be added once the api is ready
-  public getAssetNotifications = async (): Promise<any> => {
-    return await this.apiClient.get(ENDPOINTS.getAssetNotifications());
+  public getAssetNotifications = async (
+    limit: number,
+    offset: number,
+    searchText?: string
+  ): Promise<AssetNotifications> => {
+    const response = await this.apiClient.get(ENDPOINTS.getAssetNotifications(), {
+      limit,
+      offset,
+      ...(searchText && { q: searchText }),
+    });
+    return ObjectMapper.deserialize(AssetNotifications, response);
   };
 }
 

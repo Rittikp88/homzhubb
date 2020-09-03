@@ -73,6 +73,7 @@ const opacity = {
   imageVideoPaginationBackground: 'rgba(25, 50, 74, 0.65)',
   ratingLow: 'rgba(242, 61, 6, 0.12)',
   ratingHigh: 'rgba(71, 194, 178, 0.12)',
+  reminderBackground: 'rgba(0, 132, 248, 0.1)',
 };
 
 const gradientAssetMetrics = {

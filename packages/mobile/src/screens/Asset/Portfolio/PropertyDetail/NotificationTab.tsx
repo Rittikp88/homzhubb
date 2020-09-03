@@ -7,30 +7,33 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { TopTabNavigatorParamList } from '@homzhub/mobile/src/navigation/TopTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { NotificationBox } from '@homzhub/common/src/components';
-import { AssetNotificationsData } from '@homzhub/common/src/mocks/AssetNotifications';
+import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 type libraryProps = NavigationScreenProps<TopTabNavigatorParamList, ScreensKeys.NotificationTab>;
 type Props = WithTranslation & libraryProps;
 
 interface IAssetNotificationsState {
-  notifications: any[];
+  notifications: AssetNotifications;
+  limit: number;
+  offset: number;
 }
 
 export class NotificationTab extends React.PureComponent<Props, IAssetNotificationsState> {
   public state = {
-    notifications: AssetNotificationsData,
+    notifications: {} as AssetNotifications,
+    limit: 10,
+    offset: 0,
   };
 
-  // TODO: To be uncommented when the api is ready
-  // public componentDidMount = async (): Promise<void> => {
-  //   await this.getAssetNotifications();
-  // };
+  public componentDidMount = async (): Promise<void> => {
+    await this.getAssetNotifications();
+  };
 
   public render = (): React.ReactNode => {
     const { notifications } = this.state;
     return (
       <NotificationBox
-        data={notifications}
+        data={notifications?.results ?? []}
         onPress={this.onNotificationClicked}
         isTitle={false}
         containerStyle={styles.notificationContainer}
@@ -41,7 +44,8 @@ export class NotificationTab extends React.PureComponent<Props, IAssetNotificati
   public onNotificationClicked = (id: number): void => {};
 
   public getAssetNotifications = async (): Promise<void> => {
-    const response = await DashboardRepository.getAssetNotifications();
+    const { limit, offset } = this.state;
+    const response = await DashboardRepository.getAssetNotifications(limit, offset);
     this.setState({ notifications: response });
   };
 }
