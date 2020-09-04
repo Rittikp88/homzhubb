@@ -59,7 +59,7 @@ describe('Property Details Item Component', () => {
   });
 
   it('should call onCarpetareaChange', () => {
-    props = { ...props, data: PropertyAssetGroupData, onCommercialPropertyChange: mock, propertyGroupSelectedIndex: 1 };
+    props = { ...props, data: PropertyAssetGroupData, onCarpetAreaChange: mock, propertyGroupSelectedIndex: 1 };
     component = shallow(<PropertyDetailsItems {...props} t={(key: string): string => key} />);
     // @ts-ignore
     component.find('[testID="txtipCarpetArea"]').prop('onChangeText')();
@@ -91,7 +91,7 @@ describe('Property Details Item Component', () => {
   });
 
   it('should call onAreaUnitChange', () => {
-    props = { ...props, data: PropertyAssetGroupData, onCommercialPropertyChange: mock, propertyGroupSelectedIndex: 1 };
+    props = { ...props, data: PropertyAssetGroupData, onCarpetAreaChange: mock, propertyGroupSelectedIndex: 1 };
     component = shallow(<PropertyDetailsItems {...props} t={(key: string): string => key} />);
     // @ts-ignore
     component.find('[testID="dpnAreaUnit"]').prop('onDonePress')();

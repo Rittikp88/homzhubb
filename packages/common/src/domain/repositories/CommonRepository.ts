@@ -1,10 +1,11 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { ICarpetAreaUnit, CountryCode } from '@homzhub/common/src/domain/models/CountryCode';
+import { CountryCode } from '@homzhub/common/src/domain/models/CountryCode';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 
 const ENDPOINTS = {
   getCountryCodes: (): string => 'countries/',
@@ -31,8 +32,9 @@ class CommonRepository {
     return ObjectMapper.deserializeArray(Currency, response);
   };
 
-  public getCarpetAreaUnits = async (): Promise<ICarpetAreaUnit[]> => {
-    return await this.apiClient.get(ENDPOINTS.carpetAreaUnits());
+  public getCarpetAreaUnits = async (): Promise<CarpetArea[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.carpetAreaUnits());
+    return ObjectMapper.deserializeArray(CarpetArea, response);
   };
 
   public getOnboarding = async (): Promise<Onboarding[]> => {

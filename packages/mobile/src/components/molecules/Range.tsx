@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { PickerItemProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
-import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Label, Slider, Text } from '@homzhub/common/src/components';
@@ -14,7 +13,7 @@ interface IRange {
 
 interface IProps {
   dropdownData: PickerItemProps[];
-  selectedUnit?: string;
+  selectedUnit?: string | number;
   isPriceRange?: boolean;
   range: IRange;
   currencySymbol?: string;
@@ -39,7 +38,7 @@ export const Range = (props: IProps): React.ReactElement => {
     onDropdownValueChange,
   } = props;
   const { t } = useTranslation();
-  const [dropdownValue, setValue] = useState('');
+  const [dropdownValue, setValue] = useState<string | number>('');
   useEffect(() => {
     if (selectedUnit) {
       setValue(selectedUnit);
@@ -51,8 +50,9 @@ export const Range = (props: IProps): React.ReactElement => {
       onDropdownValueChange(value);
     }
   };
-  const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(dropdownValue, value);
-  const getAreaValue = (value: number): string => PropertyUtils.getAreaUnit(dropdownValue, value);
+  const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(dropdownValue.toString(), value);
+  const currentCarpetAreaUnit = dropdownData.filter((obj: PickerItemProps) => obj.value === selectedUnit)[0].label;
+  const getAreaValue = (value: number): string => `${value.toLocaleString()} ${currentCarpetAreaUnit}`;
 
   const maxChanged = isPriceRange
     ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}`

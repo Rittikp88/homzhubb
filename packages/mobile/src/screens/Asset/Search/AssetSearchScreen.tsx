@@ -43,6 +43,7 @@ import {
   ITransactionRange,
 } from '@homzhub/common/src/domain/models/Search';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -103,8 +104,15 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     }
     try {
       const response = await CommonRepository.getCarpetAreaUnits();
+      const areaUnitsDropdown: IDropdownOption[] = [];
+      response.forEach((carpetArea: CarpetArea) => {
+        areaUnitsDropdown.push({
+          value: carpetArea.id,
+          label: carpetArea.title,
+        });
+      });
       this.setState({
-        areaUnits: response,
+        areaUnits: areaUnitsDropdown,
       });
     } catch (error) {
       AlertHelper.error({ message: error.message });
@@ -263,7 +271,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
     if (carpet_area) {
       carpet_area.forEach((units: ICarpetArea) => {
-        if (units.carpet_area_unit === area_unit) {
+        if (units.id === area_unit) {
           areaRange = {
             min: units.min_area,
             max: units.max_area,

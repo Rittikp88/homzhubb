@@ -21,7 +21,12 @@ export const TenanciesAssetData = [
     latitude: 25.6207722,
     longitude: 85.1280892,
     carpet_area: 2500.0,
-    carpet_area_unit: 'SQ_FT',
+    carpet_area_unit: {
+      id: 1,
+      name: 'SQ_FT',
+      label: 'Square feet',
+      title: 'Sq.ft',
+    },
     floor_number: 2,
     total_floors: 3,
     asset_type: {

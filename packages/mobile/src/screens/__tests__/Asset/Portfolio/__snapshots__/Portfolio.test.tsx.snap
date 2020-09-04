@@ -377,7 +377,12 @@ exports[`Portfolio Screen should render snapshot for tenancies 1`] = `
                     ],
                     "block_number": "B",
                     "carpet_area": 2500,
-                    "carpet_area_unit": "SQ_FT",
+                    "carpet_area_unit": Object {
+                      "id": 1,
+                      "label": "Square feet",
+                      "name": "SQ_FT",
+                      "title": "Sq.ft",
+                    },
                     "construction_year": null,
                     "description": "",
                     "digital_id": "8fad8389-6893-411a-bd4a-4b1575523d4a",

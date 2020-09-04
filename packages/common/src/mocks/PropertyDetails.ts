@@ -188,7 +188,12 @@ export const assetDetail = {
   latitude: '0.9999',
   longitude: '0.24444',
   carpet_area: '12',
-  carpet_area_unit: 'Sqt',
+  carpet_area_unit: {
+    id: 1,
+    name: 'SQ_FT',
+    label: 'Square feet',
+    title: 'Sq.ft',
+  },
   floor_number: 2,
   total_floors: 5,
 };

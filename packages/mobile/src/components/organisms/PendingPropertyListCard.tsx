@@ -88,7 +88,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       floorNumber,
       item.assetGroup.name,
       carpetArea,
-      carpetAreaUnit,
+      carpetAreaUnit?.title ?? '',
       true
     );
 

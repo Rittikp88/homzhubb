@@ -158,7 +158,7 @@ export interface ISpaceAvailable {
   floorNumber: number;
   totalFloors: number;
   carpetArea: string;
-  areaUnit: string;
+  areaUnit: number;
 }
 
 export interface ISpaceAvailablePayload {
@@ -186,8 +186,8 @@ export interface IUpdateAssetDetails {
   block_number?: string;
   latitude?: string | number;
   longitude?: string | number;
-  carpet_area?: string;
-  carpet_area_unit?: string;
+  carpet_area?: number;
+  carpet_area_unit?: number;
   floor_number?: number;
   total_floors?: number;
   asset_type?: number;

@@ -15,7 +15,7 @@ export const initialSearchState: ISearchState = {
     max_price: -1,
     min_area: -1,
     max_area: -1,
-    area_unit: 'SQ_FT',
+    area_unit: 1,
     furnishing_status: '',
     room_count: [-1],
     bath_count: -1,

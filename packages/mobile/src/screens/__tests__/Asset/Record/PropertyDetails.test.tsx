@@ -85,7 +85,12 @@ describe('Property Details Screen Component', () => {
       latitude: '109.12',
       longitude: '110.12',
       carpet_area: '1000',
-      carpet_area_unit: 'Sq.ft',
+      carpet_area_unit: {
+        id: 1,
+        name: 'SQ_FT',
+        label: 'Square feet',
+        title: 'Sq.ft',
+      },
       floor_number: 1,
       total_floors: 2,
       asset_type: 0,

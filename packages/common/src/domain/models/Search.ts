@@ -1,4 +1,5 @@
 import { IMediaAttributes } from '@homzhub/common/src/domain/models/Attachment';
+import { ICarpetAreaUnit } from '@homzhub/common/src/domain/models/Asset';
 
 export enum ContactActions {
   WHATSAPP = 'WHATSAPP',
@@ -48,7 +49,10 @@ export interface IFilters {
 }
 
 export interface ICarpetArea {
-  carpet_area_unit: string;
+  id: number;
+  name: string;
+  label: string;
+  title: string;
   max_area: number;
   min_area: number;
 }
@@ -93,7 +97,7 @@ export interface IFilter {
   max_price: number;
   min_area: number;
   max_area: number;
-  area_unit: string;
+  area_unit: number;
   furnishing_status: string;
   room_count: number[];
   bath_count: number;
@@ -113,7 +117,7 @@ export interface IProperties {
   latitude: string;
   longitude: string;
   carpet_area: string;
-  carpet_area_unit: string;
+  carpet_area_unit: ICarpetAreaUnit;
   floor_number: number;
   total_floors: number;
   asset_type: IAssetTypes;

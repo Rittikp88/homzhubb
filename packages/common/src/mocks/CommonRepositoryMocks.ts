@@ -36,35 +36,33 @@ export const currencyCodes = [
 
 export const carpetAreaUnits = [
   {
-    label: 'Sq.ft',
-    value: 'SQ_FT',
+    id: 1,
+    name: 'SQ_FT',
+    label: 'Square Feet',
+    title: 'Sq.ft',
   },
   {
-    label: 'Sq.yard',
-    value: 'SQ_YARD',
+    id: 2,
+    name: 'SQ_M',
+    label: 'Square Meter',
+    title: 'Sq.m',
   },
   {
-    label: 'Sq.m',
-    value: 'SQ_M',
+    id: 3,
+    name: 'SQ_YARD',
+    label: 'Square Yard',
+    title: 'Sq.yard',
   },
   {
-    label: 'Cents',
-    value: 'CENTS',
-  },
-  {
-    label: 'Biswa',
-    value: 'BISWA',
-  },
-  {
+    id: 4,
+    name: 'ACRES',
     label: 'Acres',
-    value: 'ACRES',
+    title: 'Acres',
   },
   {
+    id: 5,
+    name: 'HECTARES',
     label: 'Hectares',
-    value: 'HECTARES',
-  },
-  {
-    label: 'Kattha',
-    value: 'KATTHA',
+    title: 'Hectares',
   },
 ];

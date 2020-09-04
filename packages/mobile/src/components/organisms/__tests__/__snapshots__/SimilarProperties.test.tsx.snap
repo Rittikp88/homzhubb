@@ -36,7 +36,12 @@ exports[`SimilarProperties should match snapshot for renderItem 1`] = `
       },
       "block_number": "B",
       "carpet_area": "5000",
-      "carpet_area_unit": "Sq.ft",
+      "carpet_area_unit": Object {
+        "id": 1,
+        "label": "Square feet",
+        "name": "SQ_FT",
+        "title": "Sq.ft",
+      },
       "floor_number": 1,
       "id": 1,
       "images": Array [
@@ -115,7 +120,12 @@ exports[`SimilarProperties should match snapshot with similar properties 1`] = `
           },
           "block_number": "B",
           "carpet_area": "5000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -164,7 +174,12 @@ exports[`SimilarProperties should match snapshot with similar properties 1`] = `
           },
           "block_number": "B",
           "carpet_area": "2000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 2,
           "id": 2,
           "images": Array [

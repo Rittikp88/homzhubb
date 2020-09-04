@@ -349,7 +349,12 @@ Asset {
   ],
   "_blockNumber": "B",
   "_carpetArea": 5000,
-  "_carpetAreaUnit": "SQ_FT",
+  "_carpetAreaUnit": CarpetArea {
+    "_id": 1,
+    "_label": "Square feet",
+    "_name": "SQ_FT",
+    "_title": "Sq.ft",
+  },
   "_contacts": User {
     "_accessToken": "",
     "_countryCode": "+91",
@@ -679,7 +684,12 @@ Asset {
   ],
   "_blockNumber": "B",
   "_carpetArea": 5000,
-  "_carpetAreaUnit": "SQ_FT",
+  "_carpetAreaUnit": CarpetArea {
+    "_id": 1,
+    "_label": "Square feet",
+    "_name": "SQ_FT",
+    "_title": "Sq.ft",
+  },
   "_contacts": User {
     "_accessToken": "",
     "_countryCode": "+91",
@@ -987,7 +997,12 @@ Array [
     ],
     "_blockNumber": "B",
     "_carpetArea": 5000,
-    "_carpetAreaUnit": "SQ_FT",
+    "_carpetAreaUnit": CarpetArea {
+      "_id": 1,
+      "_label": "Square feet",
+      "_name": "SQ_FT",
+      "_title": "Sq.ft",
+    },
     "_contacts": User {
       "_accessToken": "",
       "_countryCode": "+91",
@@ -1296,7 +1311,12 @@ Array [
     ],
     "_blockNumber": "B",
     "_carpetArea": 5000,
-    "_carpetAreaUnit": "SQ_FT",
+    "_carpetAreaUnit": CarpetArea {
+      "_id": 1,
+      "_label": "Square feet",
+      "_name": "SQ_FT",
+      "_title": "Sq.ft",
+    },
     "_contacts": User {
       "_accessToken": "",
       "_countryCode": "+91",
@@ -1691,7 +1711,12 @@ Asset {
   ],
   "_blockNumber": "B",
   "_carpetArea": 5000,
-  "_carpetAreaUnit": "SQ_FT",
+  "_carpetAreaUnit": CarpetArea {
+    "_id": 1,
+    "_label": "Square feet",
+    "_name": "SQ_FT",
+    "_title": "Sq.ft",
+  },
   "_contacts": User {
     "_accessToken": "",
     "_countryCode": "+91",

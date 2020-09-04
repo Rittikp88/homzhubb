@@ -104,7 +104,7 @@ exports[`Property Details Screen Component should render on space value change 1
               },
             ]
           }
-          onCommercialPropertyChange={[Function]}
+          onCarpetAreaChange={[Function]}
           onPropertyGroupChange={[Function]}
           onPropertyGroupTypeChange={[Function]}
           onSpaceAvailableValueChange={[Function]}
@@ -112,7 +112,7 @@ exports[`Property Details Screen Component should render on space value change 1
           propertyGroupTypeSelectedIndex={0}
           spaceAvailable={
             Object {
-              "areaUnit": "SQ_FT",
+              "areaUnit": 1,
               "balcony": 1,
               "bathroom": 1,
               "bedroom": 1,
@@ -255,7 +255,7 @@ exports[`Property Details Screen Component should render property details screen
               },
             ]
           }
-          onCommercialPropertyChange={[Function]}
+          onCarpetAreaChange={[Function]}
           onPropertyGroupChange={[Function]}
           onPropertyGroupTypeChange={[Function]}
           onSpaceAvailableValueChange={[Function]}
@@ -263,7 +263,7 @@ exports[`Property Details Screen Component should render property details screen
           propertyGroupTypeSelectedIndex={1}
           spaceAvailable={
             Object {
-              "areaUnit": "SQ_FT",
+              "areaUnit": 1,
               "balcony": 0,
               "bathroom": 0,
               "bedroom": 0,
@@ -413,7 +413,7 @@ exports[`Property Details Screen Component should render property details screen
               },
             ]
           }
-          onCommercialPropertyChange={[Function]}
+          onCarpetAreaChange={[Function]}
           onPropertyGroupChange={[Function]}
           onPropertyGroupTypeChange={[Function]}
           onSpaceAvailableValueChange={[Function]}
@@ -421,7 +421,7 @@ exports[`Property Details Screen Component should render property details screen
           propertyGroupTypeSelectedIndex={0}
           spaceAvailable={
             Object {
-              "areaUnit": "SQ_FT",
+              "areaUnit": 1,
               "balcony": 0,
               "bathroom": 0,
               "bedroom": 0,

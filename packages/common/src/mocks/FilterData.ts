@@ -63,7 +63,10 @@ export const FilterData = {
     ],
     carpet_area: [
       {
-        carpet_area_unit: 'SQ_FT',
+        id: 1,
+        name: 'SQ_FT',
+        label: 'Square feet',
+        title: 'Sq.ft',
         min_area: 121.0,
         max_area: 12345.0,
       },
@@ -80,7 +83,7 @@ export const SearchFilter = {
   max_price: -1,
   min_area: -1,
   max_area: -1,
-  area_unit: 'SQ_FT',
+  area_unit: 1,
   furnishing_status: '',
   room_count: [-1],
   bath_count: -1,

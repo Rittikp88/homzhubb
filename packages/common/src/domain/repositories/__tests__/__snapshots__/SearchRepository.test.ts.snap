@@ -52,9 +52,12 @@ Object {
     },
     "carpet_area": Array [
       Object {
-        "carpet_area_unit": "SQ_FT",
+        "id": 1,
+        "label": "Square feet",
         "max_area": 12345,
         "min_area": 121,
+        "name": "SQ_FT",
+        "title": "Sq.ft",
       },
     ],
     "transaction_type": Array [
@@ -292,7 +295,12 @@ AssetSearch {
       ],
       "_blockNumber": "B",
       "_carpetArea": 5000,
-      "_carpetAreaUnit": "SQ_FT",
+      "_carpetAreaUnit": CarpetArea {
+        "_id": 1,
+        "_label": "Square feet",
+        "_name": "SQ_FT",
+        "_title": "Sq.ft",
+      },
       "_contacts": User {
         "_accessToken": "",
         "_countryCode": "+91",
@@ -608,7 +616,12 @@ AssetSearch {
       ],
       "_blockNumber": "B",
       "_carpetArea": 5000,
-      "_carpetAreaUnit": "SQ_FT",
+      "_carpetAreaUnit": CarpetArea {
+        "_id": 1,
+        "_label": "Square feet",
+        "_name": "SQ_FT",
+        "_title": "Sq.ft",
+      },
       "_contacts": User {
         "_accessToken": "",
         "_countryCode": "+91",

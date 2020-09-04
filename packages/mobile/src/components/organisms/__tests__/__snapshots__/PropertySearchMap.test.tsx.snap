@@ -65,7 +65,12 @@ exports[`PropertySearchMap should call on onFavorite 1`] = `
           },
           "block_number": "B",
           "carpet_area": "5000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -114,7 +119,12 @@ exports[`PropertySearchMap should call on onFavorite 1`] = `
           },
           "block_number": "B",
           "carpet_area": "2000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 2,
           "id": 2,
           "images": Array [
@@ -234,7 +244,12 @@ exports[`PropertySearchMap should match snapshot 1`] = `
           },
           "block_number": "B",
           "carpet_area": "5000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -283,7 +298,12 @@ exports[`PropertySearchMap should match snapshot 1`] = `
           },
           "block_number": "B",
           "carpet_area": "2000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 2,
           "id": 2,
           "images": Array [
@@ -403,7 +423,12 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
           },
           "block_number": "B",
           "carpet_area": "5000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -452,7 +477,12 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
           },
           "block_number": "B",
           "carpet_area": "2000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 2,
           "id": 2,
           "images": Array [
@@ -572,7 +602,12 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
           },
           "block_number": "B",
           "carpet_area": "5000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -621,7 +656,12 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
           },
           "block_number": "B",
           "carpet_area": "2000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 2,
           "id": 2,
           "images": Array [
@@ -741,7 +781,12 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
           },
           "block_number": "B",
           "carpet_area": "5000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -790,7 +835,12 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
           },
           "block_number": "B",
           "carpet_area": "2000",
-          "carpet_area_unit": "Sq.ft",
+          "carpet_area_unit": Object {
+            "id": 1,
+            "label": "Square feet",
+            "name": "SQ_FT",
+            "title": "Sq.ft",
+          },
           "floor_number": 2,
           "id": 2,
           "images": Array [

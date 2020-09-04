@@ -62,37 +62,35 @@ Array [
 
 exports[`CommonRepository should fetch a list of unit areas 1`] = `
 Array [
-  Object {
-    "label": "Sq.ft",
-    "value": "SQ_FT",
+  CarpetArea {
+    "_id": 1,
+    "_label": "Square Feet",
+    "_name": "SQ_FT",
+    "_title": "Sq.ft",
   },
-  Object {
-    "label": "Sq.yard",
-    "value": "SQ_YARD",
+  CarpetArea {
+    "_id": 2,
+    "_label": "Square Meter",
+    "_name": "SQ_M",
+    "_title": "Sq.m",
   },
-  Object {
-    "label": "Sq.m",
-    "value": "SQ_M",
+  CarpetArea {
+    "_id": 3,
+    "_label": "Square Yard",
+    "_name": "SQ_YARD",
+    "_title": "Sq.yard",
   },
-  Object {
-    "label": "Cents",
-    "value": "CENTS",
+  CarpetArea {
+    "_id": 4,
+    "_label": "Acres",
+    "_name": "ACRES",
+    "_title": "Acres",
   },
-  Object {
-    "label": "Biswa",
-    "value": "BISWA",
-  },
-  Object {
-    "label": "Acres",
-    "value": "ACRES",
-  },
-  Object {
-    "label": "Hectares",
-    "value": "HECTARES",
-  },
-  Object {
-    "label": "Kattha",
-    "value": "KATTHA",
+  CarpetArea {
+    "_id": 5,
+    "_label": "Hectares",
+    "_name": "HECTARES",
+    "_title": "Hectares",
   },
 ]
 `;

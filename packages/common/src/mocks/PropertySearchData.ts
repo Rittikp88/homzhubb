@@ -11,7 +11,12 @@ export const PropertySearchData = [
     latitude: '25.61900000',
     longitude: '85.12300000',
     carpet_area: '5000',
-    carpet_area_unit: 'Sq.ft',
+    carpet_area_unit: {
+      id: 1,
+      name: 'SQ_FT',
+      label: 'Square feet',
+      title: 'Sq.ft',
+    },
     floor_number: 1,
     total_floors: 4,
     asset_type: {
@@ -62,7 +67,12 @@ export const PropertySearchData = [
     latitude: '25.31400000',
     longitude: '85.12350000',
     carpet_area: '2000',
-    carpet_area_unit: 'Sq.ft',
+    carpet_area_unit: {
+      id: 1,
+      name: 'SQ_FT',
+      label: 'Square feet',
+      title: 'Sq.ft',
+    },
     floor_number: 2,
     total_floors: 3,
     asset_type: {

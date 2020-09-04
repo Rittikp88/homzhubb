@@ -240,6 +240,7 @@ exports[`Property Details Item Component should render property details items co
         }
         iconColor="#99A4AF"
         iconSize={16}
+        listHeight={889.3333333333334}
         listTitle="selectAreaUnit"
         onDonePress={[Function]}
         testID="dpnAreaUnit"

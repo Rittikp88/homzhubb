@@ -25,7 +25,7 @@ interface IPropertyDetailsItemsProps {
   onPropertyGroupChange: (index: string | number) => void;
   onPropertyGroupTypeChange: (index: string | number) => void;
   onSpaceAvailableValueChange: (item: IPropertyTypes, index: string | number) => void;
-  onCommercialPropertyChange?: (type: string, value: string | number) => void;
+  onCarpetAreaChange?: (type: string, value: string | number) => void;
 }
 
 type Props = IPropertyDetailsItemsProps & WithTranslation;
@@ -148,7 +148,7 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
             keyboardType="number-pad"
             style={[styles.textInput, carpetAreaError && styles.errorTextInput]}
             placeholder={t('enterCarpetArea')}
-            onChangeText={this.onCarpetAreaChange}
+            onChangeText={this.bubbleCarpetAreaChange}
             maxLength={5}
             testID="txtipCarpetArea"
           />
@@ -168,6 +168,7 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
             listTitle={t('selectAreaUnit')}
             onDonePress={this.onAreaUnitChange}
             iconSize={16}
+            listHeight={theme.viewport.height / 1.5}
             iconColor={theme.colors.darkTint7}
             containerStyle={styles.dropdownContainer}
             testID="dpnAreaUnit"
@@ -175,13 +176,6 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
         </View>
       </View>
     );
-  };
-
-  public onCarpetAreaChange = (value: string | number): void => {
-    const { onCommercialPropertyChange } = this.props;
-    if (onCommercialPropertyChange) {
-      onCommercialPropertyChange('carpetArea', value);
-    }
   };
 
   public onHorizontalPickerValueChange = (item: IPropertyTypes, index: string | number): void => {
@@ -200,9 +194,16 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
   };
 
   public onAreaUnitChange = (value: string | number): void => {
-    const { onCommercialPropertyChange } = this.props;
-    if (onCommercialPropertyChange) {
-      onCommercialPropertyChange('areaUnit', value);
+    const { onCarpetAreaChange } = this.props;
+    if (onCarpetAreaChange) {
+      onCarpetAreaChange('areaUnit', value);
+    }
+  };
+
+  public bubbleCarpetAreaChange = (value: string | number): void => {
+    const { onCarpetAreaChange } = this.props;
+    if (onCarpetAreaChange) {
+      onCarpetAreaChange('carpetArea', value);
     }
   };
 

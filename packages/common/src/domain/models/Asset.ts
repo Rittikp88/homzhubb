@@ -9,6 +9,14 @@ import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
+import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
+
+export interface ICarpetAreaUnit {
+  id: number;
+  label: string;
+  name: string;
+  title: string;
+}
 
 export interface IAsset {
   id: number;
@@ -19,8 +27,8 @@ export interface IAsset {
   block_number: string;
   latitude: string;
   longitude: string;
-  carpet_area: string;
-  carpet_area_unit: string;
+  carpet_area: number;
+  carpet_area_unit: ICarpetAreaUnit;
   floor_number: number;
   total_floors: number;
   asset_type: IData;
@@ -94,8 +102,8 @@ export class Asset {
   @JsonProperty('longitude', Number)
   private _longitude = 0;
 
-  @JsonProperty('carpet_area_unit', String, true)
-  private _carpetAreaUnit: string | null = null;
+  @JsonProperty('carpet_area_unit', CarpetArea, true)
+  private _carpetAreaUnit: CarpetArea | null = null;
 
   @JsonProperty('carpet_area', Number, true)
   private _carpetArea: number | null = null;
@@ -186,7 +194,7 @@ export class Asset {
     return this._longitude;
   }
 
-  get carpetAreaUnit(): string | null {
+  get carpetAreaUnit(): CarpetArea | null {
     return this._carpetAreaUnit;
   }
 

@@ -26,6 +26,7 @@ import PropertyDetailsItems from '@homzhub/mobile/src/components/organisms/Prope
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
+import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 
 interface IDispatchProps {
   getPropertyDetails: () => void;
@@ -62,7 +63,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
       floorNumber: 0,
       totalFloors: 0,
       carpetArea: '',
-      areaUnit: 'SQ_FT',
+      areaUnit: 1,
     },
     carpetAreaError: false,
   };
@@ -122,7 +123,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
             onPropertyGroupChange={this.onPropertyGroupChange}
             onPropertyGroupTypeChange={this.onPropertyGroupTypeChange}
             onSpaceAvailableValueChange={this.onSpaceAvailableValueChange}
-            onCommercialPropertyChange={this.updateSpaceAvailable}
+            onCarpetAreaChange={this.updateSpaceAvailable}
           />
         </ScrollView>
         <WithShadowView outerViewStyle={styles.shadowView}>
@@ -200,7 +201,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
       let requestPayload: IUpdateAssetDetails = {
         asset_type: Number(property[propertyGroupSelectedIndex].asset_types[propertyGroupTypeSelectedIndex].id),
         spaces,
-        carpet_area: carpetArea.toString(),
+        carpet_area: Number(carpetArea),
         carpet_area_unit: areaUnit,
       };
       if (!carpetArea) {
@@ -251,9 +252,16 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
 
   public getCarpetAreaUnits = async (): Promise<void> => {
     try {
-      const response = await CommonRepository.getCarpetAreaUnits();
+      const response: CarpetArea[] = await CommonRepository.getCarpetAreaUnits();
+      const areaUnitsDropdown: IDropdownOption[] = [];
+      response.forEach((carpetArea: CarpetArea) => {
+        areaUnitsDropdown.push({
+          value: carpetArea.id,
+          label: carpetArea.title,
+        });
+      });
       this.setState({
-        areaUnits: response,
+        areaUnits: areaUnitsDropdown,
       });
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);

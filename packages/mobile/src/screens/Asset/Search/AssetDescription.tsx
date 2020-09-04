@@ -238,7 +238,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       floorNumber,
       name,
       carpetArea,
-      carpetAreaUnit,
+      carpetAreaUnit?.title ?? '',
       true
     );
 
