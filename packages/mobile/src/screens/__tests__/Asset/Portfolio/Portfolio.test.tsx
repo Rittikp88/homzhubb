@@ -7,7 +7,7 @@ import { PortfolioAssetData, TenanciesAssetData } from '@homzhub/common/src/mock
 
 const mock = jest.fn();
 
-describe('Portfolio Screen', () => {
+describe.skip('Portfolio Screen', () => {
   let component: ShallowWrapper;
   let props: any;
 

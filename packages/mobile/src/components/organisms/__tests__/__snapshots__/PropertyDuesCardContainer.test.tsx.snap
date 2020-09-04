@@ -121,13 +121,14 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 60,
+            "flex": 0,
           }
         }
         title="assetFinancial:payNow"
         titleStyle={
           Object {
-            "flexDirection": "row",
+            "marginHorizontal": 24,
+            "marginVertical": 6,
           }
         }
         type="primary"
@@ -197,13 +198,14 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 60,
+            "flex": 0,
           }
         }
         title="assetFinancial:payNow"
         titleStyle={
           Object {
-            "flexDirection": "row",
+            "marginHorizontal": 24,
+            "marginVertical": 6,
           }
         }
         type="primary"
@@ -273,13 +275,14 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Button
         containerStyle={
           Object {
-            "marginLeft": 60,
+            "flex": 0,
           }
         }
         title="assetFinancial:payNow"
         titleStyle={
           Object {
-            "flexDirection": "row",
+            "marginHorizontal": 24,
+            "marginVertical": 6,
           }
         }
         type="primary"

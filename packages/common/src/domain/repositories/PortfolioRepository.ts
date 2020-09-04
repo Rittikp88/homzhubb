@@ -4,12 +4,14 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
+import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
 
 const ENDPOINTS = {
   getAssetMetrics: (): string => 'portfolio/management-tab/',
   getAssetFilter: (): string => 'portfolio/asset-filters/',
   getTenancies: (): string => 'portfolio/tenancies/',
   getAssetDetails: (): string => 'portfolio/asset-details/',
+  getTenantHistory: (id: number): string => `assets/${id}/lease-tenants/`,
 };
 
 class PortfolioRepository {
@@ -37,6 +39,11 @@ class PortfolioRepository {
   public getUserAssetDetails = async (status: string): Promise<Asset[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getAssetDetails(), { status });
     return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  public getTenantHistory = async (id: number): Promise<TenantHistory[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getTenantHistory(id));
+    return ObjectMapper.deserializeArray(TenantHistory, response);
   };
 }
 

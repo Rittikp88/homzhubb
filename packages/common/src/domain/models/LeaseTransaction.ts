@@ -57,7 +57,7 @@ export class Transaction {
 }
 
 @JsonObject('LeasePeriod')
-class LeasePeriod {
+export class LeasePeriod {
   @JsonProperty('lease_start_date', String)
   private _leaseStartDate = '';
 

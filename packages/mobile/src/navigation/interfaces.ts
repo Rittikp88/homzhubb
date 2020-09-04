@@ -171,10 +171,6 @@ export interface IContactProps {
 }
 
 // Portfolio
-export interface IPropertyDetailProps {
-  propertyData: any;
-}
-
 export interface ILandingScreenProps {
   filter?: string;
 }

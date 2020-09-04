@@ -24,7 +24,7 @@ const initialCarouselData: Attachment[] = [
 
 interface IListProps {
   assetData: Asset;
-  onViewProperty?: (data: Asset) => void;
+  onViewProperty?: (id: number) => void;
   isDetailView?: boolean;
   expandedId?: number;
   onPressArrow?: (id: number) => void;
@@ -44,9 +44,9 @@ export class AssetCard extends Component<Props> {
       notifications,
       serviceTickets,
       attachments,
-      assetStatusInfo: { tag },
+      assetStatusInfo,
     } = assetData;
-    const handlePropertyView = (): void => onViewProperty && onViewProperty(assetData);
+    const handlePropertyView = (): void => onViewProperty && onViewProperty(id);
     const handleArrowPress = (): void => onPressArrow && onPressArrow(id);
     const isExpanded: boolean = expandedId === id;
     return (
@@ -55,16 +55,20 @@ export class AssetCard extends Component<Props> {
           {!isDetailView && (
             <View style={[styles.topView, isExpanded && styles.expandedView]}>
               <View style={styles.topLeftView}>
-                <Badge title={tag.label} badgeColor={tag.color} badgeStyle={styles.badgeStyle} />
+                <Badge
+                  title={assetStatusInfo?.tag.label}
+                  badgeColor={assetStatusInfo?.tag.color}
+                  badgeStyle={styles.badgeStyle}
+                />
                 <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
                 <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
                 <Label type="large" style={styles.count}>
-                  {notifications.count}
+                  {notifications?.count}
                 </Label>
                 <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
                 <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
                 <Label type="large" style={styles.count}>
-                  {serviceTickets.count}
+                  {serviceTickets?.count}
                 </Label>
               </View>
               <Icon
@@ -78,7 +82,11 @@ export class AssetCard extends Component<Props> {
           )}
           {(isExpanded || isDetailView) && this.renderAttachmentView(attachments)}
           {isDetailView && (
-            <Badge title={tag.label} badgeColor={tag.color} badgeStyle={[styles.badgeStyle, styles.detailViewBadge]} />
+            <Badge
+              title={assetStatusInfo?.tag.label}
+              badgeColor={assetStatusInfo?.tag.color}
+              badgeStyle={[styles.badgeStyle, styles.detailViewBadge]}
+            />
           )}
           <PropertyAddressCountry
             primaryAddress={projectName}

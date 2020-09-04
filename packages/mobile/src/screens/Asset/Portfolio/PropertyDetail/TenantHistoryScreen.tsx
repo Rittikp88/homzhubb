@@ -1,42 +1,61 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { debounce } from 'lodash';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { TopTabNavigatorParamList } from '@homzhub/mobile/src/navigation/TopTabs';
-import { Avatar, Button, Divider } from '@homzhub/common/src/components';
-import { EmptyState, LeaseProgress, Loader, SearchBar } from '@homzhub/mobile/src/components';
-import { TenantHistoryData } from '@homzhub/common/src/mocks/AssetData';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
+import { Avatar, Button, Divider, EmptyState } from '@homzhub/common/src/components';
+import { LeaseProgress, Loader, SearchBar } from '@homzhub/mobile/src/components';
+import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
 
-interface IState {
-  tenantHistory: any[];
+interface IStateProps {
+  assetId: number;
+  tenantHistory: TenantHistory[] | null;
+}
+
+interface IDispatchProps {
+  getTenantHistory: (payload: IGetHistoryPayload) => void;
+}
+
+interface IScreenState {
+  tenantHistory: TenantHistory[];
   searchValue: string;
   isLoading: boolean;
 }
 
 type libraryProps = NavigationScreenProps<TopTabNavigatorParamList, ScreensKeys.TenantHistoryTab>;
-type Props = WithTranslation & libraryProps;
+type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
-export class TenantHistory extends Component<Props, IState> {
-  public state = {
-    tenantHistory: TenantHistoryData,
-    searchValue: '',
-    isLoading: false,
-  };
-
+export class TenantHistoryScreen extends Component<Props, IScreenState> {
   private search = debounce(() => {
     const { searchValue, tenantHistory } = this.state;
-    const results: any[] = [];
+    const results: TenantHistory[] = [];
     tenantHistory.forEach((item) => {
-      const { tenant_user } = item;
-      if (tenant_user.full_name.includes(searchValue)) {
+      // @ts-ignore
+      if (item.tenantUser.fullName.includes(searchValue)) {
         results.push(item);
       }
     });
     this.setState({ tenantHistory: results, isLoading: false });
   }, 1000);
+
+  public state = {
+    tenantHistory: [],
+    searchValue: '',
+    isLoading: false,
+  };
+
+  public componentDidMount = (): void => {
+    this.getTenantHistoryData();
+  };
 
   public render(): React.ReactNode {
     const { t } = this.props;
@@ -49,7 +68,7 @@ export class TenantHistory extends Component<Props, IState> {
           updateValue={this.onSearch}
           containerStyle={styles.searchBar}
         />
-        {tenantHistory.length > 0 ? (
+        {tenantHistory && tenantHistory.length > 0 ? (
           <FlatList
             data={tenantHistory}
             renderItem={this.renderItem}
@@ -64,19 +83,17 @@ export class TenantHistory extends Component<Props, IState> {
     );
   }
 
-  private renderItem = ({ item }: { item: any }): React.ReactElement => {
+  private renderItem = ({ item }: { item: TenantHistory }): React.ReactElement => {
     const { t } = this.props;
-    const {
-      tenant_user: { full_name },
-    } = item;
+    const { tenantUser, leaseTransaction } = item;
     return (
       <View style={styles.content}>
-        <Avatar fullName={full_name} designation="Tenant" containerStyle={styles.avatar} />
+        <Avatar fullName={tenantUser?.fullName ?? ''} designation="Tenant" containerStyle={styles.avatar} />
         <LeaseProgress
-          progress={0.5}
+          progress={leaseTransaction?.totalSpendPeriod}
           width={theme.viewport.width > 400 ? 320 : 280}
-          fromDate="02/01/2020"
-          toDate="02/01/2020"
+          fromDate={leaseTransaction?.leaseStartDate ?? ''}
+          toDate={leaseTransaction?.leaseEndDate ?? ''}
           iconColor={theme.colors.darkTint5}
           containerStyle={styles.progressContainer}
           labelStyle={styles.progressLabel}
@@ -105,21 +122,48 @@ export class TenantHistory extends Component<Props, IState> {
   };
 
   private onSearch = (value: string): void => {
+    const { tenantHistory } = this.props;
     this.setState({ searchValue: value }, () => {
       if (value.length >= 3) {
         this.setState({ isLoading: true });
         this.search();
       }
 
-      if (value.length === 0) {
+      if (value.length === 0 && tenantHistory) {
         this.setState({
-          tenantHistory: TenantHistoryData,
+          tenantHistory,
         });
       }
     });
   };
+
+  private onHistoryCallback = (): void => {
+    const { tenantHistory } = this.props;
+    if (tenantHistory) {
+      this.setState({ tenantHistory, isLoading: false });
+    }
+  };
+
+  private getTenantHistoryData = (): void => {
+    const { assetId, getTenantHistory } = this.props;
+    this.setState({ isLoading: true });
+    getTenantHistory({ id: assetId, onCallback: this.onHistoryCallback });
+  };
 }
-export default withTranslation()(TenantHistory);
+const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    assetId: PortfolioSelectors.getCurrentAssetId(state),
+    tenantHistory: PortfolioSelectors.getTenantHistory(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getTenantHistory } = PortfolioActions;
+  return bindActionCreators({ getTenantHistory }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TenantHistoryScreen));
+
 const styles = StyleSheet.create({
   container: {
     padding: 16,

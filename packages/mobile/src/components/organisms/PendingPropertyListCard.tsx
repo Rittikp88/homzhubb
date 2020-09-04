@@ -34,6 +34,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
     const { t } = this.props;
     const currentProperty = data[currentPropertyIndex];
     const total = data.length;
+
     return (
       <View style={styles.container}>
         <View style={styles.headingView}>

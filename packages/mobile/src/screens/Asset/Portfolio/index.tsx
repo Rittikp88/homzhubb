@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, FlatList, View, PickerItemProps } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -10,6 +12,14 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
+import {
+  IGetPropertiesPayload,
+  IGetTenanciesPayload,
+  ISetAssetPayload,
+} from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Text } from '@homzhub/common/src/components';
 import {
   AnimatedProfileHeader,
@@ -20,18 +30,28 @@ import {
   StateAwareComponent,
 } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
+
+interface IStateProps {
+  tenancies: Asset[] | null;
+  properties: Asset[] | null;
+  isTenanciesLoading: boolean;
+}
+
+interface IDispatchProps {
+  getTenanciesDetails: (payload: IGetTenanciesPayload) => void;
+  getPropertyDetails: (payload: IGetPropertiesPayload) => void;
+  setCurrentAsset: (payload: ISetAssetPayload) => void;
+}
 
 interface IPortfolioState {
   isBottomSheetVisible: boolean;
   selectedFilter: string;
   metrics: AssetMetrics;
   filters: PickerItemProps[];
-  tenancies: Asset[];
-  portfolioProperties: Asset[];
   attachments: Attachment[];
   isLoading: boolean;
   isSpinnerLoading: boolean;
@@ -40,7 +60,8 @@ interface IPortfolioState {
   activeSlide: number;
 }
 
-type Props = WithTranslation & NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
+type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
+type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   public state = {
@@ -48,8 +69,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     selectedFilter: Filters.ALL,
     metrics: {} as AssetMetrics,
     filters: [],
-    tenancies: [],
-    portfolioProperties: [],
     attachments: [],
     isLoading: false,
     isSpinnerLoading: false,
@@ -61,9 +80,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   public componentDidMount = async (): Promise<void> => {
     await this.getAssetMetrics();
     await this.getAssetFilters();
-    await this.getTenancies();
-    await this.getPortfolioProperty();
-    this.verifyData();
+    this.getTenancies();
+    this.getPortfolioProperty();
     this.updateFilter();
   };
 
@@ -75,21 +93,20 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   }
 
   public render = (): React.ReactElement => {
+    const { isTenanciesLoading } = this.props;
     const { isLoading } = this.state;
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} testID="stateAware" />;
+    return (
+      <StateAwareComponent
+        loading={isTenanciesLoading || isLoading}
+        renderComponent={this.renderComponent()}
+        testID="stateAware"
+      />
+    );
   };
 
   private renderComponent = (): React.ReactElement => {
-    const { t } = this.props;
-    const {
-      selectedFilter,
-      isBottomSheetVisible,
-      metrics,
-      filters,
-      isSpinnerLoading,
-      tenancies,
-      portfolioProperties,
-    } = this.state;
+    const { t, tenancies, properties } = this.props;
+    const { selectedFilter, isBottomSheetVisible, metrics, filters, isSpinnerLoading } = this.state;
     return (
       <>
         <AnimatedProfileHeader title={t('portfolio')}>
@@ -102,8 +119,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
               onPlusIconClicked={this.handleAddProperty}
               containerStyle={styles.assetCards}
             />
-            {tenancies.length > 0 && this.renderTenancies()}
-            {portfolioProperties.length > 0 && this.renderPortfolio()}
+            {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
+            {properties && properties.length > 0 && this.renderPortfolio(properties)}
             <BottomSheetListView
               data={filters}
               selectedValue={selectedFilter}
@@ -121,24 +138,26 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     );
   };
 
-  private renderTenancies = (): React.ReactElement => {
+  private renderTenancies = (tenancies: Asset[]): React.ReactElement => {
     const { t } = this.props;
-    const { tenancies, expandedAssetId } = this.state;
-
+    const { expandedAssetId } = this.state;
+    const renderListItem = ({ item, index }: { item: Asset; index: number }): React.ReactElement =>
+      this.renderList(item, index, DataType.TENANCIES);
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('tenancies')}
         </Text>
-        <FlatList data={tenancies} renderItem={this.renderList} extraData={expandedAssetId} />
+        <FlatList data={tenancies} renderItem={renderListItem} extraData={expandedAssetId} />
       </>
     );
   };
 
-  private renderPortfolio = (): React.ReactElement => {
+  private renderPortfolio = (properties: Asset[]): React.ReactElement => {
     const { t } = this.props;
-    const { portfolioProperties, expandedAssetId } = this.state;
-
+    const { expandedAssetId } = this.state;
+    const renderListItem = ({ item, index }: { item: Asset; index: number }): React.ReactElement =>
+      this.renderList(item, index, DataType.PROPERTIES);
     return (
       <>
         <View style={styles.headingView}>
@@ -153,19 +172,20 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             testID="menu"
           />
         </View>
-        <FlatList data={portfolioProperties} renderItem={this.renderList} extraData={expandedAssetId} />
+        <FlatList data={properties} renderItem={renderListItem} extraData={expandedAssetId} />
       </>
     );
   };
 
-  private renderList = ({ item, index }: { item: Asset; index: number }): React.ReactElement => {
+  private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId } = this.state;
+    const handleViewProperty = (id: number): void => this.onViewProperty(id, type);
     return (
       <AssetCard
         assetData={item}
         key={index}
         expandedId={expandedAssetId}
-        onViewProperty={this.onViewProperty}
+        onViewProperty={handleViewProperty}
         enterFullScreen={this.onFullScreenToggle}
         onPressArrow={this.handleExpandCollapse}
       />
@@ -187,7 +207,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private onSelectFilter = (value: string): void => {
     this.setState({ selectedFilter: value, expandedAssetId: 0 }, (): void => {
-      this.getPortfolioProperty(true).then();
+      this.getPortfolioProperty(true);
     });
     this.closeBottomSheet();
   };
@@ -200,14 +220,19 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     }
   };
 
-  private onViewProperty = (data: Asset): void => {
-    const { navigation } = this.props;
-    // TODO: Rishabh- Need to discuss with shikha for saving current selected property in redux
-    navigation.navigate(ScreensKeys.PropertyDetailScreen, { propertyData: data });
+  private onViewProperty = (id: number, type: DataType): void => {
+    const { navigation, setCurrentAsset } = this.props;
+    setCurrentAsset({ id, dataType: type });
+    navigation.navigate(ScreensKeys.PropertyDetailScreen);
   };
 
-  private updateSlide = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
+  private onPropertiesCallback = (): void => {
+    this.verifyData();
+    this.setState({ isSpinnerLoading: false, isLoading: false });
+  };
+
+  private onTenanciesCallback = (): void => {
+    this.verifyData();
   };
 
   private handleExpandCollapse = (id: number): void => {
@@ -223,7 +248,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { route } = this.props;
     if (route && route.params && route.params.filter) {
       this.setState({ selectedFilter: route.params.filter, expandedAssetId: 0 }, () => {
-        this.getPortfolioProperty().then();
+        this.getPortfolioProperty();
       });
     }
   };
@@ -260,42 +285,25 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     }
   };
 
-  private getTenancies = async (): Promise<void> => {
-    this.setState({ isLoading: true });
-    try {
-      const response: Asset[] = await PortfolioRepository.getUserTenancies();
-      this.setState({ tenancies: response, isLoading: false });
-    } catch (e) {
-      this.setState({ isLoading: false });
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
-    }
+  private getTenancies = (): void => {
+    const { getTenanciesDetails } = this.props;
+    getTenanciesDetails({ onCallback: this.onTenanciesCallback });
   };
 
-  private getPortfolioProperty = async (isFromFilter?: boolean): Promise<void> => {
+  private getPortfolioProperty = (isFromFilter?: boolean): void => {
     const { selectedFilter } = this.state;
+    const { getPropertyDetails } = this.props;
     if (isFromFilter) {
       this.setState({ isSpinnerLoading: true });
     } else {
       this.setState({ isLoading: true });
     }
-    try {
-      const response: Asset[] = await PortfolioRepository.getUserAssetDetails(selectedFilter);
-      this.setState({ portfolioProperties: response });
-      if (isFromFilter) {
-        this.setState({ isSpinnerLoading: false });
-      } else {
-        this.setState({ isLoading: false });
-      }
-    } catch (e) {
-      if (isFromFilter) {
-        this.setState({ isSpinnerLoading: false });
-      } else {
-        this.setState({ isLoading: false });
-      }
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
-    }
+
+    getPropertyDetails({ status: selectedFilter, onCallback: this.onPropertiesCallback });
+  };
+
+  private updateSlide = (slideNumber: number): void => {
+    this.setState({ activeSlide: slideNumber });
   };
 
   private handleBottomSheet = (): void => {
@@ -309,9 +317,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private verifyData = (): void => {
-    const { navigation } = this.props;
-    const { tenancies, portfolioProperties } = this.state;
-    if (tenancies.length === 0 && portfolioProperties.length === 0) {
+    const { navigation, tenancies, properties } = this.props;
+    if ((!tenancies && !properties) || (tenancies && tenancies.length === 0 && properties && properties.length === 0)) {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -322,7 +329,23 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(Portfolio);
+const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    tenancies: PortfolioSelectors.getTenancies(state),
+    properties: PortfolioSelectors.getProperties(state),
+    isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getTenanciesDetails, getPropertyDetails, setCurrentAsset } = PortfolioActions;
+  return bindActionCreators({ getTenanciesDetails, getPropertyDetails, setCurrentAsset }, dispatch);
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(Portfolio));
 
 const styles = StyleSheet.create({
   assetCards: {

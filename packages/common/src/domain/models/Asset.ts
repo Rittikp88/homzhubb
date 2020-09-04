@@ -18,6 +18,11 @@ export interface ICarpetAreaUnit {
   title: string;
 }
 
+export enum DataType {
+  TENANCIES = 'TENANCIES',
+  PROPERTIES = 'PROPERTIES',
+}
+
 export interface IAsset {
   id: number;
   project_name: string;

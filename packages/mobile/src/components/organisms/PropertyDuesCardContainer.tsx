@@ -113,10 +113,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   payNowBtnStyles: {
-    marginLeft: 60,
+    flex: 0,
   },
   payNowTitleStyles: {
-    flexDirection: 'row',
+    marginVertical: 6,
+    marginHorizontal: 24,
   },
   walletIconStyle: {
     marginRight: 10,
