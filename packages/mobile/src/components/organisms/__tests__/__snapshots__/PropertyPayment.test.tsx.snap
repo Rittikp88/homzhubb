@@ -2,14 +2,18 @@
 
 exports[`Property Payment Component should render button 1`] = `
 <Fragment>
-  <Button
+  <Text
+    type="large"
+  >
+    Pay Rs. 1000
+  </Text>
+  <withI18nextTranslation(PaymentGateway)
     containerStyle={
       Object {
         "flex": 0,
         "margin": 16,
       }
     }
-    onPress={[MockFunction]}
     title="Pay Now"
     type="primary"
   />
@@ -18,8 +22,20 @@ exports[`Property Payment Component should render button 1`] = `
 
 exports[`Property Payment Component should render property payment component 1`] = `
 <Fragment>
-  <PaymentSuccess
-    onClickLink={[MockFunction]}
+  <Text
+    type="large"
+  >
+    Pay Rs. 1000
+  </Text>
+  <withI18nextTranslation(PaymentGateway)
+    containerStyle={
+      Object {
+        "flex": 0,
+        "margin": 16,
+      }
+    }
+    title="Pay Now"
+    type="primary"
   />
 </Fragment>
 `;

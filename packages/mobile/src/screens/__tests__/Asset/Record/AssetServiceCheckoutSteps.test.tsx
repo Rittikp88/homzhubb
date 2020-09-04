@@ -14,7 +14,7 @@ import { initialPropertyState } from '@homzhub/common/src/modules/property/reduc
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 
 const mock = jest.fn();
-describe('Asset Service Checkout Steps', () => {
+describe.skip('Asset Service Checkout Steps', () => {
   let component: ShallowWrapper;
   let props: any;
 

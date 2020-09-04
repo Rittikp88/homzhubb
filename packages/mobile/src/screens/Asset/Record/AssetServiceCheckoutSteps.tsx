@@ -3,21 +3,28 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertySelector } from '@homzhub/common/src/modules/property/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, Label, Text, WithShadowView } from '@homzhub/common/src/components';
-import { PropertyPayment, Header, StepIndicatorComponent, Loader } from '@homzhub/mobile/src/components';
+import { Label, Text } from '@homzhub/common/src/components';
+import {
+  PropertyPayment,
+  Header,
+  StepIndicatorComponent,
+  Loader,
+  PaymentSuccess,
+} from '@homzhub/mobile/src/components';
 import CheckoutAssetDetails from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IServiceCategory, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
+import { IServiceCategory, IServiceDetail, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
 import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 interface IStringForStep {
   title: string;
@@ -36,6 +43,8 @@ interface IStateProps {
   propertyId: number;
   termId: number;
   serviceCategory: IServiceCategory;
+  serviceDetails: IServiceDetail[];
+  userDetails: User | null;
 }
 
 interface IDispatchProps {
@@ -53,8 +62,8 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
   };
 
   public render = (): React.ReactNode => {
-    const { t } = this.props;
-    const { isPaymentSuccess, isLoading } = this.state;
+    const { isLoading } = this.state;
+
     return (
       <>
         {this.renderHeader()}
@@ -62,16 +71,6 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
           {this.renderTitle()}
           {this.renderContent()}
         </ScrollView>
-        {isPaymentSuccess && (
-          <WithShadowView outerViewStyle={styles.shadowView}>
-            <Button
-              type="primary"
-              title={t('previewProperty')}
-              containerStyle={styles.buttonStyle}
-              onPress={this.previewProperty}
-            />
-          </WithShadowView>
-        )}
         <Loader visible={isLoading} />
       </>
     );
@@ -176,13 +175,11 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
           />
         );
       case ServiceStepTypes.PAYMENT_TOKEN_AMOUNT:
-        return (
-          <PropertyPayment
-            onPayNow={this.onPaymentSuccess}
-            isSuccess={isPaymentSuccess}
-            navigateToPropertyHelper={this.navigateToPropertyHelper}
-            testID="propertyPayment"
-          />
+        return isPaymentSuccess ? (
+          <PaymentSuccess onPreviewPropertyPress={this.previewProperty} onClickLink={this.navigateToPropertyHelper} />
+        ) : (
+          // Todo (Sriram 2020.09.04) Pass relevant data
+          <PropertyPayment onPaymentSuccess={this.onPaymentSuccess} testID="propertyPayment" />
         );
       default:
         return null;
@@ -276,12 +273,22 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentPropertyId, getTermId, getServiceStepsDetails, getServiceCategory } = PropertySelector;
+  const {
+    getCurrentPropertyId,
+    getTermId,
+    getServiceStepsDetails,
+    getServiceCategory,
+    getServiceDetails,
+  } = PropertySelector;
+  const { getUserDetails } = UserSelector;
+
   return {
     propertyId: getCurrentPropertyId(state),
     termId: getTermId(state),
     steps: getServiceStepsDetails(state),
     serviceCategory: getServiceCategory(state),
+    serviceDetails: getServiceDetails(state),
+    userDetails: getUserDetails(state),
   };
 };
 
@@ -317,14 +324,5 @@ const styles = StyleSheet.create({
   },
   textColor: {
     color: theme.colors.darkTint3,
-  },
-  shadowView: {
-    paddingTop: 10,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
-    paddingBottom: 0,
-  },
-  buttonStyle: {
-    flex: 0,
-    margin: 16,
   },
 });

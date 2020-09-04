@@ -1,25 +1,27 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Button } from '@homzhub/common/src/components';
-import { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
-import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
+import { Text } from '@homzhub/common/src/components';
+import { PaymentGateway, IPersonalData } from '@homzhub/mobile/src/components';
 
 interface IPaymentProps {
-  onPayNow: () => void;
-  isSuccess: boolean;
-  navigateToPropertyHelper: (markdownKey: MarkdownType) => void;
+  amount?: string;
+  currency?: string;
+  personalData?: IPersonalData;
+  onPaymentSuccess: () => void;
   testID?: string;
 }
 
 export const PropertyPayment = (props: IPaymentProps): React.ReactElement => {
-  const { isSuccess, onPayNow, navigateToPropertyHelper } = props;
+  const { onPaymentSuccess } = props;
   return (
     <>
-      {isSuccess ? (
-        <PaymentSuccess onClickLink={navigateToPropertyHelper} />
-      ) : (
-        <Button type="primary" title="Pay Now" containerStyle={styles.buttonStyle} onPress={onPayNow} />
-      )}
+      <Text type="large">Pay Rs. 1000</Text>
+      <PaymentGateway
+        type="primary"
+        title="Pay Now"
+        containerStyle={styles.buttonStyle}
+        onPaymentSuccess={onPaymentSuccess}
+      />
     </>
   );
 };

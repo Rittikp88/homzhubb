@@ -1,19 +1,23 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Text } from '@homzhub/common/src/components';
-import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
+import { Button, Divider, Text } from '@homzhub/common/src/components';
 
 interface IProps {
   onClickLink: (markdownKey: MarkdownType) => void;
+  onPreviewPropertyPress: () => void;
 }
 
 export const PaymentSuccess = (props: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-  const handleLink = (): void => props.onClickLink('visit');
+  const { onClickLink, onPreviewPropertyPress } = props;
+  const handleLink = (): void => onClickLink('visit');
+
   return (
     <View style={styles.container}>
       <View style={styles.doneView}>
@@ -38,6 +42,14 @@ export const PaymentSuccess = (props: IProps): React.ReactElement => {
           {t('common:why')}
         </Text>
       </Text>
+      <View style={styles.shadowView}>
+        <Button
+          type="primary"
+          title={t('previewProperty')}
+          containerStyle={styles.buttonStyle}
+          onPress={onPreviewPropertyPress}
+        />
+      </View>
     </View>
   );
 };
@@ -77,5 +89,14 @@ const styles = StyleSheet.create({
   },
   linkText: {
     color: theme.colors.primaryColor,
+  },
+  shadowView: {
+    paddingTop: 10,
+    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
+    paddingBottom: 0,
+  },
+  buttonStyle: {
+    flex: 0,
+    margin: 16,
   },
 });

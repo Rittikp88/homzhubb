@@ -1,6 +1,6 @@
 // Atoms
 export { AmenitiesIcon } from '@homzhub/common/src/components/atoms/AmenitiesIcon';
-export { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
+export { Button, ButtonType, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 export { Badge } from '@homzhub/common/src/components/atoms/Badge';
 export { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker';
 export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';

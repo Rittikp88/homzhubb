@@ -7,8 +7,8 @@ export class TenantHistory {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('lease_listing', Number)
-  private _leaseListing = 0;
+  @JsonProperty('lease_listing_id', Number, true)
+  private _leaseListingId = 0;
 
   @JsonProperty('lease_transaction', LeasePeriod)
   private _leaseTransaction: LeasePeriod | null = null;
@@ -20,8 +20,8 @@ export class TenantHistory {
     return this._id;
   }
 
-  get leaseListing(): number {
-    return this._leaseListing;
+  get leaseListingId(): number {
+    return this._leaseListingId;
   }
 
   get leaseTransaction(): LeasePeriod | null {
