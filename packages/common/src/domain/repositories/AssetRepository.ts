@@ -5,9 +5,11 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   ICreateAssetDetails,
   ICreateAssetResult,
+  ICreateDocumentPayload,
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import {
   ILeaseTermDetails,
@@ -56,6 +58,9 @@ const ENDPOINTS = {
     `lease-listings/${propertyTermId}/similar-properties/`,
   getSimilarPropertiesForSale: (propertyTermId: number): string =>
     `sale-listings/${propertyTermId}/similar-properties/`,
+  assetDocument: (propertyId: number): string => `assets/${propertyId}/asset-documents/`,
+  deleteAssetDocument: (propertyId: number, documentId: number): string =>
+    `assets/${propertyId}/asset-documents/${documentId}/`,
 };
 
 class AssetRepository {
@@ -191,6 +196,20 @@ class AssetRepository {
   public getPropertiesByStatus = async (status?: string): Promise<Asset[]> => {
     const response = await this.apiClient.get(ENDPOINTS.asset(), { status });
     return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  public createAssetDocument = async (payload: ICreateDocumentPayload): Promise<void> => {
+    const { propertyId, documentData } = payload;
+    await this.apiClient.post(ENDPOINTS.assetDocument(propertyId), documentData);
+  };
+
+  public getAssetDocument = async (propertyId: number): Promise<AssetDocument[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.assetDocument(propertyId));
+    return ObjectMapper.deserializeArray(AssetDocument, response);
+  };
+
+  public deleteAssetDocument = async (propertyId: number, documentId: number): Promise<void> => {
+    await this.apiClient.delete(ENDPOINTS.deleteAssetDocument(propertyId, documentId));
   };
 }
 

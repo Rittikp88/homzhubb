@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 
 const getAssetReviews = (state: IState): AssetReview[] => {
@@ -31,8 +32,17 @@ const getLoadingState = (state: IState): boolean => {
   return asset;
 };
 
+const getAssetDocuments = (state: IState): AssetDocument[] => {
+  const {
+    asset: { documents },
+  } = state;
+  if (documents.length <= 0) return [];
+  return documents;
+};
+
 export const AssetSelectors = {
   getAssetReviews,
   getAsset,
   getLoadingState,
+  getAssetDocuments,
 };

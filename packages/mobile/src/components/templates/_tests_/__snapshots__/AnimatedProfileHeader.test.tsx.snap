@@ -222,15 +222,12 @@ exports[`AnimatedProfileHeader should render snapshot 1`] = `
         </View>
       </View>
       <ScrollViewMock
-        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
       >
         <RCTScrollView
-          scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
         >
           <RCTScrollView
-            scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
           >
             <View>

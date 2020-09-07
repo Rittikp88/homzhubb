@@ -97,6 +97,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   notificationContainer: {
+    flex: 0,
     backgroundColor: theme.colors.white,
   },
 });

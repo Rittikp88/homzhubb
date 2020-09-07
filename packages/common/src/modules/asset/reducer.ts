@@ -8,13 +8,16 @@ export const initialAssetState: IAssetState = {
   error: {
     reviews: '',
     asset: '',
+    documents: '',
   },
   loaders: {
     reviews: false,
     asset: false,
+    documents: false,
   },
   asset: null,
   reviews: [],
+  documents: [],
 };
 
 export const assetReducer = (
@@ -55,23 +58,29 @@ export const assetReducer = (
         ['asset']: action.payload as IAsset,
       };
     case AssetActionTypes.GET.ASSET_FAILURE:
-    case AssetActionTypes.POST.LEAD_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['asset']: false },
         ['error']: { ...state.error, ['asset']: action.error as string },
       };
-    case AssetActionTypes.POST.LEAD:
+    case AssetActionTypes.GET.ASSET_DOCUMENT:
       return {
         ...state,
-        ['loaders']: { ...state.loaders, ['asset']: true },
-        ['error']: { ...state.error, ['asset']: '' },
+        ['loaders']: { ...state.loaders, ['documents']: true },
+        ['error']: { ...state.error, ['documents']: '' },
       };
-    case AssetActionTypes.POST.LEAD_SUCCESS:
+    case AssetActionTypes.GET.ASSET_DOCUMENT_SUCCESS:
       return {
         ...state,
-        ['loaders']: { ...state.loaders, ['asset']: false },
-        ['error']: { ...state.error, ['asset']: '' },
+        ['documents']: action.payload as any,
+        ['loaders']: { ...state.loaders, ['documents']: false },
+        ['error']: { ...state.error, ['documents']: '' },
+      };
+    case AssetActionTypes.GET.ASSET_DOCUMENT_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['documents']: false },
+        ['error']: { ...state.error, ['documents']: action.error as string },
       };
     case AssetActionTypes.CLEAR_ASSET:
       return initialAssetState;

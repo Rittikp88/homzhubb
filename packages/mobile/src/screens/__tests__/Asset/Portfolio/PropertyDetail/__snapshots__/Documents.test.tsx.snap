@@ -30,57 +30,9 @@ exports[`Documents Screen should render snapshot 1`] = `
     updateValue={[Function]}
     value=""
   />
-  <FlatList
-    ItemSeparatorComponent={[Function]}
-    data={
-      Array [
-        Object {
-          "id": 1,
-          "name": "Quarterly Inspection Report",
-          "uploaded_by": "HomzHub",
-          "uploaded_on": "02/07/2020",
-        },
-        Object {
-          "id": 2,
-          "name": "Rent",
-          "uploaded_by": "HomzHub",
-          "uploaded_on": "02/07/2020",
-        },
-        Object {
-          "id": 3,
-          "name": "Electricity bill",
-          "uploaded_by": "HomzHub",
-          "uploaded_on": "02/07/2020",
-        },
-        Object {
-          "id": 4,
-          "name": "Water charges",
-          "uploaded_by": "HomzHub",
-          "uploaded_on": "02/07/2020",
-        },
-        Object {
-          "id": 5,
-          "name": "Maintenance Charges",
-          "uploaded_by": "HomzHub",
-          "uploaded_on": "02/07/2020",
-        },
-      ]
-    }
-    disableVirtualization={false}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
+  <EmptyState />
   <Loader
-    visible={false}
+    visible={true}
   />
 </View>
 `;

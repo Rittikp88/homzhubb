@@ -72,7 +72,8 @@
     "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
     "uploadDocument": "Upload Document",
     "toastBack": "Click Back again to exit.",
-    "optional": "Optional"
+    "optional": "Optional",
+    "you": "You"
   },
   "auth": {
     "verifyNumber": "Verify your number",

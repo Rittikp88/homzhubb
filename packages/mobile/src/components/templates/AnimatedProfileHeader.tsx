@@ -38,7 +38,7 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
           <StatusBarComponent backgroundColor={theme.colors.primaryColor} isTranslucent barStyle="light-content" />
           {this.renderHeader()}
         </>
-        <ScrollView scrollEventThrottle={16} showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <>
             <View style={styles.headingView} />
             <View style={styles.scrollView}>{children}</View>

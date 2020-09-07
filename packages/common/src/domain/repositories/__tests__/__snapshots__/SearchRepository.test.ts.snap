@@ -235,6 +235,7 @@ AssetSearch {
         "_name": "",
       },
       "_assetStatusInfo": AssetStatusInfo {
+        "_leaseListingId": null,
         "_leaseTenantInfo": User {
           "_accessToken": "",
           "_countryCode": "",
@@ -249,6 +250,7 @@ AssetSearch {
           "_rent": null,
           "_securityDeposit": null,
         },
+        "_saleListingId": null,
         "_tag": LabelColor {
           "_color": "",
           "_label": "",
@@ -556,6 +558,7 @@ AssetSearch {
         "_name": "",
       },
       "_assetStatusInfo": AssetStatusInfo {
+        "_leaseListingId": null,
         "_leaseTenantInfo": User {
           "_accessToken": "",
           "_countryCode": "",
@@ -570,6 +573,7 @@ AssetSearch {
           "_rent": null,
           "_securityDeposit": null,
         },
+        "_saleListingId": null,
         "_tag": LabelColor {
           "_color": "",
           "_label": "",

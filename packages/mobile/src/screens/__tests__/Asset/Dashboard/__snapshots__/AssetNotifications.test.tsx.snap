@@ -43,6 +43,7 @@ exports[`Asset Notifications Screen should render snapshot 1`] = `
     style={
       Object {
         "backgroundColor": "#FFFFFF",
+        "height": 800,
       }
     }
   >

@@ -289,6 +289,7 @@ Asset {
     "_name": "",
   },
   "_assetStatusInfo": AssetStatusInfo {
+    "_leaseListingId": null,
     "_leaseTenantInfo": User {
       "_accessToken": "",
       "_countryCode": "",
@@ -303,6 +304,7 @@ Asset {
       "_rent": null,
       "_securityDeposit": null,
     },
+    "_saleListingId": null,
     "_tag": LabelColor {
       "_color": "",
       "_label": "",
@@ -624,6 +626,7 @@ Asset {
     "_name": "",
   },
   "_assetStatusInfo": AssetStatusInfo {
+    "_leaseListingId": null,
     "_leaseTenantInfo": User {
       "_accessToken": "",
       "_countryCode": "",
@@ -638,6 +641,7 @@ Asset {
       "_rent": null,
       "_securityDeposit": null,
     },
+    "_saleListingId": null,
     "_tag": LabelColor {
       "_color": "",
       "_label": "",
@@ -937,6 +941,7 @@ Array [
       "_name": "",
     },
     "_assetStatusInfo": AssetStatusInfo {
+      "_leaseListingId": null,
       "_leaseTenantInfo": User {
         "_accessToken": "",
         "_countryCode": "",
@@ -951,6 +956,7 @@ Array [
         "_rent": null,
         "_securityDeposit": null,
       },
+      "_saleListingId": null,
       "_tag": LabelColor {
         "_color": "",
         "_label": "",
@@ -1251,6 +1257,7 @@ Array [
       "_name": "",
     },
     "_assetStatusInfo": AssetStatusInfo {
+      "_leaseListingId": null,
       "_leaseTenantInfo": User {
         "_accessToken": "",
         "_countryCode": "",
@@ -1265,6 +1272,7 @@ Array [
         "_rent": null,
         "_securityDeposit": null,
       },
+      "_saleListingId": null,
       "_tag": LabelColor {
         "_color": "",
         "_label": "",
@@ -1651,6 +1659,7 @@ Asset {
     "_name": "",
   },
   "_assetStatusInfo": AssetStatusInfo {
+    "_leaseListingId": null,
     "_leaseTenantInfo": User {
       "_accessToken": "",
       "_countryCode": "",
@@ -1665,6 +1674,7 @@ Asset {
       "_rent": null,
       "_securityDeposit": null,
     },
+    "_saleListingId": null,
     "_tag": LabelColor {
       "_color": "",
       "_label": "",

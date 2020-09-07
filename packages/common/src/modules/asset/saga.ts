@@ -6,7 +6,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions, AssetActionTypes } from '@homzhub/common/src/modules/asset/actions';
-import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
+import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 
 function* getAssetReviews(action: IFluxStandardAction<number>) {
@@ -47,7 +47,28 @@ function* getAssetDetails(action: IFluxStandardAction<IGetAssetPayload>) {
   }
 }
 
+function* getAssetDocuments(action: IFluxStandardAction<IGetDocumentPayload>) {
+  if (action.payload) {
+    const { assetId, onCallback } = action.payload;
+    try {
+      const response = yield call(AssetRepository.getAssetDocument, assetId);
+      yield put(AssetActions.getAssetDocumentSuccess(response));
+      if (onCallback) {
+        onCallback({ status: true });
+      }
+    } catch (err) {
+      if (onCallback) {
+        onCallback({ status: false });
+      }
+      const error = ErrorUtils.getErrorMessage(err.details);
+      AlertHelper.error({ message: error });
+      yield put(AssetActions.getAssetDocumentFailure(err.message));
+    }
+  }
+}
+
 export function* watchAsset() {
   yield takeEvery(AssetActionTypes.GET.ASSET, getAssetDetails);
   yield takeEvery(AssetActionTypes.GET.REVIEWS, getAssetReviews);
+  yield takeEvery(AssetActionTypes.GET.ASSET_DOCUMENT, getAssetDocuments);
 }

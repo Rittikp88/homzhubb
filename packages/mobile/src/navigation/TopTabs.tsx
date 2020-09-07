@@ -30,11 +30,13 @@ export const TopTabs = (): React.ReactElement => {
     <TopTabNavigator.Navigator
       initialRouteName={ScreensKeys.NotificationTab}
       style={styles.container}
+      sceneContainerStyle={styles.sceneContainer}
       tabBarOptions={{
         scrollEnabled: true,
         showIcon: true,
         activeTintColor: theme.colors.blue,
         inactiveTintColor: theme.colors.darkTint3,
+        labelStyle: { textTransform: 'none', fontSize: 14 },
       }}
     >
       <TopTabNavigator.Screen
@@ -145,5 +147,8 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
     marginTop: 14,
+  },
+  sceneContainer: {
+    backgroundColor: theme.colors.white,
   },
 });

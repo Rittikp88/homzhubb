@@ -251,3 +251,14 @@ export interface INotificationsPayload {
   lease_listing_id?: number;
   sale_listing_id?: number;
 }
+
+export interface IDocumentPayload {
+  attachment: number;
+  lease_listing_id?: number;
+  sale_listing_id?: number;
+}
+
+export interface ICreateDocumentPayload {
+  propertyId: number;
+  documentData: IDocumentPayload[];
+}

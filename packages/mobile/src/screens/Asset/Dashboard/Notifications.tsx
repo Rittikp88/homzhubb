@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     margin: theme.layout.screenPadding,
   },
   searchBarContainer: {
+    height: 800,
     backgroundColor: theme.colors.white,
   },
 });

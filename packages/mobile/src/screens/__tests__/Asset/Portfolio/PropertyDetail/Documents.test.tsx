@@ -5,9 +5,13 @@ import { Documents } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyD
 
 describe('Documents Screen', () => {
   let component: ShallowWrapper;
+  let props: any;
 
   beforeEach(() => {
-    component = shallow(<Documents />);
+    props = {
+      getAssetDocument: jest.fn(),
+    };
+    component = shallow(<Documents {...props} />);
   });
 
   it('should render snapshot', () => {

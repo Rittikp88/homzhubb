@@ -6,7 +6,8 @@ exports[`Tenant History Screen should render snapshot 1`] = `
     Object {
       "backgroundColor": "#FFFFFF",
       "borderRadius": 4,
-      "padding": 16,
+      "paddingHorizontal": 16,
+      "paddingVertical": 24,
     }
   }
 >

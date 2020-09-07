@@ -166,7 +166,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Te
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
   },
