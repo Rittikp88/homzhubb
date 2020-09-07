@@ -11,15 +11,15 @@ import { Notifications } from '@homzhub/common/src/domain/models/AssetNotificati
 interface IProps {
   data: Notifications[];
   onPress: (id: number) => void;
+  onLoadMore: () => void;
+  unreadCount: number;
   isTitle?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const NotificationBox = (props: IProps): React.ReactElement => {
-  const { data, onPress, isTitle = true, containerStyle } = props;
+  const { data, onPress, isTitle = true, containerStyle, unreadCount, onLoadMore } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
-
-  const count = data.filter((obj: Notifications) => !obj.isRead).length;
 
   const renderItem = ({ item }: { item: Notifications }): React.ReactElement => {
     let notificationStyle = {};
@@ -71,9 +71,16 @@ const NotificationBox = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.notificationsContainer, containerStyle]}>
       <Label type="large" textType="regular" style={styles.notificationsCount}>
-        {t('newNotification', { count })}
+        {t('newNotification', { count: unreadCount })}
       </Label>
-      <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor} />
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        onEndReached={onLoadMore}
+        onEndReachedThreshold={0.5}
+        nestedScrollEnabled
+      />
     </View>
   );
 };

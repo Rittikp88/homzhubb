@@ -6,7 +6,7 @@ import { EmptyState } from '@homzhub/common/src/components';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { GeneralLedgers, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
-const INNER_RADIUS = '45%';
+const INNER_RADIUS = '70%';
 const HEIGHT = theme.viewport.height * 0.25;
 interface IProps {
   data: GeneralLedgers[];

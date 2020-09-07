@@ -58,6 +58,9 @@ export class AssetNotifications {
   @JsonProperty('count', Number)
   private _count = 0;
 
+  @JsonProperty('unread_count', Number)
+  private _unreadCount = 0;
+
   @JsonProperty('links', Links)
   private _links: Links = new Links();
 
@@ -66,6 +69,10 @@ export class AssetNotifications {
 
   get count(): number {
     return this._count;
+  }
+
+  get unreadCount(): number {
+    return this._unreadCount;
   }
 
   get links(): Links {

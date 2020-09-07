@@ -1,6 +1,7 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
+import { INotificationsPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { AssetAdvertisement } from '@homzhub/common/src/domain/models/AssetAdvertisement';
@@ -12,6 +13,7 @@ const ENDPOINTS = {
   getAdvertisements: (): string => 'advertisements/',
   getGeneralLedgers: (): string => 'general-ledgers/overall-performances/',
   getAssetNotifications: (): string => 'notifications/',
+  updateNotifications: (id: number): string => `notifications/${id}/`,
 };
 
 class DashboardRepository {
@@ -36,17 +38,13 @@ class DashboardRepository {
     return ObjectMapper.deserialize(AssetAdvertisement, response);
   };
 
-  public getAssetNotifications = async (
-    limit: number,
-    offset: number,
-    searchText?: string
-  ): Promise<AssetNotifications> => {
-    const response = await this.apiClient.get(ENDPOINTS.getAssetNotifications(), {
-      limit,
-      offset,
-      ...(searchText && { q: searchText }),
-    });
+  public getAssetNotifications = async (requestPayload: INotificationsPayload): Promise<AssetNotifications> => {
+    const response = await this.apiClient.get(ENDPOINTS.getAssetNotifications(), requestPayload);
     return ObjectMapper.deserialize(AssetNotifications, response);
+  };
+
+  public updateNotificationStatus = async (id: number): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.updateNotifications(id));
   };
 }
 

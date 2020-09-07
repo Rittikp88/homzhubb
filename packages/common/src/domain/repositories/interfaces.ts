@@ -243,3 +243,11 @@ export interface IAddGeneralLedgerPayload {
 export interface ICreateLedgerResult {
   id: number;
 }
+
+export interface INotificationsPayload {
+  limit?: number;
+  offset?: number;
+  q?: string;
+  lease_listing_id?: number;
+  sale_listing_id?: number;
+}

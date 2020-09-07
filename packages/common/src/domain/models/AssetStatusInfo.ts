@@ -13,6 +13,12 @@ export class AssetStatusInfo {
   @JsonProperty('lease_transaction', LeaseTransaction, true)
   private _leaseTransaction: LeaseTransaction = new LeaseTransaction();
 
+  @JsonProperty('lease_listing_id', Number, true)
+  private _leaseListingId: number | null = null;
+
+  @JsonProperty('sale_listing_id', Number, true)
+  private _saleListingId: number | null = null;
+
   get tag(): LabelColor {
     return this._tag;
   }
@@ -23,5 +29,13 @@ export class AssetStatusInfo {
 
   get leaseTransaction(): LeaseTransaction {
     return this._leaseTransaction;
+  }
+
+  get leaseListingId(): number | null {
+    return this._leaseListingId;
+  }
+
+  get saleListingId(): number | null {
+    return this._saleListingId;
   }
 }

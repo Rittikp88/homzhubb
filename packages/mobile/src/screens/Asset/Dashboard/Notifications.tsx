@@ -17,12 +17,16 @@ type Props = WithTranslation & libraryProps;
 interface IAssetNotificationsState {
   notifications: AssetNotifications;
   searchText: string;
+  limit: number;
+  offset: number;
 }
 
 export class Notifications extends React.PureComponent<Props, IAssetNotificationsState> {
   public state = {
     notifications: {} as AssetNotifications,
     searchText: '',
+    limit: 50,
+    offset: 0,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -72,13 +76,25 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
         />
         {notifications?.results && notifications?.results.length === 0 && <EmptyState />}
         {notifications?.results && notifications?.results.length > 0 && (
-          <NotificationBox data={notifications?.results ?? []} onPress={this.onNotificationClicked} />
+          <NotificationBox
+            data={notifications?.results ?? []}
+            onPress={this.onNotificationClicked}
+            unreadCount={notifications?.unreadCount ?? 0}
+            onLoadMore={this.onLoadMore}
+          />
         )}
       </View>
     );
   };
 
-  public onNotificationClicked = (id: number): void => {};
+  public onNotificationClicked = async (id: number): Promise<void> => {
+    await DashboardRepository.updateNotificationStatus(id);
+    await this.getAssetNotifications();
+  };
+
+  public onLoadMore = (): void => {
+    // TODO: Call the getAssetNotifications with more offset once the scroll issue is solved
+  };
 
   // eslint-disable-next-line @typescript-eslint/require-await
   public onUpdateSearchText = async (value: string): Promise<void> => {
@@ -94,8 +110,13 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public getAssetNotifications = async (): Promise<void> => {
-    const { searchText } = this.state;
-    const response = await DashboardRepository.getAssetNotifications(50, 0, searchText);
+    const { searchText, limit, offset } = this.state;
+    const requestPayload = {
+      limit,
+      offset,
+      ...(searchText.length > 0 ? { q: searchText } : {}),
+    };
+    const response = await DashboardRepository.getAssetNotifications(requestPayload);
     this.setState({ notifications: response });
   };
 }
