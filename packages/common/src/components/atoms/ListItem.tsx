@@ -2,7 +2,6 @@ import React from 'react';
 import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IListItemProps {
@@ -19,12 +18,11 @@ export const ListItem = (props: IListItemProps): React.ReactElement => {
   return (
     <View style={[styles.listItemView, listItemViewStyle]}>
       <TouchableOpacity style={[styles.itemContent, itemContentStyle]} onPress={onItemSelect} testID={testID}>
-        <Text type="small" style={styles.item}>
+        <Text type="small" textType="regular" style={styles.item}>
           {listItem.label}
         </Text>
         {isCheck && <Icon name={icons.checkFilled} size={16} color={theme.colors.primaryColor} />}
       </TouchableOpacity>
-      <Divider />
     </View>
   );
 };

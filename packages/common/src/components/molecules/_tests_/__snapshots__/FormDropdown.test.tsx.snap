@@ -10,6 +10,7 @@ exports[`Test cases for FormDropdown should render snapshot 1`] = `
         "marginTop": 16,
       }
     }
+    textType="regular"
     type="regular"
   >
     <Label
@@ -26,6 +27,7 @@ exports[`Test cases for FormDropdown should render snapshot 1`] = `
     disable={false}
     iconColor="#99A4AF"
     iconSize={16}
+    numColumns={1}
     onDonePress={[Function]}
   />
 </WithFieldError>

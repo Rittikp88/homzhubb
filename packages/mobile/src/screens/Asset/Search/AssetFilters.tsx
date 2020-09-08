@@ -3,12 +3,15 @@ import { View, StyleSheet, StatusBar, SafeAreaView, ScrollView } from 'react-nat
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { remove } from 'lodash';
+// @ts-ignore
+import Markdown from 'react-native-easy-markdown';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
-import { AdvancedFilters } from '@homzhub/common/src/mocks/AssetAdvancedFilters';
+import { AdvancedFilters, IAdvancedFilters } from '@homzhub/common/src/constants/AssetAdvancedFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -23,28 +26,31 @@ import {
   Text,
   WithShadowView,
 } from '@homzhub/common/src/components';
-import { BottomSheet, ButtonGroup } from '@homzhub/mobile/src/components';
+import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
+import { BottomSheet } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
-import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { IFacing, IFilter, IFilterDetails, IPropertyAmenities } from '@homzhub/common/src/domain/models/Search';
 import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 interface IStateProps {
   filters: IFilter;
+  filterDetails: IFilterDetails | null;
 }
 
 // TODO: set the filter arguments type
 interface IDispatchProps {
   setFilter: (payload: any) => void;
   setInitialState: () => void;
+  getProperties: () => void;
+  setInitialMiscellaneous: () => void;
 }
 
 interface IAssetFiltersState {
-  agentListed: boolean;
-  showVerified: boolean;
   isFacingToggled: boolean;
-  isFurnishingToggled: boolean;
   isPropertyAmenitiesToggled: boolean;
-  data: any; // TODO: to be removed once the data is coming from props
+  isShowVerifiedHelperToggled: boolean;
+  isAgentListedHelperToggled: boolean;
+  data: IAdvancedFilters;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyFilters>;
@@ -60,55 +66,67 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   /* eslint-enable */
 
   public state = {
-    agentListed: false,
-    showVerified: false,
     isFacingToggled: false,
-    isFurnishingToggled: false,
     isPropertyAmenitiesToggled: false,
+    isShowVerifiedHelperToggled: false,
+    isAgentListedHelperToggled: false,
     data: AdvancedFilters,
   };
 
   public render(): React.ReactElement {
-    const { t } = this.props;
+    const {
+      t,
+      filters: { asset_group },
+    } = this.props;
     return (
       <>
         <StatusBar translucent backgroundColor={theme.colors.white} barStyle="dark-content" />
         <SafeAreaView style={styles.container}>
+          {this.renderHeader()}
           <ScrollView style={styles.flexOne}>
             <View style={styles.screen}>
-              <View style={styles.header}>
-                <Icon name={icons.leftArrow} size={18} color={theme.colors.darkTint3} onPress={this.goBack} />
-                <Text type="small" textType="semiBold">
-                  {t('filters')}
-                </Text>
-                <Text type="small" textType="semiBold" onPress={this.onReset} style={styles.reset}>
-                  {t('reset')}
-                </Text>
-              </View>
-              {this.renderTransactionType()}
-              {this.renderSearchRadius()}
-              {this.renderDateAdded()}
-              {this.renderPropertyAge()}
-              {this.renderMoveInDate()}
-              {this.renderFacing()}
-              {this.renderFurnishing()}
-              {this.renderPropertyAmenities()}
-              {this.renderShowVerified()}
-              {this.renderAgentListed()}
+              <>
+                {this.renderTransactionType()}
+                {this.renderShowVerified()}
+                {this.renderAgentListed()}
+                {this.renderSearchRadius()}
+                {this.renderDateAdded()}
+                {this.renderPropertyAge()}
+                {asset_group === 2 && this.renderRentFreePeriod()}
+                {this.renderMoveInDate()}
+                {this.renderFacing()}
+                {this.renderFurnishing()}
+                {this.renderPropertyAmenities()}
+                <WithShadowView outerViewStyle={styles.shadowView}>
+                  <Button
+                    type="primary"
+                    title={t('showProperties')}
+                    containerStyle={styles.buttonStyle}
+                    onPress={this.handleSubmit}
+                  />
+                </WithShadowView>
+              </>
             </View>
           </ScrollView>
-          <WithShadowView outerViewStyle={styles.shadowView}>
-            <Button
-              type="primary"
-              title="Show Properties"
-              containerStyle={styles.buttonStyle}
-              onPress={this.onShowProperties}
-            />
-          </WithShadowView>
         </SafeAreaView>
       </>
     );
   }
+
+  public renderHeader = (): React.ReactElement => {
+    const { t } = this.props;
+    return (
+      <View style={styles.header}>
+        <Icon name={icons.leftArrow} size={18} color={theme.colors.darkTint3} onPress={this.goBack} />
+        <Text type="small" textType="semiBold">
+          {t('filters')}
+        </Text>
+        <Text type="small" textType="semiBold" style={styles.reset} onPress={this.clearForm}>
+          {t('reset')}
+        </Text>
+      </View>
+    );
+  };
 
   public renderTransactionType = (): React.ReactElement => {
     const {
@@ -128,11 +146,21 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     );
   };
 
-  public renderSearchRadius = (): React.ReactElement => {
-    const { t } = this.props;
+  public renderSearchRadius = (): React.ReactNode => {
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { search_radius },
+      },
+    } = this.props;
     const {
       data: { searchRadius },
     } = this.state;
+    const onSelectSearchRadius = (value: string | number): void => {
+      setFilter({ miscellaneous: { ...filters.miscellaneous, search_radius: value } });
+    };
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
@@ -140,24 +168,36 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <Dropdown
           data={searchRadius}
-          value={0}
+          value={search_radius}
           listTitle={t('selectSearchRadius')}
           placeholder={t('selectRadius')}
           listHeight={theme.viewport.height / 2}
-          onDonePress={this.onSelectSearchRadius}
+          onDonePress={onSelectSearchRadius}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
           containerStyle={styles.dropdownContainer}
+          numColumns={2}
+          maxLabelLength={36}
         />
       </>
     );
   };
 
   public renderDateAdded = (): React.ReactElement => {
-    const { t } = this.props;
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { date_added },
+      },
+    } = this.props;
     const {
       data: { dateAdded },
     } = this.state;
+    const onSelectDateAdded = (value: string | number): void => {
+      setFilter({ miscellaneous: { ...filters.miscellaneous, date_added: value } });
+    };
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
@@ -165,24 +205,36 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <Dropdown
           data={dateAdded}
-          value={0}
+          value={date_added}
           listTitle={t('selectDateAdded')}
           placeholder={t('selectDateAdded')}
           listHeight={theme.viewport.height / 2}
-          onDonePress={this.onSelectDateAdded}
+          onDonePress={onSelectDateAdded}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
           containerStyle={styles.dropdownContainer}
+          numColumns={2}
+          maxLabelLength={36}
         />
       </>
     );
   };
 
   public renderPropertyAge = (): React.ReactElement => {
-    const { t } = this.props;
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { property_age },
+      },
+    } = this.props;
     const {
       data: { propertyAge },
     } = this.state;
+    const onSelectPropertyAge = (value: string | number): void => {
+      setFilter({ miscellaneous: { ...filters.miscellaneous, property_age: value } });
+    };
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
@@ -190,63 +242,109 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <Dropdown
           data={propertyAge}
-          value={0}
+          value={property_age}
           listTitle={t('selectPropertyAge')}
           placeholder={t('selectPropertyAge')}
           listHeight={theme.viewport.height / 2}
-          onDonePress={this.onSelectPropertyAge}
+          onDonePress={onSelectPropertyAge}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
           containerStyle={styles.dropdownContainer}
+          numColumns={2}
+          maxLabelLength={36}
+        />
+      </>
+    );
+  };
+
+  public renderRentFreePeriod = (): React.ReactElement => {
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { rent_free_period },
+      },
+    } = this.props;
+    const {
+      data: { rentFreePeriod },
+    } = this.state;
+    const onSelectRentFreePeriod = (value: string | number): void => {
+      setFilter({ miscellaneous: { ...filters.miscellaneous, rent_free_period: value } });
+    };
+    return (
+      <>
+        <Text type="small" textType="semiBold" style={styles.filterHeader}>
+          {t('propertyAge')}
+        </Text>
+        <Dropdown
+          data={rentFreePeriod}
+          value={rent_free_period}
+          listTitle={t('selectRentFreePeriod')}
+          placeholder={t('selectRentFreePeriod')}
+          listHeight={theme.viewport.height / 2}
+          onDonePress={onSelectRentFreePeriod}
+          iconSize={16}
+          iconColor={theme.colors.darkTint7}
+          containerStyle={styles.dropdownContainer}
+          numColumns={2}
+          maxLabelLength={36}
         />
       </>
     );
   };
 
   public renderMoveInDate = (): React.ReactElement => {
-    const { t } = this.props;
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { expected_move_in_date },
+      },
+    } = this.props;
+    const updateSelectedDate = (day: string): void => {
+      setFilter({ miscellaneous: { ...filters.miscellaneous, expected_move_in_date: day } });
+    };
     return (
-      <>
-        <Text type="small" textType="semiBold" style={styles.filterHeader}>
-          {t('expectedMoveInDate')}
-        </Text>
-        <Dropdown
-          data={[]}
-          value={0}
-          listTitle={t('availableFrom')}
-          placeholder={t('selectMoveInDate')}
-          listHeight={theme.viewport.height / 2}
-          onDonePress={this.onSelectPropertyAge}
-          iconSize={16}
-          iconColor={theme.colors.darkTint7}
-          containerStyle={styles.dropdownContainer}
-        />
-      </>
+      <FormCalendar
+        selectedValue={expected_move_in_date}
+        name="expected_move_in_date"
+        label={t('expectedMoveInDate')}
+        placeHolder={t('selectMoveInDate')}
+        textType="text"
+        textSize="small"
+        fontType="semiBold"
+        bubbleSelectedDate={updateSelectedDate}
+      />
     );
   };
 
   public renderFacing = (): React.ReactElement => {
-    const { t } = this.props;
     const {
-      data: { facing },
-      isFacingToggled,
-    } = this.state;
+      t,
+      filters: {
+        miscellaneous: { facing },
+      },
+    } = this.props;
+    const { isFacingToggled } = this.state;
     const toggleFacing = (): void => this.setState({ isFacingToggled: !isFacingToggled });
-    const handleFacingSelection = (): void => {};
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
-          {t('facing', { totalFacing: 2 })}
+          {t('facing', { totalFacing: facing.length })}
         </Text>
         <View style={styles.moreRow}>
           <MultipleButtonGroup<number>
-            data={facing.slice(0, 4)}
-            onItemSelect={handleFacingSelection}
-            selectedItem={[1, 2]}
+            data={this.transformFacingData().slice(0, 4) ?? []}
+            onItemSelect={this.handleFacingSelection}
+            selectedItem={facing}
           />
-          <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleFacing}>
-            {t('common:more')}
-          </Text>
+          {facing.length > 4 && (
+            <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleFacing}>
+              {t('common:more')}
+            </Text>
+          )}
         </View>
         {isFacingToggled && (
           <BottomSheet
@@ -256,99 +354,70 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
             visible={isFacingToggled}
             onCloseSheet={toggleFacing}
           >
-            <ScrollView style={styles.flexOne}>{this.renderFacingData()}</ScrollView>
+            <ScrollView style={styles.flexOne}>
+              <CheckboxGroup
+                data={this.facingCheckboxGroupData(facing)}
+                onToggle={this.handleFacingSelection}
+                containerStyle={styles.checkboxGroupContainer}
+              />
+            </ScrollView>
           </BottomSheet>
         )}
       </>
-    );
-  };
-
-  public renderFacingData = (): React.ReactElement => {
-    const {
-      data: { facing },
-    } = this.state;
-    const checkboxGroupData = (): ICheckboxGroupData[] => {
-      return facing.map((facingType: { title: string; value: number }) => ({
-        id: facingType.value,
-        label: facingType.title,
-        isSelected: false,
-      }));
-    };
-    return (
-      <CheckboxGroup
-        data={checkboxGroupData()}
-        onToggle={this.onSelectedFacing}
-        containerStyle={styles.checkboxGroupContainer}
-      />
     );
   };
 
   public renderFurnishing = (): React.ReactElement => {
-    const { t } = this.props;
-    const { isFurnishingToggled } = this.state;
-    const toggleFurnishing = (): void => this.setState({ isFurnishingToggled: !isFurnishingToggled });
-    const handleFurnishingSelection = (): void => {};
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { furnishing },
+      },
+    } = this.props;
+    const handleFurnishingSelection = (value: FurnishingType): void => {
+      if (furnishing.includes(value)) {
+        remove(furnishing, (type: FurnishingType) => type === value);
+        setFilter({ miscellaneous: { ...filters.miscellaneous, furnishing } });
+      } else {
+        const newFurnishing = furnishing.concat(value);
+        setFilter({ miscellaneous: { ...filters.miscellaneous, furnishing: newFurnishing } });
+      }
+    };
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
-          {t('furnishing', { totalFurnishing: 2 })}
+          {t('furnishing', { totalFurnishing: furnishing.length })}
         </Text>
         <View style={styles.moreRow}>
-          <ButtonGroup<FurnishingType>
+          <MultipleButtonGroup<FurnishingType>
             data={this.FURNISHING}
             onItemSelect={handleFurnishingSelection}
-            selectedItem={FurnishingType.FULL}
+            selectedItem={furnishing}
           />
-          <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleFurnishing}>
-            {t('common:more')}
-          </Text>
         </View>
-        {isFurnishingToggled && (
-          <BottomSheet
-            isShadowView
-            sheetHeight={theme.viewport.height / 2}
-            headerTitle={t('selectFurnishing')}
-            visible={isFurnishingToggled}
-            onCloseSheet={toggleFurnishing}
-          >
-            <ScrollView style={styles.flexOne}>{this.renderFurnishingData()}</ScrollView>
-          </BottomSheet>
-        )}
       </>
     );
   };
 
-  public renderFurnishingData = (): React.ReactElement => {
-    const {
-      data: { furnishing },
-    } = this.state;
-    const checkboxGroupData = (): ICheckboxGroupData[] => {
-      return furnishing.map((furnishingType: { label: string; value: number }) => ({
-        id: furnishingType.value,
-        label: furnishingType.label,
-        isSelected: false,
-      }));
-    };
-    return (
-      <CheckboxGroup
-        data={checkboxGroupData()}
-        onToggle={this.onSelectedFurnishing}
-        containerStyle={styles.checkboxGroupContainer}
-      />
-    );
-  };
-
   public renderPropertyAmenities = (): React.ReactElement => {
-    const { t } = this.props;
+    const {
+      t,
+      filters: {
+        miscellaneous: { propertyAmenity },
+      },
+    } = this.props;
     const { isPropertyAmenitiesToggled } = this.state;
     const toggleAmenities = (): void => this.setState({ isPropertyAmenitiesToggled: !isPropertyAmenitiesToggled });
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
-          {t('propertyAmenities', { totalAmenities: 2 })}
+          {t('propertyAmenities', { totalAmenities: propertyAmenity.length })}
         </Text>
+        {this.renderPropertyAmenitiesGroupData()}
         <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleAmenities}>
-          {t('common:select')}
+          {propertyAmenity.length > 0 ? t('common:more') : t('common:select')}
         </Text>
         {isPropertyAmenitiesToggled && (
           <BottomSheet
@@ -365,73 +434,255 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     );
   };
 
+  public renderPropertyAmenitiesGroupData = (): React.ReactNode => {
+    const {
+      filterDetails,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { propertyAmenity },
+      },
+    } = this.props;
+    const propertyAmenities = filterDetails?.filters?.additional_filters?.property_amenities ?? [];
+    const findSelectedAmenities = (): { title: string; value: number }[] => {
+      const selectedAmenities: { title: string; value: number }[] = [];
+      const filteredArray = propertyAmenities.filter((amenity: IPropertyAmenities) =>
+        propertyAmenity.includes(amenity.id)
+      );
+      filteredArray.forEach((obj: IPropertyAmenities) => {
+        selectedAmenities.push({
+          title: obj.name,
+          value: obj.id,
+        });
+      });
+      return selectedAmenities;
+    };
+
+    const handleDeselectAmenities = (value: number): void => {
+      const amenityIndex = propertyAmenity.indexOf(value);
+      if (amenityIndex !== -1) {
+        const updatedAmenities = propertyAmenity.splice(0, amenityIndex);
+        setFilter({ miscellaneous: { ...filters.miscellaneous, propertyAmenity: updatedAmenities } });
+      }
+    };
+    if (propertyAmenity.length === 0) {
+      return null;
+    }
+    return (
+      <MultipleButtonGroup<number>
+        data={propertyAmenity.length > 0 ? findSelectedAmenities() : []}
+        onItemSelect={handleDeselectAmenities}
+        selectedItem={propertyAmenity}
+      />
+    );
+  };
+
   public renderAmenitiesData = (): React.ReactElement => {
     const {
-      data: { propertyAmenities },
-    } = this.state;
-    const checkboxGroupData = (): ICheckboxGroupData[] => {
-      return propertyAmenities.map((amenityType: { label: string; value: number }) => ({
-        id: amenityType.value,
-        label: amenityType.label,
-        isSelected: false,
-      }));
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { propertyAmenity },
+      },
+    } = this.props;
+    const onSelectedAmenities = (value: number): void => {
+      const existingAmenity: number[] = propertyAmenity;
+      if (existingAmenity.includes(value)) {
+        remove(existingAmenity, (count: number) => count === value);
+        setFilter({ miscellaneous: { ...filters.miscellaneous, propertyAmenity: existingAmenity } });
+      } else {
+        const newAmenity = existingAmenity.concat(value);
+        setFilter({ miscellaneous: { ...filters.miscellaneous, propertyAmenity: newAmenity } });
+      }
     };
     return (
       <CheckboxGroup
-        data={checkboxGroupData()}
-        onToggle={this.onSelectedAmenities}
+        data={this.amenityCheckboxGroupData()}
+        onToggle={onSelectedAmenities}
         containerStyle={styles.checkboxGroupContainer}
       />
     );
   };
 
   public renderShowVerified = (): React.ReactElement => {
-    const { t } = this.props;
-    const { showVerified } = this.state;
-    const updateVerified = (): void => this.setState({ showVerified: !showVerified });
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { show_verified: showVerified },
+      },
+    } = this.props;
+    const { isShowVerifiedHelperToggled } = this.state;
+    const updateVerified = (): void =>
+      setFilter({ miscellaneous: { ...filters.miscellaneous, show_verified: !showVerified } });
+    const toggleHelper = (): void => this.setState({ isShowVerifiedHelperToggled: !isShowVerifiedHelperToggled });
     return (
-      <View style={styles.toggleButton}>
-        <Text type="small" textType="semiBold" style={styles.filterHeader}>
-          {t('showVerified')}
-        </Text>
-        <RNSwitch selected={showVerified} onToggle={updateVerified} />
-      </View>
+      <>
+        <View style={styles.toggleButton}>
+          <View style={styles.moreRow}>
+            <Text type="small" textType="semiBold" style={styles.agentListed}>
+              {t('showVerified')}
+            </Text>
+            <Icon
+              name={icons.info}
+              color={theme.colors.darkTint4}
+              size={22}
+              style={styles.helperIcon}
+              onPress={toggleHelper}
+            />
+          </View>
+          <RNSwitch selected={showVerified} onToggle={updateVerified} />
+        </View>
+        {isShowVerifiedHelperToggled && (
+          <BottomSheet
+            visible={isShowVerifiedHelperToggled}
+            onCloseSheet={toggleHelper}
+            headerTitle="Show Verified"
+            sheetHeight={500}
+            isShadowView
+          >
+            <Markdown
+              markdownStyles={{
+                h2: { fontWeight: '600', fontSize: 20, marginVertical: 10 },
+                h4: { fontWeight: '300', fontSize: 24, color: theme.colors.darkTint2 },
+                strong: { fontWeight: '600', fontSize: 16 },
+                text: { fontWeight: 'normal', fontSize: 14 },
+              }}
+              style={{ margin: theme.layout.screenPadding }}
+            >
+              Show Verified helper text
+            </Markdown>
+          </BottomSheet>
+        )}
+      </>
     );
   };
 
   public renderAgentListed = (): React.ReactElement => {
-    const { t } = this.props;
-    const { agentListed } = this.state;
-    const updateAgentListed = (): void => this.setState({ agentListed: !agentListed });
+    const {
+      t,
+      setFilter,
+      filters,
+      filters: {
+        miscellaneous: { agent_listed: agentListed },
+      },
+    } = this.props;
+    const { isAgentListedHelperToggled } = this.state;
+    const updateAgentListed = (): void =>
+      setFilter({ miscellaneous: { ...filters.miscellaneous, agent_listed: !agentListed } });
+    const toggleHelper = (): void => this.setState({ isAgentListedHelperToggled: !isAgentListedHelperToggled });
     return (
-      <View style={styles.toggleButton}>
-        <Text type="small" textType="semiBold" style={styles.agentListed}>
-          {t('agentListed')}
-        </Text>
-        <RNSwitch selected={agentListed} onToggle={updateAgentListed} />
-      </View>
+      <>
+        <View style={styles.toggleButton}>
+          <View style={styles.moreRow}>
+            <Text type="small" textType="semiBold" style={styles.agentListed}>
+              {t('agentListed')}
+            </Text>
+            <Icon
+              name={icons.info}
+              color={theme.colors.darkTint4}
+              size={22}
+              style={styles.helperIcon}
+              onPress={toggleHelper}
+            />
+          </View>
+          <RNSwitch selected={agentListed} onToggle={updateAgentListed} />
+        </View>
+        {isAgentListedHelperToggled && (
+          <BottomSheet
+            visible={isAgentListedHelperToggled}
+            onCloseSheet={toggleHelper}
+            headerTitle="Agent Listed"
+            sheetHeight={500}
+            isShadowView
+          >
+            <Markdown
+              markdownStyles={{
+                h2: { fontWeight: '600', fontSize: 20, marginVertical: 10 },
+                h4: { fontWeight: '300', fontSize: 24, color: theme.colors.darkTint2 },
+                strong: { fontWeight: '600', fontSize: 16 },
+                text: { fontWeight: 'normal', fontSize: 14 },
+              }}
+              style={{ margin: theme.layout.screenPadding }}
+            >
+              Agent Listed helper text
+            </Markdown>
+          </BottomSheet>
+        )}
+      </>
     );
   };
-
-  public onReset = (): void => {};
-
-  public onSelectedAmenities = (id: number, isSelected: boolean): void => {};
-
-  public onSelectedFacing = (id: number, isSelected: boolean): void => {};
-
-  public onSelectedFurnishing = (id: number, isSelected: boolean): void => {};
-
-  public onSelectSearchRadius = (value: string | number): void => {};
-
-  public onSelectDateAdded = (value: string | number): void => {};
-
-  public onSelectPropertyAge = (value: string | number): void => {};
-
-  public onShowProperties = (): void => {};
 
   public onToggleTransactionType = (value: number): void => {
     const { setFilter } = this.props;
     setFilter({ asset_transaction_type: value });
+  };
+
+  private handleSubmit = (): void => {
+    const { getProperties, navigation } = this.props;
+    getProperties();
+    navigation.goBack();
+  };
+
+  public transformFacingData = (): { title: string; value: number }[] => {
+    const { filterDetails } = this.props;
+    const facingData = filterDetails?.filters?.additional_filters?.facing ?? [];
+    const transformedFacing: { title: string; value: number }[] = [];
+    facingData.forEach((data: IFacing) => {
+      transformedFacing.push({
+        title: data.name,
+        value: data.id,
+      });
+    });
+    return transformedFacing;
+  };
+
+  public facingCheckboxGroupData = (facing: number[]): ICheckboxGroupData[] => {
+    const { filterDetails } = this.props;
+    const facingData = filterDetails?.filters?.additional_filters?.facing ?? [];
+    return facingData.map((facingType: { name: string; id: number }) => ({
+      id: facingType.id,
+      label: facingType.name,
+      isSelected: facing.includes(facingType.id),
+    }));
+  };
+
+  public handleFacingSelection = (value: number): void => {
+    const {
+      filters,
+      setFilter,
+      filters: {
+        miscellaneous: { facing: existingFacing },
+      },
+    } = this.props;
+    if (existingFacing.includes(value)) {
+      remove(existingFacing, (count: number) => count === value);
+      setFilter({ miscellaneous: { ...filters.miscellaneous, facing: existingFacing } });
+    } else {
+      const newFacing = existingFacing.concat(value);
+      setFilter({ miscellaneous: { ...filters.miscellaneous, facing: newFacing } });
+    }
+  };
+
+  public amenityCheckboxGroupData = (): ICheckboxGroupData[] => {
+    const {
+      filterDetails,
+      filters: {
+        miscellaneous: { propertyAmenity },
+      },
+    } = this.props;
+    const propertyAmenitiesData = filterDetails?.filters?.additional_filters?.property_amenities ?? [];
+    return propertyAmenitiesData.map((amenityType: { name: string; id: number }) => ({
+      id: amenityType.id,
+      label: amenityType.name,
+      isSelected: propertyAmenity.includes(amenityType.id),
+    }));
+  };
+
+  public clearForm = (): void => {
+    const { setInitialMiscellaneous } = this.props;
+    setInitialMiscellaneous();
   };
 
   public goBack = (): void => {
@@ -441,18 +692,21 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getFilters } = SearchSelector;
+  const { getFilters, getFilterDetail } = SearchSelector;
   return {
     filters: getFilters(state),
+    filterDetails: getFilterDetail(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, setInitialState } = SearchActions;
+  const { setFilter, setInitialState, getProperties, setInitialMiscellaneous } = SearchActions;
   return bindActionCreators(
     {
       setFilter,
       setInitialState,
+      getProperties,
+      setInitialMiscellaneous,
     },
     dispatch
   );
@@ -475,31 +729,24 @@ const styles = StyleSheet.create({
     margin: theme.layout.screenPadding,
   },
   header: {
-    minHeight: 60,
+    margin: theme.layout.screenPadding,
+    marginTop: 30,
     flexDirection: 'row',
+    paddingVertical: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
   },
   reset: {
     flex: 0,
     borderWidth: 0,
     color: theme.colors.primaryColor,
   },
-  dropdownContainer: {
-    height: 45,
-  },
   filterHeader: {
-    paddingVertical: 20,
+    paddingVertical: 10,
     color: theme.colors.darkTint3,
   },
   agentListed: {
     color: theme.colors.darkTint3,
-  },
-  shadowView: {
-    paddingTop: 10,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
-    paddingBottom: 0,
   },
   buttonStyle: {
     flex: 0,
@@ -509,6 +756,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: 10,
   },
   selectAmenity: {
     color: theme.colors.primaryColor,
@@ -520,5 +768,16 @@ const styles = StyleSheet.create({
   },
   checkboxGroupContainer: {
     margin: theme.layout.screenPadding,
+  },
+  dropdownContainer: {
+    marginVertical: 10,
+  },
+  shadowView: {
+    paddingTop: 10,
+    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
+    paddingBottom: 0,
+  },
+  helperIcon: {
+    marginStart: 8,
   },
 });

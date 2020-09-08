@@ -386,6 +386,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                     "marginTop": 16,
                   }
                 }
+                textType="regular"
                 type="regular"
               >
                 <Text
@@ -505,6 +506,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                 iconSize={16}
                 listHeight={300}
                 listTitle="maintenanceSchedule"
+                numColumns={1}
                 onDonePress={[Function]}
               >
                 <View
@@ -802,6 +804,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                       isBottomSheetVisible={false}
                       listHeight={300}
                       listTitle="maintenanceSchedule"
+                      numColumns={1}
                       onCloseDropDown={[Function]}
                       onSelectItem={[Function]}
                       selectedValue=""
@@ -1406,6 +1409,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                   </View>
                                                 </WithShadowView>
                                                 <FlatList
+                                                  ItemSeparatorComponent={[Function]}
                                                   data={
                                                     Array [
                                                       Object {
@@ -1437,6 +1441,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                   windowSize={21}
                                                 >
                                                   <VirtualizedList
+                                                    ItemSeparatorComponent={[Function]}
                                                     data={
                                                       Array [
                                                         Object {
@@ -1470,6 +1475,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                     windowSize={21}
                                                   >
                                                     <ScrollViewMock
+                                                      ItemSeparatorComponent={[Function]}
                                                       data={
                                                         Array [
                                                           Object {
@@ -1510,6 +1516,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                       windowSize={21}
                                                     >
                                                       <RCTScrollView
+                                                        ItemSeparatorComponent={[Function]}
                                                         data={
                                                           Array [
                                                             Object {
@@ -1550,6 +1557,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                         windowSize={21}
                                                       >
                                                         <RCTScrollView
+                                                          ItemSeparatorComponent={[Function]}
                                                           data={
                                                             Array [
                                                               Object {
@@ -1592,6 +1600,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                           <View>
                                                             <View>
                                                               <CellRenderer
+                                                                ItemSeparatorComponent={[Function]}
                                                                 cellKey="MONTHLY-0"
                                                                 fillRateHelper={
                                                                   FillRateHelper {
@@ -1629,6 +1638,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                 onUpdateSeparators={[Function]}
                                                                 parentProps={
                                                                   Object {
+                                                                    "ItemSeparatorComponent": [Function],
                                                                     "data": Array [
                                                                       Object {
                                                                         "label": "monthly",
@@ -1678,6 +1688,12 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                           "value": "MONTHLY",
                                                                         }
                                                                       }
+                                                                      listItemViewStyle={
+                                                                        Object {
+                                                                          "color": "#667686",
+                                                                          "width": 750,
+                                                                        }
+                                                                      }
                                                                       onItemSelect={[Function]}
                                                                     >
                                                                       <View
@@ -1686,7 +1702,10 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Object {
                                                                               "marginHorizontal": 26,
                                                                             },
-                                                                            undefined,
+                                                                            Object {
+                                                                              "color": "#667686",
+                                                                              "width": 750,
+                                                                            },
                                                                           ]
                                                                         }
                                                                       >
@@ -1696,7 +1715,10 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Object {
                                                                                 "marginHorizontal": 26,
                                                                               },
-                                                                              undefined,
+                                                                              Object {
+                                                                                "color": "#667686",
+                                                                                "width": 750,
+                                                                              },
                                                                             ]
                                                                           }
                                                                         >
@@ -1823,6 +1845,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                                             "paddingVertical": 16,
                                                                                           }
                                                                                         }
+                                                                                        textType="regular"
                                                                                         type="small"
                                                                                       >
                                                                                         <Text
@@ -1874,38 +1897,49 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               </ForwardRef(AnimatedComponentWrapper)>
                                                                             </TouchableOpacity>
                                                                           </ForwardRef>
-                                                                          <Divider>
-                                                                            <View
-                                                                              style={
-                                                                                Array [
-                                                                                  Object {
-                                                                                    "borderColor": "#C9D6DF",
-                                                                                    "borderWidth": 0.5,
-                                                                                  },
-                                                                                  Object {},
-                                                                                ]
-                                                                              }
-                                                                            >
-                                                                              <View
-                                                                                style={
-                                                                                  Array [
-                                                                                    Object {
-                                                                                      "borderColor": "#C9D6DF",
-                                                                                      "borderWidth": 0.5,
-                                                                                    },
-                                                                                    Object {},
-                                                                                  ]
-                                                                                }
-                                                                              />
-                                                                            </View>
-                                                                          </Divider>
                                                                         </View>
                                                                       </View>
                                                                     </ListItem>
+                                                                    <Component
+                                                                      highlighted={false}
+                                                                      leadingItem={
+                                                                        Object {
+                                                                          "label": "monthly",
+                                                                          "value": "MONTHLY",
+                                                                        }
+                                                                      }
+                                                                    >
+                                                                      <Divider>
+                                                                        <View
+                                                                          style={
+                                                                            Array [
+                                                                              Object {
+                                                                                "borderColor": "#C9D6DF",
+                                                                                "borderWidth": 0.5,
+                                                                              },
+                                                                              Object {},
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          <View
+                                                                            style={
+                                                                              Array [
+                                                                                Object {
+                                                                                  "borderColor": "#C9D6DF",
+                                                                                  "borderWidth": 0.5,
+                                                                                },
+                                                                                Object {},
+                                                                              ]
+                                                                            }
+                                                                          />
+                                                                        </View>
+                                                                      </Divider>
+                                                                    </Component>
                                                                   </View>
                                                                 </View>
                                                               </CellRenderer>
                                                               <CellRenderer
+                                                                ItemSeparatorComponent={[Function]}
                                                                 cellKey="QUARTERLY-1"
                                                                 fillRateHelper={
                                                                   FillRateHelper {
@@ -1943,6 +1977,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                 onUpdateSeparators={[Function]}
                                                                 parentProps={
                                                                   Object {
+                                                                    "ItemSeparatorComponent": [Function],
                                                                     "data": Array [
                                                                       Object {
                                                                         "label": "monthly",
@@ -1993,6 +2028,12 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                           "value": "QUARTERLY",
                                                                         }
                                                                       }
+                                                                      listItemViewStyle={
+                                                                        Object {
+                                                                          "color": "#667686",
+                                                                          "width": 750,
+                                                                        }
+                                                                      }
                                                                       onItemSelect={[Function]}
                                                                     >
                                                                       <View
@@ -2001,7 +2042,10 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Object {
                                                                               "marginHorizontal": 26,
                                                                             },
-                                                                            undefined,
+                                                                            Object {
+                                                                              "color": "#667686",
+                                                                              "width": 750,
+                                                                            },
                                                                           ]
                                                                         }
                                                                       >
@@ -2011,7 +2055,10 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Object {
                                                                                 "marginHorizontal": 26,
                                                                               },
-                                                                              undefined,
+                                                                              Object {
+                                                                                "color": "#667686",
+                                                                                "width": 750,
+                                                                              },
                                                                             ]
                                                                           }
                                                                         >
@@ -2138,6 +2185,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                                             "paddingVertical": 16,
                                                                                           }
                                                                                         }
+                                                                                        textType="regular"
                                                                                         type="small"
                                                                                       >
                                                                                         <Text
@@ -2189,34 +2237,44 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               </ForwardRef(AnimatedComponentWrapper)>
                                                                             </TouchableOpacity>
                                                                           </ForwardRef>
-                                                                          <Divider>
-                                                                            <View
-                                                                              style={
-                                                                                Array [
-                                                                                  Object {
-                                                                                    "borderColor": "#C9D6DF",
-                                                                                    "borderWidth": 0.5,
-                                                                                  },
-                                                                                  Object {},
-                                                                                ]
-                                                                              }
-                                                                            >
-                                                                              <View
-                                                                                style={
-                                                                                  Array [
-                                                                                    Object {
-                                                                                      "borderColor": "#C9D6DF",
-                                                                                      "borderWidth": 0.5,
-                                                                                    },
-                                                                                    Object {},
-                                                                                  ]
-                                                                                }
-                                                                              />
-                                                                            </View>
-                                                                          </Divider>
                                                                         </View>
                                                                       </View>
                                                                     </ListItem>
+                                                                    <Component
+                                                                      highlighted={false}
+                                                                      leadingItem={
+                                                                        Object {
+                                                                          "label": "quarterly",
+                                                                          "value": "QUARTERLY",
+                                                                        }
+                                                                      }
+                                                                    >
+                                                                      <Divider>
+                                                                        <View
+                                                                          style={
+                                                                            Array [
+                                                                              Object {
+                                                                                "borderColor": "#C9D6DF",
+                                                                                "borderWidth": 0.5,
+                                                                              },
+                                                                              Object {},
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          <View
+                                                                            style={
+                                                                              Array [
+                                                                                Object {
+                                                                                  "borderColor": "#C9D6DF",
+                                                                                  "borderWidth": 0.5,
+                                                                                },
+                                                                                Object {},
+                                                                              ]
+                                                                            }
+                                                                          />
+                                                                        </View>
+                                                                      </Divider>
+                                                                    </Component>
                                                                   </View>
                                                                 </View>
                                                               </CellRenderer>
@@ -2258,6 +2316,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                 onUpdateSeparators={[Function]}
                                                                 parentProps={
                                                                   Object {
+                                                                    "ItemSeparatorComponent": [Function],
                                                                     "data": Array [
                                                                       Object {
                                                                         "label": "monthly",
@@ -2308,6 +2367,12 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                           "value": "ANNUALLY",
                                                                         }
                                                                       }
+                                                                      listItemViewStyle={
+                                                                        Object {
+                                                                          "color": "#667686",
+                                                                          "width": 750,
+                                                                        }
+                                                                      }
                                                                       onItemSelect={[Function]}
                                                                     >
                                                                       <View
@@ -2316,7 +2381,10 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Object {
                                                                               "marginHorizontal": 26,
                                                                             },
-                                                                            undefined,
+                                                                            Object {
+                                                                              "color": "#667686",
+                                                                              "width": 750,
+                                                                            },
                                                                           ]
                                                                         }
                                                                       >
@@ -2326,7 +2394,10 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Object {
                                                                                 "marginHorizontal": 26,
                                                                               },
-                                                                              undefined,
+                                                                              Object {
+                                                                                "color": "#667686",
+                                                                                "width": 750,
+                                                                              },
                                                                             ]
                                                                           }
                                                                         >
@@ -2453,6 +2524,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                                             "paddingVertical": 16,
                                                                                           }
                                                                                         }
+                                                                                        textType="regular"
                                                                                         type="small"
                                                                                       >
                                                                                         <Text
@@ -2504,31 +2576,6 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               </ForwardRef(AnimatedComponentWrapper)>
                                                                             </TouchableOpacity>
                                                                           </ForwardRef>
-                                                                          <Divider>
-                                                                            <View
-                                                                              style={
-                                                                                Array [
-                                                                                  Object {
-                                                                                    "borderColor": "#C9D6DF",
-                                                                                    "borderWidth": 0.5,
-                                                                                  },
-                                                                                  Object {},
-                                                                                ]
-                                                                              }
-                                                                            >
-                                                                              <View
-                                                                                style={
-                                                                                  Array [
-                                                                                    Object {
-                                                                                      "borderColor": "#C9D6DF",
-                                                                                      "borderWidth": 0.5,
-                                                                                    },
-                                                                                    Object {},
-                                                                                  ]
-                                                                                }
-                                                                              />
-                                                                            </View>
-                                                                          </Divider>
                                                                         </View>
                                                                       </View>
                                                                     </ListItem>

@@ -36,12 +36,13 @@ export interface IProps {
   textStyle?: StyleProp<TextStyle>;
   testID?: string;
   maxLabelLength?: number;
+  numColumns?: number;
 }
 
 interface IState {
   dropdownVisible: boolean;
 }
-
+// TODO: Add Translation for default list title
 export class Dropdown extends React.PureComponent<IProps, IState> {
   public state = {
     dropdownVisible: false,
@@ -63,6 +64,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
       icon = icons.downArrowFilled,
       testID,
       maxLabelLength = MAX_LABEL_COUNT,
+      numColumns = 1,
     } = this.props;
     const { dropdownVisible } = this.state;
     const selectedItem = data.find((d: PickerItemProps) => d.value === value);
@@ -93,6 +95,7 @@ export class Dropdown extends React.PureComponent<IProps, IState> {
           onCloseDropDown={this.onCancel}
           onSelectItem={this.onValueChange}
           testID={testID}
+          numColumns={numColumns}
         />
       </View>
     );

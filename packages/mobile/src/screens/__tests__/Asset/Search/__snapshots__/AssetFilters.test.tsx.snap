@@ -17,6 +17,46 @@ exports[`Asset filter should render snapshot 1`] = `
       }
     }
   >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "margin": 16,
+          "marginTop": 30,
+          "paddingVertical": 10,
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#33495E"
+        name="left-arrow"
+        onPress={[Function]}
+        size={18}
+      />
+      <Text
+        textType="semiBold"
+        type="small"
+      >
+        filters
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          Object {
+            "borderWidth": 0,
+            "color": "#0084F8",
+            "flex": 0,
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        reset
+      </Text>
+    </View>
     <ScrollViewMock
       style={
         Object {
@@ -31,45 +71,6 @@ exports[`Asset filter should render snapshot 1`] = `
           }
         }
       >
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "marginBottom": 20,
-              "minHeight": 60,
-            }
-          }
-        >
-          <Icon
-            allowFontScaling={false}
-            color="#33495E"
-            name="left-arrow"
-            onPress={[Function]}
-            size={18}
-          />
-          <Text
-            textType="semiBold"
-            type="small"
-          >
-            filters
-          </Text>
-          <Text
-            onPress={[Function]}
-            style={
-              Object {
-                "borderWidth": 0,
-                "color": "#0084F8",
-                "flex": 0,
-              }
-            }
-            textType="semiBold"
-            type="small"
-          >
-            reset
-          </Text>
-        </View>
         <SelectionPicker
           data={
             Array [
@@ -90,11 +91,107 @@ exports[`Asset filter should render snapshot 1`] = `
             ]
           }
         />
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginVertical": 10,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#33495E",
+                }
+              }
+              textType="semiBold"
+              type="small"
+            >
+              showVerified
+            </Text>
+            <Icon
+              allowFontScaling={false}
+              color="#4C5F72"
+              name="info"
+              onPress={[Function]}
+              size={22}
+              style={
+                Object {
+                  "marginStart": 8,
+                }
+              }
+            />
+          </View>
+          <RNSwitch
+            onToggle={[Function]}
+            selected={false}
+          />
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginVertical": 10,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#33495E",
+                }
+              }
+              textType="semiBold"
+              type="small"
+            >
+              agentListed
+            </Text>
+            <Icon
+              allowFontScaling={false}
+              color="#4C5F72"
+              name="info"
+              onPress={[Function]}
+              size={22}
+              style={
+                Object {
+                  "marginStart": 8,
+                }
+              }
+            />
+          </View>
+          <RNSwitch
+            onToggle={[Function]}
+            selected={false}
+          />
+        </View>
         <Text
           style={
             Object {
               "color": "#33495E",
-              "paddingVertical": 20,
+              "paddingVertical": 10,
             }
           }
           textType="semiBold"
@@ -105,7 +202,7 @@ exports[`Asset filter should render snapshot 1`] = `
         <Dropdown
           containerStyle={
             Object {
-              "height": 45,
+              "marginVertical": 10,
             }
           }
           data={
@@ -115,27 +212,27 @@ exports[`Asset filter should render snapshot 1`] = `
                 "value": 1,
               },
               Object {
-                "label": "Within 0.25 miles",
+                "label": "Within 5 miles",
                 "value": 2,
               },
               Object {
-                "label": "Within 0.5 miles",
+                "label": "Within 0.25 miles",
                 "value": 3,
               },
               Object {
-                "label": "Within 1 miles",
+                "label": "Within 10 miles",
                 "value": 4,
               },
               Object {
-                "label": "Within 3 miles",
+                "label": "Within 0.5 miles",
                 "value": 5,
               },
               Object {
-                "label": "Within 10 miles",
+                "label": "Within 20 miles",
                 "value": 6,
               },
               Object {
-                "label": "Within 20 miles",
+                "label": "Within 1 miles",
                 "value": 7,
               },
               Object {
@@ -143,8 +240,12 @@ exports[`Asset filter should render snapshot 1`] = `
                 "value": 8,
               },
               Object {
-                "label": "Within 40 miles",
+                "label": "Within 3 miles",
                 "value": 9,
+              },
+              Object {
+                "label": "Within 40 miles",
+                "value": 10,
               },
             ]
           }
@@ -152,15 +253,17 @@ exports[`Asset filter should render snapshot 1`] = `
           iconSize={16}
           listHeight={667}
           listTitle="selectSearchRadius"
+          maxLabelLength={36}
+          numColumns={2}
           onDonePress={[Function]}
           placeholder="selectRadius"
-          value={0}
+          value={1}
         />
         <Text
           style={
             Object {
               "color": "#33495E",
-              "paddingVertical": 20,
+              "paddingVertical": 10,
             }
           }
           textType="semiBold"
@@ -171,7 +274,7 @@ exports[`Asset filter should render snapshot 1`] = `
         <Dropdown
           containerStyle={
             Object {
-              "height": 45,
+              "marginVertical": 10,
             }
           }
           data={
@@ -206,15 +309,17 @@ exports[`Asset filter should render snapshot 1`] = `
           iconSize={16}
           listHeight={667}
           listTitle="selectDateAdded"
+          maxLabelLength={36}
+          numColumns={2}
           onDonePress={[Function]}
           placeholder="selectDateAdded"
-          value={0}
+          value={1}
         />
         <Text
           style={
             Object {
               "color": "#33495E",
-              "paddingVertical": 20,
+              "paddingVertical": 10,
             }
           }
           textType="semiBold"
@@ -225,7 +330,7 @@ exports[`Asset filter should render snapshot 1`] = `
         <Dropdown
           containerStyle={
             Object {
-              "height": 45,
+              "marginVertical": 10,
             }
           }
           data={
@@ -260,42 +365,27 @@ exports[`Asset filter should render snapshot 1`] = `
           iconSize={16}
           listHeight={667}
           listTitle="selectPropertyAge"
+          maxLabelLength={36}
+          numColumns={2}
           onDonePress={[Function]}
           placeholder="selectPropertyAge"
-          value={0}
+          value={1}
+        />
+        <withI18nextTranslation(FormCalendar)
+          bubbleSelectedDate={[Function]}
+          fontType="semiBold"
+          label="expectedMoveInDate"
+          name="expected_move_in_date"
+          placeHolder="selectMoveInDate"
+          selectedValue="2020-09-30"
+          textSize="small"
+          textType="text"
         />
         <Text
           style={
             Object {
               "color": "#33495E",
-              "paddingVertical": 20,
-            }
-          }
-          textType="semiBold"
-          type="small"
-        >
-          expectedMoveInDate
-        </Text>
-        <Dropdown
-          containerStyle={
-            Object {
-              "height": 45,
-            }
-          }
-          data={Array []}
-          iconColor="#99A4AF"
-          iconSize={16}
-          listHeight={667}
-          listTitle="availableFrom"
-          onDonePress={[Function]}
-          placeholder="selectMoveInDate"
-          value={0}
-        />
-        <Text
-          style={
-            Object {
-              "color": "#33495E",
-              "paddingVertical": 20,
+              "paddingVertical": 10,
             }
           }
           textType="semiBold"
@@ -313,52 +403,20 @@ exports[`Asset filter should render snapshot 1`] = `
           }
         >
           <MultipleButtonGroup
-            data={
-              Array [
-                Object {
-                  "title": "East",
-                  "value": 1,
-                },
-                Object {
-                  "title": "West",
-                  "value": 2,
-                },
-                Object {
-                  "title": "North",
-                  "value": 3,
-                },
-                Object {
-                  "title": "South",
-                  "value": 4,
-                },
-              ]
-            }
+            data={Array []}
             onItemSelect={[Function]}
             selectedItem={
               Array [
                 1,
-                2,
               ]
             }
           />
-          <Text
-            onPress={[Function]}
-            style={
-              Object {
-                "color": "#0084F8",
-              }
-            }
-            textType="semiBold"
-            type="small"
-          >
-            common:more
-          </Text>
         </View>
         <Text
           style={
             Object {
               "color": "#33495E",
-              "paddingVertical": 20,
+              "paddingVertical": 10,
             }
           }
           textType="semiBold"
@@ -375,7 +433,7 @@ exports[`Asset filter should render snapshot 1`] = `
             }
           }
         >
-          <ButtonGroup
+          <MultipleButtonGroup
             data={
               Array [
                 Object {
@@ -393,26 +451,18 @@ exports[`Asset filter should render snapshot 1`] = `
               ]
             }
             onItemSelect={[Function]}
-            selectedItem="FULL"
-          />
-          <Text
-            onPress={[Function]}
-            style={
-              Object {
-                "color": "#0084F8",
-              }
+            selectedItem={
+              Array [
+                "NONE",
+              ]
             }
-            textType="semiBold"
-            type="small"
-          >
-            common:more
-          </Text>
+          />
         </View>
         <Text
           style={
             Object {
               "color": "#33495E",
-              "paddingVertical": 20,
+              "paddingVertical": 10,
             }
           }
           textType="semiBold"
@@ -432,80 +482,29 @@ exports[`Asset filter should render snapshot 1`] = `
         >
           common:select
         </Text>
-        <View
-          style={
+        <WithShadowView
+          outerViewStyle={
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "space-between",
+              "marginBottom": 20,
+              "paddingBottom": 0,
+              "paddingTop": 10,
             }
           }
         >
-          <Text
-            style={
+          <Button
+            containerStyle={
               Object {
-                "color": "#33495E",
-                "paddingVertical": 20,
+                "flex": 0,
+                "margin": 16,
               }
             }
-            textType="semiBold"
-            type="small"
-          >
-            showVerified
-          </Text>
-          <RNSwitch
-            onToggle={[Function]}
-            selected={false}
+            onPress={[Function]}
+            title="showProperties"
+            type="primary"
           />
-        </View>
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#33495E",
-              }
-            }
-            textType="semiBold"
-            type="small"
-          >
-            agentListed
-          </Text>
-          <RNSwitch
-            onToggle={[Function]}
-            selected={false}
-          />
-        </View>
+        </WithShadowView>
       </View>
     </ScrollViewMock>
-    <WithShadowView
-      outerViewStyle={
-        Object {
-          "marginBottom": 20,
-          "paddingBottom": 0,
-          "paddingTop": 10,
-        }
-      }
-    >
-      <Button
-        containerStyle={
-          Object {
-            "flex": 0,
-            "margin": 16,
-          }
-        }
-        onPress={[Function]}
-        title="Show Properties"
-        type="primary"
-      />
-    </WithShadowView>
   </ForwardRef(SafeAreaView)>
 </Fragment>
 `;

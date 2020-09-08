@@ -18,6 +18,7 @@ export enum SpaceAvailableTypes {
   FLOOR_NUMBER = 'Floor number',
   BALCONY = 'Balcony',
 }
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -109,6 +110,7 @@ export interface IUserPayload {
   access_token: string;
   refresh_token: string;
 }
+
 // USER AUTH - END
 
 // OTP - START
@@ -130,6 +132,7 @@ export interface IOtpVerifyResponse {
   otp_verify?: boolean;
   otp_sent?: boolean;
 }
+
 // OTP - END
 
 // REFRESH TOKEN - START
@@ -141,6 +144,7 @@ export interface IRefreshToken {
 export interface IRefreshTokenPayload {
   refresh_token: string;
 }
+
 // REFRESH TOKEN - END
 
 // USER LOGOUT - START
@@ -148,6 +152,7 @@ export interface IUserLogoutPayload {
   action: string;
   payload: IRefreshTokenPayload;
 }
+
 // USER LOGOUT - END
 
 // ASSET - START
@@ -193,19 +198,35 @@ export interface IUpdateAssetDetails {
   asset_type?: number;
   spaces?: ISpaceAvailablePayload[];
 }
+
 // ASSET - END
 
 // Property Search
 export interface IPropertySearchPayload {
-  latitude?: number;
-  longitude?: number;
-  txn_type?: string;
+  asset_group: number;
+  price__gt: number;
+  price__lt: number;
+  latitude: number;
+  longitude: number;
+  limit: number;
+  offset: number;
+  bathroom__gte: number;
+  move_in_date__gte?: string;
+  furnishing__in?: string;
+  facing__in?: string;
+  amenities__in?: string;
+  rent_free_period?: number;
+  is_verified?: boolean;
+  agent_listed?: boolean;
+  age__gte?: string;
+  search_radius?: number;
+  date_added?: string;
   asset_type__in?: string;
-  price__lt?: number;
-  price__gt?: number;
-  bedroom?: string;
-  bathroom?: number;
-  asset_group?: number;
+  bedroom__gte?: number;
+  bedroom__in?: number;
+  carpet_area__lt?: number;
+  carpet_area__gt?: number;
+  carpet_area_unit?: number;
 }
 
 // Lead

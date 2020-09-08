@@ -2,19 +2,14 @@
 
 exports[`Test cases for FormCalendar should render snapshot 1`] = `
 <View
-  style={
-    Array [
-      Object {
-        "marginTop": 16,
-      },
-      Object {},
-    ]
-  }
+  style={Object {}}
 >
   <Label
     style={
       Object {
         "color": "#33495E",
+        "marginBottom": 6,
+        "marginTop": 16,
       }
     }
     textType="regular"
@@ -90,19 +85,14 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
 
 exports[`Test cases for FormCalendar should render snapshot when initial date today 1`] = `
 <View
-  style={
-    Array [
-      Object {
-        "marginTop": 16,
-      },
-      Object {},
-    ]
-  }
+  style={Object {}}
 >
   <Label
     style={
       Object {
         "color": "#33495E",
+        "marginBottom": 6,
+        "marginTop": 16,
       }
     }
     textType="regular"
@@ -170,7 +160,7 @@ exports[`Test cases for FormCalendar should render snapshot when initial date to
   >
     <CalendarComponent
       onSelect={[Function]}
-      selectedDate="2020-09-07"
+      selectedDate="2020-09-08"
     />
   </BottomSheet>
 </View>

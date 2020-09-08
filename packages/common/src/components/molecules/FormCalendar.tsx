@@ -5,17 +5,22 @@ import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, Label } from '@homzhub/common/src/components';
+import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
 
 interface IFormCalendarProps extends WithTranslation {
   name: string;
-  formProps: FormikProps<FormikValues>;
+  formProps?: FormikProps<FormikValues>;
+  selectedValue?: string;
   label?: string;
   placeHolder?: string;
   allowPastDates?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  textType?: TextFieldType;
+  textSize?: TextSizeType;
+  fontType?: FontWeightType;
+  bubbleSelectedDate?: (day: string) => void;
 }
 
 interface IFormCalendarState {
@@ -31,25 +36,41 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     const {
       t,
       name,
-      formProps: { values },
+      formProps,
+      selectedValue,
       containerStyle = {},
       label,
       placeHolder,
       allowPastDates,
+      textType = 'label',
+      textSize = 'regular',
+      fontType = 'regular',
     } = this.props;
     const { isCalendarVisible } = this.state;
-    const availableDate = values[name] === moment().format('YYYY-MM-DD') ? 'Today' : values[name];
+    const availableDate = (): string => {
+      if (selectedValue) {
+        return selectedValue;
+      }
+      return formProps?.values[name] === moment().format('YYYY-MM-DD') ? 'Today' : formProps?.values[name];
+    };
+    const labelStyles = { ...theme.form.formLabel };
+
+    let TextField = Text;
+
+    if (textType === 'label') {
+      TextField = Label;
+    }
 
     return (
-      <View style={[styles.container, containerStyle]}>
-        <Label type="regular" textType="regular" style={styles.label}>
+      <View style={containerStyle}>
+        <TextField type={textSize} textType={fontType} style={labelStyles}>
           {label || t('common:availableFrom')}
-        </Label>
+        </TextField>
         <TouchableOpacity testID="toCalenderInput" style={styles.dateView} onPress={this.onCalendarOpen}>
           <View style={styles.dateLeft}>
             <Icon name={icons.calendar} color={theme.colors.darkTint5} size={18} />
             <Text type="small" textType="regular" style={styles.dateText}>
-              {availableDate || placeHolder}
+              {availableDate() || placeHolder}
             </Text>
           </View>
           <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} />
@@ -64,7 +85,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
           <CalendarComponent
             allowPastDates={allowPastDates}
             onSelect={this.onDateSelected}
-            selectedDate={values[name]}
+            selectedDate={selectedValue ?? formProps?.values[name]}
           />
         </BottomSheet>
       </View>
@@ -72,14 +93,15 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   }
 
   private onDateSelected = (day: string): void => {
-    const {
-      name,
-      formProps: { setFieldValue, setFieldTouched },
-    } = this.props;
+    const { name, formProps, bubbleSelectedDate } = this.props;
     this.setState({ isCalendarVisible: false });
 
-    setFieldValue(name, day);
-    setFieldTouched(name);
+    if (bubbleSelectedDate) {
+      bubbleSelectedDate(day);
+    } else {
+      formProps?.setFieldValue(name, day);
+      formProps?.setFieldTouched(name);
+    }
   };
 
   private onCalendarOpen = (): void => {
@@ -93,9 +115,6 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 16,
-  },
   dateView: {
     borderWidth: 1,
     borderColor: theme.colors.disabled,
@@ -114,9 +133,6 @@ const styles = StyleSheet.create({
   dateText: {
     marginLeft: 16,
     color: theme.colors.darkTint1,
-  },
-  label: {
-    color: theme.colors.darkTint3,
   },
 });
 

@@ -119,6 +119,14 @@ class DateUtils {
     const year = moment(givenTime).year();
     return moment([year, month, day]).fromNow();
   };
+
+  public getYear = (yearCount: number): string => {
+    return moment.utc(new Date()).subtract(yearCount, 'years').format('YYYY');
+  };
+
+  public getDate = (dateCount: number): string => {
+    return moment.utc(new Date()).subtract(dateCount, 'days').format('YYYY-MM-DD');
+  };
 }
 
 const dateUtils = new DateUtils();

@@ -1,8 +1,10 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 import { SearchActionTypes, SearchPayloadTypes } from '@homzhub/common/src/modules/search/actions';
 import { IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -19,10 +21,21 @@ export const initialSearchState: ISearchState = {
     furnishing_status: '',
     room_count: [-1],
     bath_count: -1,
-    is_verified: false,
     search_address: '',
     limit: 10,
     offset: 0,
+    miscellaneous: {
+      show_verified: false,
+      agent_listed: false,
+      search_radius: 1,
+      date_added: 1,
+      property_age: 1,
+      rent_free_period: -1,
+      expected_move_in_date: DateUtils.getCurrentMonthLastDate(),
+      facing: [1],
+      furnishing: [FurnishingType.NONE],
+      propertyAmenity: [],
+    },
   },
   filterDetails: null,
   properties: {
@@ -114,6 +127,8 @@ export const searchReducer = (
         },
         ['loaders']: { ...state.loaders, ['search']: false },
       };
+    case SearchActionTypes.SET.INITIAL_MISCELLANEOUS:
+      return { ...state, ['filter']: { ...state.filter, miscellaneous: initialSearchState.filter.miscellaneous } };
     default:
       return state;
   }

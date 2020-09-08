@@ -1,3 +1,6 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
+
 export const FilterData = {
   currency: [
     {
@@ -87,9 +90,20 @@ export const SearchFilter = {
   furnishing_status: '',
   room_count: [-1],
   bath_count: -1,
-  is_verified: false,
   asset_group: 1,
   search_address: '',
   limit: 10,
   offset: 0,
+  miscellaneous: {
+    show_verified: false,
+    agent_listed: false,
+    search_radius: 1,
+    date_added: 1,
+    property_age: 1,
+    rent_free_period: -1,
+    expected_move_in_date: DateUtils.getCurrentMonthLastDate(),
+    facing: [1],
+    furnishing: [FurnishingType.NONE],
+    propertyAmenity: [],
+  },
 };

@@ -1,5 +1,6 @@
 import { IMediaAttributes } from '@homzhub/common/src/domain/models/Attachment';
 import { ICarpetAreaUnit } from '@homzhub/common/src/domain/models/Asset';
+import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 export enum ContactActions {
   WHATSAPP = 'WHATSAPP',
@@ -42,10 +43,28 @@ export interface ITransactionRange {
   max: number;
 }
 
+export interface IFacing {
+  id: number;
+  name: string;
+}
+
+export interface IPropertyAmenities {
+  id: number;
+  name: string;
+  category: IAssetTypes;
+  attachment: { id: number; name: string; link: string };
+}
+
+export interface IAdditionalFilters {
+  facing: IFacing[];
+  property_amenities: IPropertyAmenities[];
+}
+
 export interface IFilters {
   asset_group: IAssetGroup;
   transaction_type: ITransactionType[];
   carpet_area: ICarpetArea[];
+  additional_filters: IAdditionalFilters;
 }
 
 export interface ICarpetArea {
@@ -101,11 +120,22 @@ export interface IFilter {
   furnishing_status: string;
   room_count: number[];
   bath_count: number;
-  is_verified: boolean;
   asset_group: number;
   search_address: string;
   limit: number;
   offset: number;
+  miscellaneous: {
+    show_verified: boolean;
+    agent_listed: boolean;
+    search_radius: number;
+    date_added: number;
+    property_age: number;
+    rent_free_period: number;
+    expected_move_in_date: string;
+    facing: number[];
+    furnishing: FurnishingType[];
+    propertyAmenity: number[];
+  };
 }
 
 export interface IProperties {

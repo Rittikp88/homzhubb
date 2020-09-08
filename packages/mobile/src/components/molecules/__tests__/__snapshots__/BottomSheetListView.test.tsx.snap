@@ -665,6 +665,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                               </View>
                             </WithShadowView>
                             <FlatList
+                              ItemSeparatorComponent={[Function]}
                               data={
                                 Array [
                                   Object {
@@ -736,6 +737,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                               windowSize={21}
                             >
                               <VirtualizedList
+                                ItemSeparatorComponent={[Function]}
                                 data={
                                   Array [
                                     Object {
@@ -809,6 +811,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                 windowSize={21}
                               >
                                 <ScrollViewMock
+                                  ItemSeparatorComponent={[Function]}
                                   data={
                                     Array [
                                       Object {
@@ -889,6 +892,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                   windowSize={21}
                                 >
                                   <RCTScrollView
+                                    ItemSeparatorComponent={[Function]}
                                     data={
                                       Array [
                                         Object {
@@ -969,6 +973,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                     windowSize={21}
                                   >
                                     <RCTScrollView
+                                      ItemSeparatorComponent={[Function]}
                                       data={
                                         Array [
                                           Object {
@@ -1051,6 +1056,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                       <View>
                                         <View>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+91-0"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -1088,6 +1094,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -1177,6 +1184,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+91",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -1186,7 +1199,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -1196,7 +1212,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -1329,6 +1348,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -1380,38 +1400,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "India (+91)",
+                                                      "value": "+91",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+122-1"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -1449,6 +1480,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -1539,6 +1571,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+122",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -1548,7 +1586,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -1558,7 +1599,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -1691,6 +1735,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -1742,38 +1787,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "USA (+122)",
+                                                      "value": "+122",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+852-2"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -1811,6 +1867,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -1901,6 +1958,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+852",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -1910,7 +1973,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -1920,7 +1986,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -2053,6 +2122,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -2104,38 +2174,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Hong Kong (+852)",
+                                                      "value": "+852",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+36-3"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -2173,6 +2254,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -2263,6 +2345,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+36",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -2272,7 +2360,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -2282,7 +2373,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -2415,6 +2509,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -2466,38 +2561,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Hungary (+36)",
+                                                      "value": "+36",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+354-4"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -2535,6 +2641,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -2625,6 +2732,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+354",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -2634,7 +2747,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -2644,7 +2760,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -2777,6 +2896,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -2828,38 +2948,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Iceland (+354)",
+                                                      "value": "+354",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+62-5"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -2897,6 +3028,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -2987,6 +3119,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+62",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -2996,7 +3134,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -3006,7 +3147,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -3139,6 +3283,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -3190,38 +3335,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Indonesia (+62)",
+                                                      "value": "+62",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+98-6"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -3259,6 +3415,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -3349,6 +3506,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+98",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -3358,7 +3521,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -3368,7 +3534,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -3501,6 +3670,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -3552,38 +3722,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Iran (+98)",
+                                                      "value": "+98",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+964-7"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -3621,6 +3802,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -3711,6 +3893,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+964",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -3720,7 +3908,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -3730,7 +3921,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -3863,6 +4057,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -3914,38 +4109,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Iraq (+964)",
+                                                      "value": "+964",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+353-8"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -3983,6 +4189,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -4073,6 +4280,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+353",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -4082,7 +4295,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -4092,7 +4308,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -4225,6 +4444,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -4276,38 +4496,49 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Ireland (+353)",
+                                                      "value": "+353",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>
                                           <CellRenderer
+                                            ItemSeparatorComponent={[Function]}
                                             cellKey="+44-9"
                                             fillRateHelper={
                                               FillRateHelper {
@@ -4345,6 +4576,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                             onUpdateSeparators={[Function]}
                                             parentProps={
                                               Object {
+                                                "ItemSeparatorComponent": [Function],
                                                 "data": Array [
                                                   Object {
                                                     "label": "India (+91)",
@@ -4435,6 +4667,12 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                       "value": "+44",
                                                     }
                                                   }
+                                                  listItemViewStyle={
+                                                    Object {
+                                                      "color": "#667686",
+                                                      "width": 750,
+                                                    }
+                                                  }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
                                                 >
@@ -4444,7 +4682,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "color": "#667686",
+                                                          "width": 750,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -4454,7 +4695,10 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
                                                         ]
                                                       }
                                                     >
@@ -4587,6 +4831,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                         "paddingVertical": 16,
                                                                       }
                                                                     }
+                                                                    textType="regular"
                                                                     type="small"
                                                                   >
                                                                     <Text
@@ -4638,34 +4883,44 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           </ForwardRef(AnimatedComponentWrapper)>
                                                         </TouchableOpacity>
                                                       </ForwardRef>
-                                                      <Divider>
-                                                        <View
-                                                          style={
-                                                            Array [
-                                                              Object {
-                                                                "borderColor": "#C9D6DF",
-                                                                "borderWidth": 0.5,
-                                                              },
-                                                              Object {},
-                                                            ]
-                                                          }
-                                                        >
-                                                          <View
-                                                            style={
-                                                              Array [
-                                                                Object {
-                                                                  "borderColor": "#C9D6DF",
-                                                                  "borderWidth": 0.5,
-                                                                },
-                                                                Object {},
-                                                              ]
-                                                            }
-                                                          />
-                                                        </View>
-                                                      </Divider>
                                                     </View>
                                                   </View>
                                                 </ListItem>
+                                                <Component
+                                                  highlighted={false}
+                                                  leadingItem={
+                                                    Object {
+                                                      "label": "Isle of Man (+44)",
+                                                      "value": "+44",
+                                                    }
+                                                  }
+                                                >
+                                                  <Divider>
+                                                    <View
+                                                      style={
+                                                        Array [
+                                                          Object {
+                                                            "borderColor": "#C9D6DF",
+                                                            "borderWidth": 0.5,
+                                                          },
+                                                          Object {},
+                                                        ]
+                                                      }
+                                                    >
+                                                      <View
+                                                        style={
+                                                          Array [
+                                                            Object {
+                                                              "borderColor": "#C9D6DF",
+                                                              "borderWidth": 0.5,
+                                                            },
+                                                            Object {},
+                                                          ]
+                                                        }
+                                                      />
+                                                    </View>
+                                                  </Divider>
+                                                </Component>
                                               </View>
                                             </View>
                                           </CellRenderer>

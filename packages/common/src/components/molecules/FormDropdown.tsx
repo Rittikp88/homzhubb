@@ -2,7 +2,7 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import React, { PureComponent } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
@@ -26,9 +26,13 @@ export interface IFormDropdownProps {
   optionalText?: string;
   dropdownContainerStyle?: StyleProp<ViewStyle>;
   maxLabelLength?: number;
+  numColumns?: number;
+  textType?: TextFieldType;
+  textSize?: TextSizeType;
+  fontType?: FontWeightType;
 }
 
-export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
+export class FormDropdown extends PureComponent<IFormDropdownProps> {
   public render(): React.ReactNode {
     const {
       name,
@@ -43,6 +47,10 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
       listHeight,
       dropdownContainerStyle = {},
       maxLabelLength,
+      numColumns = 1,
+      textType = 'label',
+      textSize = 'regular',
+      fontType = 'regular',
     } = this.props;
     const { values, errors, touched, setFieldValue, setFieldTouched } = formProps;
 
@@ -65,14 +73,20 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
       labelStyles = { ...labelStyles, color: theme.colors.error };
     }
 
+    let TextField = Text;
+
+    if (textType === 'label') {
+      TextField = Label;
+    }
+
     return (
       <WithFieldError error={error}>
-        <Label type="regular" style={labelStyles}>
+        <TextField type={textSize} textType={fontType} style={labelStyles}>
           {label}
-          <Label type="small" style={styles.optionalText}>
+          <TextField type="small" style={styles.optionalText}>
             {optionalText}
-          </Label>
-        </Label>
+          </TextField>
+        </TextField>
         <Dropdown
           // @ts-ignore
           data={options}
@@ -86,6 +100,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps, any> {
           iconColor={theme.colors.darkTint7}
           containerStyle={dropdownContainerStyle}
           maxLabelLength={maxLabelLength}
+          numColumns={numColumns}
         />
       </WithFieldError>
     );

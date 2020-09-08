@@ -20,9 +20,10 @@ export const SearchActionTypes = {
     PROPERTIES_LIST_VIEW_FAILURE: `${actionTypePrefix}PROPERTIES_LIST_VIEW_FAILURE`,
   },
   SET: {
-    FILTER: `${actionTypePrefix}FILTER`,
-    INITIAL_FILTERS: `${actionTypePrefix}INITIAL_FILTERS`,
-    INITIAL_STATE: `${actionTypePrefix}INITIAL_STATE`,
+    FILTER: `${actionTypePrefix}SET_FILTER`,
+    INITIAL_FILTERS: `${actionTypePrefix}SET_INITIAL_FILTERS`,
+    INITIAL_STATE: `${actionTypePrefix}SET_INITIAL_STATE`,
+    INITIAL_MISCELLANEOUS: `${actionTypePrefix}SET_INITIAL_MISCELLANEOUS`,
   },
 };
 
@@ -107,6 +108,12 @@ const getPropertiesListViewFailure = (error: string): IFluxStandardAction => {
   };
 };
 
+const setInitialMiscellaneous = (): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.SET.INITIAL_MISCELLANEOUS,
+  };
+};
+
 export type SearchPayloadTypes = string | number | IAssetSearch | IFilter | IFilterDetails | undefined;
 
 export const SearchActions = {
@@ -122,4 +129,5 @@ export const SearchActions = {
   getPropertiesListView,
   getPropertiesListViewSuccess,
   getPropertiesListViewFailure,
+  setInitialMiscellaneous,
 };

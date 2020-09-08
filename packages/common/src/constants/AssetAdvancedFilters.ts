@@ -6,35 +6,39 @@ export const AdvancedFilters = {
     },
     {
       value: 2,
-      label: 'Within 0.25 miles',
+      label: 'Within 5 km',
     },
     {
       value: 3,
-      label: 'Within 0.5 miles',
+      label: 'Within 0.25 km',
     },
     {
       value: 4,
-      label: 'Within 1 miles',
+      label: 'Within 10 km',
     },
     {
       value: 5,
-      label: 'Within 3 miles',
+      label: 'Within 0.5 km',
     },
     {
       value: 6,
-      label: 'Within 10 miles',
+      label: 'Within 20 km',
     },
     {
       value: 7,
-      label: 'Within 20 miles',
+      label: 'Within 1 km',
     },
     {
       value: 8,
-      label: 'Within 30 miles',
+      label: 'Within 30 km',
     },
     {
       value: 9,
-      label: 'Within 40 miles',
+      label: 'Within 3 km',
+    },
+    {
+      value: 10,
+      label: 'Within 40 km',
     },
   ],
   dateAdded: [
@@ -89,43 +93,26 @@ export const AdvancedFilters = {
       label: 'More than 20 years',
     },
   ],
-  moveInDate: '',
-  facing: [
+  rentFreePeriod: [
     {
       value: 1,
-      title: 'East',
+      label: 'At least 15 days',
     },
     {
       value: 2,
-      title: 'West',
+      label: 'At least 30 days',
     },
     {
       value: 3,
-      title: 'North',
+      label: 'At least 45 days',
     },
     {
       value: 4,
-      title: 'South',
+      label: 'at least 60 days',
     },
     {
-      value: 5,
-      title: 'North-East',
-    },
-    {
-      value: 6,
-      title: 'South-east',
-    },
-    {
-      value: 7,
-      title: 'North-West',
-    },
-    {
-      value: 8,
-      title: 'South-West',
-    },
-    {
-      value: 9,
-      title: 'Any value',
+      value: -1,
+      label: 'Any period',
     },
   ],
   furnishing: [
@@ -170,48 +157,17 @@ export const AdvancedFilters = {
       label: 'Air Conditioner',
     },
   ],
-  propertyAmenities: [
-    {
-      value: 1,
-      label: 'Swimming Pool',
-    },
-    {
-      value: 2,
-      label: 'Near Metro station',
-    },
-    {
-      value: 3,
-      label: 'Gym',
-    },
-    {
-      value: 4,
-      label: 'Tennis court',
-    },
-    {
-      value: 5,
-      label: 'Daily needs store',
-    },
-    {
-      value: 6,
-      label: 'Table tennis',
-    },
-    {
-      value: 7,
-      label: 'Near ATM',
-    },
-    {
-      value: 8,
-      label: 'Club-house',
-    },
-    {
-      value: 9,
-      label: 'Near petrol pump',
-    },
-    {
-      value: 10,
-      label: 'Helipad',
-    },
-  ],
-  isAgentListed: false,
-  isVerified: false,
 };
+
+export interface IFilterData {
+  value: number;
+  label: string;
+}
+
+export interface IAdvancedFilters {
+  searchRadius: IFilterData[];
+  dateAdded: IFilterData[];
+  propertyAge: IFilterData[];
+  rentFreePeriod: IFilterData[];
+  furnishing: IFilterData[];
+}

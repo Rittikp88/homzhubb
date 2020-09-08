@@ -73,6 +73,7 @@
     "uploadDocument": "Upload Document",
     "toastBack": "Click Back again to exit.",
     "optional": "Optional",
+    "selectFromHere": "Select from here",
     "you": "You"
   },
   "auth": {
@@ -262,6 +263,8 @@
     "dateAdded": "Date Added",
     "selectDateAdded": "Select Date Added",
     "propertyAge": "Property Age",
+    "rentFreePeriod": "Rent Free Period",
+    "selectRentFreePeriod": "Select Rent Free Period",
     "selectPropertyAge": "Select Property Age",
     "expectedMoveInDate": "Expected Move-In Date",
     "availableFrom": "Available from",
