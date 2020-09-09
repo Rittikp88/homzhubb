@@ -21,7 +21,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     <Icon
       allowFontScaling={false}
       name="cheque"
-      size={20}
+      size={22}
       style={
         Object {
           "marginRight": 10,
@@ -30,98 +30,282 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <Text
       textType="semiBold"
-      type="regular"
+      type="small"
     >
       transactions
     </Text>
   </View>
   <Divider />
-  <ForwardRef
-    onPress={[Function]}
+  <FlatList
+    ListFooterComponent={null}
+    data={
+      Array [
+        FinancialRecords {
+          "_amount": 27000,
+          "_asset": Asset {
+            "_id": 1,
+            "_projectName": "akn",
+          },
+          "_attachment": null,
+          "_category": LedgerCategory {
+            "_entryType": "",
+            "_id": 1,
+            "_name": "Maintanence",
+          },
+          "_currencyCode": "INR",
+          "_currencySymbol": "$",
+          "_entryType": "CREDIT",
+          "_id": 1,
+          "_label": "Rent",
+          "_notes": "Jahn Doe",
+          "_payerName": "Foobar",
+          "_receiverName": "JohnDoe",
+          "_transactionDate": "2020-06-20",
+        },
+        FinancialRecords {
+          "_amount": 27000,
+          "_asset": Asset {
+            "_id": 1,
+            "_projectName": "Godrej Prime",
+          },
+          "_attachment": Attachment {
+            "_fileName": "Foobar.jpg",
+            "_id": 1,
+            "_isCoverImage": false,
+            "_link": "",
+            "_mediaAttributes": MediaAttributes {
+              "_duration": "",
+              "_thumbnail": "",
+              "_thumbnailHD": "",
+              "_thumbnailSD": "",
+              "_title": "",
+              "_videoId": "",
+            },
+            "_mediaType": "IMAGE",
+            "_name": "",
+          },
+          "_category": LedgerCategory {
+            "_entryType": "",
+            "_id": 1,
+            "_name": "Rental Income",
+          },
+          "_currencyCode": "INR",
+          "_currencySymbol": "$",
+          "_entryType": "DEBIT",
+          "_id": 2,
+          "_label": "Rent",
+          "_notes": "Jahn Doe",
+          "_payerName": "Foobar",
+          "_receiverName": "JohnDoe",
+          "_transactionDate": "2020-06-20",
+        },
+        FinancialRecords {
+          "_amount": 27000,
+          "_asset": Asset {
+            "_id": 1,
+            "_projectName": "Godrej Prime",
+          },
+          "_attachment": Attachment {
+            "_fileName": "Foobar.jpg",
+            "_id": 1,
+            "_isCoverImage": false,
+            "_link": "",
+            "_mediaAttributes": MediaAttributes {
+              "_duration": "",
+              "_thumbnail": "",
+              "_thumbnailHD": "",
+              "_thumbnailSD": "",
+              "_title": "",
+              "_videoId": "",
+            },
+            "_mediaType": "IMAGE",
+            "_name": "",
+          },
+          "_category": LedgerCategory {
+            "_entryType": "",
+            "_id": 1,
+            "_name": "Utility bills",
+          },
+          "_currencyCode": "INR",
+          "_currencySymbol": "$",
+          "_entryType": "CREDIT",
+          "_id": 3,
+          "_label": "Rent",
+          "_notes": "Jahn Doe",
+          "_payerName": "Foobar",
+          "_receiverName": "JohnDoe",
+          "_transactionDate": "2020-06-20",
+        },
+        FinancialRecords {
+          "_amount": 27000,
+          "_asset": Asset {
+            "_id": 1,
+            "_projectName": "Godrej Prime",
+          },
+          "_attachment": Attachment {
+            "_fileName": "Foobar.jpg",
+            "_id": 1,
+            "_isCoverImage": false,
+            "_link": "",
+            "_mediaAttributes": MediaAttributes {
+              "_duration": "",
+              "_thumbnail": "",
+              "_thumbnailHD": "",
+              "_thumbnailSD": "",
+              "_title": "",
+              "_videoId": "",
+            },
+            "_mediaType": "IMAGE",
+            "_name": "",
+          },
+          "_category": LedgerCategory {
+            "_entryType": "",
+            "_id": 1,
+            "_name": "Utility bills",
+          },
+          "_currencyCode": "INR",
+          "_currencySymbol": "$",
+          "_entryType": "DEBIT",
+          "_id": 4,
+          "_label": "Rent",
+          "_notes": "Jahn Doe",
+          "_payerName": "Foobar",
+          "_receiverName": "JohnDoe",
+          "_transactionDate": "2020-06-20",
+        },
+        FinancialRecords {
+          "_amount": 27000,
+          "_asset": Asset {
+            "_id": 1,
+            "_projectName": "Godrej Prime",
+          },
+          "_attachment": Attachment {
+            "_fileName": "Foobar.jpg",
+            "_id": 1,
+            "_isCoverImage": false,
+            "_link": "",
+            "_mediaAttributes": MediaAttributes {
+              "_duration": "",
+              "_thumbnail": "",
+              "_thumbnailHD": "",
+              "_thumbnailSD": "",
+              "_title": "",
+              "_videoId": "",
+            },
+            "_mediaType": "IMAGE",
+            "_name": "",
+          },
+          "_category": LedgerCategory {
+            "_entryType": "",
+            "_id": 1,
+            "_name": "Utility bills",
+          },
+          "_currencyCode": "INR",
+          "_currencySymbol": "$",
+          "_entryType": "CREDIT",
+          "_id": 5,
+          "_label": "Rent",
+          "_notes": "Jahn Doe",
+          "_payerName": "Foobar",
+          "_receiverName": "JohnDoe",
+          "_transactionDate": "2020-06-20",
+        },
+        FinancialRecords {
+          "_amount": 27000,
+          "_asset": Asset {
+            "_id": 1,
+            "_projectName": "Godrej Prime",
+          },
+          "_attachment": Attachment {
+            "_fileName": "Foobar.jpg",
+            "_id": 1,
+            "_isCoverImage": false,
+            "_link": "",
+            "_mediaAttributes": MediaAttributes {
+              "_duration": "",
+              "_thumbnail": "",
+              "_thumbnailHD": "",
+              "_thumbnailSD": "",
+              "_title": "",
+              "_videoId": "",
+            },
+            "_mediaType": "IMAGE",
+            "_name": "",
+          },
+          "_category": LedgerCategory {
+            "_entryType": "",
+            "_id": 1,
+            "_name": "Utility bills",
+          },
+          "_currencyCode": "INR",
+          "_currencySymbol": "$",
+          "_entryType": "DEBIT",
+          "_id": 6,
+          "_label": "Rent",
+          "_notes": "Jahn Doe",
+          "_payerName": "Foobar",
+          "_receiverName": "JohnDoe",
+          "_transactionDate": "2020-06-20",
+        },
+        FinancialRecords {
+          "_amount": 27000,
+          "_asset": Asset {
+            "_id": 1,
+            "_projectName": "Godrej Prime",
+          },
+          "_attachment": Attachment {
+            "_fileName": "Foobar.jpg",
+            "_id": 1,
+            "_isCoverImage": false,
+            "_link": "",
+            "_mediaAttributes": MediaAttributes {
+              "_duration": "",
+              "_thumbnail": "",
+              "_thumbnailHD": "",
+              "_thumbnailSD": "",
+              "_title": "",
+              "_videoId": "",
+            },
+            "_mediaType": "IMAGE",
+            "_name": "",
+          },
+          "_category": LedgerCategory {
+            "_entryType": "",
+            "_id": 1,
+            "_name": "Utility bills",
+          },
+          "_currencyCode": "INR",
+          "_currencySymbol": "$",
+          "_entryType": "CREDIT",
+          "_id": 7,
+          "_label": "Rent",
+          "_notes": "Jahn Doe",
+          "_payerName": "Foobar",
+          "_receiverName": "JohnDoe",
+          "_transactionDate": "2020-06-20",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={0.1}
+    onMomentumScrollEnd={[Function]}
+    onScrollEndDrag={[Function]}
+    onTouchStart={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
     style={
       Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "padding": 16,
+        "height": 400,
       }
     }
-  >
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "borderColor": "#000",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "marginRight": 12,
-            "padding": 10,
-          }
-        }
-      >
-        <Text
-          textType="bold"
-          type="regular"
-        >
-          12
-        </Text>
-        <Text
-          type="regular"
-        >
-          May
-        </Text>
-      </View>
-      <View>
-        <Text
-          type="small"
-        >
-          Maintenance
-        </Text>
-        <Text
-          textType="bold"
-          type="regular"
-        >
-          Rent
-        </Text>
-        <Text
-          type="regular"
-        >
-          Manor
-        </Text>
-      </View>
-    </View>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-        }
-      }
-    >
-      <PricePerUnit
-        currency="INR"
-        price={20000}
-        priceTransformation={false}
-      />
-      <Icon
-        allowFontScaling={false}
-        name="down-arrow"
-        size={24}
-        style={
-          Object {
-            "marginLeft": 10,
-          }
-        }
-      />
-    </View>
-  </ForwardRef>
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
 </View>
 `;

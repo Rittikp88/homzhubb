@@ -72,9 +72,10 @@ interface IProps extends TextProps {
   type: TextSizeType;
   textType?: FontWeightType;
   testID?: string;
+  maxLength?: number;
 }
 
-const Label = ({ type, style, children, textType, testID, ...props }: IProps): ReactElement<RNText> => {
+const Label = ({ type, style, children, textType, maxLength, testID, ...props }: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
   switch (type) {
@@ -89,14 +90,19 @@ const Label = ({ type, style, children, textType, testID, ...props }: IProps): R
       defaultStyle = styles.labelSmall;
       break;
   }
+  const slicedText =
+    maxLength && children && children.toString().length > maxLength
+      ? `${children.toString().substring(0, maxLength)}...`
+      : children;
+
   return (
     <RNText style={[defaultStyle, fontStyle, style]} {...props} testID={testID}>
-      {children}
+      {slicedText || children}
     </RNText>
   );
 };
 
-const Text = ({ type, style, children, textType, testID, ...props }: IProps): ReactElement<RNText> => {
+const Text = ({ type, style, children, textType, testID, maxLength, ...props }: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
   switch (type) {
@@ -111,9 +117,14 @@ const Text = ({ type, style, children, textType, testID, ...props }: IProps): Re
       defaultStyle = styles.textSmall;
       break;
   }
+  const slicedText =
+    maxLength && children && children.toString().length > maxLength
+      ? `${children.toString().substring(0, maxLength)}...`
+      : children;
+
   return (
     <RNText style={[defaultStyle, fontStyle, style]} {...props} testID={testID}>
-      {children}
+      {slicedText || children}
     </RNText>
   );
 };

@@ -1,6 +1,7 @@
 {
   "common": {
     "homzhub": "Homzhub",
+    "description": "Your Property Custodian",
     "welcome": "Welcome To Homzhub",
     "login": "Login",
     "ok": "OK",

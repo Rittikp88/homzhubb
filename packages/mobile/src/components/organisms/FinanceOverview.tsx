@@ -159,7 +159,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
     };
     /* Empty the data before adding new */
     this.setState({ data: [] });
-    const response: GeneralLedgers[] = await LedgerService.getAllGeneralLedgers(
+    const response: GeneralLedgers[] = await LedgerService.getLedgerPerformances(
       startDate,
       endDate,
       getTransactionGroupBy()

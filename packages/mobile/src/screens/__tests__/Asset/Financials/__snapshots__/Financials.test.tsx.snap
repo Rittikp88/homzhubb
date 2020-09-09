@@ -5,6 +5,7 @@ exports[`Financials Screen should render snapshot 1`] = `
   loading={true}
   renderComponent={
     <AnimatedProfileHeader
+      isOuterScrollEnabled={true}
       title="financial"
     >
       <React.Fragment>
@@ -38,7 +39,12 @@ exports[`Financials Screen should render snapshot 1`] = `
           }
           totalDue={70000}
         />
-        <withI18nextTranslation(TransactionCardsContainer) />
+        <withI18nextTranslation(TransactionCardsContainer)
+          isLoading={false}
+          onEndReachedHandler={[Function]}
+          shouldEnableOuterScroll={[Function]}
+          transactionsData={Array []}
+        />
       </React.Fragment>
     </AnimatedProfileHeader>
   }

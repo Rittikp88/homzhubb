@@ -5,7 +5,7 @@ import { TFunction } from 'i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, Divider, Image, PricePerUnit, Text } from '@homzhub/common/src/components';
+import { Button, Divider, Image, Label, PricePerUnit, Text } from '@homzhub/common/src/components';
 
 interface IPropertyDuesData {
   propertyName: string;
@@ -25,17 +25,22 @@ export const PropertyDuesCardContainer = ({ ...props }: IProps): ReactElement =>
   const { totalDue, currency, propertyDues } = props;
   const { t } = useTranslation();
 
-  // TODO(Sriram-2020.08.21) Change the below dues icon to a desired icon
   return (
     <View style={styles.containerStyle}>
       <View style={styles.heading}>
         <View style={styles.duesText}>
-          <Icon style={styles.walletIconStyle} name={icons.wallet} size={20} />
-          <Text type="regular" textType="semiBold">
+          <Icon style={styles.walletIconStyle} name={icons.wallet} size={22} />
+          <Text type="small" textType="semiBold">
             {t('assetDashboard:dues')}
           </Text>
         </View>
-        <PricePerUnit textStyle={styles.dueStyle} priceTransformation={false} currency={currency} price={totalDue} />
+        <PricePerUnit
+          textSizeType="small"
+          textStyle={styles.dueStyle}
+          priceTransformation={false}
+          currency={currency}
+          price={totalDue}
+        />
       </View>
       <Divider />
       <View style={styles.propertyDuesContainer}>{renderPropertyDues(propertyDues, t)}</View>
@@ -51,17 +56,19 @@ const renderPropertyDues = (propertyDues: IPropertyDuesData[], t: TFunction): Re
       <>
         <View style={styles.propertyName}>
           <Image style={styles.flag} source={images.flag} />
-          <Text type="regular" textType="semiBold">
+          <Text type="small" textType="semiBold">
             {propertyName}
           </Text>
         </View>
-        <Text type="small">{address}</Text>
+        <Label type="large">{address}</Label>
         <View style={styles.dueContainer}>
           <View>
-            <Text type="small">{dueCategory}</Text>
-            <PricePerUnit priceTransformation={false} currency={currency_symbol} price={price} />
+            <Label type="large">{dueCategory}</Label>
+            <PricePerUnit textSizeType="small" priceTransformation={false} currency={currency_symbol} price={price} />
           </View>
           <Button
+            textType="text"
+            textSize="small"
             titleStyle={styles.payNowTitleStyles}
             containerStyle={styles.payNowBtnStyles}
             type="primary"

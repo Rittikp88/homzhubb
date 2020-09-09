@@ -12,6 +12,7 @@ interface IProps {
   children: React.ReactElement;
   title: string;
   onIconPress?: () => void;
+  isOuterScrollEnabled?: boolean;
 }
 
 interface IAnimatedProfileHeaderState {
@@ -31,14 +32,14 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
   };
 
   public render(): React.ReactNode {
-    const { children } = this.props;
+    const { children, isOuterScrollEnabled } = this.props;
     return (
       <View style={styles.container}>
         <>
           <StatusBarComponent backgroundColor={theme.colors.primaryColor} isTranslucent barStyle="light-content" />
           {this.renderHeader()}
         </>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView scrollEnabled={isOuterScrollEnabled} showsVerticalScrollIndicator={false}>
           <>
             <View style={styles.headingView} />
             <View style={styles.scrollView}>{children}</View>

@@ -30,12 +30,11 @@ enum FormType {
 
 interface IFormData {
   property: string;
-  details: string;
+  label: string;
   tellerName?: string;
   amount: string;
   category: string;
-  // TODO (Sriram 2020.09.02 Remove optional)
-  date?: string;
+  date: string;
   notes?: string;
 }
 
@@ -68,7 +67,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     attachment: undefined,
     formValues: {
       property: '',
-      details: '',
+      label: '',
       tellerName: '',
       amount: '',
       category: '',
@@ -116,7 +115,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                 <FormTextInput
                   formProps={formProps}
                   inputType="default"
-                  name="details"
+                  name="label"
                   label={t('details')}
                   placeholder={t('detailsPlaceholder')}
                 />
@@ -230,12 +229,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 
     return yup.object().shape({
       property: yup.string().required(t('propertyError')),
-      details: yup.string().required(t('detailsError')),
+      label: yup.string().required(t('detailsError')),
       tellerName: yup.string().optional(),
       amount: yup.string().required(t('amountError')),
       category: yup.string().required(t('categoryError')),
-      // TODO (Sriram 2020.09.02 Remove optional)
-      date: yup.string().optional(),
+      date: yup.string().required(t('dateError')),
       notes: yup.string().optional(),
     });
   };
@@ -263,7 +261,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 
   private handleSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
-    const { property, details, tellerName, amount, category, notes } = values;
+    const { property, label, tellerName, amount, category, notes, date } = values;
     const { selectedFormType, attachment } = this.state;
     const { shouldLoad } = this.props;
     let attachmentId = 0;
@@ -288,15 +286,15 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       const payload = {
         asset: property,
         entry_type: selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit,
-        detail: details,
-        ...tellerInfo,
+        label,
+        ...(tellerName && tellerInfo),
         amount,
         category,
-        // TODO (Sriram 2020.09.02 Replace string with date)
-        transaction_date: '2020-08-11',
+        transaction_date: date,
         ...(notes && { notes }),
         attachment: attachmentId || null,
       };
+
       await LedgerService.postGeneralLedgers(payload);
       shouldLoad(false);
       formActions.setSubmitting(false);

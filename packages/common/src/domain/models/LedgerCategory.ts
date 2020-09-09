@@ -5,7 +5,7 @@ export class LedgerCategory {
   @JsonProperty('id', Number)
   private _id = '';
 
-  @JsonProperty('entry_type', String)
+  @JsonProperty('entry_type', String, true)
   private _entryType = '';
 
   @JsonProperty('name', String)

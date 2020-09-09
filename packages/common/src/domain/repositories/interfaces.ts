@@ -251,7 +251,7 @@ export interface IGeneralLedgerPayload {
 export interface IAddGeneralLedgerPayload {
   asset: number;
   entry_type: string;
-  detail: string;
+  label: string;
   payer_name?: string;
   receiver_name?: string;
   amount: number;

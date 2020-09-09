@@ -19,10 +19,20 @@ import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOve
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import { propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
+
+// Todo (Sriram 2020.09.08) Do we need this?
+enum LoadTypes {
+  ScreenLoad = 'ScreenLoad',
+  ComponentLoad = 'ComponentLoad',
+}
 
 interface IState {
   ledgerData: GeneralLedgers[];
+  transactionsData: FinancialRecords[];
   isLoading: boolean;
+  isComponentLoading: boolean;
+  scrollEnabled: boolean;
 }
 
 type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -30,11 +40,15 @@ type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamLis
 export class Financials extends React.PureComponent<Props, IState> {
   public state = {
     ledgerData: [],
+    transactionsData: [],
     isLoading: false,
+    isComponentLoading: false,
+    scrollEnabled: true,
   };
 
   public async componentDidMount(): Promise<void> {
-    await this.getGeneralLedgers();
+    await this.getGeneralLedgersPref();
+    await this.getGeneralLedgers(LoadTypes.ScreenLoad);
   }
 
   public render = (): React.ReactElement => {
@@ -44,11 +58,11 @@ export class Financials extends React.PureComponent<Props, IState> {
 
   private renderComponent = (): React.ReactElement => {
     const { t } = this.props;
-    const { ledgerData } = this.state;
+    const { ledgerData, transactionsData, scrollEnabled, isComponentLoading } = this.state;
     const { currency_symbol, totalDue, details } = propertyDues;
 
     return (
-      <AnimatedProfileHeader title={t('financial')}>
+      <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
         <>
           {ledgerData && ledgerData.length > 0 && (
             <FinancialHeaderContainer
@@ -62,10 +76,19 @@ export class Financials extends React.PureComponent<Props, IState> {
           )}
           <FinanceOverview />
           <PropertyDuesCardContainer currency={currency_symbol} totalDue={totalDue} propertyDues={details} />
-          <TransactionCardsContainer />
+          <TransactionCardsContainer
+            shouldEnableOuterScroll={this.toggleScroll}
+            transactionsData={transactionsData}
+            isLoading={isComponentLoading}
+            onEndReachedHandler={this.onEndReachedHandler}
+          />
         </>
       </AnimatedProfileHeader>
     );
+  };
+
+  private onEndReachedHandler = async (): Promise<void> => {
+    await this.getGeneralLedgers(LoadTypes.ComponentLoad);
   };
 
   private onPlusIconPress = (): void => {
@@ -73,10 +96,14 @@ export class Financials extends React.PureComponent<Props, IState> {
     navigation.navigate(ScreensKeys.AddRecordScreen);
   };
 
-  private getGeneralLedgers = async (): Promise<void> => {
+  private toggleScroll = (scrollEnabled: boolean): void => {
+    this.setState({ scrollEnabled });
+  };
+
+  private getGeneralLedgersPref = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
-      const response: GeneralLedgers[] = await LedgerService.getAllGeneralLedgers(
+      const response: GeneralLedgers[] = await LedgerService.getLedgerPerformances(
         DateUtils.getCurrentYearStartDate(),
         DateUtils.getCurrentYearLastDate(),
         DataGroupBy.year
@@ -85,8 +112,26 @@ export class Financials extends React.PureComponent<Props, IState> {
       this.setState({ ledgerData: response, isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
+  private getGeneralLedgers = async (type: LoadTypes): Promise<void> => {
+    const { transactionsData } = this.state;
+    this.setState(() => {
+      if (type === LoadTypes.ScreenLoad) {
+        return { isLoading: true, isComponentLoading: false };
+      }
+      return { isComponentLoading: true, isLoading: false };
+    });
+
+    try {
+      const response: FinancialTransactions = await LedgerService.getGeneralLedgers(transactionsData.length);
+
+      this.setState({ transactionsData: [...transactionsData, ...response.results], isLoading: false });
+    } catch (e) {
+      this.setState({ isLoading: false });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 }

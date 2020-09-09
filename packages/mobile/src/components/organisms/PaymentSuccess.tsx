@@ -10,7 +10,7 @@ import { Button, Divider, Text } from '@homzhub/common/src/components';
 
 interface IProps {
   onClickLink: (markdownKey: MarkdownType) => void;
-  onPreviewPropertyPress: () => void;
+  onPreviewPropertyPress?: () => void;
 }
 
 export const PaymentSuccess = (props: IProps): React.ReactElement => {
@@ -42,14 +42,16 @@ export const PaymentSuccess = (props: IProps): React.ReactElement => {
           {t('common:why')}
         </Text>
       </Text>
-      <View style={styles.shadowView}>
-        <Button
-          type="primary"
-          title={t('previewProperty')}
-          containerStyle={styles.buttonStyle}
-          onPress={onPreviewPropertyPress}
-        />
-      </View>
+      {onPreviewPropertyPress ? (
+        <View style={styles.shadowView}>
+          <Button
+            type="primary"
+            title={t('previewProperty')}
+            containerStyle={styles.buttonStyle}
+            onPress={onPreviewPropertyPress}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };

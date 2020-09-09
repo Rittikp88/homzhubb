@@ -31,7 +31,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       <Icon
         allowFontScaling={false}
         name="wallet"
-        size={20}
+        size={22}
         style={
           Object {
             "marginRight": 10,
@@ -40,7 +40,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       />
       <Text
         textType="semiBold"
-        type="regular"
+        type="small"
       >
         assetDashboard:dues
       </Text>
@@ -49,6 +49,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       currency="INR"
       price={1200}
       priceTransformation={false}
+      textSizeType="small"
       textStyle={
         Object {
           "color": "#D60D31",
@@ -86,16 +87,16 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       />
       <Text
         textType="semiBold"
-        type="regular"
+        type="small"
       >
         Eaton Garth Manor
       </Text>
     </View>
-    <Text
-      type="small"
+    <Label
+      type="large"
     >
       Sindhi Society, Chembur, Mumbai- 400071
-    </Text>
+    </Label>
     <View
       style={
         Object {
@@ -107,15 +108,16 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       }
     >
       <View>
-        <Text
-          type="small"
+        <Label
+          type="large"
         >
           Plumbing fees
-        </Text>
+        </Label>
         <PricePerUnit
           currency="USD"
           price={20000}
           priceTransformation={false}
+          textSizeType="small"
         />
       </View>
       <Button
@@ -124,6 +126,8 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
             "flex": 0,
           }
         }
+        textSize="small"
+        textType="text"
         title="assetFinancial:payNow"
         titleStyle={
           Object {
@@ -163,16 +167,16 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       />
       <Text
         textType="semiBold"
-        type="regular"
+        type="small"
       >
         Eaton Garth Manor
       </Text>
     </View>
-    <Text
-      type="small"
+    <Label
+      type="large"
     >
       Sindhi Society, Chembur, Mumbai- 400071
-    </Text>
+    </Label>
     <View
       style={
         Object {
@@ -184,15 +188,16 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       }
     >
       <View>
-        <Text
-          type="small"
+        <Label
+          type="large"
         >
           Plumbing fees
-        </Text>
+        </Label>
         <PricePerUnit
           currency="USD"
           price={30000}
           priceTransformation={false}
+          textSizeType="small"
         />
       </View>
       <Button
@@ -201,6 +206,8 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
             "flex": 0,
           }
         }
+        textSize="small"
+        textType="text"
         title="assetFinancial:payNow"
         titleStyle={
           Object {
@@ -240,16 +247,16 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       />
       <Text
         textType="semiBold"
-        type="regular"
+        type="small"
       >
         Eaton Garth Manor
       </Text>
     </View>
-    <Text
-      type="small"
+    <Label
+      type="large"
     >
       Sindhi Society, Chembur, Mumbai- 400071
-    </Text>
+    </Label>
     <View
       style={
         Object {
@@ -261,15 +268,16 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
       }
     >
       <View>
-        <Text
-          type="small"
+        <Label
+          type="large"
         >
           Plumbing fees
-        </Text>
+        </Label>
         <PricePerUnit
           currency="USD"
           price={20000}
           priceTransformation={false}
+          textSizeType="small"
         />
       </View>
       <Button
@@ -278,6 +286,8 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
             "flex": 0,
           }
         }
+        textSize="small"
+        textType="text"
         title="assetFinancial:payNow"
         titleStyle={
           Object {

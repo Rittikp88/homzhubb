@@ -5,6 +5,7 @@ import { FontWeightType, Label, Text, TextSizeType } from '@homzhub/common/src/c
 
 interface IProps {
   price: number;
+  prefixText?: string;
   unit?: string;
   currency: string;
   priceTransformation?: boolean;
@@ -17,6 +18,7 @@ interface IProps {
 const PricePerUnit = (props: IProps): React.ReactElement => {
   const {
     price,
+    prefixText,
     unit = '',
     currency,
     priceTransformation = true,
@@ -39,7 +41,7 @@ const PricePerUnit = (props: IProps): React.ReactElement => {
 
   return (
     <Text type={textSizeType} textType={textFontWeight} style={textStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
-      {priceWithCurrency}
+      {prefixText ? `${prefixText} ${priceWithCurrency}` : priceWithCurrency}
       {unit.length > 0 && renderLabel()}
     </Text>
   );

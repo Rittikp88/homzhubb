@@ -29,7 +29,7 @@ exports[`AddRecordForm should match snapshot 1`] = `
         "amount": "",
         "category": "",
         "date": "",
-        "details": "",
+        "label": "",
         "notes": "",
         "property": "",
         "tellerName": "",

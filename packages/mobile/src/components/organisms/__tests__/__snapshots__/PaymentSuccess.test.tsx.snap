@@ -98,25 +98,5 @@ exports[`Payment Success Component should render payment success component 1`] =
       common:why
     </Text>
   </Text>
-  <View
-    style={
-      Object {
-        "marginBottom": 20,
-        "paddingBottom": 0,
-        "paddingTop": 10,
-      }
-    }
-  >
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "margin": 16,
-        }
-      }
-      title="previewProperty"
-      type="primary"
-    />
-  </View>
 </View>
 `;
