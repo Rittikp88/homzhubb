@@ -54,7 +54,8 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     const { searchValue, documents } = this.state;
     const results: AssetDocument[] = [];
     documents.forEach((item: AssetDocument) => {
-      if (item.attachment.fileName.includes(searchValue)) {
+      const name = item.attachment.fileName.toLowerCase();
+      if (name.includes(searchValue.toLowerCase())) {
         results.push(item);
       }
     });

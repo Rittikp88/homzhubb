@@ -5,19 +5,19 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ListItem } from '@homzhub/common/src/components/atoms/ListItem';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
-interface IProps {
+interface IProps<T> {
   data: PickerItemProps[];
   selectedValue: string;
   listTitle: string;
   listHeight?: number;
   isBottomSheetVisible: boolean;
   onCloseDropDown: () => void;
-  onSelectItem: (value: string) => void;
+  onSelectItem: (value: T) => void;
   testID?: string;
   numColumns?: number;
 }
 
-export class BottomSheetListView extends Component<IProps> {
+export class BottomSheetListView<T> extends Component<IProps<T>> {
   public render(): React.ReactNode {
     const {
       isBottomSheetVisible,

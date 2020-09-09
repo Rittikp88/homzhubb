@@ -120,6 +120,10 @@ class DateUtils {
     return moment([year, month, day]).fromNow();
   };
 
+  public getFutureDate = (dateCount: number): string => {
+    return moment().add(dateCount, 'days').calendar();
+  };
+
   public getYear = (yearCount: number): string => {
     return moment.utc(new Date()).subtract(yearCount, 'years').format('YYYY');
   };

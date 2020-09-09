@@ -2,12 +2,15 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { AssetSummary } from '@homzhub/common/src/components';
 import {
   AnimatedProfileHeader,
@@ -19,10 +22,15 @@ import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOve
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import AssetSubscriptionPlan from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 
+interface IDispatchProps {
+  setCurrentFilter: (payload: Filters) => void;
+}
+
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
-type Props = WithTranslation & libraryProps;
+type Props = WithTranslation & libraryProps & IDispatchProps;
 
 interface IDashboardState {
   metrics: AssetMetrics;
@@ -104,11 +112,11 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   private handleMetricsNavigation = (name: string): void => {
-    const { navigation } = this.props;
+    const { navigation, setCurrentFilter } = this.props;
+    setCurrentFilter(name as Filters);
     // @ts-ignore
     navigation.navigate(ScreensKeys.Portfolio, {
       screen: ScreensKeys.PortfolioLandingScreen,
-      params: { filter: name },
     });
   };
 
@@ -125,7 +133,15 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Dashboard);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentFilter } = PortfolioActions;
+  return bindActionCreators({ setCurrentFilter }, dispatch);
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Dashboard));
 
 const styles = StyleSheet.create({
   assetCards: {

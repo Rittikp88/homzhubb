@@ -36,6 +36,7 @@ const tintColors = {
   darkTint5: '#667686',
   darkTint6: '#808D9B',
   darkTint7: '#99A4AF',
+  darkTint8: '#B2BBC3',
   darkTint9: '#CCD1D7',
   darkTint10: '#E5E8EB',
   darkTint11: '#9A99A2',

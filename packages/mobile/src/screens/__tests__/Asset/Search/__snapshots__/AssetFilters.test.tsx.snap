@@ -212,39 +212,39 @@ exports[`Asset filter should render snapshot 1`] = `
                 "value": 1,
               },
               Object {
-                "label": "Within 5 miles",
+                "label": "Within 5 km",
                 "value": 2,
               },
               Object {
-                "label": "Within 0.25 miles",
+                "label": "Within 0.25 km",
                 "value": 3,
               },
               Object {
-                "label": "Within 10 miles",
+                "label": "Within 10 km",
                 "value": 4,
               },
               Object {
-                "label": "Within 0.5 miles",
+                "label": "Within 0.5 km",
                 "value": 5,
               },
               Object {
-                "label": "Within 20 miles",
+                "label": "Within 20 km",
                 "value": 6,
               },
               Object {
-                "label": "Within 1 miles",
+                "label": "Within 1 km",
                 "value": 7,
               },
               Object {
-                "label": "Within 30 miles",
+                "label": "Within 30 km",
                 "value": 8,
               },
               Object {
-                "label": "Within 3 miles",
+                "label": "Within 3 km",
                 "value": 9,
               },
               Object {
-                "label": "Within 40 miles",
+                "label": "Within 40 km",
                 "value": 10,
               },
             ]

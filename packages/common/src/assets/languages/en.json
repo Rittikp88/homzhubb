@@ -73,8 +73,13 @@
     "uploadDocument": "Upload Document",
     "toastBack": "Click Back again to exit.",
     "optional": "Optional",
-    "selectFromHere": "Select from here",
-    "you": "You"
+    "you": "You",
+    "charactersRemaining": "Characters remaining: {{wordCount}}",
+    "confirm": "Confirm",
+    "selectDate": "Select Date",
+    "datePlaceholder": "Select your date",
+    "selectTimings": "Select Timings",
+    "selectFromHere": "Select from here"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -306,7 +311,8 @@
     "atms": "ATMs",
     "malls": "Shopping Malls",
     "noDescription": "No Description",
-    "messageSent": "Message Sent Successfully"
+    "messageSent": "Message Sent Successfully",
+    "scheduleVisit": "Schedule Site Visit"
   },
   "assetDashboard": {
     "notification": "Notifications",
@@ -342,7 +348,8 @@
     "addPropertyHighlights": "Add Property highlights for +10%",
     "propertyDetails": "Property Details",
     "rentalReceipts": "Rental Receipts",
-    "searchByName": "Search by name"
+    "searchByName": "Search by name",
+    "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -363,7 +370,6 @@
     "addDatePlaceholder": "Select a date",
     "notes": "Notes",
     "notesPlaceholder": "Type your notes here...",
-    "charactersRemaining": "Characters remaining: {{wordCount}}",
     "addNow": "Add Now",
     "propertyError": "Please enter your property",
     "detailsError": "Please enter your property details",

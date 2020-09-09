@@ -8,6 +8,7 @@ describe('Text Area', () => {
 
   it('should match snapshot', () => {
     const props = {
+      value: 'Message',
       label: 'Some label',
       placeholder: 'placeholder',
     };
@@ -17,6 +18,7 @@ describe('Text Area', () => {
 
   it('should match snapshot for optional', () => {
     const props = {
+      value: 'Message',
       label: 'Some label',
       placeholder: 'placeholder',
       isOptional: true,

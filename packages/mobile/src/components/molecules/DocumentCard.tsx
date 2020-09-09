@@ -5,6 +5,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 
 interface IProps {
   userEmail: string;
@@ -20,6 +21,7 @@ export const DocumentCard = ({ document, handleShare, userEmail, handleDelete }:
   } = document;
   const { t } = useTranslation();
   const uploadedBy = userEmail === user?.email ? t('you') : user?.fullName;
+  const uploadedOn = DateUtils.getDisplayDate(document.uploadedOn, 'L');
   const onShare = (): void => handleShare(link);
   const onDelete = (): void => handleDelete(document.id);
   return (
@@ -30,7 +32,7 @@ export const DocumentCard = ({ document, handleShare, userEmail, handleDelete }:
             {fileName}
           </Label>
           <Label type="regular" style={styles.description}>
-            {`Uploaded on: ${document.uploadedOn}, by ${uploadedBy}`}
+            {t('assetPortfolio:uploadedOn', { uploadedOn, uploadedBy })}
           </Label>
         </View>
         <Icon name={icons.doc} size={35} color={theme.colors.lowPriority} />
@@ -54,7 +56,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 18,
   },
-  leftView: {},
+  leftView: {
+    flex: 1,
+  },
   title: {
     color: theme.colors.darkTint3,
   },

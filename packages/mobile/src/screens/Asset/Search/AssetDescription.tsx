@@ -183,12 +183,18 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         >
           <View style={styles.screen}>
             {this.renderHeaderSection()}
-            <CollapsibleSection title={t('description')}>{this.renderAssetDescription()}</CollapsibleSection>
-            <CollapsibleSection title={t('factsFeatures')}>{this.renderFactsAndFeatures()}</CollapsibleSection>
+            <CollapsibleSection title={t('description')} isDividerRequired>
+              {this.renderAssetDescription()}
+            </CollapsibleSection>
+            <CollapsibleSection title={t('factsFeatures')} isDividerRequired>
+              {this.renderFactsAndFeatures()}
+            </CollapsibleSection>
             {this.renderAmenities()}
-            <CollapsibleSection title={t('highlights')}>{this.renderAssetHighlights()}</CollapsibleSection>
+            <CollapsibleSection title={t('highlights')} isDividerRequired>
+              {this.renderAssetHighlights()}
+            </CollapsibleSection>
             {this.renderMapSection()}
-            <CollapsibleSection title={t('reviewsRatings')}>
+            <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
               <AssetRatings reviews={reviews} />
             </CollapsibleSection>
             {this.renderSimilarProperties()}
@@ -259,12 +265,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             currency={(leaseTerm?.currencyCode || saleTerm?.currencyCode) ?? 'INR'}
             unit={asset_transaction_type === 0 ? 'mo' : ''}
           />
-          <View style={styles.textIcon}>
+          <TouchableOpacity style={styles.textIcon} onPress={this.onBookVisit}>
             <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
             <Text type="small" textType="regular" style={styles.primaryText}>
               {t('bookTour')}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.apartmentContainer}>
           <PropertyAddress
@@ -624,7 +630,30 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.goBack();
   };
 
-  public navigateToContactForm = (): void => {
+  private onBookVisit = (): void => {
+    const { navigation, isLoggedIn, setChangeStack } = this.props;
+    if (!isLoggedIn) {
+      setChangeStack(false);
+      navigation.navigate(ScreensKeys.AuthStack, {
+        screen: ScreensKeys.SignUp,
+        params: { onCallback: this.navigateToVisitForm },
+      });
+    } else {
+      this.navigateToVisitForm();
+    }
+  };
+
+  private navigateToVisitForm = (): void => {
+    const {
+      navigation,
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+    navigation.navigate(ScreensKeys.BookVisit, { propertyTermId });
+  };
+
+  private navigateToContactForm = (): void => {
     const {
       navigation,
       assetDetails,

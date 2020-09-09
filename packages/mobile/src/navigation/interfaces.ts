@@ -94,6 +94,7 @@ export enum ScreensKeys {
   PropertyFilters = 'PropertyFilters',
   ContactSignup = 'ContactSignup',
   ContactForm = 'ContactForm',
+  BookVisit = 'BookVisit',
 
   // Common Screens
 
@@ -170,9 +171,8 @@ export interface IContactProps {
   propertyTermId: number;
 }
 
-// Portfolio
-export interface ILandingScreenProps {
-  filter?: string;
+export interface IBookVisitProps {
+  propertyTermId: number;
 }
 
 // Webview

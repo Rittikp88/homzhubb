@@ -79,7 +79,8 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                 price={0}
                 unit="mo"
               />
-              <View
+              <ForwardRef
+                onPress={[Function]}
                 style={
                   Object {
                     "flexDirection": "row",
@@ -108,7 +109,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                 >
                   bookTour
                 </Text>
-              </View>
+              </ForwardRef>
             </View>
             <View
               style={
@@ -225,7 +226,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                     textType="semiBold"
                     type="large"
                   >
-                    08 Sep 2020
+                    09 Sep 2020
                   </Label>
                 </View>
                 <View
@@ -263,6 +264,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             </View>
           </View>
           <UNDEFINED
+            isDividerRequired={true}
             title="description"
           >
             <React.Fragment>
@@ -283,6 +285,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             </React.Fragment>
           </UNDEFINED>
           <UNDEFINED
+            isDividerRequired={true}
             title="factsFeatures"
           >
             <FlatList
@@ -485,6 +488,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             />
           </View>
           <UNDEFINED
+            isDividerRequired={true}
             title="highlights"
           >
             <FlatList
@@ -615,6 +619,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             />
           </View>
           <UNDEFINED
+            isDividerRequired={true}
             title="reviewsRatings"
           >
             <UNDEFINED

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, StatusBar, FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
@@ -19,7 +19,7 @@ import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTren
 import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notifications';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
-import { ILandingScreenProps, NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 
@@ -107,7 +107,7 @@ export type DashboardNavigatorParamList = {
 };
 
 export type PortfolioNavigatorParamList = {
-  [ScreensKeys.PortfolioLandingScreen]: ILandingScreenProps;
+  [ScreensKeys.PortfolioLandingScreen]: undefined;
   [ScreensKeys.PropertyDetailScreen]: undefined;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
@@ -180,7 +180,12 @@ export const BottomTabs = (): React.ReactElement => {
   // TODO: Need to add type
   const getTabBarVisibility = (route: any): boolean => {
     const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
-    const notAllowedRoutes = [ScreensKeys.PropertyAssetDescription, ScreensKeys.ContactForm, ScreensKeys.AuthStack];
+    const notAllowedRoutes = [
+      ScreensKeys.PropertyAssetDescription,
+      ScreensKeys.ContactForm,
+      ScreensKeys.AuthStack,
+      ScreensKeys.BookVisit,
+    ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };
 

@@ -38,9 +38,9 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
   private search = debounce(() => {
     const { searchValue, tenantHistory } = this.state;
     const results: TenantHistory[] = [];
-    tenantHistory.forEach((item) => {
-      // @ts-ignore
-      if (item.tenantUser.fullName.includes(searchValue)) {
+    tenantHistory.forEach((item: TenantHistory) => {
+      const { tenantUser } = item;
+      if (tenantUser && tenantUser.fullName.toLowerCase().includes(searchValue.toLowerCase())) {
         results.push(item);
       }
     });

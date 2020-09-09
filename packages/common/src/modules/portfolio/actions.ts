@@ -6,6 +6,7 @@ import {
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
 
 const actionTypePrefix = 'Portfolio/';
@@ -24,6 +25,8 @@ export const PortfolioActionTypes = {
   },
   SET: {
     CURRENT_ASSET: `${actionTypePrefix}CURRENT_ASSET`,
+    CURRENT_FILTER: `${actionTypePrefix}CURRENT_FILTER`,
+    INITIAL_STATE: `${actionTypePrefix}INITIAL_STATE`,
   },
 };
 const getTenanciesDetails = (payload: IGetTenanciesPayload): IFluxStandardAction<IGetTenanciesPayload> => {
@@ -94,7 +97,16 @@ const getTenantHistoryFailure = (error: string): IFluxStandardAction<string> => 
   };
 };
 
-export type PortfolioPayloadTypes = string | ISetAssetPayload | Asset[] | undefined | TenantHistory[];
+const setCurrentFilter = (payload: Filters): IFluxStandardAction<Filters> => ({
+  type: PortfolioActionTypes.SET.CURRENT_FILTER,
+  payload,
+});
+
+const setInitialState = (): IFluxStandardAction => ({
+  type: PortfolioActionTypes.SET.INITIAL_STATE,
+});
+
+export type PortfolioPayloadTypes = string | ISetAssetPayload | Asset[] | undefined | TenantHistory[] | Filters;
 export const PortfolioActions = {
   getTenanciesDetails,
   getTenanciesDetailsSuccess,
@@ -106,4 +118,6 @@ export const PortfolioActions = {
   getTenantHistory,
   getTenantHistorySuccess,
   getTenantHistoryFailure,
+  setCurrentFilter,
+  setInitialState,
 };

@@ -12,6 +12,7 @@ interface ICalendarProps {
   onSelect: (day: string) => void;
   selectedDate: string;
   allowPastDates?: boolean;
+  maxDate?: string;
 }
 
 interface ICalendarState {
@@ -46,7 +47,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   }
 
   private renderHeader = (): React.ReactElement => {
-    const { allowPastDates } = this.props;
+    const { allowPastDates, maxDate } = this.props;
     const { year, isMonthView, selectedDate } = this.state;
     const newYear = moment(selectedDate).year();
     let { month } = this.state;
@@ -72,7 +73,16 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           >
             {`${updateMonth} ${newYear || year}`}
           </Text>
-          <Icon name={icons.rightArrow} size={22} color={theme.colors.primaryColor} onPress={this.handleNextPress} />
+          <Icon
+            name={icons.rightArrow}
+            size={22}
+            color={
+              maxDate && moment(maxDate).month() === moment().month()
+                ? theme.colors.disabled
+                : theme.colors.primaryColor
+            }
+            onPress={this.handleNextPress}
+          />
         </View>
         <Divider />
       </>
@@ -113,12 +123,11 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   };
 
   private renderCalendar = (): React.ReactElement => {
-    const { allowPastDates } = this.props;
+    const { allowPastDates, maxDate } = this.props;
     const { day, month, year, selectedDate } = this.state;
     const updateMonth = month + 1;
     const date = selectedDate || DateUtils.getFormattedDate(day, updateMonth, year, 'YYYY-MM-DD').toDateString();
     const markedDate = !selectedDate ? moment().format('YYYY-MM-DD') : date;
-
     return (
       <>
         <Calendar
@@ -126,6 +135,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           // @ts-ignore
           renderHeader={this.headerView}
           minDate={allowPastDates ? undefined : new Date()}
+          maxDate={maxDate}
           current={date}
           key={date}
           style={styles.calendarStyle}
@@ -198,8 +208,12 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
 
   private handleNextPress = (): void => {
     const { year, isMonthView, selectedDate } = this.state;
+    const { maxDate } = this.props;
 
     let { month } = this.state;
+    if (maxDate && moment(maxDate).month() === moment().month()) {
+      return;
+    }
     if (selectedDate) {
       month = moment(selectedDate).month();
     }
@@ -209,9 +223,10 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
       this.getSelectedDate(month, nextYear);
       this.setState({ year: nextYear.toString() });
     } else {
-      const nextMonth = month + 1;
-      this.getSelectedDate(nextMonth, Number(year));
-      this.setState({ month: nextMonth });
+      const nextMonth = month <= 10 ? month + 1 : 0;
+      const nextYear = month <= 10 ? Number(year) : Number(year) + 1;
+      this.getSelectedDate(nextMonth, nextYear);
+      this.setState({ month: nextMonth, year: nextYear.toString() });
     }
   };
 

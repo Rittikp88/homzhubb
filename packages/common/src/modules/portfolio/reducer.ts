@@ -3,6 +3,7 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioActionTypes, PortfolioPayloadTypes } from '@homzhub/common/src/modules/portfolio/actions';
 import { IPortfolioState, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
 
 export const initialPortfolioState: IPortfolioState = {
@@ -20,6 +21,7 @@ export const initialPortfolioState: IPortfolioState = {
   tenancies: null,
   currentAsset: {} as ISetAssetPayload,
   tenantHistory: null,
+  currentFilter: Filters.ALL,
 };
 
 export const portfolioReducer = (
@@ -83,6 +85,10 @@ export const portfolioReducer = (
         ['loaders']: { ...state.loaders, ['history']: false },
         ['error']: { ...state.error, ['history']: action.error as string },
       };
+    case PortfolioActionTypes.SET.CURRENT_FILTER:
+      return { ...state, ['currentFilter']: action.payload as Filters };
+    case PortfolioActionTypes.SET.INITIAL_STATE:
+      return initialPortfolioState;
     default:
       return state;
   }

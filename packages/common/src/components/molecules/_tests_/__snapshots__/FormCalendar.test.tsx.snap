@@ -4,7 +4,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
 <View
   style={Object {}}
 >
-  <Label
+  <Text
     style={
       Object {
         "color": "#33495E",
@@ -16,7 +16,7 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
     type="regular"
   >
     common:availableFrom
-  </Label>
+  </Text>
   <ForwardRef
     onPress={[Function]}
     style={
@@ -50,10 +50,13 @@ exports[`Test cases for FormCalendar should render snapshot 1`] = `
       />
       <Text
         style={
-          Object {
-            "color": "#001B36",
-            "marginLeft": 16,
-          }
+          Array [
+            Object {
+              "color": "#001B36",
+              "marginLeft": 16,
+            },
+            false,
+          ]
         }
         textType="regular"
         type="small"
@@ -87,7 +90,7 @@ exports[`Test cases for FormCalendar should render snapshot when initial date to
 <View
   style={Object {}}
 >
-  <Label
+  <Text
     style={
       Object {
         "color": "#33495E",
@@ -99,7 +102,7 @@ exports[`Test cases for FormCalendar should render snapshot when initial date to
     type="regular"
   >
     common:availableFrom
-  </Label>
+  </Text>
   <ForwardRef
     onPress={[Function]}
     style={
@@ -133,10 +136,13 @@ exports[`Test cases for FormCalendar should render snapshot when initial date to
       />
       <Text
         style={
-          Object {
-            "color": "#001B36",
-            "marginLeft": 16,
-          }
+          Array [
+            Object {
+              "color": "#001B36",
+              "marginLeft": 16,
+            },
+            false,
+          ]
         }
         textType="regular"
         type="small"
@@ -160,7 +166,7 @@ exports[`Test cases for FormCalendar should render snapshot when initial date to
   >
     <CalendarComponent
       onSelect={[Function]}
-      selectedDate="2020-09-08"
+      selectedDate="2020-09-09"
     />
   </BottomSheet>
 </View>

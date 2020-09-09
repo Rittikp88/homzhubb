@@ -5,6 +5,7 @@ import {
   IAssetDescriptionProps,
   IContactProps,
   NestedNavigatorParams,
+  IBookVisitProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStack, AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
@@ -12,6 +13,7 @@ import AssetNeighbourhood from '@homzhub/mobile/src/screens/Asset/Search/AssetNe
 import ContactForm from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
 import AssetFilters from '@homzhub/mobile/src/screens/Asset/Search/AssetFilters';
 import AssetSearchScreen from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchScreen';
+import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 
 export type SearchStackParamList = {
   [ScreensKeys.PropertySearchScreen]: undefined;
@@ -20,6 +22,7 @@ export type SearchStackParamList = {
   [ScreensKeys.AssetNeighbourhood]: undefined;
   [ScreensKeys.PropertyFilters]: undefined;
   [ScreensKeys.ContactForm]: IContactProps;
+  [ScreensKeys.BookVisit]: IBookVisitProps;
 };
 
 const SearchStackNavigator = createStackNavigator<SearchStackParamList>();
@@ -38,6 +41,7 @@ export const SearchStack = (): React.ReactElement => {
       <SearchStackNavigator.Screen name={ScreensKeys.AssetNeighbourhood} component={AssetNeighbourhood} />
       <SearchStackNavigator.Screen name={ScreensKeys.PropertyFilters} component={AssetFilters} />
       <SearchStackNavigator.Screen name={ScreensKeys.ContactForm} component={ContactForm} />
+      <SearchStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
     </SearchStackNavigator.Navigator>
   );
 };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, TextStyle } from 'react-native';
 import { FormikProps, FormikValues } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -14,19 +14,20 @@ interface IFormCalendarProps extends WithTranslation {
   formProps?: FormikProps<FormikValues>;
   selectedValue?: string;
   label?: string;
+  iconColor?: string;
   placeHolder?: string;
   allowPastDates?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  placeHolderStyle?: StyleProp<TextStyle>;
   textType?: TextFieldType;
   textSize?: TextSizeType;
   fontType?: FontWeightType;
+  maxDate?: string;
   bubbleSelectedDate?: (day: string) => void;
 }
-
 interface IFormCalendarState {
   isCalendarVisible: boolean;
 }
-
 class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   public state = {
     isCalendarVisible: false,
@@ -42,9 +43,12 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       label,
       placeHolder,
       allowPastDates,
-      textType = 'label',
+      textType,
+      iconColor,
       textSize = 'regular',
       fontType = 'regular',
+      placeHolderStyle = {},
+      maxDate,
     } = this.props;
     const { isCalendarVisible } = this.state;
     const availableDate = (): string => {
@@ -54,13 +58,10 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       return formProps?.values[name] === moment().format('YYYY-MM-DD') ? 'Today' : formProps?.values[name];
     };
     const labelStyles = { ...theme.form.formLabel };
-
     let TextField = Text;
-
     if (textType === 'label') {
       TextField = Label;
     }
-
     return (
       <View style={containerStyle}>
         <TextField type={textSize} textType={fontType} style={labelStyles}>
@@ -68,8 +69,8 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
         </TextField>
         <TouchableOpacity testID="toCalenderInput" style={styles.dateView} onPress={this.onCalendarOpen}>
           <View style={styles.dateLeft}>
-            <Icon name={icons.calendar} color={theme.colors.darkTint5} size={18} />
-            <Text type="small" textType="regular" style={styles.dateText}>
+            <Icon name={icons.calendar} color={iconColor || theme.colors.darkTint5} size={18} />
+            <Text type="small" textType="regular" style={[styles.dateText, selectedValue === '' && placeHolderStyle]}>
               {availableDate() || placeHolder}
             </Text>
           </View>
@@ -84,6 +85,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
         >
           <CalendarComponent
             allowPastDates={allowPastDates}
+            maxDate={maxDate}
             onSelect={this.onDateSelected}
             selectedDate={selectedValue ?? formProps?.values[name]}
           />
@@ -95,7 +97,6 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   private onDateSelected = (day: string): void => {
     const { name, formProps, bubbleSelectedDate } = this.props;
     this.setState({ isCalendarVisible: false });
-
     if (bubbleSelectedDate) {
       bubbleSelectedDate(day);
     } else {
@@ -113,7 +114,6 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     this.setState({ isCalendarVisible: false });
   };
 }
-
 const styles = StyleSheet.create({
   dateView: {
     borderWidth: 1,
@@ -135,6 +135,5 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint1,
   },
 });
-
 const HOC = withTranslation()(FormCalendar);
 export { HOC as FormCalendar };

@@ -1,5 +1,6 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
 
 const getTenancies = (state: IState): Asset[] | null => {
@@ -57,12 +58,21 @@ const getAssetById = (state: IState): Asset | null => {
   }
   return properties[currentAsset.id];
 };
+
 const getTenantHistory = (state: IState): TenantHistory[] | null => {
   const {
     portfolio: { tenantHistory },
   } = state;
   if (!tenantHistory) return null;
   return tenantHistory;
+};
+
+const getCurrentFilter = (state: IState): Filters => {
+  const {
+    portfolio: { currentFilter },
+  } = state;
+
+  return currentFilter;
 };
 
 export const PortfolioSelectors = {
@@ -73,4 +83,5 @@ export const PortfolioSelectors = {
   getCurrentAssetId,
   getAssetById,
   getTenantHistory,
+  getCurrentFilter,
 };

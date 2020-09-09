@@ -47,8 +47,24 @@ exports[`Text Area should match snapshot 1`] = `
         }
       }
       underlineColorAndroid="transparent"
+      value="Message"
     />
   </View>
+  <Label
+    style={
+      Array [
+        Object {
+          "color": "#33495E",
+        },
+        Object {
+          "paddingVertical": 6,
+        },
+      ]
+    }
+    type="small"
+  >
+    charactersRemaining
+  </Label>
 </View>
 `;
 
@@ -83,7 +99,7 @@ exports[`Text Area should match snapshot for optional 1`] = `
       }
       type="regular"
     >
-      Optional
+      optional
     </Label>
   </View>
   <View
@@ -109,7 +125,23 @@ exports[`Text Area should match snapshot for optional 1`] = `
         }
       }
       underlineColorAndroid="transparent"
+      value="Message"
     />
   </View>
+  <Label
+    style={
+      Array [
+        Object {
+          "color": "#33495E",
+        },
+        Object {
+          "paddingVertical": 6,
+        },
+      ]
+    }
+    type="small"
+  >
+    charactersRemaining
+  </Label>
 </View>
 `;

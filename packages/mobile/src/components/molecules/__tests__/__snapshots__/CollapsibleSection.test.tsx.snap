@@ -13,15 +13,27 @@ exports[`CollapsibleSection should match snapshot 1`] = `
     }
     testID="collapse"
   >
-    <Text
+    <View
       style={
         Object {
-          "color": "#4C5F72",
+          "alignItems": "center",
+          "flexDirection": "row",
         }
       }
-      textType="semiBold"
-      type="small"
-    />
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#4C5F72",
+            },
+            undefined,
+          ]
+        }
+        textType="semiBold"
+        type="small"
+      />
+    </View>
     <Icon
       allowFontScaling={false}
       color="#4C5F72"
@@ -40,13 +52,6 @@ exports[`CollapsibleSection should match snapshot 1`] = `
   >
     <View />
   </Collapsible>
-  <Divider
-    containerStyles={
-      Object {
-        "marginTop": 24,
-      }
-    }
-  />
 </Fragment>
 `;
 
@@ -63,15 +68,27 @@ exports[`CollapsibleSection should match snapshot with press 1`] = `
     }
     testID="collapse"
   >
-    <Text
+    <View
       style={
         Object {
-          "color": "#4C5F72",
+          "alignItems": "center",
+          "flexDirection": "row",
         }
       }
-      textType="semiBold"
-      type="small"
-    />
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#4C5F72",
+            },
+            undefined,
+          ]
+        }
+        textType="semiBold"
+        type="small"
+      />
+    </View>
     <Icon
       allowFontScaling={false}
       color="#4C5F72"
@@ -90,12 +107,5 @@ exports[`CollapsibleSection should match snapshot with press 1`] = `
   >
     <View />
   </Collapsible>
-  <Divider
-    containerStyles={
-      Object {
-        "marginTop": 24,
-      }
-    }
-  />
 </Fragment>
 `;

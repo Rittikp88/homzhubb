@@ -39,17 +39,19 @@ interface IStateProps {
   tenancies: Asset[] | null;
   properties: Asset[] | null;
   isTenanciesLoading: boolean;
+  currentFilter: Filters;
 }
 
 interface IDispatchProps {
   getTenanciesDetails: (payload: IGetTenanciesPayload) => void;
   getPropertyDetails: (payload: IGetPropertiesPayload) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
+  setCurrentFilter: (payload: Filters) => void;
+  setInitialState: () => void;
 }
 
 interface IPortfolioState {
   isBottomSheetVisible: boolean;
-  selectedFilter: string;
   metrics: AssetMetrics;
   filters: PickerItemProps[];
   attachments: Attachment[];
@@ -64,9 +66,10 @@ type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKe
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
+  public focusListener: any;
+
   public state = {
     isBottomSheetVisible: false,
-    selectedFilter: Filters.ALL,
     metrics: {} as AssetMetrics,
     filters: [],
     attachments: [],
@@ -77,19 +80,15 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     activeSlide: 0,
   };
 
-  public componentDidMount = async (): Promise<void> => {
-    await this.getAssetMetrics();
-    await this.getAssetFilters();
-    this.getTenancies();
-    this.getPortfolioProperty();
-    this.updateFilter();
+  public componentDidMount = (): void => {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('focus', () => {
+      this.getScreenData().then();
+    });
   };
 
-  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IPortfolioState>): void {
-    const { route } = this.props;
-    if (route !== prevProps.route) {
-      this.updateFilter();
-    }
+  public componentWillUnmount(): void {
+    this.focusListener();
   }
 
   public render = (): React.ReactElement => {
@@ -105,8 +104,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private renderComponent = (): React.ReactElement => {
-    const { t, tenancies, properties } = this.props;
-    const { selectedFilter, isBottomSheetVisible, metrics, filters, isSpinnerLoading } = this.state;
+    const { t, tenancies, properties, currentFilter } = this.props;
+    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading } = this.state;
     return (
       <>
         <AnimatedProfileHeader title={t('portfolio')}>
@@ -123,7 +122,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             {properties && properties.length > 0 && this.renderPortfolio(properties)}
             <BottomSheetListView
               data={filters}
-              selectedValue={selectedFilter}
+              selectedValue={currentFilter}
               listTitle={t('propertySearch:filters')}
               listHeight={500}
               isBottomSheetVisible={isBottomSheetVisible}
@@ -205,8 +204,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     );
   };
 
-  private onSelectFilter = (value: string): void => {
-    this.setState({ selectedFilter: value, expandedAssetId: 0 }, (): void => {
+  private onSelectFilter = (value: Filters): void => {
+    const { setCurrentFilter } = this.props;
+    setCurrentFilter(value);
+    this.setState({ expandedAssetId: 0 }, (): void => {
       this.getPortfolioProperty(true);
     });
     this.closeBottomSheet();
@@ -235,6 +236,13 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.verifyData();
   };
 
+  private getScreenData = async (): Promise<void> => {
+    await this.getAssetMetrics();
+    await this.getAssetFilters();
+    this.getTenancies();
+    this.getPortfolioProperty();
+  };
+
   private handleExpandCollapse = (id: number): void => {
     const { expandedAssetId } = this.state;
     this.setState({ expandedAssetId: expandedAssetId === id ? 0 : id });
@@ -242,15 +250,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private closeBottomSheet = (): void => {
     this.setState({ isBottomSheetVisible: false });
-  };
-
-  private updateFilter = (): void => {
-    const { route } = this.props;
-    if (route && route.params && route.params.filter) {
-      this.setState({ selectedFilter: route.params.filter, expandedAssetId: 0 }, () => {
-        this.getPortfolioProperty();
-      });
-    }
   };
 
   private getAssetMetrics = async (): Promise<void> => {
@@ -291,15 +290,13 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private getPortfolioProperty = (isFromFilter?: boolean): void => {
-    const { selectedFilter } = this.state;
-    const { getPropertyDetails } = this.props;
+    const { getPropertyDetails, currentFilter } = this.props;
     if (isFromFilter) {
       this.setState({ isSpinnerLoading: true });
     } else {
       this.setState({ isLoading: true });
     }
-
-    getPropertyDetails({ status: selectedFilter, onCallback: this.onPropertiesCallback });
+    getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
   };
 
   private updateSlide = (slideNumber: number): void => {
@@ -333,13 +330,23 @@ const mapStateToProps = (state: IState): IStateProps => {
   return {
     tenancies: PortfolioSelectors.getTenancies(state),
     properties: PortfolioSelectors.getProperties(state),
+    currentFilter: PortfolioSelectors.getCurrentFilter(state),
     isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTenanciesDetails, getPropertyDetails, setCurrentAsset } = PortfolioActions;
-  return bindActionCreators({ getTenanciesDetails, getPropertyDetails, setCurrentAsset }, dispatch);
+  const {
+    getTenanciesDetails,
+    getPropertyDetails,
+    setCurrentAsset,
+    setCurrentFilter,
+    setInitialState,
+  } = PortfolioActions;
+  return bindActionCreators(
+    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setInitialState },
+    dispatch
+  );
 };
 
 export default connect(

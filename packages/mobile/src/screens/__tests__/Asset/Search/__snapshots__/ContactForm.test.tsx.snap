@@ -231,6 +231,7 @@ exports[`Contact Form Screen should render snapshot 1`] = `
         label="message"
         onMessageChange={[Function]}
         placeholder="typeYourMessage"
+        value=""
       />
     </ScrollViewMock>
   </ForwardRef(SafeAreaView)>

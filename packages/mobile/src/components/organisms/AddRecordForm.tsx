@@ -160,7 +160,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   label={t('notes')}
                   placeholder={t('notesPlaceholder')}
                   style={styles.inputStyle}
-                  helpText={t('charactersRemaining', { wordCount })}
+                  helpText={t('common:charactersRemaining', { wordCount })}
                   onValueChange={this.wordCount}
                   multiline
                   maxLength={MAX_WORD_COUNT}

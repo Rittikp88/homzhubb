@@ -57,7 +57,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
   };
 
   public render = (): React.ReactElement => {
-    const { selectedTime, selectedSpaces, userType } = this.state;
+    const { selectedTime, selectedSpaces, userType, message } = this.state;
     const { t, navigation } = this.props;
     return (
       <HandleBack onBack={this.goBack} navigation={navigation}>
@@ -93,6 +93,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
               label={t('message')}
               placeholder={t('typeYourMessage')}
               isOptional
+              value={message}
               containerStyle={styles.textArea}
               onMessageChange={this.handleMessageChange}
             />

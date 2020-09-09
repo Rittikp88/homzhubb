@@ -57,10 +57,18 @@ exports[`DocumentCard should match snapshot 1`] = `
           }
         >
           <View
-            style={Object {}}
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
           >
             <View
-              style={Object {}}
+              style={
+                Object {
+                  "flex": 1,
+                }
+              }
             >
               <Label
                 style={
@@ -155,7 +163,7 @@ exports[`DocumentCard should match snapshot 1`] = `
                       ]
                     }
                   >
-                    Uploaded on: undefined, by you
+                    assetPortfolio:uploadedOn
                   </Text>
                 </Text>
               </Label>
