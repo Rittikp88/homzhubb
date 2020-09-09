@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 
@@ -17,7 +17,7 @@ const data = [
   },
 ];
 describe('RadioButtonGroup', () => {
-  let wrapper: ShallowWrapper;
+  let wrapper: any;
 
   it('should match snapshot', () => {
     const props = {
@@ -37,7 +37,6 @@ describe('RadioButtonGroup', () => {
     };
     wrapper = shallow(<RadioButtonGroup {...props} />);
     const RenderItem = wrapper.find('[testID="ftlist"]').prop('renderItem');
-    // @ts-ignore
     const renderItemShallowWrapper = shallow(<RenderItem item={data[0]} />);
     expect(toJson(renderItemShallowWrapper)).toMatchSnapshot();
   });

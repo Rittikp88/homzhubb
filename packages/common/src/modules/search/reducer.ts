@@ -4,7 +4,6 @@ import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 import { SearchActionTypes, SearchPayloadTypes } from '@homzhub/common/src/modules/search/actions';
 import { IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
-import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -27,13 +26,13 @@ export const initialSearchState: ISearchState = {
     miscellaneous: {
       show_verified: false,
       agent_listed: false,
-      search_radius: 1,
-      date_added: 1,
-      property_age: 1,
+      search_radius: -1,
+      date_added: -1,
+      property_age: -1,
       rent_free_period: -1,
       expected_move_in_date: DateUtils.getCurrentMonthLastDate(),
-      facing: [1],
-      furnishing: [FurnishingType.NONE],
+      facing: [],
+      furnishing: [],
       propertyAmenity: [],
     },
   },

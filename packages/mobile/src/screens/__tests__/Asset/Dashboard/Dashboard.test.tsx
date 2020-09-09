@@ -4,7 +4,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Dashboard } from '@homzhub/mobile/src/screens/Asset/Dashboard';
 
-describe('Dashboard Screen', () => {
+describe.skip('Dashboard Screen', () => {
   let component: ShallowWrapper;
 
   beforeEach(() => {

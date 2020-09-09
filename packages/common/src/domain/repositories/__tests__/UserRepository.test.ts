@@ -20,8 +20,7 @@ describe('UserRepository', () => {
   });
 
   it('should call signUp API', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => true);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(true));
     const response = await UserRepository.signUp({
       full_name: 'Test User',
       email: 'xxx@y.com',
@@ -33,8 +32,7 @@ describe('UserRepository', () => {
   });
 
   it('should call social signUp API', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => loginData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(loginData));
     const response = await UserRepository.socialSignUp({
       otp: '123',
       user_details: {
@@ -49,8 +47,7 @@ describe('UserRepository', () => {
   });
 
   it('should call login API for email and return response', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => loginData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(loginData));
     const response = await UserRepository.login({
       action: LoginTypes.EMAIL,
       payload: {
@@ -62,8 +59,7 @@ describe('UserRepository', () => {
   });
 
   it('should call login API for OTP and return response', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => loginData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(loginData));
     const response = await UserRepository.login({
       action: LoginTypes.OTP,
       payload: {
@@ -76,8 +72,7 @@ describe('UserRepository', () => {
   });
 
   it('should call socialLogin and return response', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => socialLogin);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(socialLogin));
     const response = await UserRepository.socialLogin({
       action: LoginTypes.SOCIAL_MEDIA,
       payload: {
@@ -89,8 +84,7 @@ describe('UserRepository', () => {
   });
 
   it('should call socialLogin and return for no user', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => socialLoginNoUser);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(socialLoginNoUser));
     const response = await UserRepository.socialLogin({
       action: LoginTypes.SOCIAL_MEDIA,
       payload: {
@@ -102,8 +96,7 @@ describe('UserRepository', () => {
   });
 
   it('should call otp API for fetch', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => otpSent);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(otpSent));
     const response = await UserRepository.Otp({
       action: OtpActionTypes.SEND,
       payload: {
@@ -115,8 +108,7 @@ describe('UserRepository', () => {
   });
 
   it('should call otp API for verify', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => otpVerify);
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve(otpVerify));
     const response = await UserRepository.Otp({
       action: OtpActionTypes.VERIFY,
       payload: {
@@ -129,8 +121,7 @@ describe('UserRepository', () => {
   });
 
   it('should call resetPassword API for setPassword', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => true);
+    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve(true));
     const response = await UserRepository.resetPassword({
       action: 'SET_PASSWORD',
       payload: {
@@ -142,8 +133,7 @@ describe('UserRepository', () => {
   });
 
   it('should call resetPassword API for send email', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => true);
+    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve(true));
     const response = await UserRepository.resetPassword({
       action: 'SEND_EMAIL',
       payload: {
@@ -154,15 +144,13 @@ describe('UserRepository', () => {
   });
 
   it('should check if email exists', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => emailExists);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(emailExists));
     const response = await UserRepository.emailExists('test@example.com');
     expect(response).toMatchSnapshot();
   });
 
   it('should check if phone exists', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => emailExists);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(emailExists));
     const response = await UserRepository.phoneExists('90000000000');
     expect(response).toMatchSnapshot();
   });
@@ -171,15 +159,15 @@ describe('UserRepository', () => {
     const payload = {
       refresh_token: 'refresh_token',
     };
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => {});
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve({}));
     const response = await UserRepository.logout(payload);
     expect(response).toMatchSnapshot();
   });
 
   it('should get user subscription', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => AssetSubscriptionPlanData);
+    jest
+      .spyOn(BootstrapAppService.clientInstance, 'get')
+      .mockImplementation(() => Promise.resolve(AssetSubscriptionPlanData));
     const response = await UserRepository.getUserSubscription();
     expect(response).toMatchSnapshot();
   });

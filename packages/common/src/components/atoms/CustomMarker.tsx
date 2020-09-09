@@ -22,17 +22,13 @@ const CustomMarker = (props: IProps): React.ReactElement => {
 
 const styles = StyleSheet.create({
   marker: {
-    width: 16,
-    height: 16,
-    borderRadius: 16 / 2,
+    ...(theme.circleCSS(16) as object),
     backgroundColor: theme.colors.primaryColor,
   },
   selectedMarker: {
+    ...(theme.circleCSS(40) as object),
     justifyContent: 'center',
     alignItems: 'center',
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
     backgroundColor: theme.colors.markerOpacity,
   },
 });

@@ -49,6 +49,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   setTermId: (termId: number) => void;
+  setPropertyInitialState: () => void;
 }
 
 type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.ServiceCheckoutSteps>;
@@ -206,7 +207,8 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
   };
 
   public previewProperty = (): void => {
-    const { navigation } = this.props;
+    const { navigation, setPropertyInitialState } = this.props;
+    setPropertyInitialState();
     // @ts-ignore
     navigation.navigate(ScreensKeys.BottomTabs, { screen: ScreensKeys.Portfolio });
   };
@@ -293,8 +295,8 @@ export const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setTermId } = PropertyActions;
-  return bindActionCreators({ setTermId }, dispatch);
+  const { setTermId, setPropertyInitialState } = PropertyActions;
+  return bindActionCreators({ setTermId, setPropertyInitialState }, dispatch);
 };
 
 const connectedComponent = connect<IStateProps, IDispatchProps, OwnProps, IState>(

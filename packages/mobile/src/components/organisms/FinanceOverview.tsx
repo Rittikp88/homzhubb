@@ -6,6 +6,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { DateFilter, MONTH_LABELS, FINANCIAL_DROPDOWN_DATA } from '@homzhub/common/src/constants/FinanceOverview';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
@@ -17,55 +18,6 @@ enum TabKeys {
   expenses = 1,
   cashFlow = 2,
 }
-
-enum DateFilter {
-  thisMonth = 1,
-  lastMonth = 2,
-  thisYear = 3,
-  thisFinancialYear = 4,
-  lastYear = 5,
-}
-
-// TODO: Figure out how to get these label values from translations
-const DROPDOWN_DATA = {
-  [DateFilter.thisMonth]: {
-    label: 'This month',
-    value: DateFilter.thisMonth,
-    startDate: DateUtils.getCurrentMonthStartDate(),
-    endDate: DateUtils.getCurrentMonthLastDate(),
-    dataGroupBy: DataGroupBy.month,
-  },
-  [DateFilter.lastMonth]: {
-    label: 'Last month',
-    value: DateFilter.lastMonth,
-    startDate: DateUtils.getPreviousMonthStartDate(),
-    endDate: DateUtils.getPreviousMonthLastDate(),
-    dataGroupBy: DataGroupBy.month,
-  },
-  [DateFilter.thisYear]: {
-    label: 'This year',
-    value: DateFilter.thisYear,
-    startDate: DateUtils.getCurrentYearStartDate(),
-    endDate: DateUtils.getCurrentDate(),
-    dataGroupBy: DataGroupBy.year,
-  },
-  [DateFilter.thisFinancialYear]: {
-    label: 'This financial year',
-    value: DateFilter.thisFinancialYear,
-    startDate: `${DateUtils.getCurrentYear()}-04-01`,
-    endDate: `${DateUtils.getNextYear()}-03-31`,
-    dataGroupBy: DataGroupBy.year,
-  },
-  [DateFilter.lastYear]: {
-    label: 'Last year',
-    value: DateFilter.lastYear,
-    startDate: DateUtils.getPreviousYearStartDate(),
-    endDate: DateUtils.getPreviousYearLastDate(),
-    dataGroupBy: DataGroupBy.year,
-  },
-};
-
-const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 interface IState {
   currentTab: TabKeys;
@@ -110,7 +62,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
             </Label>
           </View>
           <Dropdown
-            data={Object.values(DROPDOWN_DATA)}
+            data={Object.values(FINANCIAL_DROPDOWN_DATA)}
             value={selectedTimeRange}
             // @ts-ignore
             onDonePress={this.onTimeRangeChange}
@@ -149,7 +101,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
 
   public getGeneralLedgers = async (): Promise<void> => {
     const { selectedTimeRange, currentTab } = this.state;
-    const { endDate, startDate, dataGroupBy } = DROPDOWN_DATA[selectedTimeRange];
+    const { endDate, startDate, dataGroupBy } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
     const getTransactionGroupBy = (): DataGroupBy => {
       if (currentTab === TabKeys.cashFlow) {
         // For bar graph, we need all data by months
@@ -195,7 +147,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
       return {
         data1,
         data2,
-        label: monthLabels,
+        label: MONTH_LABELS,
       };
     };
 
@@ -209,8 +161,8 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
           data1: sumForMonth(LedgerTypes.debit),
           data2: sumForMonth(LedgerTypes.credit),
           label: DateFilter.lastMonth
-            ? [monthLabels[DateUtils.getCurrentMonthIndex() - 1]]
-            : [monthLabels[DateUtils.getCurrentMonthIndex()]],
+            ? [MONTH_LABELS[DateUtils.getCurrentMonthIndex() - 1]]
+            : [MONTH_LABELS[DateUtils.getCurrentMonthIndex()]],
         };
     }
   };

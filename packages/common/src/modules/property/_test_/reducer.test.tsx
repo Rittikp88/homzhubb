@@ -46,8 +46,7 @@ describe('Property Reducer', () => {
   });
 
   it('should handle Get Service details', () => {
-    // @ts-ignore
-    const state = reducer(initialPropertyState, PropertyActions.getServiceDetails());
+    const state = reducer(initialPropertyState, PropertyActions.getServiceDetails(1));
     expect(state).toStrictEqual({
       ...initialPropertyState,
       ['loaders']: { ...state.loaders, ['service']: true },

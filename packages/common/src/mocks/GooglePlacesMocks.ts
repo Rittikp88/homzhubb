@@ -1,10 +1,10 @@
-export const googleError = {
+export const GoogleError = {
   error_message: 'This is an Error',
   predictions: [],
   status: 'REQUEST_DENIED',
 };
 
-export const autocompleteMock = {
+export const AutocompleteMock = {
   predictions: [
     {
       description: 'Skyline Drive, Front Royal, VA, USA',

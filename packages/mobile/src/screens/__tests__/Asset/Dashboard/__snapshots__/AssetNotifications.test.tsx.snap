@@ -41,10 +41,14 @@ exports[`Asset Notifications Screen should render snapshot 1`] = `
   </View>
   <View
     style={
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "height": 800,
-      }
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+        },
+        Object {
+          "height": 500,
+        },
+      ]
     }
   >
     <SearchBar

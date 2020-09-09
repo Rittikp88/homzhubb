@@ -74,8 +74,10 @@ class AssetService {
       ...(show_verified ? { is_verified: show_verified } : {}),
       ...(agent_listed ? { agent_listed } : {}),
       // ...{ age__gte: PROPERTY_AGE[property_age - 1] },
-      ...{ search_radius: SEARCH_RADIUS_KILO_METRE[search_radius - 1] },
-      ...(date_added !== 1 ? { date_added__gte: DATE_ADDED[date_added - 1] } : {}),
+      ...(search_radius === -1
+        ? { search_radius: SEARCH_RADIUS_KILO_METRE[0] }
+        : { search_radius: SEARCH_RADIUS_KILO_METRE[search_radius - 1] }),
+      ...(date_added !== -1 ? { date_added__gte: DATE_ADDED[date_added - 1] } : {}),
     };
     if (asset_type.length > 0) {
       Object.assign(finalPayload, { asset_type__in: asset_type.toString() });

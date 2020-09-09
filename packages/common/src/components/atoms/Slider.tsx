@@ -111,9 +111,7 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   normalMarker: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
+    ...(theme.circleCSS(20) as object),
     backgroundColor: theme.colors.white,
     borderWidth: 1,
     borderColor: theme.colors.active,

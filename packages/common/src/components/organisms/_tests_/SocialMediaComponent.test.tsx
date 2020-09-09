@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { SocialMediaComponent } from '@homzhub/common/src/components';
-import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
+import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});

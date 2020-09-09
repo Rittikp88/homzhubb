@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssetRepository Should delete property image 1`] = `undefined`;
+exports[`AssetRepository Should delete property image 1`] = `Object {}`;
 
-exports[`AssetRepository Should delete verification document 1`] = `undefined`;
+exports[`AssetRepository Should delete verification document 1`] = `Object {}`;
 
 exports[`AssetRepository Should fetch existing verification document types 1`] = `
 Array [
@@ -1428,9 +1428,9 @@ Object {
 }
 `;
 
-exports[`AssetRepository Should post attachment for property 1`] = `undefined`;
+exports[`AssetRepository Should post attachment for property 1`] = `Object {}`;
 
-exports[`AssetRepository Should post verification document 1`] = `undefined`;
+exports[`AssetRepository Should post verification document 1`] = `Object {}`;
 
 exports[`AssetRepository should fetch a asset data 1`] = `
 Array [

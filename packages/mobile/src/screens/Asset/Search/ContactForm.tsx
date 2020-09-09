@@ -19,7 +19,7 @@ import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/Mu
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/mocks/ContactFormData';
+import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/constants/ContactFormData';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 interface ISlot {

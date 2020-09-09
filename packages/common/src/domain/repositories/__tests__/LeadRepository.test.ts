@@ -21,15 +21,13 @@ describe('LeadRepository', () => {
   });
 
   it('should post lease lead', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => {});
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve({}));
     const response = await LeadRepository.postLeaseLeadDetail(leadPayload);
     expect(response).toMatchSnapshot();
   });
 
   it('should post sale lead', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => {});
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve({}));
     const response = await LeadRepository.postSaleLeadDetail(leadPayload);
     expect(response).toMatchSnapshot();
   });

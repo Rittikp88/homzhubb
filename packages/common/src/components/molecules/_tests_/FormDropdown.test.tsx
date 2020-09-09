@@ -15,8 +15,14 @@ describe('Test cases for FormDropdown', () => {
       name: 'test',
     },
   };
+  const options = [
+    {
+      value: 1,
+      label: 'Label',
+    },
+  ];
   // @ts-ignore
-  const wrapper: ShallowWrapper = shallow(<FormDropdown name="dropdown" formProps={formValues} />);
+  const wrapper: ShallowWrapper = shallow(<FormDropdown name="dropdown" formProps={formValues} options={options} />);
 
   it('should render snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();

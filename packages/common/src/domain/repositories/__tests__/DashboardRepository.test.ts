@@ -11,22 +11,21 @@ describe('DashboardRepository', () => {
   });
 
   it('should get Market Trends', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => MarketTrendsData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(MarketTrendsData));
     const response = await DashboardRepository.getMarketTrends(2);
     expect(response).toMatchSnapshot();
   });
 
   it('should get Asset Metrics', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => AssetMetricsData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(AssetMetricsData));
     const response = await DashboardRepository.getAssetMetrics();
     expect(response).toMatchSnapshot();
   });
 
   it('should get advertisements', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => AssetAdvertisementData);
+    jest
+      .spyOn(BootstrapAppService.clientInstance, 'get')
+      .mockImplementation(() => Promise.resolve(AssetAdvertisementData));
     const response = await DashboardRepository.getAdvertisements();
     expect(response).toMatchSnapshot();
   });

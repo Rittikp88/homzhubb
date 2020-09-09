@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { remove } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { BATHROOM_FILTER, BEDROOM_FILTER } from '@homzhub/common/src/constants/SearchFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SelectionPicker, Text } from '@homzhub/common/src/components';
 
@@ -11,61 +12,6 @@ interface IProps {
   bathroomCount: number[];
   onSelection: (type: string, value: number | number[]) => void;
 }
-
-// TODO: To be moved either in redux or constants?
-const bedroom = [
-  {
-    title: 'Any',
-    value: -1,
-  },
-  {
-    title: '1',
-    value: 1,
-  },
-  {
-    title: '2',
-    value: 2,
-  },
-  {
-    title: '3',
-    value: 3,
-  },
-  {
-    title: '4',
-    value: 4,
-  },
-  {
-    title: '5+',
-    value: 5,
-  },
-];
-
-const bathroom = [
-  {
-    title: 'Any',
-    value: -1,
-  },
-  {
-    title: '1+',
-    value: 1,
-  },
-  {
-    title: '2+',
-    value: 2,
-  },
-  {
-    title: '3+',
-    value: 3,
-  },
-  {
-    title: '4+',
-    value: 4,
-  },
-  {
-    title: '5+',
-    value: 5,
-  },
-];
 
 const OPTION_WIDTH = (theme.viewport.width - 40) / 6;
 
@@ -101,7 +47,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         {t('beds')}
       </Text>
       <SelectionPicker
-        data={bedroom}
+        data={BEDROOM_FILTER}
         selectedItem={bedCount}
         onValueChange={onUpdateBedroomCount}
         optionWidth={OPTION_WIDTH}
@@ -111,7 +57,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         {t('baths')}
       </Text>
       <SelectionPicker
-        data={bathroom}
+        data={BATHROOM_FILTER}
         selectedItem={bathroomCount}
         onValueChange={onUpdateBathroomCount}
         optionWidth={OPTION_WIDTH}

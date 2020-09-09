@@ -24,6 +24,14 @@ exports[`Test cases for FormDropdown should render snapshot 1`] = `
   </Label>
   <Dropdown
     containerStyle={Object {}}
+    data={
+      Array [
+        Object {
+          "label": "Label",
+          "value": 1,
+        },
+      ]
+    }
     disable={false}
     iconColor="#99A4AF"
     iconSize={16}

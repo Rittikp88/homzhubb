@@ -257,7 +257,7 @@ exports[`Asset filter should render snapshot 1`] = `
           numColumns={2}
           onDonePress={[Function]}
           placeholder="selectRadius"
-          value={1}
+          value={-1}
         />
         <Text
           style={
@@ -313,7 +313,7 @@ exports[`Asset filter should render snapshot 1`] = `
           numColumns={2}
           onDonePress={[Function]}
           placeholder="selectDateAdded"
-          value={1}
+          value={-1}
         />
         <Text
           style={
@@ -369,7 +369,7 @@ exports[`Asset filter should render snapshot 1`] = `
           numColumns={2}
           onDonePress={[Function]}
           placeholder="selectPropertyAge"
-          value={1}
+          value={-1}
         />
         <withI18nextTranslation(FormCalendar)
           bubbleSelectedDate={[Function]}
@@ -405,11 +405,7 @@ exports[`Asset filter should render snapshot 1`] = `
           <MultipleButtonGroup
             data={Array []}
             onItemSelect={[Function]}
-            selectedItem={
-              Array [
-                1,
-              ]
-            }
+            selectedItem={Array []}
           />
         </View>
         <Text
@@ -451,11 +447,7 @@ exports[`Asset filter should render snapshot 1`] = `
               ]
             }
             onItemSelect={[Function]}
-            selectedItem={
-              Array [
-                "NONE",
-              ]
-            }
+            selectedItem={Array []}
           />
         </View>
         <Text

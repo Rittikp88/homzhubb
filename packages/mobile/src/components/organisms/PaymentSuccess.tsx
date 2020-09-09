@@ -17,7 +17,6 @@ export const PaymentSuccess = (props: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const { onClickLink, onPreviewPropertyPress } = props;
   const handleLink = (): void => onClickLink('visit');
-
   return (
     <View style={styles.container}>
       <View style={styles.doneView}>
@@ -55,7 +54,6 @@ export const PaymentSuccess = (props: IProps): React.ReactElement => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

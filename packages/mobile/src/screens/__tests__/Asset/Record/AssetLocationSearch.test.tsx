@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { AssetLocationSearch } from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
-import { autocompleteMock } from '@homzhub/common/src/mocks/GooglePlacesMocks';
+import { AutocompleteMock } from '@homzhub/common/src/mocks/GooglePlacesMocks';
 
 const mock = jest.fn();
 describe('Asset Location Search', () => {
@@ -47,7 +47,7 @@ describe('Asset Location Search', () => {
 
   it('should call on press results', () => {
     component.find('[testID="searchBar"]').prop('updateValue')('Kochi');
-    component.setState({ suggestions: autocompleteMock.predictions });
+    component.setState({ suggestions: AutocompleteMock.predictions });
     component.find('[testID="searchResults"]').prop('onResultPress')({ place_id: 1 });
     component.instance().navigateToMapView();
     expect(mock).toHaveBeenCalled();

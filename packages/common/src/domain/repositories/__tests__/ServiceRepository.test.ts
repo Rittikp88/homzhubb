@@ -14,15 +14,13 @@ describe('ServiceRepository', () => {
   });
 
   it('Should fetch list of all services', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => ServicesData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(ServicesData));
     const response = await ServiceRepository.getServiceDetail(1);
     expect(response).toMatchSnapshot();
   });
 
   it('should fetch a list of rent services', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => RentServicesData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(RentServicesData));
     const response = await ServiceRepository.getRentServices();
     expect(response).toMatchSnapshot();
   });
@@ -42,8 +40,7 @@ describe('ServiceRepository', () => {
   });
 
   it('Should fetch service steps details', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => ServiceSteps);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(ServiceSteps));
     const response = await ServiceRepository.getServiceStepsDetails(1, 1);
     expect(response).toMatchSnapshot();
   });

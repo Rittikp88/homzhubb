@@ -1,11 +1,11 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 
 const mock = jest.fn();
 describe('ContactPerson', () => {
-  let wrapper: ShallowWrapper;
+  let wrapper: any;
 
   beforeEach(() => {
     const props = {
@@ -23,7 +23,6 @@ describe('ContactPerson', () => {
 
   it('should call onContactTypeClicked', () => {
     [0, 1, 2].forEach((index: number) => {
-      // @ts-ignore
       wrapper.find('[testID="to"]').at(index).prop('onPress')();
       expect(mock).toHaveBeenCalled();
     });

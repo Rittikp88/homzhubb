@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Dropdown, IProps } from '@homzhub/common/src/components/atoms/Dropdown';
-import { CountryWithCode } from '@homzhub/common/src/mocks/countryWithCode';
+import { CountryWithCode } from '@homzhub/common/src/mocks/CountryWithCode';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});

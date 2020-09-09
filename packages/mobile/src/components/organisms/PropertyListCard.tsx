@@ -82,7 +82,7 @@ export class PropertyListCard extends React.Component<Props, {}> {
       floorNumber,
       name,
       carpetArea,
-      carpetAreaUnit
+      carpetAreaUnit?.title ?? ''
     );
     return (
       <View style={styles.amenities}>

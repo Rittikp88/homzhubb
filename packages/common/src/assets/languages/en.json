@@ -384,5 +384,22 @@
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg. Suresh Raina",
     "addedSuccessfullyMessage": "Added successfully"
+  },
+  "assetMore": {
+    "more": "More",
+    "profile": "Profile",
+    "notifications": "Notifications",
+    "documents": "Documents",
+    "kycDocuments": "KYC Documents",
+    "tickets": "Tickets",
+    "newLaunches": "New Launches",
+    "valueAddedServices": "Value Added Services",
+    "savedProperties": "Saved Properties",
+    "marketTrends": "Market Trends",
+    "support": "Support",
+    "settings": "Settings",
+    "referFriend": "Refer a friend",
+    "paymentMethods": "Subscriptions & Payments",
+    "logout": "Log Out"
   }
 }

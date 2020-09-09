@@ -38,14 +38,23 @@ interface IDashboardState {
 }
 
 export class Dashboard extends React.PureComponent<Props, IDashboardState> {
+  public focusListener: any;
+
   public state = {
     metrics: {} as AssetMetrics,
     isLoading: false,
   };
 
-  public componentDidMount = async (): Promise<void> => {
-    await this.getAssetMetrics();
+  public componentDidMount = (): void => {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('focus', () => {
+      this.getScreenData().then();
+    });
   };
+
+  public componentWillUnmount(): void {
+    this.focusListener();
+  }
 
   public render = (): React.ReactElement => {
     const { isLoading } = this.state;
@@ -94,6 +103,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private onViewAll = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.MarketTrends);
+  };
+
+  private getScreenData = async (): Promise<void> => {
+    await this.getAssetMetrics();
   };
 
   private handleDues = (): void => {

@@ -357,25 +357,15 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   private renderFilterTray = (): React.ReactNode => {
     const {
       t,
-      filters: { search_address },
-      filterData,
+      filters: { search_address, asset_group },
     } = this.props;
-    let propertyType = '';
-    if (filterData) {
-      const {
-        filters: {
-          asset_group: { name },
-        },
-      } = filterData;
-      propertyType = name;
-    }
     const { selectedOnScreenFilter, isMenuTrayCollapsed } = this.state;
     const onScreenFilters = [
       { type: OnScreenFilters.TYPE, label: t('type') },
       { type: OnScreenFilters.PRICE, label: t('price') },
       {
-        type: propertyType === 'RESIDENTIAL' ? OnScreenFilters.ROOMS : OnScreenFilters.AREA,
-        label: propertyType === 'RESIDENTIAL' ? t('rooms') : t('area'),
+        type: asset_group === 1 ? OnScreenFilters.ROOMS : OnScreenFilters.AREA, // asset_group=1 is RESIDENTIAL
+        label: asset_group === 1 ? t('rooms') : t('area'),
       },
       { type: OnScreenFilters.MORE, label: icons.filter },
     ];

@@ -100,6 +100,8 @@ export const propertyReducer = (
         ['loaders']: { ...state.loaders, ['service']: false },
         ['error']: { ...state.error, ['service']: action.error as string },
       };
+    case PropertyActionTypes.SET.INITIAL_STATE:
+      return { ...state, ...initialPropertyState };
     default:
       return state;
   }

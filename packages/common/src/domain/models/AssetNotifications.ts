@@ -1,5 +1,22 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Links } from '@homzhub/common/src/domain/models/PaginationLinks';
+import { Links, ILinks } from '@homzhub/common/src/domain/models/PaginationLinks';
+
+export interface IAssetNotifications {
+  count: number;
+  unread_count: number;
+  links: ILinks;
+  results: INotificationsResults[];
+}
+
+export interface INotificationsResults {
+  id: number;
+  notification_type: string;
+  title: string;
+  message: string;
+  link: string;
+  created_at: string;
+  is_read: boolean;
+}
 
 @JsonObject('Notifications')
 export class Notifications {

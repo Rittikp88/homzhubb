@@ -30,6 +30,7 @@ export const PropertyActionTypes = {
     CURRENT_PROPERTY_ID: `${actionTypePrefix}CURRENT_PROPERTY_ID`,
     TERM_ID: `${actionTypePrefix}TERM_ID`,
     SERVICE_CATEGORY: `${actionTypePrefix}SERVICE_CATEGORY`,
+    INITIAL_STATE: `${actionTypePrefix}INITIAL_STATE`,
   },
 };
 
@@ -132,6 +133,12 @@ const getServiceStepsDetailsFailure = (error: string): IFluxStandardAction<strin
   };
 };
 
+const setPropertyInitialState = (): IFluxStandardAction => {
+  return {
+    type: PropertyActionTypes.SET.INITIAL_STATE,
+  };
+};
+
 export type PropertyPayloadTypes =
   | string
   | number
@@ -157,4 +164,5 @@ export const PropertyActions = {
   setCurrentPropertyId,
   setTermId,
   setServiceCategory,
+  setPropertyInitialState,
 };

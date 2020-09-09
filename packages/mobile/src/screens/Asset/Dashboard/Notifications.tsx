@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -9,7 +10,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { Text, NotificationBox, EmptyState } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
-import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
+import { AssetNotifications, IAssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
 type Props = WithTranslation & libraryProps;
@@ -19,6 +20,7 @@ interface IAssetNotificationsState {
   searchText: string;
   limit: number;
   offset: number;
+  shouldLoadMore: boolean;
 }
 
 export class Notifications extends React.PureComponent<Props, IAssetNotificationsState> {
@@ -27,13 +29,14 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     searchText: '',
     limit: 50,
     offset: 0,
+    shouldLoadMore: true,
   };
 
   public componentDidMount = async (): Promise<void> => {
     await this.getAssetNotifications();
   };
 
-  public render = (): React.ReactNode => {
+  public render(): React.ReactNode {
     const { t } = this.props;
     return (
       <AnimatedProfileHeader title={t('dashboard')}>
@@ -43,7 +46,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
         </>
       </AnimatedProfileHeader>
     );
-  };
+  }
 
   public renderHeader = (): React.ReactElement => {
     const { t } = this.props;
@@ -66,8 +69,16 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   public renderNotifications = (): React.ReactNode => {
     const { t } = this.props;
     const { notifications, searchText } = this.state;
+    let containerStyle = {
+      height: 500,
+    };
+    if (notifications?.results && notifications?.results.length === 0) {
+      containerStyle = {
+        height: 200,
+      };
+    }
     return (
-      <View style={styles.searchBarContainer}>
+      <View style={[styles.searchBarContainer, containerStyle]}>
         <SearchBar
           placeholder={t('searchByKeyword')}
           value={searchText}
@@ -93,7 +104,13 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public onLoadMore = (): void => {
-    // TODO: Call the getAssetNotifications with more offset once the scroll issue is solved
+    const { limit, offset, shouldLoadMore } = this.state;
+    if (shouldLoadMore) {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      this.setState({ offset: limit + offset }, async () => {
+        await this.getAssetNotifications();
+      });
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -110,14 +127,33 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public getAssetNotifications = async (): Promise<void> => {
-    const { searchText, limit, offset } = this.state;
+    const { searchText, limit, offset, notifications } = this.state;
     const requestPayload = {
       limit,
       offset,
       ...(searchText.length > 0 ? { q: searchText } : {}),
     };
     const response = await DashboardRepository.getAssetNotifications(requestPayload);
-    this.setState({ notifications: response });
+    if (!searchText) {
+      const serializedNewResponse: IAssetNotifications = ObjectMapper.serialize(response);
+      const serializedOldResponse: IAssetNotifications = ObjectMapper.serialize(notifications);
+      const updatedNotifications = {
+        ...serializedNewResponse,
+        results:
+          serializedOldResponse.results && serializedOldResponse.results.length > 0
+            ? serializedOldResponse.results.concat(serializedNewResponse.results)
+            : serializedNewResponse.results,
+      };
+      this.setState({
+        notifications: ObjectMapper.deserialize(AssetNotifications, updatedNotifications),
+        shouldLoadMore: !(serializedNewResponse.results.length === 0),
+      });
+    } else {
+      this.setState({
+        notifications: response,
+        shouldLoadMore: !(response.results.length === 0),
+      });
+    }
   };
 }
 
@@ -142,7 +178,6 @@ const styles = StyleSheet.create({
     margin: theme.layout.screenPadding,
   },
   searchBarContainer: {
-    height: 800,
     backgroundColor: theme.colors.white,
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
+import { OnboardingData } from '@homzhub/common/src/mocks/Onboarding';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 
 const createTestProps = (testProps: any): object => ({

@@ -64,7 +64,7 @@ const HorizontalPicker = (props: IProps): React.ReactElement => {
     return (): void => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [selected, value]);
 
   const handleChange = (index: number): void => {
     setSelected(index);

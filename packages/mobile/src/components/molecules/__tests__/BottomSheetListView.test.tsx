@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { CountryWithCode } from '@homzhub/common/src/mocks/countryWithCode';
+import { CountryWithCode } from '@homzhub/common/src/mocks/CountryWithCode';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
 const mock = jest.fn();

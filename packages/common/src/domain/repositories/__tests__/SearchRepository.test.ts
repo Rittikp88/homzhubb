@@ -12,22 +12,19 @@ describe('SearchRepository', () => {
   });
 
   it('should get filter details', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => FilterData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(FilterData));
     const response = await SearchRepository.getFilterDetails({ asset_group: 1 });
     expect(response).toMatchSnapshot();
   });
 
   it('should get properties for lease listings', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => AssetSearchData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(AssetSearchData));
     const response = await SearchRepository.getPropertiesForLeaseListings({ asset_group: 1 });
     expect(response).toMatchSnapshot();
   });
 
   it('should get properties for sale listings', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => AssetSearchData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(AssetSearchData));
     const response = await SearchRepository.getPropertiesForSaleListings({ asset_group: 1 });
     expect(response).toMatchSnapshot();
   });

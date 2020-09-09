@@ -14,15 +14,13 @@ describe('AssetRepository', () => {
   });
 
   it('should fetch a asset data', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => assetGroups);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(assetGroups));
     const response = await AssetRepository.getDetails();
     expect(response).toMatchSnapshot();
   });
 
   it('should add a new asset in DB and return the corresponding property ID', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => ({ id: 5 }));
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve({ id: 5 }));
     const response = await AssetRepository.createAsset({
       project_name: 'My House',
       unit_number: '6',
@@ -34,8 +32,7 @@ describe('AssetRepository', () => {
   });
 
   it('should update an existing asset in DB', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'patch').mockImplementation(() => true);
+    jest.spyOn(BootstrapAppService.clientInstance, 'patch').mockImplementation(() => Promise.resolve(true));
     const response = await AssetRepository.updateAsset(7, {
       total_floors: 5,
       asset_type: 5,
@@ -64,22 +61,19 @@ describe('AssetRepository', () => {
   });
 
   it('should fetch a asset detail', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => mockAsset);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(mockAsset));
     const response = await AssetRepository.getAssetById(1);
     expect(response).toMatchSnapshot();
   });
 
   it('should fetch a lease term', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => leaseTermDetail);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(leaseTermDetail));
     const response = await AssetRepository.getLeaseTerms(1);
     expect(response).toMatchSnapshot();
   });
 
   it('should create lease term in DB and return the corresponding property ID', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => ({ id: 5 }));
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve({ id: 5 }));
     const response = await AssetRepository.createLeaseTerms(1, {
       currency_code: '+91',
       expected_monthly_rent: 1200,
@@ -97,8 +91,7 @@ describe('AssetRepository', () => {
   });
 
   it('should update lease term in DB and return the corresponding property ID', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => ({ id: 5 }));
+    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve({ id: 5 }));
     const response = await AssetRepository.updateLeaseTerms(1, 1, {
       currency_code: '+91',
       expected_monthly_rent: 1200,
@@ -116,15 +109,13 @@ describe('AssetRepository', () => {
   });
 
   it('should fetch a sale term', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => saleTerm);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(saleTerm));
     const response = await AssetRepository.getSaleTerms(1);
     expect(response).toMatchSnapshot();
   });
 
   it('should create sale term in DB and return the corresponding property ID', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => ({ id: 5 }));
+    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve({ id: 5 }));
     const response = await AssetRepository.createSaleTerms(1, {
       currency_code: '+91',
       expected_price: 1200,
@@ -138,8 +129,7 @@ describe('AssetRepository', () => {
   });
 
   it('should update sale term in DB and return the corresponding property ID', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => ({ id: 5 }));
+    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve({ id: 5 }));
     const response = await AssetRepository.updateSaleTerms(1, 1, {
       currency_code: '+91',
       expected_price: 12000,
@@ -153,22 +143,23 @@ describe('AssetRepository', () => {
   });
 
   it('Should fetch existing verification document types', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => PropertyVerificationTypes);
+    jest
+      .spyOn(BootstrapAppService.clientInstance, 'get')
+      .mockImplementation(() => Promise.resolve(PropertyVerificationTypes));
     const response = await AssetRepository.getExistingVerificationDocuments(1);
     expect(response).toMatchSnapshot();
   });
 
   it('Should fetch verification document types', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => PropertyVerificationTypes);
+    jest
+      .spyOn(BootstrapAppService.clientInstance, 'get')
+      .mockImplementation(() => Promise.resolve(PropertyVerificationTypes));
     const response = await AssetRepository.getVerificationDocumentTypes();
     expect(response).toMatchSnapshot();
   });
 
   it('Should delete verification document', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'delete').mockImplementation(() => {});
+    jest.spyOn(BootstrapAppService.clientInstance, 'delete').mockImplementation(() => Promise.resolve({}));
     const response = await AssetRepository.deleteVerificationDocument(1, 1);
     expect(response).toMatchSnapshot();
   });
@@ -184,8 +175,7 @@ describe('AssetRepository', () => {
         link: 'www.google.com',
       },
     ];
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => data);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(data));
     const response = await AssetRepository.getPropertyImagesByPropertyId(1);
     expect(response).toMatchSnapshot();
   });
@@ -194,8 +184,7 @@ describe('AssetRepository', () => {
     const data = {
       cover_updated: true,
     };
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => data);
+    jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve(data));
     const response = await AssetRepository.markAttachmentAsCoverImage(1, 10);
     expect(response).toMatchSnapshot();
   });
@@ -207,8 +196,7 @@ describe('AssetRepository', () => {
         is_cover_image: true,
       },
     ];
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => {});
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve({}));
     const response = await AssetRepository.postAttachmentsForProperty(1, requestPayload);
     expect(response).toMatchSnapshot();
   });
@@ -220,15 +208,13 @@ describe('AssetRepository', () => {
         document_id: 1,
       },
     ];
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => {});
+    jest.spyOn(BootstrapAppService.clientInstance, 'post').mockImplementation(() => Promise.resolve({}));
     const response = await AssetRepository.postVerificationDocuments(1, requestPayload);
     expect(response).toMatchSnapshot();
   });
 
   it('Should delete property image', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'delete').mockImplementation(() => {});
+    jest.spyOn(BootstrapAppService.clientInstance, 'delete').mockImplementation(() => Promise.resolve({}));
     const response = await AssetRepository.deletePropertyImage(1);
     expect(response).toMatchSnapshot();
   });
@@ -256,8 +242,7 @@ describe('AssetRepository', () => {
         },
       },
     ];
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => data);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(data));
     const response = await AssetRepository.getAssetIdentityDocuments();
     expect(response).toMatchSnapshot();
   });
@@ -270,36 +255,31 @@ describe('AssetRepository', () => {
         experience_area: 'experience area',
       },
     ];
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => data);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(data));
     const response = await AssetRepository.getRatings(1);
     expect(response).toMatchSnapshot();
   });
 
   it('Should get lease listings', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => mockAsset);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(mockAsset));
     const response = await AssetRepository.getLeaseListing(1);
     expect(response).toMatchSnapshot();
   });
 
   it('Should get sale listings', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => mockAsset);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(mockAsset));
     const response = await AssetRepository.getSaleListing(1);
     expect(response).toMatchSnapshot();
   });
 
   it('Should get similar properties for rent', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => [mockAsset]);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve([mockAsset]));
     const response = await AssetRepository.getSimilarProperties(1, 0);
     expect(response).toMatchSnapshot();
   });
 
   it('Should get similar properties for sale', async () => {
-    // @ts-ignore
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => [mockAsset]);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve([mockAsset]));
     const response = await AssetRepository.getSimilarProperties(1, 1);
     expect(response).toMatchSnapshot();
   });

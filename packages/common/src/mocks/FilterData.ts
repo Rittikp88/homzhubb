@@ -97,13 +97,13 @@ export const SearchFilter = {
   miscellaneous: {
     show_verified: false,
     agent_listed: false,
-    search_radius: 1,
-    date_added: 1,
-    property_age: 1,
+    search_radius: -1,
+    date_added: -1,
+    property_age: -1,
     rent_free_period: -1,
     expected_move_in_date: DateUtils.getCurrentMonthLastDate(),
-    facing: [1],
-    furnishing: [FurnishingType.NONE],
+    facing: [],
+    furnishing: [],
     propertyAmenity: [],
   },
 };

@@ -130,4 +130,4 @@ UserSubscription {
 }
 `;
 
-exports[`UserRepository should logout 1`] = `undefined`;
+exports[`UserRepository should logout 1`] = `Object {}`;

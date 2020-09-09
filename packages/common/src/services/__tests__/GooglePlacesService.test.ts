@@ -1,8 +1,8 @@
 import mockAxios from 'axios';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import {
-  autocompleteMock,
-  googleError,
+  AutocompleteMock,
+  GoogleError,
   placeDetails,
   reverseGeocode,
 } from '@homzhub/common/src/mocks/GooglePlacesMocks';
@@ -16,7 +16,7 @@ describe('GooglePlaces API', () => {
 
   it('Test for error', async () => {
     // @ts-ignore
-    mockAxios.get.mockImplementation(() => Promise.resolve({ data: googleError }));
+    mockAxios.get.mockImplementation(() => Promise.resolve({ data: GoogleError }));
     try {
       await GooglePlacesService.autoComplete('TestLocation');
     } catch (e) {
@@ -27,7 +27,7 @@ describe('GooglePlaces API', () => {
 
   it('should fetch the list of autocomplete items as per input', async () => {
     // @ts-ignore
-    mockAxios.get.mockImplementation(() => Promise.resolve({ data: autocompleteMock }));
+    mockAxios.get.mockImplementation(() => Promise.resolve({ data: AutocompleteMock }));
     const response = await GooglePlacesService.autoComplete('TestLocation');
     expect(response).toMatchSnapshot();
   });

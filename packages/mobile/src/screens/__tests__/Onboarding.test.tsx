@@ -1,17 +1,17 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
-import { OnboardingData } from '@homzhub/common/src/mocks/onboarding';
+import { OnboardingData } from '@homzhub/common/src/mocks/Onboarding';
 import { OnBoarding, mapDispatchToProps } from '@homzhub/mobile/src/screens/OnBoarding';
 import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
 
 const mock = jest.fn();
 
 describe('Onboarding Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
   let instance: any;
 
@@ -48,7 +48,6 @@ describe('Onboarding Screen', () => {
 
   it('should call render next frame on button press with navigation to Getting started', () => {
     instance.setState({ data: OnboardingData, activeSlide: 0 });
-    // @ts-ignore
     component.find('[testID="btnNextFrame"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
@@ -61,7 +60,6 @@ describe('Onboarding Screen', () => {
         snapToNext: mock,
       },
     });
-    // @ts-ignore
     component.find('[testID="btnNextFrame"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
@@ -77,14 +75,12 @@ describe('Onboarding Screen', () => {
 
   it('should call change slide', () => {
     instance.setState({ data: OnboardingData, activeSlide: 0 });
-    // @ts-ignore
     component.find('[testID="carsl"]').prop('onSnapToItem')(1);
     expect(component.state('activeSlide')).toBe(1);
   });
 
   it('should call update ref', () => {
     instance.setState({ data: OnboardingData, activeSlide: 0 });
-    // @ts-ignore
     component.find('[testID="carsl"]').prop('bubbleRef')(null);
     expect(component.state('ref')).toBe(null);
   });

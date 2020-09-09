@@ -126,11 +126,11 @@ exports[`Asset Search Screen should render snapshot 1`] = `
             }
           }
           fontType="regular"
-          key="AREA"
+          key="ROOMS"
           onPress={[Function]}
           textSize="regular"
           textType="label"
-          title="area"
+          title="rooms"
           titleStyle={
             Object {
               "marginHorizontal": 24,
@@ -383,11 +383,11 @@ exports[`Asset Search Screen should render snapshot for Map view 1`] = `
             }
           }
           fontType="regular"
-          key="AREA"
+          key="ROOMS"
           onPress={[Function]}
           textSize="regular"
           textType="label"
-          title="area"
+          title="rooms"
           titleStyle={
             Object {
               "marginHorizontal": 24,
@@ -640,11 +640,11 @@ exports[`Asset Search Screen should render snapshot with filterData 1`] = `
             }
           }
           fontType="regular"
-          key="AREA"
+          key="ROOMS"
           onPress={[Function]}
           textSize="regular"
           textType="label"
-          title="area"
+          title="rooms"
           titleStyle={
             Object {
               "marginHorizontal": 24,

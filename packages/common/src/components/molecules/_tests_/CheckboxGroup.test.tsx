@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { CheckboxGroup, IProps } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 
@@ -17,7 +17,7 @@ const data = [
   },
 ];
 describe('CheckboxGroup', () => {
-  let wrapper: ShallowWrapper;
+  let wrapper: any;
   let props: IProps;
 
   it('should match snapshot', () => {
@@ -48,7 +48,6 @@ describe('CheckboxGroup', () => {
     };
     wrapper = shallow(<CheckboxGroup {...props} />);
     const RenderItem = wrapper.find('[testID="ftlist"]').prop('renderItem');
-    // @ts-ignore
     const renderItemShallowWrapper = shallow(<RenderItem item={data[0]} />);
     expect(toJson(renderItemShallowWrapper)).toMatchSnapshot();
   });
@@ -61,7 +60,6 @@ describe('CheckboxGroup', () => {
     };
     wrapper = shallow(<CheckboxGroup {...props} />);
     const RenderItem = wrapper.find('[testID="ftlist"]').prop('renderItem');
-    // @ts-ignore
     const renderItemShallowWrapper = shallow(<RenderItem item={data[0]} />);
     expect(toJson(renderItemShallowWrapper)).toMatchSnapshot();
   });

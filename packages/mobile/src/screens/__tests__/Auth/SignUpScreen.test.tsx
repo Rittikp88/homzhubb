@@ -3,7 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
-import { SocialMediaData } from '@homzhub/common/src/mocks/socialMedia';
+import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
 import { SignUpScreen, mapDispatchToProps } from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
 
 const mock = jest.fn();

@@ -22,6 +22,7 @@ enum namespacesKey {
   assetDashboard = 'assetDashboard',
   assetPortfolio = 'assetPortfolio',
   assetFinancial = 'assetFinancial',
+  assetMore = 'assetMore',
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;

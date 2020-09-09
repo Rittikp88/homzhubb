@@ -17,7 +17,7 @@ import { CollapsibleSection, Header, TimeSlotGroup } from '@homzhub/mobile/src/c
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { TimeSlot, UserType } from '@homzhub/common/src/mocks/ContactFormData';
+import { TimeSlot, UserType } from '@homzhub/common/src/constants/ContactFormData';
 import { VisitSlot, VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
 
 interface IStateProps {

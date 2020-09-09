@@ -26,6 +26,7 @@ const namedColors = {
   income: '#85DACF',
   blueDonut: '#A2D2FD',
   unreadNotification: '#F2F9FF',
+  moreSeparator: '#F8FCFF',
 };
 
 const tintColors = {
