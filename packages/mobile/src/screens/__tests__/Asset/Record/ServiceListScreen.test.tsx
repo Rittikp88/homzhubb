@@ -1,21 +1,22 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
-import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
+import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
 import {
   ServiceListScreen,
   mapStateToProps,
   mapDispatchToProps,
 } from '@homzhub/mobile/src/screens/Asset/Record/ServiceListScreen';
+import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 
 const mock = jest.fn();
 describe('Service List Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -41,13 +42,11 @@ describe('Service List Screen', () => {
   });
 
   it('should navigate to previous screen ', () => {
-    // @ts-ignore
     component.find('[testID="animatedServiceHeader"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate to Service details screen ', () => {
-    // @ts-ignore
     component.find('[testID="toPress"]').at(0).prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
@@ -66,6 +65,9 @@ describe('Service List Screen', () => {
       },
       search: {
         ...initialSearchState,
+      },
+      portfolio: {
+        ...initialPortfolioState,
       },
     };
     const state = mapStateToProps(mockedState);

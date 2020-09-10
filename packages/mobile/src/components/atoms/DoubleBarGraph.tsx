@@ -30,7 +30,6 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
   const {
     data: { data1, data2, label },
   } = props;
-  const conditionalStyle = customizedStyles(label.length);
   const barData = [
     {
       data: data1,
@@ -79,14 +78,14 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
               />
               <BarChart
                 contentInset={VERTICAL_INSET}
-                style={[styles.barGraph, conditionalStyle.derivedWidth]}
+                style={[styles.barGraph, label.length <= 3 && styles.derivedWidth]}
                 data={barData}
               >
                 <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
               </BarChart>
             </View>
             <XAxis
-              style={[styles.xAxis, conditionalStyle.derivedWidth]}
+              style={[styles.xAxis, label.length <= 3 && styles.derivedWidth]}
               data={label}
               contentInset={HORIZONTAL_INSET}
               svg={SVG_FONT}
@@ -122,10 +121,8 @@ const styles = StyleSheet.create({
     width: WIDTH,
     padding: 10,
   },
-});
-const customizedStyles = (labelLength: number): any => ({
   derivedWidth: {
-    width: labelLength > 3 ? WIDTH : theme.viewport.width - 100,
+    width: theme.viewport.width - 100,
   },
 });
 const memoizedComponent = React.memo(DoubleBarGraph);

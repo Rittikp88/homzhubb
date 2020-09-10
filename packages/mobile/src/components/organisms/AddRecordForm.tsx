@@ -148,6 +148,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   allowPastDates
                   formProps={formProps}
                   name="date"
+                  textType="label"
                   label={t('addDate')}
                   placeHolder={t('addDatePlaceholder')}
                 />

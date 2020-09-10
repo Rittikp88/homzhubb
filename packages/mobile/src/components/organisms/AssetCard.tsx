@@ -5,7 +5,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { placeHolderImage } from '@homzhub/common/src/styles/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Avatar, Badge, Button, Divider, Label } from '@homzhub/common/src/components';
+import { Avatar, Badge, Divider, Label } from '@homzhub/common/src/components';
 import { PropertyAddressCountry, LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -35,7 +35,7 @@ type Props = WithTranslation & IListProps;
 
 export class AssetCard extends Component<Props> {
   public render(): React.ReactNode {
-    const { t, assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0 } = this.props;
+    const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0 } = this.props;
     const {
       id,
       projectName,
@@ -80,37 +80,30 @@ export class AssetCard extends Component<Props> {
               />
             </View>
           )}
-          {(isExpanded || isDetailView) && this.renderAttachmentView(attachments)}
-          {isDetailView && (
-            <Badge
-              title={assetStatusInfo?.tag.label}
-              badgeColor={assetStatusInfo?.tag.color}
-              badgeStyle={[styles.badgeStyle, styles.detailViewBadge]}
-            />
-          )}
-          <PropertyAddressCountry
-            primaryAddress={projectName}
-            subAddress={`${unitNumber} ${blockNumber}`}
-            containerStyle={styles.addressStyle}
-          />
+          <TouchableOpacity onPress={handlePropertyView} activeOpacity={isDetailView ? 1 : 0.3}>
+            <>
+              {(isExpanded || isDetailView) && this.renderAttachmentView(attachments, handlePropertyView)}
+              {isDetailView && (
+                <Badge
+                  title={assetStatusInfo?.tag.label}
+                  badgeColor={assetStatusInfo?.tag.color}
+                  badgeStyle={[styles.badgeStyle, styles.detailViewBadge]}
+                />
+              )}
+              <PropertyAddressCountry
+                primaryAddress={projectName}
+                subAddress={`${unitNumber} ${blockNumber}`}
+                containerStyle={styles.addressStyle}
+              />
+            </>
+          </TouchableOpacity>
           {(isExpanded || isDetailView) && this.renderExpandedView()}
         </View>
-        {isExpanded && (
-          <Button
-            type="secondary"
-            title={t('viewProperty')}
-            textSize="small"
-            onPress={handlePropertyView}
-            containerStyle={styles.buttonStyle}
-            titleStyle={styles.buttonTitle}
-            testID="btnPropertyView"
-          />
-        )}
       </View>
     );
   }
 
-  private renderAttachmentView = (attachments: Attachment[]): React.ReactElement => {
+  private renderAttachmentView = (attachments: Attachment[], handlePropertyView: () => void): React.ReactElement => {
     const { isDetailView, enterFullScreen } = this.props;
     let item;
     let handleFullScreen;
@@ -124,7 +117,7 @@ export class AssetCard extends Component<Props> {
       handleFullScreen = (): void => enterFullScreen && enterFullScreen(initialCarouselData);
     }
     return (
-      <TouchableOpacity onPress={handleFullScreen}>
+      <TouchableOpacity onPress={isDetailView ? handleFullScreen : handlePropertyView}>
         {item.mediaType === 'IMAGE' && (
           <Image
             source={{
@@ -239,12 +232,6 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     borderColor: theme.colors.background,
     borderWidth: 1,
-  },
-  buttonStyle: {
-    borderWidth: 0,
-  },
-  buttonTitle: {
-    marginVertical: 14,
   },
   image: {
     minWidth: theme.viewport.width > 400 ? 350 : 300,

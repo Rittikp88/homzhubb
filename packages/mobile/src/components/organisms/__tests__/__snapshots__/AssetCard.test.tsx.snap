@@ -127,14 +127,19 @@ exports[`AssetCard should match snapshot 1`] = `
         testID="collapseIcon"
       />
     </View>
-    <PropertyAddressCountry
-      containerStyle={
-        Object {
-          "marginTop": 14,
+    <ForwardRef
+      activeOpacity={0.3}
+      onPress={[Function]}
+    >
+      <PropertyAddressCountry
+        containerStyle={
+          Object {
+            "marginTop": 14,
+          }
         }
-      }
-      subAddress="undefined undefined"
-    />
+        subAddress="undefined undefined"
+      />
+    </ForwardRef>
   </View>
 </View>
 `;
@@ -160,31 +165,36 @@ exports[`AssetCard should match snapshot for detail view 1`] = `
     }
   >
     <ForwardRef
+      activeOpacity={1}
       onPress={[Function]}
-    />
-    <Badge
-      badgeStyle={
-        Array [
-          Object {
-            "alignSelf": "flex-start",
-            "minWidth": 75,
-            "paddingHorizontal": 8,
-            "paddingVertical": 1,
-          },
-          Object {
-            "marginTop": 12,
-          },
-        ]
-      }
-    />
-    <PropertyAddressCountry
-      containerStyle={
-        Object {
-          "marginTop": 14,
+    >
+      <ForwardRef
+        onPress={[Function]}
+      />
+      <Badge
+        badgeStyle={
+          Array [
+            Object {
+              "alignSelf": "flex-start",
+              "minWidth": 75,
+              "paddingHorizontal": 8,
+              "paddingVertical": 1,
+            },
+            Object {
+              "marginTop": 12,
+            },
+          ]
         }
-      }
-      subAddress="undefined undefined"
-    />
+      />
+      <PropertyAddressCountry
+        containerStyle={
+          Object {
+            "marginTop": 14,
+          }
+        }
+        subAddress="undefined undefined"
+      />
+    </ForwardRef>
     <Divider
       containerStyles={
         Object {

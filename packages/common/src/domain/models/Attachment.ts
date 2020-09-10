@@ -20,7 +20,7 @@ export interface IMediaAttributes {
 }
 
 @JsonObject('MediaAttributes')
-class MediaAttributes {
+export class MediaAttributes {
   @JsonProperty('title', String, true)
   private _title = '';
 

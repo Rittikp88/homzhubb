@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, PickerItemProps } from 'react-native';
+import { FlatList, PickerItemProps, StyleSheet } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ListItem } from '@homzhub/common/src/components/atoms/ListItem';
@@ -42,7 +42,6 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
           keyExtractor={this.renderKeyExtractor}
           extraData={selectedValue}
           numColumns={numColumns}
-          // @ts-ignore
           ItemSeparatorComponent={this.itemSeparator}
         />
       </BottomSheet>
@@ -51,7 +50,6 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
 
   private renderSheetItem = ({ item, index }: { item: PickerItemProps; index: number }): React.ReactElement => {
     const { selectedValue, onSelectItem, testID, numColumns = 1 } = this.props;
-    const conditionalStyle = customizedStyles(numColumns);
     const onItemSelect = (): void => onSelectItem(item.value);
     const isCheck: boolean = selectedValue === item.value;
     return (
@@ -61,7 +59,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
         onItemSelect={onItemSelect}
         key={index}
         testID={testID}
-        listItemViewStyle={conditionalStyle.item}
+        listItemViewStyle={[styles.item, numColumns > 1 && styles.itemWidth]}
       />
     );
   };
@@ -71,7 +69,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
     return `${value}-${index}`;
   };
 
-  private itemSeparator = (): React.ReactNode => {
+  private itemSeparator = (): React.ReactElement | null => {
     const { numColumns } = this.props;
     if (numColumns && numColumns > 1) {
       return null;
@@ -80,9 +78,12 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
   };
 }
 
-const customizedStyles = (numColumns: number): any => ({
+const styles = StyleSheet.create({
   item: {
-    width: numColumns > 1 ? theme.viewport.width / 2.5 : theme.viewport.width,
+    width: theme.viewport.width,
     color: theme.colors.darkTint5,
+  },
+  itemWidth: {
+    width: theme.viewport.width / 2.5,
   },
 });

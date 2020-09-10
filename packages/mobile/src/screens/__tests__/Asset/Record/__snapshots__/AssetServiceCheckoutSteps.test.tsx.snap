@@ -21,13 +21,12 @@ exports[`Asset Service Checkout Steps should render snapshot 1`] = `
     labels={
       Array [
         "common:details",
-        "",
         "common:verification",
         "common:payment",
       ]
     }
     onPress={[Function]}
-    stepCount={4}
+    stepCount={3}
     testID="stepIndicator"
   />
   <ScrollViewMock
@@ -82,7 +81,7 @@ exports[`Asset Service Checkout Steps should render snapshot 1`] = `
       propertyId={1}
       setLoading={[Function]}
       setTermId={[MockFunction]}
-      stepsLength={4}
+      stepsLength={3}
       termId={1}
     />
   </ScrollViewMock>
@@ -113,13 +112,12 @@ exports[`Asset Service Checkout Steps should render snapshot when typeOfSale is 
     labels={
       Array [
         "common:details",
-        "",
         "common:verification",
         "common:payment",
       ]
     }
     onPress={[Function]}
-    stepCount={4}
+    stepCount={3}
     testID="stepIndicator"
   />
   <ScrollViewMock
@@ -174,7 +172,7 @@ exports[`Asset Service Checkout Steps should render snapshot when typeOfSale is 
       propertyId={1}
       setLoading={[Function]}
       setTermId={[MockFunction]}
-      stepsLength={4}
+      stepsLength={3}
       termId={1}
     />
   </ScrollViewMock>

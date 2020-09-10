@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import GettingStarted from '@homzhub/mobile/src/screens/GettingStarted';
-import OnBoarding from '@homzhub/mobile/src/screens/OnBoarding';
+import OnBoardingScreen from '@homzhub/mobile/src/screens/OnBoardingScreen';
 import { NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { WrapperSearchStack } from '@homzhub/mobile/src/navigation/WrapperSearchStack';
 import { AuthStack, AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -22,7 +22,7 @@ export function GuestStack(): React.ReactElement {
 
   const showOnBoardingScreen = (): React.ReactNode => {
     if (!hasOnBoardingCompleted) {
-      return <GuestStackNavigator.Screen name={ScreensKeys.OnBoarding} component={OnBoarding} />;
+      return <GuestStackNavigator.Screen name={ScreensKeys.OnBoarding} component={OnBoardingScreen} />;
     }
     return null;
   };

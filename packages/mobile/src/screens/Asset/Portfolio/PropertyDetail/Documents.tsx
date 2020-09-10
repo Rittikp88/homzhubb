@@ -100,6 +100,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         renderItem={this.renderDocumentCard}
         ItemSeparatorComponent={this.renderSeparatorComponent}
         keyExtractor={this.renderKeyExtractor}
+        showsVerticalScrollIndicator={false}
       />
     );
   };
@@ -244,6 +245,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Documents);
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: theme.colors.white,
     padding: 16,
   },

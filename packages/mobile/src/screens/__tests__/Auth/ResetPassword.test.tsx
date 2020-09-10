@@ -1,12 +1,12 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ResetPassword } from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 
 const mock = jest.fn();
 
 describe('Reset Password Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -33,7 +33,6 @@ describe('Reset Password Screen', () => {
   });
 
   it('should navigate on icon press', () => {
-    // @ts-ignore
     component.find('[testID="headerIconPress"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });

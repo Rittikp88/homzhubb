@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, FlatList, View, PickerItemProps } from 'react-native';
+import { FlatList, PickerItemProps, StyleSheet, View } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -25,13 +25,11 @@ import {
   AnimatedProfileHeader,
   AssetMetricsList,
   BottomSheetListView,
-  FullScreenAssetDetailsCarousel,
   Loader,
   StateAwareComponent,
 } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 
@@ -54,12 +52,10 @@ interface IPortfolioState {
   isBottomSheetVisible: boolean;
   metrics: AssetMetrics;
   filters: PickerItemProps[];
-  attachments: Attachment[];
   isLoading: boolean;
   isSpinnerLoading: boolean;
+  expandedTenanciesId: number;
   expandedAssetId: number;
-  isFullScreen: boolean;
-  activeSlide: number;
 }
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
@@ -72,12 +68,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     isBottomSheetVisible: false,
     metrics: {} as AssetMetrics,
     filters: [],
-    attachments: [],
     isLoading: false,
     isSpinnerLoading: false,
+    expandedTenanciesId: 0,
     expandedAssetId: 0,
-    isFullScreen: false,
-    activeSlide: 0,
   };
 
   public componentDidMount = (): void => {
@@ -131,7 +125,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             />
           </>
         </AnimatedProfileHeader>
-        {this.renderFullscreenCarousel()}
         <Loader visible={isSpinnerLoading} />
       </>
     );
@@ -139,7 +132,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderTenancies = (tenancies: Asset[]): React.ReactElement => {
     const { t } = this.props;
-    const { expandedAssetId } = this.state;
+    const { expandedTenanciesId } = this.state;
     const renderListItem = ({ item, index }: { item: Asset; index: number }): React.ReactElement =>
       this.renderList(item, index, DataType.TENANCIES);
     return (
@@ -147,7 +140,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('tenancies')}
         </Text>
-        <FlatList data={tenancies} renderItem={renderListItem} extraData={expandedAssetId} />
+        <FlatList data={tenancies} renderItem={renderListItem} extraData={expandedTenanciesId} />
       </>
     );
   };
@@ -177,29 +170,16 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
-    const { expandedAssetId } = this.state;
+    const { expandedAssetId, expandedTenanciesId } = this.state;
     const handleViewProperty = (id: number): void => this.onViewProperty(id, type);
+    const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
     return (
       <AssetCard
         assetData={item}
         key={index}
-        expandedId={expandedAssetId}
+        expandedId={type === DataType.PROPERTIES ? expandedAssetId : expandedTenanciesId}
         onViewProperty={handleViewProperty}
-        enterFullScreen={this.onFullScreenToggle}
-        onPressArrow={this.handleExpandCollapse}
-      />
-    );
-  };
-
-  private renderFullscreenCarousel = (): React.ReactNode => {
-    const { isFullScreen, activeSlide, attachments } = this.state;
-    if (!isFullScreen) return null;
-    return (
-      <FullScreenAssetDetailsCarousel
-        onFullScreenToggle={this.onFullScreenToggle}
-        activeSlide={activeSlide}
-        data={attachments}
-        updateSlide={this.updateSlide}
+        onPressArrow={handleArrowPress}
       />
     );
   };
@@ -211,14 +191,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
       this.getPortfolioProperty(true);
     });
     this.closeBottomSheet();
-  };
-
-  private onFullScreenToggle = (attachments?: Attachment[]): void => {
-    const { isFullScreen } = this.state;
-    this.setState({ isFullScreen: !isFullScreen });
-    if (attachments) {
-      this.setState({ attachments });
-    }
   };
 
   private onViewProperty = (id: number, type: DataType): void => {
@@ -243,9 +215,13 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.getPortfolioProperty();
   };
 
-  private handleExpandCollapse = (id: number): void => {
-    const { expandedAssetId } = this.state;
-    this.setState({ expandedAssetId: expandedAssetId === id ? 0 : id });
+  private handleExpandCollapse = (id: number, type: DataType): void => {
+    const { expandedAssetId, expandedTenanciesId } = this.state;
+    if (type === DataType.PROPERTIES) {
+      this.setState({ expandedAssetId: expandedAssetId === id ? 0 : id });
+    } else {
+      this.setState({ expandedTenanciesId: expandedTenanciesId === id ? 0 : id });
+    }
   };
 
   private closeBottomSheet = (): void => {
@@ -299,10 +275,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
   };
 
-  private updateSlide = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
-  };
-
   private handleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
@@ -322,6 +294,18 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
           routes: [{ name: ScreensKeys.PropertyPostLandingScreen }],
         })
       );
+    } else if ((tenancies && tenancies.length > 0) || (properties && properties.length > 0)) {
+      if (tenancies && tenancies.length > 0) {
+        this.setState({
+          expandedTenanciesId: tenancies[0].id,
+        });
+      }
+
+      if (properties && properties.length > 0) {
+        this.setState({
+          expandedAssetId: properties[0].id,
+        });
+      }
     }
   };
 }

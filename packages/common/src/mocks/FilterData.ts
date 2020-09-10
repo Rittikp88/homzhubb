@@ -1,5 +1,4 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 export const FilterData = {
   currency: [

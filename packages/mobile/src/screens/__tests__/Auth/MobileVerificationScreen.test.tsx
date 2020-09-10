@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { SocialMediaKeys } from '@homzhub/common/src/assets/constants';
 import { DetailedHeader } from '@homzhub/common/src/components';
@@ -8,7 +8,7 @@ import { MobileVerificationScreen } from '@homzhub/mobile/src/screens/Auth/Mobil
 const mock = jest.fn();
 
 describe('Mobile verification Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -69,21 +69,16 @@ describe('Mobile verification Screen', () => {
   });
 
   it('should close dropdown', () => {
-    // @ts-ignore
     component.find('[testID="bottomSheet"]').prop('onCloseDropDown')();
-    // @ts-ignore
     expect(component.instance().state.isBottomSheetVisible).toBe(false);
   });
 
   it('should handle selection', () => {
-    // @ts-ignore
     component.find('[testID="bottomSheet"]').prop('onSelectItem')('INR');
-    // @ts-ignore
     expect(component.instance().state.countryCode).toBe('INR');
   });
 
   it('should navigate back', () => {
-    // @ts-ignore
     component.find(DetailedHeader).prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });

@@ -2,19 +2,19 @@
 
 exports[`CommonRepository should fetch OnBoarding screen data 1`] = `
 Array [
-  Onboarding {
+  OnBoarding {
     "_description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-    "_image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+    "_imageUrl": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
     "_title": "Search",
   },
-  Onboarding {
+  OnBoarding {
     "_description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-    "_image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+    "_imageUrl": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
     "_title": "Post",
   },
-  Onboarding {
+  OnBoarding {
     "_description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-    "_image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+    "_imageUrl": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
     "_title": "Maintain",
   },
 ]

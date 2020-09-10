@@ -1,46 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Property Detail Screen should render snapshot 1`] = `
-<AnimatedProfileHeader
-  title="portfolio"
->
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#FFFFFF",
-        "borderBottomLeftRadius": 0,
-        "borderBottomRightRadius": 0,
-        "flexDirection": "row",
-        "padding": 10,
-      }
-    }
+<Fragment>
+  <AnimatedProfileHeader
+    title="portfolio"
   >
-    <Icon
-      allowFontScaling={false}
-      color="#0084F8"
-      name="left-arrow"
-      onPress={[Function]}
-      size={20}
-      testID="icnBack"
-    />
-    <Text
+    <View
       style={
         Object {
-          "color": "#001B36",
-          "marginLeft": 12,
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderBottomLeftRadius": 0,
+          "borderBottomRightRadius": 0,
+          "flexDirection": "row",
+          "padding": 10,
         }
       }
-      textType="semiBold"
-      type="small"
     >
-      propertyDetails
-    </Text>
-  </View>
-  <withI18nextTranslation(AssetCard)
-    assetData={Array []}
-    isDetailView={true}
-  />
-  <TopTabs />
-</AnimatedProfileHeader>
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="left-arrow"
+        onPress={[Function]}
+        size={20}
+        testID="icnBack"
+      />
+      <Text
+        style={
+          Object {
+            "color": "#001B36",
+            "marginLeft": 12,
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        propertyDetails
+      </Text>
+    </View>
+    <withI18nextTranslation(AssetCard)
+      assetData={Array []}
+      enterFullScreen={[Function]}
+      isDetailView={true}
+    />
+    <TopTabs />
+  </AnimatedProfileHeader>
+</Fragment>
 `;

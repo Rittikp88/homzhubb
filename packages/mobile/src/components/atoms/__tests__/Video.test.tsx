@@ -8,30 +8,33 @@ let props: any;
 let wrapper: ShallowWrapper;
 
 describe('Video', () => {
-  const createTestProps = (testProps: any): object => ({
-    direction: 'row',
-    ...testProps,
+  beforeEach(() => {
+    props = {
+      direction: 'row',
+    };
   });
 
   it('should match snapshot', () => {
-    props = createTestProps({});
     wrapper = shallow(<RNVideo {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('should match snapshot for full screen', () => {
-    props = createTestProps({
+    props = {
+      ...props,
       isFullScreenCarousel: true,
-    });
+    };
     wrapper = shallow(<RNVideo {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('should validate state', () => {
-    props = createTestProps({
+    props = {
+      ...props,
       isFullScreenCarousel: true,
       onToggleFullScreenVideoPlayer: jest.fn(),
-    });
+    };
+
     const instance = shallow(<RNVideo {...props} />).instance();
     instance.onPaused(1);
     expect(instance.state.paused).toBe(true);

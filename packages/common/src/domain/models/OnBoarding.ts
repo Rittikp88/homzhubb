@@ -1,7 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
-@JsonObject('Onboarding')
-export class Onboarding {
+@JsonObject('OnBoarding')
+export class OnBoarding {
   @JsonProperty('title', String)
   private _title = '';
 
@@ -9,7 +9,7 @@ export class Onboarding {
   private _description = '';
 
   @JsonProperty('image_url', String)
-  private _image_url = '';
+  private _imageUrl = '';
 
   get title(): string {
     return this._title;
@@ -19,7 +19,7 @@ export class Onboarding {
     return this._description;
   }
 
-  get image_url(): string {
-    return this._image_url;
+  get imageUrl(): string {
+    return this._imageUrl;
   }
 }

@@ -1,11 +1,14 @@
 import React from 'react';
 import { StatusBar, Image } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
@@ -100,6 +103,7 @@ export const FinancialsStack = (): React.ReactElement => {
 export const BottomTabs = (): React.ReactElement => {
   const routeName = getFocusedRouteNameFromRoute(useRoute()) ?? ScreensKeys.Dashboard;
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
+  const dispatch = useDispatch();
   // Initial Route for guest and logged in user gets decided here
   if (isLoggedIn && routeName !== ScreensKeys.Search) {
     StatusBar.setBackgroundColor(theme.colors.primaryColor);
@@ -128,9 +132,9 @@ export const BottomTabs = (): React.ReactElement => {
         keyboardHidesTabBar: true,
         style: {
           borderTopWidth: 2,
-          paddingTop: 3,
-          paddingBottom: 4,
-          height: 60,
+          paddingTop: PlatformUtils.isIOS() ? 8 : 3,
+          paddingBottom: PlatformUtils.isIOS() ? 30 : 4,
+          height: PlatformUtils.isIOS() ? 90 : 60,
           shadowColor: theme.colors.shadow,
           shadowOpacity: 1,
           shadowRadius: 20,
@@ -141,6 +145,9 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.Portfolio}
         component={isLoggedIn ? PortfolioStack : DefaultLogin}
+        listeners={{
+          blur: (): IFluxStandardAction => dispatch(PortfolioActions.setInitialState()),
+        }}
         options={{
           tabBarLabel: ScreensKeys.Portfolio,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ForgotPassword } from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import { DetailedHeader } from '@homzhub/common/src/components';
@@ -7,7 +7,7 @@ import { DetailedHeader } from '@homzhub/common/src/components';
 const mock = jest.fn();
 
 describe('Forgot Password Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -35,13 +35,11 @@ describe('Forgot Password Screen', () => {
   });
 
   it('should navigate to login screen', () => {
-    // @ts-ignore
     component.find('[testID="txtLogin"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate back', () => {
-    // @ts-ignore
     component.find(DetailedHeader).prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });

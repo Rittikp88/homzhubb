@@ -5,7 +5,7 @@ exports[`ResaleDetailsForm should match snapshot 1`] = `
   enableReinitialize={true}
   initialValues={
     Object {
-      "availableFrom": "2020-09-09",
+      "availableFrom": "2020-09-10",
       "bookingAmount": "",
       "expectedPrice": "",
       "maintenanceAmount": "",

@@ -1,14 +1,20 @@
-// @ts-nocheck
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { AssetLocationSearch } from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
 import { AutocompleteMock } from '@homzhub/common/src/mocks/GooglePlacesMocks';
 
 const mock = jest.fn();
 describe('Asset Location Search', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
+
+  const navigationParam = {
+    initialLatitude: 1,
+    initialLongitude: 1,
+    primaryTitle: 'location',
+    secondaryTitle: 'location2',
+  };
 
   beforeEach(() => {
     props = {
@@ -41,7 +47,7 @@ describe('Asset Location Search', () => {
     component.find('[testID="currentLocation"]').prop('onGetCurrentPositionSuccess')({
       coords: { latitude: 1, longitude: 1 },
     });
-    component.instance().navigateToMapView();
+    component.instance().navigateToMapView(navigationParam);
     expect(mock).toHaveBeenCalled();
   });
 
@@ -49,7 +55,7 @@ describe('Asset Location Search', () => {
     component.find('[testID="searchBar"]').prop('updateValue')('Kochi');
     component.setState({ suggestions: AutocompleteMock.predictions });
     component.find('[testID="searchResults"]').prop('onResultPress')({ place_id: 1 });
-    component.instance().navigateToMapView();
+    component.instance().navigateToMapView(navigationParam);
     expect(mock).toHaveBeenCalled();
     component.instance().displayError('Error');
   });

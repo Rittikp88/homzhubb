@@ -20,7 +20,7 @@ interface ICarouselProps<T> {
 const ACTIVE_SLIDE_OFFSET = 20;
 
 export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
-  private carouselRef: any;
+  private carouselRef: Carousel<T> | null = null;
 
   public render = (): React.ReactElement => {
     const {
@@ -48,7 +48,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
         containerCustomStyle={containerStyle}
         removeClippedSubviews
         initialNumToRender={initialNumToRender}
-        ref={(c: any): void => {
+        ref={(c): void => {
           this.carouselRef = c;
         }}
         testID={testID}

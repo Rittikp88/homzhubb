@@ -1689,10 +1689,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                         }
                                                                       }
                                                                       listItemViewStyle={
-                                                                        Object {
-                                                                          "color": "#667686",
-                                                                          "width": 750,
-                                                                        }
+                                                                        Array [
+                                                                          Object {
+                                                                            "color": "#667686",
+                                                                            "width": 750,
+                                                                          },
+                                                                          false,
+                                                                        ]
                                                                       }
                                                                       onItemSelect={[Function]}
                                                                     >
@@ -1702,10 +1705,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Object {
                                                                               "marginHorizontal": 26,
                                                                             },
-                                                                            Object {
-                                                                              "color": "#667686",
-                                                                              "width": 750,
-                                                                            },
+                                                                            Array [
+                                                                              Object {
+                                                                                "color": "#667686",
+                                                                                "width": 750,
+                                                                              },
+                                                                              false,
+                                                                            ],
                                                                           ]
                                                                         }
                                                                       >
@@ -1715,10 +1721,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Object {
                                                                                 "marginHorizontal": 26,
                                                                               },
-                                                                              Object {
-                                                                                "color": "#667686",
-                                                                                "width": 750,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "color": "#667686",
+                                                                                  "width": 750,
+                                                                                },
+                                                                                false,
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -2029,10 +2038,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                         }
                                                                       }
                                                                       listItemViewStyle={
-                                                                        Object {
-                                                                          "color": "#667686",
-                                                                          "width": 750,
-                                                                        }
+                                                                        Array [
+                                                                          Object {
+                                                                            "color": "#667686",
+                                                                            "width": 750,
+                                                                          },
+                                                                          false,
+                                                                        ]
                                                                       }
                                                                       onItemSelect={[Function]}
                                                                     >
@@ -2042,10 +2054,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Object {
                                                                               "marginHorizontal": 26,
                                                                             },
-                                                                            Object {
-                                                                              "color": "#667686",
-                                                                              "width": 750,
-                                                                            },
+                                                                            Array [
+                                                                              Object {
+                                                                                "color": "#667686",
+                                                                                "width": 750,
+                                                                              },
+                                                                              false,
+                                                                            ],
                                                                           ]
                                                                         }
                                                                       >
@@ -2055,10 +2070,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Object {
                                                                                 "marginHorizontal": 26,
                                                                               },
-                                                                              Object {
-                                                                                "color": "#667686",
-                                                                                "width": 750,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "color": "#667686",
+                                                                                  "width": 750,
+                                                                                },
+                                                                                false,
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -2368,10 +2386,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                         }
                                                                       }
                                                                       listItemViewStyle={
-                                                                        Object {
-                                                                          "color": "#667686",
-                                                                          "width": 750,
-                                                                        }
+                                                                        Array [
+                                                                          Object {
+                                                                            "color": "#667686",
+                                                                            "width": 750,
+                                                                          },
+                                                                          false,
+                                                                        ]
                                                                       }
                                                                       onItemSelect={[Function]}
                                                                     >
@@ -2381,10 +2402,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Object {
                                                                               "marginHorizontal": 26,
                                                                             },
-                                                                            Object {
-                                                                              "color": "#667686",
-                                                                              "width": 750,
-                                                                            },
+                                                                            Array [
+                                                                              Object {
+                                                                                "color": "#667686",
+                                                                                "width": 750,
+                                                                              },
+                                                                              false,
+                                                                            ],
                                                                           ]
                                                                         }
                                                                       >
@@ -2394,10 +2418,13 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Object {
                                                                                 "marginHorizontal": 26,
                                                                               },
-                                                                              Object {
-                                                                                "color": "#667686",
-                                                                                "width": 750,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "color": "#667686",
+                                                                                  "width": 750,
+                                                                                },
+                                                                                false,
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >

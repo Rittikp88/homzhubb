@@ -5,8 +5,8 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { OnboardingData } from '@homzhub/common/src/mocks/Onboarding';
-import { OnBoarding, mapDispatchToProps } from '@homzhub/mobile/src/screens/OnBoarding';
-import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
+import { OnBoardingScreen, mapDispatchToProps } from '@homzhub/mobile/src/screens/OnBoardingScreen';
+import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 
 const mock = jest.fn();
 
@@ -20,7 +20,7 @@ describe('Onboarding Screen', () => {
       navigation: { navigate: mock },
       updateOnBoarding: mock,
     };
-    component = shallow(<OnBoarding {...props} t={(key: string): string => key} />);
+    component = shallow(<OnBoardingScreen {...props} t={(key: string): string => key} />);
     instance = component.instance();
   });
 
@@ -86,10 +86,10 @@ describe('Onboarding Screen', () => {
   });
 
   it('should call get onboarding data', async () => {
-    const deserializedData = ObjectMapper.deserializeArray(Onboarding, OnboardingData);
-    jest.spyOn(CommonRepository, 'getOnboarding').mockImplementation(async () => Promise.resolve(deserializedData));
+    const deserializedData = ObjectMapper.deserializeArray(OnBoarding, OnboardingData);
+    jest.spyOn(CommonRepository, 'getOnBoarding').mockImplementation(async () => Promise.resolve(deserializedData));
     await instance.componentDidMount();
-    const response = await CommonRepository.getOnboarding();
+    const response = await CommonRepository.getOnBoarding();
     instance.setState({ data: response });
     expect(component.state('data')).toBe(deserializedData);
   });

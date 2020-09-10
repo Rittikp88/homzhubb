@@ -1,11 +1,12 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
+import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
 import {
   AssetLocationMap,
   mapStateToProps,
@@ -15,7 +16,7 @@ import {
 const mock = jest.fn();
 
 describe('Add property Map Screen Component', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -42,15 +43,12 @@ describe('Add property Map Screen Component', () => {
   });
 
   it('should render snapshot for states', () => {
-    // @ts-ignore
     component.instance().onPressSetLocation();
     expect(toJson(component)).toMatchSnapshot();
   });
 
   it('should navigate to previous screen', () => {
-    // @ts-ignore
     component.instance().onClose();
-    // @ts-ignore
     component.find('[testID="location"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });
@@ -69,6 +67,9 @@ describe('Add property Map Screen Component', () => {
       },
       search: {
         ...initialSearchState,
+      },
+      portfolio: {
+        ...initialPortfolioState,
       },
     };
     const state = mapStateToProps(mockedState);

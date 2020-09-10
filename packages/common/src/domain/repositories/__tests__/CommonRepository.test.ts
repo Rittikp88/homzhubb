@@ -38,7 +38,7 @@ describe('CommonRepository', () => {
 
   it('should fetch OnBoarding screen data', async () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(OnboardingData));
-    const response = await CommonRepository.getOnboarding();
+    const response = await CommonRepository.getOnBoarding();
     expect(response).toMatchSnapshot();
   });
 

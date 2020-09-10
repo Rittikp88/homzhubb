@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
@@ -11,7 +11,7 @@ import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMed
 const mock = jest.fn();
 
 describe('Login Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
   let instance: any;
 
@@ -42,19 +42,16 @@ describe('Login Screen', () => {
   });
 
   it('should navigate go back', () => {
-    // @ts-ignore
     component.find('[testID="headerEvents"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate to signup screen', () => {
-    // @ts-ignore
     component.find('[testID="headerEvents"]').prop('onLinkPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate to email login', () => {
-    // @ts-ignore
     component.find('[testID="socialEmailLogin"]').prop('onEmailLogin')();
     expect(mock).toHaveBeenCalled();
   });
@@ -66,7 +63,6 @@ describe('Login Screen', () => {
       country_code: '_91',
       phone_number: '9876543210',
     };
-    // @ts-ignore
     component.find('[testID="loginForm"]').prop('onLoginSuccess')(values);
     expect(mock).toHaveBeenCalled();
   });

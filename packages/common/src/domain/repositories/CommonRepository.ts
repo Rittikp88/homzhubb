@@ -3,7 +3,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { CountryCode } from '@homzhub/common/src/domain/models/CountryCode';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
+import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 
@@ -11,7 +11,7 @@ const ENDPOINTS = {
   getCountryCodes: (): string => 'countries/',
   getCurrencyCodes: (): string => 'currency-codes/',
   carpetAreaUnits: (): string => 'carpet-area-units/',
-  onboarding: (): string => 'onboardings/',
+  onBoarding: (): string => 'onboardings/',
   socialMedia: (): string => 'social-providers/',
 };
 
@@ -37,9 +37,9 @@ class CommonRepository {
     return ObjectMapper.deserializeArray(CarpetArea, response);
   };
 
-  public getOnboarding = async (): Promise<Onboarding[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.onboarding());
-    return ObjectMapper.deserializeArray(Onboarding, response);
+  public getOnBoarding = async (): Promise<OnBoarding[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.onBoarding());
+    return ObjectMapper.deserializeArray(OnBoarding, response);
   };
 
   public getSocialMedia = async (): Promise<SocialMediaProvider[]> => {

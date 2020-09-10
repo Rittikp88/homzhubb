@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
-import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
-import { SnapCarousel, PaginationComponent } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/GuestStack';
-import { Onboarding } from '@homzhub/common/src/domain/models/Onboarding';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
+import { SnapCarousel, PaginationComponent } from '@homzhub/mobile/src/components';
+import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 
 interface IDispatchProps {
   updateOnBoarding: (isOnBoardingCompleted: boolean) => void;
@@ -21,13 +21,13 @@ interface IDispatchProps {
 interface IOnBoardingScreenState {
   activeSlide: number;
   ref: any;
-  data: Onboarding[];
+  data: OnBoarding[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<GuestStackNavigatorParamList, ScreensKeys.OnBoarding>;
 type Props = IDispatchProps & libraryProps;
 
-export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenState> {
+export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScreenState> {
   public state = {
     activeSlide: 0,
     ref: null,
@@ -35,7 +35,7 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
   };
 
   public componentDidMount = async (): Promise<void> => {
-    await this.getOnboardingData();
+    await this.getOnBoardingData();
   };
 
   public render(): React.ReactNode {
@@ -47,7 +47,7 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
     }
 
     const buttonText = activeSlide === data.length - 1 ? t('common:gotIt') : t('common:next');
-    const currentSlide: Onboarding = data[activeSlide];
+    const currentSlide: OnBoarding = data[activeSlide];
     return (
       <SafeAreaView style={styles.container}>
         {this.renderSkipButton()}
@@ -81,8 +81,8 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
     );
   }
 
-  private renderCarouselItem = (item: any): React.ReactElement => {
-    return <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.image_url} />;
+  private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
+    return <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} />;
   };
 
   public renderNextFrame = async (): Promise<void> => {
@@ -119,9 +119,9 @@ export class OnBoarding extends React.PureComponent<Props, IOnBoardingScreenStat
     this.setState({ activeSlide: slideNumber });
   };
 
-  public getOnboardingData = async (): Promise<void> => {
+  public getOnBoardingData = async (): Promise<void> => {
     try {
-      const response = await CommonRepository.getOnboarding();
+      const response = await CommonRepository.getOnBoarding();
       this.setState({
         data: response,
       });
@@ -190,4 +190,4 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(withTranslation()(OnBoarding));
+export default connect(null, mapDispatchToProps)(withTranslation()(OnBoardingScreen));

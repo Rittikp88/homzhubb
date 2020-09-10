@@ -1,19 +1,22 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { DetailedHeader } from '@homzhub/common/src/components';
-import { Otp, mapDispatchToProps, mapStateToProps } from '@homzhub/mobile/src/screens/Auth/Otp';
-import { LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IEmailLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
-import { OtpNavTypes } from '../../../navigation/interfaces';
-import { OtpInputs } from '../../../components';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
+import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
+import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
+import { OtpInputs } from '@homzhub/mobile/src/components';
+import { DetailedHeader } from '@homzhub/common/src/components';
+import { Otp, mapDispatchToProps, mapStateToProps } from '@homzhub/mobile/src/screens/Auth/Otp';
 
 const mock = jest.fn();
 
 describe('OTP Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -72,22 +75,18 @@ describe('OTP Screen', () => {
   });
 
   it('should match snapshot in error', () => {
-    // @ts-ignore
     component.find(OtpInputs).prop('toggleError')();
     component.setState({ error: 'Error' });
     expect(toJson(component)).toMatchSnapshot();
   });
 
   it('should verify otp', () => {
-    // @ts-ignore
     component.find(OtpInputs).prop('bubbleOtp')('123456');
     expect(toJson(component)).toMatchSnapshot();
   });
 
   it('should navigate back', () => {
-    // @ts-ignore
     component.find(DetailedHeader).prop('onIconPress')();
-    // @ts-ignore
     component.find('[testID="icnEdit"]').prop('onPress')();
     expect(props.navigation.goBack).toBeCalled();
   });
@@ -101,8 +100,16 @@ describe('OTP Screen', () => {
       property: {
         ...initialPropertyState,
       },
+      search: {
+        ...initialSearchState,
+      },
+      asset: {
+        ...initialAssetState,
+      },
+      portfolio: {
+        ...initialPortfolioState,
+      },
     };
-    // @ts-ignore
     const state = mapStateToProps(mockedState);
     expect(state.isLoading).toStrictEqual(false);
   });
@@ -116,10 +123,9 @@ describe('OTP Screen', () => {
           email: 'johndoe@gmail.com',
           password: 'Johndoe123!',
         },
-      },
+      } as IEmailLoginPayload,
       onCallback: mock,
     };
-    // @ts-ignore
     mapDispatchToProps(dispatch).login(payload);
     expect(dispatch.mock.calls[0][0]).toStrictEqual({
       type: UserActionTypes.AUTH.LOGIN,

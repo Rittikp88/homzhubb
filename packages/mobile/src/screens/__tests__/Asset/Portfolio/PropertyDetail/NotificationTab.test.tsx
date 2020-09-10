@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -6,9 +5,16 @@ import { NotificationTab } from '@homzhub/mobile/src/screens/Asset/Portfolio/Pro
 
 describe('Asset Notifications Screen', () => {
   let component: ShallowWrapper;
+  let props: any;
 
   beforeEach(() => {
-    component = shallow(<NotificationTab t={(key: string): string => key} />);
+    props = {
+      propertyData: [],
+      navigation: {
+        goBack: jest.fn(),
+      },
+    };
+    component = shallow(<NotificationTab {...props} t={(key: string): string => key} />);
   });
 
   it('should render snapshot', () => {

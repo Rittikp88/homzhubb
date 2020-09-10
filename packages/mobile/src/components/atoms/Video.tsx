@@ -24,7 +24,7 @@ interface IRNVideoState {
 }
 
 class RNVideo extends React.Component<IProps, IRNVideoState> {
-  private videoPlayer: any;
+  private videoPlayer: Video | null = null;
   public state = {
     currentTime: 0,
     duration: 0,
@@ -53,7 +53,7 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
           onLoadStart={this.onLoadStart}
           onProgress={this.onProgress}
           paused={paused}
-          ref={(c: any): void => {
+          ref={(c): void => {
             this.videoPlayer = c;
           }}
           // @ts-ignore
@@ -82,7 +82,7 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
 
   public onSeek = (seek: number): void => {
     // Handler for change in seekbar
-    this.videoPlayer.seek(seek);
+    this.videoPlayer?.seek(seek);
   };
 
   public onPaused = (playerState: number): void => {
@@ -97,7 +97,7 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
   public onReplay = (): void => {
     // Handler for Replay
     this.setState({ playerState: PLAYER_STATES.PLAYING });
-    this.videoPlayer.seek(0);
+    this.videoPlayer?.seek(0);
   };
 
   public onProgress = (data: OnProgressData): void => {

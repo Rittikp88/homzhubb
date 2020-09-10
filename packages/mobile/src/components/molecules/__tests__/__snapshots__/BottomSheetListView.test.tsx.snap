@@ -1185,10 +1185,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -1199,10 +1202,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -1212,10 +1218,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -1572,10 +1581,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -1586,10 +1598,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -1599,10 +1614,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -1959,10 +1977,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -1973,10 +1994,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -1986,10 +2010,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -2346,10 +2373,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -2360,10 +2390,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -2373,10 +2406,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -2733,10 +2769,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -2747,10 +2786,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -2760,10 +2802,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -3120,10 +3165,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -3134,10 +3182,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -3147,10 +3198,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -3507,10 +3561,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -3521,10 +3578,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -3534,10 +3594,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -3894,10 +3957,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -3908,10 +3974,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -3921,10 +3990,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -4281,10 +4353,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -4295,10 +4370,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -4308,10 +4386,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >
@@ -4668,10 +4749,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                     }
                                                   }
                                                   listItemViewStyle={
-                                                    Object {
-                                                      "color": "#667686",
-                                                      "width": 750,
-                                                    }
+                                                    Array [
+                                                      Object {
+                                                        "color": "#667686",
+                                                        "width": 750,
+                                                      },
+                                                      false,
+                                                    ]
                                                   }
                                                   onItemSelect={[Function]}
                                                   testID="btmshList"
@@ -4682,10 +4766,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                         Object {
                                                           "marginHorizontal": 26,
                                                         },
-                                                        Object {
-                                                          "color": "#667686",
-                                                          "width": 750,
-                                                        },
+                                                        Array [
+                                                          Object {
+                                                            "color": "#667686",
+                                                            "width": 750,
+                                                          },
+                                                          false,
+                                                        ],
                                                       ]
                                                     }
                                                   >
@@ -4695,10 +4782,13 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                           Object {
                                                             "marginHorizontal": 26,
                                                           },
-                                                          Object {
-                                                            "color": "#667686",
-                                                            "width": 750,
-                                                          },
+                                                          Array [
+                                                            Object {
+                                                              "color": "#667686",
+                                                              "width": 750,
+                                                            },
+                                                            false,
+                                                          ],
                                                         ]
                                                       }
                                                     >

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
@@ -9,7 +9,7 @@ import { SignUpScreen, mapDispatchToProps } from '@homzhub/mobile/src/screens/Au
 const mock = jest.fn();
 
 describe('SignUp Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
   let instance: any;
   beforeEach(() => {
@@ -39,13 +39,11 @@ describe('SignUp Screen', () => {
   });
 
   it('should navigate back', () => {
-    // @ts-ignore
     component.find('[testID="headerEvents"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate to login screen', () => {
-    // @ts-ignore
     component.find('[testID="headerEvents"]').prop('onLinkPress')();
     expect(mock).toHaveBeenCalled();
   });
@@ -85,7 +83,6 @@ describe('SignUp Screen', () => {
       password: 'password',
     };
     component.setState({ isNewUser: true });
-    // @ts-ignore
     component.find('[testID="signupForm"]').prop('onSubmitFormSuccess')(formData);
     expect(mock).toHaveBeenCalled();
   });

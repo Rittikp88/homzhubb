@@ -1,23 +1,24 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
-import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
-import { ServiceSteps, ServiceStepsWithVerification } from '@homzhub/common/src/mocks/ServiceSteps';
+import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
 import {
   AssetPackageSteps,
   mapStateToProps,
   mapDispatchToProps,
 } from '@homzhub/mobile/src/screens/Asset/Record/AssetPackageSteps';
+import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
+import { ServiceSteps, ServiceStepsWithVerification } from '@homzhub/common/src/mocks/ServiceSteps';
 
 const mock = jest.fn();
 
 describe('Service List Steps Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -65,13 +66,11 @@ describe('Service List Steps Screen', () => {
   });
 
   it('should navigate on Continue', () => {
-    // @ts-ignore
     component.find('[testID="btnContinue"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should navigate back', () => {
-    // @ts-ignore
     component.find('[testID="lblNavigate"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
@@ -90,6 +89,9 @@ describe('Service List Steps Screen', () => {
       },
       asset: {
         ...initialAssetState,
+      },
+      portfolio: {
+        ...initialPortfolioState,
       },
     };
     const state = mapStateToProps(mockedState);

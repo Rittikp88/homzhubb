@@ -1,21 +1,24 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
-import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
+import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
 import {
   AssetServiceSelection,
   mapStateToProps,
   mapDispatchToProps,
 } from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceSelection';
 import { User } from '@homzhub/common/src/domain/models/User';
+import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 
 const mock = jest.fn();
 describe('Rent Services Screen Component', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -44,19 +47,16 @@ describe('Rent Services Screen Component', () => {
   });
 
   it('should navigate to previous screen', () => {
-    // @ts-ignore
     component.find('[testID="headerIconPress"]').prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should handle selected service', () => {
-    // @ts-ignore
     component.find('[testID="icoFilled"]').prop('onPress')(1);
     expect(component.state('selectedItem')).toBe(1);
   });
 
   it('should handle unselected service', () => {
-    // @ts-ignore
     component.find('[testID="icoDisabled"]').at(0).prop('onPress')(2);
     expect(component.state('isSelected')).toBe(true);
     expect(component.state('selectedItem')).toBe(2);
@@ -83,8 +83,16 @@ describe('Rent Services Screen Component', () => {
           rentServices: RentServicesData,
         },
       },
+      search: {
+        ...initialSearchState,
+      },
+      asset: {
+        ...initialAssetState,
+      },
+      portfolio: {
+        ...initialPortfolioState,
+      },
     };
-    // @ts-ignore
     const state = mapStateToProps(mockedState);
     const deserializedUser = ObjectMapper.deserialize(User, userData);
     expect(state.user).toStrictEqual(deserializedUser);

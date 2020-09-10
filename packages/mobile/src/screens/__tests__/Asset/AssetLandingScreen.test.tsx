@@ -1,10 +1,13 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
+import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
 import {
   AssetLandingScreen,
   mapStateToProps,
@@ -15,7 +18,7 @@ import { User } from '@homzhub/common/src/domain/models/User';
 const mock = jest.fn();
 
 describe('Landing Screen Component', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -41,13 +44,11 @@ describe('Landing Screen Component', () => {
   });
 
   it('should navigate to Add Property Screen', () => {
-    // @ts-ignore
     component.find('[testID="btnAddProperty"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
 
   it('should call logout', () => {
-    // @ts-ignore
     component.find('[testID="lblLogout"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });
@@ -69,8 +70,16 @@ describe('Landing Screen Component', () => {
       property: {
         ...initialPropertyState,
       },
+      asset: {
+        ...initialAssetState,
+      },
+      search: {
+        ...initialSearchState,
+      },
+      portfolio: {
+        ...initialPortfolioState,
+      },
     };
-    // @ts-ignore
     const state = mapStateToProps(mockedState);
     const deserializedUser = ObjectMapper.deserialize(User, user);
     expect(state.user).toStrictEqual(deserializedUser);

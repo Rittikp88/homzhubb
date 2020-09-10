@@ -6,15 +6,16 @@ import { GeneralLedgersData } from '@homzhub/common/src/mocks/GeneralLedgers';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
-const createTestProps = (testProps: any): object => ({
-  data: ObjectMapper.deserializeArray(GeneralLedgers, GeneralLedgersData),
-  ...testProps,
-});
 let props: any;
 
 describe('DonutGraph', () => {
+  beforeEach(() => {
+    props = {
+      data: ObjectMapper.deserializeArray(GeneralLedgers, GeneralLedgersData),
+    };
+  });
+
   it('should match snapshot', () => {
-    props = createTestProps({});
     const wrapper: ShallowWrapper = shallow(<DonutGraph {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });

@@ -43,10 +43,8 @@ const CardBody = (props: Props): React.ReactElement => {
     const parsedCost = parseInt(cost, 10);
     switch (parsedCost) {
       case 0:
-        // @ts-ignore
         return t('common:noCost');
       case -1:
-        // @ts-ignore
         return t('common:requestQuote');
       default:
         return cost;
