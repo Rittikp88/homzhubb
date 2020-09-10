@@ -1,11 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle, PickerItemProps } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IListItemProps {
-  listItem: any;
+  listItem: PickerItemProps;
   isCheck: boolean;
   onItemSelect?: () => void;
   listItemViewStyle?: StyleProp<ViewStyle>;

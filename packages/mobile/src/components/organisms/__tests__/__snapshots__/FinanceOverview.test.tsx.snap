@@ -92,14 +92,14 @@ exports[`FinanceOverview should match snapshot 1`] = `
           Object {
             "dataGroupBy": "MONTH",
             "endDate": "2020-09-30",
-            "label": "This month",
+            "label": "common:thisMonth",
             "startDate": "2020-09-01",
             "value": 1,
           },
           Object {
             "dataGroupBy": "MONTH",
             "endDate": "2020-08-31",
-            "label": "Last month",
+            "label": "common:lastMonth",
             "startDate": "2020-08-01",
             "value": 2,
           },
@@ -113,14 +113,14 @@ exports[`FinanceOverview should match snapshot 1`] = `
           Object {
             "dataGroupBy": "YEAR",
             "endDate": "2021-03-31",
-            "label": "This financial year",
+            "label": "common:thisFinancialYear",
             "startDate": "2020-04-01",
             "value": 4,
           },
           Object {
             "dataGroupBy": "YEAR",
             "endDate": "2019-12-31",
-            "label": "Last year",
+            "label": "common:lastYear",
             "startDate": "2019-01-01",
             "value": 5,
           },

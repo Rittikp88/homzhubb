@@ -208,43 +208,43 @@ exports[`Asset filter should render snapshot 1`] = `
           data={
             Array [
               Object {
-                "label": "This area only",
+                "label": "propertySearch:thisAreaOnly",
                 "value": 1,
               },
               Object {
-                "label": "Within 5 km",
+                "label": "propertySearch:within5km",
                 "value": 2,
               },
               Object {
-                "label": "Within 0.25 km",
+                "label": "propertySearch:withinQuarterkm",
                 "value": 3,
               },
               Object {
-                "label": "Within 10 km",
+                "label": "propertySearch:within10km",
                 "value": 4,
               },
               Object {
-                "label": "Within 0.5 km",
+                "label": "propertySearch:withinHalfkm",
                 "value": 5,
               },
               Object {
-                "label": "Within 20 km",
+                "label": "propertySearch:within20km",
                 "value": 6,
               },
               Object {
-                "label": "Within 1 km",
+                "label": "propertySearch:within1km",
                 "value": 7,
               },
               Object {
-                "label": "Within 30 km",
+                "label": "propertySearch:within30km",
                 "value": 8,
               },
               Object {
-                "label": "Within 3 km",
+                "label": "propertySearch:within3km",
                 "value": 9,
               },
               Object {
-                "label": "Within 40 km",
+                "label": "propertySearch:within40km",
                 "value": 10,
               },
             ]
@@ -280,27 +280,27 @@ exports[`Asset filter should render snapshot 1`] = `
           data={
             Array [
               Object {
-                "label": "Anytime",
+                "label": "propertySearch:anytime",
                 "value": 1,
               },
               Object {
-                "label": "Last 3 days",
+                "label": "propertySearch:last3days",
                 "value": 2,
               },
               Object {
-                "label": "Last 14 days",
+                "label": "propertySearch:last14days",
                 "value": 3,
               },
               Object {
-                "label": "Last 24 hours",
+                "label": "propertySearch:last24hours",
                 "value": 4,
               },
               Object {
-                "label": "Last 7 days",
+                "label": "propertySearch:last7days",
                 "value": 5,
               },
               Object {
-                "label": "Last 28 days",
+                "label": "propertySearch:last28days",
                 "value": 6,
               },
             ]
@@ -336,27 +336,27 @@ exports[`Asset filter should render snapshot 1`] = `
           data={
             Array [
               Object {
-                "label": "Less than 1 year",
+                "label": "propertySearch:lessThan1Year",
                 "value": 1,
               },
               Object {
-                "label": "Less than 5 years",
+                "label": "propertySearch:lessThan5Year",
                 "value": 2,
               },
               Object {
-                "label": "Less than 10 years",
+                "label": "propertySearch:lessThan10Year",
                 "value": 3,
               },
               Object {
-                "label": "Less than 15 years",
+                "label": "propertySearch:lessThan15Year",
                 "value": 4,
               },
               Object {
-                "label": "Less than 20 years",
+                "label": "propertySearch:lessThan20Year",
                 "value": 5,
               },
               Object {
-                "label": "More than 20 years",
+                "label": "propertySearch:moreThan20Year",
                 "value": 6,
               },
             ]

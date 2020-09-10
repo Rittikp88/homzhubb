@@ -6,7 +6,12 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { DateFilter, MONTH_LABELS, FINANCIAL_DROPDOWN_DATA } from '@homzhub/common/src/constants/FinanceOverview';
+import {
+  DateFilter,
+  MONTH_LABELS,
+  FINANCIAL_DROPDOWN_DATA,
+  IFinancialDropdownObject,
+} from '@homzhub/common/src/constants/FinanceOverview';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Dropdown, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
@@ -62,7 +67,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
             </Label>
           </View>
           <Dropdown
-            data={Object.values(FINANCIAL_DROPDOWN_DATA)}
+            data={this.getFinancialDropdownData()}
             value={selectedTimeRange}
             // @ts-ignore
             onDonePress={this.onTimeRangeChange}
@@ -181,6 +186,17 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
       default:
         return DateUtils.getCurrentMonth();
     }
+  };
+
+  public getFinancialDropdownData = (): IFinancialDropdownObject[] => {
+    const { t } = this.props;
+    const data = Object.values(FINANCIAL_DROPDOWN_DATA);
+    return data.map((currentData: IFinancialDropdownObject) => {
+      return {
+        ...currentData,
+        label: t(currentData.label),
+      };
+    });
   };
 }
 

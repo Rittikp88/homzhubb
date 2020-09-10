@@ -102,7 +102,7 @@ exports[`Dropdown should match snapshot 1`] = `
       ]
     }
     isBottomSheetVisible={false}
-    listTitle="Select From here"
+    listTitle="common:selectFromHere"
     numColumns={1}
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
@@ -158,7 +158,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
   <BottomSheetListView
     data={Array []}
     isBottomSheetVisible={false}
-    listTitle="Select From here"
+    listTitle="common:selectFromHere"
     numColumns={1}
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}
@@ -214,7 +214,7 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
   <BottomSheetListView
     data={Array []}
     isBottomSheetVisible={false}
-    listTitle="Select From here"
+    listTitle="common:selectFromHere"
     numColumns={1}
     onCloseDropDown={[Function]}
     onSelectItem={[Function]}

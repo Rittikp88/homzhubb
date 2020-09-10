@@ -25,27 +25,27 @@ exports[`RoomsFilter should match snapshot 1`] = `
     data={
       Array [
         Object {
-          "title": "Any",
+          "title": "common:any",
           "value": -1,
         },
         Object {
-          "title": "1",
+          "title": "common:one",
           "value": 1,
         },
         Object {
-          "title": "2",
+          "title": "common:two",
           "value": 2,
         },
         Object {
-          "title": "3",
+          "title": "common:three",
           "value": 3,
         },
         Object {
-          "title": "4",
+          "title": "common:four",
           "value": 4,
         },
         Object {
-          "title": "5+",
+          "title": "common:fivePlus",
           "value": 5,
         },
       ]
@@ -79,27 +79,27 @@ exports[`RoomsFilter should match snapshot 1`] = `
     data={
       Array [
         Object {
-          "title": "Any",
+          "title": "common:any",
           "value": -1,
         },
         Object {
-          "title": "1+",
+          "title": "common:onePlus",
           "value": 1,
         },
         Object {
-          "title": "2+",
+          "title": "common:twoPlus",
           "value": 2,
         },
         Object {
-          "title": "3+",
+          "title": "common:threePlus",
           "value": 3,
         },
         Object {
-          "title": "4+",
+          "title": "common:fourPlus",
           "value": 4,
         },
         Object {
-          "title": "5+",
+          "title": "common:fivePlus",
           "value": 5,
         },
       ]

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { remove } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { BATHROOM_FILTER, BEDROOM_FILTER } from '@homzhub/common/src/constants/SearchFilters';
+import { BATHROOM_FILTER, BEDROOM_FILTER, IFilterDataObject } from '@homzhub/common/src/constants/SearchFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SelectionPicker, Text } from '@homzhub/common/src/components';
 
@@ -39,6 +39,15 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
     }
   };
 
+  const translateData = (data: IFilterDataObject[]): IFilterDataObject[] => {
+    return data.map((currentData: IFilterDataObject) => {
+      return {
+        ...currentData,
+        title: t(currentData.title),
+      };
+    });
+  };
+
   const onUpdateBathroomCount = (value: number): void => bubbleSelectedValue('bath_count', value);
 
   return (
@@ -47,7 +56,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         {t('beds')}
       </Text>
       <SelectionPicker
-        data={BEDROOM_FILTER}
+        data={translateData(BEDROOM_FILTER)}
         selectedItem={bedCount}
         onValueChange={onUpdateBedroomCount}
         optionWidth={OPTION_WIDTH}
@@ -57,7 +66,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         {t('baths')}
       </Text>
       <SelectionPicker
-        data={BATHROOM_FILTER}
+        data={translateData(BATHROOM_FILTER)}
         selectedItem={bathroomCount}
         onValueChange={onUpdateBathroomCount}
         optionWidth={OPTION_WIDTH}

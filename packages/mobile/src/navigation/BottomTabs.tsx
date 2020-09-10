@@ -5,6 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import { useTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
@@ -101,6 +102,7 @@ export const FinancialsStack = (): React.ReactElement => {
 };
 
 export const BottomTabs = (): React.ReactElement => {
+  const { t } = useTranslation();
   const routeName = getFocusedRouteNameFromRoute(useRoute()) ?? ScreensKeys.Dashboard;
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const dispatch = useDispatch();
@@ -149,7 +151,7 @@ export const BottomTabs = (): React.ReactElement => {
           blur: (): IFluxStandardAction => dispatch(PortfolioActions.setInitialState()),
         }}
         options={{
-          tabBarLabel: ScreensKeys.Portfolio,
+          tabBarLabel: t('assetPortfolio:portfolio'),
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
             <Icon name={icons.portfolio} color={color} size={22} />
           ),
@@ -159,7 +161,7 @@ export const BottomTabs = (): React.ReactElement => {
         name={ScreensKeys.Financials}
         component={isLoggedIn ? FinancialsStack : DefaultLogin}
         options={{
-          tabBarLabel: ScreensKeys.Financials,
+          tabBarLabel: t('assetFinancial:financial'),
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
             <Icon name={icons.barChartOutline} color={color} size={22} />
           ),
@@ -169,7 +171,7 @@ export const BottomTabs = (): React.ReactElement => {
         name={ScreensKeys.Dashboard}
         component={isLoggedIn ? DashboardStack : DefaultLogin}
         options={{
-          tabBarLabel: ScreensKeys.Dashboard,
+          tabBarLabel: t('assetDashboard:dashboard'),
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
             return <Image source={focused ? images.dashboardFocused : images.dashboardUnfocused} />;
           },
@@ -180,7 +182,7 @@ export const BottomTabs = (): React.ReactElement => {
         component={SearchStack}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: ScreensKeys.Search,
+          tabBarLabel: t('common:search'),
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
             return <Icon name={icons.search} color={color} size={22} />;
           },
@@ -190,7 +192,7 @@ export const BottomTabs = (): React.ReactElement => {
         name={ScreensKeys.More}
         component={isLoggedIn ? More : DefaultLogin}
         options={{
-          tabBarLabel: ScreensKeys.More,
+          tabBarLabel: t('assetMore:more'),
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
             <Icon name={icons.threeDots} color={color} size={22} />
           ),

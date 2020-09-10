@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   StyleProp,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TextStyle,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -39,83 +40,74 @@ export interface IProps {
   numColumns?: number;
 }
 
-interface IState {
-  dropdownVisible: boolean;
-}
-// TODO: Add Translation for default list title
-export class Dropdown extends React.PureComponent<IProps, IState> {
-  public state = {
-    dropdownVisible: false,
-  };
+export const Dropdown = (props: IProps): React.ReactElement => {
+  const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
+  const { t } = useTranslation();
+  const {
+    value,
+    data,
+    iconColor,
+    iconSize,
+    iconStyle,
+    listTitle,
+    listHeight,
+    disable = false,
+    placeholder = '',
+    onDonePress,
+    containerStyle = {},
+    textStyle = {},
+    icon = icons.downArrowFilled,
+    testID,
+    maxLabelLength = MAX_LABEL_COUNT,
+    numColumns = 1,
+  } = props;
 
-  public render(): React.ReactNode {
-    const {
-      value,
-      data,
-      iconColor,
-      iconSize,
-      iconStyle,
-      listTitle,
-      listHeight,
-      disable = false,
-      placeholder = '',
-      containerStyle = {},
-      textStyle = {},
-      icon = icons.downArrowFilled,
-      testID,
-      maxLabelLength = MAX_LABEL_COUNT,
-      numColumns = 1,
-    } = this.props;
-    const { dropdownVisible } = this.state;
-    const selectedItem = data.find((d: PickerItemProps) => d.value === value);
-    const label =
-      selectedItem?.label && selectedItem?.label.length > maxLabelLength
-        ? `${(selectedItem?.label).substring(0, maxLabelLength)}...`
-        : selectedItem?.label;
-
-    return (
-      <View pointerEvents={disable ? 'none' : 'auto'}>
-        <TouchableOpacity onPress={this.openDropdown} style={[styles.container, containerStyle]}>
-          <Label type="large" textType="regular" style={textStyle}>
-            {label ?? placeholder}
-          </Label>
-          <Icon
-            name={icon}
-            size={iconSize ?? 16}
-            color={iconColor ?? theme.colors.disabled}
-            style={[styles.iconStyle, iconStyle]}
-          />
-        </TouchableOpacity>
-        <BottomSheetListView
-          data={data}
-          selectedValue={selectedItem?.value ?? ''}
-          listTitle={listTitle ?? 'Select From here'}
-          listHeight={listHeight}
-          isBottomSheetVisible={dropdownVisible}
-          onCloseDropDown={this.onCancel}
-          onSelectItem={this.onValueChange}
-          testID={testID}
-          numColumns={numColumns}
-        />
-      </View>
-    );
-  }
-
-  public onValueChange = (value: string | number): void => {
-    const { placeholder, onDonePress } = this.props;
-    const selectedValue = value === placeholder ? '' : value;
+  const onValueChange = (changedValue: string | number): void => {
+    const selectedValue = changedValue === placeholder ? '' : changedValue;
     if (onDonePress) {
       onDonePress(selectedValue);
-      this.closeDropdown();
+      closeDropdown();
     }
   };
 
-  public onCancel = (): void => this.closeDropdown();
+  const onCancel = (): void => closeDropdown();
 
-  public openDropdown = (): void => this.setState({ dropdownVisible: true });
+  const openDropdown = (): void => setDropdownVisible(true);
 
-  public closeDropdown = (): void => this.setState({ dropdownVisible: false });
-}
+  const closeDropdown = (): void => setDropdownVisible(false);
+  const selectedItem = data.find((d: PickerItemProps) => d.value === value);
+  const label =
+    selectedItem?.label && selectedItem?.label.length > maxLabelLength
+      ? `${(selectedItem?.label).substring(0, maxLabelLength)}...`
+      : selectedItem?.label;
+
+  return (
+    <View pointerEvents={disable ? 'none' : 'auto'}>
+      <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
+        <Label type="large" textType="regular" style={textStyle}>
+          {label ?? placeholder}
+        </Label>
+        <Icon
+          name={icon}
+          size={iconSize ?? 16}
+          color={iconColor ?? theme.colors.disabled}
+          style={[styles.iconStyle, iconStyle]}
+        />
+      </TouchableOpacity>
+      <BottomSheetListView
+        data={data}
+        selectedValue={selectedItem?.value ?? ''}
+        listTitle={listTitle ?? t('common:selectFromHere')}
+        listHeight={listHeight}
+        isBottomSheetVisible={dropdownVisible}
+        onCloseDropDown={onCancel}
+        onSelectItem={onValueChange}
+        testID={testID}
+        numColumns={numColumns}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -11,7 +11,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
-import { AdvancedFilters, IAdvancedFilters } from '@homzhub/common/src/constants/AssetAdvancedFilters';
+import { AdvancedFilters, IAdvancedFilters, IFilterData } from '@homzhub/common/src/constants/AssetAdvancedFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -158,6 +158,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       data: { searchRadius },
     } = this.state;
+    const translatedSearchRadius = this.translateData(searchRadius);
     const onSelectSearchRadius = (value: string | number): void => {
       setFilter({ miscellaneous: { ...filters.miscellaneous, search_radius: value } });
     };
@@ -167,7 +168,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           {t('searchRadius')}
         </Text>
         <Dropdown
-          data={searchRadius}
+          data={translatedSearchRadius}
           value={search_radius}
           listTitle={t('selectSearchRadius')}
           placeholder={t('selectRadius')}
@@ -195,6 +196,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       data: { dateAdded },
     } = this.state;
+    const translatedDateAdded = this.translateData(dateAdded);
     const onSelectDateAdded = (value: string | number): void => {
       setFilter({ miscellaneous: { ...filters.miscellaneous, date_added: value } });
     };
@@ -204,7 +206,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           {t('dateAdded')}
         </Text>
         <Dropdown
-          data={dateAdded}
+          data={translatedDateAdded}
           value={date_added}
           listTitle={t('selectDateAdded')}
           placeholder={t('selectDateAdded')}
@@ -232,6 +234,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       data: { propertyAge },
     } = this.state;
+    const translatedPropertyAge = this.translateData(propertyAge);
     const onSelectPropertyAge = (value: string | number): void => {
       setFilter({ miscellaneous: { ...filters.miscellaneous, property_age: value } });
     };
@@ -241,7 +244,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           {t('propertyAge')}
         </Text>
         <Dropdown
-          data={propertyAge}
+          data={translatedPropertyAge}
           value={property_age}
           listTitle={t('selectPropertyAge')}
           placeholder={t('selectPropertyAge')}
@@ -269,6 +272,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       data: { rentFreePeriod },
     } = this.state;
+    const translatedRentFreePeriod = this.translateData(rentFreePeriod);
     const onSelectRentFreePeriod = (value: string | number): void => {
       setFilter({ miscellaneous: { ...filters.miscellaneous, rent_free_period: value } });
     };
@@ -278,7 +282,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           {t('propertyAge')}
         </Text>
         <Dropdown
-          data={rentFreePeriod}
+          data={translatedRentFreePeriod}
           value={rent_free_period}
           listTitle={t('selectRentFreePeriod')}
           placeholder={t('selectRentFreePeriod')}
@@ -623,6 +627,16 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const { getProperties, navigation } = this.props;
     getProperties();
     navigation.goBack();
+  };
+
+  public translateData = (data: IFilterData[]): IFilterData[] => {
+    const { t } = this.props;
+    return data.map((currentData: IFilterData) => {
+      return {
+        value: currentData.value,
+        label: t(currentData.label),
+      };
+    });
   };
 
   public transformFacingData = (): { title: string; value: number }[] => {

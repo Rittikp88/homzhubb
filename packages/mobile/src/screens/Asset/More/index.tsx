@@ -3,7 +3,6 @@ import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { MORE_SCREENS, LOGOUT, IMoreScreenItem } from '@homzhub/common/src/constants/MoreScreens';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -27,7 +26,7 @@ class More extends React.PureComponent<Props> {
     const { t } = this.props;
     const screenKeys: string[] = Object.keys(MORE_SCREENS);
     return (
-      <AnimatedProfileHeader title={t('more')}>
+      <AnimatedProfileHeader title={t('assetMore:more')}>
         <View style={styles.moreStack}>
           <MoreProfile onIconPress={this.onIconPress} />
           {screenKeys.map(
@@ -128,7 +127,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(withTranslation(LocaleConstants.namespacesKey.assetMore)(More));
+export default connect(null, mapDispatchToProps)(withTranslation()(More));
 
 const styles = StyleSheet.create({
   moreStack: {

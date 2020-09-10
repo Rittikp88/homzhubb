@@ -19,6 +19,7 @@ module.exports = {
     '<rootDir>/src/**/interfaces.ts',
     '<rootDir>/src/**/Interfaces.ts',
     '!<rootDir>/src/assets/*',
+    '!<rootDir>/src/constants/*',
     '!<rootDir>/src/mocks/**./*.{ts,tsx}',
     '!<rootDir>/src/styles/*',
     '!<rootDir>/src/domain/models/*',
