@@ -83,6 +83,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             },
             "_mediaType": "IMAGE",
             "_name": "",
+            "_presignedReferenceKey": "",
           },
           "_category": LedgerCategory {
             "_entryType": "",
@@ -120,6 +121,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             },
             "_mediaType": "IMAGE",
             "_name": "",
+            "_presignedReferenceKey": "",
           },
           "_category": LedgerCategory {
             "_entryType": "",
@@ -157,6 +159,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             },
             "_mediaType": "IMAGE",
             "_name": "",
+            "_presignedReferenceKey": "",
           },
           "_category": LedgerCategory {
             "_entryType": "",
@@ -194,6 +197,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             },
             "_mediaType": "IMAGE",
             "_name": "",
+            "_presignedReferenceKey": "",
           },
           "_category": LedgerCategory {
             "_entryType": "",
@@ -231,6 +235,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             },
             "_mediaType": "IMAGE",
             "_name": "",
+            "_presignedReferenceKey": "",
           },
           "_category": LedgerCategory {
             "_entryType": "",
@@ -268,6 +273,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             },
             "_mediaType": "IMAGE",
             "_name": "",
+            "_presignedReferenceKey": "",
           },
           "_category": LedgerCategory {
             "_entryType": "",

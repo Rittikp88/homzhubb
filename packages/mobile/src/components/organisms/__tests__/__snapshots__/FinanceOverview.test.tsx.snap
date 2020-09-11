@@ -105,8 +105,8 @@ exports[`FinanceOverview should match snapshot 1`] = `
           },
           Object {
             "dataGroupBy": "YEAR",
-            "endDate": "2020-09-10",
-            "label": "This year",
+            "endDate": "2020-09-11",
+            "label": "common:thisYear",
             "startDate": "2020-01-01",
             "value": 3,
           },

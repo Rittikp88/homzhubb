@@ -353,6 +353,7 @@ exports[`DocumentCard should match snapshot 1`] = `
             allowFontScaling={false}
             color="#0084F8"
             name="download"
+            onPress={[Function]}
             size={22}
             style={
               Object {
@@ -362,6 +363,7 @@ exports[`DocumentCard should match snapshot 1`] = `
           >
             <Text
               allowFontScaling={false}
+              onPress={[Function]}
               style={
                 Array [
                   Object {
@@ -382,6 +384,7 @@ exports[`DocumentCard should match snapshot 1`] = `
             >
               <Text
                 allowFontScaling={false}
+                onPress={[Function]}
                 style={
                   Array [
                     Object {

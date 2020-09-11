@@ -8,6 +8,7 @@ jest.mock('react-native-orientation-locker', () => {});
 jest.mock('@react-native-community/geolocation', () => {});
 jest.mock('react-native-progress', () => {});
 jest.mock('react-native-razorpay', () => {});
+jest.mock('rn-fetch-blob', () => {});
 jest.mock('react-native-permissions', () => {
   return {
     request: jest.fn(),

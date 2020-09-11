@@ -112,6 +112,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         document={item}
         handleShare={this.onShare}
         handleDelete={this.onDeleteDocument}
+        handleDownload={this.onDownloadDocument}
         userEmail={user?.email ?? ''}
       />
     );
@@ -170,6 +171,10 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     }
   };
 
+  private onDownloadDocument = async (key: string, fileName: string): Promise<void> => {
+    await AttachmentService.downloadAttachment(key, fileName);
+  };
+
   private onDeleteDocument = async (id: number): Promise<void> => {
     const { currentAssetId } = this.props;
     try {
@@ -186,6 +191,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     if (!assetData) {
       return;
     }
+
     const {
       assetStatusInfo: { leaseListingId, saleListingId },
     } = assetData;

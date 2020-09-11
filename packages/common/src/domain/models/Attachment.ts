@@ -88,6 +88,9 @@ export class Attachment {
   @JsonProperty('media_attributes', MediaAttributes, true)
   private _mediaAttributes: MediaAttributes = new MediaAttributes();
 
+  @JsonProperty('presigned_reference_key', String, true)
+  private _presignedReferenceKey = '';
+
   get id(): number {
     return this._id;
   }
@@ -114,5 +117,9 @@ export class Attachment {
 
   get mediaAttributes(): MediaAttributes {
     return this._mediaAttributes;
+  }
+
+  get presignedReferenceKey(): string {
+    return this._presignedReferenceKey;
   }
 }

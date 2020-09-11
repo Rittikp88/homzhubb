@@ -61,6 +61,7 @@ const ENDPOINTS = {
   assetDocument: (propertyId: number): string => `assets/${propertyId}/asset-documents/`,
   deleteAssetDocument: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/asset-documents/${documentId}/`,
+  downloadAttachment: (): string => 'attachments/download/',
 };
 
 class AssetRepository {
@@ -210,6 +211,10 @@ class AssetRepository {
 
   public deleteAssetDocument = async (propertyId: number, documentId: number): Promise<void> => {
     await this.apiClient.delete(ENDPOINTS.deleteAssetDocument(propertyId, documentId));
+  };
+
+  public downloadAttachment = async (refKey: string): Promise<void> => {
+    return await this.apiClient.get(ENDPOINTS.downloadAttachment(), { presigned_reference_key: refKey });
   };
 }
 

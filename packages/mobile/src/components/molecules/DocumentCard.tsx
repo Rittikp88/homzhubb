@@ -12,11 +12,18 @@ interface IProps {
   document: AssetDocument;
   handleShare: (link: string) => void;
   handleDelete: (id: number) => void;
+  handleDownload: (refKey: string, fileName: string) => void;
 }
 
-export const DocumentCard = ({ document, handleShare, userEmail, handleDelete }: IProps): React.ReactElement => {
+export const DocumentCard = ({
+  document,
+  handleShare,
+  userEmail,
+  handleDelete,
+  handleDownload,
+}: IProps): React.ReactElement => {
   const {
-    attachment: { fileName, link },
+    attachment: { fileName, link, presignedReferenceKey },
     user,
   } = document;
   const { t } = useTranslation();
@@ -24,6 +31,7 @@ export const DocumentCard = ({ document, handleShare, userEmail, handleDelete }:
   const uploadedOn = DateUtils.getDisplayDate(document.uploadedOn, 'L');
   const onShare = (): void => handleShare(link);
   const onDelete = (): void => handleDelete(document.id);
+  const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -40,7 +48,7 @@ export const DocumentCard = ({ document, handleShare, userEmail, handleDelete }:
       <View style={styles.iconContainer}>
         <Icon name={icons.trash} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDelete} />
         <Icon name={icons.shareFilled} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onShare} />
-        <Icon name={icons.download} size={22} color={theme.colors.blue} style={styles.iconStyle} />
+        <Icon name={icons.download} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDownload} />
       </View>
     </View>
   );
