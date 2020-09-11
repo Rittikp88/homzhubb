@@ -15,6 +15,7 @@ interface IState {
 
 interface IProps extends WithTranslation {
   transaction: FinancialRecords;
+  handleDownload: (refKey: string, fileName: string) => void;
 }
 
 class TransactionCard extends React.PureComponent<IProps, IState> {
@@ -25,7 +26,16 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
   public render(): ReactElement {
     const { shouldExpand } = this.state;
     const {
-      transaction: { transactionDate, category, label, assetName, amount, currencyCode, entryType, attachmentName },
+      transaction: {
+        transactionDate,
+        category,
+        label,
+        assetName,
+        amount,
+        currencyCode,
+        entryType,
+        attachmentDetails: { fileName },
+      },
     } = this.props;
 
     let textStyle: StyleProp<TextStyle> = { color: theme.colors.completed };
@@ -49,7 +59,7 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
             <View>
               <View style={styles.commonAlignStyle}>
                 <Label type="regular">{category}</Label>
-                {attachmentName ? <Icon name={icons.attachment} size={12} /> : null}
+                {fileName ? <Icon name={icons.attachment} size={12} /> : null}
               </View>
               <Label maxLength={21} type="large" textType="bold">
                 {label}
@@ -79,8 +89,15 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
   private renderTransactionDetails = (): ReactElement => {
     const {
       t,
-      transaction: { entryType, notes, tellerName, attachmentName },
+      handleDownload,
+      transaction: {
+        entryType,
+        notes,
+        tellerName,
+        attachmentDetails: { fileName, presignedReferenceKey },
+      },
     } = this.props;
+    const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
 
     return (
       <View style={styles.transactionDetailContainer}>
@@ -92,12 +109,12 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
             </View>
           </View>
         ) : null}
-        {attachmentName ? (
+        {fileName ? (
           <View style={styles.commonMarginStyle}>
             <Label type="regular">{t('invoice')}</Label>
-            <TouchableOpacity style={styles.commonAlignStyle}>
+            <TouchableOpacity onPress={onDownload} style={styles.commonAlignStyle}>
               <Label style={styles.attachmentStyles} type="large">
-                {attachmentName}
+                {fileName}
               </Label>
               <Icon name={icons.download} size={20} color={theme.colors.primaryColor} />
             </TouchableOpacity>

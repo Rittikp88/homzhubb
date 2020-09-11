@@ -98,7 +98,10 @@ export class AddRecordScreen extends React.PureComponent<IProps, IState> {
 
   private goBack = (): void => {
     const { navigation } = this.props;
-    navigation.goBack();
+
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 }
 

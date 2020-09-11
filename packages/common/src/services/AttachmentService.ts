@@ -46,10 +46,12 @@ class AttachmentService {
   // TODO: (Shikha) - Adding types and IOS part
   public downloadAttachment = async (refKey: string, fileName: string): Promise<void> => {
     const response: any = await AssetRepository.downloadAttachment(refKey);
+
     if (response) {
       try {
         const { dirs, writeFile, mkdir, isDir } = RNFetchBlob.fs;
         const dir = PlatformUtils.isIOS() ? dirs.DocumentDir : dirs.DownloadDir;
+
         RNFetchBlob.config({
           IOSBackgroundTask: true,
           fileCache: true,
@@ -62,8 +64,8 @@ class AttachmentService {
           },
         })
           .fetch('GET', response.download_link)
-          .then((res) => {
-            // TODO: (Shikha) - Need to check for IOS
+          .then((res: any) => {
+            // TODO: (Shikha) - Need to check for IOS and Images
             if (PlatformUtils.isIOS()) {
               isDir(dir)
                 .then(() => {
@@ -76,9 +78,12 @@ class AttachmentService {
                 });
             }
             AlertHelper.success({ message: 'Successfully Downloaded' });
+          })
+          .catch((err) => {
+            AlertHelper.error({ message: 'Download manager failed to download the file.' });
           });
       } catch (err) {
-        AlertHelper.success({ message: err });
+        AlertHelper.error({ message: err });
       }
     }
   };

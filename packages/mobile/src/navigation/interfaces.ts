@@ -97,7 +97,7 @@ export enum ScreensKeys {
   BookVisit = 'BookVisit',
 
   // Common Screens
-
+  BlankScreen = 'BlankScreen',
   WebViewScreen = 'WebViewScreen',
 }
 

@@ -1,6 +1,9 @@
 import { Linking } from 'react-native';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { PathConfigMap } from '@react-navigation/core';
+import { LinkingOptions } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 class LinkingService {
   public openDialer = async (phoneNumber: string): Promise<void> => {
@@ -26,6 +29,49 @@ class LinkingService {
     } catch (e) {
       return false;
     }
+  };
+
+  public getLinkingOptions = (userLoggedIn: boolean): LinkingOptions => {
+    return {
+      prefixes: ['https://www.homzhub.com', 'http://www.homzhub.com', 'www.homzhub.com'],
+      config: {
+        screens: {
+          ...this.getNestedScreens(userLoggedIn),
+          // Todo (Sriram 2020.09.11) This screen has to be replaced with 404 screen
+          [ScreensKeys.BlankScreen]: '*',
+        },
+      },
+    };
+  };
+
+  // Todo (Sriram: 2020.09.11) Refactor this in such a way that, you get 'PathConfigMap' just by passing 'screenName'.
+  /* This is just for Demo purposes, much work has to be put into this */
+  private getNestedScreens = (userLoggedIn: boolean): PathConfigMap => {
+    const nestedScreens = {
+      [ScreensKeys.BottomTabs]: {
+        screens: {
+          [ScreensKeys.Search]: {
+            screens: {
+              [ScreensKeys.PropertyAssetDescription]: 'propertydetails/:propertyTermId',
+            },
+          },
+        },
+      },
+    };
+
+    if (userLoggedIn) {
+      return {
+        ...nestedScreens,
+      };
+    }
+
+    return {
+      [ScreensKeys.SearchStack]: {
+        screens: {
+          ...nestedScreens,
+        },
+      },
+    };
   };
 }
 

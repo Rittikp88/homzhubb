@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Text } from '@homzhub/common/src/components';
-import { PaymentGateway, IPersonalData } from '@homzhub/mobile/src/components';
+import { PaymentGateway, IPersonalData } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 
 interface IPaymentProps {
   amount?: string;

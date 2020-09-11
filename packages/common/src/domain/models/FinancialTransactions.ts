@@ -56,7 +56,7 @@ export class FinancialRecords {
   private _asset: Asset | null = null;
 
   @JsonProperty('attachment', Attachment, true)
-  private _attachment: Attachment | null = null;
+  private _attachment: Attachment = new Attachment();
 
   get id(): number {
     return this._id;
@@ -110,8 +110,8 @@ export class FinancialRecords {
     return this._asset?.projectName || '';
   }
 
-  get attachmentName(): string {
-    return this._attachment?.name || '';
+  get attachmentDetails(): Attachment {
+    return this._attachment;
   }
 }
 

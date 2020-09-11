@@ -6,6 +6,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { CommonActions } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -626,8 +627,30 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private onGoBack = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
+    const { navigation, isLoggedIn } = this.props;
+
+    // Todo (Sriram 2020.09.11) Do we have to move this logic to Utils?
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    if (isLoggedIn) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreensKeys.PropertyPostLandingScreen }],
+        })
+      );
+      return;
+    }
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensKeys.GettingStarted }],
+      })
+    );
   };
 
   private onBookVisit = (): void => {
