@@ -83,7 +83,6 @@ class PropertyUtils {
     return amenities;
   };
 
-  // TODO: (Shikha) - Need to add proper data once api integrate
   public getPropertyTimelineData = (
     name: string,
     postedOn: string,

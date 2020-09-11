@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
+import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -40,7 +41,7 @@ export class NotificationTab extends React.PureComponent<Props, IAssetNotificati
 
   public render = (): React.ReactNode => {
     const { notifications } = this.state;
-    if (isEmpty(notifications)) {
+    if (isEmpty(notifications) || notifications.count === 0) {
       return <EmptyState />;
     }
     return (
@@ -56,17 +57,24 @@ export class NotificationTab extends React.PureComponent<Props, IAssetNotificati
   };
 
   public onNotificationClicked = async (id: number): Promise<void> => {
+    const { notifications } = this.state;
     await DashboardRepository.updateNotificationStatus(id);
-    await this.getAssetNotifications();
+    this.setState({ notifications: NotificationService.getUpdatedNotifications(id, notifications) });
   };
 
   public onLoadMore = (): void => {
-    // TODO: Call the getAssetNotifications with more offset once the scroll issue is solved
+    const { limit, offset, notifications } = this.state;
+    if (notifications.results && notifications.results.length !== notifications.count) {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      this.setState({ offset: offset + limit }, async () => {
+        await this.getAssetNotifications();
+      });
+    }
   };
 
   public getAssetNotifications = async (): Promise<void> => {
     const { propertyData } = this.props;
-    const { limit, offset } = this.state;
+    const { limit, offset, notifications } = this.state;
     const requestPayload = {
       limit,
       offset,
@@ -79,7 +87,9 @@ export class NotificationTab extends React.PureComponent<Props, IAssetNotificati
     };
     if (requestPayload.sale_listing_id || requestPayload.lease_listing_id) {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
-      this.setState({ notifications: response });
+      this.setState({
+        notifications: NotificationService.transformNotificationsData(response, notifications),
+      });
     }
   };
 }

@@ -59,8 +59,8 @@ class AssetService {
     remove(bedroomCount, (count: number) => count === -1);
     const finalPayload = {
       asset_group,
-      price__gt: min_price,
-      price__lt: max_price,
+      price__gte: min_price,
+      price__lte: max_price,
       latitude: search_latitude,
       longitude: search_longitude,
       limit,

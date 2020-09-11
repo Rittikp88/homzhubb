@@ -68,6 +68,10 @@ export class Notifications {
   get isRead(): boolean {
     return this._isRead;
   }
+
+  set isRead(value: boolean) {
+    this._isRead = value;
+  }
 }
 
 @JsonObject('AssetNotifications')
@@ -86,6 +90,10 @@ export class AssetNotifications {
 
   get count(): number {
     return this._count;
+  }
+
+  set unreadCount(count: number) {
+    this._unreadCount = count;
   }
 
   get unreadCount(): number {

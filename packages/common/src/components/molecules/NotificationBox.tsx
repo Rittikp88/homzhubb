@@ -11,6 +11,7 @@ import { Notifications } from '@homzhub/common/src/domain/models/AssetNotificati
 interface IProps {
   data: Notifications[];
   onPress: (id: number) => void;
+  shouldEnableOuterScroll?: (scrollEnabled: boolean) => void;
   onLoadMore: () => void;
   unreadCount: number;
   isTitle?: boolean;
@@ -18,7 +19,7 @@ interface IProps {
 }
 
 const NotificationBox = (props: IProps): React.ReactElement => {
-  const { data, onPress, isTitle = true, containerStyle, unreadCount, onLoadMore } = props;
+  const { data, onPress, isTitle = true, containerStyle, unreadCount, onLoadMore, shouldEnableOuterScroll } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
 
   const renderItem = ({ item }: { item: Notifications }): React.ReactElement => {
@@ -34,7 +35,9 @@ const NotificationBox = (props: IProps): React.ReactElement => {
     }
 
     const onBubblePress = (): void => {
-      onPress(item.id);
+      if (!item.isRead) {
+        onPress(item.id);
+      }
     };
 
     return (
@@ -76,8 +79,23 @@ const NotificationBox = (props: IProps): React.ReactElement => {
       <FlatList
         data={data}
         renderItem={renderItem}
+        initialNumToRender={10}
+        onTouchStart={(): void => {
+          if (shouldEnableOuterScroll) {
+            shouldEnableOuterScroll(false);
+          }
+        }}
+        onMomentumScrollEnd={(): void => {
+          if (shouldEnableOuterScroll) {
+            shouldEnableOuterScroll(true);
+          }
+        }}
         keyExtractor={keyExtractor}
-        onEndReached={onLoadMore}
+        onEndReached={({ distanceFromEnd }: { distanceFromEnd: number }): void => {
+          if (distanceFromEnd > 0) {
+            onLoadMore();
+          }
+        }}
         onEndReachedThreshold={0.5}
         nestedScrollEnabled
       />
@@ -85,7 +103,8 @@ const NotificationBox = (props: IProps): React.ReactElement => {
   );
 };
 
-export { NotificationBox };
+const memoizedComponent = React.memo(NotificationBox);
+export { memoizedComponent as NotificationBox };
 
 const styles = StyleSheet.create({
   container: {

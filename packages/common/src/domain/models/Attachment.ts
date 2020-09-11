@@ -64,7 +64,6 @@ export class MediaAttributes {
   }
 }
 
-// TODO: Ask backend to not send the object if not media_attributes present
 @JsonObject('Attachment')
 export class Attachment {
   @JsonProperty('id', Number, true)

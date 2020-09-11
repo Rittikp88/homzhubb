@@ -204,8 +204,8 @@ export interface IUpdateAssetDetails {
 // Property Search
 export interface IPropertySearchPayload {
   asset_group: number;
-  price__gt: number;
-  price__lt: number;
+  price__gte: number;
+  price__lte: number;
   latitude: number;
   longitude: number;
   limit: number;

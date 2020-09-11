@@ -1,16 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
+import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { Text, NotificationBox, EmptyState } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
-import { AssetNotifications, IAssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
+import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
 type Props = WithTranslation & libraryProps;
@@ -20,7 +20,7 @@ interface IAssetNotificationsState {
   searchText: string;
   limit: number;
   offset: number;
-  shouldLoadMore: boolean;
+  scrollEnabled: boolean;
 }
 
 export class Notifications extends React.PureComponent<Props, IAssetNotificationsState> {
@@ -29,7 +29,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     searchText: '',
     limit: 50,
     offset: 0,
-    shouldLoadMore: true,
+    scrollEnabled: true,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -38,8 +38,9 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
   public render(): React.ReactNode {
     const { t } = this.props;
+    const { scrollEnabled } = this.state;
     return (
-      <AnimatedProfileHeader title={t('dashboard')}>
+      <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={t('dashboard')}>
         <>
           {this.renderHeader()}
           {this.renderNotifications()}
@@ -91,6 +92,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
             data={notifications?.results ?? []}
             onPress={this.onNotificationClicked}
             unreadCount={notifications?.unreadCount ?? 0}
+            shouldEnableOuterScroll={this.toggleScroll}
             onLoadMore={this.onLoadMore}
           />
         )}
@@ -99,15 +101,16 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public onNotificationClicked = async (id: number): Promise<void> => {
+    const { notifications } = this.state;
     await DashboardRepository.updateNotificationStatus(id);
-    await this.getAssetNotifications();
+    this.setState({ notifications: NotificationService.getUpdatedNotifications(id, notifications) });
   };
 
   public onLoadMore = (): void => {
-    const { limit, offset, shouldLoadMore } = this.state;
-    if (shouldLoadMore) {
+    const { limit, offset, notifications } = this.state;
+    if (notifications.results && notifications.results.length !== notifications.count) {
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      this.setState({ offset: limit + offset }, async () => {
+      this.setState({ offset: offset + limit }, async () => {
         await this.getAssetNotifications();
       });
     }
@@ -116,9 +119,13 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   // eslint-disable-next-line @typescript-eslint/require-await
   public onUpdateSearchText = async (value: string): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    this.setState({ searchText: value }, async () => {
+    this.setState({ searchText: value, limit: 50, offset: 0 }, async () => {
       await this.getAssetNotifications();
     });
+  };
+
+  private toggleScroll = (scrollEnabled: boolean): void => {
+    this.setState({ scrollEnabled });
   };
 
   public handleIconPress = (): void => {
@@ -135,23 +142,12 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     };
     const response = await DashboardRepository.getAssetNotifications(requestPayload);
     if (!searchText) {
-      const serializedNewResponse: IAssetNotifications = ObjectMapper.serialize(response);
-      const serializedOldResponse: IAssetNotifications = ObjectMapper.serialize(notifications);
-      const updatedNotifications = {
-        ...serializedNewResponse,
-        results:
-          serializedOldResponse.results && serializedOldResponse.results.length > 0
-            ? serializedOldResponse.results.concat(serializedNewResponse.results)
-            : serializedNewResponse.results,
-      };
       this.setState({
-        notifications: ObjectMapper.deserialize(AssetNotifications, updatedNotifications),
-        shouldLoadMore: !(serializedNewResponse.results.length === 0),
+        notifications: NotificationService.transformNotificationsData(response, notifications),
       });
     } else {
       this.setState({
         notifications: response,
-        shouldLoadMore: !(response.results.length === 0),
       });
     }
   };

@@ -62,7 +62,6 @@ export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organi
 export { PropertyDetailsItems } from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 export { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 export { TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
-// TODO: More files to be added
 
 // Templates
 export { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';

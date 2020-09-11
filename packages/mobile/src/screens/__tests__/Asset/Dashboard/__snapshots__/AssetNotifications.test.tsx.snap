@@ -2,6 +2,7 @@
 
 exports[`Asset Notifications Screen should render snapshot 1`] = `
 <AnimatedProfileHeader
+  isOuterScrollEnabled={true}
   title="dashboard"
 >
   <View
