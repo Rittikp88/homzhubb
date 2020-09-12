@@ -131,6 +131,34 @@ class DateUtils {
   public getDate = (dateCount: number): string => {
     return moment.utc(new Date()).subtract(dateCount, 'days').format('YYYY-MM-DD');
   };
+
+  public convertTimeFormat = (date: string, format: string): string[] => {
+    return moment.utc(date).format(format).split(' ');
+  };
+
+  public getISOFormat = (date: string, time: number): string => {
+    const dateFormat = moment.utc(`${date} ${time}:00`).format('YYYY-MM-DD HH:mm');
+    return moment.utc(dateFormat).toISOString();
+  };
+
+  public getDateWithWeekDay = (date: string, format: string): string => {
+    return moment.utc(date).format(format);
+  };
+
+  public getDateString = (date: string): string => {
+    if (date === moment().format('YYYY-MM-DD')) {
+      return 'Today';
+    }
+    if (date === moment().add(1, 'days').format('YYYY-MM-DD')) {
+      return 'Tomorrow';
+    }
+    return date;
+  };
+
+  public isPastTime = (time: number): boolean => {
+    const current = moment().format('YYYY-MM-DD HH').split(' ');
+    return Number(current[1]) >= time;
+  };
 }
 
 const dateUtils = new DateUtils();

@@ -2,10 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { CustomMarker } from '@homzhub/common/src/components';
@@ -23,6 +20,7 @@ interface IProps {
   properties: Asset[];
   transaction_type: number;
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
+  onFavorite: (propertyTermId: number, isFavourite: boolean) => void;
 }
 
 type Props = IProps & WithTranslation;
@@ -105,7 +103,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
   };
 
   private renderCarouselItem = (item: Asset): React.ReactElement => {
-    const { transaction_type, onSelectedProperty } = this.props;
+    const { transaction_type, onSelectedProperty, onFavorite } = this.props;
     const {
       attachments,
       projectName,
@@ -116,12 +114,15 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       assetGroup: { name },
       leaseTerm,
       saleTerm,
+      isWishlisted,
       id,
     } = item;
     const currency = this.getCurrency(item);
     const price = this.getPrice(item);
     const amenities = PropertyUtils.getAmenities(spaces, floorNumber, name, carpetArea, carpetAreaUnit?.title ?? '');
     const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
+    const isFavourite = isWishlisted ? isWishlisted.status : false;
+
     const navigateToAssetDetails = (): void => {
       if (leaseTerm) {
         onSelectedProperty(leaseTerm.id, id);
@@ -130,6 +131,16 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
         onSelectedProperty(saleTerm.id, id);
       }
     };
+
+    const handleFav = (): void => {
+      if (leaseTerm) {
+        onFavorite(leaseTerm.id, isFavourite);
+      }
+      if (saleTerm) {
+        onFavorite(saleTerm.id, isFavourite);
+      }
+    };
+
     return (
       <PropertyMapCard
         source={{
@@ -142,21 +153,12 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
         currency={currency}
         price={price}
         priceUnit={transaction_type === 0 ? 'mo' : ''}
-        isFavorite={false}
+        isFavorite={isFavourite}
         amenitiesData={amenities}
-        onFavorite={this.onFavorite}
+        onFavorite={handleFav}
         onSelectedProperty={navigateToAssetDetails}
       />
     );
-  };
-
-  private onFavorite = async (): Promise<void> => {
-    const { t } = this.props;
-    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-    if (!user) {
-      AlertHelper.error({ message: t('common:loginToContinue') });
-    }
-    // TODO: Call the api from favorite service
   };
 
   public onSnapToItem = (currentSlide: number): void => {

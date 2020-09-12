@@ -34,15 +34,6 @@ describe('PropertySearchMap', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('should call on onFavorite', () => {
-    wrapper = shallow(<PropertySearchMap {...props} t={(key: string): string => key} />);
-    // @ts-ignore
-    wrapper.find('[testID="assetSnap"]').prop('carouselItem')(mockAsset);
-    // @ts-ignore
-    wrapper.instance().onFavorite();
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
   it('should match snapshot for Snap To Item', () => {
     wrapper = shallow(<PropertySearchMap {...props} t={(key: string): string => key} />);
     // @ts-ignore

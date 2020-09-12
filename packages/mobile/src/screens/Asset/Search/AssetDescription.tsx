@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { CommonActions } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
@@ -19,6 +21,11 @@ import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { ILeadPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import {
@@ -41,16 +48,15 @@ import {
   StatusBarComponent,
   ShieldGroup,
   StateAwareComponent,
+  Loader,
 } from '@homzhub/mobile/src/components';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
-import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { IAmenitiesIcons, IFilter, ContactActions } from '@homzhub/common/src/domain/models/Search';
+import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IStateProps {
@@ -74,6 +80,7 @@ interface IOwnState {
   descriptionHide: boolean;
   amenitiesShowAll: boolean;
   isScroll: boolean;
+  isSpinnerLoading: boolean;
 }
 
 const { width, height } = theme.viewport;
@@ -103,6 +110,7 @@ const initialState = {
   amenitiesShowAll: false,
   activeSlide: 0,
   isScroll: true,
+  isSpinnerLoading: false,
 };
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
@@ -112,17 +120,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = initialState;
 
   public componentDidMount = (): void => {
-    const {
-      getAsset,
-      route: {
-        params: { propertyTermId },
-      },
-    } = this.props;
-    const payload: IGetAssetPayload = {
-      propertyTermId,
-      onCallback: this.onGetAssetCallback,
-    };
-    getAsset(payload);
+    this.getAssetData();
   };
 
   // TODO: Do we require a byId reducer here?
@@ -150,13 +148,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   public render = (): React.ReactNode => {
     const { isLoading } = this.props;
+    const { isSpinnerLoading } = this.state;
 
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+    return <StateAwareComponent loading={isLoading && !isSpinnerLoading} renderComponent={this.renderComponent()} />;
   };
 
   private renderComponent = (): React.ReactElement | null => {
     const { t, reviews, assetDetails } = this.props;
-    const { isFullScreen, isScroll } = this.state;
+    const { isFullScreen, isScroll, isSpinnerLoading } = this.state;
     if (!assetDetails) return null;
     const {
       contacts: { fullName, phoneNumber, countryCode },
@@ -179,7 +178,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           onChangeHeaderVisibility={(isChanged: boolean): void => this.setState({ isScroll: isChanged })}
           renderForeground={(): React.ReactElement => this.renderCarousel()}
           renderStickyHeader={(): React.ReactElement => this.renderStickyHeader()}
-          renderFixedHeader={(): React.ReactElement => this.renderFixedHeader()}
+          renderFixedHeader={(): React.ReactElement | null => this.renderFixedHeader()}
           testID="parallaxView"
         >
           <View style={styles.screen}>
@@ -210,6 +209,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             onContactTypeClicked={this.onContactTypeClicked}
           />
         )}
+        <Loader visible={isSpinnerLoading} />
       </>
     );
   };
@@ -235,10 +235,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       projectName,
       unitNumber,
       blockNumber,
+      visitDate,
       verifications: { description },
       assetGroup: { name },
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
+
+    const scheduleVisit = visitDate ? DateUtils.getDisplayDate(visitDate, 'LL') : t('bookTour');
 
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
@@ -269,7 +272,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <TouchableOpacity style={styles.textIcon} onPress={this.onBookVisit}>
             <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
             <Text type="small" textType="regular" style={styles.primaryText}>
-              {t('bookTour')}
+              {scheduleVisit}
             </Text>
           </TouchableOpacity>
         </View>
@@ -522,8 +525,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderFixedHeader = (): React.ReactElement => {
+  private renderFixedHeader = (): React.ReactElement | null => {
     const { isScroll } = this.state;
+    const { assetDetails } = this.props;
+    if (!assetDetails) return null;
+    const isFavourite = assetDetails.isWishlisted ? assetDetails.isWishlisted.status : false;
     const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
     const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
     return (
@@ -532,7 +538,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <Icon name={icons.leftArrow} size={22} color={color} onPress={this.onGoBack} />
         </View>
         <View style={styles.headerRightIcon}>
-          <Icon name={icons.heartOutline} size={22} color={color} />
+          <Icon
+            name={isFavourite ? icons.favourite : icons.heartOutline}
+            size={22}
+            color={isFavourite ? theme.colors.error : color}
+            onPress={this.onFavourite}
+          />
           <Icon name={icons.share} size={22} color={color} onPress={this.handleShare} />
         </View>
       </View>
@@ -666,14 +677,62 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
+  private onFavourite = async (): Promise<void> => {
+    const {
+      t,
+      route: {
+        params: { propertyTermId },
+      },
+      assetDetails,
+      filters: { asset_transaction_type },
+    } = this.props;
+    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
+    if (!user) {
+      AlertHelper.error({ message: t('common:loginToContinue') });
+    }
+
+    if (!assetDetails) return;
+
+    const { isWishlisted } = assetDetails;
+
+    const isListed = isWishlisted ? isWishlisted.status : false;
+
+    const payload: ILeadPayload = {
+      propertyTermId,
+      data: {
+        lead_type: 'WISHLIST',
+        is_wishlisted: !isListed,
+        user_search: null,
+      },
+    };
+
+    try {
+      await LeadService.postLeadDetail(asset_transaction_type, payload);
+      this.getAssetData(true);
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
+  };
+
   private navigateToVisitForm = (): void => {
     const {
       navigation,
       route: {
         params: { propertyTermId },
       },
+      assetDetails,
     } = this.props;
-    navigation.navigate(ScreensKeys.BookVisit, { propertyTermId });
+    if (!assetDetails) return;
+    const { leaseTerm, saleTerm } = assetDetails;
+
+    const param = {
+      propertyTermId,
+      ...(leaseTerm && { lease_listing_id: leaseTerm.id }),
+      ...(saleTerm && { sale_listing_id: saleTerm.id }),
+    };
+
+    navigation.navigate(ScreensKeys.BookVisit, param);
   };
 
   private navigateToContactForm = (): void => {
@@ -705,6 +764,20 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       propertyTermId,
       propertyId,
     });
+  };
+
+  private getAssetData = (isFromFav?: boolean): void => {
+    const {
+      getAsset,
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+    const payload: IGetAssetPayload = {
+      propertyTermId,
+      onCallback: this.onGetAssetCallback,
+    };
+    getAsset(payload);
   };
 
   public handleShare = async (): Promise<void> => {

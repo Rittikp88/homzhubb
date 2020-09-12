@@ -296,6 +296,7 @@ Asset {
     "_name": "",
   },
   "_assetStatusInfo": AssetStatusInfo {
+    "_action": null,
     "_leaseListingId": null,
     "_leaseTenantInfo": User {
       "_accessToken": "",
@@ -427,6 +428,7 @@ Asset {
   ],
   "_id": 1,
   "_isFavorite": false,
+  "_isWishlisted": null,
   "_latitude": 25.619,
   "_leaseTerm": null,
   "_longitude": 85.123,
@@ -459,6 +461,7 @@ Asset {
     "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
     "_verificationStatus": 3,
   },
+  "_visitDate": "",
 }
 `;
 
@@ -642,6 +645,7 @@ Asset {
     "_name": "",
   },
   "_assetStatusInfo": AssetStatusInfo {
+    "_action": null,
     "_leaseListingId": null,
     "_leaseTenantInfo": User {
       "_accessToken": "",
@@ -773,6 +777,7 @@ Asset {
   ],
   "_id": 1,
   "_isFavorite": false,
+  "_isWishlisted": null,
   "_latitude": 25.619,
   "_leaseTerm": null,
   "_longitude": 85.123,
@@ -805,6 +810,7 @@ Asset {
     "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
     "_verificationStatus": 3,
   },
+  "_visitDate": "",
 }
 `;
 
@@ -966,6 +972,7 @@ Array [
       "_name": "",
     },
     "_assetStatusInfo": AssetStatusInfo {
+      "_action": null,
       "_leaseListingId": null,
       "_leaseTenantInfo": User {
         "_accessToken": "",
@@ -1097,6 +1104,7 @@ Array [
     ],
     "_id": 1,
     "_isFavorite": false,
+    "_isWishlisted": null,
     "_latitude": 25.619,
     "_leaseTerm": null,
     "_longitude": 85.123,
@@ -1129,6 +1137,7 @@ Array [
       "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
       "_verificationStatus": 3,
     },
+    "_visitDate": "",
   },
 ]
 `;
@@ -1291,6 +1300,7 @@ Array [
       "_name": "",
     },
     "_assetStatusInfo": AssetStatusInfo {
+      "_action": null,
       "_leaseListingId": null,
       "_leaseTenantInfo": User {
         "_accessToken": "",
@@ -1422,6 +1432,7 @@ Array [
     ],
     "_id": 1,
     "_isFavorite": false,
+    "_isWishlisted": null,
     "_latitude": 25.619,
     "_leaseTerm": null,
     "_longitude": 85.123,
@@ -1454,6 +1465,7 @@ Array [
       "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
       "_verificationStatus": 3,
     },
+    "_visitDate": "",
   },
 ]
 `;
@@ -1702,6 +1714,7 @@ Asset {
     "_name": "",
   },
   "_assetStatusInfo": AssetStatusInfo {
+    "_action": null,
     "_leaseListingId": null,
     "_leaseTenantInfo": User {
       "_accessToken": "",
@@ -1833,6 +1846,7 @@ Asset {
   ],
   "_id": 1,
   "_isFavorite": false,
+  "_isWishlisted": null,
   "_latitude": 25.619,
   "_leaseTerm": null,
   "_longitude": 85.123,
@@ -1865,6 +1879,7 @@ Asset {
     "_description": "It was popularised in the 1960s with the release of Letraset sheets.",
     "_verificationStatus": 3,
   },
+  "_visitDate": "",
 }
 `;
 

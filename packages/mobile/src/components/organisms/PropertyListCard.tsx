@@ -1,10 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider, PricePerUnit, PropertyAddress, TextSizeType } from '@homzhub/common/src/components';
 import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
@@ -15,7 +12,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
 interface IProps {
   property: Asset;
-  onFavorite: (index: number) => void;
+  onFavorite: () => void;
   transaction_type: number;
   containerStyle?: StyleProp<ViewStyle>;
   isCarousel: boolean;
@@ -30,17 +27,19 @@ type Props = libraryProps & IProps;
 export class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
-      property: { attachments, projectName, unitNumber, blockNumber, isFavorite = false },
+      property: { attachments, projectName, unitNumber, blockNumber, isWishlisted },
       containerStyle,
       isCarousel,
       onSelectedProperty,
+      onFavorite,
     } = this.props;
+    const isFavorite = isWishlisted ? isWishlisted.status : false;
     return (
       <View style={[styles.container, containerStyle]}>
         <PropertyListImageCarousel
           images={attachments}
           isFavorite={isFavorite}
-          onFavorite={this.onFavorite}
+          onFavorite={onFavorite}
           isCarousel={isCarousel}
         />
         {this.renderPropertyTypeAndBadges()}
@@ -95,20 +94,6 @@ export class PropertyListCard extends React.Component<Props, {}> {
         <PropertyAmenities data={amenitiesData} direction="row" contentContainerStyle={styles.amenitiesContainer} />
       </View>
     );
-  };
-
-  public onFavorite = async (): Promise<void> => {
-    const {
-      onFavorite,
-      property: { id },
-      t,
-    } = this.props;
-    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-    if (!user) {
-      AlertHelper.error({ message: t('common:loginToContinue') });
-      return;
-    }
-    onFavorite(id);
   };
 
   public getCurrency = (): string => {

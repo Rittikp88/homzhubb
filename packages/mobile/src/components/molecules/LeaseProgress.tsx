@@ -5,8 +5,7 @@ import * as Progress from 'react-native-progress';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Button, Label } from '@homzhub/common/src/components';
-import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { Label } from '@homzhub/common/src/components';
 
 interface IProgressBarProps {
   progress?: number;
@@ -15,7 +14,6 @@ interface IProgressBarProps {
   width?: number;
   iconColor?: string;
   filledColor?: string;
-  buttonAction?: LabelColor | null;
   isPropertyVacant?: boolean;
   labelStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
@@ -30,7 +28,6 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
     fromDate,
     toDate,
     iconColor,
-    buttonAction,
     labelStyle = {},
     containerStyle = {},
   } = props;
@@ -72,17 +69,6 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
           </Label>
         </View>
       )}
-      {(buttonAction || isPropertyVacant) && (
-        <Button
-          type="primary"
-          textType="label"
-          textSize="regular"
-          fontType="semiBold"
-          containerStyle={[styles.buttonStyle, { backgroundColor: buttonAction?.color ?? theme.colors.green }]}
-          title={buttonAction?.label ?? t('complete')}
-          titleStyle={styles.buttonTitle}
-        />
-      )}
     </View>
   );
 };
@@ -116,16 +102,6 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint6,
     marginTop: 6,
     marginLeft: 28,
-  },
-  buttonStyle: {
-    flex: 0,
-    alignSelf: 'flex-end',
-    borderRadius: 2,
-    marginTop: 12,
-  },
-  buttonTitle: {
-    marginVertical: 1,
-    marginHorizontal: 18,
   },
   label: {
     color: theme.colors.darkTint3,

@@ -5,7 +5,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { placeHolderImage } from '@homzhub/common/src/styles/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Avatar, Badge, Divider, Label } from '@homzhub/common/src/components';
+import { Avatar, Badge, Button, Divider, Label } from '@homzhub/common/src/components';
 import { PropertyAddressCountry, LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -139,15 +139,21 @@ export class AssetCard extends Component<Props> {
   };
 
   private renderExpandedView = (): React.ReactElement => {
-    const { assetData } = this.props;
+    const { assetData, t } = this.props;
     const {
       assetStatusInfo: {
+        action,
         tag: { label },
         leaseTenantInfo,
+        leaseListingId,
+        saleListingId,
         leaseTransaction: { rent, securityDeposit, leasePeriod },
       },
       formattedPercentage,
     } = assetData;
+
+    const buttonAction = leasePeriod ? leasePeriod.action : action;
+    const isListed = leaseListingId || saleListingId;
     return (
       <>
         {!!leaseTenantInfo.fullName && (
@@ -162,19 +168,42 @@ export class AssetCard extends Component<Props> {
             <RentAndMaintenance rentData={rent} depositData={securityDeposit} />
           </>
         )}
-        {label !== 'FOR SALE' && (
+        {(leasePeriod || (label === Filters.VACANT && !isListed)) && (
           <>
             <Divider containerStyles={styles.divider} />
             <LeaseProgress
               progress={leasePeriod ? leasePeriod.totalSpendPeriod : formattedPercentage}
               fromDate={leasePeriod?.leaseStartDate}
               toDate={leasePeriod?.leaseEndDate}
-              buttonAction={leasePeriod?.action}
               width={theme.viewport.width > 400 ? 320 : 280}
               isPropertyVacant={label === Filters.VACANT}
             />
           </>
         )}
+        <View style={styles.buttonGroup}>
+          {buttonAction && (
+            <Button
+              type="primary"
+              textType="label"
+              textSize="regular"
+              fontType="semiBold"
+              containerStyle={[styles.buttonStyle, { backgroundColor: buttonAction.color }]}
+              title={buttonAction.label}
+              titleStyle={styles.buttonTitle}
+            />
+          )}
+          {!isListed && formattedPercentage < 100 && (
+            <Button
+              type="primary"
+              textType="label"
+              textSize="regular"
+              fontType="semiBold"
+              containerStyle={styles.buttonStyle}
+              title={t('complete')}
+              titleStyle={styles.buttonTitle}
+            />
+          )}
+        </View>
       </>
     );
   };
@@ -240,5 +269,21 @@ const styles = StyleSheet.create({
   detailViewImage: {
     borderRadius: 4,
     height: 130,
+  },
+  buttonStyle: {
+    flex: 0,
+    alignSelf: 'flex-end',
+    borderRadius: 2,
+    marginTop: 12,
+    backgroundColor: theme.colors.green,
+    marginLeft: 10,
+  },
+  buttonTitle: {
+    marginVertical: 1,
+    marginHorizontal: 18,
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });

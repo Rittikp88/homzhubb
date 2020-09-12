@@ -86,18 +86,14 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
     );
   };
 
-  // TODO: Check the return type here
-  // eslint-disable-next-line @typescript-eslint/require-await
-  private onTabChange = async (tabId: TabKeys): Promise<void> => {
+  private onTabChange = (tabId: TabKeys): void => {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.setState({ currentTab: tabId }, async () => {
       await this.getGeneralLedgers();
     });
   };
 
-  // TODO: Check the return type here
-  // eslint-disable-next-line @typescript-eslint/require-await
-  private onTimeRangeChange = async (selectedTimeRange: number): Promise<void> => {
+  private onTimeRangeChange = (selectedTimeRange: number): void => {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.setState({ selectedTimeRange }, async () => {
       await this.getGeneralLedgers();

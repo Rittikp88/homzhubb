@@ -6,6 +6,8 @@ import {
   ICreateAssetDetails,
   ICreateAssetResult,
   ICreateDocumentPayload,
+  IScheduleVisitPayload,
+  IUpcomingVisitPayload,
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -29,6 +31,7 @@ import {
   IVerificationDocumentList,
   IVerificationTypes,
 } from '@homzhub/common/src/domain/models/Service';
+import { AssetLeadType, UpcomingSlot } from '../models/AssetVisit';
 
 const ENDPOINTS = {
   asset: (): string => 'assets/',
@@ -62,6 +65,9 @@ const ENDPOINTS = {
   deleteAssetDocument: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/asset-documents/${documentId}/`,
   downloadAttachment: (): string => 'attachments/download/',
+  getVisitLead: (): string => 'list-of-values/site-visit-lead-types/',
+  getUpcomingVisits: (): string => 'listing-visits/upcoming-visits/',
+  assetVisit: (): string => 'listing-visits/',
 };
 
 class AssetRepository {
@@ -215,6 +221,20 @@ class AssetRepository {
 
   public downloadAttachment = async (refKey: string): Promise<void> => {
     return await this.apiClient.get(ENDPOINTS.downloadAttachment(), { presigned_reference_key: refKey });
+  };
+
+  public getVisitLeadType = async (): Promise<AssetLeadType[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getVisitLead());
+    return ObjectMapper.deserializeArray(AssetLeadType, response);
+  };
+
+  public getUpcomingVisits = async (payload?: IUpcomingVisitPayload): Promise<UpcomingSlot[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getUpcomingVisits(), payload);
+    return ObjectMapper.deserializeArray(UpcomingSlot, response);
+  };
+
+  public scheduleVisit = async (payload: IScheduleVisitPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.assetVisit(), payload);
   };
 }
 

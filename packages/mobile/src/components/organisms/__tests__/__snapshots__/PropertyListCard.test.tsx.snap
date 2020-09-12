@@ -34,7 +34,7 @@ exports[`PropertyListCard should match snapshot 1`] = `
       ]
     }
     isFavorite={false}
-    onFavorite={[Function]}
+    onFavorite={[MockFunction]}
   />
   <ShieldGroup
     propertyType="Apartment / Condo"
@@ -134,7 +134,7 @@ exports[`PropertyListCard should match snapshot for optional props 1`] = `
       ]
     }
     isFavorite={false}
-    onFavorite={[Function]}
+    onFavorite={[MockFunction]}
   />
   <ShieldGroup
     propertyType="Apartment / Condo"

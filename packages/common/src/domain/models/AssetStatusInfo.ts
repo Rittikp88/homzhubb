@@ -19,6 +19,9 @@ export class AssetStatusInfo {
   @JsonProperty('sale_listing_id', Number, true)
   private _saleListingId: number | null = null;
 
+  @JsonProperty('action', LabelColor, true)
+  private _action: LabelColor | null = null;
+
   get tag(): LabelColor {
     return this._tag;
   }
@@ -37,5 +40,9 @@ export class AssetStatusInfo {
 
   get saleListingId(): number | null {
     return this._saleListingId;
+  }
+
+  get action(): LabelColor | null {
+    return this._action;
   }
 }

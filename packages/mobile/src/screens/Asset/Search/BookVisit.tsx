@@ -1,58 +1,96 @@
 import React, { Component } from 'react';
 import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { cloneDeep, remove } from 'lodash';
 import { connect } from 'react-redux';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import {
+  IScheduleVisitPayload,
+  IUpcomingVisitPayload,
+  VisitType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, Divider, Label, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
-import { CollapsibleSection, Header, TimeSlotGroup } from '@homzhub/mobile/src/components';
+import { CollapsibleSection, Header, Loader, StateAwareComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { TimeSlot, UserType } from '@homzhub/common/src/constants/ContactFormData';
-import { VisitSlot, VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
+import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
+import { AssetLeadType, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
 
 interface IStateProps {
   isLoggedIn: boolean;
 }
 
 interface IVisitState {
+  visitors: AssetLeadType[];
+  upcomingVisits: UpcomingSlot[];
   userType: number;
-  visitType: number[];
-  selectedTimeSlot: number[];
+  visitType: string[];
+  selectedTimeSlot: number;
   isCollapsed: boolean;
   selectedUpcomingSlot: number;
   isUpcomingSlotSelected: boolean;
   selectedDate: string;
   message: string;
+  isLoading: boolean;
+  isSpinnerLoading: boolean;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.ContactForm>;
+type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.BookVisit>;
 type Props = libraryProps & IStateProps;
 
 class BookVisit extends Component<Props, IVisitState> {
   public state = {
+    visitors: [],
+    upcomingVisits: [],
     userType: 1,
-    visitType: [0],
-    selectedTimeSlot: [],
+    visitType: [VisitType.PHYSICAL],
+    selectedTimeSlot: 0,
     isCollapsed: true,
     selectedDate: '',
     selectedUpcomingSlot: 0,
     isUpcomingSlotSelected: false,
     message: '',
+    isLoading: false,
+    isSpinnerLoading: false,
+  };
+
+  public componentDidMount = async (): Promise<void> => {
+    await this.getVisitorType();
+    await this.getUpcomingVisits();
   };
 
   public render(): React.ReactNode {
-    const { isCollapsed, isUpcomingSlotSelected, message } = this.state;
+    const { isLoading } = this.state;
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+  }
+
+  private renderComponent = (): React.ReactElement => {
+    const {
+      isCollapsed,
+      isUpcomingSlotSelected,
+      message,
+      upcomingVisits,
+      isSpinnerLoading,
+      selectedDate,
+      selectedTimeSlot,
+    } = this.state;
     const { t, navigation } = this.props;
+    const upcomingVisitTitle = PropertyUtils.getUpcomingSlotMessage(upcomingVisits[0]);
+    const isButtonDisabled = (selectedDate === '' || selectedTimeSlot === 0) && !isUpcomingSlotSelected;
+
     return (
       <HandleBack onBack={this.goBack} navigation={navigation}>
         <Header
@@ -64,23 +102,25 @@ class BookVisit extends Component<Props, IVisitState> {
         />
         <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
           {this.renderVisitType()}
-          {this.renderUserType()}
+          {this.renderVisitorType()}
           <Divider containerStyles={styles.divider} />
-          <CollapsibleSection
-            title="Join next visit at 3PM, Today"
-            icon={icons.watch}
-            titleStyle={styles.upcomingTitle}
-            initialCollapsedValue={isCollapsed}
-            onCollapse={this.handleSlotView}
-          >
-            <FlatList
-              data={VisitSlot}
-              renderItem={this.renderUpcomingSlot}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              extraData={isUpcomingSlotSelected}
-            />
-          </CollapsibleSection>
+          {upcomingVisits.length > 0 && (
+            <CollapsibleSection
+              title={upcomingVisitTitle}
+              icon={icons.watch}
+              titleStyle={styles.upcomingTitle}
+              initialCollapsedValue={isCollapsed}
+              onCollapse={this.handleSlotView}
+            >
+              <FlatList
+                data={upcomingVisits}
+                renderItem={this.renderUpcomingSlot}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                extraData={isUpcomingSlotSelected}
+              />
+            </CollapsibleSection>
+          )}
           {isCollapsed && !isUpcomingSlotSelected && this.renderDateTimeSection()}
           <TextArea
             label={t('message')}
@@ -95,22 +135,24 @@ class BookVisit extends Component<Props, IVisitState> {
           <Button
             type="primary"
             title={t('confirm')}
+            disabled={isButtonDisabled}
             titleStyle={styles.buttonTitleStyle}
             containerStyle={styles.buttonStyle}
             onPress={this.handleSubmit}
           />
         </WithShadowView>
+        <Loader visible={isSpinnerLoading} />
       </HandleBack>
     );
-  }
+  };
 
-  public renderVisitType = (): React.ReactElement => {
+  private renderVisitType = (): React.ReactElement => {
     const { visitType } = this.state;
     return <SelectionPicker data={VisitTypeData} selectedItem={visitType} onValueChange={this.onChangeVisitType} />;
   };
 
-  public renderUserType = (): React.ReactElement => {
-    const { userType } = this.state;
+  private renderVisitorType = (): React.ReactElement => {
+    const { userType, visitors } = this.state;
     const { t } = this.props;
     return (
       <View style={styles.userContainer}>
@@ -118,7 +160,7 @@ class BookVisit extends Component<Props, IVisitState> {
           {t('iAm')}
         </Text>
         <RadioButtonGroup
-          data={UserType}
+          data={visitors}
           onToggle={this.handleUserType}
           containerStyle={styles.radioGroup}
           selectedValue={userType}
@@ -127,10 +169,14 @@ class BookVisit extends Component<Props, IVisitState> {
     );
   };
 
-  private renderUpcomingSlot = ({ item }: { item: any }): React.ReactElement => {
+  private renderUpcomingSlot = ({ item }: { item: UpcomingSlot }): React.ReactElement | null => {
     const { selectedUpcomingSlot, isUpcomingSlotSelected } = this.state;
     const handleSelection = (): void => this.onSelectUpcomingSlot(item.id);
     const selected = isUpcomingSlotSelected && selectedUpcomingSlot === item.id;
+    const slot = PropertyUtils.getUpcomingSlotsData(item);
+    if (!slot) {
+      return null;
+    }
     return (
       <TouchableOpacity
         key={item.id}
@@ -139,17 +185,17 @@ class BookVisit extends Component<Props, IVisitState> {
         onPress={handleSelection}
       >
         <Text type="small" style={[styles.slotTitle, selected && styles.selectedTitle]}>
-          {item.date}
+          {slot.date}
         </Text>
         <View style={styles.upcomingView}>
           <Icon
-            name={item.icon}
+            name={slot.time.icon}
             size={20}
             color={selected ? theme.colors.white : theme.colors.darkTint2}
             style={styles.iconStyle}
           />
           <Label type="large" style={[styles.slotTitle, selected && styles.selectedTitle]}>
-            {item.formatted}
+            {slot.time.formatted}
           </Label>
         </View>
       </TouchableOpacity>
@@ -187,8 +233,10 @@ class BookVisit extends Component<Props, IVisitState> {
     this.setState({ selectedUpcomingSlot: slotId, isUpcomingSlotSelected: !isUpcomingSlotSelected });
   };
 
-  private onChangeVisitType = (value: number): void => {
-    this.setState({ visitType: [value] });
+  private onChangeVisitType = (value: string): void => {
+    this.setState({ visitType: [value] }, () => {
+      this.getUpcomingVisits(true).then();
+    });
   };
 
   private onSelectDate = (day: string): void => {
@@ -197,17 +245,45 @@ class BookVisit extends Component<Props, IVisitState> {
   };
 
   private onSelectTime = (slotId: number): void => {
-    const { selectedTimeSlot } = this.state;
-    const newTimeSlot: number[] = cloneDeep(selectedTimeSlot);
-    let value;
-    if (newTimeSlot.includes(slotId)) {
-      remove(newTimeSlot, (item: number) => item === slotId);
-      value = newTimeSlot;
-    } else {
-      value = newTimeSlot.concat(slotId);
-    }
+    this.setState({ selectedTimeSlot: slotId });
+  };
 
-    this.setState({ selectedTimeSlot: value });
+  private getVisitorType = async (): Promise<void> => {
+    this.setState({ isLoading: true });
+    try {
+      const response = await AssetRepository.getVisitLeadType();
+      this.setState({ visitors: response, userType: response[0].id, isLoading: false });
+    } catch (e) {
+      this.setState({ isLoading: false });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
+  };
+
+  private getUpcomingVisits = async (isVisitTypeChange?: boolean): Promise<void> => {
+    const { visitType } = this.state;
+    const {
+      route: { params },
+    } = this.props;
+    const payload: IUpcomingVisitPayload = {
+      visit_type: visitType[0],
+      start_date__gte: DateUtils.getCurrentDate(),
+      lease_listing_id: params.lease_listing_id ?? null,
+      sale_listing_id: params.sale_listing_id ?? null,
+    };
+    if (isVisitTypeChange) {
+      this.setState({ isSpinnerLoading: true });
+    } else {
+      this.setState({ isLoading: true });
+    }
+    try {
+      const response = await AssetRepository.getUpcomingVisits(payload);
+      this.setState({ upcomingVisits: response, isLoading: false, isSpinnerLoading: false });
+    } catch (e) {
+      this.setState({ isLoading: false, isSpinnerLoading: false });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 
   private handleUserType = (id: number): void => {
@@ -222,8 +298,62 @@ class BookVisit extends Component<Props, IVisitState> {
     this.setState({ isCollapsed });
   };
 
-  private handleSubmit = (): void => {
-    // TODO:(Shikha) - Add logic here
+  private handleSubmit = async (): Promise<void> => {
+    this.setState({ isLoading: true });
+    const {
+      visitType,
+      userType,
+      message,
+      selectedUpcomingSlot,
+      upcomingVisits,
+      selectedDate,
+      selectedTimeSlot,
+      isUpcomingSlotSelected,
+    } = this.state;
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+
+    let start_date = '';
+    let end_date = '';
+
+    if (isUpcomingSlotSelected) {
+      upcomingVisits.forEach((item: UpcomingSlot) => {
+        if (item.id === selectedUpcomingSlot) {
+          start_date = item.start_date;
+          end_date = item.end_date;
+        }
+      });
+    } else {
+      TimeSlot.forEach((item: any) => {
+        if (item.id === selectedTimeSlot) {
+          start_date = DateUtils.getISOFormat(selectedDate, item.from);
+          end_date = DateUtils.getISOFormat(selectedDate, item.to);
+        }
+      });
+    }
+
+    const payload: IScheduleVisitPayload = {
+      visit_type: visitType[0],
+      lead_type: userType,
+      start_date,
+      end_date,
+      comments: message,
+      lease_listing: params.lease_listing_id ?? null,
+      sale_listing: params.sale_listing_id ?? null,
+    };
+
+    try {
+      await AssetRepository.scheduleVisit(payload);
+      this.setState({ isLoading: false });
+      AlertHelper.success({ message: 'Your visit scheduled' });
+      navigation.replace(ScreensKeys.PropertyAssetDescription, { propertyTermId: params.propertyTermId });
+    } catch (e) {
+      this.setState({ isLoading: false });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 
   private goBack = (): void => {

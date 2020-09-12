@@ -169,6 +169,7 @@ exports[`Asset Search Screen should render snapshot 1`] = `
       }
     >
       <withI18nextTranslation(PropertySearchMap)
+        onFavorite={[Function]}
         onSelectedProperty={[Function]}
         searchLocation={Object {}}
         transaction_type={0}
@@ -426,6 +427,7 @@ exports[`Asset Search Screen should render snapshot for Map view 1`] = `
       }
     >
       <withI18nextTranslation(PropertySearchMap)
+        onFavorite={[Function]}
         onSelectedProperty={[Function]}
         searchLocation={Object {}}
         transaction_type={0}
@@ -683,6 +685,7 @@ exports[`Asset Search Screen should render snapshot with filterData 1`] = `
       }
     >
       <withI18nextTranslation(PropertySearchMap)
+        onFavorite={[Function]}
         onSelectedProperty={[Function]}
         searchLocation={Object {}}
         transaction_type={0}

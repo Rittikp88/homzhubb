@@ -2,9 +2,12 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISlotItem } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
 import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
+import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 
 class PropertyUtils {
   public getAmenities = (
@@ -112,6 +115,39 @@ class PropertyUtils {
       default:
         return [];
     }
+  };
+
+  public getUpcomingSlotsData = (slot: UpcomingSlot): { date: string; time: ISlotItem } | null => {
+    const formattedStartDate = DateUtils.convertTimeFormat(slot.start_date, 'YYYY-MM-DD HH');
+
+    const startTime = Number(formattedStartDate[1]);
+    const date = DateUtils.getDateWithWeekDay(formattedStartDate[0], 'D ddd');
+    const time = TimeSlot.find((item) => item.from === startTime);
+    if (time && date) {
+      return {
+        date,
+        time,
+      };
+    }
+    return null;
+  };
+
+  // TODO: (Shikha) - Move constants to en.json
+  public getUpcomingSlotMessage = (slot: UpcomingSlot): string => {
+    if (!slot) {
+      return 'Join next visit';
+    }
+    const { start_date } = slot;
+    const startDate = DateUtils.convertTimeFormat(start_date, 'YYYY-MM-DD HH');
+
+    const startTime = Number(startDate[1]);
+    const formattedDate = DateUtils.getDateWithWeekDay(startDate[0], 'D ddd');
+    const date = DateUtils.getDateString(formattedDate);
+
+    const timeObj = TimeSlot.find((item) => item.from === startTime);
+    const time = timeObj?.formatted.split('-') ?? [''];
+
+    return `Join next visit at ${time[0].trim()}, ${date}`;
   };
 }
 

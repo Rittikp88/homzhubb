@@ -19,6 +19,11 @@ export enum SpaceAvailableTypes {
   BALCONY = 'Balcony',
 }
 
+export enum VisitType {
+  PHYSICAL = 'PHYSICAL',
+  VIRTUAL = 'VIRTUAL',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -239,6 +244,8 @@ export interface ILeadPayload {
     message?: string;
     person_contacted?: number;
     preferred_contact_time?: any;
+    is_wishlisted?: boolean;
+    user_search?: null;
   };
 }
 
@@ -282,4 +289,21 @@ export interface IDocumentPayload {
 export interface ICreateDocumentPayload {
   propertyId: number;
   documentData: IDocumentPayload[];
+}
+
+export interface IUpcomingVisitPayload {
+  start_date__gte: string;
+  visit_type: VisitType;
+  sale_listing_id: number | null;
+  lease_listing_id: number | null;
+}
+
+export interface IScheduleVisitPayload {
+  visit_type: VisitType;
+  lead_type: number;
+  start_date: string;
+  end_date: string;
+  sale_listing: number | null;
+  lease_listing: number | null;
+  comments?: string;
 }

@@ -1,10 +1,14 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
+import { isArray } from 'lodash';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
 
-interface ISlotItem {
+// TODO: (Need to Move)
+export interface ISlotItem {
   id: number;
   from: number;
   to: number;
@@ -15,7 +19,7 @@ interface ISlotItem {
 interface ITimeSlotProps {
   data: ISlotItem[];
   onItemSelect: (id: number) => void;
-  selectedItem: number[];
+  selectedItem: number[] | number;
   containerStyle?: StyleProp<ViewStyle>;
   buttonItemStyle?: StyleProp<ViewStyle>;
   textType?: TextFieldType;
@@ -38,20 +42,33 @@ export class TimeSlotGroup extends React.PureComponent<ITimeSlotProps> {
 
   public renderItem = (item: ISlotItem): React.ReactElement => {
     const { selectedItem, onItemSelect, fontType = 'regular', buttonItemStyle = {} } = this.props;
+    const isDisabled = DateUtils.isPastTime(item.from);
+    let isSelected;
+    if (isArray(selectedItem)) {
+      isSelected = selectedItem.includes(item.id);
+    } else {
+      isSelected = selectedItem === item.id;
+    }
 
     // Styles
-    const isSelected = selectedItem.includes(item.id);
     const textStyle = StyleSheet.flatten([styles.textStyle, isSelected && styles.selectedTextStyle]);
     const buttonItemContainerStyle = StyleSheet.flatten([
       styles.item,
       isSelected && styles.selectedContainerStyle,
+      isDisabled && styles.disabledStyle,
       buttonItemStyle,
     ]);
 
     const onItemPress = (): void => onItemSelect(item.id);
 
     return (
-      <TouchableOpacity onPress={onItemPress} style={buttonItemContainerStyle} key={item.id} testID="selectSlot">
+      <TouchableOpacity
+        activeOpacity={isDisabled ? 1 : 0.5}
+        onPress={!isDisabled ? onItemPress : FunctionUtils.noop}
+        style={buttonItemContainerStyle}
+        key={item.id}
+        testID="selectSlot"
+      >
         <Icon name={item.icon} size={20} color={isSelected ? theme.colors.white : theme.colors.darkTint4} />
         <Label type="large" textType={fontType} style={textStyle}>
           {item.formatted}
@@ -90,5 +107,8 @@ const styles = StyleSheet.create({
   },
   selectedTextStyle: {
     color: theme.colors.white,
+  },
+  disabledStyle: {
+    backgroundColor: theme.colors.darkTint10,
   },
 });

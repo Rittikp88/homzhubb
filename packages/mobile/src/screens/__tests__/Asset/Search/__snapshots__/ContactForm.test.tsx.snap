@@ -116,11 +116,13 @@ exports[`Contact Form Screen should render snapshot 1`] = `
             Object {
               "id": 1,
               "label": "Tenant",
+              "order": 1,
               "value": "TENANT",
             },
             Object {
               "id": 2,
               "label": "Property Agent",
+              "order": 2,
               "value": "PROPERTY_AGENT",
             },
           ]

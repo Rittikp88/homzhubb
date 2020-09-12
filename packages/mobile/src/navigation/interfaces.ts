@@ -173,6 +173,8 @@ export interface IContactProps {
 
 export interface IBookVisitProps {
   propertyTermId: number;
+  sale_listing_id?: number;
+  lease_listing_id?: number;
 }
 
 // Webview

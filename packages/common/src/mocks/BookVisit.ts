@@ -34,6 +34,6 @@ export const VisitSlot = [
 ];
 
 export const VisitTypeData = [
-  { title: 'In-Person', value: 0 },
-  { title: 'Virtual', value: 1 },
+  { title: 'In-Person', value: 'PHYSICAL' },
+  { title: 'Virtual', value: 'VIRTUAL' },
 ];

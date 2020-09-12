@@ -87,6 +87,30 @@ export class Count {
   }
 }
 
+@JsonObject('Wishlisted')
+export class Wishlisted {
+  @JsonProperty('lead_id', Number)
+  private _leadId = 0;
+
+  @JsonProperty('lead_type', String)
+  private _leadType = '';
+
+  @JsonProperty('status', Boolean)
+  private _status = false;
+
+  get leadId(): number {
+    return this._leadId;
+  }
+
+  get leadType(): string {
+    return this._leadType;
+  }
+
+  get status(): boolean {
+    return this._status;
+  }
+}
+
 @JsonObject('Asset')
 export class Asset {
   @JsonProperty('id', Number)
@@ -178,6 +202,12 @@ export class Asset {
 
   @JsonProperty('asset_status_info', AssetStatusInfo, true)
   private _assetStatusInfo: AssetStatusInfo = new AssetStatusInfo();
+
+  @JsonProperty('visit_date', String, true)
+  private _visitDate = '';
+
+  @JsonProperty('is_wishlisted', Wishlisted, true)
+  private _isWishlisted: Wishlisted | null = null;
 
   get projectName(): string {
     return this._projectName;
@@ -308,5 +338,13 @@ export class Asset {
 
   get assetStatusInfo(): AssetStatusInfo {
     return this._assetStatusInfo;
+  }
+
+  get visitDate(): string {
+    return this._visitDate;
+  }
+
+  get isWishlisted(): Wishlisted | null {
+    return this._isWishlisted;
   }
 }

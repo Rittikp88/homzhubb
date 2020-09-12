@@ -19,18 +19,13 @@ import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/Mu
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/constants/ContactFormData';
+import { AssetLeadType } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/constants/ContactFormData';
 
 interface ISlot {
   from_time: number;
   to_time: number;
-}
-
-export interface IRadiaButtonGroupData {
-  id: number;
-  label: string;
-  value: string;
 }
 
 interface IStateProps {
@@ -71,7 +66,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
               {t('iAm')}
             </Text>
             <RadioButtonGroup
-              data={UserType}
+              data={UserType as AssetLeadType[]}
               onToggle={this.onUserToggle}
               containerStyle={styles.radioGroup}
               selectedValue={userType}

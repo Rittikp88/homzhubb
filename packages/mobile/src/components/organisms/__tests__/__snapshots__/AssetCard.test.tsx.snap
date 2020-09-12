@@ -195,18 +195,13 @@ exports[`AssetCard should match snapshot for detail view 1`] = `
         subAddress="undefined undefined"
       />
     </ForwardRef>
-    <Divider
-      containerStyles={
+    <View
+      style={
         Object {
-          "borderColor": "#F0F5F9",
-          "borderWidth": 1,
-          "marginVertical": 12,
+          "flexDirection": "row",
+          "justifyContent": "flex-end",
         }
       }
-    />
-    <LeaseProgress
-      isPropertyVacant={false}
-      width={320}
     />
   </View>
 </View>

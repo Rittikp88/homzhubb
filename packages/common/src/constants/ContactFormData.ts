@@ -32,11 +32,13 @@ export const TimeSlot = [
 export const UserType = [
   {
     id: 1,
+    order: 1,
     label: 'Tenant',
     value: 'TENANT',
   },
   {
     id: 2,
+    order: 2,
     label: 'Property Agent',
     value: 'PROPERTY_AGENT',
   },

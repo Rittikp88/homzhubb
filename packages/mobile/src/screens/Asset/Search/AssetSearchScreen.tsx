@@ -6,6 +6,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
@@ -15,6 +16,11 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { ILeadPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import {
@@ -33,8 +39,6 @@ import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResult
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import {
   ICarpetArea,
   ICurrency,
@@ -173,6 +177,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               properties={properties.results}
               transaction_type={filters.asset_transaction_type}
               onSelectedProperty={this.navigateToAssetDetails}
+              onFavorite={this.onFavoriteProperty}
               searchLocation={searchLocation}
             />
             {this.renderNoResults()}
@@ -486,7 +491,33 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  public onFavoriteProperty = (propertyId: number): void => {};
+  public onFavoriteProperty = async (propertyTermId: number, isFavourite: boolean): Promise<void> => {
+    const {
+      t,
+      filters: { asset_transaction_type },
+      getProperties,
+    } = this.props;
+    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
+    if (!user) {
+      AlertHelper.error({ message: t('common:loginToContinue') });
+    }
+    const payload: ILeadPayload = {
+      propertyTermId,
+      data: {
+        lead_type: 'WISHLIST',
+        is_wishlisted: !isFavourite,
+        user_search: null,
+      },
+    };
+
+    try {
+      await LeadService.postLeadDetail(asset_transaction_type, payload);
+      getProperties();
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
+  };
 
   private onSearchStringUpdate = (searchString: string): void => {
     const { setFilter } = this.props;

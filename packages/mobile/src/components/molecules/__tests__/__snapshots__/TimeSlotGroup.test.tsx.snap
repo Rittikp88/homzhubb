@@ -15,12 +15,13 @@ exports[`Time Slot Group should match snapshot 1`] = `
   }
 >
   <ForwardRef
+    activeOpacity={1}
     key="1"
     onPress={[Function]}
     style={
       Object {
         "alignItems": "center",
-        "backgroundColor": "#0084F8",
+        "backgroundColor": "#E5E8EB",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
@@ -54,12 +55,13 @@ exports[`Time Slot Group should match snapshot 1`] = `
     </Label>
   </ForwardRef>
   <ForwardRef
+    activeOpacity={1}
     key="2"
     onPress={[Function]}
     style={
       Object {
         "alignItems": "center",
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "#E5E8EB",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
@@ -93,12 +95,13 @@ exports[`Time Slot Group should match snapshot 1`] = `
     </Label>
   </ForwardRef>
   <ForwardRef
+    activeOpacity={1}
     key="3"
     onPress={[Function]}
     style={
       Object {
         "alignItems": "center",
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "#E5E8EB",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
@@ -132,6 +135,7 @@ exports[`Time Slot Group should match snapshot 1`] = `
     </Label>
   </ForwardRef>
   <ForwardRef
+    activeOpacity={0.5}
     key="4"
     onPress={[Function]}
     style={

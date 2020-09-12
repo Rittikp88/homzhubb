@@ -4,25 +4,25 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 
-export interface ISelectionPicker {
+export interface ISelectionPicker<T> {
   title: string;
-  value: number;
+  value: T;
 }
 
-interface IItem {
-  item: ISelectionPicker;
+interface IItem<T> {
+  item: ISelectionPicker<T>;
   index: number;
 }
 
-interface IProps {
-  data: ISelectionPicker[];
-  selectedItem: number[];
-  onValueChange: (selectedValue: number) => void;
+interface IProps<T> {
+  data: ISelectionPicker<T>[];
+  selectedItem: T[];
+  onValueChange: (selectedValue: T) => void;
   optionWidth?: number;
   testID?: string;
 }
 
-class SelectionPicker extends React.PureComponent<IProps, {}> {
+class SelectionPicker<T> extends React.PureComponent<IProps<T>> {
   public render(): React.ReactElement {
     const { data } = this.props;
     return (
@@ -31,7 +31,7 @@ class SelectionPicker extends React.PureComponent<IProps, {}> {
           horizontal
           showsHorizontalScrollIndicator={false}
           data={data}
-          renderItem={(item: IItem): React.ReactElement => this.renderItem(item)}
+          renderItem={(item: IItem<T>): React.ReactElement => this.renderItem(item)}
           keyExtractor={this.keyExtractor}
           testID="ftlist"
         />
@@ -39,7 +39,7 @@ class SelectionPicker extends React.PureComponent<IProps, {}> {
     );
   }
 
-  public renderItem({ item, index }: IItem): React.ReactElement {
+  public renderItem({ item, index }: IItem<T>): React.ReactElement {
     const { onValueChange, data, selectedItem, optionWidth = (theme.viewport.width - 35) / 2 } = this.props;
     const selected = selectedItem.includes(item.value);
     const dataLength = data.length;
@@ -61,7 +61,7 @@ class SelectionPicker extends React.PureComponent<IProps, {}> {
     );
   }
 
-  private keyExtractor = (item: ISelectionPicker, index: number): string => index.toString();
+  private keyExtractor = (item: ISelectionPicker<T>, index: number): string => index.toString();
 }
 
 export { SelectionPicker };

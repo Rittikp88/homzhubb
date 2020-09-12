@@ -11,7 +11,7 @@ import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 
 interface IProps {
   properties: AssetSearch;
-  onFavorite: (propertyId: number) => void;
+  onFavorite: (propertyId: number, isFavourite: boolean) => void;
   getPropertiesListView: () => void;
   setFilter: (payload: any) => void;
   filters: IFilter;
@@ -52,7 +52,16 @@ export class PropertySearchList extends React.PureComponent<Props> {
 
   public renderItem = ({ item }: { item: Asset }): React.ReactElement => {
     const { onFavorite, filters, onSelectedProperty } = this.props;
-    const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
+    const onUpdateFavoritePropertyId = (): void => {
+      const { leaseTerm, saleTerm, isWishlisted } = item;
+      const isFavourite = isWishlisted ? isWishlisted.status : false;
+      if (leaseTerm) {
+        onFavorite(leaseTerm.id, isFavourite);
+      }
+      if (saleTerm) {
+        onFavorite(saleTerm.id, isFavourite);
+      }
+    };
     const navigateToAssetDescription = (): void => {
       const { leaseTerm, saleTerm, id } = item;
       if (leaseTerm) {
