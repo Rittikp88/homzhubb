@@ -45,7 +45,6 @@ interface IDispatchProps {
   getPropertyDetails: (payload: IGetPropertiesPayload) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setCurrentFilter: (payload: Filters) => void;
-  setInitialState: () => void;
 }
 
 interface IPortfolioState {
@@ -140,7 +139,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('tenancies')}
         </Text>
-        <FlatList data={tenancies} renderItem={renderListItem} extraData={expandedTenanciesId} />
+        <FlatList data={tenancies} renderItem={renderListItem} extraData={expandedTenanciesId} testID="tenanciesList" />
       </>
     );
   };
@@ -320,17 +319,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    getTenanciesDetails,
-    getPropertyDetails,
-    setCurrentAsset,
-    setCurrentFilter,
-    setInitialState,
-  } = PortfolioActions;
-  return bindActionCreators(
-    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setInitialState },
-    dispatch
-  );
+  const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
+  return bindActionCreators({ getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter }, dispatch);
 };
 
 export default connect(

@@ -1,3 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dashboard Screen should render snapshot 1`] = `undefined`;
+exports[`Dashboard Screen should render snapshot 1`] = `
+<StateAwareComponent
+  loading={false}
+  renderComponent={
+    <AnimatedProfileHeader
+      title="dashboard"
+    >
+      <React.Fragment>
+        <React.Fragment>
+          <AssetMetricsList
+            containerStyle={
+              Object {
+                "marginVertical": 12,
+              }
+            }
+            onMetricsClicked={[Function]}
+            title={0}
+          />
+          <AssetSummary
+            containerStyle={
+              Object {
+                "marginVertical": 12,
+              }
+            }
+            dues={0}
+            notification={0}
+            onPressDue={[Function]}
+            onPressNotification={[Function]}
+            serviceTickets={0}
+          />
+        </React.Fragment>
+        <withI18nextTranslation(PendingPropertyListCard) />
+        <withI18nextTranslation(FinanceOverview) />
+        <withI18nextTranslation(AssetMarketTrends)
+          containerStyle={
+            Object {
+              "marginVertical": 12,
+            }
+          }
+          onViewAll={[Function]}
+        />
+        <AssetAdvertisementBanner />
+        <withI18nextTranslation(AssetSubscriptionPlan)
+          containerStyle={
+            Object {
+              "marginVertical": 12,
+            }
+          }
+        />
+      </React.Fragment>
+    </AnimatedProfileHeader>
+  }
+/>
+`;

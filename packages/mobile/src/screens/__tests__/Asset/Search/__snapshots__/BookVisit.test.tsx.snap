@@ -1,0 +1,456 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Book Visit Screen should render snapshot 1`] = `
+<StateAwareComponent
+  loading={true}
+  renderComponent={
+    <HandleBack
+      navigation={
+        Object {
+          "goBack": [MockFunction],
+          "navigate": [MockFunction],
+        }
+      }
+      onBack={[Function]}
+    >
+      <UNDEFINED
+        icon="close"
+        isHeadingVisible={true}
+        onIconPress={[Function]}
+        testID="header"
+        title="assetDescription:scheduleVisit"
+        type="secondary"
+      />
+      <ScrollViewMock
+        showsVerticalScrollIndicator={false}
+        style={
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 20,
+          }
+        }
+      >
+        <SelectionPicker
+          data={
+            Array [
+              Object {
+                "title": "In-Person",
+                "value": "PHYSICAL",
+              },
+              Object {
+                "title": "Virtual",
+                "value": "VIRTUAL",
+              },
+            ]
+          }
+          onValueChange={[Function]}
+          selectedItem={
+            Array [
+              "PHYSICAL",
+            ]
+          }
+        />
+        <View
+          style={
+            Object {
+              "paddingVertical": 24,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#33495E",
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            iAm
+          </Text>
+          <RadioButtonGroup
+            containerStyle={
+              Object {
+                "marginVertical": 16,
+              }
+            }
+            data={Array []}
+            onToggle={[Function]}
+            selectedValue={1}
+          />
+        </View>
+        <Divider
+          containerStyles={
+            Object {
+              "borderColor": "#E5E8EB",
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "marginTop": 12,
+            }
+          }
+        >
+          <withI18nextTranslation(FormCalendar)
+            bubbleSelectedDate={[Function]}
+            fontType="semiBold"
+            iconColor="#B2BBC3"
+            label="selectDate"
+            maxDate="09/24/2020"
+            name="selectDate"
+            placeHolder="datePlaceholder"
+            placeHolderStyle={
+              Object {
+                "color": "#B2BBC3",
+              }
+            }
+            selectedValue=""
+            textSize="small"
+          />
+          <Text
+            style={
+              Object {
+                "color": "#33495E",
+                "marginBottom": 8,
+                "marginTop": 22,
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            selectTimings
+          </Text>
+          <TimeSlotGroup
+            data={
+              Array [
+                Object {
+                  "formatted": "8 AM - 12 PM",
+                  "from": 8,
+                  "icon": "sun-rise",
+                  "id": 1,
+                  "to": 12,
+                },
+                Object {
+                  "formatted": "12 PM - 3 PM",
+                  "from": 12,
+                  "icon": "sun",
+                  "id": 2,
+                  "to": 15,
+                },
+                Object {
+                  "formatted": "3 PM - 6 PM",
+                  "from": 15,
+                  "icon": "sun-set",
+                  "id": 3,
+                  "to": 18,
+                },
+                Object {
+                  "formatted": "6 PM - 9 PM",
+                  "from": 18,
+                  "icon": "moon",
+                  "id": 4,
+                  "to": 21,
+                },
+              ]
+            }
+            onItemSelect={[Function]}
+            selectedItem={0}
+          />
+        </View>
+        <TextArea
+          containerStyle={
+            Object {
+              "marginBottom": 24,
+              "marginTop": 18,
+            }
+          }
+          isOptional={true}
+          label="message"
+          onMessageChange={[Function]}
+          placeholder="typeYourMessage"
+          value=""
+        />
+      </ScrollViewMock>
+      <WithShadowView
+        outerViewStyle={
+          Object {
+            "marginBottom": 20,
+            "paddingBottom": 0,
+            "paddingTop": 4,
+          }
+        }
+      >
+        <Button
+          containerStyle={
+            Object {
+              "flex": 0,
+              "flexDirection": "row-reverse",
+              "margin": 16,
+            }
+          }
+          disabled={true}
+          onPress={[Function]}
+          title="confirm"
+          titleStyle={
+            Object {
+              "marginHorizontal": 12,
+            }
+          }
+          type="primary"
+        />
+      </WithShadowView>
+      <Loader
+        visible={false}
+      />
+    </HandleBack>
+  }
+/>
+`;
+
+exports[`Book Visit Screen should render snapshot with upcoming visits 1`] = `
+<StateAwareComponent
+  loading={true}
+  renderComponent={
+    <HandleBack
+      navigation={
+        Object {
+          "goBack": [MockFunction],
+          "navigate": [MockFunction],
+        }
+      }
+      onBack={[Function]}
+    >
+      <UNDEFINED
+        icon="close"
+        isHeadingVisible={true}
+        onIconPress={[Function]}
+        testID="header"
+        title="assetDescription:scheduleVisit"
+        type="secondary"
+      />
+      <ScrollViewMock
+        showsVerticalScrollIndicator={false}
+        style={
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 20,
+          }
+        }
+      >
+        <SelectionPicker
+          data={
+            Array [
+              Object {
+                "title": "In-Person",
+                "value": "PHYSICAL",
+              },
+              Object {
+                "title": "Virtual",
+                "value": "VIRTUAL",
+              },
+            ]
+          }
+          onValueChange={[Function]}
+          selectedItem={
+            Array [
+              "PHYSICAL",
+            ]
+          }
+        />
+        <View
+          style={
+            Object {
+              "paddingVertical": 24,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#33495E",
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            iAm
+          </Text>
+          <RadioButtonGroup
+            containerStyle={
+              Object {
+                "marginVertical": 16,
+              }
+            }
+            data={Array []}
+            onToggle={[Function]}
+            selectedValue={1}
+          />
+        </View>
+        <Divider
+          containerStyles={
+            Object {
+              "borderColor": "#E5E8EB",
+            }
+          }
+        />
+        <UNDEFINED
+          icon="watch"
+          initialCollapsedValue={true}
+          onCollapse={[Function]}
+          title="Join next visit at , 13 Sun"
+          titleStyle={
+            Object {
+              "marginLeft": 12,
+            }
+          }
+        >
+          <FlatList
+            data={
+              Array [
+                Object {},
+              ]
+            }
+            disableVirtualization={false}
+            extraData={false}
+            horizontal={true}
+            initialNumToRender={10}
+            keyExtractor={[Function]}
+            maxToRenderPerBatch={10}
+            numColumns={1}
+            onEndReachedThreshold={2}
+            removeClippedSubviews={false}
+            renderItem={[Function]}
+            scrollEventThrottle={50}
+            showsHorizontalScrollIndicator={false}
+            updateCellsBatchingPeriod={50}
+            windowSize={21}
+          />
+        </UNDEFINED>
+        <View
+          style={
+            Object {
+              "marginTop": 12,
+            }
+          }
+        >
+          <withI18nextTranslation(FormCalendar)
+            bubbleSelectedDate={[Function]}
+            fontType="semiBold"
+            iconColor="#B2BBC3"
+            label="selectDate"
+            maxDate="09/24/2020"
+            name="selectDate"
+            placeHolder="datePlaceholder"
+            placeHolderStyle={
+              Object {
+                "color": "#B2BBC3",
+              }
+            }
+            selectedValue=""
+            textSize="small"
+          />
+          <Text
+            style={
+              Object {
+                "color": "#33495E",
+                "marginBottom": 8,
+                "marginTop": 22,
+              }
+            }
+            textType="semiBold"
+            type="small"
+          >
+            selectTimings
+          </Text>
+          <TimeSlotGroup
+            data={
+              Array [
+                Object {
+                  "formatted": "8 AM - 12 PM",
+                  "from": 8,
+                  "icon": "sun-rise",
+                  "id": 1,
+                  "to": 12,
+                },
+                Object {
+                  "formatted": "12 PM - 3 PM",
+                  "from": 12,
+                  "icon": "sun",
+                  "id": 2,
+                  "to": 15,
+                },
+                Object {
+                  "formatted": "3 PM - 6 PM",
+                  "from": 15,
+                  "icon": "sun-set",
+                  "id": 3,
+                  "to": 18,
+                },
+                Object {
+                  "formatted": "6 PM - 9 PM",
+                  "from": 18,
+                  "icon": "moon",
+                  "id": 4,
+                  "to": 21,
+                },
+              ]
+            }
+            onItemSelect={[Function]}
+            selectedItem={0}
+          />
+        </View>
+        <TextArea
+          containerStyle={
+            Object {
+              "marginBottom": 24,
+              "marginTop": 18,
+            }
+          }
+          isOptional={true}
+          label="message"
+          onMessageChange={[Function]}
+          placeholder="typeYourMessage"
+          value=""
+        />
+      </ScrollViewMock>
+      <WithShadowView
+        outerViewStyle={
+          Object {
+            "marginBottom": 20,
+            "paddingBottom": 0,
+            "paddingTop": 4,
+          }
+        }
+      >
+        <Button
+          containerStyle={
+            Object {
+              "flex": 0,
+              "flexDirection": "row-reverse",
+              "margin": 16,
+            }
+          }
+          disabled={true}
+          onPress={[Function]}
+          title="confirm"
+          titleStyle={
+            Object {
+              "marginHorizontal": 12,
+            }
+          }
+          type="primary"
+        />
+      </WithShadowView>
+      <Loader
+        visible={false}
+      />
+    </HandleBack>
+  }
+/>
+`;

@@ -23,8 +23,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ILeadPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -295,11 +294,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  // TODO: (Shikha) - Add type once api integrate
-  private renderPropertyTimelines = (data: any): React.ReactElement => {
+  private renderPropertyTimelines = (data: { label: string; value: string }[]): React.ReactElement => {
     return (
       <>
-        {data.map((item: any, index: number) => {
+        {data.map((item: { label: string; value: string }, index: number) => {
           return (
             <View key={index} style={styles.utilityItem}>
               <Label type="large" textType="regular" style={{ color: theme.colors.darkTint4 }}>
@@ -517,7 +515,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     return (
       <SimilarProperties
-        onFavorite={this.onFavorite}
+        onFavorite={this.onFavourite}
         propertyTermId={propertyTermId}
         transaction_type={asset_transaction_type}
         onSelectedProperty={this.loadSimilarProperty}
@@ -626,10 +624,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  public onFavorite = (propertyId: number): void => {
-    // TODO: add the logic of favorite property
-  };
-
   private onExploreNeighborhood = (): void => {
     const {
       navigation: { navigate },
@@ -678,18 +672,28 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private onFavourite = async (): Promise<void> => {
+    const { navigation, assetDetails, isLoggedIn, setChangeStack } = this.props;
+
+    if (!assetDetails) return;
+    if (!isLoggedIn) {
+      setChangeStack(false);
+      navigation.navigate(ScreensKeys.AuthStack, {
+        screen: ScreensKeys.SignUp,
+        params: { onCallback: this.handleFavourite },
+      });
+    } else {
+      await this.handleFavourite();
+    }
+  };
+
+  private handleFavourite = async (): Promise<void> => {
     const {
-      t,
       route: {
         params: { propertyTermId },
       },
       assetDetails,
       filters: { asset_transaction_type },
     } = this.props;
-    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-    if (!user) {
-      AlertHelper.error({ message: t('common:loginToContinue') });
-    }
 
     if (!assetDetails) return;
 

@@ -19,6 +19,16 @@ export interface IMediaAttributes {
   thumbnail_sd: string;
 }
 
+@JsonObject('DownloadAttachment')
+export class DownloadAttachment {
+  @JsonProperty('download_link', String, true)
+  private _downloadLink = '';
+
+  get downloadLink(): string {
+    return this._downloadLink;
+  }
+}
+
 @JsonObject('MediaAttributes')
 export class MediaAttributes {
   @JsonProperty('title', String, true)

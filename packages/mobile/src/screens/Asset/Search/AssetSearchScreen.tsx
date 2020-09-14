@@ -16,6 +16,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { ILeadPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -65,6 +66,7 @@ interface IStateProps {
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
   searchLocation: Point;
+  isLoggedIn: boolean;
 }
 
 // TODO: (Shikha) Need to add types
@@ -177,7 +179,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               properties={properties.results}
               transaction_type={filters.asset_transaction_type}
               onSelectedProperty={this.navigateToAssetDetails}
-              onFavorite={this.onFavoriteProperty}
+              onFavorite={this.onFavourite}
               searchLocation={searchLocation}
             />
             {this.renderNoResults()}
@@ -190,7 +192,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               filters={filters}
               setFilter={setFilter}
               getPropertiesListView={getPropertiesListView}
-              onFavorite={this.onFavoriteProperty}
+              onFavorite={this.onFavourite}
               onSelectedProperty={this.navigateToAssetDetails}
             />
             {this.renderNoResultsListView()}
@@ -491,31 +493,17 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  public onFavoriteProperty = async (propertyTermId: number, isFavourite: boolean): Promise<void> => {
-    const {
-      t,
-      filters: { asset_transaction_type },
-      getProperties,
-    } = this.props;
-    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-    if (!user) {
-      AlertHelper.error({ message: t('common:loginToContinue') });
-    }
-    const payload: ILeadPayload = {
-      propertyTermId,
-      data: {
-        lead_type: 'WISHLIST',
-        is_wishlisted: !isFavourite,
-        user_search: null,
-      },
-    };
+  private onFavourite = async (propertyTermId: number, isFavourite: boolean): Promise<void> => {
+    const { navigation, isLoggedIn, setChangeStack } = this.props;
 
-    try {
-      await LeadService.postLeadDetail(asset_transaction_type, payload);
-      getProperties();
-    } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+    if (!isLoggedIn) {
+      setChangeStack(false);
+      navigation.navigate(ScreensKeys.AuthStack, {
+        screen: ScreensKeys.SignUp,
+        params: { onCallback: (): Promise<void> => this.handleFavoriteProperty(propertyTermId, isFavourite) },
+      });
+    } else {
+      await this.handleFavoriteProperty(propertyTermId, isFavourite);
     }
   };
 
@@ -563,6 +551,34 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
   public onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
     this.setState({ isSearchBarFocused });
+  };
+
+  private handleFavoriteProperty = async (propertyTermId: number, isFavourite: boolean): Promise<void> => {
+    const {
+      t,
+      filters: { asset_transaction_type },
+      getProperties,
+    } = this.props;
+    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
+    if (!user) {
+      AlertHelper.error({ message: t('common:loginToContinue') });
+    }
+    const payload: ILeadPayload = {
+      propertyTermId,
+      data: {
+        lead_type: 'WISHLIST',
+        is_wishlisted: !isFavourite,
+        user_search: null,
+      },
+    };
+
+    try {
+      await LeadService.postLeadDetail(asset_transaction_type, payload);
+      getProperties();
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 
   public toggleSearchBar = (): void => {
@@ -628,6 +644,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     getPriceRange,
     getSearchLocationLatLong,
   } = SearchSelector;
+  const { isLoggedIn } = UserSelector;
   return {
     properties: getProperties(state),
     filterData: getFilterDetail(state),
@@ -636,6 +653,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     currencyData: getCurrencyData(state),
     priceRange: getPriceRange(state),
     searchLocation: getSearchLocationLatLong(state),
+    isLoggedIn: isLoggedIn(state),
   };
 };
 

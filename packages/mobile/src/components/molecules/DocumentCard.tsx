@@ -8,6 +8,7 @@ import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 
 interface IProps {
+  testID?: string;
   userEmail: string;
   document: AssetDocument;
   handleShare: (link: string) => void;

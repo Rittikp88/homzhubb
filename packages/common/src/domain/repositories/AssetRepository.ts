@@ -11,8 +11,10 @@ import {
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { AssetLeadType, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
 import {
   ILeaseTermDetails,
   ICreateLeaseTermDetails,
@@ -31,7 +33,6 @@ import {
   IVerificationDocumentList,
   IVerificationTypes,
 } from '@homzhub/common/src/domain/models/Service';
-import { AssetLeadType, UpcomingSlot } from '../models/AssetVisit';
 
 const ENDPOINTS = {
   asset: (): string => 'assets/',
@@ -219,8 +220,9 @@ class AssetRepository {
     await this.apiClient.delete(ENDPOINTS.deleteAssetDocument(propertyId, documentId));
   };
 
-  public downloadAttachment = async (refKey: string): Promise<void> => {
-    return await this.apiClient.get(ENDPOINTS.downloadAttachment(), { presigned_reference_key: refKey });
+  public downloadAttachment = async (refKey: string): Promise<DownloadAttachment> => {
+    const response = await this.apiClient.get(ENDPOINTS.downloadAttachment(), { presigned_reference_key: refKey });
+    return ObjectMapper.deserialize(DownloadAttachment, response);
   };
 
   public getVisitLeadType = async (): Promise<AssetLeadType[]> => {

@@ -529,8 +529,8 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
               {t('showVerified')}
             </Text>
             <Icon
-              name={icons.info}
-              color={theme.colors.darkTint4}
+              name={icons.tooltip}
+              color={theme.colors.blue}
               size={22}
               style={styles.helperIcon}
               onPress={toggleHelper}
@@ -584,8 +584,8 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
               {t('agentListed')}
             </Text>
             <Icon
-              name={icons.info}
-              color={theme.colors.darkTint4}
+              name={icons.tooltip}
+              color={theme.colors.blue}
               size={22}
               style={styles.helperIcon}
               onPress={toggleHelper}

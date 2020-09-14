@@ -95,7 +95,10 @@
     "threePlus": "3+",
     "four": "4",
     "fourPlus": "4+",
-    "fivePlus": "5+"
+    "fivePlus": "5+",
+    "downloadSuccess": "Successfully Downloaded",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -253,7 +256,8 @@
     "yearOfConstruction": "Year of construction",
     "yearOfConstructionRequired": "Year of construction cannot be empty",
     "yearOfConstructionPlaceholder": "e.g. 2015",
-    "verification": "Verification"
+    "verification": "Verification",
+    "scheduleVisit": "Successfully scheduled visit"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

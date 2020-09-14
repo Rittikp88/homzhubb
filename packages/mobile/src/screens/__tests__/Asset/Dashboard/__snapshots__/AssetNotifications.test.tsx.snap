@@ -62,6 +62,84 @@ exports[`Asset Notifications Screen should render snapshot 1`] = `
       updateValue={[Function]}
       value=""
     />
+    <Memo(NotificationBox)
+      data={
+        Array [
+          Object {},
+        ]
+      }
+      onLoadMore={[Function]}
+      onPress={[Function]}
+      shouldEnableOuterScroll={[Function]}
+      unreadCount={0}
+    />
+  </View>
+</AnimatedProfileHeader>
+`;
+
+exports[`Asset Notifications Screen should render snapshot with empty notifications 1`] = `
+<AnimatedProfileHeader
+  isOuterScrollEnabled={true}
+  title="dashboard"
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderBottomLeftRadius": 0,
+        "borderBottomRightRadius": 0,
+        "borderRadius": 4,
+        "flexDirection": "row",
+        "justifyContent": "flex-start",
+        "padding": 10,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="left-arrow"
+      onPress={[Function]}
+      size={20}
+      testID="icnBack"
+    />
+    <Text
+      style={
+        Object {
+          "color": "#001B36",
+          "marginLeft": 12,
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      notification
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+        },
+        Object {
+          "height": 200,
+        },
+      ]
+    }
+  >
+    <SearchBar
+      containerStyle={
+        Object {
+          "margin": 16,
+        }
+      }
+      placeholder="searchByKeyword"
+      updateValue={[Function]}
+      value=""
+    />
+    <EmptyState />
   </View>
 </AnimatedProfileHeader>
 `;

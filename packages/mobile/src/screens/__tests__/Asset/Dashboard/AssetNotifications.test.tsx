@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Notifications } from '@homzhub/mobile/src/screens/Asset/Dashboard/Notifications';
 
 describe('Asset Notifications Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -17,6 +17,17 @@ describe('Asset Notifications Screen', () => {
   });
 
   it('should render snapshot', () => {
+    component.setState({ notifications: { results: [{}] } });
     expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should render snapshot with empty notifications', () => {
+    component.setState({ notifications: { results: [] } });
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should navigate to previous screen ', () => {
+    component.find('[testID="icnBack"]').prop('onPress')();
+    expect(props.navigation.goBack).toHaveBeenCalled();
   });
 });

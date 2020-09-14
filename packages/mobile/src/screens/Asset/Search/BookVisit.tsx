@@ -25,8 +25,8 @@ import { CollapsibleSection, Header, Loader, StateAwareComponent, TimeSlotGroup 
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 import { AssetLeadType, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 import { VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
 
 interface IStateProps {
@@ -51,7 +51,7 @@ interface IVisitState {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.BookVisit>;
 type Props = libraryProps & IStateProps;
 
-class BookVisit extends Component<Props, IVisitState> {
+export class BookVisit extends Component<Props, IVisitState> {
   public state = {
     visitors: [],
     upcomingVisits: [],
@@ -99,6 +99,7 @@ class BookVisit extends Component<Props, IVisitState> {
           title={t('assetDescription:scheduleVisit')}
           type="secondary"
           onIconPress={this.goBack}
+          testID="header"
         />
         <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
           {this.renderVisitType()}
@@ -311,6 +312,7 @@ class BookVisit extends Component<Props, IVisitState> {
       isUpcomingSlotSelected,
     } = this.state;
     const {
+      t,
       navigation,
       route: { params },
     } = this.props;
@@ -339,7 +341,7 @@ class BookVisit extends Component<Props, IVisitState> {
       lead_type: userType,
       start_date,
       end_date,
-      comments: message,
+      ...(message && { comments: message }),
       lease_listing: params.lease_listing_id ?? null,
       sale_listing: params.sale_listing_id ?? null,
     };
@@ -347,7 +349,7 @@ class BookVisit extends Component<Props, IVisitState> {
     try {
       await AssetRepository.scheduleVisit(payload);
       this.setState({ isLoading: false });
-      AlertHelper.success({ message: 'Your visit scheduled' });
+      AlertHelper.success({ message: t('property:scheduleVisit') });
       navigation.replace(ScreensKeys.PropertyAssetDescription, { propertyTermId: params.propertyTermId });
     } catch (e) {
       this.setState({ isLoading: false });

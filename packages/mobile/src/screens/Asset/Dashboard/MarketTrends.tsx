@@ -23,6 +23,7 @@ export class MarketTrends extends React.PureComponent<Props> {
           onIconPress={this.handleIconPress}
           isHeadingVisible
           title={t('marketTrends')}
+          testID="header"
         />
         <AssetMarketTrends limit={100} isHeaderVisible={false} containerStyle={styles.marketTrends} />
       </View>

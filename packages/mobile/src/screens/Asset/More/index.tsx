@@ -3,16 +3,17 @@ import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { MORE_SCREENS, LOGOUT, IMoreScreenItem } from '@homzhub/common/src/constants/MoreScreens';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { Divider, Text } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, MoreProfile } from '@homzhub/mobile/src/components';
+import { MORE_SCREENS, LOGOUT, IMoreScreenItem } from '@homzhub/common/src/constants/MoreScreens';
 
 interface IDispatchProps {
   logout: (data: IRefreshTokenPayload) => void;
@@ -21,7 +22,7 @@ interface IDispatchProps {
 type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.More>;
 type Props = libraryProps & IDispatchProps;
 
-class More extends React.PureComponent<Props> {
+export class More extends React.PureComponent<Props> {
   public render = (): React.ReactNode => {
     const { t } = this.props;
     const screenKeys: string[] = Object.keys(MORE_SCREENS);
@@ -41,6 +42,7 @@ class More extends React.PureComponent<Props> {
                     keyExtractor={this.renderKeyExtractor}
                     ItemSeparatorComponent={this.renderSeparator}
                     key={index}
+                    testID="moreList"
                   />
                   {!lastIndex && <Divider containerStyles={styles.listSeparator} />}
                 </View>
@@ -56,8 +58,7 @@ class More extends React.PureComponent<Props> {
   private renderKeyExtractor = (item: IMoreScreenItem, index: number): string => index.toString();
 
   public renderItem = ({ item }: { item: IMoreScreenItem }): React.ReactElement => {
-    const onPress = (): void => {};
-    return <TouchableOpacity onPress={onPress}>{this.renderItemWithIcon(item, false)}</TouchableOpacity>;
+    return <TouchableOpacity onPress={FunctionUtils.noop}>{this.renderItemWithIcon(item, false)}</TouchableOpacity>;
   };
 
   public renderItemWithIcon = (item: IMoreScreenItem, isLogout: boolean): React.ReactElement => {
@@ -86,7 +87,7 @@ class More extends React.PureComponent<Props> {
     return (
       <>
         {this.renderLogoutSeparator()}
-        <TouchableOpacity onPress={this.logout} style={styles.logout}>
+        <TouchableOpacity onPress={this.logout} style={styles.logout} testID="touchLogout">
           {this.renderItemWithIcon(LOGOUT, true)}
         </TouchableOpacity>
       </>

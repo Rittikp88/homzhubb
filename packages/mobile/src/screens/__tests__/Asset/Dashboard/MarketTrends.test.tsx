@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { MarketTrends } from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
 
 describe('Market Trends Screen', () => {
-  let component: ShallowWrapper;
+  let component: any;
   let props: any;
 
   beforeEach(() => {
@@ -18,5 +18,10 @@ describe('Market Trends Screen', () => {
 
   it('should render snapshot', () => {
     expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('should navigate to previous screen ', () => {
+    component.find('[testID="header"]').prop('onIconPress')();
+    expect(props.navigation.goBack).toHaveBeenCalled();
   });
 });

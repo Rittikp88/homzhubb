@@ -1,17 +1,14 @@
 import React, { PureComponent } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { WithTranslation } from 'react-i18next';
-import axios from 'axios';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { CommonService } from '@homzhub/common/src/services/CommonService';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header } from '@homzhub/mobile/src/components';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 
 type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.MarkdownScreen>;
 type Props = OwnProps;
@@ -25,26 +22,13 @@ export class MarkdownView extends PureComponent<Props, IMarkdownState> {
     markdownData: '',
   };
 
-  // TODO: (Shikha: 20/06/2020) - Need to check data api data and remove axios call from screen
-  public componentDidMount = async (): Promise<void> => {
+  public componentDidMount = (): void => {
     const {
       route: { params },
     } = this.props;
-    const baseUrl = ConfigHelper.getBaseUrl();
-    const urlEndpoint = params.isFrom === 'verification' ? 'VERIFICATION_DOCUMENT' : 'VISIT_PROPERTY_LOCATION';
-    const user: IUser | null = await StorageService.get(StorageKeys.USER);
-    if (user) {
-      axios
-        .get(`${baseUrl}markdown/${urlEndpoint}/`, {
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${user.access_token}`,
-          },
-        })
-        .then((res) => {
-          this.setState({ markdownData: res.data });
-        });
-    }
+    CommonService.getMarkdownData(params.isFrom).then((response) => {
+      this.setState({ markdownData: response });
+    });
   };
 
   public render(): React.ReactElement {

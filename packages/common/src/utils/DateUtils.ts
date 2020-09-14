@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
 export const MonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -147,10 +148,10 @@ class DateUtils {
 
   public getDateString = (date: string): string => {
     if (date === moment().format('YYYY-MM-DD')) {
-      return 'Today';
+      return I18nService.t('today');
     }
     if (date === moment().add(1, 'days').format('YYYY-MM-DD')) {
-      return 'Tomorrow';
+      return I18nService.t('tomorrow');
     }
     return date;
   };

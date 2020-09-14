@@ -82,6 +82,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
           value={searchValue}
           updateValue={this.onSearch}
           containerStyle={styles.searchBar}
+          testID="searchBar"
         />
         {this.renderDocumentList()}
         <Loader visible={isLoading} />
@@ -101,6 +102,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         ItemSeparatorComponent={this.renderSeparatorComponent}
         keyExtractor={this.renderKeyExtractor}
         showsVerticalScrollIndicator={false}
+        testID="documentList"
       />
     );
   };
@@ -114,6 +116,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         handleDelete={this.onDeleteDocument}
         handleDownload={this.onDownloadDocument}
         userEmail={user?.email ?? ''}
+        testID="documentCard"
       />
     );
   };

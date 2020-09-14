@@ -89,7 +89,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
         {notifications?.results && notifications?.results.length === 0 && <EmptyState />}
         {notifications?.results && notifications?.results.length > 0 && (
           <NotificationBox
-            data={notifications?.results ?? []}
+            data={notifications?.results}
             onPress={this.onNotificationClicked}
             unreadCount={notifications?.unreadCount ?? 0}
             shouldEnableOuterScroll={this.toggleScroll}

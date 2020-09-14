@@ -126,6 +126,7 @@ export const icons = {
   docFilled: 'doc-filled',
   upload: 'upload',
   files: 'files',
+  tooltip: 'tooltip',
 
   // COMMUTE
   train: 'train',

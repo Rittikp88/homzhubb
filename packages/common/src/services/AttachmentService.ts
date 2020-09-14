@@ -3,7 +3,9 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src//utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src//domain/repositories/AssetRepository';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
 export enum AttachmentError {
@@ -43,44 +45,37 @@ class AttachmentService {
       });
   };
 
-  // TODO: (Shikha) - Adding types and IOS part
   public downloadAttachment = async (refKey: string, fileName: string): Promise<void> => {
-    const response: any = await AssetRepository.downloadAttachment(refKey);
+    const response: DownloadAttachment = await AssetRepository.downloadAttachment(refKey);
 
     if (response) {
       try {
-        const { dirs, writeFile, mkdir, isDir } = RNFetchBlob.fs;
+        const { dirs } = RNFetchBlob.fs;
         const dir = PlatformUtils.isIOS() ? dirs.DocumentDir : dirs.DownloadDir;
+        const url = response.downloadLink;
 
         RNFetchBlob.config({
           IOSBackgroundTask: true,
           fileCache: true,
           indicator: true,
+          path: `${dir}/${fileName}`,
           addAndroidDownloads: {
             useDownloadManager: true,
-            path: `${dir}/${fileName}`,
             notification: true,
+            path: `${dir}/${fileName}`,
             title: fileName,
           },
         })
-          .fetch('GET', response.download_link)
-          .then((res: any) => {
-            // TODO: (Shikha) - Need to check for IOS and Images
+          .fetch('GET', url)
+          .then((res) => {
             if (PlatformUtils.isIOS()) {
-              isDir(dir)
-                .then(() => {
-                  writeFile(`${dir}/${fileName}`, res.data, 'base64');
-                })
-                .catch(() => {
-                  mkdir(dir).then(() => {
-                    writeFile(`${dir}/${fileName}`, res.data, 'base64');
-                  });
-                });
+              RNFetchBlob.ios.previewDocument(res.path());
+            } else {
+              AlertHelper.success({ message: I18nService.t('downloadSuccess') });
             }
-            AlertHelper.success({ message: 'Successfully Downloaded' });
           })
           .catch((err) => {
-            AlertHelper.error({ message: 'Download manager failed to download the file.' });
+            AlertHelper.error({ message: err });
           });
       } catch (err) {
         AlertHelper.error({ message: err });

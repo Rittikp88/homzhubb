@@ -12,6 +12,7 @@ exports[`Market Trends Screen should render snapshot 1`] = `
     icon="left-arrow"
     isHeadingVisible={true}
     onIconPress={[Function]}
+    testID="header"
     title="marketTrends"
     type="primary"
   />

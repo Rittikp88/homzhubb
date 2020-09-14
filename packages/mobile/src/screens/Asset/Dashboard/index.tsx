@@ -146,7 +146,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentFilter } = PortfolioActions;
   return bindActionCreators({ setCurrentFilter }, dispatch);
 };
