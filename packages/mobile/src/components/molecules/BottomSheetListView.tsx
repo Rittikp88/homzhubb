@@ -52,7 +52,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
     const { selectedValue, onSelectItem, testID, numColumns = 1 } = this.props;
     const onItemSelect = (): void => onSelectItem(item.value);
     const isCheck: boolean = selectedValue === item.value;
-    console.log(selectedValue, item.value)
+    console.log(selectedValue, item.value);
     return (
       <ListItem
         listItem={item}

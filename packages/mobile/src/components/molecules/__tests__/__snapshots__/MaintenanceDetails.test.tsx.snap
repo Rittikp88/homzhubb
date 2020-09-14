@@ -1692,7 +1692,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                         Array [
                                                                           Object {
                                                                             "color": "#667686",
-                                                                            "width": 750,
+                                                                            "width": 652.1739130434784,
                                                                           },
                                                                           false,
                                                                         ]
@@ -1708,7 +1708,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Array [
                                                                               Object {
                                                                                 "color": "#667686",
-                                                                                "width": 750,
+                                                                                "width": 652.1739130434784,
                                                                               },
                                                                               false,
                                                                             ],
@@ -1724,7 +1724,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Array [
                                                                                 Object {
                                                                                   "color": "#667686",
-                                                                                  "width": 750,
+                                                                                  "width": 652.1739130434784,
                                                                                 },
                                                                                 false,
                                                                               ],
@@ -2041,7 +2041,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                         Array [
                                                                           Object {
                                                                             "color": "#667686",
-                                                                            "width": 750,
+                                                                            "width": 652.1739130434784,
                                                                           },
                                                                           false,
                                                                         ]
@@ -2057,7 +2057,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Array [
                                                                               Object {
                                                                                 "color": "#667686",
-                                                                                "width": 750,
+                                                                                "width": 652.1739130434784,
                                                                               },
                                                                               false,
                                                                             ],
@@ -2073,7 +2073,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Array [
                                                                                 Object {
                                                                                   "color": "#667686",
-                                                                                  "width": 750,
+                                                                                  "width": 652.1739130434784,
                                                                                 },
                                                                                 false,
                                                                               ],
@@ -2389,7 +2389,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                         Array [
                                                                           Object {
                                                                             "color": "#667686",
-                                                                            "width": 750,
+                                                                            "width": 652.1739130434784,
                                                                           },
                                                                           false,
                                                                         ]
@@ -2405,7 +2405,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                             Array [
                                                                               Object {
                                                                                 "color": "#667686",
-                                                                                "width": 750,
+                                                                                "width": 652.1739130434784,
                                                                               },
                                                                               false,
                                                                             ],
@@ -2421,7 +2421,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                                               Array [
                                                                                 Object {
                                                                                   "color": "#667686",
-                                                                                  "width": 750,
+                                                                                  "width": 652.1739130434784,
                                                                                 },
                                                                                 false,
                                                                               ],
