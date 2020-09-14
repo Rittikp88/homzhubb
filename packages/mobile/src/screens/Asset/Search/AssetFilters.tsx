@@ -279,7 +279,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
-          {t('propertyAge')}
+          {t('rentFreePeriod')}
         </Text>
         <Dropdown
           data={translatedRentFreePeriod}
@@ -332,6 +332,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
       },
     } = this.props;
     const { isFacingToggled } = this.state;
+    const transformedFacing = this.transformFacingData();
     const toggleFacing = (): void => this.setState({ isFacingToggled: !isFacingToggled });
     return (
       <>
@@ -340,11 +341,11 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <View style={styles.moreRow}>
           <MultipleButtonGroup<number>
-            data={this.transformFacingData().slice(0, 4) ?? []}
+            data={transformedFacing.slice(0, 4) ?? []}
             onItemSelect={this.handleFacingSelection}
             selectedItem={facing}
           />
-          {facing.length > 4 && (
+          {transformedFacing.length > 4 && (
             <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleFacing}>
               {t('common:more')}
             </Text>

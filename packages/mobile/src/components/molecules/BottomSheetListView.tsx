@@ -80,7 +80,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
 
 const styles = StyleSheet.create({
   item: {
-    width: theme.viewport.width,
+    width: theme.viewport.width / 1.15,
     color: theme.colors.darkTint5,
   },
   itemWidth: {

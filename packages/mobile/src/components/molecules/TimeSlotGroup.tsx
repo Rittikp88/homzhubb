@@ -20,6 +20,7 @@ interface ITimeSlotProps {
   data: ISlotItem[];
   onItemSelect: (id: number) => void;
   selectedItem: number[] | number;
+  selectedDate?: string;
   containerStyle?: StyleProp<ViewStyle>;
   buttonItemStyle?: StyleProp<ViewStyle>;
   textType?: TextFieldType;
@@ -41,8 +42,8 @@ export class TimeSlotGroup extends React.PureComponent<ITimeSlotProps> {
   }
 
   public renderItem = (item: ISlotItem): React.ReactElement => {
-    const { selectedItem, onItemSelect, fontType = 'regular', buttonItemStyle = {} } = this.props;
-    const isDisabled = DateUtils.isPastTime(item.from);
+    const { selectedItem, onItemSelect, fontType = 'regular', buttonItemStyle = {}, selectedDate = '' } = this.props;
+    const isDisabled = DateUtils.isPastTime(item.from, selectedDate);
     let isSelected;
     if (isArray(selectedItem)) {
       isSelected = selectedItem.includes(item.id);

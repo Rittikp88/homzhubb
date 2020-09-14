@@ -121,6 +121,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.ContactForm,
       ScreensKeys.AuthStack,
       ScreensKeys.BookVisit,
+      ScreensKeys.PropertyFilters,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };

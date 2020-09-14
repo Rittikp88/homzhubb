@@ -156,9 +156,12 @@ class DateUtils {
     return date;
   };
 
-  public isPastTime = (time: number): boolean => {
+  public isPastTime = (time: number, date: string): boolean => {
     const current = moment().format('YYYY-MM-DD HH').split(' ');
-    return Number(current[1]) >= time;
+    if (moment(date).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')) {
+      return Number(current[1]) >= time;
+    }
+    return false;
   };
 }
 
