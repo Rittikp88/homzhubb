@@ -224,7 +224,12 @@ export class BookVisit extends Component<Props, IVisitState> {
         <Text type="small" textType="semiBold" style={styles.timeHeading}>
           {t('selectTimings')}
         </Text>
-        <TimeSlotGroup data={TimeSlot} onItemSelect={this.onSelectTime} selectedItem={selectedTimeSlot} />
+        <TimeSlotGroup
+          data={TimeSlot}
+          onItemSelect={this.onSelectTime}
+          selectedItem={selectedTimeSlot}
+          selectedDate={selectedDate}
+        />
       </View>
     );
   };

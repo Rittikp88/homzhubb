@@ -127,7 +127,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const { day, month, year, selectedDate } = this.state;
     const updateMonth = month + 1;
     const date = selectedDate || DateUtils.getFormattedDate(day, updateMonth, year, 'YYYY-MM-DD').toDateString();
-    const markedDate = !selectedDate ? moment().format('YYYY-MM-DD') : date;
+    const markedDate = !selectedDate ? moment().format('YYYY-MM-DD') : moment(date).format('YYYY-MM-DD');
     return (
       <>
         <Calendar

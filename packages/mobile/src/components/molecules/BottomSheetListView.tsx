@@ -52,6 +52,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
     const { selectedValue, onSelectItem, testID, numColumns = 1 } = this.props;
     const onItemSelect = (): void => onSelectItem(item.value);
     const isCheck: boolean = selectedValue === item.value;
+    console.log(selectedValue, item.value)
     return (
       <ListItem
         listItem={item}
@@ -80,7 +81,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
 
 const styles = StyleSheet.create({
   item: {
-    width: theme.viewport.width,
+    width: theme.viewport.width / 1.15,
     color: theme.colors.darkTint5,
   },
   itemWidth: {
