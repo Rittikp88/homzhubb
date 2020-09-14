@@ -37,7 +37,7 @@ export class PropertyMapCard extends React.PureComponent<IProps> {
           <View style={styles.detailsContainer}>
             <View style={styles.row}>
               <PricePerUnit price={price} unit={priceUnit} currency={currency} />
-              <Favorite onFavorite={onFavorite} containerStyle={isFavorite ? styles.favorite : styles.nonFavorite} />
+              <Favorite onFavorite={onFavorite} isFavorite={isFavorite} />
             </View>
             <Label type="large" textType="semiBold" numberOfLines={1}>
               {name}
@@ -79,15 +79,5 @@ const styles = StyleSheet.create({
   image: {
     height: 120,
     width: 120,
-  },
-  favorite: {
-    backgroundColor: theme.colors.primaryColor,
-    padding: 3,
-    borderRadius: 4,
-  },
-  nonFavorite: {
-    backgroundColor: theme.colors.favoriteBackground,
-    padding: 3,
-    borderRadius: 4,
   },
 });

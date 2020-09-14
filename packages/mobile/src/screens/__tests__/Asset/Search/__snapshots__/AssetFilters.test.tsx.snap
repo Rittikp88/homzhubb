@@ -123,8 +123,8 @@ exports[`Asset filter should render snapshot 1`] = `
             </Text>
             <Icon
               allowFontScaling={false}
-              color="#4C5F72"
-              name="info"
+              color="#0084F8"
+              name="tooltip"
               onPress={[Function]}
               size={22}
               style={
@@ -171,8 +171,8 @@ exports[`Asset filter should render snapshot 1`] = `
             </Text>
             <Icon
               allowFontScaling={false}
-              color="#4C5F72"
-              name="info"
+              color="#0084F8"
+              name="tooltip"
               onPress={[Function]}
               size={22}
               style={

@@ -4,7 +4,7 @@ exports[`Favorite should match snapshot for selected true 1`] = `
 <View>
   <Icon
     allowFontScaling={false}
-    color="#FFFFFF"
+    color="#808D9B"
     name="heart-outline"
     onPress={[Function]}
     size={32}

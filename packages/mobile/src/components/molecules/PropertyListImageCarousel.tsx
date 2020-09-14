@@ -62,7 +62,7 @@ export class PropertyListImageCarousel extends React.PureComponent<IProps, IProp
         )}
         <View style={styles.overlay}>
           <View style={styles.favoriteContainer}>
-            <Favorite onFavorite={onFavorite} containerStyle={isFavorite ? styles.favorite : styles.nonFavorite} />
+            <Favorite onFavorite={onFavorite} isFavorite={isFavorite} iconColor={theme.colors.white} />
           </View>
           {isCarousel && (
             <View style={styles.arrowContainer}>
@@ -145,13 +145,5 @@ const styles = StyleSheet.create({
   carouselImage: {
     height: '100%',
     width: '100%',
-  },
-  favorite: {
-    backgroundColor: theme.colors.primaryColor,
-    padding: 4,
-    borderRadius: 4,
-  },
-  nonFavorite: {
-    backgroundColor: theme.colors.transparent,
   },
 });

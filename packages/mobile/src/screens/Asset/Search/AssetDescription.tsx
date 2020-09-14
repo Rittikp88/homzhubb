@@ -47,7 +47,6 @@ import {
   StatusBarComponent,
   ShieldGroup,
   StateAwareComponent,
-  Loader,
 } from '@homzhub/mobile/src/components';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -79,7 +78,7 @@ interface IOwnState {
   descriptionHide: boolean;
   amenitiesShowAll: boolean;
   isScroll: boolean;
-  isSpinnerLoading: boolean;
+  isFavourite: boolean;
 }
 
 const { width, height } = theme.viewport;
@@ -109,7 +108,7 @@ const initialState = {
   amenitiesShowAll: false,
   activeSlide: 0,
   isScroll: true,
-  isSpinnerLoading: false,
+  isFavourite: false,
 };
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
@@ -147,14 +146,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   public render = (): React.ReactNode => {
     const { isLoading } = this.props;
-    const { isSpinnerLoading } = this.state;
 
-    return <StateAwareComponent loading={isLoading && !isSpinnerLoading} renderComponent={this.renderComponent()} />;
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
   };
 
   private renderComponent = (): React.ReactElement | null => {
     const { t, reviews, assetDetails } = this.props;
-    const { isFullScreen, isScroll, isSpinnerLoading } = this.state;
+    const { isFullScreen, isScroll } = this.state;
     if (!assetDetails) return null;
     const {
       contacts: { fullName, phoneNumber, countryCode },
@@ -208,7 +206,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             onContactTypeClicked={this.onContactTypeClicked}
           />
         )}
-        <Loader visible={isSpinnerLoading} />
       </>
     );
   };
@@ -524,22 +521,21 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderFixedHeader = (): React.ReactElement | null => {
-    const { isScroll } = this.state;
+    const { isScroll, isFavourite } = this.state;
     const { assetDetails } = this.props;
     if (!assetDetails) return null;
-    const isFavourite = assetDetails.isWishlisted ? assetDetails.isWishlisted.status : false;
     const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
     const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
     return (
       <View key="fixed-header" style={sectionStyle}>
         <View style={styles.headerLeftIcon}>
-          <Icon name={icons.leftArrow} size={22} color={color} onPress={this.onGoBack} />
+          <Icon name={icons.leftArrow} size={26} color={color} onPress={this.onGoBack} />
         </View>
         <View style={styles.headerRightIcon}>
           <Icon
-            name={isFavourite ? icons.favourite : icons.heartOutline}
+            name={isFavourite ? icons.filledHeart : icons.heartOutline}
             size={22}
-            color={isFavourite ? theme.colors.error : color}
+            color={isFavourite ? theme.colors.favourite : color}
             onPress={this.onFavourite}
           />
           <Icon name={icons.share} size={22} color={color} onPress={this.handleShare} />
@@ -562,9 +558,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public onGetAssetCallback = ({ status }: { status: boolean }): void => {
-    const { navigation } = this.props;
+    const { navigation, assetDetails } = this.props;
     if (!status) {
       navigation.goBack();
+    }
+    if (assetDetails) {
+      const isFavourite = assetDetails.isWishlisted ? assetDetails.isWishlisted.status : false;
+      this.setState({ isFavourite });
     }
   };
 
@@ -679,41 +679,42 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       setChangeStack(false);
       navigation.navigate(ScreensKeys.AuthStack, {
         screen: ScreensKeys.SignUp,
-        params: { onCallback: this.handleFavourite },
+        params: { onCallback: (): Promise<void> => this.handleFavourite(true) },
       });
     } else {
       await this.handleFavourite();
     }
   };
 
-  private handleFavourite = async (): Promise<void> => {
+  private handleFavourite = async (isFromLogin?: boolean): Promise<void> => {
     const {
+      navigation,
       route: {
         params: { propertyTermId },
       },
-      assetDetails,
       filters: { asset_transaction_type },
     } = this.props;
 
-    if (!assetDetails) return;
+    if (isFromLogin) {
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
+    }
 
-    const { isWishlisted } = assetDetails;
-
-    const isListed = isWishlisted ? isWishlisted.status : false;
+    const { isFavourite } = this.state;
 
     const payload: ILeadPayload = {
       propertyTermId,
       data: {
         lead_type: 'WISHLIST',
-        is_wishlisted: !isListed,
+        is_wishlisted: !isFavourite,
         user_search: null,
       },
     };
 
     try {
       await LeadService.postLeadDetail(asset_transaction_type, payload);
-      this.getAssetData(true);
+      this.setState({ isFavourite: !isFavourite });
     } catch (e) {
+      this.setState({ isFavourite: false });
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
     }
@@ -770,7 +771,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     });
   };
 
-  private getAssetData = (isFromFav?: boolean): void => {
+  private getAssetData = (): void => {
     const {
       getAsset,
       route: {

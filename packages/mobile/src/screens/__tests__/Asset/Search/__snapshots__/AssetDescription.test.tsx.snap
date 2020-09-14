@@ -639,9 +639,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
         onContactTypeClicked={[Function]}
         phoneNumber="undefinedundefined"
       />
-      <Loader
-        visible={false}
-      />
     </React.Fragment>
   }
 />

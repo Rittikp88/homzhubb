@@ -5,11 +5,13 @@ import { theme } from '@homzhub/common/src/styles/theme';
 
 interface IProps {
   onFavorite: () => void;
+  isFavorite: boolean;
+  iconColor?: string;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const Favorite = (props: IProps): React.ReactElement => {
-  const { onFavorite, containerStyle } = props;
+  const { onFavorite, isFavorite, iconColor, containerStyle } = props;
 
   const onFavoritePress = (): void => {
     onFavorite();
@@ -17,7 +19,13 @@ const Favorite = (props: IProps): React.ReactElement => {
 
   return (
     <View style={containerStyle}>
-      <Icon name={icons.heartOutline} size={32} color={theme.colors.white} onPress={onFavoritePress} testID="icon" />
+      <Icon
+        name={isFavorite ? icons.filledHeart : icons.heartOutline}
+        size={32}
+        color={isFavorite ? theme.colors.favourite : iconColor || theme.colors.darkTint6}
+        onPress={onFavoritePress}
+        testID="icon"
+      />
     </View>
   );
 };

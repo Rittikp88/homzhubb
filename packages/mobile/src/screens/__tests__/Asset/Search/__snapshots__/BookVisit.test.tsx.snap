@@ -303,7 +303,7 @@ exports[`Book Visit Screen should render snapshot with upcoming visits 1`] = `
           icon="watch"
           initialCollapsedValue={true}
           onCollapse={[Function]}
-          title="Join next visit at , 13 Sun"
+          title="Join next visit at 8 AM, 14 Mon"
           titleStyle={
             Object {
               "marginLeft": 12,

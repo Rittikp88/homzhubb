@@ -45,11 +45,8 @@ exports[`PropertyListImageCarousel should match snapshot 1`] = `
       }
     >
       <Favorite
-        containerStyle={
-          Object {
-            "backgroundColor": "transparent",
-          }
-        }
+        iconColor="#FFFFFF"
+        isFavorite={false}
         onFavorite={[MockFunction]}
       />
     </View>
@@ -107,13 +104,8 @@ exports[`PropertyListImageCarousel should match snapshot with props 1`] = `
       }
     >
       <Favorite
-        containerStyle={
-          Object {
-            "backgroundColor": "#0084F8",
-            "borderRadius": 4,
-            "padding": 4,
-          }
-        }
+        iconColor="#FFFFFF"
+        isFavorite={true}
         onFavorite={[MockFunction]}
       />
     </View>

@@ -19,8 +19,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ILeadPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -94,6 +93,7 @@ type Props = libraryProps & IStateProps & IDispatchProps;
 
 export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
   private searchBar: typeof GoogleSearchBar | null = null;
+  private focusListener: any;
   public state = {
     isMapView: true,
     selectedOnScreenFilter: '',
@@ -104,7 +104,11 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { filterData, filters, getFilterDetails } = this.props;
+    const { filterData, filters, getFilterDetails, getProperties, navigation } = this.props;
+    this.focusListener = navigation.addListener('focus', () => {
+      getProperties();
+    });
+
     if (!filterData) {
       getFilterDetails({ asset_group: filters.asset_group });
     }
@@ -500,7 +504,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       setChangeStack(false);
       navigation.navigate(ScreensKeys.AuthStack, {
         screen: ScreensKeys.SignUp,
-        params: { onCallback: (): Promise<void> => this.handleFavoriteProperty(propertyTermId, isFavourite) },
+        params: { onCallback: (): Promise<void> => this.handleFavoriteProperty(propertyTermId, isFavourite, true) },
       });
     } else {
       await this.handleFavoriteProperty(propertyTermId, isFavourite);
@@ -553,16 +557,21 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     this.setState({ isSearchBarFocused });
   };
 
-  private handleFavoriteProperty = async (propertyTermId: number, isFavourite: boolean): Promise<void> => {
+  private handleFavoriteProperty = async (
+    propertyTermId: number,
+    isFavourite: boolean,
+    isFromLogin?: boolean
+  ): Promise<void> => {
     const {
-      t,
+      navigation,
       filters: { asset_transaction_type },
       getProperties,
     } = this.props;
-    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-    if (!user) {
-      AlertHelper.error({ message: t('common:loginToContinue') });
+
+    if (isFromLogin) {
+      navigation.navigate(ScreensKeys.PropertySearchScreen);
     }
+
     const payload: ILeadPayload = {
       propertyTermId,
       data: {

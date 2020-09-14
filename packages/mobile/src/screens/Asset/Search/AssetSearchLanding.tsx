@@ -287,8 +287,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
   };
 
   private onShowProperties = (): void => {
-    const { navigation, getProperties } = this.props;
-    getProperties();
+    const { navigation } = this.props;
     navigation.navigate(ScreensKeys.BottomTabs);
   };
 

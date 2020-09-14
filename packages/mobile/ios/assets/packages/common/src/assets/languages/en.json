@@ -1,6 +1,7 @@
 {
   "common": {
     "homzhub": "Homzhub",
+    "description": "Your Property Custodian",
     "welcome": "Welcome To Homzhub",
     "login": "Login",
     "ok": "OK",
@@ -73,7 +74,31 @@
     "uploadDocument": "Upload Document",
     "toastBack": "Click Back again to exit.",
     "optional": "Optional",
-    "you": "You"
+    "you": "You",
+    "charactersRemaining": "Characters remaining: {{wordCount}}",
+    "confirm": "Confirm",
+    "selectDate": "Select Date",
+    "datePlaceholder": "Select your date",
+    "selectTimings": "Select Timings",
+    "selectFromHere": "Select from here",
+    "thisMonth": "This month",
+    "lastMonth": "Last month",
+    "thisYear": "This year",
+    "thisFinancialYear": "This Financial Year",
+    "lastYear": "Last year",
+    "search": "Search",
+    "one": "1",
+    "onePlus": "1+",
+    "two": "2",
+    "twoPlus": "2+",
+    "three": "3",
+    "threePlus": "3+",
+    "four": "4",
+    "fourPlus": "4+",
+    "fivePlus": "5+",
+    "downloadSuccess": "Successfully Downloaded",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -231,7 +256,8 @@
     "yearOfConstruction": "Year of construction",
     "yearOfConstructionRequired": "Year of construction cannot be empty",
     "yearOfConstructionPlaceholder": "e.g. 2015",
-    "verification": "Verification"
+    "verification": "Verification",
+    "scheduleVisit": "Successfully scheduled visit"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -262,6 +288,8 @@
     "dateAdded": "Date Added",
     "selectDateAdded": "Select Date Added",
     "propertyAge": "Property Age",
+    "rentFreePeriod": "Rent Free Period",
+    "selectRentFreePeriod": "Select Rent Free Period",
     "selectPropertyAge": "Select Property Age",
     "expectedMoveInDate": "Expected Move-In Date",
     "availableFrom": "Available from",
@@ -273,7 +301,34 @@
     "propertyAmenities": "Property Amenities ({{totalAmenities}})",
     "selectAmenities": "Select Property Amenities",
     "showVerified": "Show Verified",
-    "agentListed": "Agent Listed"
+    "agentListed": "Agent Listed",
+    "thisAreaOnly": "This area only",
+    "within5km": "Within 5 km",
+    "withinQuarterkm": "Within 0.25 km",
+    "within10km": "Within 10 km",
+    "withinHalfkm": "Within 0.5 km",
+    "within20km": "Within 20 km",
+    "within1km": "Within 1 km",
+    "within30km": "Within 30 km",
+    "within3km": "Within 3 km",
+    "within40km": "Within 40 km",
+    "anytime": "Anytime",
+    "last3days": "Last 3 days",
+    "last14days": "Last 14 days",
+    "last24hours": "Last 24 hours",
+    "last7days": "Last 7 days",
+    "last28days": "Last 28 days",
+    "lessThan1Year": "Less than 1 year",
+    "lessThan5Year": "Less than 5 years",
+    "lessThan10Year": "Less than 10 years",
+    "lessThan15Year": "Less than 15 years",
+    "lessThan20Year": "Less than 20 years",
+    "moreThan20Year": "More than 20 years",
+    "least15days": "At least 15 days",
+    "least30days": "At least 30 days",
+    "least45days": "At least 45 days",
+    "least60days": "At least 60 days",
+    "anyPeriod": "Any Period"
   },
   "assetDescription": {
     "reviewsRatings": "Reviews and ratings",
@@ -303,7 +358,8 @@
     "atms": "ATMs",
     "malls": "Shopping Malls",
     "noDescription": "No Description",
-    "messageSent": "Message Sent Successfully"
+    "messageSent": "Message Sent Successfully",
+    "scheduleVisit": "Schedule Site Visit"
   },
   "assetDashboard": {
     "notification": "Notifications",
@@ -339,7 +395,8 @@
     "addPropertyHighlights": "Add Property highlights for +10%",
     "propertyDetails": "Property Details",
     "rentalReceipts": "Rental Receipts",
-    "searchByName": "Search by name"
+    "searchByName": "Search by name",
+    "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -360,7 +417,6 @@
     "addDatePlaceholder": "Select a date",
     "notes": "Notes",
     "notesPlaceholder": "Type your notes here...",
-    "charactersRemaining": "Characters remaining: {{wordCount}}",
     "addNow": "Add Now",
     "propertyError": "Please enter your property",
     "detailsError": "Please enter your property details",
@@ -374,5 +430,22 @@
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg. Suresh Raina",
     "addedSuccessfullyMessage": "Added successfully"
+  },
+  "assetMore": {
+    "more": "More",
+    "profile": "Profile",
+    "notifications": "Notifications",
+    "documents": "Documents",
+    "kycDocuments": "KYC Documents",
+    "tickets": "Tickets",
+    "newLaunches": "New Launches",
+    "valueAddedServices": "Value Added Services",
+    "savedProperties": "Saved Properties",
+    "marketTrends": "Market Trends",
+    "support": "Support",
+    "settings": "Settings",
+    "referFriend": "Refer a friend",
+    "paymentMethods": "Subscriptions & Payments",
+    "logout": "Log Out"
   }
 }

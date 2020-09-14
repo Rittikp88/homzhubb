@@ -127,6 +127,7 @@ export const icons = {
   upload: 'upload',
   files: 'files',
   tooltip: 'tooltip',
+  filledHeart: 'filled-heart',
 
   // COMMUTE
   train: 'train',

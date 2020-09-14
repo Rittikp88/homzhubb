@@ -57,13 +57,7 @@ exports[`PropertyMapCard should match snapshot 1`] = `
           unit=""
         />
         <Favorite
-          containerStyle={
-            Object {
-              "backgroundColor": "rgba(25, 50, 74, 0.25)",
-              "borderRadius": 4,
-              "padding": 3,
-            }
-          }
+          isFavorite={false}
           onFavorite={[MockFunction]}
         />
       </View>
@@ -153,13 +147,7 @@ exports[`PropertyMapCard should match snapshot when isFavourite is true 1`] = `
           unit=""
         />
         <Favorite
-          containerStyle={
-            Object {
-              "backgroundColor": "#0084F8",
-              "borderRadius": 4,
-              "padding": 3,
-            }
-          }
+          isFavorite={true}
           onFavorite={[MockFunction]}
         />
       </View>

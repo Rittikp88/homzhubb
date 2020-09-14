@@ -71,7 +71,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     const { t } = this.props;
     const { notifications, searchText } = this.state;
     let containerStyle = {
-      height: 500,
+      height: 800,
     };
     if (notifications?.results && notifications?.results.length === 0) {
       containerStyle = {

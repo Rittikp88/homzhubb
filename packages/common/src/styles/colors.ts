@@ -27,6 +27,7 @@ const namedColors = {
   blueDonut: '#A2D2FD',
   unreadNotification: '#F2F9FF',
   moreSeparator: '#F8FCFF',
+  favourite: '#EA464C',
 };
 
 const tintColors = {

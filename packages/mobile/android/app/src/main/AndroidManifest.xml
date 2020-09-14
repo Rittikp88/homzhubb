@@ -34,6 +34,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="@string/deep_link_scheme" />
+                <data android:scheme="http" android:host="@string/deep_link_scheme" />
             </intent-filter>
 
         </activity>
