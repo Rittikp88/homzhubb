@@ -40,7 +40,6 @@ exports[`Financials Screen should render snapshot 1`] = `
           totalDue={70000}
         />
         <withI18nextTranslation(TransactionCardsContainer)
-          isLoading={false}
           onEndReachedHandler={[Function]}
           shouldEnableOuterScroll={[Function]}
           transactionsData={Array []}

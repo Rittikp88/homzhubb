@@ -21,17 +21,10 @@ import { propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 
-// Todo (Sriram 2020.09.08) Do we need this?
-enum LoadTypes {
-  ScreenLoad = 'ScreenLoad',
-  ComponentLoad = 'ComponentLoad',
-}
-
 interface IState {
   ledgerData: GeneralLedgers[];
   transactionsData: FinancialRecords[];
   isLoading: boolean;
-  isComponentLoading: boolean;
   scrollEnabled: boolean;
 }
 
@@ -42,13 +35,12 @@ export class Financials extends React.PureComponent<Props, IState> {
     ledgerData: [],
     transactionsData: [],
     isLoading: false,
-    isComponentLoading: false,
     scrollEnabled: true,
   };
 
   public async componentDidMount(): Promise<void> {
     await this.getGeneralLedgersPref();
-    await this.getGeneralLedgers(LoadTypes.ScreenLoad);
+    await this.getGeneralLedgers();
   }
 
   public render = (): React.ReactElement => {
@@ -58,7 +50,7 @@ export class Financials extends React.PureComponent<Props, IState> {
 
   private renderComponent = (): React.ReactElement => {
     const { t } = this.props;
-    const { ledgerData, transactionsData, scrollEnabled, isComponentLoading } = this.state;
+    const { ledgerData, transactionsData, scrollEnabled } = this.state;
     const { currency_symbol, totalDue, details } = propertyDues;
 
     return (
@@ -79,7 +71,6 @@ export class Financials extends React.PureComponent<Props, IState> {
           <TransactionCardsContainer
             shouldEnableOuterScroll={this.toggleScroll}
             transactionsData={transactionsData}
-            isLoading={isComponentLoading}
             onEndReachedHandler={this.onEndReachedHandler}
           />
         </>
@@ -88,12 +79,14 @@ export class Financials extends React.PureComponent<Props, IState> {
   };
 
   private onEndReachedHandler = async (): Promise<void> => {
-    await this.getGeneralLedgers(LoadTypes.ComponentLoad);
+    await this.getGeneralLedgers();
   };
 
   private onPlusIconPress = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.AddRecordScreen);
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.AddRecordScreen);
   };
 
   private toggleScroll = (scrollEnabled: boolean): void => {
@@ -116,19 +109,19 @@ export class Financials extends React.PureComponent<Props, IState> {
     }
   };
 
-  private getGeneralLedgers = async (type: LoadTypes): Promise<void> => {
+  private getGeneralLedgers = async (): Promise<void> => {
     const { transactionsData } = this.state;
     this.setState(() => {
-      if (type === LoadTypes.ScreenLoad) {
-        return { isLoading: true, isComponentLoading: false };
-      }
-      return { isComponentLoading: true, isLoading: false };
+      return { isLoading: false };
     });
 
     try {
       const response: FinancialTransactions = await LedgerService.getGeneralLedgers(transactionsData.length);
 
-      this.setState({ transactionsData: [...transactionsData, ...response.results], isLoading: false });
+      this.setState({
+        transactionsData: [...transactionsData, ...response.results],
+        isLoading: false,
+      });
     } catch (e) {
       this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });

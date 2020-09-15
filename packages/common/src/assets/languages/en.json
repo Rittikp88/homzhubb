@@ -429,7 +429,8 @@
     "paidTo": "Paid To",
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg. Suresh Raina",
-    "addedSuccessfullyMessage": "Added successfully"
+    "addedSuccessfullyMessage": "Added successfully",
+    "noDescriptionText": "No Description."
   },
   "assetMore": {
     "more": "More",

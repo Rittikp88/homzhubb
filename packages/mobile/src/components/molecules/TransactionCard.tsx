@@ -37,6 +37,7 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
         attachmentDetails: { fileName },
       },
     } = this.props;
+    const textLength = theme.viewport.width / 20;
 
     let textStyle: StyleProp<TextStyle> = { color: theme.colors.completed };
     let pricePrefixText = '+';
@@ -61,10 +62,10 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
                 <Label type="regular">{category}</Label>
                 {fileName ? <Icon name={icons.attachment} size={12} /> : null}
               </View>
-              <Label maxLength={21} type="large" textType="bold">
+              <Label maxLength={textLength} type="large" textType="bold">
                 {label}
               </Label>
-              <Label maxLength={21} type="large">
+              <Label maxLength={textLength} type="large">
                 {assetName}
               </Label>
             </View>
@@ -73,7 +74,6 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
             <PricePerUnit
               textSizeType="small"
               textStyle={textStyle}
-              priceTransformation={false}
               currency={currencyCode}
               prefixText={pricePrefixText}
               price={amount}
@@ -98,6 +98,14 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
       },
     } = this.props;
     const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
+
+    if (!entryType && !tellerName && !fileName) {
+      return (
+        <Label style={styles.noDescriptionText} type="large">
+          {t('noDescriptionText')}
+        </Label>
+      );
+    }
 
     return (
       <View style={styles.transactionDetailContainer}>
@@ -152,6 +160,8 @@ const styles = StyleSheet.create({
   },
   dateStyle: {
     alignItems: 'center',
+    width: 52,
+    height: 60,
     borderWidth: 1,
     borderColor: theme.colors.shadow,
     borderRadius: 4,
@@ -176,5 +186,8 @@ const styles = StyleSheet.create({
   },
   commonMarginStyle: {
     marginBottom: 24,
+  },
+  noDescriptionText: {
+    textAlign: 'center',
   },
 });

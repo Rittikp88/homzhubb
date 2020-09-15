@@ -37,7 +37,6 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
   </View>
   <Divider />
   <FlatList
-    ListFooterComponent={null}
     data={
       Array [
         FinancialRecords {

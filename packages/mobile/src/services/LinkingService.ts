@@ -33,7 +33,7 @@ class LinkingService {
 
   public getLinkingOptions = (userLoggedIn: boolean): LinkingOptions => {
     return {
-      prefixes: ['https://www.homzhub.com', 'http://www.homzhub.com', 'www.homzhub.com'],
+      prefixes: ['https://www.homzhub.com', 'http://www.homzhub.com', 'www.homzhub.com', 'homzhub://www.homzhub.com'],
       config: {
         screens: {
           ...this.getNestedScreens(userLoggedIn),

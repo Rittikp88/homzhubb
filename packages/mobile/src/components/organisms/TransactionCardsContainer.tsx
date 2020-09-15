@@ -6,7 +6,6 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Text } from '@homzhub/common/src/components';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import TransactionCard from '@homzhub/mobile/src/components/molecules/TransactionCard';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 
@@ -14,7 +13,6 @@ interface IProps extends WithTranslation {
   transactionsData: FinancialRecords[];
   shouldEnableOuterScroll: (enable: boolean) => void;
   onEndReachedHandler: () => void;
-  isLoading: boolean;
 }
 
 export class TransactionCardsContainer extends React.PureComponent<IProps> {
@@ -55,7 +53,6 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
         style={styles.transactionContainer}
         data={transactionsData}
         keyExtractor={keyExtractor}
-        ListFooterComponent={this.showFootLoader()}
         onEndReached={onEndReachedHandler}
         onEndReachedThreshold={0.1}
       />
@@ -73,15 +70,6 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
   private controlScroll = (): void => {
     const { shouldEnableOuterScroll } = this.props;
     shouldEnableOuterScroll(true);
-  };
-
-  private showFootLoader = (): ReactElement | null => {
-    const { transactionsData, isLoading } = this.props;
-
-    if (transactionsData.length < 1 && isLoading) {
-      return <Loader visible />;
-    }
-    return null;
   };
 }
 
