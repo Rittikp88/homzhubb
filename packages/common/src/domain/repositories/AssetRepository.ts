@@ -235,7 +235,7 @@ class AssetRepository {
     return ObjectMapper.deserializeArray(UpcomingSlot, response);
   };
 
-  public scheduleVisit = async (payload: IScheduleVisitPayload): Promise<void> => {
+  public propertyVisit = async (payload: IScheduleVisitPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.assetVisit(), payload);
   };
 }

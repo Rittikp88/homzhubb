@@ -22,6 +22,7 @@ export enum SpaceAvailableTypes {
 export enum VisitType {
   PHYSICAL = 'PHYSICAL',
   VIRTUAL = 'VIRTUAL',
+  PROPERTY_VIEW = 'PROPERTY_VIEW',
 }
 
 // ENUMS - END

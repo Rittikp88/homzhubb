@@ -352,7 +352,7 @@ export class BookVisit extends Component<Props, IVisitState> {
     };
 
     try {
-      await AssetRepository.scheduleVisit(payload);
+      await AssetRepository.propertyVisit(payload);
       this.setState({ isLoading: false });
       AlertHelper.success({ message: t('property:scheduleVisit') });
       navigation.replace(ScreensKeys.PropertyAssetDescription, { propertyTermId: params.propertyTermId });

@@ -23,7 +23,8 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILeadPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -79,6 +80,7 @@ interface IOwnState {
   amenitiesShowAll: boolean;
   isScroll: boolean;
   isFavourite: boolean;
+  startDate: string;
 }
 
 const { width, height } = theme.viewport;
@@ -109,6 +111,7 @@ const initialState = {
   activeSlide: 0,
   isScroll: true,
   isFavourite: false,
+  startDate: '',
 };
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
@@ -118,6 +121,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = initialState;
 
   public componentDidMount = (): void => {
+    const startDate = this.getFormattedDate();
+    this.setState({ startDate });
     this.getAssetData();
   };
 
@@ -143,6 +148,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       this.setState({ ...initialState });
     }
   }
+
+  public componentWillUnmount = async (): Promise<void> => {
+    await this.getViewCounts();
+  };
 
   public render = (): React.ReactNode => {
     const { isLoading } = this.props;
@@ -783,6 +792,31 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       onCallback: this.onGetAssetCallback,
     };
     getAsset(payload);
+  };
+
+  private getFormattedDate = (): string => {
+    const date = DateUtils.getCurrentDate();
+    const time = DateUtils.getCurrentTime();
+    return DateUtils.getISOFormat(date, Number(time));
+  };
+
+  private getViewCounts = async (): Promise<void> => {
+    const { startDate } = this.state;
+    const endDate = this.getFormattedDate();
+    const payload = {
+      visit_type: VisitType.PROPERTY_VIEW,
+      lead_type: 11, // TODO: (Shikha) Need to add proper Id once Logic integrated
+      start_date: startDate,
+      end_date: endDate,
+      lease_listing: 1,
+      sale_listing: null,
+    };
+    try {
+      await AssetRepository.propertyVisit(payload);
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e);
+      AlertHelper.error({ message: error });
+    }
   };
 
   public handleShare = async (): Promise<void> => {

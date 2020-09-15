@@ -98,6 +98,11 @@ class DateUtils {
     return moment.utc(new Date()).format('YYYY-MM-DD');
   };
 
+  public getCurrentTime = (): string => {
+    const current = moment().format('YYYY-MM-DD HH').split(' ');
+    return current[1];
+  };
+
   public getPreviousYearStartDate = (): string => {
     return moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
   };
