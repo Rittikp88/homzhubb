@@ -78,6 +78,7 @@ export enum ScreensKeys {
   PostPropertySearch = 'PostPropertySearch',
   PostPropertyMap = 'PostPropertyMap',
   PropertyDetailsScreen = 'PropertyDetails',
+  AddPropertyScreen = 'AddPropertyScreen',
   RentServicesScreen = 'RentServices',
   ServiceListScreen = 'ServiceList',
   ServiceDetailScreen = 'ServiceDetail',

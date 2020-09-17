@@ -67,6 +67,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               Object {
                 "backgroundColor": "#0084F8",
               },
+              false,
             ]
           }
         >
@@ -83,6 +84,7 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                 Object {
                   "backgroundColor": "#0084F8",
                 },
+                false,
               ]
             }
           >

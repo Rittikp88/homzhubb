@@ -12,11 +12,20 @@ interface ICommonHeaderProps {
   isHeadingVisible?: boolean;
   title?: string;
   testID?: string;
+  isBottomStyleVisible?: boolean;
 }
 const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 34 : StatusBar.currentHeight;
 
 const Header = (props: ICommonHeaderProps): React.ReactElement => {
-  const { type = 'primary', icon, onIconPress, isHeadingVisible = true, title, testID } = props;
+  const {
+    type = 'primary',
+    icon,
+    onIconPress,
+    isHeadingVisible = true,
+    title,
+    testID,
+    isBottomStyleVisible = false,
+  } = props;
 
   let backgroundColor = theme.colors.primaryColor;
   let barStyle = 'light-content';
@@ -36,7 +45,10 @@ const Header = (props: ICommonHeaderProps): React.ReactElement => {
           barStyle={barStyle as 'light-content' | 'dark-content'}
         />
       </View>
-      <View style={[styles.container, { backgroundColor }]} testID={testID}>
+      <View
+        style={[styles.container, { backgroundColor }, isBottomStyleVisible && styles.containerBottom]}
+        testID={testID}
+      >
         <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
         {isHeadingVisible && (
           <Text numberOfLines={1} type="small" textType="semiBold" style={[styles.title, { color: textColor }]}>
@@ -59,6 +71,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  containerBottom: {
+    borderBottomWidth: 4,
+    borderBottomColor: theme.colors.green,
   },
   title: {
     textAlign: 'center',

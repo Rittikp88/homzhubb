@@ -11,6 +11,7 @@ export { RNVideo } from '@homzhub/mobile/src/components/atoms/Video';
 export { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';
 
 // Molecules
+export { AddressWithStepIndicator } from '@homzhub/mobile/src/components/molecules/AddressWithStepIndicator';
 export { AnimatedHeader } from '@homzhub/mobile/src/components/molecules/AnimatedHeader';
 export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecules/AssetAdvertisementBanner';
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';

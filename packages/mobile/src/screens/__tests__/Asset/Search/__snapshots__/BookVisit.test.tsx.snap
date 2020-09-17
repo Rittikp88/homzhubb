@@ -100,7 +100,7 @@ exports[`Book Visit Screen should render snapshot 1`] = `
             fontType="semiBold"
             iconColor="#B2BBC3"
             label="selectDate"
-            maxDate="09/26/2020"
+            maxDate="09/27/2020"
             name="selectDate"
             placeHolder="datePlaceholder"
             placeHolderStyle={
@@ -304,7 +304,7 @@ exports[`Book Visit Screen should render snapshot with upcoming visits 1`] = `
           icon="watch"
           initialCollapsedValue={true}
           onCollapse={[Function]}
-          title="Join next visit at , 16 Wed"
+          title="Join next visit at , 17 Thu"
           titleStyle={
             Object {
               "marginLeft": 12,
@@ -345,7 +345,7 @@ exports[`Book Visit Screen should render snapshot with upcoming visits 1`] = `
             fontType="semiBold"
             iconColor="#B2BBC3"
             label="selectDate"
-            maxDate="09/26/2020"
+            maxDate="09/27/2020"
             name="selectDate"
             placeHolder="datePlaceholder"
             placeHolderStyle={

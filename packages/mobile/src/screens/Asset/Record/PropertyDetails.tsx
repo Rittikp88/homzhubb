@@ -215,7 +215,7 @@ export class PropertyDetails extends React.PureComponent<Props, IPropertyDetails
         };
       }
       await AssetRepository.updateAsset(propertyId, requestPayload);
-      navigation.navigate(ScreensKeys.AssetPropertyImages);
+      navigation.navigate(ScreensKeys.AddPropertyScreen);
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
