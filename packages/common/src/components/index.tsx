@@ -7,7 +7,7 @@ export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 export { Divider } from '@homzhub/common/src/components/atoms/Divider';
 export { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 export { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
-export { HorizontalPicker } from '@homzhub/common/src/components/atoms/HorizontalPicker';
+export { Counter } from '@homzhub/common/src/components/atoms/Counter';
 export * from '@homzhub/common/src/components/atoms/Image';
 export { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
 export { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';

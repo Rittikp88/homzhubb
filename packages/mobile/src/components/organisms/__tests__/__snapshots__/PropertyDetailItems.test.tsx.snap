@@ -113,7 +113,7 @@ exports[`Property Details Item Component should render property details items co
     >
       Room
     </Label>
-    <HorizontalPicker
+    <Counter
       key="Residential-0"
       onValueChange={[Function]}
       testID="ftlist"

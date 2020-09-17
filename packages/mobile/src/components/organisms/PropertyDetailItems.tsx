@@ -4,14 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes, ISpaceAvailable } from '@homzhub/common/src/domain/repositories/interfaces';
-import {
-  HorizontalPicker,
-  IDropdownOption,
-  Label,
-  Text,
-  Dropdown,
-  SelectionPicker,
-} from '@homzhub/common/src/components';
+import { Counter, IDropdownOption, Label, Text, Dropdown, SelectionPicker } from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { IPropertyDetailsData, IPropertyTypes } from '@homzhub/common/src/domain/models/Property';
 
@@ -72,7 +65,7 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           <Label type="large" textType="regular" style={styles.label}>
             {space.name}
           </Label>
-          <HorizontalPicker key={`${key}-${index}`} onValueChange={onValueChange} value={pickerValue} testID="ftlist" />
+          <Counter key={`${key}-${index}`} onValueChange={onValueChange} value={pickerValue} testID="ftlist" />
         </View>
       );
     });
@@ -117,7 +110,7 @@ export class PropertyDetailsItems extends React.PureComponent<Props, {}> {
           <Label type="large" textType="regular" style={styles.label}>
             {space.name}
           </Label>
-          <HorizontalPicker key={index} onValueChange={onValueChange} value={space.value} testID="ftlist" />
+          <Counter key={index} onValueChange={onValueChange} value={space.value} testID="ftlist" />
         </View>
       );
     });
