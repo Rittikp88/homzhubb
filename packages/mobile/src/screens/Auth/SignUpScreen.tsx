@@ -8,9 +8,10 @@ import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepo
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { AnimatedHeader, FormTextInput, SignUpForm, SocialMediaComponent } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { FormTextInput } from '@homzhub/common/src/components';
+import { AnimatedHeader, SignUpForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 

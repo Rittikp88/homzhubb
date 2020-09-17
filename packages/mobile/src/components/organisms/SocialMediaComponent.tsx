@@ -8,16 +8,15 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { ISocialUserData, SocialMediaKeys } from '@homzhub/common/src/assets/constants';
-import { ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { Button, Label } from '@homzhub/common/src/components';
+import { ISocialUserData, SocialMediaKeys } from '@homzhub/common/src/assets/constants';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 interface ISocialMediaProps extends WithTranslation {
@@ -113,8 +112,8 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
         return;
       }
       const serializedUser = ObjectMapper.serialize(response);
-      onLoginSuccessAction(serializedUser as IUser);
-      await StorageService.set<IUser>('@user', serializedUser as IUser);
+      onLoginSuccessAction(serializedUser);
+      await StorageService.set<IUser>('@user', serializedUser);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

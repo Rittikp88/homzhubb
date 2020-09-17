@@ -6,6 +6,7 @@
     "experimentalDecorators": true,
     "isolatedModules": false,
     "typeRoots": ["../../node_modules/@types"],
-    "rootDir": "src"
+    "rootDir": "src",
+    "composite": true
   }
 }

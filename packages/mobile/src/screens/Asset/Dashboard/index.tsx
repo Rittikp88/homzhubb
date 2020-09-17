@@ -11,12 +11,12 @@ import { DashboardRepository } from '@homzhub/common/src/domain/repositories/Das
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
-import { AssetSummary } from '@homzhub/common/src/components';
 import {
   AnimatedProfileHeader,
   AssetMetricsList,
   AssetAdvertisementBanner,
   StateAwareComponent,
+  AssetSummary,
 } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';

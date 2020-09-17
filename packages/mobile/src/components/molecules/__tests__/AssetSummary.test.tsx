@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { AssetSummary } from '@homzhub/common/src/components/molecules/AssetSummary';
+import { AssetSummary } from '@homzhub/mobile/src/components/molecules/AssetSummary';
 
 describe('AssetSummary', () => {
   let wrapper: ShallowWrapper;

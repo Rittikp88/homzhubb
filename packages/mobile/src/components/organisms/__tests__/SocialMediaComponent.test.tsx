@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { SocialMediaComponent } from '@homzhub/common/src/components';
+import { SocialMediaComponent } from '@homzhub/mobile/src/components';
 import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { YoutubeVideo } from '@homzhub/common/src/components/atoms/YoutubeVideo';
+import { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';
 
 describe('YoutubeVideo', () => {
   let wrapper: ShallowWrapper;

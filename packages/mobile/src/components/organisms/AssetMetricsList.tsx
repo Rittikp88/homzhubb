@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
-import { Label, Text, AssetMetrics, Image } from '@homzhub/common/src/components';
+import { Label, Text, Image } from '@homzhub/common/src/components';
+import { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
 import { ColorGradient } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 interface IMetricsData {

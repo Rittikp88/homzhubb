@@ -5,7 +5,8 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, AssetMetrics, Image } from '@homzhub/common/src/components';
+import { Text, Image } from '@homzhub/common/src/components';
+import { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
 
 interface IProps {
   title?: number | string;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { AssetMetrics } from '@homzhub/common/src/components/molecules/AssetMetrics';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});

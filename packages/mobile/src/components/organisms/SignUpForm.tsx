@@ -6,14 +6,11 @@ import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { CommonService } from '@homzhub/common/src/services/CommonService';
-import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
-import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { FormButton, IDropdownOption, FormTextInput, TermsCondition } from '@homzhub/common/src/components';
+import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
 interface ISignUpFormProps extends WithTranslation {
   testID?: string;

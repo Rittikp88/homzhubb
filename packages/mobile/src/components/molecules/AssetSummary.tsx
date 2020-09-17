@@ -5,8 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text, Divider } from '@homzhub/common/src/components';
 
 interface IProps {
   notification?: number;
