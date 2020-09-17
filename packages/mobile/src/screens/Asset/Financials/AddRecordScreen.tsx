@@ -48,7 +48,6 @@ export class AddRecordScreen extends React.PureComponent<IProps, IState> {
   private renderComponent = (): ReactElement => {
     const { t } = this.props;
     const { clearForm } = this.state;
-
     return (
       <AnimatedProfileHeader title={t('financial')}>
         <>

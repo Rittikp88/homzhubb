@@ -8,7 +8,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 import { Header, AddressWithStepIndicator } from '@homzhub/mobile/src/components';
-import { PropertyHighlights } from '@homzhub/mobile/src/components/organisms/PropertyHighlights';
+import { AssetHighlights } from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 
 interface IRoutes {
@@ -99,8 +99,8 @@ export class AddPropertyScreen extends PureComponent<Props, IScreenState> {
 
   // TODO: Replace components once ready
   private renderScene = SceneMap({
-    detail: (): ReactElement => <PropertyHighlights handleNextStep={this.handleNextStep} />,
-    highlights: (): ReactElement => <PropertyHighlights handleNextStep={this.handleNextStep} />,
+    detail: (): ReactElement => <AssetHighlights handleNextStep={this.handleNextStep} />,
+    highlights: (): ReactElement => <AssetHighlights handleNextStep={this.handleNextStep} />,
     gallery: (): ReactElement => (
       <PropertyImages
         propertyId={60} // TODO: Pass the property id from mapStateToProps

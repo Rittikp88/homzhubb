@@ -36,3 +36,27 @@ export class Amenity {
     return this._attachment;
   }
 }
+
+@JsonObject('AssetAmenity')
+export class AssetAmenity {
+  @JsonProperty('id', Number)
+  private _id = 0;
+
+  @JsonProperty('name', String)
+  private _name = '';
+
+  @JsonProperty('amenities', [Amenity])
+  private _amenities: Amenity[] = [];
+
+  get id(): number {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get amenities(): Amenity[] {
+    return this._amenities;
+  }
+}
