@@ -11,7 +11,6 @@ import { MarkdownView } from '@homzhub/mobile/src/screens/Asset/MarkdownView';
 import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
 import AssetLocationSearch from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
 import AddPropertyScreen from '@homzhub/mobile/src/screens/Asset/Record/AddPropertyScreen';
-import AssetPropertyImages from '@homzhub/mobile/src/screens/Asset/Record/AssetPropertyImages';
 import AssetPackageSteps from '@homzhub/mobile/src/screens/Asset/Record/AssetPackageSteps';
 import AssetServiceCheckoutSteps from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceCheckoutSteps';
 import AssetServiceSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceSelection';
@@ -30,7 +29,6 @@ export type PropertyPostStackParamList = {
   [ScreensKeys.ServiceListSteps]: IServiceStepProps;
   [ScreensKeys.ServiceCheckoutSteps]: undefined;
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
-  [ScreensKeys.AssetPropertyImages]: undefined;
 };
 const PropertyPostStackNavigator = createStackNavigator<PropertyPostStackParamList>();
 
@@ -46,7 +44,6 @@ export const PropertyPostStack = (): React.ReactElement => {
       <PropertyPostStackNavigator.Screen name={ScreensKeys.PostPropertyMap} component={AssetLocationMap} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.PropertyDetailsScreen} component={PropertyDetails} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AddPropertyScreen} component={AddPropertyScreen} />
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetPropertyImages} component={AssetPropertyImages} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.RentServicesScreen} component={AssetServiceSelection} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.ServiceListScreen} component={ServiceListScreen} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.ServiceDetailScreen} component={ServiceDetailScreen} />

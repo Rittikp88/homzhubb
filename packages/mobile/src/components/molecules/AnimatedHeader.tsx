@@ -5,9 +5,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
+import { DetailedHeader, Text, TextSizeType, WithShadowView } from '@homzhub/common/src/components';
 
 interface IHeaderProps {
   children?: React.ReactElement;

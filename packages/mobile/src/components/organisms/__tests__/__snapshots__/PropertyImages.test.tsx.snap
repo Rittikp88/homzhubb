@@ -12,50 +12,80 @@ exports[`Property Images Component should render the PropertyImages component 1`
       ]
     }
   >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#F8FCFF",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 15,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#33495E",
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          property:images
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "margin": 20,
+          }
+        }
+      >
+        <UploadBox
+          header="property:addPhotos"
+          icon="gallery"
+          onPress={[Function]}
+          subHeader="property:supportedImageFormats"
+        />
+      </View>
+    </View>
+    <AddYoutubeUrl
+      containerStyle={
+        Object {
+          "marginVertical": 20,
+        }
+      }
+      isToggled={false}
+      onToggle={[Function]}
+      onUpdateUrl={[Function]}
+      videoUrl=""
+    />
+  </View>
+  <BottomSheet
+    headerTitle="property:propertyImages"
+    isShadowView={true}
+    onCloseSheet={[Function]}
+    sheetHeight={650}
+    visible={false}
+  >
     <ScrollViewMock
-      showsVerticalScrollIndicator={false}
       style={
         Object {
           "flex": 1,
         }
       }
-    >
-      <UploadBox
-        containerStyle={
-          Object {
-            "marginTop": 20,
-          }
-        }
-        header="property:addPhotos"
-        icon="gallery"
-        onPress={[Function]}
-        subHeader="property:supportedImageFormats"
-      />
-      <View
-        style={
-          Object {
-            "flex": 1,
-            "marginTop": 20,
-          }
-        }
-      />
-    </ScrollViewMock>
-    <BottomSheet
-      headerTitle="property:propertyImages"
-      isShadowView={true}
-      onCloseSheet={[Function]}
-      sheetHeight={650}
-      visible={false}
-    >
-      <ScrollViewMock
-        style={
-          Object {
-            "flex": 1,
-          }
-        }
-      />
-    </BottomSheet>
-  </View>
+    />
+  </BottomSheet>
   <WithShadowView
     outerViewStyle={
       Object {
@@ -72,7 +102,6 @@ exports[`Property Images Component should render the PropertyImages component 1`
           "margin": 16,
         }
       }
-      disabled={true}
       onPress={[Function]}
       title="common:continue"
       type="primary"

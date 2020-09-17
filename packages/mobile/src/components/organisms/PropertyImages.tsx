@@ -9,8 +9,9 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhub/common/src/components';
+import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
@@ -21,18 +22,21 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-type OwnProps = WithTranslation;
-type Props = OwnProps & IProps;
+type Props = WithTranslation & IProps;
 
 interface IPropertyImagesState {
   selectedImages: IPropertySelectedImages[];
   isBottomSheetVisible: boolean;
+  isVideoToggled: boolean;
+  videoUrl: string;
 }
 
 class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   public state = {
     selectedImages: [],
     isBottomSheetVisible: false,
+    isVideoToggled: false,
+    videoUrl: '',
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -47,31 +51,37 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     return (
       <>
         <View style={[styles.container, containerStyle]}>
-          <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-            <UploadBox
-              icon={icons.gallery}
-              header={header}
-              subHeader={t('property:supportedImageFormats')}
-              onPress={this.onPhotosUpload}
-              containerStyle={styles.uploadBox}
-            />
-            <View style={styles.imagesContainer}>{this.renderImages()}</View>
-          </ScrollView>
-          <BottomSheet
-            isShadowView
-            sheetHeight={650}
-            headerTitle={t('property:propertyImages')}
-            visible={isBottomSheetVisible}
-            onCloseSheet={this.onCloseBottomSheet}
-          >
-            <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
-          </BottomSheet>
+          <View style={styles.imageContainer}>
+            <View style={styles.imageHeader}>
+              <Text type="small" textType="semiBold" style={styles.headerText}>
+                {t('property:images')}
+              </Text>
+            </View>
+            <View style={styles.uploadContainer}>
+              <UploadBox
+                icon={icons.gallery}
+                header={header}
+                subHeader={t('property:supportedImageFormats')}
+                onPress={this.onPhotosUpload}
+              />
+              {this.renderImages()}
+            </View>
+          </View>
+          <>{this.renderVideo()}</>
         </View>
+        <BottomSheet
+          isShadowView
+          sheetHeight={650}
+          headerTitle={t('property:propertyImages')}
+          visible={isBottomSheetVisible}
+          onCloseSheet={this.onCloseBottomSheet}
+        >
+          <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
+        </BottomSheet>
         <WithShadowView outerViewStyle={styles.shadowView}>
           <Button
             type="primary"
             title={t('common:continue')}
-            disabled={selectedImages.length === 0}
             containerStyle={styles.buttonStyle}
             onPress={this.postAttachmentsForProperty}
           />
@@ -92,9 +102,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
           <Text type="small" textType="semiBold" style={styles.uploadImageText}>
             {t('property:uploadedImages')}
           </Text>
-          <Text type="small" textType="semiBold" style={styles.edit} onPress={this.onToggleBottomSheet}>
-            {t('common:edit')}
-          </Text>
+          <Icon name={icons.noteBook} size={23} color={theme.colors.blue} onPress={this.onToggleBottomSheet} />
         </View>
         <View>{this.renderImageThumbnails()}</View>
       </>
@@ -128,7 +136,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         <SafeAreaView>
           <FlatList
             data={selectedImages.slice(1, 7)}
-            numColumns={3}
+            numColumns={2}
             renderItem={this.renderImagesList}
             keyExtractor={this.renderKeyExtractor}
             testID="ftlistRenderItem"
@@ -183,6 +191,21 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         />
       );
     });
+  };
+
+  public renderVideo = (): React.ReactElement => {
+    const { isVideoToggled, videoUrl } = this.state;
+    const onToggleVideo = (): void => this.setState({ isVideoToggled: !isVideoToggled });
+    const onUpdateVideoUrl = (url: string): void => this.setState({ videoUrl: url });
+    return (
+      <AddYoutubeUrl
+        isToggled={isVideoToggled}
+        videoUrl={videoUrl}
+        onToggle={onToggleVideo}
+        onUpdateUrl={onUpdateVideoUrl}
+        containerStyle={styles.videoContainer}
+      />
+    );
   };
 
   private renderKeyExtractor = (item: IPropertySelectedImages, index: number): string => {
@@ -344,18 +367,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  uploadBox: {
-    marginTop: 20,
-  },
-  edit: {
-    color: theme.colors.blue,
-  },
-  imagesContainer: {
+  uploadContainer: {
     flex: 1,
-    marginTop: 20,
+    margin: 20,
   },
   uploadImageContainer: {
     flex: 1,
+    marginVertical: 20,
     flexDirection: 'row',
   },
   uploadImageText: {
@@ -384,5 +402,22 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     margin: theme.layout.screenPadding,
+  },
+  imageContainer: {
+    backgroundColor: theme.colors.white,
+  },
+  imageHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 4,
+    padding: 15,
+    backgroundColor: theme.colors.moreSeparator,
+  },
+  headerText: {
+    color: theme.colors.darkTint3,
+  },
+  videoContainer: {
+    marginVertical: 20,
   },
 });

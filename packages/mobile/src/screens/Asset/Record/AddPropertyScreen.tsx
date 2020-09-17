@@ -9,6 +9,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 import { Header, AddressWithStepIndicator } from '@homzhub/mobile/src/components';
 import { PropertyHighlights } from '@homzhub/mobile/src/components/organisms/PropertyHighlights';
+import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 
 interface IRoutes {
   key: string;
@@ -100,7 +101,13 @@ export class AddPropertyScreen extends PureComponent<Props, IScreenState> {
   private renderScene = SceneMap({
     detail: (): ReactElement => <PropertyHighlights handleNextStep={this.handleNextStep} />,
     highlights: (): ReactElement => <PropertyHighlights handleNextStep={this.handleNextStep} />,
-    gallery: (): ReactElement => <PropertyHighlights handleNextStep={this.handleNextStep} />,
+    gallery: (): ReactElement => (
+      <PropertyImages
+        propertyId={60} // TODO: Pass the property id from mapStateToProps
+        onPressContinue={this.handleNextStep}
+        containerStyle={styles.propertyImagesContainer}
+      />
+    ),
   });
 
   private goBack = (): void => {
@@ -113,6 +120,7 @@ export class AddPropertyScreen extends PureComponent<Props, IScreenState> {
   };
 
   private handleNextStep = (): void => {
+    const { navigation } = this.props;
     const { currentIndex, isStepDone, progress } = this.state;
     const newStepDone: boolean[] = isStepDone;
     newStepDone[currentIndex] = true;
@@ -128,6 +136,8 @@ export class AddPropertyScreen extends PureComponent<Props, IScreenState> {
       this.setState({
         progress: newProgress,
       });
+    } else {
+      navigation.navigate(ScreensKeys.RentServicesScreen);
     }
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
@@ -140,6 +150,7 @@ export default withTranslation()(AddPropertyScreen);
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: theme.colors.background,
   },
   content: {
     flex: 1,
@@ -162,5 +173,8 @@ const styles = StyleSheet.create({
   },
   addressCard: {
     marginHorizontal: 16,
+  },
+  propertyImagesContainer: {
+    margin: theme.layout.screenPadding,
   },
 });
