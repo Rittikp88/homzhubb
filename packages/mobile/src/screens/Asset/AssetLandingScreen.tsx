@@ -68,12 +68,6 @@ export class AssetLandingScreen extends React.PureComponent<Props, {}> {
               onPress={this.onSwitchProperty}
               containerStyle={styles.addProperty}
             />
-            <Button
-              title="Asset Plan"
-              type="secondary"
-              onPress={this.onAssetPlan}
-              containerStyle={styles.addProperty}
-            />
             <Label type="large" textType="regular" style={styles.logoutContainer}>
               {t('logoutHelperText')} &nbsp;
               <Label type="large" textType="bold" style={styles.logout} onPress={this.logout} testID="lblLogout">
@@ -94,11 +88,6 @@ export class AssetLandingScreen extends React.PureComponent<Props, {}> {
   public onSwitchProperty = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.BottomTabs, { screen: ScreensKeys.Dashboard });
-  };
-
-  public onAssetPlan = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetPlanSelection });
   };
 
   public logout = async (): Promise<void> => {

@@ -1,14 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import PropertyDetails from '@homzhub/mobile/src/screens/Asset/Record/PropertyDetails';
-import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
-import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
-import {
-  getServiceDetails,
-  getPropertyDetails,
-  getServiceStepsDetails,
-  watchProperty,
-} from '@homzhub/common/src/modules/property/saga';
+import { getPropertyDetails, watchProperty } from '@homzhub/common/src/modules/property/saga';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -27,43 +20,9 @@ describe.skip('fetchAuthorsFromApi', () => {
     );
   });
 
-  it('should dispatch action "SERVICE_DETAILS_SUCCESS" and "SERVICE_DETAILS_FAILURE" with result from API', () => {
-    const mockResponse = ServicesData;
-    const mockError = 'Error';
-    const generator = getServiceDetails({ type: PropertyActionTypes.GET.SERVICE_DETAILS_SUCCESS });
-    generator.next();
-    expect(generator.next(mockResponse).value).toEqual(
-      put({ type: PropertyActionTypes.GET.SERVICE_DETAILS_SUCCESS, payload: ServicesData })
-    );
-    expect(generator.throw(new Error(mockError)).value).toEqual(
-      put({ type: PropertyActionTypes.GET.SERVICE_DETAILS_FAILURE, error: 'Error' })
-    );
-  });
-
-  it('should dispatch action "SERVICE_STEPS_SUCCESS" and "SERVICE_STEPS_FAILURE" with result from API', () => {
-    const mockResponse = ServiceSteps;
-    const mockError = 'Error';
-    const generator = getServiceStepsDetails({
-      type: PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS,
-      payload: {
-        serviceCategoryId: 1,
-        serviceId: 1,
-      },
-    });
-    generator.next();
-    expect(generator.next(mockResponse).value).toEqual(
-      put({ type: PropertyActionTypes.GET.SERVICE_STEPS_SUCCESS, payload: ServiceSteps })
-    );
-    expect(generator.throw(new Error(mockError)).value).toEqual(
-      put({ type: PropertyActionTypes.GET.SERVICE_STEPS_FAILURE, error: 'Error' })
-    );
-  });
-
   it('should be done on next iteration', () => {
     const generator = watchProperty();
     expect(generator.next().value).toEqual(takeEvery(PropertyActionTypes.GET.PROPERTY_DETAILS, getPropertyDetails));
-    expect(generator.next().value).toEqual(takeEvery(PropertyActionTypes.GET.SERVICE_DETAILS, getServiceDetails));
-    expect(generator.next().value).toEqual(takeEvery(PropertyActionTypes.GET.SERVICE_STEPS, getServiceStepsDetails));
     expect(generator.next().done).toBeTruthy();
   });
 });

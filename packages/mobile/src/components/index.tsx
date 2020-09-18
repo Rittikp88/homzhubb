@@ -23,7 +23,6 @@ export { AssetSummary } from '@homzhub/mobile/src/components/molecules/AssetSumm
 export { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 export { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 export { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
-export { CardBody } from '@homzhub/mobile/src/components/molecules/CardBody';
 export { CollapsibleSection } from '@homzhub/mobile/src/components/molecules/CollapsibleSection';
 export { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
 export { DocumentCard } from '@homzhub/mobile/src/components/molecules/DocumentCard';
@@ -51,7 +50,6 @@ export { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 export { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 export { SetLocationForm } from '@homzhub/mobile/src/components/molecules/SetLocationForm';
 export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
-export { StepIndicatorComponent } from '@homzhub/mobile/src/components/molecules/StepIndicator';
 export { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 export { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';

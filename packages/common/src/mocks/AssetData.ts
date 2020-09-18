@@ -113,7 +113,7 @@ export const PortfolioAssetData = [
     address: 'Sindhi Society, Chembur, Mumbai- 400071',
     type: 'RENTED',
     isPropertyCompleted: true,
-    color: theme.colors.gradientE,
+    color: theme.colors.gradientA,
     images: [
       {
         file_name: 'House-1b',

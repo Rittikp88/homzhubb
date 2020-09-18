@@ -1,0 +1,289 @@
+import React, { ReactElement } from 'react';
+import { StyleSheet, ScrollView, View } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { SceneMap, TabView } from 'react-native-tab-view';
+// @ts-ignore
+import Markdown from 'react-native-easy-markdown';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import { RNSwitch, Text } from '@homzhub/common/src/components';
+import { AddressWithStepIndicator, BottomSheet, Header } from '@homzhub/mobile/src/components';
+import { DummyView } from '@homzhub/mobile/src/screens/Asset/Record/DummyView';
+import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
+
+interface IStateProps {
+  selectedAssetPlan: ISelectedAssetPlan;
+}
+
+type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetServiceCheckoutScreen>;
+type Props = WithTranslation & libraryProps & IStateProps;
+
+interface IRoutes {
+  key: string;
+  title: string;
+}
+
+interface IAssetServiceCheckoutScreenState {
+  currentIndex: number;
+  isStepDone: boolean[];
+  progress: number;
+  isActionSheetToggled: boolean;
+  isPropertyAsUnits: boolean;
+}
+
+class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServiceCheckoutScreenState> {
+  public state = {
+    currentIndex: 0,
+    progress: 0,
+    isStepDone: [],
+    isActionSheetToggled: false,
+    isPropertyAsUnits: false,
+  };
+
+  public render(): React.ReactElement {
+    const { currentIndex, isStepDone, progress } = this.state;
+    const {
+      selectedAssetPlan: { selectedPlan },
+    } = this.props;
+    // TODO: Remove this once data is coming from api call
+    const badge = ObjectMapper.deserialize(LabelColor, {
+      label: selectedPlan,
+      color: selectedPlan === TypeOfPlan.RENT ? theme.colors.rental : theme.colors.sell,
+    });
+    return (
+      <>
+        <Header icon={icons.leftArrow} title={this.getHeader()} isBottomStyleVisible onIconPress={this.goBack} />
+        <ScrollView style={styles.screen}>
+          <View style={styles.container}>
+            <AddressWithStepIndicator
+              steps={this.getSteps()}
+              badge={badge}
+              badgeStyle={styles.badgeStyle}
+              progress={progress}
+              propertyType="Bungalow"
+              primaryAddress="Kalpataru Splendour"
+              subAddress="Shankar Kalat Nagar, Maharashtra 411057"
+              currentIndex={currentIndex}
+              isStepDone={isStepDone}
+            />
+            {this.renderTabHeader()}
+            <TabView
+              renderScene={this.renderScene}
+              onIndexChange={this.handleIndexChange}
+              renderTabBar={(): null => null}
+              swipeEnabled={false}
+              navigationState={{
+                index: currentIndex,
+                routes: this.getRoutes(),
+              }}
+            />
+          </View>
+        </ScrollView>
+        {this.openActionBottomSheet()}
+      </>
+    );
+  }
+
+  public renderTabHeader = (): ReactElement => {
+    const { currentIndex, isActionSheetToggled, isPropertyAsUnits } = this.state;
+    const { t } = this.props;
+    const tabTitle = this.getRoutes()[currentIndex].title;
+    const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
+    const togglePropertyUnits = (): void => this.setState({ isPropertyAsUnits: !isPropertyAsUnits });
+    return (
+      <>
+        {tabTitle === t('actions') && (
+          <View style={styles.actionsContainer}>
+            <Text type="small" textType="semiBold">
+              {t('shareAsUnits')}
+            </Text>
+            <RNSwitch selected={isPropertyAsUnits} onToggle={togglePropertyUnits} />
+          </View>
+        )}
+        <View style={styles.tabHeader}>
+          <Text type="small" textType="semiBold" style={styles.title}>
+            {tabTitle}
+          </Text>
+          {tabTitle === t('actions') && (
+            <Icon name={icons.tooltip} color={theme.colors.blue} size={22} onPress={toggleActionSheet} />
+          )}
+          {[t('verification'), t('services')].includes(tabTitle) && (
+            <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleNextStep}>
+              {t('common:skip')}
+            </Text>
+          )}
+        </View>
+      </>
+    );
+  };
+
+  // TODO: Replace the DummyView with your components
+  private renderScene = SceneMap({
+    actions: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+    verification: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+    services: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+    payment: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+  });
+
+  private openActionBottomSheet = (): React.ReactNode => {
+    const { isActionSheetToggled } = this.state;
+    const { t } = this.props;
+    const closeActionSheet = (): void => this.setState({ isActionSheetToggled: false });
+    if (!isActionSheetToggled) {
+      return null;
+    }
+    return (
+      <BottomSheet
+        visible={isActionSheetToggled}
+        onCloseSheet={closeActionSheet}
+        headerTitle={t('actions')}
+        sheetHeight={500}
+        isShadowView
+      >
+        <Markdown
+          markdownStyles={{
+            h2: { fontWeight: '600', fontSize: 20, marginVertical: 10 },
+            h4: { fontWeight: '300', fontSize: 24, color: theme.colors.darkTint2 },
+            strong: { fontWeight: '600', fontSize: 16 },
+            text: { fontWeight: 'normal', fontSize: 14 },
+          }}
+          style={{ margin: theme.layout.screenPadding }}
+        >
+          Action Helper Text
+        </Markdown>
+      </BottomSheet>
+    );
+  };
+
+  public getRoutes = (): IRoutes[] => {
+    const {
+      t,
+      selectedAssetPlan: { selectedPlan },
+    } = this.props;
+    switch (selectedPlan) {
+      case TypeOfPlan.MANAGE:
+        return [
+          { key: 'actions', title: t('actions') },
+          { key: 'services', title: t('services') },
+          { key: 'payment', title: t('payment') },
+        ];
+      default:
+        return [
+          { key: 'actions', title: t('actions') },
+          { key: 'verification', title: t('verification') },
+          { key: 'services', title: t('services') },
+          { key: 'payment', title: t('payment') },
+        ];
+    }
+  };
+
+  public getSteps = (): string[] => {
+    const {
+      t,
+      selectedAssetPlan: { selectedPlan },
+    } = this.props;
+    switch (selectedPlan) {
+      case TypeOfPlan.MANAGE:
+        return [t('actions'), t('services'), t('payment')];
+      default:
+        return [t('actions'), t('verification'), t('services'), t('payment')];
+    }
+  };
+
+  public getHeader = (): string => {
+    const {
+      t,
+      selectedAssetPlan: { selectedPlan },
+    } = this.props;
+    switch (selectedPlan) {
+      case TypeOfPlan.RENT:
+        return t('rent');
+      case TypeOfPlan.SELL:
+        return t('sell');
+      default:
+        return t('manage');
+    }
+  };
+
+  private goBack = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  };
+
+  private handleIndexChange = (index: number): void => {
+    this.setState({ currentIndex: index });
+  };
+
+  private handleNextStep = (): void => {
+    const { currentIndex, isStepDone, progress } = this.state;
+    const newStepDone: boolean[] = isStepDone;
+    newStepDone[currentIndex] = true;
+    this.setState({
+      isStepDone: newStepDone,
+    });
+    if (progress < 100) {
+      const progressCount = Number((100 / this.getSteps().length).toFixed(0));
+      let newProgress = progress + progressCount;
+      if (100 - newProgress === 1) {
+        newProgress += 1;
+      }
+      this.setState({
+        progress: newProgress,
+      });
+    }
+    if (currentIndex < this.getRoutes().length - 1) {
+      this.setState({ currentIndex: currentIndex + 1 });
+    }
+  };
+}
+
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getSelectedAssetPlan } = RecordAssetSelectors;
+  return {
+    selectedAssetPlan: getSelectedAssetPlan(state),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(withTranslation(LocaleConstants.namespacesKey.property)(AssetServiceCheckoutScreen));
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  container: {
+    margin: theme.layout.screenPadding,
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  badgeStyle: {
+    paddingVertical: 3,
+    paddingHorizontal: 18,
+    borderRadius: 2,
+  },
+  tabHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    paddingVertical: 16,
+  },
+  skip: {
+    color: theme.colors.blue,
+  },
+});

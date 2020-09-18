@@ -28,6 +28,8 @@ const namedColors = {
   unreadNotification: '#F2F9FF',
   moreSeparator: '#F8FCFF',
   favourite: '#EA464C',
+  rental: '#6CCEC1',
+  sell: '#FFB876',
 };
 
 const tintColors = {
@@ -84,7 +86,6 @@ const gradientAssetMetrics = {
   gradientB: '#94EF90',
   gradientC: '#FDB113',
   gradientD: '#FFDB8F',
-  gradientE: '#6CCEC1',
   gradientF: '#84ECE4',
   gradientG: '#FD8313',
   gradientH: '#FFD2A9',

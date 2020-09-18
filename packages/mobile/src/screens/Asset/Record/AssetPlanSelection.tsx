@@ -80,11 +80,12 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   };
 
   public renderItem = ({ item, index }: { item: AssetPlan; index: number }): React.ReactElement => {
-    const { assetPlan, setSelectedPlan } = this.props;
+    const { assetPlan, setSelectedPlan, navigation } = this.props;
     const onPress = (): void => {
       // TODO: Figure out to remove this error
       // @ts-ignore
       setSelectedPlan({ id: item.id, selectedPlan: item.name });
+      navigation.navigate(ScreensKeys.AssetServiceCheckoutScreen);
     };
     const isLastIndex = assetPlan.length === index + 1;
     return (

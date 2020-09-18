@@ -80,9 +80,7 @@ export enum ScreensKeys {
   PropertyDetailsScreen = 'PropertyDetails',
   AddPropertyScreen = 'AddPropertyScreen',
   AssetPlanSelection = 'AssetPlanSelection',
-  ServiceListScreen = 'ServiceList',
-  ServiceDetailScreen = 'ServiceDetail',
-  ServiceCheckoutSteps = 'ServiceCheckoutSteps',
+  AssetServiceCheckoutScreen = 'AssetServiceCheckoutScreen',
   MarkdownScreen = 'Markdown',
 
   // Search Stack
@@ -141,10 +139,6 @@ export interface IPropertyDetailScreenProps {
   propertyId: number;
   primaryAddress: string;
   secondaryAddress: string;
-}
-
-export interface IServiceDataProps {
-  serviceId: number;
 }
 
 export type MarkdownType = 'visit' | 'verification';

@@ -1,51 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
-export enum ServiceStepTypes {
-  LEASE_DETAILS = 'LEASE_DETAILS',
-  PROPERTY_VERIFICATIONS = 'PROPERTY_VERIFICATIONS',
-  PAYMENT_TOKEN_AMOUNT = 'PAYMENT_TOKEN_AMOUNT',
-}
-
-export interface IServiceDetail {
-  id: number;
-  name: string;
-  title: string;
-  label: boolean;
-  description: string;
-  number: number;
-  info: string;
-  service_cost: string;
-  service_bundle_items: IServiceItems[];
-}
-
-export interface IServiceItems {
-  id: number;
-  name: string;
-  title: string;
-  category: string;
-  description: string;
-  position: number;
-  item_label: string;
-}
-
-export interface IServiceListSteps {
-  id: number;
-  name: ServiceStepTypes;
-  title: string;
-  label: string;
-}
-
-export interface IServiceListStepsDetail {
-  steps: IServiceListSteps[];
-  PROPERTY_VERIFICATIONS: boolean;
-  PAYMENT_TOKEN_AMOUNT: boolean;
-}
-
-export interface IServiceListStepsPayload {
-  serviceCategoryId: number;
-  serviceId: number;
-}
-
 export interface IVerificationTypes {
   id: number;
   name: string;

@@ -1,6 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { AssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 const getLoadingState = (state: IState): boolean => {
   const {
@@ -18,7 +18,15 @@ const getAssetPlans = (state: IState): AssetPlan[] => {
   return ObjectMapper.deserializeArray(AssetPlan, assetPlan);
 };
 
+const getSelectedAssetPlan = (state: IState): ISelectedAssetPlan => {
+  const {
+    recordAsset: { selectedAssetPlan },
+  } = state;
+  return selectedAssetPlan;
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
+  getSelectedAssetPlan,
 };

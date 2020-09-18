@@ -17,6 +17,7 @@ interface IProps {
   propertyType: string;
   icon?: string;
   badge?: LabelColor;
+  badgeStyle?: StyleProp<ViewStyle>;
   stepContainerStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -29,6 +30,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     progress,
     icon,
     badge,
+    badgeStyle,
     stepContainerStyle = {},
     containerStyle = {},
     primaryAddress,
@@ -68,7 +70,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
           {propertyType}
         </Text>
         {icon && <Icon name={icon} size={23} color={theme.colors.blue} />}
-        {badge && <Badge title={badge.label} badgeColor={badge.color} />}
+        {badge && <Badge title={badge.label} badgeColor={badge.color} badgeStyle={badgeStyle} />}
       </View>
       <PropertyAddressCountry
         primaryAddress={primaryAddress}

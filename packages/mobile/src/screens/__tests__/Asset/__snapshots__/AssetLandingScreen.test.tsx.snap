@@ -102,6 +102,17 @@ exports[`Landing Screen Component should render landing screen 1`] = `
         title="Dashboard"
         type="secondary"
       />
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+            "marginVertical": 5,
+          }
+        }
+        onPress={[Function]}
+        title="Asset Plan"
+        type="secondary"
+      />
       <Label
         style={
           Object {
