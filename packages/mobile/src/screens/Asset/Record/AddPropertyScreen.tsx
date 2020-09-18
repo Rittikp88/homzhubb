@@ -137,7 +137,7 @@ export class AddPropertyScreen extends PureComponent<Props, IScreenState> {
         progress: newProgress,
       });
     } else {
-      navigation.navigate(ScreensKeys.RentServicesScreen);
+      navigation.navigate(ScreensKeys.AssetPlanSelection);
     }
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });

@@ -79,10 +79,9 @@ export enum ScreensKeys {
   PostPropertyMap = 'PostPropertyMap',
   PropertyDetailsScreen = 'PropertyDetails',
   AddPropertyScreen = 'AddPropertyScreen',
-  RentServicesScreen = 'RentServices',
+  AssetPlanSelection = 'AssetPlanSelection',
   ServiceListScreen = 'ServiceList',
   ServiceDetailScreen = 'ServiceDetail',
-  ServiceListSteps = 'ServiceListSteps',
   ServiceCheckoutSteps = 'ServiceCheckoutSteps',
   MarkdownScreen = 'Markdown',
 
@@ -146,11 +145,6 @@ export interface IPropertyDetailScreenProps {
 
 export interface IServiceDataProps {
   serviceId: number;
-}
-
-export interface IServiceStepProps {
-  id: number;
-  name: string;
 }
 
 export type MarkdownType = 'visit' | 'verification';

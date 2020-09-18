@@ -33,8 +33,8 @@ class DashboardRepository {
     return ObjectMapper.deserialize(AssetMetrics, response);
   };
 
-  public getAdvertisements = async (): Promise<AssetAdvertisement> => {
-    const response = await this.apiClient.get(ENDPOINTS.getAdvertisements());
+  public getAdvertisements = async (payload?: { category: string }): Promise<AssetAdvertisement> => {
+    const response = await this.apiClient.get(ENDPOINTS.getAdvertisements(), payload || {});
     return ObjectMapper.deserialize(AssetAdvertisement, response);
   };
 

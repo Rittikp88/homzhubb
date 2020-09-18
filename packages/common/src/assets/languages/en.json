@@ -262,7 +262,12 @@
     "video": "Video",
     "youtubeUrl": "YouTube URL",
     "videoHelperText": "<Paste a link you want to display on your site>",
-    "urlPlaceholder": "https://www.youtube.com/watch?v=LBE14_BmUzU"
+    "urlPlaceholder": "https://www.youtube.com/watch?v=LBE14_BmUzU",
+    "propertyPlan": "Property Plan",
+    "propertyPlanTitle": " How can we serve you?",
+    "rent": "Rent",
+    "sell": "Sell",
+    "manage": "Manage"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

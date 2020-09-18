@@ -8,7 +8,7 @@ import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetai
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
-import { Tabs } from '@homzhub/common/src/domain/models/Tabs';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export type TopTabNavigatorParamList = {
   [ScreensKeys.NotificationTab]: undefined;

@@ -21,8 +21,8 @@ import CheckoutAssetDetails from '@homzhub/mobile/src/components/organisms/Check
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { MarkdownType, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IServiceCategory, IServiceDetail, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
-import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
+import { IServiceDetail, ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { User } from '@homzhub/common/src/domain/models/User';
 
@@ -42,7 +42,6 @@ interface IStateProps {
   steps: ServiceStepTypes[];
   propertyId: number;
   termId: number;
-  serviceCategory: IServiceCategory;
   serviceDetails: IServiceDetail[];
   userDetails: User | null;
 }
@@ -139,13 +138,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
 
   private renderContent = (): React.ReactNode => {
     const { currentStep, isPaymentSuccess } = this.state;
-    const {
-      propertyId,
-      termId,
-      setTermId,
-      steps,
-      serviceCategory: { typeOfSale },
-    } = this.props;
+    const { propertyId, termId, setTermId, steps } = this.props;
 
     const currentStepId = steps[currentStep];
     switch (currentStepId) {
@@ -155,7 +148,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
             propertyId={propertyId}
             termId={termId}
             setTermId={setTermId}
-            isLeaseFlow={typeOfSale === TypeOfSale.FIND_TENANT}
+            isLeaseFlow // TODO: To be checked thoroughly
             stepsLength={steps.length}
             onStepSuccess={this.onProceedToNextStep}
             setLoading={this.setLoadingState}
@@ -168,7 +161,7 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
         return (
           <PropertyVerification
             propertyId={propertyId}
-            typeOfFlow={typeOfSale === TypeOfSale.FIND_TENANT ? TypeOfSale.RENT : TypeOfSale.SALE}
+            typeOfFlow={TypeOfPlan.RENT} // TODO: To be checked thoroughly
             navigateToPropertyHelper={this.navigateToPropertyHelper}
             updateStep={this.onProceedToNextStep}
             setLoading={this.setLoadingState}
@@ -234,19 +227,9 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
   };
 
   private getTitleStringsForStep = (serviceStep: ServiceStepTypes): IStringForStep => {
-    const {
-      t,
-      serviceCategory: { typeOfSale },
-    } = this.props;
+    const { t } = this.props;
     switch (serviceStep) {
       case ServiceStepTypes.LEASE_DETAILS:
-        if (typeOfSale === TypeOfSale.FIND_TENANT) {
-          return {
-            stepLabel: t('common:details'),
-            title: t('enterLeaseDetails'),
-            screenTitle: t('leaseDetails'),
-          };
-        }
         return {
           stepLabel: t('common:details'),
           title: t('enterSaleDetails'),
@@ -275,20 +258,13 @@ export class AssetServiceCheckoutSteps extends React.PureComponent<Props, IScree
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
-  const {
-    getCurrentPropertyId,
-    getTermId,
-    getServiceStepsDetails,
-    getServiceCategory,
-    getServiceDetails,
-  } = PropertySelector;
+  const { getCurrentPropertyId, getTermId, getServiceStepsDetails, getServiceDetails } = PropertySelector;
   const { getUserDetails } = UserSelector;
 
   return {
     propertyId: getCurrentPropertyId(state),
     termId: getTermId(state),
     steps: getServiceStepsDetails(state),
-    serviceCategory: getServiceCategory(state),
     serviceDetails: getServiceDetails(state),
     userDetails: getUserDetails(state),
   };

@@ -1,9 +1,7 @@
 import { PropertyActions, PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
-import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
-import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 
 describe('Property Actions', () => {
   it('should call get property detail action', () => {
@@ -77,29 +75,6 @@ describe('Property Actions', () => {
     });
   });
 
-  it('should call get rent service action', () => {
-    const action = PropertyActions.getRentServiceList();
-    expect(action).toStrictEqual({
-      type: PropertyActionTypes.GET.RENT_SERVICE_LIST,
-    });
-  });
-
-  it('should call get rent service success action', () => {
-    const action = PropertyActions.getRentServiceListSuccess(RentServicesData);
-    expect(action).toStrictEqual({
-      type: PropertyActionTypes.GET.RENT_SERVICE_LIST_SUCCESS,
-      payload: RentServicesData,
-    });
-  });
-
-  it('should call get service steps failure action', () => {
-    const action = PropertyActions.getRentServiceListFailure('Test Error');
-    expect(action).toStrictEqual({
-      type: PropertyActionTypes.GET.RENT_SERVICE_LIST_FAILURE,
-      error: 'Test Error',
-    });
-  });
-
   it('should call set current property id', () => {
     const action = PropertyActions.setCurrentPropertyId(1);
     expect(action).toStrictEqual({
@@ -113,14 +88,6 @@ describe('Property Actions', () => {
     expect(action).toStrictEqual({
       type: PropertyActionTypes.SET.TERM_ID,
       payload: 1,
-    });
-  });
-
-  it('should call set current service category', () => {
-    const action = PropertyActions.setServiceCategory({ id: 1, typeOfSale: TypeOfSale.FIND_TENANT });
-    expect(action).toStrictEqual({
-      type: PropertyActionTypes.SET.SERVICE_CATEGORY,
-      payload: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
     });
   });
 });

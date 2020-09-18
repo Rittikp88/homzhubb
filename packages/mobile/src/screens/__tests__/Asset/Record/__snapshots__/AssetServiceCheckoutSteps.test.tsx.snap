@@ -6,7 +6,7 @@ exports[`Asset Service Checkout Steps should render snapshot 1`] = `
     icon="left-arrow"
     onIconPress={[Function]}
     testID="lblNavigate"
-    title="leaseDetails"
+    title="resaleDetails"
     type="primary"
   />
   <StepIndicatorComponent
@@ -70,7 +70,7 @@ exports[`Asset Service Checkout Steps should render snapshot 1`] = `
       textType="semiBold"
       type="regular"
     >
-      enterLeaseDetails
+      enterSaleDetails
     </Text>
     <withI18nextTranslation(CheckoutAssetDetails)
       isLeaseFlow={true}
@@ -164,7 +164,7 @@ exports[`Asset Service Checkout Steps should render snapshot when typeOfSale is 
       enterSaleDetails
     </Text>
     <withI18nextTranslation(CheckoutAssetDetails)
-      isLeaseFlow={false}
+      isLeaseFlow={true}
       isPaymentSuccess={false}
       navigateToPropertyHelper={[Function]}
       onPaymentSuccess={[Function]}

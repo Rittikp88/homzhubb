@@ -1,10 +1,8 @@
 import { initialPropertyState, propertyReducer as reducer } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActions } from '@homzhub/common/src/modules/property/actions';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
-import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
-import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 
 describe('Property Reducer', () => {
   it('should return the initial state', () => {
@@ -63,18 +61,6 @@ describe('Property Reducer', () => {
     });
   });
 
-  it('should handle Get Rent Service list Success', () => {
-    const state = reducer(initialPropertyState, PropertyActions.getRentServiceListSuccess(RentServicesData));
-    expect(state).toStrictEqual({
-      ...initialPropertyState,
-      ['propertyDetails']: {
-        ...state.propertyDetails,
-        ['rentServices']: RentServicesData,
-      },
-      ['loaders']: { ...state.loaders, ['property']: false },
-    });
-  });
-
   it('should handle Get Service detail Success', () => {
     const state = reducer(initialPropertyState, PropertyActions.getServiceDetailsSuccess(ServicesData));
     expect(state).toStrictEqual({
@@ -106,20 +92,6 @@ describe('Property Reducer', () => {
     expect(state).toStrictEqual({
       ...initialPropertyState,
       ['termId']: 1,
-    });
-  });
-
-  it('should handle set current service category', () => {
-    const state = reducer(
-      initialPropertyState,
-      PropertyActions.setServiceCategory({
-        id: 1,
-        typeOfSale: TypeOfSale.FIND_TENANT,
-      })
-    );
-    expect(state).toStrictEqual({
-      ...initialPropertyState,
-      ['serviceCategory']: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
     });
   });
 });

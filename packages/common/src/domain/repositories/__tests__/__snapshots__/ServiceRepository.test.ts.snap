@@ -229,26 +229,3 @@ Object {
   ],
 }
 `;
-
-exports[`ServiceRepository should fetch a list of rent services 1`] = `
-Array [
-  Object {
-    "icon": "home-search",
-    "id": 1,
-    "label": "I want to find tenants",
-    "name": "FIND_TENANT",
-  },
-  Object {
-    "icon": "home-calculus",
-    "id": 2,
-    "label": "I want to sell my property",
-    "name": "SELL_PROPERTY",
-  },
-  Object {
-    "icon": "home-person",
-    "id": 3,
-    "label": "I already have found a tenant",
-    "name": "TENANT_FOUND",
-  },
-]
-`;

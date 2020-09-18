@@ -7,13 +7,13 @@ import {
   mapDispatchToProps,
 } from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceCheckoutSteps';
 import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
-import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
+import { initialRecordAssetState } from '@homzhub/common/src/modules/recordAsset/reducer';
 
 const mock = jest.fn();
 describe('Asset Service Checkout Steps', () => {
@@ -29,10 +29,6 @@ describe('Asset Service Checkout Steps', () => {
       ],
       propertyId: 1,
       termId: 1,
-      serviceCategory: {
-        id: 1,
-        typeOfSale: TypeOfSale.FIND_TENANT,
-      },
       setTermId: mock,
       navigation: {
         navigate: mock,
@@ -47,13 +43,6 @@ describe('Asset Service Checkout Steps', () => {
   });
 
   it('should render snapshot when typeOfSale is not tenant', () => {
-    props = {
-      ...props,
-      serviceCategory: {
-        id: 1,
-        typeOfSale: TypeOfSale.RENT,
-      },
-    };
     component = shallow(<AssetServiceCheckoutSteps {...props} t={(key: string): string => key} />);
     expect(toJson(component)).toMatchSnapshot();
   });
@@ -65,13 +54,6 @@ describe('Asset Service Checkout Steps', () => {
     expect(component.instance().state.currentStep).toBe(2);
     component.find('[testID="stepIndicator"]').prop('onPress')(3);
     expect(component.instance().state.currentStep).toBe(3);
-    props = {
-      ...props,
-      serviceCategory: {
-        id: 1,
-        typeOfSale: TypeOfSale.RENT,
-      },
-    };
     component = shallow(<AssetServiceCheckoutSteps {...props} t={(key: string): string => key} />);
     component.find('[testID="stepIndicator"]').prop('onPress')(2);
     expect(component.instance().state.currentStep).toBe(2);
@@ -127,6 +109,9 @@ describe('Asset Service Checkout Steps', () => {
       },
       portfolio: {
         ...initialPortfolioState,
+      },
+      recordAsset: {
+        ...initialRecordAssetState,
       },
     };
     const state = mapStateToProps(mockedState);

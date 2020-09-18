@@ -19,17 +19,6 @@ export function* getPropertyDetails() {
   }
 }
 
-export function* getRentServicesList() {
-  try {
-    const data = yield call(ServiceRepository.getRentServices);
-    yield put(PropertyActions.getRentServiceListSuccess(data));
-  } catch (e) {
-    const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
-    yield put(PropertyActions.getRentServiceListFailure(error));
-  }
-}
-
 export function* getServiceDetails(action: IFluxStandardAction<number>) {
   const { payload } = action;
   try {
@@ -57,7 +46,6 @@ export function* getServiceStepsDetails(action: IFluxStandardAction<IServiceList
 
 export function* watchProperty() {
   yield takeEvery(PropertyActionTypes.GET.PROPERTY_DETAILS, getPropertyDetails);
-  yield takeEvery(PropertyActionTypes.GET.RENT_SERVICE_LIST, getRentServicesList);
   yield takeEvery(PropertyActionTypes.GET.SERVICE_DETAILS, getServiceDetails);
   yield takeEvery(PropertyActionTypes.GET.SERVICE_STEPS, getServiceStepsDetails);
 }

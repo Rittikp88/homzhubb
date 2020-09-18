@@ -4,12 +4,12 @@ import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
+import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
+import { initialRecordAssetState } from '@homzhub/common/src/modules/recordAsset/reducer';
 import { PropertyAssetGroupData } from '@homzhub/common/src/mocks/PropertyDetails';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
-import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import { ServiceStepTypes } from '@homzhub/common/src/domain/models/Service';
-import { TypeOfSale } from '@homzhub/common/src/domain/models/Property';
 
 const state: IState = {
   user: {
@@ -20,13 +20,11 @@ const state: IState = {
     propertyDetails: {
       ...initialPropertyState.propertyDetails,
       propertyGroup: PropertyAssetGroupData,
-      rentServices: RentServicesData,
     },
     servicesInfo: ServicesData,
     servicesSteps: ServiceSteps,
     currentPropertyId: 1,
     termId: 1,
-    serviceCategory: { id: 1, typeOfSale: TypeOfSale.FIND_TENANT },
     loaders: {
       ...initialPropertyState.loaders,
       property: true,
@@ -37,6 +35,12 @@ const state: IState = {
   },
   search: {
     ...initialSearchState,
+  },
+  portfolio: {
+    ...initialPortfolioState,
+  },
+  recordAsset: {
+    ...initialRecordAssetState,
   },
 };
 
@@ -55,14 +59,6 @@ describe('Property Selector', () => {
 
   it('should return current lease term id', () => {
     expect(PropertySelector.getTermId(state)).toBe(1);
-  });
-
-  it('should return current service category', () => {
-    expect(PropertySelector.getServiceCategory(state)).toStrictEqual({ id: 1, typeOfSale: TypeOfSale.FIND_TENANT });
-  });
-
-  it('should return the service list', () => {
-    expect(PropertySelector.getRentServicesList(state)).toBe(RentServicesData);
   });
 
   it('should return the service steps', () => {

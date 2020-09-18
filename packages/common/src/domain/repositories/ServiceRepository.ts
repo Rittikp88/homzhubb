@@ -1,10 +1,11 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { IRentServiceList } from '@homzhub/common/src/domain/models/Property';
 import { IServiceDetail, IServiceListStepsDetail } from '@homzhub/common/src/domain/models/Service';
+import { AssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 const ENDPOINTS = {
-  getRentServices: (): string => 'services/',
+  getAssetPlan: (): string => 'service-category-actions/',
   getServiceData: (serviceId: number): string => `service-categories/${serviceId}/services/`,
   getServiceSteps: (serviceCategoryId: number, serviceId: number): string =>
     `service-categories/${serviceCategoryId}/services/${serviceId}/steps/`,
@@ -17,8 +18,9 @@ class ServiceRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getRentServices = async (): Promise<IRentServiceList[]> => {
-    return await this.apiClient.get(ENDPOINTS.getRentServices());
+  public getAssetPlans = async (): Promise<AssetPlan[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getAssetPlan());
+    return ObjectMapper.deserializeArray(AssetPlan, response);
   };
 
   public getServiceDetail = async (serviceId: number): Promise<IServiceDetail[]> => {

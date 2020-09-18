@@ -2,12 +2,10 @@ import { put, takeEvery } from 'redux-saga/effects';
 import PropertyDetails from '@homzhub/mobile/src/screens/Asset/Record/PropertyDetails';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { PropertyActionTypes } from '@homzhub/common/src/modules/property/actions';
-import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 import {
   getServiceDetails,
   getPropertyDetails,
-  getRentServicesList,
   getServiceStepsDetails,
   watchProperty,
 } from '@homzhub/common/src/modules/property/saga';
@@ -42,19 +40,6 @@ describe.skip('fetchAuthorsFromApi', () => {
     );
   });
 
-  it('should dispatch action "RENT_SERVICE_SUCCESS" and "RENT_SERVICE_FAILURE" with result from API', () => {
-    const mockResponse = RentServicesData;
-    const mockError = 'Error';
-    const generator = getRentServicesList();
-    generator.next();
-    expect(generator.next(mockResponse).value).toEqual(
-      put({ type: PropertyActionTypes.GET.RENT_SERVICE_LIST_SUCCESS, payload: RentServicesData })
-    );
-    expect(generator.throw(new Error(mockError)).value).toEqual(
-      put({ type: PropertyActionTypes.GET.RENT_SERVICE_LIST_FAILURE, error: 'Error' })
-    );
-  });
-
   it('should dispatch action "SERVICE_STEPS_SUCCESS" and "SERVICE_STEPS_FAILURE" with result from API', () => {
     const mockResponse = ServiceSteps;
     const mockError = 'Error';
@@ -77,7 +62,6 @@ describe.skip('fetchAuthorsFromApi', () => {
   it('should be done on next iteration', () => {
     const generator = watchProperty();
     expect(generator.next().value).toEqual(takeEvery(PropertyActionTypes.GET.PROPERTY_DETAILS, getPropertyDetails));
-    expect(generator.next().value).toEqual(takeEvery(PropertyActionTypes.GET.RENT_SERVICE_LIST, getRentServicesList));
     expect(generator.next().value).toEqual(takeEvery(PropertyActionTypes.GET.SERVICE_DETAILS, getServiceDetails));
     expect(generator.next().value).toEqual(takeEvery(PropertyActionTypes.GET.SERVICE_STEPS, getServiceStepsDetails));
     expect(generator.next().done).toBeTruthy();

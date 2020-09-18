@@ -1,6 +1,8 @@
 /*eslint-disable*/
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { AssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ServicesData } from '@homzhub/common/src/mocks/ServiceData';
 import { ServiceSteps } from '@homzhub/common/src/mocks/ServiceSteps';
 import { RentServicesData } from '@homzhub/common/src/mocks/RentServices';
@@ -20,9 +22,10 @@ describe('ServiceRepository', () => {
   });
 
   it('should fetch a list of rent services', async () => {
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(RentServicesData));
-    const response = await ServiceRepository.getRentServices();
-    expect(response).toMatchSnapshot();
+    const data = ObjectMapper.deserializeArray(AssetPlan, RentServicesData);
+    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(data));
+    const response = await ServiceRepository.getAssetPlans();
+    expect(response).toStrictEqual(data);
   });
 
   ['getServiceDetail'].forEach((api: string) => {
