@@ -8,7 +8,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 import { Header, AddressWithStepIndicator } from '@homzhub/mobile/src/components';
-import { AssetHighlights } from '@homzhub/mobile/src/components/organisms/AssetHighlights';
+import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 
 interface IRoutes {
@@ -63,6 +63,7 @@ export class AddPropertyScreen extends PureComponent<Props, IScreenState> {
             isStepDone={isStepDone}
             stepContainerStyle={styles.stepContainer}
             containerStyle={styles.addressCard}
+            onPressSteps={this.handlePreviousStep}
           />
           {this.renderTabHeader()}
           <TabView
@@ -117,6 +118,14 @@ export class AddPropertyScreen extends PureComponent<Props, IScreenState> {
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
+  };
+
+  private handlePreviousStep = (index: number): void => {
+    const { currentIndex } = this.state;
+    const value = index - currentIndex;
+    if (value < 0) {
+      this.setState({ currentIndex: currentIndex + value });
+    }
   };
 
   private handleNextStep = (): void => {

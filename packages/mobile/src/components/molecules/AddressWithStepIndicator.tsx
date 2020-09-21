@@ -17,6 +17,7 @@ interface IProps {
   propertyType: string;
   icon?: string;
   badge?: LabelColor;
+  onPressSteps: (index: number) => void;
   badgeStyle?: StyleProp<ViewStyle>;
   stepContainerStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
@@ -36,6 +37,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     primaryAddress,
     subAddress,
     propertyType,
+    onPressSteps,
   } = props;
   const renderIndicator = ({ item, index }: { item: string; index: number }): React.ReactElement => {
     const isCurrentStep = currentIndex === index;
@@ -44,7 +46,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     const labelStyle = [styles.stepLabel, isCurrentStep && styles.currentStepLabel, stepDone && styles.doneStepLabel];
     return (
       <View style={styles.indicatorView}>
-        <Icon name={icons.roundFilled} size={30} color={iconColor} />
+        <Icon name={icons.roundFilled} size={30} color={iconColor} onPress={(): void => onPressSteps(index)} />
         <Label type="small" textType="semiBold" style={labelStyle}>
           {item}
         </Label>
@@ -116,7 +118,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.green,
   },
   listStyle: {
-    paddingHorizontal: 10,
     marginTop: 20,
   },
   stepLabel: {

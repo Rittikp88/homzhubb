@@ -96,6 +96,7 @@
     "downloadSuccess": "Successfully Downloaded",
     "today": "Today",
     "tomorrow": "Tomorrow",
+    "add": "ADD",
     "requiredText": "Please enter {{field}}"
   },
   "auth": {
@@ -266,7 +267,10 @@
     "services": "Services",
     "verification": "Verification",
     "payment": "Payment",
-    "shareAsUnits": "Share your Property as Units"
+    "shareAsUnits": "Share your Property as Units",
+    "otherHighlights": "Other Highlights",
+    "highlightPlaceholder": "Eg. Power Supply",
+    "otherDetails": "Other Details"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

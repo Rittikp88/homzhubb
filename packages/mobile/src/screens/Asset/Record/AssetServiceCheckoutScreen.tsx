@@ -73,6 +73,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
               subAddress="Shankar Kalat Nagar, Maharashtra 411057"
               currentIndex={currentIndex}
               isStepDone={isStepDone}
+              onPressSteps={this.handlePreviousStep}
             />
             {this.renderTabHeader()}
             <TabView
@@ -220,6 +221,14 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
+  };
+
+  private handlePreviousStep = (index: number): void => {
+    const { currentIndex } = this.state;
+    const value = index - currentIndex;
+    if (value < 0) {
+      this.setState({ currentIndex: currentIndex + value });
+    }
   };
 
   private handleNextStep = (): void => {
