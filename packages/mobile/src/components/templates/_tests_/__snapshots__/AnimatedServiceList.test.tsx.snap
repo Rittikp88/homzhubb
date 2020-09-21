@@ -67,7 +67,6 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               Object {
                 "backgroundColor": "#0084F8",
               },
-              false,
             ]
           }
         >
@@ -84,7 +83,6 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
                 Object {
                   "backgroundColor": "#0084F8",
                 },
-                false,
               ]
             }
           >
@@ -223,6 +221,23 @@ exports[`AnimatedServiceList should render snapshot 1`] = `
               </Text>
             </Text>
           </View>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "#2CBA67",
+              "height": 4,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#2CBA67",
+                "height": 4,
+              }
+            }
+          />
         </View>
       </Memo(Header)>
       <ForwardRef(AnimatedComponentWrapper)

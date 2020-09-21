@@ -1482,75 +1482,75 @@ exports[`AssetRepository Should post verification document 1`] = `Object {}`;
 
 exports[`AssetRepository should fetch a asset data 1`] = `
 Array [
-  Object {
-    "asset_types": Array [
-      Object {
-        "id": 1,
-        "name": "Residential House",
+  AssetGroup {
+    "_assetTypes": Array [
+      TypeUnit {
+        "_id": 1,
+        "_name": "Residential House",
       },
-      Object {
-        "id": 2,
-        "name": "Apartment / Condo",
+      TypeUnit {
+        "_id": 2,
+        "_name": "Apartment / Condo",
       },
-      Object {
-        "id": 3,
-        "name": "Villa",
+      TypeUnit {
+        "_id": 3,
+        "_name": "Villa",
       },
-      Object {
-        "id": 4,
-        "name": "Penthouse",
+      TypeUnit {
+        "_id": 4,
+        "_name": "Penthouse",
       },
-      Object {
-        "id": 5,
-        "name": "Studio Apartment",
+      TypeUnit {
+        "_id": 5,
+        "_name": "Studio Apartment",
       },
-      Object {
-        "id": 6,
-        "name": "Independant Floor",
+      TypeUnit {
+        "_id": 6,
+        "_name": "Independant Floor",
       },
     ],
-    "id": 1,
-    "name": "Residential",
-    "space_types": Array [
-      Object {
-        "id": 1,
-        "name": "Bedroom",
+    "_id": 1,
+    "_name": "Residential",
+    "_spaceTypes": Array [
+      TypeUnit {
+        "_id": 1,
+        "_name": "Bedroom",
       },
-      Object {
-        "id": 2,
-        "name": "Bathroom",
+      TypeUnit {
+        "_id": 2,
+        "_name": "Bathroom",
       },
-      Object {
-        "id": 3,
-        "name": "Balcony",
+      TypeUnit {
+        "_id": 3,
+        "_name": "Balcony",
       },
     ],
   },
-  Object {
-    "asset_types": Array [
-      Object {
-        "id": 7,
-        "name": "Commercial Office Space",
+  AssetGroup {
+    "_assetTypes": Array [
+      TypeUnit {
+        "_id": 7,
+        "_name": "Commercial Office Space",
       },
-      Object {
-        "id": 8,
-        "name": "Office in IT park/SEZ",
+      TypeUnit {
+        "_id": 8,
+        "_name": "Office in IT park/SEZ",
       },
-      Object {
-        "id": 9,
-        "name": "Commercial Showroom",
+      TypeUnit {
+        "_id": 9,
+        "_name": "Commercial Showroom",
       },
-      Object {
-        "id": 10,
-        "name": "Warehouse / Godown",
+      TypeUnit {
+        "_id": 10,
+        "_name": "Warehouse / Godown",
       },
     ],
-    "id": 2,
-    "name": "Commercial",
-    "space_types": Array [
-      Object {
-        "id": 2,
-        "name": "Bathroom",
+    "_id": 2,
+    "_name": "Commercial",
+    "_spaceTypes": Array [
+      TypeUnit {
+        "_id": 2,
+        "_name": "Bathroom",
       },
     ],
   },

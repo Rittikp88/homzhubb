@@ -79,6 +79,7 @@ const opacity = {
   ratingLow: 'rgba(242, 61, 6, 0.12)',
   ratingHigh: 'rgba(71, 194, 178, 0.12)',
   reminderBackground: 'rgba(0, 132, 248, 0.1)',
+  greenOpacity: '#DDF4E7',
 };
 
 const gradientAssetMetrics = {

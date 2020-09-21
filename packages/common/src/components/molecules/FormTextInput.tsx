@@ -40,6 +40,7 @@ export interface IFormTextInputProps extends TextInputProps {
   disallowedCharacters?: RegExp;
   onValueChange?: (text: string) => void;
   isTouched?: boolean;
+  editable?: boolean;
   onIconPress?: () => void;
 }
 
@@ -75,6 +76,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       isOptional,
       helpText,
       isTouched = true,
+      editable = true,
       maxLength = 40,
       onIconPress,
       ...rest
@@ -94,6 +96,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       placeholderTextColor: theme.form.placeholderColor,
       style: inputFieldStyles,
       autoCorrect: false,
+      editable,
       maxLength,
       onChangeText: this.handleTextChange,
       onBlur: (): void => {
@@ -198,6 +201,9 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     if (isFocused) {
       inputProps.style = { ...inputProps.style, ...theme.form.fieldFocus };
       labelStyles = { ...labelStyles, color: theme.colors.primaryColor };
+    }
+    if (!editable) {
+      inputProps.style = { ...inputProps.style, ...theme.form.fieldDisabled };
     }
 
     return (

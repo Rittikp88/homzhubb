@@ -10,6 +10,7 @@ exports[`Asset Location Search should render snapshot 1`] = `
 >
   <Memo(Header)
     icon="left-arrow"
+    isBarVisible={false}
     isHeadingVisible={true}
     onIconPress={[Function]}
     testID="header"
@@ -22,6 +23,14 @@ exports[`Asset Location Search should render snapshot 1`] = `
     testID="searchBar"
     updateValue={[Function]}
     value=""
+  />
+  <View
+    style={
+      Object {
+        "backgroundColor": "#2CBA67",
+        "height": 4,
+      }
+    }
   />
   <Memo(CurrentLocation)
     onGetCurrentPositionSuccess={[Function]}

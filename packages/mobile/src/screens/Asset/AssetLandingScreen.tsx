@@ -82,7 +82,7 @@ export class AssetLandingScreen extends React.PureComponent<Props, {}> {
 
   public onAddProperty = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.PostPropertySearch });
+    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
   };
 
   public onSwitchProperty = (): void => {

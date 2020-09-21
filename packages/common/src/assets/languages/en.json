@@ -95,7 +95,8 @@
     "fivePlus": "5+",
     "downloadSuccess": "Successfully Downloaded",
     "today": "Today",
-    "tomorrow": "Tomorrow"
+    "tomorrow": "Tomorrow",
+    "requiredText": "Please enter {{field}}"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -159,6 +160,13 @@
     "unitNoRequired": "Please enter unit no",
     "unitNo": "Unit No.",
     "blockNo": "Block No.",
+    "address": "Address",
+    "pincode": "Pincode",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "myProjectIs": "My Property is",
+    "selectType": "Select your type",
     "saveLocation": "Save Location",
     "setLocation": "Set Location",
     "locationDetails": "Location Details",

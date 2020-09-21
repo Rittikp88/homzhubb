@@ -1,7 +1,6 @@
 import { IPropertyState } from '@homzhub/common/src/modules/property/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PropertyActionTypes, PropertyPayloadTypes } from '@homzhub/common/src/modules/property/actions';
-import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 
 export const initialPropertyState: IPropertyState = {
   currentPropertyId: 0,
@@ -33,7 +32,7 @@ export const propertyReducer = (
         ...state,
         ['propertyDetails']: {
           ...state.propertyDetails,
-          ['propertyGroup']: action.payload as IPropertyDetailsData[],
+          ['propertyGroup']: [] as any,
         },
         ['loaders']: { ...state.loaders, ['property']: false },
       };

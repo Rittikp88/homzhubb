@@ -485,7 +485,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                       "overflow": "hidden",
                                       "paddingBottom": 10,
                                     },
-                                    undefined,
+                                    Object {
+                                      "marginBottom": 20,
+                                      "paddingBottom": 0,
+                                      "paddingTop": 10,
+                                    },
                                   ]
                                 }
                               >
@@ -496,7 +500,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                         "overflow": "hidden",
                                         "paddingBottom": 10,
                                       },
-                                      undefined,
+                                      Object {
+                                        "marginBottom": 20,
+                                        "paddingBottom": 0,
+                                        "paddingTop": 10,
+                                      },
                                     ]
                                   }
                                 >

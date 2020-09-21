@@ -1,9 +1,15 @@
-import { Coordinate, PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { Coordinate, PointOfInterest, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 // Constants
 const RADIUS_OF_EARTH_IN_KM = 6371.071;
 const KM_TO_MILES_RATE = 1.60934;
 const LIMIT = 10;
+const LocationKeysToMatch = {
+  country: 'country',
+  state: 'administrative_area_level_1',
+  city: 'locality',
+  pincode: 'postal_code',
+};
 
 class ResponseHelper {
   public transformPOIs = (pointsOfInterest: any, originPoint: Coordinate): PointOfInterest[] => {
@@ -47,6 +53,22 @@ class ResponseHelper {
       finalDistance /= KM_TO_MILES_RATE;
     }
     return finalDistance;
+  };
+
+  public getLocationDetails = (placeData: GooglePlaceDetail): Record<string, string> => {
+    const locationData = {} as Record<string, string>;
+    const { address_components: addressComponents } = placeData;
+
+    addressComponents.forEach((component): void => {
+      Object.keys(LocationKeysToMatch).forEach((key: string) => {
+        // @ts-ignore
+        if (component.types[0] === LocationKeysToMatch[key]) {
+          locationData[key] = component.long_name;
+        }
+      });
+    });
+
+    return locationData;
   };
 
   private toRadian = (angle: number): number => (Math.PI / 180) * angle;

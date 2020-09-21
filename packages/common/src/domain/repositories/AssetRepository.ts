@@ -1,9 +1,8 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
-  ICreateAssetDetails,
+  ICreateAssetParams,
   ICreateAssetResult,
   ICreateDocumentPayload,
   IScheduleVisitPayload,
@@ -11,10 +10,11 @@ import {
   IUpdateAssetDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
-import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetLeadType, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import {
   ILeaseTermDetails,
   ICreateLeaseTermDetails,
@@ -51,7 +51,7 @@ const ENDPOINTS = {
   postVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   markAttachmentAsCoverImage: (propertyId: number, attachmentId: number): string =>
     `assets/${propertyId}/attachments/${attachmentId}/cover-image`,
-  getPropertyDetails: (): string => 'asset-groups/',
+  getAssetGroups: (): string => 'asset-groups/',
   deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
   getVerificationDocumentDetails: (): string => 'verification-document-types/',
@@ -83,11 +83,12 @@ class AssetRepository {
     return ObjectMapper.deserialize(Asset, response);
   };
 
-  public getDetails = async (): Promise<IPropertyDetailsData[]> => {
-    return await this.apiClient.get(ENDPOINTS.getPropertyDetails());
+  public getAssetGroups = async (): Promise<AssetGroup[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getAssetGroups());
+    return ObjectMapper.deserializeArray(AssetGroup, response);
   };
 
-  public createAsset = async (assetDetails: ICreateAssetDetails): Promise<ICreateAssetResult> => {
+  public createAsset = async (assetDetails: ICreateAssetParams): Promise<ICreateAssetResult> => {
     return await this.apiClient.post(ENDPOINTS.asset(), assetDetails);
   };
 

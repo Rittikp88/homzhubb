@@ -23,19 +23,19 @@ const PropertyDetailsLocation = (props: Props): React.ReactElement => {
   return (
     <View style={styles.locationContainer}>
       <View style={styles.icon}>
-        <Icon name={icons.locationMarker} size={30} color={theme.colors.darkTint5} />
+        <Icon name={icons.locationMarkerTick} size={30} color={theme.colors.green} />
       </View>
-      <View style={styles.address}>
-        <Label type="large" textType="semiBold">
-          {propertyName}
-        </Label>
-        <Label type="regular" textType="regular" style={styles.addressPadding}>
+      <View style={styles.textContainer}>
+        <View style={styles.rowContainer}>
+          <Label type="large" textType="regular" style={styles.textColor}>
+            {propertyName}
+          </Label>
+          <Label type="large" textType="semiBold" style={styles.label} onPress={navigateToMaps} testID={testID}>
+            {t('common:change')}
+          </Label>
+        </View>
+        <Label type="large" textType="regular" numberOfLines={1} style={styles.addressPadding}>
           {propertyAddress}
-        </Label>
-      </View>
-      <View style={styles.navigation}>
-        <Label type="large" textType="semiBold" style={styles.label} onPress={navigateToMaps} testID={testID}>
-          {t('common:change')}
         </Label>
       </View>
     </View>
@@ -48,27 +48,30 @@ export { HOC as PropertyDetailsLocation };
 const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: 'row',
-    flex: 1,
     margin: theme.layout.screenPadding,
   },
-  icon: {
+  textContainer: {
     flex: 1,
-    backgroundColor: theme.colors.darkTint10,
-    marginRight: 10,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  icon: {
+    ...(theme.circleCSS(52) as object),
+    backgroundColor: theme.colors.greenOpacity,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
-  },
-  navigation: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  address: {
-    flex: 3,
+    alignSelf: 'center',
+    marginEnd: 12,
   },
   addressPadding: {
-    paddingTop: 10,
+    paddingTop: 4,
+    marginEnd: 12,
+    color: theme.colors.darkTint3,
+  },
+  textColor: {
+    color: theme.colors.darkTint3,
   },
   label: {
     color: theme.colors.primaryColor,

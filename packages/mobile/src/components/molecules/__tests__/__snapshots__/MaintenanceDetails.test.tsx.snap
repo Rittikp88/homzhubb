@@ -204,6 +204,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                   <Component
                     allowFontScaling={true}
                     autoCorrect={false}
+                    editable={true}
                     keyboardType="number-pad"
                     maxLength={12}
                     onBlur={[Function]}
@@ -230,6 +231,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                     <TextInput
                       allowFontScaling={true}
                       autoCorrect={false}
+                      editable={true}
                       keyboardType="number-pad"
                       maxLength={12}
                       onBlur={[Function]}
@@ -1229,7 +1231,11 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                           "overflow": "hidden",
                                                           "paddingBottom": 10,
                                                         },
-                                                        undefined,
+                                                        Object {
+                                                          "marginBottom": 20,
+                                                          "paddingBottom": 0,
+                                                          "paddingTop": 10,
+                                                        },
                                                       ]
                                                     }
                                                   >
@@ -1240,7 +1246,11 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                             "overflow": "hidden",
                                                             "paddingBottom": 10,
                                                           },
-                                                          undefined,
+                                                          Object {
+                                                            "marginBottom": 20,
+                                                            "paddingBottom": 0,
+                                                            "paddingTop": 10,
+                                                          },
                                                         ]
                                                       }
                                                     >

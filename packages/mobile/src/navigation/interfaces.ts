@@ -4,6 +4,7 @@ import { ISocialUserData } from '@homzhub/common/src/assets/constants';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
+import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
@@ -75,8 +76,9 @@ export enum ScreensKeys {
   AddRecordScreen = 'AddRecordScreen',
 
   // PropertyPostStack
-  PostPropertySearch = 'PostPropertySearch',
-  PostPropertyMap = 'PostPropertyMap',
+  AssetLocationSearch = 'AssetLocationSearch',
+  AssetLocationMap = 'AssetLocationMap',
+  PostAssetDetails = 'PostAssetDetails',
   PropertyDetailsScreen = 'PropertyDetails',
   AddPropertyScreen = 'AddPropertyScreen',
   AssetPlanSelection = 'AssetPlanSelection',
@@ -128,17 +130,19 @@ export interface IResetPasswordProps extends IScreenCallback {
 }
 
 // Post Property
-export interface IAddPropertyMapProps {
-  initialLatitude: number;
-  initialLongitude: number;
-  primaryTitle: string;
-  secondaryTitle: string;
+export interface IAssetLocationMapProps {
+  placeData: GooglePlaceDetail;
 }
 
-export interface IPropertyDetailScreenProps {
-  propertyId: number;
-  primaryAddress: string;
-  secondaryAddress: string;
+export interface IPostAssetDetailsProps {
+  lat: number;
+  lng: number;
+  name: string;
+  address: string;
+  pincode: string;
+  city: string;
+  state: string;
+  country: string;
 }
 
 export type MarkdownType = 'visit' | 'verification';

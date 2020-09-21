@@ -7,7 +7,7 @@ import { PropertyActions, PropertyActionTypes } from '@homzhub/common/src/module
 
 export function* getPropertyDetails() {
   try {
-    const data = yield call(AssetRepository.getDetails);
+    const data = yield call(AssetRepository.getAssetGroups);
     yield put(PropertyActions.getPropertyDetailsSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);

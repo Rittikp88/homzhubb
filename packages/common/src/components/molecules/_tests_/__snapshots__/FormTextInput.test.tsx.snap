@@ -64,6 +64,7 @@ Array [
     <TextInput
       allowFontScaling={true}
       autoCorrect={false}
+      editable={true}
       keyboardType="numeric"
       maxLength={40}
       onBlur={[Function]}
@@ -176,6 +177,7 @@ Array [
     <TextInput
       allowFontScaling={true}
       autoCorrect={false}
+      editable={true}
       keyboardType="number-pad"
       maxLength={40}
       onBlur={[Function]}
@@ -336,6 +338,7 @@ Array [
     <TextInput
       allowFontScaling={true}
       autoCorrect={false}
+      editable={true}
       maxLength={40}
       onBlur={[Function]}
       onChangeText={[Function]}

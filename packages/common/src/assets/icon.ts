@@ -37,6 +37,7 @@ export const icons = {
   circularCrossFilled: 'circular-cross-filled',
   circularWarningFilled: 'circular-warning-filled',
   locationMarker: 'location-marker',
+  locationMarkerTick: 'location-marker-tick',
   info: 'info',
   idProof: 'id-proof',
   document: 'document',
@@ -160,4 +161,7 @@ export const icons = {
   lodgeMarker: 'lodge-marker',
   park: 'park',
   parkMarker: 'park-marker',
+  commercial: 'commercial',
+  industrial: 'industrial',
+  residential: 'residential',
 };

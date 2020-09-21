@@ -2,29 +2,29 @@ import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 
 interface ICommonHeaderProps {
-  icon: string;
+  icon?: string;
   onIconPress?: () => void;
   type?: 'primary' | 'secondary';
   isHeadingVisible?: boolean;
+  isBarVisible?: boolean;
   title?: string;
   testID?: string;
-  isBottomStyleVisible?: boolean;
 }
 const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 34 : StatusBar.currentHeight;
 
 const Header = (props: ICommonHeaderProps): React.ReactElement => {
   const {
-    type = 'primary',
-    icon,
-    onIconPress,
-    isHeadingVisible = true,
     title,
+    onIconPress,
+    type = 'primary',
+    icon = icons.leftArrow,
+    isHeadingVisible = true,
+    isBarVisible = true,
     testID,
-    isBottomStyleVisible = false,
   } = props;
 
   let backgroundColor = theme.colors.primaryColor;
@@ -45,10 +45,7 @@ const Header = (props: ICommonHeaderProps): React.ReactElement => {
           barStyle={barStyle as 'light-content' | 'dark-content'}
         />
       </View>
-      <View
-        style={[styles.container, { backgroundColor }, isBottomStyleVisible && styles.containerBottom]}
-        testID={testID}
-      >
+      <View style={[styles.container, { backgroundColor }]} testID={testID}>
         <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
         {isHeadingVisible && (
           <Text numberOfLines={1} type="small" textType="semiBold" style={[styles.title, { color: textColor }]}>
@@ -56,6 +53,7 @@ const Header = (props: ICommonHeaderProps): React.ReactElement => {
           </Text>
         )}
       </View>
+      {isBarVisible && <View style={styles.bar} />}
     </>
   );
 };
@@ -72,9 +70,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  containerBottom: {
-    borderBottomWidth: 4,
-    borderBottomColor: theme.colors.green,
+  bar: {
+    height: 4,
+    backgroundColor: theme.colors.green,
   },
   title: {
     textAlign: 'center',

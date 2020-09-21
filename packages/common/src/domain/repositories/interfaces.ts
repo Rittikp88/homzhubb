@@ -179,12 +179,18 @@ export interface ISpaceAvailablePayload {
   count?: number;
 }
 
-export interface ICreateAssetDetails {
+export interface ICreateAssetParams {
   project_name: string;
   unit_number: string;
   block_number: string;
   latitude: string | number;
   longitude: string | number;
+  address: string;
+  postal_code: string;
+  city: string;
+  state: string;
+  country: string;
+  asset_type: number;
 }
 
 export interface ICreateAssetResult {

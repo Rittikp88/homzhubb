@@ -1,19 +1,38 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { AssetGroup, IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 const actionTypePrefix = 'RecordAsset/';
 
 export const RecordAssetActionTypes = {
   GET: {
+    ASSET_GROUPS: `${actionTypePrefix}ASSET_GROUPS`,
+    ASSET_GROUPS_SUCCESS: `${actionTypePrefix}ASSET_GROUPS_SUCCESS`,
+    ASSET_GROUPS_FAILURE: `${actionTypePrefix}ASSET_GROUPS_FAILURE`,
     ASSET_PLAN_LIST: `${actionTypePrefix}ASSET_PLAN_LIST`,
     ASSET_PLAN_LIST_SUCCESS: `${actionTypePrefix}ASSET_PLAN_LIST_SUCCESS`,
     ASSET_PLAN_LIST_FAILURE: `${actionTypePrefix}ASSET_PLAN_LIST_FAILURE`,
   },
   SET: {
+    ASSET_ID: `${actionTypePrefix}ASSET_ID`,
     SELECTED_PLAN: `${actionTypePrefix}SELECTED_PLAN`,
   },
+  RESET: `${actionTypePrefix}RESET`,
 };
+const getAssetGroups = (): IFluxStandardAction => ({
+  type: RecordAssetActionTypes.GET.ASSET_GROUPS,
+});
+
+const getAssetGroupsSuccess = (payload: AssetGroup[]): IFluxStandardAction<IAssetGroup[]> => ({
+  type: RecordAssetActionTypes.GET.ASSET_GROUPS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getAssetGroupsFailure = (error: string): IFluxStandardAction => ({
+  type: RecordAssetActionTypes.GET.ASSET_GROUPS_FAILURE,
+  error,
+});
 
 const getAssetPlanList = (): IFluxStandardAction => {
   return {
@@ -40,11 +59,25 @@ const setSelectedPlan = (payload: ISelectedAssetPlan): IFluxStandardAction<ISele
   payload,
 });
 
-export type RecordAssetPayloadTypes = string | number | IAssetPlan[] | ISelectedAssetPlan | undefined;
+const setAssetId = (payload: number): IFluxStandardAction<number> => ({
+  type: RecordAssetActionTypes.SET.ASSET_ID,
+  payload,
+});
+
+const resetState = (): IFluxStandardAction => ({
+  type: RecordAssetActionTypes.RESET,
+});
+
+export type RecordAssetPayloadTypes = string | number | IAssetPlan[] | IAssetGroup[] | ISelectedAssetPlan | undefined;
 
 export const RecordAssetActions = {
+  getAssetGroups,
+  getAssetGroupsSuccess,
+  getAssetGroupsFailure,
   getAssetPlanList,
   getAssetPlanListSuccess,
   getAssetPlanListFailure,
   setSelectedPlan,
+  setAssetId,
+  resetState,
 };

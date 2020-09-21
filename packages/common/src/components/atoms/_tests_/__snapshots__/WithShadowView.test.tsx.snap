@@ -8,7 +8,11 @@ exports[`WithShadowView should match snapshot 1`] = `
         "overflow": "hidden",
         "paddingBottom": 10,
       },
-      undefined,
+      Object {
+        "marginBottom": 20,
+        "paddingBottom": 0,
+        "paddingTop": 10,
+      },
     ]
   }
 >

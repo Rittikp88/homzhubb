@@ -1,10 +1,13 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 import { RecordAssetActionTypes, RecordAssetPayloadTypes } from '@homzhub/common/src/modules/recordAsset/actions';
+import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 export const initialRecordAssetState: IRecordAssetState = {
+  assetId: -1,
   assetPlan: [],
+  assetGroups: [],
   selectedAssetPlan: {
     id: 0,
     selectedPlan: TypeOfPlan.RENT,
@@ -14,6 +17,7 @@ export const initialRecordAssetState: IRecordAssetState = {
   },
   loaders: {
     assetPlan: false,
+    assetGroups: false,
   },
 };
 
@@ -22,6 +26,23 @@ export const recordAssetReducer = (
   action: IFluxStandardAction<RecordAssetPayloadTypes>
 ): IRecordAssetState => {
   switch (action.type) {
+    case RecordAssetActionTypes.GET.ASSET_GROUPS:
+      return {
+        ...state,
+        ['assetGroups']: [],
+        ['loaders']: { ...state.loaders, ['assetGroups']: true },
+      };
+    case RecordAssetActionTypes.GET.ASSET_GROUPS_SUCCESS:
+      return {
+        ...state,
+        ['assetGroups']: action.payload as IAssetGroup[],
+        ['loaders']: { ...state.loaders, ['assetGroups']: false },
+      };
+    case RecordAssetActionTypes.GET.ASSET_GROUPS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['assetGroups']: false },
+      };
     case RecordAssetActionTypes.GET.ASSET_PLAN_LIST:
       return {
         ...state,
@@ -40,8 +61,12 @@ export const recordAssetReducer = (
         ['loaders']: { ...state.loaders, ['assetPlan']: false },
         ['error']: { ...state.error, ['assetPlan']: action.error as string },
       };
+    case RecordAssetActionTypes.SET.ASSET_ID:
+      return { ...state, ['assetId']: action.payload as number };
     case RecordAssetActionTypes.SET.SELECTED_PLAN:
       return { ...state, ['selectedAssetPlan']: action.payload as ISelectedAssetPlan };
+    case RecordAssetActionTypes.RESET:
+      return initialRecordAssetState;
     default:
       return state;
   }

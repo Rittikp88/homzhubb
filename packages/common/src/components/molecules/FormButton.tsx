@@ -4,12 +4,13 @@ import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Butto
 
 export interface IFormButtonProps extends IButtonProps {
   isSubmitting?: boolean;
+  disabled?: boolean;
   formProps: FormikProps<FormikValues>;
 }
 
 export const FormButton = (props: IFormButtonProps): React.ReactElement => {
-  const { isSubmitting = false, formProps, containerStyle, ...buttonProps } = props;
+  const { isSubmitting = false, disabled, formProps, containerStyle, ...buttonProps } = props;
   const isDisabled: boolean = formProps ? !(formProps.isValid && formProps.dirty) : isSubmitting;
 
-  return <Button disabled={isDisabled} {...buttonProps} containerStyle={containerStyle} />;
+  return <Button disabled={disabled || isDisabled} {...buttonProps} containerStyle={containerStyle} />;
 };

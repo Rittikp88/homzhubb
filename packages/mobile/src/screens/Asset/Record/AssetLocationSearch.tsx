@@ -4,22 +4,27 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import {
+  GoogleGeocodeData,
+  GooglePlaceData,
+  GooglePlaceDetail,
+} from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { CurrentLocation, Header } from '@homzhub/mobile/src/components';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { NavigationScreenProps, ScreensKeys, IAddPropertyMapProps } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, ScreensKeys, IAssetLocationMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IState {
   searchString: string;
   suggestions: GooglePlaceData[];
   showAutoDetect: boolean;
 }
-type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostPropertySearch>;
+type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLocationSearch>;
 
 export class AssetLocationSearch extends React.PureComponent<Props, IState> {
   public state = {
@@ -35,6 +40,7 @@ export class AssetLocationSearch extends React.PureComponent<Props, IState> {
     return (
       <View style={styles.container}>
         <Header
+          isBarVisible={false}
           type="primary"
           icon={icons.leftArrow}
           onIconPress={this.onBackPress}
@@ -49,6 +55,7 @@ export class AssetLocationSearch extends React.PureComponent<Props, IState> {
           onFocusChange={this.onToggleAutoDetect}
           testID="searchBar"
         />
+        <View style={styles.bar} />
         {suggestions.length > 0 && searchString.length > 0 && (
           <SearchResults results={suggestions} onResultPress={this.onSuggestionPress} testID="searchResults" />
         )}
@@ -86,26 +93,16 @@ export class AssetLocationSearch extends React.PureComponent<Props, IState> {
 
     GooglePlacesService.getLocationData({ lng: longitude, lat: latitude })
       .then((locData) => {
-        const { formatted_address } = locData;
-        const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
-        this.navigateToMapView({
-          initialLatitude: latitude,
-          initialLongitude: longitude,
-          primaryTitle: primaryAddress,
-          secondaryTitle: secondaryAddress,
-        });
+        this.onSuggestionPress(locData);
       })
       .catch(this.displayError);
   };
 
-  private onSuggestionPress = (place: GooglePlaceData): void => {
+  private onSuggestionPress = (place: GooglePlaceData | GoogleGeocodeData): void => {
     GooglePlacesService.getPlaceDetail(place.place_id)
-      .then((placeDetail: GooglePlaceDetail) => {
+      .then((placeData: GooglePlaceDetail) => {
         this.navigateToMapView({
-          initialLatitude: placeDetail.geometry.location.lat,
-          initialLongitude: placeDetail.geometry.location.lng,
-          primaryTitle: place.structured_formatting.main_text,
-          secondaryTitle: place.structured_formatting.secondary_text,
+          placeData,
         });
       })
       .catch(this.displayError);
@@ -121,11 +118,11 @@ export class AssetLocationSearch extends React.PureComponent<Props, IState> {
       .catch(this.displayError);
   }, 300);
 
-  private navigateToMapView = (options: IAddPropertyMapProps): void => {
+  private navigateToMapView = (options: IAssetLocationMapProps): void => {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate(ScreensKeys.PostPropertyMap, options);
+    navigate(ScreensKeys.AssetLocationMap, options);
   };
 
   private displayError = (e: Error): void => {
@@ -137,6 +134,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  bar: { height: 4, backgroundColor: theme.colors.green },
 });
 
 export default withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch);

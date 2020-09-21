@@ -124,9 +124,9 @@ PODS:
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
-  - Permission-LocationAlways (2.1.5):
+  - Permission-LocationAlways (2.2.0):
     - RNPermissions
-  - Permission-LocationWhenInUse (2.1.5):
+  - Permission-LocationWhenInUse (2.2.0):
     - RNPermissions
   - razorpay-pod (1.1.5)
   - RCTRequired (0.62.2)
@@ -333,7 +333,7 @@ PODS:
     - React
   - react-native-viewpager (4.1.6):
     - React
-  - react-native-webview (10.8.2):
+  - react-native-webview (10.9.0):
     - React
   - React-RCTActionSheet (0.62.2):
     - React-Core/RCTActionSheetHeaders (= 0.62.2)
@@ -400,9 +400,9 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.6.6):
+  - RNCPicker (1.7.1):
     - React
-  - RNGestureHandler (1.7.0):
+  - RNGestureHandler (1.8.0):
     - React
   - RNGoogleSignin (4.0.3):
     - GoogleSignIn (~> 5.0.0)
@@ -416,7 +416,7 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNPermissions (2.1.5):
+  - RNPermissions (2.2.0):
     - React
   - RNReanimated (1.13.0):
     - React
@@ -673,8 +673,8 @@ SPEC CHECKSUMS:
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
-  Permission-LocationAlways: 155e6251b757b380f6354737cae8e8d59c472495
-  Permission-LocationWhenInUse: 3624cf08c12c6019926aba3054efee7f4f8ee91e
+  Permission-LocationAlways: 8026796fd0fc8d735adbd84cd1ae28a4fb22ac22
+  Permission-LocationWhenInUse: eba08412fee84a8ac5140472d83aef2427a5befe
   razorpay-pod: 31dd24ddb70275d82be12527b45001f9bc9f1be2
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
@@ -697,7 +697,7 @@ SPEC CHECKSUMS:
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-video: eee541262ada11bc7ffe8ec5508e6a877937c462
   react-native-viewpager: f44c9e21c37d4cb76d38841c8a450e3891923461
-  react-native-webview: 0e49a2e85f42b20ea5579928a8b254a07fa901dc
+  react-native-webview: bfe5436586b214759bd5043658863549fffc8e92
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
   React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71
@@ -711,11 +711,11 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: 494015f2b7ec4bee5484b6f235aa19691426dcdb
-  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
+  RNCPicker: a2bf7bad059f23de52add203c3c5a3bc5b5239d8
+  RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9
   RNImageCropPicker: 54e5ea3d0e298ed51e1441a2fa0a0e7c90ee256d
-  RNPermissions: ad71dd4f767ec254f2cd57592fbee02afee75467
+  RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
   RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
@@ -725,6 +725,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   YoutubePlayer-in-WKWebView: af2f5929fc78882d94bfdfeea999b661b78d9717
 
-PODFILE CHECKSUM: 7362e5fb93062a3f43e321743c0d0e187409b1e4
+PODFILE CHECKSUM: 86fd5b5a1d40ac626793a4adc788d5ffac4a1f22
 
 COCOAPODS: 1.9.3

@@ -1,7 +1,6 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 
-const getPropertyDetails = (state: IState): IPropertyDetailsData[] | null => {
+const getPropertyDetails = (state: IState): any => {
   const {
     property: {
       propertyDetails: { propertyGroup },

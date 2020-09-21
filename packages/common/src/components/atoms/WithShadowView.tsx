@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 export interface IShadowViewProps {
@@ -9,7 +10,7 @@ export interface IShadowViewProps {
 }
 
 export const WithShadowView = (props: IShadowViewProps): React.ReactElement => {
-  const { children, outerViewStyle, shadowViewStyle } = props;
+  const { children, outerViewStyle = styles.defaultShadowView, shadowViewStyle } = props;
   return (
     <View style={[styles.outerView, outerViewStyle]}>
       <View style={[styles.shadowView, shadowViewStyle]}>{children}</View>
@@ -21,6 +22,11 @@ const styles = StyleSheet.create({
   outerView: {
     overflow: 'hidden',
     paddingBottom: 10,
+  },
+  defaultShadowView: {
+    paddingTop: 10,
+    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
+    paddingBottom: 0,
   },
   shadowView: {
     backgroundColor: theme.colors.white,

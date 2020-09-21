@@ -281,7 +281,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private handleAddProperty = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.PostPropertySearch });
+    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
   };
 
   private verifyData = (): void => {

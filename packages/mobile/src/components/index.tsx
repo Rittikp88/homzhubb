@@ -16,6 +16,7 @@ export { AddressWithStepIndicator } from '@homzhub/mobile/src/components/molecul
 export { AnimatedHeader } from '@homzhub/mobile/src/components/molecules/AnimatedHeader';
 export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecules/AssetAdvertisementBanner';
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
+export { AssetGroupSelection } from '@homzhub/mobile/src/components/molecules/AssetGroupSelection';
 export { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
 export { AssetMarketTrends } from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 export { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
@@ -48,7 +49,6 @@ export { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilte
 export { GoogleSearchBar } from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 export { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
 export { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
-export { SetLocationForm } from '@homzhub/mobile/src/components/molecules/SetLocationForm';
 export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 export { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
@@ -64,7 +64,6 @@ export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/Financ
 export { LoginForm } from '@homzhub/mobile/src/components/organisms/LoginForm';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
-export { PropertyDetailsItems } from '@homzhub/mobile/src/components/organisms/PropertyDetailItems';
 export { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 export { SignUpForm } from '@homzhub/mobile/src/components/organisms/SignUpForm';
 export { SocialMediaComponent } from '@homzhub/mobile/src/components/organisms/SocialMediaComponent';

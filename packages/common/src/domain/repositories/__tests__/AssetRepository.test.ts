@@ -15,7 +15,7 @@ describe('AssetRepository', () => {
 
   it('should fetch a asset data', async () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(assetGroups));
-    const response = await AssetRepository.getDetails();
+    const response = await AssetRepository.getAssetGroups();
     expect(response).toMatchSnapshot();
   });
 

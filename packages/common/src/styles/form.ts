@@ -1,6 +1,6 @@
-import { colors } from './colors';
+import { colors } from '@homzhub/common/src/styles/colors';
 
-const formStyles = {
+export const form = {
   placeholderColor: colors.disabled,
   formErrorColor: colors.error,
   formLabel: {
@@ -39,6 +39,10 @@ const formStyles = {
   fieldFocus: {
     borderColor: colors.primaryColor,
   },
+  fieldDisabled: {
+    borderColor: colors.background,
+    opacity: 0.6,
+  },
   dropdownContainer: {
     backgroundColor: 'transparent',
     height: 48,
@@ -51,5 +55,3 @@ const formStyles = {
     backgroundColor: colors.disabled,
   },
 };
-
-export { formStyles as form };

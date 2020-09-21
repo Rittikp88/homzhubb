@@ -43,7 +43,6 @@ exports[`Header should match snapshot 1`] = `
         Object {
           "backgroundColor": "#0084F8",
         },
-        false,
       ]
     }
   >
@@ -60,7 +59,6 @@ exports[`Header should match snapshot 1`] = `
           Object {
             "backgroundColor": "#0084F8",
           },
-          false,
         ]
       }
     >
@@ -198,6 +196,23 @@ exports[`Header should match snapshot 1`] = `
       </Text>
     </View>
   </View>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#2CBA67",
+        "height": 4,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#2CBA67",
+          "height": 4,
+        }
+      }
+    />
+  </View>
 </Memo(Header)>
 `;
 
@@ -247,7 +262,6 @@ exports[`Header should match snapshot for secondary theme 1`] = `
         Object {
           "backgroundColor": "#FFFFFF",
         },
-        false,
       ]
     }
   >
@@ -264,7 +278,6 @@ exports[`Header should match snapshot for secondary theme 1`] = `
           Object {
             "backgroundColor": "#FFFFFF",
           },
-          false,
         ]
       }
     >
@@ -404,6 +417,23 @@ exports[`Header should match snapshot for secondary theme 1`] = `
       </Text>
     </View>
   </View>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#2CBA67",
+        "height": 4,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#2CBA67",
+          "height": 4,
+        }
+      }
+    />
+  </View>
 </Memo(Header)>
 `;
 
@@ -452,7 +482,6 @@ exports[`Header should match snapshot without title 1`] = `
         Object {
           "backgroundColor": "#0084F8",
         },
-        false,
       ]
     }
   >
@@ -469,7 +498,6 @@ exports[`Header should match snapshot without title 1`] = `
           Object {
             "backgroundColor": "#0084F8",
           },
-          false,
         ]
       }
     >
@@ -608,6 +636,23 @@ exports[`Header should match snapshot without title 1`] = `
         </Text>
       </Text>
     </View>
+  </View>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#2CBA67",
+        "height": 4,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#2CBA67",
+          "height": 4,
+        }
+      }
+    />
   </View>
 </Memo(Header)>
 `;

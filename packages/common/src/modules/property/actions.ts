@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyDetailsData } from '@homzhub/common/src/domain/models/Property';
 
 const actionTypePrefix = 'Property/';
 
@@ -24,7 +23,7 @@ const getPropertyDetails = (): IFluxStandardAction => {
   };
 };
 
-const getPropertyDetailsSuccess = (data: any): IFluxStandardAction<IPropertyDetailsData[]> => {
+const getPropertyDetailsSuccess = (data: any): IFluxStandardAction<[]> => {
   return {
     type: PropertyActionTypes.GET.PROPERTY_DETAILS_SUCCESS,
     payload: data,
@@ -54,7 +53,7 @@ const setPropertyInitialState = (): IFluxStandardAction => {
   };
 };
 
-export type PropertyPayloadTypes = string | number | IPropertyDetailsData[] | undefined;
+export type PropertyPayloadTypes = string | number | undefined;
 
 export const PropertyActions = {
   getPropertyDetails,
