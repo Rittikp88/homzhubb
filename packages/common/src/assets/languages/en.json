@@ -97,7 +97,8 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "add": "ADD",
-    "requiredText": "Please enter {{field}}"
+    "requiredText": "Please enter {{field}}",
+    "congratulations": "Congratulations!"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -270,7 +271,9 @@
     "shareAsUnits": "Share your Property as Units",
     "otherHighlights": "Other Highlights",
     "highlightPlaceholder": "Eg. Power Supply",
-    "otherDetails": "Other Details"
+    "otherDetails": "Other Details",
+    "clickContinue": "Click \"Continue\" to see the property plans",
+    "yourDetailsAdded": "Your property details are added!!"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

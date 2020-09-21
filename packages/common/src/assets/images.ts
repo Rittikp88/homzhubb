@@ -12,4 +12,5 @@ export const images = {
   dashboardUnfocused: require('@homzhub/common/src/assets/images/dashboardUnfocused.png'),
   dashboardFocused: require('@homzhub/common/src/assets/images/dashboardFocused.png'),
   property: require('@homzhub/common/src/assets/images/property.png'),
+  check: require('@homzhub/common/src/assets/images/check.png'),
 };

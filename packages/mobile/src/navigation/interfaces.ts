@@ -80,7 +80,7 @@ export enum ScreensKeys {
   AssetLocationMap = 'AssetLocationMap',
   PostAssetDetails = 'PostAssetDetails',
   PropertyDetailsScreen = 'PropertyDetails',
-  AddPropertyScreen = 'AddPropertyScreen',
+  AddProperty = 'AddProperty',
   AssetPlanSelection = 'AssetPlanSelection',
   AssetServiceCheckoutScreen = 'AssetServiceCheckoutScreen',
   MarkdownScreen = 'Markdown',

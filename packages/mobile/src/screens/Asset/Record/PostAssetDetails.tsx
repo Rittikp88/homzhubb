@@ -245,6 +245,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       },
       setAssetId,
       assetId,
+      navigation,
     } = this.props;
     const { assetTypeId: asset_type } = this.state;
 
@@ -269,6 +270,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
         const response = await AssetRepository.createAsset(params);
         setAssetId(response.id);
       }
+      navigation.navigate(ScreensKeys.AddProperty);
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
