@@ -98,7 +98,11 @@
     "tomorrow": "Tomorrow",
     "add": "ADD",
     "requiredText": "Please enter {{field}}",
-    "congratulations": "Congratulations!"
+    "congratulations": "Congratulations!",
+    "havePromoCode": "Have a promo code?",
+    "apply": "Apply",
+    "promoPlaceholder": "Enter Promo code",
+    "promoError": "Please enter a valid Promotional Code"
   },
   "auth": {
     "verifyNumber": "Verify your number",

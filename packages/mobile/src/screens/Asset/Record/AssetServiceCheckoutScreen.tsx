@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { CommonActions } from '@react-navigation/native';
 import { SceneMap, TabView } from 'react-native-tab-view';
 // @ts-ignore
@@ -16,12 +17,11 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
-import { AddressWithStepIndicator, BottomSheet, Header } from '@homzhub/mobile/src/components';
+import { AddressWithStepIndicator, BottomSheet, Header, PropertyPayment } from '@homzhub/mobile/src/components';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { DummyView } from '@homzhub/mobile/src/screens/Asset/Record/DummyView';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
-import { bindActionCreators, Dispatch } from 'redux';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
@@ -155,7 +155,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
       return <PropertyVerification propertyId={assetId} typeOfPlan={selectedPlan} updateStep={this.handleNextStep} />;
     },
     services: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
-    payment: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+    payment: (): ReactElement => <PropertyPayment handleNextStep={this.handleNextStep} />,
   });
 
   private openActionBottomSheet = (): React.ReactNode => {
@@ -292,13 +292,18 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
 
   public handleSkip = (): void => {
     const { navigation, resetState } = this.props;
-    resetState();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: ScreensKeys.BottomTabs }],
-      })
-    );
+    const { currentIndex } = this.state;
+    if (currentIndex < this.getRoutes().length - 1) {
+      this.setState({ currentIndex: currentIndex + 1 });
+    } else {
+      resetState();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreensKeys.BottomTabs }],
+        })
+      );
+    }
   };
 }
 

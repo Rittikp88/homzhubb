@@ -1,34 +1,28 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Text } from '@homzhub/common/src/components';
-import { PaymentGateway, IPersonalData } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
+import { StyleSheet, View } from 'react-native';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
+import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
+import { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 
 interface IPaymentProps {
-  amount?: string;
-  currency?: string;
-  personalData?: IPersonalData;
-  onPaymentSuccess: () => void;
-  testID?: string;
+  handleNextStep: () => void;
 }
 
 export const PropertyPayment = (props: IPaymentProps): React.ReactElement => {
-  const { onPaymentSuccess } = props;
   return (
-    <>
-      <Text type="large">Pay Rs. 1000</Text>
-      <PaymentGateway
-        type="primary"
-        title="Pay Now"
-        containerStyle={styles.buttonStyle}
-        onPaymentSuccess={onPaymentSuccess}
-      />
-    </>
+    <View style={styles.container}>
+      <PromoCode />
+      <PaymentGateway type="primary" title="Pay Now" onPaymentSuccess={FunctionUtils.noop} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  buttonStyle: {
-    flex: 0,
-    margin: 16,
+  container: {
+    backgroundColor: theme.colors.white,
+    marginHorizontal: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
 });
