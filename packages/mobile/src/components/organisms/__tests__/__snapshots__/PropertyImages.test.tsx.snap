@@ -46,7 +46,6 @@ exports[`Property Images Component should render the PropertyImages component 1`
       <View
         style={
           Object {
-            "flex": 1,
             "margin": 20,
           }
         }
@@ -86,15 +85,7 @@ exports[`Property Images Component should render the PropertyImages component 1`
       }
     />
   </BottomSheet>
-  <WithShadowView
-    outerViewStyle={
-      Object {
-        "marginBottom": 20,
-        "paddingBottom": 0,
-        "paddingTop": 10,
-      }
-    }
-  >
+  <WithShadowView>
     <Button
       containerStyle={
         Object {

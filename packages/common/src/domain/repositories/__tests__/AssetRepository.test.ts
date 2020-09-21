@@ -2,7 +2,6 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { assetGroups, leaseTermDetail, saleTerm } from '@homzhub/common/src/mocks/PropertyDetails';
 import { FurnishingType, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { PropertyVerificationTypes } from '@homzhub/common/src/mocks/PropertyVerification';
 import { mockAsset } from '@homzhub/common/src/mocks/AssetDescription';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
@@ -142,22 +141,6 @@ describe('AssetRepository', () => {
     expect(response).toStrictEqual({ id: 5 });
   });
 
-  it('Should fetch existing verification document types', async () => {
-    jest
-      .spyOn(BootstrapAppService.clientInstance, 'get')
-      .mockImplementation(() => Promise.resolve(PropertyVerificationTypes));
-    const response = await AssetRepository.getExistingVerificationDocuments(1);
-    expect(response).toMatchSnapshot();
-  });
-
-  it('Should fetch verification document types', async () => {
-    jest
-      .spyOn(BootstrapAppService.clientInstance, 'get')
-      .mockImplementation(() => Promise.resolve(PropertyVerificationTypes));
-    const response = await AssetRepository.getVerificationDocumentTypes();
-    expect(response).toMatchSnapshot();
-  });
-
   it('Should delete verification document', async () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'delete').mockImplementation(() => Promise.resolve({}));
     const response = await AssetRepository.deleteVerificationDocument(1, 1);
@@ -216,34 +199,6 @@ describe('AssetRepository', () => {
   it('Should delete property image', async () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'delete').mockImplementation(() => Promise.resolve({}));
     const response = await AssetRepository.deletePropertyImage(1);
-    expect(response).toMatchSnapshot();
-  });
-
-  it('Should get asset identity documents', async () => {
-    const data = [
-      {
-        id: 1,
-        verification_document_type: {
-          id: 1,
-          name: 'file.jpg',
-          title: 'title',
-          category: 'category',
-          description: 'description',
-          label: 'label',
-          helpText: 'helpText',
-          icon: 'icon',
-        },
-        document: {
-          id: 1,
-          name: 'name',
-          attachment_type: 'attachment_type',
-          mime_type: 'mime_type',
-          link: 'link',
-        },
-      },
-    ];
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(data));
-    const response = await AssetRepository.getAssetIdentityDocuments();
     expect(response).toMatchSnapshot();
   });
 

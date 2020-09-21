@@ -2,29 +2,38 @@ import React, { ReactElement } from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { CommonActions } from '@react-navigation/native';
 import { SceneMap, TabView } from 'react-native-tab-view';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { RNSwitch, Text } from '@homzhub/common/src/components';
+import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
 import { AddressWithStepIndicator, BottomSheet, Header } from '@homzhub/mobile/src/components';
+import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { DummyView } from '@homzhub/mobile/src/screens/Asset/Record/DummyView';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { bindActionCreators, Dispatch } from 'redux';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
+  assetId: number;
+}
+
+interface IDispatchProps {
+  resetState: () => void;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetServiceCheckoutScreen>;
-type Props = WithTranslation & libraryProps & IStateProps;
+type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 interface IRoutes {
   key: string;
@@ -60,33 +69,32 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
     });
     return (
       <>
-        <Header icon={icons.leftArrow} title={this.getHeader()} isBottomStyleVisible onIconPress={this.goBack} />
+        <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
         <ScrollView style={styles.screen}>
-          <View style={styles.container}>
-            <AddressWithStepIndicator
-              steps={this.getSteps()}
-              badge={badge}
-              badgeStyle={styles.badgeStyle}
-              progress={progress}
-              propertyType="Bungalow"
-              primaryAddress="Kalpataru Splendour"
-              subAddress="Shankar Kalat Nagar, Maharashtra 411057"
-              currentIndex={currentIndex}
-              isStepDone={isStepDone}
-              onPressSteps={this.handlePreviousStep}
-            />
-            {this.renderTabHeader()}
-            <TabView
-              renderScene={this.renderScene}
-              onIndexChange={this.handleIndexChange}
-              renderTabBar={(): null => null}
-              swipeEnabled={false}
-              navigationState={{
-                index: currentIndex,
-                routes: this.getRoutes(),
-              }}
-            />
-          </View>
+          <AddressWithStepIndicator
+            steps={this.getSteps()}
+            badge={badge}
+            badgeStyle={styles.badgeStyle}
+            progress={progress}
+            propertyType="Bungalow"
+            primaryAddress="Kalpataru Splendour"
+            subAddress="Shankar Kalat Nagar, Maharashtra 411057"
+            currentIndex={currentIndex}
+            isStepDone={isStepDone}
+            onPressSteps={this.handlePreviousStep}
+            containerStyle={styles.screenMargin}
+          />
+          <View style={styles.screenMargin}>{this.renderTabHeader()}</View>
+          <TabView
+            renderScene={this.renderScene}
+            onIndexChange={this.handleIndexChange}
+            renderTabBar={(): null => null}
+            swipeEnabled={false}
+            navigationState={{
+              index: currentIndex,
+              routes: this.getRoutes(),
+            }}
+          />
         </ScrollView>
         {this.openActionBottomSheet()}
       </>
@@ -101,7 +109,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
     const togglePropertyUnits = (): void => this.setState({ isPropertyAsUnits: !isPropertyAsUnits });
     return (
       <>
-        {tabTitle === t('actions') && (
+        {tabTitle === t('lease') && (
           <View style={styles.actionsContainer}>
             <Text type="small" textType="semiBold">
               {t('shareAsUnits')}
@@ -113,15 +121,25 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
           <Text type="small" textType="semiBold" style={styles.title}>
             {tabTitle}
           </Text>
-          {tabTitle === t('actions') && (
+          {[t('lease'), t('terms')].includes(tabTitle) && (
             <Icon name={icons.tooltip} color={theme.colors.blue} size={22} onPress={toggleActionSheet} />
           )}
           {[t('verification'), t('services')].includes(tabTitle) && (
-            <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleNextStep}>
+            <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
               {t('common:skip')}
             </Text>
           )}
         </View>
+        {tabTitle === t('verification') && (
+          <View style={styles.verificationContainer}>
+            <Label type="large" textType="regular">
+              {t('propertyVerificationSubTitle')}
+            </Label>
+            <Text type="small" textType="semiBold" style={styles.link} onPress={this.navigateToVerificationHelper}>
+              {t('helperNavigationText')}
+            </Text>
+          </View>
+        )}
       </>
     );
   };
@@ -129,14 +147,23 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
   // TODO: Replace the DummyView with your components
   private renderScene = SceneMap({
     actions: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
-    verification: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+    verification: (): ReactElement => {
+      const {
+        selectedAssetPlan: { selectedPlan },
+        assetId,
+      } = this.props;
+      return <PropertyVerification propertyId={assetId} typeOfPlan={selectedPlan} updateStep={this.handleNextStep} />;
+    },
     services: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
     payment: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
   });
 
   private openActionBottomSheet = (): React.ReactNode => {
     const { isActionSheetToggled } = this.state;
-    const { t } = this.props;
+    const {
+      t,
+      selectedAssetPlan: { selectedPlan },
+    } = this.props;
     const closeActionSheet = (): void => this.setState({ isActionSheetToggled: false });
     if (!isActionSheetToggled) {
       return null;
@@ -145,7 +172,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
       <BottomSheet
         visible={isActionSheetToggled}
         onCloseSheet={closeActionSheet}
-        headerTitle={t('actions')}
+        headerTitle={selectedPlan === TypeOfPlan.RENT ? t('lease') : t('terms')}
         sheetHeight={500}
         isShadowView
       >
@@ -158,7 +185,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
           }}
           style={{ margin: theme.layout.screenPadding }}
         >
-          Action Helper Text
+          {`${selectedPlan} Helper Text`}
         </Markdown>
       </BottomSheet>
     );
@@ -178,7 +205,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
         ];
       default:
         return [
-          { key: 'actions', title: t('actions') },
+          { key: 'actions', title: selectedPlan === TypeOfPlan.RENT ? t('lease') : t('terms') },
           { key: 'verification', title: t('verification') },
           { key: 'services', title: t('services') },
           { key: 'payment', title: t('payment') },
@@ -195,7 +222,12 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
       case TypeOfPlan.MANAGE:
         return [t('actions'), t('services'), t('payment')];
       default:
-        return [t('actions'), t('verification'), t('services'), t('payment')];
+        return [
+          selectedPlan === TypeOfPlan.RENT ? t('lease') : t('terms'),
+          t('verification'),
+          t('services'),
+          t('payment'),
+        ];
     }
   };
 
@@ -252,18 +284,45 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
       this.setState({ currentIndex: currentIndex + 1 });
     }
   };
+
+  private navigateToVerificationHelper = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.MarkdownScreen, { title: 'Property Verification', isFrom: 'verification' });
+  };
+
+  public handleSkip = (): void => {
+    const { navigation, resetState } = this.props;
+    resetState();
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensKeys.BottomTabs }],
+      })
+    );
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getSelectedAssetPlan } = RecordAssetSelectors;
+  const { getSelectedAssetPlan, getCurrentAssetId } = RecordAssetSelectors;
   return {
     selectedAssetPlan: getSelectedAssetPlan(state),
+    assetId: getCurrentAssetId(state),
   };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { resetState } = RecordAssetActions;
+  return bindActionCreators(
+    {
+      resetState,
+    },
+    dispatch
+  );
 };
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(AssetServiceCheckoutScreen));
 
 const styles = StyleSheet.create({
@@ -271,13 +330,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
-  container: {
+  screenMargin: {
     margin: theme.layout.screenPadding,
   },
   actionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 10,
+  },
+  verificationContainer: {
+    justifyContent: 'space-around',
   },
   badgeStyle: {
     paddingVertical: 3,
@@ -293,6 +355,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   skip: {
+    color: theme.colors.blue,
+  },
+  link: {
+    marginVertical: 5,
     color: theme.colors.blue,
   },
 });

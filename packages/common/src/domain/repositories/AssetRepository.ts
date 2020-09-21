@@ -25,14 +25,13 @@ import {
   ISaleDetails,
   IUpdateSaleTermDetails,
 } from '@homzhub/common/src/domain/models/SaleTerms';
+import { IMarkCoverImageAttachment, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 import {
-  IMarkCoverImageAttachment,
+  ExistingVerificationDocuments,
   IPostVerificationDocuments,
-  IPropertyImagesPostPayload,
   IPropertySelectedImages,
-  IVerificationDocumentList,
-  IVerificationTypes,
-} from '@homzhub/common/src/domain/models/Service';
+  VerificationDocumentTypes,
+} from '@homzhub/common/src/domain/models/VerificationDocuments';
 
 const ENDPOINTS = {
   asset: (): string => 'assets/',
@@ -131,8 +130,9 @@ class AssetRepository {
     return await this.apiClient.put(ENDPOINTS.updateSaleTerms(propertyId, saleTermId), saleTerms);
   };
 
-  public getExistingVerificationDocuments = async (propertyId: number): Promise<IVerificationDocumentList[]> => {
-    return await this.apiClient.get(ENDPOINTS.existingVerificationDocuments(propertyId));
+  public getExistingVerificationDocuments = async (propertyId: number): Promise<ExistingVerificationDocuments[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.existingVerificationDocuments(propertyId));
+    return ObjectMapper.deserializeArray(ExistingVerificationDocuments, response);
   };
 
   public deleteVerificationDocument = async (propertyId: number, documentId: number): Promise<void> => {
@@ -168,12 +168,14 @@ class AssetRepository {
     return await this.apiClient.delete(ENDPOINTS.deletePropertyAttachment(attachmentId));
   };
 
-  public getAssetIdentityDocuments = async (): Promise<IVerificationDocumentList[]> => {
-    return await this.apiClient.get(ENDPOINTS.assetIdentityDocuments());
+  public getAssetIdentityDocuments = async (): Promise<ExistingVerificationDocuments[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.assetIdentityDocuments());
+    return ObjectMapper.deserializeArray(ExistingVerificationDocuments, response);
   };
 
-  public getVerificationDocumentTypes = async (): Promise<IVerificationTypes[]> => {
-    return await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
+  public getVerificationDocumentTypes = async (): Promise<VerificationDocumentTypes[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
+    return ObjectMapper.deserializeArray(VerificationDocumentTypes, response);
   };
 
   public getRatings = async (id: number): Promise<AssetReview[]> => {

@@ -1,7 +1,10 @@
 import React, { ReactElement, PureComponent, ReactNode } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SceneMap, TabView } from 'react-native-tab-view';
+import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -32,7 +35,12 @@ interface IScreenState {
   isSheetVisible: boolean;
 }
 
-type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
+interface IStateProps {
+  assetId: number;
+}
+
+type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
+type Props = libraryProps & IStateProps;
 
 export class AddProperty extends PureComponent<Props, IScreenState> {
   public state = {
@@ -124,17 +132,19 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     );
   };
 
-  // TODO: Replace components once ready
   private renderScene = SceneMap({
     detail: (): ReactElement => <AssetHighlights handleNextStep={this.handleNextStep} />,
     highlights: (): ReactElement => <AssetHighlights handleNextStep={this.handleNextStep} />,
-    gallery: (): ReactElement => (
-      <PropertyImages
-        propertyId={60} // TODO: Pass the property id from mapStateToProps
-        onPressContinue={this.handleNextStep}
-        containerStyle={styles.propertyImagesContainer}
-      />
-    ),
+    gallery: (): ReactElement => {
+      const { assetId } = this.props;
+      return (
+        <PropertyImages
+          propertyId={assetId}
+          onPressContinue={this.handleNextStep}
+          containerStyle={styles.propertyImagesContainer}
+        />
+      );
+    },
   });
 
   private onCloseSheet = (): void => {
@@ -198,12 +208,18 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 }
 
-export default withTranslation()(AddProperty);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getCurrentAssetId } = RecordAssetSelectors;
+  return {
+    assetId: getCurrentAssetId(state),
+  };
+};
+
+export default connect(mapStateToProps, null)(withTranslation()(AddProperty));
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   content: {
     flex: 1,

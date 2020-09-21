@@ -14,7 +14,8 @@ import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhu
 import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { IPropertySelectedImages, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
+import { IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
+import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/VerificationDocuments';
 
 interface IProps {
   propertyId: number;
@@ -78,7 +79,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         >
           <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
         </BottomSheet>
-        <WithShadowView outerViewStyle={styles.shadowView}>
+        <WithShadowView>
           <Button
             type="primary"
             title={t('common:continue')}
@@ -368,11 +369,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   uploadContainer: {
-    flex: 1,
     margin: 20,
   },
   uploadImageContainer: {
-    flex: 1,
     marginVertical: 20,
     flexDirection: 'row',
   },
@@ -390,11 +389,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-  },
-  shadowView: {
-    paddingTop: 10,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
-    paddingBottom: 0,
   },
   buttonStyle: {
     flex: 0,

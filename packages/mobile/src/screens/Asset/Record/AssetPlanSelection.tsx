@@ -21,6 +21,7 @@ import { AssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/d
 interface IDispatchProps {
   getAssetPlanList: () => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
+  resetState: () => void;
 }
 
 interface IStateProps {
@@ -51,7 +52,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     const { t } = this.props;
     return (
       <>
-        <Header icon={icons.leftArrow} title={t('propertyPlan')} isBottomStyleVisible onIconPress={this.goBack} />
+        <Header icon={icons.leftArrow} title={t('propertyPlan')} onIconPress={this.goBack} />
         <ScrollView style={styles.flexOne}>
           <View style={styles.planContainer}>{this.renderPlans()}</View>
           <View style={styles.carouselContainer}>{this.renderAdvertisements()}</View>
@@ -153,7 +154,8 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   };
 
   private onSkip = (): void => {
-    const { navigation } = this.props;
+    const { navigation, resetState } = this.props;
+    resetState();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -196,11 +198,12 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetPlanList, setSelectedPlan } = RecordAssetActions;
+  const { getAssetPlanList, setSelectedPlan, resetState } = RecordAssetActions;
   return bindActionCreators(
     {
       getAssetPlanList,
       setSelectedPlan,
+      resetState,
     },
     dispatch
   );

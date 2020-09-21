@@ -4,7 +4,6 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -67,7 +66,7 @@ export class AssetHighlights extends Component<Props, IState> {
           {this.renderOtherDetails()}
           {this.renderOtherHighlights()}
         </View>
-        <WithShadowView outerViewStyle={styles.shadowView}>
+        <WithShadowView>
           <Button type="primary" title={t('continue')} containerStyle={styles.buttonStyle} onPress={handleNextStep} />
         </WithShadowView>
       </>
@@ -188,11 +187,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 16,
-  },
-  shadowView: {
-    paddingTop: 10,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
-    paddingBottom: 0,
   },
   buttonStyle: {
     flex: 0,
