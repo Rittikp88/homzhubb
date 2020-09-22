@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -9,13 +9,19 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, FormTextInput, FormButton, WithShadowView } from '@homzhub/common/src/components';
-import { Header, PropertyDetailsLocation, AssetGroupSelection, Loader } from '@homzhub/mobile/src/components';
+import { FormButton, WithShadowView } from '@homzhub/common/src/components';
+import {
+  PostAssetForm,
+  Header,
+  PropertyDetailsLocation,
+  AssetGroupSelection,
+  Loader,
+} from '@homzhub/mobile/src/components';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -48,6 +54,8 @@ type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKey
 type Props = WithTranslation & libraryProps & IDispatchProps & IStateProps;
 
 class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
+  private scrollView: ScrollView | null = null;
+
   public constructor(props: Props) {
     super(props);
     const {
@@ -102,107 +110,25 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
         {(formProps: FormikProps<FormikValues>): React.ReactNode => {
           return (
             <>
-              <ScrollView keyboardShouldPersistTaps="never" showsVerticalScrollIndicator={false}>
+              <ScrollView
+                keyboardShouldPersistTaps="never"
+                showsVerticalScrollIndicator={false}
+                ref={(ref): void => {
+                  this.scrollView = ref;
+                }}
+              >
                 <PropertyDetailsLocation
                   propertyName={name}
                   propertyAddress={address}
                   onNavigate={this.onChangeText}
                   testID="propertyLocation"
                 />
-                <View style={styles.fieldsView}>
-                  <FormTextInput
-                    name="projectName"
-                    label={t('projectName')}
-                    inputType="default"
-                    maxLength={50}
-                    numberOfLines={1}
-                    placeholder={t('projectNamePlaceholder')}
-                    formProps={formProps}
-                  />
-                  <View style={styles.contentView}>
-                    <View style={styles.subContentView}>
-                      <FormTextInput
-                        name="unitNo"
-                        label={t('unitNo')}
-                        maxLength={10}
-                        numberOfLines={1}
-                        inputType="default"
-                        formProps={formProps}
-                      />
-                    </View>
-                    <View style={styles.flexOne}>
-                      <FormTextInput
-                        name="blockNo"
-                        label={t('blockNo')}
-                        maxLength={10}
-                        numberOfLines={1}
-                        inputType="default"
-                        formProps={formProps}
-                      />
-                    </View>
-                  </View>
-                  <FormTextInput
-                    name="address"
-                    label={t('address')}
-                    maxLength={100}
-                    inputType="default"
-                    multiline
-                    formProps={formProps}
-                    style={styles.address}
-                  />
-                  <View style={styles.contentView}>
-                    <View style={styles.subContentView}>
-                      <FormTextInput
-                        name="pincode"
-                        label={t('pincode')}
-                        maxLength={10}
-                        numberOfLines={1}
-                        inputType="default"
-                        formProps={formProps}
-                      />
-                    </View>
-                    <View style={styles.flexOne}>
-                      <FormTextInput
-                        name="city"
-                        label={t('city')}
-                        maxLength={20}
-                        numberOfLines={1}
-                        inputType="default"
-                        editable={false}
-                        formProps={formProps}
-                      />
-                    </View>
-                  </View>
-                  <View style={styles.contentView}>
-                    <View style={styles.subContentView}>
-                      <FormTextInput
-                        name="state"
-                        label={t('state')}
-                        maxLength={20}
-                        numberOfLines={1}
-                        inputType="default"
-                        editable={false}
-                        formProps={formProps}
-                      />
-                    </View>
-                    <View style={styles.flexOne}>
-                      <FormTextInput
-                        name="country"
-                        label={t('country')}
-                        maxLength={20}
-                        numberOfLines={1}
-                        editable={false}
-                        inputType="default"
-                        formProps={formProps}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <Divider />
+                <PostAssetForm formProps={formProps} />
                 <AssetGroupSelection
                   assetGroups={assetGroups}
                   selectedAssetGroupType={assetTypeId}
                   onAssetGroupSelected={this.onAssetGroupSelected}
+                  scrollRef={this.scrollView}
                 />
               </ScrollView>
               <WithShadowView>
@@ -307,25 +233,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-  },
-  fieldsView: {
-    marginHorizontal: 24,
-    marginBottom: 24,
-  },
-  contentView: {
-    flexDirection: 'row',
-  },
-  subContentView: {
-    flex: 1,
-    marginRight: 16,
-  },
-  address: {
-    height: 80,
-    paddingTop: 16,
-    paddingBottom: 16,
-  },
-  flexOne: {
-    flex: 1,
   },
   buttonStyle: {
     flex: 0,

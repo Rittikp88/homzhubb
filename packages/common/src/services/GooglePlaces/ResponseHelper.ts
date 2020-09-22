@@ -1,4 +1,4 @@
-import { Coordinate, PointOfInterest, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { Coordinate, PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 // Constants
 const RADIUS_OF_EARTH_IN_KM = 6371.071;
@@ -55,11 +55,11 @@ class ResponseHelper {
     return finalDistance;
   };
 
-  public getLocationDetails = (placeData: GooglePlaceDetail): Record<string, string> => {
+  public getLocationDetails = (placeData: any): Record<string, string> => {
     const locationData = {} as Record<string, string>;
     const { address_components: addressComponents } = placeData;
 
-    addressComponents.forEach((component): void => {
+    addressComponents.forEach((component: any): void => {
       Object.keys(LocationKeysToMatch).forEach((key: string) => {
         // @ts-ignore
         if (component.types[0] === LocationKeysToMatch[key]) {

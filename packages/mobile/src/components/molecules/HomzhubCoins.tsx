@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-// @ts-ignore
 import Coin from '@homzhub/common/src/assets/images/coin.svg';
 import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
 

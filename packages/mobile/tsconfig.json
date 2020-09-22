@@ -6,7 +6,7 @@
     "typeRoots": ["@types", "../../node_modules/@types"],
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["index.js", "src"],
+  "include": ["index.js", "src", "../common/src/assets/images/declarations.d.ts"],
   "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"],
   "references": [
     {

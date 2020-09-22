@@ -53,11 +53,12 @@ class GooglePlacesService {
     return response.data.result;
   };
 
-  public getLocationData = async (point: Point): Promise<GoogleGeocodeData> => {
+  public getLocationData = async (point?: Point, address?: string): Promise<GoogleGeocodeData> => {
     const response = await this.axiosInstance.get(ENDPOINTS.getLocationData(), {
       params: {
         key: this.apiKey,
-        latlng: `${point.lat},${point.lng}`,
+        latlng: `${point?.lat},${point?.lng}`,
+        address,
       },
     });
 
@@ -97,6 +98,10 @@ class GooglePlacesService {
   private checkError = (object: Record<string, any>): void => {
     if (object.hasOwnProperty('error_message')) {
       throw new Error(object.error_message);
+    }
+
+    if (object.hasOwnProperty('status') && object.status === ZERO_RESULTS) {
+      throw new Error('No Results Found');
     }
   };
 }

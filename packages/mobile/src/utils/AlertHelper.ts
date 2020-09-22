@@ -1,3 +1,4 @@
+import { Keyboard } from 'react-native';
 import { hideMessage, showMessage } from 'react-native-flash-message';
 import { theme } from '@homzhub/common/src/styles/theme';
 
@@ -16,6 +17,7 @@ class AlertHelper {
   };
 
   public error = (options: IToastProps): void => {
+    Keyboard.dismiss();
     const { message } = options;
     showMessage({
       autoHide: false,

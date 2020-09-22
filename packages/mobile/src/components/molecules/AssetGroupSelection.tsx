@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
@@ -10,6 +10,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   assetGroups: AssetGroup[];
   selectedAssetGroupType: number;
+  scrollRef: ScrollView | null;
   onAssetGroupSelected: (id: number) => void;
 }
 
@@ -58,7 +59,7 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
 
   private renderItem = (type: Type, item: AssetGroup | TypeUnit, index: number): React.ReactNode => {
     const { selectedAssetGroup } = this.state;
-    const { onAssetGroupSelected, selectedAssetGroupType } = this.props;
+    const { onAssetGroupSelected, selectedAssetGroupType, scrollRef } = this.props;
 
     const conditionalSelectedItem = type === Type.AssetGroup ? selectedAssetGroup : selectedAssetGroupType;
     const conditionalContainerStyle =
@@ -77,7 +78,10 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
 
     const onPress = (): void => {
       if (type === Type.AssetGroup) {
-        this.setState({ selectedAssetGroup: item.id });
+        this.setState({ selectedAssetGroup: item.id }, () => {});
+        setTimeout(() => {
+          scrollRef?.scrollToEnd({ animated: true });
+        }, 0);
       } else {
         onAssetGroupSelected(item.id);
       }
