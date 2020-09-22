@@ -7,6 +7,8 @@ import {
   ICreateDocumentPayload,
   IScheduleVisitPayload,
   IUpcomingVisitPayload,
+  IPropertyImagesPostPayload,
+  IMarkCoverImageAttachment,
   IUpdateAssetParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -25,13 +27,13 @@ import {
   ISaleDetails,
   IUpdateSaleTermDetails,
 } from '@homzhub/common/src/domain/models/SaleTerms';
-import { IMarkCoverImageAttachment, IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
 import {
   ExistingVerificationDocuments,
   IPostVerificationDocuments,
-  IPropertySelectedImages,
+  IYoutubeResponse,
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 
 const ENDPOINTS = {
   asset: (): string => 'assets/',
@@ -68,6 +70,7 @@ const ENDPOINTS = {
   getVisitLead: (): string => 'list-of-values/site-visit-lead-types/',
   getUpcomingVisits: (): string => 'listing-visits/upcoming-visits/',
   assetVisit: (): string => 'listing-visits/',
+  attachmentUpload: (): string => 'attachments/upload/',
 };
 
 class AssetRepository {
@@ -139,8 +142,9 @@ class AssetRepository {
     return await this.apiClient.delete(ENDPOINTS.deleteExistingVerificationDocuments(propertyId, documentId));
   };
 
-  public getPropertyImagesByPropertyId = async (propertyId: number): Promise<IPropertySelectedImages[]> => {
-    return await this.apiClient.get(ENDPOINTS.assetAttachments(propertyId));
+  public getPropertyImagesByPropertyId = async (propertyId: number): Promise<AssetGallery[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.assetAttachments(propertyId));
+    return ObjectMapper.deserializeArray(AssetGallery, response);
   };
 
   public markAttachmentAsCoverImage = async (
@@ -240,6 +244,10 @@ class AssetRepository {
 
   public propertyVisit = async (payload: IScheduleVisitPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.assetVisit(), payload);
+  };
+
+  public postAttachmentUpload = async (payload: { link: string }[]): Promise<IYoutubeResponse[]> => {
+    return await this.apiClient.post(ENDPOINTS.attachmentUpload(), payload);
   };
 }
 

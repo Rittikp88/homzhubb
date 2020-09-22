@@ -3,6 +3,7 @@ import { StyleSheet, View, SafeAreaView, FlatList, ScrollView, StyleProp, ViewSt
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -14,8 +15,9 @@ import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhu
 import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { IPropertyImagesPostPayload } from '@homzhub/common/src/domain/models/Service';
-import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { IPropertyImagesPostPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IPropertySelectedImages, IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 
 interface IProps {
   propertyId: number;
@@ -26,7 +28,7 @@ interface IProps {
 type Props = WithTranslation & IProps;
 
 interface IPropertyImagesState {
-  selectedImages: IPropertySelectedImages[];
+  selectedImages: AssetGallery[];
   isBottomSheetVisible: boolean;
   isVideoToggled: boolean;
   videoUrl: string;
@@ -117,11 +119,10 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     if (selectedImages.length <= 0) {
       return null;
     }
-    const coverImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
-      return image.is_cover_image;
+    const coverImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
+      return image.isCoverImage;
     });
-    const currentImage: IPropertySelectedImages =
-      coverImageIndex !== -1 ? selectedImages[coverImageIndex] : selectedImages[0];
+    const currentImage: AssetGallery = coverImageIndex !== -1 ? selectedImages[coverImageIndex] : selectedImages[0];
     coverPhoto.push(
       <ImageThumbnail
         imageUrl={currentImage.link}
@@ -147,8 +148,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     );
   };
 
-  private renderImagesList = (data: { item: IPropertySelectedImages; index: number }): React.ReactElement => {
-    const { item, index } = data;
+  private renderImagesList = ({ item, index }: { item: AssetGallery; index: number }): React.ReactElement => {
     const { selectedImages } = this.state;
     const extraDataLength = selectedImages.length > 6 ? selectedImages.length - 7 : selectedImages.length;
     const isLastThumbnail = index === 5 && extraDataLength > 0;
@@ -173,19 +173,19 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     // Sort the images with cover image as first object and then the rest
     selectedImages.sort((a, b) => {
       // @ts-ignore
-      return b.is_cover_image - a.is_cover_image;
+      return b.isCoverImage - a.isCoverImage;
     });
-    return selectedImages.map((currentImage: IPropertySelectedImages, index: number) => {
+    return selectedImages.map((currentImage: AssetGallery, index: number) => {
       const deletePropertyImage = async (): Promise<void> => await this.deletePropertyImage(currentImage);
       const markFavorite = async (): Promise<void> => await this.markAttachmentAsCoverImage(currentImage);
       return (
         <ImageThumbnail
           imageUrl={currentImage.link}
           key={index}
-          coverPhotoTitle={currentImage.is_cover_image ? t('property:coverPhoto') : t('property:addCoverPhoto')}
+          coverPhotoTitle={currentImage.isCoverImage ? t('property:coverPhoto') : t('property:addCoverPhoto')}
           isCoverPhotoContainer
           isIconVisible
-          isFavorite={currentImage.is_cover_image}
+          isFavorite={currentImage.isCoverImage}
           markFavorite={markFavorite}
           containerStyle={styles.bottomSheetContainer}
           onIconPress={deletePropertyImage}
@@ -209,7 +209,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     );
   };
 
-  private renderKeyExtractor = (item: IPropertySelectedImages, index: number): string => {
+  private renderKeyExtractor = (item: AssetGallery, index: number): string => {
     const { id } = item;
     return `${id}-${index}`;
   };
@@ -260,6 +260,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
               asset: propertyId,
               attachment: data[index].id,
               link: data[index].link,
+              file_name: 'localImage',
               isLocalImage: true,
             });
           });
@@ -268,7 +269,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
           }
           this.setState({
             // @ts-ignore
-            selectedImages: selectedImages.concat(localSelectedImages),
+            selectedImages: selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages)),
           });
         });
     } catch (e) {
@@ -285,20 +286,20 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     this.setState({ isBottomSheetVisible: false });
   };
 
-  public deletePropertyImage = async (selectedImage: IPropertySelectedImages): Promise<void> => {
+  public deletePropertyImage = async (selectedImage: AssetGallery): Promise<void> => {
     const { propertyId } = this.props;
     const { selectedImages } = this.state;
-    const clonedSelectedImages: IPropertySelectedImages[] = cloneDeep(selectedImages);
+    const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
     if (selectedImage.isLocalImage) {
-      const localImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
+      const localImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
         return selectedImage.attachment === image.attachment;
       });
       clonedSelectedImages.splice(localImageIndex, 1);
-      const coverImageIndex = findIndex(clonedSelectedImages, (image) => {
-        return image.is_cover_image;
+      const coverImageIndex = findIndex(clonedSelectedImages, (image: AssetGallery) => {
+        return image.isCoverImage;
       });
       if (coverImageIndex === -1 && clonedSelectedImages.length > 0) {
-        clonedSelectedImages[0].is_cover_image = true;
+        clonedSelectedImages[0].isCoverImage = true;
       }
       this.setState({ selectedImages: clonedSelectedImages });
       return;
@@ -309,12 +310,12 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
     try {
-      const response = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
-      const coverImageIndex = findIndex(response, (image) => {
-        return image.is_cover_image;
+      const response: AssetGallery[] = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
+      const coverImageIndex = findIndex(response, (image: AssetGallery) => {
+        return image.isCoverImage;
       });
       if (coverImageIndex === -1 && response.length > 0) {
-        response[0].is_cover_image = true;
+        response[0].isCoverImage = true;
       }
       this.setState({
         selectedImages: response,
@@ -324,19 +325,19 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     }
   };
 
-  public markAttachmentAsCoverImage = async (selectedImage: IPropertySelectedImages): Promise<void> => {
+  public markAttachmentAsCoverImage = async (selectedImage: AssetGallery): Promise<void> => {
     const { propertyId } = this.props;
     const { selectedImages } = this.state;
-    const clonedSelectedImages: IPropertySelectedImages[] = cloneDeep(selectedImages);
+    const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
     if (!selectedImage.id) {
-      const existingCoverImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
-        return image.is_cover_image;
+      const existingCoverImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
+        return image.isCoverImage;
       });
-      clonedSelectedImages[existingCoverImageIndex].is_cover_image = false;
-      const newCoverImageIndex = findIndex(selectedImages, (image: IPropertySelectedImages) => {
+      clonedSelectedImages[existingCoverImageIndex].isCoverImage = false;
+      const newCoverImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
         return selectedImage.attachment === image.attachment;
       });
-      clonedSelectedImages[newCoverImageIndex].is_cover_image = true;
+      clonedSelectedImages[newCoverImageIndex].isCoverImage = true;
       this.setState({
         selectedImages: clonedSelectedImages,
       });
@@ -348,11 +349,16 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public postAttachmentsForProperty = async (): Promise<void> => {
     const { propertyId, onPressContinue } = this.props;
-    const { selectedImages } = this.state;
+    const { selectedImages, isVideoToggled, videoUrl } = this.state;
     const attachmentIds: IPropertyImagesPostPayload[] = [];
-    selectedImages.forEach((selectedImage: IPropertySelectedImages) =>
-      attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.is_cover_image })
+    selectedImages.forEach((selectedImage: AssetGallery) =>
+      attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.isCoverImage })
     );
+    if (isVideoToggled && !!videoUrl) {
+      const payload = [{ link: videoUrl }];
+      const urlResponse: IYoutubeResponse[] = await AssetRepository.postAttachmentUpload(payload);
+      attachmentIds.push({ attachment: urlResponse[0].id, is_cover_image: false });
+    }
     try {
       await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
       onPressContinue();

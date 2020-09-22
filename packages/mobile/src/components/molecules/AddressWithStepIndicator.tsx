@@ -11,7 +11,8 @@ interface IProps {
   steps: string[];
   currentIndex: number;
   isStepDone: boolean[];
-  progress: number;
+  progress?: number;
+  isProgress?: boolean;
   primaryAddress: string;
   subAddress: string;
   propertyType: string;
@@ -38,6 +39,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     subAddress,
     propertyType,
     onPressSteps,
+    isProgress = true,
   } = props;
   const renderIndicator = ({ item, index }: { item: string; index: number }): React.ReactElement => {
     const isCurrentStep = currentIndex === index;
@@ -79,7 +81,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         subAddress={subAddress}
         containerStyle={styles.addressView}
       />
-      <ProgressBar progress={progress} width={theme.viewport.width > 400 ? 350 : 310} />
+      {isProgress && <ProgressBar progress={progress ?? 0} width={theme.viewport.width > 400 ? 350 : 310} />}
       <FlatList
         data={steps}
         renderItem={renderIndicator}

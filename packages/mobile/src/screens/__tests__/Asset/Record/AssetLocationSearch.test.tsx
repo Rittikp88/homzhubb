@@ -64,5 +64,6 @@ describe('Asset Location Search', () => {
   it('should navigate to previous screen', () => {
     component.find('[testID="header"]').prop('onIconPress')();
     expect(props.navigation.goBack).toBeCalled();
+    expect(props.resetState).toBeCalled();
   });
 });

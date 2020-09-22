@@ -39,7 +39,13 @@ export interface IPropertySelectedImages {
   asset: number;
   attachment: number;
   link: string | null;
+  file_name: string;
   isLocalImage?: boolean;
+}
+
+export interface IYoutubeResponse {
+  id: number;
+  link: string;
 }
 
 export interface IPostVerificationDocuments {

@@ -45,7 +45,6 @@ interface IRoutes {
 interface IAssetServiceCheckoutScreenState {
   currentIndex: number;
   isStepDone: boolean[];
-  progress: number;
   isActionSheetToggled: boolean;
   isPropertyAsUnits: boolean;
 }
@@ -53,14 +52,13 @@ interface IAssetServiceCheckoutScreenState {
 class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServiceCheckoutScreenState> {
   public state = {
     currentIndex: 0,
-    progress: 0,
     isStepDone: [],
     isActionSheetToggled: false,
     isPropertyAsUnits: false,
   };
 
   public render(): React.ReactElement {
-    const { currentIndex, isStepDone, progress } = this.state;
+    const { currentIndex, isStepDone } = this.state;
     const {
       selectedAssetPlan: { selectedPlan },
     } = this.props;
@@ -77,7 +75,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
             steps={this.getSteps()}
             badge={badge}
             badgeStyle={styles.badgeStyle}
-            progress={progress}
+            isProgress={false}
             propertyType="Bungalow"
             primaryAddress="Kalpataru Splendour"
             subAddress="Shankar Kalat Nagar, Maharashtra 411057"
@@ -266,22 +264,12 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
   };
 
   private handleNextStep = (): void => {
-    const { currentIndex, isStepDone, progress } = this.state;
+    const { currentIndex, isStepDone } = this.state;
     const newStepDone: boolean[] = isStepDone;
     newStepDone[currentIndex] = true;
     this.setState({
       isStepDone: newStepDone,
     });
-    if (progress < 100) {
-      const progressCount = Number((100 / this.getSteps().length).toFixed(0));
-      let newProgress = progress + progressCount;
-      if (100 - newProgress === 1) {
-        newProgress += 1;
-      }
-      this.setState({
-        progress: newProgress,
-      });
-    }
     if (currentIndex < this.getRoutes().length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
     }

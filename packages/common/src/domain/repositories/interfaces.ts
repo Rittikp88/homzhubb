@@ -319,3 +319,12 @@ export interface IScheduleVisitPayload {
   lease_listing: number | null;
   comments?: string;
 }
+
+export interface IPropertyImagesPostPayload {
+  attachment: number;
+  is_cover_image: boolean;
+}
+
+export interface IMarkCoverImageAttachment {
+  cover_updated: boolean;
+}

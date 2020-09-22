@@ -9,7 +9,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Text, Divider, Image, Button } from '@homzhub/common/src/components';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
-import { ServiceBundleItems } from '@homzhub/common/src/domain/models/Service';
+import { ServiceBundleItems } from '@homzhub/common/src/domain/models/ServiceBundleItems';
 
 interface IProps {
   containerStyle?: StyleProp<ViewStyle>;

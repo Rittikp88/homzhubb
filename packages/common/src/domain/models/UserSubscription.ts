@@ -1,5 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { IServiceBundleItems, ServiceBundleItems } from '@homzhub/common/src/domain/models/Service';
+import { IServiceBundleItems, ServiceBundleItems } from '@homzhub/common/src/domain/models/ServiceBundleItems';
 
 interface ISubscribedPlan {
   id: number;

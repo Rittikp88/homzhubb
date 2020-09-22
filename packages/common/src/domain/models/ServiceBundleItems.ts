@@ -1,14 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
-export interface IPropertyImagesPostPayload {
-  attachment: number;
-  is_cover_image: boolean;
-}
-
-export interface IMarkCoverImageAttachment {
-  cover_updated: boolean;
-}
-
 export interface IServiceBundleItems {
   id: number;
   name: string;
