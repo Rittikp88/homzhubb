@@ -6,7 +6,7 @@ import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
 interface ICheckboxOptions {
   selected: boolean;
-  label: string;
+  label?: string;
   onToggle: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
@@ -38,9 +38,11 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
         color={selected ? theme.colors.primaryColor : theme.colors.disabled}
         style={selected ? iconSelectedStyle : iconStyle}
       />
-      <Label type={labelType} textType="regular" style={[styles.label, labelStyle]}>
-        {label}
-      </Label>
+      {label && (
+        <Label type={labelType} textType="regular" style={[styles.label, labelStyle]}>
+          {label}
+        </Label>
+      )}
     </TouchableOpacity>
   );
 };

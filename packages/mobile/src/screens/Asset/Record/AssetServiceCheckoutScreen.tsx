@@ -20,6 +20,7 @@ import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
 import { AddressWithStepIndicator, BottomSheet, Header, PropertyPayment } from '@homzhub/mobile/src/components';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { DummyView } from '@homzhub/mobile/src/screens/Asset/Record/DummyView';
+import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
@@ -154,7 +155,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
       } = this.props;
       return <PropertyVerification propertyId={assetId} typeOfPlan={selectedPlan} updateStep={this.handleNextStep} />;
     },
-    services: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+    services: (): ReactElement => <ValueAddedServicesView handleNextStep={this.handleNextStep} />,
     payment: (): ReactElement => <PropertyPayment handleNextStep={this.handleNextStep} />,
   });
 
