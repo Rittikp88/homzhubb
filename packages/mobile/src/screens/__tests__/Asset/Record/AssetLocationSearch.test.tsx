@@ -22,6 +22,7 @@ describe('Asset Location Search', () => {
         navigate: mock,
         goBack: mock,
       },
+      resetState: mock,
     };
     component = shallow(<AssetLocationSearch {...props} t={(key: string): string => key} />);
   });

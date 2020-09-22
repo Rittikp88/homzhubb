@@ -102,7 +102,8 @@
     "havePromoCode": "Have a promo code?",
     "apply": "Apply",
     "promoPlaceholder": "Enter Promo code",
-    "promoError": "Please enter a valid Promotional Code"
+    "promoError": "Please enter a valid Promotional Code",
+    "remove": "Remove"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -278,7 +279,13 @@
     "highlightPlaceholder": "Eg. Power Supply",
     "otherDetails": "Other Details",
     "clickContinue": "Click \"Continue\" to see the property plans",
-    "yourDetailsAdded": "Your property details are added!!"
+    "yourDetailsAdded": "Your property details are added!!",
+    "useCoins": "Use Homzhub Coins",
+    "balance": "Balance:",
+    "securePayment": "100% Secure Payments",
+    "orderSummary": "Order Summary",
+    "youPay": "You Pay",
+    "usedCoins": "You will save {{amount}} using {{coin}} Homzhub coins"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

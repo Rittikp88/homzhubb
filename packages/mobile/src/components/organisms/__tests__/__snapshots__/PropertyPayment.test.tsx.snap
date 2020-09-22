@@ -1,41 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Property Payment Component should render button 1`] = `
-<View
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "marginHorizontal": 16,
-      "paddingHorizontal": 16,
-      "paddingVertical": 16,
-    }
-  }
->
-  <withI18nextTranslation(PromoCode) />
-  <withI18nextTranslation(PaymentGateway)
-    onPaymentSuccess={[Function]}
-    title="Pay Now"
-    type="primary"
-  />
-</View>
-`;
-
 exports[`Property Payment Component should render property payment component 1`] = `
-<View
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "marginHorizontal": 16,
-      "paddingHorizontal": 16,
-      "paddingVertical": 16,
-    }
-  }
->
-  <withI18nextTranslation(PromoCode) />
-  <withI18nextTranslation(PaymentGateway)
-    onPaymentSuccess={[Function]}
-    title="Pay Now"
-    type="primary"
-  />
-</View>
+<PropertyPayment
+  handleNextStep={[MockFunction]}
+  i18n={Object {}}
+  t={[Function]}
+  tReady={false}
+/>
 `;

@@ -49,6 +49,7 @@ export default withTranslation()(PromoCode);
 const styles = StyleSheet.create({
   container: {
     marginVertical: 24,
+    marginHorizontal: 16,
   },
   title: {
     color: theme.colors.darkTint4,
