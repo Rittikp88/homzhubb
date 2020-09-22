@@ -7,7 +7,7 @@ import {
   ICreateDocumentPayload,
   IScheduleVisitPayload,
   IUpcomingVisitPayload,
-  IUpdateAssetDetails,
+  IUpdateAssetParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -91,7 +91,7 @@ class AssetRepository {
     return await this.apiClient.post(ENDPOINTS.asset(), assetDetails);
   };
 
-  public updateAsset = async (id: number, requestBody: IUpdateAssetDetails): Promise<void> => {
+  public updateAsset = async (id: number, requestBody: IUpdateAssetParams): Promise<void> => {
     return await this.apiClient.patch(ENDPOINTS.updateAsset(id), requestBody);
   };
 

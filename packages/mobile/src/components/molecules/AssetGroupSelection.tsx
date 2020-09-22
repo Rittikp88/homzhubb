@@ -84,7 +84,7 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
     };
 
     return (
-      <TouchableOpacity onPress={onPress} style={[conditionalContainerStyle, { backgroundColor }]}>
+      <TouchableOpacity key={item.id} onPress={onPress} style={[conditionalContainerStyle, { backgroundColor }]}>
         {type === Type.AssetGroup && <Icon name={item.name.toLowerCase()} size={24} color={color} />}
         <Label type="large" textType={textType as 'regular' | 'semiBold'} style={[styles.assetGroupName, { color }]}>
           {item.name}

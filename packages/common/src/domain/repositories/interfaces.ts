@@ -186,7 +186,7 @@ export interface ICreateAssetParams {
   latitude: string | number;
   longitude: string | number;
   address: string;
-  postal_code: string;
+  pin_code: string;
   city: string;
   state: string;
   country: string;
@@ -197,12 +197,17 @@ export interface ICreateAssetResult {
   id: number;
 }
 
-export interface IUpdateAssetDetails {
+export interface IUpdateAssetParams {
   project_name?: string;
   unit_number?: string;
   block_number?: string;
   latitude?: string | number;
   longitude?: string | number;
+  address?: string;
+  pin_code?: string;
+  city?: string;
+  state?: string;
+  country?: string;
   carpet_area?: number;
   carpet_area_unit?: number;
   floor_number?: number;

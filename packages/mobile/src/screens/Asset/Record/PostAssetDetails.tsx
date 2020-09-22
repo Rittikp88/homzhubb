@@ -106,7 +106,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                 <PropertyDetailsLocation
                   propertyName={name}
                   propertyAddress={address}
-                  onNavigate={this.onBackPress}
+                  onNavigate={this.onChangeText}
                   testID="propertyLocation"
                 />
                 <View style={styles.fieldsView}>
@@ -228,12 +228,17 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     navigation.goBack();
   };
 
+  private onChangeText = (): void => {
+    const { navigation } = this.props;
+    navigation.popToTop();
+  };
+
   private onSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
     const {
       projectName: project_name,
       unitNo: unit_number,
       blockNo: block_number,
-      pincode: postal_code,
+      pincode: pin_code,
       city,
       state,
       country,
@@ -255,7 +260,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       country,
       address,
       project_name,
-      postal_code,
+      pin_code,
       asset_type,
       block_number,
       unit_number,

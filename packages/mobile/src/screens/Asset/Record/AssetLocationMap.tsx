@@ -6,14 +6,14 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
-import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, WithShadowView } from '@homzhub/common/src/components';
 import { Header } from '@homzhub/mobile/src/components';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 
 type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLocationMap>;
 
@@ -80,7 +80,6 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       route: { params },
-      navigation: { goBack },
     } = this.props;
     const { placeData } = params;
     return (
@@ -89,7 +88,7 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
           isBarVisible={false}
           type="primary"
           icon={icons.leftArrow}
-          onIconPress={goBack}
+          onIconPress={this.onBackPress}
           title={t('common:location')}
           testID="location"
         />
@@ -161,6 +160,13 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
       .catch((e: Error): void => {
         AlertHelper.error({ message: e.message });
       });
+  };
+
+  private onBackPress = (): void => {
+    const {
+      navigation: { goBack },
+    } = this.props;
+    goBack();
   };
 }
 

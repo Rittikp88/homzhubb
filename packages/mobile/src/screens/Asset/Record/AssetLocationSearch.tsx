@@ -1,30 +1,42 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { GeolocationResponse } from '@react-native-community/geolocation';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import {
-  GoogleGeocodeData,
-  GooglePlaceData,
-  GooglePlaceDetail,
-} from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { CurrentLocation, Header } from '@homzhub/mobile/src/components';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
+import {
+  GoogleGeocodeData,
+  GooglePlaceData,
+  GooglePlaceDetail,
+} from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys, IAssetLocationMapProps } from '@homzhub/mobile/src/navigation/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IState {
   searchString: string;
   suggestions: GooglePlaceData[];
   showAutoDetect: boolean;
 }
-type Props = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLocationSearch>;
+
+interface IDispatchProps {
+  resetState: () => void;
+}
+
+/* eslint-disable @typescript-eslint/indent */
+type Props = WithTranslation &
+  IDispatchProps &
+  NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLocationSearch>;
+/* eslint-enable @typescript-eslint/indent */
 
 export class AssetLocationSearch extends React.PureComponent<Props, IState> {
   public state = {
@@ -82,7 +94,9 @@ export class AssetLocationSearch extends React.PureComponent<Props, IState> {
   private onBackPress = (): void => {
     const {
       navigation: { goBack },
+      resetState,
     } = this.props;
+    resetState();
     goBack();
   };
 
@@ -137,4 +151,17 @@ const styles = StyleSheet.create({
   bar: { height: 4, backgroundColor: theme.colors.green },
 });
 
-export default withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { resetState } = RecordAssetActions;
+  return bindActionCreators(
+    {
+      resetState,
+    },
+    dispatch
+  );
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch));
