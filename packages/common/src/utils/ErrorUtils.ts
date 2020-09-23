@@ -5,6 +5,9 @@ class ErrorUtils {
   public getErrorMessage = (e: IApiClientError): string => {
     if (e.original && e.original.error && e.original.error.length > 0) {
       const { error } = e.original;
+      if (error[0].message.detail) {
+        return error[0].message.detail;
+      }
       return error[0].message;
     }
     if (e.original && e.original.data && e.original.data.length > 0) {

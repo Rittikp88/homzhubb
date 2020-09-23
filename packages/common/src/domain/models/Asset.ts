@@ -81,6 +81,30 @@ export class Data {
   }
 }
 
+@JsonObject('LastVisitedStep')
+export class LastVisitedStep {
+  @JsonProperty('current_step', Number, true)
+  private _currentStep = 1;
+
+  @JsonProperty('total_step', Number, true)
+  private _totalStep = 4;
+
+  @JsonProperty('percentage', Number, true)
+  private _percentage = 0;
+
+  get currentStep(): number {
+    return this._currentStep;
+  }
+
+  get totalStep(): number {
+    return this._totalStep;
+  }
+
+  get percentage(): number {
+    return (this.currentStep / this.totalStep) * 100;
+  }
+}
+
 @JsonObject('Count')
 export class Count {
   @JsonProperty('count', Number)
@@ -215,6 +239,9 @@ export class Asset {
 
   @JsonProperty('address', String, true)
   private _address = '';
+
+  @JsonProperty('last_visited_step', LastVisitedStep, true)
+  private _lastVisitedStep = new LastVisitedStep();
 
   get projectName(): string {
     return this._projectName;
@@ -357,5 +384,9 @@ export class Asset {
 
   get address(): string {
     return this._address;
+  }
+
+  get lastVisitedStep(): LastVisitedStep {
+    return this._lastVisitedStep;
   }
 }

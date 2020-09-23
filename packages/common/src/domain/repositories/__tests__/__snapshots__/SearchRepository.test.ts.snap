@@ -376,6 +376,11 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isWishlisted": null,
+      "_lastVisitedStep": LastVisitedStep {
+        "_currentStep": 1,
+        "_percentage": 0,
+        "_totalStep": 4,
+      },
       "_latitude": 25.619,
       "_leaseTerm": null,
       "_longitude": 85.123,
@@ -712,6 +717,11 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isWishlisted": null,
+      "_lastVisitedStep": LastVisitedStep {
+        "_currentStep": 1,
+        "_percentage": 0,
+        "_totalStep": 4,
+      },
       "_latitude": 25.619,
       "_leaseTerm": null,
       "_longitude": 85.123,

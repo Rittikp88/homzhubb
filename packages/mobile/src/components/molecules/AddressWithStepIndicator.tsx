@@ -17,6 +17,7 @@ interface IProps {
   subAddress: string;
   propertyType: string;
   icon?: string;
+  onEditPress?: () => void;
   badge?: LabelColor;
   onPressSteps: (index: number) => void;
   badgeStyle?: StyleProp<ViewStyle>;
@@ -40,6 +41,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     propertyType,
     onPressSteps,
     isProgress = true,
+    onEditPress,
   } = props;
   const renderIndicator = ({ item, index }: { item: string; index: number }): React.ReactElement => {
     const isCurrentStep = currentIndex === index;
@@ -73,7 +75,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         <Text type="small" textType="regular">
           {propertyType}
         </Text>
-        {icon && <Icon name={icon} size={23} color={theme.colors.blue} />}
+        {icon && <Icon name={icon} size={23} color={theme.colors.blue} onPress={onEditPress} />}
         {badge && <Badge title={badge.label} badgeColor={badge.color} badgeStyle={badgeStyle} />}
       </View>
       <PropertyAddressCountry

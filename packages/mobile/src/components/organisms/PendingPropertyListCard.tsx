@@ -78,13 +78,13 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       spaces,
       assetType: { name },
       projectName,
-      progressPercentage,
       unitNumber,
       carpetArea,
       carpetAreaUnit,
       floorNumber,
       blockNumber,
       address,
+      lastVisitedStep: { percentage },
       verifications: { description },
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
@@ -107,7 +107,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         {amenitiesData.length > 0 && (
           <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         )}
-        <ProgressBar progress={progressPercentage} width={theme.viewport.width > 400 ? 350 : 310} />
+        <ProgressBar progress={percentage} width={theme.viewport.width > 400 ? 350 : 310} />
         <Button type="primary" title={t('completeDetails')} containerStyle={styles.buttonStyle} />
         <Label type="regular" style={styles.infoText}>
           {t('completeProperty')}

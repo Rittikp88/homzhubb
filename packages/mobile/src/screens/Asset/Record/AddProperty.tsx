@@ -67,6 +67,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
             subAddress="Shankar Kalat Nagar, Maharashtra 411057"
             currentIndex={currentIndex}
             isStepDone={isStepDone}
+            onEditPress={this.onEditPress}
             stepContainerStyle={styles.stepContainer}
             containerStyle={styles.addressCard}
             onPressSteps={this.handlePreviousStep}
@@ -75,6 +76,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
           <TabView
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
+            removeClippedSubviews
             renderTabBar={(): null => null}
             swipeEnabled={false}
             navigationState={{
@@ -149,6 +151,11 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private onCloseSheet = (): void => {
     this.setState({ isSheetVisible: false });
+  };
+
+  private onEditPress = (): void => {
+    // TODO: Add logic to go back Property detail form
+    this.goBack();
   };
 
   private goBack = (): void => {
