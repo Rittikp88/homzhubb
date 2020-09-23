@@ -6,6 +6,7 @@ exports[`AssetRepository Should delete verification document 1`] = `Object {}`;
 
 exports[`AssetRepository Should get lease listings 1`] = `
 Asset {
+  "_address": "",
   "_amenities": Array [
     Amenity {
       "_attachment": Attachment {
@@ -355,6 +356,7 @@ Array [
 
 exports[`AssetRepository Should get sale listings 1`] = `
 Asset {
+  "_address": "",
   "_amenities": Array [
     Amenity {
       "_attachment": Attachment {
@@ -682,6 +684,7 @@ Asset {
 exports[`AssetRepository Should get similar properties for rent 1`] = `
 Array [
   Asset {
+    "_address": "",
     "_amenities": Array [
       Amenity {
         "_attachment": Attachment {
@@ -1010,6 +1013,7 @@ Array [
 exports[`AssetRepository Should get similar properties for sale 1`] = `
 Array [
   Asset {
+    "_address": "",
     "_amenities": Array [
       Amenity {
         "_attachment": Attachment {
@@ -1424,6 +1428,7 @@ Array [
 
 exports[`AssetRepository should fetch a asset detail 1`] = `
 Asset {
+  "_address": "",
   "_amenities": Array [
     Amenity {
       "_attachment": Attachment {

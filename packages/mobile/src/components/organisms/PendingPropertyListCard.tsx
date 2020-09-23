@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { AssetService, PropertyStatus } from '@homzhub/common/src/services/Property/AssetService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text } from '@homzhub/common/src/components';
 import { PropertyAmenities, PropertyAddressCountry, ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IState {
@@ -82,6 +84,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       carpetAreaUnit,
       floorNumber,
       blockNumber,
+      address,
       verifications: { description },
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
@@ -98,7 +101,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         <ShieldGroup propertyType={name} propertyTypeStyle={styles.heading} text={description} isInfoRequired />
         <PropertyAddressCountry
           primaryAddress={projectName}
-          subAddress={`${unitNumber ?? ''} ${blockNumber ?? ''}`}
+          subAddress={address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`}
           containerStyle={styles.addressStyle}
         />
         {amenitiesData.length > 0 && (
@@ -114,8 +117,13 @@ export class PendingPropertyListCard extends Component<Props, IState> {
   };
 
   private getPendingProperties = async (): Promise<void> => {
-    const response: Asset[] = await AssetService.getPropertiesByStatus(PropertyStatus.PENDING);
-    this.setState({ data: response });
+    try {
+      const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
+      this.setState({ data: response });
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 
   private handleNext = (): void => {

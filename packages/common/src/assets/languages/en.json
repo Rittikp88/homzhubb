@@ -285,7 +285,8 @@
     "securePayment": "100% Secure Payments",
     "orderSummary": "Order Summary",
     "youPay": "You Pay",
-    "usedCoins": "You will save {{amount}} using {{coin}} Homzhub coins"
+    "usedCoins": "You will save {{amount}} using {{coin}} Homzhub coins",
+    "amenities": "Amenities"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

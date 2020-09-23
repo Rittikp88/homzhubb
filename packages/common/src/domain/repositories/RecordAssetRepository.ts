@@ -1,10 +1,10 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
+import { AssetGroupAmenity } from '@homzhub/common/src/domain/models/Amenity';
 
 const ENDPOINTS = {
-  amenities: (): string => 'amenities/',
+  amenities: (): string => 'asset-groups/amenities/',
 };
 
 class RecordAssetRepository {
@@ -14,9 +14,9 @@ class RecordAssetRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getAmenities = async (): Promise<AssetAmenity[]> => {
+  public getAmenities = async (): Promise<AssetGroupAmenity[]> => {
     const response = await this.apiClient.get(ENDPOINTS.amenities());
-    return ObjectMapper.deserializeArray(AssetAmenity, response);
+    return ObjectMapper.deserializeArray(AssetGroupAmenity, response);
   };
 }
 

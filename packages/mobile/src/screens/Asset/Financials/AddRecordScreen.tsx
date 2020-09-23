@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { AssetService } from '@homzhub/common/src/services/Property/AssetService';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AnimatedProfileHeader, HeaderCard, StateAwareComponent } from '@homzhub/mobile/src/components';
 import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -34,7 +34,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IState> {
     this.setState({ isLoading: true });
 
     const categories = await LedgerService.getAllLedgerCategories();
-    const properties = await AssetService.getPropertiesByStatus();
+    const properties = await AssetRepository.getPropertiesByStatus();
 
     this.setState({ ledgerCategories: categories, properties, isLoading: false });
   }

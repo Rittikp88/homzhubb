@@ -23,6 +23,10 @@ export enum DataType {
   PROPERTIES = 'PROPERTIES',
 }
 
+export enum PropertyStatus {
+  PENDING = 'PENDING',
+}
+
 export interface IAsset {
   id: number;
   project_name: string;
@@ -209,6 +213,9 @@ export class Asset {
   @JsonProperty('is_wishlisted', Wishlisted, true)
   private _isWishlisted: Wishlisted | null = null;
 
+  @JsonProperty('address', String, true)
+  private _address = '';
+
   get projectName(): string {
     return this._projectName;
   }
@@ -346,5 +353,9 @@ export class Asset {
 
   get isWishlisted(): Wishlisted | null {
     return this._isWishlisted;
+  }
+
+  get address(): string {
+    return this._address;
   }
 }

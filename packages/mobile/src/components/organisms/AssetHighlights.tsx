@@ -7,13 +7,19 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, CheckboxGroup, Text, WithShadowView } from '@homzhub/common/src/components';
+import { Button, CheckboxGroup, ICheckboxGroupData, Text, WithShadowView } from '@homzhub/common/src/components';
 import AssetHighlightCard from '@homzhub/mobile/src/components/molecules/AssetHighlightCard';
-import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
+import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
+import { OtherDetails } from '@homzhub/common/src/constants/AssetHighlights';
+
+export interface IOtherDetail {
+  id: number;
+  name: string;
+  details: ICheckboxGroupData[];
+}
 
 interface IState {
-  amenities: Amenity[];
-  sports: Amenity[];
+  assetAmenity: AssetAmenity[];
   extraData: number[];
   otherHighlight: string[];
 }
@@ -22,31 +28,13 @@ interface IHighlightProps {
   handleNextStep: () => void;
 }
 
-// TODO: (Shikha) - Need to refactor once API integrate
-const data = [
-  {
-    id: 1,
-    label: 'Power backup',
-    isSelected: false,
-  },
-  {
-    id: 1,
-    label: '24x7 Access ',
-    isSelected: false,
-  },
-  {
-    id: 1,
-    label: 'Corner Property',
-    isSelected: false,
-  },
-];
+const PropertyType = 'Residential'; // TODO: (Shikha) - Add property type once GET api integrate
 
 type Props = IHighlightProps & WithTranslation;
 
 export class AssetHighlights extends Component<Props, IState> {
   public state = {
-    amenities: [],
-    sports: [],
+    assetAmenity: [],
     extraData: [0],
     otherHighlight: [],
   };
@@ -56,13 +44,11 @@ export class AssetHighlights extends Component<Props, IState> {
   };
 
   public render(): React.ReactNode {
-    const { amenities, sports } = this.state;
     const { t, handleNextStep } = this.props;
     return (
       <>
         <View style={styles.container}>
-          <AssetHighlightCard title="Amenities" data={amenities} />
-          <AssetHighlightCard title="Sports" data={sports} />
+          {this.renderAmenities()}
           {this.renderOtherDetails()}
           {this.renderOtherHighlights()}
         </View>
@@ -73,8 +59,20 @@ export class AssetHighlights extends Component<Props, IState> {
     );
   }
 
-  private renderOtherDetails = (): React.ReactElement => {
+  private renderAmenities = (): React.ReactElement[] => {
+    const { assetAmenity } = this.state;
+    return assetAmenity.map((item: AssetAmenity) => {
+      const title = this.getAmenitiesTitle(item.name);
+      return <AssetHighlightCard title={title} data={item.amenities} key={item.id} />;
+    });
+  };
+
+  private renderOtherDetails = (): React.ReactElement | null => {
     const { t } = this.props;
+    const data = OtherDetails.find((item: IOtherDetail) => item.name === PropertyType);
+
+    if (!data) return null;
+
     return (
       <View style={styles.card}>
         <View style={styles.header}>
@@ -82,7 +80,7 @@ export class AssetHighlights extends Component<Props, IState> {
             {t('property:otherDetails')}
           </Text>
         </View>
-        <CheckboxGroup data={data} onToggle={FunctionUtils.noop} containerStyle={styles.checkboxGroup} />
+        <CheckboxGroup data={data.details} onToggle={FunctionUtils.noop} containerStyle={styles.checkboxGroup} />
       </View>
     );
   };
@@ -147,6 +145,14 @@ export class AssetHighlights extends Component<Props, IState> {
     }
   };
 
+  private getAmenitiesTitle = (name: string): string => {
+    const { t } = this.props;
+    if (name === 'General') {
+      return t('property:amenities');
+    }
+    return name;
+  };
+
   private handleNext = (): void => {
     const { extraData } = this.state;
     const lastValue = extraData[extraData.length - 1];
@@ -168,10 +174,8 @@ export class AssetHighlights extends Component<Props, IState> {
     try {
       const response = await RecordAssetRepository.getAmenities();
       response.forEach((item) => {
-        if (item.name === 'Sports') {
-          this.setState({ sports: item.amenities });
-        } else {
-          this.setState({ amenities: item.amenities });
+        if (item.name === PropertyType) {
+          this.setState({ assetAmenity: item.category });
         }
       });
     } catch (e) {

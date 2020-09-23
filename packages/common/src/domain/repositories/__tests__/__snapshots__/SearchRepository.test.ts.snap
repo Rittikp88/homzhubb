@@ -87,6 +87,7 @@ AssetSearch {
   },
   "_results": Array [
     Asset {
+      "_address": "",
       "_amenities": Array [
         Amenity {
           "_attachment": Attachment {
@@ -422,6 +423,7 @@ AssetSearch {
   },
   "_results": Array [
     Asset {
+      "_address": "",
       "_amenities": Array [
         Amenity {
           "_attachment": Attachment {

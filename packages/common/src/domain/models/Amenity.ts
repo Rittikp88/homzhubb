@@ -60,3 +60,27 @@ export class AssetAmenity {
     return this._amenities;
   }
 }
+
+@JsonObject('AssetGroupAmenity')
+export class AssetGroupAmenity {
+  @JsonProperty('id', Number)
+  private _id = 0;
+
+  @JsonProperty('name', String)
+  private _name = '';
+
+  @JsonProperty('category', [AssetAmenity])
+  private _category: AssetAmenity[] = [];
+
+  get id(): number {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get category(): AssetAmenity[] {
+    return this._category;
+  }
+}
