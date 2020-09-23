@@ -3,6 +3,8 @@ import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 
 export interface IRecordAssetState {
   assetId: number;
+  // Todo update the model
+  assetDetails: any;
   assetPlan: IAssetPlan[];
   assetGroups: IAssetGroup[];
   selectedAssetPlan: ISelectedAssetPlan;
@@ -12,5 +14,6 @@ export interface IRecordAssetState {
   loaders: {
     assetPlan: boolean;
     assetGroups: boolean;
+    assetDetails: boolean;
   };
 }

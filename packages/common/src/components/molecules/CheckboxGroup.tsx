@@ -59,6 +59,6 @@ export class CheckboxGroup extends React.PureComponent<IProps, {}> {
 const styles = StyleSheet.create({
   checkboxContainer: {
     flex: 1,
-    marginBottom: 20,
+    marginBottom: 24,
   },
 });

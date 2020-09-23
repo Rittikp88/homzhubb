@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { AssetGroup, IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 
 const actionTypePrefix = 'RecordAsset/';
 
@@ -13,6 +14,9 @@ export const RecordAssetActionTypes = {
     ASSET_PLAN_LIST: `${actionTypePrefix}ASSET_PLAN_LIST`,
     ASSET_PLAN_LIST_SUCCESS: `${actionTypePrefix}ASSET_PLAN_LIST_SUCCESS`,
     ASSET_PLAN_LIST_FAILURE: `${actionTypePrefix}ASSET_PLAN_LIST_FAILURE`,
+    ASSET_BY_ID: `${actionTypePrefix}ASSET_BY_ID`,
+    ASSET_BY_ID_SUCCESS: `${actionTypePrefix}ASSET_BY_ID_SUCCESS`,
+    ASSET_BY_ID_FAILURE: `${actionTypePrefix}ASSET_BY_ID_FAILURE`,
   },
   SET: {
     ASSET_ID: `${actionTypePrefix}ASSET_ID`,
@@ -20,6 +24,7 @@ export const RecordAssetActionTypes = {
   },
   RESET: `${actionTypePrefix}RESET`,
 };
+
 const getAssetGroups = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.GET.ASSET_GROUPS,
 });
@@ -64,6 +69,21 @@ const setAssetId = (payload: number): IFluxStandardAction<number> => ({
   payload,
 });
 
+const getAssetById = (assetId: number): IFluxStandardAction<number> => ({
+  type: RecordAssetActionTypes.GET.ASSET_BY_ID,
+  payload: assetId,
+});
+
+const getAssetByIdSuccess = (payload: Asset): IFluxStandardAction<IAsset> => ({
+  type: RecordAssetActionTypes.GET.ASSET_BY_ID_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getAssetByIdFailure = (error: string): IFluxStandardAction => ({
+  type: RecordAssetActionTypes.GET.ASSET_BY_ID_FAILURE,
+  error,
+});
+
 const resetState = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.RESET,
 });
@@ -77,6 +97,9 @@ export const RecordAssetActions = {
   getAssetPlanList,
   getAssetPlanListSuccess,
   getAssetPlanListFailure,
+  getAssetById,
+  getAssetByIdSuccess,
+  getAssetByIdFailure,
   setSelectedPlan,
   setAssetId,
   resetState,

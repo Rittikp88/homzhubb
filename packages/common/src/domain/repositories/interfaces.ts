@@ -191,6 +191,7 @@ export interface ICreateAssetParams {
   state: string;
   country: string;
   asset_type: number;
+  country_iso2_code: string;
 }
 
 export interface ICreateAssetResult {

@@ -56,6 +56,7 @@ export { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
 export { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 
 // Organisms
+export { AddPropertyDetails } from '@homzhub/mobile/src/components/organisms/AddPropertyDetails';
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
@@ -66,6 +67,7 @@ export { LoginForm } from '@homzhub/mobile/src/components/organisms/LoginForm';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
 export { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';
+export { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 export { SignUpForm } from '@homzhub/mobile/src/components/organisms/SignUpForm';
 export { SocialMediaComponent } from '@homzhub/mobile/src/components/organisms/SocialMediaComponent';
 export { TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';

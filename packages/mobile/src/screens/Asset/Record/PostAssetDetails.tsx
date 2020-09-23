@@ -192,6 +192,8 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       unit_number,
       latitude,
       longitude,
+      // Todo (Change this to dynamic value)
+      country_iso2_code: 'IN',
     };
 
     try {

@@ -8,6 +8,7 @@ export const initialRecordAssetState: IRecordAssetState = {
   assetId: -1,
   assetPlan: [],
   assetGroups: [],
+  assetDetails: null,
   selectedAssetPlan: {
     id: 0,
     selectedPlan: TypeOfPlan.RENT,
@@ -18,6 +19,7 @@ export const initialRecordAssetState: IRecordAssetState = {
   loaders: {
     assetPlan: false,
     assetGroups: false,
+    assetDetails: false,
   },
 };
 
@@ -60,6 +62,17 @@ export const recordAssetReducer = (
         ...state,
         ['loaders']: { ...state.loaders, ['assetPlan']: false },
         ['error']: { ...state.error, ['assetPlan']: action.error as string },
+      };
+    case RecordAssetActionTypes.GET.ASSET_BY_ID_SUCCESS:
+      return {
+        ...state,
+        ['assetDetails']: action.payload as any,
+        ['loaders']: { ...state.loaders, ['assetDetails']: false },
+      };
+    case RecordAssetActionTypes.GET.ASSET_BY_ID_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['assetDetails']: false },
       };
     case RecordAssetActionTypes.SET.ASSET_ID:
       return { ...state, ['assetId']: action.payload as number };

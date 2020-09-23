@@ -1,8 +1,10 @@
 import React, { ReactElement, PureComponent, ReactNode } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SceneMap, TabView } from 'react-native-tab-view';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -11,9 +13,10 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button, Image, Label, Text } from '@homzhub/common/src/components';
-import { Header, AddressWithStepIndicator, BottomSheet } from '@homzhub/mobile/src/components';
+import { Header, AddressWithStepIndicator, AddPropertyDetails, BottomSheet } from '@homzhub/mobile/src/components';
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
+import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IRoutes {
   key: string;
@@ -37,18 +40,29 @@ interface IScreenState {
 
 interface IStateProps {
   assetId: number;
+  spaceTypes: SpaceType[];
+}
+
+interface IDispatchProps {
+  getAssetById: (assetId: number) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
-type Props = libraryProps & IStateProps;
+type Props = libraryProps & IStateProps & IDispatchProps;
 
 export class AddProperty extends PureComponent<Props, IScreenState> {
-  public state = {
-    currentIndex: 0,
-    progress: 0,
-    isStepDone: [],
-    isSheetVisible: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    const { getAssetById, assetId } = this.props;
+
+    getAssetById(assetId);
+    this.state = {
+      currentIndex: 0,
+      progress: 0,
+      isStepDone: [],
+      isSheetVisible: false,
+    };
+  }
 
   // TODO: Replace static data after api integration
   public render = (): ReactNode => {
@@ -135,10 +149,17 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private renderScene = SceneMap({
-    detail: (): ReactElement => <AssetHighlights handleNextStep={this.handleNextStep} />,
+    detail: (): ReactElement => {
+      const { spaceTypes } = this.props;
+
+      return <AddPropertyDetails spaceTypes={spaceTypes} handleNextStep={this.handleNextStep} />;
+    },
+
     highlights: (): ReactElement => <AssetHighlights handleNextStep={this.handleNextStep} />,
+
     gallery: (): ReactElement => {
       const { assetId } = this.props;
+
       return (
         <PropertyImages
           propertyId={assetId}
@@ -216,13 +237,19 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentAssetId } = RecordAssetSelectors;
+  const { getCurrentAssetId, getSpaceTypes } = RecordAssetSelectors;
   return {
     assetId: getCurrentAssetId(state),
+    spaceTypes: getSpaceTypes(state),
   };
 };
 
-export default connect(mapStateToProps, null)(withTranslation()(AddProperty));
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getAssetById } = RecordAssetActions;
+  return bindActionCreators({ getAssetById }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddProperty));
 
 const styles = StyleSheet.create({
   screen: {

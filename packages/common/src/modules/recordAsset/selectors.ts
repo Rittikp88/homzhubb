@@ -1,6 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
+import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 const getLoadingState = (state: IState): boolean => {
@@ -24,6 +24,23 @@ const getAssetGroups = (state: IState): AssetGroup[] => {
     recordAsset: { assetGroups },
   } = state;
   return ObjectMapper.deserializeArray(AssetGroup, assetGroups);
+};
+
+const getSpaceTypes = (state: IState): SpaceType[] => {
+  const {
+    recordAsset: { assetGroups, assetId },
+  } = state;
+  const spaceType: SpaceType[] = [];
+
+  ObjectMapper.deserializeArray(AssetGroup, assetGroups).forEach((item) => {
+    const assetIds = item.assetTypes.map((asset) => asset.id);
+
+    if (assetIds.includes(assetId)) {
+      spaceType.concat(item.spaceTypes);
+    }
+  });
+
+  return spaceType;
 };
 
 const getCurrentAssetId = (state: IState): number => {
@@ -56,4 +73,5 @@ export const RecordAssetSelectors = {
   getAssetGroupsLoading,
   getCurrentAssetId,
   getSelectedAssetPlan,
+  getSpaceTypes,
 };

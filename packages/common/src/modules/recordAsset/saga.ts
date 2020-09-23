@@ -5,6 +5,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
+import { IFluxStandardAction } from '../interfaces';
 
 export function* getAssetPlanList() {
   try {
@@ -28,7 +29,21 @@ export function* getAssetGroups() {
   }
 }
 
+export function* getAssetById(action: IFluxStandardAction<number>) {
+  const { payload } = action;
+
+  try {
+    const data = yield call(AssetRepository.getAssetById, payload as number);
+    yield put(RecordAssetActions.getAssetByIdSuccess(data));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(RecordAssetActions.getAssetByIdFailure(error));
+  }
+}
+
 export function* watchRecordAsset() {
   yield takeEvery(RecordAssetActionTypes.GET.ASSET_PLAN_LIST, getAssetPlanList);
   yield takeEvery(RecordAssetActionTypes.GET.ASSET_GROUPS, getAssetGroups);
+  yield takeEvery(RecordAssetActionTypes.GET.ASSET_BY_ID, getAssetById);
 }
