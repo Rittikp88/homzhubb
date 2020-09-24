@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
@@ -66,6 +67,13 @@ const getSelectedAssetPlan = (state: IState): ISelectedAssetPlan => {
   return selectedAssetPlan;
 };
 
+const getAssetDetails = (state: IState): Asset | null => {
+  const {
+    recordAsset: { assetDetails },
+  } = state;
+  return ObjectMapper.deserialize(Asset, assetDetails);
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
@@ -74,4 +82,5 @@ export const RecordAssetSelectors = {
   getCurrentAssetId,
   getSelectedAssetPlan,
   getSpaceTypes,
+  getAssetDetails,
 };

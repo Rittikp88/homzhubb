@@ -477,7 +477,9 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                               ]
                             }
                           >
-                            <WithShadowView>
+                            <WithShadowView
+                              isBottomShadow={true}
+                            >
                               <View
                                 style={
                                   Array [
@@ -485,11 +487,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                       "overflow": "hidden",
                                       "paddingBottom": 10,
                                     },
-                                    Object {
-                                      "marginBottom": 20,
-                                      "paddingBottom": 0,
-                                      "paddingTop": 10,
-                                    },
+                                    false,
                                   ]
                                 }
                               >
@@ -500,11 +498,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                         "overflow": "hidden",
                                         "paddingBottom": 10,
                                       },
-                                      Object {
-                                        "marginBottom": 20,
-                                        "paddingBottom": 0,
-                                        "paddingTop": 10,
-                                      },
+                                      false,
                                     ]
                                   }
                                 >

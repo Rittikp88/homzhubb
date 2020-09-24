@@ -11,6 +11,7 @@ import { DashboardRepository } from '@homzhub/common/src/domain/repositories/Das
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import {
   AnimatedProfileHeader,
   AssetMetricsList,
@@ -27,6 +28,7 @@ import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
+  setAssetId: (payload: number) => void;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
@@ -67,7 +69,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       <AnimatedProfileHeader title={t('dashboard')}>
         <>
           {this.renderAssetMetricsAndUpdates()}
-          <PendingPropertyListCard />
+          <PendingPropertyListCard onPressComplete={this.onCompleteDetails} />
           <FinanceOverview />
           <AssetMarketTrends containerStyle={styles.assetCards} onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
@@ -98,6 +100,12 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
         />
       </>
     );
+  };
+
+  private onCompleteDetails = (assetId: number): void => {
+    const { navigation, setAssetId } = this.props;
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AddProperty });
   };
 
   private onViewAll = (): void => {
@@ -148,7 +156,8 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentFilter } = PortfolioActions;
-  return bindActionCreators({ setCurrentFilter }, dispatch);
+  const { setAssetId } = RecordAssetActions;
+  return bindActionCreators({ setCurrentFilter, setAssetId }, dispatch);
 };
 
 export default connect(

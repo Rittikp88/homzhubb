@@ -31,7 +31,9 @@ exports[`Dashboard Screen should render snapshot 1`] = `
             serviceTickets={0}
           />
         </React.Fragment>
-        <withI18nextTranslation(PendingPropertyListCard) />
+        <withI18nextTranslation(PendingPropertyListCard)
+          onPressComplete={[Function]}
+        />
         <withI18nextTranslation(FinanceOverview) />
         <withI18nextTranslation(AssetMarketTrends)
           containerStyle={

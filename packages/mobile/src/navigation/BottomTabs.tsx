@@ -39,6 +39,7 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
   [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined;
+  [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
 };
 
 export type PortfolioNavigatorParamList = {

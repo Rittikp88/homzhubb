@@ -77,7 +77,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
       <View style={[styles.sheetContainer, sheetContainerStyle]}>
         {isShadowView ? (
           <>
-            {renderHeader && <WithShadowView>{header()}</WithShadowView>}
+            {renderHeader && <WithShadowView isBottomShadow>{header()}</WithShadowView>}
             {children}
           </>
         ) : (

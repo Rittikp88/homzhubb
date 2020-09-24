@@ -34,6 +34,7 @@ describe.skip('AssetRepository', () => {
       state: 'state',
       country: 'country',
       asset_type: 1,
+      country_iso2_code: 'IN',
     });
     expect(response).toStrictEqual({ id: 5 });
   });

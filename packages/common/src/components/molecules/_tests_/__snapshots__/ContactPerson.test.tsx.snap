@@ -30,7 +30,6 @@ exports[`ContactPerson should match snapshot 1`] = `
       style={
         Array [
           Object {
-            "backgroundColor": "#F0F5F9",
             "borderRadius": 4,
             "padding": 16,
           },
@@ -52,7 +51,6 @@ exports[`ContactPerson should match snapshot 1`] = `
       style={
         Array [
           Object {
-            "backgroundColor": "#F0F5F9",
             "borderRadius": 4,
             "padding": 16,
           },
@@ -76,7 +74,6 @@ exports[`ContactPerson should match snapshot 1`] = `
       style={
         Array [
           Object {
-            "backgroundColor": "#F0F5F9",
             "borderRadius": 4,
             "padding": 16,
           },

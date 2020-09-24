@@ -1,5 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Attachment } from './Attachment';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 export interface ITypeUnit {
   id: number;

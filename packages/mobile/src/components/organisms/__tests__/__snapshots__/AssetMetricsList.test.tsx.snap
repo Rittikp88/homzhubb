@@ -235,7 +235,6 @@ exports[`AssetMetricsList should match snapshot for optional props 1`] = `
         <View
           style={
             Object {
-              "backgroundColor": "#F7FAFC",
               "marginRight": 12,
             }
           }

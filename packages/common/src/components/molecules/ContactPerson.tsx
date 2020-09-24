@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     padding: 16,
-    backgroundColor: theme.colors.background,
     borderRadius: 4,
   },
 });

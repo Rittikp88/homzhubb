@@ -2,7 +2,8 @@ import React, { ReactElement, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label, Text, SVGUri } from '@homzhub/common/src/components';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface ITitle {
   title: string;

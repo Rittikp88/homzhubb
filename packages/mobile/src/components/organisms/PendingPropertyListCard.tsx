@@ -14,12 +14,16 @@ import { PropertyAmenities, PropertyAddressCountry, ProgressBar, ShieldGroup } f
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
+interface IProps {
+  onPressComplete: (assetId: number) => void;
+}
+
 interface IState {
   currentPropertyIndex: number;
   data: Asset[];
 }
 
-type Props = WithTranslation;
+type Props = IProps & WithTranslation;
 
 export class PendingPropertyListCard extends Component<Props, IState> {
   public state = {
@@ -73,8 +77,9 @@ export class PendingPropertyListCard extends Component<Props, IState> {
   }
 
   private renderCardItem = (item: Asset): React.ReactElement => {
-    const { t } = this.props;
+    const { t, onPressComplete } = this.props;
     const {
+      id,
       spaces,
       assetType: { name },
       projectName,
@@ -96,6 +101,8 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       true
     );
 
+    const handleComplete = (): void => onPressComplete(id);
+
     return (
       <View style={styles.cardContainer}>
         <ShieldGroup propertyType={name} propertyTypeStyle={styles.heading} text={description} isInfoRequired />
@@ -108,7 +115,12 @@ export class PendingPropertyListCard extends Component<Props, IState> {
           <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         )}
         <ProgressBar progress={percentage} width={theme.viewport.width > 400 ? 350 : 310} />
-        <Button type="primary" title={t('completeDetails')} containerStyle={styles.buttonStyle} />
+        <Button
+          type="primary"
+          title={t('completeDetails')}
+          containerStyle={styles.buttonStyle}
+          onPress={handleComplete}
+        />
         <Label type="regular" style={styles.infoText}>
           {t('completeProperty')}
         </Label>

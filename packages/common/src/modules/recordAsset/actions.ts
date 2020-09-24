@@ -1,8 +1,8 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup, IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 
 const actionTypePrefix = 'RecordAsset/';
 
@@ -74,7 +74,7 @@ const getAssetById = (assetId: number): IFluxStandardAction<number> => ({
   payload: assetId,
 });
 
-const getAssetByIdSuccess = (payload: Asset): IFluxStandardAction<IAsset> => ({
+const getAssetByIdSuccess = (payload: Asset): IFluxStandardAction<Asset> => ({
   type: RecordAssetActionTypes.GET.ASSET_BY_ID_SUCCESS,
   payload: ObjectMapper.serialize(payload),
 });
@@ -88,7 +88,14 @@ const resetState = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.RESET,
 });
 
-export type RecordAssetPayloadTypes = string | number | IAssetPlan[] | IAssetGroup[] | ISelectedAssetPlan | undefined;
+export type RecordAssetPayloadTypes =
+  | string
+  | number
+  | IAssetPlan[]
+  | IAssetGroup[]
+  | ISelectedAssetPlan
+  | Asset
+  | undefined;
 
 export const RecordAssetActions = {
   getAssetGroups,

@@ -1,6 +1,7 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 import { RecordAssetActionTypes, RecordAssetPayloadTypes } from '@homzhub/common/src/modules/recordAsset/actions';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
@@ -66,7 +67,7 @@ export const recordAssetReducer = (
     case RecordAssetActionTypes.GET.ASSET_BY_ID_SUCCESS:
       return {
         ...state,
-        ['assetDetails']: action.payload as any,
+        ['assetDetails']: action.payload as Asset,
         ['loaders']: { ...state.loaders, ['assetDetails']: false },
       };
     case RecordAssetActionTypes.GET.ASSET_BY_ID_FAILURE:

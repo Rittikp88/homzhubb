@@ -16,6 +16,7 @@ import { Button, Image, Label, Text } from '@homzhub/common/src/components';
 import { Header, AddressWithStepIndicator, AddPropertyDetails, BottomSheet } from '@homzhub/mobile/src/components';
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IRoutes {
@@ -34,13 +35,13 @@ const Steps = ['Details', 'Highlights', 'Gallery'];
 interface IScreenState {
   currentIndex: number;
   isStepDone: boolean[];
-  progress: number;
   isSheetVisible: boolean;
 }
 
 interface IStateProps {
   assetId: number;
   spaceTypes: SpaceType[];
+  assetDetail: Asset | null;
 }
 
 interface IDispatchProps {
@@ -54,20 +55,38 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
     const { getAssetById, assetId } = this.props;
-
     getAssetById(assetId);
     this.state = {
       currentIndex: 0,
-      progress: 0,
       isStepDone: [],
       isSheetVisible: false,
     };
   }
 
-  // TODO: Replace static data after api integration
+  public componentDidMount(): void {
+    const { assetDetail } = this.props;
+    if (assetDetail && assetDetail.lastVisitedStep) {
+      const { currentStep } = assetDetail.lastVisitedStep;
+      if (currentStep > 1) {
+        this.setState({
+          currentIndex: currentStep - 1,
+        });
+      }
+    }
+  }
+
   public render = (): ReactNode => {
-    const { currentIndex, isStepDone, progress, isSheetVisible } = this.state;
-    const { t } = this.props;
+    const { currentIndex, isStepDone, isSheetVisible } = this.state;
+    const { t, assetDetail } = this.props;
+
+    if (!assetDetail) return null;
+    const {
+      projectName,
+      address,
+      lastVisitedStep,
+      assetType: { name },
+    } = assetDetail;
+
     return (
       <View style={styles.screen}>
         <Header icon={icons.leftArrow} title={t('property:addProperty')} onIconPress={this.goBack} />
@@ -75,10 +94,10 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
           <AddressWithStepIndicator
             icon={icons.noteBook}
             steps={Steps}
-            progress={progress}
-            propertyType="Bungalow"
-            primaryAddress="Kalpataru Splendour"
-            subAddress="Shankar Kalat Nagar, Maharashtra 411057"
+            progress={lastVisitedStep?.percentage}
+            propertyType={name}
+            primaryAddress={projectName}
+            subAddress={address}
             currentIndex={currentIndex}
             isStepDone={isStepDone}
             onEditPress={this.onEditPress}
@@ -212,22 +231,12 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private handleNextStep = (): void => {
-    const { currentIndex, isStepDone, progress } = this.state;
+    const { currentIndex, isStepDone } = this.state;
     const newStepDone: boolean[] = isStepDone;
     newStepDone[currentIndex] = true;
     this.setState({
       isStepDone: newStepDone,
     });
-    if (progress < 100) {
-      const progressCount = Number((100 / Steps.length).toFixed(0));
-      let newProgress = progress + progressCount;
-      if (100 - newProgress === 1) {
-        newProgress += 1;
-      }
-      this.setState({
-        progress: newProgress,
-      });
-    }
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
     } else {
@@ -237,10 +246,11 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentAssetId, getSpaceTypes } = RecordAssetSelectors;
+  const { getCurrentAssetId, getSpaceTypes, getAssetDetails } = RecordAssetSelectors;
   return {
     assetId: getCurrentAssetId(state),
     spaceTypes: getSpaceTypes(state),
+    assetDetail: getAssetDetails(state),
   };
 };
 

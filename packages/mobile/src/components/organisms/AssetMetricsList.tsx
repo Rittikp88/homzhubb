@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   plusIcon: {
-    backgroundColor: theme.colors.lightGrayishBlue,
     marginRight: 12,
   },
   propertiesRow: {

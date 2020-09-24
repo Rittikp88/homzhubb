@@ -1,10 +1,10 @@
-import { IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
+import { IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 export interface IRecordAssetState {
   assetId: number;
-  // Todo update the model
-  assetDetails: any;
+  assetDetails: Asset | null;
   assetPlan: IAssetPlan[];
   assetGroups: IAssetGroup[];
   selectedAssetPlan: ISelectedAssetPlan;

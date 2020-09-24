@@ -1223,7 +1223,9 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                   ]
                                                 }
                                               >
-                                                <WithShadowView>
+                                                <WithShadowView
+                                                  isBottomShadow={true}
+                                                >
                                                   <View
                                                     style={
                                                       Array [
@@ -1231,11 +1233,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                           "overflow": "hidden",
                                                           "paddingBottom": 10,
                                                         },
-                                                        Object {
-                                                          "marginBottom": 20,
-                                                          "paddingBottom": 0,
-                                                          "paddingTop": 10,
-                                                        },
+                                                        false,
                                                       ]
                                                     }
                                                   >
@@ -1246,11 +1244,7 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                                             "overflow": "hidden",
                                                             "paddingBottom": 10,
                                                           },
-                                                          Object {
-                                                            "marginBottom": 20,
-                                                            "paddingBottom": 0,
-                                                            "paddingTop": 10,
-                                                          },
+                                                          false,
                                                         ]
                                                       }
                                                     >

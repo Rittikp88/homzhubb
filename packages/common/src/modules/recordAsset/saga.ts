@@ -5,7 +5,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
-import { IFluxStandardAction } from '../interfaces';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 export function* getAssetPlanList() {
   try {

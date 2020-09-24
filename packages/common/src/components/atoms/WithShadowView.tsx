@@ -7,10 +7,16 @@ export interface IShadowViewProps {
   children: React.ReactElement;
   outerViewStyle?: StyleProp<ViewStyle>;
   shadowViewStyle?: StyleProp<ViewStyle>;
+  isBottomShadow?: boolean;
 }
 
 export const WithShadowView = (props: IShadowViewProps): React.ReactElement => {
-  const { children, outerViewStyle = styles.defaultShadowView, shadowViewStyle } = props;
+  const {
+    children,
+    shadowViewStyle,
+    isBottomShadow,
+    outerViewStyle = !isBottomShadow && styles.defaultShadowView,
+  } = props;
   return (
     <View style={[styles.outerView, outerViewStyle]}>
       <View style={[styles.shadowView, shadowViewStyle]}>{children}</View>
