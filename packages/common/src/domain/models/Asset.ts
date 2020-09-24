@@ -51,6 +51,11 @@ export interface IAsset {
   verifications: IVerifications;
 }
 
+export interface ILastVisitedStep {
+  current_step: number;
+  total_step: number;
+}
+
 export interface IData {
   id: number;
   name: string;

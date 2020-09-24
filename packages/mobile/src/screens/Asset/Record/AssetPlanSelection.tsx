@@ -86,7 +86,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
       // TODO: Figure out to remove this error
       // @ts-ignore
       setSelectedPlan({ id: item.id, selectedPlan: item.name });
-      navigation.navigate(ScreensKeys.AssetServiceCheckoutScreen);
+      navigation.navigate(ScreensKeys.AssetLeaseListing);
     };
     const isLastIndex = assetPlan.length === index + 1;
     return (

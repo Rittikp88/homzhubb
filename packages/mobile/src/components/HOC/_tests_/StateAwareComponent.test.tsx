@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Text } from 'react-native';
-import { StateAwareComponent } from '@homzhub/mobile/src/components/templates/StateAwareComponent';
+import { StateAwareComponent } from '@homzhub/mobile/src/components/HOC/StateAwareComponent';
 
 const createTestProps = (testProps: any): object => ({
   loading: false,

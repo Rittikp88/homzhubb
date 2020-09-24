@@ -1,5 +1,6 @@
-// ENUMS
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 
+// ENUMS
 export enum LoginTypes {
   OTP = 'OTP_LOGIN',
   EMAIL = 'EMAIL_LOGIN',
@@ -190,8 +191,9 @@ export interface ICreateAssetParams {
   city: string;
   state: string;
   country: string;
-  asset_type: number;
   country_iso2_code: string;
+  asset_type: number;
+  last_visited_step?: ILastVisitedStep;
 }
 
 export interface ICreateAssetResult {
@@ -208,12 +210,14 @@ export interface IUpdateAssetParams {
   pin_code?: string;
   city?: string;
   state?: string;
+  country_iso2_code?: string;
   country?: string;
   carpet_area?: number;
   carpet_area_unit?: number;
   floor_number?: number;
   total_floors?: number;
   asset_type?: number;
+  last_visited_step?: ILastVisitedStep;
   spaces?: ISpaceAvailablePayload[];
 }
 

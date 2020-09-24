@@ -17,10 +17,9 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
-import { AddressWithStepIndicator, BottomSheet, Header } from '@homzhub/mobile/src/components';
+import { AddressWithStepIndicator, ActionController, BottomSheet, Header } from '@homzhub/mobile/src/components';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
-import { DummyView } from '@homzhub/mobile/src/screens/Asset/Record/DummyView';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
@@ -34,7 +33,7 @@ interface IDispatchProps {
   resetState: () => void;
 }
 
-type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetServiceCheckoutScreen>;
+type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLeaseListing>;
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 interface IRoutes {
@@ -42,14 +41,14 @@ interface IRoutes {
   title: string;
 }
 
-interface IAssetServiceCheckoutScreenState {
+interface IOwnState {
   currentIndex: number;
   isStepDone: boolean[];
   isActionSheetToggled: boolean;
   isPropertyAsUnits: boolean;
 }
 
-class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServiceCheckoutScreenState> {
+class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   public state = {
     currentIndex: 0,
     isStepDone: [],
@@ -70,7 +69,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
     return (
       <>
         <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
-        <ScrollView style={styles.screen}>
+        <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
           <AddressWithStepIndicator
             steps={this.getSteps()}
             badge={badge}
@@ -82,9 +81,8 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
             currentIndex={currentIndex}
             isStepDone={isStepDone}
             onPressSteps={this.handlePreviousStep}
-            containerStyle={styles.screenMargin}
           />
-          <View style={styles.screenMargin}>{this.renderTabHeader()}</View>
+          {this.renderTabHeader()}
           <TabView
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
@@ -144,9 +142,14 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
     );
   };
 
-  // TODO: Replace the DummyView with your components
   private renderScene = SceneMap({
-    actions: (): ReactElement => <DummyView handleNextStep={this.handleNextStep} />,
+    actions: (): ReactElement => {
+      const { isPropertyAsUnits } = this.state;
+      const {
+        selectedAssetPlan: { selectedPlan },
+      } = this.props;
+      return <ActionController typeOfPlan={selectedPlan} isSplitAsUnits={isPropertyAsUnits} />;
+    },
     verification: (): ReactElement => {
       const {
         selectedAssetPlan: { selectedPlan },
@@ -205,7 +208,7 @@ class AssetServiceCheckoutScreen extends React.PureComponent<Props, IAssetServic
         ];
       default:
         return [
-          { key: 'actions', title: selectedPlan === TypeOfPlan.RENT ? t('lease') : t('terms') },
+          { key: 'actions', title: t('actions') },
           { key: 'verification', title: t('verification') },
           { key: 'services', title: t('services') },
           { key: 'payment', title: t('payment') },
@@ -318,15 +321,13 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(AssetServiceCheckoutScreen));
+)(withTranslation(LocaleConstants.namespacesKey.property)(AssetLeaseListing));
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: theme.colors.background,
-  },
-  screenMargin: {
-    margin: theme.layout.screenPadding,
+    padding: theme.layout.screenPadding,
   },
   actionsContainer: {
     flexDirection: 'row',

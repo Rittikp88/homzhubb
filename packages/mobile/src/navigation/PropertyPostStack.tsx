@@ -12,7 +12,7 @@ import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLoca
 import AssetLocationSearch from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
 import AddProperty from '@homzhub/mobile/src/screens/Asset/Record/AddProperty';
 import AssetPlanSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetPlanSelection';
-import AssetServiceCheckoutScreen from '@homzhub/mobile/src/screens/Asset/Record/AssetServiceCheckoutScreen';
+import AssetLeaseListing from '@homzhub/mobile/src/screens/Asset/Record/AssetLeaseListing';
 
 export type PropertyPostStackParamList = {
   [ScreensKeys.AssetLocationSearch]: undefined;
@@ -20,7 +20,7 @@ export type PropertyPostStackParamList = {
   [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps;
   [ScreensKeys.AddProperty]: undefined;
   [ScreensKeys.AssetPlanSelection]: undefined;
-  [ScreensKeys.AssetServiceCheckoutScreen]: undefined;
+  [ScreensKeys.AssetLeaseListing]: undefined;
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
 };
 const PropertyPostStackNavigator = createStackNavigator<PropertyPostStackParamList>();
@@ -37,10 +37,7 @@ export const PropertyPostStack = (): React.ReactElement => {
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetLocationMap} component={AssetLocationMap} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.PostAssetDetails} component={PostAssetDetails} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetPlanSelection} component={AssetPlanSelection} />
-      <PropertyPostStackNavigator.Screen
-        name={ScreensKeys.AssetServiceCheckoutScreen}
-        component={AssetServiceCheckoutScreen}
-      />
+      <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetLeaseListing} component={AssetLeaseListing} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AddProperty} component={AddProperty} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.MarkdownScreen} component={MarkdownView} />
     </PropertyPostStackNavigator.Navigator>

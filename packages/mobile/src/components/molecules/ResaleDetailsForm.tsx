@@ -14,9 +14,7 @@ import { ICreateSaleTermDetails } from '@homzhub/common/src/domain/models/SaleTe
 import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 interface IProps extends WithTranslation {
-  initialValues: ICreateSaleTermDetails | null;
   currency: string;
-  onSubmit: (data: ICreateSaleTermDetails) => void;
   testID?: string;
 }
 
@@ -39,29 +37,29 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
     maintenanceSchedule: ScheduleTypes.ANNUALLY,
   };
 
-  public componentDidUpdate = (prevProps: Readonly<IProps>): void => {
-    const { initialValues } = this.props;
-    if (prevProps.initialValues !== initialValues && initialValues) {
-      const {
-        available_from_date,
-        expected_booking_amount,
-        expected_price,
-        maintenance_amount,
-        maintenance_payment_schedule,
-        construction_year,
-      } = initialValues;
-
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        expectedPrice: expected_price.toString(),
-        bookingAmount: expected_booking_amount.toString(),
-        yearOfConstruction: construction_year.toString(),
-        availableFrom: available_from_date,
-        maintenanceAmount: maintenance_amount.toString(),
-        maintenanceSchedule: maintenance_payment_schedule,
-      });
-    }
-  };
+  // public componentDidUpdate = (prevProps: Readonly<IProps>): void => {
+  //   const { initialValues } = this.props;
+  //   if (prevProps.initialValues !== initialValues && initialValues) {
+  //     const {
+  //       available_from_date,
+  //       expected_booking_amount,
+  //       expected_price,
+  //       maintenance_amount,
+  //       maintenance_payment_schedule,
+  //       construction_year,
+  //     } = initialValues;
+  //
+  //     // eslint-disable-next-line react/no-did-update-set-state
+  //     this.setState({
+  //       expectedPrice: expected_price.toString(),
+  //       bookingAmount: expected_booking_amount.toString(),
+  //       yearOfConstruction: construction_year.toString(),
+  //       availableFrom: available_from_date,
+  //       maintenanceAmount: maintenance_amount.toString(),
+  //       maintenanceSchedule: maintenance_payment_schedule,
+  //     });
+  //   }
+  // };
 
   public render = (): React.ReactNode => {
     const { currency, t } = this.props;
@@ -126,8 +124,9 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
 
   private onSubmit = (values: IResaleFormState, formActions: FormikActions<FormikValues>): void => {
     formActions.setSubmitting(true);
-    const { currency, onSubmit } = this.props;
+    const { currency } = this.props;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
     const payload: ICreateSaleTermDetails = {
       currency_code: currency,
       expected_price: parseInt(values.expectedPrice, 10),
@@ -137,7 +136,6 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
       maintenance_amount: parseInt(values.maintenanceAmount, 10),
       maintenance_payment_schedule: values.maintenanceSchedule,
     };
-    onSubmit(payload);
 
     formActions.setSubmitting(false);
   };

@@ -30,6 +30,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
       formProps.setFieldValue('city', addressComponents.city);
       formProps.setFieldValue('state', addressComponents.state);
       formProps.setFieldValue('country', addressComponents.country);
+      formProps.setFieldValue('countryIsoCode', addressComponents.countryIsoCode);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

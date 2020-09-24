@@ -45,7 +45,7 @@ export { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecu
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 export { Range } from '@homzhub/mobile/src/components/molecules/Range';
 export { RentAndMaintenance } from '@homzhub/mobile/src/components/molecules/RentAndMaintenance';
-export { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
+export { default as ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
 export { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 export { GoogleSearchBar } from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 export { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
@@ -58,6 +58,7 @@ export { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/Upl
 // Organisms
 export { AddPropertyDetails } from '@homzhub/mobile/src/components/organisms/AddPropertyDetails';
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
+export { ActionController } from '@homzhub/mobile/src/components/organisms/ActionController';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
@@ -72,7 +73,8 @@ export { SignUpForm } from '@homzhub/mobile/src/components/organisms/SignUpForm'
 export { SocialMediaComponent } from '@homzhub/mobile/src/components/organisms/SocialMediaComponent';
 export { TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 
-// Templates
-export { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
-export { AnimatedProfileHeader } from '@homzhub/mobile/src/components/templates/AnimatedProfileHeader';
-export { StateAwareComponent } from '@homzhub/mobile/src/components/templates/StateAwareComponent';
+// HOC
+export { AnimatedServiceList } from '@homzhub/mobile/src/components/HOC/AnimatedServiceList';
+export { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
+export { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';
+export { StateAwareComponent } from '@homzhub/mobile/src/components/HOC/StateAwareComponent';

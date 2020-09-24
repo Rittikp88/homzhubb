@@ -74,7 +74,7 @@ const getAssetById = (assetId: number): IFluxStandardAction<number> => ({
   payload: assetId,
 });
 
-const getAssetByIdSuccess = (payload: Asset): IFluxStandardAction<Asset> => ({
+const getAssetByIdSuccess = (payload: Asset): IFluxStandardAction<IAsset> => ({
   type: RecordAssetActionTypes.GET.ASSET_BY_ID_SUCCESS,
   payload: ObjectMapper.serialize(payload),
 });
@@ -94,7 +94,7 @@ export type RecordAssetPayloadTypes =
   | IAssetPlan[]
   | IAssetGroup[]
   | ISelectedAssetPlan
-  | Asset
+  | IAsset
   | undefined;
 
 export const RecordAssetActions = {

@@ -46,6 +46,7 @@ interface IOwnState {
     city: string;
     state: string;
     country: string;
+    countryIsoCode: string;
     address: string;
   };
   assetTypeId: number;
@@ -56,11 +57,12 @@ type Props = WithTranslation & libraryProps & IDispatchProps & IStateProps;
 class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
   private scrollView: ScrollView | null = null;
 
+  // TODO (Aditya 24-09-2020): Redo this logic so as to accommodate the edit flow
   public constructor(props: Props) {
     super(props);
     const {
       route: {
-        params: { name, pincode, state, address, country, city },
+        params: { name, pincode, state, address, country, city, countryIsoCode },
       },
     } = props;
     this.state = {
@@ -72,6 +74,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
         city,
         state,
         country,
+        countryIsoCode,
         address,
       },
       assetTypeId: -1,
@@ -168,6 +171,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       city,
       state,
       country,
+      countryIsoCode: country_iso2_code,
       address,
     } = values;
     const {
@@ -184,6 +188,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       city,
       state,
       country,
+      country_iso2_code,
       address,
       project_name,
       pin_code,
@@ -192,8 +197,10 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       unit_number,
       latitude,
       longitude,
-      // Todo (Change this to dynamic value)
-      country_iso2_code: 'IN',
+      last_visited_step: {
+        current_step: 1,
+        total_step: 4,
+      },
     };
 
     try {

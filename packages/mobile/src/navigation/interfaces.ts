@@ -82,7 +82,7 @@ export enum ScreensKeys {
   PropertyDetailsScreen = 'PropertyDetails',
   AddProperty = 'AddProperty',
   AssetPlanSelection = 'AssetPlanSelection',
-  AssetServiceCheckoutScreen = 'AssetServiceCheckoutScreen',
+  AssetLeaseListing = 'AssetLeaseListing',
   MarkdownScreen = 'Markdown',
 
   // Search Stack
@@ -143,6 +143,7 @@ export interface IPostAssetDetailsProps {
   city: string;
   state: string;
   country: string;
+  countryIsoCode: string;
 }
 
 export type MarkdownType = 'visit' | 'verification';

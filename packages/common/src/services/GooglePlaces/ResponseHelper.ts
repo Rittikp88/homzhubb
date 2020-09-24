@@ -64,6 +64,9 @@ class ResponseHelper {
         // @ts-ignore
         if (component.types[0] === LocationKeysToMatch[key]) {
           locationData[key] = component.long_name;
+          if (component.types[0] === LocationKeysToMatch.country) {
+            locationData.countryIsoCode = component.short_name;
+          }
         }
       });
     });

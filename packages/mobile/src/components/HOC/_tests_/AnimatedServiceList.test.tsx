@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Text } from 'react-native';
-import { AnimatedServiceList } from '@homzhub/mobile/src/components/templates/AnimatedServiceList';
+import { AnimatedServiceList } from '@homzhub/mobile/src/components/HOC/AnimatedServiceList';
 
 const createTestProps = (testProps: any): object => ({
   children: <Text>Testing Element</Text>,
