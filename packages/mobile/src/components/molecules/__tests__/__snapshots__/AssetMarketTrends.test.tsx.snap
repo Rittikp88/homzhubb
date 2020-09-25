@@ -7,17 +7,34 @@ exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
   onPress={[Function]}
   style={
     Object {
+      "borderColor": "#667686",
+      "borderRadius": 4,
+      "borderWidth": 0.5,
+      "flexDirection": "row",
+      "margin": 10,
       "padding": 10,
     }
   }
   testID="linkTouch"
 >
+  <Image
+    source={
+      Object {
+        "testUri": "../../../packages/common/src/assets/images/landingScreenLogo.png",
+      }
+    }
+    style={
+      Object {
+        "height": 50,
+        "width": 50,
+      }
+    }
+  />
   <View
     style={
       Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "center",
+        "flex": 1,
+        "marginStart": 10,
       }
     }
   >
@@ -25,28 +42,39 @@ exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
       style={
         Object {
           "color": "#33495E",
-          "flex": 1,
+          "flexWrap": "wrap",
         }
       }
       textType="regular"
       type="small"
     />
-    <Icon
-      allowFontScaling={false}
-      color="#0084F8"
-      name="right-arrow"
-      size={20}
-    />
-  </View>
-  <Label
-    style={
-      Object {
-        "color": "#4C5F72",
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingTop": 10,
+        }
       }
-    }
-    textType="regular"
-    type="large"
-  />
+    >
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="regular"
+        type="large"
+      />
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="right-arrow"
+        size={20}
+      />
+    </View>
+  </View>
 </ForwardRef>
 `;
 

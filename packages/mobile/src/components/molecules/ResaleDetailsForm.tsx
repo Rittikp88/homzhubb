@@ -80,6 +80,7 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
                 placeholder={t('expectedPricePlaceholder')}
                 maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
                 formProps={formProps}
+                inputPrefixText="₹"
                 inputGroupSuffixText={currency}
               />
               <FormTextInput
@@ -89,6 +90,7 @@ export class ResaleDetailsForm extends React.PureComponent<IProps, IResaleFormSt
                 placeholder={t('bookingAmountPlaceholder')}
                 maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
                 formProps={formProps}
+                inputPrefixText="₹"
                 inputGroupSuffixText={currency}
               />
               <FormDropdown

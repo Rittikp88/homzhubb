@@ -1,5 +1,6 @@
 import React from 'react';
-import { ResaleDetailsForm, AssetListingSection } from '@homzhub/mobile/src/components';
+import { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
+import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 interface IProps {

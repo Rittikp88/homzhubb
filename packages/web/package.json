@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "env-cmd -f .env react-app-rewired start",
+    "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
+    "build:dev": "env-cmd -f .env.development yarn run build",
+    "build:staging": "env-cmd -f .env.staging yarn run build",
+    "build:production": "env-cmd -f .env.production yarn run build",
     "test": "CI=true react-app-rewired test --coverage --env=jsdom",
     "eject": "react-app-rewired eject",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
@@ -15,6 +18,7 @@
   "dependencies": {
     "@homzhub/common": "0.0.1",
     "crypto-js": "^4.0.0",
+    "env-cmd": "^10.1.0",
     "node-sass": "^4.14.1",
     "react-dom": "^16.13.1",
     "react-native-web": "^0.12.2",

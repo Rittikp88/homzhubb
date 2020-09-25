@@ -6,12 +6,28 @@ export interface IMoreScreenItem {
   id: number;
   title: string;
   icon: string;
+  type: MoreScreenTypes;
   textColor: string;
   iconColor: string;
 }
 
 export interface IMoreScreens {
   [key: string]: IMoreScreenItem[];
+}
+
+export enum MoreScreenTypes {
+  NOTIFICATIONS = 'notifications',
+  TICKETS = 'tickets',
+  KYC_DOCUMENTS = 'kycDocuments',
+  SAVED_PROPERTIES = 'savedProperties',
+  NEW_LAUNCHES = 'newLaunches',
+  MARKET_TRENDS = 'marketTrends',
+  VALUE_ADDED_SERVICES = 'valueAddedServices',
+  SETTINGS = 'settings',
+  PAYMENT_METHODS = 'paymentMethods',
+  REFER_FRIEND = 'referFriend',
+  SUPPORT = 'support',
+  LOGOUT = 'logout',
 }
 
 const ICON_COLOR = theme.colors.lowPriority;
@@ -26,6 +42,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.alert,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.NOTIFICATIONS,
     },
     {
       id: 2,
@@ -33,6 +50,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.ticket,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.TICKETS,
     },
     {
       id: 3,
@@ -40,6 +58,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.documents,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.KYC_DOCUMENTS,
     },
   ],
   sectionB: [
@@ -49,6 +68,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.heartOutline,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.SAVED_PROPERTIES,
     },
     {
       id: 5,
@@ -56,6 +76,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.newLaunch,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.NEW_LAUNCHES,
     },
     {
       id: 6,
@@ -63,6 +84,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.increase,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.MARKET_TRENDS,
     },
     {
       id: 7,
@@ -70,6 +92,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.settingOutline,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.VALUE_ADDED_SERVICES,
     },
   ],
   sectionC: [
@@ -79,6 +102,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.setting,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.SETTINGS,
     },
     {
       id: 9,
@@ -86,6 +110,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.payment,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.PAYMENT_METHODS,
     },
   ],
   sectionD: [
@@ -95,6 +120,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.refer,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.REFER_FRIEND,
     },
     {
       id: 11,
@@ -102,6 +128,7 @@ export const MORE_SCREENS: IMoreScreens = {
       icon: icons.headset,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
+      type: MoreScreenTypes.SUPPORT,
     },
   ],
 };
@@ -112,4 +139,5 @@ export const LOGOUT = {
   icon: icons.logOut,
   iconColor: theme.colors.error,
   textColor: theme.colors.error,
+  type: MoreScreenTypes.LOGOUT,
 };

@@ -29,7 +29,7 @@ import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigatio
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
   [ScreensKeys.Financials]: NestedNavigatorParams<FinancialsNavigatorParamList>;
-  [ScreensKeys.Dashboard]: undefined;
+  [ScreensKeys.Dashboard]: NestedNavigatorParams<DashboardNavigatorParamList>;
   [ScreensKeys.Search]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.More]: undefined;
   [ScreensKeys.DefaultLogin]: undefined;

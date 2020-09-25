@@ -1,6 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ILinks, Links } from '@homzhub/common/src/domain/models/PaginationLinks';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 export interface IMarketTrends {
   count: number;
@@ -29,6 +30,9 @@ export class MarketTrendsResults {
   @JsonProperty('link', String)
   private _link = '';
 
+  @JsonProperty('attachment', Attachment, true)
+  private _attachment: Attachment | null = null;
+
   get id(): number {
     return this._id;
   }
@@ -47,6 +51,10 @@ export class MarketTrendsResults {
 
   get link(): string {
     return this._link;
+  }
+
+  get attachment(): Attachment | null {
+    return this._attachment;
   }
 }
 

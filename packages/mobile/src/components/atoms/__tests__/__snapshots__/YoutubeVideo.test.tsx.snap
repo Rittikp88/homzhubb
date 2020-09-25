@@ -9,7 +9,7 @@ exports[`YoutubeVideo should match snapshot 1`] = `
   }
 >
   <YouTube
-    apiKey="AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo"
+    apiKey="youtube"
     controls={1}
     fullscreen={false}
     loop={false}
@@ -37,7 +37,7 @@ exports[`YoutubeVideo should match snapshot for full screen 1`] = `
   }
 >
   <YouTube
-    apiKey="AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo"
+    apiKey="youtube"
     controls={1}
     fullscreen={true}
     loop={false}
@@ -65,7 +65,7 @@ exports[`YoutubeVideo should match snapshot for loop 1`] = `
   }
 >
   <YouTube
-    apiKey="AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo"
+    apiKey="youtube"
     controls={1}
     fullscreen={false}
     loop={true}
@@ -93,7 +93,7 @@ exports[`YoutubeVideo should match snapshot for no play 1`] = `
   }
 >
   <YouTube
-    apiKey="AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo"
+    apiKey="youtube"
     controls={1}
     fullscreen={false}
     loop={false}

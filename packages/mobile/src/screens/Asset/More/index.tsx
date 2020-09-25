@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { CommonActions } from '@react-navigation/native';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
@@ -13,7 +13,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Text } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, MoreProfile } from '@homzhub/mobile/src/components';
-import { MORE_SCREENS, LOGOUT, IMoreScreenItem } from '@homzhub/common/src/constants/MoreScreens';
+import { MORE_SCREENS, LOGOUT, IMoreScreenItem, MoreScreenTypes } from '@homzhub/common/src/constants/MoreScreens';
 
 interface IDispatchProps {
   logout: (data: IRefreshTokenPayload) => void;
@@ -58,7 +58,10 @@ export class More extends React.PureComponent<Props> {
   private renderKeyExtractor = (item: IMoreScreenItem, index: number): string => index.toString();
 
   public renderItem = ({ item }: { item: IMoreScreenItem }): React.ReactElement => {
-    return <TouchableOpacity onPress={FunctionUtils.noop}>{this.renderItemWithIcon(item, false)}</TouchableOpacity>;
+    const onPress = (): void => {
+      this.handleNavigation(item.type);
+    };
+    return <TouchableOpacity onPress={onPress}>{this.renderItemWithIcon(item, false)}</TouchableOpacity>;
   };
 
   public renderItemWithIcon = (item: IMoreScreenItem, isLogout: boolean): React.ReactElement => {
@@ -103,6 +106,33 @@ export class More extends React.PureComponent<Props> {
   };
 
   public onIconPress = (): void => {};
+
+  public handleNavigation = (type: MoreScreenTypes): void => {
+    const { navigation } = this.props;
+    switch (type) {
+      case MoreScreenTypes.NOTIFICATIONS:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.AssetNotifications,
+          })
+        );
+        break;
+      case MoreScreenTypes.MARKET_TRENDS:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.MarketTrends,
+          })
+        );
+        break;
+      default:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.More,
+          })
+        );
+        break;
+    }
+  };
 
   public logout = async (): Promise<void> => {
     const { logout } = this.props;

@@ -105,6 +105,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 1,
               "textColor": "#000",
               "title": "assetMore:notifications",
+              "type": "notifications",
             },
             Object {
               "icon": "ticket",
@@ -112,6 +113,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 2,
               "textColor": "#000",
               "title": "assetMore:tickets",
+              "type": "tickets",
             },
             Object {
               "icon": "documents",
@@ -119,6 +121,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 3,
               "textColor": "#000",
               "title": "assetMore:kycDocuments",
+              "type": "kycDocuments",
             },
           ]
         }
@@ -159,6 +162,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 4,
               "textColor": "#000",
               "title": "assetMore:savedProperties",
+              "type": "savedProperties",
             },
             Object {
               "icon": "new-launch",
@@ -166,6 +170,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 5,
               "textColor": "#000",
               "title": "assetMore:newLaunches",
+              "type": "newLaunches",
             },
             Object {
               "icon": "increase",
@@ -173,6 +178,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 6,
               "textColor": "#000",
               "title": "assetMore:marketTrends",
+              "type": "marketTrends",
             },
             Object {
               "icon": "setting-outline",
@@ -180,6 +186,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 7,
               "textColor": "#000",
               "title": "assetMore:valueAddedServices",
+              "type": "valueAddedServices",
             },
           ]
         }
@@ -220,6 +227,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 8,
               "textColor": "#000",
               "title": "assetMore:settings",
+              "type": "settings",
             },
             Object {
               "icon": "payment",
@@ -227,6 +235,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 9,
               "textColor": "#000",
               "title": "assetMore:paymentMethods",
+              "type": "paymentMethods",
             },
           ]
         }
@@ -267,6 +276,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 10,
               "textColor": "#000",
               "title": "assetMore:referFriend",
+              "type": "referFriend",
             },
             Object {
               "icon": "headset",
@@ -274,6 +284,7 @@ exports[`Financials Screen should render snapshot 1`] = `
               "id": 11,
               "textColor": "#000",
               "title": "assetMore:support",
+              "type": "support",
             },
           ]
         }

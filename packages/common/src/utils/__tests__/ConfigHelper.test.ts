@@ -1,16 +1,17 @@
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 
-jest.mock('config.json', () => ({
-  API_BASE_URL: 'https://testbaseurl.com',
-  PLACES_API_BASE_URL: 'https://testbaseurl.com',
-  PLACES_API_KEY: 'test',
-  OTP_LENGTH: 6,
-  RAZOR_API_KEY: 'razorpay',
-  storage_secret: 'secret',
-  YOUTUBE_API_KEY: 'youtube',
-}));
-
 describe('Config Helper', () => {
+  beforeEach(() => {
+    Object.assign(process.env, {
+      REACT_APP_API_BASE_URL: 'https://testbaseurl.com',
+      REACT_APP_PLACES_API_BASE_URL: 'https://testbaseurl.com',
+      REACT_APP_PLACES_API_KEY: 'test',
+      REACT_APP_RAZOR_API_KEY: 'razorpay',
+      REACT_APP_OTP_LENGTH: 6,
+      REACT_APP_STORAGE_SECRET: 'secret',
+      REACT_APP_YOUTUBE_API_KEY: 'youtube',
+    });
+  });
   it('should return API base url', () => {
     const baseURL = ConfigHelper.getBaseUrl();
     expect(baseURL).toStrictEqual('https://testbaseurl.com');

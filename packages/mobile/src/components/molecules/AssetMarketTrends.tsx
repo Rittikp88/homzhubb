@@ -1,11 +1,12 @@
 import React from 'react';
-import { FlatList, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { FlatList, Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { images } from '@homzhub/common/src/assets/images';
 import { Text, Label } from '@homzhub/common/src/components';
 import { MarketTrends, MarketTrendsResults } from '@homzhub/common/src/domain/models/MarketTrends';
 
@@ -70,22 +71,27 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
       <FlatList
         data={data.results ?? []}
         renderItem={({ item }: { item: MarketTrendsResults }): React.ReactElement => {
-          const { title, postedAtDate, link } = item;
+          const { title, postedAtDate, link, attachment } = item;
           const onLinkPress = async (): Promise<void> => {
             await LinkingService.canOpenURL(link);
           };
 
           return (
             <TouchableOpacity onPress={onLinkPress} style={styles.trendContainer} testID="linkTouch">
-              <View style={styles.trendData}>
+              {attachment?.link && <Image source={{ uri: attachment?.link }} style={styles.image} />}
+              {!attachment && <Image source={images.landingScreenLogo} style={styles.image} />}
+              <View style={styles.trendValuesContainer}>
                 <Text type="small" textType="regular" style={styles.trendHeader}>
                   {title}
                 </Text>
-                <Icon name={icons.rightArrow} color={theme.colors.primaryColor} size={20} />
+                <View style={styles.trendData}>
+                  <Label type="large" textType="regular" style={styles.trendDate}>
+                    {postedAtDate}
+                  </Label>
+                  {/* TODO: Change the icon after updating icomoon */}
+                  <Icon name={icons.rightArrow} color={theme.colors.primaryColor} size={20} />
+                </View>
               </View>
-              <Label type="large" textType="regular" style={styles.trendDate}>
-                {postedAtDate}
-              </Label>
             </TouchableOpacity>
           );
         }}
@@ -131,6 +137,13 @@ const styles = StyleSheet.create({
   },
   trendContainer: {
     padding: 10,
+    margin: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors.darkTint5,
+    borderRadius: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   viewAll: {
     flex: 0,
@@ -146,14 +159,24 @@ const styles = StyleSheet.create({
   },
   trendData: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 10,
   },
   trendHeader: {
     color: theme.colors.darkTint3,
+    flexWrap: 'wrap',
+  },
+  trendValuesContainer: {
+    marginStart: 10,
     flex: 1,
   },
   trendDate: {
     color: theme.colors.darkTint4,
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 4,
   },
 });

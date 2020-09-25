@@ -150,6 +150,7 @@ export class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                   placeholder={t('monthlyRentPlaceholder')}
                   maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
                   formProps={formProps}
+                  inputPrefixText="₹"
                   inputGroupSuffixText={currency}
                 />
                 <FormTextInput
@@ -159,6 +160,7 @@ export class LeaseDetailsForm extends React.PureComponent<IProps, IState> {
                   placeholder={t('securityDepositPlaceholder')}
                   maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
                   formProps={formProps}
+                  inputPrefixText="₹"
                   inputGroupSuffixText={currency}
                 />
                 <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>

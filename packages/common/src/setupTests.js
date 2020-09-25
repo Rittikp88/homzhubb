@@ -17,3 +17,14 @@ jest.mock('react-native-permissions', () => {
     PERMISSIONS,
   };
 });
+jest.mock('react-native-config', () => {
+  return {
+    REACT_NATIVE_APP_API_BASE_URL: 'https://testbaseurl.com',
+    REACT_NATIVE_APP_PLACES_API_BASE_URL: 'https://testbaseurl.com',
+    REACT_NATIVE_APP_PLACES_API_KEY: 'test',
+    REACT_NATIVE_APP_RAZOR_API_KEY: 'razorpay',
+    REACT_NATIVE_APP_OTP_LENGTH: 6,
+    REACT_NATIVE_APP_STORAGE_SECRET: 'secret',
+    REACT_NATIVE_APP_YOUTUBE_API_KEY: 'youtube',
+  };
+});
