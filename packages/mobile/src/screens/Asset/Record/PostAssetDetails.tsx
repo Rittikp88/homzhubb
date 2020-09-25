@@ -168,9 +168,9 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       unitNo: unit_number,
       blockNo: block_number,
       pincode: pin_code,
-      city,
-      state,
-      country,
+      city: city_name,
+      state: state_name,
+      country: country_name,
       countryIsoCode: country_iso2_code,
       address,
     } = values;
@@ -185,9 +185,9 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     const { assetTypeId: asset_type } = this.state;
 
     const params = {
-      city,
-      state,
-      country,
+      city_name,
+      state_name,
+      country_name,
       country_iso2_code,
       address,
       project_name,

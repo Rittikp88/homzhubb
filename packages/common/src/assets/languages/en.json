@@ -103,7 +103,8 @@
     "apply": "Apply",
     "promoPlaceholder": "Enter Promo code",
     "promoError": "Please enter a valid Promotional Code",
-    "remove": "Remove"
+    "remove": "Remove",
+    "typeHere": "Type here..."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -219,7 +220,7 @@
     "quarterly": "Quarterly",
     "monthly": "Monthly",
     "annually": "Annually",
-    "resaleDetails": "Resale Details",
+    "resaleTerms": "Resale Terms",
     "owner": "Owner",
     "tenant": "Tenant",
     "fullyFurnished": "Fully",

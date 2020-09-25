@@ -7,6 +7,7 @@ import { IAssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/
 
 export const initialRecordAssetState: IRecordAssetState = {
   assetId: -1,
+  termId: -1,
   assetPlan: [],
   assetGroups: [],
   assetDetails: null,
@@ -77,6 +78,8 @@ export const recordAssetReducer = (
       };
     case RecordAssetActionTypes.SET.ASSET_ID:
       return { ...state, ['assetId']: action.payload as number };
+    case RecordAssetActionTypes.SET.TERM_ID:
+      return { ...state, ['termId']: action.payload as number };
     case RecordAssetActionTypes.SET.SELECTED_PLAN:
       return { ...state, ['selectedAssetPlan']: action.payload as ISelectedAssetPlan };
     case RecordAssetActionTypes.RESET:

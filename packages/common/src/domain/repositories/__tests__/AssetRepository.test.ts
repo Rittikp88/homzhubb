@@ -124,11 +124,9 @@ describe.skip('AssetRepository', () => {
 
   it('should create sale term in DB and return the corresponding property ID', async () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve({ id: 5 }));
-    const response = await AssetRepository.createSaleTerms(1, {
-      currency_code: '+91',
+    const response = await AssetRepository.createSaleTerm(1, {
       expected_price: 1200,
       expected_booking_amount: 500,
-      construction_year: 1,
       available_from_date: '2020-09-12',
       maintenance_amount: 200,
       maintenance_payment_schedule: ScheduleTypes.MONTHLY,
@@ -138,11 +136,9 @@ describe.skip('AssetRepository', () => {
 
   it('should update sale term in DB and return the corresponding property ID', async () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'put').mockImplementation(() => Promise.resolve({ id: 5 }));
-    const response = await AssetRepository.updateSaleTerms(1, 1, {
-      currency_code: '+91',
+    const response = await AssetRepository.updateSaleTerm(1, 1, {
       expected_price: 12000,
       expected_booking_amount: 5000,
-      construction_year: 1,
       available_from_date: '2020-10-12',
       maintenance_amount: 2000,
       maintenance_payment_schedule: ScheduleTypes.MONTHLY,

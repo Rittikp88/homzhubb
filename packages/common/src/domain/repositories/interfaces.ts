@@ -188,9 +188,9 @@ export interface ICreateAssetParams {
   longitude: string | number;
   address: string;
   pin_code: string;
-  city: string;
-  state: string;
-  country: string;
+  city_name: string;
+  state_name: string;
+  country_name: string;
   country_iso2_code: string;
   asset_type: number;
   last_visited_step?: ILastVisitedStep;
@@ -208,10 +208,10 @@ export interface IUpdateAssetParams {
   longitude?: string | number;
   address?: string;
   pin_code?: string;
-  city?: string;
-  state?: string;
+  city_name?: string;
+  state_name?: string;
   country_iso2_code?: string;
-  country?: string;
+  country_name?: string;
   carpet_area?: number;
   carpet_area_unit?: number;
   floor_number?: number;
@@ -332,4 +332,8 @@ export interface IPropertyImagesPostPayload {
 
 export interface IMarkCoverImageAttachment {
   cover_updated: boolean;
+}
+
+export interface IGetSaleTermsParams {
+  status: 'DRAFT';
 }

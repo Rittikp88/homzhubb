@@ -4,6 +4,7 @@ import { IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/model
 
 export interface IRecordAssetState {
   assetId: number;
+  termId: number;
   assetDetails: IAsset | null;
   assetPlan: IAssetPlan[];
   assetGroups: IAssetGroup[];

@@ -1,26 +1,60 @@
 import React from 'react';
-import { ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
-import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
+import { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 interface IProps {
   typeOfPlan: TypeOfPlan;
   isSplitAsUnits: boolean;
+  onNextStep: () => void;
 }
 
-class ActionController extends React.PureComponent<IProps, {}> {
+interface IDispatchProps {
+  setTermId: (termId: number) => void;
+}
+
+interface IStateProps {
+  currentTermId: number;
+  currentAssetId: number;
+}
+
+type Props = IStateProps & IDispatchProps & IProps;
+
+class ActionController extends React.PureComponent<Props, {}> {
   public render = (): React.ReactNode => {
-    const { typeOfPlan } = this.props;
+    const { onNextStep } = this.props;
+    const { typeOfPlan, currentTermId, setTermId, currentAssetId } = this.props;
     return (
       <>
         {typeOfPlan === TypeOfPlan.SELL ? (
-          <AssetListingSection title="Action">
-            <ResaleDetailsForm currency="₹" />
-          </AssetListingSection>
+          <SaleTermController
+            onNextStep={onNextStep}
+            setTermId={setTermId}
+            currentTermId={currentTermId}
+            currentAssetId={currentAssetId}
+          />
         ) : null}
       </>
     );
   };
 }
 
-export { ActionController };
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setTermId } = RecordAssetActions;
+  return bindActionCreators({ setTermId }, dispatch);
+};
+
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getCurrentTermId, getCurrentAssetId } = RecordAssetSelectors;
+  return {
+    currentTermId: getCurrentTermId(state),
+    currentAssetId: getCurrentAssetId(state),
+  };
+};
+
+const HOC = connect(mapStateToProps, mapDispatchToProps)(ActionController);
+export { HOC as ActionController };

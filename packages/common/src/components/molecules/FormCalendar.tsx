@@ -5,7 +5,7 @@ import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
+import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
 

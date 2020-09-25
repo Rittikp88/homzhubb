@@ -20,10 +20,26 @@ export const RecordAssetActionTypes = {
   },
   SET: {
     ASSET_ID: `${actionTypePrefix}ASSET_ID`,
+    TERM_ID: `${actionTypePrefix}TERM_ID`,
     SELECTED_PLAN: `${actionTypePrefix}SELECTED_PLAN`,
   },
   RESET: `${actionTypePrefix}RESET`,
 };
+
+const setSelectedPlan = (payload: ISelectedAssetPlan): IFluxStandardAction<ISelectedAssetPlan> => ({
+  type: RecordAssetActionTypes.SET.SELECTED_PLAN,
+  payload,
+});
+
+const setAssetId = (payload: number): IFluxStandardAction<number> => ({
+  type: RecordAssetActionTypes.SET.ASSET_ID,
+  payload,
+});
+
+const setTermId = (payload: number): IFluxStandardAction<number> => ({
+  type: RecordAssetActionTypes.SET.TERM_ID,
+  payload,
+});
 
 const getAssetGroups = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.GET.ASSET_GROUPS,
@@ -59,16 +75,6 @@ const getAssetPlanListFailure = (error: string): IFluxStandardAction<string> => 
   };
 };
 
-const setSelectedPlan = (payload: ISelectedAssetPlan): IFluxStandardAction<ISelectedAssetPlan> => ({
-  type: RecordAssetActionTypes.SET.SELECTED_PLAN,
-  payload,
-});
-
-const setAssetId = (payload: number): IFluxStandardAction<number> => ({
-  type: RecordAssetActionTypes.SET.ASSET_ID,
-  payload,
-});
-
 const getAssetById = (assetId: number): IFluxStandardAction<number> => ({
   type: RecordAssetActionTypes.GET.ASSET_BY_ID,
   payload: assetId,
@@ -98,6 +104,9 @@ export type RecordAssetPayloadTypes =
   | undefined;
 
 export const RecordAssetActions = {
+  setSelectedPlan,
+  setAssetId,
+  setTermId,
   getAssetGroups,
   getAssetGroupsSuccess,
   getAssetGroupsFailure,
@@ -107,7 +116,5 @@ export const RecordAssetActions = {
   getAssetById,
   getAssetByIdSuccess,
   getAssetByIdFailure,
-  setSelectedPlan,
-  setAssetId,
   resetState,
 };

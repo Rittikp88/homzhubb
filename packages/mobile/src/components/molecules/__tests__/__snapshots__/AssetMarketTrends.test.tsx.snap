@@ -7,10 +7,12 @@ exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
   onPress={[Function]}
   style={
     Object {
+      "alignItems": "center",
       "borderColor": "#667686",
       "borderRadius": 4,
       "borderWidth": 0.5,
       "flexDirection": "row",
+      "justifyContent": "center",
       "margin": 10,
       "padding": 10,
     }
@@ -25,8 +27,9 @@ exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
     }
     style={
       Object {
-        "height": 50,
-        "width": 50,
+        "borderRadius": 4,
+        "height": 70,
+        "width": 70,
       }
     }
   />

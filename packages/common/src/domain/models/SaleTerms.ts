@@ -2,23 +2,21 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 export interface ICreateSaleTermDetails {
-  currency_code: string;
   expected_price: number;
   expected_booking_amount: number;
-  construction_year: number;
   available_from_date: string;
   maintenance_amount: number;
   maintenance_payment_schedule: ScheduleTypes;
+  description?: string;
 }
 
 export interface IUpdateSaleTermDetails {
-  currency_code?: string;
   expected_price?: number;
   expected_booking_amount?: number;
-  construction_year?: number;
   available_from_date?: string;
   maintenance_amount?: number;
   maintenance_payment_schedule?: ScheduleTypes;
+  description?: string;
 }
 
 export interface ISaleDetails extends ICreateSaleTermDetails {
@@ -40,37 +38,31 @@ export class SaleTerms {
   private _maintenanceAmount = -1;
 
   @JsonProperty('maintenance_payment_schedule', String)
-  private _maintenanceSchedule = '';
+  private _maintenanceSchedule = ScheduleTypes.QUARTERLY;
 
   @JsonProperty('available_from_date', String)
   private _availableFromDate = '';
 
-  @JsonProperty('tenanted_till', String)
-  private _tenantedTill = '';
-
-  @JsonProperty('currency_code', String)
-  private _currencyCode = 'INR';
-
-  @JsonProperty('currency_symbol', String)
-  private _currencySymbol = 'INR';
+  @JsonProperty('description', String)
+  private _description = '';
 
   get id(): number {
     return this._id;
   }
 
-  get expectedPrice(): number {
-    return this._expectedPrice;
+  get expectedPrice(): string {
+    return this._expectedPrice.toString();
   }
 
-  get expectedBookingAmount(): number {
-    return this._expectedBookingAmount;
+  get expectedBookingAmount(): string {
+    return this._expectedBookingAmount.toString();
   }
 
-  get maintenanceAmount(): number {
-    return this._maintenanceAmount;
+  get maintenanceAmount(): string {
+    return this._maintenanceAmount.toString();
   }
 
-  get maintenanceSchedule(): string {
+  get maintenanceSchedule(): ScheduleTypes {
     return this._maintenanceSchedule;
   }
 
@@ -78,15 +70,7 @@ export class SaleTerms {
     return this._availableFromDate;
   }
 
-  get tenantedTill(): string {
-    return this._tenantedTill;
-  }
-
-  get currencyCode(): string {
-    return this._currencyCode;
-  }
-
-  get currencySymbol(): string {
-    return this._currencySymbol;
+  get description(): string {
+    return this._description;
   }
 }

@@ -10,6 +10,7 @@ import {
   IPropertyImagesPostPayload,
   IMarkCoverImageAttachment,
   IUpdateAssetParams,
+  IGetSaleTermsParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -22,11 +23,7 @@ import {
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
-import {
-  ICreateSaleTermDetails,
-  ISaleDetails,
-  IUpdateSaleTermDetails,
-} from '@homzhub/common/src/domain/models/SaleTerms';
+import { ICreateSaleTermDetails, IUpdateSaleTermDetails, SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 import {
   ExistingVerificationDocuments,
   IPostVerificationDocuments,
@@ -117,15 +114,16 @@ class AssetRepository {
     return await this.apiClient.put(ENDPOINTS.updateLeaseTerms(propertyId, leaseTermId), leaseTerms);
   };
 
-  public getSaleTerms = async (propertyId: number): Promise<ISaleDetails[]> => {
-    return await this.apiClient.get(ENDPOINTS.saleTerms(propertyId));
+  public getSaleTerms = async (propertyId: number, params: IGetSaleTermsParams): Promise<SaleTerms[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.saleTerms(propertyId), params);
+    return ObjectMapper.deserializeArray(SaleTerms, response);
   };
 
-  public createSaleTerms = async (propertyId: number, saleTerms: ICreateSaleTermDetails): Promise<{ id: number }> => {
+  public createSaleTerm = async (propertyId: number, saleTerms: ICreateSaleTermDetails): Promise<{ id: number }> => {
     return await this.apiClient.post(ENDPOINTS.saleTerms(propertyId), saleTerms);
   };
 
-  public updateSaleTerms = async (
+  public updateSaleTerm = async (
     propertyId: number,
     saleTermId: number,
     saleTerms: IUpdateSaleTermDetails

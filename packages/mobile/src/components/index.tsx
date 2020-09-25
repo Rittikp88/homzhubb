@@ -45,7 +45,6 @@ export { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecu
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 export { Range } from '@homzhub/mobile/src/components/molecules/Range';
 export { RentAndMaintenance } from '@homzhub/mobile/src/components/molecules/RentAndMaintenance';
-export { default as ResaleDetailsForm } from '@homzhub/mobile/src/components/molecules/ResaleDetailsForm';
 export { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 export { GoogleSearchBar } from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 export { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
@@ -61,7 +60,6 @@ export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecor
 export { ActionController } from '@homzhub/mobile/src/components/organisms/ActionController';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
-export { CheckoutAssetDetails } from '@homzhub/mobile/src/components/organisms/CheckoutAssetDetails';
 export { FinancialHeaderContainer } from '@homzhub/mobile/src/components/organisms/FinancialHeaderContainer';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 export { LoginForm } from '@homzhub/mobile/src/components/organisms/LoginForm';
@@ -70,6 +68,7 @@ export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organi
 export { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 export { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 export { SignUpForm } from '@homzhub/mobile/src/components/organisms/SignUpForm';
+export { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 export { SocialMediaComponent } from '@homzhub/mobile/src/components/organisms/SocialMediaComponent';
 export { TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 

@@ -22,6 +22,7 @@ export { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionP
 export type { ISelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 export { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 export { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+export { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 export type { TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 export { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
 export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
@@ -35,6 +36,7 @@ export { DetailedHeader } from '@homzhub/common/src/components/molecules/Detaile
 export { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 export type { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+export { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 export { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 export { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';

@@ -49,6 +49,7 @@ interface IOwnState {
 }
 
 class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
+  private scrollRef = React.createRef<ScrollView>();
   public state = {
     currentIndex: 0,
     isStepDone: [],
@@ -69,7 +70,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     return (
       <>
         <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
-        <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.screen} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
           <AddressWithStepIndicator
             steps={this.getSteps()}
             badge={badge}
@@ -148,7 +149,13 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       const {
         selectedAssetPlan: { selectedPlan },
       } = this.props;
-      return <ActionController typeOfPlan={selectedPlan} isSplitAsUnits={isPropertyAsUnits} />;
+      return (
+        <ActionController
+          typeOfPlan={selectedPlan}
+          isSplitAsUnits={isPropertyAsUnits}
+          onNextStep={this.handleNextStep}
+        />
+      );
     },
     verification: (): ReactElement => {
       const {
@@ -275,6 +282,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     });
     if (currentIndex < this.getRoutes().length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     }
   };
 

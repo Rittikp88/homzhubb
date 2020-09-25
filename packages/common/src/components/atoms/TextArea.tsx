@@ -5,20 +5,19 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
-  label: string;
+  label?: string;
   value: string;
   placeholder: string;
   isOptional?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   onMessageChange?: (text: string) => void;
+  wordCountLimit?: number;
 }
 
-const MAX_WORD_COUNT = 250;
-
 export const TextArea = (props: IProps): React.ReactElement => {
-  const { label, placeholder, isOptional, containerStyle = {}, onMessageChange, value } = props;
+  const { label, placeholder, isOptional, containerStyle = {}, onMessageChange, value, wordCountLimit = 250 } = props;
   const { t } = useTranslation();
-  const wordCount = value.length === 0 ? MAX_WORD_COUNT : MAX_WORD_COUNT - value.length;
+  const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
   return (
     <View style={containerStyle}>
       <View style={styles.labelView}>
