@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { cloneDeep, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button, CheckboxGroup, ICheckboxGroupData, Text, WithShadowView } from '@homzhub/common/src/components';
 import AssetHighlightCard from '@homzhub/mobile/src/components/molecules/AssetHighlightCard';
 import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { OtherDetails } from '@homzhub/common/src/constants/AssetHighlights';
+
+enum Details {
+  powerBackup = 'Power backup',
+  isGated = 'Gated Society',
+  cornerProperty = 'Corner Property',
+  allDayAccess = '24x7 Access',
+}
 
 export interface IOtherDetail {
   id: number;
@@ -20,31 +30,48 @@ export interface IOtherDetail {
 
 interface IState {
   assetAmenity: AssetAmenity[];
-  extraData: number[];
-  otherHighlight: string[];
+  propertyHighlight: string[];
+  selectedAmenity: number[];
+  otherDetails: ICheckboxGroupData[];
+  selectedDetails: string[];
+  isSelected: boolean;
 }
 
 interface IHighlightProps {
   handleNextStep: () => void;
+  propertyId: number;
+  propertyDetail: Asset | null;
 }
-
-const PropertyType = 'Residential'; // TODO: (Shikha) - Add property type once GET api integrate
 
 type Props = IHighlightProps & WithTranslation;
 
 export class AssetHighlights extends Component<Props, IState> {
   public state = {
     assetAmenity: [],
-    extraData: [0],
-    otherHighlight: [],
+    propertyHighlight: [''],
+    selectedAmenity: [],
+    otherDetails: [],
+    selectedDetails: [],
+    isSelected: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
+    const { propertyDetail } = this.props;
     await this.getAmenities();
+    const propertyType = propertyDetail ? propertyDetail.assetGroup.name : '';
+    const data = OtherDetails.find((item: IOtherDetail) => item.name === propertyType);
+    if (data) {
+      this.setState({
+        otherDetails: data.details,
+      });
+    }
+    if (propertyDetail) {
+      this.getSelectedData(propertyDetail);
+    }
   };
 
   public render(): React.ReactNode {
-    const { t, handleNextStep } = this.props;
+    const { t } = this.props;
     return (
       <>
         <View style={styles.container}>
@@ -53,25 +80,36 @@ export class AssetHighlights extends Component<Props, IState> {
           {this.renderOtherHighlights()}
         </View>
         <WithShadowView>
-          <Button type="primary" title={t('continue')} containerStyle={styles.buttonStyle} onPress={handleNextStep} />
+          <Button
+            type="primary"
+            title={t('continue')}
+            containerStyle={styles.buttonStyle}
+            onPress={this.handleContinue}
+          />
         </WithShadowView>
       </>
     );
   }
 
   private renderAmenities = (): React.ReactElement[] => {
-    const { assetAmenity } = this.state;
+    const { assetAmenity, selectedAmenity } = this.state;
     return assetAmenity.map((item: AssetAmenity) => {
       const title = this.getAmenitiesTitle(item.name);
-      return <AssetHighlightCard title={title} data={item.amenities} key={item.id} />;
+      return (
+        <AssetHighlightCard
+          title={title}
+          data={item.amenities}
+          key={item.id}
+          selectedAmenity={selectedAmenity}
+          onAmenityPress={this.onSelectAmenity}
+        />
+      );
     });
   };
 
   private renderOtherDetails = (): React.ReactElement | null => {
     const { t } = this.props;
-    const data = OtherDetails.find((item: IOtherDetail) => item.name === PropertyType);
-
-    if (!data) return null;
+    const { otherDetails, isSelected } = this.state;
 
     return (
       <View style={styles.card}>
@@ -80,23 +118,28 @@ export class AssetHighlights extends Component<Props, IState> {
             {t('property:otherDetails')}
           </Text>
         </View>
-        <CheckboxGroup data={data.details} onToggle={FunctionUtils.noop} containerStyle={styles.checkboxGroup} />
+        <CheckboxGroup
+          key={`${isSelected}-checkbox`}
+          data={otherDetails}
+          onToggle={this.onPressCheckbox}
+          containerStyle={styles.checkboxGroup}
+        />
       </View>
     );
   };
 
   private renderOtherHighlights = (): React.ReactElement => {
-    const { extraData, otherHighlight } = this.state;
+    const { propertyHighlight } = this.state;
     const { t } = this.props;
     return (
       <View style={styles.card}>
         <View style={styles.header}>
           <Text type="small" textType="semiBold" style={styles.headerTitle}>
-            {t('property:otherHighlights')}
+            {t('property:propertyHighlights')}
           </Text>
         </View>
         <View style={styles.highlightsContainer}>
-          {extraData.map((item, index) => {
+          {propertyHighlight.map((item, index) => {
             return (
               <View style={styles.textInputContainer} key={index}>
                 <TextInput
@@ -104,11 +147,11 @@ export class AssetHighlights extends Component<Props, IState> {
                   autoCorrect={false}
                   autoCapitalize="none"
                   numberOfLines={1}
-                  value={otherHighlight[index]}
+                  value={propertyHighlight[index]}
                   onChangeText={(text): void => this.handleTextChange(text, index)}
                   style={styles.textInput}
                 />
-                {extraData.length > 1 && index > 0 && (
+                {propertyHighlight.length > 1 && index > 0 && (
                   <Button
                     type="primary"
                     icon={icons.circularCrossFilled}
@@ -122,7 +165,7 @@ export class AssetHighlights extends Component<Props, IState> {
               </View>
             );
           })}
-          {extraData.length !== 5 && (
+          {propertyHighlight.length !== 5 && (
             <Button type="secondary" title={t('add')} containerStyle={styles.addButton} onPress={this.handleNext} />
           )}
         </View>
@@ -131,16 +174,85 @@ export class AssetHighlights extends Component<Props, IState> {
   };
 
   private onPressCross = (index: number): void => {
-    const { extraData, otherHighlight } = this.state;
-    if (otherHighlight[index]) {
-      const newData: string[] = otherHighlight;
+    const { propertyHighlight } = this.state;
+    if (propertyHighlight[index]) {
+      const newData: string[] = propertyHighlight;
       newData[index] = '';
       this.setState({
-        otherHighlight: newData,
+        propertyHighlight: newData,
       });
     } else {
       this.setState({
-        extraData: extraData.slice(0, -1),
+        propertyHighlight: propertyHighlight.slice(0, -1),
+      });
+    }
+  };
+
+  private onPressCheckbox = (id: number, isChecked: boolean): void => {
+    const { otherDetails, isSelected } = this.state;
+    const selectedValues: string[] = [];
+
+    otherDetails.forEach((detail: ICheckboxGroupData) => {
+      if (detail.id === id) {
+        detail.isSelected = isChecked;
+      }
+      if (detail.isSelected) {
+        selectedValues.push(detail.label);
+      }
+    });
+
+    this.setState({ otherDetails, selectedDetails: selectedValues, isSelected: !isSelected });
+  };
+
+  private onSelectAmenity = (id: number): void => {
+    const { selectedAmenity } = this.state;
+    const newAmenity: number[] = cloneDeep(selectedAmenity);
+    let value: number[];
+    if (newAmenity.includes(id)) {
+      remove(newAmenity, (item: number) => item === id);
+      value = newAmenity;
+    } else {
+      value = newAmenity.concat(id);
+    }
+    this.setState({ selectedAmenity: value });
+  };
+
+  private getSelectedData = (propertyDetail: Asset): void => {
+    const { selectedAmenity, otherDetails } = this.state;
+    const newSelectedValues: number[] = selectedAmenity;
+    const { amenityGroup, isGated, powerBackup, allDayAccess, cornerProperty, assetHighlights } = propertyDetail;
+    if (amenityGroup) {
+      amenityGroup.amenities.forEach((item) => {
+        newSelectedValues.push(item.id);
+      });
+
+      this.setState({
+        selectedAmenity: newSelectedValues,
+      });
+    }
+    otherDetails.forEach((item: ICheckboxGroupData) => {
+      switch (item.label) {
+        case Details.isGated:
+          item.isSelected = isGated;
+          break;
+        case Details.powerBackup:
+          item.isSelected = powerBackup;
+          break;
+        case Details.cornerProperty:
+          item.isSelected = cornerProperty;
+          break;
+        case Details.allDayAccess:
+          item.isSelected = allDayAccess;
+          break;
+        default:
+          item.isSelected = false;
+      }
+    });
+    this.setState({ otherDetails });
+
+    if (assetHighlights.length > 0) {
+      this.setState({
+        propertyHighlight: assetHighlights,
       });
     }
   };
@@ -153,28 +265,57 @@ export class AssetHighlights extends Component<Props, IState> {
     return name;
   };
 
+  private handleContinue = async (): Promise<void> => {
+    const { handleNextStep, propertyId } = this.props;
+    const { isGated, allDayAccess, cornerProperty, powerBackup } = Details;
+    const { selectedAmenity, propertyHighlight, selectedDetails } = this.state;
+    const otherDetails: string[] = selectedDetails;
+    const highlights = propertyHighlight.filter((item) => item);
+    const payload: IUpdateAssetParams = {
+      amenities: selectedAmenity,
+      asset_highlights: highlights,
+      last_visited_step: {
+        is_highlights_done: true,
+        current_step: 3,
+        total_step: 4,
+      },
+      is_gated: otherDetails.includes(isGated),
+      power_backup: otherDetails.includes(powerBackup),
+      all_day_access: otherDetails.includes(allDayAccess),
+      corner_property: otherDetails.includes(cornerProperty),
+    };
+    try {
+      await AssetRepository.updateAsset(propertyId, payload);
+      handleNextStep();
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
+  };
+
   private handleNext = (): void => {
-    const { extraData } = this.state;
-    const lastValue = extraData[extraData.length - 1];
+    const { propertyHighlight } = this.state;
     this.setState({
-      extraData: [...extraData, lastValue + 1],
+      propertyHighlight: [...propertyHighlight, ''],
     });
   };
 
   private handleTextChange = (text: string, index: number): void => {
-    const { otherHighlight } = this.state;
-    const newData: string[] = otherHighlight;
+    const { propertyHighlight } = this.state;
+    const newData: string[] = propertyHighlight;
     newData[index] = text;
     this.setState({
-      otherHighlight: newData,
+      propertyHighlight: newData,
     });
   };
 
   private getAmenities = async (): Promise<void> => {
+    const { propertyDetail } = this.props;
+    const propertyType = propertyDetail ? propertyDetail.assetGroup.name : '';
     try {
       const response = await RecordAssetRepository.getAmenities();
       response.forEach((item) => {
-        if (item.name === PropertyType) {
+        if (item.name === propertyType) {
           this.setState({ assetAmenity: item.category });
         }
       });

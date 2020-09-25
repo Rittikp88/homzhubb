@@ -88,6 +88,7 @@ AssetSearch {
   "_results": Array [
     Asset {
       "_address": "",
+      "_allDayAccess": false,
       "_amenities": Array [
         Amenity {
           "_attachment": Attachment {
@@ -237,11 +238,13 @@ AssetSearch {
           "_name": "Balcony",
         },
       ],
+      "_amenityGroup": null,
       "_assetGroup": Data {
         "_count": 0,
         "_id": 0,
         "_name": "",
       },
+      "_assetHighlights": Array [],
       "_assetStatusInfo": AssetStatusInfo {
         "_action": null,
         "_leaseListingId": null,
@@ -323,6 +326,7 @@ AssetSearch {
         "_phoneNumber": "7903470293",
         "_refreshToken": "",
       },
+      "_cornerProperty": false,
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
       "_features": Array [
         AssetFeature {
@@ -375,9 +379,14 @@ AssetSearch {
       ],
       "_id": 1,
       "_isFavorite": false,
+      "_isGated": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {
-        "_currentStep": 1,
+        "_currentStep": 4,
+        "_isCreated": true,
+        "_isDetailsDone": false,
+        "_isGalleryDone": false,
+        "_isHighlightsDone": false,
         "_percentage": 0,
         "_totalStep": 4,
       },
@@ -389,6 +398,7 @@ AssetSearch {
         "_count": 0,
       },
       "_postedOn": "2020-06-03",
+      "_powerBackup": false,
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
       "_saleTerm": null,
@@ -429,6 +439,7 @@ AssetSearch {
   "_results": Array [
     Asset {
       "_address": "",
+      "_allDayAccess": false,
       "_amenities": Array [
         Amenity {
           "_attachment": Attachment {
@@ -578,11 +589,13 @@ AssetSearch {
           "_name": "Balcony",
         },
       ],
+      "_amenityGroup": null,
       "_assetGroup": Data {
         "_count": 0,
         "_id": 0,
         "_name": "",
       },
+      "_assetHighlights": Array [],
       "_assetStatusInfo": AssetStatusInfo {
         "_action": null,
         "_leaseListingId": null,
@@ -664,6 +677,7 @@ AssetSearch {
         "_phoneNumber": "7903470293",
         "_refreshToken": "",
       },
+      "_cornerProperty": false,
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
       "_features": Array [
         AssetFeature {
@@ -716,9 +730,14 @@ AssetSearch {
       ],
       "_id": 1,
       "_isFavorite": false,
+      "_isGated": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {
-        "_currentStep": 1,
+        "_currentStep": 4,
+        "_isCreated": true,
+        "_isDetailsDone": false,
+        "_isGalleryDone": false,
+        "_isHighlightsDone": false,
         "_percentage": 0,
         "_totalStep": 4,
       },
@@ -730,6 +749,7 @@ AssetSearch {
         "_count": 0,
       },
       "_postedOn": "2020-06-03",
+      "_powerBackup": false,
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
       "_saleTerm": null,

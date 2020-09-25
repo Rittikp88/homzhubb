@@ -45,7 +45,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  getAssetById: (assetId: number) => void;
+  getAssetById: () => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
@@ -54,8 +54,8 @@ type Props = libraryProps & IStateProps & IDispatchProps;
 export class AddProperty extends PureComponent<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
-    const { getAssetById, assetId } = this.props;
-    getAssetById(assetId);
+    const { getAssetById } = this.props;
+    getAssetById();
     this.state = {
       currentIndex: 0,
       isStepDone: [],
@@ -90,7 +90,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     return (
       <View style={styles.screen}>
         <Header icon={icons.leftArrow} title={t('property:addProperty')} onIconPress={this.goBack} />
-        <ScrollView style={styles.content}>
+        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
           <AddressWithStepIndicator
             icon={icons.noteBook}
             steps={Steps}
@@ -170,15 +170,16 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   private renderScene = SceneMap({
     detail: (): ReactElement => {
       const { spaceTypes } = this.props;
-
       return <AddPropertyDetails spaceTypes={spaceTypes} handleNextStep={this.handleNextStep} />;
     },
 
-    highlights: (): ReactElement => <AssetHighlights handleNextStep={this.handleNextStep} />,
+    highlights: (): ReactElement => {
+      const { assetId, assetDetail } = this.props;
+      return <AssetHighlights propertyId={assetId} propertyDetail={assetDetail} handleNextStep={this.handleNextStep} />;
+    },
 
     gallery: (): ReactElement => {
       const { assetId } = this.props;
-
       return (
         <PropertyImages
           propertyId={assetId}

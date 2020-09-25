@@ -219,6 +219,12 @@ export interface IUpdateAssetParams {
   asset_type?: number;
   last_visited_step?: ILastVisitedStep;
   spaces?: ISpaceAvailablePayload[];
+  asset_highlights?: string[];
+  is_gated?: boolean;
+  power_backup?: boolean;
+  corner_property?: boolean;
+  all_day_access?: boolean;
+  amenities?: number[];
 }
 
 // ASSET - END

@@ -9,12 +9,12 @@ export const OtherDetails = [
         isSelected: false,
       },
       {
-        id: 1,
-        label: 'Gated Society ',
+        id: 2,
+        label: 'Gated Society',
         isSelected: false,
       },
       {
-        id: 1,
+        id: 3,
         label: 'Corner Property',
         isSelected: false,
       },
@@ -30,7 +30,7 @@ export const OtherDetails = [
         isSelected: false,
       },
       {
-        id: 1,
+        id: 2,
         label: '24x7 Access',
         isSelected: false,
       },

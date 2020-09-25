@@ -198,6 +198,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       latitude,
       longitude,
       last_visited_step: {
+        is_created: true,
         current_step: 1,
         total_step: 4,
       },

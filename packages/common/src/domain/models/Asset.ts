@@ -1,6 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
-import { IAmenity, Amenity } from '@homzhub/common/src/domain/models/Amenity';
+import { IAmenity, Amenity, AmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
@@ -54,6 +54,10 @@ export interface IAsset {
 export interface ILastVisitedStep {
   current_step: number;
   total_step: number;
+  is_created?: boolean;
+  is_details_done?: boolean;
+  is_highlights_done?: boolean;
+  is_gallery_done?: boolean;
 }
 
 export interface IData {
@@ -88,8 +92,20 @@ export class Data {
 
 @JsonObject('LastVisitedStep')
 export class LastVisitedStep {
+  @JsonProperty('is_Created', Boolean, true)
+  private _isCreated = true;
+
+  @JsonProperty('is_details_done', Boolean, true)
+  private _isDetailsDone = false;
+
+  @JsonProperty('is_highlights_done', Boolean, true)
+  private _isHighlightsDone = false;
+
+  @JsonProperty('is_gallery_done', Boolean, true)
+  private _isGalleryDone = false;
+
   @JsonProperty('current_step', Number, true)
-  private _currentStep = 1;
+  private _currentStep = 4;
 
   @JsonProperty('total_step', Number, true)
   private _totalStep = 4;
@@ -105,8 +121,29 @@ export class LastVisitedStep {
     return this._totalStep;
   }
 
+  get isCreated(): boolean {
+    return this._isCreated;
+  }
+
+  get isDetailsDone(): boolean {
+    return this._isDetailsDone;
+  }
+
+  get isHighlightsDone(): boolean {
+    return this._isHighlightsDone;
+  }
+
+  get isGalleryDone(): boolean {
+    return this._isGalleryDone;
+  }
+
+  // TODO: (Shikha) - Need To Refactor
   get percentage(): number {
-    return (this.currentStep / this.totalStep) * 100;
+    const totalDone = [];
+    if (this.isCreated || this.isDetailsDone || this.isGalleryDone || this.isHighlightsDone) {
+      totalDone.push(true);
+    }
+    return (totalDone.length / this.totalStep) * 100;
   }
 }
 
@@ -247,6 +284,24 @@ export class Asset {
 
   @JsonProperty('last_visited_step', LastVisitedStep, true)
   private _lastVisitedStep = new LastVisitedStep();
+
+  @JsonProperty('is_gated', Boolean, true)
+  private _isGated = false;
+
+  @JsonProperty('power_backup', Boolean, true)
+  private _powerBackup = false;
+
+  @JsonProperty('corner_property', Boolean, true)
+  private _cornerProperty = false;
+
+  @JsonProperty('all_day_access', Boolean, true)
+  private _allDayAccess = false;
+
+  @JsonProperty('asset_highlights', [String], true)
+  private _assetHighlights = [];
+
+  @JsonProperty('amenity_group', AmenityGroup, true)
+  private _amenityGroup: AmenityGroup | null = null;
 
   get projectName(): string {
     return this._projectName;
@@ -393,5 +448,29 @@ export class Asset {
 
   get lastVisitedStep(): LastVisitedStep {
     return this._lastVisitedStep;
+  }
+
+  get isGated(): boolean {
+    return this._isGated;
+  }
+
+  get powerBackup(): boolean {
+    return this._powerBackup;
+  }
+
+  get cornerProperty(): boolean {
+    return this._cornerProperty;
+  }
+
+  get allDayAccess(): boolean {
+    return this._allDayAccess;
+  }
+
+  get assetHighlights(): string[] {
+    return this._assetHighlights;
+  }
+
+  get amenityGroup(): AmenityGroup | null {
+    return this._amenityGroup;
   }
 }

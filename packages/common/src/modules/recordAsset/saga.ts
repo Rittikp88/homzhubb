@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
+import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 
 export function* getAssetPlanList() {
   try {
@@ -29,11 +30,10 @@ export function* getAssetGroups() {
   }
 }
 
-export function* getAssetById(action: IFluxStandardAction<number>) {
-  const { payload } = action;
-
+export function* getAssetById() {
   try {
-    const data = yield call(AssetRepository.getAssetById, payload as number);
+    const assetId = yield select(RecordAssetSelectors.getCurrentAssetId);
+    const data = yield call(AssetRepository.getAssetById, assetId);
     yield put(RecordAssetActions.getAssetByIdSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);

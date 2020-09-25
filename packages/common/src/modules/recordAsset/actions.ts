@@ -75,9 +75,8 @@ const getAssetPlanListFailure = (error: string): IFluxStandardAction<string> => 
   };
 };
 
-const getAssetById = (assetId: number): IFluxStandardAction<number> => ({
+const getAssetById = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.GET.ASSET_BY_ID,
-  payload: assetId,
 });
 
 const getAssetByIdSuccess = (payload: Asset): IFluxStandardAction<IAsset> => ({

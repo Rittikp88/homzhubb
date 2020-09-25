@@ -45,7 +45,7 @@ export class AssetAmenity {
   @JsonProperty('name', String)
   private _name = '';
 
-  @JsonProperty('amenities', [Amenity])
+  @JsonProperty('amenities', [Amenity], true)
   private _amenities: Amenity[] = [];
 
   get id(): number {
@@ -69,6 +69,9 @@ export class AssetGroupAmenity {
   @JsonProperty('name', String)
   private _name = '';
 
+  @JsonProperty('code', String)
+  private _code = '';
+
   @JsonProperty('category', [AssetAmenity])
   private _category: AssetAmenity[] = [];
 
@@ -80,7 +83,59 @@ export class AssetGroupAmenity {
     return this._name;
   }
 
+  get code(): string {
+    return this._code;
+  }
+
   get category(): AssetAmenity[] {
     return this._category;
+  }
+}
+
+@JsonObject('CategoryAmenityGroup')
+export class CategoryAmenityGroup {
+  @JsonProperty('id', Number)
+  private _id = 0;
+
+  @JsonProperty('name', String)
+  private _name = '';
+
+  @JsonProperty('category', AssetAmenity)
+  private _category = new AssetAmenity();
+
+  get id(): number {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get category(): AssetAmenity {
+    return this._category;
+  }
+}
+
+@JsonObject('AmenityGroup')
+export class AmenityGroup {
+  @JsonProperty('id', Number)
+  private _id = 0;
+
+  @JsonProperty('name', String)
+  private _name = '';
+
+  @JsonProperty('amenities', [CategoryAmenityGroup])
+  private _amenities: CategoryAmenityGroup[] = [];
+
+  get id(): number {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get amenities(): CategoryAmenityGroup[] {
+    return this._amenities;
   }
 }

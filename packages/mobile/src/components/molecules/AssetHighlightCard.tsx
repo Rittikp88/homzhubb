@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { cloneDeep, remove } from 'lodash';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, SVGUri, Text } from '@homzhub/common/src/components';
 import { PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
@@ -9,17 +8,17 @@ import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 interface IProps {
   title: string;
   data: Amenity[];
+  selectedAmenity: number[];
+  onAmenityPress: (id: number) => void;
 }
 
 interface IState {
   activeSlide: number;
-  selectedAmenity: number[];
 }
 
 class AssetHighlightCard extends Component<IProps, IState> {
   public state = {
     activeSlide: 0,
-    selectedAmenity: [],
   };
 
   public render(): React.ReactNode {
@@ -52,11 +51,10 @@ class AssetHighlightCard extends Component<IProps, IState> {
   }
 
   private renderListItem = ({ item }: { item: Amenity }): React.ReactElement => {
-    const { selectedAmenity } = this.state;
-    const amenities: number[] = selectedAmenity;
-    const isSelected = amenities.includes(item.id);
+    const { selectedAmenity, onAmenityPress } = this.props;
+    const isSelected = selectedAmenity.includes(item.id);
     return (
-      <TouchableOpacity style={styles.amenityItem} onPress={(): void => this.onSelectItem(item.id)}>
+      <TouchableOpacity style={styles.amenityItem} onPress={(): void => onAmenityPress(item.id)}>
         <SVGUri uri={item.attachment.link} height={30} width={30} />
         <Label type="regular" textType="regular" style={isSelected && { color: theme.colors.blue }}>
           {item.name}
@@ -67,19 +65,6 @@ class AssetHighlightCard extends Component<IProps, IState> {
 
   private onSnapToItem = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
-  };
-
-  private onSelectItem = (id: number): void => {
-    const { selectedAmenity } = this.state;
-    const newAmenity: number[] = cloneDeep(selectedAmenity);
-    let value: number[];
-    if (newAmenity.includes(id)) {
-      remove(newAmenity, (item: number) => item === id);
-      value = newAmenity;
-    } else {
-      value = newAmenity.concat(id);
-    }
-    this.setState({ selectedAmenity: value });
   };
 
   private getFormattedData = (): Amenity[][] => {
