@@ -178,6 +178,7 @@ export interface ISpaceAvailablePayload {
   name?: string;
   value?: number;
   count?: number;
+  description?: string;
 }
 
 export interface ICreateAssetParams {
@@ -225,6 +226,11 @@ export interface IUpdateAssetParams {
   corner_property?: boolean;
   all_day_access?: boolean;
   amenities?: number[];
+  facing?: string;
+  floor_type?: number;
+  furnishing_description?: string;
+  construction_year?: number;
+  furnishing?: string;
 }
 
 // ASSET - END

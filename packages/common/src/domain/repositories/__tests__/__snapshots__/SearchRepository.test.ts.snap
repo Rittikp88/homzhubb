@@ -317,6 +317,7 @@ AssetSearch {
         "_name": "SQ_FT",
         "_title": "Sq.ft",
       },
+      "_construction_Year": 0,
       "_contacts": User {
         "_accessToken": "",
         "_countryCode": "+91",
@@ -328,6 +329,7 @@ AssetSearch {
       },
       "_cornerProperty": false,
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
+      "_facing": "",
       "_features": Array [
         AssetFeature {
           "_localeKey": "security_deposit",
@@ -366,7 +368,9 @@ AssetSearch {
         },
       ],
       "_floorNumber": 1,
+      "_floorType": "",
       "_furnishing": "",
+      "_furnishingDescription": "",
       "_highlights": Array [
         AssetHighlight {
           "_covered": true,
@@ -668,6 +672,7 @@ AssetSearch {
         "_name": "SQ_FT",
         "_title": "Sq.ft",
       },
+      "_construction_Year": 0,
       "_contacts": User {
         "_accessToken": "",
         "_countryCode": "+91",
@@ -679,6 +684,7 @@ AssetSearch {
       },
       "_cornerProperty": false,
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
+      "_facing": "",
       "_features": Array [
         AssetFeature {
           "_localeKey": "security_deposit",
@@ -717,7 +723,9 @@ AssetSearch {
         },
       ],
       "_floorNumber": 1,
+      "_floorType": "",
       "_furnishing": "",
+      "_furnishingDescription": "",
       "_highlights": Array [
         AssetHighlight {
           "_covered": true,

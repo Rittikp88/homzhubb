@@ -31,6 +31,7 @@ export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowV
 export { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 export { CheckboxGroup } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 export type { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+export type { ICheckboxGroupProps } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 export { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 export { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 export { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
@@ -38,8 +39,10 @@ export type { IDropdownOption } from '@homzhub/common/src/components/molecules/F
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 export { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+export { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 export { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 export { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 export { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
+export { UncontrolledCheckboxGroup } from '@homzhub/common/src/components/molecules/UncontrolledCheckboxGroup';
 export { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 export { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';

@@ -49,6 +49,10 @@ export interface IAsset {
   features: IAssetFeature[];
   contacts?: IUser;
   verifications: IVerifications;
+  furnishing_description: string;
+  construction_year: string;
+  facing: string;
+  floor_type: string;
 }
 
 export interface ILastVisitedStep {
@@ -219,6 +223,12 @@ export class Asset {
   @JsonProperty('total_floors', Number)
   private _totalFloors = 0;
 
+  @JsonProperty('construction_year', Number, true)
+  private _construction_Year = 0;
+
+  @JsonProperty('floor_type', String, true)
+  private _floorType = '';
+
   @JsonProperty('attachments', [Attachment], true)
   private _attachments: Attachment[] = [];
 
@@ -263,6 +273,12 @@ export class Asset {
 
   @JsonProperty('furnishing', String, true)
   private _furnishing = '';
+
+  @JsonProperty('furnishing_description', String, true)
+  private _furnishingDescription = '';
+
+  @JsonProperty('facing', String, true)
+  private _facing = '';
 
   @JsonProperty('notifications', Count, true)
   private _notifications: Count = new Count();
@@ -472,5 +488,21 @@ export class Asset {
 
   get amenityGroup(): AmenityGroup | null {
     return this._amenityGroup;
+  }
+
+  get construction_Year(): number {
+    return this._construction_Year;
+  }
+
+  get floorType(): string {
+    return this._floorType;
+  }
+
+  get furnishingDescription(): string {
+    return this._furnishingDescription;
+  }
+
+  get facing(): string {
+    return this._facing;
   }
 }

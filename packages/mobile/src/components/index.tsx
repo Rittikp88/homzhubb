@@ -15,10 +15,11 @@ export { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutu
 export { AddressWithStepIndicator } from '@homzhub/mobile/src/components/molecules/AddressWithStepIndicator';
 export { AnimatedHeader } from '@homzhub/mobile/src/components/molecules/AnimatedHeader';
 export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecules/AssetAdvertisementBanner';
+export { AssetDescriptionForm } from '@homzhub/mobile/src/components/molecules/AssetDescriptionForm';
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
 export { AssetGroupSelection } from '@homzhub/mobile/src/components/molecules/AssetGroupSelection';
-export { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
 export { AssetMarketTrends } from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
+export { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
 export { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
 export { AssetSummary } from '@homzhub/mobile/src/components/molecules/AssetSummary';
 export { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';

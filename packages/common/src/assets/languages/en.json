@@ -287,7 +287,16 @@
     "orderSummary": "Order Summary",
     "youPay": "You Pay",
     "usedCoins": "You will save {{amount}} using {{coin}} Homzhub coins",
-    "amenities": "Amenities"
+    "amenities": "Amenities",
+    "facingText": "Facing",
+    "flooringType": "Type of Flooring",
+    "selectFlooringType": "Select flooring type",
+    "numberOfFloorsText": "No of Floors",
+    "onFloorText": "On Floor",
+    "buildingGradeText": "Building grade",
+    "selectBuildingGrade": "Select building type",
+    "furnishingDetails": "Furniture & Appliance details",
+    "spacesText": "Spaces"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

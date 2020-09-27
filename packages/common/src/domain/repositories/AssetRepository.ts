@@ -30,6 +30,7 @@ import {
   IYoutubeResponse,
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 
 const ENDPOINTS = {
@@ -68,6 +69,7 @@ const ENDPOINTS = {
   getUpcomingVisits: (): string => 'listing-visits/upcoming-visits/',
   assetVisit: (): string => 'listing-visits/',
   attachmentUpload: (): string => 'attachments/upload/',
+  assetDescriptionDropdownValues: (): string => 'assets/list-of-values',
 };
 
 class AssetRepository {
@@ -246,6 +248,11 @@ class AssetRepository {
 
   public postAttachmentUpload = async (payload: { link: string }[]): Promise<IYoutubeResponse[]> => {
     return await this.apiClient.post(ENDPOINTS.attachmentUpload(), payload);
+  };
+
+  public getAssetDescriptionDropdownValues = async (): Promise<AssetDescriptionDropdownValues> => {
+    const response = await this.apiClient.get(ENDPOINTS.assetDescriptionDropdownValues());
+    return ObjectMapper.deserialize(AssetDescriptionDropdownValues, response);
   };
 }
 

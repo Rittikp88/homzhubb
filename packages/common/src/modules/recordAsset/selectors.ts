@@ -29,15 +29,13 @@ const getAssetGroups = (state: IState): AssetGroup[] => {
 
 const getSpaceTypes = (state: IState): SpaceType[] => {
   const {
-    recordAsset: { assetGroups, assetId },
+    recordAsset: { assetGroups, assetDetails },
   } = state;
-  const spaceType: SpaceType[] = [];
+  let spaceType: SpaceType[] = [];
 
   ObjectMapper.deserializeArray(AssetGroup, assetGroups).forEach((item) => {
-    const assetIds = item.assetTypes.map((asset) => asset.id);
-
-    if (assetIds.includes(assetId)) {
-      spaceType.concat(item.spaceTypes);
+    if (assetDetails?.asset_group.id === item.id) {
+      spaceType = item.spaceTypes;
     }
   });
 

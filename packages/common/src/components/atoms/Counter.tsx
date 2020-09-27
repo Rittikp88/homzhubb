@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -7,10 +7,10 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface ITitle {
   title: string;
-  id: number;
+  id?: number;
 }
 
-interface IProps {
+export interface ICounterProps {
   defaultValue: number;
   name?: ITitle;
   svgImage?: string;
@@ -21,21 +21,23 @@ interface IProps {
   testID?: string;
 }
 
-export const Counter = (props: IProps): React.ReactElement => {
+export const Counter = (props: ICounterProps): React.ReactElement => {
   const { onValueChange, defaultValue, name, svgImage, maxCount = 10, minCount = 0, containerStyles } = props;
   const [count, setCount] = useState(defaultValue);
+
+  useEffect(() => {
+    onValueChange(count, name?.id);
+  }, [count]);
 
   const incrementCount = (): void => {
     if (count < maxCount) {
       setCount((prev) => prev + 1);
-      onValueChange(count, name?.id);
     }
   };
 
   const decrementCount = (): void => {
     if (count > minCount) {
       setCount((prev) => prev - 1);
-      onValueChange(count, name?.id);
     }
   };
 

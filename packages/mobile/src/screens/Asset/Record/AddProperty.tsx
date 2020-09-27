@@ -169,8 +169,15 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private renderScene = SceneMap({
     detail: (): ReactElement => {
-      const { spaceTypes } = this.props;
-      return <AddPropertyDetails spaceTypes={spaceTypes} handleNextStep={this.handleNextStep} />;
+      const { spaceTypes, assetDetail, assetId } = this.props;
+      return (
+        <AddPropertyDetails
+          assetId={assetId}
+          assetDetails={assetDetail}
+          spaceTypes={spaceTypes}
+          handleNextStep={this.handleNextStep}
+        />
+      );
     },
 
     highlights: (): ReactElement => {

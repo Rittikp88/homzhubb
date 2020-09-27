@@ -45,6 +45,9 @@ export class SpaceType extends TypeUnit {
   @JsonProperty('is_mandatory', Boolean)
   private _isMandatory = false;
 
+  @JsonProperty('value', Number, true)
+  private _value = -1;
+
   @JsonProperty('attachment', Attachment)
   private _attachment = new Attachment();
 
@@ -62,6 +65,14 @@ export class SpaceType extends TypeUnit {
 
   get attachment(): Attachment {
     return this._attachment;
+  }
+
+  get value(): number {
+    return this._value;
+  }
+
+  set value(value: number) {
+    this._value = value;
   }
 }
 

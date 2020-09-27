@@ -3,106 +3,295 @@ import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, FormDropdown, FormTextInput } from '@homzhub/common/src/components';
+import {
+  FormButton,
+  FormTextInput,
+  ISelectionPicker,
+  SelectionPicker,
+  Text,
+  WithShadowView,
+} from '@homzhub/common/src/components';
+import { AssetDescriptionForm } from '@homzhub/mobile/src/components';
 import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
+export interface ISpacesForm {
+  space_type: number;
+  count: number;
+  description?: string;
+}
+
 interface IDescriptionForm {
-  carpetArea?: string;
-  areaUnit?: string;
+  carpetArea?: number;
+  areaUnit?: number;
   buildingGrade?: string;
   facing?: string;
   flooringType?: string;
-  yearOfConstruction?: string;
-  totalFloors?: string;
-  onFloorNumber?: string;
+  yearOfConstruction?: number;
+  totalFloors?: number;
+  onFloorNumber?: number;
+}
+
+interface IFurnishingForm {
+  furnishingDetails?: string;
+  furnishingType?: string;
 }
 
 interface IOwnProps extends WithTranslation {
+  assetId: number;
+  assetDetails: Asset | null;
   spaceTypes: SpaceType[];
   handleNextStep: () => void;
 }
 
 interface IOwnState {
+  spacesForm: ISpacesForm[];
   descriptionForm: IDescriptionForm;
+  furnishingForm: IFurnishingForm;
+  descriptionDropdownValues: AssetDescriptionDropdownValues | null;
 }
-// Todo (Sriram) Ignore this screen
+
 class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
   constructor(props: IOwnProps) {
     super(props);
+    const { assetDetails } = this.props;
 
     this.state = {
-      descriptionForm: {},
+      spacesForm: this.transformSpacesFormValues(),
+      descriptionForm: {
+        carpetArea: (assetDetails && assetDetails.carpetArea) || undefined,
+        areaUnit: (assetDetails && assetDetails.carpetAreaUnit && assetDetails.carpetAreaUnit.id) || undefined,
+        buildingGrade: '',
+        facing: (assetDetails && assetDetails.facing) || undefined,
+        flooringType: (assetDetails && assetDetails.floorType) || undefined,
+        yearOfConstruction: (assetDetails && assetDetails.construction_Year) || undefined,
+        totalFloors: (assetDetails && assetDetails.totalFloors) || 0,
+        onFloorNumber: (assetDetails && assetDetails.floorNumber) || 0,
+      },
+      furnishingForm: {
+        furnishingDetails: (assetDetails && assetDetails.furnishingDescription) || undefined,
+        furnishingType: (assetDetails && assetDetails.furnishing) || undefined,
+      },
+      descriptionDropdownValues: null,
     };
   }
 
+  public async componentDidMount(): Promise<void> {
+    await this.getDescriptionDropdownValues();
+  }
+
   public render(): ReactElement {
-    const { spaceTypes, handleNextStep, t } = this.props;
-    const { descriptionForm } = this.state;
+    const { spaceTypes, t } = this.props;
+    const { descriptionForm, furnishingForm, descriptionDropdownValues, spacesForm } = this.state;
 
     return (
-      <View style={styles.containerStyle}>
-        <PropertySpaces spacesTypes={spaceTypes} />
-        <Formik onSubmit={this.onSubmit} initialValues={descriptionForm} validate={FormUtils.validate(this.formSchema)}>
+      <>
+        <Formik
+          onSubmit={this.onSubmit}
+          initialValues={{ ...descriptionForm, ...furnishingForm }}
+          validate={FormUtils.validate(this.formSchema)}
+        >
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
             return (
               <>
-                <View>
-                  <FormTextInput
-                    formProps={formProps}
-                    inputType="default"
-                    name="label"
-                    label={t('details')}
-                    placeholder={t('detailsPlaceholder')}
-                  />
-                  <FormDropdown
-                    formProps={formProps}
-                    name="property"
-                    options={[
-                      { label: 'blah', value: 'blah' },
-                      { label: 'halb', value: 'halb' },
-                    ]}
-                    placeholder={t('selectProperty')}
-                    maxLabelLength={36}
-                  />
+                <View style={styles.containerStyle}>
+                  <>
+                    <Text style={styles.headingStyle} type="small">
+                      {t('property:spacesText')}
+                    </Text>
+                    <PropertySpaces
+                      spacesFormValues={spacesForm}
+                      onChange={this.handleSpaceFormChange}
+                      spacesTypes={spaceTypes}
+                    />
+                  </>
+
+                  {descriptionDropdownValues && (
+                    <AssetDescriptionForm dropDownOptions={descriptionDropdownValues} formProps={formProps} />
+                  )}
+
+                  {descriptionDropdownValues && this.renderFurnishingFields(formProps)}
                 </View>
+
+                <WithShadowView>
+                  <FormButton
+                    type="primary"
+                    title={t('common:continue')}
+                    containerStyle={styles.buttonStyle}
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    formProps={formProps}
+                  />
+                </WithShadowView>
               </>
             );
           }}
         </Formik>
-        <Button
-          type="primary"
-          title={t('common:continue')}
-          containerStyle={styles.buttonStyle}
-          onPress={handleNextStep}
-        />
-      </View>
+      </>
     );
   }
 
-  // private getSpacesFormFields = (): any[] => {
-  //   const { data } = this.props;
-  //   let spaces: any = {};
-  //
-  //   return data.reduce((accumulator: any, currentValue) => {
-  //   }, {});
-  // };
+  private renderFurnishingFields = (formProps: FormikProps<FormikValues>): ReactElement => {
+    const { t } = this.props;
+    const { furnishingForm } = this.state;
 
-  private onSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {};
+    return (
+      <>
+        <Text style={styles.headingStyle} type="small">
+          {t('property:furnishing')}
+        </Text>
+        <View style={styles.furnishingStyle}>
+          <SelectionPicker<string>
+            containerStyles={styles.marginTop}
+            data={this.loadFurnishingStatus()}
+            selectedItem={[furnishingForm.furnishingType || '']}
+            onValueChange={this.setFurnishingStatus}
+          />
+          <FormTextInput
+            style={styles.furnishingFieldStyle}
+            name="furnishingDetails"
+            label={t('property:furnishingDetails')}
+            maxLength={400}
+            inputType="default"
+            formProps={formProps}
+          />
+        </View>
+      </>
+    );
+  };
 
-  private formSchema = (): yup.ObjectSchema<IDescriptionForm> => {
+  private onSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
+    const {
+      areaUnit,
+      carpetArea,
+      facing,
+      flooringType,
+      furnishingDetails,
+      onFloorNumber,
+      totalFloors,
+      yearOfConstruction,
+    } = values;
+    const {
+      furnishingForm: { furnishingType },
+      spacesForm,
+    } = this.state;
+    const { handleNextStep, assetId, assetDetails } = this.props;
+
+    // Todo (Sriram: replace string temporary to space.description) This is due to BE error
+    const sanitizedSpaces = spacesForm
+      .filter((item) => item != null)
+      .map((space) => {
+        return {
+          space_type: space.space_type,
+          count: space.count,
+          ...(space.description === '' && { description: 'temporary' }),
+        };
+      });
+
+    formActions.setSubmitting(true);
+
+    const payload: IUpdateAssetParams = {
+      carpet_area: carpetArea,
+      carpet_area_unit: areaUnit,
+      facing,
+      floor_type: flooringType,
+      furnishing_description: furnishingDetails,
+      floor_number: onFloorNumber,
+      total_floors: totalFloors,
+      construction_year: Number(DateUtils.getDisplayDate(yearOfConstruction, 'YYYY')),
+      furnishing: furnishingType,
+      spaces: sanitizedSpaces,
+      last_visited_step: {
+        ...assetDetails?.lastVisitedStep,
+        is_details_done: true,
+        current_step: 2,
+        total_step: 4,
+      },
+    };
+
+    try {
+      await AssetRepository.updateAsset(assetId, payload);
+      handleNextStep();
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
+  };
+
+  private transformSpacesFormValues = (): ISpacesForm[] => {
+    const { assetDetails } = this.props;
+
+    if (assetDetails) {
+      return assetDetails.spaces.map((item) => {
+        return {
+          space_type: item.id,
+          count: item.count,
+        };
+      });
+    }
+    return [];
+  };
+
+  private setFurnishingStatus = (furnishingType: string): void => {
+    this.setState({ furnishingForm: { furnishingType } });
+  };
+
+  private loadFurnishingStatus = (): ISelectionPicker<string>[] | [] => {
+    const { descriptionDropdownValues } = this.state;
+    if (descriptionDropdownValues) {
+      return descriptionDropdownValues.furnishingStatus.map((item) => {
+        return {
+          value: item.name,
+          title: item.label,
+        };
+      });
+    }
+    return [];
+  };
+
+  private handleSpaceFormChange = (id: number, count: number, description?: string): void => {
+    const { spacesForm } = this.state;
+
+    spacesForm[id] = { space_type: id, count, description };
+  };
+
+  private formSchema = (): yup.ObjectSchema<IDescriptionForm & IFurnishingForm> => {
     return yup.object().shape({
-      carpetArea: yup.string().optional(),
-      areaUnit: yup.string().optional(),
+      carpetArea: yup.number().optional(),
+      areaUnit: yup.number().optional(),
       buildingGrade: yup.string().optional(),
       facing: yup.string().optional(),
       flooringType: yup.string().optional(),
-      yearOfConstruction: yup.string().optional(),
-      totalFloors: yup.string().optional(),
-      onFloorNumber: yup.string().optional(),
+      yearOfConstruction: yup.number().optional(),
+      totalFloors: yup.number().optional(),
+      onFloorNumber: yup.number().optional(),
+      furnishingType: yup.string().optional(),
+      furnishingDetails: yup.string().optional(),
     });
+  };
+
+  private getDescriptionDropdownValues = async (): Promise<void> => {
+    try {
+      const response: AssetDescriptionDropdownValues = await AssetRepository.getAssetDescriptionDropdownValues();
+
+      this.setState({
+        descriptionDropdownValues: response,
+        furnishingForm: {
+          furnishingType: response.furnishingStatus[0].name,
+        },
+      });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
   };
 }
 
@@ -116,5 +305,24 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     margin: 16,
+  },
+  furnishingStyle: {
+    backgroundColor: theme.colors.white,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
+  },
+  headingStyle: {
+    marginTop: 16,
+    paddingVertical: 16,
+    paddingLeft: 16,
+    backgroundColor: theme.colors.moreSeparator,
+  },
+  furnishingFieldStyle: {
+    height: 85,
+    textAlignVertical: 'top',
+    paddingTop: 10,
+  },
+  marginTop: {
+    marginTop: 20,
   },
 });

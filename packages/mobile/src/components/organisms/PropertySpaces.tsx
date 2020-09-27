@@ -2,7 +2,15 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { CheckboxGroup, Counter, ICheckboxGroupData, RNSwitch, Text } from '@homzhub/common/src/components';
+import {
+  UncontrolledCheckboxGroup,
+  Counter,
+  ICheckboxGroupData,
+  RNSwitch,
+  Text,
+  InputWithCheckbox,
+} from '@homzhub/common/src/components';
+import { ISpacesForm } from '@homzhub/mobile/src/components/organisms/AddPropertyDetails';
 import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IGroupedSpaceType {
@@ -12,7 +20,9 @@ interface IGroupedSpaceType {
 }
 
 interface IOwnProps extends WithTranslation {
+  spacesFormValues: ISpacesForm[];
   spacesTypes: SpaceType[];
+  onChange: (id: number, count: number, description?: string) => void;
 }
 
 interface IOwnState {
@@ -54,7 +64,16 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
   private renderSpaces = (renderPrimary: boolean): React.ReactNode => {
     const { groupedSpaceTypes } = this.state;
 
-    const counterFields = groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
+    const handleCounterChange = (count: number, id?: number): void => {
+      this.handleSpacesChange(id || -1, count);
+    };
+
+    const handleCheckboxGroupToggle = (id: number, isSelected: boolean): void => {
+      this.handleSpacesChange(id, isSelected ? 1 : 0);
+    };
+
+    /* This part of the method renders Counters */
+    const spaceFields = groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
       if (space.isPrimary !== renderPrimary) {
         return null;
       }
@@ -63,23 +82,45 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
         <Counter
           key={index}
           containerStyles={styles.marginBottom}
-          defaultValue={0}
+          defaultValue={space.value ? space.value : space.isMandatory ? 1 : 0}
           name={{ title: space.name, id: space.id }}
           svgImage={space.attachment && space.attachment.link}
-          onValueChange={(): void => {}}
+          onValueChange={handleCounterChange}
         />
       );
     });
 
-    const checkboxFields = (
-      <CheckboxGroup
+    /* This part of the method renders Checkbox */
+    spaceFields?.push(
+      <UncontrolledCheckboxGroup
         containerStyle={styles.marginBottom}
         data={this.loadCheckboxData(renderPrimary)}
-        onToggle={(): void => {}}
+        onToggle={handleCheckboxGroupToggle}
       />
     );
 
-    return counterFields?.concat(checkboxFields);
+    /* This part of the method renders text input field with checkbox */
+    groupedSpaceTypes[SpaceFieldTypes.TextBox]?.forEach((space, index) => {
+      if (space.isPrimary !== renderPrimary) {
+        return;
+      }
+
+      const handleInputWithCheckChange = (isSelected: boolean, text: string): void => {
+        const count = isSelected ? 1 : 0;
+        this.handleSpacesChange(space.id, count, text);
+      };
+
+      spaceFields?.push(<InputWithCheckbox key={index} onChange={handleInputWithCheckChange} />);
+    });
+
+    return spaceFields;
+  };
+
+  private handleSpacesChange = (id: number, count: number, description?: string): void => {
+    const { onChange } = this.props;
+    this.setState({ groupedSpaceTypes: this.groupSpaceTypes() });
+
+    onChange(id, count, description);
   };
 
   private loadCheckboxData = (renderPrimary: boolean): ICheckboxGroupData[] => {
@@ -88,20 +129,21 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
 
     groupedSpaceTypes[SpaceFieldTypes.CheckBox]?.forEach((space) => {
       if (space.isPrimary === renderPrimary) {
-        checkboxData.push({ id: space.id, label: space.name, isSelected: false });
+        checkboxData.push({ id: space.id, label: space.name, isSelected: !!space.value });
       }
     });
     return checkboxData;
   };
 
-  private groupSpaceTypes = (): any => {
-    const { spacesTypes } = this.props;
+  private groupSpaceTypes = (): IGroupedSpaceType => {
+    const { spacesTypes, spacesFormValues } = this.props;
 
     return spacesTypes.reduce((accumulator: any, currentSpace) => {
       const key: string = currentSpace.fieldType;
       if (!accumulator[key]) {
         accumulator[key] = [];
       }
+      currentSpace.value = spacesFormValues[currentSpace.id]?.count;
 
       accumulator[key].push(currentSpace);
       return accumulator;

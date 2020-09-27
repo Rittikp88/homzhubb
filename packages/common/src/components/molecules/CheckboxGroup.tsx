@@ -8,7 +8,7 @@ export interface ICheckboxGroupData {
   isSelected: boolean;
 }
 
-export interface IProps {
+export interface ICheckboxGroupProps {
   data: ICheckboxGroupData[];
   onToggle: (id: number, isSelected: boolean) => void;
   numColumns?: number;
@@ -17,7 +17,7 @@ export interface IProps {
   testID?: string;
 }
 
-export class CheckboxGroup extends React.PureComponent<IProps, {}> {
+export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> {
   public render = (): React.ReactNode => {
     const { data, numColumns = 2, containerStyle = {} } = this.props;
     return (

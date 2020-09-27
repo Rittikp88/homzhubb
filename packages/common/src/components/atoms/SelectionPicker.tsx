@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, FlatList, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -19,14 +19,15 @@ interface IProps<T> {
   selectedItem: T[];
   onValueChange: (selectedValue: T) => void;
   optionWidth?: number;
+  containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
 class SelectionPicker<T> extends React.PureComponent<IProps<T>> {
   public render(): React.ReactElement {
-    const { data } = this.props;
+    const { data, containerStyles } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyles]}>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}

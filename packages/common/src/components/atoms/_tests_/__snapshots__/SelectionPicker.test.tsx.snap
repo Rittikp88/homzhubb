@@ -3,11 +3,14 @@
 exports[`SelectionPicker should match snapshot 1`] = `
 <View
   style={
-    Object {
-      "borderColor": "#0084F8",
-      "borderRadius": 4,
-      "borderWidth": 1.5,
-    }
+    Array [
+      Object {
+        "borderColor": "#0084F8",
+        "borderRadius": 4,
+        "borderWidth": 1.5,
+      },
+      undefined,
+    ]
   }
 >
   <FlatList
@@ -152,11 +155,14 @@ exports[`SelectionPicker should match snapshot for carouselItem without optional
 exports[`SelectionPicker should match snapshot for optional width 1`] = `
 <View
   style={
-    Object {
-      "borderColor": "#0084F8",
-      "borderRadius": 4,
-      "borderWidth": 1.5,
-    }
+    Array [
+      Object {
+        "borderColor": "#0084F8",
+        "borderRadius": 4,
+        "borderWidth": 1.5,
+      },
+      undefined,
+    ]
   }
 >
   <FlatList
