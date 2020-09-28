@@ -378,7 +378,7 @@ AssetSearch {
         },
       ],
       "_floorNumber": 1,
-      "_floorType": "",
+      "_floorType": 0,
       "_furnishing": "",
       "_furnishingDescription": "",
       "_highlights": Array [
@@ -745,7 +745,7 @@ AssetSearch {
         },
       ],
       "_floorNumber": 1,
-      "_floorType": "",
+      "_floorType": 0,
       "_furnishing": "",
       "_furnishingDescription": "",
       "_highlights": Array [

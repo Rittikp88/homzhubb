@@ -1,5 +1,20 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export enum LeaseFormKeys {
+  monthlyRent = 'monthlyRent',
+  securityDeposit = 'securityDeposit',
+  showMore = 'showMore',
+  annualIncrement = 'annualIncrement',
+  maintenanceAmount = 'maintenanceAmount',
+  maintenanceSchedule = 'maintenanceSchedule',
+  maintenanceBy = 'maintenanceBy',
+  availableFrom = 'availableFrom',
+  furnishingStatus = 'furnishingStatus',
+  utilityBy = 'utilityBy',
+  minimumLeasePeriod = 'minimumLeasePeriod',
+  rentFreePeriod = 'rentFreePeriod',
+}
+
 export enum PaidByTypes {
   TENANT = 'TENANT',
   OWNER = 'OWNER',
@@ -35,6 +50,7 @@ export interface IUpdateLeaseTermDetails {
   maintenance_amount?: number | null;
   maintenance_payment_schedule?: ScheduleTypes | null;
   description?: string;
+  rent_free_period?: number;
   tenant_preferences?: number[];
   lease_unit?: {
     name: string;
@@ -56,6 +72,7 @@ export interface ICreateLeaseTermDetails {
   maintenance_payment_schedule: ScheduleTypes | null;
   description?: string;
   tenant_preferences?: number[];
+  rent_free_period?: number;
   lease_unit: {
     name: string;
     spaces: ISpaces[];

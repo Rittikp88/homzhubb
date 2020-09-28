@@ -133,8 +133,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
       this.setState({ data: response });
     } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 

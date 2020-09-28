@@ -104,7 +104,9 @@
     "promoPlaceholder": "Enter Promo code",
     "promoError": "Please enter a valid Promotional Code",
     "remove": "Remove",
-    "typeHere": "Type here..."
+    "typeHere": "Type here...",
+    "days": "Days",
+    "enter": "Enter"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -298,7 +300,8 @@
     "buildingGradeText": "Building grade",
     "selectBuildingGrade": "Select building type",
     "furnishingDetails": "Furniture & Appliance details",
-    "spacesText": "Spaces"
+    "spacesText": "Spaces",
+    "rentFreePeriod": "Rent Free Period"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

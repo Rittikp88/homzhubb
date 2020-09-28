@@ -237,11 +237,13 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private handleNextStep = (): void => {
     const { currentIndex, isStepDone } = this.state;
+    const { getAssetById } = this.props;
     const newStepDone: boolean[] = isStepDone;
     newStepDone[currentIndex] = true;
     this.setState({
       isStepDone: newStepDone,
     });
+    getAssetById();
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
     } else {

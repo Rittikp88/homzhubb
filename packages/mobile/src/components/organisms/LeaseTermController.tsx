@@ -25,6 +25,7 @@ import {
   FurnishingType,
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
+  LeaseFormKeys,
   PaidByTypes,
   ScheduleTypes,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
@@ -32,8 +33,7 @@ import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/R
 import { IList } from '@homzhub/common/src/domain/models/Tenant';
 import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { LeaseFormKeys } from '../molecules/LeaseDetailsForm';
-import { ButtonGroup } from '..';
+import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
@@ -56,6 +56,7 @@ interface IFormData {
   furnishingStatus: FurnishingType;
   maintenanceBy: PaidByTypes;
   utilityBy: PaidByTypes;
+  rentFreePeriod: number;
 }
 
 interface IOwnState {
@@ -71,6 +72,8 @@ const MAX_DESCRIPTION_LENGTH = 600;
 const MINIMUM_LEASE_PERIOD = 1;
 const DEFAULT_LEASE_PERIOD = 11;
 const MAXIMUM_LEASE_PERIOD = 24;
+
+// TODO: (Shikha) - Need to implement Edit flow
 
 class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   /*eslint-disable */
@@ -93,6 +96,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       furnishingStatus: FurnishingType.NONE,
       maintenanceBy: PaidByTypes.OWNER,
       utilityBy: PaidByTypes.TENANT,
+      rentFreePeriod: 0,
     },
     description: '',
     preferences: [],
@@ -110,6 +114,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     const {
       t,
       currencyData: { currencySymbol, currencyCode },
+      currentAssetType,
     } = this.props;
     const { description, formData, preferences, isPreferencesSelected } = this.state;
 
@@ -128,6 +133,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
               setFieldTouched(LeaseFormKeys.annualIncrement, false);
             }
           };
+          const maxDayCount = currentAssetType === 'COM' ? 180 : 60;
           return (
             <>
               <AssetListingSection title={t('leaseTerms')}>
@@ -166,10 +172,27 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
                       inputGroupSuffixText={t('annualIncrementSuffix')}
                     />
                   )}
+                  {currentAssetType === 'COM' && (
+                    <FormTextInput
+                      inputType="number"
+                      name={LeaseFormKeys.rentFreePeriod}
+                      label={t('rentFreePeriod')}
+                      placeholder={t('common:enter')}
+                      maxLength={2}
+                      formProps={formProps}
+                      inputGroupSuffixText={t('common:days')}
+                    />
+                  )}
                   <Text type="small" textType="semiBold" style={styles.headerTitle}>
                     {t('duration')}
                   </Text>
-                  <FormCalendar formProps={formProps} name="availableFrom" textType="label" textSize="regular" />
+                  <FormCalendar
+                    formProps={formProps}
+                    maxDate={DateUtils.getFutureDate(maxDayCount)}
+                    name="availableFrom"
+                    textType="label"
+                    textSize="regular"
+                  />
                   {this.renderNonFormikInputs(formProps)}
                   {values.maintenanceBy === PaidByTypes.TENANT && (
                     <MaintenanceDetails
@@ -181,14 +204,16 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
                   )}
                 </>
               </AssetListingSection>
-              <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>
-                <CheckboxGroup
-                  key={`${isPreferencesSelected}-checkbox`}
-                  data={preferences}
-                  onToggle={this.handlePreferences}
-                  containerStyle={styles.checkBox}
-                />
-              </AssetListingSection>
+              {preferences.length > 0 && (
+                <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>
+                  <CheckboxGroup
+                    key={`${isPreferencesSelected}-checkbox`}
+                    data={preferences}
+                    onToggle={this.handlePreferences}
+                    containerStyle={styles.checkBox}
+                  />
+                </AssetListingSection>
+              )}
               <AssetListingSection
                 title={t('assetDescription:description')}
                 containerStyles={styles.descriptionContainer}
@@ -280,7 +305,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
   private onSubmit = async (values: IFormData, formActions: FormikActions<FormikValues>): Promise<void> => {
     formActions.setSubmitting(true);
-    const { onNextStep } = this.props;
+    const { onNextStep, currentAssetType } = this.props;
     const { description, availableSpaces, selectedPreferences } = this.state;
 
     let maintenance_amount: number | null = parseInt(values[LeaseFormKeys.maintenanceAmount], 10);
@@ -307,6 +332,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       maintenance_payment_schedule,
       ...(description && { description }),
       tenant_preferences: selectedPreferences,
+      ...(currentAssetType === 'COM' && { rent_free_period: Number(values[LeaseFormKeys.rentFreePeriod]) }),
       lease_unit: {
         name: 'Unit 1',
         spaces: availableSpaces,

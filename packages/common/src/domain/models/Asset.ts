@@ -238,8 +238,8 @@ export class Asset {
   @JsonProperty('construction_year', Number, true)
   private _construction_Year = 0;
 
-  @JsonProperty('floor_type', String, true)
-  private _floorType = '';
+  @JsonProperty('floor_type', Number, true)
+  private _floorType = 0;
 
   @JsonProperty('attachments', [Attachment], true)
   private _attachments: Attachment[] = [];
