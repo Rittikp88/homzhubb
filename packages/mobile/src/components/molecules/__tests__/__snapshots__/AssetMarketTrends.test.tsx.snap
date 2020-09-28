@@ -8,7 +8,7 @@ exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
   style={
     Object {
       "alignItems": "center",
-      "borderColor": "#667686",
+      "borderColor": "#E5E8EB",
       "borderRadius": 4,
       "borderWidth": 0.5,
       "flexDirection": "row",

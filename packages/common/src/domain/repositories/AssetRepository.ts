@@ -69,7 +69,7 @@ const ENDPOINTS = {
   getUpcomingVisits: (): string => 'listing-visits/upcoming-visits/',
   assetVisit: (): string => 'listing-visits/',
   attachmentUpload: (): string => 'attachments/upload/',
-  assetDescriptionDropdownValues: (): string => 'assets/list-of-values',
+  assetDescriptionDropdownValues: (): string => 'assets/list-of-values/',
   availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
 };
 

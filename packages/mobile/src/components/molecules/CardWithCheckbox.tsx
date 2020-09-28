@@ -34,16 +34,16 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
 
     return (
       <View style={[styles.container, { backgroundColor }]}>
-        <View style={styles.subContainer}>
-          <Image width={100} height={80} source={image} />
-          <View style={styles.textStyle}>
-            <Label type="large" numberOfLines={3}>
+        <Image width={80} height={80} source={image} />
+        <View style={styles.content}>
+          <View style={styles.subContainer}>
+            <Label type="large" numberOfLines={3} style={styles.textStyle}>
               {heading}
             </Label>
-            <PricePerUnit textStyle={styles.marginTop} textSizeType="small" price={price} currency="INR" />
+            <RNCheckbox selected={isChecked} onToggle={this.onToggle} containerStyle={styles.checkbox} />
           </View>
+          <PricePerUnit textStyle={styles.price} textSizeType="small" price={price} currency="INR" />
         </View>
-        <RNCheckbox selected={isChecked} onToggle={this.onToggle} />
       </View>
     );
   };
@@ -58,18 +58,25 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
     padding: theme.layout.screenPadding,
+    marginBottom: 16,
+  },
+  content: {
+    marginLeft: 10,
   },
   subContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   textStyle: {
-    marginHorizontal: 10,
     width: '70%',
+    color: theme.colors.darkTint2,
   },
-  marginTop: {
-    marginTop: 17,
+  checkbox: {
+    marginHorizontal: 16,
+  },
+  price: {
+    marginTop: 10,
+    color: theme.colors.darkTint2,
   },
 });

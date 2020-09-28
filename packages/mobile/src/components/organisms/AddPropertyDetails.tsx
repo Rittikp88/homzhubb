@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -9,7 +9,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import {
-  FormButton,
+  Button,
   FormTextInput,
   ISelectionPicker,
   SelectionPicker,
@@ -117,13 +117,11 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                 </View>
 
                 <WithShadowView>
-                  <FormButton
+                  <Button
                     type="primary"
                     title={t('common:continue')}
                     containerStyle={styles.buttonStyle}
-                    // @ts-ignore
-                    onPress={formProps.handleSubmit}
-                    formProps={formProps}
+                    onPress={(): Promise<void> => this.onSubmit(formProps.values)}
                   />
                 </WithShadowView>
               </>
@@ -163,7 +161,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
     );
   };
 
-  private onSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
+  private onSubmit = async (values: FormikValues): Promise<void> => {
     const {
       areaUnit,
       carpetArea,
@@ -189,8 +187,6 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
           ...(space.description && { description: space.description }),
         };
       });
-
-    formActions.setSubmitting(true);
 
     const payload: IUpdateAssetParams = {
       carpet_area: carpetArea,

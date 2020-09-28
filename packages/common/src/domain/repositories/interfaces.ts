@@ -349,3 +349,9 @@ export interface IMarkCoverImageAttachment {
 export interface IGetSaleTermsParams {
   status: 'DRAFT';
 }
+
+export interface IOrderSummaryPayload {
+  services?: number[];
+  coins?: number;
+  promo_code?: string;
+}

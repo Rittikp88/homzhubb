@@ -5,10 +5,12 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import Coin from '@homzhub/common/src/assets/images/coin.svg';
 import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
+import { Coins } from '@homzhub/common/src/domain/models/OrderSummary';
 
 interface IOwnProps {
   onToggle: () => void;
   selected: boolean;
+  coins: Coins;
 }
 
 type Props = IOwnProps & WithTranslation;
@@ -16,7 +18,7 @@ type Props = IOwnProps & WithTranslation;
 // TODO: (Shikha) - Move static code after API integration
 class HomzhubCoins extends PureComponent<Props> {
   public render(): React.ReactNode {
-    const { t, onToggle, selected } = this.props;
+    const { t, onToggle, selected, coins } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.switchView}>
@@ -31,7 +33,7 @@ class HomzhubCoins extends PureComponent<Props> {
           </Text>
           <Coin style={styles.image} />
           <Text type="small" style={styles.title}>
-            128
+            {coins?.currentBalance ?? 0}
           </Text>
         </View>
         {selected && (

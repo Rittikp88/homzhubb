@@ -3,81 +3,57 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider, Text } from '@homzhub/common/src/components';
+import { OrderTotalSummary, OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
 
-interface ISummaryItem {
-  key: string;
-  value: string;
-  isDiscount?: boolean;
+interface IOwnProps {
+  summary: Summary;
 }
 
-// TODO: (Shikha) - Remove after API integration
-const data: ISummaryItem[] = [
-  {
-    key: 'Order Total',
-    value: '3000',
-  },
-  {
-    key: 'Coin Discount',
-    value: '₹128',
-    isDiscount: true,
-  },
-  {
-    key: 'Discount (0%)',
-    value: '0',
-    isDiscount: true,
-  },
-  {
-    key: 'Sub Total',
-    value: '₹2872',
-  },
-  {
-    key: 'GST (18%)',
-    value: '₹720',
-  },
-];
-
-type Props = WithTranslation;
+type Props = IOwnProps & WithTranslation;
 
 export class OrderSummary extends PureComponent<Props> {
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const {
+      t,
+      summary: { summaryList, amountPayable },
+    } = this.props;
     return (
       <View style={styles.container}>
         <Text type="small" textType="semiBold" style={styles.heading}>
           {t('property:orderSummary')}
         </Text>
-        <FlatList data={data} renderItem={this.renderList} contentContainerStyle={styles.listContainer} />
-        {this.renderTotalView('₹3592')}
+        <FlatList data={summaryList} renderItem={this.renderList} contentContainerStyle={styles.listContainer} />
+        {amountPayable && this.renderTotalView(amountPayable)}
       </View>
     );
   }
 
-  private renderList = ({ item }: { item: ISummaryItem }): React.ReactElement => {
-    const { key, value, isDiscount } = item;
-    const amount = isDiscount ? `- ${value}` : value;
+  private renderList = ({ item }: { item: OrderTotalSummary }): React.ReactElement => {
+    const { title, value, valueColor } = item;
+    const amount = valueColor === theme.colors.green ? `- ₹${value}` : `₹${value}`;
     return (
       <View style={styles.listItem}>
         <Text type="small" textType="semiBold" style={styles.listKey}>
-          {key}
+          {title}
         </Text>
-        <Text type="small" textType="semiBold" style={isDiscount ? styles.discountValue : styles.listValue}>
+        <Text type="small" textType="semiBold" style={[styles.listValue, { color: valueColor }]}>
           {amount}
         </Text>
       </View>
     );
   };
 
-  private renderTotalView = (total: string): React.ReactElement => {
-    const { t } = this.props;
+  private renderTotalView = (total: OrderTotalSummary): React.ReactElement => {
+    const { title, value } = total;
     return (
       <View style={styles.totalView}>
         <Divider containerStyles={styles.divider} />
         <View style={styles.totalContent}>
           <Text type="small" textType="semiBold" style={styles.totalText}>
-            {t('property:youPay')}
+            {title}
           </Text>
           <Text type="small" textType="semiBold" style={styles.totalText}>
-            {total}
+            {`₹${value}`}
           </Text>
         </View>
         <Divider containerStyles={styles.divider} />

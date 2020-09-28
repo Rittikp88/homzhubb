@@ -14,9 +14,10 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { images } from '@homzhub/common/src/assets/images';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
+import { Button, Image, Label, RNSwitch, Text } from '@homzhub/common/src/components';
 import { AddressWithStepIndicator, ActionController, BottomSheet, Header } from '@homzhub/mobile/src/components';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
@@ -49,6 +50,7 @@ interface IOwnState {
   isStepDone: boolean[];
   isActionSheetToggled: boolean;
   isPropertyAsUnits: boolean;
+  isSheetVisible: boolean;
 }
 
 class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
@@ -58,6 +60,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     isStepDone: [],
     isActionSheetToggled: false,
     isPropertyAsUnits: false,
+    isSheetVisible: false,
   };
 
   public componentDidMount(): void {
@@ -66,7 +69,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   }
 
   public render(): React.ReactNode {
-    const { currentIndex, isStepDone } = this.state;
+    const { currentIndex, isStepDone, isSheetVisible } = this.state;
     const {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
@@ -113,6 +116,9 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
         </ScrollView>
         {this.openActionBottomSheet()}
+        <BottomSheet visible={isSheetVisible} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
+          {this.renderContinueView()}
+        </BottomSheet>
       </>
     );
   }
@@ -160,6 +166,30 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  private renderContinueView = (): ReactElement => {
+    const { t } = this.props;
+    return (
+      <>
+        <View style={styles.sheetContent}>
+          <Text type="large" style={styles.sheetTitle}>
+            {t('congratulations')}
+          </Text>
+          <Text type="small">You are now a HomzHub Lite Member</Text>
+          <Image source={images.check} style={styles.image} />
+          <Label type="large" style={styles.continue}>
+            {t('clickContinueToDashboard')}
+          </Label>
+        </View>
+        <Button
+          type="primary"
+          title={t('continue')}
+          containerStyle={styles.buttonStyle}
+          onPress={this.navigateToDashboard}
+        />
+      </>
+    );
+  };
+
   private renderScene = SceneMap({
     actions: (): ReactElement => {
       const { isPropertyAsUnits } = this.state;
@@ -191,6 +221,10 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     services: (): ReactElement => <ValueAddedServicesView handleNextStep={this.handleNextStep} />,
     payment: (): ReactElement => <PropertyPayment handleNextStep={this.handleNextStep} />,
   });
+
+  private onCloseSheet = (): void => {
+    this.setState({ isSheetVisible: false });
+  };
 
   private openActionBottomSheet = (): React.ReactNode => {
     const { isActionSheetToggled } = this.state;
@@ -299,6 +333,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     }
   };
 
+  private navigateToDashboard = (): void => {
+    const { navigation } = this.props;
+    this.setState({ isSheetVisible: false });
+    navigation.navigate(ScreensKeys.DashboardLandingScreen);
+  };
+
   private handleNextStep = (): void => {
     const { currentIndex, isStepDone } = this.state;
     const newStepDone: boolean[] = isStepDone;
@@ -309,6 +349,8 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     if (currentIndex < this.getRoutes().length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    } else {
+      this.setState({ isSheetVisible: true });
     }
   };
 
@@ -393,5 +435,22 @@ const styles = StyleSheet.create({
   link: {
     marginVertical: 5,
     color: theme.colors.blue,
+  },
+  sheetContent: {
+    alignItems: 'center',
+  },
+  sheetTitle: {
+    marginBottom: 8,
+  },
+  image: {
+    marginVertical: 30,
+  },
+  continue: {
+    marginBottom: 12,
+    color: theme.colors.darkTint5,
+  },
+  buttonStyle: {
+    flex: 0,
+    marginHorizontal: 16,
   },
 });

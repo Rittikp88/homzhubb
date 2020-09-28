@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.darkTint5,
+    borderColor: theme.colors.darkTint10,
     borderRadius: 4,
     flexDirection: 'row',
     justifyContent: 'center',

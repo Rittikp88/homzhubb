@@ -34,7 +34,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
     super(props);
 
     this.state = {
-      showMore: true,
+      showMore: false,
       groupedSpaceTypes: this.groupSpaceTypes(),
     };
   }

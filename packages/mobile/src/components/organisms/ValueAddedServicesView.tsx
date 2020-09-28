@@ -5,6 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button } from '@homzhub/common/src/components';
 import { CardWithCheckbox } from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
+import { Services } from '@homzhub/common/src/mocks/ValueAddedServices';
 
 interface IValueServices {
   name: string;
@@ -19,13 +20,25 @@ interface IOwnProps extends WithTranslation {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
+// TODO(28/09/2020): Replace mock-data once API finalize
+
 class ValueAddedServicesView extends React.PureComponent<IOwnProps, {}> {
   public render = (): React.ReactElement => {
     const { handleNextStep, containerStyle, t } = this.props;
 
     return (
       <View style={[styles.container, containerStyle]}>
-        <CardWithCheckbox heading="This is dummy service. Yup" image={images.landingScreenLogo} price={1500} selected />
+        {Services.map((item) => {
+          return (
+            <CardWithCheckbox
+              key={item.id}
+              heading={item.name}
+              image={images.landingScreenLogo}
+              price={item.isPrice}
+              selected
+            />
+          );
+        })}
         <Button
           type="primary"
           title={t('common:continue')}
@@ -42,7 +55,8 @@ export { valueAddedServicesView as ValueAddedServicesView };
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: theme.layout.screenPadding,
+    padding: theme.layout.screenPadding,
+    backgroundColor: theme.colors.white,
   },
   buttonStyle: {
     flex: 0,
