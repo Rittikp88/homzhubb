@@ -168,6 +168,20 @@ class DateUtils {
     }
     return false;
   };
+
+  public getYearList = (startYear: number, endYear: number): { value: number; label: string }[] => {
+    const years = [];
+    const dateStart = moment().subtract(startYear, 'y');
+    const dateEnd = moment().add(endYear, 'y');
+    while (dateEnd.diff(dateStart, 'years') >= 0) {
+      years.push(dateStart.format('YYYY'));
+      dateStart.add(1, 'year');
+    }
+    return years.map((year) => ({
+      label: year,
+      value: parseInt(year, 10),
+    }));
+  };
 }
 
 const dateUtils = new DateUtils();

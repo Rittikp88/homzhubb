@@ -20,6 +20,7 @@ export enum SpaceFieldTypes {
 export interface ISpaceCount {
   space_type: number;
   count: number;
+  description?: string;
 }
 
 @JsonObject('TypeUnit')

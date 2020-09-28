@@ -2,9 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormCalendar, FormDropdown, FormTextInput, IDropdownOption, Text } from '@homzhub/common/src/components';
+import { FormDropdown, FormTextInput, IDropdownOption, Text } from '@homzhub/common/src/components';
 import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
 import {
   AssetDescriptionDropdownValues,
@@ -74,14 +75,6 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           </View>
         </View>
         <FormDropdown
-          label={t('buildingGradeText')}
-          name="buildingGrade"
-          options={transformDropdownTypes(dropDownOptions.facing, Facing)}
-          placeholder={t('selectBuildingGrade')}
-          maxLabelLength={36}
-          formProps={formProps}
-        />
-        <FormDropdown
           label={t('facingText')}
           name="facing"
           options={transformDropdownTypes(dropDownOptions.facing, Facing)}
@@ -97,13 +90,13 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           maxLabelLength={36}
           formProps={formProps}
         />
-        <FormCalendar
-          allowPastDates
+        <FormDropdown
           formProps={formProps}
           name="yearOfConstruction"
           textType="label"
           label={t('yearOfConstruction')}
-          placeHolder={t('assetFinancial:addDatePlaceholder')}
+          options={DateUtils.getYearList(20, 5)}
+          placeholder={t('assetFinancial:addDatePlaceholder')}
         />
         <FormCounter
           containerStyles={styles.marginTop}

@@ -1,7 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { AssetGroup, ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 const getLoadingState = (state: IState): boolean => {
@@ -79,6 +79,22 @@ const getAssetDetails = (state: IState): Asset | null => {
   return ObjectMapper.deserialize(Asset, assetDetails);
 };
 
+const getTransformedSpaceValues = (state: IState): ISpaceCount[] => {
+  const {
+    recordAsset: { assetDetails },
+  } = state;
+
+  if (assetDetails) {
+    return assetDetails.spaces.map((item) => {
+      return {
+        space_type: item.id,
+        count: item.count,
+      };
+    });
+  }
+  return [];
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
@@ -89,4 +105,5 @@ export const RecordAssetSelectors = {
   getSpaceTypes,
   getAssetDetails,
   getCurrentTermId,
+  getTransformedSpaceValues,
 };

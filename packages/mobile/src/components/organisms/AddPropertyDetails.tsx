@@ -6,7 +6,6 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import {
@@ -22,20 +21,14 @@ import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/Propert
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
-import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
-
-export interface ISpacesForm {
-  space_type: number;
-  count: number;
-  description?: string;
-}
+import { ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IDescriptionForm {
   carpetArea?: number;
   areaUnit?: number;
   buildingGrade?: string;
   facing?: string;
-  flooringType?: string;
+  flooringType?: number;
   yearOfConstruction?: number;
   totalFloors?: number;
   onFloorNumber?: number;
@@ -50,11 +43,12 @@ interface IOwnProps extends WithTranslation {
   assetId: number;
   assetDetails: Asset | null;
   spaceTypes: SpaceType[];
+  spaceValues: ISpaceCount[];
   handleNextStep: () => void;
 }
 
 interface IOwnState {
-  spacesForm: ISpacesForm[];
+  spacesForm: ISpaceCount[];
   descriptionForm: IDescriptionForm;
   furnishingForm: IFurnishingForm;
   descriptionDropdownValues: AssetDescriptionDropdownValues | null;
@@ -63,10 +57,10 @@ interface IOwnState {
 class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
   constructor(props: IOwnProps) {
     super(props);
-    const { assetDetails } = this.props;
+    const { assetDetails, spaceValues } = this.props;
 
     this.state = {
-      spacesForm: this.transformSpacesFormValues(),
+      spacesForm: spaceValues,
       descriptionForm: {
         carpetArea: (assetDetails && assetDetails.carpetArea) || undefined,
         areaUnit: (assetDetails && assetDetails.carpetAreaUnit && assetDetails.carpetAreaUnit.id) || undefined,
@@ -142,7 +136,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
 
   private renderFurnishingFields = (formProps: FormikProps<FormikValues>): ReactElement => {
     const { t } = this.props;
-    const { furnishingForm } = this.state;
+    const handlePickerChange = (value: string): void => this.setFurnishingStatus(formProps, value);
 
     return (
       <>
@@ -153,8 +147,8 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
           <SelectionPicker<string>
             containerStyles={styles.marginTop}
             data={this.loadFurnishingStatus()}
-            selectedItem={[furnishingForm.furnishingType || '']}
-            onValueChange={this.setFurnishingStatus}
+            selectedItem={formProps.values.furnishingType}
+            onValueChange={handlePickerChange}
           />
           <FormTextInput
             style={styles.furnishingFieldStyle}
@@ -186,14 +180,13 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
     } = this.state;
     const { handleNextStep, assetId, assetDetails } = this.props;
 
-    // Todo (Sriram: replace string temporary to space.description) This is due to BE error
     const sanitizedSpaces = spacesForm
-      .filter((item) => item != null)
+      .filter((item) => item && item.description !== '' && item.count)
       .map((space) => {
         return {
           space_type: space.space_type,
           count: space.count,
-          ...(space.description === '' && { description: 'temporary' }),
+          ...(space.description && { description: space.description }),
         };
       });
 
@@ -207,7 +200,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
       furnishing_description: furnishingDetails,
       floor_number: onFloorNumber,
       total_floors: totalFloors,
-      construction_year: Number(DateUtils.getDisplayDate(yearOfConstruction, 'YYYY')),
+      construction_year: yearOfConstruction,
       furnishing: furnishingType,
       spaces: sanitizedSpaces,
       last_visited_step: {
@@ -227,22 +220,8 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
     }
   };
 
-  private transformSpacesFormValues = (): ISpacesForm[] => {
-    const { assetDetails } = this.props;
-
-    if (assetDetails) {
-      return assetDetails.spaces.map((item) => {
-        return {
-          space_type: item.id,
-          count: item.count,
-        };
-      });
-    }
-    return [];
-  };
-
-  private setFurnishingStatus = (furnishingType: string): void => {
-    this.setState({ furnishingForm: { furnishingType } });
+  private setFurnishingStatus = (formProps: FormikProps<FormikValues>, furnishingType: string): void => {
+    formProps.setFieldValue('furnishingType', furnishingType);
   };
 
   private loadFurnishingStatus = (): ISelectionPicker<string>[] | [] => {
@@ -270,7 +249,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
       areaUnit: yup.number().optional(),
       buildingGrade: yup.string().optional(),
       facing: yup.string().optional(),
-      flooringType: yup.string().optional(),
+      flooringType: yup.number().optional(),
       yearOfConstruction: yup.number().optional(),
       totalFloors: yup.number().optional(),
       onFloorNumber: yup.number().optional(),

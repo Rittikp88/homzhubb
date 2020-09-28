@@ -10,8 +10,7 @@ import {
   Text,
   InputWithCheckbox,
 } from '@homzhub/common/src/components';
-import { ISpacesForm } from '@homzhub/mobile/src/components/organisms/AddPropertyDetails';
-import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { ISpaceCount, SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IGroupedSpaceType {
   [SpaceFieldTypes.Counter]?: SpaceType[];
@@ -20,7 +19,7 @@ interface IGroupedSpaceType {
 }
 
 interface IOwnProps extends WithTranslation {
-  spacesFormValues: ISpacesForm[];
+  spacesFormValues: ISpaceCount[];
   spacesTypes: SpaceType[];
   onChange: (id: number, count: number, description?: string) => void;
 }
@@ -93,6 +92,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
     /* This part of the method renders Checkbox */
     spaceFields?.push(
       <UncontrolledCheckboxGroup
+        key="UncontrolledCheckboxGroup"
         containerStyle={styles.marginBottom}
         data={this.loadCheckboxData(renderPrimary)}
         onToggle={handleCheckboxGroupToggle}

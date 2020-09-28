@@ -17,7 +17,7 @@ import { Header, AddressWithStepIndicator, AddPropertyDetails, BottomSheet } fro
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IRoutes {
   key: string;
@@ -42,6 +42,7 @@ interface IStateProps {
   assetId: number;
   spaceTypes: SpaceType[];
   assetDetail: Asset | null;
+  transformedSpaceValues: ISpaceCount[];
 }
 
 interface IDispatchProps {
@@ -165,11 +166,12 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private renderScene = SceneMap({
     detail: (): ReactElement => {
-      const { spaceTypes, assetDetail, assetId } = this.props;
+      const { spaceTypes, assetDetail, assetId, transformedSpaceValues } = this.props;
       return (
         <AddPropertyDetails
           assetId={assetId}
           assetDetails={assetDetail}
+          spaceValues={transformedSpaceValues}
           spaceTypes={spaceTypes}
           handleNextStep={this.handleNextStep}
         />
@@ -253,11 +255,12 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentAssetId, getSpaceTypes, getAssetDetails } = RecordAssetSelectors;
+  const { getCurrentAssetId, getSpaceTypes, getAssetDetails, getTransformedSpaceValues } = RecordAssetSelectors;
   return {
     assetId: getCurrentAssetId(state),
     spaceTypes: getSpaceTypes(state),
     assetDetail: getAssetDetails(state),
+    transformedSpaceValues: getTransformedSpaceValues(state),
   };
 };
 

@@ -19,6 +19,12 @@ export interface ICarpetAreaUnit {
   title: string;
 }
 
+export interface IAssetSpaces {
+  id: number;
+  name: string;
+  count: number;
+}
+
 export enum DataType {
   TENANCIES = 'TENANCIES',
   PROPERTIES = 'PROPERTIES',
@@ -43,7 +49,7 @@ export interface IAsset {
   total_floors: number;
   asset_type: IData;
   asset_group: IData;
-  spaces: IData[];
+  spaces: IAssetSpaces[];
   amenities: IAmenity[];
   attachments: IAttachment[];
   highlights: IAssetHighlight[];
@@ -513,7 +519,7 @@ export class Asset {
     return this._construction_Year;
   }
 
-  get floorType(): string {
+  get floorType(): number {
     return this._floorType;
   }
 
