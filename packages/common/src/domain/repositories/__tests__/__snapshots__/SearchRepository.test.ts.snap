@@ -240,6 +240,7 @@ AssetSearch {
       ],
       "_amenityGroup": null,
       "_assetGroup": Data {
+        "_code": "",
         "_count": 0,
         "_id": 0,
         "_name": "",
@@ -269,6 +270,7 @@ AssetSearch {
         },
       },
       "_assetType": Data {
+        "_code": "",
         "_count": 0,
         "_id": 0,
         "_name": "",
@@ -328,6 +330,14 @@ AssetSearch {
         "_refreshToken": "",
       },
       "_cornerProperty": false,
+      "_country": Country {
+        "_currencies": Array [],
+        "_id": 0,
+        "_iso2Code": "",
+        "_iso3Code": "",
+        "_name": "",
+        "_phoneCodes": Array [],
+      },
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
       "_facing": "",
       "_features": Array [
@@ -411,11 +421,13 @@ AssetSearch {
       },
       "_spaces": Array [
         Data {
+          "_code": "",
           "_count": 1,
           "_id": 1,
           "_name": "Bedroom",
         },
         Data {
+          "_code": "",
           "_count": 1,
           "_id": 2,
           "_name": "Bathroom",
@@ -595,6 +607,7 @@ AssetSearch {
       ],
       "_amenityGroup": null,
       "_assetGroup": Data {
+        "_code": "",
         "_count": 0,
         "_id": 0,
         "_name": "",
@@ -624,6 +637,7 @@ AssetSearch {
         },
       },
       "_assetType": Data {
+        "_code": "",
         "_count": 0,
         "_id": 0,
         "_name": "",
@@ -683,6 +697,14 @@ AssetSearch {
         "_refreshToken": "",
       },
       "_cornerProperty": false,
+      "_country": Country {
+        "_currencies": Array [],
+        "_id": 0,
+        "_iso2Code": "",
+        "_iso3Code": "",
+        "_name": "",
+        "_phoneCodes": Array [],
+      },
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
       "_facing": "",
       "_features": Array [
@@ -766,11 +788,13 @@ AssetSearch {
       },
       "_spaces": Array [
         Data {
+          "_code": "",
           "_count": 1,
           "_id": 1,
           "_name": "Bedroom",
         },
         Data {
+          "_code": "",
           "_count": 1,
           "_id": 2,
           "_name": "Bathroom",

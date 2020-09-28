@@ -47,14 +47,17 @@ exports[`CommonRepository should fetch a list of currency codes 1`] = `
 Array [
   Currency {
     "_currencyCode": "AUD",
+    "_currencyName": "AUD",
     "_currencySymbol": "$",
   },
   Currency {
     "_currencyCode": "INR",
+    "_currencyName": "AUD",
     "_currencySymbol": "₹",
   },
   Currency {
     "_currencyCode": "SGD",
+    "_currencyName": "AUD",
     "_currencySymbol": "$",
   },
 ]

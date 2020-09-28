@@ -21,16 +21,19 @@ import { AddressWithStepIndicator, ActionController, BottomSheet, Header } from 
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
   assetId: number;
+  assetDetails: Asset | null;
 }
 
 interface IDispatchProps {
   resetState: () => void;
+  getAssetById: () => void;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLeaseListing>;
@@ -57,16 +60,30 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     isPropertyAsUnits: false,
   };
 
-  public render(): React.ReactElement {
+  public componentDidMount(): void {
+    const { getAssetById } = this.props;
+    getAssetById();
+  }
+
+  public render(): React.ReactNode {
     const { currentIndex, isStepDone } = this.state;
     const {
       selectedAssetPlan: { selectedPlan },
+      assetDetails,
     } = this.props;
     // TODO: Remove this once data is coming from api call
     const badge = ObjectMapper.deserialize(LabelColor, {
       label: selectedPlan,
       color: selectedPlan === TypeOfPlan.RENT ? theme.colors.rental : theme.colors.sell,
     });
+    if (!assetDetails) return null;
+
+    const {
+      projectName,
+      assetType: { name },
+      address,
+    } = assetDetails;
+
     return (
       <>
         <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
@@ -76,9 +93,9 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             badge={badge}
             badgeStyle={styles.badgeStyle}
             isProgress={false}
-            propertyType="Bungalow"
-            primaryAddress="Kalpataru Splendour"
-            subAddress="Shankar Kalat Nagar, Maharashtra 411057"
+            propertyType={name}
+            primaryAddress={projectName}
+            subAddress={address}
             currentIndex={currentIndex}
             isStepDone={isStepDone}
             onPressSteps={this.handlePreviousStep}
@@ -148,13 +165,20 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       const { isPropertyAsUnits } = this.state;
       const {
         selectedAssetPlan: { selectedPlan },
+        assetDetails,
       } = this.props;
       return (
-        <ActionController
-          typeOfPlan={selectedPlan}
-          isSplitAsUnits={isPropertyAsUnits}
-          onNextStep={this.handleNextStep}
-        />
+        <>
+          {assetDetails && (
+            <ActionController
+              typeOfPlan={selectedPlan}
+              isSplitAsUnits={isPropertyAsUnits}
+              country={assetDetails.country}
+              propertyType={assetDetails.assetGroup.code}
+              onNextStep={this.handleNextStep}
+            />
+          )}
+        </>
       );
     },
     verification: (): ReactElement => {
@@ -309,18 +333,20 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getSelectedAssetPlan, getCurrentAssetId } = RecordAssetSelectors;
+  const { getSelectedAssetPlan, getCurrentAssetId, getAssetDetails } = RecordAssetSelectors;
   return {
     selectedAssetPlan: getSelectedAssetPlan(state),
     assetId: getCurrentAssetId(state),
+    assetDetails: getAssetDetails(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { resetState } = RecordAssetActions;
+  const { resetState, getAssetById } = RecordAssetActions;
   return bindActionCreators(
     {
       resetState,
+      getAssetById,
     },
     dispatch
   );

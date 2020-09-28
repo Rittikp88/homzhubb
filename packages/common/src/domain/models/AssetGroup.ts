@@ -17,6 +17,11 @@ export enum SpaceFieldTypes {
   TextBox = 'TEXTBOX',
 }
 
+export interface ISpaceCount {
+  space_type: number;
+  count: number;
+}
+
 @JsonObject('TypeUnit')
 export class TypeUnit {
   @JsonProperty('id', Number)
@@ -51,6 +56,9 @@ export class SpaceType extends TypeUnit {
   @JsonProperty('attachment', Attachment)
   private _attachment = new Attachment();
 
+  @JsonProperty('count', Number, true)
+  private _count = -1;
+
   get fieldType(): string {
     return this._fieldType;
   }
@@ -73,6 +81,17 @@ export class SpaceType extends TypeUnit {
 
   set value(value: number) {
     this._value = value;
+  }
+
+  get count(): number {
+    return this._count;
+  }
+
+  get spaceList(): ISpaceCount {
+    return {
+      space_type: this.id,
+      count: this.count,
+    };
   }
 }
 

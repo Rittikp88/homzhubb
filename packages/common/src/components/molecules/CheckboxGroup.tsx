@@ -1,15 +1,10 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
-
-export interface ICheckboxGroupData {
-  id: number;
-  label: string;
-  isSelected: boolean;
-}
+import { IList } from '@homzhub/common/src/domain/models/Tenant';
 
 export interface ICheckboxGroupProps {
-  data: ICheckboxGroupData[];
+  data: IList[];
   onToggle: (id: number, isSelected: boolean) => void;
   numColumns?: number;
   labelStyle?: StyleProp<TextStyle>;
@@ -21,7 +16,7 @@ export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> 
   public render = (): React.ReactNode => {
     const { data, numColumns = 2, containerStyle = {} } = this.props;
     return (
-      <FlatList<ICheckboxGroupData>
+      <FlatList<IList>
         numColumns={numColumns}
         data={data}
         renderItem={this.renderCheckbox}
@@ -31,7 +26,7 @@ export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> 
     );
   };
 
-  private renderCheckbox = ({ item, index }: { item: ICheckboxGroupData; index: number }): React.ReactElement => {
+  private renderCheckbox = ({ item, index }: { item: IList; index: number }): React.ReactElement => {
     const { label, isSelected = false } = item;
     const { data, onToggle, numColumns = 2, labelStyle = {}, testID } = this.props;
 
@@ -40,7 +35,6 @@ export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> 
     if (index >= data.length - numColumns) {
       checkboxContainerStyle = StyleSheet.flatten([styles.checkboxContainer, { marginBottom: 0 }]);
     }
-
     const onCheckboxToggle = (): void => onToggle(item.id, !isSelected);
 
     return (

@@ -95,7 +95,7 @@ class DateUtils {
   };
 
   public getCurrentDate = (): string => {
-    return moment.utc(new Date()).format('YYYY-MM-DD');
+    return moment(new Date()).format('YYYY-MM-DD');
   };
 
   public getCurrentTime = (): string => {

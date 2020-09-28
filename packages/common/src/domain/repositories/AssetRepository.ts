@@ -14,14 +14,14 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
-import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
+import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetLeadType, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import {
-  ILeaseTermDetails,
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
+  LeaseTerms,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { ICreateSaleTermDetails, IUpdateSaleTermDetails, SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 import {
@@ -70,6 +70,7 @@ const ENDPOINTS = {
   assetVisit: (): string => 'listing-visits/',
   attachmentUpload: (): string => 'attachments/upload/',
   assetDescriptionDropdownValues: (): string => 'assets/list-of-values',
+  availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
 };
 
 class AssetRepository {
@@ -97,13 +98,14 @@ class AssetRepository {
     return await this.apiClient.patch(ENDPOINTS.updateAsset(id), requestBody);
   };
 
-  public getLeaseTerms = async (propertyId: number): Promise<ILeaseTermDetails[]> => {
-    return await this.apiClient.get(ENDPOINTS.leaseTerms(propertyId));
+  public getLeaseTerms = async (propertyId: number): Promise<LeaseTerms[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.leaseTerms(propertyId));
+    return ObjectMapper.deserializeArray(LeaseTerms, response);
   };
 
   public createLeaseTerms = async (
     propertyId: number,
-    leaseTerms: ICreateLeaseTermDetails
+    leaseTerms: ICreateLeaseTermDetails[]
   ): Promise<{ id: number }> => {
     return await this.apiClient.post(ENDPOINTS.leaseTerms(propertyId), leaseTerms);
   };
@@ -253,6 +255,11 @@ class AssetRepository {
   public getAssetDescriptionDropdownValues = async (): Promise<AssetDescriptionDropdownValues> => {
     const response = await this.apiClient.get(ENDPOINTS.assetDescriptionDropdownValues());
     return ObjectMapper.deserialize(AssetDescriptionDropdownValues, response);
+  };
+
+  public getAssetAvailableSpaces = async (assetId: number): Promise<SpaceType[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.availableSpaces(assetId));
+    return ObjectMapper.deserializeArray(SpaceType, response);
   };
 }
 

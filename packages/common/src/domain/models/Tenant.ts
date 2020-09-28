@@ -2,6 +2,12 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { LeasePeriod } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { User } from '@homzhub/common/src/domain/models/User';
 
+export interface IList {
+  id: number;
+  label: string;
+  isSelected: boolean;
+}
+
 @JsonObject('TenantHistory')
 export class TenantHistory {
   @JsonProperty('id', Number)
@@ -30,5 +36,41 @@ export class TenantHistory {
 
   get tenantUser(): User | null {
     return this._tenantUser;
+  }
+}
+
+@JsonObject('TenantPreference')
+export class TenantPreference {
+  @JsonProperty('id', Number)
+  private _id = 1;
+
+  @JsonProperty('name', String)
+  private _name = 'Family';
+
+  @JsonProperty('is_selected', Boolean, true)
+  private _isSelected = false;
+
+  get id(): number {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get isSelected(): boolean {
+    return this._isSelected;
+  }
+
+  set isSelected(value: boolean) {
+    this._isSelected = value;
+  }
+
+  get menuItem(): IList {
+    return {
+      id: this.id,
+      label: this.name,
+      isSelected: this.isSelected,
+    };
   }
 }

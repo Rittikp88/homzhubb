@@ -14,11 +14,11 @@ import { IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interf
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { Avatar, Button, Divider, EmptyState } from '@homzhub/common/src/components';
 import { LeaseProgress, Loader, SearchBar } from '@homzhub/mobile/src/components';
-import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
+import { Tenant } from '@homzhub/common/src/domain/models/TenantHistory';
 
 interface IStateProps {
   assetId: number;
-  tenantHistory: TenantHistory[] | null;
+  tenantHistory: Tenant[] | null;
 }
 
 interface IDispatchProps {
@@ -26,7 +26,7 @@ interface IDispatchProps {
 }
 
 interface IScreenState {
-  tenantHistory: TenantHistory[];
+  tenantHistory: Tenant[];
   searchValue: string;
   isLoading: boolean;
 }
@@ -37,8 +37,8 @@ type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 export class TenantHistoryScreen extends Component<Props, IScreenState> {
   private search = debounce(() => {
     const { searchValue, tenantHistory } = this.state;
-    const results: TenantHistory[] = [];
-    tenantHistory.forEach((item: TenantHistory) => {
+    const results: Tenant[] = [];
+    tenantHistory.forEach((item: Tenant) => {
       const { tenantUser } = item;
       if (tenantUser && tenantUser.fullName.toLowerCase().includes(searchValue.toLowerCase())) {
         results.push(item);
@@ -83,7 +83,7 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
     );
   }
 
-  private renderItem = ({ item }: { item: TenantHistory }): React.ReactElement => {
+  private renderItem = ({ item }: { item: Tenant }): React.ReactElement => {
     const { t } = this.props;
     const { tenantUser, leaseTransaction } = item;
     return (

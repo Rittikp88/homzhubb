@@ -66,12 +66,8 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   public componentDidMount(): void {
     const { assetDetail } = this.props;
     if (assetDetail && assetDetail.lastVisitedStep) {
-      const { currentStep } = assetDetail.lastVisitedStep;
-      if (currentStep > 1) {
-        this.setState({
-          currentIndex: currentStep - 1,
-        });
-      }
+      const { stepList } = assetDetail.lastVisitedStep;
+      this.setState({ isStepDone: stepList });
     }
   }
 
@@ -186,11 +182,12 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     },
 
     gallery: (): ReactElement => {
-      const { assetId } = this.props;
+      const { assetId, assetDetail } = this.props;
       return (
         <PropertyImages
           propertyId={assetId}
           onPressContinue={this.handleNextStep}
+          lastVisitedStep={assetDetail?.lastVisitedStep}
           containerStyle={styles.propertyImagesContainer}
         />
       );

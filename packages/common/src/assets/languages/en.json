@@ -288,6 +288,8 @@
     "youPay": "You Pay",
     "usedCoins": "You will save {{amount}} using {{coin}} Homzhub coins",
     "amenities": "Amenities",
+    "leaseTerms": "Lease Terms",
+    "tenantPreferences": "Tenant Preferences",
     "facingText": "Facing",
     "flooringType": "Type of Flooring",
     "selectFlooringType": "Select flooring type",

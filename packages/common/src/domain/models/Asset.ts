@@ -10,6 +10,7 @@ import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
+import { Country, ICountry } from '@homzhub/common/src/domain/models/CountryCode';
 
 export interface ICarpetAreaUnit {
   id: number;
@@ -49,6 +50,7 @@ export interface IAsset {
   features: IAssetFeature[];
   contacts?: IUser;
   verifications: IVerifications;
+  country: ICountry;
   furnishing_description: string;
   construction_year: string;
   facing: string;
@@ -78,6 +80,9 @@ export class Data {
   @JsonProperty('name', String)
   private _name = '';
 
+  @JsonProperty('code', String, true)
+  private _code = '';
+
   @JsonProperty('count', Number, true)
   private _count = 0;
 
@@ -87,6 +92,10 @@ export class Data {
 
   get name(): string {
     return this._name;
+  }
+
+  get code(): string {
+    return this._code;
   }
 
   get count(): number {
@@ -141,13 +150,16 @@ export class LastVisitedStep {
     return this._isGalleryDone;
   }
 
-  // TODO: (Shikha) - Need To Refactor
+  get stepList(): boolean[] {
+    // Sort in same order as add property flow
+    return [this.isDetailsDone, this.isHighlightsDone, this.isGalleryDone];
+  }
+
   get percentage(): number {
-    const totalDone = [];
-    if (this.isCreated || this.isDetailsDone || this.isGalleryDone || this.isHighlightsDone) {
-      totalDone.push(true);
-    }
-    return (totalDone.length / this.totalStep) * 100;
+    let totalDone = 0;
+    const totalSteps = [...this.stepList, this.isCreated];
+    totalDone = totalSteps.filter((item) => item).length;
+    return (totalDone / this.totalStep) * 100;
   }
 }
 
@@ -319,6 +331,9 @@ export class Asset {
   @JsonProperty('amenity_group', AmenityGroup, true)
   private _amenityGroup: AmenityGroup | null = null;
 
+  @JsonProperty('country', Country, true)
+  private _country = new Country();
+
   get projectName(): string {
     return this._projectName;
   }
@@ -488,6 +503,10 @@ export class Asset {
 
   get amenityGroup(): AmenityGroup | null {
     return this._amenityGroup;
+  }
+
+  get country(): Country {
+    return this._country;
   }
 
   get construction_Year(): number {

@@ -4,7 +4,7 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
-import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
+import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
 
 const ENDPOINTS = {
   getAssetMetrics: (): string => 'portfolio/management-tab/',

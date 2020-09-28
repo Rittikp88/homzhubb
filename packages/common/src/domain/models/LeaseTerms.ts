@@ -17,6 +17,11 @@ export enum FurnishingType {
   FULL = 'FULL',
 }
 
+interface ISpaces {
+  space_type: number;
+  count: number;
+}
+
 export interface IUpdateLeaseTermDetails {
   currency_code?: string;
   expected_monthly_rent?: number;
@@ -29,10 +34,16 @@ export interface IUpdateLeaseTermDetails {
   utility_paid_by?: PaidByTypes;
   maintenance_amount?: number | null;
   maintenance_payment_schedule?: ScheduleTypes | null;
+  description?: string;
+  tenant_preferences?: number[];
+  lease_unit?: {
+    name: string;
+    spaces: ISpaces[];
+  };
 }
 
 export interface ICreateLeaseTermDetails {
-  currency_code: string;
+  currency_code?: string;
   expected_monthly_rent: number;
   security_deposit: number;
   annual_rent_increment_percentage: number | null;
@@ -43,6 +54,12 @@ export interface ICreateLeaseTermDetails {
   utility_paid_by: PaidByTypes;
   maintenance_amount: number | null;
   maintenance_payment_schedule: ScheduleTypes | null;
+  description?: string;
+  tenant_preferences?: number[];
+  lease_unit: {
+    name: string;
+    spaces: ISpaces[];
+  };
 }
 
 export interface ILeaseTermDetails extends ICreateLeaseTermDetails {
@@ -92,6 +109,9 @@ export class LeaseTerms {
 
   @JsonProperty('currency_symbol', String)
   private _currencySymbol = '';
+
+  @JsonProperty('description', String)
+  private _description = '';
 
   get id(): number {
     return this._id;
@@ -147,5 +167,9 @@ export class LeaseTerms {
 
   get currencySymbol(): string {
     return this._currencySymbol;
+  }
+
+  get description(): string {
+    return this._description;
   }
 }

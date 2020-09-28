@@ -21,14 +21,17 @@ export const countryCodes = [
 
 export const currencyCodes = [
   {
+    currency_name: 'AUD',
     currency_code: 'AUD',
     currency_symbol: '$',
   },
   {
+    currency_name: 'AUD',
     currency_code: 'INR',
     currency_symbol: '₹',
   },
   {
+    currency_name: 'AUD',
     currency_code: 'SGD',
     currency_symbol: '$',
   },

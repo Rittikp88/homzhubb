@@ -266,7 +266,7 @@ export class AssetHighlights extends Component<Props, IState> {
   };
 
   private handleContinue = async (): Promise<void> => {
-    const { handleNextStep, propertyId } = this.props;
+    const { handleNextStep, propertyId, propertyDetail } = this.props;
     const { isGated, allDayAccess, cornerProperty, powerBackup } = Details;
     const { selectedAmenity, propertyHighlight, selectedDetails } = this.state;
     const otherDetails: string[] = selectedDetails;
@@ -275,6 +275,7 @@ export class AssetHighlights extends Component<Props, IState> {
       amenities: selectedAmenity,
       asset_highlights: highlights,
       last_visited_step: {
+        ...propertyDetail?.lastVisitedStep,
         is_highlights_done: true,
         current_step: 3,
         total_step: 4,

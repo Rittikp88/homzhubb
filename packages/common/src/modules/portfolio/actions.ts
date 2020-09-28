@@ -7,7 +7,7 @@ import {
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { TenantHistory } from '@homzhub/common/src/domain/models/TenantHistory';
+import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
 
 const actionTypePrefix = 'Portfolio/';
 

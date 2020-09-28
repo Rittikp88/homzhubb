@@ -5,6 +5,7 @@ import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-cr
 import { findIndex, cloneDeep } from 'lodash';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -15,13 +16,15 @@ import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhu
 import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { IUser } from '@homzhub/common/src/domain/models/User';
-import { IPropertyImagesPostPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IPropertySelectedImages, IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
+import { LastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 
 interface IProps {
   propertyId: number;
   onPressContinue: () => void;
+  lastVisitedStep?: LastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -348,7 +351,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
-    const { propertyId, onPressContinue } = this.props;
+    const { propertyId, onPressContinue, lastVisitedStep } = this.props;
     const { selectedImages, isVideoToggled, videoUrl } = this.state;
     const attachmentIds: IPropertyImagesPostPayload[] = [];
     selectedImages.forEach((selectedImage: AssetGallery) =>
@@ -359,11 +362,20 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       const urlResponse: IYoutubeResponse[] = await AssetRepository.postAttachmentUpload(payload);
       attachmentIds.push({ attachment: urlResponse[0].id, is_cover_image: false });
     }
+    const updateAssetPayload: IUpdateAssetParams = {
+      last_visited_step: {
+        ...lastVisitedStep,
+        is_gallery_done: true,
+        current_step: 4,
+        total_step: 4,
+      },
+    };
     try {
       await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
+      await AssetRepository.updateAsset(propertyId, updateAssetPayload);
       onPressContinue();
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 }
