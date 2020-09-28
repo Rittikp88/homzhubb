@@ -46,10 +46,16 @@ exports[`Property Details Component should render PropertyDetails 1`] = `
       }
     >
       <Label
+        numberOfLines={1}
         style={
-          Object {
-            "color": "#33495E",
-          }
+          Array [
+            Object {
+              "color": "#33495E",
+            },
+            Object {
+              "width": 450,
+            },
+          ]
         }
         textType="regular"
         type="large"

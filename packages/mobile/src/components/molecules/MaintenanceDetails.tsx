@@ -2,13 +2,14 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { FormTextInput, FormDropdown } from '@homzhub/common/src/components';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   formProps: FormikProps<FormikValues>;
-  currency: string;
+  currency: Currency;
   maintenanceAmountKey: string;
   maintenanceScheduleKey: string;
   onMaintenanceAmountChanged?: (value: string) => void;
@@ -42,7 +43,8 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           placeholder={t('maintenanceAmountPlaceholder')}
           maxLength={formProps.values.maintenanceAmount && formProps.values.maintenanceAmount.includes('.') ? 13 : 12}
           formProps={formProps}
-          inputGroupSuffixText={currency}
+          inputPrefixText={currency.currencySymbol}
+          inputGroupSuffixText={currency.currencyCode}
           onValueChange={onMaintenanceAmountChanged}
         />
       </View>

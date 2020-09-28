@@ -53,6 +53,8 @@ type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackPar
 type Props = libraryProps & IStateProps & IDispatchProps;
 
 export class AddProperty extends PureComponent<Props, IScreenState> {
+  private scrollRef = React.createRef<ScrollView>();
+
   constructor(props: Props) {
     super(props);
     const { getAssetById } = this.props;
@@ -87,7 +89,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     return (
       <View style={styles.screen}>
         <Header icon={icons.leftArrow} title={t('property:addProperty')} onIconPress={this.goBack} />
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.content} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
           <AddressWithStepIndicator
             icon={icons.noteBook}
             steps={Steps}
@@ -218,6 +220,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     const { currentIndex } = this.state;
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
       this.setState({ isSheetVisible: true });
     }
@@ -234,6 +237,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     const value = index - currentIndex;
     if (value < 0) {
       this.setState({ currentIndex: currentIndex + value });
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     }
   };
 
@@ -248,6 +252,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     getAssetById();
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
       this.setState({ isSheetVisible: true });
     }

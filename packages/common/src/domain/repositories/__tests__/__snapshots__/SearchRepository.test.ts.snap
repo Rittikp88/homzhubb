@@ -319,6 +319,7 @@ AssetSearch {
         "_name": "SQ_FT",
         "_title": "Sq.ft",
       },
+      "_city": "Bengaluru",
       "_construction_Year": 0,
       "_contacts": User {
         "_accessToken": "",
@@ -338,6 +339,7 @@ AssetSearch {
         "_name": "",
         "_phoneCodes": Array [],
       },
+      "_countryName": "India",
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
       "_facing": "",
       "_features": Array [
@@ -411,6 +413,7 @@ AssetSearch {
       "_notifications": Count {
         "_count": 0,
       },
+      "_pinCode": "560097",
       "_postedOn": "2020-06-03",
       "_powerBackup": false,
       "_progressPercentage": 0,
@@ -433,6 +436,7 @@ AssetSearch {
           "_name": "Bathroom",
         },
       ],
+      "_state": "Karnataka",
       "_totalFloors": 4,
       "_unitNumber": "41",
       "_verifications": Verification {
@@ -686,6 +690,7 @@ AssetSearch {
         "_name": "SQ_FT",
         "_title": "Sq.ft",
       },
+      "_city": "Bengaluru",
       "_construction_Year": 0,
       "_contacts": User {
         "_accessToken": "",
@@ -705,6 +710,7 @@ AssetSearch {
         "_name": "",
         "_phoneCodes": Array [],
       },
+      "_countryName": "India",
       "_description": "It is a long established fact that the readable content of a page when looking at its layout.",
       "_facing": "",
       "_features": Array [
@@ -778,6 +784,7 @@ AssetSearch {
       "_notifications": Count {
         "_count": 0,
       },
+      "_pinCode": "560097",
       "_postedOn": "2020-06-03",
       "_powerBackup": false,
       "_progressPercentage": 0,
@@ -800,6 +807,7 @@ AssetSearch {
           "_name": "Bathroom",
         },
       ],
+      "_state": "Karnataka",
       "_totalFloors": 4,
       "_unitNumber": "41",
       "_verifications": Verification {

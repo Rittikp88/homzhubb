@@ -287,6 +287,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
+    this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   };
 
   private handlePreviousStep = (index: number): void => {
@@ -294,6 +295,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const value = index - currentIndex;
     if (value < 0) {
       this.setState({ currentIndex: currentIndex + value });
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     }
   };
 
@@ -320,6 +322,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const { currentIndex } = this.state;
     if (currentIndex < this.getRoutes().length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
       resetState();
       navigation.dispatch(

@@ -61,7 +61,6 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                 },
               }
             }
-            inputGroupSuffixText="INR"
             inputType="number"
             label="maintenanceAmount"
             maxLength={12}
@@ -256,70 +255,6 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                       underlineColorAndroid="transparent"
                     />
                   </Component>
-                  <TextInputSuffix
-                    text="INR"
-                  >
-                    <Label
-                      style={
-                        Object {
-                          "bottom": 14,
-                          "color": "#808D9B",
-                          "position": "absolute",
-                          "right": 6,
-                          "top": 13,
-                        }
-                      }
-                      type="large"
-                    >
-                      <Text
-                        style={
-                          Array [
-                            Object {
-                              "fontSize": 14,
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            Object {
-                              "fontFamily": "OpenSans-Regular",
-                              "fontWeight": "400",
-                            },
-                            Object {
-                              "bottom": 14,
-                              "color": "#808D9B",
-                              "position": "absolute",
-                              "right": 6,
-                              "top": 13,
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            Array [
-                              Object {
-                                "fontSize": 14,
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              Object {
-                                "fontFamily": "OpenSans-Regular",
-                                "fontWeight": "400",
-                              },
-                              Object {
-                                "bottom": 14,
-                                "color": "#808D9B",
-                                "position": "absolute",
-                                "right": 6,
-                                "top": 13,
-                              },
-                            ]
-                          }
-                        >
-                          INR
-                        </Text>
-                      </Text>
-                    </Label>
-                  </TextInputSuffix>
                 </View>
               </View>
             </WithFieldError>

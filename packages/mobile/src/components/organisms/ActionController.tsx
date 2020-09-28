@@ -28,6 +28,7 @@ interface IStateProps {
 
 type Props = IStateProps & IDispatchProps & IProps;
 
+// TODO (28/09/2020): Check if we need this wrapper at all after the implementation of manage flow & split unit lease flow
 class ActionController extends React.PureComponent<Props, {}> {
   public render = (): React.ReactNode => {
     const { onNextStep } = this.props;
@@ -42,12 +43,7 @@ class ActionController extends React.PureComponent<Props, {}> {
     return (
       <>
         {typeOfPlan === TypeOfPlan.SELL && (
-          <SaleTermController
-            onNextStep={onNextStep}
-            setTermId={setTermId}
-            currentTermId={currentTermId}
-            currentAssetId={currentAssetId}
-          />
+          <SaleTermController onNextStep={onNextStep} currentAssetId={currentAssetId} currency={currencies[0]} />
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
           <LeaseTermController

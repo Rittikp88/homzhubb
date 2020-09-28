@@ -12,15 +12,15 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormCalendar, FormTextInput, Text, TextArea } from '@homzhub/common/src/components';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ICreateSaleTermDetails } from '@homzhub/common/src/domain/models/SaleTerms';
-import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
-  currentTermId: number;
-  setTermId: (termId: number) => void;
   onNextStep: () => void;
+  currency: Currency;
 }
 
 interface IFormData {
@@ -34,6 +34,7 @@ interface IFormData {
 interface IOwnState {
   formData: IFormData;
   description: string;
+  currentTermId: number;
 }
 
 const MAX_DESCRIPTION_LENGTH = 600;
@@ -48,15 +49,17 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       maintenanceSchedule: ScheduleTypes.ANNUALLY,
     },
     description: '',
+    currentTermId: -1,
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { currentTermId, currentAssetId } = this.props;
-
-    if (currentTermId <= -1) return;
+    const { currentAssetId } = this.props;
 
     try {
       const response = await AssetRepository.getSaleTerms(currentAssetId, { status: 'DRAFT' });
+
+      if (response.length <= 0) return;
+
       this.setState({
         description: response[0].description ?? '',
         formData: {
@@ -67,13 +70,15 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
           bookingAmount: response[0].expectedBookingAmount,
         },
       });
+
+      this.setState({ currentTermId: response[0].id });
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
   };
 
   public render = (): React.ReactNode => {
-    const { t } = this.props;
+    const { t, currency } = this.props;
     const { description, formData } = this.state;
 
     return (
@@ -95,7 +100,8 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                     placeholder={t('expectedPricePlaceholder')}
                     maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
                     formProps={formProps}
-                    inputGroupSuffixText="₹"
+                    inputPrefixText={currency.currencySymbol}
+                    inputGroupSuffixText={currency.currencyCode}
                   />
                   <FormTextInput
                     inputType="number"
@@ -104,7 +110,8 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                     placeholder={t('bookingAmountPlaceholder')}
                     maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
                     formProps={formProps}
-                    inputGroupSuffixText="₹"
+                    inputPrefixText={currency.currencySymbol}
+                    inputGroupSuffixText={currency.currencyCode}
                   />
                   <FormCalendar formProps={formProps} name="availableFrom" textType="label" textSize="regular" />
                   <Text type="small" textType="semiBold" style={styles.headerTitle}>
@@ -112,7 +119,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                   </Text>
                   <MaintenanceDetails
                     formProps={formProps}
-                    currency="₹"
+                    currency={currency}
                     maintenanceAmountKey="maintenanceAmount"
                     maintenanceScheduleKey="maintenanceSchedule"
                   />
@@ -150,8 +157,8 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
 
   private onSubmit = async (values: IFormData, formActions: FormikActions<FormikValues>): Promise<void> => {
     formActions.setSubmitting(true);
-    const { description } = this.state;
-    const { onNextStep } = this.props;
+    const { description, currentTermId } = this.state;
+    const { onNextStep, currentAssetId } = this.props;
 
     const params: ICreateSaleTermDetails = {
       expected_price: parseInt(values.expectedPrice, 10),
@@ -162,11 +169,10 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       description,
     };
 
-    const { setTermId, currentTermId, currentAssetId } = this.props;
     try {
       if (currentTermId <= -1) {
         const response = await AssetRepository.createSaleTerm(currentAssetId, params);
-        setTermId(response.id);
+        this.setState({ currentTermId: response.id });
       } else {
         await AssetRepository.updateSaleTerm(currentAssetId, currentTermId, params);
       }

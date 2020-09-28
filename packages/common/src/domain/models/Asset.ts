@@ -41,6 +41,10 @@ export interface IAsset {
   posted_on: string;
   description: string;
   block_number: string;
+  pin_code: string;
+  city_name: string;
+  state_name: string;
+  country_name: string;
   latitude: string;
   longitude: string;
   carpet_area: number;
@@ -340,6 +344,18 @@ export class Asset {
   @JsonProperty('country', Country, true)
   private _country = new Country();
 
+  @JsonProperty('pin_code', String)
+  private _pinCode = '';
+
+  @JsonProperty('state_name', String)
+  private _state = '';
+
+  @JsonProperty('city_name', String)
+  private _city = '';
+
+  @JsonProperty('country_name', String)
+  private _countryName = '';
+
   get projectName(): string {
     return this._projectName;
   }
@@ -529,5 +545,26 @@ export class Asset {
 
   get facing(): string {
     return this._facing;
+  }
+
+  get pinCode(): string {
+    return this._pinCode;
+  }
+
+  get state(): string {
+    return this._state;
+  }
+
+  get city(): string {
+    return this._city;
+  }
+
+  get countryName(): string {
+    return this._countryName;
+  }
+
+  get countryIsoCode(): string {
+    const { iso2Code } = this.country;
+    return iso2Code;
   }
 }

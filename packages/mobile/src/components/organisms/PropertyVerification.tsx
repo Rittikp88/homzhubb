@@ -322,9 +322,8 @@ export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyV
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    margin: theme.layout.screenPadding,
-    marginTop: 0,
+    paddingHorizontal: 8,
+    marginTop: 4,
     backgroundColor: theme.colors.white,
   },
   proofContainer: {

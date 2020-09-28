@@ -93,8 +93,11 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
           testID="location"
         />
         <View style={styles.titleContainer}>
-          <Label type="large" textType="semiBold" style={styles.titlePrimary}>
-            {`${placeData.name ?? ''}\n${placeData.formatted_address}`}
+          <Label type="large" textType="semiBold" numberOfLines={1} style={styles.titlePrimary}>
+            {`${placeData.name ?? ''}`}
+          </Label>
+          <Label type="large" textType="semiBold" numberOfLines={2} style={styles.titlePrimary}>
+            {`${placeData.formatted_address}`}
           </Label>
         </View>
       </>
@@ -182,10 +185,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     backgroundColor: theme.colors.primaryColor,
     paddingHorizontal: 16,
+    paddingTop: 4,
+    paddingBottom: 8,
   },
   titlePrimary: {
-    marginTop: 4,
-    marginBottom: 8,
     color: theme.colors.white,
   },
   shadowView: {

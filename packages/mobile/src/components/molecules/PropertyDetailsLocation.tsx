@@ -27,7 +27,12 @@ const PropertyDetailsLocation = (props: Props): React.ReactElement => {
       </View>
       <View style={styles.textContainer}>
         <View style={styles.rowContainer}>
-          <Label type="large" textType="regular" style={styles.textColor}>
+          <Label
+            type="large"
+            textType="regular"
+            numberOfLines={1}
+            style={[styles.textColor, { width: theme.viewport.width * 0.6 }]}
+          >
             {propertyName}
           </Label>
           <Label type="large" textType="semiBold" style={styles.label} onPress={navigateToMaps} testID={testID}>
