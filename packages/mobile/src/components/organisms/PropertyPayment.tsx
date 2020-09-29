@@ -52,12 +52,15 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           onClear={this.clearPromo}
         />
         <OrderSummary summary={orderSummary} />
-        <PaymentGateway
-          type="primary"
-          title={t('assetFinancial:payNow')}
-          containerStyle={styles.payButton}
-          onPaymentSuccess={handleNextStep}
-        />
+        {orderSummary.amountPayable && (
+          <PaymentGateway
+            type="primary"
+            amount={orderSummary.amountPayable}
+            title={t('assetFinancial:payNow')}
+            containerStyle={styles.payButton}
+            onPaymentSuccess={handleNextStep}
+          />
+        )}
         <View style={styles.secureView}>
           <Icon name={icons.badge} color={theme.colors.darkTint7} size={28} />
           <Label type="large" textType="semiBold" style={styles.secureText}>

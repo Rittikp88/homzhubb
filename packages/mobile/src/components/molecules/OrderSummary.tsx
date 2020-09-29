@@ -15,7 +15,7 @@ export class OrderSummary extends PureComponent<Props> {
   public render(): React.ReactNode {
     const {
       t,
-      summary: { summaryList, amountPayable },
+      summary: { summaryList, amountPayableText },
     } = this.props;
     return (
       <View style={styles.container}>
@@ -23,7 +23,7 @@ export class OrderSummary extends PureComponent<Props> {
           {t('property:orderSummary')}
         </Text>
         <FlatList data={summaryList} renderItem={this.renderList} contentContainerStyle={styles.listContainer} />
-        {amountPayable && this.renderTotalView(amountPayable)}
+        {amountPayableText && this.renderTotalView(amountPayableText)}
       </View>
     );
   }
@@ -84,9 +84,6 @@ const styles = StyleSheet.create({
   },
   listValue: {
     color: theme.colors.darkTint3,
-  },
-  discountValue: {
-    color: theme.colors.green,
   },
   totalView: {
     marginBottom: 16,

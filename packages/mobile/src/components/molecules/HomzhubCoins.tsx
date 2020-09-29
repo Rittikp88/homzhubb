@@ -15,10 +15,11 @@ interface IOwnProps {
 
 type Props = IOwnProps & WithTranslation;
 
-// TODO: (Shikha) - Move static code after API integration
 class HomzhubCoins extends PureComponent<Props> {
   public render(): React.ReactNode {
     const { t, onToggle, selected, coins } = this.props;
+    const amount = `₹${coins?.savedAmount ?? 0}`;
+    const coinUsed = coins?.coinsUsed ?? 0;
     return (
       <View style={styles.container}>
         <View style={styles.switchView}>
@@ -38,7 +39,7 @@ class HomzhubCoins extends PureComponent<Props> {
         </View>
         {selected && (
           <Label type="regular" textType="semiBold" style={styles.message}>
-            {t('property:usedCoins', { amount: '₹128', coin: 128 })}
+            {t('property:usedCoins', { amount, coin: coinUsed })}
           </Label>
         )}
       </View>

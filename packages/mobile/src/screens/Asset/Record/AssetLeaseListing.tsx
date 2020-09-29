@@ -334,9 +334,15 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToDashboard = (): void => {
-    const { navigation } = this.props;
+    const { navigation, resetState } = this.props;
     this.setState({ isSheetVisible: false });
-    navigation.navigate(ScreensKeys.DashboardLandingScreen);
+    resetState();
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensKeys.BottomTabs }],
+      })
+    );
   };
 
   private handleNextStep = (): void => {

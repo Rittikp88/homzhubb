@@ -68,17 +68,17 @@ export class Coins {
   @JsonProperty('current_balance', Number)
   private _currentBalance = 0;
 
-  @JsonProperty('saved_amount', String)
-  private _savedAmount = '';
+  @JsonProperty('saved_amount', Number)
+  private _savedAmount = 0;
 
-  @JsonProperty('currency_symbol', String)
+  @JsonProperty('currency_symbol', String, true)
   private _currencySymbol = '';
 
-  @JsonProperty('currency_code', String)
+  @JsonProperty('currency_code', String, true)
   private _currencyCode = '';
 
-  @JsonProperty('coins_used', String)
-  private _coinsUsed = '';
+  @JsonProperty('coins_used', Number)
+  private _coinsUsed = 0;
 
   @JsonProperty('coins_applied', Boolean)
   private _coinsApplied = false;
@@ -87,7 +87,7 @@ export class Coins {
     return this._currentBalance;
   }
 
-  get savedAmount(): string {
+  get savedAmount(): number {
     return this._savedAmount;
   }
 
@@ -99,7 +99,7 @@ export class Coins {
     return this._currencyCode;
   }
 
-  get coinsUsed(): string {
+  get coinsUsed(): number {
     return this._coinsUsed;
   }
 
@@ -166,7 +166,11 @@ export class OrderSummary {
     return new OrderTotalSummary('Sub Total', this._subTotal);
   }
 
-  get amountPayable(): OrderTotalSummary {
+  get amountPayable(): number {
+    return this._amountPayable;
+  }
+
+  get amountPayableText(): OrderTotalSummary {
     return new OrderTotalSummary('You Pay', this._amountPayable);
   }
 
@@ -187,7 +191,7 @@ export class OrderSummary {
     summary.push(this.orderTotal);
 
     if (this.coins && this.coins.coinsApplied) {
-      const coins = new OrderTotalSummary('Coins Discount', Number(this.coins.savedAmount), theme.colors.green);
+      const coins = new OrderTotalSummary('Coins Discount', this.coins.savedAmount, theme.colors.green);
       summary.push(coins);
     }
 

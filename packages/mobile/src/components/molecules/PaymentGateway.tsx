@@ -4,7 +4,6 @@ import RazorpayCheckout from 'react-native-razorpay';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button, IButtonProps } from '@homzhub/common/src/components';
@@ -38,7 +37,7 @@ export interface IPersonalData {
 }
 
 interface IProps extends IButtonProps, WithTranslation {
-  amount?: string;
+  amount: number;
   currency?: string;
   personalData?: IPersonalData;
   onPaymentSuccess: () => void;
@@ -47,8 +46,16 @@ interface IProps extends IButtonProps, WithTranslation {
 
 class PaymentGateway extends React.PureComponent<IProps> {
   public componentDidMount(): void {
-    const { t } = this.props;
-    options = { ...options, ...{ name: t('homzhub'), image: images.landingScreenLogo, description: 'dumb' } };
+    const { t, amount } = this.props;
+    options = {
+      ...options,
+      ...{
+        name: t('homzhub'),
+        image: images.landingScreenLogo,
+        description: t('description'),
+        amount: (amount * 100).toString(),
+      },
+    };
   }
 
   public render = (): React.ReactElement => {
@@ -81,5 +88,5 @@ class PaymentGateway extends React.PureComponent<IProps> {
   };
 }
 
-const paymentGateway = withTranslation(LocaleConstants.namespacesKey.common)(PaymentGateway);
+const paymentGateway = withTranslation()(PaymentGateway);
 export { paymentGateway as PaymentGateway };
