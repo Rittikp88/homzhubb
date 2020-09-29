@@ -9,7 +9,7 @@ import {
   Image,
   TextInput as RNTextInput,
 } from 'react-native';
-import { FormikErrors, FormikProps, FormikValues } from 'formik';
+import { FormikErrors, FormikProps } from 'formik';
 import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -24,7 +24,7 @@ type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' 
 export interface IFormTextInputProps extends TextInputProps {
   style?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
-  formProps: FormikProps<FormikValues>;
+  formProps: FormikProps<any>;
   inputType: SupportedInputType;
   labelTextType?: TextSizeType;
   name: string;
@@ -264,7 +264,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     }
   };
 
-  private getFieldError = (): string | FormikErrors<any> | undefined => {
+  private getFieldError = (): FormikErrors<any>[] | string | string[] | FormikErrors<any> | undefined => {
     const { name, formProps } = this.props;
     const { errors, touched } = formProps;
     return touched[name] && errors[name] ? errors[name] : undefined;

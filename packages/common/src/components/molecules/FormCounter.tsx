@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { FormikProps, FormikValues } from 'formik';
+import { FormikProps } from 'formik';
 import { Counter } from '@homzhub/common/src/components/atoms/Counter';
 
 interface IOwnProps {
   name: string;
   label: string;
-  formProps: FormikProps<FormikValues>;
+  formProps: FormikProps<any>;
   onChange?: (count: number, id?: number) => void;
   maxCount?: number;
   minCount?: number;

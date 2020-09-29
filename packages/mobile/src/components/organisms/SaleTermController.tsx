@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
@@ -155,7 +155,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
     this.setState({ description });
   };
 
-  private onSubmit = async (values: IFormData, formActions: FormikActions<FormikValues>): Promise<void> => {
+  private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
     const { description, currentTermId } = this.state;
     const { onNextStep, currentAssetId } = this.props;

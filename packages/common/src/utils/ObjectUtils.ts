@@ -5,6 +5,10 @@ export class ObjectUtils {
     return val.constructor && val.constructor.name.toLowerCase() === type.toLowerCase();
   };
 
+  public static isEmpty = (obj: object): boolean => {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  };
+
   // This function sorts an array of objects based on a `key` of the object
   public static sort = (arrayOfObjects: any[], key: any): any => {
     return arrayOfObjects.sort((a, b) => {

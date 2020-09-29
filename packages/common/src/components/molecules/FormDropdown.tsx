@@ -18,7 +18,7 @@ export interface IFormDropdownProps {
   label?: string;
   listTitle?: string;
   listHeight?: number;
-  formProps: FormikProps<FormikValues>;
+  formProps: FormikProps<any>;
   isDisabled?: boolean;
   onBlur?: () => void;
   onChange?: (value: string, props?: FormikProps<FormikValues>) => void;

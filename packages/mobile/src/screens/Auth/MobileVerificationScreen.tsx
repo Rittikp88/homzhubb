@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -16,7 +16,9 @@ import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IVerificationState {
-  phone: string;
+  formData: {
+    phone: string;
+  };
   countryCode: string;
   isBottomSheetVisible: boolean;
   countryCodeData: IDropdownOption[];
@@ -28,7 +30,9 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
   public phone: FormTextInput | null = null;
 
   public state = {
-    phone: '',
+    formData: {
+      phone: '',
+    },
     countryCode: '+91',
     isBottomSheetVisible: false,
     countryCodeData: [],
@@ -36,8 +40,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { isBottomSheetVisible, countryCode, countryCodeData } = this.state;
-    const formData = { ...this.state };
+    const { isBottomSheetVisible, formData, countryCodeData, countryCode } = this.state;
     const { title, message, subTitle, buttonTitle } = this.getDisplayStrings();
     return (
       <View style={styles.container}>
@@ -46,7 +49,11 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
           <Text type="small" style={styles.message}>
             {message}
           </Text>
-          <Formik onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)} initialValues={formData}>
+          <Formik
+            initialValues={{ ...formData }}
+            onSubmit={this.onSubmit}
+            validate={FormUtils.validate(this.formSchema)}
+          >
             {(formProps: FormikProps<FormikValues>): React.ReactElement => (
               <>
                 <FormTextInput
@@ -87,7 +94,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     );
   }
 
-  private onSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
+  private onSubmit = (values: { phone: string }, formActions: FormikHelpers<{ phone: string }>): void => {
     formActions.setSubmitting(true);
     const {
       t,
@@ -102,7 +109,8 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
       },
       navigation,
     } = this.props;
-    const { phone, countryCode } = values;
+    const { countryCode } = this.state;
+    const { phone } = values;
 
     navigation.navigate(ScreensKeys.OTP, {
       ref: () => this.phone,

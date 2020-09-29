@@ -3,7 +3,7 @@ import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -37,18 +37,20 @@ interface IDispatchProps {
   getAssetGroups: () => void;
 }
 
+interface IFormData {
+  projectName: string;
+  unitNo: string;
+  blockNo: string;
+  pincode: string;
+  city: string;
+  state: string;
+  country: string;
+  countryIsoCode: string;
+  address: string;
+}
+
 interface IOwnState {
-  formData: {
-    projectName: string;
-    unitNo: string;
-    blockNo: string;
-    pincode: string;
-    city: string;
-    state: string;
-    country: string;
-    countryIsoCode: string;
-    address: string;
-  };
+  formData: IFormData;
   assetTypeId: number;
 }
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostAssetDetails>;
@@ -162,7 +164,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     navigation.popToTop();
   };
 
-  private onSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
+  private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     const {
       projectName: project_name,
       unitNo: unit_number,
@@ -204,6 +206,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       },
     };
 
+    formActions.setSubmitting(true);
     try {
       if (assetId > -1) {
         await AssetRepository.updateAsset(assetId, params);
@@ -215,6 +218,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
+    formActions.setSubmitting(false);
   };
 
   private onAssetGroupSelected = (assetTypeId: number): void => {

@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { FormikProps, FormikValues } from 'formik';
+import { FormikProps } from 'formik';
 import { FormTextInput, FormDropdown } from '@homzhub/common/src/components';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
-  formProps: FormikProps<FormikValues>;
+  formProps: FormikProps<any>;
   currency: Currency;
   maintenanceAmountKey: string;
   maintenanceScheduleKey: string;

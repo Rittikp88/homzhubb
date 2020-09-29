@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -18,13 +18,15 @@ interface ISignUpFormProps extends WithTranslation {
   onSubmitFormSuccess: (payload: ISignUpPayload, ref: () => FormTextInput | null) => void;
 }
 
+interface IFormData {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
 interface ISignUpFormState {
-  user: {
-    name: string;
-    email: string;
-    phone: string;
-    password: string;
-  };
+  user: IFormData;
   countryCode: string;
   isBottomSheetVisible: boolean;
   countryCodeData: IDropdownOption[];
@@ -51,11 +53,10 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
   public render(): React.ReactNode {
     const { t, testID, onPressLink } = this.props;
     const { user, countryCode, isBottomSheetVisible, countryCodeData } = this.state;
-    const formData = { ...user };
 
     return (
       <View style={styles.container}>
-        <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
+        <Formik initialValues={{ ...user }} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
             const onEmailFocus = (): void => this.email?.focus();
             const onPasswordFocus = (): void => this.password?.focus();
@@ -172,7 +173,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
     });
   };
 
-  public handleSubmit = (values: FormikValues, formActions: FormikActions<FormikValues>): void => {
+  public handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
     const { onSubmitFormSuccess } = this.props;
     const { countryCode } = this.state;
     formActions.setSubmitting(true);
@@ -185,6 +186,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
     };
     const phoneRef = (): FormTextInput | null => this.phone;
     onSubmitFormSuccess(signUpData, phoneRef);
+    formActions.setSubmitting(false);
   };
 }
 

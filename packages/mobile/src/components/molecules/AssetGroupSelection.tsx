@@ -78,7 +78,8 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
 
     const onPress = (): void => {
       if (type === Type.AssetGroup) {
-        this.setState({ selectedAssetGroup: item.id }, () => {});
+        this.setState({ selectedAssetGroup: item.id });
+        onAssetGroupSelected(-1);
         setTimeout(() => {
           scrollRef?.scrollToEnd({ animated: true });
         }, 0);

@@ -36,7 +36,7 @@
   "dependencies": {
     "@types/react-native-calendars": "^1.20.8",
     "axios": "^0.19.2",
-    "formik": "^1.5.8",
+    "formik": "^2.1.5",
     "i18next": "^19.4.4",
     "json2typescript": "^1.4.1",
     "lodash": "^4.17.15",

@@ -35,11 +35,8 @@ exports[`AddRecordForm should match snapshot 1`] = `
         "tellerName": "",
       }
     }
-    isInitialValid={false}
     onSubmit={[Function]}
     validate={[Function]}
-    validateOnBlur={true}
-    validateOnChange={true}
   >
     <Component />
   </Formik>

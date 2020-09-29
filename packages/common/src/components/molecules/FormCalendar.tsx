@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, TextStyle } from 'react-native';
-import { FormikProps, FormikValues } from 'formik';
+import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -11,7 +11,7 @@ import { CalendarComponent } from '@homzhub/common/src/components/atoms/Calendar
 
 interface IFormCalendarProps extends WithTranslation {
   name: string;
-  formProps?: FormikProps<FormikValues>;
+  formProps?: FormikProps<any>;
   selectedValue?: string;
   label?: string;
   iconColor?: string;

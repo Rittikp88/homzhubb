@@ -83,7 +83,6 @@ SignUpForm {
         }
       >
         <Formik
-          enableReinitialize={false}
           initialValues={
             Object {
               "email": "",
@@ -92,11 +91,8 @@ SignUpForm {
               "phone": "",
             }
           }
-          isInitialValid={false}
           onSubmit={[Function]}
           validate={[Function]}
-          validateOnBlur={true}
-          validateOnChange={true}
         >
           [Function]
         </Formik>

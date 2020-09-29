@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -161,7 +161,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
     );
   };
 
-  private onSubmit = async (values: FormikValues): Promise<void> => {
+  private onSubmit = async (values: FormikValues, formActions: FormikHelpers<FormikValues>): Promise<void> => {
     const {
       areaUnit,
       carpetArea,

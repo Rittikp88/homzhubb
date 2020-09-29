@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -31,11 +31,11 @@ enum FormType {
 interface IFormData {
   property: string;
   label: string;
-  tellerName?: string;
+  tellerName: string;
   amount: string;
   category: string;
   date: string;
-  notes?: string;
+  notes: string;
 }
 
 interface IState {
@@ -96,7 +96,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         />
         <Formik
           onSubmit={this.handleSubmit}
-          initialValues={formValues}
+          initialValues={{ ...formValues }}
           validate={FormUtils.validate(this.formSchema)}
           enableReinitialize
         >
@@ -231,11 +231,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     return yup.object().shape({
       property: yup.string().required(t('propertyError')),
       label: yup.string().required(t('detailsError')),
-      tellerName: yup.string().optional(),
+      tellerName: yup.string(),
       amount: yup.string().required(t('amountError')),
       category: yup.string().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
-      notes: yup.string().optional(),
+      notes: yup.string(),
     });
   };
 
@@ -261,7 +261,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     });
   };
 
-  private handleSubmit = async (values: FormikValues, formActions: FormikActions<FormikValues>): Promise<void> => {
+  private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     const { property, label, tellerName, amount, category, notes, date } = values;
     const { selectedFormType, attachment } = this.state;
     const { shouldLoad } = this.props;

@@ -35,20 +35,13 @@ exports[`Mobile verification Screen should render snapshot 1`] = `
       enterNumberForProfileForLogin
     </Text>
     <Formik
-      enableReinitialize={false}
       initialValues={
         Object {
-          "countryCode": "+91",
-          "countryCodeData": Array [],
-          "isBottomSheetVisible": false,
           "phone": "",
         }
       }
-      isInitialValid={false}
       onSubmit={[Function]}
       validate={[Function]}
-      validateOnBlur={true}
-      validateOnChange={true}
     >
       <Component />
     </Formik>
@@ -100,20 +93,13 @@ exports[`Mobile verification Screen should render snapshot when its not from log
       enterNumberForProfileForSignUp
     </Text>
     <Formik
-      enableReinitialize={false}
       initialValues={
         Object {
-          "countryCode": "+91",
-          "countryCodeData": Array [],
-          "isBottomSheetVisible": false,
           "phone": "",
         }
       }
-      isInitialValid={false}
       onSubmit={[Function]}
       validate={[Function]}
-      validateOnBlur={true}
-      validateOnChange={true}
     >
       <Component />
     </Formik>

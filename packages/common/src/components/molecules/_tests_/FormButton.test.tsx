@@ -6,7 +6,7 @@ jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageS
 jest.mock('@react-native-community/google-signin', () => {});
 
 describe('Test cases for FormButton', () => {
-  it('should render snapshot', () => {
+  it('should render snapshot for invalid', () => {
     const props = {
       type: 'primary',
       formProps: {
@@ -20,23 +20,13 @@ describe('Test cases for FormButton', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('should render snapshot', () => {
+  it('should render snapshot for valid', () => {
     const props = {
       type: 'primary',
       formProps: {
         isValid: true,
         dirty: false,
       },
-    };
-
-    // @ts-ignore
-    const tree = renderer.create(<FormButton {...props} />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it('should render snapshot', () => {
-    const props = {
-      type: 'primary',
     };
 
     // @ts-ignore
