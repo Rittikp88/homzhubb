@@ -41,7 +41,7 @@ export interface IAsset {
   posted_on: string;
   description: string;
   block_number: string;
-  pin_code: string;
+  postal_code: string;
   city_name: string;
   state_name: string;
   country_name: string;
@@ -344,7 +344,7 @@ export class Asset {
   @JsonProperty('country', Country, true)
   private _country = new Country();
 
-  @JsonProperty('pin_code', String)
+  @JsonProperty('postal_code', String)
   private _pinCode = '';
 
   @JsonProperty('state_name', String)
@@ -428,8 +428,16 @@ export class Asset {
     return this._assetType;
   }
 
+  get assetGroupTypeId(): number {
+    return this._assetType.id;
+  }
+
   get assetGroup(): Data {
     return this._assetGroup;
+  }
+
+  get assetGroupId(): number {
+    return this.assetGroup.id;
   }
 
   get leaseTerm(): LeaseTerms | null {

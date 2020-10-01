@@ -17,10 +17,10 @@ import AssetLeaseListing from '@homzhub/mobile/src/screens/Asset/Record/AssetLea
 export type PropertyPostStackParamList = {
   [ScreensKeys.AssetLocationSearch]: undefined;
   [ScreensKeys.AssetLocationMap]: IAssetLocationMapProps;
-  [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps;
-  [ScreensKeys.AddProperty]: undefined;
+  [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps | undefined;
+  [ScreensKeys.AddProperty]: undefined | { previousScreen: string };
   [ScreensKeys.AssetPlanSelection]: undefined;
-  [ScreensKeys.AssetLeaseListing]: undefined;
+  [ScreensKeys.AssetLeaseListing]: undefined | { previousScreen: string };
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
 };
 const PropertyPostStackNavigator = createStackNavigator<PropertyPostStackParamList>();

@@ -34,7 +34,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
-  }, 1000);
+  }, 1300);
 
   return (
     <>

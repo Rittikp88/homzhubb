@@ -22,7 +22,7 @@ export const mockAsset = {
     id: 1,
     name: 'Residential',
   },
-  pin_code: '560097',
+  postal_code: '560097',
   city_name: 'Bengaluru',
   state_name: 'Karnataka',
   country_name: 'India',

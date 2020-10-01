@@ -120,8 +120,8 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
     } = placeData;
     const { state, city, country, pincode, countryIsoCode } = ResponseHelper.getLocationDetails(placeData);
     navigate(ScreensKeys.PostAssetDetails, {
-      lat,
-      lng,
+      latitude: lat,
+      longitude: lng,
       name,
       address: formatted_address,
       city,

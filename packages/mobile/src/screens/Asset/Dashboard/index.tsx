@@ -16,8 +16,8 @@ import {
   AnimatedProfileHeader,
   AssetMetricsList,
   AssetAdvertisementBanner,
-  StateAwareComponent,
   AssetSummary,
+  Loader,
 } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
@@ -59,12 +59,8 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   }
 
   public render = (): React.ReactElement => {
-    const { isLoading } = this.state;
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
-  };
-
-  public renderComponent = (): React.ReactElement => {
     const { t } = this.props;
+    const { isLoading } = this.state;
     return (
       <AnimatedProfileHeader title={t('dashboard')}>
         <>
@@ -74,6 +70,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           <AssetMarketTrends containerStyle={styles.assetCards} onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
           <AssetSubscriptionPlan containerStyle={styles.assetCards} />
+          <Loader visible={isLoading} />
         </>
       </AnimatedProfileHeader>
     );
@@ -105,7 +102,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private onCompleteDetails = (assetId: number): void => {
     const { navigation, setAssetId } = this.props;
     setAssetId(assetId);
-    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AddProperty });
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AddProperty,
+      params: { previousScreen: ScreensKeys.Dashboard },
+    });
   };
 
   private onViewAll = (): void => {

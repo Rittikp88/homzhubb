@@ -20,6 +20,7 @@ import {
   AssetGroupSelection,
   Loader,
 } from '@homzhub/mobile/src/components';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -30,6 +31,7 @@ interface IStateProps {
   assetGroups: AssetGroup[];
   isLoading: boolean;
   assetId: number;
+  asset: Asset | null;
 }
 
 interface IDispatchProps {
@@ -51,49 +53,70 @@ interface IFormData {
 
 interface IOwnState {
   formData: IFormData;
-  assetTypeId: number;
+  assetGroupTypeId: number;
+  assetGroupId: number;
+  latitude: number;
+  longitude: number;
+  assetGroupSelectionDisabled: boolean;
 }
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostAssetDetails>;
 type Props = WithTranslation & libraryProps & IDispatchProps & IStateProps;
 
 class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
+  public state = {
+    formData: {
+      projectName: '',
+      unitNo: '',
+      blockNo: '',
+      pincode: '',
+      city: '',
+      state: '',
+      country: '',
+      countryIsoCode: '',
+      address: '',
+    },
+    assetGroupSelectionDisabled: false,
+    assetGroupTypeId: -1,
+    assetGroupId: -1,
+    longitude: 0,
+    latitude: 0,
+  };
+
   private scrollView: ScrollView | null = null;
 
-  // TODO (Aditya 24-09-2020): Redo this logic so as to accommodate the edit flow
-  public constructor(props: Props) {
-    super(props);
-    const {
-      route: {
-        params: { name, pincode, state, address, country, city, countryIsoCode },
-      },
-    } = props;
-    this.state = {
-      formData: {
-        projectName: name,
-        unitNo: '',
-        blockNo: '',
-        pincode,
-        city,
-        state,
-        country,
-        countryIsoCode,
-        address,
-      },
-      assetTypeId: -1,
-    };
-  }
-
   public componentDidMount = (): void => {
-    const { getAssetGroups } = this.props;
+    const {
+      getAssetGroups,
+      navigation,
+      route: { params },
+    } = this.props;
     getAssetGroups();
+
+    navigation.addListener('focus', this.onFocus);
+
+    if (!params) {
+      this.setDataFromAsset();
+      return;
+    }
+
+    this.setDataFromNavProps();
+  };
+
+  public componentWillUnmount = (): void => {
+    const { navigation } = this.props;
+    navigation.removeListener('focus', this.onFocus);
   };
 
   public render(): React.ReactNode {
-    const { t, isLoading } = this.props;
+    const {
+      t,
+      isLoading,
+      navigation: { goBack },
+    } = this.props;
 
     return (
       <>
-        <Header title={t('headerTitle')} onIconPress={this.onBackPress} isBarVisible />
+        <Header title={t('headerTitle')} onIconPress={goBack} isBarVisible />
         <SafeAreaView style={styles.container}>{this.renderForm()}</SafeAreaView>
         <Loader visible={isLoading} />
       </>
@@ -101,17 +124,22 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
   }
 
   private renderForm = (): React.ReactNode => {
+    const { t, assetGroups } = this.props;
     const {
-      t,
-      assetGroups,
-      route: {
-        params: { name, address },
-      },
-    } = this.props;
-    const { formData, assetTypeId } = this.state;
+      formData,
+      assetGroupTypeId,
+      assetGroupId,
+      formData: { projectName, address },
+      assetGroupSelectionDisabled,
+    } = this.state;
 
     return (
-      <Formik initialValues={formData} onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)}>
+      <Formik
+        enableReinitialize
+        initialValues={formData}
+        onSubmit={this.onSubmit}
+        validate={FormUtils.validate(this.formSchema)}
+      >
         {(formProps: FormikProps<FormikValues>): React.ReactNode => {
           return (
             <>
@@ -123,22 +151,24 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                 }}
               >
                 <PropertyDetailsLocation
-                  propertyName={name}
+                  propertyName={projectName}
                   propertyAddress={address}
-                  onNavigate={this.onChangeText}
+                  onNavigate={this.onChange}
                   testID="propertyLocation"
                 />
                 <PostAssetForm formProps={formProps} />
                 <AssetGroupSelection
+                  isDisabled={assetGroupSelectionDisabled}
                   assetGroups={assetGroups}
-                  selectedAssetGroupType={assetTypeId}
+                  selectedAssetGroupType={assetGroupTypeId}
+                  selectedAssetGroupId={assetGroupId}
                   onAssetGroupSelected={this.onAssetGroupSelected}
                   scrollRef={this.scrollView}
                 />
               </ScrollView>
               <WithShadowView>
                 <FormButton
-                  disabled={assetTypeId === -1}
+                  disabled={assetGroupTypeId === -1}
                   type="primary"
                   title={t('common:submit')}
                   containerStyle={styles.buttonStyle}
@@ -154,14 +184,11 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private onBackPress = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
-  };
-
-  private onChangeText = (): void => {
-    const { navigation } = this.props;
-    navigation.popToTop();
+  private onChange = (): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.AssetLocationSearch);
   };
 
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
@@ -169,22 +196,15 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       projectName: project_name,
       unitNo: unit_number,
       blockNo: block_number,
-      pincode: pin_code,
+      pincode: postal_code,
       city: city_name,
       state: state_name,
       country: country_name,
       countryIsoCode: country_iso2_code,
       address,
     } = values;
-    const {
-      route: {
-        params: { lat: latitude, lng: longitude },
-      },
-      setAssetId,
-      assetId,
-      navigation,
-    } = this.props;
-    const { assetTypeId: asset_type } = this.state;
+    const { setAssetId, assetId, navigation } = this.props;
+    const { assetGroupTypeId: asset_type, longitude, latitude } = this.state;
 
     const params = {
       city_name,
@@ -193,7 +213,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       country_iso2_code,
       address,
       project_name,
-      pin_code,
+      postal_code,
       asset_type,
       block_number,
       unit_number,
@@ -221,8 +241,90 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     formActions.setSubmitting(false);
   };
 
-  private onAssetGroupSelected = (assetTypeId: number): void => {
-    this.setState({ assetTypeId });
+  private onAssetGroupSelected = (assetGroupTypeId: number): void => {
+    this.setState({ assetGroupTypeId });
+  };
+
+  private onFocus = (): void => {
+    const {
+      route: { params },
+    } = this.props;
+
+    if (!params) return;
+    this.setDataFromNavProps();
+  };
+
+  private setDataFromNavProps = (): void => {
+    const {
+      route: { params },
+      asset,
+    } = this.props;
+    const { formData } = this.state;
+
+    if (!params) return;
+    const { name, pincode, state, address, country, city, countryIsoCode, longitude, latitude } = params;
+
+    this.setState({
+      formData: {
+        ...formData,
+        projectName: name,
+        pincode,
+        city,
+        state,
+        country,
+        countryIsoCode,
+        address,
+        unitNo: asset?.unitNumber ?? '',
+        blockNo: asset?.blockNumber ?? '',
+      },
+      assetGroupId: asset?.assetGroupId ?? -1,
+      assetGroupTypeId: asset?.assetGroupTypeId ?? -1,
+      assetGroupSelectionDisabled: !!asset,
+      longitude,
+      latitude,
+    });
+  };
+
+  private setDataFromAsset = (): void => {
+    const { asset } = this.props;
+    if (!asset) {
+      return;
+    }
+
+    const {
+      pinCode,
+      projectName,
+      unitNumber,
+      blockNumber,
+      city,
+      state,
+      countryName,
+      countryIsoCode,
+      address,
+      assetGroupTypeId,
+      latitude,
+      longitude,
+      assetGroupId,
+    } = asset;
+
+    this.setState({
+      formData: {
+        projectName,
+        unitNo: unitNumber,
+        blockNo: blockNumber,
+        pincode: pinCode,
+        city,
+        state,
+        country: countryName,
+        countryIsoCode,
+        address,
+      },
+      assetGroupSelectionDisabled: true,
+      assetGroupTypeId,
+      assetGroupId,
+      longitude,
+      latitude,
+    });
   };
 
   private formSchema = (): yup.ObjectSchema<{
@@ -255,11 +357,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getAssetGroups, getAssetGroupsLoading, getCurrentAssetId } = RecordAssetSelectors;
+  const { getAssetGroups, getAssetGroupsLoading, getCurrentAssetId, getAssetDetails } = RecordAssetSelectors;
   return {
     assetGroups: getAssetGroups(state),
     assetId: getCurrentAssetId(state),
     isLoading: getAssetGroupsLoading(state),
+    asset: getAssetDetails(state),
   };
 };
 

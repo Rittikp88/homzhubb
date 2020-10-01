@@ -13,7 +13,13 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button, Image, Label, Text } from '@homzhub/common/src/components';
-import { Header, AddressWithStepIndicator, AddPropertyDetails, BottomSheet } from '@homzhub/mobile/src/components';
+import {
+  Header,
+  AddressWithStepIndicator,
+  AddPropertyDetails,
+  BottomSheet,
+  Loader,
+} from '@homzhub/mobile/src/components';
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -47,6 +53,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   getAssetById: () => void;
+  resetState: () => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
@@ -67,18 +74,24 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   }
 
   public componentDidMount(): void {
-    const { assetDetail } = this.props;
+    const { assetDetail, navigation, getAssetById } = this.props;
     if (assetDetail && assetDetail.lastVisitedStep) {
       const { stepList } = assetDetail.lastVisitedStep;
       this.setState({ isStepDone: stepList });
     }
+    navigation.addListener('focus', getAssetById);
   }
+
+  public componentWillUnmount = (): void => {
+    const { navigation, getAssetById } = this.props;
+    navigation.removeListener('focus', getAssetById);
+  };
 
   public render = (): ReactNode => {
     const { currentIndex, isStepDone, isSheetVisible } = this.state;
     const { t, assetDetail } = this.props;
 
-    if (!assetDetail) return null;
+    if (!assetDetail) return <Loader visible />;
     const {
       projectName,
       address,
@@ -203,12 +216,21 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private onEditPress = (): void => {
-    // TODO: Add logic to go back Property detail form
-    this.goBack();
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.PostAssetDetails);
   };
 
   private goBack = (): void => {
-    const { navigation } = this.props;
+    const {
+      navigation,
+      route: { params },
+      resetState,
+    } = this.props;
+
+    if (params && params.previousScreen === ScreensKeys.Dashboard) {
+      resetState();
+    }
+
     navigation.goBack();
   };
 
@@ -270,8 +292,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetById } = RecordAssetActions;
-  return bindActionCreators({ getAssetById }, dispatch);
+  const { getAssetById, resetState } = RecordAssetActions;
+  return bindActionCreators({ getAssetById, resetState }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddProperty));

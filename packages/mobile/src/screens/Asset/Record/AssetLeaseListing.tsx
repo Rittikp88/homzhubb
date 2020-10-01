@@ -315,7 +315,16 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private goBack = (): void => {
-    const { navigation } = this.props;
+    const {
+      navigation,
+      route: { params },
+      resetState,
+    } = this.props;
+
+    if (params && params.previousScreen === ScreensKeys.Dashboard) {
+      resetState();
+    }
+
     navigation.goBack();
   };
 

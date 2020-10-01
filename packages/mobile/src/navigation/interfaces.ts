@@ -135,8 +135,8 @@ export interface IAssetLocationMapProps {
 }
 
 export interface IPostAssetDetailsProps {
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
   name: string;
   address: string;
   pincode: string;

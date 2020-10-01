@@ -10,8 +10,10 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   assetGroups: AssetGroup[];
   selectedAssetGroupType: number;
+  selectedAssetGroupId: number;
   scrollRef: ScrollView | null;
   onAssetGroupSelected: (id: number) => void;
+  isDisabled: boolean;
 }
 
 interface IOwnState {
@@ -29,14 +31,34 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
     selectedAssetGroup: -1,
   };
 
+  public static getDerivedStateFromProps(props: IProps, state: IOwnState): IOwnState | null {
+    const { selectedAssetGroupId: newPropValue } = props;
+    const { selectedAssetGroup: oldStateValue } = state;
+
+    if (oldStateValue !== newPropValue && newPropValue !== -1) {
+      return {
+        selectedAssetGroup: newPropValue,
+      };
+    }
+
+    return null;
+  }
+
   public render = (): React.ReactNode => {
-    const { assetGroups, t } = this.props;
+    const { assetGroups, t, isDisabled } = this.props;
     const { selectedAssetGroup } = this.state;
 
     const selectedGroup = assetGroups.find((assetGroup: AssetGroup) => assetGroup.id === selectedAssetGroup);
 
+    let opacity;
+    let pointer;
+    if (isDisabled) {
+      opacity = 0.5;
+      pointer = 'none';
+    }
+
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { opacity }]} pointerEvents={pointer as 'none' | undefined}>
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('myProjectIs')}
         </Text>

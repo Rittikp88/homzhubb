@@ -65,6 +65,12 @@ export const recordAssetReducer = (
         ['loaders']: { ...state.loaders, ['assetPlan']: false },
         ['error']: { ...state.error, ['assetPlan']: action.error as string },
       };
+    case RecordAssetActionTypes.GET.ASSET_BY_ID:
+      return {
+        ...state,
+        ['assetDetails']: null,
+        ['loaders']: { ...state.loaders, ['assetDetails']: true },
+      };
     case RecordAssetActionTypes.GET.ASSET_BY_ID_SUCCESS:
       return {
         ...state,
