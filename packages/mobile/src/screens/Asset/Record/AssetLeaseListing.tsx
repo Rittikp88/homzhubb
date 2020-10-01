@@ -7,7 +7,7 @@ import { CommonActions } from '@react-navigation/native';
 import { SceneMap, TabView } from 'react-native-tab-view';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -24,7 +24,6 @@ import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPa
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
@@ -74,11 +73,8 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
     } = this.props;
-    // TODO: Remove this once data is coming from api call
-    const badge = ObjectMapper.deserialize(LabelColor, {
-      label: selectedPlan,
-      color: selectedPlan === TypeOfPlan.RENT ? theme.colors.rental : theme.colors.sell,
-    });
+
+    const badge = PropertyUtils.getListingBadge(selectedPlan);
     if (!assetDetails) return null;
 
     const {
@@ -95,7 +91,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             steps={this.getSteps()}
             badge={badge}
             badgeStyle={styles.badgeStyle}
-            isProgress={false}
             propertyType={name}
             primaryAddress={projectName}
             subAddress={address}
@@ -377,7 +372,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   public handleSkip = (): void => {
     const { navigation, resetState } = this.props;
     const { currentIndex } = this.state;
-    if (currentIndex < this.getRoutes().length - 1) {
+    if (currentIndex < this.getRoutes().length - 2) {
       this.setState({ currentIndex: currentIndex + 1 });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {

@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import {
@@ -19,7 +20,7 @@ import {
 import { AssetDescriptionForm } from '@homzhub/mobile/src/components';
 import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, LastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 import { ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
@@ -177,6 +178,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
       spacesForm,
     } = this.state;
     const { handleNextStep, assetId, assetDetails } = this.props;
+    const serializedObj: LastVisitedStep = ObjectMapper.serialize(assetDetails?.lastVisitedStep);
 
     const sanitizedSpaces = spacesForm
       .filter((item) => item && item.description !== '' && item.count)
@@ -200,7 +202,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
       furnishing: furnishingType,
       spaces: sanitizedSpaces,
       last_visited_step: {
-        ...assetDetails?.lastVisitedStep,
+        ...serializedObj,
         is_details_done: true,
         current_step: 2,
         total_step: 4,

@@ -3,22 +3,19 @@ import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge, Label, Text } from '@homzhub/common/src/components';
-import { ProgressBar } from '@homzhub/mobile/src/components/atoms/ProgressBar';
 import { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAddressCountry';
-import { LabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
 interface IProps {
   steps: string[];
   currentIndex: number;
   isStepDone: boolean[];
-  progress?: number;
-  isProgress?: boolean;
   primaryAddress: string;
   subAddress: string;
   propertyType: string;
   icon?: string;
   onEditPress?: () => void;
-  badge?: LabelColor;
+  badge?: ILabelColor;
   onPressSteps: (index: number) => void;
   badgeStyle?: StyleProp<ViewStyle>;
   stepContainerStyle?: StyleProp<ViewStyle>;
@@ -30,7 +27,6 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     steps,
     currentIndex,
     isStepDone,
-    progress,
     icon,
     badge,
     badgeStyle,
@@ -40,7 +36,6 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     subAddress,
     propertyType,
     onPressSteps,
-    isProgress = true,
     onEditPress,
   } = props;
   const renderIndicator = ({ item, index }: { item: string; index: number }): React.ReactElement => {
@@ -76,14 +71,13 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
           {propertyType}
         </Text>
         {icon && <Icon name={icon} size={23} color={theme.colors.blue} onPress={onEditPress} />}
-        {badge && <Badge title={badge.label} badgeColor={badge.color} badgeStyle={badgeStyle} />}
+        {badge && <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />}
       </View>
       <PropertyAddressCountry
         primaryAddress={primaryAddress}
         subAddress={subAddress}
         containerStyle={styles.addressView}
       />
-      {isProgress && <ProgressBar progress={progress ?? 0} width={theme.viewport.width > 400 ? 350 : 310} />}
       <FlatList
         data={steps}
         renderItem={renderIndicator}
@@ -122,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.green,
   },
   listStyle: {
-    marginTop: 20,
+    marginTop: 10,
   },
   stepLabel: {
     color: theme.colors.darkTint7,

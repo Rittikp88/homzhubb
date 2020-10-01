@@ -32,7 +32,6 @@ export { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/m
 export { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
 export { Header } from '@homzhub/mobile/src/components/molecules/Header';
 export { HeaderCard } from '@homzhub/mobile/src/components/molecules/HeaderCard';
-export { LeaseDetailsForm } from '@homzhub/mobile/src/components/molecules/LeaseDetailsForm';
 export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeaseProgress';
 export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, SVGUri, Text } from '@homzhub/common/src/components';
-import { PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { Label, SVGUri } from '@homzhub/common/src/components';
+import { AssetListingSection, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 
 interface IProps {
@@ -27,26 +27,23 @@ class AssetHighlightCard extends Component<IProps, IState> {
     const formattedData = this.getFormattedData();
 
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text type="small" textType="semiBold" style={styles.headerTitle}>
-            {title}
-          </Text>
-        </View>
-        <SnapCarousel
-          carouselData={formattedData}
-          carouselItem={this.carouselItem}
-          activeIndex={activeSlide}
-          onSnapToItem={this.onSnapToItem}
-          containerStyle={styles.carouselContainer}
-        />
-        <PaginationComponent
-          dotsLength={formattedData.length}
-          activeSlide={activeSlide}
-          activeDotStyle={styles.activeDot}
-          inactiveDotStyle={styles.inactiveDot}
-        />
-      </View>
+      <AssetListingSection title={title} containerStyles={styles.container}>
+        <>
+          <SnapCarousel
+            carouselData={formattedData}
+            carouselItem={this.carouselItem}
+            activeIndex={activeSlide}
+            onSnapToItem={this.onSnapToItem}
+            containerStyle={styles.carouselContainer}
+          />
+          <PaginationComponent
+            dotsLength={formattedData.length}
+            activeSlide={activeSlide}
+            activeDotStyle={styles.activeDot}
+            inactiveDotStyle={styles.inactiveDot}
+          />
+        </>
+      </AssetListingSection>
     );
   }
 
@@ -97,14 +94,6 @@ export default AssetHighlightCard;
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
-    backgroundColor: theme.colors.white,
-  },
-  header: {
-    backgroundColor: theme.colors.moreSeparator,
-  },
-  headerTitle: {
-    padding: 16,
-    color: theme.colors.darkTint3,
   },
   carouselContainer: {
     alignSelf: 'center',

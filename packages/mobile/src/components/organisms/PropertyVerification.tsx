@@ -16,6 +16,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
 import { Text, Label, UploadBox, ImageThumbnail, Button, WithShadowView } from '@homzhub/common/src/components';
 import {
   IExistingVerificationDocuments,
@@ -24,6 +25,7 @@ import {
   ExistingVerificationDocuments,
   IPostVerificationDocuments,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -85,12 +87,27 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           <Text type="small" textType="semiBold" style={styles.title}>
             {data.title}
           </Text>
-          {data.description !== '' && (
-            <Label type="regular" textType="regular" style={styles.subTitle}>
-              {data.description}
-            </Label>
+          {verificationType.name !== VerificationDocumentCategory.SELFIE_ID_PROOF && (
+            <>
+              {data.description !== '' && (
+                <Label type="regular" textType="regular" style={styles.subTitle}>
+                  {data.description}
+                </Label>
+              )}
+            </>
           )}
           {this.renderImageOrUploadBox(verificationType)}
+          {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF && (
+            <>
+              {selfieInstruction.map((instruction, i) => {
+                return (
+                  <Label type="regular" textType="regular" style={styles.instruction} key={i}>
+                    {instruction}
+                  </Label>
+                );
+              })}
+            </>
+          )}
         </View>
       );
     });
@@ -131,13 +148,19 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     }
 
     return (
-      <UploadBox
-        icon={currentData.icon}
-        header={currentData.label}
-        subHeader={currentData.helpText}
-        onPress={onPress}
-        containerStyle={styles.uploadBox}
-      />
+      <>
+        {currentData.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
+          <Selfie style={styles.selfie} onPress={onPress} />
+        ) : (
+          <UploadBox
+            icon={currentData.icon}
+            header={currentData.label}
+            subHeader={currentData.helpText}
+            onPress={onPress}
+            containerStyle={styles.uploadBox}
+          />
+        )}
+      </>
     );
   };
 
@@ -371,5 +394,13 @@ const styles = StyleSheet.create({
   },
   pdfName: {
     flex: 0.9,
+  },
+  instruction: {
+    color: theme.colors.darkTint3,
+    marginBottom: 6,
+  },
+  selfie: {
+    alignSelf: 'center',
+    marginVertical: 12,
   },
 });

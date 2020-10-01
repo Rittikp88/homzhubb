@@ -19,6 +19,7 @@ import {
   TextArea,
 } from '@homzhub/common/src/components';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
+import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
@@ -33,7 +34,6 @@ import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/R
 import { IList } from '@homzhub/common/src/domain/models/Tenant';
 import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
@@ -111,11 +111,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const {
-      t,
-      currencyData: { currencySymbol, currencyCode },
-      currentAssetType,
-    } = this.props;
+    const { t, currencyData, currentAssetType } = this.props;
     const { description, formData, preferences, isPreferencesSelected } = this.state;
 
     return (
@@ -145,8 +141,8 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
                     placeholder={t('monthlyRentPlaceholder')}
                     maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
                     formProps={formProps}
-                    inputPrefixText={currencySymbol}
-                    inputGroupSuffixText={currencyCode}
+                    inputPrefixText={currencyData.currencySymbol}
+                    inputGroupSuffixText={currencyData.currencyCode}
                   />
                   <FormTextInput
                     inputType="number"
@@ -155,8 +151,8 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
                     placeholder={t('securityDepositPlaceholder')}
                     maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
                     formProps={formProps}
-                    inputPrefixText={currencySymbol}
-                    inputGroupSuffixText={currencyCode}
+                    inputPrefixText={currencyData.currencySymbol}
+                    inputGroupSuffixText={currencyData.currencyCode}
                   />
                   <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
                     {values.showMore ? t('showLess') : t('showMore')}
@@ -197,7 +193,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
                   {values.maintenanceBy === PaidByTypes.TENANT && (
                     <MaintenanceDetails
                       formProps={formProps}
-                      currency={currencyCode}
+                      currency={currencyData}
                       maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
                       maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
                     />

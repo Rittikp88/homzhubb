@@ -115,7 +115,7 @@ export class Data {
 
 @JsonObject('LastVisitedStep')
 export class LastVisitedStep {
-  @JsonProperty('is_Created', Boolean, true)
+  @JsonProperty('is_created', Boolean, true)
   private _isCreated = true;
 
   @JsonProperty('is_details_done', Boolean, true)

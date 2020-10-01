@@ -3,10 +3,12 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISlotItem } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
-import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
-import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 
 class PropertyUtils {
@@ -148,6 +150,14 @@ class PropertyUtils {
     const time = timeObj?.formatted.split('-') ?? [''];
 
     return `Join next visit at ${time[0].trim()}, ${date}`;
+  };
+
+  // TODO: (Shikha) - Move constants to en.json
+  public getListingBadge = (plan: string): ILabelColor => {
+    return {
+      label: plan === TypeOfPlan.RENT ? 'For Rental' : 'For Sale',
+      color: plan === TypeOfPlan.RENT ? theme.colors.rental : theme.colors.sell,
+    };
   };
 }
 

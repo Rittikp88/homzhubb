@@ -1,6 +1,11 @@
 import moment from 'moment';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export interface ILabelColor {
+  label: string;
+  color: string;
+}
+
 @JsonObject('LabelColor')
 export class LabelColor {
   @JsonProperty('label', String)

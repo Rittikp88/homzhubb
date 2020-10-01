@@ -4,14 +4,16 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { cloneDeep, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, CheckboxGroup, ICheckboxGroupData, Text, WithShadowView } from '@homzhub/common/src/components';
+import { Button, CheckboxGroup, ICheckboxGroupData, WithShadowView } from '@homzhub/common/src/components';
 import AssetHighlightCard from '@homzhub/mobile/src/components/molecules/AssetHighlightCard';
+import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, LastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { OtherDetails } from '@homzhub/common/src/constants/AssetHighlights';
 
@@ -72,6 +74,9 @@ export class AssetHighlights extends Component<Props, IState> {
 
   public render(): React.ReactNode {
     const { t } = this.props;
+    const { selectedAmenity, selectedDetails, propertyHighlight } = this.state;
+    const highlights = propertyHighlight.filter((item) => item);
+    const isButtonDisabled = selectedAmenity.length <= 0 && selectedDetails.length <= 0 && highlights.length <= 0;
     return (
       <>
         <View style={styles.container}>
@@ -83,6 +88,7 @@ export class AssetHighlights extends Component<Props, IState> {
           <Button
             type="primary"
             title={t('continue')}
+            disabled={isButtonDisabled}
             containerStyle={styles.buttonStyle}
             onPress={this.handleContinue}
           />
@@ -112,19 +118,14 @@ export class AssetHighlights extends Component<Props, IState> {
     const { otherDetails, isSelected } = this.state;
 
     return (
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <Text type="small" textType="semiBold" style={styles.headerTitle}>
-            {t('property:otherDetails')}
-          </Text>
-        </View>
+      <AssetListingSection title={t('property:otherDetails')} containerStyles={styles.card}>
         <CheckboxGroup
           key={`${isSelected}-checkbox`}
           data={otherDetails}
           onToggle={this.onPressCheckbox}
           containerStyle={styles.checkboxGroup}
         />
-      </View>
+      </AssetListingSection>
     );
   };
 
@@ -132,12 +133,7 @@ export class AssetHighlights extends Component<Props, IState> {
     const { propertyHighlight } = this.state;
     const { t } = this.props;
     return (
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <Text type="small" textType="semiBold" style={styles.headerTitle}>
-            {t('property:propertyHighlights')}
-          </Text>
-        </View>
+      <AssetListingSection title={t('property:propertyHighlights')} containerStyles={styles.card}>
         <View style={styles.highlightsContainer}>
           {propertyHighlight.map((item, index) => {
             return (
@@ -169,7 +165,7 @@ export class AssetHighlights extends Component<Props, IState> {
             <Button type="secondary" title={t('add')} containerStyle={styles.addButton} onPress={this.handleNext} />
           )}
         </View>
-      </View>
+      </AssetListingSection>
     );
   };
 
@@ -271,11 +267,13 @@ export class AssetHighlights extends Component<Props, IState> {
     const { selectedAmenity, propertyHighlight, selectedDetails } = this.state;
     const otherDetails: string[] = selectedDetails;
     const highlights = propertyHighlight.filter((item) => item);
+    const serializedObj: LastVisitedStep = ObjectMapper.serialize(propertyDetail?.lastVisitedStep);
+
     const payload: IUpdateAssetParams = {
       amenities: selectedAmenity,
       asset_highlights: highlights,
       last_visited_step: {
-        ...propertyDetail?.lastVisitedStep,
+        ...serializedObj,
         is_highlights_done: true,
         current_step: 3,
         total_step: 4,
@@ -340,14 +338,6 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 16,
-    backgroundColor: theme.colors.white,
-  },
-  header: {
-    backgroundColor: theme.colors.moreSeparator,
-  },
-  headerTitle: {
-    padding: 16,
-    color: theme.colors.darkTint3,
   },
   iconButton: {
     backgroundColor: theme.colors.secondaryColor,

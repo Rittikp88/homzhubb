@@ -1,6 +1,6 @@
 import React, { ReactElement, PureComponent, ReactNode } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SceneMap, TabView } from 'react-native-tab-view';
+import { TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -40,7 +40,7 @@ const Steps = ['Details', 'Highlights', 'Gallery'];
 
 interface IScreenState {
   currentIndex: number;
-  isStepDone: boolean[];
+  isNextStep: boolean;
   isSheetVisible: boolean;
 }
 
@@ -68,18 +68,23 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     getAssetById();
     this.state = {
       currentIndex: 0,
-      isStepDone: [],
+      isNextStep: false,
       isSheetVisible: false,
     };
   }
 
-  public componentDidMount(): void {
-    const { assetDetail, navigation, getAssetById } = this.props;
-    if (assetDetail && assetDetail.lastVisitedStep) {
-      const { stepList } = assetDetail.lastVisitedStep;
-      this.setState({ isStepDone: stepList });
+  public static getDerivedStateFromProps(props: Props, state: IScreenState): IScreenState | null {
+    const { assetDetail: newPropValue } = props;
+    const { currentIndex, isNextStep } = state;
+    const newStepIndex = newPropValue?.lastVisitedStep.stepList.findIndex((item) => !item);
+    if (!isNextStep && newStepIndex && currentIndex !== newStepIndex) {
+      return {
+        ...state,
+        currentIndex: newStepIndex,
+      };
     }
-    navigation.addListener('focus', getAssetById);
+
+    return null;
   }
 
   public componentWillUnmount = (): void => {
@@ -88,15 +93,15 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   public render = (): ReactNode => {
-    const { currentIndex, isStepDone, isSheetVisible } = this.state;
+    const { isSheetVisible, currentIndex } = this.state;
     const { t, assetDetail } = this.props;
 
     if (!assetDetail) return <Loader visible />;
     const {
       projectName,
       address,
-      lastVisitedStep,
       assetType: { name },
+      lastVisitedStep: { stepList },
     } = assetDetail;
 
     return (
@@ -106,12 +111,11 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
           <AddressWithStepIndicator
             icon={icons.noteBook}
             steps={Steps}
-            progress={lastVisitedStep?.percentage}
             propertyType={name}
             primaryAddress={projectName}
             subAddress={address}
             currentIndex={currentIndex}
-            isStepDone={isStepDone}
+            isStepDone={stepList}
             onEditPress={this.onEditPress}
             stepContainerStyle={styles.stepContainer}
             containerStyle={styles.addressCard}
@@ -121,7 +125,6 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
           <TabView
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
-            removeClippedSubviews
             renderTabBar={(): null => null}
             swipeEnabled={false}
             navigationState={{
@@ -179,37 +182,36 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     );
   };
 
-  private renderScene = SceneMap({
-    detail: (): ReactElement => {
-      const { spaceTypes, assetDetail, assetId, transformedSpaceValues } = this.props;
-      return (
-        <AddPropertyDetails
-          assetId={assetId}
-          assetDetails={assetDetail}
-          spaceValues={transformedSpaceValues}
-          spaceTypes={spaceTypes}
-          handleNextStep={this.handleNextStep}
-        />
-      );
-    },
-
-    highlights: (): ReactElement => {
-      const { assetId, assetDetail } = this.props;
-      return <AssetHighlights propertyId={assetId} propertyDetail={assetDetail} handleNextStep={this.handleNextStep} />;
-    },
-
-    gallery: (): ReactElement => {
-      const { assetId, assetDetail } = this.props;
-      return (
-        <PropertyImages
-          propertyId={assetId}
-          onPressContinue={this.handleNextStep}
-          lastVisitedStep={assetDetail?.lastVisitedStep}
-          containerStyle={styles.propertyImagesContainer}
-        />
-      );
-    },
-  });
+  private renderScene = ({ route }: { route: IRoutes }): ReactElement | null => {
+    const { spaceTypes, assetDetail, assetId, transformedSpaceValues } = this.props;
+    switch (route.key) {
+      case 'detail':
+        return (
+          <AddPropertyDetails
+            assetId={assetId}
+            assetDetails={assetDetail}
+            spaceValues={transformedSpaceValues}
+            spaceTypes={spaceTypes}
+            handleNextStep={this.handleNextStep}
+          />
+        );
+      case 'highlights':
+        return (
+          <AssetHighlights propertyId={assetId} propertyDetail={assetDetail} handleNextStep={this.handleNextStep} />
+        );
+      case 'gallery':
+        return (
+          <PropertyImages
+            propertyId={assetId}
+            onPressContinue={this.handleNextStep}
+            lastVisitedStep={assetDetail?.lastVisitedStep}
+            containerStyle={styles.propertyImagesContainer}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   private onCloseSheet = (): void => {
     this.setState({ isSheetVisible: false });
@@ -256,21 +258,19 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private handlePreviousStep = (index: number): void => {
     const { currentIndex } = this.state;
+    const { assetDetail } = this.props;
     const value = index - currentIndex;
-    if (value < 0) {
-      this.setState({ currentIndex: currentIndex + value });
+    const notCompletedStep = assetDetail?.lastVisitedStep.stepList.findIndex((item) => !item);
+    if (index < currentIndex && index !== notCompletedStep) {
+      this.setState({ currentIndex: currentIndex + value, isNextStep: true });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     }
   };
 
   private handleNextStep = (): void => {
-    const { currentIndex, isStepDone } = this.state;
+    const { currentIndex } = this.state;
     const { getAssetById } = this.props;
-    const newStepDone: boolean[] = isStepDone;
-    newStepDone[currentIndex] = true;
-    this.setState({
-      isStepDone: newStepDone,
-    });
+    this.setState({ isNextStep: true });
     getAssetById();
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
