@@ -52,7 +52,10 @@ export class SpaceType extends TypeUnit {
   private _isMandatory = false;
 
   @JsonProperty('value', Number, true)
-  private _value = -1;
+  private _value = 0;
+
+  @JsonProperty('description', String, true)
+  private _description = '';
 
   @JsonProperty('attachment', Attachment)
   private _attachment = new Attachment();
@@ -82,6 +85,14 @@ export class SpaceType extends TypeUnit {
 
   set value(value: number) {
     this._value = value;
+  }
+
+  set description(text: string) {
+    this._description = text;
+  }
+
+  get description(): string {
+    return this._description;
   }
 
   get count(): number {

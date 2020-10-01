@@ -79,6 +79,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         containerStyle={styles.addressView}
       />
       <FlatList
+        keyExtractor={(step): string => step}
         data={steps}
         renderItem={renderIndicator}
         horizontal

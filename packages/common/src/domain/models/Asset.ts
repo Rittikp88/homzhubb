@@ -23,6 +23,7 @@ export interface IAssetSpaces {
   id: number;
   name: string;
   count: number;
+  description?: string;
 }
 
 export enum DataType {
@@ -96,6 +97,9 @@ export class Data {
   @JsonProperty('count', Number, true)
   private _count = 0;
 
+  @JsonProperty('description', String, true)
+  private _description = '';
+
   get id(): number {
     return this._id;
   }
@@ -110,6 +114,10 @@ export class Data {
 
   get count(): number {
     return this._count;
+  }
+
+  get description(): string {
+    return this._description;
   }
 }
 

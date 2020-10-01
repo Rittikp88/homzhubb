@@ -23,7 +23,7 @@ import {
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IRoutes {
   key: string;
@@ -48,10 +48,10 @@ interface IStateProps {
   assetId: number;
   spaceTypes: SpaceType[];
   assetDetail: Asset | null;
-  transformedSpaceValues: ISpaceCount[];
 }
 
 interface IDispatchProps {
+  getAssetGroups: () => void;
   getAssetById: () => void;
   resetState: () => void;
 }
@@ -64,7 +64,16 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   constructor(props: Props) {
     super(props);
-    const { getAssetById } = this.props;
+    const {
+      getAssetById,
+      getAssetGroups,
+      route: { params },
+    } = this.props;
+
+    if (params && params.previousScreen === ScreensKeys.Dashboard) {
+      getAssetGroups();
+    }
+
     getAssetById();
     this.state = {
       currentIndex: 0,
@@ -183,14 +192,13 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private renderScene = ({ route }: { route: IRoutes }): ReactElement | null => {
-    const { spaceTypes, assetDetail, assetId, transformedSpaceValues } = this.props;
+    const { spaceTypes, assetDetail, assetId } = this.props;
     switch (route.key) {
       case 'detail':
         return (
           <AddPropertyDetails
             assetId={assetId}
             assetDetails={assetDetail}
-            spaceValues={transformedSpaceValues}
             spaceTypes={spaceTypes}
             handleNextStep={this.handleNextStep}
           />
@@ -282,18 +290,17 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentAssetId, getSpaceTypes, getAssetDetails, getTransformedSpaceValues } = RecordAssetSelectors;
+  const { getCurrentAssetId, getSpaceTypes, getAssetDetails } = RecordAssetSelectors;
   return {
     assetId: getCurrentAssetId(state),
     spaceTypes: getSpaceTypes(state),
     assetDetail: getAssetDetails(state),
-    transformedSpaceValues: getTransformedSpaceValues(state),
   };
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetById, resetState } = RecordAssetActions;
-  return bindActionCreators({ getAssetById, resetState }, dispatch);
+  const { getAssetById, resetState, getAssetGroups } = RecordAssetActions;
+  return bindActionCreators({ getAssetById, resetState, getAssetGroups }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddProperty));

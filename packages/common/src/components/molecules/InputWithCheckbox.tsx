@@ -6,12 +6,13 @@ import { RNCheckbox } from '@homzhub/common/src/components';
 export interface IProps {
   onChange: (isSelected: boolean, text: string) => void;
   selected?: boolean;
+  textValue?: string;
 }
 
 export const InputWithCheckbox = (props: IProps): React.ReactElement => {
-  const { onChange, selected = false } = props;
+  const { onChange, selected = false, textValue = '' } = props;
   const [isSelected, setIsSelected] = useState(selected);
-  const [text, setText] = useState('');
+  const [text, setText] = useState(textValue);
 
   useEffect(() => {
     onChange(isSelected, text);

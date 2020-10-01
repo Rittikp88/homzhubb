@@ -5,13 +5,9 @@ import { FormikProps, FormikValues } from 'formik';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormDropdown, FormTextInput, IDropdownOption, Text } from '@homzhub/common/src/components';
+import { FormDropdown, FormTextInput, Text } from '@homzhub/common/src/components';
 import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
-import {
-  AssetDescriptionDropdownValues,
-  FormUnit,
-  AssetDescriptionDropdownTypes,
-} from '@homzhub/common/src/domain/models/AssetDescriptionForm';
+import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 
 interface IProps {
   formProps: FormikProps<FormikValues>;
@@ -20,30 +16,7 @@ interface IProps {
 
 const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
-  const { Facing, FurnishingStatus, CarpetUnit, FlooringType } = AssetDescriptionDropdownTypes;
-
-  const transformDropdownTypes = (typeArray: FormUnit[], type: string): IDropdownOption[] => {
-    return typeArray.map((item) => {
-      if (type === Facing || type === FurnishingStatus) {
-        return {
-          value: item.name,
-          label: item.label,
-        };
-      }
-
-      if (type === CarpetUnit) {
-        return {
-          value: item.id,
-          label: item.title,
-        };
-      }
-
-      return {
-        value: item.id,
-        label: item.label,
-      };
-    });
-  };
+  // Todo (Sriram: Look into this prefill issue of carpetArea)
 
   return (
     <>
@@ -60,6 +33,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
               maxLength={10}
               numberOfLines={1}
               inputType="number"
+              placeholder={t('common:enter')}
               formProps={formProps}
             />
           </View>
@@ -67,7 +41,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
             <FormDropdown
               name="areaUnit"
               label={t('areaUnit')}
-              options={transformDropdownTypes(dropDownOptions.carpetAreaUnit, CarpetUnit)}
+              options={dropDownOptions.areaUnitDropdownValues}
               placeholder={t('selectAreaUnit')}
               maxLabelLength={8}
               formProps={formProps}
@@ -77,7 +51,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
         <FormDropdown
           label={t('facingText')}
           name="facing"
-          options={transformDropdownTypes(dropDownOptions.facing, Facing)}
+          options={dropDownOptions.facing}
           placeholder={t('propertySearch:selectFacing')}
           maxLabelLength={36}
           formProps={formProps}
@@ -85,7 +59,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
         <FormDropdown
           label={t('flooringType')}
           name="flooringType"
-          options={transformDropdownTypes(dropDownOptions.typeOfFlooring, FlooringType)}
+          options={dropDownOptions.typeOfFlooring}
           placeholder={t('selectFlooringType')}
           maxLabelLength={36}
           formProps={formProps}

@@ -1,7 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { AssetGroup, ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 const getLoadingState = (state: IState): boolean => {
@@ -25,21 +25,6 @@ const getAssetGroups = (state: IState): AssetGroup[] => {
     recordAsset: { assetGroups },
   } = state;
   return ObjectMapper.deserializeArray(AssetGroup, assetGroups);
-};
-
-const getSpaceTypes = (state: IState): SpaceType[] => {
-  const {
-    recordAsset: { assetGroups, assetDetails },
-  } = state;
-  let spaceType: SpaceType[] = [];
-
-  ObjectMapper.deserializeArray(AssetGroup, assetGroups).forEach((item) => {
-    if (assetDetails?.asset_group.id === item.id) {
-      spaceType = item.spaceTypes;
-    }
-  });
-
-  return spaceType;
 };
 
 const getCurrentAssetId = (state: IState): number => {
@@ -79,20 +64,28 @@ const getAssetDetails = (state: IState): Asset | null => {
   return ObjectMapper.deserialize(Asset, assetDetails);
 };
 
-const getTransformedSpaceValues = (state: IState): ISpaceCount[] => {
+const getSpaceTypes = (state: IState): SpaceType[] => {
   const {
-    recordAsset: { assetDetails },
+    recordAsset: { assetGroups, assetDetails },
   } = state;
+  let spaceType: SpaceType[] = [];
 
-  if (assetDetails) {
-    return assetDetails.spaces.map((item) => {
-      return {
-        space_type: item.id,
-        count: item.count,
-      };
+  ObjectMapper.deserializeArray(AssetGroup, assetGroups).forEach((item) => {
+    if (assetDetails?.asset_group.id === item.id) {
+      spaceType = item.spaceTypes;
+    }
+  });
+
+  spaceType.forEach((item) => {
+    assetDetails?.spaces.forEach((space) => {
+      if (item.id === space.id) {
+        item.value = space.count;
+        item.description = space.description ? space.description : '';
+      }
     });
-  }
-  return [];
+  });
+
+  return spaceType;
 };
 
 export const RecordAssetSelectors = {
@@ -105,5 +98,4 @@ export const RecordAssetSelectors = {
   getSpaceTypes,
   getAssetDetails,
   getCurrentTermId,
-  getTransformedSpaceValues,
 };

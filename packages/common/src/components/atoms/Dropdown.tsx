@@ -70,21 +70,20 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     }
   };
 
-  const onCancel = (): void => closeDropdown();
-
   const openDropdown = (): void => setDropdownVisible(true);
-
   const closeDropdown = (): void => setDropdownVisible(false);
+
   const selectedItem = data.find((d: PickerItemProps) => d.value === value);
   const label =
     selectedItem?.label && selectedItem?.label.length > maxLabelLength
       ? `${(selectedItem?.label).substring(0, maxLabelLength)}...`
       : selectedItem?.label;
+  const placeholderColor = !label ? styles.placeholderColor : {};
 
   return (
     <View pointerEvents={disable ? 'none' : 'auto'}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
-        <Label type="large" textType="regular" style={textStyle}>
+        <Label type="large" textType="regular" style={[placeholderColor, textStyle]}>
           {label ?? placeholder}
         </Label>
         <Icon
@@ -100,7 +99,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
         listTitle={listTitle ?? t('common:selectFromHere')}
         listHeight={listHeight}
         isBottomSheetVisible={dropdownVisible}
-        onCloseDropDown={onCancel}
+        onCloseDropDown={closeDropdown}
         onSelectItem={onValueChange}
         testID={testID}
         numColumns={numColumns}
@@ -122,5 +121,8 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     marginStart: 8,
+  },
+  placeholderColor: {
+    color: theme.colors.darkTint8,
   },
 });

@@ -26,12 +26,12 @@ exports[`AddRecordForm should match snapshot 1`] = `
     enableReinitialize={true}
     initialValues={
       Object {
-        "amount": "",
+        "amount": 0,
         "category": "",
         "date": "",
         "label": "",
         "notes": "",
-        "property": "",
+        "property": 0,
         "tellerName": "",
       }
     }

@@ -29,10 +29,10 @@ enum FormType {
 }
 
 interface IFormData {
-  property: string;
+  property: number;
   label: string;
   tellerName: string;
-  amount: string;
+  amount: number;
   category: string;
   date: string;
   notes: string;
@@ -66,10 +66,10 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     wordCount: MAX_WORD_COUNT,
     attachment: undefined,
     formValues: {
-      property: '',
+      property: 0,
       label: '',
       tellerName: '',
-      amount: '',
+      amount: 0,
       category: '',
       date: '',
       notes: '',
@@ -229,10 +229,10 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { t } = this.props;
 
     return yup.object().shape({
-      property: yup.string().required(t('propertyError')),
+      property: yup.number().required(t('propertyError')),
       label: yup.string().required(t('detailsError')),
       tellerName: yup.string(),
-      amount: yup.string().required(t('amountError')),
+      amount: yup.number().required(t('amountError')),
       category: yup.string().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
       notes: yup.string(),

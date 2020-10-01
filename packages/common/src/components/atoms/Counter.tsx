@@ -54,7 +54,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
   return (
     <View style={[styles.rowStyle, containerStyles]}>
       <View style={styles.imageContainer}>
-        {svgImage && <SVGUri height={20} width={20} uri={svgImage} />}
+        {svgImage && <SVGUri height={25} width={25} uri={svgImage} />}
         {name && (
           <Text style={styles.textStyle} type="small">
             {name.title}

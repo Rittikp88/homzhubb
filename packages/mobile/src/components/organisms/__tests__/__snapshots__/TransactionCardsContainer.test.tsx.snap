@@ -322,7 +322,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     scrollEventThrottle={50}
     style={
       Object {
-        "height": 400,
+        "maxHeight": 400,
       }
     }
     updateCellsBatchingPeriod={50}

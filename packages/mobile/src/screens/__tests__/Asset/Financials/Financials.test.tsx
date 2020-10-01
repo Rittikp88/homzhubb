@@ -11,6 +11,7 @@ describe('Financials Screen', () => {
     props = {
       navigation: {
         goBack: jest.fn(),
+        addListener: jest.fn(),
       },
     };
     component = shallow(<Financials {...props} t={(key: string): string => key} />);

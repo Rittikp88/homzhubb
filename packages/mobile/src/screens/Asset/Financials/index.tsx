@@ -31,6 +31,8 @@ interface IState {
 type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
 
 export class Financials extends React.PureComponent<Props, IState> {
+  private onFocusSubscription: any;
+
   public state = {
     ledgerData: [],
     transactionsData: [],
@@ -38,9 +40,13 @@ export class Financials extends React.PureComponent<Props, IState> {
     scrollEnabled: true,
   };
 
-  public async componentDidMount(): Promise<void> {
-    await this.getGeneralLedgersPref();
-    await this.getGeneralLedgers();
+  public componentDidMount(): void {
+    const { navigation } = this.props;
+
+    this.onFocusSubscription = navigation.addListener('focus', (): void => {
+      this.getGeneralLedgersPref().then();
+      this.getGeneralLedgers().then();
+    });
   }
 
   public render = (): React.ReactElement => {
@@ -56,23 +62,23 @@ export class Financials extends React.PureComponent<Props, IState> {
     return (
       <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
         <>
-          {ledgerData && ledgerData.length > 0 && (
-            <FinancialHeaderContainer
-              onPlusIconClicked={this.onPlusIconPress}
-              // @ts-ignore
-              title={t('assetFinancial:recordsText')}
-              income={LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.credit, ledgerData)}
-              expense={LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.debit, ledgerData)}
-              individualCardStyle={styles.individualCardStyle}
-            />
-          )}
+          <FinancialHeaderContainer
+            onPlusIconClicked={this.onPlusIconPress}
+            // @ts-ignore
+            title={t('assetFinancial:recordsText')}
+            income={LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.credit, ledgerData)}
+            expense={LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.debit, ledgerData)}
+            individualCardStyle={styles.individualCardStyle}
+          />
           <FinanceOverview />
           <PropertyDuesCardContainer currency={currency_symbol} totalDue={totalDue} propertyDues={details} />
-          <TransactionCardsContainer
-            shouldEnableOuterScroll={this.toggleScroll}
-            transactionsData={transactionsData}
-            onEndReachedHandler={this.onEndReachedHandler}
-          />
+          {transactionsData && transactionsData.length > 0 && (
+            <TransactionCardsContainer
+              shouldEnableOuterScroll={this.toggleScroll}
+              transactionsData={transactionsData}
+              onEndReachedHandler={this.onEndReachedHandler}
+            />
+          )}
         </>
       </AnimatedProfileHeader>
     );

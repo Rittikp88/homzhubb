@@ -43,11 +43,9 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
 
     return (
       <FlatList
-        // @ts-ignore
         renderItem={this.renderItem}
-        onTouchStart={(): void => {
-          shouldEnableOuterScroll(false);
-        }}
+        // @typescript-eslint/indent
+        onTouchStart={transactionsData.length > 4 ? (): void => shouldEnableOuterScroll(false) : undefined}
         onMomentumScrollEnd={this.controlScroll}
         onScrollEndDrag={this.controlScroll}
         style={styles.transactionContainer}
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   transactionContainer: {
-    height: 400,
+    maxHeight: 400,
   },
   chequeIconStyle: {
     marginRight: 10,

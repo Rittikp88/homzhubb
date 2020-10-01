@@ -23,7 +23,12 @@ exports[`Dropdown should match snapshot 1`] = `
     }
   >
     <Label
-      style={Object {}}
+      style={
+        Array [
+          Object {},
+          Object {},
+        ]
+      }
       textType="regular"
       type="large"
     >
@@ -134,7 +139,14 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
     }
   >
     <Label
-      style={Object {}}
+      style={
+        Array [
+          Object {
+            "color": "#B2BBC3",
+          },
+          Object {},
+        ]
+      }
       textType="regular"
       type="large"
     >
@@ -190,7 +202,14 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
     }
   >
     <Label
-      style={Object {}}
+      style={
+        Array [
+          Object {
+            "color": "#B2BBC3",
+          },
+          Object {},
+        ]
+      }
       textType="regular"
       type="large"
     >

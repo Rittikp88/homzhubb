@@ -2,13 +2,25 @@
 
 exports[`Financials Screen should render snapshot 1`] = `
 <StateAwareComponent
-  loading={true}
+  loading={false}
   renderComponent={
     <AnimatedProfileHeader
       isOuterScrollEnabled={true}
       title="financial"
     >
       <React.Fragment>
+        <FinancialHeaderContainer
+          expense={0}
+          income={0}
+          individualCardStyle={
+            Object {
+              "alignItems": "center",
+              "paddingHorizontal": 25,
+            }
+          }
+          onPlusIconClicked={[Function]}
+          title="assetFinancial:recordsText"
+        />
         <withI18nextTranslation(FinanceOverview) />
         <PropertyDuesCardContainer
           currency="USD"
@@ -38,11 +50,6 @@ exports[`Financials Screen should render snapshot 1`] = `
             ]
           }
           totalDue={70000}
-        />
-        <withI18nextTranslation(TransactionCardsContainer)
-          onEndReachedHandler={[Function]}
-          shouldEnableOuterScroll={[Function]}
-          transactionsData={Array []}
         />
       </React.Fragment>
     </AnimatedProfileHeader>

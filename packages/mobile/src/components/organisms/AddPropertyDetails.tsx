@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -9,14 +9,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  Button,
-  FormTextInput,
-  ISelectionPicker,
-  SelectionPicker,
-  Text,
-  WithShadowView,
-} from '@homzhub/common/src/components';
+import { Button, FormTextInput, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
 import { AssetDescriptionForm } from '@homzhub/mobile/src/components';
 import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -44,7 +37,6 @@ interface IOwnProps extends WithTranslation {
   assetId: number;
   assetDetails: Asset | null;
   spaceTypes: SpaceType[];
-  spaceValues: ISpaceCount[];
   handleNextStep: () => void;
 }
 
@@ -58,13 +50,13 @@ interface IOwnState {
 class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
   constructor(props: IOwnProps) {
     super(props);
-    const { assetDetails, spaceValues } = this.props;
+    const { assetDetails } = this.props;
 
     this.state = {
-      spacesForm: spaceValues,
+      spacesForm: [],
       descriptionForm: {
         carpetArea: (assetDetails && assetDetails.carpetArea) || undefined,
-        areaUnit: (assetDetails && assetDetails.carpetAreaUnit && assetDetails.carpetAreaUnit.id) || undefined,
+        areaUnit: (assetDetails && assetDetails.carpetAreaUnit && assetDetails.carpetAreaUnit.id) || 1,
         buildingGrade: '',
         facing: (assetDetails && assetDetails.facing) || undefined,
         flooringType: (assetDetails && assetDetails.floorType) || undefined,
@@ -86,7 +78,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
 
   public render(): ReactElement {
     const { spaceTypes, t } = this.props;
-    const { descriptionForm, furnishingForm, descriptionDropdownValues, spacesForm } = this.state;
+    const { descriptionForm, furnishingForm, descriptionDropdownValues } = this.state;
 
     return (
       <>
@@ -103,11 +95,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                     <Text style={styles.headingStyle} type="small">
                       {t('property:spacesText')}
                     </Text>
-                    <PropertySpaces
-                      spacesFormValues={spacesForm}
-                      onChange={this.handleSpaceFormChange}
-                      spacesTypes={spaceTypes}
-                    />
+                    <PropertySpaces onChange={this.handleSpaceFormChange} spacesTypes={spaceTypes} />
                   </>
 
                   {descriptionDropdownValues && (
@@ -135,6 +123,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
 
   private renderFurnishingFields = (formProps: FormikProps<FormikValues>): ReactElement => {
     const { t } = this.props;
+    const { descriptionDropdownValues } = this.state;
     const handlePickerChange = (value: string): void => this.setFurnishingStatus(formProps, value);
 
     return (
@@ -145,7 +134,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
         <View style={styles.furnishingStyle}>
           <SelectionPicker<string>
             containerStyles={styles.marginTop}
-            data={this.loadFurnishingStatus()}
+            data={descriptionDropdownValues?.furnishingStatusDropdownValues || []}
             selectedItem={formProps.values.furnishingType}
             onValueChange={handlePickerChange}
           />
@@ -162,7 +151,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
     );
   };
 
-  private onSubmit = async (values: FormikValues, formActions: FormikHelpers<FormikValues>): Promise<void> => {
+  private onSubmit = async (values: FormikValues): Promise<void> => {
     const {
       areaUnit,
       carpetArea,
@@ -172,16 +161,14 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
       onFloorNumber,
       totalFloors,
       yearOfConstruction,
+      furnishingType,
     } = values;
-    const {
-      furnishingForm: { furnishingType },
-      spacesForm,
-    } = this.state;
+    const { spacesForm } = this.state;
     const { handleNextStep, assetId, assetDetails } = this.props;
     const serializedObj: LastVisitedStep = ObjectMapper.serialize(assetDetails?.lastVisitedStep);
 
     const sanitizedSpaces = spacesForm
-      .filter((item) => item && item.description !== '' && item.count)
+      .filter((item) => item && item.description !== '')
       .map((space) => {
         return {
           space_type: space.space_type,
@@ -220,19 +207,6 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
 
   private setFurnishingStatus = (formProps: FormikProps<FormikValues>, furnishingType: string): void => {
     formProps.setFieldValue('furnishingType', furnishingType);
-  };
-
-  private loadFurnishingStatus = (): ISelectionPicker<string>[] | [] => {
-    const { descriptionDropdownValues } = this.state;
-    if (descriptionDropdownValues) {
-      return descriptionDropdownValues.furnishingStatus.map((item) => {
-        return {
-          value: item.name,
-          title: item.label,
-        };
-      });
-    }
-    return [];
   };
 
   private handleSpaceFormChange = (id: number, count: number, description?: string): void => {

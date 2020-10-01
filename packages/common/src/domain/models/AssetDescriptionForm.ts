@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { IDropdownOption, ISelectionPicker } from '@homzhub/common/src/components';
 
 export enum AssetDescriptionDropdownTypes {
   Facing = 'facing',
@@ -60,19 +61,56 @@ export class AssetDescriptionDropdownValues {
   @JsonProperty('type_of_flooring', [FormUnit])
   private _typeOfFlooring = [new FormUnit()];
 
-  get facing(): FormUnit[] {
-    return this._facing;
+  get facing(): IDropdownOption[] {
+    return this.transformDropdownTypes(this._facing, AssetDescriptionDropdownTypes.Facing);
   }
 
   get furnishingStatus(): FormUnit[] {
     return this._furnishingStatus;
   }
 
+  get areaUnitDropdownValues(): IDropdownOption[] {
+    return this.transformDropdownTypes(this._carpetAreaUnit, AssetDescriptionDropdownTypes.CarpetUnit);
+  }
+
   get carpetAreaUnit(): FormUnit[] {
     return this._carpetAreaUnit;
   }
 
-  get typeOfFlooring(): FormUnit[] {
-    return this._typeOfFlooring;
+  get typeOfFlooring(): IDropdownOption[] {
+    return this.transformDropdownTypes(this._typeOfFlooring, AssetDescriptionDropdownTypes.FlooringType);
   }
+
+  get furnishingStatusDropdownValues(): ISelectionPicker<string>[] {
+    return this._furnishingStatus?.map((item) => {
+      return {
+        value: item.name,
+        title: item.label,
+      };
+    });
+  }
+
+  private transformDropdownTypes = (typeArray: FormUnit[], type: string): IDropdownOption[] => {
+    const { Facing, FurnishingStatus, CarpetUnit } = AssetDescriptionDropdownTypes;
+    return typeArray.map((item) => {
+      if (type === Facing || type === FurnishingStatus) {
+        return {
+          value: item.name,
+          label: item.label,
+        };
+      }
+
+      if (type === CarpetUnit) {
+        return {
+          value: item.id,
+          label: item.title,
+        };
+      }
+
+      return {
+        value: item.id,
+        label: item.label,
+      };
+    });
+  };
 }

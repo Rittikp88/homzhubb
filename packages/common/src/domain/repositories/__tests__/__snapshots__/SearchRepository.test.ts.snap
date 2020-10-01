@@ -242,6 +242,7 @@ AssetSearch {
       "_assetGroup": Data {
         "_code": "",
         "_count": 0,
+        "_description": "",
         "_id": 0,
         "_name": "",
       },
@@ -272,6 +273,7 @@ AssetSearch {
       "_assetType": Data {
         "_code": "",
         "_count": 0,
+        "_description": "",
         "_id": 0,
         "_name": "",
       },
@@ -426,12 +428,14 @@ AssetSearch {
         Data {
           "_code": "",
           "_count": 1,
+          "_description": "",
           "_id": 1,
           "_name": "Bedroom",
         },
         Data {
           "_code": "",
           "_count": 1,
+          "_description": "",
           "_id": 2,
           "_name": "Bathroom",
         },
@@ -613,6 +617,7 @@ AssetSearch {
       "_assetGroup": Data {
         "_code": "",
         "_count": 0,
+        "_description": "",
         "_id": 0,
         "_name": "",
       },
@@ -643,6 +648,7 @@ AssetSearch {
       "_assetType": Data {
         "_code": "",
         "_count": 0,
+        "_description": "",
         "_id": 0,
         "_name": "",
       },
@@ -797,12 +803,14 @@ AssetSearch {
         Data {
           "_code": "",
           "_count": 1,
+          "_description": "",
           "_id": 1,
           "_name": "Bedroom",
         },
         Data {
           "_code": "",
           "_count": 1,
+          "_description": "",
           "_id": 2,
           "_name": "Bathroom",
         },

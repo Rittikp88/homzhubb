@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import {
   UncontrolledCheckboxGroup,
   Counter,
@@ -10,7 +11,7 @@ import {
   Text,
   InputWithCheckbox,
 } from '@homzhub/common/src/components';
-import { ISpaceCount, SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IGroupedSpaceType {
   [SpaceFieldTypes.Counter]?: SpaceType[];
@@ -19,7 +20,6 @@ interface IGroupedSpaceType {
 }
 
 interface IOwnProps extends WithTranslation {
-  spacesFormValues: ISpaceCount[];
   spacesTypes: SpaceType[];
   onChange: (id: number, count: number, description?: string) => void;
 }
@@ -51,7 +51,10 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
         {this.renderSpaces(true)}
 
         <View style={[styles.rowStyle, styles.marginBottom]}>
-          <Text type="small">More</Text>
+          <View style={styles.rowStyle}>
+            <Icon style={styles.threeDots} name={icons.threeDots} size={22} />
+            <Text type="small">More</Text>
+          </View>
           <RNSwitch selected={showMore} onToggle={this.toggleMoreSwitch} />
         </View>
 
@@ -110,7 +113,14 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
         this.handleSpacesChange(space.id, count, text);
       };
 
-      spaceFields?.push(<InputWithCheckbox key={index} onChange={handleInputWithCheckChange} />);
+      spaceFields?.push(
+        <InputWithCheckbox
+          textValue={space.description}
+          selected={!!space.value}
+          key={index}
+          onChange={handleInputWithCheckChange}
+        />
+      );
     });
 
     return spaceFields;
@@ -136,14 +146,13 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   private groupSpaceTypes = (): IGroupedSpaceType => {
-    const { spacesTypes, spacesFormValues } = this.props;
+    const { spacesTypes } = this.props;
 
     return spacesTypes.reduce((accumulator: any, currentSpace) => {
       const key: string = currentSpace.fieldType;
       if (!accumulator[key]) {
         accumulator[key] = [];
       }
-      currentSpace.value = spacesFormValues[currentSpace.id]?.count;
 
       accumulator[key].push(currentSpace);
       return accumulator;
@@ -174,5 +183,8 @@ const styles = StyleSheet.create({
   },
   marginBottom: {
     marginBottom: 24,
+  },
+  threeDots: {
+    marginRight: 12,
   },
 });

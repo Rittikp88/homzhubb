@@ -610,7 +610,14 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                 }
                               >
                                 <Label
-                                  style={Object {}}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#B2BBC3",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
                                   textType="regular"
                                   type="large"
                                 >
@@ -626,7 +633,12 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                           "fontFamily": "OpenSans-Regular",
                                           "fontWeight": "400",
                                         },
-                                        Object {},
+                                        Array [
+                                          Object {
+                                            "color": "#B2BBC3",
+                                          },
+                                          Object {},
+                                        ],
                                       ]
                                     }
                                   >
@@ -642,7 +654,12 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
                                             "fontFamily": "OpenSans-Regular",
                                             "fontWeight": "400",
                                           },
-                                          Object {},
+                                          Array [
+                                            Object {
+                                              "color": "#B2BBC3",
+                                            },
+                                            Object {},
+                                          ],
                                         ]
                                       }
                                     />
