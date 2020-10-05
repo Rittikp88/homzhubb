@@ -1,29 +1,18 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikActions, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  CheckboxGroup,
-  FormButton,
-  FormCalendar,
-  FormTextInput,
-  Slider,
-  Text,
-  TextArea,
-} from '@homzhub/common/src/components';
-import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
-import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
+import { CheckboxGroup, FormButton, TextArea } from '@homzhub/common/src/components';
+import { LeaseTermForm, IFormData } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
-  FurnishingType,
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
   LeaseFormKeys,
@@ -44,21 +33,6 @@ interface IProps extends WithTranslation {
   currentAssetType: string;
 }
 
-interface IFormData {
-  showMore: boolean;
-  monthlyRent: string;
-  securityDeposit: string;
-  annualIncrement: string;
-  availableFrom: string;
-  maintenanceAmount: string;
-  minimumLeasePeriod: number;
-  maintenanceSchedule: ScheduleTypes;
-  furnishingStatus: FurnishingType;
-  maintenanceBy: PaidByTypes;
-  utilityBy: PaidByTypes;
-  rentFreePeriod: number;
-}
-
 interface IOwnState {
   formData: IFormData;
   description: string;
@@ -69,20 +43,11 @@ interface IOwnState {
 }
 
 const MAX_DESCRIPTION_LENGTH = 600;
-const MINIMUM_LEASE_PERIOD = 1;
 const DEFAULT_LEASE_PERIOD = 11;
-const MAXIMUM_LEASE_PERIOD = 24;
 
 // TODO: (Shikha) - Need to implement Edit flow
 
 class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
-  /*eslint-disable */
-  private PAID_BY_OPTIONS = [
-    { title: this.props.t('owner'), value: PaidByTypes.OWNER },
-    { title: this.props.t('tenant'), value: PaidByTypes.TENANT },
-  ];
-  /* eslint-enable */
-
   public state = {
     formData: {
       showMore: false,
@@ -93,7 +58,6 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       availableFrom: DateUtils.getCurrentDate(),
       maintenanceAmount: '',
       maintenanceSchedule: ScheduleTypes.ANNUALLY,
-      furnishingStatus: FurnishingType.NONE,
       maintenanceBy: PaidByTypes.OWNER,
       utilityBy: PaidByTypes.TENANT,
       rentFreePeriod: 0,
@@ -122,84 +86,9 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         validate={FormUtils.validate(this.formSchema)}
       >
         {(formProps: FormikProps<IFormData>): React.ReactElement => {
-          const { setFieldValue, setFieldTouched, values } = formProps;
-          const onShowMorePress = (): void => {
-            setFieldValue(LeaseFormKeys.showMore, !values.showMore);
-            if (!values.showMore) {
-              setFieldTouched(LeaseFormKeys.annualIncrement, false);
-            }
-          };
-          const maxDayCount = currentAssetType === 'COM' ? 180 : 60;
           return (
             <>
-              <AssetListingSection title={t('leaseTerms')}>
-                <>
-                  <FormTextInput
-                    inputType="number"
-                    name={LeaseFormKeys.monthlyRent}
-                    label={t('monthlyRent')}
-                    placeholder={t('monthlyRentPlaceholder')}
-                    maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
-                    formProps={formProps}
-                    inputPrefixText={currencyData.currencySymbol}
-                    inputGroupSuffixText={currencyData.currencyCode}
-                  />
-                  <FormTextInput
-                    inputType="number"
-                    name={LeaseFormKeys.securityDeposit}
-                    label={t('securityDeposit')}
-                    placeholder={t('securityDepositPlaceholder')}
-                    maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
-                    formProps={formProps}
-                    inputPrefixText={currencyData.currencySymbol}
-                    inputGroupSuffixText={currencyData.currencyCode}
-                  />
-                  <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
-                    {values.showMore ? t('showLess') : t('showMore')}
-                  </Text>
-                  {values.showMore && (
-                    <FormTextInput
-                      inputType="decimal"
-                      name={LeaseFormKeys.annualIncrement}
-                      label={t('annualIncrement')}
-                      placeholder={t('annualIncrementPlaceholder')}
-                      maxLength={4}
-                      formProps={formProps}
-                      inputGroupSuffixText={t('annualIncrementSuffix')}
-                    />
-                  )}
-                  {currentAssetType === 'COM' && (
-                    <FormTextInput
-                      inputType="number"
-                      name={LeaseFormKeys.rentFreePeriod}
-                      label={t('rentFreePeriod')}
-                      placeholder={t('common:enter')}
-                      maxLength={2}
-                      formProps={formProps}
-                      inputGroupSuffixText={t('common:days')}
-                    />
-                  )}
-                  <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                    {t('duration')}
-                  </Text>
-                  <FormCalendar
-                    formProps={formProps}
-                    maxDate={DateUtils.getFutureDate(maxDayCount)}
-                    name="availableFrom"
-                    textType="label"
-                    textSize="regular"
-                  />
-                  {this.renderNonFormikInputs(formProps)}
-                  {values.maintenanceBy === PaidByTypes.TENANT && (
-                    <MaintenanceDetails
-                      formProps={formProps}
-                      currency={currencyData}
-                      maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
-                      maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
-                    />
-                  )}
-                </>
-              </AssetListingSection>
+              <LeaseTermForm formProps={formProps} currencyData={currencyData} currentAssetType={currentAssetType} />
               {preferences.length > 0 && (
                 <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>
                   <CheckboxGroup
@@ -236,70 +125,11 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     );
   };
 
-  private renderNonFormikInputs = (formProps: FormikProps<IFormData>): React.ReactNode => {
-    const { t } = this.props;
-    const {
-      formData: { minimumLeasePeriod },
-    } = this.state;
-    const { values, setFieldValue, setFieldTouched } = formProps;
-
-    const onSliderChange = (value: number): void => {
-      setFieldValue(LeaseFormKeys.minimumLeasePeriod, Math.round(value));
-    };
-
-    const onUtilityChanged = (value: string): void => {
-      setFieldValue(LeaseFormKeys.utilityBy, value);
-    };
-
-    const onMaintenanceChanged = (value: PaidByTypes): void => {
-      setFieldValue(LeaseFormKeys.maintenanceBy, value);
-      if (value === PaidByTypes.TENANT) {
-        setFieldTouched(LeaseFormKeys.maintenanceAmount, false);
-      }
-    };
-
-    return (
-      <>
-        <>
-          <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-            {t('minimumLeasePeriod')}
-          </Text>
-          <Slider
-            onSliderChange={onSliderChange}
-            minSliderRange={MINIMUM_LEASE_PERIOD}
-            maxSliderRange={MAXIMUM_LEASE_PERIOD}
-            minSliderValue={minimumLeasePeriod}
-            isLabelRequired
-            labelText="Months"
-          />
-        </>
-        <Text type="small" textType="semiBold" style={styles.headerTitle}>
-          {t('utilityBy')}
-        </Text>
-        <ButtonGroup<PaidByTypes>
-          data={this.PAID_BY_OPTIONS}
-          onItemSelect={onUtilityChanged}
-          selectedItem={values[LeaseFormKeys.utilityBy]}
-          containerStyle={styles.buttonGroup}
-        />
-        <Text type="small" textType="semiBold" style={styles.headerTitle}>
-          {t('maintenanceBy')}
-        </Text>
-        <ButtonGroup<PaidByTypes>
-          data={this.PAID_BY_OPTIONS}
-          onItemSelect={onMaintenanceChanged}
-          selectedItem={values.maintenanceBy}
-          containerStyle={styles.buttonGroup}
-        />
-      </>
-    );
-  };
-
   private onDescriptionChange = (description: string): void => {
     this.setState({ description });
   };
 
-  private onSubmit = async (values: IFormData, formActions: FormikActions<FormikValues>): Promise<void> => {
+  private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
     const { onNextStep, currentAssetType } = this.props;
     const { description, availableSpaces, selectedPreferences } = this.state;
@@ -323,7 +153,6 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       available_from_date: values[LeaseFormKeys.availableFrom],
       maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
       utility_paid_by: values[LeaseFormKeys.utilityBy],
-      furnishing: values[LeaseFormKeys.furnishingStatus],
       maintenance_amount,
       maintenance_payment_schedule,
       ...(description && { description }),
@@ -436,25 +265,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 50,
   },
-  showMore: {
-    marginTop: 8,
-    alignSelf: 'flex-end',
-    color: theme.colors.active,
-  },
-  headerTitle: {
-    marginTop: 25,
-    color: theme.colors.darkTint3,
-  },
   descriptionContainer: {
     marginTop: 16,
-  },
-  buttonGroup: {
-    marginTop: 14,
-  },
-  sliderTitle: {
-    marginTop: 28,
-    color: theme.colors.darkTint3,
-    marginBottom: 18,
   },
   checkBox: {
     paddingVertical: 10,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-native';
+import { Switch, StyleSheet } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 interface ISwitchOptions {
@@ -7,10 +7,11 @@ interface ISwitchOptions {
   onToggle: () => void;
 }
 
-const RNSwitch = (props: ISwitchOptions): React.ReactElement => {
+export const RNSwitch = (props: ISwitchOptions): React.ReactElement => {
   const { selected, onToggle } = props;
   return (
     <Switch
+      style={styles.switch}
       trackColor={{ false: theme.colors.disabled, true: theme.colors.primaryColor }}
       thumbColor={theme.colors.white}
       onValueChange={onToggle}
@@ -19,4 +20,9 @@ const RNSwitch = (props: ISwitchOptions): React.ReactElement => {
   );
 };
 
-export { RNSwitch };
+const styles = StyleSheet.create({
+  switch: {
+    alignSelf: 'flex-end',
+    transform: [{ scaleX: 0.7 }, { scaleY: 0.65 }],
+  },
+});

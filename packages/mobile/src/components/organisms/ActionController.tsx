@@ -6,6 +6,7 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import LeaseTermController from '@homzhub/mobile/src/components/organisms/LeaseTermController';
 import { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
+import { ManageTermController } from '@homzhub/mobile/src/components/organisms/ManageTermController';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Country } from '@homzhub/common/src/domain/models/CountryCode';
 
@@ -55,6 +56,7 @@ class ActionController extends React.PureComponent<Props, {}> {
             currentAssetType={propertyType}
           />
         )}
+        {typeOfPlan === TypeOfPlan.MANAGE && <ManageTermController />}
       </>
     );
   };

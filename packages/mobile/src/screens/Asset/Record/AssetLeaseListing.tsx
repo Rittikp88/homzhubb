@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -18,7 +18,7 @@ import { images } from '@homzhub/common/src/assets/images';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Button, Image, Label, RNSwitch, Text } from '@homzhub/common/src/components';
-import { AddressWithStepIndicator, ActionController, BottomSheet, Header } from '@homzhub/mobile/src/components';
+import { ActionController, AddressWithStepIndicator, BottomSheet, Header } from '@homzhub/mobile/src/components';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
@@ -40,7 +40,7 @@ type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKey
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 interface IRoutes {
-  key: string;
+  key: RouteKeys;
   title: string;
 }
 
@@ -50,6 +50,13 @@ interface IOwnState {
   isActionSheetToggled: boolean;
   isPropertyAsUnits: boolean;
   isSheetVisible: boolean;
+}
+
+enum RouteKeys {
+  Actions = 'actions',
+  Verification = 'verification',
+  Services = 'services',
+  Payment = 'payment',
 }
 
 class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
@@ -83,12 +90,14 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       address,
     } = assetDetails;
 
+    const steps = this.getRoutes().map((route) => route.title);
+
     return (
       <>
         <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
         <ScrollView style={styles.screen} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
           <AddressWithStepIndicator
-            steps={this.getSteps()}
+            steps={steps}
             badge={badge}
             badgeStyle={styles.badgeStyle}
             propertyType={name}
@@ -119,45 +128,55 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   }
 
   public renderTabHeader = (): ReactElement => {
-    const { currentIndex, isActionSheetToggled, isPropertyAsUnits } = this.state;
-    const { t } = this.props;
-    const tabTitle = this.getRoutes()[currentIndex].title;
-    const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
+    const {
+      t,
+      selectedAssetPlan: { selectedPlan },
+    } = this.props;
+    const { currentIndex, isPropertyAsUnits, isActionSheetToggled } = this.state;
+    const { key, title } = this.getRoutes()[currentIndex];
+
     const togglePropertyUnits = (): void => this.setState({ isPropertyAsUnits: !isPropertyAsUnits });
+    const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
+
     return (
-      <>
-        {tabTitle === t('lease') && (
-          <View style={styles.actionsContainer}>
+      <View style={styles.tabHeader}>
+        {key === RouteKeys.Actions && selectedPlan === TypeOfPlan.RENT && (
+          <View style={[styles.tabRows, styles.switchTab]}>
             <Text type="small" textType="semiBold">
               {t('shareAsUnits')}
             </Text>
             <RNSwitch selected={isPropertyAsUnits} onToggle={togglePropertyUnits} />
           </View>
         )}
-        <View style={styles.tabHeader}>
-          <Text type="small" textType="semiBold" style={styles.title}>
-            {tabTitle}
+        <View style={styles.tabRows}>
+          <Text type="small" textType="semiBold">
+            {title}
           </Text>
-          {[t('lease'), t('terms')].includes(tabTitle) && (
-            <Icon name={icons.tooltip} color={theme.colors.blue} size={22} onPress={toggleActionSheet} />
-          )}
-          {[t('verification'), t('services')].includes(tabTitle) && (
+          {[RouteKeys.Verification, RouteKeys.Services].includes(key) && (
             <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
               {t('common:skip')}
             </Text>
           )}
+          {key === RouteKeys.Actions && (
+            <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+          )}
         </View>
-        {tabTitle === t('verification') && (
-          <View style={styles.verificationContainer}>
-            <Label type="large" textType="regular">
+        {key === RouteKeys.Verification && (
+          <>
+            <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
               {t('propertyVerificationSubTitle')}
             </Label>
-            <Text type="small" textType="semiBold" style={styles.link} onPress={this.navigateToVerificationHelper}>
+            <Label
+              type="large"
+              textType="semiBold"
+              style={styles.helperText}
+              onPress={this.navigateToVerificationHelper}
+            >
               {t('helperNavigationText')}
-            </Text>
-          </View>
+            </Label>
+          </>
         )}
-      </>
+      </View>
     );
   };
 
@@ -259,39 +278,18 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       t,
       selectedAssetPlan: { selectedPlan },
     } = this.props;
-    switch (selectedPlan) {
-      case TypeOfPlan.MANAGE:
-        return [
-          { key: 'actions', title: t('actions') },
-          { key: 'services', title: t('services') },
-          { key: 'payment', title: t('payment') },
-        ];
-      default:
-        return [
-          { key: 'actions', title: t('actions') },
-          { key: 'verification', title: t('verification') },
-          { key: 'services', title: t('services') },
-          { key: 'payment', title: t('payment') },
-        ];
-    }
-  };
+    const routes = [
+      { key: RouteKeys.Actions, title: t('actions') },
+      { key: RouteKeys.Verification, title: t('verification') },
+      { key: RouteKeys.Services, title: t('services') },
+      { key: RouteKeys.Payment, title: t('payment') },
+    ];
 
-  public getSteps = (): string[] => {
-    const {
-      t,
-      selectedAssetPlan: { selectedPlan },
-    } = this.props;
-    switch (selectedPlan) {
-      case TypeOfPlan.MANAGE:
-        return [t('actions'), t('services'), t('payment')];
-      default:
-        return [
-          selectedPlan === TypeOfPlan.RENT ? t('lease') : t('terms'),
-          t('verification'),
-          t('services'),
-          t('payment'),
-        ];
+    if (selectedPlan !== TypeOfPlan.MANAGE) {
+      return routes;
     }
+
+    return routes.filter((route) => route.key !== RouteKeys.Verification);
   };
 
   public getHeader = (): string => {
@@ -418,32 +416,30 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
     padding: theme.layout.screenPadding,
   },
-  actionsContainer: {
+  tabHeader: {
+    paddingVertical: 16,
+  },
+  switchTab: {
+    marginBottom: 24,
+  },
+  tabRows: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
-  },
-  verificationContainer: {
-    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   badgeStyle: {
     paddingVertical: 3,
     paddingHorizontal: 18,
     borderRadius: 2,
   },
-  tabHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  helperText: {
+    color: theme.colors.primaryColor,
   },
-  title: {
-    paddingVertical: 16,
+  verificationSubtitle: {
+    marginTop: 12,
+    marginBottom: 8,
   },
   skip: {
-    color: theme.colors.blue,
-  },
-  link: {
-    marginVertical: 5,
     color: theme.colors.blue,
   },
   sheetContent: {
