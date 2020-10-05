@@ -309,15 +309,9 @@ export class AssetHighlights extends Component<Props, IState> {
   };
 
   private getAmenities = async (): Promise<void> => {
-    const { propertyDetail } = this.props;
-    const propertyType = propertyDetail ? propertyDetail.assetGroup.name : '';
     try {
       const response = await RecordAssetRepository.getAmenities();
-      response.forEach((item) => {
-        if (item.name === propertyType) {
-          this.setState({ assetAmenity: item.category });
-        }
-      });
+      this.setState({ assetAmenity: response });
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e);
       AlertHelper.error({ message: error });
@@ -357,7 +351,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   highlightsContainer: {
-    padding: 16,
+    padding: 14,
   },
   textInput: {
     flex: 1,
