@@ -4,7 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { CommonActions } from '@react-navigation/native';
-import { SceneMap, TabView } from 'react-native-tab-view';
+import { TabView } from 'react-native-tab-view';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
@@ -18,7 +18,13 @@ import { images } from '@homzhub/common/src/assets/images';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Button, Image, Label, RNSwitch, Text } from '@homzhub/common/src/components';
-import { ActionController, AddressWithStepIndicator, BottomSheet, Header } from '@homzhub/mobile/src/components';
+import {
+  ActionController,
+  AddressWithStepIndicator,
+  BottomSheet,
+  Header,
+  Loader,
+} from '@homzhub/mobile/src/components';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
@@ -109,6 +115,11 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
           {this.renderTabHeader()}
           <TabView
+            lazy
+            renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
+            removeClippedSubviews
+            initialLayout={theme.viewport}
+            // @ts-ignore
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
             renderTabBar={(): null => null}
@@ -204,37 +215,35 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderScene = SceneMap({
-    actions: (): ReactElement => {
-      const { isPropertyAsUnits } = this.state;
-      const {
-        selectedAssetPlan: { selectedPlan },
-        assetDetails,
-      } = this.props;
-      return (
-        <>
-          {assetDetails && (
-            <ActionController
-              typeOfPlan={selectedPlan}
-              isSplitAsUnits={isPropertyAsUnits}
-              country={assetDetails.country}
-              propertyType={assetDetails.assetGroup.code}
-              onNextStep={this.handleNextStep}
-            />
-          )}
-        </>
-      );
-    },
-    verification: (): ReactElement => {
-      const {
-        selectedAssetPlan: { selectedPlan },
-        assetId,
-      } = this.props;
-      return <PropertyVerification propertyId={assetId} typeOfPlan={selectedPlan} updateStep={this.handleNextStep} />;
-    },
-    services: (): ReactElement => <ValueAddedServicesView handleNextStep={this.handleNextStep} />,
-    payment: (): ReactElement => <PropertyPayment handleNextStep={this.handleNextStep} />,
-  });
+  private renderScene = ({ route }: { route: RouteKeys }): React.ReactNode => {
+    const { isPropertyAsUnits } = this.state;
+    const {
+      selectedAssetPlan: { selectedPlan },
+      assetDetails,
+      assetId,
+    } = this.props;
+
+    if (!assetDetails) return null;
+
+    switch (route) {
+      case RouteKeys.Verification:
+        return <PropertyVerification propertyId={assetId} typeOfPlan={selectedPlan} updateStep={this.handleNextStep} />;
+      case RouteKeys.Services:
+        return <ValueAddedServicesView handleNextStep={this.handleNextStep} />;
+      case RouteKeys.Payment:
+        return <PropertyPayment handleNextStep={this.handleNextStep} />;
+      default:
+        return (
+          <ActionController
+            typeOfPlan={selectedPlan}
+            isSplitAsUnits={isPropertyAsUnits}
+            country={assetDetails.country}
+            propertyType={assetDetails.assetGroup.code}
+            onNextStep={this.handleNextStep}
+          />
+        );
+    }
+  };
 
   private onCloseSheet = (): void => {
     this.setState({ isSheetVisible: false });

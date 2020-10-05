@@ -123,6 +123,10 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
           />
           {this.renderTabHeader()}
           <TabView
+            lazy
+            renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
+            removeClippedSubviews
+            initialLayout={theme.viewport}
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
             renderTabBar={(): null => null}
