@@ -9,13 +9,18 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { CheckboxGroup, FormButton, TextArea } from '@homzhub/common/src/components';
-import { LeaseTermForm, IFormData } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
+import {
+  LeaseTermForm,
+  DEFAULT_LEASE_PERIOD,
+  IFormData,
+  LeaseFormKeys,
+  LeaseFormSchema,
+} from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
-  LeaseFormKeys,
   PaidByTypes,
   ScheduleTypes,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
@@ -43,7 +48,6 @@ interface IOwnState {
 }
 
 const MAX_DESCRIPTION_LENGTH = 600;
-const DEFAULT_LEASE_PERIOD = 11;
 
 // TODO: (Shikha) - Need to implement Edit flow
 
@@ -88,7 +92,9 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         {(formProps: FormikProps<IFormData>): React.ReactElement => {
           return (
             <>
-              <LeaseTermForm formProps={formProps} currencyData={currencyData} currentAssetType={currentAssetType} />
+              <AssetListingSection title={t('leaseTerms')}>
+                <LeaseTermForm formProps={formProps} currencyData={currencyData} currentAssetType={currentAssetType} />
+              </AssetListingSection>
               {preferences.length > 0 && (
                 <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>
                   <CheckboxGroup
@@ -226,33 +232,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   private formSchema = (): yup.ObjectSchema => {
     const { t } = this.props;
     return yup.object().shape({
-      [LeaseFormKeys.maintenanceBy]: yup.string(),
-      [LeaseFormKeys.showMore]: yup.boolean(),
-      [LeaseFormKeys.monthlyRent]: yup
-        .string()
-        .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
-        .required(t('monthlyRentRequired')),
-      [LeaseFormKeys.securityDeposit]: yup
-        .string()
-        .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
-        .required(t('securityDepositRequired')),
-      [LeaseFormKeys.annualIncrement]: yup.string().when('showMore', {
-        is: true,
-        then: yup
-          .string()
-          .matches(FormUtils.percentageRegex, t('common:onlyNumeric'))
-          .required(t('annualIncrementRequired')),
-      }),
-      [LeaseFormKeys.maintenanceAmount]: yup.string().when('maintenanceBy', {
-        is: PaidByTypes.TENANT,
-        then: yup
-          .string()
-          .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
-          .required(t('maintenanceAmountRequired')),
-      }),
-      [LeaseFormKeys.maintenanceSchedule]: yup.string<ScheduleTypes>().required(t('maintenanceScheduleRequired')),
-      availableFrom: yup.string(),
-      description: yup.string(),
+      ...LeaseFormSchema(t),
     });
   };
 }

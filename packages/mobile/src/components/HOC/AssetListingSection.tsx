@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingTop: 8,
+    paddingBottom: 16,
   },
   title: {
     color: theme.colors.darkTint3,

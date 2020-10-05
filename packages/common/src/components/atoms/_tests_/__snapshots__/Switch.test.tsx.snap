@@ -3,6 +3,19 @@
 exports[`Switch should match snapshot for not selected 1`] = `
 <Switch
   onValueChange={[MockFunction]}
+  style={
+    Object {
+      "alignSelf": "flex-end",
+      "transform": Array [
+        Object {
+          "scaleX": 0.7,
+        },
+        Object {
+          "scaleY": 0.65,
+        },
+      ],
+    }
+  }
   thumbColor="#FFFFFF"
   trackColor={
     Object {
@@ -17,6 +30,19 @@ exports[`Switch should match snapshot for not selected 1`] = `
 exports[`Switch should match snapshot for selected 1`] = `
 <Switch
   onValueChange={[MockFunction]}
+  style={
+    Object {
+      "alignSelf": "flex-end",
+      "transform": Array [
+        Object {
+          "scaleX": 0.7,
+        },
+        Object {
+          "scaleY": 0.65,
+        },
+      ],
+    }
+  }
   thumbColor="#FFFFFF"
   trackColor={
     Object {

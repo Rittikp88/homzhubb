@@ -106,7 +106,11 @@
     "remove": "Remove",
     "typeHere": "Type here...",
     "days": "Days",
-    "enter": "Enter"
+    "enter": "Enter",
+    "yes": "Yes",
+    "no": "No",
+    "phone": "Phone",
+    "email": "E-mail"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -123,6 +127,8 @@
     "yourNumber": "Your mobile number",
     "signup": "Signup",
     "nameRequired": "Please enter your name",
+    "firstNameRequired": "Please enter the first name",
+    "lastNameRequired": "Please enter the last name",
     "emailRequired": "Please enter your email",
     "numberRequired": "Please enter your mobile number",
     "passwordRequired": "Please enter your password",
@@ -302,7 +308,13 @@
     "selectBuildingGrade": "Select building type",
     "furnishingDetails": "Furniture & Appliance details",
     "spacesText": "Spaces",
-    "rentFreePeriod": "Rent Free Period"
+    "rentFreePeriod": "Rent Free Period",
+    "propertyOccupied": "Property Occupied?",
+    "propertyOccupiedDescription": "Property Occupied Description...",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "tenantEmail": "Tenant E-mail",
+    "tenantPhone": "Tenant mobile number"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

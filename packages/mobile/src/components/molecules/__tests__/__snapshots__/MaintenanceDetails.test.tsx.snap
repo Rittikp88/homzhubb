@@ -21,7 +21,6 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
       Object {
         "flex": 1,
         "flexDirection": "row",
-        "marginBottom": 24,
         "marginTop": 4,
       }
     }
@@ -31,7 +30,6 @@ exports[`MaintenanceDetails should match snapshot 1`] = `
         Object {
           "flex": 1,
           "flexDirection": "row",
-          "marginBottom": 24,
           "marginTop": 4,
         }
       }

@@ -1,20 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
-export enum LeaseFormKeys {
-  monthlyRent = 'monthlyRent',
-  securityDeposit = 'securityDeposit',
-  showMore = 'showMore',
-  annualIncrement = 'annualIncrement',
-  maintenanceAmount = 'maintenanceAmount',
-  maintenanceSchedule = 'maintenanceSchedule',
-  maintenanceBy = 'maintenanceBy',
-  availableFrom = 'availableFrom',
-  furnishingStatus = 'furnishingStatus',
-  utilityBy = 'utilityBy',
-  minimumLeasePeriod = 'minimumLeasePeriod',
-  rentFreePeriod = 'rentFreePeriod',
-}
-
 export enum PaidByTypes {
   TENANT = 'TENANT',
   OWNER = 'OWNER',

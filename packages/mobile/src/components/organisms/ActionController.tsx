@@ -56,7 +56,9 @@ class ActionController extends React.PureComponent<Props, {}> {
             currentAssetType={propertyType}
           />
         )}
-        {typeOfPlan === TypeOfPlan.MANAGE && <ManageTermController />}
+        {typeOfPlan === TypeOfPlan.MANAGE && (
+          <ManageTermController currencyData={currencies[0]} currentAssetType={propertyType} onNextStep={onNextStep} />
+        )}
       </>
     );
   };

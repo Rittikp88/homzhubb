@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 4,
     flexDirection: 'row',
-    marginBottom: 24,
   },
   fieldContainer: {
     flex: 0.5,
