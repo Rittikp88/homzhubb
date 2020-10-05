@@ -11,15 +11,8 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images';
-import { Button, Image, Label, Text } from '@homzhub/common/src/components';
-import {
-  Header,
-  AddressWithStepIndicator,
-  AddPropertyDetails,
-  BottomSheet,
-  Loader,
-} from '@homzhub/mobile/src/components';
+import { Text } from '@homzhub/common/src/components';
+import { Header, AddressWithStepIndicator, AddPropertyDetails, Loader } from '@homzhub/mobile/src/components';
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -41,7 +34,6 @@ const Steps = ['Details', 'Highlights', 'Gallery'];
 interface IScreenState {
   currentIndex: number;
   isNextStep: boolean;
-  isSheetVisible: boolean;
 }
 
 interface IStateProps {
@@ -78,7 +70,6 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     this.state = {
       currentIndex: 0,
       isNextStep: false,
-      isSheetVisible: false,
     };
   }
 
@@ -102,7 +93,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   public render = (): ReactNode => {
-    const { isSheetVisible, currentIndex } = this.state;
+    const { currentIndex } = this.state;
     const { t, assetDetail } = this.props;
 
     if (!assetDetail) return <Loader visible />;
@@ -142,34 +133,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
             }}
           />
         </ScrollView>
-        <BottomSheet visible={isSheetVisible} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
-          {this.renderContinueView()}
-        </BottomSheet>
       </View>
-    );
-  };
-
-  private renderContinueView = (): ReactElement => {
-    const { t } = this.props;
-    return (
-      <>
-        <View style={styles.sheetContent}>
-          <Text type="large" style={styles.sheetTitle}>
-            {t('congratulations')}
-          </Text>
-          <Text type="small">{t('property:yourDetailsAdded')}</Text>
-          <Image source={images.check} style={styles.image} />
-          <Label type="large" style={styles.continue}>
-            {t('property:clickContinue')}
-          </Label>
-        </View>
-        <Button
-          type="primary"
-          title={t('continue')}
-          containerStyle={styles.buttonStyle}
-          onPress={this.navigateToPlans}
-        />
-      </>
     );
   };
 
@@ -221,10 +185,6 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private onCloseSheet = (): void => {
-    this.setState({ isSheetVisible: false });
-  };
-
   private onEditPress = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.PostAssetDetails);
@@ -250,18 +210,13 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private handleSkip = (): void => {
     const { currentIndex } = this.state;
+    const { navigation } = this.props;
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
-      this.setState({ isSheetVisible: true });
+      navigation.navigate(ScreensKeys.AssetPlanSelection);
     }
-  };
-
-  private navigateToPlans = (): void => {
-    const { navigation } = this.props;
-    this.setState({ isSheetVisible: false });
-    navigation.navigate(ScreensKeys.AssetPlanSelection);
   };
 
   private handlePreviousStep = (index: number): void => {
@@ -277,14 +232,14 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private handleNextStep = (): void => {
     const { currentIndex } = this.state;
-    const { getAssetById } = this.props;
+    const { getAssetById, navigation } = this.props;
     this.setState({ isNextStep: true });
     getAssetById();
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
-      this.setState({ isSheetVisible: true });
+      navigation.navigate(ScreensKeys.AssetPlanSelection);
     }
   };
 }
@@ -333,22 +288,5 @@ const styles = StyleSheet.create({
   },
   propertyImagesContainer: {
     margin: theme.layout.screenPadding,
-  },
-  sheetContent: {
-    alignItems: 'center',
-  },
-  sheetTitle: {
-    marginBottom: 8,
-  },
-  image: {
-    marginVertical: 30,
-  },
-  continue: {
-    marginBottom: 12,
-    color: theme.colors.darkTint5,
-  },
-  buttonStyle: {
-    flex: 0,
-    marginHorizontal: 16,
   },
 });

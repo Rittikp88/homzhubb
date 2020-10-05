@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { RNCheckbox } from '@homzhub/common/src/components';
+import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 
 export interface IProps {
   onChange: (isSelected: boolean, text: string) => void;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { View, StyleSheet, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -11,10 +11,11 @@ import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/se
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { images } from '@homzhub/common/src/assets/images';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { Divider, Label, Text } from '@homzhub/common/src/components';
-import { Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { Button, Divider, Label, Text } from '@homzhub/common/src/components';
+import { BottomSheet, Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { AssetAdvertisement, AssetAdvertisementResults } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 import { AssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
@@ -34,12 +35,14 @@ type Props = OwnProps & IDispatchProps & IStateProps;
 interface IAssetPlanState {
   banners: AssetAdvertisement;
   activeSlide: number;
+  isSheetVisible: boolean;
 }
 
 class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   public state = {
     banners: {} as AssetAdvertisement,
     activeSlide: 0,
+    isSheetVisible: true,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -50,6 +53,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
 
   public render(): React.ReactElement {
     const { t } = this.props;
+    const { isSheetVisible } = this.state;
     return (
       <>
         <Header icon={icons.leftArrow} title={t('propertyPlan')} onIconPress={this.goBack} />
@@ -57,6 +61,9 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
           <View style={styles.planContainer}>{this.renderPlans()}</View>
           <View style={styles.carouselContainer}>{this.renderAdvertisements()}</View>
         </ScrollView>
+        <BottomSheet visible={isSheetVisible} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
+          {this.renderContinueView()}
+        </BottomSheet>
       </>
     );
   }
@@ -76,6 +83,25 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
         <View>
           <FlatList data={assetPlan} renderItem={this.renderItem} keyExtractor={this.renderKeyExtractor} />
         </View>
+      </>
+    );
+  };
+
+  private renderContinueView = (): ReactElement => {
+    const { t } = this.props;
+    return (
+      <>
+        <View style={styles.sheetContent}>
+          <Text type="large" style={styles.sheetTitle}>
+            {t('common:congratulations')}
+          </Text>
+          <Text type="small">{t('property:yourDetailsAdded')}</Text>
+          <Image source={images.check} style={styles.image} />
+          <Label type="large" style={styles.continue}>
+            {t('property:clickContinue')}
+          </Label>
+        </View>
+        <Button type="primary" title={t('continue')} containerStyle={styles.buttonStyle} onPress={this.onCloseSheet} />
       </>
     );
   };
@@ -162,6 +188,10 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
         routes: [{ name: ScreensKeys.BottomTabs }],
       })
     );
+  };
+
+  private onCloseSheet = (): void => {
+    this.setState({ isSheetVisible: false });
   };
 
   public getPlanName = (name: string): string => {
@@ -271,5 +301,22 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     width: theme.viewport.width / 1.2,
+  },
+  sheetContent: {
+    alignItems: 'center',
+  },
+  sheetTitle: {
+    marginBottom: 8,
+  },
+  image: {
+    marginVertical: 30,
+  },
+  continue: {
+    marginBottom: 12,
+    color: theme.colors.darkTint5,
+  },
+  buttonStyle: {
+    flex: 0,
+    marginHorizontal: 16,
   },
 });

@@ -127,7 +127,7 @@ export class LeaseTerms {
   @JsonProperty('currency_symbol', String)
   private _currencySymbol = '';
 
-  @JsonProperty('description', String)
+  @JsonProperty('description', String, true)
   private _description = '';
 
   get id(): number {
