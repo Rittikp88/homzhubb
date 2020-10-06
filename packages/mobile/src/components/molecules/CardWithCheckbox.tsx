@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, StyleSheet, ImageSourcePropType } from 'react-native';
+import React, { ReactElement } from 'react';
+import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Image, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
+import { Divider, ImageRound, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
 
 interface IOwnProps {
   heading: string;
@@ -9,9 +9,11 @@ interface IOwnProps {
   price: number;
   selected: boolean;
   onToggleSelect?: () => void;
+  containerStyle?: any;
 }
 interface IOwnState {
   isChecked: boolean;
+  showMore: boolean;
 }
 
 export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> {
@@ -21,30 +23,53 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
 
     this.state = {
       isChecked: selected,
+      showMore: false,
     };
   }
 
   public render = (): React.ReactElement => {
-    const { heading, image, price } = this.props;
-    const { isChecked } = this.state;
+    const { heading, image, price, containerStyle } = this.props;
+    const { isChecked, showMore } = this.state;
     const {
       colors: { moreSeparator, white },
     } = theme;
     const backgroundColor = isChecked ? moreSeparator : white;
 
     return (
-      <View style={[styles.container, { backgroundColor }]}>
-        <Image width={80} height={80} source={image} />
-        <View style={styles.content}>
-          <View style={styles.subContainer}>
-            <Label type="large" numberOfLines={3} style={styles.textStyle}>
-              {heading}
-            </Label>
-            <RNCheckbox selected={isChecked} onToggle={this.onToggle} containerStyle={styles.checkbox} />
+      <View style={[styles.container, containerStyle]}>
+        <View style={[{ backgroundColor }, styles.padding]}>
+          <View style={styles.rowStyle}>
+            <ImageRound width={70} height={70} source={image} />
+            <View style={styles.content}>
+              <View style={styles.headingStyle}>
+                <Label type="large" numberOfLines={3} style={styles.textStyle}>
+                  {heading}
+                </Label>
+                <RNCheckbox selected={isChecked} onToggle={this.onToggle} />
+              </View>
+              <PricePerUnit textStyle={styles.price} textSizeType="small" price={price} currency="INR" />
+            </View>
           </View>
-          <PricePerUnit textStyle={styles.price} textSizeType="small" price={price} currency="INR" />
+          {showMore && this.renderMoreContent()}
         </View>
+        <TouchableOpacity style={styles.moreBtn} onPress={this.toggleSubsection}>
+          <Label type="regular" textType="semiBold" style={styles.moreTextStyle}>
+            {showMore ? 'Show less' : 'Show more'}
+          </Label>
+        </TouchableOpacity>
       </View>
+    );
+  };
+
+  private renderMoreContent = (): ReactElement => {
+    return (
+      <>
+        <Divider containerStyles={styles.dividerStyles} />
+        <View style={styles.rowStyle}>
+          <Label type="regular">{'\u2B24'}</Label>
+          <Label type="regular">Some extra text</Label>
+        </View>
+      </>
     );
   };
 
@@ -53,30 +78,51 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
       isChecked: !prev.isChecked,
     }));
   };
+
+  private toggleSubsection = (): void => {
+    this.setState((prev) => ({
+      showMore: !prev.showMore,
+    }));
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    padding: theme.layout.screenPadding,
-    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.moreSeparator,
+    borderRadius: 4,
   },
   content: {
     marginLeft: 10,
   },
-  subContainer: {
+  headingStyle: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   textStyle: {
     width: '70%',
     color: theme.colors.darkTint2,
   },
-  checkbox: {
-    marginHorizontal: 16,
-  },
   price: {
     marginTop: 10,
     color: theme.colors.darkTint2,
+  },
+  rowStyle: {
+    flexDirection: 'row',
+  },
+  moreBtn: {
+    backgroundColor: theme.colors.lightBlue,
+    alignItems: 'center',
+    paddingVertical: 6,
+  },
+  padding: {
+    padding: 12,
+  },
+  moreTextStyle: {
+    color: theme.colors.blue,
+  },
+  dividerStyles: {
+    marginTop: 16,
+    marginBottom: 12,
   },
 });

@@ -5,6 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button } from '@homzhub/common/src/components';
 import { CardWithCheckbox } from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
+import { SearchBar } from '@homzhub/mobile/src/components';
 import { Services } from '@homzhub/common/src/mocks/ValueAddedServices';
 
 interface IValueServices {
@@ -20,17 +21,34 @@ interface IOwnProps extends WithTranslation {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
+interface IOwnState {
+  searchString: string;
+}
+
 // TODO(28/09/2020): Replace mock-data once API finalize
 
-class ValueAddedServicesView extends React.PureComponent<IOwnProps, {}> {
+class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
+  public state = {
+    searchString: '',
+  };
+
   public render = (): React.ReactElement => {
     const { handleNextStep, containerStyle, t } = this.props;
+    const { searchString } = this.state;
 
     return (
       <View style={[styles.container, containerStyle]}>
+        <SearchBar
+          placeholder={t('assetDashboard:searchByKeyword')}
+          value={searchString}
+          updateValue={this.updateSearchString}
+          containerStyle={styles.searchStyle}
+        />
+
         {Services.map((item) => {
           return (
             <CardWithCheckbox
+              containerStyle={styles.cardContainer}
               key={item.id}
               heading={item.name}
               image={images.landingScreenLogo}
@@ -39,6 +57,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, {}> {
             />
           );
         })}
+
         <Button
           type="primary"
           title={t('common:continue')}
@@ -47,6 +66,10 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, {}> {
         />
       </View>
     );
+  };
+
+  private updateSearchString = (text: string): void => {
+    this.setState({ searchString: text });
   };
 }
 
@@ -61,5 +84,11 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     margin: 16,
+  },
+  searchStyle: {
+    marginBottom: 24,
+  },
+  cardContainer: {
+    marginBottom: 16,
   },
 });
