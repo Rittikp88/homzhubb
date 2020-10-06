@@ -19,12 +19,12 @@ import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IPropertySelectedImages, IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
-import { LastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProps {
   propertyId: number;
   onPressContinue: () => void;
-  lastVisitedStep?: LastVisitedStep;
+  lastVisitedStep: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -362,12 +362,15 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       const urlResponse: IYoutubeResponse[] = await AssetRepository.postAttachmentUpload(payload);
       attachmentIds.push({ attachment: urlResponse[0].id, is_cover_image: false });
     }
+
     const updateAssetPayload: IUpdateAssetParams = {
       last_visited_step: {
         ...lastVisitedStep,
-        is_gallery_done: true,
-        current_step: 4,
-        total_step: 4,
+        asset_creation: {
+          ...lastVisitedStep.asset_creation,
+          is_gallery_done: true,
+          total_step: 4,
+        },
       },
     };
     try {

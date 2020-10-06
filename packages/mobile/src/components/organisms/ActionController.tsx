@@ -9,6 +9,8 @@ import { SaleTermController } from '@homzhub/mobile/src/components/organisms/Sal
 import { ManageTermController } from '@homzhub/mobile/src/components/organisms/ManageTermController';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Country } from '@homzhub/common/src/domain/models/CountryCode';
+import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProps {
   typeOfPlan: TypeOfPlan;
@@ -16,6 +18,8 @@ interface IProps {
   onNextStep: () => void;
   country: Country;
   propertyType: string;
+  furnishing: FurnishingType;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IDispatchProps {
@@ -40,16 +44,25 @@ class ActionController extends React.PureComponent<Props, {}> {
       currentAssetId,
       country: { currencies },
       propertyType,
+      lastVisitedStep,
+      furnishing,
     } = this.props;
     return (
       <>
         {typeOfPlan === TypeOfPlan.SELL && (
-          <SaleTermController onNextStep={onNextStep} currentAssetId={currentAssetId} currency={currencies[0]} />
+          <SaleTermController
+            onNextStep={onNextStep}
+            currentAssetId={currentAssetId}
+            currency={currencies[0]}
+            lastVisitedStep={lastVisitedStep}
+          />
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
           <LeaseTermController
             onNextStep={onNextStep}
             setTermId={setTermId}
+            furnishing={furnishing}
+            lastVisitedStep={lastVisitedStep}
             currencyData={currencies[0]}
             currentTermId={currentTermId}
             currentAssetId={currentAssetId}
@@ -57,7 +70,12 @@ class ActionController extends React.PureComponent<Props, {}> {
           />
         )}
         {typeOfPlan === TypeOfPlan.MANAGE && (
-          <ManageTermController currencyData={currencies[0]} currentAssetType={propertyType} onNextStep={onNextStep} />
+          <ManageTermController
+            currencyData={currencies[0]}
+            currentAssetType={propertyType}
+            onNextStep={onNextStep}
+            lastVisitedStep={lastVisitedStep}
+          />
         )}
       </>
     );

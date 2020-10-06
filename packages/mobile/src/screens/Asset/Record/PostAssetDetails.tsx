@@ -20,7 +20,7 @@ import {
   AssetGroupSelection,
   Loader,
 } from '@homzhub/mobile/src/components';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -32,6 +32,7 @@ interface IStateProps {
   isLoading: boolean;
   assetId: number;
   asset: Asset | null;
+  lastVisitedStep: ILastVisitedStep | null;
 }
 
 interface IDispatchProps {
@@ -203,8 +204,25 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       countryIsoCode: country_iso2_code,
       address,
     } = values;
-    const { setAssetId, assetId, navigation } = this.props;
+    const { setAssetId, assetId, navigation, lastVisitedStep } = this.props;
     const { assetGroupTypeId: asset_type, longitude, latitude } = this.state;
+    let visitedStep = {
+      asset_creation: {
+        is_created: true,
+        total_step: 4,
+      },
+    };
+
+    if (lastVisitedStep) {
+      visitedStep = {
+        ...lastVisitedStep,
+        asset_creation: {
+          ...lastVisitedStep.asset_creation,
+          is_created: true,
+          total_step: 4,
+        },
+      };
+    }
 
     const params = {
       city_name,
@@ -219,11 +237,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       unit_number,
       latitude,
       longitude,
-      last_visited_step: {
-        is_created: true,
-        current_step: 1,
-        total_step: 4,
-      },
+      last_visited_step: visitedStep,
     };
 
     formActions.setSubmitting(true);
@@ -357,12 +371,19 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getAssetGroups, getAssetGroupsLoading, getCurrentAssetId, getAssetDetails } = RecordAssetSelectors;
+  const {
+    getAssetGroups,
+    getAssetGroupsLoading,
+    getCurrentAssetId,
+    getAssetDetails,
+    getLastVisitedStep,
+  } = RecordAssetSelectors;
   return {
     assetGroups: getAssetGroups(state),
     assetId: getCurrentAssetId(state),
     isLoading: getAssetGroupsLoading(state),
     asset: getAssetDetails(state),
+    lastVisitedStep: getLastVisitedStep(state),
   };
 };
 

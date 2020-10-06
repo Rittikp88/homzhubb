@@ -1,12 +1,18 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
 import { Button } from '@homzhub/common/src/components';
 import { CardWithCheckbox } from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
 import { SearchBar } from '@homzhub/mobile/src/components';
 import { Services } from '@homzhub/common/src/mocks/ValueAddedServices';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IValueServices {
   name: string;
@@ -18,7 +24,10 @@ interface IValueServices {
 interface IOwnProps extends WithTranslation {
   data?: IValueServices[];
   handleNextStep: () => void;
+  propertyId: number;
+  typeOfPlan: TypeOfPlan;
   containerStyle?: StyleProp<ViewStyle>;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IOwnState {
@@ -33,7 +42,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   public render = (): React.ReactElement => {
-    const { handleNextStep, containerStyle, t } = this.props;
+    const { containerStyle, t } = this.props;
     const { searchString } = this.state;
 
     return (
@@ -62,7 +71,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
           type="primary"
           title={t('common:continue')}
           containerStyle={styles.buttonStyle}
-          onPress={handleNextStep}
+          onPress={this.handleContinue}
         />
       </View>
     );
@@ -70,6 +79,28 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
 
   private updateSearchString = (text: string): void => {
     this.setState({ searchString: text });
+  };
+
+  private handleContinue = async (): Promise<void> => {
+    const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
+    handleNextStep();
+
+    const updateAssetPayload: IUpdateAssetParams = {
+      last_visited_step: {
+        ...lastVisitedStep,
+        listing: {
+          ...lastVisitedStep.listing,
+          type: typeOfPlan,
+          is_services_done: true,
+        },
+      },
+    };
+
+    try {
+      await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 }
 

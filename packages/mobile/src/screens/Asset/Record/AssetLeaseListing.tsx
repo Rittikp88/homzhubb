@@ -7,7 +7,6 @@ import { CommonActions } from '@react-navigation/native';
 import { TabView } from 'react-native-tab-view';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
-import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -30,11 +29,14 @@ import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPa
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
   assetId: number;
   assetDetails: Asset | null;
+  lastVisitedStep: ILastVisitedStep | null;
 }
 
 interface IDispatchProps {
@@ -56,6 +58,7 @@ interface IOwnState {
   isActionSheetToggled: boolean;
   isPropertyAsUnits: boolean;
   isSheetVisible: boolean;
+  isNextStep: boolean;
 }
 
 enum RouteKeys {
@@ -73,7 +76,28 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     isActionSheetToggled: false,
     isPropertyAsUnits: false,
     isSheetVisible: false,
+    isNextStep: false,
   };
+
+  public static getDerivedStateFromProps(props: Props, state: IOwnState): IOwnState | null {
+    const { assetDetails } = props;
+    const { isNextStep } = state;
+    if (assetDetails) {
+      const {
+        isVerificationRequired,
+        listing: { stepList },
+      } = assetDetails.lastVisitedStep;
+      if (!isNextStep && isVerificationRequired) {
+        return {
+          ...state,
+          currentIndex: 1,
+          isStepDone: stepList,
+        };
+      }
+    }
+
+    return null;
+  }
 
   public componentDidMount(): void {
     const { getAssetById } = this.props;
@@ -87,7 +111,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       assetDetails,
     } = this.props;
 
-    const badge = PropertyUtils.getListingBadge(selectedPlan);
     if (!assetDetails) return null;
 
     const {
@@ -104,7 +127,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         <ScrollView style={styles.screen} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
           <AddressWithStepIndicator
             steps={steps}
-            badge={badge}
+            selectedPan={selectedPlan}
             badgeStyle={styles.badgeStyle}
             propertyType={name}
             primaryAddress={projectName}
@@ -118,7 +141,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             lazy
             renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
             removeClippedSubviews
-            initialLayout={theme.viewport}
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
             renderTabBar={(): null => null}
@@ -219,22 +241,46 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
+      lastVisitedStep,
       assetId,
     } = this.props;
 
-    if (!assetDetails) return null;
+    if (!assetDetails || !lastVisitedStep) return null;
 
     switch (route.key) {
       case RouteKeys.Verification:
-        return <PropertyVerification propertyId={assetId} typeOfPlan={selectedPlan} updateStep={this.handleNextStep} />;
+        return (
+          <PropertyVerification
+            propertyId={assetId}
+            typeOfPlan={selectedPlan}
+            updateStep={this.handleNextStep}
+            lastVisitedStep={lastVisitedStep}
+          />
+        );
       case RouteKeys.Services:
-        return <ValueAddedServicesView handleNextStep={this.handleNextStep} />;
+        return (
+          <ValueAddedServicesView
+            propertyId={assetId}
+            lastVisitedStep={lastVisitedStep}
+            typeOfPlan={selectedPlan}
+            handleNextStep={this.handleNextStep}
+          />
+        );
       case RouteKeys.Payment:
-        return <PropertyPayment handleNextStep={this.handleNextStep} />;
+        return (
+          <PropertyPayment
+            propertyId={assetId}
+            lastVisitedStep={lastVisitedStep}
+            typeOfPlan={selectedPlan}
+            handleNextStep={this.handleNextStep}
+          />
+        );
       default:
         return (
           <ActionController
             typeOfPlan={selectedPlan}
+            lastVisitedStep={lastVisitedStep}
+            furnishing={assetDetails.furnishing as FurnishingType}
             isSplitAsUnits={isPropertyAsUnits}
             country={assetDetails.country}
             propertyType={assetDetails.assetGroup.code}
@@ -361,6 +407,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     newStepDone[currentIndex] = true;
     this.setState({
       isStepDone: newStepDone,
+      isNextStep: true,
     });
     if (currentIndex < this.getRoutes().length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
@@ -379,7 +426,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const { navigation, resetState } = this.props;
     const { currentIndex } = this.state;
     if (currentIndex < this.getRoutes().length - 2) {
-      this.setState({ currentIndex: currentIndex + 1 });
+      this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
       resetState();
@@ -394,11 +441,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getSelectedAssetPlan, getCurrentAssetId, getAssetDetails } = RecordAssetSelectors;
+  const { getSelectedAssetPlan, getCurrentAssetId, getAssetDetails, getLastVisitedStep } = RecordAssetSelectors;
   return {
     selectedAssetPlan: getSelectedAssetPlan(state),
     assetId: getCurrentAssetId(state),
     assetDetails: getAssetDetails(state),
+    lastVisitedStep: getLastVisitedStep(state),
   };
 };
 

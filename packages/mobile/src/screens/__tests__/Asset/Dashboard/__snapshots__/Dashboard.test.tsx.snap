@@ -27,6 +27,7 @@ exports[`Dashboard Screen should render snapshot 1`] = `
   />
   <withI18nextTranslation(PendingPropertyListCard)
     onPressComplete={[Function]}
+    onSelectAction={[Function]}
   />
   <withI18nextTranslation(FinanceOverview) />
   <withI18nextTranslation(AssetMarketTrends)

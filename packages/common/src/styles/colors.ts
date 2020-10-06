@@ -33,6 +33,7 @@ const namedColors = {
 };
 
 const tintColors = {
+  // dark
   darkTint1: '#001B36',
   darkTint2: '#19324A',
   darkTint3: '#33495E',
@@ -45,6 +46,12 @@ const tintColors = {
   darkTint10: '#E5E8EB',
   darkTint11: '#9A99A2',
   darkTint12: '#E0E0E0',
+
+  // blue
+  blueTint7: '#99CEFC',
+  blueTint8: '#B2DAFD',
+  blueTint9: '#CCE6FE',
+  blueTint10: '#E5F3FE',
 };
 
 // Theme based color scheme
@@ -80,6 +87,8 @@ const opacity = {
   ratingHigh: 'rgba(71, 194, 178, 0.12)',
   reminderBackground: 'rgba(0, 132, 248, 0.1)',
   greenOpacity: '#DDF4E7',
+  blueOpacity: 'rgba(0, 132, 248, 0.1)',
+  reviewCardOpacity: 'rgba(44, 186, 103, 0.1)',
 };
 
 const gradientAssetMetrics = {

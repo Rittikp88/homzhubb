@@ -11,24 +11,27 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { CheckboxGroup, FormButton, TextArea } from '@homzhub/common/src/components';
 import {
-  LeaseTermForm,
   DEFAULT_LEASE_PERIOD,
   IFormData,
   LeaseFormKeys,
   LeaseFormSchema,
+  LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import {
+  FurnishingType,
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
   PaidByTypes,
   ScheduleTypes,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { IList } from '@homzhub/common/src/domain/models/Tenant';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IList } from '@homzhub/common/src/domain/models/Tenant';
-import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
@@ -37,6 +40,8 @@ interface IProps extends WithTranslation {
   onNextStep: () => void;
   currencyData: Currency;
   currentAssetType: string;
+  furnishing: FurnishingType;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IOwnState {
@@ -142,7 +147,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
-    const { onNextStep, currentAssetType } = this.props;
+    const { onNextStep, lastVisitedStep, furnishing, currentAssetType } = this.props;
     const { description, availableSpaces, selectedPreferences } = this.state;
 
     let maintenance_amount: number | null = parseInt(values[LeaseFormKeys.maintenanceAmount], 10);
@@ -175,6 +180,16 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       lease_unit: {
         name: 'Unit 1',
         spaces: availableSpaces,
+      },
+      maintenance_unit: null, // TODO: Add data once UI ready
+      furnishing,
+      last_visited_step: {
+        ...lastVisitedStep,
+        listing: {
+          ...lastVisitedStep.listing,
+          type: TypeOfPlan.RENT,
+          is_listing_created: true,
+        },
       },
     };
 

@@ -11,6 +11,7 @@ import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/CountryCode';
+import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 export interface ICarpetAreaUnit {
   id: number;
@@ -66,15 +67,7 @@ export interface IAsset {
   construction_year: string;
   facing: string;
   floor_type: string;
-}
-
-export interface ILastVisitedStep {
-  current_step: number;
-  total_step: number;
-  is_created?: boolean;
-  is_details_done?: boolean;
-  is_highlights_done?: boolean;
-  is_gallery_done?: boolean;
+  last_visited_step: ILastVisitedStep;
 }
 
 export interface IData {
@@ -118,66 +111,6 @@ export class Data {
 
   get description(): string {
     return this._description;
-  }
-}
-
-@JsonObject('LastVisitedStep')
-export class LastVisitedStep {
-  @JsonProperty('is_created', Boolean, true)
-  private _isCreated = true;
-
-  @JsonProperty('is_details_done', Boolean, true)
-  private _isDetailsDone = false;
-
-  @JsonProperty('is_highlights_done', Boolean, true)
-  private _isHighlightsDone = false;
-
-  @JsonProperty('is_gallery_done', Boolean, true)
-  private _isGalleryDone = false;
-
-  @JsonProperty('current_step', Number, true)
-  private _currentStep = 4;
-
-  @JsonProperty('total_step', Number, true)
-  private _totalStep = 4;
-
-  @JsonProperty('percentage', Number, true)
-  private _percentage = 0;
-
-  get currentStep(): number {
-    return this._currentStep;
-  }
-
-  get totalStep(): number {
-    return this._totalStep;
-  }
-
-  get isCreated(): boolean {
-    return this._isCreated;
-  }
-
-  get isDetailsDone(): boolean {
-    return this._isDetailsDone;
-  }
-
-  get isHighlightsDone(): boolean {
-    return this._isHighlightsDone;
-  }
-
-  get isGalleryDone(): boolean {
-    return this._isGalleryDone;
-  }
-
-  get stepList(): boolean[] {
-    // Sort in same order as add property flow
-    return [this.isDetailsDone, this.isHighlightsDone, this.isGalleryDone];
-  }
-
-  get percentage(): number {
-    let totalDone = 0;
-    const totalSteps = [...this.stepList, this.isCreated];
-    totalDone = totalSteps.filter((item) => item).length;
-    return (totalDone / this.totalStep) * 100;
   }
 }
 

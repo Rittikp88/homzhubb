@@ -3,6 +3,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 const getLoadingState = (state: IState): boolean => {
   const {
@@ -88,6 +89,14 @@ const getSpaceTypes = (state: IState): SpaceType[] => {
   return spaceType;
 };
 
+const getLastVisitedStep = (state: IState): ILastVisitedStep | null => {
+  const {
+    recordAsset: { assetDetails },
+  } = state;
+  if (!assetDetails) return null;
+  return assetDetails.last_visited_step;
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
@@ -98,4 +107,5 @@ export const RecordAssetSelectors = {
   getSpaceTypes,
   getAssetDetails,
   getCurrentTermId,
+  getLastVisitedStep,
 };

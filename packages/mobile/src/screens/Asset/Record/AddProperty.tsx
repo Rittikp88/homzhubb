@@ -17,6 +17,7 @@ import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighl
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IRoutes {
   key: string;
@@ -40,6 +41,7 @@ interface IStateProps {
   assetId: number;
   spaceTypes: SpaceType[];
   assetDetail: Asset | null;
+  lastVisitedStep: ILastVisitedStep | null;
 }
 
 interface IDispatchProps {
@@ -74,14 +76,17 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   }
 
   public static getDerivedStateFromProps(props: Props, state: IScreenState): IScreenState | null {
-    const { assetDetail: newPropValue } = props;
+    const { assetDetail } = props;
     const { currentIndex, isNextStep } = state;
-    const newStepIndex = newPropValue?.lastVisitedStep.stepList.findIndex((item) => !item);
-    if (!isNextStep && newStepIndex && currentIndex !== newStepIndex) {
-      return {
-        ...state,
-        currentIndex: newStepIndex,
-      };
+    if (!isNextStep && assetDetail) {
+      const { assetCreation } = assetDetail.lastVisitedStep;
+      const newStepIndex = assetCreation.stepList.findIndex((item) => !item);
+      if (newStepIndex && currentIndex !== newStepIndex) {
+        return {
+          ...state,
+          currentIndex: newStepIndex,
+        };
+      }
     }
 
     return null;
@@ -101,7 +106,9 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
       projectName,
       address,
       assetType: { name },
-      lastVisitedStep: { stepList },
+      lastVisitedStep: {
+        assetCreation: { stepList },
+      },
     } = assetDetail;
 
     return (
@@ -160,7 +167,9 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private renderScene = ({ route }: { route: IRoutes }): ReactElement | null => {
-    const { spaceTypes, assetDetail, assetId } = this.props;
+    const { spaceTypes, assetDetail, assetId, lastVisitedStep } = this.props;
+    if (!lastVisitedStep) return null;
+
     switch (route.key) {
       case 'detail':
         return (
@@ -168,19 +177,25 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
             assetId={assetId}
             assetDetails={assetDetail}
             spaceTypes={spaceTypes}
+            lastVisitedStep={lastVisitedStep}
             handleNextStep={this.handleNextStep}
           />
         );
       case 'highlights':
         return (
-          <AssetHighlights propertyId={assetId} propertyDetail={assetDetail} handleNextStep={this.handleNextStep} />
+          <AssetHighlights
+            propertyId={assetId}
+            propertyDetail={assetDetail}
+            lastVisitedStep={lastVisitedStep}
+            handleNextStep={this.handleNextStep}
+          />
         );
       case 'gallery':
         return (
           <PropertyImages
             propertyId={assetId}
             onPressContinue={this.handleNextStep}
-            lastVisitedStep={assetDetail?.lastVisitedStep}
+            lastVisitedStep={lastVisitedStep}
             containerStyle={styles.propertyImagesContainer}
           />
         );
@@ -226,8 +241,13 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   private handlePreviousStep = (index: number): void => {
     const { currentIndex } = this.state;
     const { assetDetail } = this.props;
+    if (!assetDetail) return;
+    const {
+      lastVisitedStep: { assetCreation },
+    } = assetDetail;
+
     const value = index - currentIndex;
-    const notCompletedStep = assetDetail?.lastVisitedStep.stepList.findIndex((item) => !item);
+    const notCompletedStep = assetCreation.stepList.findIndex((item) => !item);
     if (index < currentIndex && index !== notCompletedStep) {
       this.setState({ currentIndex: currentIndex + value, isNextStep: true });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
@@ -249,11 +269,12 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentAssetId, getSpaceTypes, getAssetDetails } = RecordAssetSelectors;
+  const { getCurrentAssetId, getSpaceTypes, getAssetDetails, getLastVisitedStep } = RecordAssetSelectors;
   return {
     assetId: getCurrentAssetId(state),
     spaceTypes: getSpaceTypes(state),
     assetDetail: getAssetDetails(state),
+    lastVisitedStep: getLastVisitedStep(state),
   };
 };
 

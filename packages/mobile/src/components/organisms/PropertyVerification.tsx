@@ -26,6 +26,9 @@ import {
   IPostVerificationDocuments,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -35,9 +38,10 @@ interface IPropertyVerificationState {
 }
 
 interface IProps {
-  typeOfPlan: string;
+  typeOfPlan: TypeOfPlan;
   updateStep: () => void;
   propertyId: number;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 type Props = WithTranslation & IProps;
@@ -233,7 +237,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
-    const { propertyId, updateStep, t } = this.props;
+    const { propertyId, updateStep, t, lastVisitedStep, typeOfPlan } = this.props;
     const { localDocuments, existingDocuments } = this.state;
     if (localDocuments.length === 0) {
       updateStep();
@@ -251,6 +255,17 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     });
 
     this.setState({ isLoading: true });
+
+    const updateAssetPayload: IUpdateAssetParams = {
+      last_visited_step: {
+        ...lastVisitedStep,
+        listing: {
+          ...lastVisitedStep.listing,
+          type: typeOfPlan,
+          is_verification_done: true,
+        },
+      },
+    };
 
     try {
       const response = await AttachmentService.uploadImage(formData);
@@ -277,6 +292,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
       await this.getExistingDocuments(propertyId);
       updateStep();
+      await AssetRepository.updateAsset(propertyId, updateAssetPayload);
     } catch (e) {
       if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
         AlertHelper.error({ message: t('common:fileCorrupt') });

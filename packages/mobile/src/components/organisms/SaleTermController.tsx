@@ -12,15 +12,18 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormCalendar, FormTextInput, Text, TextArea } from '@homzhub/common/src/components';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { ICreateSaleTermDetails } from '@homzhub/common/src/domain/models/SaleTerms';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
   onNextStep: () => void;
   currency: Currency;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IFormData {
@@ -158,7 +161,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
     const { description, currentTermId } = this.state;
-    const { onNextStep, currentAssetId } = this.props;
+    const { onNextStep, currentAssetId, lastVisitedStep } = this.props;
 
     const params: ICreateSaleTermDetails = {
       expected_price: parseInt(values.expectedPrice, 10),
@@ -167,6 +170,14 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       maintenance_amount: parseInt(values.maintenanceAmount, 10),
       maintenance_payment_schedule: values.maintenanceSchedule,
       description,
+      last_visited_step: {
+        ...lastVisitedStep,
+        listing: {
+          ...lastVisitedStep.listing,
+          type: TypeOfPlan.SELL,
+          is_listing_created: true,
+        },
+      },
     };
 
     try {

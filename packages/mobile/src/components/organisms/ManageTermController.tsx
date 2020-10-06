@@ -15,8 +15,10 @@ import {
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IOwnState {
@@ -28,6 +30,7 @@ interface IProps extends WithTranslation {
   currencyData: Currency;
   currentAssetType: string;
   onNextStep: () => void;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IFormFields extends IFormData {
@@ -201,7 +204,19 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     this.setState({ description });
   };
 
-  private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {};
+  private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {
+    const { lastVisitedStep } = this.props;
+
+    // TODO: Add this object in payload. (Ref - lease/sale payload)
+    const last_visited_step = {
+      ...lastVisitedStep,
+      listing: {
+        ...lastVisitedStep.listing,
+        type: TypeOfPlan.MANAGE,
+        is_listing_created: true,
+      },
+    };
+  };
 
   private formSchema = (): yup.ObjectSchema => {
     const { t } = this.props;

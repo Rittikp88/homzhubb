@@ -316,7 +316,11 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "tenantEmail": "Tenant E-mail",
-    "tenantPhone": "Tenant mobile number"
+    "tenantPhone": "Tenant mobile number",
+    "forRental": "For Rental",
+    "forSale": "For Sale",
+    "reviewingProperty": "We are reviewing your property",
+    "executivesCall": "Please expect a call from our executives within the next 18 - 24 hours."
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -441,7 +445,9 @@
     "subscriptionHelperServices": "and get the following services",
     "upgrade": "Upgrade",
     "newNotification": "{{count}} new notifications",
-    "searchByKeyword": "Search by keyword"
+    "searchByKeyword": "Search by keyword",
+    "takeActions": "Take Actions",
+    "completeVerification": "Complete Property Verification"
   },
   "assetPortfolio": {
     "portfolio": "Portfolio",

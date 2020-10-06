@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 
 export enum PaidByTypes {
   TENANT = 'TENANT',
@@ -41,6 +42,8 @@ export interface IUpdateLeaseTermDetails {
     name: string;
     spaces: ISpaces[];
   };
+  last_visited_step?: ILastVisitedStep;
+  maintenance_unit?: null;
 }
 
 export interface ICreateLeaseTermDetails {
@@ -63,6 +66,8 @@ export interface ICreateLeaseTermDetails {
     name: string;
     spaces: ISpaces[];
   };
+  last_visited_step: ILastVisitedStep;
+  maintenance_unit: null;
 }
 
 export interface ILeaseTermDetails extends ICreateLeaseTermDetails {

@@ -3,6 +3,8 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Label, Text } from '@homzhub/common/src/components';
@@ -10,13 +12,17 @@ import HomzhubCoins from '@homzhub/mobile/src/components/molecules/HomzhubCoins'
 import OrderSummary from '@homzhub/mobile/src/components/molecules/OrderSummary';
 import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
 import { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
-import { Services } from '@homzhub/common/src/mocks/ValueAddedServices';
-import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
-import { IOrderSummaryPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
+import { IOrderSummaryPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Services } from '@homzhub/common/src/mocks/ValueAddedServices';
 
 interface IPaymentProps {
   handleNextStep: () => void;
+  typeOfPlan: TypeOfPlan;
+  propertyId: number;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IPaymentState {
@@ -40,7 +46,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
 
   public render(): React.ReactNode {
     const { isCoinApplied, orderSummary, isPromoFailed } = this.state;
-    const { t, handleNextStep } = this.props;
+    const { t } = this.props;
     return (
       <View style={styles.container}>
         {this.renderServices()}
@@ -58,7 +64,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
             amount={orderSummary.amountPayable}
             title={t('assetFinancial:payNow')}
             containerStyle={styles.payButton}
-            onPaymentSuccess={handleNextStep}
+            onPaymentSuccess={this.onPaymentSuccess}
           />
         )}
         <View style={styles.secureView}>
@@ -116,6 +122,28 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     } = this.state;
     this.setState({ isCoinApplied: !isCoinApplied });
     await this.getOrderSummary({ coins: coins.currentBalance });
+  };
+
+  private onPaymentSuccess = async (): Promise<void> => {
+    const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
+    handleNextStep();
+
+    const updateAssetPayload: IUpdateAssetParams = {
+      last_visited_step: {
+        ...lastVisitedStep,
+        listing: {
+          ...lastVisitedStep.listing,
+          type: typeOfPlan,
+          is_payment_done: true,
+        },
+      },
+    };
+
+    try {
+      await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private applyPromo = async (code: string): Promise<void> => {

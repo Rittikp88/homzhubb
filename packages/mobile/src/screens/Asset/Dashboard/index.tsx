@@ -25,10 +25,12 @@ import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMar
 import AssetSubscriptionPlan from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
+import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
   setAssetId: (payload: number) => void;
+  setSelectedPlan: (payload: ISelectedAssetPlan) => void;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
@@ -65,7 +67,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       <AnimatedProfileHeader title={t('dashboard')}>
         <>
           {this.renderAssetMetricsAndUpdates()}
-          <PendingPropertyListCard onPressComplete={this.onCompleteDetails} />
+          <PendingPropertyListCard
+            onPressComplete={this.onCompleteDetails}
+            onSelectAction={this.handleActionSelection}
+          />
           <FinanceOverview />
           <AssetMarketTrends containerStyle={styles.assetCards} onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
@@ -141,6 +146,16 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     });
   };
 
+  private handleActionSelection = (item: IActions, assetId: number): void => {
+    const { navigation, setSelectedPlan, setAssetId } = this.props;
+    setSelectedPlan({ id: item.id, selectedPlan: item.type });
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AssetLeaseListing,
+      params: { previousScreen: ScreensKeys.Dashboard },
+    });
+  };
+
   private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
@@ -156,8 +171,8 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentFilter } = PortfolioActions;
-  const { setAssetId } = RecordAssetActions;
-  return bindActionCreators({ setCurrentFilter, setAssetId }, dispatch);
+  const { setAssetId, setSelectedPlan } = RecordAssetActions;
+  return bindActionCreators({ setCurrentFilter, setAssetId, setSelectedPlan }, dispatch);
 };
 
 export default connect(

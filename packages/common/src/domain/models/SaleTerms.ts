@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 export interface ICreateSaleTermDetails {
@@ -8,6 +9,7 @@ export interface ICreateSaleTermDetails {
   maintenance_amount: number;
   maintenance_payment_schedule: ScheduleTypes;
   description?: string;
+  last_visited_step: ILastVisitedStep;
 }
 
 export interface IUpdateSaleTermDetails {
@@ -17,6 +19,7 @@ export interface IUpdateSaleTermDetails {
   maintenance_amount?: number;
   maintenance_payment_schedule?: ScheduleTypes;
   description?: string;
+  last_visited_step?: ILastVisitedStep;
 }
 
 export interface ISaleDetails extends ICreateSaleTermDetails {

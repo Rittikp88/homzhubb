@@ -6,6 +6,12 @@ export enum TypeOfPlan {
   MANAGE = 'MANAGE',
 }
 
+export interface IActions {
+  id: number;
+  title: string;
+  type: TypeOfPlan;
+}
+
 export interface ISelectedAssetPlan {
   id: number;
   selectedPlan: TypeOfPlan;

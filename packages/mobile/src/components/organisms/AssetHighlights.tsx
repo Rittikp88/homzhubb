@@ -4,7 +4,6 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { cloneDeep, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -13,7 +12,8 @@ import { Button, CheckboxGroup, ICheckboxGroupData, WithShadowView } from '@homz
 import AssetHighlightCard from '@homzhub/mobile/src/components/molecules/AssetHighlightCard';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
-import { Asset, LastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { OtherDetails } from '@homzhub/common/src/constants/AssetHighlights';
 
@@ -43,6 +43,7 @@ interface IHighlightProps {
   handleNextStep: () => void;
   propertyId: number;
   propertyDetail: Asset | null;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 type Props = IHighlightProps & WithTranslation;
@@ -262,21 +263,23 @@ export class AssetHighlights extends Component<Props, IState> {
   };
 
   private handleContinue = async (): Promise<void> => {
-    const { handleNextStep, propertyId, propertyDetail } = this.props;
+    const { handleNextStep, propertyId, lastVisitedStep } = this.props;
     const { isGated, allDayAccess, cornerProperty, powerBackup } = Details;
     const { selectedAmenity, propertyHighlight, selectedDetails } = this.state;
+
     const otherDetails: string[] = selectedDetails;
     const highlights = propertyHighlight.filter((item) => item);
-    const serializedObj: LastVisitedStep = ObjectMapper.serialize(propertyDetail?.lastVisitedStep);
 
     const payload: IUpdateAssetParams = {
       amenities: selectedAmenity,
       asset_highlights: highlights,
       last_visited_step: {
-        ...serializedObj,
-        is_highlights_done: true,
-        current_step: 3,
-        total_step: 4,
+        ...lastVisitedStep,
+        asset_creation: {
+          ...lastVisitedStep.asset_creation,
+          is_highlights_done: true,
+          total_step: 4,
+        },
       },
       is_gated: otherDetails.includes(isGated),
       power_backup: otherDetails.includes(powerBackup),

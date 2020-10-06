@@ -6,16 +6,16 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, FormTextInput, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
 import { AssetDescriptionForm } from '@homzhub/mobile/src/components';
 import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { Asset, LastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 import { ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IDescriptionForm {
   carpetArea?: number;
@@ -38,6 +38,7 @@ interface IOwnProps extends WithTranslation {
   assetDetails: Asset | null;
   spaceTypes: SpaceType[];
   handleNextStep: () => void;
+  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IOwnState {
@@ -164,8 +165,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
       furnishingType,
     } = values;
     const { spacesForm } = this.state;
-    const { handleNextStep, assetId, assetDetails } = this.props;
-    const serializedObj: LastVisitedStep = ObjectMapper.serialize(assetDetails?.lastVisitedStep);
+    const { handleNextStep, assetId, lastVisitedStep } = this.props;
 
     const sanitizedSpaces = spacesForm
       .filter((item) => item && item.description !== '')
@@ -189,10 +189,12 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
       furnishing: furnishingType,
       spaces: sanitizedSpaces,
       last_visited_step: {
-        ...serializedObj,
-        is_details_done: true,
-        current_step: 2,
-        total_step: 4,
+        ...lastVisitedStep,
+        asset_creation: {
+          ...lastVisitedStep.asset_creation,
+          is_details_done: true,
+          total_step: 4,
+        },
       },
     };
 
