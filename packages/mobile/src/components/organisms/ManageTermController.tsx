@@ -47,6 +47,7 @@ const initialFormValues: IFormFields = {
   securityDeposit: '',
   annualIncrement: '',
   minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
+  maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
   availableFrom: DateUtils.getCurrentDate(),
   maintenanceAmount: '',
   maintenanceSchedule: ScheduleTypes.ANNUALLY,
@@ -154,10 +155,11 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
                     placeholder={t('tenantPhone')}
                     inputType="phone"
                     maxLength={10}
-                    inputPrefixText={currencyData.currencyCode}
+                    inputPrefixText="+91"
                     formProps={formProps}
                   />
                   <LeaseTermForm
+                    isFromManage
                     formProps={formProps}
                     currencyData={currencyData}
                     currentAssetType={currentAssetType}

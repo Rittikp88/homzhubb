@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MultiSlider, { MarkerProps, LabelProps } from '@ptomasroos/react-native-multi-slider';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface ISliderProps {
   isMultipleSlider?: boolean;
@@ -70,8 +71,16 @@ export class Slider extends Component<ISliderProps> {
   private renderLabel = (e: LabelProps): React.ReactElement => {
     const { labelText = '' } = this.props;
     return (
-      <View style={{ transform: [{ translateX: e.oneMarkerLeftPosition }] }}>
-        <Text>{`${e.oneMarkerValue} ${labelText}`}</Text>
+      <View
+        style={[
+          { transform: [{ translateX: e.oneMarkerLeftPosition - theme.viewport.width * 0.075 }] },
+          styles.textContainer,
+        ]}
+      >
+        <Text textType="regular" type="regular">{`${e.oneMarkerValue} `}</Text>
+        <Label type="regular" textType="regular">
+          {labelText}
+        </Label>
       </View>
     );
   };
@@ -109,6 +118,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 4.65,
     elevation: 7,
+  },
+  textContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   normalMarker: {
     ...(theme.circleCSS(20) as object),

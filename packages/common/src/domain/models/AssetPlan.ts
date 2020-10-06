@@ -36,8 +36,8 @@ export class AssetPlan {
     return this._id;
   }
 
-  get name(): string {
-    return this._name;
+  get name(): TypeOfPlan {
+    return this._name as TypeOfPlan;
   }
 
   get description(): string {

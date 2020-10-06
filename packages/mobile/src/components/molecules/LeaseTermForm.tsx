@@ -12,6 +12,7 @@ import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGrou
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 export interface IFormData {
@@ -22,6 +23,7 @@ export interface IFormData {
   [LeaseFormKeys.availableFrom]: string;
   [LeaseFormKeys.maintenanceAmount]: string;
   [LeaseFormKeys.minimumLeasePeriod]: number;
+  [LeaseFormKeys.maximumLeasePeriod]: number;
   [LeaseFormKeys.maintenanceSchedule]: ScheduleTypes;
   [LeaseFormKeys.maintenanceBy]: PaidByTypes;
   [LeaseFormKeys.utilityBy]: PaidByTypes;
@@ -39,6 +41,7 @@ enum LeaseFormKeys {
   availableFrom = 'availableFrom',
   utilityBy = 'utilityBy',
   minimumLeasePeriod = 'minimumLeasePeriod',
+  maximumLeasePeriod = 'maximumLeasePeriod',
   rentFreePeriod = 'rentFreePeriod',
 }
 
@@ -46,12 +49,20 @@ interface IProps {
   formProps: FormikProps<IFormData>;
   currencyData: Currency;
   currentAssetType: string;
+  isFromManage?: boolean;
 }
 const MINIMUM_LEASE_PERIOD = 1;
 const MAXIMUM_LEASE_PERIOD = 24;
+const MINIMUM_TOTAL_LEASE_PERIOD = 0;
+const MAXIMUM_TOTAL_LEASE_PERIOD = 60;
 const DEFAULT_LEASE_PERIOD = 11;
 
-const LeaseTermForm = ({ formProps, currencyData, currentAssetType }: IProps): React.ReactElement => {
+const LeaseTermForm = ({
+  formProps,
+  currencyData,
+  currentAssetType,
+  isFromManage = false,
+}: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   const { setFieldValue, setFieldTouched, values } = formProps;
 
@@ -60,7 +71,13 @@ const LeaseTermForm = ({ formProps, currencyData, currentAssetType }: IProps): R
     { title: t('owner'), value: PaidByTypes.OWNER },
     { title: t('tenant'), value: PaidByTypes.TENANT },
   ];
-  const maxDayCount = currentAssetType === 'COM' ? 180 : 60;
+
+  let dateLabel;
+  let maxDate: string | undefined = DateUtils.getFutureDate(currentAssetType === AssetGroupTypes.COM ? 180 : 60);
+  if (isFromManage) {
+    maxDate = undefined;
+    dateLabel = t('common:startingFrom');
+  }
   // CONSTANTS END
 
   // INTERACTION HANDLERS
@@ -73,6 +90,10 @@ const LeaseTermForm = ({ formProps, currencyData, currentAssetType }: IProps): R
 
   const onSliderChange = useCallback((value: number): void => {
     setFieldValue(LeaseFormKeys.minimumLeasePeriod, Math.round(value));
+  }, []);
+
+  const onTotalSliderChange = useCallback((value: number): void => {
+    setFieldValue(LeaseFormKeys.maximumLeasePeriod, Math.round(value));
   }, []);
 
   const onUtilityChanged = useCallback((value: string): void => {
@@ -123,7 +144,7 @@ const LeaseTermForm = ({ formProps, currencyData, currentAssetType }: IProps): R
           inputGroupSuffixText={t('annualIncrementSuffix')}
         />
       )}
-      {currentAssetType === 'COM' && (
+      {currentAssetType === AssetGroupTypes.COM && (
         <FormTextInput
           inputType="number"
           name={LeaseFormKeys.rentFreePeriod}
@@ -139,7 +160,9 @@ const LeaseTermForm = ({ formProps, currencyData, currentAssetType }: IProps): R
       </Text>
       <FormCalendar
         formProps={formProps}
-        maxDate={DateUtils.getFutureDate(maxDayCount)}
+        label={dateLabel}
+        allowPastDates={isFromManage}
+        maxDate={maxDate}
         name={LeaseFormKeys.availableFrom}
         textType="label"
         textSize="regular"
@@ -152,6 +175,17 @@ const LeaseTermForm = ({ formProps, currencyData, currentAssetType }: IProps): R
           onSliderChange={onSliderChange}
           minSliderRange={MINIMUM_LEASE_PERIOD}
           maxSliderRange={MAXIMUM_LEASE_PERIOD}
+          minSliderValue={DEFAULT_LEASE_PERIOD}
+          isLabelRequired
+          labelText="Months"
+        />
+        <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+          {t('maximumLeasePeriod')}
+        </Text>
+        <Slider
+          onSliderChange={onTotalSliderChange}
+          minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
+          maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
           minSliderValue={DEFAULT_LEASE_PERIOD}
           isLabelRequired
           labelText="Months"

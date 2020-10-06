@@ -8,6 +8,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { CheckboxGroup, FormButton, TextArea } from '@homzhub/common/src/components';
 import {
   LeaseTermForm,
@@ -17,17 +18,17 @@ import {
   LeaseFormSchema,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
   ICreateLeaseTermDetails,
   IUpdateLeaseTermDetails,
   PaidByTypes,
   ScheduleTypes,
 } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IList } from '@homzhub/common/src/domain/models/Tenant';
 import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
@@ -59,6 +60,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       securityDeposit: '',
       annualIncrement: '',
       minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
+      maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
       availableFrom: DateUtils.getCurrentDate(),
       maintenanceAmount: '',
       maintenanceSchedule: ScheduleTypes.ANNUALLY,
@@ -74,7 +76,10 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
-    await this.getTenantPreferences();
+    const { currentAssetType } = this.props;
+    if (currentAssetType === AssetGroupTypes.RES) {
+      await this.getTenantPreferences();
+    }
     await this.getAvailableSpaces();
   };
 
@@ -156,6 +161,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       security_deposit: parseInt(values[LeaseFormKeys.securityDeposit], 10),
       annual_rent_increment_percentage,
       minimum_lease_period: values[LeaseFormKeys.minimumLeasePeriod],
+      maximum_lease_period: values[LeaseFormKeys.maximumLeasePeriod],
       available_from_date: values[LeaseFormKeys.availableFrom],
       maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
       utility_paid_by: values[LeaseFormKeys.utilityBy],
@@ -163,7 +169,9 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       maintenance_payment_schedule,
       ...(description && { description }),
       tenant_preferences: selectedPreferences,
-      ...(currentAssetType === 'COM' && { rent_free_period: Number(values[LeaseFormKeys.rentFreePeriod]) }),
+      ...(currentAssetType === AssetGroupTypes.COM && {
+        rent_free_period: Number(values[LeaseFormKeys.rentFreePeriod]),
+      }),
       lease_unit: {
         name: 'Unit 1',
         spaces: availableSpaces,

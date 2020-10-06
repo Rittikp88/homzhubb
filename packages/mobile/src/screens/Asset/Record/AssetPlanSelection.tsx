@@ -42,13 +42,16 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   public state = {
     banners: {} as AssetAdvertisement,
     activeSlide: 0,
-    isSheetVisible: true,
+    isSheetVisible: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
     const { getAssetPlanList } = this.props;
     getAssetPlanList();
     await this.getAssetAdvertisements();
+    setTimeout(() => {
+      this.setState({ isSheetVisible: true });
+    }, 0);
   };
 
   public render(): React.ReactElement {
@@ -108,13 +111,13 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
 
   public renderItem = ({ item, index }: { item: AssetPlan; index: number }): React.ReactElement => {
     const { assetPlan, setSelectedPlan, navigation } = this.props;
+
     const onPress = (): void => {
-      // TODO: Figure out to remove this error
-      // @ts-ignore
       setSelectedPlan({ id: item.id, selectedPlan: item.name });
       navigation.navigate(ScreensKeys.AssetLeaseListing);
     };
     const isLastIndex = assetPlan.length === index + 1;
+
     return (
       <>
         <TouchableOpacity onPress={onPress} style={styles.assetPlanItem} key={index}>

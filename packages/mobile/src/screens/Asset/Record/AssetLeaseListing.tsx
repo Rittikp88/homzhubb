@@ -119,7 +119,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
             removeClippedSubviews
             initialLayout={theme.viewport}
-            // @ts-ignore
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
             renderTabBar={(): null => null}
@@ -215,7 +214,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderScene = ({ route }: { route: RouteKeys }): React.ReactNode => {
+  private renderScene = ({ route }: { route: IRoutes }): React.ReactNode => {
     const { isPropertyAsUnits } = this.state;
     const {
       selectedAssetPlan: { selectedPlan },
@@ -225,7 +224,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
     if (!assetDetails) return null;
 
-    switch (route) {
+    switch (route.key) {
       case RouteKeys.Verification:
         return <PropertyVerification propertyId={assetId} typeOfPlan={selectedPlan} updateStep={this.handleNextStep} />;
       case RouteKeys.Services:

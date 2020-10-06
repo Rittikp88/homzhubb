@@ -49,6 +49,7 @@ export interface ICreateLeaseTermDetails {
   security_deposit: number;
   annual_rent_increment_percentage: number | null;
   minimum_lease_period: number;
+  maximum_lease_period: number;
   furnishing: FurnishingType;
   available_from_date: string;
   maintenance_paid_by: PaidByTypes;

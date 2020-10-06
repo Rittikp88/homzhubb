@@ -11,7 +11,7 @@ class FormUtils {
 
   public decimalRegex = /^[0-9]+(\.\d+)?$/;
 
-  public percentageRegex = /[0-9]{1,2}(.[0-9])*/;
+  public percentageRegex = /^(100(\.00?)?|[1-9]?\d(\.\d\d?)?)$/;
 
   public passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?])[0-9a-zA-Z!@#$%^&*?]*$/;
 
