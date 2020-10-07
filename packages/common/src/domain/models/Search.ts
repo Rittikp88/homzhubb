@@ -1,6 +1,6 @@
 import { IMediaAttributes } from '@homzhub/common/src/domain/models/Attachment';
 import { ICarpetAreaUnit } from '@homzhub/common/src/domain/models/Asset';
-import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 
 export enum ContactActions {
   WHATSAPP = 'WHATSAPP',
@@ -133,7 +133,7 @@ export interface IFilter {
     rent_free_period: number;
     expected_move_in_date: string;
     facing: number[];
-    furnishing: FurnishingType[];
+    furnishing: FurnishingTypes[];
     propertyAmenity: number[];
   };
 }

@@ -7,9 +7,10 @@ import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/se
 import LeaseTermController from '@homzhub/mobile/src/components/organisms/LeaseTermController';
 import { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 import { ManageTermController } from '@homzhub/mobile/src/components/organisms/ManageTermController';
-import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Country } from '@homzhub/common/src/domain/models/CountryCode';
-import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProps {
@@ -17,13 +18,15 @@ interface IProps {
   isSplitAsUnits: boolean;
   onNextStep: () => void;
   country: Country;
+  assetGroupType: string;
   propertyType: string;
-  furnishing: FurnishingType;
+  furnishing: FurnishingTypes;
   lastVisitedStep: ILastVisitedStep;
 }
 
 interface IDispatchProps {
   setTermId: (termId: number) => void;
+  getMaintenanceUnits: () => void;
 }
 
 interface IStateProps {
@@ -33,8 +36,14 @@ interface IStateProps {
 
 type Props = IStateProps & IDispatchProps & IProps;
 
-// TODO (28/09/2020): Check if we need this wrapper at all after the implementation of manage flow & split unit lease flow
 class ActionController extends React.PureComponent<Props, {}> {
+  public componentDidMount = (): void => {
+    const { getMaintenanceUnits, assetGroupType } = this.props;
+    if (assetGroupType === AssetGroupTypes.COM) {
+      getMaintenanceUnits();
+    }
+  };
+
   public render = (): React.ReactNode => {
     const { onNextStep } = this.props;
     const {
@@ -43,7 +52,7 @@ class ActionController extends React.PureComponent<Props, {}> {
       setTermId,
       currentAssetId,
       country: { currencies },
-      propertyType,
+      assetGroupType,
       lastVisitedStep,
       furnishing,
     } = this.props;
@@ -51,30 +60,31 @@ class ActionController extends React.PureComponent<Props, {}> {
       <>
         {typeOfPlan === TypeOfPlan.SELL && (
           <SaleTermController
-            onNextStep={onNextStep}
             currentAssetId={currentAssetId}
-            currency={currencies[0]}
+            assetGroupType={assetGroupType}
+            currencyData={currencies[0]}
+            onNextStep={onNextStep}
             lastVisitedStep={lastVisitedStep}
           />
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
           <LeaseTermController
-            onNextStep={onNextStep}
+            currentAssetId={currentAssetId}
+            currentTermId={currentTermId}
+            assetGroupType={assetGroupType}
             setTermId={setTermId}
             furnishing={furnishing}
             lastVisitedStep={lastVisitedStep}
             currencyData={currencies[0]}
-            currentTermId={currentTermId}
-            currentAssetId={currentAssetId}
-            currentAssetType={propertyType}
+            onNextStep={onNextStep}
           />
         )}
         {typeOfPlan === TypeOfPlan.MANAGE && (
           <ManageTermController
-            currencyData={currencies[0]}
-            currentAssetType={propertyType}
-            onNextStep={onNextStep}
+            assetGroupType={assetGroupType}
             lastVisitedStep={lastVisitedStep}
+            currencyData={currencies[0]}
+            onNextStep={onNextStep}
           />
         )}
       </>
@@ -83,8 +93,8 @@ class ActionController extends React.PureComponent<Props, {}> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setTermId } = RecordAssetActions;
-  return bindActionCreators({ setTermId }, dispatch);
+  const { setTermId, getMaintenanceUnits } = RecordAssetActions;
+  return bindActionCreators({ setTermId, getMaintenanceUnits }, dispatch);
 };
 
 const mapStateToProps = (state: IState): IStateProps => {

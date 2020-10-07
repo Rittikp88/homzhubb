@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FormikProps } from 'formik';
 import { TFunction } from 'i18next';
@@ -7,13 +8,15 @@ import * as yup from 'yup';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { FormCalendar, FormTextInput, Slider, Text } from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 
 export interface IFormData {
   [LeaseFormKeys.showMore]: boolean;
@@ -21,11 +24,12 @@ export interface IFormData {
   [LeaseFormKeys.securityDeposit]: string;
   [LeaseFormKeys.annualIncrement]: string;
   [LeaseFormKeys.availableFrom]: string;
+  [LeaseFormKeys.maintenanceBy]: PaidByTypes;
   [LeaseFormKeys.maintenanceAmount]: string;
+  [LeaseFormKeys.maintenanceSchedule]: ScheduleTypes;
+  [LeaseFormKeys.maintenanceUnit]: number;
   [LeaseFormKeys.minimumLeasePeriod]: number;
   [LeaseFormKeys.maximumLeasePeriod]: number;
-  [LeaseFormKeys.maintenanceSchedule]: ScheduleTypes;
-  [LeaseFormKeys.maintenanceBy]: PaidByTypes;
   [LeaseFormKeys.utilityBy]: PaidByTypes;
   [LeaseFormKeys.rentFreePeriod]: number;
 }
@@ -38,6 +42,7 @@ enum LeaseFormKeys {
   maintenanceAmount = 'maintenanceAmount',
   maintenanceSchedule = 'maintenanceSchedule',
   maintenanceBy = 'maintenanceBy',
+  maintenanceUnit = 'maintenanceUnit',
   availableFrom = 'availableFrom',
   utilityBy = 'utilityBy',
   minimumLeasePeriod = 'minimumLeasePeriod',
@@ -48,7 +53,7 @@ enum LeaseFormKeys {
 interface IProps {
   formProps: FormikProps<IFormData>;
   currencyData: Currency;
-  currentAssetType: string;
+  assetGroupType: string;
   isFromManage?: boolean;
 }
 const MINIMUM_LEASE_PERIOD = 1;
@@ -60,11 +65,13 @@ const DEFAULT_LEASE_PERIOD = 11;
 const LeaseTermForm = ({
   formProps,
   currencyData,
-  currentAssetType,
+  assetGroupType,
   isFromManage = false,
 }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   const { setFieldValue, setFieldTouched, values } = formProps;
+  const dispatch = useDispatch();
+  const maintenanceUnits = useSelector(RecordAssetSelectors.getMaintenanceUnits);
 
   // CONSTANTS
   const PAID_BY_OPTIONS = [
@@ -73,12 +80,19 @@ const LeaseTermForm = ({
   ];
 
   let dateLabel;
-  let maxDate: string | undefined = DateUtils.getFutureDate(currentAssetType === AssetGroupTypes.COM ? 180 : 60);
+  let maxDate: string | undefined = DateUtils.getFutureDate(assetGroupType === AssetGroupTypes.COM ? 180 : 60);
   if (isFromManage) {
     maxDate = undefined;
     dateLabel = t('common:startingFrom');
   }
   // CONSTANTS END
+
+  // EFFECT
+  useEffect(() => {
+    if (maintenanceUnits.length <= 0) {
+      dispatch(RecordAssetActions.getMaintenanceUnits());
+    }
+  }, []);
 
   // INTERACTION HANDLERS
   const onShowMorePress = useCallback((): void => {
@@ -144,7 +158,7 @@ const LeaseTermForm = ({
           inputGroupSuffixText={t('annualIncrementSuffix')}
         />
       )}
-      {currentAssetType === AssetGroupTypes.COM && (
+      {assetGroupType === AssetGroupTypes.COM && (
         <FormTextInput
           inputType="number"
           name={LeaseFormKeys.rentFreePeriod}
@@ -212,9 +226,11 @@ const LeaseTermForm = ({
       {values.maintenanceBy === PaidByTypes.TENANT && (
         <MaintenanceDetails
           formProps={formProps}
-          currency={currencyData}
+          currencyData={currencyData}
+          assetGroupType={assetGroupType}
           maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
           maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
+          maintenanceUnitKey={LeaseFormKeys.maintenanceUnit}
         />
       )}
     </>

@@ -1,13 +1,14 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
-import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 
 export interface ICreateSaleTermDetails {
   expected_price: number;
   expected_booking_amount: number;
   available_from_date: string;
   maintenance_amount: number;
-  maintenance_payment_schedule: ScheduleTypes;
+  maintenance_unit?: number;
+  maintenance_payment_schedule?: ScheduleTypes;
   description?: string;
   last_visited_step: ILastVisitedStep;
 }
@@ -17,6 +18,7 @@ export interface IUpdateSaleTermDetails {
   expected_booking_amount?: number;
   available_from_date?: string;
   maintenance_amount?: number;
+  maintenance_unit?: number;
   maintenance_payment_schedule?: ScheduleTypes;
   description?: string;
   last_visited_step?: ILastVisitedStep;
@@ -40,8 +42,11 @@ export class SaleTerms {
   @JsonProperty('maintenance_amount', Number)
   private _maintenanceAmount = -1;
 
-  @JsonProperty('maintenance_payment_schedule', String)
-  private _maintenanceSchedule = ScheduleTypes.QUARTERLY;
+  @JsonProperty('maintenance_unit', Number, true)
+  private _maintenanceUnit = -1;
+
+  @JsonProperty('maintenance_payment_schedule', String, true)
+  private _maintenanceSchedule = ScheduleTypes.MONTHLY;
 
   @JsonProperty('available_from_date', String)
   private _availableFromDate = '';
@@ -75,5 +80,9 @@ export class SaleTerms {
 
   get description(): string {
     return this._description;
+  }
+
+  get maintenanceUnit(): number {
+    return this._maintenanceUnit;
   }
 }

@@ -14,15 +14,17 @@ import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/Mai
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-import { ICreateSaleTermDetails } from '@homzhub/common/src/domain/models/SaleTerms';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { ICreateSaleTermDetails } from '@homzhub/common/src/domain/models/SaleTerms';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
   onNextStep: () => void;
-  currency: Currency;
+  assetGroupType: string;
+  currencyData: Currency;
   lastVisitedStep: ILastVisitedStep;
 }
 
@@ -31,6 +33,7 @@ interface IFormData {
   bookingAmount: string;
   availableFrom: string;
   maintenanceAmount: string;
+  maintenanceUnit: number;
   maintenanceSchedule: ScheduleTypes;
 }
 
@@ -49,7 +52,8 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       bookingAmount: '',
       availableFrom: DateUtils.getCurrentDate(),
       maintenanceAmount: '',
-      maintenanceSchedule: ScheduleTypes.ANNUALLY,
+      maintenanceSchedule: ScheduleTypes.MONTHLY,
+      maintenanceUnit: -1,
     },
     description: '',
     currentTermId: -1,
@@ -64,24 +68,24 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       if (response.length <= 0) return;
 
       this.setState({
+        currentTermId: response[0].id,
         description: response[0].description ?? '',
         formData: {
-          maintenanceAmount: response[0].maintenanceAmount,
-          maintenanceSchedule: response[0].maintenanceSchedule,
           expectedPrice: response[0].expectedPrice,
           availableFrom: DateUtils.getDisplayDate(response[0].availableFromDate, DateFormats.YYYYMMDD),
           bookingAmount: response[0].expectedBookingAmount,
+          maintenanceAmount: response[0].maintenanceAmount,
+          maintenanceSchedule: response[0].maintenanceSchedule ?? ScheduleTypes.MONTHLY,
+          maintenanceUnit: response[0].maintenanceUnit ?? -1,
         },
       });
-
-      this.setState({ currentTermId: response[0].id });
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
   };
 
   public render = (): React.ReactNode => {
-    const { t, currency } = this.props;
+    const { t, currencyData, assetGroupType } = this.props;
     const { description, formData } = this.state;
 
     return (
@@ -103,8 +107,8 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                     placeholder={t('expectedPricePlaceholder')}
                     maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
                     formProps={formProps}
-                    inputPrefixText={currency.currencySymbol}
-                    inputGroupSuffixText={currency.currencyCode}
+                    inputPrefixText={currencyData.currencySymbol}
+                    inputGroupSuffixText={currencyData.currencyCode}
                   />
                   <FormTextInput
                     inputType="number"
@@ -113,8 +117,8 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                     placeholder={t('bookingAmountPlaceholder')}
                     maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
                     formProps={formProps}
-                    inputPrefixText={currency.currencySymbol}
-                    inputGroupSuffixText={currency.currencyCode}
+                    inputPrefixText={currencyData.currencySymbol}
+                    inputGroupSuffixText={currencyData.currencyCode}
                   />
                   <FormCalendar formProps={formProps} name="availableFrom" textType="label" textSize="regular" />
                   <Text type="small" textType="semiBold" style={styles.headerTitle}>
@@ -122,7 +126,9 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                   </Text>
                   <MaintenanceDetails
                     formProps={formProps}
-                    currency={currency}
+                    currencyData={currencyData}
+                    assetGroupType={assetGroupType}
+                    maintenanceUnitKey="maintenanceUnit"
                     maintenanceAmountKey="maintenanceAmount"
                     maintenanceScheduleKey="maintenanceSchedule"
                   />
@@ -161,7 +167,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
     const { description, currentTermId } = this.state;
-    const { onNextStep, currentAssetId, lastVisitedStep } = this.props;
+    const { onNextStep, currentAssetId, assetGroupType, lastVisitedStep } = this.props;
 
     const params: ICreateSaleTermDetails = {
       expected_price: parseInt(values.expectedPrice, 10),
@@ -169,6 +175,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       available_from_date: values.availableFrom,
       maintenance_amount: parseInt(values.maintenanceAmount, 10),
       maintenance_payment_schedule: values.maintenanceSchedule,
+      maintenance_unit: values.maintenanceUnit,
       description,
       last_visited_step: {
         ...lastVisitedStep,
@@ -179,6 +186,13 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
         },
       },
     };
+
+    // Removing un-required field as per the flow
+    if (assetGroupType === AssetGroupTypes.COM) {
+      delete params.maintenance_payment_schedule;
+    } else if (assetGroupType === AssetGroupTypes.RES) {
+      delete params.maintenance_unit;
+    }
 
     try {
       if (currentTermId <= -1) {

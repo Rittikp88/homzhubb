@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IDropdownOption, ISelectionPicker } from '@homzhub/common/src/components';
 
 export enum AssetDescriptionDropdownTypes {
@@ -8,64 +9,25 @@ export enum AssetDescriptionDropdownTypes {
   FlooringType = 'type_of_flooring',
 }
 
-// Todo (Sriram: Centralize the duplicated properties)
-@JsonObject('FormUnit')
-export class FormUnit {
-  @JsonProperty('id', Number, true)
-  private _id = -1;
-
-  @JsonProperty('name', String, true)
-  private _name = '';
-
-  @JsonProperty('label', String)
-  private _label = '';
-
-  @JsonProperty('title', String, true)
-  private _title = '';
-
-  @JsonProperty('order', Number, true)
-  private _order = -1;
-
-  get id(): number {
-    return this._id;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  get label(): string {
-    return this._label;
-  }
-
-  get title(): string {
-    return this._title;
-  }
-
-  get order(): number {
-    return this._order;
-  }
-}
-
 @JsonObject('AssetDescriptionDropdownValues')
 export class AssetDescriptionDropdownValues {
-  @JsonProperty('facing', [FormUnit])
-  private _facing = [new FormUnit()];
+  @JsonProperty('facing', [Unit])
+  private _facing = [new Unit()];
 
-  @JsonProperty('furnishing_status', [FormUnit])
-  private _furnishingStatus = [new FormUnit()];
+  @JsonProperty('furnishing_status', [Unit])
+  private _furnishingStatus = [new Unit()];
 
-  @JsonProperty('carpet_area_unit', [FormUnit])
-  private _carpetAreaUnit = [new FormUnit()];
+  @JsonProperty('carpet_area_unit', [Unit])
+  private _carpetAreaUnit = [new Unit()];
 
-  @JsonProperty('type_of_flooring', [FormUnit])
-  private _typeOfFlooring = [new FormUnit()];
+  @JsonProperty('type_of_flooring', [Unit])
+  private _typeOfFlooring = [new Unit()];
 
   get facing(): IDropdownOption[] {
     return this.transformDropdownTypes(this._facing, AssetDescriptionDropdownTypes.Facing);
   }
 
-  get furnishingStatus(): FormUnit[] {
+  get furnishingStatus(): Unit[] {
     return this._furnishingStatus;
   }
 
@@ -73,7 +35,7 @@ export class AssetDescriptionDropdownValues {
     return this.transformDropdownTypes(this._carpetAreaUnit, AssetDescriptionDropdownTypes.CarpetUnit);
   }
 
-  get carpetAreaUnit(): FormUnit[] {
+  get carpetAreaUnit(): Unit[] {
     return this._carpetAreaUnit;
   }
 
@@ -90,7 +52,7 @@ export class AssetDescriptionDropdownValues {
     });
   }
 
-  private transformDropdownTypes = (typeArray: FormUnit[], type: string): IDropdownOption[] => {
+  private transformDropdownTypes = (typeArray: Unit[], type: string): IDropdownOption[] => {
     const { Facing, FurnishingStatus, CarpetUnit } = AssetDescriptionDropdownTypes;
     return typeArray.map((item) => {
       if (type === Facing || type === FurnishingStatus) {

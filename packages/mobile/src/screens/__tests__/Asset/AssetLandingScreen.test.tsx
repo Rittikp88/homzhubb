@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
-import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
@@ -66,9 +65,6 @@ describe('Landing Screen Component', () => {
       user: {
         ...initialUserState,
         user,
-      },
-      property: {
-        ...initialPropertyState,
       },
       asset: {
         ...initialAssetState,

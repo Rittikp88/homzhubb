@@ -1,6 +1,6 @@
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
-import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
+import { initialRecordAssetState } from '@homzhub/common/src/modules/recordAsset/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
@@ -11,11 +11,11 @@ const state: IState = {
   user: {
     ...initialUserState,
   },
-  property: {
-    ...initialPropertyState,
-  },
   asset: {
     ...initialAssetState,
+  },
+  recordAsset: {
+    ...initialRecordAssetState,
   },
   search: {
     ...initialSearchState,

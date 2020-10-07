@@ -1,4 +1,4 @@
-import { ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 
 export const PropertyAssetGroupData = [
   {

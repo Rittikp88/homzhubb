@@ -111,7 +111,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       assetDetails,
     } = this.props;
 
-    if (!assetDetails) return null;
+    if (!assetDetails) return <Loader visible />;
 
     const {
       projectName,
@@ -283,7 +283,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             furnishing={assetDetails.furnishing as FurnishingType}
             isSplitAsUnits={isPropertyAsUnits}
             country={assetDetails.country}
-            propertyType={assetDetails.assetGroup.code}
+            assetGroupType={assetDetails.assetGroup.code}
             onNextStep={this.handleNextStep}
           />
         );

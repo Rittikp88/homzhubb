@@ -17,9 +17,9 @@ import {
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IOwnState {
   isPropertyOccupied: boolean;
@@ -28,7 +28,7 @@ interface IOwnState {
 
 interface IProps extends WithTranslation {
   currencyData: Currency;
-  currentAssetType: string;
+  assetGroupType: string;
   onNextStep: () => void;
   lastVisitedStep: ILastVisitedStep;
 }
@@ -53,8 +53,9 @@ const initialFormValues: IFormFields = {
   maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
   availableFrom: DateUtils.getCurrentDate(),
   maintenanceAmount: '',
-  maintenanceSchedule: ScheduleTypes.ANNUALLY,
+  maintenanceSchedule: ScheduleTypes.MONTHLY,
   maintenanceBy: PaidByTypes.OWNER,
+  maintenanceUnit: -1,
   utilityBy: PaidByTypes.TENANT,
   rentFreePeriod: 0,
 };
@@ -111,7 +112,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   private renderForm = (): React.ReactNode => {
-    const { t, currencyData, currentAssetType } = this.props;
+    const { t, currencyData, assetGroupType } = this.props;
     const { description } = this.state;
     return (
       <Formik
@@ -165,7 +166,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
                     isFromManage
                     formProps={formProps}
                     currencyData={currencyData}
-                    currentAssetType={currentAssetType}
+                    assetGroupType={assetGroupType}
                   />
                 </>
               </AssetListingSection>
@@ -204,10 +205,10 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     this.setState({ description });
   };
 
-  private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {
+  private onSubmit = (values: IFormFields, formActions: FormikHelpers<IFormFields>): void => {
     const { lastVisitedStep } = this.props;
 
-    // TODO: Add this object in payload. (Ref - lease/sale payload)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
     const last_visited_step = {
       ...lastVisitedStep,
       listing: {

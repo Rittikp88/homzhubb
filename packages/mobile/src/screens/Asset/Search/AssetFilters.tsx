@@ -30,7 +30,7 @@ import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalen
 import { BottomSheet } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
 import { IFacing, IFilter, IFilterDetails, IPropertyAmenities } from '@homzhub/common/src/domain/models/Search';
-import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 
 interface IStateProps {
   filters: IFilter;
@@ -59,9 +59,9 @@ type Props = libraryProps & IStateProps & IDispatchProps;
 export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
   /*eslint-disable */
   private FURNISHING = [
-    { title: this.props.t('property:fullyFurnished'), value: FurnishingType.FULL },
-    { title: this.props.t('property:semiFurnished'), value: FurnishingType.SEMI },
-    { title: this.props.t('property:none'), value: FurnishingType.NONE },
+    { title: this.props.t('property:fullyFurnished'), value: FurnishingTypes.FULL },
+    { title: this.props.t('property:semiFurnished'), value: FurnishingTypes.SEMI },
+    { title: this.props.t('property:none'), value: FurnishingTypes.NONE },
   ];
   /* eslint-enable */
 
@@ -381,9 +381,9 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         miscellaneous: { furnishing },
       },
     } = this.props;
-    const handleFurnishingSelection = (value: FurnishingType): void => {
+    const handleFurnishingSelection = (value: FurnishingTypes): void => {
       if (furnishing.includes(value)) {
-        remove(furnishing, (type: FurnishingType) => type === value);
+        remove(furnishing, (type: FurnishingTypes) => type === value);
         setFilter({ miscellaneous: { ...filters.miscellaneous, furnishing } });
       } else {
         const newFurnishing = furnishing.concat(value);
@@ -396,7 +396,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           {t('furnishing', { totalFurnishing: furnishing.length })}
         </Text>
         <View style={styles.moreRow}>
-          <MultipleButtonGroup<FurnishingType>
+          <MultipleButtonGroup<FurnishingTypes>
             data={this.FURNISHING}
             onItemSelect={handleFurnishingSelection}
             selectedItem={furnishing}

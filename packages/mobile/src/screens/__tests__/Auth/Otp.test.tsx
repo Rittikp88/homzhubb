@@ -4,7 +4,6 @@ import toJson from 'enzyme-to-json';
 import { IEmailLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
-import { initialPropertyState } from '@homzhub/common/src/modules/property/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
@@ -96,9 +95,6 @@ describe('OTP Screen', () => {
       user: {
         ...initialUserState,
         isLoading: false,
-      },
-      property: {
-        ...initialPropertyState,
       },
       search: {
         ...initialSearchState,

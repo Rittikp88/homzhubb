@@ -18,20 +18,15 @@ import {
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
-import {
-  FurnishingType,
-  ICreateLeaseTermDetails,
-  IUpdateLeaseTermDetails,
-  PaidByTypes,
-  ScheduleTypes,
-} from '@homzhub/common/src/domain/models/LeaseTerms';
-import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
-import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { PaidByTypes, ScheduleTypes, FurnishingTypes } from '@homzhub/common/src/constants/Terms';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ICreateLeaseTermDetails, IUpdateLeaseTermDetails } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IList } from '@homzhub/common/src/domain/models/Tenant';
-import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
@@ -39,8 +34,8 @@ interface IProps extends WithTranslation {
   setTermId: (termId: number) => void;
   onNextStep: () => void;
   currencyData: Currency;
-  currentAssetType: string;
-  furnishing: FurnishingType;
+  assetGroupType: string;
+  furnishing: FurnishingTypes;
   lastVisitedStep: ILastVisitedStep;
 }
 
@@ -67,11 +62,12 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
       maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
       availableFrom: DateUtils.getCurrentDate(),
-      maintenanceAmount: '',
-      maintenanceSchedule: ScheduleTypes.ANNUALLY,
-      maintenanceBy: PaidByTypes.OWNER,
       utilityBy: PaidByTypes.TENANT,
       rentFreePeriod: 0,
+      maintenanceBy: PaidByTypes.OWNER,
+      maintenanceAmount: '',
+      maintenanceSchedule: ScheduleTypes.MONTHLY,
+      maintenanceUnit: -1,
     },
     description: '',
     preferences: [],
@@ -81,15 +77,15 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { currentAssetType } = this.props;
-    if (currentAssetType === AssetGroupTypes.RES) {
+    const { assetGroupType } = this.props;
+    if (assetGroupType === AssetGroupTypes.RES) {
       await this.getTenantPreferences();
     }
     await this.getAvailableSpaces();
   };
 
   public render = (): React.ReactNode => {
-    const { t, currencyData, currentAssetType } = this.props;
+    const { t, currencyData, assetGroupType } = this.props;
     const { description, formData, preferences, isPreferencesSelected } = this.state;
 
     return (
@@ -103,7 +99,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
           return (
             <>
               <AssetListingSection title={t('leaseTerms')}>
-                <LeaseTermForm formProps={formProps} currencyData={currencyData} currentAssetType={currentAssetType} />
+                <LeaseTermForm formProps={formProps} currencyData={currencyData} assetGroupType={assetGroupType} />
               </AssetListingSection>
               {preferences.length > 0 && (
                 <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>
@@ -147,7 +143,8 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
-    const { onNextStep, lastVisitedStep, furnishing, currentAssetType } = this.props;
+
+    const { onNextStep, lastVisitedStep, furnishing, assetGroupType } = this.props;
     const { description, availableSpaces, selectedPreferences } = this.state;
 
     let maintenance_amount: number | null = parseInt(values[LeaseFormKeys.maintenanceAmount], 10);
@@ -168,20 +165,20 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       minimum_lease_period: values[LeaseFormKeys.minimumLeasePeriod],
       maximum_lease_period: values[LeaseFormKeys.maximumLeasePeriod],
       available_from_date: values[LeaseFormKeys.availableFrom],
-      maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
       utility_paid_by: values[LeaseFormKeys.utilityBy],
+      maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
       maintenance_amount,
+      maintenance_unit: values[LeaseFormKeys.maintenanceUnit],
       maintenance_payment_schedule,
       ...(description && { description }),
       tenant_preferences: selectedPreferences,
-      ...(currentAssetType === AssetGroupTypes.COM && {
+      ...(assetGroupType === AssetGroupTypes.COM && {
         rent_free_period: Number(values[LeaseFormKeys.rentFreePeriod]),
       }),
       lease_unit: {
         name: 'Unit 1',
         spaces: availableSpaces,
       },
-      maintenance_unit: null, // TODO: Add data once UI ready
       furnishing,
       last_visited_step: {
         ...lastVisitedStep,
@@ -192,6 +189,13 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         },
       },
     };
+
+    // Removing un-required field as per the flow
+    if (assetGroupType === AssetGroupTypes.COM) {
+      delete leaseTerms.maintenance_payment_schedule;
+    } else if (assetGroupType === AssetGroupTypes.RES) {
+      delete leaseTerms.maintenance_unit;
+    }
 
     const { setTermId, currentTermId, currentAssetId } = this.props;
     try {

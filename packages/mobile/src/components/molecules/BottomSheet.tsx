@@ -18,7 +18,7 @@ export interface IBottomSheetProps {
 }
 
 export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
-  const rbSheet = useRef();
+  const rbSheet = useRef(null);
   const {
     children,
     sheetContainerStyle,
@@ -31,15 +31,16 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
   } = props;
 
   useEffect(() => {
-    if (visible) {
+    if (visible && rbSheet.current) {
       // @ts-ignore
       rbSheet.current.open();
-    } else {
-      // @ts-ignore
-      rbSheet.current.close();
     }
   }, [visible]);
+
   const onCloseBottomSheet = (): void => {
+    if (!rbSheet.current) {
+      return;
+    }
     // @ts-ignore
     rbSheet.current.close();
     if (onCloseSheet) {
@@ -60,7 +61,6 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
 
   return (
     <RBSheet
-      // @ts-ignore
       ref={rbSheet}
       animationType="slide"
       height={sheetHeight}

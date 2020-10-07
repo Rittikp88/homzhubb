@@ -1,10 +1,10 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { RadioButton } from '@homzhub/common/src/components/atoms/RadioButton';
-import { AssetLeadType } from '@homzhub/common/src/domain/models/AssetVisit';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 interface IProps {
-  data: AssetLeadType[];
+  data: Unit[];
   onToggle: (id: number) => void;
   selectedValue: number;
   numColumns?: number;
@@ -16,7 +16,7 @@ export class RadioButtonGroup extends React.Component<IProps, {}> {
   public render = (): React.ReactNode => {
     const { data, numColumns = 2, containerStyle = {} } = this.props;
     return (
-      <FlatList<AssetLeadType>
+      <FlatList<Unit>
         numColumns={numColumns}
         data={data}
         renderItem={this.renderButton}
@@ -27,7 +27,7 @@ export class RadioButtonGroup extends React.Component<IProps, {}> {
     );
   };
 
-  private renderButton = ({ item, index }: { item: AssetLeadType; index: number }): React.ReactElement => {
+  private renderButton = ({ item, index }: { item: Unit; index: number }): React.ReactElement => {
     const { label } = item;
     const { data, onToggle, numColumns = 2, labelStyle = {}, selectedValue } = this.props;
 

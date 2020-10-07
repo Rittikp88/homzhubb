@@ -5,9 +5,8 @@ exports[`Button Group Component should render item group label 1`] = `
   style={
     Array [
       Object {
-        "flex": 0,
+        "flex": 1,
         "flexDirection": "row",
-        "flexGrow": 1,
         "flexWrap": "wrap",
       },
       Object {},
@@ -18,12 +17,14 @@ exports[`Button Group Component should render item group label 1`] = `
     onPress={[Function]}
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
-        "marginEnd": 12,
-        "paddingHorizontal": 12,
+        "flex": 0.5,
+        "justifyContent": "center",
+        "marginEnd": 16,
         "paddingVertical": 6,
       }
     }
@@ -43,12 +44,13 @@ exports[`Button Group Component should render item group label 1`] = `
     onPress={[Function]}
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
-        "marginEnd": 12,
-        "paddingHorizontal": 12,
+        "flex": 0.5,
+        "justifyContent": "center",
         "paddingVertical": 6,
       }
     }
@@ -72,9 +74,8 @@ exports[`Button Group Component should render item group text 1`] = `
   style={
     Array [
       Object {
-        "flex": 0,
+        "flex": 1,
         "flexDirection": "row",
-        "flexGrow": 1,
         "flexWrap": "wrap",
       },
       Object {},
@@ -85,18 +86,20 @@ exports[`Button Group Component should render item group text 1`] = `
     onPress={[Function]}
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
-        "marginEnd": 12,
-        "paddingHorizontal": 12,
+        "flex": 0.5,
+        "justifyContent": "center",
+        "marginEnd": 16,
         "paddingVertical": 6,
       }
     }
     testID="btngrp"
   >
-    <Text
+    <Label
       style={
         Object {
           "color": "#667686",
@@ -110,18 +113,19 @@ exports[`Button Group Component should render item group text 1`] = `
     onPress={[Function]}
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "#FFFFFF",
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
-        "marginEnd": 12,
-        "paddingHorizontal": 12,
+        "flex": 0.5,
+        "justifyContent": "center",
         "paddingVertical": 6,
       }
     }
     testID="btngrp"
   >
-    <Text
+    <Label
       style={
         Object {
           "color": "#667686",

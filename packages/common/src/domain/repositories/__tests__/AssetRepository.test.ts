@@ -2,9 +2,9 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { assetGroups, leaseTermDetail, saleTerm } from '@homzhub/common/src/mocks/PropertyDetails';
-import { FurnishingType, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { mockAsset } from '@homzhub/common/src/mocks/AssetDescription';
+import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -88,7 +88,7 @@ describe.skip('AssetRepository', () => {
       security_deposit: 15000,
       annual_rent_increment_percentage: 5,
       minimum_lease_period: 2,
-      furnishing: FurnishingType.SEMI,
+      furnishing: FurnishingTypes.SEMI,
       available_from_date: '2020-09-12',
       maintenance_paid_by: PaidByTypes.OWNER,
       utility_paid_by: PaidByTypes.OWNER,
@@ -106,7 +106,7 @@ describe.skip('AssetRepository', () => {
       security_deposit: 15000,
       annual_rent_increment_percentage: 5,
       minimum_lease_period: 2,
-      furnishing: FurnishingType.SEMI,
+      furnishing: FurnishingTypes.SEMI,
       available_from_date: '2020-09-12',
       maintenance_paid_by: PaidByTypes.OWNER,
       utility_paid_by: PaidByTypes.OWNER,

@@ -1,6 +1,5 @@
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
-import { IPropertyState } from '@homzhub/common/src/modules/property/interface';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 import { IPortfolioState } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
@@ -18,7 +17,6 @@ export interface ICallback {
 
 export interface IState {
   user: IUserState;
-  property: IPropertyState;
   search: ISearchState;
   asset: IAssetState;
   portfolio: IPortfolioState;

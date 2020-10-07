@@ -3,6 +3,7 @@
 exports[`Dropdown should match snapshot 1`] = `
 <View
   pointerEvents="auto"
+  style={Object {}}
 >
   <ForwardRef
     onPress={[Function]}
@@ -119,6 +120,11 @@ exports[`Dropdown should match snapshot 1`] = `
 exports[`Dropdown should match snapshot for disabled 1`] = `
 <View
   pointerEvents="none"
+  style={
+    Object {
+      "opacity": 0.5,
+    }
+  }
 >
   <ForwardRef
     onPress={[Function]}
@@ -182,6 +188,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
 exports[`Dropdown should match snapshot when data is empty 1`] = `
 <View
   pointerEvents="auto"
+  style={Object {}}
 >
   <ForwardRef
     onPress={[Function]}

@@ -4,12 +4,14 @@ import { RecordAssetActionTypes, RecordAssetPayloadTypes } from '@homzhub/common
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 export const initialRecordAssetState: IRecordAssetState = {
   assetId: -1,
   termId: -1,
   assetPlan: [],
   assetGroups: [],
+  maintenanceUnits: [],
   assetDetails: null,
   selectedAssetPlan: {
     id: 0,
@@ -81,6 +83,16 @@ export const recordAssetReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['assetDetails']: false },
+      };
+    case RecordAssetActionTypes.GET.MAINTENANCE_UNITS:
+      return {
+        ...state,
+        ['maintenanceUnits']: [],
+      };
+    case RecordAssetActionTypes.GET.MAINTENANCE_UNITS_SUCCESS:
+      return {
+        ...state,
+        ['maintenanceUnits']: action.payload as IUnit[],
       };
     case RecordAssetActionTypes.SET.ASSET_ID:
       return { ...state, ['assetId']: action.payload as number };

@@ -1,16 +1,18 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { IApiClient } from '@homzhub/common/src/network/Interfaces';
+import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { CountryCode } from '@homzhub/common/src/domain/models/CountryCode';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
-import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 const ENDPOINTS = {
   getCountryCodes: (): string => 'countries/',
   getCurrencyCodes: (): string => 'currency-codes/',
   carpetAreaUnits: (): string => 'carpet-area-units/',
+  maintenanceUnits: (): string => 'list-of-values/maintenance-units/',
   onBoarding: (): string => 'onboardings/',
   socialMedia: (): string => 'social-providers/',
 };
@@ -45,6 +47,11 @@ class CommonRepository {
   public getSocialMedia = async (): Promise<SocialMediaProvider[]> => {
     const response = await this.apiClient.get(ENDPOINTS.socialMedia());
     return ObjectMapper.deserializeArray(SocialMediaProvider, response);
+  };
+
+  public getMaintenanceUnits = async (): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.maintenanceUnits());
+    return ObjectMapper.deserializeArray(Unit, response);
   };
 }
 

@@ -80,8 +80,10 @@ export const Dropdown = (props: IProps): React.ReactElement => {
       : selectedItem?.label;
   const placeholderColor = !label ? styles.placeholderColor : {};
 
+  const disabledStyles = StyleSheet.flatten([disable && styles.disabled]);
+
   return (
-    <View pointerEvents={disable ? 'none' : 'auto'}>
+    <View pointerEvents={disable ? 'none' : 'auto'} style={disabledStyles}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
         <Label type="large" textType="regular" style={[placeholderColor, textStyle]}>
           {label ?? placeholder}
@@ -124,5 +126,8 @@ const styles = StyleSheet.create({
   },
   placeholderColor: {
     color: theme.colors.darkTint8,
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

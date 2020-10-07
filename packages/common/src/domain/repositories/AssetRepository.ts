@@ -15,7 +15,9 @@ import {
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
-import { AssetLeadType, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
+import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
+import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import {
@@ -30,8 +32,7 @@ import {
   IYoutubeResponse,
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
-import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
-import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 const ENDPOINTS = {
   asset: (): string => 'assets/',
@@ -234,9 +235,9 @@ class AssetRepository {
     return ObjectMapper.deserialize(DownloadAttachment, response);
   };
 
-  public getVisitLeadType = async (): Promise<AssetLeadType[]> => {
+  public getVisitLeadType = async (): Promise<Unit[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getVisitLead());
-    return ObjectMapper.deserializeArray(AssetLeadType, response);
+    return ObjectMapper.deserializeArray(Unit, response);
   };
 
   public getUpcomingVisits = async (payload?: IUpcomingVisitPayload): Promise<UpcomingSlot[]> => {

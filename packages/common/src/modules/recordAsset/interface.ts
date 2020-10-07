@@ -1,6 +1,7 @@
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface IRecordAssetState {
   assetId: number;
@@ -8,6 +9,7 @@ export interface IRecordAssetState {
   assetDetails: IAsset | null;
   assetPlan: IAssetPlan[];
   assetGroups: IAssetGroup[];
+  maintenanceUnits: IUnit[];
   selectedAssetPlan: ISelectedAssetPlan;
   error: {
     assetPlan: string;

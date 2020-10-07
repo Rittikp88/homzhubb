@@ -1,22 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
-
-export enum PaidByTypes {
-  TENANT = 'TENANT',
-  OWNER = 'OWNER',
-}
-
-export enum ScheduleTypes {
-  MONTHLY = 'MONTHLY',
-  QUARTERLY = 'QUARTERLY',
-  ANNUALLY = 'ANNUALLY',
-}
-
-export enum FurnishingType {
-  SEMI = 'SEMI',
-  NONE = 'NONE',
-  FULL = 'FULL',
-}
 
 interface ISpaces {
   space_type: number;
@@ -29,11 +13,13 @@ export interface IUpdateLeaseTermDetails {
   security_deposit?: number;
   annual_rent_increment_percentage?: number | null;
   minimum_lease_period?: number;
-  furnishing?: FurnishingType;
+  maximum_lease_period?: number;
+  furnishing?: FurnishingTypes;
   available_from_date?: string;
-  maintenance_paid_by?: PaidByTypes;
   utility_paid_by?: PaidByTypes;
-  maintenance_amount?: number | null;
+  maintenance_paid_by?: PaidByTypes;
+  maintenance_amount?: number;
+  maintenance_unit?: number;
   maintenance_payment_schedule?: ScheduleTypes | null;
   description?: string;
   rent_free_period?: number;
@@ -43,7 +29,6 @@ export interface IUpdateLeaseTermDetails {
     spaces: ISpaces[];
   };
   last_visited_step?: ILastVisitedStep;
-  maintenance_unit?: null;
 }
 
 export interface ICreateLeaseTermDetails {
@@ -53,12 +38,13 @@ export interface ICreateLeaseTermDetails {
   annual_rent_increment_percentage: number | null;
   minimum_lease_period: number;
   maximum_lease_period: number;
-  furnishing: FurnishingType;
+  furnishing: FurnishingTypes;
   available_from_date: string;
-  maintenance_paid_by: PaidByTypes;
   utility_paid_by: PaidByTypes;
+  maintenance_paid_by: PaidByTypes;
   maintenance_amount: number | null;
-  maintenance_payment_schedule: ScheduleTypes | null;
+  maintenance_unit?: number;
+  maintenance_payment_schedule?: ScheduleTypes | null;
   description?: string;
   tenant_preferences?: number[];
   rent_free_period?: number;
@@ -67,7 +53,6 @@ export interface ICreateLeaseTermDetails {
     spaces: ISpaces[];
   };
   last_visited_step: ILastVisitedStep;
-  maintenance_unit: null;
 }
 
 export interface ILeaseTermDetails extends ICreateLeaseTermDetails {
