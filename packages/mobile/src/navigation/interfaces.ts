@@ -98,6 +98,9 @@ export enum ScreensKeys {
   // Common Screens
   BlankScreen = 'BlankScreen',
   WebViewScreen = 'WebViewScreen',
+
+  // More Stack
+  UserProfileScreen = 'UserProfileScreen',
 }
 
 export enum OtpNavTypes {

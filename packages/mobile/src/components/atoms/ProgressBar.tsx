@@ -1,22 +1,24 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components';
 
 interface IProgressBarProps {
   progress: number;
+  title?: string;
   width?: number;
   filledColor?: string;
+  containerStyles?: StyleProp<ViewStyle>;
 }
 
 const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
-  const { progress, width, filledColor = theme.colors.green } = props;
+  const { progress, width, filledColor = theme.colors.green, title, containerStyles = {} } = props;
   return (
-    <>
+    <View style={containerStyles}>
       <View style={styles.container}>
         <Label type="large" style={styles.progressTitle}>
-          Progress
+          {title || 'Progress'}
         </Label>
         <Label type="large" style={styles.status}>
           {progress}%
@@ -29,7 +31,7 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
         style={styles.barStyle}
         borderRadius={5}
       />
-    </>
+    </View>
   );
 };
 

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -19,7 +19,7 @@ interface IDispatchProps {
   logout: (data: IRefreshTokenPayload) => void;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.More>;
+type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.More>;
 type Props = libraryProps & IDispatchProps;
 
 export class More extends React.PureComponent<Props> {
@@ -105,7 +105,12 @@ export class More extends React.PureComponent<Props> {
     return <Divider containerStyles={styles.logoutSeparator} />;
   };
 
-  public onIconPress = (): void => {};
+  public onIconPress = (): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.UserProfileScreen);
+  };
 
   public handleNavigation = (type: MoreScreenTypes): void => {
     const { navigation } = this.props;

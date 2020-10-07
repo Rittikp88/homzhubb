@@ -27,6 +27,7 @@ export { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/Bo
 export { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 export { CollapsibleSection } from '@homzhub/mobile/src/components/molecules/CollapsibleSection';
 export { CurrentLocation } from '@homzhub/mobile/src/components/molecules/CurrentLocation';
+export { DetailsCard } from '@homzhub/mobile/src/components/molecules/DetailsCard';
 export { DocumentCard } from '@homzhub/mobile/src/components/molecules/DocumentCard';
 export { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
 export { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';

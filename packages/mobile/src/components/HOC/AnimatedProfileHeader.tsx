@@ -10,7 +10,7 @@ import { IUser } from '@homzhub/common/src/domain/models/User';
 
 interface IProps {
   children: React.ReactElement;
-  title: string;
+  title?: string;
   onIconPress?: () => void;
   isOuterScrollEnabled?: boolean;
 }
@@ -50,7 +50,7 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
   }
 
   private renderHeader = (): React.ReactElement => {
-    const { title, onIconPress } = this.props;
+    const { title = '', onIconPress } = this.props;
     const { user } = this.state;
     return (
       <View style={styles.headerContainer}>

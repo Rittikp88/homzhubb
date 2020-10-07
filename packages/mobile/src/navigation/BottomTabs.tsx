@@ -25,6 +25,7 @@ import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import { NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -54,10 +55,16 @@ export type FinancialsNavigatorParamList = {
   [ScreensKeys.AddRecordScreen]: undefined;
 };
 
+export type MoreStackNavigatorParamList = {
+  [ScreensKeys.More]: undefined;
+  [ScreensKeys.UserProfileScreen]: undefined;
+};
+
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
 const DashboardNavigator = createStackNavigator<DashboardNavigatorParamList>();
 const PortfolioNavigator = createStackNavigator<PortfolioNavigatorParamList>();
 const FinancialsNavigator = createStackNavigator<FinancialsNavigatorParamList>();
+const MoreStackNavigator = createStackNavigator<MoreStackNavigatorParamList>();
 
 export const DashboardStack = (): React.ReactElement => {
   return (
@@ -99,6 +106,19 @@ export const FinancialsStack = (): React.ReactElement => {
       <FinancialsNavigator.Screen name={ScreensKeys.FinancialsLandingScreen} component={Financials} />
       <FinancialsNavigator.Screen name={ScreensKeys.AddRecordScreen} component={AddRecordScreen} />
     </FinancialsNavigator.Navigator>
+  );
+};
+export const MoreStack = (): React.ReactElement => {
+  return (
+    <MoreStackNavigator.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
+      <MoreStackNavigator.Screen name={ScreensKeys.More} component={More} />
+      <MoreStackNavigator.Screen name={ScreensKeys.UserProfileScreen} component={UserProfile} />
+    </MoreStackNavigator.Navigator>
   );
 };
 
@@ -192,7 +212,7 @@ export const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.More}
-        component={isLoggedIn ? More : DefaultLogin}
+        component={isLoggedIn ? MoreStack : DefaultLogin}
         options={{
           tabBarLabel: t('assetMore:more'),
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
