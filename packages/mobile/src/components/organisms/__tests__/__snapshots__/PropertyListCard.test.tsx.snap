@@ -67,6 +67,7 @@ exports[`PropertyListCard should match snapshot 1`] = `
       }
     >
       <PricePerUnit
+        currency="INR"
         price={NaN}
         textSizeType="regular"
         unit=""
@@ -167,6 +168,7 @@ exports[`PropertyListCard should match snapshot for optional props 1`] = `
       }
     >
       <PricePerUnit
+        currency="INR"
         price={NaN}
         textSizeType="regular"
         unit="mo"

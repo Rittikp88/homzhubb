@@ -129,6 +129,11 @@ export const icons = {
   files: 'files',
   tooltip: 'tooltip',
   filledHeart: 'filled-heart',
+  bin: 'bin',
+  wait: 'wait',
+  visit: 'visit',
+  schedule: 'schedule',
+  dart: 'dart',
 
   // COMMUTE
   train: 'train',
@@ -164,4 +169,14 @@ export const icons = {
   commercial: 'commercial',
   industrial: 'industrial',
   residential: 'residential',
+
+  // user
+  email: 'email',
+  call: 'call',
+  filledUser: 'filled-user',
+  marker: 'marker',
+  circularCamera: 'circular-camera',
+  company: 'company',
+  doubleCheck: 'doubleCheck',
+  filledWarning: 'filled-warning',
 };

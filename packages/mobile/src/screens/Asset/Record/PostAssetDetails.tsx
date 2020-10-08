@@ -20,8 +20,9 @@ import {
   AssetGroupSelection,
   Loader,
 } from '@homzhub/mobile/src/components';
-import { Asset, ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';

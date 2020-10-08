@@ -73,7 +73,7 @@ exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
       <Icon
         allowFontScaling={false}
         color="#0084F8"
-        name="right-arrow"
+        name="dart"
         size={20}
       />
     </View>

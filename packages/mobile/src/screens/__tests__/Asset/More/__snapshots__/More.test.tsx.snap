@@ -165,6 +165,14 @@ exports[`Financials Screen should render snapshot 1`] = `
               "type": "savedProperties",
             },
             Object {
+              "icon": "visit",
+              "iconColor": "#78B7FA",
+              "id": 4,
+              "textColor": "#000",
+              "title": "assetMore:propertyVisits",
+              "type": "propertyVisits",
+            },
+            Object {
               "icon": "new-launch",
               "iconColor": "#78B7FA",
               "id": 5,

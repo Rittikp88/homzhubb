@@ -324,7 +324,10 @@
     "forRental": "For Rental",
     "forSale": "For Sale",
     "reviewingProperty": "We are reviewing your property",
-    "executivesCall": "Please expect a call from our executives within the next 18 - 24 hours."
+    "executivesCall": "Please expect a call from our executives within the next 18 - 24 hours.",
+    "visitDetails": "Visit Details",
+    "reschedule": "Reschedule",
+    "newVisit": "New Visit"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -511,6 +514,7 @@
     "newLaunches": "New Launches",
     "valueAddedServices": "Value Added Services",
     "savedProperties": "Saved Properties",
+    "propertyVisits": "Property Visits",
     "marketTrends": "Market Trends",
     "support": "Support",
     "settings": "Settings",

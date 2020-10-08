@@ -24,6 +24,7 @@ import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/Pr
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import { NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 
@@ -58,6 +59,7 @@ export type FinancialsNavigatorParamList = {
 export type MoreStackNavigatorParamList = {
   [ScreensKeys.More]: undefined;
   [ScreensKeys.UserProfileScreen]: undefined;
+  [ScreensKeys.PropertyVisits]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -118,6 +120,7 @@ export const MoreStack = (): React.ReactElement => {
     >
       <MoreStackNavigator.Screen name={ScreensKeys.More} component={More} />
       <MoreStackNavigator.Screen name={ScreensKeys.UserProfileScreen} component={UserProfile} />
+      <MoreStackNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
     </MoreStackNavigator.Navigator>
   );
 };

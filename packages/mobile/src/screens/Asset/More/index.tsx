@@ -129,6 +129,13 @@ export class More extends React.PureComponent<Props> {
           })
         );
         break;
+      case MoreScreenTypes.PROPERTY_VISITS:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.PropertyVisits,
+          })
+        );
+        break;
       default:
         navigation.dispatch(
           CommonActions.navigate({

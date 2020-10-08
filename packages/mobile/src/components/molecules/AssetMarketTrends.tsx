@@ -88,8 +88,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
                   <Label type="large" textType="regular" style={styles.trendDate}>
                     {postedAtDate}
                   </Label>
-                  {/* TODO: Change the icon after updating icomoon */}
-                  <Icon name={icons.rightArrow} color={theme.colors.primaryColor} size={20} />
+                  <Icon name={icons.dart} color={theme.colors.primaryColor} size={20} />
                 </View>
               </View>
             </TouchableOpacity>

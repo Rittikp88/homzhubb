@@ -76,7 +76,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             >
               <PricePerUnit
                 currency="INR"
-                price={0}
+                price={NaN}
                 unit="mo"
               />
               <ForwardRef

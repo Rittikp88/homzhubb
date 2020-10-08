@@ -7,6 +7,7 @@ import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
+import PropertyVisits from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyVisits';
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
@@ -30,6 +31,8 @@ export const TopTabs = (): React.ReactElement => {
     <TopTabNavigator.Navigator
       initialRouteName={ScreensKeys.NotificationTab}
       style={styles.container}
+      lazy
+      initialLayout={theme.viewport}
       sceneContainerStyle={styles.sceneContainer}
       tabBarOptions={{
         scrollEnabled: true,
@@ -81,7 +84,7 @@ export const TopTabs = (): React.ReactElement => {
       />
       <TopTabNavigator.Screen
         name={ScreensKeys.SiteVisitsTab}
-        component={DummyView}
+        component={PropertyVisits}
         options={{
           tabBarLabel: Tabs.SITE_VISITS,
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => {

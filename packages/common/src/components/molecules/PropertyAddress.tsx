@@ -1,22 +1,37 @@
 import React from 'react';
-import { StyleSheet, View, StyleProp, TextStyle } from 'react-native';
+import { StyleSheet, View, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+import { Text, Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   primaryAddress: string;
   isIcon?: boolean;
   subAddress: string;
+  primaryTextType?: TextSizeType;
   primaryAddressStyle?: StyleProp<TextStyle>;
   subAddressStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const PropertyAddress = (props: IProps): React.ReactElement => {
-  const { primaryAddress, subAddress, primaryAddressStyle, subAddressStyle, isIcon } = props;
+  const {
+    primaryAddress,
+    subAddress,
+    primaryAddressStyle,
+    subAddressStyle,
+    isIcon,
+    primaryTextType = 'regular',
+    containerStyle = {},
+  } = props;
   return (
-    <View style={styles.propertyAddressContainer}>
-      <Text type="regular" textType="semiBold" style={[styles.propertyNameText, primaryAddressStyle]} numberOfLines={1}>
+    <View style={[styles.propertyAddressContainer, containerStyle]}>
+      <Text
+        type={primaryTextType}
+        textType="semiBold"
+        style={[styles.propertyNameText, primaryAddressStyle]}
+        numberOfLines={1}
+      >
         {primaryAddress}
       </Text>
       <View style={styles.flexRow}>

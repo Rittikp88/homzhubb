@@ -43,6 +43,9 @@ exports[`PropertySearchList should match snapshot 1`] = `
             "name": "SQ_FT",
             "title": "Sq.ft",
           },
+          "country": Object {
+            "currencies": Array [],
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -96,6 +99,20 @@ exports[`PropertySearchList should match snapshot 1`] = `
             "label": "Square feet",
             "name": "SQ_FT",
             "title": "Sq.ft",
+          },
+          "country": Object {
+            "currencies": Array [
+              Object {
+                "currency_code": "",
+                "currency_name": "",
+                "currency_symbol": "",
+              },
+            ],
+            "id": 1,
+            "iso2_code": "",
+            "iso3_code": "",
+            "name": "",
+            "phone_codes": Array [],
           },
           "floor_number": 2,
           "id": 2,
@@ -197,6 +214,9 @@ exports[`PropertySearchList should match snapshot for renderItem 1`] = `
         "name": "SQ_FT",
         "title": "Sq.ft",
       },
+      "country": Object {
+        "currencies": Array [],
+      },
       "floor_number": 1,
       "id": 1,
       "images": Array [
@@ -285,6 +305,9 @@ exports[`PropertySearchList should match snapshot when count is not there 1`] = 
             "name": "SQ_FT",
             "title": "Sq.ft",
           },
+          "country": Object {
+            "currencies": Array [],
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -338,6 +361,20 @@ exports[`PropertySearchList should match snapshot when count is not there 1`] = 
             "label": "Square feet",
             "name": "SQ_FT",
             "title": "Sq.ft",
+          },
+          "country": Object {
+            "currencies": Array [
+              Object {
+                "currency_code": "",
+                "currency_name": "",
+                "currency_symbol": "",
+              },
+            ],
+            "id": 1,
+            "iso2_code": "",
+            "iso3_code": "",
+            "name": "",
+            "phone_codes": Array [],
           },
           "floor_number": 2,
           "id": 2,

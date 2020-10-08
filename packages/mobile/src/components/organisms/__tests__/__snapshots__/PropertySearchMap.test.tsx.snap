@@ -71,6 +71,9 @@ exports[`PropertySearchMap should match snapshot 1`] = `
             "name": "SQ_FT",
             "title": "Sq.ft",
           },
+          "country": Object {
+            "currencies": Array [],
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -124,6 +127,20 @@ exports[`PropertySearchMap should match snapshot 1`] = `
             "label": "Square feet",
             "name": "SQ_FT",
             "title": "Sq.ft",
+          },
+          "country": Object {
+            "currencies": Array [
+              Object {
+                "currency_code": "",
+                "currency_name": "",
+                "currency_symbol": "",
+              },
+            ],
+            "id": 1,
+            "iso2_code": "",
+            "iso3_code": "",
+            "name": "",
+            "phone_codes": Array [],
           },
           "floor_number": 2,
           "id": 2,
@@ -250,6 +267,9 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
             "name": "SQ_FT",
             "title": "Sq.ft",
           },
+          "country": Object {
+            "currencies": Array [],
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -303,6 +323,20 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
             "label": "Square feet",
             "name": "SQ_FT",
             "title": "Sq.ft",
+          },
+          "country": Object {
+            "currencies": Array [
+              Object {
+                "currency_code": "",
+                "currency_name": "",
+                "currency_symbol": "",
+              },
+            ],
+            "id": 1,
+            "iso2_code": "",
+            "iso3_code": "",
+            "name": "",
+            "phone_codes": Array [],
           },
           "floor_number": 2,
           "id": 2,
@@ -429,6 +463,9 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
             "name": "SQ_FT",
             "title": "Sq.ft",
           },
+          "country": Object {
+            "currencies": Array [],
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -482,6 +519,20 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
             "label": "Square feet",
             "name": "SQ_FT",
             "title": "Sq.ft",
+          },
+          "country": Object {
+            "currencies": Array [
+              Object {
+                "currency_code": "",
+                "currency_name": "",
+                "currency_symbol": "",
+              },
+            ],
+            "id": 1,
+            "iso2_code": "",
+            "iso3_code": "",
+            "name": "",
+            "phone_codes": Array [],
           },
           "floor_number": 2,
           "id": 2,
@@ -608,6 +659,9 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
             "name": "SQ_FT",
             "title": "Sq.ft",
           },
+          "country": Object {
+            "currencies": Array [],
+          },
           "floor_number": 1,
           "id": 1,
           "images": Array [
@@ -661,6 +715,20 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
             "label": "Square feet",
             "name": "SQ_FT",
             "title": "Sq.ft",
+          },
+          "country": Object {
+            "currencies": Array [
+              Object {
+                "currency_code": "",
+                "currency_name": "",
+                "currency_symbol": "",
+              },
+            ],
+            "id": 1,
+            "iso2_code": "",
+            "iso3_code": "",
+            "name": "",
+            "phone_codes": Array [],
           },
           "floor_number": 2,
           "id": 2,

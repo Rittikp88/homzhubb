@@ -23,6 +23,9 @@ export const PropertySearchData = [
       id: 2,
       name: 'Apartment / Condo',
     },
+    country: {
+      currencies: [],
+    },
     spaces: [
       {
         id: 1,
@@ -78,6 +81,20 @@ export const PropertySearchData = [
     asset_type: {
       id: 2,
       name: 'Apartment / Condo',
+    },
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
     },
     spaces: [
       {

@@ -57,7 +57,7 @@ export class LeaseTerm {
   @JsonProperty('maximum_lease_period', Number)
   private _maximumLeasePeriod = -1;
 
-  @JsonProperty('rent_free_period', Number)
+  @JsonProperty('rent_free_period', Number, true)
   private _rentFreePeriod = -1;
 
   @JsonProperty('annual_rent_increment_percentage', Number, true)

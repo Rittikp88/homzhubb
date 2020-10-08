@@ -52,6 +52,7 @@ export enum ScreensKeys {
   // Dashboard Stack
   DashboardLandingScreen = 'DashboardLandingScreen',
   MarketTrends = 'MarketTrends',
+  PropertyVisits = 'PropertyVisits',
   AssetNotifications = 'AssetNotifications',
 
   // Portfolio Stack

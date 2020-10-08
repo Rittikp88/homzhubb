@@ -44,6 +44,20 @@ export const mockAsset = {
     latitude: 25.619,
     longitude: 85.123,
   },
+  country: {
+    id: 1,
+    name: '',
+    iso2_code: '',
+    iso3_code: '',
+    phone_codes: [],
+    currencies: [
+      {
+        currency_name: '',
+        currency_symbol: '',
+        currency_code: '',
+      },
+    ],
+  },
   assetType: {
     id: 2,
     name: 'Apartment / Condo',

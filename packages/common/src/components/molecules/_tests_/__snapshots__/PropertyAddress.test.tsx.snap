@@ -3,10 +3,13 @@
 exports[`PropertyAddress should match snapshot with icon 1`] = `
 <View
   style={
-    Object {
-      "flexDirection": "column",
-      "justifyContent": "space-between",
-    }
+    Array [
+      Object {
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+      },
+      Object {},
+    ]
   }
 >
   <Text
@@ -64,10 +67,13 @@ exports[`PropertyAddress should match snapshot with icon 1`] = `
 exports[`PropertyAddress should match snapshot without icon 1`] = `
 <View
   style={
-    Object {
-      "flexDirection": "column",
-      "justifyContent": "space-between",
-    }
+    Array [
+      Object {
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+      },
+      Object {},
+    ]
   }
 >
   <Text

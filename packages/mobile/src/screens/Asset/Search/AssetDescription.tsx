@@ -240,6 +240,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       projectName,
       unitNumber,
       blockNumber,
+      country: { currencies },
       visitDate,
       verifications: { description },
       assetGroup: { name },
@@ -270,8 +271,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         <ShieldGroup propertyType={propertyType} text={description} isInfoRequired />
         <View style={styles.apartmentContainer}>
           <PricePerUnit
-            price={(Number(leaseTerm?.expectedPrice) || saleTerm?.expectedPrice) ?? 0}
-            currency={(leaseTerm?.currencyCode || saleTerm?.currencyCode) ?? 'INR'}
+            price={(Number(leaseTerm?.expectedPrice) || Number(saleTerm?.expectedPrice)) ?? 0}
+            currency={currencies[0].currencyCode ?? 'INR'}
             unit={asset_transaction_type === 0 ? 'mo' : ''}
           />
           <TouchableOpacity style={styles.textIcon} onPress={this.onBookVisit}>

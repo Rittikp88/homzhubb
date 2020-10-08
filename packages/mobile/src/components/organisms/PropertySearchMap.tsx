@@ -184,14 +184,11 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
   };
 
   public getCurrency = (item: Asset): string => {
-    const { leaseTerm, saleTerm } = item;
-    if (leaseTerm) {
-      return leaseTerm.currencyCode;
-    }
-    if (saleTerm) {
-      return saleTerm.currencyCode;
-    }
-    return 'INR';
+    const {
+      country: { currencies },
+    } = item;
+
+    return currencies[0].currencyCode || 'INR';
   };
 
   public getPrice = (item: Asset): number => {

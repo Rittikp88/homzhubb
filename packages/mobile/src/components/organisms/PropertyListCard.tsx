@@ -98,15 +98,11 @@ export class PropertyListCard extends React.Component<Props, {}> {
 
   public getCurrency = (): string => {
     const {
-      property: { leaseTerm, saleTerm },
+      property: {
+        country: { currencies },
+      },
     } = this.props;
-    if (leaseTerm) {
-      return leaseTerm.currencyCode;
-    }
-    if (saleTerm) {
-      return saleTerm.currencyCode;
-    }
-    return 'INR';
+    return currencies[0].currencyCode || 'INR';
   };
 
   public getPrice = (): number => {

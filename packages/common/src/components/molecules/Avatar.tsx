@@ -9,11 +9,12 @@ interface IProps {
   fullName: string;
   designation: string;
   phoneNumber?: string;
+  rating?: number;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
-  const { fullName, designation, containerStyle = {}, phoneNumber } = props;
+  const { fullName, designation, containerStyle = {}, phoneNumber, rating } = props;
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -36,6 +37,16 @@ const Avatar = (props: IProps): React.ReactElement => {
               <Label textType="regular" type="regular" style={styles.designation}>
                 {phoneNumber}
               </Label>
+            </View>
+          )}
+          {rating && (
+            <View style={styles.numberContainer}>
+              <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+              <Label textType="regular" type="regular" style={styles.rating}>
+                {rating}
+              </Label>
+              {/* TODO: Handle color from model */}
+              <Icon name={icons.starFilled} color={theme.colors.error} size={12} />
             </View>
           )}
         </View>
@@ -71,6 +82,10 @@ const styles = StyleSheet.create({
   iconStyle: {
     marginTop: 6,
     marginHorizontal: 4,
+  },
+  rating: {
+    color: theme.colors.darkTint2,
+    marginEnd: 4,
   },
 });
 

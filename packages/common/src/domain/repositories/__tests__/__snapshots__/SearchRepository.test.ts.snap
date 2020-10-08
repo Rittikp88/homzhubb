@@ -334,8 +334,14 @@ AssetSearch {
       },
       "_cornerProperty": false,
       "_country": Country {
-        "_currencies": Array [],
-        "_id": 0,
+        "_currencies": Array [
+          Currency {
+            "_currencyCode": "",
+            "_currencyName": "",
+            "_currencySymbol": "",
+          },
+        ],
+        "_id": 1,
         "_iso2Code": "",
         "_iso3Code": "",
         "_name": "",
@@ -717,8 +723,14 @@ AssetSearch {
       },
       "_cornerProperty": false,
       "_country": Country {
-        "_currencies": Array [],
-        "_id": 0,
+        "_currencies": Array [
+          Currency {
+            "_currencyCode": "",
+            "_currencyName": "",
+            "_currencySymbol": "",
+          },
+        ],
+        "_id": 1,
         "_iso2Code": "",
         "_iso3Code": "",
         "_name": "",

@@ -3,7 +3,7 @@ export enum Tabs {
   TICKETS = 'Tickets',
   OFFERS = 'Offers',
   REVIEWS = 'Reviews',
-  SITE_VISITS = 'Site Visits',
+  SITE_VISITS = 'Property Visits',
   FINANCIALS = 'Financials',
   MESSAGES = 'Messages',
   DOCUMENTS = 'Documents',
