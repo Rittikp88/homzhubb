@@ -21,7 +21,7 @@ describe('AssetSubscriptionPlan', () => {
     const RenderItem = wrapper.find('[testID="subscriptionList"]').prop('renderItem');
     const renderItemShallowWrapper = shallow(
       // @ts-ignore
-      <RenderItem item={AssetSubscriptionPlanData.recommended_plan.service_bundle_items[0]} />
+      <RenderItem item={AssetSubscriptionPlanData.recommended_plan.service_plan_bundles[0]} />
     );
     expect(toJson(renderItemShallowWrapper)).toMatchSnapshot();
   });
@@ -30,7 +30,7 @@ describe('AssetSubscriptionPlan', () => {
     const KeyExtractor = wrapper.find('[testID="subscriptionList"]').prop('keyExtractor');
     const renderExtractorShallowWrapper = shallow(
       // @ts-ignore
-      <KeyExtractor item={AssetSubscriptionPlanData.recommended_plan.service_bundle_items[0]} />
+      <KeyExtractor item={AssetSubscriptionPlanData.recommended_plan.service_plan_bundles[0]} />
     );
     expect(toJson(renderExtractorShallowWrapper)).toMatchSnapshot();
   });

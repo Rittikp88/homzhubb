@@ -124,7 +124,6 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
             currentIndex={currentIndex}
             isStepDone={stepList}
             onEditPress={this.onEditPress}
-            stepContainerStyle={styles.stepContainer}
             containerStyle={styles.addressCard}
             onPressSteps={this.handlePreviousStep}
           />
@@ -304,9 +303,6 @@ const styles = StyleSheet.create({
   },
   skip: {
     color: theme.colors.blue,
-  },
-  stepContainer: {
-    paddingHorizontal: 50,
   },
   addressCard: {
     marginHorizontal: 16,

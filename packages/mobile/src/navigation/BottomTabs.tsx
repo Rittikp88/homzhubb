@@ -60,6 +60,8 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.More]: undefined;
   [ScreensKeys.UserProfileScreen]: undefined;
   [ScreensKeys.PropertyVisits]: undefined;
+  [ScreensKeys.MarketTrends]: undefined;
+  [ScreensKeys.AssetNotifications]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -121,6 +123,8 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.More} component={More} />
       <MoreStackNavigator.Screen name={ScreensKeys.UserProfileScreen} component={UserProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
+      <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
+      <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -131,10 +135,12 @@ export const BottomTabs = (): React.ReactElement => {
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const dispatch = useDispatch();
   // Initial Route for guest and logged in user gets decided here
-  if (isLoggedIn && routeName !== ScreensKeys.Search) {
-    StatusBar.setBackgroundColor(theme.colors.primaryColor);
-  } else {
-    StatusBar.setBackgroundColor(theme.colors.white);
+  if (PlatformUtils.isAndroid()) {
+    if (isLoggedIn && routeName !== ScreensKeys.Search) {
+      StatusBar.setBackgroundColor(theme.colors.primaryColor);
+    } else {
+      StatusBar.setBackgroundColor(theme.colors.white);
+    }
   }
 
   // TODO: Need to add type

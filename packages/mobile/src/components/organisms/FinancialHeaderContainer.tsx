@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   plusIcon: {
-    backgroundColor: theme.colors.lightGrayishBlue,
     marginRight: 12,
   },
   priceStyle: {

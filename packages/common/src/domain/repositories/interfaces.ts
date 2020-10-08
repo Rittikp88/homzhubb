@@ -1,5 +1,6 @@
-// ENUMS
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+
+// ENUMS
 
 export enum LoginTypes {
   OTP = 'OTP_LOGIN',

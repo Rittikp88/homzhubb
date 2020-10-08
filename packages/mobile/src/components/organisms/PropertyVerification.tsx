@@ -89,7 +89,18 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           <Text type="small" textType="semiBold" style={styles.title}>
             {data.title}
           </Text>
-          {verificationType.name !== VerificationDocumentCategory.SELFIE_ID_PROOF && (
+          {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
+            <>
+              <Selfie style={styles.selfie} />
+              {selfieInstruction.map((instruction, i) => {
+                return (
+                  <Label type="regular" textType="regular" style={styles.instruction} key={i}>
+                    {instruction}
+                  </Label>
+                );
+              })}
+            </>
+          ) : (
             <>
               {data.description !== '' && (
                 <Label type="regular" textType="regular" style={styles.subTitle}>
@@ -99,17 +110,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             </>
           )}
           {this.renderImageOrUploadBox(verificationType)}
-          {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF && (
-            <>
-              {selfieInstruction.map((instruction, i) => {
-                return (
-                  <Label type="regular" textType="regular" style={styles.instruction} key={i}>
-                    {instruction}
-                  </Label>
-                );
-              })}
-            </>
-          )}
         </View>
       );
     });
@@ -150,19 +150,13 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     }
 
     return (
-      <>
-        {currentData.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
-          <Selfie style={styles.selfie} onPress={onPress} />
-        ) : (
-          <UploadBox
-            icon={currentData.icon}
-            header={currentData.label}
-            subHeader={currentData.helpText}
-            onPress={onPress}
-            containerStyle={styles.uploadBox}
-          />
-        )}
-      </>
+      <UploadBox
+        icon={currentData.icon}
+        header={currentData.label}
+        subHeader={currentData.helpText}
+        onPress={onPress}
+        containerStyle={styles.uploadBox}
+      />
     );
   };
 
@@ -359,7 +353,7 @@ export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyV
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
     marginTop: 4,
     backgroundColor: theme.colors.white,
   },

@@ -12,8 +12,9 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text } from '@homzhub/common/src/components';
 import { PropertyAmenities, PropertyAddressCountry, ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
-import { Asset, LastVisitedStep, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { IActions, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 const actionButtons: IActions[] = [

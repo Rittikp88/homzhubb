@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 export interface IServiceBundleItems {
   id: number;
@@ -18,20 +19,14 @@ export class ServiceBundleItems {
   @JsonProperty('name', String)
   private _name = '';
 
-  @JsonProperty('title', String)
-  private _title = '';
+  @JsonProperty('display_order', Number)
+  private _displayOrder = -1;
 
-  @JsonProperty('category', String)
-  private _category = '';
+  @JsonProperty('label', String)
+  private _label = '';
 
-  @JsonProperty('description', String)
-  private _description = '';
-
-  @JsonProperty('position', Number)
-  private _position = 0;
-
-  @JsonProperty('item_label', String)
-  private _itemLabel = '';
+  @JsonProperty('attachment', Attachment)
+  private _attachment = new Attachment();
 
   get id(): number {
     return this._id;
@@ -41,23 +36,15 @@ export class ServiceBundleItems {
     return this._name;
   }
 
-  get title(): string {
-    return this._title;
+  get displayOrder(): number {
+    return this._displayOrder;
   }
 
-  get category(): string {
-    return this._category;
+  get label(): string {
+    return this._label;
   }
 
-  get description(): string {
-    return this._description;
-  }
-
-  get position(): number {
-    return this._position;
-  }
-
-  get itemLabel(): string {
-    return this._itemLabel;
+  get attachment(): Attachment {
+    return this._attachment;
   }
 }

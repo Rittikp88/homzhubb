@@ -97,12 +97,12 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
         data={bundleItems ?? []}
         numColumns={1}
         renderItem={({ item }: { item: ServiceBundleItems }): React.ReactElement => {
-          const { title } = item;
+          const { label } = item;
           return (
             <View style={styles.featuresData}>
               <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />
               <Text type="small" textType="regular" style={styles.featureName}>
-                {title}
+                {label}
               </Text>
             </View>
           );

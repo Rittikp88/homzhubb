@@ -8,7 +8,7 @@ exports[`PropertyVerification should match snapshot 1`] = `
         "backgroundColor": "#FFFFFF",
         "flex": 1,
         "marginTop": 4,
-        "paddingHorizontal": 8,
+        "paddingHorizontal": 16,
       }
     }
   >
@@ -71,7 +71,6 @@ exports[`PropertyVerification should match snapshot 1`] = `
           Click a selfie with the ID proof
         </Text>
         <[object Object]
-          onPress={[Function]}
           style={
             Object {
               "alignSelf": "center",
@@ -105,6 +104,16 @@ exports[`PropertyVerification should match snapshot 1`] = `
         >
           2. Please ensure that the ID is clearly visible in your photo
         </Label>
+        <UploadBox
+          containerStyle={
+            Object {
+              "marginTop": 20,
+            }
+          }
+          header="Capture Your Selfie"
+          icon="selfie"
+          onPress={[Function]}
+        />
       </View>
       <View
         key="2"

@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   },
   listStyle: {
     marginTop: 10,
+    alignSelf: 'center',
   },
   stepLabel: {
     color: theme.colors.darkTint7,

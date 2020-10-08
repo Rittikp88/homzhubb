@@ -427,19 +427,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   public handleSkip = (): void => {
-    const { navigation, resetState } = this.props;
     const { currentIndex } = this.state;
     if (currentIndex < this.getRoutes().length - 2) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
-      resetState();
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreensKeys.BottomTabs }],
-        })
-      );
+      this.setState({ isSheetVisible: true });
     }
   };
 }

@@ -5,7 +5,7 @@ interface ISubscribedPlan {
   id: number;
   name: string;
   label: string;
-  service_bundle_items: IServiceBundleItems;
+  service_plan_bundles: IServiceBundleItems;
 }
 
 interface IUserSubscription {
@@ -24,7 +24,7 @@ export class SubscribedPlan {
   @JsonProperty('label', String)
   private _label = '';
 
-  @JsonProperty('service_bundle_items', [ServiceBundleItems])
+  @JsonProperty('service_plan_bundles', [ServiceBundleItems])
   private _serviceBundleItems: ServiceBundleItems[] = [];
 
   get id(): number {
