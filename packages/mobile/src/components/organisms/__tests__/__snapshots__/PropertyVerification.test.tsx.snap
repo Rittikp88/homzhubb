@@ -237,19 +237,17 @@ exports[`PropertyVerification should match snapshot 1`] = `
       </View>
     </View>
   </View>
-  <WithShadowView>
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "margin": 16,
-        }
+  <Button
+    containerStyle={
+      Object {
+        "flex": 0,
+        "marginTop": 20,
       }
-      disabled={true}
-      onPress={[Function]}
-      title="common:saveAndContinue"
-      type="primary"
-    />
-  </WithShadowView>
+    }
+    disabled={true}
+    onPress={[Function]}
+    title="common:saveAndContinue"
+    type="primary"
+  />
 </Fragment>
 `;

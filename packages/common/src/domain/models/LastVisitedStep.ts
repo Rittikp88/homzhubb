@@ -18,8 +18,8 @@ export interface IListingStep {
 }
 
 export interface ILastVisitedStep {
-  asset_creation?: IAssetCreationStep;
-  listing?: IListingStep;
+  asset_creation: IAssetCreationStep;
+  listing: IListingStep;
 }
 
 @JsonObject('AssetCreationStep')

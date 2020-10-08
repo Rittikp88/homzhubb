@@ -10,7 +10,7 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
-import { FormCalendar, FormTextInput, Slider, Text } from '@homzhub/common/src/components';
+import { FormCalendar, FormTextInput, Slider, Text, WithFieldError } from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
@@ -31,7 +31,7 @@ export interface IFormData {
   [LeaseFormKeys.minimumLeasePeriod]: number;
   [LeaseFormKeys.maximumLeasePeriod]: number;
   [LeaseFormKeys.utilityBy]: PaidByTypes;
-  [LeaseFormKeys.rentFreePeriod]: number;
+  [LeaseFormKeys.rentFreePeriod]: string;
 }
 
 enum LeaseFormKeys {
@@ -158,17 +158,6 @@ const LeaseTermForm = ({
           inputGroupSuffixText={t('annualIncrementSuffix')}
         />
       )}
-      {assetGroupType === AssetGroupTypes.COM && (
-        <FormTextInput
-          inputType="number"
-          name={LeaseFormKeys.rentFreePeriod}
-          label={t('rentFreePeriod')}
-          placeholder={t('common:enter')}
-          maxLength={2}
-          formProps={formProps}
-          inputGroupSuffixText={t('common:days')}
-        />
-      )}
       <Text type="small" textType="semiBold" style={styles.headerTitle}>
         {t('duration')}
       </Text>
@@ -196,14 +185,16 @@ const LeaseTermForm = ({
         <Text type="small" textType="semiBold" style={styles.sliderTitle}>
           {t('maximumLeasePeriod')}
         </Text>
-        <Slider
-          onSliderChange={onTotalSliderChange}
-          minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
-          maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
-          minSliderValue={DEFAULT_LEASE_PERIOD}
-          isLabelRequired
-          labelText="Months"
-        />
+        <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
+          <Slider
+            onSliderChange={onTotalSliderChange}
+            minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
+            maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
+            minSliderValue={DEFAULT_LEASE_PERIOD}
+            isLabelRequired
+            labelText="Months"
+          />
+        </WithFieldError>
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
           {t('utilityBy')}
         </Text>
@@ -231,6 +222,17 @@ const LeaseTermForm = ({
           maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
           maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
           maintenanceUnitKey={LeaseFormKeys.maintenanceUnit}
+        />
+      )}
+      {assetGroupType === AssetGroupTypes.COM && (
+        <FormTextInput
+          inputType="number"
+          name={LeaseFormKeys.rentFreePeriod}
+          label={t('rentFreePeriod')}
+          placeholder={t('common:enter')}
+          maxLength={2}
+          formProps={formProps}
+          inputGroupSuffixText={t('common:days')}
         />
       )}
     </>
@@ -264,8 +266,16 @@ const LeaseFormSchema = (t: TFunction): object => {
         .required(t('maintenanceAmountRequired')),
     }),
     [LeaseFormKeys.maintenanceSchedule]: yup.string<ScheduleTypes>().required(t('maintenanceScheduleRequired')),
-    availableFrom: yup.string(),
-    description: yup.string(),
+    [LeaseFormKeys.availableFrom]: yup.string(),
+    [LeaseFormKeys.minimumLeasePeriod]: yup.number(),
+    [LeaseFormKeys.maximumLeasePeriod]: yup
+      .number()
+      .when(LeaseFormKeys.minimumLeasePeriod, (min: number, schema: yup.MixedSchema<any>) => {
+        return schema.test({
+          test: (value: number) => value >= min,
+          message: t('maximumLeaseError'),
+        });
+      }),
   };
 };
 

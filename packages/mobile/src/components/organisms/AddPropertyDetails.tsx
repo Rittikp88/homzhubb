@@ -9,7 +9,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, FormTextInput, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
-import { AssetDescriptionForm } from '@homzhub/mobile/src/components';
+import { AssetDescriptionForm } from '@homzhub/mobile/src/components/molecules/AssetDescriptionForm';
 import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';

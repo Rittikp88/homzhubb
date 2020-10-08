@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import LeaseTermController from '@homzhub/mobile/src/components/organisms/LeaseTermController';
@@ -12,6 +12,7 @@ import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IProps {
   typeOfPlan: TypeOfPlan;
@@ -63,8 +64,7 @@ class ActionController extends React.PureComponent<Props, {}> {
             currentAssetId={currentAssetId}
             assetGroupType={assetGroupType}
             currencyData={currencies[0]}
-            onNextStep={onNextStep}
-            lastVisitedStep={lastVisitedStep}
+            onNextStep={this.onNextStep}
           />
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
@@ -81,14 +81,29 @@ class ActionController extends React.PureComponent<Props, {}> {
         )}
         {typeOfPlan === TypeOfPlan.MANAGE && (
           <ManageTermController
+            currentAssetId={currentAssetId}
             assetGroupType={assetGroupType}
-            lastVisitedStep={lastVisitedStep}
             currencyData={currencies[0]}
-            onNextStep={onNextStep}
+            onNextStep={this.onNextStep}
           />
         )}
       </>
     );
+  };
+
+  private onNextStep = async (type: TypeOfPlan): Promise<void> => {
+    const { onNextStep, lastVisitedStep, currentAssetId } = this.props;
+
+    const last_visited_step = {
+      ...lastVisitedStep,
+      listing: {
+        ...lastVisitedStep.listing,
+        type,
+        is_listing_created: true,
+      },
+    };
+    await AssetRepository.updateAsset(currentAssetId, { last_visited_step });
+    onNextStep();
   };
 }
 

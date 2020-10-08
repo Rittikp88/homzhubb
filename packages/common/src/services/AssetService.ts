@@ -1,22 +1,13 @@
 import { remove, cloneDeep } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IFormData, LeaseFormKeys } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
-// TODO: Use Property age Array when api is able to accept values
-// const PROPERTY_AGE = [
-//   DateUtils.getYear(1),
-//   DateUtils.getYear(5),
-//   DateUtils.getYear(10),
-//   DateUtils.getYear(15),
-//   DateUtils.getYear(20),
-//   DateUtils.getYear(30),
-// ];
-
-// TODO: Use Metre Array when api is able to accept values in metres
-// const SEARCH_RADIUS_METRE = [50000, 5000, 250, 10000, 500, 20000, 1000, 30000, 3000, 40000];
+// CONSTANTS
 const SEARCH_RADIUS_KILO_METRE = [50, 5, 0.25, 10, 0.5, 20, 1, 30, 3, 40];
-
 const DATE_ADDED = [
   -1,
   DateUtils.getDate(3),
@@ -98,6 +89,39 @@ class AssetService {
       });
     }
     return finalPayload;
+  };
+
+  public extractLeaseParams = (values: IFormData, assetGroupType: AssetGroupTypes): any => {
+    const params: any = {
+      expected_monthly_rent: parseInt(values[LeaseFormKeys.monthlyRent], 10),
+      security_deposit: parseFloat(values[LeaseFormKeys.securityDeposit]),
+      annual_rent_increment_percentage: parseFloat(values[LeaseFormKeys.annualIncrement]),
+      available_from_date: values[LeaseFormKeys.availableFrom],
+      minimum_lease_period: values[LeaseFormKeys.minimumLeasePeriod],
+      maximum_lease_period: values[LeaseFormKeys.maximumLeasePeriod],
+      utility_paid_by: values[LeaseFormKeys.utilityBy],
+      maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
+      maintenance_amount: parseInt(values[LeaseFormKeys.maintenanceAmount], 10),
+      maintenance_payment_schedule: values[LeaseFormKeys.maintenanceSchedule],
+      maintenance_unit: values[LeaseFormKeys.maintenanceUnit],
+    };
+
+    if (!values[LeaseFormKeys.showMore]) {
+      params.annual_rent_increment_percentage = null;
+    }
+
+    if (values[LeaseFormKeys.maintenanceBy] === PaidByTypes.OWNER) {
+      params.maintenance_amount = null;
+      params.maintenance_payment_schedule = null;
+      params.maintenance_unit = null;
+    } else if (assetGroupType === AssetGroupTypes.COM) {
+      params.maintenance_payment_schedule = null;
+    } else if (assetGroupType === AssetGroupTypes.RES) {
+      params.maintenance_unit = null;
+      params.rent_free_period = null;
+    }
+
+    return params;
   };
 }
 

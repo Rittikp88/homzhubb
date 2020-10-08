@@ -1,13 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
-import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { AssetService } from '@homzhub/common/src/services/AssetService';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, Label, TextArea, FormButton, FormTextInput, Button } from '@homzhub/common/src/components';
+import { Button, FormButton, FormTextInput, Label, Text, TextArea } from '@homzhub/common/src/components';
 import {
   DEFAULT_LEASE_PERIOD,
   IFormData,
@@ -19,18 +23,20 @@ import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
 
 interface IOwnState {
+  currentTermId: number;
   isPropertyOccupied: boolean;
   description: string;
 }
 
 interface IProps extends WithTranslation {
   currencyData: Currency;
-  assetGroupType: string;
-  onNextStep: () => void;
-  lastVisitedStep: ILastVisitedStep;
+  assetGroupType: AssetGroupTypes;
+  currentAssetId: number;
+  onNextStep: (type: TypeOfPlan) => Promise<void>;
 }
 
 interface IFormFields extends IFormData {
@@ -49,6 +55,7 @@ const initialFormValues: IFormFields = {
   monthlyRent: '',
   securityDeposit: '',
   annualIncrement: '',
+  rentFreePeriod: '',
   minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
   maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
   availableFrom: DateUtils.getCurrentDate(),
@@ -57,7 +64,6 @@ const initialFormValues: IFormFields = {
   maintenanceBy: PaidByTypes.OWNER,
   maintenanceUnit: -1,
   utilityBy: PaidByTypes.TENANT,
-  rentFreePeriod: 0,
 };
 const MAX_DESCRIPTION_LENGTH = 600;
 
@@ -65,22 +71,23 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   public state = {
     isPropertyOccupied: true,
     description: '',
+    currentTermId: -1,
   };
 
   public render = (): React.ReactNode => {
     const { isPropertyOccupied } = this.state;
-    const { onNextStep, t } = this.props;
+    const { t } = this.props;
 
     return (
       <>
         {this.renderCard()}
-        {isPropertyOccupied && this.renderForm()}
+        {this.renderForm()}
         {!isPropertyOccupied && (
           <Button
             type="primary"
             title={t('common:continue')}
             containerStyle={styles.buttonStyle}
-            onPress={onNextStep}
+            onPress={this.onNextStep}
           />
         )}
       </>
@@ -123,7 +130,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
 
   private renderForm = (): React.ReactNode => {
     const { t, currencyData, assetGroupType } = this.props;
-    const { description } = this.state;
+    const { description, isPropertyOccupied } = this.state;
     return (
       <Formik
         enableReinitialize
@@ -131,83 +138,87 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
         initialValues={{ ...initialFormValues }}
         validate={FormUtils.validate(this.formSchema)}
       >
-        {(formProps: FormikProps<IFormData>): React.ReactElement => {
-          return (
-            <>
-              <AssetListingSection title={t('leaseTerms')}>
-                <>
-                  <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                    {t('tenantDetails')}
-                  </Text>
-                  <View style={styles.optionContainer}>
-                    <View style={styles.firstName}>
-                      <FormTextInput
-                        name="firstName"
-                        inputType="name"
-                        label={t('firstName')}
-                        placeholder={t('firstName')}
-                        formProps={formProps}
-                      />
+        {isPropertyOccupied ? (
+          (formProps: FormikProps<IFormData>): React.ReactElement => {
+            return (
+              <>
+                <AssetListingSection title={t('leaseTerms')}>
+                  <>
+                    <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                      {t('tenantDetails')}
+                    </Text>
+                    <View style={styles.optionContainer}>
+                      <View style={styles.firstName}>
+                        <FormTextInput
+                          name="firstName"
+                          inputType="name"
+                          label={t('firstName')}
+                          placeholder={t('firstName')}
+                          formProps={formProps}
+                        />
+                      </View>
+                      <View style={styles.lastName}>
+                        <FormTextInput
+                          name="lastName"
+                          inputType="name"
+                          label={t('lastName')}
+                          placeholder={t('lastName')}
+                          formProps={formProps}
+                        />
+                      </View>
                     </View>
-                    <View style={styles.lastName}>
-                      <FormTextInput
-                        name="lastName"
-                        inputType="name"
-                        label={t('lastName')}
-                        placeholder={t('lastName')}
-                        formProps={formProps}
-                      />
-                    </View>
-                  </View>
-                  <FormTextInput
-                    name="email"
-                    label={t('common:email')}
-                    placeholder={t('tenantEmail')}
-                    inputType="email"
-                    formProps={formProps}
+                    <FormTextInput
+                      name="email"
+                      label={t('common:email')}
+                      placeholder={t('tenantEmail')}
+                      inputType="email"
+                      formProps={formProps}
+                    />
+                    <FormTextInput
+                      name="phone"
+                      label={t('common:phone')}
+                      placeholder={t('tenantPhone')}
+                      inputType="phone"
+                      maxLength={10}
+                      inputPrefixText="+91"
+                      formProps={formProps}
+                    />
+                    <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                      {t('rentAndDeposit')}
+                    </Text>
+                    <LeaseTermForm
+                      isFromManage
+                      formProps={formProps}
+                      currencyData={currencyData}
+                      assetGroupType={assetGroupType}
+                    />
+                  </>
+                </AssetListingSection>
+                <AssetListingSection
+                  title={t('assetDescription:description')}
+                  containerStyles={styles.descriptionContainer}
+                >
+                  <TextArea
+                    value={description}
+                    wordCountLimit={MAX_DESCRIPTION_LENGTH}
+                    placeholder={t('common:typeHere')}
+                    onMessageChange={this.onDescriptionChange}
                   />
-                  <FormTextInput
-                    name="phone"
-                    label={t('common:phone')}
-                    placeholder={t('tenantPhone')}
-                    inputType="phone"
-                    maxLength={10}
-                    inputPrefixText="+91"
-                    formProps={formProps}
-                  />
-                  <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                    {t('rentAndDeposit')}
-                  </Text>
-                  <LeaseTermForm
-                    isFromManage
-                    formProps={formProps}
-                    currencyData={currencyData}
-                    assetGroupType={assetGroupType}
-                  />
-                </>
-              </AssetListingSection>
-              <AssetListingSection
-                title={t('assetDescription:description')}
-                containerStyles={styles.descriptionContainer}
-              >
-                <TextArea
-                  value={description}
-                  wordCountLimit={MAX_DESCRIPTION_LENGTH}
-                  placeholder={t('common:typeHere')}
-                  onMessageChange={this.onDescriptionChange}
+                </AssetListingSection>
+                <FormButton
+                  title={t('common:continue')}
+                  type="primary"
+                  formProps={formProps}
+                  // @ts-ignore
+                  onPress={formProps.handleSubmit}
+                  containerStyle={styles.continue}
                 />
-              </AssetListingSection>
-              <FormButton
-                title={t('common:continue')}
-                type="primary"
-                formProps={formProps}
-                // @ts-ignore
-                onPress={formProps.handleSubmit}
-                containerStyle={styles.continue}
-              />
-            </>
-          );
-        }}
+              </>
+            );
+          }
+        ) : (
+          <></>
+        )}
       </Formik>
     );
   };
@@ -221,18 +232,41 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     this.setState({ description });
   };
 
-  private onSubmit = (values: IFormFields, formActions: FormikHelpers<IFormFields>): void => {
-    const { lastVisitedStep } = this.props;
+  private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {
+    formActions.setSubmitting(true);
+    const { onNextStep, currentAssetId, assetGroupType } = this.props;
+    const { currentTermId, description } = this.state;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
-    const last_visited_step = {
-      ...lastVisitedStep,
-      listing: {
-        ...lastVisitedStep.listing,
-        type: TypeOfPlan.MANAGE,
-        is_listing_created: true,
-      },
+    const params: IManageTerm = {
+      first_name: values.firstName,
+      last_name: values.lastName,
+      email: values.email,
+      country_code: '+91',
+      phone_number: values.phone,
+      ...AssetService.extractLeaseParams(values, assetGroupType),
+      description,
     };
+
+    try {
+      if (currentTermId <= -1) {
+        const id = await AssetRepository.createManageLeaseTerm(currentAssetId, params);
+        this.setState({ currentTermId: id });
+      }
+      await onNextStep(TypeOfPlan.MANAGE);
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
+
+    formActions.setSubmitting(false);
+  };
+
+  private onNextStep = async (): Promise<void> => {
+    const { onNextStep } = this.props;
+    try {
+      await onNextStep(TypeOfPlan.MANAGE);
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
   };
 
   private formSchema = (): yup.ObjectSchema => {
@@ -243,7 +277,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
         .string()
         .matches(FormUtils.nameRegex, t('auth:onlyAlphabets'))
         .required(t('auth:firstNameRequired')),
-      lastName: yup.string().matches(FormUtils.nameRegex, t('auth:onlyAlphabets')).required(t('auth:lastNameRequired')),
+      lastName: yup.string().matches(FormUtils.nameRegex, t('auth:onlyAlphabets')),
       email: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
       phone: yup.string().required(t('auth:numberRequired')),
     });

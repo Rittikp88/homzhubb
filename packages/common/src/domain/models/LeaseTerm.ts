@@ -2,42 +2,23 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 
-export interface IUpdateLeaseTermParams {
-  expected_monthly_rent?: number;
-  security_deposit?: number;
-  minimum_lease_period?: number;
-  maximum_lease_period?: number;
-  rent_free_period?: number | null;
-  tenant_preferences?: number[];
-  annual_rent_increment_percentage?: number | null;
-  furnishing?: FurnishingTypes;
-  available_from_date?: string;
-  utility_paid_by?: PaidByTypes;
-  maintenance_paid_by?: PaidByTypes;
-  maintenance_amount?: number;
-  maintenance_unit?: number;
-  maintenance_payment_schedule?: ScheduleTypes | null;
-  description?: string;
-  lease_unit?: any;
-}
-
-export interface ICreateLeaseTermParams {
+export interface ILeaseTermParams {
   expected_monthly_rent: number;
   security_deposit: number;
   annual_rent_increment_percentage: number | null;
   minimum_lease_period: number;
   maximum_lease_period: number;
-  furnishing: FurnishingTypes;
   available_from_date: string;
   utility_paid_by: PaidByTypes;
   maintenance_paid_by: PaidByTypes;
   maintenance_amount: number | null;
-  maintenance_unit?: number;
-  maintenance_payment_schedule?: ScheduleTypes | null;
-  description?: string;
+  maintenance_unit: number | null;
+  maintenance_payment_schedule: ScheduleTypes | null;
+  description: string;
+  rent_free_period: number | null;
   tenant_preferences?: number[];
-  rent_free_period?: number;
-  lease_unit: any;
+  furnishing?: FurnishingTypes;
+  lease_unit?: any;
 }
 
 @JsonObject('LeaseTerm')
@@ -69,19 +50,19 @@ export class LeaseTerm {
   @JsonProperty('maintenance_paid_by', String)
   private _maintenancePaidBy = PaidByTypes.OWNER;
 
+  @JsonProperty('utility_paid_by', String)
+  private _utilityPaidBy = PaidByTypes.TENANT;
+
   @JsonProperty('maintenance_unit', Unit)
   private _maintenanceUnit = new Unit();
 
   @JsonProperty('maintenance_amount', Number, true)
-  private _maintenanceAmount: number | null = null;
+  private _maintenanceAmount = -1;
 
   @JsonProperty('maintenance_payment_schedule', String, true)
-  private _maintenanceSchedule: string | null = null;
+  private _maintenanceSchedule = '';
 
-  @JsonProperty('utility_paid_by', String)
-  private _utilityPaidBy = PaidByTypes.OWNER;
-
-  @JsonProperty('furnishing', String)
+  @JsonProperty('furnishing', String, true)
   private _furnishing = FurnishingTypes.NONE;
 
   @JsonProperty('description', String, true)

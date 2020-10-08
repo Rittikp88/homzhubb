@@ -20,8 +20,8 @@ import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/model
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
-import { ICreateLeaseTermParams, IUpdateLeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
-import { ManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
+import { ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
 import { ICreateSaleTermParams, IUpdateSaleTermParams, SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import {
   ExistingVerificationDocuments,
@@ -42,8 +42,7 @@ const ENDPOINTS = {
   saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-listings/`,
   updateSaleTerms: (propertyId: number, saleTermId: number): string =>
     `assets/${propertyId}/sale-listings/${saleTermId}/`,
-  manageTerm: (assetId: number): string => `asset/${assetId}/manage-lease-listing/`,
-  updateManageTerm: (assetId: number, unitId: number): string => `asset/${assetId}/manage-lease-listing/${unitId}/`,
+  manageTerm: (assetId: number): string => `assets/${assetId}/manage-lease-listing/`,
   existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}/`,
@@ -104,17 +103,14 @@ class AssetRepository {
     return ObjectMapper.deserializeArray(LeaseTerm, response);
   };
 
-  public createLeaseTerms = async (
-    propertyId: number,
-    leaseTerms: ICreateLeaseTermParams[]
-  ): Promise<{ id: number }> => {
+  public createLeaseTerms = async (propertyId: number, leaseTerms: ILeaseTermParams[]): Promise<{ id: number }> => {
     return await this.apiClient.post(ENDPOINTS.leaseTerms(propertyId), leaseTerms);
   };
 
   public updateLeaseTerms = async (
     propertyId: number,
     leaseTermId: number,
-    leaseTerms: IUpdateLeaseTermParams
+    leaseTerms: ILeaseTermParams
   ): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.updateLeaseTerms(propertyId, leaseTermId), leaseTerms);
   };
@@ -263,13 +259,9 @@ class AssetRepository {
     return ObjectMapper.deserializeArray(SpaceType, response);
   };
 
-  public getManageLeaseTerm = async (assetId: number): Promise<ManageTerm> => {
-    const response = await this.apiClient.get(ENDPOINTS.manageTerm(assetId));
-    return ObjectMapper.deserialize(ManageTerm, response);
-  };
-
-  public createManageLeaseTerm = async (assetId: number, leaseUnitId: number): Promise<{ lease_unit_id: number }> => {
-    return await this.apiClient.get(ENDPOINTS.updateManageTerm(assetId, leaseUnitId));
+  public createManageLeaseTerm = async (assetId: number, params: IManageTerm): Promise<number> => {
+    const response = await this.apiClient.post(ENDPOINTS.manageTerm(assetId), params);
+    return response.lease_unit_id;
   };
 }
 

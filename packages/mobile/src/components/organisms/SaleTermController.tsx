@@ -16,15 +16,14 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ICreateSaleTermParams } from '@homzhub/common/src/domain/models/SaleTerm';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
-  onNextStep: () => void;
+  onNextStep: (type: TypeOfPlan) => Promise<void>;
   assetGroupType: string;
   currencyData: Currency;
-  lastVisitedStep: ILastVisitedStep;
 }
 
 interface IFormData {
@@ -191,7 +190,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       } else {
         await AssetRepository.updateSaleTerm(currentAssetId, currentTermId, params);
       }
-      onNextStep();
+      await onNextStep(TypeOfPlan.SELL);
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
@@ -238,7 +237,6 @@ const styles = StyleSheet.create({
   continue: {
     flex: 0,
     marginTop: 20,
-    marginBottom: 40,
   },
   headerTitle: {
     marginTop: 28,

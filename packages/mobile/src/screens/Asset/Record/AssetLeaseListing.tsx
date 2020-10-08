@@ -123,7 +123,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     return (
       <>
         <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
-        <ScrollView style={styles.screen} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
+        <ScrollView
+          style={styles.screen}
+          contentContainerStyle={styles.screenContent}
+          showsVerticalScrollIndicator={false}
+          ref={this.scrollRef}
+        >
           <AddressWithStepIndicator
             steps={steps}
             selectedPan={selectedPlan}
@@ -513,5 +518,8 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     marginHorizontal: 16,
+  },
+  screenContent: {
+    paddingBottom: 48,
   },
 });

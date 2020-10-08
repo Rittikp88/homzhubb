@@ -1,6 +1,6 @@
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
-
 // ENUMS
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+
 export enum LoginTypes {
   OTP = 'OTP_LOGIN',
   EMAIL = 'EMAIL_LOGIN',

@@ -1,8 +1,8 @@
 import React from 'react';
-import { CheckboxGroup, ICheckboxGroupData, ICheckboxGroupProps } from '@homzhub/common/src/components';
+import { CheckboxGroup, ICheckboxGroupProps } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 
 interface IState {
-  data: ICheckboxGroupData[];
+  data: any[];
 }
 
 // Todo (Sriram: do we need this component?)

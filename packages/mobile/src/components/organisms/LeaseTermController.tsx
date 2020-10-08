@@ -7,13 +7,13 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { CheckboxGroup, FormButton, TextArea } from '@homzhub/common/src/components';
 import {
   DEFAULT_LEASE_PERIOD,
   IFormData,
-  LeaseFormKeys,
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
@@ -22,7 +22,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { PaidByTypes, ScheduleTypes, FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ICreateLeaseTermParams, IUpdateLeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IList } from '@homzhub/common/src/domain/models/Tenant';
 import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
@@ -33,7 +33,7 @@ interface IProps extends WithTranslation {
   setTermId: (termId: number) => void;
   onNextStep: () => void;
   currencyData: Currency;
-  assetGroupType: string;
+  assetGroupType: AssetGroupTypes;
   furnishing: FurnishingTypes;
   lastVisitedStep: ILastVisitedStep;
 }
@@ -49,8 +49,6 @@ interface IOwnState {
 
 const MAX_DESCRIPTION_LENGTH = 600;
 
-// TODO: (Shikha) - Need to implement Edit flow
-
 class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   public state = {
     formData: {
@@ -62,7 +60,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
       availableFrom: DateUtils.getCurrentDate(),
       utilityBy: PaidByTypes.TENANT,
-      rentFreePeriod: 0,
+      rentFreePeriod: '',
       maintenanceBy: PaidByTypes.OWNER,
       maintenanceAmount: '',
       maintenanceSchedule: ScheduleTypes.MONTHLY,
@@ -146,57 +144,24 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     const { onNextStep, furnishing, assetGroupType } = this.props;
     const { description, availableSpaces, selectedPreferences } = this.state;
 
-    let maintenance_amount: number | null = parseInt(values[LeaseFormKeys.maintenanceAmount], 10);
-    let maintenance_payment_schedule: ScheduleTypes | null = values[LeaseFormKeys.maintenanceSchedule];
-    let annual_rent_increment_percentage: number | null = parseFloat(values[LeaseFormKeys.annualIncrement]);
-    if (values[LeaseFormKeys.maintenanceBy] === PaidByTypes.OWNER) {
-      maintenance_amount = null;
-      maintenance_payment_schedule = null;
-    }
-    if (!values[LeaseFormKeys.showMore]) {
-      annual_rent_increment_percentage = null;
-    }
-
-    const leaseTerms: ICreateLeaseTermParams | IUpdateLeaseTermParams = {
-      expected_monthly_rent: parseInt(values[LeaseFormKeys.monthlyRent], 10),
-      security_deposit: parseInt(values[LeaseFormKeys.securityDeposit], 10),
-      annual_rent_increment_percentage,
-      minimum_lease_period: values[LeaseFormKeys.minimumLeasePeriod],
-      maximum_lease_period: values[LeaseFormKeys.maximumLeasePeriod],
-      available_from_date: values[LeaseFormKeys.availableFrom],
-      utility_paid_by: values[LeaseFormKeys.utilityBy],
-      maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
-      maintenance_amount,
-      maintenance_unit: values[LeaseFormKeys.maintenanceUnit],
-      maintenance_payment_schedule,
-      ...(description && { description }),
+    const params: ILeaseTermParams = {
+      ...AssetService.extractLeaseParams(values, assetGroupType),
+      description,
       tenant_preferences: selectedPreferences,
-      ...(assetGroupType === AssetGroupTypes.COM && {
-        rent_free_period: Number(values[LeaseFormKeys.rentFreePeriod]),
-      }),
+      furnishing,
       lease_unit: {
         name: 'Unit 1',
         spaces: availableSpaces,
       },
-      furnishing,
     };
-
-    // Removing un-required field as per the flow
-    if (assetGroupType === AssetGroupTypes.COM) {
-      delete leaseTerms.maintenance_payment_schedule;
-    } else if (assetGroupType === AssetGroupTypes.RES) {
-      delete leaseTerms.maintenance_unit;
-    }
 
     const { setTermId, currentTermId, currentAssetId } = this.props;
     try {
       if (currentTermId <= -1) {
-        const response = await AssetRepository.createLeaseTerms(currentAssetId, [
-          leaseTerms,
-        ] as ICreateLeaseTermParams[]);
+        const response = await AssetRepository.createLeaseTerms(currentAssetId, [params]);
         setTermId(response.id);
       } else {
-        await AssetRepository.updateLeaseTerms(currentAssetId, currentTermId, leaseTerms as IUpdateLeaseTermParams);
+        await AssetRepository.updateLeaseTerms(currentAssetId, currentTermId, params);
       }
       onNextStep();
     } catch (err) {

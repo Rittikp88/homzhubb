@@ -17,7 +17,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
-import { Text, Label, UploadBox, ImageThumbnail, Button, WithShadowView } from '@homzhub/common/src/components';
+import { Text, Label, UploadBox, ImageThumbnail, Button } from '@homzhub/common/src/components';
 import {
   IExistingVerificationDocuments,
   VerificationDocumentCategory,
@@ -69,15 +69,13 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
         <View style={styles.container}>
           <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
         </View>
-        <WithShadowView>
-          <Button
-            type="primary"
-            title={t('common:saveAndContinue')}
-            disabled={totalDocuments.length < verificationTypes.length || isLoading}
-            containerStyle={styles.buttonStyle}
-            onPress={this.postPropertyVerificationDocuments}
-          />
-        </WithShadowView>
+        <Button
+          type="primary"
+          title={t('common:saveAndContinue')}
+          disabled={totalDocuments.length < verificationTypes.length || isLoading}
+          containerStyle={styles.buttonStyle}
+          onPress={this.postPropertyVerificationDocuments}
+        />
       </>
     );
   }
@@ -406,7 +404,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    margin: 16,
+    marginTop: 20,
   },
   pdfName: {
     flex: 0.9,

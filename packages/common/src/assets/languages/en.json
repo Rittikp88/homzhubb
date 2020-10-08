@@ -217,6 +217,7 @@
     "duration": "Duration",
     "minimumLeasePeriod": "Minimum Lock-in period",
     "maximumLeasePeriod": "Total lease period",
+    "maximumLeaseError": "Total lease period should be greater than the minimum lock in",
     "utilityBy": "Utilities By",
     "furnishing": "Furnishing",
     "maintenance": "Maintenance",
