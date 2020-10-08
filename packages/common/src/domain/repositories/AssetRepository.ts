@@ -20,12 +20,9 @@ import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/model
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
-import {
-  ICreateLeaseTermDetails,
-  IUpdateLeaseTermDetails,
-  LeaseTerms,
-} from '@homzhub/common/src/domain/models/LeaseTerms';
-import { ICreateSaleTermDetails, IUpdateSaleTermDetails, SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
+import { ICreateLeaseTermParams, IUpdateLeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { ManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
+import { ICreateSaleTermParams, IUpdateSaleTermParams, SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import {
   ExistingVerificationDocuments,
   IPostVerificationDocuments,
@@ -34,6 +31,7 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
+// TODO: Split these across multiple repos
 const ENDPOINTS = {
   asset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
@@ -44,6 +42,8 @@ const ENDPOINTS = {
   saleTerms: (propertyId: number): string => `assets/${propertyId}/sale-listings/`,
   updateSaleTerms: (propertyId: number, saleTermId: number): string =>
     `assets/${propertyId}/sale-listings/${saleTermId}/`,
+  manageTerm: (assetId: number): string => `asset/${assetId}/manage-lease-listing/`,
+  updateManageTerm: (assetId: number, unitId: number): string => `asset/${assetId}/manage-lease-listing/${unitId}/`,
   existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}/`,
@@ -99,14 +99,14 @@ class AssetRepository {
     return await this.apiClient.patch(ENDPOINTS.updateAsset(id), requestBody);
   };
 
-  public getLeaseTerms = async (propertyId: number): Promise<LeaseTerms[]> => {
+  public getLeaseTerms = async (propertyId: number): Promise<LeaseTerm[]> => {
     const response = await this.apiClient.get(ENDPOINTS.leaseTerms(propertyId));
-    return ObjectMapper.deserializeArray(LeaseTerms, response);
+    return ObjectMapper.deserializeArray(LeaseTerm, response);
   };
 
   public createLeaseTerms = async (
     propertyId: number,
-    leaseTerms: ICreateLeaseTermDetails[]
+    leaseTerms: ICreateLeaseTermParams[]
   ): Promise<{ id: number }> => {
     return await this.apiClient.post(ENDPOINTS.leaseTerms(propertyId), leaseTerms);
   };
@@ -114,24 +114,24 @@ class AssetRepository {
   public updateLeaseTerms = async (
     propertyId: number,
     leaseTermId: number,
-    leaseTerms: IUpdateLeaseTermDetails
+    leaseTerms: IUpdateLeaseTermParams
   ): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.updateLeaseTerms(propertyId, leaseTermId), leaseTerms);
   };
 
-  public getSaleTerms = async (propertyId: number, params: IGetSaleTermsParams): Promise<SaleTerms[]> => {
+  public getSaleTerms = async (propertyId: number, params: IGetSaleTermsParams): Promise<SaleTerm[]> => {
     const response = await this.apiClient.get(ENDPOINTS.saleTerms(propertyId), params);
-    return ObjectMapper.deserializeArray(SaleTerms, response);
+    return ObjectMapper.deserializeArray(SaleTerm, response);
   };
 
-  public createSaleTerm = async (propertyId: number, saleTerms: ICreateSaleTermDetails): Promise<{ id: number }> => {
+  public createSaleTerm = async (propertyId: number, saleTerms: ICreateSaleTermParams): Promise<{ id: number }> => {
     return await this.apiClient.post(ENDPOINTS.saleTerms(propertyId), saleTerms);
   };
 
   public updateSaleTerm = async (
     propertyId: number,
     saleTermId: number,
-    saleTerms: IUpdateSaleTermDetails
+    saleTerms: IUpdateSaleTermParams
   ): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.updateSaleTerms(propertyId, saleTermId), saleTerms);
   };
@@ -261,6 +261,15 @@ class AssetRepository {
   public getAssetAvailableSpaces = async (assetId: number): Promise<SpaceType[]> => {
     const response = await this.apiClient.get(ENDPOINTS.availableSpaces(assetId));
     return ObjectMapper.deserializeArray(SpaceType, response);
+  };
+
+  public getManageLeaseTerm = async (assetId: number): Promise<ManageTerm> => {
+    const response = await this.apiClient.get(ENDPOINTS.manageTerm(assetId));
+    return ObjectMapper.deserialize(ManageTerm, response);
+  };
+
+  public createManageLeaseTerm = async (assetId: number, leaseUnitId: number): Promise<{ lease_unit_id: number }> => {
+    return await this.apiClient.get(ENDPOINTS.updateManageTerm(assetId, leaseUnitId));
   };
 }
 

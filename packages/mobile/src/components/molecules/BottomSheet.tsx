@@ -35,6 +35,10 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
       // @ts-ignore
       rbSheet.current.open();
     }
+    if (!visible && rbSheet.current) {
+      // @ts-ignore
+      rbSheet.current.close();
+    }
   }, [visible]);
 
   const onCloseBottomSheet = (): void => {

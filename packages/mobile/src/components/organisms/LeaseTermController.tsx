@@ -19,11 +19,10 @@ import {
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { PaidByTypes, ScheduleTypes, FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ICreateLeaseTermDetails, IUpdateLeaseTermDetails } from '@homzhub/common/src/domain/models/LeaseTerms';
+import { ICreateLeaseTermParams, IUpdateLeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IList } from '@homzhub/common/src/domain/models/Tenant';
 import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
@@ -144,7 +143,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
 
-    const { onNextStep, lastVisitedStep, furnishing, assetGroupType } = this.props;
+    const { onNextStep, furnishing, assetGroupType } = this.props;
     const { description, availableSpaces, selectedPreferences } = this.state;
 
     let maintenance_amount: number | null = parseInt(values[LeaseFormKeys.maintenanceAmount], 10);
@@ -158,7 +157,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       annual_rent_increment_percentage = null;
     }
 
-    const leaseTerms: ICreateLeaseTermDetails | IUpdateLeaseTermDetails = {
+    const leaseTerms: ICreateLeaseTermParams | IUpdateLeaseTermParams = {
       expected_monthly_rent: parseInt(values[LeaseFormKeys.monthlyRent], 10),
       security_deposit: parseInt(values[LeaseFormKeys.securityDeposit], 10),
       annual_rent_increment_percentage,
@@ -180,14 +179,6 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         spaces: availableSpaces,
       },
       furnishing,
-      last_visited_step: {
-        ...lastVisitedStep,
-        listing: {
-          ...lastVisitedStep.listing,
-          type: TypeOfPlan.RENT,
-          is_listing_created: true,
-        },
-      },
     };
 
     // Removing un-required field as per the flow
@@ -202,10 +193,10 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       if (currentTermId <= -1) {
         const response = await AssetRepository.createLeaseTerms(currentAssetId, [
           leaseTerms,
-        ] as ICreateLeaseTermDetails[]);
+        ] as ICreateLeaseTermParams[]);
         setTermId(response.id);
       } else {
-        await AssetRepository.updateLeaseTerms(currentAssetId, currentTermId, leaseTerms as IUpdateLeaseTermDetails);
+        await AssetRepository.updateLeaseTerms(currentAssetId, currentTermId, leaseTerms as IUpdateLeaseTermParams);
       }
       onNextStep();
     } catch (err) {

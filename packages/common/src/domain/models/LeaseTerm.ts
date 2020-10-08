@@ -1,19 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
 
-interface ISpaces {
-  space_type: number;
-  count: number;
-}
-
-export interface IUpdateLeaseTermDetails {
-  currency_code?: string;
+export interface IUpdateLeaseTermParams {
   expected_monthly_rent?: number;
   security_deposit?: number;
-  annual_rent_increment_percentage?: number | null;
   minimum_lease_period?: number;
   maximum_lease_period?: number;
+  rent_free_period?: number | null;
+  tenant_preferences?: number[];
+  annual_rent_increment_percentage?: number | null;
   furnishing?: FurnishingTypes;
   available_from_date?: string;
   utility_paid_by?: PaidByTypes;
@@ -22,17 +18,10 @@ export interface IUpdateLeaseTermDetails {
   maintenance_unit?: number;
   maintenance_payment_schedule?: ScheduleTypes | null;
   description?: string;
-  rent_free_period?: number;
-  tenant_preferences?: number[];
-  lease_unit?: {
-    name: string;
-    spaces: ISpaces[];
-  };
-  last_visited_step?: ILastVisitedStep;
+  lease_unit?: any;
 }
 
-export interface ICreateLeaseTermDetails {
-  currency_code?: string;
+export interface ICreateLeaseTermParams {
   expected_monthly_rent: number;
   security_deposit: number;
   annual_rent_increment_percentage: number | null;
@@ -48,45 +37,40 @@ export interface ICreateLeaseTermDetails {
   description?: string;
   tenant_preferences?: number[];
   rent_free_period?: number;
-  lease_unit: {
-    name: string;
-    spaces: ISpaces[];
-  };
-  last_visited_step: ILastVisitedStep;
+  lease_unit: any;
 }
 
-export interface ILeaseTermDetails extends ICreateLeaseTermDetails {
-  id: number;
-}
-
-@JsonObject('LeaseTerms')
-export class LeaseTerms {
+@JsonObject('LeaseTerm')
+export class LeaseTerm {
   @JsonProperty('id', Number)
-  private _id = 0;
-
-  @JsonProperty('status', String)
-  private _status = '';
+  private _id = -1;
 
   @JsonProperty('expected_monthly_rent', Number)
-  private _expectedPrice = 0;
+  private _expectedPrice = -1;
 
   @JsonProperty('security_deposit', Number)
-  private _securityDeposit = 0;
+  private _securityDeposit = -1;
 
   @JsonProperty('minimum_lease_period', Number)
-  private _minimumLeasePeriod = 0;
+  private _minimumLeasePeriod = -1;
+
+  @JsonProperty('maximum_lease_period', Number)
+  private _maximumLeasePeriod = -1;
+
+  @JsonProperty('rent_free_period', Number)
+  private _rentFreePeriod = -1;
 
   @JsonProperty('annual_rent_increment_percentage', Number, true)
-  private _annualRentIncrementPercentage: number | null = null;
+  private _annualRentIncrementPercentage = -1;
 
   @JsonProperty('available_from_date', String)
   private _availableFromDate = '';
 
   @JsonProperty('maintenance_paid_by', String)
-  private _maintenancePaidBy = '';
+  private _maintenancePaidBy = PaidByTypes.OWNER;
 
-  @JsonProperty('utility_paid_by', String)
-  private _utilityPaidBy = '';
+  @JsonProperty('maintenance_unit', Unit)
+  private _maintenanceUnit = new Unit();
 
   @JsonProperty('maintenance_amount', Number, true)
   private _maintenanceAmount: number | null = null;
@@ -94,24 +78,17 @@ export class LeaseTerms {
   @JsonProperty('maintenance_payment_schedule', String, true)
   private _maintenanceSchedule: string | null = null;
 
+  @JsonProperty('utility_paid_by', String)
+  private _utilityPaidBy = PaidByTypes.OWNER;
+
   @JsonProperty('furnishing', String)
-  private _furnishing = '';
-
-  @JsonProperty('currency_code', String)
-  private _currencyCode = 'INR';
-
-  @JsonProperty('currency_symbol', String)
-  private _currencySymbol = '';
+  private _furnishing = FurnishingTypes.NONE;
 
   @JsonProperty('description', String, true)
   private _description = '';
 
   get id(): number {
     return this._id;
-  }
-
-  get status(): string {
-    return this._status;
   }
 
   get expectedPrice(): number {
@@ -126,7 +103,7 @@ export class LeaseTerms {
     return this._minimumLeasePeriod;
   }
 
-  get annualRentIncrementPercentage(): number | null {
+  get annualRentIncrementPercentage(): number {
     return this._annualRentIncrementPercentage;
   }
 
@@ -134,11 +111,11 @@ export class LeaseTerms {
     return this._availableFromDate;
   }
 
-  get maintenancePaidBy(): string {
+  get maintenancePaidBy(): PaidByTypes {
     return this._maintenancePaidBy;
   }
 
-  get utilityPaidBy(): string {
+  get utilityPaidBy(): PaidByTypes {
     return this._utilityPaidBy;
   }
 
@@ -146,23 +123,23 @@ export class LeaseTerms {
     return this._maintenanceAmount;
   }
 
-  get maintenanceSchedule(): string | null {
-    return this._maintenanceSchedule;
+  get maintenanceSchedule(): ScheduleTypes {
+    return this._maintenanceSchedule as ScheduleTypes;
   }
 
   get furnishing(): string {
     return this._furnishing;
   }
 
-  get currencyCode(): string {
-    return this._currencyCode;
-  }
-
-  get currencySymbol(): string {
-    return this._currencySymbol;
-  }
-
   get description(): string {
     return this._description;
+  }
+
+  get maximumLeasePeriod(): number {
+    return this._maximumLeasePeriod;
+  }
+
+  get maintenanceUnit(): number {
+    return this._maintenanceUnit.id;
   }
 }

@@ -7,7 +7,7 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, Label, TextArea, FormButton, FormTextInput } from '@homzhub/common/src/components';
+import { Text, Label, TextArea, FormButton, FormTextInput, Button } from '@homzhub/common/src/components';
 import {
   DEFAULT_LEASE_PERIOD,
   IFormData,
@@ -69,10 +69,20 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
 
   public render = (): React.ReactNode => {
     const { isPropertyOccupied } = this.state;
+    const { onNextStep, t } = this.props;
+
     return (
       <>
         {this.renderCard()}
         {isPropertyOccupied && this.renderForm()}
+        {!isPropertyOccupied && (
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            containerStyle={styles.buttonStyle}
+            onPress={onNextStep}
+          />
+        )}
       </>
     );
   };
@@ -126,6 +136,9 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
             <>
               <AssetListingSection title={t('leaseTerms')}>
                 <>
+                  <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                    {t('tenantDetails')}
+                  </Text>
                   <View style={styles.optionContainer}>
                     <View style={styles.firstName}>
                       <FormTextInput
@@ -162,6 +175,9 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
                     inputPrefixText="+91"
                     formProps={formProps}
                   />
+                  <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                    {t('rentAndDeposit')}
+                  </Text>
                   <LeaseTermForm
                     isFromManage
                     formProps={formProps}
@@ -276,5 +292,13 @@ const styles = StyleSheet.create({
   lastName: {
     flex: 0.5,
     marginStart: 16,
+  },
+  buttonStyle: {
+    flex: 0,
+  },
+  headerTitle: {
+    marginTop: 20,
+    marginBottom: 8,
+    color: theme.colors.darkTint3,
   },
 });

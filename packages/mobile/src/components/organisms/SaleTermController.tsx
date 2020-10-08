@@ -12,12 +12,11 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton, FormCalendar, FormTextInput, Text, TextArea } from '@homzhub/common/src/components';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
-import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
-import { ICreateSaleTermDetails } from '@homzhub/common/src/domain/models/SaleTerms';
+import { ICreateSaleTermParams } from '@homzhub/common/src/domain/models/SaleTerm';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProps extends WithTranslation {
@@ -66,7 +65,6 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       const response = await AssetRepository.getSaleTerms(currentAssetId, { status: 'DRAFT' });
 
       if (response.length <= 0) return;
-
       this.setState({
         currentTermId: response[0].id,
         description: response[0].description ?? '',
@@ -167,9 +165,9 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
     const { description, currentTermId } = this.state;
-    const { onNextStep, currentAssetId, assetGroupType, lastVisitedStep } = this.props;
+    const { onNextStep, currentAssetId, assetGroupType } = this.props;
 
-    const params: ICreateSaleTermDetails = {
+    const params: ICreateSaleTermParams = {
       expected_price: parseInt(values.expectedPrice, 10),
       expected_booking_amount: parseInt(values.bookingAmount, 10),
       available_from_date: values.availableFrom,
@@ -177,14 +175,6 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       maintenance_payment_schedule: values.maintenanceSchedule,
       maintenance_unit: values.maintenanceUnit,
       description,
-      last_visited_step: {
-        ...lastVisitedStep,
-        listing: {
-          ...lastVisitedStep.listing,
-          type: TypeOfPlan.SELL,
-          is_listing_created: true,
-        },
-      },
     };
 
     // Removing un-required field as per the flow
@@ -247,7 +237,8 @@ export { HOC as SaleTermController };
 const styles = StyleSheet.create({
   continue: {
     flex: 0,
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 40,
   },
   headerTitle: {
     marginTop: 28,

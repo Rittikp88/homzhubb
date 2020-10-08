@@ -5,7 +5,7 @@ import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/int
 import { ISlotItem } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
-import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
+import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 
@@ -91,7 +91,7 @@ class PropertyUtils {
     postedOn: string,
     availableFrom: string,
     transaction_type: number,
-    saleTerm: SaleTerms | null
+    saleTerm: SaleTerm | null
   ): { label: string; value: string }[] => {
     const currentDay = new Date();
     const availableFromDate = new Date(availableFrom);

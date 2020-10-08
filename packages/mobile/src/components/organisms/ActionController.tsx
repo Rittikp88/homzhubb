@@ -19,7 +19,6 @@ interface IProps {
   onNextStep: () => void;
   country: Country;
   assetGroupType: string;
-  propertyType: string;
   furnishing: FurnishingTypes;
   lastVisitedStep: ILastVisitedStep;
 }
@@ -36,6 +35,7 @@ interface IStateProps {
 
 type Props = IStateProps & IDispatchProps & IProps;
 
+// TODO (Aditya): Optimize, look at un-required props drilling
 class ActionController extends React.PureComponent<Props, {}> {
   public componentDidMount = (): void => {
     const { getMaintenanceUnits, assetGroupType } = this.props;

@@ -1,17 +1,18 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IAmenity, Amenity, AmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
-import { LeaseTerms } from '@homzhub/common/src/domain/models/LeaseTerms';
-import { SaleTerms } from '@homzhub/common/src/domain/models/SaleTerms';
-import { IUser, User } from '@homzhub/common/src/domain/models/User';
-import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/CountryCode';
-import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { LastVisitedStep, ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
+import { User, IUser } from '@homzhub/common/src/domain/models/User';
+import { Verification, IVerifications } from '@homzhub/common/src/domain/models/Verification';
+import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
+import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 export interface ICarpetAreaUnit {
   id: number;
@@ -213,11 +214,11 @@ export class Asset {
   @JsonProperty('asset_group', Data, true)
   private _assetGroup: Data = new Data();
 
-  @JsonProperty('lease_listing', LeaseTerms, true)
-  private _leaseTerm: LeaseTerms | null = null;
+  @JsonProperty('lease_listing', LeaseTerm, true)
+  private _leaseTerm: LeaseTerm | null = null;
 
-  @JsonProperty('sale_listing', SaleTerms, true)
-  private _saleTerm: SaleTerms | null = null;
+  @JsonProperty('sale_listing', SaleTerm, true)
+  private _saleTerm: SaleTerm | null = null;
 
   @JsonProperty('contacts', User, true)
   private _contacts: User = new User();
@@ -381,11 +382,11 @@ export class Asset {
     return this.assetGroup.id;
   }
 
-  get leaseTerm(): LeaseTerms | null {
+  get leaseTerm(): LeaseTerm | null {
     return this._leaseTerm;
   }
 
-  get saleTerm(): SaleTerms | null {
+  get saleTerm(): SaleTerm | null {
     return this._saleTerm;
   }
 
@@ -420,8 +421,8 @@ export class Asset {
     return this._maintenancePaymentSchedule;
   }
 
-  get furnishing(): string {
-    return this._furnishing;
+  get furnishing(): FurnishingTypes {
+    return this._furnishing as FurnishingTypes;
   }
 
   get notifications(): Count {

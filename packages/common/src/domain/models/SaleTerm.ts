@@ -1,8 +1,8 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/Asset';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
-export interface ICreateSaleTermDetails {
+export interface ICreateSaleTermParams {
   expected_price: number;
   expected_booking_amount: number;
   available_from_date: string;
@@ -10,10 +10,9 @@ export interface ICreateSaleTermDetails {
   maintenance_unit?: number;
   maintenance_payment_schedule?: ScheduleTypes;
   description?: string;
-  last_visited_step: ILastVisitedStep;
 }
 
-export interface IUpdateSaleTermDetails {
+export interface IUpdateSaleTermParams {
   expected_price?: number;
   expected_booking_amount?: number;
   available_from_date?: string;
@@ -21,15 +20,10 @@ export interface IUpdateSaleTermDetails {
   maintenance_unit?: number;
   maintenance_payment_schedule?: ScheduleTypes;
   description?: string;
-  last_visited_step?: ILastVisitedStep;
 }
 
-export interface ISaleDetails extends ICreateSaleTermDetails {
-  id: number;
-}
-
-@JsonObject('SaleTerms')
-export class SaleTerms {
+@JsonObject('SaleTerm')
+export class SaleTerm {
   @JsonProperty('id', Number)
   private _id = 0;
 
@@ -42,8 +36,8 @@ export class SaleTerms {
   @JsonProperty('maintenance_amount', Number)
   private _maintenanceAmount = -1;
 
-  @JsonProperty('maintenance_unit', Number, true)
-  private _maintenanceUnit = -1;
+  @JsonProperty('maintenance_unit', Unit, true)
+  private _maintenanceUnit = new Unit();
 
   @JsonProperty('maintenance_payment_schedule', String, true)
   private _maintenanceSchedule = ScheduleTypes.MONTHLY;
@@ -83,6 +77,6 @@ export class SaleTerms {
   }
 
   get maintenanceUnit(): number {
-    return this._maintenanceUnit;
+    return this._maintenanceUnit.id;
   }
 }

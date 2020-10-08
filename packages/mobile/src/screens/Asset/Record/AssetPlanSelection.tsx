@@ -104,7 +104,12 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
             {t('property:clickContinue')}
           </Label>
         </View>
-        <Button type="primary" title={t('continue')} containerStyle={styles.buttonStyle} onPress={this.onCloseSheet} />
+        <Button
+          type="primary"
+          title={t('common:continue')}
+          containerStyle={styles.buttonStyle}
+          onPress={this.onCloseSheet}
+        />
       </>
     );
   };

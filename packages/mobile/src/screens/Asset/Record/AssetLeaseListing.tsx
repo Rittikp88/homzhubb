@@ -29,7 +29,6 @@ import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPa
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { FurnishingType } from '@homzhub/common/src/domain/models/LeaseTerms';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IStateProps {
@@ -280,7 +279,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           <ActionController
             typeOfPlan={selectedPlan}
             lastVisitedStep={lastVisitedStep}
-            furnishing={assetDetails.furnishing as FurnishingType}
+            furnishing={assetDetails.furnishing}
             isSplitAsUnits={isPropertyAsUnits}
             country={assetDetails.country}
             assetGroupType={assetDetails.assetGroup.code}
