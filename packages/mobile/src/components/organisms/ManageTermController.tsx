@@ -4,7 +4,6 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
@@ -13,8 +12,8 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, FormButton, FormTextInput, Label, Text, TextArea } from '@homzhub/common/src/components';
 import {
-  DEFAULT_LEASE_PERIOD,
   IFormData,
+  initialLeaseFormValues,
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
@@ -22,14 +21,21 @@ import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetLis
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
+
+interface IFormFields extends IFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
 
 interface IOwnState {
   currentTermId: number;
   isPropertyOccupied: boolean;
   description: string;
+  formData: IFormFields;
 }
 
 interface IProps extends WithTranslation {
@@ -39,32 +45,6 @@ interface IProps extends WithTranslation {
   onNextStep: (type: TypeOfPlan) => Promise<void>;
 }
 
-interface IFormFields extends IFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}
-
-const initialFormValues: IFormFields = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  showMore: false,
-  monthlyRent: '',
-  securityDeposit: '',
-  annualIncrement: '',
-  rentFreePeriod: '',
-  minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
-  maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
-  availableFrom: DateUtils.getCurrentDate(),
-  maintenanceAmount: '',
-  maintenanceSchedule: ScheduleTypes.MONTHLY,
-  maintenanceBy: PaidByTypes.OWNER,
-  maintenanceUnit: -1,
-  utilityBy: PaidByTypes.TENANT,
-};
 const MAX_DESCRIPTION_LENGTH = 600;
 
 class ManageTermController extends React.PureComponent<IProps, IOwnState> {
@@ -72,6 +52,13 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     isPropertyOccupied: true,
     description: '',
     currentTermId: -1,
+    formData: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      ...initialLeaseFormValues,
+    },
   };
 
   public render = (): React.ReactNode => {
@@ -130,12 +117,12 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
 
   private renderForm = (): React.ReactNode => {
     const { t, currencyData, assetGroupType } = this.props;
-    const { description, isPropertyOccupied } = this.state;
+    const { description, isPropertyOccupied, formData } = this.state;
     return (
       <Formik
         enableReinitialize
         onSubmit={this.onSubmit}
-        initialValues={{ ...initialFormValues }}
+        initialValues={{ ...formData }}
         validate={FormUtils.validate(this.formSchema)}
       >
         {isPropertyOccupied ? (
@@ -251,6 +238,8 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
       if (currentTermId <= -1) {
         const id = await AssetRepository.createManageLeaseTerm(currentAssetId, params);
         this.setState({ currentTermId: id });
+      } else {
+        await AssetRepository.updateManageTerm(currentAssetId, currentTermId, params);
       }
       await onNextStep(TypeOfPlan.MANAGE);
     } catch (err) {

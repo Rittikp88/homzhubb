@@ -56,11 +56,27 @@ interface IProps {
   assetGroupType: string;
   isFromManage?: boolean;
 }
+
 const MINIMUM_LEASE_PERIOD = 1;
 const MAXIMUM_LEASE_PERIOD = 24;
 const MINIMUM_TOTAL_LEASE_PERIOD = 0;
 const MAXIMUM_TOTAL_LEASE_PERIOD = 60;
 const DEFAULT_LEASE_PERIOD = 11;
+export const initialLeaseFormValues = {
+  showMore: false,
+  monthlyRent: '',
+  securityDeposit: '',
+  annualIncrement: '',
+  minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
+  maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
+  availableFrom: DateUtils.getCurrentDate(),
+  utilityBy: PaidByTypes.TENANT,
+  rentFreePeriod: '',
+  maintenanceBy: PaidByTypes.OWNER,
+  maintenanceAmount: '',
+  maintenanceSchedule: ScheduleTypes.MONTHLY,
+  maintenanceUnit: -1,
+};
 
 const LeaseTermForm = ({
   formProps,

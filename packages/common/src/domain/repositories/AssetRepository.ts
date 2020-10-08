@@ -43,6 +43,8 @@ const ENDPOINTS = {
   updateSaleTerms: (propertyId: number, saleTermId: number): string =>
     `assets/${propertyId}/sale-listings/${saleTermId}/`,
   manageTerm: (assetId: number): string => `assets/${assetId}/manage-lease-listing/`,
+  updateManageTerm: (assetId: number, leaseUnitId: number): string =>
+    `assets/${assetId}/revise-manage-lease-listing/${leaseUnitId}/`,
   existingVerificationDocuments: (propertyId: number): string => `assets/${propertyId}/verification-documents/`,
   deleteExistingVerificationDocuments: (propertyId: number, documentId: number): string =>
     `assets/${propertyId}/verification-documents/${documentId}/`,
@@ -262,6 +264,10 @@ class AssetRepository {
   public createManageLeaseTerm = async (assetId: number, params: IManageTerm): Promise<number> => {
     const response = await this.apiClient.post(ENDPOINTS.manageTerm(assetId), params);
     return response.lease_unit_id;
+  };
+
+  public updateManageTerm = async (assetId: number, leaseUnitId: number, params: IManageTerm): Promise<void> => {
+    await this.apiClient.put(ENDPOINTS.updateManageTerm(assetId, leaseUnitId), params);
   };
 }
 

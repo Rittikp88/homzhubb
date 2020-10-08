@@ -4,7 +4,6 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
@@ -12,15 +11,15 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { CheckboxGroup, FormButton, TextArea } from '@homzhub/common/src/components';
 import {
-  DEFAULT_LEASE_PERIOD,
   IFormData,
+  initialLeaseFormValues,
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
-import { PaidByTypes, ScheduleTypes, FurnishingTypes } from '@homzhub/common/src/constants/Terms';
+import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
@@ -51,21 +50,7 @@ const MAX_DESCRIPTION_LENGTH = 600;
 
 class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   public state = {
-    formData: {
-      showMore: false,
-      monthlyRent: '',
-      securityDeposit: '',
-      annualIncrement: '',
-      minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
-      maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
-      availableFrom: DateUtils.getCurrentDate(),
-      utilityBy: PaidByTypes.TENANT,
-      rentFreePeriod: '',
-      maintenanceBy: PaidByTypes.OWNER,
-      maintenanceAmount: '',
-      maintenanceSchedule: ScheduleTypes.MONTHLY,
-      maintenanceUnit: -1,
-    },
+    formData: { ...initialLeaseFormValues },
     description: '',
     preferences: [],
     availableSpaces: [],

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, StyleProp, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { isEmpty } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -35,11 +35,13 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
   public render(): React.ReactNode {
     const { containerStyle, t } = this.props;
     const { data, isMoreToggled } = this.state;
-    if (isEmpty(data)) {
+
+    if (ObjectUtils.isEmpty(data)) {
       return null;
     }
-    const currentPlan = `${t('common:homzhub')} ${data?.userServicePlan?.label}`;
-    const recommendedPlan = `${t('common:homzhub')} ${data?.recommendedPlan?.label}`;
+
+    const currentPlan = `${t('common:homzhub')} ${data.userServicePlan?.label}`;
+    const recommendedPlan = `${t('common:homzhub')} ${data.recommendedPlan?.label}`;
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={styles.currentSubscription}>

@@ -104,6 +104,7 @@ class AssetService {
       maintenance_amount: parseInt(values[LeaseFormKeys.maintenanceAmount], 10),
       maintenance_payment_schedule: values[LeaseFormKeys.maintenanceSchedule],
       maintenance_unit: values[LeaseFormKeys.maintenanceUnit],
+      rent_free_period: parseInt(values[LeaseFormKeys.rentFreePeriod], 10),
     };
 
     if (!values[LeaseFormKeys.showMore]) {
