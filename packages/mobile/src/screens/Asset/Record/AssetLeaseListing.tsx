@@ -30,6 +30,7 @@ import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
@@ -41,6 +42,7 @@ interface IStateProps {
 interface IDispatchProps {
   resetState: () => void;
   getAssetById: () => void;
+  setValueAddedServices: (payload: ISelectedValueServices) => void;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLeaseListing>;
@@ -247,6 +249,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       assetDetails,
       lastVisitedStep,
       assetId,
+      setValueAddedServices,
     } = this.props;
 
     if (!assetDetails || !lastVisitedStep) return null;
@@ -264,6 +267,9 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       case RouteKeys.Services:
         return (
           <ValueAddedServicesView
+            setValueAddedServices={setValueAddedServices}
+            countryId={assetDetails?.country.id}
+            assetGroupId={assetDetails?.assetGroup.id}
             propertyId={assetId}
             lastVisitedStep={lastVisitedStep}
             typeOfPlan={selectedPlan}
@@ -448,11 +454,12 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { resetState, getAssetById } = RecordAssetActions;
+  const { resetState, getAssetById, setValueAddedServices } = RecordAssetActions;
   return bindActionCreators(
     {
       resetState,
       getAssetById,
+      setValueAddedServices,
     },
     dispatch
   );

@@ -111,7 +111,8 @@
     "yes": "Yes",
     "no": "No",
     "phone": "Phone",
-    "email": "E-mail"
+    "email": "E-mail",
+    "noServicesFound": "No Services Found"
   },
   "auth": {
     "verifyNumber": "Verify your number",

@@ -3,6 +3,7 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup, IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Unit, IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 const actionTypePrefix = 'RecordAsset/';
@@ -25,6 +26,7 @@ export const RecordAssetActionTypes = {
     ASSET_ID: `${actionTypePrefix}ASSET_ID`,
     TERM_ID: `${actionTypePrefix}TERM_ID`,
     SELECTED_PLAN: `${actionTypePrefix}SELECTED_PLAN`,
+    SELECTED_VALUE_SERVICES: `${actionTypePrefix}SELECTED_VALUE_SERVICES`,
   },
   RESET: `${actionTypePrefix}RESET`,
 };
@@ -101,6 +103,13 @@ const getMaintenanceUnitsSuccess = (payload: Unit[]): IFluxStandardAction<IUnit[
   payload: ObjectMapper.serializeArray(payload),
 });
 
+const setValueAddedServices = (payload: ISelectedValueServices): IFluxStandardAction<ISelectedValueServices> => {
+  return {
+    type: RecordAssetActionTypes.SET.SELECTED_VALUE_SERVICES,
+    payload,
+  };
+};
+
 const resetState = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.RESET,
 });
@@ -112,6 +121,7 @@ export type RecordAssetPayloadTypes =
   | IAssetGroup[]
   | IUnit[]
   | ISelectedAssetPlan
+  | ISelectedValueServices
   | IAsset
   | undefined;
 
@@ -130,5 +140,6 @@ export const RecordAssetActions = {
   getAssetByIdFailure,
   getMaintenanceUnits,
   getMaintenanceUnitsSuccess,
+  setValueAddedServices,
   resetState,
 };

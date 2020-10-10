@@ -4,6 +4,7 @@ import { RecordAssetActionTypes, RecordAssetPayloadTypes } from '@homzhub/common
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 export const initialRecordAssetState: IRecordAssetState = {
@@ -17,6 +18,7 @@ export const initialRecordAssetState: IRecordAssetState = {
     id: 0,
     selectedPlan: TypeOfPlan.RENT,
   },
+  selectedValueServices: [],
   error: {
     assetPlan: '',
   },
@@ -25,6 +27,20 @@ export const initialRecordAssetState: IRecordAssetState = {
     assetGroups: false,
     assetDetails: false,
   },
+};
+
+const getValueServicesArray = (state: IRecordAssetState, payload: ISelectedValueServices): ISelectedValueServices[] => {
+  let { selectedValueServices } = state;
+
+  if (payload.value) {
+    selectedValueServices.push(payload);
+  } else {
+    selectedValueServices = selectedValueServices.filter((item) => {
+      return item.id !== payload.id;
+    });
+  }
+
+  return selectedValueServices;
 };
 
 export const recordAssetReducer = (
@@ -100,6 +116,11 @@ export const recordAssetReducer = (
       return { ...state, ['termId']: action.payload as number };
     case RecordAssetActionTypes.SET.SELECTED_PLAN:
       return { ...state, ['selectedAssetPlan']: action.payload as ISelectedAssetPlan };
+    case RecordAssetActionTypes.SET.SELECTED_VALUE_SERVICES:
+      return {
+        ...state,
+        ['selectedValueServices']: getValueServicesArray(state, action.payload as ISelectedValueServices),
+      };
     case RecordAssetActionTypes.RESET:
       return initialRecordAssetState;
     default:

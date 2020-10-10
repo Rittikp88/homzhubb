@@ -2,15 +2,19 @@ import React, { ReactElement } from 'react';
 import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider, ImageRound, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 interface IOwnProps {
   heading: string;
   image: ImageSourcePropType;
   price: number;
-  selected: boolean;
-  onToggleSelect?: () => void;
+  discountedPrice?: number;
+  bundleItems: Unit[];
+  selected?: boolean;
+  onToggle: (value: boolean) => void;
   containerStyle?: any;
 }
+
 interface IOwnState {
   isChecked: boolean;
   showMore: boolean;
@@ -19,7 +23,7 @@ interface IOwnState {
 export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> {
   constructor(props: IOwnProps) {
     super(props);
-    const { selected } = this.props;
+    const { selected = false } = this.props;
 
     this.state = {
       isChecked: selected,
@@ -28,7 +32,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
   }
 
   public render = (): React.ReactElement => {
-    const { heading, image, price, containerStyle } = this.props;
+    const { heading, image, price, discountedPrice, containerStyle } = this.props;
     const { isChecked, showMore } = this.state;
     const {
       colors: { moreSeparator, white },
@@ -47,7 +51,22 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
                 </Label>
                 <RNCheckbox selected={isChecked} onToggle={this.onToggle} />
               </View>
-              <PricePerUnit textStyle={styles.price} textSizeType="small" price={price} currency="INR" />
+              <View style={styles.rowStyle}>
+                <PricePerUnit
+                  textStyle={[styles.price, styles.marginRight]}
+                  textSizeType="small"
+                  price={price}
+                  currency="INR"
+                />
+                {discountedPrice && (
+                  <PricePerUnit
+                    textStyle={styles.originalPrice}
+                    textSizeType="small"
+                    price={discountedPrice}
+                    currency="INR"
+                  />
+                )}
+              </View>
             </View>
           </View>
           {showMore && this.renderMoreContent()}
@@ -62,21 +81,31 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
   };
 
   private renderMoreContent = (): ReactElement => {
+    const { bundleItems } = this.props;
     return (
       <>
         <Divider containerStyles={styles.dividerStyles} />
-        <View style={styles.rowStyle}>
-          <Label type="regular">{'\u2B24'}</Label>
-          <Label type="regular">Some extra text</Label>
-        </View>
+        {bundleItems.map((item) => {
+          return (
+            <View key={item.id} style={[styles.rowStyle, styles.marginBottom]}>
+              <Label style={styles.marginRight} type="regular">
+                {'\u2B24'}
+              </Label>
+              <Label type="regular">{item.label}</Label>
+            </View>
+          );
+        })}
       </>
     );
   };
 
   private onToggle = (): void => {
-    this.setState((prev) => ({
-      isChecked: !prev.isChecked,
-    }));
+    const { onToggle } = this.props;
+    const { isChecked } = this.state;
+    onToggle(!isChecked);
+    this.setState({
+      isChecked: !isChecked,
+    });
   };
 
   private toggleSubsection = (): void => {
@@ -107,6 +136,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: theme.colors.darkTint2,
   },
+  originalPrice: {
+    color: theme.colors.disabled,
+    textDecorationLine: 'line-through',
+    marginTop: 10,
+  },
   rowStyle: {
     flexDirection: 'row',
   },
@@ -124,5 +158,11 @@ const styles = StyleSheet.create({
   dividerStyles: {
     marginTop: 16,
     marginBottom: 12,
+  },
+  marginRight: {
+    marginRight: 8,
+  },
+  marginBottom: {
+    marginBottom: 14,
   },
 });

@@ -6,44 +6,58 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { images } from '@homzhub/common/src/assets/images';
-import { Button } from '@homzhub/common/src/components';
+import { Button, Text } from '@homzhub/common/src/components';
 import { CardWithCheckbox } from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
 import { SearchBar } from '@homzhub/mobile/src/components';
-import { Services } from '@homzhub/common/src/mocks/ValueAddedServices';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
-
-interface IValueServices {
-  name: string;
-  price: number;
-  image: string;
-  selected: boolean;
-}
+import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 
 interface IOwnProps extends WithTranslation {
-  data?: IValueServices[];
   handleNextStep: () => void;
   propertyId: number;
+  assetGroupId: number;
+  countryId: number;
   typeOfPlan: TypeOfPlan;
+  setValueAddedServices: (payload: ISelectedValueServices) => void;
   containerStyle?: StyleProp<ViewStyle>;
   lastVisitedStep: ILastVisitedStep;
 }
 
 interface IOwnState {
+  valueServices: ValueAddedService[];
   searchString: string;
 }
 
-// TODO(28/09/2020): Replace mock-data once API finalize
-
 class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   public state = {
+    valueServices: [],
     searchString: '',
   };
 
-  public render = (): React.ReactElement => {
-    const { containerStyle, t } = this.props;
-    const { searchString } = this.state;
+  public async componentDidMount(): Promise<void> {
+    const { assetGroupId, countryId } = this.props;
+    const response = await RecordAssetRepository.getValueAddedServices(assetGroupId, countryId);
+
+    this.setState({
+      valueServices: response,
+      searchString: '',
+    });
+  }
+
+  public render = (): React.ReactNode => {
+    const { setValueAddedServices, containerStyle, t } = this.props;
+    const { valueServices, searchString } = this.state;
+
+    if (valueServices && valueServices.length <= 0) {
+      return (
+        <Text style={styles.noResults} type="regular">
+          {t('common:noServicesFound')}
+        </Text>
+      );
+    }
 
     return (
       <View style={[styles.container, containerStyle]}>
@@ -54,15 +68,28 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
           containerStyle={styles.searchStyle}
         />
 
-        {Services.map((item) => {
+        {this.dynamicSearch().map((item: ValueAddedService) => {
+          const {
+            id,
+            valueBundle: { valueBundleItems, label },
+            bundlePrice,
+            discountedPrice,
+          } = item;
+
+          const handleToggle = (value: boolean): void => {
+            setValueAddedServices({ id, price: bundlePrice, name: label, value });
+          };
+
           return (
             <CardWithCheckbox
               containerStyle={styles.cardContainer}
-              key={item.id}
-              heading={item.name}
+              key={id}
+              heading={label}
               image={images.landingScreenLogo}
-              price={item.isPrice}
-              selected
+              price={bundlePrice}
+              discountedPrice={discountedPrice > 0 ? discountedPrice : undefined}
+              bundleItems={valueBundleItems}
+              onToggle={handleToggle}
             />
           );
         })}
@@ -75,6 +102,14 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
         />
       </View>
     );
+  };
+
+  private dynamicSearch = (): ValueAddedService[] => {
+    const { valueServices, searchString } = this.state;
+
+    return valueServices.filter((item: ValueAddedService) => {
+      return item.valueBundle.label.toLowerCase().includes(searchString.toLowerCase());
+    });
   };
 
   private updateSearchString = (text: string): void => {
@@ -111,6 +146,9 @@ const styles = StyleSheet.create({
   container: {
     padding: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
+  },
+  noResults: {
+    textAlign: 'center',
   },
   buttonStyle: {
     flex: 0,
