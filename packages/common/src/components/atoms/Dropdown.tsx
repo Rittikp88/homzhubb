@@ -8,10 +8,12 @@ import {
   ImageStyle,
   TouchableOpacity,
   TextStyle,
+  Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { theme } from '@homzhub/common/src/styles/theme';
+import { images } from '@homzhub/common/src/assets/images';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
@@ -21,6 +23,8 @@ export interface IProps {
   data: PickerItemProps[];
   value: number | string;
   onDonePress: (value: string | number) => void;
+  showImage?: boolean;
+  image?: string;
   icon?: string;
   listTitle?: string;
   listHeight?: number;
@@ -34,6 +38,7 @@ export interface IProps {
   iconStyle?: StyleProp<ImageStyle>;
   itemStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  imageStyle?: StyleProp<ImageStyle>;
   textStyle?: StyleProp<TextStyle>;
   testID?: string;
   maxLabelLength?: number;
@@ -56,10 +61,12 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     onDonePress,
     containerStyle = {},
     textStyle = {},
+    imageStyle = {},
     icon = icons.downArrowFilled,
     testID,
     maxLabelLength = MAX_LABEL_COUNT,
     numColumns = 1,
+    showImage = false,
   } = props;
 
   const onValueChange = (changedValue: string | number): void => {
@@ -85,9 +92,13 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   return (
     <View pointerEvents={disable ? 'none' : 'auto'} style={disabledStyles}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
-        <Label type="large" textType="regular" style={[placeholderColor, textStyle]}>
-          {label ?? placeholder}
-        </Label>
+        {showImage ? (
+          <Image source={images.flag} height={12} width={18} style={imageStyle} />
+        ) : (
+          <Label type="large" textType="regular" style={[placeholderColor, textStyle]}>
+            {label ?? placeholder}
+          </Label>
+        )}
         <Icon
           name={icon}
           size={iconSize ?? 16}

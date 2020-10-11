@@ -36,7 +36,7 @@ interface IProps {
 interface IScreenState {
   dropdownValue: number;
   isCancelSheet: boolean;
-  currentActionId: number;
+  currentVisitId: number;
 }
 
 type Props = IProps & WithTranslation;
@@ -45,7 +45,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   public state = {
     dropdownValue: 1,
     isCancelSheet: false,
-    currentActionId: 0,
+    currentVisitId: 0,
   };
 
   public render(): React.ReactNode {
@@ -76,7 +76,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
                 <>
                   <View style={styles.dateView}>
                     <View style={styles.dividerView} />
-                    <Text type="small" style={styles.date}>
+                    <Text type="small" style={styles.horizontalStyle}>
                       {item.key}
                     </Text>
                     <View style={styles.dividerView} />
@@ -98,7 +98,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   }
 
   private renderItem = (item: AssetVisit): React.ReactElement => {
-    const { asset, user, actions, startDate, endDate, id, role } = item;
+    const { asset, user, actions, startDate, endDate, id, role, createdAt } = item;
     const { visitType, handleReschedule } = this.props;
     const isMissed = visitType === VisitStatusType.MISSED;
     const isCompleted = visitType === VisitStatusType.COMPLETED;
@@ -109,7 +109,14 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     return (
       <View style={styles.mainContainer} key={id}>
         <View style={containerStyle}>
-          <Avatar fullName={user.fullName} designation={role} rating={user.rating} />
+          <Avatar
+            fullName={user.fullName}
+            isRightIcon
+            designation={role}
+            rating={user.rating}
+            date={createdAt}
+            containerStyle={styles.horizontalStyle}
+          />
           <AddressWithVisitDetail
             primaryAddress={asset.projectName}
             subAddress={asset.address}
@@ -118,9 +125,10 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             isMissedVisit={isMissed}
             isCompletedVisit={isCompleted}
             onPressSchedule={onReschedule}
+            containerStyle={styles.horizontalStyle}
           />
+          {visitType === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
         </View>
-        {visitType === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
       </View>
     );
   };
@@ -128,43 +136,40 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   private renderUpcomingView = (item: AssetVisit): React.ReactElement => {
     const { actions, status, id } = item;
     const visitStatus = this.getVisitStatus(status);
-    const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
 
     return (
       <>
-        {actions.length > 1 && <Divider containerStyles={styles.dividerStyle} />}
-        <View style={containerStyle}>
-          <View style={styles.buttonView}>
-            {actions.length < 2 && (
+        {actions.length > 0 && <Divider containerStyles={styles.dividerStyle} />}
+        <View style={styles.buttonView}>
+          {actions.length < 2 && (
+            <Button
+              type="secondary"
+              icon={visitStatus?.icon}
+              iconColor={visitStatus?.color}
+              iconSize={20}
+              title={visitStatus?.title}
+              containerStyle={styles.statusView}
+              titleStyle={[styles.statusTitle, { color: visitStatus?.color }]}
+            />
+          )}
+          {actions.map((action: string, index: number): React.ReactElement | null => {
+            const actionData = this.getActions(action);
+            if (!actionData) return null;
+            const onPressButton = (): void => actionData.action && actionData.action(id);
+            return (
               <Button
+                key={index}
                 type="secondary"
-                icon={visitStatus?.icon}
-                iconColor={visitStatus?.color}
+                icon={actionData.icon}
+                iconColor={actionData.color}
                 iconSize={20}
-                title={visitStatus?.title}
+                onPress={onPressButton}
+                title={actionData.title}
                 containerStyle={styles.statusView}
-                titleStyle={[styles.statusTitle, { color: visitStatus?.color }]}
+                titleStyle={[styles.actionTitle, { color: actionData.color }]}
               />
-            )}
-            {actions.map((action: string, index: number): React.ReactElement | null => {
-              const actionData = this.getActions(action);
-              if (!actionData) return null;
-              const onPressButton = (): void => actionData.action && actionData.action(id);
-              return (
-                <Button
-                  key={index}
-                  type="secondary"
-                  icon={actionData.icon}
-                  iconColor={actionData.color}
-                  iconSize={20}
-                  onPress={onPressButton}
-                  title={actionData.title}
-                  containerStyle={styles.statusView}
-                  titleStyle={[styles.actionTitle, { color: actionData.color }]}
-                />
-              );
-            })}
-          </View>
+            );
+          })}
         </View>
       </>
     );
@@ -200,9 +205,9 @@ class PropertyVisitList extends Component<Props, IScreenState> {
 
   private onPressConfirmation = (item: string): void => {
     const { handleAction } = this.props;
-    const { currentActionId } = this.state;
+    const { currentVisitId } = this.state;
     if (item === 'Yes') {
-      handleAction(currentActionId, VisitActions.CANCEL);
+      handleAction(currentVisitId, VisitActions.CANCEL);
     }
     this.onCancelSheet();
   };
@@ -293,7 +298,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   private handleVisitCancel = (id: number): void => {
     this.setState({
       isCancelSheet: true,
-      currentActionId: id,
+      currentVisitId: id,
     });
   };
 
@@ -324,7 +329,8 @@ const styles = StyleSheet.create({
   },
   container: {
     borderWidth: 1,
-    padding: 16,
+    borderRadius: 5,
+    paddingVertical: 16,
     borderColor: theme.colors.darkTint10,
   },
   newVisit: {
@@ -333,11 +339,13 @@ const styles = StyleSheet.create({
   },
   dividerStyle: {
     backgroundColor: theme.colors.background,
+    marginVertical: 16,
   },
   buttonView: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginHorizontal: 16,
   },
   statusView: {
     borderWidth: 0,
@@ -376,7 +384,7 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.background,
     width: 100,
   },
-  date: {
+  horizontalStyle: {
     marginHorizontal: 16,
   },
   dateView: {

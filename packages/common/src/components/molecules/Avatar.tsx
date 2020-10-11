@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,47 +11,61 @@ interface IProps {
   designation: string;
   phoneNumber?: string;
   rating?: number;
+  date?: string;
+  isRightIcon?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
-  const { fullName, designation, containerStyle = {}, phoneNumber, rating } = props;
+  const { fullName, designation, containerStyle = {}, phoneNumber, rating, date, isRightIcon } = props;
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.initialsContainer}>
-        <Text type="small" textType="regular" style={styles.initials}>
-          {StringUtils.getInitials(fullName)}
-        </Text>
-      </View>
-      <View style={styles.nameContainer}>
-        <Label textType="regular" type="large">
-          {fullName}
-        </Label>
-        <View style={styles.container}>
-          <Label textType="regular" type="regular" style={styles.designation}>
-            {designation}
+      <View style={styles.leftView}>
+        <View style={styles.initialsContainer}>
+          <Text type="small" textType="regular" style={styles.initials}>
+            {StringUtils.getInitials(fullName)}
+          </Text>
+        </View>
+        <View style={styles.nameContainer}>
+          <Label textType="regular" type="large">
+            {fullName}
           </Label>
-          {phoneNumber && (
-            <View style={styles.numberContainer}>
-              <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
-              <Label textType="regular" type="regular" style={styles.designation}>
-                {phoneNumber}
-              </Label>
-            </View>
-          )}
-          {rating && (
-            <View style={styles.numberContainer}>
-              <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
-              <Label textType="regular" type="regular" style={styles.rating}>
-                {rating}
-              </Label>
-              {/* TODO: Handle color from model */}
-              <Icon name={icons.starFilled} color={theme.colors.error} size={12} />
-            </View>
-          )}
+          <View style={styles.container}>
+            <Label textType="regular" type="regular" style={styles.designation}>
+              {designation}
+            </Label>
+            {phoneNumber && (
+              <View style={styles.numberContainer}>
+                <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+                <Label textType="regular" type="regular" style={styles.designation}>
+                  {phoneNumber}
+                </Label>
+              </View>
+            )}
+            {rating && (
+              <View style={styles.numberContainer}>
+                <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+                <Label textType="regular" type="regular" style={styles.rating}>
+                  {rating}
+                </Label>
+                {/* TODO: Handle color from model */}
+                <Icon name={icons.starFilled} color={theme.colors.error} size={12} />
+              </View>
+            )}
+          </View>
         </View>
       </View>
+      {(isRightIcon || date) && (
+        <View style={styles.rightView}>
+          {isRightIcon && <Icon name={icons.rightArrow} color={theme.colors.blue} size={20} style={styles.iconStyle} />}
+          {date && (
+            <Label textType="regular" type="regular" style={styles.designation}>
+              {DateUtils.timeDifference(date)}
+            </Label>
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -58,6 +73,13 @@ const Avatar = (props: IProps): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  leftView: {
+    flexDirection: 'row',
+  },
+  rightView: {
+    alignItems: 'flex-end',
   },
   initialsContainer: {
     ...(theme.circleCSS(42) as object),

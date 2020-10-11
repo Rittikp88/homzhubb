@@ -72,7 +72,7 @@ const getAssetVisitsByDate = (state: IState): IVisitByKey[] => {
   });
 };
 
-const getVisitsByAsset = (state: IState): IVisitByKey[] => {
+const getVisitsByAsset = (state: IState): IVisitByKey[][] => {
   const {
     asset: { visits },
   } = state;
@@ -86,12 +86,14 @@ const getVisitsByAsset = (state: IState): IVisitByKey[] => {
   });
 
   return Object.keys(groupData).map((projectName) => {
-    const results = groupData[projectName];
-    return {
-      key: projectName,
-      results,
-      totalVisits: data.length,
-    };
+    const results = groupBy(groupData[projectName], 'startDate');
+    return Object.keys(results).map((key) => {
+      const formattedData = results[key];
+      return {
+        key: projectName,
+        results: formattedData,
+      };
+    });
   });
 };
 

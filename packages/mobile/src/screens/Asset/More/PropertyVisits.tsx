@@ -4,6 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { AnimatedProfileHeader, HeaderCard } from '@homzhub/mobile/src/components';
+import { DropdownWithCountry } from '@homzhub/mobile/src/components/molecules/DropdownWithCountry';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/SiteVisitCalendarView';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -44,7 +45,16 @@ class PropertyVisits extends Component<Props, IScreenState> {
 
   private renderPropertyVisits = (): React.ReactElement => {
     const { isCalendarView } = this.state;
-    return isCalendarView ? <SiteVisitCalendarView /> : <SiteVisitTab onReschedule={this.rescheduleVisit} />;
+    return (
+      <>
+        <DropdownWithCountry />
+        {isCalendarView ? (
+          <SiteVisitCalendarView onReschedule={this.rescheduleVisit} />
+        ) : (
+          <SiteVisitTab onReschedule={this.rescheduleVisit} />
+        )}
+      </>
+    );
   };
 
   private handleBack = (): void => {

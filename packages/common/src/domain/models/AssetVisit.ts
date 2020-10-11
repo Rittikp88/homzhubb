@@ -1,6 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { IUser, User, UserRole } from '@homzhub/common/src/domain/models/User';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IVisitAssetDetail, VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { VisitStatus, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export enum VisitActions {
@@ -33,13 +34,7 @@ export interface IVisitActions {
 export interface IVisitByKey {
   key: string;
   results: AssetVisit[];
-  totalVisits: number;
-}
-
-interface IVisitAssetDetail {
-  id: number;
-  project_name: string;
-  address: string;
+  totalVisits?: number;
 }
 
 export interface IAssetVisit {
@@ -59,61 +54,6 @@ export interface IAssetVisit {
   created_at: string;
 }
 
-@JsonObject('UpcomingSlot')
-export class UpcomingSlot {
-  @JsonProperty('id', Number)
-  private _id = 0;
-
-  @JsonProperty('visit_type', String)
-  private _visit_type = '';
-
-  @JsonProperty('start_date', String)
-  private _start_date = '';
-
-  @JsonProperty('end_date', String)
-  private _end_date = '';
-
-  get id(): number {
-    return this._id;
-  }
-
-  get visit_type(): string {
-    return this._visit_type;
-  }
-
-  get start_date(): string {
-    return this._start_date;
-  }
-
-  get end_date(): string {
-    return this._end_date;
-  }
-}
-
-@JsonObject('VisitAssetDetail')
-export class VisitAssetDetail {
-  @JsonProperty('id', Number)
-  private _id = 0;
-
-  @JsonProperty('project_name', String)
-  private _projectName = '';
-
-  @JsonProperty('address', String)
-  private _address = '';
-
-  get id(): number {
-    return this._id;
-  }
-
-  get projectName(): string {
-    return this._projectName;
-  }
-
-  get address(): string {
-    return this._address;
-  }
-}
-
 @JsonObject('AssetVisit')
 export class AssetVisit {
   @JsonProperty('id', Number)
@@ -131,7 +71,7 @@ export class AssetVisit {
   @JsonProperty('lead_type', Unit, true)
   private _leadType = new Unit();
 
-  @JsonProperty('comments', String)
+  @JsonProperty('comments', String, true)
   private _comments = '';
 
   @JsonProperty('sale_listing', Number, true)

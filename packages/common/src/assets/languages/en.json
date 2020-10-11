@@ -331,6 +331,7 @@
     "executivesCall": "Please expect a call from our executives within the next 18 - 24 hours.",
     "visitDetails": "Visit Details",
     "reschedule": "Reschedule",
+    "rescheduleAll": "Reschedule All",
     "newVisit": "New Visit",
     "totalVisit": "{{totalVisit}} Site visits",
     "noVisits": "No Visits Found",

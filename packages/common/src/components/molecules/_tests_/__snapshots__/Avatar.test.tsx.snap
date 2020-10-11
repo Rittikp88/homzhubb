@@ -6,6 +6,7 @@ exports[`Avatar should match snapshot 1`] = `
     Array [
       Object {
         "flexDirection": "row",
+        "justifyContent": "space-between",
       },
       Object {},
     ]
@@ -14,59 +15,68 @@ exports[`Avatar should match snapshot 1`] = `
   <View
     style={
       Object {
-        "alignItems": "center",
-        "backgroundColor": "#808D9B",
-        "borderRadius": 21,
-        "height": 42,
-        "justifyContent": "center",
-        "width": 42,
+        "flexDirection": "row",
       }
     }
   >
-    <Text
-      style={
-        Object {
-          "color": "#FFFFFF",
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      JD
-    </Text>
-  </View>
-  <View
-    style={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-  >
-    <Label
-      textType="regular"
-      type="large"
-    >
-      John Doe
-    </Label>
     <View
       style={
         Object {
-          "flexDirection": "row",
+          "alignItems": "center",
+          "backgroundColor": "#808D9B",
+          "borderRadius": 21,
+          "height": 42,
+          "justifyContent": "center",
+          "width": 42,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        JD
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "marginHorizontal": 12,
         }
       }
     >
       <Label
+        textType="regular"
+        type="large"
+      >
+        John Doe
+      </Label>
+      <View
         style={
           Object {
-            "color": "#667686",
-            "marginTop": 2,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
           }
         }
-        textType="regular"
-        type="regular"
       >
-        CEO
-      </Label>
+        <Label
+          style={
+            Object {
+              "color": "#667686",
+              "marginTop": 2,
+            }
+          }
+          textType="regular"
+          type="regular"
+        >
+          CEO
+        </Label>
+      </View>
     </View>
   </View>
 </View>
@@ -78,6 +88,7 @@ exports[`Avatar should match snapshot with phone number 1`] = `
     Array [
       Object {
         "flexDirection": "row",
+        "justifyContent": "space-between",
       },
       Object {},
     ]
@@ -86,79 +97,55 @@ exports[`Avatar should match snapshot with phone number 1`] = `
   <View
     style={
       Object {
-        "alignItems": "center",
-        "backgroundColor": "#808D9B",
-        "borderRadius": 21,
-        "height": 42,
-        "justifyContent": "center",
-        "width": 42,
+        "flexDirection": "row",
       }
     }
   >
-    <Text
-      style={
-        Object {
-          "color": "#FFFFFF",
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      JD
-    </Text>
-  </View>
-  <View
-    style={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-  >
-    <Label
-      textType="regular"
-      type="large"
-    >
-      John Doe
-    </Label>
     <View
       style={
         Object {
-          "flexDirection": "row",
+          "alignItems": "center",
+          "backgroundColor": "#808D9B",
+          "borderRadius": 21,
+          "height": 42,
+          "justifyContent": "center",
+          "width": 42,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        JD
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "marginHorizontal": 12,
         }
       }
     >
       <Label
-        style={
-          Object {
-            "color": "#667686",
-            "marginTop": 2,
-          }
-        }
         textType="regular"
-        type="regular"
+        type="large"
       >
-        CEO
+        John Doe
       </Label>
       <View
         style={
           Object {
-            "alignItems": "center",
             "flexDirection": "row",
+            "justifyContent": "space-between",
           }
         }
       >
-        <Icon
-          allowFontScaling={false}
-          color="#C9D6DF"
-          name="round-filled"
-          size={12}
-          style={
-            Object {
-              "marginHorizontal": 4,
-              "marginTop": 6,
-            }
-          }
-        />
         <Label
           style={
             Object {
@@ -169,8 +156,41 @@ exports[`Avatar should match snapshot with phone number 1`] = `
           textType="regular"
           type="regular"
         >
-          9876543210
+          CEO
         </Label>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#C9D6DF"
+            name="round-filled"
+            size={12}
+            style={
+              Object {
+                "marginHorizontal": 4,
+                "marginTop": 6,
+              }
+            }
+          />
+          <Label
+            style={
+              Object {
+                "color": "#667686",
+                "marginTop": 2,
+              }
+            }
+            textType="regular"
+            type="regular"
+          >
+            9876543210
+          </Label>
+        </View>
       </View>
     </View>
   </View>

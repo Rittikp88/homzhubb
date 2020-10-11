@@ -15,6 +15,7 @@ interface IProps {
   endDate: string;
   isMissedVisit?: boolean;
   isCompletedVisit?: boolean;
+  isRescheduleAll?: boolean;
   onPressSchedule?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -28,9 +29,9 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
     isCompletedVisit,
     containerStyle = {},
     onPressSchedule,
+    isRescheduleAll = false,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-  // TODO: Handle with Model
   const dateTime = DateUtils.convertTimeFormat(startDate, 'DD-MMM HH');
   const time = VisitSlot.find((item) => item.from === Number(dateTime[1]));
   const textStyle = [styles.textColor, isMissedVisit && styles.missedColor];
@@ -54,7 +55,7 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
           <Icon
             name={icons.roundFilled}
             color={isMissedVisit ? theme.colors.error : theme.colors.darkTint3}
-            size={10}
+            size={8}
             style={styles.iconStyle}
           />
           <Text type="small" textType="semiBold" style={textStyle}>
@@ -64,7 +65,7 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
         <TouchableOpacity style={styles.content} onPress={onPressSchedule}>
           <Icon name={icons.schedule} color={theme.colors.blue} size={20} />
           <Text type="small" style={styles.scheduleText}>
-            {isCompletedVisit ? t('newVisit') : t('reschedule')}
+            {isCompletedVisit ? t('newVisit') : isRescheduleAll ? t('rescheduleAll') : t('reschedule')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     marginTop: 6,
-    marginHorizontal: 10,
+    marginHorizontal: 6,
   },
   scheduleText: {
     color: theme.colors.blue,

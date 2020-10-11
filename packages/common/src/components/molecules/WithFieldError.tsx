@@ -6,7 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 
 interface IProps {
   children: string | React.ReactNode | null;
-  error?: string | FormikErrors<any>;
+  error?: FormikErrors<any>[] | string | string[] | FormikErrors<any> | undefined;
   hideError?: boolean;
   labelStyle?: StyleProp<TextStyle>;
 }

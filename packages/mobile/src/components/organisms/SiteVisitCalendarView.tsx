@@ -4,16 +4,16 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Avatar, Divider, Button } from '@homzhub/common/src/components';
+import { Avatar, Divider, Button, EmptyState } from '@homzhub/common/src/components';
 import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader';
 import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
-import { BottomSheet } from '@homzhub/mobile/src/components';
+import { BottomSheet, Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
-import { ISlotItem, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, ISlotItem, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -21,27 +21,35 @@ import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
+  setVisitIds: (payload: number[]) => void;
 }
 
 interface IStateProps {
-  visits: IVisitByKey[];
+  visits: IVisitByKey[][];
+  isLoading: boolean;
+}
+
+interface IProps {
+  onReschedule: () => void;
 }
 
 interface IScreenState {
   currentDate: string;
   timeSlot: ISlotItem[];
   isCalendarVisible: boolean;
+  selectedSlot: number;
 }
 
 const allSlot = { id: 0, from: 0, to: 0, icon: '', formatted: 'ALL' };
 
-type Props = IDispatchProps & IStateProps & WithTranslation;
+type Props = IProps & IDispatchProps & IStateProps & WithTranslation;
 
 class SiteVisitCalendarView extends Component<Props, IScreenState> {
   public state = {
     currentDate: DateUtils.getDisplayDate(new Date().toDateString(), 'DD, MMMM YYYY'),
     timeSlot: [allSlot].concat(TimeSlot),
     isCalendarVisible: false,
+    selectedSlot: 0,
   };
 
   public componentDidMount(): void {
@@ -49,10 +57,10 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   }
 
   public render(): React.ReactNode {
-    const { t, visits } = this.props;
+    const { t, visits, isLoading } = this.props;
     const { currentDate, isCalendarVisible } = this.state;
     return (
-      <View>
+      <>
         <CalendarHeader
           headerTitle={currentDate}
           onMonthPress={this.handleFullCalendar}
@@ -60,11 +68,17 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
           onBackPress={this.handlePreviousDay}
         />
         {this.renderTimeSlot()}
-        <ScrollView style={styles.visitView}>
-          {visits.map((visit) => {
-            return this.renderVisits(visit);
-          })}
-        </ScrollView>
+        {visits.length > 0 ? (
+          <ScrollView style={styles.visitView} showsVerticalScrollIndicator={false}>
+            {visits.map((visitData) => {
+              return visitData.map((visit) => {
+                return this.renderVisits(visit);
+              });
+            })}
+          </ScrollView>
+        ) : (
+          <EmptyState icon={icons.schedule} title={t('noVisits')} />
+        )}
         <BottomSheet
           visible={isCalendarVisible}
           onCloseSheet={this.onCloseCalendar}
@@ -74,25 +88,29 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
         >
           <CalendarComponent allowPastDates selectedDate={currentDate} onSelect={this.onSelectDate} />
         </BottomSheet>
-      </View>
+        <Loader visible={isLoading} />
+      </>
     );
   }
 
   private renderTimeSlot = (): React.ReactElement => {
-    const { timeSlot } = this.state;
+    const { timeSlot, selectedSlot } = this.state;
     return (
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
         {timeSlot.map((slot, index) => {
+          const onSelectSlot = (): void => this.handleSlotSelection(slot.id);
+          const isSelected = selectedSlot === slot.id;
           return (
             <Button
               key={index}
               type="secondary"
               icon={slot.icon}
+              iconColor={isSelected ? theme.colors.white : theme.colors.darkTint4}
               iconSize={16}
               title={slot.formatted}
-              onPress={FunctionUtils.noop}
-              titleStyle={styles.slotTitle}
-              containerStyle={styles.slotButton}
+              onPress={onSelectSlot}
+              titleStyle={[styles.slotTitle, isSelected && styles.selectedTitle]}
+              containerStyle={[styles.slotButton, isSelected && styles.selectedSlot]}
             />
           );
         })}
@@ -106,18 +124,21 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
       <View style={styles.visitCard}>
         <AddressWithVisitDetail
           primaryAddress={key}
+          isRescheduleAll
           subAddress={results[0].asset.address}
           startDate={results[0].startDate}
           endDate={results[0].endDate}
+          onPressSchedule={(): void => this.handleRescheduleAll(results)}
           containerStyle={styles.addressView}
         />
         <Divider containerStyles={styles.dividerStyle} />
         <View style={styles.userView}>
-          {results.map((item) => {
+          {results.map((item, index) => {
             const {
               user: { fullName, rating },
               role,
               id,
+              createdAt,
             } = item;
             return (
               <>
@@ -126,9 +147,11 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
                   fullName={fullName}
                   designation={role}
                   rating={rating}
+                  isRightIcon
+                  date={createdAt}
                   containerStyle={styles.avatar}
                 />
-                <Divider containerStyles={styles.dividerStyle} />
+                {results.length - 1 !== index && <Divider containerStyles={styles.dividerStyle} />}
               </>
             );
           })}
@@ -152,11 +175,22 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
 
   private getVisitsData = (): void => {
     const { getAssetVisit } = this.props;
-    const { currentDate } = this.state;
-    const date = DateUtils.getDisplayDate(currentDate, DateFormats.ISO);
+    const { currentDate, selectedSlot, timeSlot } = this.state;
+
+    let start_date = DateUtils.getUtcFormattedDate(currentDate, DateFormats.ISO);
+    let end_date = '';
+    if (selectedSlot > 0) {
+      timeSlot.forEach((item) => {
+        if (item.id === selectedSlot) {
+          start_date = DateUtils.getISOFormat(currentDate, item.from);
+          end_date = DateUtils.getISOFormat(currentDate, item.to);
+        }
+      });
+    }
 
     const payload: IAssetVisitPayload = {
-      start_date__gte: date,
+      ...(start_date && { start_date__gte: start_date }),
+      ...(end_date && { start_date__lte: end_date }),
     };
 
     getAssetVisit(payload);
@@ -164,16 +198,22 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
 
   private handleNextDay = (): void => {
     const { currentDate } = this.state;
-    this.setState({
-      currentDate: DateUtils.getNextDate(1, currentDate, 'DD, MMMM YYYY'),
-    });
+    this.setState(
+      {
+        currentDate: DateUtils.getNextDate(1, currentDate, 'DD, MMMM YYYY'),
+      },
+      (): void => this.getVisitsData()
+    );
   };
 
   private handlePreviousDay = (): void => {
     const { currentDate } = this.state;
-    this.setState({
-      currentDate: DateUtils.getNextDate(1, currentDate, 'DD, MMMM YYYY'),
-    });
+    this.setState(
+      {
+        currentDate: DateUtils.getPreviousDate(1, currentDate, 'DD, MMMM YYYY'),
+      },
+      (): void => this.getVisitsData()
+    );
   };
 
   private handleFullCalendar = (): void => {
@@ -183,19 +223,43 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
       };
     });
   };
+
+  private handleSlotSelection = (value: string | number): void => {
+    this.setState(
+      {
+        selectedSlot: value as number,
+      },
+      (): void => {
+        this.getVisitsData();
+      }
+    );
+  };
+
+  private handleRescheduleAll = (results: AssetVisit[]): void => {
+    const { setVisitIds, onReschedule } = this.props;
+    const visitIds: number[] = [];
+    results.forEach((visit) => {
+      visitIds.push(visit.id);
+    });
+
+    setVisitIds(visitIds);
+    onReschedule();
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     visits: AssetSelectors.getVisitsByAsset(state),
+    isLoading: AssetSelectors.getVisitLoadingState(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetVisit } = AssetActions;
+  const { getAssetVisit, setVisitIds } = AssetActions;
   return bindActionCreators(
     {
       getAssetVisit,
+      setVisitIds,
     },
     dispatch
   );
@@ -216,6 +280,9 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     color: theme.colors.darkTint4,
   },
+  selectedTitle: {
+    color: theme.colors.white,
+  },
   slotButton: {
     backgroundColor: theme.colors.background,
     borderWidth: 0,
@@ -223,12 +290,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     flexDirection: 'row-reverse',
   },
+  selectedSlot: {
+    backgroundColor: theme.colors.blue,
+  },
   visitView: {
-    height: 500,
+    height: 450,
+    marginTop: 10,
   },
   visitCard: {
     marginHorizontal: 16,
+    marginBottom: 16,
     borderWidth: 1,
+    borderRadius: 5,
     borderColor: theme.colors.darkTint10,
   },
   addressView: {
@@ -236,13 +309,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   dividerStyle: {
-    borderColor: theme.colors.background,
+    borderColor: theme.colors.darkTint10,
   },
   userView: {
     paddingHorizontal: 16,
     marginVertical: 16,
   },
   avatar: {
-    marginVertical: 16,
+    marginVertical: 12,
   },
 });
