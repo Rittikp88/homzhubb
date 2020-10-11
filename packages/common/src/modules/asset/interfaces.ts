@@ -2,20 +2,25 @@ import { ICallback } from '@homzhub/common/src/modules/interfaces';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 
 export interface IAssetState {
   asset: IAsset | null;
   reviews: IAssetReview[];
   documents: AssetDocument[];
+  visits: IAssetVisit[];
+  visitIds: number[];
   error: {
     asset: string;
     reviews: string;
     documents: string;
+    visits: string;
   };
   loaders: {
     asset: boolean;
     reviews: boolean;
     documents: boolean;
+    visits: boolean;
   };
 }
 

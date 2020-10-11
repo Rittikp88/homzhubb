@@ -8,6 +8,7 @@ export enum LedgerTypes {
 export enum DataGroupBy {
   year = 'YEAR',
   month = 'MONTH',
+  week = 'WEEK',
 }
 
 export enum BarGraphLegends {

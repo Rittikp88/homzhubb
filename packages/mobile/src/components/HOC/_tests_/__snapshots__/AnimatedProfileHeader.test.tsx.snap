@@ -222,12 +222,15 @@ exports[`AnimatedProfileHeader should render snapshot 1`] = `
         </View>
       </View>
       <ScrollViewMock
+        nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
       >
         <RCTScrollView
+          nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}
         >
           <RCTScrollView
+            nestedScrollEnabled={true}
             showsVerticalScrollIndicator={false}
           >
             <View>

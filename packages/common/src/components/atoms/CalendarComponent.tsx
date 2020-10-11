@@ -4,11 +4,10 @@ import { View, FlatList, TouchableOpacity, StyleSheet, StyleProp, TextStyle, Vie
 import moment from 'moment';
 import { DateFormats, DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 
 interface ICalendarProps {
@@ -59,36 +58,20 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     }
     const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMMM);
 
+    const title = `${updateMonth} ${newYear || year}`;
+    const isCurrentMonth = month === moment().month();
+
     return (
-      <>
-        <View style={styles.headerContainer}>
-          <Icon
-            name={icons.leftArrow}
-            onPress={this.handleBackPress}
-            size={22}
-            color={!allowPastDates && month === moment().month() ? theme.colors.disabled : theme.colors.primaryColor}
-          />
-          <Text
-            type="small"
-            textType="semiBold"
-            onPress={this.handleMonthPress}
-            style={StyleSheet.flatten([customStyles.headerTitle(isMonthView)])}
-          >
-            {`${updateMonth} ${newYear || year}`}
-          </Text>
-          <Icon
-            name={icons.rightArrow}
-            size={22}
-            color={
-              maxDate && moment(maxDate).month() === moment().month()
-                ? theme.colors.disabled
-                : theme.colors.primaryColor
-            }
-            onPress={this.handleNextPress}
-          />
-        </View>
-        <Divider />
-      </>
+      <CalendarHeader
+        isAllowPastDate={allowPastDates}
+        headerTitle={title}
+        isCurrentMonth={isCurrentMonth}
+        isMonthView={isMonthView}
+        maxDate={maxDate}
+        onBackPress={this.handleBackPress}
+        onNextPress={this.handleNextPress}
+        onMonthPress={this.handleMonthPress}
+      />
     );
   };
 
@@ -136,7 +119,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
         <Calendar
           hideArrows
           // @ts-ignore
-          renderHeader={this.headerView}
+          renderHeader={(): null => null}
           minDate={allowPastDates ? undefined : new Date()}
           maxDate={maxDate}
           current={date}
@@ -180,10 +163,6 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const { onSelect } = this.props;
     const { selectedDate } = this.state;
     onSelect(selectedDate);
-  };
-
-  private headerView = (): null => {
-    return null;
   };
 
   private handleBackPress = (): void => {
@@ -258,12 +237,6 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     margin: 16,
-  },
-  headerContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingVertical: 20,
-    paddingHorizontal: 24,
   },
   listContent: {
     marginVertical: 16,

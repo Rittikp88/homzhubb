@@ -6,15 +6,7 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
-
-// TODO: (Need to Move)
-export interface ISlotItem {
-  id: number;
-  from: number;
-  to: number;
-  icon: string;
-  formatted: string;
-}
+import { ISlotItem } from '@homzhub/common/src/domain/models/AssetVisit';
 
 interface ITimeSlotProps {
   data: ISlotItem[];

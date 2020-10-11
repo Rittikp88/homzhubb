@@ -3,21 +3,26 @@ import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 import { AssetActionTypes, AssetPayloadTypes } from '@homzhub/common/src/modules/asset/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 
 export const initialAssetState: IAssetState = {
   error: {
     reviews: '',
     asset: '',
     documents: '',
+    visits: '',
   },
   loaders: {
     reviews: false,
     asset: false,
     documents: false,
+    visits: false,
   },
   asset: null,
   reviews: [],
   documents: [],
+  visits: [],
+  visitIds: [],
 };
 
 export const assetReducer = (
@@ -82,6 +87,27 @@ export const assetReducer = (
         ['loaders']: { ...state.loaders, ['documents']: false },
         ['error']: { ...state.error, ['documents']: action.error as string },
       };
+    case AssetActionTypes.GET.ASSET_VISIT:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['visits']: true },
+        ['error']: { ...state.error, ['visits']: '' },
+      };
+    case AssetActionTypes.GET.ASSET_VISIT_SUCCESS:
+      return {
+        ...state,
+        ['visits']: action.payload as IAssetVisit[],
+        ['loaders']: { ...state.loaders, ['visits']: false },
+        ['error']: { ...state.error, ['visits']: '' },
+      };
+    case AssetActionTypes.GET.ASSET_VISIT_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['visits']: false },
+        ['error']: { ...state.error, ['visits']: action.error as string },
+      };
+    case AssetActionTypes.SET.VISIT_IDS:
+      return { ...state, ['visitIds']: action.payload as number[] };
     case AssetActionTypes.CLEAR_ASSET:
       return initialAssetState;
     default:

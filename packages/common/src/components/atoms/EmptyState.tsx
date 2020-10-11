@@ -5,13 +5,19 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 
-export const EmptyState = (): React.ReactElement => {
+interface IProps {
+  icon?: string;
+  title?: string;
+}
+
+export const EmptyState = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
+  const { icon = icons.search, title = t('common:noResultsFound') } = props;
   return (
     <View style={styles.noDataContainer}>
-      <Icon name={icons.search} size={30} color={theme.colors.disabledSearch} />
+      <Icon name={icon} size={30} color={theme.colors.disabledSearch} />
       <Text type="small" textType="semiBold" style={styles.noResultsFound}>
-        {t('common:noResultsFound')}
+        {title}
       </Text>
     </View>
   );

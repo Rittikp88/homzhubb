@@ -4,7 +4,7 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 export const MonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const DateFormats = {
-  ISO: 'YYYY-MM-DDTHH:mm:ss.sss[Z]',
+  ISO: 'YYYY-MM-DDThh:mm:ss.sss[Z]',
   ddd: 'ddd',
   DD: 'DD',
   y: 'y',
@@ -70,20 +70,30 @@ class DateUtils {
     return `${startDate} - ${endDate}`;
   };
 
-  public getCurrentMonthStartDate = (): string => {
-    return moment().startOf('months').format('YYYY-MM-DD');
+  public getCurrentMonthStartDate = (format?: string): string => {
+    return moment()
+      .startOf('months')
+      .format(format || 'YYYY-MM-DD');
   };
 
-  public getCurrentMonthLastDate = (): string => {
-    return moment().endOf('months').format('YYYY-MM-DD');
+  public getCurrentMonthLastDate = (format?: string): string => {
+    return moment()
+      .endOf('months')
+      .format(format || 'YYYY-MM-DD');
   };
 
-  public getPreviousMonthStartDate = (): string => {
-    return moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+  public getPreviousMonthStartDate = (format?: string): string => {
+    return moment()
+      .subtract(1, 'months')
+      .startOf('month')
+      .format(format || 'YYYY-MM-DD');
   };
 
-  public getPreviousMonthLastDate = (): string => {
-    return moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+  public getPreviousMonthLastDate = (format?: string): string => {
+    return moment()
+      .subtract(1, 'months')
+      .endOf('month')
+      .format(format || 'YYYY-MM-DD');
   };
 
   public getCurrentYearStartDate = (): string => {
@@ -92,6 +102,32 @@ class DateUtils {
 
   public getCurrentYearLastDate = (): string => {
     return moment().endOf('year').format('YYYY-MM-DD');
+  };
+
+  public getCurrentWeekStartDate = (format?: string): string => {
+    return moment()
+      .startOf('week')
+      .format(format || 'YYYY-MM-DD');
+  };
+
+  public getCurrentWeekLastDate = (format?: string): string => {
+    return moment()
+      .endOf('week')
+      .format(format || 'YYYY-MM-DD');
+  };
+
+  public getLastWeekStartDate = (format?: string): string => {
+    return moment()
+      .subtract(1, 'week')
+      .startOf('week')
+      .format(format || 'YYYY-MM-DD');
+  };
+
+  public getLastWeekLastDate = (format?: string): string => {
+    return moment()
+      .subtract(1, 'week')
+      .endOf('week')
+      .format(format || 'YYYY-MM-DD');
   };
 
   public getCurrentDate = (): string => {
@@ -138,6 +174,20 @@ class DateUtils {
     return moment.utc(new Date()).subtract(dateCount, 'days').format('YYYY-MM-DD');
   };
 
+  public getNextDate = (dateCount: number, date?: string, format?: string): string => {
+    return moment
+      .utc(date || new Date())
+      .add(dateCount, 'days')
+      .format(format || 'YYYY-MM-DD');
+  };
+
+  public getPreviousDate = (dateCount: number, date?: string, format?: string): string => {
+    return moment
+      .utc(date || new Date())
+      .subtract(dateCount, 'days')
+      .format(format || 'YYYY-MM-DD');
+  };
+
   public convertTimeFormat = (date: string, format: string): string[] => {
     return moment.utc(date).format(format).split(' ');
   };
@@ -147,7 +197,11 @@ class DateUtils {
     return moment.utc(dateFormat).toISOString();
   };
 
-  public getDateWithWeekDay = (date: string, format: string): string => {
+  public getCurrentDateISO = (): string => {
+    return moment(new Date()).format(DateFormats.ISO);
+  };
+
+  public getUtcFormattedDate = (date: string, format: string): string => {
     return moment.utc(date).format(format);
   };
 

@@ -59,7 +59,7 @@ export class Button extends React.PureComponent<IButtonProps> {
         testID={testID}
       >
         {title && this.getTextField()}
-        {icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
+        {!!icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
         {image && <Image source={image} style={imageStyle} />}
       </TouchableOpacity>
     );

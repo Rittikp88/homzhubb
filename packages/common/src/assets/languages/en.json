@@ -84,6 +84,8 @@
     "thisYear": "This year",
     "thisFinancialYear": "This Financial Year",
     "lastYear": "Last year",
+    "lastWeek": "Last week",
+    "thisWeek": "This week",
     "search": "Search",
     "one": "1",
     "onePlus": "1+",
@@ -329,7 +331,11 @@
     "executivesCall": "Please expect a call from our executives within the next 18 - 24 hours.",
     "visitDetails": "Visit Details",
     "reschedule": "Reschedule",
-    "newVisit": "New Visit"
+    "newVisit": "New Visit",
+    "totalVisit": "{{totalVisit}} Site visits",
+    "noVisits": "No Visits Found",
+    "wantCancelVisit": "Do you want to cancel scheduled visit?",
+    "cancelVisit": "Cancel Visit"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

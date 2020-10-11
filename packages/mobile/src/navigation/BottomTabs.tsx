@@ -62,6 +62,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.PropertyVisits]: undefined;
   [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined;
+  [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -125,6 +126,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
+      <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
     </MoreStackNavigator.Navigator>
   );
 };

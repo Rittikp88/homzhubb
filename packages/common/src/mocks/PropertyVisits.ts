@@ -31,7 +31,7 @@ export const visits = [
     created_at: '2020-10-07T11:26:36.355740Z',
   },
   {
-    id: 1,
+    id: 2,
     visit_type: 'PHYSICAL',
     lead_type: {
       id: 12,
@@ -62,7 +62,7 @@ export const visits = [
     created_at: '2020-10-07T11:26:36.355740Z',
   },
   {
-    id: 2,
+    id: 3,
     visit_type: 'PHYSICAL',
     lead_type: {
       id: 12,
@@ -93,7 +93,7 @@ export const visits = [
     created_at: '2020-10-07T11:26:36.355740Z',
   },
   {
-    id: 3,
+    id: 4,
     visit_type: 'PHYSICAL',
     lead_type: {
       id: 12,

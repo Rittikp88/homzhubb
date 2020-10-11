@@ -1,56 +1,135 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Avatar, Button, Divider } from '@homzhub/common/src/components';
+import { Avatar, Button, Divider, Dropdown, EmptyState, Label, Text } from '@homzhub/common/src/components';
+import { BottomSheet, Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
-import { visits } from '@homzhub/common/src/mocks/PropertyVisits';
+import {
+  AssetVisit,
+  IVisitActions,
+  IVisitByKey,
+  VisitActions,
+  VisitStatusType,
+} from '@homzhub/common/src/domain/models/AssetVisit';
+import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
+import { MISSED_COMPLETED_DATA, UPCOMING_DROPDOWN_DATA } from '@homzhub/common/src/constants/SiteVisit';
 
-// TODO: Move to Model
-export enum VisitType {
-  UPCOMING = 'Upcoming',
-  MISSED = 'Missed',
-  COMPLETED = 'Completed',
-}
+// CONSTANTS
+const confirmation = ['Yes', 'No'];
+
+// END CONSTANTS
 
 interface IProps {
-  routeKey: VisitType;
+  visitType: VisitStatusType;
+  visitData: IVisitByKey[];
+  isLoading: boolean;
+  handleAction: (id: number, action: VisitActions) => void;
+  handleReschedule: (id: number) => void;
+  handleDropdown: (startDate: string, endDate: string) => void;
 }
 
-class PropertyVisitList extends Component<IProps> {
-  public render(): React.ReactNode {
-    // TODO: Check with Map
-    return <FlatList data={visits} renderItem={this.renderItem} />;
-  }
+interface IScreenState {
+  dropdownValue: number;
+  isCancelSheet: boolean;
+  currentActionId: number;
+}
 
-  private renderItem = ({ item }: { item: any }): React.ReactElement => {
-    const { asset, user, actions, start_date, end_date } = item;
-    const { routeKey } = this.props;
-    const isMissed = routeKey === VisitType.MISSED;
-    const isCompleted = routeKey === VisitType.COMPLETED;
-    const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
+type Props = IProps & WithTranslation;
+
+class PropertyVisitList extends Component<Props, IScreenState> {
+  public state = {
+    dropdownValue: 1,
+    isCancelSheet: false,
+    currentActionId: 0,
+  };
+
+  public render(): React.ReactNode {
+    const { visitData, isLoading, t } = this.props;
+    const { dropdownValue } = this.state;
+    const dropdownData = this.getDropdownData();
+    const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
     return (
-      <View style={styles.mainContainer}>
-        <View style={containerStyle}>
-          <Avatar fullName={user.full_name} designation="Tenant" rating={user.rating} />
-          <AddressWithVisitDetail
-            primaryAddress={asset.project_name}
-            subAddress={asset.address}
-            startDate={start_date}
-            endDate={end_date}
-            isMissedVisit={isMissed}
-            isCompletedVisit={isCompleted}
+      <>
+        <View style={styles.headerView}>
+          <Label type="regular" style={styles.count}>
+            {t('totalVisit', { totalVisit })}
+          </Label>
+          <Dropdown
+            data={dropdownData}
+            value={dropdownValue}
+            icon={icons.downArrow}
+            textStyle={{ color: theme.colors.blue }}
+            iconColor={theme.colors.blue}
+            onDonePress={this.handleDropdownSelection}
+            containerStyle={styles.dropdownStyle}
           />
         </View>
-        {routeKey === VisitType.UPCOMING && this.renderUpcomingView(item)}
+        {visitData.length > 0 ? (
+          <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+            {visitData.map((item) => {
+              return (
+                <>
+                  <View style={styles.dateView}>
+                    <View style={styles.dividerView} />
+                    <Text type="small" style={styles.date}>
+                      {item.key}
+                    </Text>
+                    <View style={styles.dividerView} />
+                  </View>
+                  {item.results.map((asset: AssetVisit) => {
+                    return this.renderItem(asset);
+                  })}
+                </>
+              );
+            })}
+          </ScrollView>
+        ) : (
+          <EmptyState icon={icons.schedule} title={t('noVisits')} />
+        )}
+        <Loader visible={isLoading} />
+        {this.renderCancelConfirmation()}
+      </>
+    );
+  }
+
+  private renderItem = (item: AssetVisit): React.ReactElement => {
+    const { asset, user, actions, startDate, endDate, id, role } = item;
+    const { visitType, handleReschedule } = this.props;
+    const isMissed = visitType === VisitStatusType.MISSED;
+    const isCompleted = visitType === VisitStatusType.COMPLETED;
+    const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
+
+    const onReschedule = (): void => handleReschedule(id);
+
+    return (
+      <View style={styles.mainContainer} key={id}>
+        <View style={containerStyle}>
+          <Avatar fullName={user.fullName} designation={role} rating={user.rating} />
+          <AddressWithVisitDetail
+            primaryAddress={asset.projectName}
+            subAddress={asset.address}
+            startDate={startDate}
+            endDate={endDate}
+            isMissedVisit={isMissed}
+            isCompletedVisit={isCompleted}
+            onPressSchedule={onReschedule}
+          />
+        </View>
+        {visitType === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
       </View>
     );
   };
 
-  private renderUpcomingView = (item: any): React.ReactElement => {
-    const { actions, status } = item;
+  private renderUpcomingView = (item: AssetVisit): React.ReactElement => {
+    const { actions, status, id } = item;
     const visitStatus = this.getVisitStatus(status);
     const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
+
     return (
       <>
         {actions.length > 1 && <Divider containerStyles={styles.dividerStyle} />}
@@ -68,18 +147,20 @@ class PropertyVisitList extends Component<IProps> {
               />
             )}
             {actions.map((action: string, index: number): React.ReactElement | null => {
-              const data = this.getActions(action);
-              if (!data) return null;
+              const actionData = this.getActions(action);
+              if (!actionData) return null;
+              const onPressButton = (): void => actionData.action && actionData.action(id);
               return (
                 <Button
                   key={index}
                   type="secondary"
-                  icon={data.icon}
-                  iconColor={data.color}
+                  icon={actionData.icon}
+                  iconColor={actionData.color}
                   iconSize={20}
-                  title={data.title}
+                  onPress={onPressButton}
+                  title={actionData.title}
                   containerStyle={styles.statusView}
-                  titleStyle={[styles.actionTitle, { color: data.color }]}
+                  titleStyle={[styles.actionTitle, { color: actionData.color }]}
                 />
               );
             })}
@@ -89,49 +170,93 @@ class PropertyVisitList extends Component<IProps> {
     );
   };
 
-  // TODO: Refactor once API integrate
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  private getActions = (action: string) => {
+  private renderCancelConfirmation = (): React.ReactElement => {
+    const { isCancelSheet } = this.state;
+    const { t } = this.props;
+    return (
+      <BottomSheet visible={isCancelSheet} headerTitle={t('cancelVisit')} onCloseSheet={this.onCancelSheet}>
+        <View style={styles.sheetContent}>
+          <Text type="small" style={{ color: theme.colors.darkTint1 }}>
+            {t('wantCancelVisit')}
+          </Text>
+          <View style={styles.sheetButtonView}>
+            {confirmation.map((item, index) => {
+              return (
+                <Button
+                  type="secondary"
+                  key={index}
+                  title={item}
+                  onPress={(): void => this.onPressConfirmation(item)}
+                  containerStyle={styles.confirmationContainer}
+                  titleStyle={styles.confirmationTitle}
+                />
+              );
+            })}
+          </View>
+        </View>
+      </BottomSheet>
+    );
+  };
+
+  private onPressConfirmation = (item: string): void => {
+    const { handleAction } = this.props;
+    const { currentActionId } = this.state;
+    if (item === 'Yes') {
+      handleAction(currentActionId, VisitActions.CANCEL);
+    }
+    this.onCancelSheet();
+  };
+
+  private onCancelSheet = (): void => {
+    this.setState({
+      isCancelSheet: false,
+    });
+  };
+
+  private getActions = (action: string): IVisitActions | null => {
+    const { handleAction } = this.props;
+    const { APPROVE, REJECT, CANCEL } = VisitActions;
     switch (action) {
-      case 'Accept':
+      case APPROVE:
         return {
           title: 'Accept',
           color: theme.colors.green,
           icon: icons.circularCheckFilled,
+          action: (id): void => handleAction(id, VisitActions.APPROVE),
         };
-      case 'Reject':
+      case REJECT:
         return {
           title: 'Reject',
           color: theme.colors.error,
           icon: icons.circularCrossFilled,
+          action: (id): void => handleAction(id, VisitActions.REJECT),
         };
-      case 'Cancel':
+      case CANCEL:
         return {
           title: 'Cancel',
           color: theme.colors.error,
+          action: (id): void => this.handleVisitCancel(id),
         };
       default:
         return null;
     }
   };
 
-  // TODO: Refactor once API integrate
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  private getVisitStatus = (status: string) => {
+  private getVisitStatus = (status: string): IVisitActions | null => {
     switch (status) {
-      case 'SCHEDULED':
+      case VisitStatus.APPROVED:
         return {
           title: 'Visit Scheduled',
           color: theme.colors.green,
           icon: icons.circularCheckFilled,
         };
-      case 'CANCELLED':
+      case VisitStatus.CANCELLED:
         return {
           title: 'Visit Cancelled',
           color: theme.colors.error,
           icon: icons.circularCrossFilled,
         };
-      case 'PENDING':
+      case VisitStatus.PENDING:
         return {
           title: 'Awaiting Confirmation...',
           color: theme.colors.darkTint3,
@@ -141,9 +266,56 @@ class PropertyVisitList extends Component<IProps> {
         return null;
     }
   };
+
+  private getDropdownData = (): IDropdownObject[] => {
+    const { visitType, t } = this.props;
+    let results;
+    switch (visitType) {
+      case VisitStatusType.UPCOMING:
+        results = Object.values(UPCOMING_DROPDOWN_DATA);
+        break;
+      case VisitStatusType.MISSED:
+      case VisitStatusType.COMPLETED:
+        results = Object.values(MISSED_COMPLETED_DATA);
+        break;
+      default:
+        results = Object.values(MISSED_COMPLETED_DATA);
+    }
+
+    return results.map((currentData: IDropdownObject) => {
+      return {
+        ...currentData,
+        label: t(currentData.label),
+      };
+    });
+  };
+
+  private handleVisitCancel = (id: number): void => {
+    this.setState({
+      isCancelSheet: true,
+      currentActionId: id,
+    });
+  };
+
+  private handleDropdownSelection = (value: string | number): void => {
+    const { handleDropdown, visitType } = this.props;
+    const currentDate = DateUtils.getCurrentDateISO();
+    this.setState({
+      dropdownValue: value as number,
+    });
+    const data = this.getDropdownData();
+    const selectedData = data.find((item) => item.value === (value as number));
+    if (selectedData) {
+      const fromDate =
+        visitType === VisitStatusType.UPCOMING && selectedData.startDate < currentDate
+          ? currentDate
+          : selectedData.startDate;
+      handleDropdown(fromDate, selectedData.endDate);
+    }
+  };
 }
 
-export default PropertyVisitList;
+export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyVisitList);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -171,6 +343,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     flex: 0,
     flexDirection: 'row-reverse',
+    backgroundColor: theme.colors.transparent,
   },
   statusTitle: {
     marginVertical: 0,
@@ -179,5 +352,50 @@ const styles = StyleSheet.create({
   actionTitle: {
     marginVertical: 0,
     marginHorizontal: 16,
+  },
+  headerView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    alignItems: 'center',
+    marginHorizontal: 16,
+  },
+  scrollView: {
+    flex: 1,
+    height: 500,
+  },
+  count: {
+    color: theme.colors.darkTint6,
+  },
+  dropdownStyle: {
+    borderWidth: 0,
+    backgroundColor: theme.colors.lightGrayishBlue,
+  },
+  dividerView: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.background,
+    width: 100,
+  },
+  date: {
+    marginHorizontal: 16,
+  },
+  dateView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  sheetContent: {
+    alignSelf: 'center',
+  },
+  sheetButtonView: {
+    flexDirection: 'row',
+    marginTop: 24,
+  },
+  confirmationContainer: {
+    marginHorizontal: 6,
+  },
+  confirmationTitle: {
+    marginVertical: 0,
+    paddingVertical: 8,
   },
 });

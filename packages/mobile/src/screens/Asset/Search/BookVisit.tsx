@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
 import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import {
-  IScheduleVisitPayload,
-  IUpcomingVisitPayload,
-  VisitType,
-} from '@homzhub/common/src/domain/repositories/interfaces';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, Divider, Label, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
@@ -25,16 +20,32 @@ import { CollapsibleSection, Header, Loader, StateAwareComponent, TimeSlotGroup 
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { AssetLeadType, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, ISlotItem, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 import { VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  IAssetVisitPayload,
+  IRescheduleVisitPayload,
+  IScheduleVisitPayload,
+  IUpcomingVisitPayload,
+  VisitType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
+
+interface IDispatchProps {
+  getAssetVisit: (payload: IAssetVisitPayload) => void;
+}
 
 interface IStateProps {
   isLoggedIn: boolean;
+  visitDetail: AssetVisit;
+  visitIds: number[];
 }
 
 interface IVisitState {
-  visitors: AssetLeadType[];
+  visitors: Unit[];
   upcomingVisits: UpcomingSlot[];
   userType: number;
   visitType: string[];
@@ -49,7 +60,7 @@ interface IVisitState {
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.BookVisit>;
-type Props = libraryProps & IStateProps;
+type Props = libraryProps & IStateProps & IDispatchProps;
 
 export class BookVisit extends Component<Props, IVisitState> {
   public state = {
@@ -70,6 +81,7 @@ export class BookVisit extends Component<Props, IVisitState> {
   public componentDidMount = async (): Promise<void> => {
     await this.getVisitorType();
     await this.getUpcomingVisits();
+    this.getExistingData();
   };
 
   public render(): React.ReactNode {
@@ -87,7 +99,11 @@ export class BookVisit extends Component<Props, IVisitState> {
       selectedDate,
       selectedTimeSlot,
     } = this.state;
-    const { t, navigation } = this.props;
+    const {
+      t,
+      navigation,
+      route: { params },
+    } = this.props;
     const upcomingVisitTitle = PropertyUtils.getUpcomingSlotMessage(upcomingVisits[0]);
     const isButtonDisabled = (selectedDate === '' || selectedTimeSlot === 0) && !isUpcomingSlotSelected;
 
@@ -95,6 +111,7 @@ export class BookVisit extends Component<Props, IVisitState> {
       <HandleBack onBack={this.goBack} navigation={navigation}>
         <Header
           icon={icons.close}
+          isBarVisible={false}
           isHeadingVisible
           title={t('assetDescription:scheduleVisit')}
           type="secondary"
@@ -103,7 +120,7 @@ export class BookVisit extends Component<Props, IVisitState> {
         />
         <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
           {this.renderVisitType()}
-          {this.renderVisitorType()}
+          {!params.isReschedule && this.renderVisitorType()}
           <Divider containerStyles={styles.divider} />
           {upcomingVisits.length > 0 && (
             <CollapsibleSection
@@ -132,7 +149,7 @@ export class BookVisit extends Component<Props, IVisitState> {
             onMessageChange={this.handleMessageChange}
           />
         </ScrollView>
-        <WithShadowView outerViewStyle={styles.shadowView}>
+        <WithShadowView>
           <Button
             type="primary"
             title={t('confirm')}
@@ -254,6 +271,18 @@ export class BookVisit extends Component<Props, IVisitState> {
     this.setState({ selectedTimeSlot: slotId });
   };
 
+  private getExistingData = (): void => {
+    const { visitDetail } = this.props;
+    if (!visitDetail) return;
+    const dateTime = DateUtils.convertTimeFormat(visitDetail.startDate, 'YYYY-MM-DD HH');
+    const time = TimeSlot.find((item) => item.from === Number(dateTime[1]));
+
+    this.setState({
+      selectedDate: DateUtils.getDisplayDate(dateTime[0], 'll'),
+      selectedTimeSlot: time ? time.id : 0,
+    });
+  };
+
   private getVisitorType = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
@@ -318,8 +347,8 @@ export class BookVisit extends Component<Props, IVisitState> {
     } = this.state;
     const {
       t,
-      navigation,
       route: { params },
+      visitIds,
     } = this.props;
 
     let start_date = '';
@@ -333,7 +362,7 @@ export class BookVisit extends Component<Props, IVisitState> {
         }
       });
     } else {
-      TimeSlot.forEach((item: any) => {
+      TimeSlot.forEach((item: ISlotItem) => {
         if (item.id === selectedTimeSlot) {
           start_date = DateUtils.getISOFormat(selectedDate, item.from);
           end_date = DateUtils.getISOFormat(selectedDate, item.to);
@@ -351,11 +380,23 @@ export class BookVisit extends Component<Props, IVisitState> {
       sale_listing: params.sale_listing_id ?? null,
     };
 
+    const reschedulePayload: IRescheduleVisitPayload = {
+      ids: visitIds,
+      visit_type: visitType[0],
+      start_date,
+      end_date,
+      ...(message && { comments: message }),
+    };
+
     try {
-      await AssetRepository.propertyVisit(payload);
+      if (params.isReschedule) {
+        await AssetRepository.reschedulePropertyVisit(reschedulePayload);
+      } else {
+        await AssetRepository.propertyVisit(payload);
+        AlertHelper.success({ message: t('property:scheduleVisit') });
+      }
       this.setState({ isLoading: false });
-      AlertHelper.success({ message: t('property:scheduleVisit') });
-      navigation.replace(ScreensKeys.PropertyAssetDescription, { propertyTermId: params.propertyTermId });
+      this.goBack();
     } catch (e) {
       this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e.details);
@@ -369,18 +410,37 @@ export class BookVisit extends Component<Props, IVisitState> {
       route: {
         params: { propertyTermId },
       },
+      getAssetVisit,
     } = this.props;
-    navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
+
+    if (propertyTermId) {
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
+    } else {
+      navigation.goBack();
+      getAssetVisit({});
+    }
   };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     isLoggedIn: UserSelector.isLoggedIn(state),
+    visitDetail: AssetSelectors.getVisitById(state),
+    visitIds: AssetSelectors.getVisitIds(state),
   };
 };
 
-export default connect(mapStateToProps, null)(withTranslation()(BookVisit));
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getAssetVisit } = AssetActions;
+  return bindActionCreators(
+    {
+      getAssetVisit,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BookVisit));
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -428,11 +488,6 @@ const styles = StyleSheet.create({
   textArea: {
     marginTop: 18,
     marginBottom: 24,
-  },
-  shadowView: {
-    paddingTop: 4,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
-    paddingBottom: 0,
   },
   buttonStyle: {
     flex: 0,

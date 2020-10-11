@@ -4,6 +4,8 @@ import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modul
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview, IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { AssetVisit, IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const actionTypePrefix = 'Asset/';
 
@@ -18,6 +20,12 @@ export const AssetActionTypes = {
     ASSET_DOCUMENT: `${actionTypePrefix}ASSET_DOCUMENT`,
     ASSET_DOCUMENT_SUCCESS: `${actionTypePrefix}ASSET_DOCUMENT_SUCCESS`,
     ASSET_DOCUMENT_FAILURE: `${actionTypePrefix}ASSET_DOCUMENT_FAILURE`,
+    ASSET_VISIT: `${actionTypePrefix}ASSET_VISIT`,
+    ASSET_VISIT_SUCCESS: `${actionTypePrefix}ASSET_VISIT_SUCCESS`,
+    ASSET_VISIT_FAILURE: `${actionTypePrefix}ASSET_VISIT_FAILURE`,
+  },
+  SET: {
+    VISIT_IDS: `${actionTypePrefix}VISIT_IDS`,
   },
   CLEAR_ASSET: `${actionTypePrefix}CLEAR_ASSET`,
 };
@@ -71,7 +79,27 @@ const getAssetDocumentFailure = (error: string): IFluxStandardAction<string> => 
   error,
 });
 
-export type AssetPayloadTypes = number | IAssetReview[] | IAsset;
+const getAssetVisit = (payload: IAssetVisitPayload): IFluxStandardAction<IAssetVisitPayload> => ({
+  type: AssetActionTypes.GET.ASSET_VISIT,
+  payload,
+});
+
+const getAssetVisitSuccess = (payload: AssetVisit[]): IFluxStandardAction<IAssetVisit[]> => ({
+  type: AssetActionTypes.GET.ASSET_VISIT_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getAssetVisitFailure = (error: string): IFluxStandardAction<string> => ({
+  type: AssetActionTypes.GET.ASSET_VISIT_FAILURE,
+  error,
+});
+
+const setVisitIds = (payload: number[]): IFluxStandardAction<number[]> => ({
+  type: AssetActionTypes.SET.VISIT_IDS,
+  payload,
+});
+
+export type AssetPayloadTypes = number | IAssetReview[] | IAsset | IAssetVisit[] | number[];
 
 export const AssetActions = {
   clearAsset,
@@ -84,4 +112,8 @@ export const AssetActions = {
   getAssetDocument,
   getAssetDocumentSuccess,
   getAssetDocumentFailure,
+  getAssetVisit,
+  getAssetVisitSuccess,
+  getAssetVisitFailure,
+  setVisitIds,
 };

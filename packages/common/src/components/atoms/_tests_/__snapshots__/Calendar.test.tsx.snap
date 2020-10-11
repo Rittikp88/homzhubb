@@ -8,7 +8,6 @@ CalendarComponent {
   "handleMonthPress": [Function],
   "handleNextPress": [Function],
   "handleSelect": [Function],
-  "headerView": [Function],
   "onDayPress": [Function],
   "onSelectMonth": [Function],
   "props": Object {
@@ -35,7 +34,7 @@ CalendarComponent {
   "renderMonthView": [Function],
   "setState": [Function],
   "state": Object {
-    "day": "10",
+    "day": "11",
     "isMonthView": false,
     "month": 6,
     "selectedDate": "",
@@ -88,54 +87,22 @@ CalendarComponent {
       "_numberOfReRenders": 0,
       "_renderPhaseUpdates": null,
       "_rendered": <View>
-        <React.Fragment>
-          <View
-            style={
-              Object {
-                "flexDirection": "row",
-                "justifyContent": "space-between",
-                "paddingHorizontal": 24,
-                "paddingVertical": 20,
-              }
-            }
-          >
-            <Icon
-              allowFontScaling={false}
-              color="#0084F8"
-              name="left-arrow"
-              onPress={[Function]}
-              size={22}
-            />
-            <Text
-              onPress={[Function]}
-              style={
-                Object {
-                  "color": "#0084F8",
-                }
-              }
-              textType="semiBold"
-              type="small"
-            >
-              July 2020
-            </Text>
-            <Icon
-              allowFontScaling={false}
-              color="#0084F8"
-              name="right-arrow"
-              onPress={[Function]}
-              size={22}
-            />
-          </View>
-          <Divider />
-        </React.Fragment>
+        <CalendarHeader
+          headerTitle="July 2020"
+          isCurrentMonth={false}
+          isMonthView={false}
+          onBackPress={[Function]}
+          onMonthPress={[Function]}
+          onNextPress={[Function]}
+        />
         <React.Fragment>
           <Calendar
-            current="Fri Jul 10 2020"
+            current="Sat Jul 11 2020"
             enableSwipeMonths={false}
             hideArrows={true}
             markedDates={
               Object {
-                "2020-10-10": Object {
+                "2020-10-11": Object {
                   "customStyles": Object {
                     "container": Object {
                       "backgroundColor": "#0084F8",
@@ -149,7 +116,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2020-10-10T07:53:37.012Z}
+            minDate={2020-10-11T11:33:35.744Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -192,44 +159,14 @@ CalendarComponent {
 
 exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = `
 <View>
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "paddingHorizontal": 24,
-        "paddingVertical": 20,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#0084F8"
-      name="left-arrow"
-      onPress={[Function]}
-      size={22}
-    />
-    <Text
-      onPress={[Function]}
-      style={
-        Object {
-          "color": "#0084F8",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      June 2020
-    </Text>
-    <Icon
-      allowFontScaling={false}
-      color="#0084F8"
-      name="right-arrow"
-      onPress={[Function]}
-      size={22}
-    />
-  </View>
-  <Divider />
+  <CalendarHeader
+    headerTitle="June 2020"
+    isCurrentMonth={false}
+    isMonthView={false}
+    onBackPress={[Function]}
+    onMonthPress={[Function]}
+    onNextPress={[Function]}
+  />
   <Calendar
     current="2020-06-19"
     enableSwipeMonths={false}
@@ -251,7 +188,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2020-10-10T07:53:36.995Z}
+    minDate={2020-10-11T11:33:35.726Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={

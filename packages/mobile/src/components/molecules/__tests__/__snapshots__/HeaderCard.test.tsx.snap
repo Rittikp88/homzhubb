@@ -31,20 +31,26 @@ exports[`Header Card should match snapshot 1`] = `
     >
       <View
         style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          }
-        }
-      >
-        <View
-          style={
+          Array [
             Object {
               "alignItems": "center",
               "flexDirection": "row",
               "justifyContent": "space-between",
-            }
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+              },
+              undefined,
+            ]
           }
         >
           <View

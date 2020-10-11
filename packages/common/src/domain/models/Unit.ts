@@ -3,9 +3,9 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 export interface IUnit {
   id: number;
   order: number;
-  name: string;
+  name?: string;
   label: string;
-  title: string;
+  title?: string;
 }
 
 @JsonObject('Unit')

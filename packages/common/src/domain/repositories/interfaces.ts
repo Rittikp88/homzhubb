@@ -1,3 +1,4 @@
+import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 // ENUMS
@@ -25,6 +26,13 @@ export enum VisitType {
   PHYSICAL = 'PHYSICAL',
   VIRTUAL = 'VIRTUAL',
   PROPERTY_VIEW = 'PROPERTY_VIEW',
+}
+
+export enum VisitStatus {
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  PENDING = 'PENDING',
+  CANCELLED = 'CANCELLED',
 }
 
 // ENUMS - END
@@ -355,4 +363,30 @@ export interface IOrderSummaryPayload {
   services?: number[];
   coins?: number;
   promo_code?: string;
+}
+
+export interface IAssetVisitPayload {
+  start_date?: string;
+  sale_listing_id?: number;
+  lease_listing_id?: number;
+  start_date__gte?: string;
+  start_date__lte?: string;
+  start_date__gt?: string;
+  start_date__lt?: string;
+  status?: VisitStatus;
+}
+
+export interface IUpdateVisitPayload {
+  id: number;
+  data: {
+    status: VisitActions;
+  };
+}
+
+export interface IRescheduleVisitPayload {
+  ids: number[];
+  visit_type: VisitType;
+  start_date: string;
+  end_date: string;
+  comments?: string;
 }

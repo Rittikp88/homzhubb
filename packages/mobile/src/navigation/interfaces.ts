@@ -169,9 +169,10 @@ export interface IContactProps {
 }
 
 export interface IBookVisitProps {
-  propertyTermId: number;
+  propertyTermId?: number;
   sale_listing_id?: number;
   lease_listing_id?: number;
+  isReschedule?: boolean;
 }
 
 // Webview

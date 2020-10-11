@@ -4,10 +4,11 @@ import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions, AssetActionTypes } from '@homzhub/common/src/modules/asset/actions';
-import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 function* getAssetReviews(action: IFluxStandardAction<number>) {
   try {
@@ -67,8 +68,20 @@ function* getAssetDocuments(action: IFluxStandardAction<IGetDocumentPayload>) {
   }
 }
 
+function* getAssetVisit(action: IFluxStandardAction<IAssetVisitPayload>) {
+  try {
+    const response = yield call(AssetRepository.getPropertyVisit, action.payload as IAssetVisitPayload);
+    yield put(AssetActions.getAssetVisitSuccess(response));
+  } catch (err) {
+    const error = ErrorUtils.getErrorMessage(err.details);
+    AlertHelper.error({ message: error });
+    yield put(AssetActions.getAssetVisitFailure(err.message));
+  }
+}
+
 export function* watchAsset() {
   yield takeEvery(AssetActionTypes.GET.ASSET, getAssetDetails);
   yield takeEvery(AssetActionTypes.GET.REVIEWS, getAssetReviews);
   yield takeEvery(AssetActionTypes.GET.ASSET_DOCUMENT, getAssetDocuments);
+  yield takeEvery(AssetActionTypes.GET.ASSET_VISIT, getAssetVisit);
 }

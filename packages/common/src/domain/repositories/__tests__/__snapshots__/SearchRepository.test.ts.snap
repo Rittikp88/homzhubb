@@ -257,6 +257,7 @@ AssetSearch {
           "_fullName": "",
           "_id": 0,
           "_phoneNumber": "",
+          "_rating": 0,
           "_refreshToken": "",
         },
         "_leaseTransaction": LeaseTransaction {
@@ -330,6 +331,7 @@ AssetSearch {
         "_fullName": "Anuvrat Somnath",
         "_id": 1,
         "_phoneNumber": "7903470293",
+        "_rating": 0,
         "_refreshToken": "",
       },
       "_cornerProperty": false,
@@ -646,6 +648,7 @@ AssetSearch {
           "_fullName": "",
           "_id": 0,
           "_phoneNumber": "",
+          "_rating": 0,
           "_refreshToken": "",
         },
         "_leaseTransaction": LeaseTransaction {
@@ -719,6 +722,7 @@ AssetSearch {
         "_fullName": "Anuvrat Somnath",
         "_id": 1,
         "_phoneNumber": "7903470293",
+        "_rating": 0,
         "_refreshToken": "",
       },
       "_cornerProperty": false,

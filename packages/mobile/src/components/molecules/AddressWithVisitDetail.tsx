@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -13,19 +13,29 @@ interface IProps {
   subAddress: string;
   startDate: string;
   endDate: string;
-  isMissedVisit: boolean;
-  isCompletedVisit: boolean;
+  isMissedVisit?: boolean;
+  isCompletedVisit?: boolean;
+  onPressSchedule?: () => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
-  const { subAddress, primaryAddress, startDate, isMissedVisit, isCompletedVisit } = props;
+  const {
+    subAddress,
+    primaryAddress,
+    startDate,
+    isMissedVisit,
+    isCompletedVisit,
+    containerStyle = {},
+    onPressSchedule,
+  } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   // TODO: Handle with Model
   const dateTime = DateUtils.convertTimeFormat(startDate, 'DD-MMM HH');
   const time = VisitSlot.find((item) => item.from === Number(dateTime[1]));
   const textStyle = [styles.textColor, isMissedVisit && styles.missedColor];
   return (
-    <>
+    <View style={containerStyle}>
       <PropertyAddress
         primaryTextType="small"
         subAddress={subAddress}
@@ -51,14 +61,14 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
             {time?.formatted}
           </Text>
         </View>
-        <View style={styles.content}>
+        <TouchableOpacity style={styles.content} onPress={onPressSchedule}>
           <Icon name={icons.schedule} color={theme.colors.blue} size={20} />
           <Text type="small" style={styles.scheduleText}>
             {isCompletedVisit ? t('newVisit') : t('reschedule')}
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -90,6 +100,6 @@ const styles = StyleSheet.create({
   },
   scheduleText: {
     color: theme.colors.blue,
-    marginStart: 10,
+    marginStart: 6,
   },
 });

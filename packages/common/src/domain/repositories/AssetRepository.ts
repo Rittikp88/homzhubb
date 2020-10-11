@@ -11,13 +11,16 @@ import {
   IMarkCoverImageAttachment,
   IUpdateAssetParams,
   IGetSaleTermsParams,
+  IAssetVisitPayload,
+  IUpdateVisitPayload,
+  IRescheduleVisitPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
-import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
@@ -70,6 +73,8 @@ const ENDPOINTS = {
   getVisitLead: (): string => 'list-of-values/site-visit-lead-types/',
   getUpcomingVisits: (): string => 'listing-visits/upcoming-visits/',
   assetVisit: (): string => 'listing-visits/',
+  rescheduleVisit: (): string => 'listing-visits/reschedule/',
+  visitUpdate: (id: number): string => `listing-visits/${id}/`,
   attachmentUpload: (): string => 'attachments/upload/',
   assetDescriptionDropdownValues: (): string => 'assets/list-of-values/',
   availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
@@ -268,6 +273,19 @@ class AssetRepository {
 
   public updateManageTerm = async (assetId: number, leaseUnitId: number, params: IManageTerm): Promise<void> => {
     await this.apiClient.put(ENDPOINTS.updateManageTerm(assetId, leaseUnitId), params);
+  };
+
+  public getPropertyVisit = async (payload: IAssetVisitPayload): Promise<AssetVisit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.assetVisit(), payload);
+    return ObjectMapper.deserializeArray(AssetVisit, response);
+  };
+
+  public updatePropertyVisit = async (payload: IUpdateVisitPayload): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.updateAsset(payload.id), payload.data);
+  };
+
+  public reschedulePropertyVisit = async (payload: IRescheduleVisitPayload): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.rescheduleVisit(), payload);
   };
 }
 

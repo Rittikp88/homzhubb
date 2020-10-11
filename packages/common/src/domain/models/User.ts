@@ -1,12 +1,19 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export enum UserRole {
+  OWNER = 'OWNER',
+  TENANT = 'TENANT',
+}
+
 export interface IUser {
+  id?: number;
   full_name: string;
   email: string;
   country_code: string;
   phone_number: string;
   access_token?: string;
   refresh_token?: string;
+  rating?: number;
 }
 
 @JsonObject('User')
@@ -31,6 +38,9 @@ export class User {
 
   @JsonProperty('id', Number, true)
   private _id = 0;
+
+  @JsonProperty('rating', Number, true)
+  private _rating = 0;
 
   get refreshToken(): string {
     return this._refreshToken;
@@ -58,5 +68,9 @@ export class User {
 
   get id(): number {
     return this._id;
+  }
+
+  get rating(): number {
+    return this._rating;
   }
 }

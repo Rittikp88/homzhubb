@@ -121,7 +121,7 @@ class PropertyUtils {
     const formattedStartDate = DateUtils.convertTimeFormat(slot.start_date, 'YYYY-MM-DD HH');
 
     const startTime = Number(formattedStartDate[1]);
-    const date = DateUtils.getDateWithWeekDay(formattedStartDate[0], 'D ddd');
+    const date = DateUtils.getDisplayDate(formattedStartDate[0], 'D ddd');
     const time = TimeSlot.find((item) => item.from === startTime);
     if (time && date) {
       return {
@@ -141,7 +141,7 @@ class PropertyUtils {
     const startDate = DateUtils.convertTimeFormat(start_date, 'YYYY-MM-DD HH');
 
     const startTime = Number(startDate[1]);
-    const formattedDate = DateUtils.getDateWithWeekDay(startDate[0], 'D ddd');
+    const formattedDate = DateUtils.getDisplayDate(startDate[0], 'D dddd');
     const date = DateUtils.getDateString(formattedDate);
 
     const timeObj = TimeSlot.find((item) => item.from === startTime);

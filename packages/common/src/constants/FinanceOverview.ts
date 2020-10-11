@@ -10,13 +10,15 @@ export enum DateFilter {
   thisYear = 3,
   thisFinancialYear = 4,
   lastYear = 5,
+  thisWeek = 6,
+  lastWeek = 7,
 }
 
 export interface IFinancialDropdownData {
-  [key: string]: IFinancialDropdownObject;
+  [key: string]: IDropdownObject;
 }
 
-export interface IFinancialDropdownObject {
+export interface IDropdownObject {
   label: string;
   value: DateFilter;
   startDate: string;

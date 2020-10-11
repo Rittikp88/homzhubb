@@ -10,7 +10,7 @@ import {
   DateFilter,
   MONTH_LABELS,
   FINANCIAL_DROPDOWN_DATA,
-  IFinancialDropdownObject,
+  IDropdownObject,
 } from '@homzhub/common/src/constants/FinanceOverview';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -184,10 +184,10 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
     }
   };
 
-  public getFinancialDropdownData = (): IFinancialDropdownObject[] => {
+  public getFinancialDropdownData = (): IDropdownObject[] => {
     const { t } = this.props;
     const data = Object.values(FINANCIAL_DROPDOWN_DATA);
-    return data.map((currentData: IFinancialDropdownObject) => {
+    return data.map((currentData: IDropdownObject) => {
       return {
         ...currentData,
         label: t(currentData.label),
