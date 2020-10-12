@@ -9,7 +9,7 @@ export interface IUser {
   id?: number;
   full_name: string;
   email: string;
-  country_code: string;
+  phone_code: string;
   phone_number: string;
   access_token?: string;
   refresh_token?: string;
@@ -24,7 +24,7 @@ export class User {
   @JsonProperty('email', String)
   private _email = '';
 
-  @JsonProperty('country_code', String)
+  @JsonProperty('phone_code', String, true)
   private _countryCode = '';
 
   @JsonProperty('phone_number', String)

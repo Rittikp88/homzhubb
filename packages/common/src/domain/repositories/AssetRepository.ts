@@ -20,7 +20,8 @@ import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
-import { AssetVisit, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
@@ -33,6 +34,7 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 
 // TODO: Split these across multiple repos
 const ENDPOINTS = {
@@ -73,6 +75,7 @@ const ENDPOINTS = {
   getVisitLead: (): string => 'list-of-values/site-visit-lead-types/',
   getUpcomingVisits: (): string => 'listing-visits/upcoming-visits/',
   assetVisit: (): string => 'listing-visits/',
+  allVisitAsset: (): string => 'listing-visits/assets',
   rescheduleVisit: (): string => 'listing-visits/reschedule/',
   visitUpdate: (id: number): string => `listing-visits/${id}/`,
   attachmentUpload: (): string => 'attachments/upload/',
@@ -281,11 +284,16 @@ class AssetRepository {
   };
 
   public updatePropertyVisit = async (payload: IUpdateVisitPayload): Promise<void> => {
-    return await this.apiClient.patch(ENDPOINTS.updateAsset(payload.id), payload.data);
+    return await this.apiClient.patch(ENDPOINTS.visitUpdate(payload.id), payload.data);
   };
 
   public reschedulePropertyVisit = async (payload: IRescheduleVisitPayload): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.rescheduleVisit(), payload);
+  };
+
+  public getAllVisitAsset = async (): Promise<VisitAssetDetail[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.allVisitAsset());
+    return ObjectMapper.deserializeArray(VisitAssetDetail, response);
   };
 }
 

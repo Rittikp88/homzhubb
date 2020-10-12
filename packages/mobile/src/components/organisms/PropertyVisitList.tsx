@@ -30,7 +30,7 @@ interface IProps {
   isLoading: boolean;
   handleAction: (id: number, action: VisitActions) => void;
   handleReschedule: (id: number) => void;
-  handleDropdown: (startDate: string, endDate: string) => void;
+  handleDropdown: (startDate: string, endDate: string, visitType: VisitStatusType) => void;
 }
 
 interface IScreenState {
@@ -72,6 +72,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         {visitData.length > 0 ? (
           <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             {visitData.map((item) => {
+              const results = item.results as AssetVisit[];
               return (
                 <>
                   <View style={styles.dateView}>
@@ -81,7 +82,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
                     </Text>
                     <View style={styles.dividerView} />
                   </View>
-                  {item.results.map((asset: AssetVisit) => {
+                  {results.map((asset: AssetVisit) => {
                     return this.renderItem(asset);
                   })}
                 </>
@@ -139,7 +140,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
 
     return (
       <>
-        {actions.length > 0 && <Divider containerStyles={styles.dividerStyle} />}
+        <Divider containerStyles={styles.dividerStyle} />
         <View style={styles.buttonView}>
           {actions.length < 2 && (
             <Button
@@ -249,11 +250,17 @@ class PropertyVisitList extends Component<Props, IScreenState> {
 
   private getVisitStatus = (status: string): IVisitActions | null => {
     switch (status) {
-      case VisitStatus.APPROVED:
+      case VisitStatus.ACCEPTED:
         return {
           title: 'Visit Scheduled',
           color: theme.colors.green,
           icon: icons.circularCheckFilled,
+        };
+      case VisitStatus.REJECTED:
+        return {
+          title: 'Visit Declined',
+          color: theme.colors.error,
+          icon: icons.circularCrossFilled,
         };
       case VisitStatus.CANCELLED:
         return {
@@ -315,7 +322,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         visitType === VisitStatusType.UPCOMING && selectedData.startDate < currentDate
           ? currentDate
           : selectedData.startDate;
-      handleDropdown(fromDate, selectedData.endDate);
+      handleDropdown(fromDate, selectedData.endDate, visitType);
     }
   };
 }
@@ -370,7 +377,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    height: 500,
+    height: 450,
   },
   count: {
     color: theme.colors.darkTint6,

@@ -30,6 +30,7 @@ export enum VisitType {
 
 export enum VisitStatus {
   APPROVED = 'APPROVED',
+  ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',
   PENDING = 'PENDING',
   CANCELLED = 'CANCELLED',
@@ -366,6 +367,7 @@ export interface IOrderSummaryPayload {
 }
 
 export interface IAssetVisitPayload {
+  asset_id?: number;
   start_date?: string;
   sale_listing_id?: number;
   lease_listing_id?: number;

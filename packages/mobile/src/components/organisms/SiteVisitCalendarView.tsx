@@ -31,6 +31,7 @@ interface IStateProps {
 
 interface IProps {
   onReschedule: () => void;
+  selectedAssetId: number;
 }
 
 interface IScreenState {
@@ -120,20 +121,21 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
 
   private renderVisits = (visit: IVisitByKey): React.ReactElement => {
     const { key, results } = visit;
+    const visitData = results as AssetVisit[];
     return (
       <View style={styles.visitCard}>
         <AddressWithVisitDetail
           primaryAddress={key}
           isRescheduleAll
-          subAddress={results[0].asset.address}
-          startDate={results[0].startDate}
-          endDate={results[0].endDate}
-          onPressSchedule={(): void => this.handleRescheduleAll(results)}
+          subAddress={visitData[0].asset.address}
+          startDate={visitData[0].startDate}
+          endDate={visitData[0].endDate}
+          onPressSchedule={(): void => this.handleRescheduleAll(visitData)}
           containerStyle={styles.addressView}
         />
         <Divider containerStyles={styles.dividerStyle} />
         <View style={styles.userView}>
-          {results.map((item, index) => {
+          {visitData.map((item, index) => {
             const {
               user: { fullName, rating },
               role,
@@ -174,23 +176,23 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   };
 
   private getVisitsData = (): void => {
-    const { getAssetVisit } = this.props;
+    const { getAssetVisit, selectedAssetId } = this.props;
     const { currentDate, selectedSlot, timeSlot } = this.state;
 
-    let start_date = DateUtils.getUtcFormattedDate(currentDate, DateFormats.ISO);
-    let end_date = '';
+    const start_date__gte = DateUtils.getUtcFormattedDate(currentDate, DateFormats.ISO);
+    let start_date = '';
     if (selectedSlot > 0) {
       timeSlot.forEach((item) => {
         if (item.id === selectedSlot) {
           start_date = DateUtils.getISOFormat(currentDate, item.from);
-          end_date = DateUtils.getISOFormat(currentDate, item.to);
         }
       });
     }
 
     const payload: IAssetVisitPayload = {
-      ...(start_date && { start_date__gte: start_date }),
-      ...(end_date && { start_date__lte: end_date }),
+      ...(start_date && { start_date }),
+      ...(selectedSlot === 0 && start_date__gte && { start_date__gte }),
+      ...(selectedAssetId && { asset_id: selectedAssetId }),
     };
 
     getAssetVisit(payload);

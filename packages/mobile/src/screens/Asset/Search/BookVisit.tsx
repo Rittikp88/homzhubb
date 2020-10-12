@@ -20,7 +20,8 @@ import { CollapsibleSection, Header, Loader, StateAwareComponent, TimeSlotGroup 
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { AssetVisit, ISlotItem, UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, ISlotItem } from '@homzhub/common/src/domain/models/AssetVisit';
+import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 import { VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
@@ -278,7 +279,7 @@ export class BookVisit extends Component<Props, IVisitState> {
     const time = TimeSlot.find((item) => item.from === Number(dateTime[1]));
 
     this.setState({
-      selectedDate: DateUtils.getDisplayDate(dateTime[0], 'll'),
+      selectedDate: visitDetail.startDate ? DateUtils.getDisplayDate(dateTime[0], 'll') : '',
       selectedTimeSlot: time ? time.id : 0,
     });
   };
@@ -414,7 +415,7 @@ export class BookVisit extends Component<Props, IVisitState> {
     } = this.props;
 
     if (propertyTermId) {
-      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
+      navigation.replace(ScreensKeys.PropertyAssetDescription, { propertyTermId });
     } else {
       navigation.goBack();
       getAssetVisit({});

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { PickerItemProps, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -8,21 +8,39 @@ import { DropdownWithCountry } from '@homzhub/mobile/src/components/molecules/Dr
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/SiteVisitCalendarView';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AssetService } from '@homzhub/common/src/services/AssetService';
+import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
+import { bindActionCreators, Dispatch } from 'redux';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { connect } from 'react-redux';
+import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IDispatchProps {
-  clearAsset: () => void;
+  getAssetVisit: (payload: IAssetVisitPayload) => void;
 }
 
 interface IScreenState {
   isCalendarView: boolean;
+  countryData: PickerItemProps[];
+  propertiesByCountry: PickerItemProps[];
+  selectedAssetId: number;
 }
+
+const defaultObj = { label: 'All Properties', value: 0 };
 
 type libraryProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyVisits>;
 type Props = WithTranslation & libraryProps & IDispatchProps;
 
-class PropertyVisits extends Component<Props, IScreenState> {
+export class PropertyVisits extends React.Component<Props, IScreenState> {
   public state = {
     isCalendarView: false,
+    countryData: [],
+    propertiesByCountry: [],
+    selectedAssetId: 0,
+  };
+
+  public componentDidMount = async (): Promise<void> => {
+    await this.getAllAssetsByCountry();
   };
 
   public render(): React.ReactNode {
@@ -44,14 +62,18 @@ class PropertyVisits extends Component<Props, IScreenState> {
   }
 
   private renderPropertyVisits = (): React.ReactElement => {
-    const { isCalendarView } = this.state;
+    const { isCalendarView, countryData, propertiesByCountry, selectedAssetId } = this.state;
     return (
       <>
-        <DropdownWithCountry />
+        <DropdownWithCountry
+          countryData={countryData}
+          dropdownData={propertiesByCountry}
+          onSelectProperty={this.handlePropertySelect}
+        />
         {isCalendarView ? (
-          <SiteVisitCalendarView onReschedule={this.rescheduleVisit} />
+          <SiteVisitCalendarView onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
         ) : (
-          <SiteVisitTab onReschedule={this.rescheduleVisit} />
+          <SiteVisitTab onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
         )}
       </>
     );
@@ -69,6 +91,19 @@ class PropertyVisits extends Component<Props, IScreenState> {
     });
   };
 
+  private handlePropertySelect = (value: number): void => {
+    const { getAssetVisit } = this.props;
+    this.setState({
+      selectedAssetId: value,
+    });
+
+    const payload: IAssetVisitPayload = {
+      ...(value > 0 && { asset_id: value }),
+    };
+
+    getAssetVisit(payload);
+  };
+
   private rescheduleVisit = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.SearchStack, {
@@ -76,9 +111,44 @@ class PropertyVisits extends Component<Props, IScreenState> {
       params: { isReschedule: true },
     });
   };
+
+  private getAllAssetsByCountry = async (): Promise<void> => {
+    const response = await AssetService.getVisitAssetByCountry();
+    const countryData = response.map((item) => {
+      const result: VisitAssetDetail = item.results[0] as VisitAssetDetail;
+      return {
+        label: result.country.name,
+        value: result.country.id,
+      };
+    });
+
+    const propertiesByCountry: PickerItemProps[] = [defaultObj];
+
+    response.forEach((item) => {
+      const results = item.results as VisitAssetDetail[];
+      results.forEach((asset: VisitAssetDetail) => {
+        propertiesByCountry.push({ label: asset.projectName, value: asset.id });
+      });
+    });
+
+    this.setState({
+      countryData,
+      propertiesByCountry,
+    });
+  };
 }
 
-export default withTranslation()(PropertyVisits);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getAssetVisit } = AssetActions;
+  return bindActionCreators(
+    {
+      getAssetVisit,
+    },
+    dispatch
+  );
+};
+
+export default connect(null, mapDispatchToProps)(withTranslation()(PropertyVisits));
 
 const styles = StyleSheet.create({
   headerContainer: {

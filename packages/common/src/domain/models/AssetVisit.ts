@@ -33,7 +33,7 @@ export interface IVisitActions {
 
 export interface IVisitByKey {
   key: string;
-  results: AssetVisit[];
+  results: AssetVisit[] | VisitAssetDetail[];
   totalVisits?: number;
 }
 

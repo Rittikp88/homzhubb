@@ -326,7 +326,7 @@ AssetSearch {
       "_construction_Year": 0,
       "_contacts": User {
         "_accessToken": "",
-        "_countryCode": "+91",
+        "_countryCode": "",
         "_email": "anuvrat.somnath@nineleaps.com",
         "_fullName": "Anuvrat Somnath",
         "_id": 1,
@@ -717,7 +717,7 @@ AssetSearch {
       "_construction_Year": 0,
       "_contacts": User {
         "_accessToken": "",
-        "_countryCode": "+91",
+        "_countryCode": "",
         "_email": "anuvrat.somnath@nineleaps.com",
         "_fullName": "Anuvrat Somnath",
         "_id": 1,

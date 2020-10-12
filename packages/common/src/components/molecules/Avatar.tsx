@@ -61,7 +61,7 @@ const Avatar = (props: IProps): React.ReactElement => {
           {isRightIcon && <Icon name={icons.rightArrow} color={theme.colors.blue} size={20} style={styles.iconStyle} />}
           {date && (
             <Label textType="regular" type="regular" style={styles.designation}>
-              {DateUtils.timeDifference(date)}
+              {DateUtils.localtimeDifference(date)}
             </Label>
           )}
         </View>

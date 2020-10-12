@@ -162,6 +162,15 @@ class DateUtils {
     return moment([year, month, day]).fromNow();
   };
 
+  // TODO: ADD timezone conversion
+  public localtimeDifference = (givenTime: string): string => {
+    const localTime = moment(givenTime).format(DateFormats.ISO);
+    const day = moment(localTime).date();
+    const month = moment(localTime).month();
+    const year = moment(localTime).year();
+    return moment([year, month, day]).fromNow();
+  };
+
   public getFutureDate = (dateCount: number): string => {
     return moment().add(dateCount, 'days').calendar();
   };

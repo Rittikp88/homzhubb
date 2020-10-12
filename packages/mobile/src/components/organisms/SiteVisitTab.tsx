@@ -52,6 +52,7 @@ interface IStateProps {
 interface IProps {
   isFromProperty?: boolean;
   onReschedule: () => void;
+  selectedAssetId?: number;
 }
 
 interface IScreenState {
@@ -149,12 +150,24 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
   };
 
-  private onDropdownValueSelect = (startDate: string, endDate: string): void => {
+  private onDropdownValueSelect = (startDate: string, endDate: string, visitType: VisitStatusType): void => {
     const { getAssetVisit } = this.props;
+    let status;
+
+    switch (visitType) {
+      case VisitStatusType.MISSED:
+        status = VisitStatus.PENDING;
+        break;
+      case VisitStatusType.COMPLETED:
+        status = VisitStatus.APPROVED;
+        break;
+      default:
+    }
 
     const payload: IAssetVisitPayload = {
       start_date__lte: endDate,
       start_date__gte: startDate,
+      ...(status && { status }),
     };
 
     getAssetVisit(payload);
@@ -186,7 +199,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   };
 
   private getVisitsData = (): void => {
-    const { getAssetVisit, asset, isFromProperty = false } = this.props;
+    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId } = this.props;
     const { currentIndex } = this.state;
     const currentRoute = Routes[currentIndex];
     const date = DateUtils.getCurrentDateISO();
@@ -199,9 +212,11 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         break;
       case VisitStatusType.MISSED:
         start_date_lte = date;
+        status = VisitStatus.PENDING;
         break;
       case VisitStatusType.COMPLETED:
-        status = VisitStatus.APPROVED;
+        status = VisitStatus.ACCEPTED;
+        start_date_lte = date;
         break;
       default:
     }
@@ -215,6 +230,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       ...(start_date_gte && { start_date__gte: start_date_gte }),
       ...(asset && asset.leaseTerm && { lease_listing_id: asset.leaseTerm.id }),
       ...(asset && asset.saleTerm && { sale_listing_id: asset.saleTerm.id }),
+      ...(selectedAssetId && { asset_id: selectedAssetId }),
       ...(status && { status }),
     };
 

@@ -1,10 +1,15 @@
-import { remove, cloneDeep } from 'lodash';
+import { remove, cloneDeep, groupBy } from 'lodash';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { IFormData, LeaseFormKeys } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
-import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
-import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
+import { IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
+import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 
 // CONSTANTS
 const SEARCH_RADIUS_KILO_METRE = [50, 5, 0.25, 10, 0.5, 20, 1, 30, 3, 40];
@@ -123,6 +128,26 @@ class AssetService {
     }
 
     return params;
+  };
+
+  public getVisitAssetByCountry = async (): Promise<IVisitByKey[]> => {
+    try {
+      const response = await AssetRepository.getAllVisitAsset();
+      const groupData = groupBy(response, (results) => {
+        return results.country.iso2Code;
+      });
+
+      return Object.keys(groupData).map((code) => {
+        const results: VisitAssetDetail[] = groupData[code];
+        return {
+          key: code,
+          results,
+        };
+      });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      return [];
+    }
   };
 }
 

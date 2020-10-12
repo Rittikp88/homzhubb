@@ -3,7 +3,7 @@
 exports[`UserRepository should call login API for OTP and return response 1`] = `
 User {
   "_accessToken": "access_token",
-  "_countryCode": "IN",
+  "_countryCode": "",
   "_email": "r@gmail.com",
   "_fullName": "Rishabh Modi",
   "_id": 0,
@@ -16,7 +16,7 @@ User {
 exports[`UserRepository should call login API for email and return response 1`] = `
 User {
   "_accessToken": "access_token",
-  "_countryCode": "IN",
+  "_countryCode": "",
   "_email": "r@gmail.com",
   "_fullName": "Rishabh Modi",
   "_id": 0,
@@ -47,7 +47,7 @@ Object {
 exports[`UserRepository should call socialLogin and return response 1`] = `
 User {
   "_accessToken": "access_token",
-  "_countryCode": "IN",
+  "_countryCode": "",
   "_email": "r@gmail.com",
   "_fullName": "Rishabh Modi",
   "_id": 0,
