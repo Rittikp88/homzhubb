@@ -5,6 +5,7 @@ import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGr
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 const getLoadingState = (state: IState): boolean => {
   const {
@@ -104,6 +105,28 @@ const getLastVisitedStep = (state: IState): ILastVisitedStep | null => {
   return assetDetails.last_visited_step;
 };
 
+const getAssetGroupId = (state: IState): number => {
+  const {
+    recordAsset: { assetDetails },
+  } = state;
+  return assetDetails ? assetDetails.asset_group.id : 1;
+};
+
+const getCountryId = (state: IState): number => {
+  const {
+    recordAsset: { assetDetails },
+  } = state;
+  return assetDetails ? assetDetails.country.id : 1;
+};
+
+const getValueAddedServices = (state: IState): ValueAddedService[] => {
+  const {
+    recordAsset: { valueAddedServices },
+  } = state;
+
+  return ObjectMapper.deserializeArray(ValueAddedService, valueAddedServices);
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
@@ -116,4 +139,7 @@ export const RecordAssetSelectors = {
   getCurrentTermId,
   getMaintenanceUnits,
   getLastVisitedStep,
+  getAssetGroupId,
+  getCountryId,
+  getValueAddedServices,
 };

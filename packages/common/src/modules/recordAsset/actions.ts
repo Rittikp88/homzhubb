@@ -3,7 +3,11 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup, IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
+import {
+  ISelectedValueServices,
+  IValueAddedServices,
+  ValueAddedService,
+} from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Unit, IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 const actionTypePrefix = 'RecordAsset/';
@@ -21,6 +25,8 @@ export const RecordAssetActionTypes = {
     ASSET_BY_ID_FAILURE: `${actionTypePrefix}ASSET_BY_ID_FAILURE`,
     MAINTENANCE_UNITS: `${actionTypePrefix}MAINTENANCE_UNITS`,
     MAINTENANCE_UNITS_SUCCESS: `${actionTypePrefix}MAINTENANCE_UNITS_SUCCESS`,
+    VALUE_ADDED_SERVICES: `${actionTypePrefix}VALUE_ADDED_SERVICES`,
+    VALUE_ADDED_SERVICES_SUCCESS: `${actionTypePrefix}VALUE_ADDED_SERVICES_SUCCESS`,
   },
   SET: {
     ASSET_ID: `${actionTypePrefix}ASSET_ID`,
@@ -103,6 +109,15 @@ const getMaintenanceUnitsSuccess = (payload: Unit[]): IFluxStandardAction<IUnit[
   payload: ObjectMapper.serializeArray(payload),
 });
 
+const getValueAddedServices = (): IFluxStandardAction => ({
+  type: RecordAssetActionTypes.GET.VALUE_ADDED_SERVICES,
+});
+
+const getValueAddedServicesSuccess = (payload: ValueAddedService[]): IFluxStandardAction<IValueAddedServices[]> => ({
+  type: RecordAssetActionTypes.GET.VALUE_ADDED_SERVICES_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
 const setValueAddedServices = (payload: ISelectedValueServices): IFluxStandardAction<ISelectedValueServices> => {
   return {
     type: RecordAssetActionTypes.SET.SELECTED_VALUE_SERVICES,
@@ -121,6 +136,7 @@ export type RecordAssetPayloadTypes =
   | IAssetGroup[]
   | IUnit[]
   | ISelectedAssetPlan
+  | IValueAddedServices[]
   | ISelectedValueServices
   | IAsset
   | undefined;
@@ -140,6 +156,8 @@ export const RecordAssetActions = {
   getAssetByIdFailure,
   getMaintenanceUnits,
   getMaintenanceUnitsSuccess,
+  getValueAddedServices,
+  getValueAddedServicesSuccess,
   setValueAddedServices,
   resetState,
 };

@@ -10,34 +10,27 @@ interface IOwnProps {
   price: number;
   discountedPrice?: number;
   bundleItems: Unit[];
-  selected?: boolean;
+  selected: boolean;
   onToggle: (value: boolean) => void;
   containerStyle?: any;
 }
 
 interface IOwnState {
-  isChecked: boolean;
   showMore: boolean;
 }
 
 export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> {
-  constructor(props: IOwnProps) {
-    super(props);
-    const { selected = false } = this.props;
-
-    this.state = {
-      isChecked: selected,
-      showMore: false,
-    };
-  }
+  public state = {
+    showMore: false,
+  };
 
   public render = (): React.ReactElement => {
-    const { heading, image, price, discountedPrice, containerStyle } = this.props;
-    const { isChecked, showMore } = this.state;
+    const { heading, image, price, discountedPrice, containerStyle, selected } = this.props;
+    const { showMore } = this.state;
     const {
       colors: { moreSeparator, white },
     } = theme;
-    const backgroundColor = isChecked ? moreSeparator : white;
+    const backgroundColor = selected ? moreSeparator : white;
 
     return (
       <View style={[styles.container, containerStyle]}>
@@ -49,7 +42,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
                 <Label type="large" numberOfLines={3} style={styles.textStyle}>
                   {heading}
                 </Label>
-                <RNCheckbox selected={isChecked} onToggle={this.onToggle} />
+                <RNCheckbox selected={selected} onToggle={this.onToggle} />
               </View>
               <View style={styles.rowStyle}>
                 <PricePerUnit
@@ -100,12 +93,8 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
   };
 
   private onToggle = (): void => {
-    const { onToggle } = this.props;
-    const { isChecked } = this.state;
-    onToggle(!isChecked);
-    this.setState({
-      isChecked: !isChecked,
-    });
+    const { onToggle, selected } = this.props;
+    onToggle(!selected);
   };
 
   private toggleSubsection = (): void => {

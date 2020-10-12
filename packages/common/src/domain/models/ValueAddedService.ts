@@ -1,12 +1,18 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { ValueBundle } from '@homzhub/common/src/domain/models/ValueBundle';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
+import { IValueBundle, ValueBundle } from '@homzhub/common/src/domain/models/ValueBundle';
 
 export interface ISelectedValueServices {
   id: number;
-  name: string;
-  price: number;
   value: boolean;
+}
+
+export interface IValueAddedServices {
+  id: number;
+  bundlePrice: string;
+  discountedPrice: number;
+  currency: ICurrency;
+  valueBundle: IValueBundle;
 }
 
 @JsonObject('ValueAddedService')
@@ -26,6 +32,9 @@ export class ValueAddedService {
   @JsonProperty('value_bundle', ValueBundle, true)
   private _valueBundle = new ValueBundle();
 
+  @JsonProperty('value', Boolean, true)
+  private _value = false;
+
   get id(): number {
     return this._id;
   }
@@ -44,5 +53,13 @@ export class ValueAddedService {
 
   get valueBundle(): ValueBundle {
     return this._valueBundle;
+  }
+
+  get value(): boolean {
+    return this._value;
+  }
+
+  set value(value: boolean) {
+    this._value = value;
   }
 }

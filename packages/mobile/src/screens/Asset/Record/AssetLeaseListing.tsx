@@ -30,19 +30,21 @@ import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
   assetId: number;
   assetDetails: Asset | null;
   lastVisitedStep: ILastVisitedStep | null;
+  valueAddedServices: ValueAddedService[];
 }
 
 interface IDispatchProps {
   resetState: () => void;
   getAssetById: () => void;
   setValueAddedServices: (payload: ISelectedValueServices) => void;
+  getValueAddedServices: () => void;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLeaseListing>;
@@ -101,8 +103,9 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   }
 
   public componentDidMount(): void {
-    const { getAssetById } = this.props;
+    const { getAssetById, getValueAddedServices } = this.props;
     getAssetById();
+    getValueAddedServices();
   }
 
   public render(): React.ReactNode {
@@ -250,6 +253,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       lastVisitedStep,
       assetId,
       setValueAddedServices,
+      valueAddedServices,
     } = this.props;
 
     if (!assetDetails || !lastVisitedStep) return null;
@@ -267,6 +271,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       case RouteKeys.Services:
         return (
           <ValueAddedServicesView
+            valueAddedServices={valueAddedServices}
             setValueAddedServices={setValueAddedServices}
             countryId={assetDetails?.country.id}
             assetGroupId={assetDetails?.assetGroup.id}
@@ -279,6 +284,8 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       case RouteKeys.Payment:
         return (
           <PropertyPayment
+            valueAddedServices={valueAddedServices}
+            setValueAddedServices={setValueAddedServices}
             propertyId={assetId}
             lastVisitedStep={lastVisitedStep}
             typeOfPlan={selectedPlan}
@@ -444,22 +451,30 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getSelectedAssetPlan, getCurrentAssetId, getAssetDetails, getLastVisitedStep } = RecordAssetSelectors;
+  const {
+    getSelectedAssetPlan,
+    getCurrentAssetId,
+    getAssetDetails,
+    getLastVisitedStep,
+    getValueAddedServices,
+  } = RecordAssetSelectors;
   return {
     selectedAssetPlan: getSelectedAssetPlan(state),
     assetId: getCurrentAssetId(state),
     assetDetails: getAssetDetails(state),
     lastVisitedStep: getLastVisitedStep(state),
+    valueAddedServices: getValueAddedServices(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { resetState, getAssetById, setValueAddedServices } = RecordAssetActions;
+  const { resetState, getAssetById, setValueAddedServices, getValueAddedServices } = RecordAssetActions;
   return bindActionCreators(
     {
       resetState,
       getAssetById,
       setValueAddedServices,
+      getValueAddedServices,
     },
     dispatch
   );

@@ -1,6 +1,14 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
+
+export interface IValueBundle {
+  attachment: IAttachment;
+  valueBundleItems: IUnit;
+  id: number;
+  name: string;
+  label: string;
+}
 
 @JsonObject('ValueBundle')
 export class ValueBundle extends Unit {

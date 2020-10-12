@@ -1,11 +1,16 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 import { RecordAssetActionTypes, RecordAssetPayloadTypes } from '@homzhub/common/src/modules/recordAsset/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
+import {
+  ISelectedValueServices,
+  IValueAddedServices,
+  ValueAddedService,
+} from '@homzhub/common/src/domain/models/ValueAddedService';
 
 export const initialRecordAssetState: IRecordAssetState = {
   assetId: -1,
@@ -18,7 +23,7 @@ export const initialRecordAssetState: IRecordAssetState = {
     id: 0,
     selectedPlan: TypeOfPlan.RENT,
   },
-  selectedValueServices: [],
+  valueAddedServices: [],
   error: {
     assetPlan: '',
   },
@@ -29,18 +34,18 @@ export const initialRecordAssetState: IRecordAssetState = {
   },
 };
 
-const getValueServicesArray = (state: IRecordAssetState, payload: ISelectedValueServices): ISelectedValueServices[] => {
-  let { selectedValueServices } = state;
+const getValueServicesArray = (state: IRecordAssetState, payload: ISelectedValueServices): IValueAddedServices[] => {
+  const { valueAddedServices } = state;
 
-  if (payload.value) {
-    selectedValueServices.push(payload);
-  } else {
-    selectedValueServices = selectedValueServices.filter((item) => {
-      return item.id !== payload.id;
-    });
-  }
+  const updatedServices = ObjectMapper.deserializeArray(ValueAddedService, valueAddedServices).map((service) => {
+    if (payload.id === service.id) {
+      service.value = payload.value;
+    }
 
-  return selectedValueServices;
+    return service;
+  });
+
+  return ObjectMapper.serializeArray(updatedServices);
 };
 
 export const recordAssetReducer = (
@@ -119,7 +124,12 @@ export const recordAssetReducer = (
     case RecordAssetActionTypes.SET.SELECTED_VALUE_SERVICES:
       return {
         ...state,
-        ['selectedValueServices']: getValueServicesArray(state, action.payload as ISelectedValueServices),
+        ['valueAddedServices']: getValueServicesArray(state, action.payload as ISelectedValueServices),
+      };
+    case RecordAssetActionTypes.GET.VALUE_ADDED_SERVICES_SUCCESS:
+      return {
+        ...state,
+        ['valueAddedServices']: action.payload as IValueAddedServices[],
       };
     case RecordAssetActionTypes.RESET:
       return initialRecordAssetState;

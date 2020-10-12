@@ -5,6 +5,7 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
+import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -53,9 +54,22 @@ export function* getMaintenanceUnits() {
   }
 }
 
+export function* getValueAddedServices() {
+  try {
+    const assetGroupId = yield select(RecordAssetSelectors.getAssetGroupId);
+    const countryId = yield select(RecordAssetSelectors.getCountryId);
+    const data = yield call(RecordAssetRepository.getValueAddedServices, assetGroupId, countryId);
+    yield put(RecordAssetActions.getValueAddedServicesSuccess(data));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+  }
+}
+
 export function* watchRecordAsset() {
   yield takeEvery(RecordAssetActionTypes.GET.ASSET_PLAN_LIST, getAssetPlanList);
   yield takeEvery(RecordAssetActionTypes.GET.ASSET_GROUPS, getAssetGroups);
   yield takeEvery(RecordAssetActionTypes.GET.ASSET_BY_ID, getAssetById);
   yield takeLatest(RecordAssetActionTypes.GET.MAINTENANCE_UNITS, getMaintenanceUnits);
+  yield takeLatest(RecordAssetActionTypes.GET.VALUE_ADDED_SERVICES, getValueAddedServices);
 }

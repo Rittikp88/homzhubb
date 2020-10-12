@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -13,9 +13,9 @@ import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
-import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 
 interface IOwnProps extends WithTranslation {
+  valueAddedServices: ValueAddedService[];
   handleNextStep: () => void;
   propertyId: number;
   assetGroupId: number;
@@ -27,31 +27,19 @@ interface IOwnProps extends WithTranslation {
 }
 
 interface IOwnState {
-  valueServices: ValueAddedService[];
   searchString: string;
 }
 
 class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   public state = {
-    valueServices: [],
     searchString: '',
   };
 
-  public async componentDidMount(): Promise<void> {
-    const { assetGroupId, countryId } = this.props;
-    const response = await RecordAssetRepository.getValueAddedServices(assetGroupId, countryId);
+  public render = (): ReactElement => {
+    const { setValueAddedServices, valueAddedServices, containerStyle, t } = this.props;
+    const { searchString } = this.state;
 
-    this.setState({
-      valueServices: response,
-      searchString: '',
-    });
-  }
-
-  public render = (): React.ReactNode => {
-    const { setValueAddedServices, containerStyle, t } = this.props;
-    const { valueServices, searchString } = this.state;
-
-    if (valueServices && valueServices.length <= 0) {
+    if (valueAddedServices && valueAddedServices.length <= 0) {
       return (
         <Text style={styles.noResults} type="regular">
           {t('common:noServicesFound')}
@@ -77,7 +65,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
           } = item;
 
           const handleToggle = (value: boolean): void => {
-            setValueAddedServices({ id, price: bundlePrice, name: label, value });
+            setValueAddedServices({ id, value });
           };
 
           return (
@@ -90,6 +78,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
               discountedPrice={discountedPrice > 0 ? discountedPrice : undefined}
               bundleItems={valueBundleItems}
               onToggle={handleToggle}
+              selected={item.value}
             />
           );
         })}
@@ -105,9 +94,10 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   private dynamicSearch = (): ValueAddedService[] => {
-    const { valueServices, searchString } = this.state;
+    const { valueAddedServices } = this.props;
+    const { searchString } = this.state;
 
-    return valueServices.filter((item: ValueAddedService) => {
+    return valueAddedServices.filter((item: ValueAddedService) => {
       return item.valueBundle.label.toLowerCase().includes(searchString.toLowerCase());
     });
   };

@@ -1,8 +1,8 @@
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
+import { IValueAddedServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 export interface IRecordAssetState {
   assetId: number;
@@ -12,7 +12,7 @@ export interface IRecordAssetState {
   assetGroups: IAssetGroup[];
   maintenanceUnits: IUnit[];
   selectedAssetPlan: ISelectedAssetPlan;
-  selectedValueServices: ISelectedValueServices[];
+  valueAddedServices: IValueAddedServices[];
   error: {
     assetPlan: string;
   };

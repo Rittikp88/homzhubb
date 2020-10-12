@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -16,9 +16,11 @@ import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
 import { IOrderSummaryPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
-import { Services } from '@homzhub/common/src/mocks/ValueAddedServices';
+import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 interface IPaymentProps {
+  valueAddedServices: ValueAddedService[];
+  setValueAddedServices: (payload: ISelectedValueServices) => void;
   handleNextStep: () => void;
   typeOfPlan: TypeOfPlan;
   propertyId: number;
@@ -77,42 +79,50 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     );
   }
 
-  private renderServices = (): React.ReactElement => {
-    const { t } = this.props;
+  private renderServices = (): React.ReactNode => {
+    const { t, valueAddedServices } = this.props;
+
     return (
       <View style={styles.servicesContainer}>
         <Text type="small" textType="semiBold" style={styles.serviceTitle}>
           {t('property:services')}
         </Text>
-        <FlatList data={Services} renderItem={this.renderItem} ItemSeparatorComponent={this.renderSeparator} />
+        {valueAddedServices.map((item) => {
+          return this.renderItem(item);
+        })}
       </View>
     );
   };
 
-  private renderItem = ({ item }: { item: any }): React.ReactElement => {
-    const { t } = this.props;
+  private renderItem = (item: ValueAddedService): React.ReactNode => {
+    const { t, setValueAddedServices } = this.props;
+    const removeService = (): void => setValueAddedServices({ id: item.id, value: false });
+
+    if (!item.value) {
+      return null;
+    }
+
     return (
-      <View style={styles.serviceItem}>
-        <View style={styles.content}>
-          <Text type="small" textType="semiBold" style={styles.serviceName}>
-            {item.name}
-          </Text>
-          <Text type="small" textType="semiBold" style={styles.serviceAmount}>
-            {`₹ ${item.isPrice}`}
-          </Text>
+      <>
+        <View style={styles.serviceItem}>
+          <View style={styles.content}>
+            <Text type="small" textType="semiBold" style={styles.serviceName}>
+              {item.valueBundle.label}
+            </Text>
+            <Text type="small" textType="semiBold" style={styles.serviceAmount}>
+              {`₹ ${item.bundlePrice}`}
+            </Text>
+          </View>
+          <TouchableOpacity onPress={removeService} style={styles.removeView}>
+            <Icon name={icons.trash} color={theme.colors.blue} size={16} />
+            <Label type="large" textType="semiBold" style={styles.removeText}>
+              {t('remove')}
+            </Label>
+          </TouchableOpacity>
         </View>
-        <View style={styles.removeView}>
-          <Icon name={icons.trash} color={theme.colors.blue} size={16} />
-          <Label type="large" textType="semiBold" style={styles.removeText}>
-            {t('remove')}
-          </Label>
-        </View>
-      </View>
+        <Divider containerStyles={styles.divider} />
+      </>
     );
-  };
-
-  private renderSeparator = (): React.ReactElement => {
-    return <Divider containerStyles={styles.divider} />;
   };
 
   private onToggleCoin = async (): Promise<void> => {
