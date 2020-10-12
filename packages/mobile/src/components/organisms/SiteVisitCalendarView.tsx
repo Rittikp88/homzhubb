@@ -4,6 +4,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -47,7 +48,7 @@ type Props = IProps & IDispatchProps & IStateProps & WithTranslation;
 
 class SiteVisitCalendarView extends Component<Props, IScreenState> {
   public state = {
-    currentDate: DateUtils.getDisplayDate(new Date().toDateString(), 'DD, MMMM YYYY'),
+    currentDate: DateUtils.getUtcFormattedDate(new Date().toDateString(), 'DD, MMMM YYYY'),
     timeSlot: [allSlot].concat(TimeSlot),
     isCalendarVisible: false,
     selectedSlot: 0,
@@ -147,7 +148,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
                 <Avatar
                   key={id}
                   fullName={fullName}
-                  designation={role}
+                  designation={StringUtils.toTitleCase(role)}
                   rating={rating}
                   isRightIcon
                   date={createdAt}
@@ -180,6 +181,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     const { currentDate, selectedSlot, timeSlot } = this.state;
 
     const start_date__gte = DateUtils.getUtcFormattedDate(currentDate, DateFormats.ISO);
+
     let start_date = '';
     if (selectedSlot > 0) {
       timeSlot.forEach((item) => {
@@ -188,11 +190,10 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
         }
       });
     }
-
     const payload: IAssetVisitPayload = {
       ...(start_date && { start_date }),
       ...(selectedSlot === 0 && start_date__gte && { start_date__gte }),
-      ...(selectedAssetId && { asset_id: selectedAssetId }),
+      ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
     };
 
     getAssetVisit(payload);

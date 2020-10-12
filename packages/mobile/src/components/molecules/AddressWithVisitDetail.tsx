@@ -32,7 +32,7 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
     isRescheduleAll = false,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-  const dateTime = DateUtils.convertTimeFormat(startDate, 'DD-MMM HH');
+  const dateTime = DateUtils.convertTimeFormat(startDate, 'DDMMM HH');
   const time = VisitSlot.find((item) => item.from === Number(dateTime[1]));
   const textStyle = [styles.textColor, isMissedVisit && styles.missedColor];
   return (

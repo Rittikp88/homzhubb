@@ -51,7 +51,7 @@ interface IStateProps {
 
 interface IProps {
   isFromProperty?: boolean;
-  onReschedule: () => void;
+  onReschedule: (isNew?: boolean) => void;
   selectedAssetId?: number;
 }
 
@@ -119,7 +119,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
             visitData={visits}
             isLoading={isLoading}
             handleAction={this.handleVisitActions}
-            handleReschedule={this.handleRescheduleVisit}
+            handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.UPCOMING)}
             handleDropdown={this.onDropdownValueSelect}
           />
         );
@@ -130,7 +130,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
             visitData={visits}
             isLoading={isLoading}
             handleAction={this.handleVisitActions}
-            handleReschedule={this.handleRescheduleVisit}
+            handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.MISSED)}
             handleDropdown={this.onDropdownValueSelect}
           />
         );
@@ -141,7 +141,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
             visitData={visits}
             isLoading={isLoading}
             handleAction={this.handleVisitActions}
-            handleReschedule={this.handleRescheduleVisit}
+            handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED)}
             handleDropdown={this.onDropdownValueSelect}
           />
         );
@@ -173,10 +173,15 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     getAssetVisit(payload);
   };
 
-  private handleRescheduleVisit = (id: number): void => {
+  private handleRescheduleVisit = (id: number, key: VisitStatusType): void => {
     const { onReschedule, setVisitIds } = this.props;
-    setVisitIds([id]);
-    onReschedule();
+
+    if (key === VisitStatusType.COMPLETED) {
+      onReschedule(true);
+    } else {
+      onReschedule(false);
+      setVisitIds([id]);
+    }
   };
 
   private handleIndexChange = (index: number): void => {
@@ -230,7 +235,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       ...(start_date_gte && { start_date__gte: start_date_gte }),
       ...(asset && asset.leaseTerm && { lease_listing_id: asset.leaseTerm.id }),
       ...(asset && asset.saleTerm && { sale_listing_id: asset.saleTerm.id }),
-      ...(selectedAssetId && { asset_id: selectedAssetId }),
+      ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
       ...(status && { status }),
     };
 

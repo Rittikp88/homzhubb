@@ -137,6 +137,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       isVerificationRequired,
       isListingRequired,
       isPropertyReady,
+      isCompleteDetailsRequired,
     } = lastVisitedStep;
     const plan = actionButtons.find((item) => item.type === type);
     let onVerifyProperty;
@@ -145,7 +146,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
     }
     return (
       <>
-        {percentage < 100 && (
+        {isCompleteDetailsRequired && (
           <>
             <ProgressBar progress={percentage} width={theme.viewport.width > 400 ? 350 : 310} />
             <Button
@@ -192,7 +193,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
           />
         )}
         {isPropertyReady && <PropertyReviewCard />}
-        {percentage < 100 && (
+        {isCompleteDetailsRequired && (
           <Label type="regular" style={styles.infoText}>
             {t('completeProperty')}
           </Label>

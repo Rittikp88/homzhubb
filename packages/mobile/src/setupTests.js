@@ -12,6 +12,7 @@ jest.mock('react-native-orientation-locker', () => {});
 jest.mock('@react-native-community/geolocation', () => {});
 jest.mock('react-native-progress', () => {});
 jest.mock('rn-fetch-blob', () => {});
+jest.mock('react-native-tab-view', () => {});
 jest.mock('@react-navigation/material-top-tabs', () => {
   return {
     createMaterialTopTabNavigator: jest.fn(),

@@ -134,9 +134,11 @@ export class LastVisitedStep {
   }
 
   get isVerificationRequired(): boolean {
-    const { percentage } = this.assetCreation;
-    const { isListingCreated, isVerificationDone } = this.listing;
-    return percentage === 100 && isListingCreated && !isVerificationDone;
+    const { isListingCreated, isVerificationDone, type } = this.listing;
+    if (type !== TypeOfPlan.MANAGE) {
+      return isListingCreated && !isVerificationDone;
+    }
+    return false;
   }
 
   get isListingRequired(): boolean {
@@ -147,9 +149,17 @@ export class LastVisitedStep {
   }
 
   get isPropertyReady(): boolean {
-    const { percentage } = this.assetCreation;
-    const { isListingCreated, isVerificationDone } = this.listing;
+    const { isListingCreated, isVerificationDone, type } = this.listing;
+    if (type === TypeOfPlan.MANAGE) {
+      return isListingCreated;
+    }
+    return isListingCreated && isVerificationDone;
+  }
 
-    return percentage === 100 && isListingCreated && isVerificationDone;
+  get isCompleteDetailsRequired(): boolean {
+    const { percentage } = this.assetCreation;
+    const { isListingCreated } = this.listing;
+
+    return percentage < 100 && !isListingCreated;
   }
 }

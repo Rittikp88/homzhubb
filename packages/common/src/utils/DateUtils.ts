@@ -164,7 +164,7 @@ class DateUtils {
 
   // TODO: ADD timezone conversion
   public localtimeDifference = (givenTime: string): string => {
-    const localTime = moment(givenTime).format(DateFormats.ISO);
+    const localTime = moment(givenTime).utcOffset(330).format();
     const day = moment(localTime).date();
     const month = moment(localTime).month();
     const year = moment(localTime).year();
@@ -211,7 +211,8 @@ class DateUtils {
   };
 
   public getUtcFormattedDate = (date: string, format: string): string => {
-    return moment.utc(date).format(format);
+    const formattedDate = this.getDisplayDate(date, 'YYYY-MM-DD');
+    return moment.utc(formattedDate).format(format);
   };
 
   public getDateString = (date: string): string => {
@@ -244,6 +245,14 @@ class DateUtils {
       label: year,
       value: parseInt(year, 10),
     }));
+  };
+
+  public getUtcFormatted = (date: string, format1: string, format2?: string): string => {
+    return moment.utc(date, format1).format(format2 || 'YYYY-MM-DD');
+  };
+
+  public getISOFormattedDate = (date: string, time: number): string => {
+    return moment([date, time]).format(DateFormats.ISO);
   };
 }
 

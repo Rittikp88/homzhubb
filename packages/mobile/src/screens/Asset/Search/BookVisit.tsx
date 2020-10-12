@@ -80,9 +80,15 @@ export class BookVisit extends Component<Props, IVisitState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
+    const {
+      route: { params },
+    } = this.props;
     await this.getVisitorType();
     await this.getUpcomingVisits();
-    this.getExistingData();
+
+    if (params && params.isReschedule) {
+      this.getExistingData();
+    }
   };
 
   public render(): React.ReactNode {

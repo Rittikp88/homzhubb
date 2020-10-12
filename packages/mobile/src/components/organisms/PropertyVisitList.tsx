@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Avatar, Button, Divider, Dropdown, EmptyState, Label, Text } from '@homzhub/common/src/components';
@@ -113,7 +114,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
           <Avatar
             fullName={user.fullName}
             isRightIcon
-            designation={role}
+            designation={StringUtils.toTitleCase(role)}
             rating={user.rating}
             date={createdAt}
             containerStyle={styles.horizontalStyle}
