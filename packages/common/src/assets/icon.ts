@@ -177,6 +177,6 @@ export const icons = {
   marker: 'marker',
   circularCamera: 'circular-camera',
   company: 'company',
-  doubleCheck: 'doubleCheck',
+  doubleCheck: 'double-check',
   filledWarning: 'filled-warning',
 };

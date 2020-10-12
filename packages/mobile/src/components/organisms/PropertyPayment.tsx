@@ -19,6 +19,7 @@ import { IOrderSummaryPayload, IUpdateAssetParams } from '@homzhub/common/src/do
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 interface IPaymentProps {
+  goBackToService: () => void;
   valueAddedServices: ValueAddedService[];
   setValueAddedServices: (payload: ISelectedValueServices) => void;
   handleNextStep: () => void;
@@ -46,13 +47,31 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     await this.getOrderSummary();
   };
 
+  public async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IPaymentState>): Promise<void> {
+    const { valueAddedServices, goBackToService } = this.props;
+
+    if (prevProps.valueAddedServices !== valueAddedServices) {
+      if (valueAddedServices.filter((service) => service.value).length === 0) {
+        goBackToService();
+      } else {
+        await this.getOrderSummary();
+      }
+    }
+  }
+
   public render(): React.ReactNode {
     const { isCoinApplied, orderSummary, isPromoFailed } = this.state;
     const { t } = this.props;
+
     return (
       <View style={styles.container}>
         {this.renderServices()}
-        <HomzhubCoins onToggle={this.onToggleCoin} selected={isCoinApplied} coins={orderSummary.coins} />
+        <HomzhubCoins
+          disabled={orderSummary.coins?.currentBalance <= 0}
+          onToggle={this.onToggleCoin}
+          selected={isCoinApplied}
+          coins={orderSummary.coins}
+        />
         <PromoCode
           onApplyPromo={this.applyPromo}
           promo={orderSummary.promo}
@@ -164,9 +183,22 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     this.setState({ isPromoFailed: false });
   };
 
+  private getServiceIds = (): number[] => {
+    const { valueAddedServices } = this.props;
+    const selectedServices: number[] = [];
+
+    valueAddedServices.forEach((service) => {
+      if (service.value) {
+        selectedServices.push(service.id);
+      }
+    });
+
+    return selectedServices;
+  };
+
   private getOrderSummary = async (data?: IOrderSummaryPayload): Promise<void> => {
     const payload: IOrderSummaryPayload = {
-      services: [1, 2],
+      ...(this.getServiceIds().length > 0 && { services: this.getServiceIds() }),
       ...(data?.coins && { coins: data.coins }),
       ...(data?.promo_code && { promo_code: data.promo_code }),
     };

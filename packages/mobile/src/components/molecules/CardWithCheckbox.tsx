@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider, ImageRound, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 interface IOwnProps {
   heading: string;
-  image: ImageSourcePropType;
+  image: string;
   price: number;
   discountedPrice?: number;
   bundleItems: Unit[];
@@ -36,7 +36,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
       <View style={[styles.container, containerStyle]}>
         <View style={[{ backgroundColor }, styles.padding]}>
           <View style={styles.rowStyle}>
-            <ImageRound width={70} height={70} source={image} />
+            <ImageRound width={70} height={70} source={{ uri: image }} />
             <View style={styles.content}>
               <View style={styles.headingStyle}>
                 <Label type="large" numberOfLines={3} style={styles.textStyle}>

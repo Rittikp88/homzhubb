@@ -16,6 +16,7 @@ import {
   IUserExistsData,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 
 const ENDPOINTS = {
@@ -29,6 +30,7 @@ const ENDPOINTS = {
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
   logout: (): string => 'users/logout/',
   getUserSubscription: (): string => 'user/service-plan/',
+  getUserProfile: (): string => 'users/profile/',
 };
 
 class UserRepository {
@@ -98,6 +100,11 @@ class UserRepository {
   public getUserSubscription = async (): Promise<UserSubscription> => {
     const response = await this.apiClient.get(ENDPOINTS.getUserSubscription());
     return ObjectMapper.deserialize(UserSubscription, response);
+  };
+
+  public getUserProfile = async (): Promise<UserProfile> => {
+    const response = await this.apiClient.get(ENDPOINTS.getUserProfile());
+    return ObjectMapper.deserialize(UserProfile, response);
   };
 }
 

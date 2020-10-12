@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Label, Text } from '@homzhub/common/src/components';
 
 interface IDetailsInfo {
   icon: string;
-  text: string;
+  text?: string;
   type?: 'TEXT' | 'EMAIL';
+  emailVerified?: boolean;
 }
 
 interface IHeaderInfo {
@@ -31,26 +32,29 @@ export class DetailsCard extends React.PureComponent<IOwnProps, {}> {
         {headerInfo && this.renderSectionHeader()}
         {details &&
           details.map((item, index) => {
-            return (
+            return item.text ? (
               <View style={styles.marginTop} key={index}>
                 <View style={item.type === 'EMAIL' ? styles.rowStyle : undefined}>
                   <View style={styles.subTitle}>
-                    <Icon size={20} name={item.icon} color={theme.colors.primaryColor} />
+                    <Icon size={20} name={item.icon} color={theme.colors.darkTint4} />
                     <Label style={styles.marginLeft} type="large">
                       {item.text}
                     </Label>
                   </View>
-                  {item.type === 'EMAIL' && (
-                    <Icon size={20} name={item.icon} color={theme.colors.primaryColor} onPress={onVerifyPress} />
-                  )}
+                  {item.type === 'EMAIL' &&
+                    (item.emailVerified ? (
+                      <Icon size={20} name={icons.doubleCheck} color={theme.colors.completed} />
+                    ) : (
+                      <Icon size={20} name={icons.filledWarning} color={theme.colors.error} />
+                    ))}
                 </View>
                 {item.type === 'EMAIL' && (
-                  <Label style={styles.verifyMail} type="large">
+                  <Label onPress={onVerifyPress} style={styles.verifyMail} type="large">
                     Verify your email
                   </Label>
                 )}
               </View>
-            );
+            ) : null;
           })}
         {showDivider && <Divider containerStyles={styles.dividerStyles} />}
       </>
@@ -79,6 +83,7 @@ const styles = StyleSheet.create({
   rowStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   subTitle: {
     flexDirection: 'row',

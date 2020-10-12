@@ -11,13 +11,14 @@ interface IOwnProps {
   onToggle: () => void;
   selected: boolean;
   coins: Coins;
+  disabled?: boolean;
 }
 
 type Props = IOwnProps & WithTranslation;
 
 class HomzhubCoins extends PureComponent<Props> {
   public render(): React.ReactNode {
-    const { t, onToggle, selected, coins } = this.props;
+    const { t, onToggle, selected, coins, disabled } = this.props;
     const amount = `₹${coins?.savedAmount ?? 0}`;
     const coinUsed = coins?.coinsUsed ?? 0;
     return (
@@ -26,7 +27,7 @@ class HomzhubCoins extends PureComponent<Props> {
           <Text type="small" textType="semiBold" style={styles.title}>
             {t('useCoins')}
           </Text>
-          <RNSwitch selected={selected} onToggle={onToggle} />
+          <RNSwitch disabled={disabled} selected={selected} onToggle={onToggle} />
         </View>
         <View style={styles.balanceView}>
           <Text type="small" style={styles.title}>

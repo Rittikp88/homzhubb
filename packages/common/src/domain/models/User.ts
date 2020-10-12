@@ -18,6 +18,9 @@ export interface IUser {
 
 @JsonObject('User')
 export class User {
+  @JsonProperty('id', Number, true)
+  private _id = 0;
+
   @JsonProperty('full_name', String)
   private _fullName = '';
 
@@ -36,9 +39,6 @@ export class User {
   @JsonProperty('access_token', String, true)
   private _accessToken = '';
 
-  @JsonProperty('id', Number, true)
-  private _id = 0;
-
   @JsonProperty('rating', Number, true)
   private _rating = 0;
 
@@ -51,7 +51,7 @@ export class User {
   }
 
   get fullName(): string {
-    return this._fullName ?? '';
+    return this._fullName;
   }
 
   get email(): string {

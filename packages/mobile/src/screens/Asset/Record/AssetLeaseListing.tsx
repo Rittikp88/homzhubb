@@ -283,6 +283,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       case RouteKeys.Payment:
         return (
           <PropertyPayment
+            goBackToService={this.goBackToServices}
             propertyId={assetDetails.id}
             lastVisitedStep={assetDetails.lastVisitedStepSerialized}
             valueAddedServices={valueAddedServices}
@@ -393,6 +394,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     }
 
     navigation.goBack();
+  };
+
+  private goBackToServices = (): void => {
+    const { currentIndex } = this.state;
+    this.setState({ currentIndex: currentIndex - 1 });
+    this.scrollToTop();
   };
 
   private handleIndexChange = (index: number): void => {

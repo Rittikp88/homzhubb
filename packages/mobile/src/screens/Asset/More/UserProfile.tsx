@@ -1,36 +1,82 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images';
-import { Image, Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, DetailsCard, ProgressBar } from '@homzhub/mobile/src/components';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 
 type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.UserProfileScreen>;
 type IOwnProps = libraryProps;
 
-class UserProfile extends React.PureComponent<IOwnProps, {}> {
-  public render = (): React.ReactElement => {
+interface IOwnState {
+  userProfile: UserProfileModel | null;
+}
+
+class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
+  public state = {
+    userProfile: {} as UserProfileModel,
+  };
+
+  public async componentDidMount(): Promise<void> {
+    const response = await UserRepository.getUserProfile();
+
+    this.setState({
+      userProfile: response,
+    });
+  }
+
+  public render = (): React.ReactNode => {
+    const { userProfile } = this.state;
+
+    if (!userProfile) {
+      return null;
+    }
+    const {
+      profileProgress,
+      fullName,
+      phoneNumber,
+      email,
+      emailVerified,
+      userAddress,
+      emergencyContact,
+      workInfo,
+    } = userProfile;
+
+    const emergencyContactArray = emergencyContact
+      ? [
+          { icon: icons.filledUser, text: emergencyContact.name },
+          { icon: icons.phone, text: emergencyContact.phoneNumber },
+          { icon: icons.email, text: emergencyContact.email },
+        ]
+      : undefined;
+
     return (
       <AnimatedProfileHeader>
         <View style={styles.container}>
           <View style={styles.header}>
             <Icon
-              size={30}
+              size={24}
               name={icons.leftArrow}
               color={theme.colors.primaryColor}
               style={styles.iconStyle}
-              onPress={this.onPress}
+              onPress={this.goBack}
             />
             <Text type="small" textType="bold">
               Profile
             </Text>
           </View>
           <View style={styles.profileImage}>
-            <Image style={styles.roundBorder} width={80} height={80} source={images.landingScreenLogo} />
+            <View style={styles.initialsContainer}>
+              <Text type="large" textType="regular" style={styles.initials}>
+                {StringUtils.getInitials(fullName || '')}
+              </Text>
+            </View>
             <View style={[styles.cameraContainer, styles.roundBorder]}>
               <Icon
                 size={16}
@@ -44,14 +90,16 @@ class UserProfile extends React.PureComponent<IOwnProps, {}> {
           <ProgressBar
             containerStyles={styles.progressBar}
             title="Profile"
-            progress={90}
+            progress={profileProgress || 0}
             width={theme.viewport.width > 400 ? 350 : 330}
           />
           <DetailsCard
-            headerInfo={{ title: 'Basic Details', icon: icons.document, onPress: this.onPress }}
+            headerInfo={{ title: 'Basic Details', icon: icons.noteBook, onPress: this.onPress }}
             details={[
-              { icon: icons.document, text: 'Darlene Robertson' },
-              { icon: icons.document, text: 'Darlene Robertson', type: 'EMAIL' },
+              { icon: icons.filledUser, text: fullName },
+              { icon: icons.phone, text: phoneNumber },
+              { icon: icons.email, text: email, type: 'EMAIL', emailVerified },
+              { icon: icons.marker, text: userAddress && userAddress.length > 0 ? userAddress[0].addressLine1 : '' },
             ]}
             onVerifyPress={this.onPress}
             showDivider
@@ -61,14 +109,21 @@ class UserProfile extends React.PureComponent<IOwnProps, {}> {
             showDivider
           />
           <DetailsCard
-            headerInfo={{ title: 'Emergency Contact', icon: icons.document, onPress: this.onPress }}
-            details={[{ icon: icons.document, text: 'Darlene Robertson' }]}
+            headerInfo={{ title: 'Emergency Contact', icon: icons.noteBook, onPress: this.onPress }}
+            details={emergencyContactArray}
             onVerifyPress={this.onPress}
             showDivider
           />
           <DetailsCard
-            headerInfo={{ title: 'Work Information', icon: icons.document, onPress: this.onPress }}
-            details={[{ icon: icons.document, text: 'Darlene Robertson' }]}
+            headerInfo={{ title: 'Work Information', icon: icons.noteBook, onPress: this.onPress }}
+            details={
+              workInfo
+                ? [
+                    { icon: icons.company, text: workInfo.companyName },
+                    { icon: icons.email, text: workInfo.workEmail },
+                  ]
+                : undefined
+            }
             onVerifyPress={this.onPress}
           />
         </View>
@@ -77,6 +132,11 @@ class UserProfile extends React.PureComponent<IOwnProps, {}> {
   };
 
   private onPress = (): void => {};
+
+  private goBack = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  };
 }
 
 export default withTranslation()(UserProfile);
@@ -118,5 +178,16 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     marginBottom: 24,
+  },
+  initialsContainer: {
+    ...(theme.circleCSS(80) as object),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.darkTint7,
+    borderColor: theme.colors.white,
+    borderWidth: 1,
+  },
+  initials: {
+    color: theme.colors.white,
   },
 });

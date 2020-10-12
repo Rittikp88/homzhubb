@@ -5,7 +5,6 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { images } from '@homzhub/common/src/assets/images';
 import { Button, Text } from '@homzhub/common/src/components';
 import { CardWithCheckbox } from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
 import { SearchBar } from '@homzhub/mobile/src/components';
@@ -59,7 +58,11 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
         {this.dynamicSearch().map((item: ValueAddedService) => {
           const {
             id,
-            valueBundle: { valueBundleItems, label },
+            valueBundle: {
+              valueBundleItems,
+              label,
+              attachment: { link },
+            },
             bundlePrice,
             discountedPrice,
           } = item;
@@ -73,7 +76,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
               containerStyle={styles.cardContainer}
               key={id}
               heading={label}
-              image={images.landingScreenLogo}
+              image={link}
               price={bundlePrice}
               discountedPrice={discountedPrice > 0 ? discountedPrice : undefined}
               bundleItems={valueBundleItems}
@@ -84,6 +87,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
         })}
 
         <Button
+          disabled={valueAddedServices.filter((service) => service.value).length === 0}
           type="primary"
           title={t('common:continue')}
           containerStyle={styles.buttonStyle}
