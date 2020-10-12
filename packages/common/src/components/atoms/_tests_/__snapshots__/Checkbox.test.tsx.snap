@@ -25,7 +25,6 @@ exports[`Checkbox should match snapshot for selected false 1`] = `
       Array [
         Object {
           "marginStart": 12,
-          "width": 135,
         },
         Object {},
       ]
@@ -63,7 +62,6 @@ exports[`Checkbox should match snapshot for selected true 1`] = `
       Array [
         Object {
           "marginStart": 12,
-          "width": 135,
         },
         Object {},
       ]

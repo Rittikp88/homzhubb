@@ -39,6 +39,21 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
     };
   }
 
+  public static getDerivedStateFromProps(props: IOwnProps, state: IOwnState): IOwnState {
+    return {
+      showMore: state.showMore,
+      groupedSpaceTypes: props.spacesTypes.reduce((accumulator: any, currentSpace) => {
+        const key: string = currentSpace.fieldType;
+        if (!accumulator[key]) {
+          accumulator[key] = [];
+        }
+
+        accumulator[key].push(currentSpace);
+        return accumulator;
+      }, {}),
+    };
+  }
+
   public render(): React.ReactNode {
     const { showMore, groupedSpaceTypes } = this.state;
 
@@ -88,6 +103,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           name={{ title: space.name, id: space.id }}
           svgImage={space.attachment && space.attachment.link}
           onValueChange={handleCounterChange}
+          maxCount={space.unitCount + space.count}
         />
       );
     });
@@ -96,7 +112,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
     spaceFields?.push(
       <UncontrolledCheckboxGroup
         key="UncontrolledCheckboxGroup"
-        containerStyle={styles.marginBottom}
+        containerStyle={styles.marginTop}
         data={this.loadCheckboxData(renderPrimary)}
         onToggle={handleCheckboxGroupToggle}
       />
@@ -183,6 +199,9 @@ const styles = StyleSheet.create({
   },
   marginBottom: {
     marginBottom: 24,
+  },
+  marginTop: {
+    marginTop: 16,
   },
   threeDots: {
     marginRight: 12,

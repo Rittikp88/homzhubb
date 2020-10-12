@@ -5,7 +5,7 @@ export interface IManageTerm extends ILeaseTermParams {
   first_name: string;
   last_name: string;
   email: string;
-  country_code: string;
+  phone_code: string;
   phone_number: string;
 }
 
@@ -20,8 +20,8 @@ export class ManageTerm extends LeaseTerm {
   @JsonProperty('email', String)
   private _email = '';
 
-  @JsonProperty('country_code', String)
-  private _countryCode = '';
+  @JsonProperty('phone_code', String)
+  private _phoneCode = '';
 
   @JsonProperty('phone_number', String)
   private _phoneNumber = '';
@@ -38,8 +38,8 @@ export class ManageTerm extends LeaseTerm {
     return this._email;
   }
 
-  get countryCode(): string {
-    return this._countryCode;
+  get phoneCode(): string {
+    return this._phoneCode;
   }
 
   get phoneNumber(): string {

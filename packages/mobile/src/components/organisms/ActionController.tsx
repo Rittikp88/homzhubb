@@ -3,86 +3,80 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
-import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import LeaseTermController from '@homzhub/mobile/src/components/organisms/LeaseTermController';
 import { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 import { ManageTermController } from '@homzhub/mobile/src/components/organisms/ManageTermController';
-import { Country } from '@homzhub/common/src/domain/models/CountryCode';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
-import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
 interface IProps {
+  assetDetails: Asset;
   typeOfPlan: TypeOfPlan;
   isSplitAsUnits: boolean;
   onNextStep: () => void;
-  country: Country;
-  assetGroupType: string;
-  furnishing: FurnishingTypes;
-  lastVisitedStep: ILastVisitedStep;
+  scrollToTop: () => void;
+  togglePropertyUnits: () => void;
 }
 
 interface IDispatchProps {
-  setTermId: (termId: number) => void;
   getMaintenanceUnits: () => void;
 }
 
-interface IStateProps {
-  currentTermId: number;
-  currentAssetId: number;
-}
+type Props = IDispatchProps & IProps;
 
-type Props = IStateProps & IDispatchProps & IProps;
-
-// TODO (Aditya): Optimize, look at un-required props drilling
 class ActionController extends React.PureComponent<Props, {}> {
   public componentDidMount = (): void => {
-    const { getMaintenanceUnits, assetGroupType } = this.props;
-    if (assetGroupType === AssetGroupTypes.COM) {
+    const {
+      getMaintenanceUnits,
+      assetDetails: { assetGroupCode },
+    } = this.props;
+
+    if (assetGroupCode === AssetGroupTypes.COM) {
       getMaintenanceUnits();
     }
   };
 
   public render = (): React.ReactNode => {
-    const { onNextStep } = this.props;
+    const { isSplitAsUnits } = this.props;
     const {
+      assetDetails: {
+        id,
+        assetGroupCode,
+        furnishing,
+        country: { currencies },
+      },
       typeOfPlan,
-      currentTermId,
-      setTermId,
-      currentAssetId,
-      country: { currencies },
-      assetGroupType,
-      lastVisitedStep,
-      furnishing,
+      scrollToTop,
+      togglePropertyUnits,
     } = this.props;
+
     return (
       <>
         {typeOfPlan === TypeOfPlan.SELL && (
           <SaleTermController
-            currentAssetId={currentAssetId}
-            assetGroupType={assetGroupType}
+            currentAssetId={id}
+            assetGroupType={assetGroupCode}
             currencyData={currencies[0]}
             onNextStep={this.onNextStep}
           />
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
           <LeaseTermController
-            currentAssetId={currentAssetId}
-            currentTermId={currentTermId}
-            assetGroupType={assetGroupType}
-            setTermId={setTermId}
+            isSplitAsUnits={isSplitAsUnits}
+            currentAssetId={id}
+            assetGroupType={assetGroupCode}
             furnishing={furnishing}
-            lastVisitedStep={lastVisitedStep}
             currencyData={currencies[0]}
-            onNextStep={onNextStep}
+            onNextStep={this.onNextStep}
+            scrollToTop={scrollToTop}
+            togglePropertyUnits={togglePropertyUnits}
           />
         )}
         {typeOfPlan === TypeOfPlan.MANAGE && (
           <ManageTermController
-            currentAssetId={currentAssetId}
-            assetGroupType={assetGroupType}
+            currentAssetId={id}
+            assetGroupType={assetGroupCode}
             currencyData={currencies[0]}
             onNextStep={this.onNextStep}
           />
@@ -92,33 +86,28 @@ class ActionController extends React.PureComponent<Props, {}> {
   };
 
   private onNextStep = async (type: TypeOfPlan): Promise<void> => {
-    const { onNextStep, lastVisitedStep, currentAssetId } = this.props;
+    const {
+      onNextStep,
+      assetDetails: { lastVisitedStepSerialized, id },
+    } = this.props;
 
     const last_visited_step = {
-      ...lastVisitedStep,
+      ...lastVisitedStepSerialized,
       listing: {
-        ...lastVisitedStep.listing,
+        ...lastVisitedStepSerialized.listing,
         type,
         is_listing_created: true,
       },
     };
-    await AssetRepository.updateAsset(currentAssetId, { last_visited_step });
+    await AssetRepository.updateAsset(id, { last_visited_step });
     onNextStep();
   };
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setTermId, getMaintenanceUnits } = RecordAssetActions;
-  return bindActionCreators({ setTermId, getMaintenanceUnits }, dispatch);
+  const { getMaintenanceUnits } = RecordAssetActions;
+  return bindActionCreators({ getMaintenanceUnits }, dispatch);
 };
 
-const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentTermId, getCurrentAssetId } = RecordAssetSelectors;
-  return {
-    currentTermId: getCurrentTermId(state),
-    currentAssetId: getCurrentAssetId(state),
-  };
-};
-
-const HOC = connect(mapStateToProps, mapDispatchToProps)(ActionController);
+const HOC = connect(null, mapDispatchToProps)(ActionController);
 export { HOC as ActionController };

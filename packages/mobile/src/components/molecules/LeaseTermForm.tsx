@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { FormikProps } from 'formik';
 import { TFunction } from 'i18next';
 import * as yup from 'yup';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
@@ -10,9 +9,10 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
-import { FormCalendar, FormTextInput, Slider, Text, WithFieldError } from '@homzhub/common/src/components';
+import { FormCalendar, FormTextInput, Slider, Text, TextArea, WithFieldError } from '@homzhub/common/src/components';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
+import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -32,6 +32,7 @@ export interface IFormData {
   [LeaseFormKeys.maximumLeasePeriod]: number;
   [LeaseFormKeys.utilityBy]: PaidByTypes;
   [LeaseFormKeys.rentFreePeriod]: string;
+  [LeaseFormKeys.description]: string;
 }
 
 enum LeaseFormKeys {
@@ -48,13 +49,16 @@ enum LeaseFormKeys {
   minimumLeasePeriod = 'minimumLeasePeriod',
   maximumLeasePeriod = 'maximumLeasePeriod',
   rentFreePeriod = 'rentFreePeriod',
+  description = 'description',
 }
 
 interface IProps {
-  formProps: FormikProps<IFormData>;
+  formProps: any;
   currencyData: Currency;
   assetGroupType: string;
   isFromManage?: boolean;
+  isSplitAsUnits?: boolean;
+  children?: React.ReactNode;
 }
 
 const MINIMUM_LEASE_PERIOD = 1;
@@ -67,6 +71,7 @@ export const initialLeaseFormValues = {
   monthlyRent: '',
   securityDeposit: '',
   annualIncrement: '',
+  description: '',
   minimumLeasePeriod: DEFAULT_LEASE_PERIOD,
   maximumLeasePeriod: DEFAULT_LEASE_PERIOD,
   availableFrom: DateUtils.getCurrentDate(),
@@ -77,11 +82,14 @@ export const initialLeaseFormValues = {
   maintenanceSchedule: ScheduleTypes.MONTHLY,
   maintenanceUnit: -1,
 };
+const MAX_DESCRIPTION_LENGTH = 600;
 
 const LeaseTermForm = ({
   formProps,
   currencyData,
   assetGroupType,
+  children,
+  isSplitAsUnits = false,
   isFromManage = false,
 }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
@@ -136,121 +144,144 @@ const LeaseTermForm = ({
       setFieldTouched(LeaseFormKeys.maintenanceAmount, false);
     }
   }, []);
+
+  const onDescriptionChange = useCallback((value: string) => {
+    setFieldValue(LeaseFormKeys.description, value);
+  }, []);
   // INTERACTION HANDLERS END
 
   return (
     <>
-      <FormTextInput
-        inputType="number"
-        name={LeaseFormKeys.monthlyRent}
-        label={t('monthlyRent')}
-        placeholder={t('monthlyRentPlaceholder')}
-        maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
-        formProps={formProps}
-        inputPrefixText={currencyData.currencySymbol}
-        inputGroupSuffixText={currencyData.currencyCode}
-      />
-      <FormTextInput
-        inputType="number"
-        name={LeaseFormKeys.securityDeposit}
-        label={t('securityDeposit')}
-        placeholder={t('securityDepositPlaceholder')}
-        maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
-        formProps={formProps}
-        inputPrefixText={currencyData.currencySymbol}
-        inputGroupSuffixText={currencyData.currencyCode}
-      />
-      <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
-        {values.showMore ? t('showLess') : t('showMore')}
-      </Text>
-      {values.showMore && (
-        <FormTextInput
-          inputType="decimal"
-          name={LeaseFormKeys.annualIncrement}
-          label={t('annualIncrement')}
-          placeholder={t('annualIncrementPlaceholder')}
-          maxLength={4}
-          formProps={formProps}
-          inputGroupSuffixText={t('annualIncrementSuffix')}
-        />
-      )}
-      <Text type="small" textType="semiBold" style={styles.headerTitle}>
-        {t('duration')}
-      </Text>
-      <FormCalendar
-        formProps={formProps}
-        label={dateLabel}
-        allowPastDates={isFromManage}
-        maxDate={maxDate}
-        name={LeaseFormKeys.availableFrom}
-        textType="label"
-        textSize="regular"
-      />
-      <>
-        <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-          {t('minimumLeasePeriod')}
-        </Text>
-        <Slider
-          onSliderChange={onSliderChange}
-          minSliderRange={MINIMUM_LEASE_PERIOD}
-          maxSliderRange={MAXIMUM_LEASE_PERIOD}
-          minSliderValue={DEFAULT_LEASE_PERIOD}
-          isLabelRequired
-          labelText="Months"
-        />
-        <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-          {t('maximumLeasePeriod')}
-        </Text>
-        <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
-          <Slider
-            onSliderChange={onTotalSliderChange}
-            minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
-            maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
-            minSliderValue={DEFAULT_LEASE_PERIOD}
-            isLabelRequired
-            labelText="Months"
+      <AssetListingSection title={t('leaseTerms')}>
+        <>
+          {isFromManage && children}
+          <FormTextInput
+            inputType="number"
+            name={LeaseFormKeys.monthlyRent}
+            label={t('monthlyRent')}
+            placeholder={t('monthlyRentPlaceholder')}
+            maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
+            formProps={formProps}
+            inputPrefixText={currencyData.currencySymbol}
+            inputGroupSuffixText={currencyData.currencyCode}
           />
-        </WithFieldError>
-        <Text type="small" textType="semiBold" style={styles.headerTitle}>
-          {t('utilityBy')}
-        </Text>
-        <ButtonGroup<PaidByTypes>
-          data={PAID_BY_OPTIONS}
-          onItemSelect={onUtilityChanged}
-          selectedItem={values[LeaseFormKeys.utilityBy]}
-          containerStyle={styles.buttonGroup}
+          <FormTextInput
+            inputType="number"
+            name={LeaseFormKeys.securityDeposit}
+            label={t('securityDeposit')}
+            placeholder={t('securityDepositPlaceholder')}
+            maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
+            formProps={formProps}
+            inputPrefixText={currencyData.currencySymbol}
+            inputGroupSuffixText={currencyData.currencyCode}
+          />
+          <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
+            {values.showMore ? t('showLess') : t('showMore')}
+          </Text>
+          {values.showMore && (
+            <FormTextInput
+              inputType="decimal"
+              name={LeaseFormKeys.annualIncrement}
+              label={t('annualIncrement')}
+              placeholder={t('annualIncrementPlaceholder')}
+              maxLength={4}
+              formProps={formProps}
+              inputGroupSuffixText={t('annualIncrementSuffix')}
+            />
+          )}
+          <Text type="small" textType="semiBold" style={styles.headerTitle}>
+            {t('duration')}
+          </Text>
+          <FormCalendar
+            formProps={formProps}
+            label={dateLabel}
+            allowPastDates={isFromManage}
+            maxDate={maxDate}
+            name={LeaseFormKeys.availableFrom}
+            textType="label"
+            textSize="regular"
+          />
+          <>
+            <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+              {t('minimumLeasePeriod')}
+            </Text>
+            <Slider
+              onSliderChange={onSliderChange}
+              minSliderRange={MINIMUM_LEASE_PERIOD}
+              maxSliderRange={MAXIMUM_LEASE_PERIOD}
+              minSliderValue={DEFAULT_LEASE_PERIOD}
+              isLabelRequired
+              labelText="Months"
+            />
+            <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+              {t('maximumLeasePeriod')}
+            </Text>
+            <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
+              <Slider
+                onSliderChange={onTotalSliderChange}
+                minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
+                maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
+                minSliderValue={DEFAULT_LEASE_PERIOD}
+                isLabelRequired
+                labelText="Months"
+              />
+            </WithFieldError>
+            <Text type="small" textType="semiBold" style={styles.headerTitle}>
+              {t('utilityBy')}
+            </Text>
+            <ButtonGroup<PaidByTypes>
+              data={PAID_BY_OPTIONS}
+              onItemSelect={onUtilityChanged}
+              selectedItem={values[LeaseFormKeys.utilityBy]}
+              containerStyle={styles.buttonGroup}
+            />
+            <View
+              pointerEvents={isSplitAsUnits ? 'none' : undefined}
+              style={isSplitAsUnits ? styles.disabled : undefined}
+            >
+              <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                {t('maintenanceBy')}
+              </Text>
+              <ButtonGroup<PaidByTypes>
+                data={PAID_BY_OPTIONS}
+                onItemSelect={onMaintenanceChanged}
+                selectedItem={values.maintenanceBy}
+                containerStyle={styles.buttonGroup}
+              />
+            </View>
+          </>
+          {values.maintenanceBy === PaidByTypes.TENANT && (
+            <MaintenanceDetails
+              formProps={formProps}
+              currencyData={currencyData}
+              assetGroupType={assetGroupType}
+              maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
+              maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
+              maintenanceUnitKey={LeaseFormKeys.maintenanceUnit}
+            />
+          )}
+          {assetGroupType === AssetGroupTypes.COM && (
+            <FormTextInput
+              inputType="number"
+              name={LeaseFormKeys.rentFreePeriod}
+              label={t('rentFreePeriod')}
+              placeholder={t('common:enter')}
+              maxLength={2}
+              formProps={formProps}
+              inputGroupSuffixText={t('common:days')}
+            />
+          )}
+        </>
+      </AssetListingSection>
+      {!isFromManage && children}
+      <AssetListingSection title={t('assetDescription:description')} containerStyles={styles.descriptionContainer}>
+        <TextArea
+          value={formProps.values[LeaseFormKeys.description]}
+          wordCountLimit={MAX_DESCRIPTION_LENGTH}
+          placeholder={t('common:typeHere')}
+          onMessageChange={onDescriptionChange}
         />
-        <Text type="small" textType="semiBold" style={styles.headerTitle}>
-          {t('maintenanceBy')}
-        </Text>
-        <ButtonGroup<PaidByTypes>
-          data={PAID_BY_OPTIONS}
-          onItemSelect={onMaintenanceChanged}
-          selectedItem={values.maintenanceBy}
-          containerStyle={styles.buttonGroup}
-        />
-      </>
-      {values.maintenanceBy === PaidByTypes.TENANT && (
-        <MaintenanceDetails
-          formProps={formProps}
-          currencyData={currencyData}
-          assetGroupType={assetGroupType}
-          maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
-          maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
-          maintenanceUnitKey={LeaseFormKeys.maintenanceUnit}
-        />
-      )}
-      {assetGroupType === AssetGroupTypes.COM && (
-        <FormTextInput
-          inputType="number"
-          name={LeaseFormKeys.rentFreePeriod}
-          label={t('rentFreePeriod')}
-          placeholder={t('common:enter')}
-          maxLength={2}
-          formProps={formProps}
-          inputGroupSuffixText={t('common:days')}
-        />
-      )}
+      </AssetListingSection>
     </>
   );
 };
@@ -315,5 +346,11 @@ const styles = StyleSheet.create({
     marginTop: 28,
     color: theme.colors.darkTint3,
     marginBottom: 18,
+  },
+  descriptionContainer: {
+    marginTop: 16,
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

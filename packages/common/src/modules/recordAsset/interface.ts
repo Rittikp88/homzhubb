@@ -6,7 +6,6 @@ import { IValueAddedServices } from '@homzhub/common/src/domain/models/ValueAdde
 
 export interface IRecordAssetState {
   assetId: number;
-  termId: number;
   assetDetails: IAsset | null;
   assetPlan: IAssetPlan[];
   assetGroups: IAssetGroup[];

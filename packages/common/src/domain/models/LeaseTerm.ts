@@ -1,8 +1,11 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { LeaseUnit, ILeaseUnit } from '@homzhub/common/src/domain/models/LeaseUnit';
+import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface ILeaseTermParams {
+  lease_listing?: number;
   expected_monthly_rent: number;
   security_deposit: number;
   annual_rent_increment_percentage: number | null;
@@ -18,7 +21,7 @@ export interface ILeaseTermParams {
   rent_free_period: number | null;
   tenant_preferences?: number[];
   furnishing?: FurnishingTypes;
-  lease_unit?: any;
+  lease_unit?: ILeaseUnit;
 }
 
 @JsonObject('LeaseTerm')
@@ -67,6 +70,16 @@ export class LeaseTerm {
 
   @JsonProperty('description', String, true)
   private _description = '';
+
+  @JsonProperty('tenant_preferences', [TenantPreference], true)
+  private _tenantPreferences = [];
+
+  @JsonProperty('lease_unit', LeaseUnit, true)
+  private _leaseUnit = new LeaseUnit();
+
+  get tenantPreferences(): TenantPreference[] {
+    return this._tenantPreferences;
+  }
 
   get id(): number {
     return this._id;
@@ -122,5 +135,13 @@ export class LeaseTerm {
 
   get maintenanceUnit(): number {
     return this._maintenanceUnit.id;
+  }
+
+  get rentFreePeriod(): number {
+    return this._rentFreePeriod;
+  }
+
+  get leaseUnit(): LeaseUnit {
+    return this._leaseUnit;
   }
 }

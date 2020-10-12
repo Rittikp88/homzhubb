@@ -8,7 +8,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, CheckboxGroup, ICheckboxGroupData, WithShadowView } from '@homzhub/common/src/components';
+import { Button, CheckboxGroup, WithShadowView, ICheckboxGroupData } from '@homzhub/common/src/components';
 import AssetHighlightCard from '@homzhub/mobile/src/components/molecules/AssetHighlightCard';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
@@ -120,12 +120,7 @@ export class AssetHighlights extends Component<Props, IState> {
 
     return (
       <AssetListingSection title={t('property:otherDetails')} containerStyles={styles.card}>
-        <CheckboxGroup
-          key={`${isSelected}-checkbox`}
-          data={otherDetails}
-          onToggle={this.onPressCheckbox}
-          containerStyle={styles.checkboxGroup}
-        />
+        <CheckboxGroup key={`${isSelected}-checkbox`} data={otherDetails} onToggle={this.onPressCheckbox} />
       </AssetListingSection>
     );
   };
@@ -349,9 +344,6 @@ const styles = StyleSheet.create({
     padding: 12,
     marginVertical: 8,
     borderColor: theme.colors.darkTint10,
-  },
-  checkboxGroup: {
-    padding: 16,
   },
   highlightsContainer: {
     padding: 14,

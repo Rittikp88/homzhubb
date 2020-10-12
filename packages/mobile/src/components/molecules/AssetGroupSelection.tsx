@@ -4,7 +4,8 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Label, Text } from '@homzhub/common/src/components';
-import { AssetGroup, TypeUnit } from '@homzhub/common/src/domain/models/AssetGroup';
+import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
@@ -79,7 +80,7 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
     );
   };
 
-  private renderItem = (type: Type, item: AssetGroup | TypeUnit, index: number): React.ReactNode => {
+  private renderItem = (type: Type, item: AssetGroup | Unit, index: number): React.ReactNode => {
     const { selectedAssetGroup } = this.state;
     const { onAssetGroupSelected, selectedAssetGroupType, scrollRef } = this.props;
 

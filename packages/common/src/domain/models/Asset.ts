@@ -1,4 +1,4 @@
-import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { JsonObject, JsonProperty, ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IAmenity, Amenity, AmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
@@ -12,6 +12,7 @@ import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { User, IUser } from '@homzhub/common/src/domain/models/User';
 import { Verification, IVerifications } from '@homzhub/common/src/domain/models/Verification';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 export interface ICarpetAreaUnit {
@@ -102,8 +103,8 @@ export class Data {
     return this._name;
   }
 
-  get code(): string {
-    return this._code;
+  get code(): AssetGroupTypes {
+    return this._code as AssetGroupTypes;
   }
 
   get count(): number {
@@ -382,6 +383,10 @@ export class Asset {
     return this.assetGroup.id;
   }
 
+  get assetGroupCode(): AssetGroupTypes {
+    return this.assetGroup.code;
+  }
+
   get leaseTerm(): LeaseTerm | null {
     return this._leaseTerm;
   }
@@ -451,6 +456,10 @@ export class Asset {
 
   get lastVisitedStep(): LastVisitedStep {
     return this._lastVisitedStep;
+  }
+
+  get lastVisitedStepSerialized(): ILastVisitedStep {
+    return ObjectMapper.serialize(this._lastVisitedStep);
   }
 
   get isGated(): boolean {

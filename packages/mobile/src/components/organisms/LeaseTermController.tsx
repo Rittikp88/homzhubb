@@ -1,65 +1,68 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TabBar, TabView } from 'react-native-tab-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikHelpers, FormikProps } from 'formik';
-import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
-import { CheckboxGroup, FormButton, TextArea } from '@homzhub/common/src/components';
-import {
-  IFormData,
-  initialLeaseFormValues,
-  LeaseFormSchema,
-  LeaseTermForm,
-} from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
-import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { ICheckboxGroupData, Label } from '@homzhub/common/src/components';
+import { SpaceChangeType, SubLeaseUnit } from '@homzhub/mobile/src/components/organisms/SubLeaseUnit';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-import { IList } from '@homzhub/common/src/domain/models/Tenant';
-import { ISpaceCount } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
-  currentTermId: number;
-  setTermId: (termId: number) => void;
-  onNextStep: () => void;
+  isSplitAsUnits: boolean;
   currencyData: Currency;
   assetGroupType: AssetGroupTypes;
   furnishing: FurnishingTypes;
-  lastVisitedStep: ILastVisitedStep;
+  togglePropertyUnits: () => void;
+  scrollToTop: () => void;
+  onNextStep: (type: TypeOfPlan) => Promise<void>;
 }
 
 interface IOwnState {
-  formData: IFormData;
-  description: string;
-  preferences: IList[];
-  availableSpaces: ISpaceCount[];
-  selectedPreferences: number[];
-  isPreferencesSelected: boolean;
+  currentIndex: number;
+  routes: { key: string; title: string; id?: number }[];
+  singleLeaseUnitKey: number;
+  preferences: ICheckboxGroupData[];
+  availableSpaces: SpaceType[];
 }
 
-const MAX_DESCRIPTION_LENGTH = 600;
-
 class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
-  public state = {
-    formData: { ...initialLeaseFormValues },
-    description: '',
-    preferences: [],
-    availableSpaces: [],
-    selectedPreferences: [],
-    isPreferencesSelected: false,
-  };
+  public constructor(props: IProps) {
+    super(props);
+    const { t } = props;
+    this.state = {
+      currentIndex: 0,
+      singleLeaseUnitKey: -1,
+      routes: [
+        { key: '1', title: t('unit', { unitNo: 1 }) },
+        { key: '2', title: t('unit', { unitNo: 2 }) },
+      ],
+      preferences: [],
+      availableSpaces: [],
+    };
+  }
 
   public componentDidMount = async (): Promise<void> => {
-    const { assetGroupType } = this.props;
+    const { assetGroupType, currentAssetId, togglePropertyUnits } = this.props;
+    try {
+      const response = await AssetRepository.getLeaseTerms(currentAssetId);
+      if (response.length > 1) {
+        togglePropertyUnits();
+      }
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
     if (assetGroupType === AssetGroupTypes.RES) {
       await this.getTenantPreferences();
     }
@@ -67,94 +70,185 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { t, currencyData, assetGroupType } = this.props;
-    const { description, formData, preferences, isPreferencesSelected } = this.state;
+    const { isSplitAsUnits, currencyData, assetGroupType, furnishing } = this.props;
+    const { preferences, availableSpaces, routes, singleLeaseUnitKey } = this.state;
 
     return (
-      <Formik
-        enableReinitialize
-        onSubmit={this.onSubmit}
-        initialValues={{ ...formData }}
-        validate={FormUtils.validate(this.formSchema)}
-      >
-        {(formProps: FormikProps<IFormData>): React.ReactElement => {
-          return (
-            <>
-              <AssetListingSection title={t('leaseTerms')}>
-                <LeaseTermForm formProps={formProps} currencyData={currencyData} assetGroupType={assetGroupType} />
-              </AssetListingSection>
-              {preferences.length > 0 && (
-                <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>
-                  <CheckboxGroup
-                    key={`${isPreferencesSelected}-checkbox`}
-                    data={preferences}
-                    onToggle={this.handlePreferences}
-                    containerStyle={styles.checkBox}
-                  />
-                </AssetListingSection>
-              )}
-              <AssetListingSection
-                title={t('assetDescription:description')}
-                containerStyles={styles.descriptionContainer}
-              >
-                <TextArea
-                  value={description}
-                  wordCountLimit={MAX_DESCRIPTION_LENGTH}
-                  placeholder={t('common:typeHere')}
-                  onMessageChange={this.onDescriptionChange}
-                />
-              </AssetListingSection>
-              <FormButton
-                title={t('common:continue')}
-                type="primary"
-                formProps={formProps}
-                // @ts-ignore
-                onPress={formProps.handleSubmit}
-                containerStyle={styles.continue}
-              />
-            </>
-          );
-        }}
-      </Formik>
+      <>
+        {isSplitAsUnits ? (
+          <>
+            <TouchableOpacity onPress={this.onTabAdd}>
+              <Icon name={icons.plus} size={24} />
+            </TouchableOpacity>
+            {routes.length > 2 && (
+              <TouchableOpacity onPress={this.onDelete}>
+                <Icon name={icons.circularCrossFilled} size={24} color={theme.colors.active} />
+              </TouchableOpacity>
+            )}
+            {this.renderTab()}
+          </>
+        ) : (
+          <SubLeaseUnit
+            singleLeaseUnitKey={singleLeaseUnitKey}
+            onSubmit={this.onSubmit}
+            furnishing={furnishing}
+            preferences={preferences}
+            currencyData={currencyData}
+            assetGroupType={assetGroupType}
+            availableSpaces={availableSpaces}
+          />
+        )}
+      </>
     );
   };
 
-  private onDescriptionChange = (description: string): void => {
-    this.setState({ description });
+  private renderTab = (): React.ReactNode => {
+    const { currentIndex, routes } = this.state;
+
+    return (
+      <TabView
+        swipeEnabled={false}
+        renderTabBar={this.renderTabBar}
+        renderScene={this.renderScene}
+        onIndexChange={this.onTabChange}
+        navigationState={{
+          index: currentIndex,
+          routes,
+        }}
+      />
+    );
   };
 
-  private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
-    formActions.setSubmitting(true);
+  private renderScene = ({ route }: { route: { key: string; title: string } }): React.ReactNode => {
+    const { currencyData, assetGroupType, furnishing } = this.props;
+    const { preferences, availableSpaces } = this.state;
 
-    const { onNextStep, furnishing, assetGroupType } = this.props;
-    const { description, availableSpaces, selectedPreferences } = this.state;
+    return (
+      <SubLeaseUnit
+        route={route}
+        onSubmit={this.onSubmit}
+        onSpacesChange={this.onSpacesChange}
+        furnishing={furnishing}
+        preferences={preferences}
+        currencyData={currencyData}
+        assetGroupType={assetGroupType}
+        availableSpaces={availableSpaces}
+      />
+    );
+  };
 
-    const params: ILeaseTermParams = {
-      ...AssetService.extractLeaseParams(values, assetGroupType),
-      description,
-      tenant_preferences: selectedPreferences,
-      furnishing,
-      lease_unit: {
-        name: 'Unit 1',
-        spaces: availableSpaces,
-      },
-    };
+  private renderTabBar = (props: any): React.ReactElement => {
+    const { currentIndex, routes } = this.state;
+    return (
+      <TabBar
+        {...props}
+        style={styles.tabBar}
+        indicatorStyle={styles.indicator}
+        renderLabel={({ route }): React.ReactElement => {
+          let style = {};
+          let type = 'regular';
 
-    const { setTermId, currentTermId, currentAssetId } = this.props;
-    try {
-      if (currentTermId <= -1) {
-        const response = await AssetRepository.createLeaseTerms(currentAssetId, [params]);
-        setTermId(response.id);
-      } else {
-        await AssetRepository.updateLeaseTerms(currentAssetId, currentTermId, params);
+          if (route.key === routes[currentIndex].key) {
+            style = { color: theme.colors.active };
+            type = 'semiBold';
+          }
+
+          return (
+            <Label type="large" textType={type as 'regular' | 'semiBold'} style={[styles.tabTitle, style]}>
+              {route.title}
+            </Label>
+          );
+        }}
+      />
+    );
+  };
+
+  private onTabChange = (index: number): void => {
+    this.setState({ currentIndex: index });
+  };
+
+  private onTabAdd = (): void => {
+    const { routes } = this.state;
+    const { t } = this.props;
+    this.setState({
+      routes: [...routes, { key: `${Math.random()}`, title: t('unit', { unitNo: routes.length + 1 }) }],
+    });
+  };
+
+  private onDelete = async (): Promise<void> => {
+    const { currentIndex, routes } = this.state;
+    const { t, currentAssetId } = this.props;
+
+    if (routes[currentIndex].id) {
+      try {
+        // @ts-ignore
+        await AssetRepository.deleteLeaseTerm(currentAssetId, routes[currentIndex].id);
+      } catch (err) {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+        return;
       }
-      onNextStep();
+    }
+
+    let routesToUpdate = [...routes];
+    routesToUpdate.splice(currentIndex, 1);
+
+    routesToUpdate = routesToUpdate.map((route, index) => ({ ...route, title: t('unit', { unitNo: index + 1 }) }));
+
+    this.setState({
+      routes: routesToUpdate,
+      currentIndex: currentIndex === routes.length - 1 ? currentIndex - 1 : currentIndex,
+    });
+  };
+
+  private onSpacesChange = (id: number, type: SpaceChangeType, count?: number): void => {
+    const { availableSpaces } = this.state;
+    const nextState = availableSpaces.map((space) => {
+      if (space.id === id) {
+        switch (type) {
+          case SpaceChangeType.INC:
+            space.count -= 1;
+            break;
+          case SpaceChangeType.DEC:
+            space.count += 1;
+            break;
+          case SpaceChangeType.DEL:
+            space.count += count ?? 0;
+            break;
+          default:
+            break;
+        }
+      }
+      return space;
+    });
+    this.setState({ availableSpaces: nextState });
+  };
+
+  private onSubmit = async (values: ILeaseTermParams, key?: string): Promise<void> => {
+    const { onNextStep, isSplitAsUnits, currentAssetId, scrollToTop } = this.props;
+    const { routes, currentIndex } = this.state;
+
+    try {
+      const response = await AssetRepository.createLeaseTerms(currentAssetId, [values]);
+
+      if (isSplitAsUnits) {
+        const routesToUpdate = routes.map((route) => {
+          if (route.key === key) {
+            return { ...route, id: response.ids[0] };
+          }
+          return route;
+        });
+        const newIndex = currentIndex === routes.length - 1 ? currentIndex : currentIndex + 1;
+        this.setState({ routes: routesToUpdate, currentIndex: newIndex }, scrollToTop);
+      } else {
+        this.setState({ singleLeaseUnitKey: response.ids[0] });
+        await onNextStep(TypeOfPlan.RENT);
+      }
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
-    formActions.setSubmitting(false);
   };
 
+  // APIs
   private getTenantPreferences = async (): Promise<void> => {
     const { currentAssetId } = this.props;
     try {
@@ -172,51 +266,24 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     const { currentAssetId } = this.props;
     try {
       const response = await AssetRepository.getAssetAvailableSpaces(currentAssetId);
-      const spaces = response.map((item) => {
-        return item.spaceList;
-      });
-      this.setState({ availableSpaces: spaces });
+      this.setState({ availableSpaces: response });
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
-
-  private handlePreferences = (id: number, isChecked: boolean): void => {
-    const { preferences, isPreferencesSelected } = this.state;
-    const selectedValues: number[] = [];
-
-    preferences.forEach((detail: IList) => {
-      if (detail.id === id) {
-        detail.isSelected = isChecked;
-      }
-      if (detail.isSelected) {
-        selectedValues.push(detail.id);
-      }
-    });
-
-    this.setState({ preferences, selectedPreferences: selectedValues, isPreferencesSelected: !isPreferencesSelected });
-  };
-
-  private formSchema = (): yup.ObjectSchema => {
-    const { t } = this.props;
-    return yup.object().shape({
-      ...LeaseFormSchema(t),
-    });
-  };
+  // APIs END
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.property)(LeaseTermController);
 
 const styles = StyleSheet.create({
-  continue: {
-    flex: 0,
-    marginTop: 20,
-    marginBottom: 50,
+  tabTitle: {
+    color: theme.colors.darkTint3,
   },
-  descriptionContainer: {
-    marginTop: 16,
+  tabBar: {
+    backgroundColor: theme.colors.white,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
   },
-  checkBox: {
-    paddingVertical: 10,
-  },
+  indicator: { backgroundColor: theme.colors.active, height: 2 },
 });

@@ -35,6 +35,7 @@ exports[`Text Area should match snapshot 1`] = `
   >
     <Component
       allowFontScaling={true}
+      autoCorrect={false}
       maxLength={250}
       multiline={true}
       placeholder="placeholder"
@@ -113,6 +114,7 @@ exports[`Text Area should match snapshot for optional 1`] = `
   >
     <Component
       allowFontScaling={true}
+      autoCorrect={false}
       maxLength={250}
       multiline={true}
       placeholder="placeholder"

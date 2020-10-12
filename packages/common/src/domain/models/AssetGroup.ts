@@ -1,14 +1,10 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 
-export interface ITypeUnit {
-  id: number;
-  name: string;
-}
-
-export interface IAssetGroup extends ITypeUnit {
+export interface IAssetGroup extends IUnit {
   space_types: SpaceType[];
-  asset_types: ITypeUnit[];
+  asset_types: IUnit[];
 }
 
 export enum SpaceFieldTypes {
@@ -23,25 +19,8 @@ export interface ISpaceCount {
   description?: string;
 }
 
-@JsonObject('TypeUnit')
-export class TypeUnit {
-  @JsonProperty('id', Number)
-  private _id = -1;
-
-  @JsonProperty('name', String)
-  private _name = '';
-
-  get id(): number {
-    return this._id;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-}
-
 @JsonObject('SpaceType')
-export class SpaceType extends TypeUnit {
+export class SpaceType extends Unit {
   @JsonProperty('field_type', String)
   private _fieldType = '';
 
@@ -62,6 +41,8 @@ export class SpaceType extends TypeUnit {
 
   @JsonProperty('count', Number, true)
   private _count = -1;
+
+  private _unitCount = this.isMandatory ? 1 : 0;
 
   get fieldType(): string {
     return this._fieldType;
@@ -99,6 +80,25 @@ export class SpaceType extends TypeUnit {
     return this._count;
   }
 
+  set count(value: number) {
+    this._count = value;
+  }
+
+  get unitCount(): number {
+    return this._unitCount;
+  }
+
+  set unitCount(value: number) {
+    this._unitCount = value;
+  }
+
+  get subLeaseSpaceList(): ISpaceCount {
+    return {
+      space_type: this.id,
+      count: this.unitCount,
+    };
+  }
+
   get spaceList(): ISpaceCount {
     return {
       space_type: this.id,
@@ -115,8 +115,8 @@ export class AssetGroup {
   @JsonProperty('name', String)
   private _name = '';
 
-  @JsonProperty('asset_types', [TypeUnit])
-  private _assetTypes: TypeUnit[] = [];
+  @JsonProperty('asset_types', [Unit])
+  private _assetTypes: Unit[] = [];
 
   @JsonProperty('space_types', [SpaceType])
   private _spaceTypes: SpaceType[] = [];
@@ -129,7 +129,7 @@ export class AssetGroup {
     return this._name;
   }
 
-  get assetTypes(): TypeUnit[] {
+  get assetTypes(): Unit[] {
     return this._assetTypes;
   }
 

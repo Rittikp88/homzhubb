@@ -6,16 +6,17 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, FormTextInput, SelectionPicker, Text, WithShadowView } from '@homzhub/common/src/components';
+import { Button, FormTextInput, FurnishingSelection, Text, WithShadowView } from '@homzhub/common/src/components';
 import { AssetDescriptionForm } from '@homzhub/mobile/src/components/molecules/AssetDescriptionForm';
 import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISpaceCount, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IDescriptionForm {
   carpetArea?: number;
@@ -124,20 +125,15 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
 
   private renderFurnishingFields = (formProps: FormikProps<FormikValues>): ReactElement => {
     const { t } = this.props;
-    const { descriptionDropdownValues } = this.state;
-    const handlePickerChange = (value: string): void => this.setFurnishingStatus(formProps, value);
+    const onFurnishingChange = (value: string): void => this.setFurnishingStatus(formProps, value);
 
     return (
-      <>
-        <Text style={styles.headingStyle} type="small">
-          {t('property:furnishing')}
-        </Text>
-        <View style={styles.furnishingStyle}>
-          <SelectionPicker<string>
-            containerStyles={styles.marginTop}
-            data={descriptionDropdownValues?.furnishingStatusDropdownValues || []}
-            selectedItem={formProps.values.furnishingType}
-            onValueChange={handlePickerChange}
+      <AssetListingSection title={t('property:furnishing')} containerStyles={styles.furnishingStyle}>
+        <>
+          <FurnishingSelection
+            titleHidden
+            value={formProps.values.furnishingType}
+            onFurnishingChange={onFurnishingChange}
           />
           <FormTextInput
             style={styles.furnishingFieldStyle}
@@ -147,8 +143,8 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
             inputType="default"
             formProps={formProps}
           />
-        </View>
-      </>
+        </>
+      </AssetListingSection>
     );
   };
 
@@ -260,9 +256,7 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   furnishingStyle: {
-    backgroundColor: theme.colors.white,
-    paddingHorizontal: 24,
-    paddingBottom: 24,
+    marginTop: 16,
   },
   headingStyle: {
     marginTop: 16,
@@ -274,8 +268,5 @@ const styles = StyleSheet.create({
     height: 85,
     textAlignVertical: 'top',
     paddingTop: 10,
-  },
-  marginTop: {
-    marginTop: 20,
   },
 });

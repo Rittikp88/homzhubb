@@ -179,6 +179,7 @@
     "projectNameRequired": "Please enter project name",
     "unitNoRequired": "Please enter unit no",
     "unitNo": "Unit No.",
+    "unit": "Unit {{unitNo}}",
     "blockNo": "Block No.",
     "address": "Address",
     "pincode": "Pincode",

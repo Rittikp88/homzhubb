@@ -32,6 +32,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
       </View>
       <View style={styles.textAreaContainer}>
         <TextInput
+          autoCorrect={false}
           style={styles.textArea}
           placeholder={placeholder}
           maxLength={250}

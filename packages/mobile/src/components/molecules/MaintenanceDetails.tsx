@@ -57,7 +57,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           inputGroupSuffixText={currencyData.currencyCode}
         />
       </View>
-      <View style={styles.dropdownContainer}>
+      <View style={[styles.fieldContainer, styles.dropdownContainer]}>
         {assetGroupType === AssetGroupTypes.RES && (
           <FormDropdown
             isDisabled
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     flex: 0.5,
   },
   dropdownContainer: {
-    flex: 0.5,
     marginStart: 16,
   },
   dropdownContainerStyle: {

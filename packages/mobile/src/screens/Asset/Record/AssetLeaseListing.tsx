@@ -29,14 +29,11 @@ import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPa
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
-  assetId: number;
   assetDetails: Asset | null;
-  lastVisitedStep: ILastVisitedStep | null;
   valueAddedServices: ValueAddedService[];
 }
 
@@ -70,6 +67,10 @@ enum RouteKeys {
   Services = 'services',
   Payment = 'payment',
 }
+const TAB_LAYOUT = {
+  width: theme.viewport.width - theme.layout.screenPadding * 2,
+  height: theme.viewport.height,
+};
 
 class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   private scrollRef = React.createRef<ScrollView>();
@@ -150,6 +151,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             lazy
             renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
             removeClippedSubviews
+            initialLayout={TAB_LAYOUT}
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
             renderTabBar={(): null => null}
@@ -176,7 +178,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const { currentIndex, isPropertyAsUnits, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
 
-    const togglePropertyUnits = (): void => this.setState({ isPropertyAsUnits: !isPropertyAsUnits });
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
@@ -186,7 +187,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             <Text type="small" textType="semiBold">
               {t('shareAsUnits')}
             </Text>
-            <RNSwitch selected={isPropertyAsUnits} onToggle={togglePropertyUnits} />
+            <RNSwitch selected={isPropertyAsUnits} onToggle={this.togglePropertyUnits} />
           </View>
         )}
         <View style={styles.tabRows}>
@@ -250,33 +251,31 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
-      lastVisitedStep,
-      assetId,
       setValueAddedServices,
       valueAddedServices,
     } = this.props;
 
-    if (!assetDetails || !lastVisitedStep) return null;
+    if (!assetDetails) return null;
 
     switch (route.key) {
       case RouteKeys.Verification:
         return (
           <PropertyVerification
-            propertyId={assetId}
+            propertyId={assetDetails.id}
             typeOfPlan={selectedPlan}
             updateStep={this.handleNextStep}
-            lastVisitedStep={lastVisitedStep}
+            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
           />
         );
       case RouteKeys.Services:
         return (
           <ValueAddedServicesView
+            propertyId={assetDetails.id}
+            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
             valueAddedServices={valueAddedServices}
             setValueAddedServices={setValueAddedServices}
             countryId={assetDetails?.country.id}
             assetGroupId={assetDetails?.assetGroup.id}
-            propertyId={assetId}
-            lastVisitedStep={lastVisitedStep}
             typeOfPlan={selectedPlan}
             handleNextStep={this.handleNextStep}
           />
@@ -284,10 +283,10 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       case RouteKeys.Payment:
         return (
           <PropertyPayment
+            propertyId={assetDetails.id}
+            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
             valueAddedServices={valueAddedServices}
             setValueAddedServices={setValueAddedServices}
-            propertyId={assetId}
-            lastVisitedStep={lastVisitedStep}
             typeOfPlan={selectedPlan}
             handleNextStep={this.handleNextStep}
           />
@@ -295,13 +294,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       default:
         return (
           <ActionController
+            assetDetails={assetDetails}
             typeOfPlan={selectedPlan}
-            lastVisitedStep={lastVisitedStep}
-            furnishing={assetDetails.furnishing}
             isSplitAsUnits={isPropertyAsUnits}
-            country={assetDetails.country}
-            assetGroupType={assetDetails.assetGroup.code}
             onNextStep={this.handleNextStep}
+            scrollToTop={this.scrollToTop}
+            togglePropertyUnits={this.togglePropertyUnits}
           />
         );
     }
@@ -342,6 +340,11 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         </Markdown>
       </BottomSheet>
     );
+  };
+
+  private togglePropertyUnits = (): void => {
+    const { isPropertyAsUnits } = this.state;
+    this.setState({ isPropertyAsUnits: !isPropertyAsUnits });
   };
 
   public getRoutes = (): IRoutes[] => {
@@ -394,7 +397,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
-    this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    this.scrollToTop();
   };
 
   private handlePreviousStep = (index: number): void => {
@@ -402,7 +405,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const value = index - currentIndex;
     if (value < 0) {
       this.setState({ currentIndex: currentIndex + value });
-      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      this.scrollToTop();
     }
   };
 
@@ -428,7 +431,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     });
     if (currentIndex < this.getRoutes().length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
-      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      this.scrollToTop();
     } else {
       this.setState({ isSheetVisible: true });
     }
@@ -443,26 +446,22 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const { currentIndex } = this.state;
     if (currentIndex < this.getRoutes().length - 2) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
-      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      this.scrollToTop();
     } else {
       this.setState({ isSheetVisible: true });
     }
   };
+
+  private scrollToTop = (): void => {
+    this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const {
-    getSelectedAssetPlan,
-    getCurrentAssetId,
-    getAssetDetails,
-    getLastVisitedStep,
-    getValueAddedServices,
-  } = RecordAssetSelectors;
+  const { getSelectedAssetPlan, getAssetDetails, getValueAddedServices } = RecordAssetSelectors;
   return {
     selectedAssetPlan: getSelectedAssetPlan(state),
-    assetId: getCurrentAssetId(state),
     assetDetails: getAssetDetails(state),
-    lastVisitedStep: getLastVisitedStep(state),
     valueAddedServices: getValueAddedServices(state),
   };
 };

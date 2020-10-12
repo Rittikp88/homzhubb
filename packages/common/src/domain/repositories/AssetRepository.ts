@@ -113,7 +113,7 @@ class AssetRepository {
     return ObjectMapper.deserializeArray(LeaseTerm, response);
   };
 
-  public createLeaseTerms = async (propertyId: number, leaseTerms: ILeaseTermParams[]): Promise<{ id: number }> => {
+  public createLeaseTerms = async (propertyId: number, leaseTerms: ILeaseTermParams[]): Promise<{ ids: number[] }> => {
     return await this.apiClient.post(ENDPOINTS.leaseTerms(propertyId), leaseTerms);
   };
 
@@ -123,6 +123,10 @@ class AssetRepository {
     leaseTerms: ILeaseTermParams
   ): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.updateLeaseTerms(propertyId, leaseTermId), leaseTerms);
+  };
+
+  public deleteLeaseTerm = async (assetId: number, leaseUnitId: number): Promise<void> => {
+    await this.apiClient.delete(ENDPOINTS.updateLeaseTerms(assetId, leaseUnitId));
   };
 
   public getSaleTerms = async (propertyId: number, params: IGetSaleTermsParams): Promise<SaleTerm[]> => {
@@ -269,7 +273,7 @@ class AssetRepository {
     return ObjectMapper.deserializeArray(SpaceType, response);
   };
 
-  public createManageLeaseTerm = async (assetId: number, params: IManageTerm): Promise<number> => {
+  public createManageTerm = async (assetId: number, params: IManageTerm): Promise<number> => {
     const response = await this.apiClient.post(ENDPOINTS.manageTerm(assetId), params);
     return response.lease_unit_id;
   };

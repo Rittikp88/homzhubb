@@ -30,7 +30,6 @@ export const RecordAssetActionTypes = {
   },
   SET: {
     ASSET_ID: `${actionTypePrefix}ASSET_ID`,
-    TERM_ID: `${actionTypePrefix}TERM_ID`,
     SELECTED_PLAN: `${actionTypePrefix}SELECTED_PLAN`,
     SELECTED_VALUE_SERVICES: `${actionTypePrefix}SELECTED_VALUE_SERVICES`,
   },
@@ -44,11 +43,6 @@ const setSelectedPlan = (payload: ISelectedAssetPlan): IFluxStandardAction<ISele
 
 const setAssetId = (payload: number): IFluxStandardAction<number> => ({
   type: RecordAssetActionTypes.SET.ASSET_ID,
-  payload,
-});
-
-const setTermId = (payload: number): IFluxStandardAction<number> => ({
-  type: RecordAssetActionTypes.SET.TERM_ID,
   payload,
 });
 
@@ -144,7 +138,6 @@ export type RecordAssetPayloadTypes =
 export const RecordAssetActions = {
   setSelectedPlan,
   setAssetId,
-  setTermId,
   getAssetGroups,
   getAssetGroupsSuccess,
   getAssetGroupsFailure,

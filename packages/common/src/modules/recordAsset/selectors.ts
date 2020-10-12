@@ -53,13 +53,6 @@ const getSelectedAssetPlan = (state: IState): ISelectedAssetPlan => {
   return selectedAssetPlan;
 };
 
-const getCurrentTermId = (state: IState): number => {
-  const {
-    recordAsset: { termId },
-  } = state;
-  return termId;
-};
-
 const getAssetDetails = (state: IState): Asset | null => {
   const {
     recordAsset: { assetDetails },
@@ -136,7 +129,6 @@ export const RecordAssetSelectors = {
   getSelectedAssetPlan,
   getSpaceTypes,
   getAssetDetails,
-  getCurrentTermId,
   getMaintenanceUnits,
   getLastVisitedStep,
   getAssetGroupId,

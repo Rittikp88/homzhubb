@@ -8,6 +8,7 @@ export { Counter } from '@homzhub/common/src/components/atoms/Counter';
 export { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 export { Divider } from '@homzhub/common/src/components/atoms/Divider';
 export { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+export { FurnishingSelection } from '@homzhub/common/src/components/atoms/FurnishingSelection';
 export { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 export { ImageRound, ImageSquare, Image } from '@homzhub/common/src/components/atoms/Image';
 export { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
@@ -30,7 +31,7 @@ export { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowV
 // Molecules
 export { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 export { CheckboxGroup } from '@homzhub/common/src/components/molecules/CheckboxGroup';
-export type { ICheckboxGroupProps } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+export type { ICheckboxGroupProps, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 export { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 export { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 export { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';

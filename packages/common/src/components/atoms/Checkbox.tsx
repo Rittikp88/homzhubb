@@ -56,6 +56,5 @@ const styles = StyleSheet.create({
   },
   label: {
     marginStart: 12,
-    width: 135, // TODO: Remove the rigid width
   },
 });

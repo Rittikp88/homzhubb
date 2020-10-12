@@ -10,14 +10,13 @@ import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, FormButton, FormTextInput, Label, Text, TextArea } from '@homzhub/common/src/components';
+import { Button, FormButton, FormTextInput, Label, Text } from '@homzhub/common/src/components';
 import {
   IFormData,
   initialLeaseFormValues,
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
-import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -34,7 +33,6 @@ interface IFormFields extends IFormData {
 interface IOwnState {
   currentTermId: number;
   isPropertyOccupied: boolean;
-  description: string;
   formData: IFormFields;
 }
 
@@ -45,12 +43,9 @@ interface IProps extends WithTranslation {
   onNextStep: (type: TypeOfPlan) => Promise<void>;
 }
 
-const MAX_DESCRIPTION_LENGTH = 600;
-
 class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   public state = {
-    isPropertyOccupied: true,
-    description: '',
+    isPropertyOccupied: false,
     currentTermId: -1,
     formData: {
       firstName: '',
@@ -117,7 +112,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
 
   private renderForm = (): React.ReactNode => {
     const { t, currencyData, assetGroupType } = this.props;
-    const { description, isPropertyOccupied, formData } = this.state;
+    const { isPropertyOccupied, formData } = this.state;
     return (
       <Formik
         enableReinitialize
@@ -126,72 +121,17 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
         validate={FormUtils.validate(this.formSchema)}
       >
         {isPropertyOccupied ? (
-          (formProps: FormikProps<IFormData>): React.ReactElement => {
+          (formProps: FormikProps<IFormFields>): React.ReactElement => {
             return (
               <>
-                <AssetListingSection title={t('leaseTerms')}>
-                  <>
-                    <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                      {t('tenantDetails')}
-                    </Text>
-                    <View style={styles.optionContainer}>
-                      <View style={styles.firstName}>
-                        <FormTextInput
-                          name="firstName"
-                          inputType="name"
-                          label={t('firstName')}
-                          placeholder={t('firstName')}
-                          formProps={formProps}
-                        />
-                      </View>
-                      <View style={styles.lastName}>
-                        <FormTextInput
-                          name="lastName"
-                          inputType="name"
-                          label={t('lastName')}
-                          placeholder={t('lastName')}
-                          formProps={formProps}
-                        />
-                      </View>
-                    </View>
-                    <FormTextInput
-                      name="email"
-                      label={t('common:email')}
-                      placeholder={t('tenantEmail')}
-                      inputType="email"
-                      formProps={formProps}
-                    />
-                    <FormTextInput
-                      name="phone"
-                      label={t('common:phone')}
-                      placeholder={t('tenantPhone')}
-                      inputType="phone"
-                      maxLength={10}
-                      inputPrefixText="+91"
-                      formProps={formProps}
-                    />
-                    <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                      {t('rentAndDeposit')}
-                    </Text>
-                    <LeaseTermForm
-                      isFromManage
-                      formProps={formProps}
-                      currencyData={currencyData}
-                      assetGroupType={assetGroupType}
-                    />
-                  </>
-                </AssetListingSection>
-                <AssetListingSection
-                  title={t('assetDescription:description')}
-                  containerStyles={styles.descriptionContainer}
+                <LeaseTermForm
+                  isFromManage
+                  formProps={formProps}
+                  currencyData={currencyData}
+                  assetGroupType={assetGroupType}
                 >
-                  <TextArea
-                    value={description}
-                    wordCountLimit={MAX_DESCRIPTION_LENGTH}
-                    placeholder={t('common:typeHere')}
-                    onMessageChange={this.onDescriptionChange}
-                  />
-                </AssetListingSection>
+                  {this.renderTenantForm(formProps)}
+                </LeaseTermForm>
                 <FormButton
                   title={t('common:continue')}
                   type="primary"
@@ -210,33 +150,78 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     );
   };
 
+  private renderTenantForm = (formProps: FormikProps<IFormFields>): React.ReactNode => {
+    const { t } = this.props;
+    return (
+      <>
+        <Text type="small" textType="semiBold" style={styles.headerTitle}>
+          {t('tenantDetails')}
+        </Text>
+        <View style={styles.optionContainer}>
+          <View style={styles.firstName}>
+            <FormTextInput
+              name="firstName"
+              inputType="name"
+              label={t('firstName')}
+              placeholder={t('firstName')}
+              formProps={formProps}
+            />
+          </View>
+          <View style={styles.lastName}>
+            <FormTextInput
+              name="lastName"
+              inputType="name"
+              label={t('lastName')}
+              placeholder={t('lastName')}
+              formProps={formProps}
+            />
+          </View>
+        </View>
+        <FormTextInput
+          name="email"
+          label={t('common:email')}
+          placeholder={t('tenantEmail')}
+          inputType="email"
+          formProps={formProps}
+        />
+        <FormTextInput
+          name="phone"
+          label={t('common:phone')}
+          placeholder={t('tenantPhone')}
+          inputType="phone"
+          maxLength={10}
+          inputPrefixText="+91"
+          formProps={formProps}
+        />
+        <Text type="small" textType="semiBold" style={styles.headerTitle}>
+          {t('rentAndDeposit')}
+        </Text>
+      </>
+    );
+  };
+
   private onOccupancyChanged = (): void => {
     const { isPropertyOccupied } = this.state;
     this.setState({ isPropertyOccupied: !isPropertyOccupied });
   };
 
-  private onDescriptionChange = (description: string): void => {
-    this.setState({ description });
-  };
-
   private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {
     formActions.setSubmitting(true);
     const { onNextStep, currentAssetId, assetGroupType } = this.props;
-    const { currentTermId, description } = this.state;
+    const { currentTermId } = this.state;
 
     const params: IManageTerm = {
       first_name: values.firstName,
       last_name: values.lastName,
       email: values.email,
-      country_code: '+91',
+      phone_code: '+91',
       phone_number: values.phone,
       ...AssetService.extractLeaseParams(values, assetGroupType),
-      description,
     };
 
     try {
       if (currentTermId <= -1) {
-        const id = await AssetRepository.createManageLeaseTerm(currentAssetId, params);
+        const id = await AssetRepository.createManageTerm(currentAssetId, params);
         this.setState({ currentTermId: id });
       } else {
         await AssetRepository.updateManageTerm(currentAssetId, currentTermId, params);
@@ -292,9 +277,6 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     marginVertical: 12,
-  },
-  descriptionContainer: {
-    marginTop: 16,
   },
   option: {
     flex: 0.5,
