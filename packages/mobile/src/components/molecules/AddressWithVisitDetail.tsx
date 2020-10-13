@@ -13,9 +13,11 @@ interface IProps {
   subAddress: string;
   startDate: string;
   endDate: string;
+  comments?: string;
   isMissedVisit?: boolean;
   isCompletedVisit?: boolean;
   isRescheduleAll?: boolean;
+  isFromProperty?: boolean;
   onPressSchedule?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -25,32 +27,44 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
     subAddress,
     primaryAddress,
     startDate,
+    comments,
     isMissedVisit,
     isCompletedVisit,
     containerStyle = {},
     onPressSchedule,
     isRescheduleAll = false,
+    isFromProperty = false,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-  const dateTime = DateUtils.convertTimeFormat(startDate, 'DDMMM HH');
+  const dateTime = DateUtils.convertTimeFormat(startDate, 'YYYY-MM-DD HH');
   const time = VisitSlot.find((item) => item.from === Number(dateTime[1]));
   const textStyle = [styles.textColor, isMissedVisit && styles.missedColor];
   return (
     <View style={containerStyle}>
-      <PropertyAddress
-        primaryTextType="small"
-        subAddress={subAddress}
-        primaryAddress={primaryAddress}
-        subAddressStyle={styles.subAddress}
-        containerStyle={styles.addressContainer}
-      />
-      <Label type="regular" style={styles.textColor}>
+      {isFromProperty ? (
+        <>
+          {!!comments && (
+            <Text type="small" textType="semiBold" style={styles.addressContainer}>
+              {comments}
+            </Text>
+          )}
+        </>
+      ) : (
+        <PropertyAddress
+          primaryTextType="small"
+          subAddress={subAddress}
+          primaryAddress={primaryAddress}
+          subAddressStyle={styles.subAddress}
+          containerStyle={styles.addressContainer}
+        />
+      )}
+      <Label type="regular" style={[styles.textColor, !comments && styles.detail]}>
         {t('visitDetails')}
       </Label>
       <View style={styles.detailContainer}>
         <View style={styles.content}>
           <Text type="small" textType="semiBold" style={textStyle}>
-            {dateTime[0]}
+            {DateUtils.getDisplayDate(dateTime[0], 'DD MMM')}
           </Text>
           <Icon
             name={icons.roundFilled}
@@ -82,6 +96,9 @@ const styles = StyleSheet.create({
   },
   textColor: {
     color: theme.colors.darkTint3,
+  },
+  detail: {
+    marginTop: 12,
   },
   missedColor: {
     color: theme.colors.error,

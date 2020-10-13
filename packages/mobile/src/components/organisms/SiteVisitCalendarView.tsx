@@ -2,23 +2,25 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { groupBy } from 'lodash';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Avatar, Divider, Button, EmptyState } from '@homzhub/common/src/components';
+import { Avatar, Badge, Button, Divider, EmptyState } from '@homzhub/common/src/components';
 import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader';
 import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
 import { BottomSheet, Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
 import { AssetVisit, ISlotItem, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAssetVisitPayload, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
+import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
@@ -40,6 +42,7 @@ interface IScreenState {
   timeSlot: ISlotItem[];
   isCalendarVisible: boolean;
   selectedSlot: number;
+  visitsData: IVisitByKey[][];
 }
 
 const allSlot = { id: 0, from: 0, to: 0, icon: '', formatted: 'ALL' };
@@ -52,15 +55,29 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     timeSlot: [allSlot].concat(TimeSlot),
     isCalendarVisible: false,
     selectedSlot: 0,
+    visitsData: [],
   };
+
+  public static getDerivedStateFromProps(props: Props, state: IScreenState): IScreenState | null {
+    const { visits } = props;
+    const { visitsData } = state;
+    if (visits && visitsData) {
+      return {
+        ...state,
+        visitsData: visits,
+      };
+    }
+
+    return null;
+  }
 
   public componentDidMount(): void {
     this.getVisitsData();
   }
 
   public render(): React.ReactNode {
-    const { t, visits, isLoading } = this.props;
-    const { currentDate, isCalendarVisible } = this.state;
+    const { t, isLoading } = this.props;
+    const { currentDate, isCalendarVisible, visitsData } = this.state;
     return (
       <>
         <CalendarHeader
@@ -70,10 +87,10 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
           onBackPress={this.handlePreviousDay}
         />
         {this.renderTimeSlot()}
-        {visits.length > 0 ? (
+        {visitsData.length > 0 ? (
           <ScrollView style={styles.visitView} showsVerticalScrollIndicator={false}>
-            {visits.map((visitData) => {
-              return visitData.map((visit) => {
+            {visitsData.map((visitItem: IVisitByKey[]) => {
+              return visitItem.map((visit) => {
                 return this.renderVisits(visit);
               });
             })}
@@ -123,6 +140,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   private renderVisits = (visit: IVisitByKey): React.ReactElement => {
     const { key, results } = visit;
     const visitData = results as AssetVisit[];
+    const visitByStatus = this.getVisitByStatus(visitData);
     return (
       <View style={styles.visitCard}>
         <AddressWithVisitDetail
@@ -136,25 +154,29 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
         />
         <Divider containerStyles={styles.dividerStyle} />
         <View style={styles.userView}>
-          {visitData.map((item, index) => {
-            const {
-              user: { fullName, rating },
-              role,
-              id,
-              createdAt,
-            } = item;
+          {visitByStatus.map((visitItem, index) => {
+            const { key: status, results: assetResults } = visitItem;
+            const assetVisit = assetResults as AssetVisit[];
+            const badge = this.getBadgesData(status);
             return (
               <>
-                <Avatar
-                  key={id}
-                  fullName={fullName}
-                  designation={StringUtils.toTitleCase(role)}
-                  rating={rating}
-                  isRightIcon
-                  date={createdAt}
-                  containerStyle={styles.avatar}
-                />
-                {results.length - 1 !== index && <Divider containerStyles={styles.dividerStyle} />}
+                <Badge title={badge.label} badgeColor={badge.color} badgeStyle={styles.badge} />
+                {assetVisit.map((item) => {
+                  return (
+                    <>
+                      <Avatar
+                        key={item.id}
+                        fullName={item.user.fullName}
+                        designation={StringUtils.toTitleCase(item.role)}
+                        rating={item.user.rating}
+                        isRightIcon
+                        date={item.createdAt}
+                        containerStyle={styles.avatar}
+                      />
+                      {results.length - 1 !== index && <Divider containerStyles={styles.dividerStyle} />}
+                    </>
+                  );
+                })}
               </>
             );
           })}
@@ -176,23 +198,68 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     });
   };
 
+  // TODO: (Shikha) - Refactor
+  private getBadgesData = (status: string): ILabelColor => {
+    switch (status) {
+      case VisitStatus.ACCEPTED:
+        return {
+          label: 'Completed',
+          color: theme.colors.green,
+        };
+        break;
+      case VisitStatus.PENDING:
+        return {
+          label: 'Missed',
+          color: theme.colors.green,
+        };
+        break;
+      case VisitStatus.CANCELLED:
+        return {
+          label: 'Cancelled',
+          color: theme.colors.error,
+        };
+        break;
+      case VisitStatus.REJECTED:
+        return {
+          label: 'Declined',
+          color: theme.colors.error,
+        };
+        break;
+      default:
+        return {
+          label: 'Completed',
+          color: theme.colors.green,
+        };
+    }
+  };
+
+  private getVisitByStatus = (visitData: AssetVisit[]): IVisitByKey[] => {
+    const groupData = groupBy(visitData, (result) => result.status);
+    return Object.keys(groupData).map((key) => {
+      const results = groupData[key];
+      return {
+        key,
+        results,
+      };
+    });
+  };
+
   private getVisitsData = (): void => {
     const { getAssetVisit, selectedAssetId } = this.props;
     const { currentDate, selectedSlot, timeSlot } = this.state;
 
-    const start_date__gte = DateUtils.getUtcFormattedDate(currentDate, DateFormats.ISO);
-
-    let start_date = '';
+    const start_date = DateUtils.getUtcFormatted(currentDate, 'DD, MMM YYYY', 'YYYY-MM-DD');
+    let start_datetime = '';
     if (selectedSlot > 0) {
       timeSlot.forEach((item) => {
         if (item.id === selectedSlot) {
-          start_date = DateUtils.getISOFormat(currentDate, item.from);
+          start_datetime = DateUtils.getISOFormat(currentDate, item.from);
         }
       });
     }
     const payload: IAssetVisitPayload = {
-      ...(start_date && { start_date }),
-      ...(selectedSlot === 0 && start_date__gte && { start_date__gte }),
+      ...(selectedSlot === 0 && { start_date }),
+      ...(selectedSlot > 0 && { start_datetime }),
       ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
     };
 
@@ -204,6 +271,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     this.setState(
       {
         currentDate: DateUtils.getNextDate(1, currentDate, 'DD, MMMM YYYY'),
+        selectedSlot: 0,
       },
       (): void => this.getVisitsData()
     );
@@ -214,6 +282,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     this.setState(
       {
         currentDate: DateUtils.getPreviousDate(1, currentDate, 'DD, MMMM YYYY'),
+        selectedSlot: 0,
       },
       (): void => this.getVisitsData()
     );
@@ -320,5 +389,10 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginVertical: 12,
+  },
+  badge: {
+    alignSelf: 'flex-start',
+    paddingVertical: 4,
+    paddingHorizontal: 14,
   },
 });

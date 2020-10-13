@@ -10,7 +10,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, FormTextInput, FurnishingSelection, Text, WithShadowView } from '@homzhub/common/src/components';
 import { AssetDescriptionForm } from '@homzhub/mobile/src/components/molecules/AssetDescriptionForm';
-import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
+import { FlowTypes, PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -97,7 +97,11 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                     <Text style={styles.headingStyle} type="small">
                       {t('property:spacesText')}
                     </Text>
-                    <PropertySpaces onChange={this.handleSpaceFormChange} spacesTypes={spaceTypes} />
+                    <PropertySpaces
+                      flowType={FlowTypes.PostAssetFlow}
+                      onChange={this.handleSpaceFormChange}
+                      spacesTypes={spaceTypes}
+                    />
                   </>
 
                   {descriptionDropdownValues && (

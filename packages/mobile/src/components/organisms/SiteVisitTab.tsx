@@ -109,7 +109,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   }
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
-    const { visits, isLoading } = this.props;
+    const { visits, isLoading, isFromProperty } = this.props;
 
     switch (route.key) {
       case VisitStatusType.UPCOMING:
@@ -117,6 +117,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
           <PropertyVisitList
             visitType={VisitStatusType.UPCOMING}
             visitData={visits}
+            isFromProperty={isFromProperty}
             isLoading={isLoading}
             handleAction={this.handleVisitActions}
             handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.UPCOMING)}
@@ -129,6 +130,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
             visitType={VisitStatusType.MISSED}
             visitData={visits}
             isLoading={isLoading}
+            isFromProperty={isFromProperty}
             handleAction={this.handleVisitActions}
             handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.MISSED)}
             handleDropdown={this.onDropdownValueSelect}
@@ -140,6 +142,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
             visitType={VisitStatusType.COMPLETED}
             visitData={visits}
             isLoading={isLoading}
+            isFromProperty={isFromProperty}
             handleAction={this.handleVisitActions}
             handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED)}
             handleDropdown={this.onDropdownValueSelect}
@@ -175,12 +178,11 @@ class SiteVisitTab extends Component<Props, IScreenState> {
 
   private handleRescheduleVisit = (id: number, key: VisitStatusType): void => {
     const { onReschedule, setVisitIds } = this.props;
-
+    setVisitIds([id]);
     if (key === VisitStatusType.COMPLETED) {
       onReschedule(true);
     } else {
       onReschedule(false);
-      setVisitIds([id]);
     }
   };
 
@@ -210,6 +212,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     const date = DateUtils.getCurrentDateISO();
     let start_date_lte;
     let start_date_gte;
+    let lease_listing_id;
+    let sale_listing_id;
     let status;
     switch (currentRoute.key) {
       case VisitStatusType.UPCOMING:
@@ -226,15 +230,22 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       default:
     }
 
-    if (isFromProperty && asset && (!asset.leaseTerm || !asset.saleTerm)) {
-      return;
+    if (isFromProperty && asset && asset.assetStatusInfo) {
+      if (!asset.assetStatusInfo.saleListingId && !asset.assetStatusInfo.leaseListingId) {
+        return;
+      }
+      if (asset.assetStatusInfo.leaseListingId) {
+        lease_listing_id = asset.assetStatusInfo.leaseListingId;
+      } else {
+        sale_listing_id = asset.assetStatusInfo.saleListingId;
+      }
     }
 
     const payload: IAssetVisitPayload = {
       ...(start_date_lte && { start_date__lte: start_date_lte }),
       ...(start_date_gte && { start_date__gte: start_date_gte }),
-      ...(asset && asset.leaseTerm && { lease_listing_id: asset.leaseTerm.id }),
-      ...(asset && asset.saleTerm && { sale_listing_id: asset.saleTerm.id }),
+      ...(isFromProperty && lease_listing_id && { lease_listing_id }),
+      ...(isFromProperty && sale_listing_id && { sale_listing_id }),
       ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
       ...(status && { status }),
     };

@@ -29,6 +29,7 @@ interface IProps {
   visitType: VisitStatusType;
   visitData: IVisitByKey[];
   isLoading: boolean;
+  isFromProperty?: boolean;
   handleAction: (id: number, action: VisitActions) => void;
   handleReschedule: (id: number) => void;
   handleDropdown: (startDate: string, endDate: string, visitType: VisitStatusType) => void;
@@ -100,8 +101,8 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   }
 
   private renderItem = (item: AssetVisit): React.ReactElement => {
-    const { asset, user, actions, startDate, endDate, id, role, createdAt } = item;
-    const { visitType, handleReschedule } = this.props;
+    const { asset, user, actions, startDate, endDate, id, role, createdAt, comments } = item;
+    const { visitType, handleReschedule, isFromProperty } = this.props;
     const isMissed = visitType === VisitStatusType.MISSED;
     const isCompleted = visitType === VisitStatusType.COMPLETED;
     const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
@@ -124,6 +125,8 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             subAddress={asset.address}
             startDate={startDate}
             endDate={endDate}
+            comments={comments}
+            isFromProperty={isFromProperty}
             isMissedVisit={isMissed}
             isCompletedVisit={isCompleted}
             onPressSchedule={onReschedule}

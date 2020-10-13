@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TopTabNavigatorParamList } from '@homzhub/mobile/src/navigation/TopTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -7,16 +7,19 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 
 type Props = NavigationScreenProps<TopTabNavigatorParamList, ScreensKeys.SiteVisitsTab>;
 
-const PropertyVisitTab = ({ navigation }: Props): React.ReactElement => {
-  const navigateToBookVisit = (): void => {
+export class PropertyVisitTab extends Component<Props> {
+  public render(): React.ReactNode {
+    return (
+      <View style={styles.container}>
+        <SiteVisitTab onReschedule={this.navigateToBookVisit} isFromProperty />
+      </View>
+    );
+  }
+
+  private navigateToBookVisit = (): void => {
     // TODO: Add navigation for reschedule visit
   };
-  return (
-    <View style={styles.container}>
-      <SiteVisitTab onReschedule={navigateToBookVisit} isFromProperty />
-    </View>
-  );
-};
+}
 
 export default PropertyVisitTab;
 

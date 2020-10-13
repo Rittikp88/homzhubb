@@ -19,9 +19,15 @@ interface IGroupedSpaceType {
   [SpaceFieldTypes.TextBox]?: SpaceType[];
 }
 
+export enum FlowTypes {
+  PostAssetFlow = 'AddPropertyFlow',
+  LeaseFlow = 'LeaseFlow',
+}
+
 interface IOwnProps extends WithTranslation {
   spacesTypes: SpaceType[];
   onChange: (id: number, count: number, description?: string) => void;
+  flowType?: FlowTypes;
 }
 
 interface IOwnState {
@@ -79,9 +85,8 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
   }
 
   private renderSpaces = (renderPrimary: boolean): React.ReactNode => {
-    const { t } = this.props;
+    const { t, flowType } = this.props;
     const { groupedSpaceTypes } = this.state;
-
     const handleCounterChange = (count: number, id?: number): void => {
       this.handleSpacesChange(id || -1, count);
     };
@@ -104,7 +109,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           name={{ title: space.name, id: space.id }}
           svgImage={space.attachment && space.attachment.link}
           onValueChange={handleCounterChange}
-          maxCount={space.unitCount + space.count}
+          maxCount={flowType === FlowTypes.PostAssetFlow ? undefined : space.unitCount + space.count}
         />
       );
     });

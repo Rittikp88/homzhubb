@@ -75,10 +75,10 @@ export class AssetVisit {
   private _comments = '';
 
   @JsonProperty('sale_listing', Number, true)
-  private _saleListing = -1;
+  private _saleListing = null;
 
   @JsonProperty('lease_listing', Number, true)
-  private _leaseListing = -1;
+  private _leaseListing = null;
 
   @JsonProperty('status', String)
   private _status = '';

@@ -231,7 +231,20 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   public postPropertyVerificationDocuments = async (): Promise<void> => {
     const { propertyId, updateStep, t, lastVisitedStep, typeOfPlan } = this.props;
     const { localDocuments, existingDocuments } = this.state;
+
+    const updateAssetPayload: IUpdateAssetParams = {
+      last_visited_step: {
+        ...lastVisitedStep,
+        listing: {
+          ...lastVisitedStep.listing,
+          type: typeOfPlan,
+          is_verification_done: true,
+        },
+      },
+    };
+
     if (localDocuments.length === 0) {
+      await AssetRepository.updateAsset(propertyId, updateAssetPayload);
       updateStep();
       return;
     }
@@ -247,17 +260,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     });
 
     this.setState({ isLoading: true });
-
-    const updateAssetPayload: IUpdateAssetParams = {
-      last_visited_step: {
-        ...lastVisitedStep,
-        listing: {
-          ...lastVisitedStep.listing,
-          type: typeOfPlan,
-          is_verification_done: true,
-        },
-      },
-    };
 
     try {
       const response = await AttachmentService.uploadImage(formData);
@@ -280,12 +282,14 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           });
         }
       });
+      this.setState({ isLoading: false });
 
       await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
       await this.getExistingDocuments(propertyId);
-      updateStep();
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+      updateStep();
     } catch (e) {
+      this.setState({ isLoading: false });
       if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
         AlertHelper.error({ message: t('common:fileCorrupt') });
       }

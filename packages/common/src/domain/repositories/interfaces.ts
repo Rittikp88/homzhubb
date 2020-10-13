@@ -369,6 +369,7 @@ export interface IOrderSummaryPayload {
 export interface IAssetVisitPayload {
   asset_id?: number;
   start_date?: string;
+  start_datetime?: string;
   sale_listing_id?: number;
   lease_listing_id?: number;
   start_date__gte?: string;

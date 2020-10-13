@@ -58,6 +58,8 @@ interface IVisitState {
   message: string;
   isLoading: boolean;
   isSpinnerLoading: boolean;
+  leaseListingId: number | null;
+  saleListingId: number | null;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.BookVisit>;
@@ -77,18 +79,15 @@ export class BookVisit extends Component<Props, IVisitState> {
     message: '',
     isLoading: false,
     isSpinnerLoading: false,
+    leaseListingId: null,
+    saleListingId: null,
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const {
-      route: { params },
-    } = this.props;
     await this.getVisitorType();
     await this.getUpcomingVisits();
 
-    if (params && params.isReschedule) {
-      this.getExistingData();
-    }
+    this.getExistingData();
   };
 
   public render(): React.ReactNode {
@@ -279,14 +278,25 @@ export class BookVisit extends Component<Props, IVisitState> {
   };
 
   private getExistingData = (): void => {
-    const { visitDetail } = this.props;
+    const {
+      visitDetail,
+      route: { params },
+    } = this.props;
     if (!visitDetail) return;
+
     const dateTime = DateUtils.convertTimeFormat(visitDetail.startDate, 'YYYY-MM-DD HH');
     const time = TimeSlot.find((item) => item.from === Number(dateTime[1]));
 
+    if (params && params.isReschedule) {
+      this.setState({
+        selectedDate: visitDetail.startDate ? DateUtils.getDisplayDate(dateTime[0], 'll') : '',
+        selectedTimeSlot: time ? time.id : 0,
+      });
+    }
+
     this.setState({
-      selectedDate: visitDetail.startDate ? DateUtils.getDisplayDate(dateTime[0], 'll') : '',
-      selectedTimeSlot: time ? time.id : 0,
+      leaseListingId: visitDetail.leaseListing,
+      saleListingId: visitDetail.saleListing,
     });
   };
 
@@ -303,15 +313,15 @@ export class BookVisit extends Component<Props, IVisitState> {
   };
 
   private getUpcomingVisits = async (isVisitTypeChange?: boolean): Promise<void> => {
-    const { visitType } = this.state;
+    const { visitType, saleListingId, leaseListingId } = this.state;
     const {
       route: { params },
     } = this.props;
     const payload: IUpcomingVisitPayload = {
       visit_type: visitType[0],
       start_date__gte: DateUtils.getCurrentDate(),
-      lease_listing_id: params.lease_listing_id ?? null,
-      sale_listing_id: params.sale_listing_id ?? null,
+      lease_listing_id: params.lease_listing_id ?? leaseListingId,
+      sale_listing_id: params.sale_listing_id ?? saleListingId,
     };
     if (isVisitTypeChange) {
       this.setState({ isSpinnerLoading: true });
@@ -351,6 +361,8 @@ export class BookVisit extends Component<Props, IVisitState> {
       selectedDate,
       selectedTimeSlot,
       isUpcomingSlotSelected,
+      leaseListingId,
+      saleListingId,
     } = this.state;
     const {
       t,
@@ -383,8 +395,8 @@ export class BookVisit extends Component<Props, IVisitState> {
       start_date,
       end_date,
       ...(message && { comments: message }),
-      lease_listing: params.lease_listing_id ?? null,
-      sale_listing: params.sale_listing_id ?? null,
+      lease_listing: params.lease_listing_id && params.lease_listing_id > 0 ? params.lease_listing_id : leaseListingId,
+      sale_listing: params.sale_listing_id && params.sale_listing_id > 0 ? params.sale_listing_id : saleListingId,
     };
 
     const reschedulePayload: IRescheduleVisitPayload = {
@@ -414,10 +426,10 @@ export class BookVisit extends Component<Props, IVisitState> {
   private goBack = (): void => {
     const {
       navigation,
+      getAssetVisit,
       route: {
         params: { propertyTermId },
       },
-      getAssetVisit,
     } = this.props;
 
     if (propertyTermId) {
