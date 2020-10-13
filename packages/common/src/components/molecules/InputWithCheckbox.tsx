@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 
@@ -7,10 +7,11 @@ export interface IProps {
   onChange: (isSelected: boolean, text: string) => void;
   selected?: boolean;
   textValue?: string;
+  placeholder?: string;
 }
 
 export const InputWithCheckbox = (props: IProps): React.ReactElement => {
-  const { onChange, selected = false, textValue = '' } = props;
+  const { onChange, selected = false, textValue = '', placeholder } = props;
   const [isSelected, setIsSelected] = useState(selected);
   const [text, setText] = useState(textValue);
 
@@ -23,9 +24,10 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <View style={styles.inputWithCheckbox}>
+    <TouchableOpacity onPress={onCheckboxToggle} style={styles.inputWithCheckbox}>
       <RNCheckbox containerStyle={styles.checkboxStyle} onToggle={onCheckboxToggle} selected={isSelected} />
       <TextInput
+        autoFocus
         value={text}
         editable={isSelected}
         style={styles.inputStyle}
@@ -33,8 +35,9 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
           setText(value);
         }}
         underlineColorAndroid="transparent"
+        placeholder={placeholder}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

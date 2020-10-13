@@ -268,6 +268,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
         );
       case RouteKeys.Services:
+        this.scrollToTop();
         return (
           <ValueAddedServicesView
             propertyId={assetDetails.id}

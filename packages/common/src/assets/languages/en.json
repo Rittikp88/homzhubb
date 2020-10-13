@@ -337,7 +337,8 @@
     "totalVisit": "{{totalVisit}} Site visits",
     "noVisits": "No Visits Found",
     "wantCancelVisit": "Do you want to cancel scheduled visit?",
-    "cancelVisit": "Cancel Visit"
+    "cancelVisit": "Cancel Visit",
+    "specifyOthersText": "Specify Others"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

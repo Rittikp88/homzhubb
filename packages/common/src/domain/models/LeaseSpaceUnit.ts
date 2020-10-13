@@ -7,10 +7,10 @@ export interface ILeaseSpaceUnit {
 
 @JsonObject('LeaseSpaceUnit')
 export class LeaseSpaceUnit {
-  @JsonProperty('count', Number)
+  @JsonProperty('count', Number, true)
   private _count = -1;
 
-  @JsonProperty('space_type', Number)
+  @JsonProperty('space_type', Number, true)
   private _spaceType = -1;
 
   get count(): number {

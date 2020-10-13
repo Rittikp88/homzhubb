@@ -79,6 +79,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
   }
 
   private renderSpaces = (renderPrimary: boolean): React.ReactNode => {
+    const { t } = this.props;
     const { groupedSpaceTypes } = this.state;
 
     const handleCounterChange = (count: number, id?: number): void => {
@@ -135,6 +136,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           selected={!!space.value}
           key={index}
           onChange={handleInputWithCheckChange}
+          placeholder={t('property:specifyOthersText')}
         />
       );
     });

@@ -8,6 +8,6 @@ export interface ILeaseUnit extends IUnit {
 
 @JsonObject('LeaseUnit')
 export class LeaseUnit extends Unit {
-  @JsonProperty('spaces', LeaseSpaceUnit)
-  private _spaces = new LeaseSpaceUnit();
+  @JsonProperty('spaces', [LeaseSpaceUnit], true)
+  private _spaces = [];
 }
