@@ -8,8 +8,6 @@ import { DashboardRepository } from '@homzhub/common/src/domain/repositories/Das
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { TopTabNavigatorParamList } from '@homzhub/mobile/src/navigation/TopTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState, NotificationBox } from '@homzhub/common/src/components';
 import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
@@ -19,8 +17,7 @@ interface IStateProps {
   propertyData: Asset | null;
 }
 
-type libraryProps = NavigationScreenProps<TopTabNavigatorParamList, ScreensKeys.NotificationTab>;
-type Props = WithTranslation & libraryProps & IStateProps;
+type Props = WithTranslation & IStateProps;
 
 interface IAssetNotificationsState {
   notifications: AssetNotifications;
@@ -28,7 +25,7 @@ interface IAssetNotificationsState {
   offset: number;
 }
 
-export class NotificationTab extends React.PureComponent<Props, IAssetNotificationsState> {
+export class NotificationTab extends React.Component<Props, IAssetNotificationsState> {
   public state = {
     notifications: {} as AssetNotifications,
     limit: 10,

@@ -4,6 +4,8 @@ import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IVisitAssetDetail, VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { VisitStatus, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
 
+// ENUM START
+
 export enum VisitActions {
   APPROVE = 'APPROVE',
   REJECT = 'REJECT',
@@ -15,6 +17,15 @@ export enum VisitStatusType {
   MISSED = 'missed',
   COMPLETED = 'completed',
 }
+
+export enum RoleType {
+  PROPERTY_AGENT = 'PROPERTY_AGENT',
+  TENANT = 'TENANT',
+  BUYER = 'BUYER',
+  OWNER = 'OWNER',
+}
+
+// ENUM END
 
 export interface ISlotItem {
   id: number;
@@ -75,10 +86,10 @@ export class AssetVisit {
   private _comments = '';
 
   @JsonProperty('sale_listing', Number, true)
-  private _saleListing = null;
+  private _saleListing = -1;
 
   @JsonProperty('lease_listing', Number, true)
-  private _leaseListing = null;
+  private _leaseListing = -1;
 
   @JsonProperty('status', String)
   private _status = '';
@@ -138,8 +149,8 @@ export class AssetVisit {
     return this._user;
   }
 
-  get role(): UserRole {
-    return this._role as UserRole;
+  get role(): RoleType {
+    return this._role as RoleType;
   }
 
   get createdAt(): string {

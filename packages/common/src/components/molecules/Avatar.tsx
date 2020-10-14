@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Rating from '@homzhub/common/src/components/atoms/Rating';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
@@ -46,11 +47,7 @@ const Avatar = (props: IProps): React.ReactElement => {
             {rating && (
               <View style={styles.numberContainer}>
                 <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
-                <Label textType="regular" type="regular" style={styles.rating}>
-                  {rating}
-                </Label>
-                {/* TODO: Handle color from model */}
-                <Icon name={icons.starFilled} color={theme.colors.error} size={12} />
+                <Rating count={rating} />
               </View>
             )}
           </View>
@@ -61,7 +58,7 @@ const Avatar = (props: IProps): React.ReactElement => {
           {isRightIcon && <Icon name={icons.rightArrow} color={theme.colors.blue} size={20} style={styles.iconStyle} />}
           {date && (
             <Label textType="regular" type="regular" style={styles.designation}>
-              {DateUtils.localtimeDifference(date)}
+              {TimeUtils.getLocaltimeDifference(date)}
             </Label>
           )}
         </View>
@@ -104,10 +101,6 @@ const styles = StyleSheet.create({
   iconStyle: {
     marginTop: 6,
     marginHorizontal: 4,
-  },
-  rating: {
-    color: theme.colors.darkTint2,
-    marginEnd: 4,
   },
 });
 

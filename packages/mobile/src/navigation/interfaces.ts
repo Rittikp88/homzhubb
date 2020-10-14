@@ -60,18 +60,6 @@ export enum ScreensKeys {
   PropertyDetailScreen = 'PropertyDetailScreen',
   PropertyDetailsNotifications = 'PropertyDetailsNotifications',
 
-  // TopTabs
-  NotificationTab = 'NotificationTab',
-  TicketsTab = 'TicketsTab',
-  ReviewsTab = 'ReviewsTab',
-  OffersTab = 'OffersTab',
-  TenantHistoryTab = 'TenantHistoryTab',
-  SiteVisitsTab = 'SiteVisitsTab',
-  FinancialsTab = 'FinancialsTab',
-  MessagesTab = 'MessagesTab',
-  DocumentsTab = 'DocumentsTab',
-  DetailsTab = 'DetailsTab',
-
   // Financials Stack
   FinancialsLandingScreen = 'FinancialsLandingScreen',
   AddRecordScreen = 'AddRecordScreen',

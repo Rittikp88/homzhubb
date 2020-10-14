@@ -50,6 +50,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.PropertyDetailScreen]: undefined;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
+  [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -98,6 +99,7 @@ export const PortfolioStack = (): React.ReactElement => {
     >
       <PortfolioNavigator.Screen name={ScreensKeys.PortfolioLandingScreen} component={Portfolio} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
+      <PortfolioNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
     </PortfolioNavigator.Navigator>
   );
 };

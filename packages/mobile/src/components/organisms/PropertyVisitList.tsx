@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Avatar, Button, Divider, Dropdown, EmptyState, Label, Text } from '@homzhub/common/src/components';
@@ -12,6 +11,7 @@ import {
   AssetVisit,
   IVisitActions,
   IVisitByKey,
+  RoleType,
   VisitActions,
   VisitStatusType,
 } from '@homzhub/common/src/domain/models/AssetVisit';
@@ -105,6 +105,9 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     const { visitType, handleReschedule, isFromProperty } = this.props;
     const isMissed = visitType === VisitStatusType.MISSED;
     const isCompleted = visitType === VisitStatusType.COMPLETED;
+
+    const userRole = this.getUserRole(role);
+
     const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
 
     const onReschedule = (): void => handleReschedule(id);
@@ -115,7 +118,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
           <Avatar
             fullName={user.fullName}
             isRightIcon
-            designation={StringUtils.toTitleCase(role)}
+            designation={userRole}
             rating={user.rating}
             date={createdAt}
             containerStyle={styles.horizontalStyle}
@@ -304,6 +307,22 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         label: t(currentData.label),
       };
     });
+  };
+
+  // TODO: move to en.json
+  private getUserRole = (role: RoleType): string => {
+    switch (role) {
+      case RoleType.PROPERTY_AGENT:
+        return 'Property agent';
+      case RoleType.BUYER:
+        return 'Buyer';
+      case RoleType.TENANT:
+        return 'Tenant';
+      case RoleType.OWNER:
+        return 'Owner';
+      default:
+        return role;
+    }
   };
 
   private handleVisitCancel = (id: number): void => {

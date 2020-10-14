@@ -30,6 +30,7 @@ const namedColors = {
   favourite: '#EA464C',
   rental: '#6CCEC1',
   sell: '#FFB876',
+  gold: '#FFD700',
 };
 
 const tintColors = {

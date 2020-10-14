@@ -4,8 +4,6 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { TopTabNavigatorParamList } from '@homzhub/mobile/src/navigation/TopTabs';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -31,8 +29,7 @@ interface IScreenState {
   isLoading: boolean;
 }
 
-type libraryProps = NavigationScreenProps<TopTabNavigatorParamList, ScreensKeys.TenantHistoryTab>;
-type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
+type Props = WithTranslation & IStateProps & IDispatchProps;
 
 export class TenantHistoryScreen extends Component<Props, IScreenState> {
   private search = debounce(() => {

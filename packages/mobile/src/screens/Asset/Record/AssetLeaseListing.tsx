@@ -431,6 +431,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
   private handleNextStep = (): void => {
     const { currentIndex, isStepDone } = this.state;
+    const { getAssetById } = this.props;
     const newStepDone: boolean[] = isStepDone;
     newStepDone[currentIndex] = true;
     this.setState({
@@ -439,6 +440,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     });
     if (currentIndex < this.getRoutes().length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
+      getAssetById();
       this.scrollToTop();
     } else {
       this.setState({ isSheetVisible: true });

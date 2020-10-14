@@ -12,6 +12,7 @@ import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState, Text } from '@homzhub/common/src/components';
+import { Loader } from '@homzhub/mobile/src/components';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
 import { IVisitByKey, VisitActions, VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -53,7 +54,7 @@ interface IProps {
   isFromProperty?: boolean;
   onReschedule: (isNew?: boolean) => void;
   selectedAssetId?: number;
-  navigation?: any; // TODO: (Shikha) - Add type
+  navigation?: any;
   setVisitPayload?: (payload: IAssetVisitPayload) => void;
 }
 
@@ -71,13 +72,18 @@ class SiteVisitTab extends Component<Props, IScreenState> {
 
   public componentDidMount(): void {
     const { navigation } = this.props;
-    this._unsubscribe = navigation.addListener('focus', () => {
-      this.getVisitsData();
-    });
+    if (navigation) {
+      this._unsubscribe = navigation.addListener('focus', () => {
+        this.getVisitsData();
+      });
+    }
   }
 
   public componentWillUnmount(): void {
-    this._unsubscribe();
+    const { navigation } = this.props;
+    if (navigation) {
+      this._unsubscribe();
+    }
   }
 
   public render(): React.ReactNode {
@@ -85,6 +91,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     return (
       <>
         <TabView
+          lazy
+          renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
           initialLayout={theme.viewport}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}
@@ -166,20 +174,24 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   private onDropdownValueSelect = (startDate: string, endDate: string, visitType: VisitStatusType): void => {
     const { getAssetVisit } = this.props;
     let status;
+    let start_date__lte = endDate;
+    const start_date__gte = startDate;
 
     switch (visitType) {
       case VisitStatusType.MISSED:
+        start_date__lte = DateUtils.getCurrentDateISO();
         status = VisitStatus.PENDING;
         break;
       case VisitStatusType.COMPLETED:
         status = VisitStatus.ACCEPTED;
+        start_date__lte = DateUtils.getCurrentDateISO();
         break;
       default:
     }
 
     const payload: IAssetVisitPayload = {
-      start_date__lte: endDate,
-      start_date__gte: startDate,
+      start_date__lte,
+      start_date__gte,
       ...(status && { status }),
     };
 

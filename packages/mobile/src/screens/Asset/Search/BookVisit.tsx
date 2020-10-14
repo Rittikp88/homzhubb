@@ -286,7 +286,7 @@ export class BookVisit extends Component<Props, IVisitState> {
         selectedTimeSlot: time ? time.id : 0,
       });
     }
-    if (params && (!params.sale_listing_id || !params.lease_listing_id)) {
+    if (params && !params.sale_listing_id && !params.lease_listing_id) {
       this.setState({
         leaseListingId: visitDetail.leaseListing,
         saleListingId: visitDetail.saleListing,
