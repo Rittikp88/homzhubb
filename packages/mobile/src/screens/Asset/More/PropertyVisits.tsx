@@ -24,6 +24,7 @@ interface IScreenState {
   countryData: PickerItemProps[];
   propertiesByCountry: PickerItemProps[];
   selectedAssetId: number;
+  visitPayload: IAssetVisitPayload;
 }
 
 const defaultObj = { label: 'All Properties', value: 0 };
@@ -37,6 +38,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     countryData: [],
     propertiesByCountry: [],
     selectedAssetId: 0,
+    visitPayload: {} as IAssetVisitPayload,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -63,6 +65,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private renderPropertyVisits = (): React.ReactElement => {
     const { isCalendarView, countryData, propertiesByCountry, selectedAssetId } = this.state;
+    const { navigation } = this.props;
     return (
       <>
         <DropdownWithCountry
@@ -73,7 +76,12 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
         {isCalendarView ? (
           <SiteVisitCalendarView onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
         ) : (
-          <SiteVisitTab onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
+          <SiteVisitTab
+            onReschedule={this.rescheduleVisit}
+            selectedAssetId={selectedAssetId}
+            navigation={navigation}
+            setVisitPayload={this.setVisitPayload}
+          />
         )}
       </>
     );
@@ -93,12 +101,18 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private handlePropertySelect = (value: number): void => {
     const { getAssetVisit } = this.props;
+    const {
+      visitPayload: { start_date__gte, start_date__lte, status },
+    } = this.state;
     this.setState({
       selectedAssetId: value,
     });
 
     const payload: IAssetVisitPayload = {
       ...(value > 0 && { asset_id: value }),
+      ...(start_date__lte && { start_date__lte }),
+      ...(start_date__gte && { start_date__gte }),
+      ...(status && { status }),
     };
 
     getAssetVisit(payload);
@@ -109,6 +123,12 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     navigation.navigate(ScreensKeys.SearchStack, {
       screen: ScreensKeys.BookVisit,
       params: { isReschedule: !isNew },
+    });
+  };
+
+  private setVisitPayload = (payload: IAssetVisitPayload): void => {
+    this.setState({
+      visitPayload: payload,
     });
   };
 

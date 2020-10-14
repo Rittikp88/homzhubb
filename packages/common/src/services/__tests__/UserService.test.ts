@@ -13,7 +13,7 @@ describe('UserService', () => {
     expect(repoSpy).toHaveBeenCalledWith({
       action: OtpActionTypes.SEND,
       payload: {
-        country_code: '+01',
+        phone_code: '+01',
         phone_number: '9000000000',
       },
     });
@@ -28,7 +28,7 @@ describe('UserService', () => {
       action: OtpActionTypes.VERIFY,
       payload: {
         otp: '123456',
-        country_code: '+01',
+        phone_code: '+01',
         phone_number: '9000000000',
       },
     });

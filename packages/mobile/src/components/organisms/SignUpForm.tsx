@@ -180,7 +180,7 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
     const signUpData: ISignUpPayload = {
       full_name: values.name,
       email: values.email,
-      country_code: countryCode,
+      phone_code: countryCode,
       phone_number: values.phone,
       password: values.password,
     };

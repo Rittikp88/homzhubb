@@ -232,7 +232,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     const loginData: IOtpLoginPayload = {
       action: LoginTypes.OTP,
       payload: {
-        country_code: countryCode,
+        phone_code: countryCode,
         phone_number: phone,
         otp,
       },

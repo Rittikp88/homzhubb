@@ -177,7 +177,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
     const loginFormData: ILoginFormData = {
       email: values.email,
       password: values.password,
-      country_code: countryCode,
+      phone_code: countryCode,
       phone_number: values.phone,
     };
 

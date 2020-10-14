@@ -8,7 +8,7 @@ class UserService {
     const requestBody: IOtpVerify = {
       action: OtpActionTypes.SEND,
       payload: {
-        country_code,
+        phone_code: country_code,
         phone_number,
       },
     };
@@ -25,7 +25,7 @@ class UserService {
       action: OtpActionTypes.VERIFY,
       payload: {
         otp,
-        country_code,
+        phone_code: country_code,
         phone_number,
       },
     };

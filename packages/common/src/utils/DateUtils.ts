@@ -183,16 +183,16 @@ class DateUtils {
     return moment.utc(new Date()).subtract(dateCount, 'days').format('YYYY-MM-DD');
   };
 
-  public getNextDate = (dateCount: number, date?: string, format?: string): string => {
+  public getNextDate = (dateCount: number, date?: string, dateFormat?: string, format?: string): string => {
     return moment
-      .utc(date || new Date())
+      .utc(date || new Date(), dateFormat)
       .add(dateCount, 'days')
       .format(format || 'YYYY-MM-DD');
   };
 
-  public getPreviousDate = (dateCount: number, date?: string, format?: string): string => {
+  public getPreviousDate = (dateCount: number, date?: string, dateFormat?: string, format?: string): string => {
     return moment
-      .utc(date || new Date())
+      .utc(date || new Date(), dateFormat)
       .subtract(dateCount, 'days')
       .format(format || 'YYYY-MM-DD');
   };
@@ -252,7 +252,7 @@ class DateUtils {
   };
 
   public getISOFormattedDate = (date: string, time: number): string => {
-    return moment([date, time]).format(DateFormats.ISO);
+    return `${date}T${time}:00:00:000Z`;
   };
 }
 

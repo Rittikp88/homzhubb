@@ -4,7 +4,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -247,18 +247,18 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   private getVisitsData = (): void => {
     const { getAssetVisit, selectedAssetId } = this.props;
     const { currentDate, selectedSlot, timeSlot } = this.state;
-
-    const start_date = DateUtils.getUtcFormatted(currentDate, 'DD, MMM YYYY', 'YYYY-MM-DD');
+    const date = DateUtils.getUtcFormatted(currentDate, 'DD, MMM YYYY', 'YYYY-MM-DD');
     let start_datetime = '';
     if (selectedSlot > 0) {
       timeSlot.forEach((item) => {
         if (item.id === selectedSlot) {
-          start_datetime = DateUtils.getISOFormat(currentDate, item.from);
+          const formattedDate = DateUtils.getISOFormattedDate(date, item.from);
+          start_datetime = DateUtils.getUtcFormatted(formattedDate, 'YYYY-MM-DD hh:mm', DateFormats.ISO);
         }
       });
     }
     const payload: IAssetVisitPayload = {
-      ...(selectedSlot === 0 && { start_date }),
+      ...(selectedSlot === 0 && { start_date: date }),
       ...(selectedSlot > 0 && { start_datetime }),
       ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
     };
@@ -270,7 +270,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     const { currentDate } = this.state;
     this.setState(
       {
-        currentDate: DateUtils.getNextDate(1, currentDate, 'DD, MMMM YYYY'),
+        currentDate: DateUtils.getNextDate(1, currentDate, 'DD, MMMM YYYY', 'DD, MMMM YYYY'),
         selectedSlot: 0,
       },
       (): void => this.getVisitsData()
@@ -281,7 +281,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     const { currentDate } = this.state;
     this.setState(
       {
-        currentDate: DateUtils.getPreviousDate(1, currentDate, 'DD, MMMM YYYY'),
+        currentDate: DateUtils.getPreviousDate(1, currentDate, 'DD, MMMM YYYY', 'DD, MMMM YYYY'),
         selectedSlot: 0,
       },
       (): void => this.getVisitsData()

@@ -42,7 +42,7 @@ export enum VisitStatus {
 export interface ISignUpPayload {
   full_name: string;
   email: string;
-  country_code: string;
+  phone_code: string;
   phone_number: string;
   password: string;
 }
@@ -72,7 +72,7 @@ export interface ISocialLogin {
   user?: {
     full_name: string;
     email: string;
-    country_code: string;
+    phone_code: string;
     phone_number: string;
   };
 }
@@ -88,7 +88,7 @@ export interface ISocialLoginPayload {
 export interface IOtpLoginPayload {
   action: LoginTypes.OTP;
   payload: {
-    country_code: string;
+    phone_code: string;
     phone_number: string;
     otp: string;
   };
@@ -97,7 +97,7 @@ export interface IOtpLoginPayload {
 export interface ILoginFormData {
   email: string;
   password: string;
-  country_code: string;
+  phone_code: string;
   phone_number: string;
 }
 
@@ -122,7 +122,7 @@ export interface IUserExistsData {
 export interface IUserPayload {
   full_name: string;
   email: string;
-  country_code: string;
+  phone_code: string;
   phone_number: string;
   access_token: string;
   refresh_token: string;
@@ -132,7 +132,7 @@ export interface IUserPayload {
 
 // OTP - START
 export interface IOtpSendPayload {
-  country_code: string;
+  phone_code: string;
   phone_number: string;
 }
 

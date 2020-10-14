@@ -94,7 +94,7 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
       navigation.navigate(ScreensKeys.OTP, {
         type: OtpNavTypes.SignUp,
         title: t('auth:verifyNumber'),
-        countryCode: formData.country_code,
+        countryCode: formData.phone_code,
         phone: formData.phone_number,
         userData: formData,
         ref,
@@ -111,7 +111,7 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
 
   private validateUser = (formData: ISignUpPayload): void => {
     const { t } = this.props;
-    const phone = `${formData.country_code}~${formData.phone_number}`;
+    const phone = `${formData.phone_code}~${formData.phone_number}`;
     UserRepository.emailExists(formData.email)
       .then((res: any) => {
         if (res && res.is_exists) {

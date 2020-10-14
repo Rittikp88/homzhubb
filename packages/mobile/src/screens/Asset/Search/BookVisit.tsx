@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
@@ -9,7 +8,6 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -28,16 +26,11 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import {
-  IAssetVisitPayload,
   IRescheduleVisitPayload,
   IScheduleVisitPayload,
   IUpcomingVisitPayload,
   VisitType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-
-interface IDispatchProps {
-  getAssetVisit: (payload: IAssetVisitPayload) => void;
-}
 
 interface IStateProps {
   isLoggedIn: boolean;
@@ -63,7 +56,7 @@ interface IVisitState {
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.BookVisit>;
-type Props = libraryProps & IStateProps & IDispatchProps;
+type Props = libraryProps & IStateProps;
 
 export class BookVisit extends Component<Props, IVisitState> {
   public state = {
@@ -293,11 +286,12 @@ export class BookVisit extends Component<Props, IVisitState> {
         selectedTimeSlot: time ? time.id : 0,
       });
     }
-
-    this.setState({
-      leaseListingId: visitDetail.leaseListing,
-      saleListingId: visitDetail.saleListing,
-    });
+    if (params && (!params.sale_listing_id || !params.lease_listing_id)) {
+      this.setState({
+        leaseListingId: visitDetail.leaseListing,
+        saleListingId: visitDetail.saleListing,
+      });
+    }
   };
 
   private getVisitorType = async (): Promise<void> => {
@@ -426,7 +420,6 @@ export class BookVisit extends Component<Props, IVisitState> {
   private goBack = (): void => {
     const {
       navigation,
-      getAssetVisit,
       route: {
         params: { propertyTermId },
       },
@@ -436,7 +429,6 @@ export class BookVisit extends Component<Props, IVisitState> {
       navigation.replace(ScreensKeys.PropertyAssetDescription, { propertyTermId });
     } else {
       navigation.goBack();
-      getAssetVisit({});
     }
   };
 }
@@ -449,17 +441,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetVisit } = AssetActions;
-  return bindActionCreators(
-    {
-      getAssetVisit,
-    },
-    dispatch
-  );
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BookVisit));
+export default connect(mapStateToProps, null)(withTranslation()(BookVisit));
 
 const styles = StyleSheet.create({
   contentContainer: {

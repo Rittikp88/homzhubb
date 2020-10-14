@@ -94,7 +94,7 @@ export class LoginScreen extends Component<Props, ILoginScreenState> {
     navigation.navigate(ScreensKeys.OTP, {
       type: OtpNavTypes.Login,
       title: t('auth:loginOtp'),
-      countryCode: values.country_code,
+      countryCode: values.phone_code,
       phone: values.phone_number,
       ref,
       ...(params && params.onCallback && { onCallback: params.onCallback }),

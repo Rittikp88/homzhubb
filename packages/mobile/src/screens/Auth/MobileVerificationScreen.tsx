@@ -122,7 +122,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
         full_name: `${first_name} ${last_name}`,
         email,
         phone_number: phone,
-        country_code: countryCode,
+        phone_code: countryCode,
         // TODO (Aditya 10-Jun-2020): How to solve this password issue?
         password: 'RandomPassword',
       },

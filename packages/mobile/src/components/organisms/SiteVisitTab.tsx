@@ -53,6 +53,8 @@ interface IProps {
   isFromProperty?: boolean;
   onReschedule: (isNew?: boolean) => void;
   selectedAssetId?: number;
+  navigation?: any; // TODO: (Shikha) - Add type
+  setVisitPayload?: (payload: IAssetVisitPayload) => void;
 }
 
 interface IScreenState {
@@ -62,12 +64,20 @@ interface IScreenState {
 type Props = IDispatchProps & IStateProps & IProps;
 
 class SiteVisitTab extends Component<Props, IScreenState> {
+  public _unsubscribe: any;
   public state = {
     currentIndex: 0,
   };
 
   public componentDidMount(): void {
-    this.getVisitsData();
+    const { navigation } = this.props;
+    this._unsubscribe = navigation.addListener('focus', () => {
+      this.getVisitsData();
+    });
+  }
+
+  public componentWillUnmount(): void {
+    this._unsubscribe();
   }
 
   public render(): React.ReactNode {
@@ -162,7 +172,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         status = VisitStatus.PENDING;
         break;
       case VisitStatusType.COMPLETED:
-        status = VisitStatus.APPROVED;
+        status = VisitStatus.ACCEPTED;
         break;
       default:
     }
@@ -206,7 +216,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   };
 
   private getVisitsData = (): void => {
-    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId } = this.props;
+    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload } = this.props;
     const { currentIndex } = this.state;
     const currentRoute = Routes[currentIndex];
     const date = DateUtils.getCurrentDateISO();
@@ -228,6 +238,13 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         start_date_lte = date;
         break;
       default:
+    }
+    if (setVisitPayload) {
+      setVisitPayload({
+        ...(start_date_lte && { start_date__lte: start_date_lte }),
+        ...(start_date_gte && { start_date__gte: start_date_gte }),
+        ...(status && { status }),
+      });
     }
 
     if (isFromProperty && asset && asset.assetStatusInfo) {

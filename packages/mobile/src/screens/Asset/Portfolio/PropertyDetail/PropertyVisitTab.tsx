@@ -9,9 +9,10 @@ type Props = NavigationScreenProps<TopTabNavigatorParamList, ScreensKeys.SiteVis
 
 export class PropertyVisitTab extends Component<Props> {
   public render(): React.ReactNode {
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <SiteVisitTab onReschedule={this.navigateToBookVisit} isFromProperty />
+        <SiteVisitTab onReschedule={this.navigateToBookVisit} isFromProperty navigation={navigation} />
       </View>
     );
   }
