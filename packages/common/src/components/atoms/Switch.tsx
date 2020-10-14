@@ -24,7 +24,6 @@ export const RNSwitch = (props: ISwitchOptions): React.ReactElement => {
 
 const styles = StyleSheet.create({
   switch: {
-    alignSelf: 'flex-end',
     transform: [{ scaleX: 0.7 }, { scaleY: 0.65 }],
   },
 });

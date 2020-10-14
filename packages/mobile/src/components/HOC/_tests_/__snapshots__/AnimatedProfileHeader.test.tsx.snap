@@ -166,7 +166,6 @@ exports[`AnimatedProfileHeader should render snapshot 1`] = `
               }
             >
               <Text
-                onPress={[MockFunction]}
                 style={
                   Object {
                     "color": "#FFFFFF",
@@ -176,7 +175,6 @@ exports[`AnimatedProfileHeader should render snapshot 1`] = `
                 type="small"
               >
                 <Text
-                  onPress={[MockFunction]}
                   style={
                     Array [
                       Object {
@@ -195,7 +193,6 @@ exports[`AnimatedProfileHeader should render snapshot 1`] = `
                   }
                 >
                   <Text
-                    onPress={[MockFunction]}
                     style={
                       Array [
                         Object {

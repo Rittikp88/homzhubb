@@ -5,7 +5,6 @@ exports[`Switch should match snapshot for not selected 1`] = `
   onValueChange={[MockFunction]}
   style={
     Object {
-      "alignSelf": "flex-end",
       "transform": Array [
         Object {
           "scaleX": 0.7,
@@ -32,7 +31,6 @@ exports[`Switch should match snapshot for selected 1`] = `
   onValueChange={[MockFunction]}
   style={
     Object {
-      "alignSelf": "flex-end",
       "transform": Array [
         Object {
           "scaleX": 0.7,

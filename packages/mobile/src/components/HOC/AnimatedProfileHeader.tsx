@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { IUser } from '@homzhub/common/src/domain/models/User';
@@ -11,7 +12,9 @@ import { IUser } from '@homzhub/common/src/domain/models/User';
 interface IProps {
   children: React.ReactElement;
   title?: string;
-  onIconPress?: () => void;
+  sectionHeader?: string;
+  onProfileIconPress?: () => void;
+  onBackPress?: () => void;
   isOuterScrollEnabled?: boolean;
 }
 
@@ -32,7 +35,7 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
   };
 
   public render(): React.ReactNode {
-    const { children, isOuterScrollEnabled } = this.props;
+    const { children, isOuterScrollEnabled, onBackPress } = this.props;
     return (
       <View style={styles.container}>
         <>
@@ -42,15 +45,37 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
         <ScrollView scrollEnabled={isOuterScrollEnabled} showsVerticalScrollIndicator={false} nestedScrollEnabled>
           <>
             <View style={styles.headingView} />
-            <View style={styles.scrollView}>{children}</View>
+            <View style={styles.scrollView}>
+              {onBackPress && this.renderSectionHeader()}
+              {children}
+            </View>
           </>
         </ScrollView>
       </View>
     );
   }
 
+  private renderSectionHeader = (): ReactElement => {
+    const { onBackPress, sectionHeader } = this.props;
+
+    return (
+      <View style={styles.header}>
+        <Icon
+          size={24}
+          name={icons.leftArrow}
+          color={theme.colors.primaryColor}
+          style={styles.iconStyle}
+          onPress={onBackPress}
+        />
+        <Text type="small" textType="bold">
+          {sectionHeader}
+        </Text>
+      </View>
+    );
+  };
+
   private renderHeader = (): React.ReactElement => {
-    const { title = '', onIconPress } = this.props;
+    const { title = '', onProfileIconPress } = this.props;
     const { user } = this.state;
     return (
       <View style={styles.headerContainer}>
@@ -58,7 +83,7 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
           {title}
         </Text>
         <View style={styles.initialsContainer}>
-          <Text type="small" textType="regular" style={styles.initials} onPress={onIconPress}>
+          <Text type="small" textType="regular" style={styles.initials} onPress={onProfileIconPress}>
             {StringUtils.getInitials(user?.full_name ?? 'User')}
           </Text>
         </View>
@@ -105,5 +130,15 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: theme.layout.screenPadding,
+    paddingTop: theme.layout.screenPaddingTop,
+    backgroundColor: theme.colors.white,
+  },
+  iconStyle: {
+    paddingRight: 12,
   },
 });

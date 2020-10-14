@@ -136,6 +136,13 @@ export class More extends React.PureComponent<Props> {
           })
         );
         break;
+      case MoreScreenTypes.SETTINGS:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.SettingsScreen,
+          })
+        );
+        break;
       default:
         navigation.dispatch(
           CommonActions.navigate({

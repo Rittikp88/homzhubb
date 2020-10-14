@@ -32,6 +32,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
   }
 
   public render = (): React.ReactNode => {
+    const { t } = this.props;
     const { userProfile } = this.state;
 
     if (!userProfile) {
@@ -57,20 +58,8 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       : undefined;
 
     return (
-      <AnimatedProfileHeader>
+      <AnimatedProfileHeader sectionHeader={t('assetMore:profile')} onBackPress={this.goBack}>
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Icon
-              size={24}
-              name={icons.leftArrow}
-              color={theme.colors.primaryColor}
-              style={styles.iconStyle}
-              onPress={this.goBack}
-            />
-            <Text type="small" textType="bold">
-              Profile
-            </Text>
-          </View>
           <View style={styles.profileImage}>
             <View style={styles.initialsContainer}>
               <Text type="large" textType="regular" style={styles.initials}>
@@ -143,17 +132,9 @@ export default withTranslation()(UserProfile);
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: theme.layout.screenPaddingTop,
     paddingBottom: 24,
     paddingHorizontal: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconStyle: {
-    paddingRight: 12,
   },
   roundBorder: {
     borderWidth: 1,

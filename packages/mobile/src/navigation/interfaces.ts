@@ -102,6 +102,7 @@ export enum ScreensKeys {
 
   // More Stack
   UserProfileScreen = 'UserProfileScreen',
+  SettingsScreen = 'SettingsScreen',
 }
 
 export enum OtpNavTypes {

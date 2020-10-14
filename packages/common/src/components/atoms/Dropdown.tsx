@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { images } from '@homzhub/common/src/assets/images';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { FontWeightType, Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
 const MAX_LABEL_COUNT = 12;
@@ -43,6 +43,8 @@ export interface IProps {
   testID?: string;
   maxLabelLength?: number;
   numColumns?: number;
+  fontSize?: TextSizeType;
+  fontWeight?: FontWeightType;
 }
 
 export const Dropdown = (props: IProps): React.ReactElement => {
@@ -67,6 +69,8 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     maxLabelLength = MAX_LABEL_COUNT,
     numColumns = 1,
     showImage = false,
+    fontSize = 'large',
+    fontWeight = 'regular',
   } = props;
 
   const onValueChange = (changedValue: string | number): void => {
@@ -95,7 +99,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
         {showImage ? (
           <Image source={images.flag} height={12} width={18} style={imageStyle} />
         ) : (
-          <Label type="large" textType="regular" style={[placeholderColor, textStyle]}>
+          <Label type={fontSize} textType={fontWeight} style={[placeholderColor, textStyle]}>
             {label ?? placeholder}
           </Label>
         )}

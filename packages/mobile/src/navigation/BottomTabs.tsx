@@ -27,6 +27,7 @@ import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/Prope
 import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
+import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -59,6 +60,7 @@ export type FinancialsNavigatorParamList = {
 export type MoreStackNavigatorParamList = {
   [ScreensKeys.More]: undefined;
   [ScreensKeys.UserProfileScreen]: undefined;
+  [ScreensKeys.SettingsScreen]: undefined;
   [ScreensKeys.PropertyVisits]: undefined;
   [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined;
@@ -123,6 +125,7 @@ export const MoreStack = (): React.ReactElement => {
     >
       <MoreStackNavigator.Screen name={ScreensKeys.More} component={More} />
       <MoreStackNavigator.Screen name={ScreensKeys.UserProfileScreen} component={UserProfile} />
+      <MoreStackNavigator.Screen name={ScreensKeys.SettingsScreen} component={Settings} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
