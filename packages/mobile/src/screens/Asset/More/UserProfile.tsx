@@ -10,6 +10,7 @@ import { Text } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, DetailsCard, ProgressBar } from '@homzhub/mobile/src/components';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.UserProfileScreen>;
 type IOwnProps = libraryProps;
@@ -38,27 +39,10 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     if (!userProfile) {
       return null;
     }
-    const {
-      profileProgress,
-      fullName,
-      phoneNumber,
-      email,
-      emailVerified,
-      userAddress,
-      emergencyContact,
-      workInfo,
-    } = userProfile;
-
-    const emergencyContactArray = emergencyContact
-      ? [
-          { icon: icons.filledUser, text: emergencyContact.name },
-          { icon: icons.phone, text: emergencyContact.phoneNumber },
-          { icon: icons.email, text: emergencyContact.email },
-        ]
-      : undefined;
+    const { profileProgress, fullName, basicDetailsArray, emergencyContactArray, workInfoArray } = userProfile;
 
     return (
-      <AnimatedProfileHeader sectionHeader={t('assetMore:profile')} onBackPress={this.goBack}>
+      <AnimatedProfileHeader sectionHeader={t('profile')} onBackPress={this.goBack}>
         <View style={styles.container}>
           <View style={styles.profileImage}>
             <View style={styles.initialsContainer}>
@@ -78,41 +62,37 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
           </View>
           <ProgressBar
             containerStyles={styles.progressBar}
-            title="Profile"
+            title={t('profile')}
             progress={profileProgress || 0}
             width={theme.viewport.width > 400 ? 350 : 330}
           />
           <DetailsCard
-            headerInfo={{ title: 'Basic Details', icon: icons.noteBook, onPress: this.onPress }}
-            details={[
-              { icon: icons.filledUser, text: fullName },
-              { icon: icons.phone, text: phoneNumber },
-              { icon: icons.email, text: email, type: 'EMAIL', emailVerified },
-              { icon: icons.marker, text: userAddress && userAddress.length > 0 ? userAddress[0].addressLine1 : '' },
-            ]}
+            headerInfo={{ title: t('basicDetails'), icon: icons.noteBook, onPress: this.onPress }}
+            details={basicDetailsArray}
             onVerifyPress={this.onPress}
             showDivider
           />
           <DetailsCard
-            headerInfo={{ title: 'Change Password', icon: icons.rightArrow, onPress: this.onPress }}
+            headerInfo={{ title: t('changePassword'), icon: icons.rightArrow, onPress: this.onPress }}
             showDivider
           />
           <DetailsCard
-            headerInfo={{ title: 'Emergency Contact', icon: icons.noteBook, onPress: this.onPress }}
+            headerInfo={{
+              title: t('emergencyContact'),
+              icon: emergencyContactArray ? icons.noteBook : undefined,
+              onPress: this.onPress,
+            }}
             details={emergencyContactArray}
             onVerifyPress={this.onPress}
             showDivider
           />
           <DetailsCard
-            headerInfo={{ title: 'Work Information', icon: icons.noteBook, onPress: this.onPress }}
-            details={
-              workInfo
-                ? [
-                    { icon: icons.company, text: workInfo.companyName },
-                    { icon: icons.email, text: workInfo.workEmail },
-                  ]
-                : undefined
-            }
+            headerInfo={{
+              title: t('workInformation'),
+              icon: workInfoArray ? icons.noteBook : undefined,
+              onPress: this.onPress,
+            }}
+            details={workInfoArray}
             onVerifyPress={this.onPress}
           />
         </View>
@@ -128,7 +108,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
   };
 }
 
-export default withTranslation()(UserProfile);
+export default withTranslation(LocaleConstants.namespacesKey.assetMore)(UserProfile);
 
 const styles = StyleSheet.create({
   container: {

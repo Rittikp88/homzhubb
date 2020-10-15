@@ -114,7 +114,8 @@
     "no": "No",
     "phone": "Phone",
     "email": "E-mail",
-    "noServicesFound": "No Services Found"
+    "noServicesFound": "No Services Found",
+    "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -531,7 +532,13 @@
     "settings": "Settings",
     "referFriend": "Refer a friend",
     "paymentMethods": "Subscriptions & Payments",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "basicDetails": "Basic Details",
+    "changePassword": "Change Password",
+    "emergencyContact": "Emergency Contact",
+    "workInformation": "Work Information",
+    "addContactInfoText": "Add Contact Info",
+    "verifyYourEmailText": "Verify your email"
   },
   "MoreSettings": {
     "loginSecurity": "Login & Security",

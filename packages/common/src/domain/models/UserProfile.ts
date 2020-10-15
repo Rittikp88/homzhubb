@@ -1,3 +1,5 @@
+import { icons } from '@homzhub/common/src/assets/icon';
+import { IDetailsInfo } from '@homzhub/mobile/src/components/molecules/DetailsCard';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Address } from '@homzhub/common/src/domain/models/Address';
 import { EmergencyContact } from '@homzhub/common/src/domain/models/EmergencyContact';
@@ -72,7 +74,57 @@ export class UserProfile extends User {
     return this._emergencyContact;
   }
 
+  get basicDetailsArray(): IDetailsInfo[] | undefined {
+    if (!this.fullName && !this.phoneNumber && !this.email && !(this.userAddress && this.userAddress.length > 0)) {
+      return undefined;
+    }
+
+    return [
+      { icon: icons.filledUser, ...(this.fullName ? { text: this.fullName } : { helperText: 'Name' }) },
+      { icon: icons.phone, ...(this.phoneNumber ? { text: this.phoneNumber } : { helperText: 'Phone Number' }) },
+      {
+        icon: icons.email,
+        ...(this.email ? { text: this.email } : { helperText: 'Email' }),
+        type: 'EMAIL',
+        emailVerified: this.emailVerified,
+      },
+      {
+        icon: icons.marker,
+        ...(this.userAddress && this.userAddress.length > 0
+          ? { text: this.userAddress[0].addressLine1 }
+          : { helperText: 'Address' }),
+      },
+    ];
+  }
+
+  get emergencyContactArray(): IDetailsInfo[] | undefined {
+    const { name, phoneNumber, email } = this._emergencyContact;
+
+    if (!name && !phoneNumber && !email) {
+      return undefined;
+    }
+
+    return [
+      { icon: icons.filledUser, ...(name ? { text: name } : { helperText: 'Name' }) },
+      { icon: icons.phone, ...(phoneNumber ? { text: phoneNumber } : { helperText: 'Phone Number' }) },
+      { icon: icons.email, ...(email ? { text: email } : { helperText: 'Email' }) },
+    ];
+  }
+
   get workInfo(): WorkInfo {
     return this._workInfo ? this.workInfo : new WorkInfo();
+  }
+
+  get workInfoArray(): IDetailsInfo[] | undefined {
+    const { companyName, workEmail } = this._workInfo || new WorkInfo();
+
+    if (!companyName && !workEmail) {
+      return undefined;
+    }
+
+    return [
+      { icon: icons.filledUser, ...(companyName ? { text: companyName } : { helperText: 'Company Name' }) },
+      { icon: icons.email, ...(workEmail ? { text: workEmail } : { helperText: 'Work Email' }) },
+    ];
   }
 }
