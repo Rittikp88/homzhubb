@@ -5,6 +5,7 @@ export const MonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug
 
 export const DateFormats = {
   ISO: 'YYYY-MM-DDThh:mm:ss.sss[Z]',
+  ISO24Format: 'YYYY-MM-DDTHH:mm:ss.sssZ',
   ddd: 'ddd',
   DD: 'DD',
   y: 'y',
@@ -24,6 +25,9 @@ export const DateFormats = {
   MMMMYYYY: 'MMMM YYYY',
   DoMMM_YYYY: 'Do MMM, YYYY',
   MM_YYYY: 'MM-YYYY',
+  DD_MMMMYYYY: 'DD, MMMM YYYY',
+  DD_MMMYYYY: 'DD, MMM YYYY',
+  YYYYMMDD_HM: 'YYYY-MM-DD hh:mm',
 };
 
 class DateUtils {
@@ -243,6 +247,9 @@ class DateUtils {
   };
 
   public getISOFormattedDate = (date: string, time: number): string => {
+    if (time < 10) {
+      return `${date}T0${time}:00:00:000Z`;
+    }
     return `${date}T${time}:00:00:000Z`;
   };
 }

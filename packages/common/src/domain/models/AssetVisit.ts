@@ -133,11 +133,11 @@ export class AssetVisit {
     return this._comments;
   }
 
-  get saleListing(): number {
+  get saleListing(): number | null {
     return this._saleListing;
   }
 
-  get leaseListing(): number {
+  get leaseListing(): number | null {
     return this._leaseListing;
   }
 

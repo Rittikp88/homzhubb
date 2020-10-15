@@ -134,7 +134,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private handleNotification = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.AssetNotifications);
+    navigation.navigate(ScreensKeys.AssetNotifications, { isFromDashboard: true });
   };
 
   private handleMetricsNavigation = (name: string): void => {

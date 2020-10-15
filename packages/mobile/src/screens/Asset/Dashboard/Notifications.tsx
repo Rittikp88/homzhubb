@@ -37,10 +37,14 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     const { scrollEnabled } = this.state;
+    const title = params && params.isFromDashboard ? t('dashboard') : t('assetMore:more');
     return (
-      <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={t('dashboard')}>
+      <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={title}>
         <>
           {this.renderHeader()}
           {this.renderNotifications()}

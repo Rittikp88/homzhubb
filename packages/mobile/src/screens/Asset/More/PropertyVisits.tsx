@@ -47,6 +47,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { t } = this.props;
+    const { isCalendarView } = this.state;
     return (
       <AnimatedProfileHeader isOuterScrollEnabled={false} title={t('assetMore:more')}>
         <HeaderCard
@@ -55,7 +56,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
           renderItem={(): React.ReactElement => this.renderPropertyVisits()}
           onIconPress={this.handleBack}
           handleIcon={this.handleCalendarPress}
-          icon={icons.calendar}
+          icon={isCalendarView ? icons.doubleBar : icons.calendar}
           containerStyles={styles.headerContainer}
           headerStyle={styles.headerStyle}
         />
@@ -102,7 +103,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
   private handlePropertySelect = (value: number): void => {
     const { getAssetVisit } = this.props;
     const {
-      visitPayload: { start_date__gte, start_date__lte, status },
+      visitPayload: { start_date__gte, status },
     } = this.state;
     this.setState({
       selectedAssetId: value,
@@ -110,8 +111,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
     const payload: IAssetVisitPayload = {
       ...(value > 0 && { asset_id: value }),
-      ...(start_date__lte && { start_date__lte }),
-      ...(start_date__gte && { start_date__gte }),
+      ...(start_date__gte && { start_datetime: start_date__gte }),
       ...(status && { status }),
     };
 

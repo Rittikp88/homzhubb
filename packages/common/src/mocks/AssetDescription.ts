@@ -1,3 +1,5 @@
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+
 export const mockReviews = [
   {
     id: 1,
@@ -43,6 +45,14 @@ export const mockAsset = {
   assetLocation: {
     latitude: 25.619,
     longitude: 85.123,
+  },
+  lastVisitedStep: {
+    assetCreation: {
+      percentage: 10,
+    },
+    listing: {
+      type: TypeOfPlan.RENT,
+    },
   },
   country: {
     id: 1,

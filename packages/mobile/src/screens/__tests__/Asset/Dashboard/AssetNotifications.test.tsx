@@ -12,6 +12,11 @@ describe('Asset Notifications Screen', () => {
       navigation: {
         goBack: jest.fn(),
       },
+      route: {
+        params: {
+          isFromDashboard: true,
+        },
+      },
     };
     component = shallow(<Notifications {...props} t={(key: string): string => key} />);
   });

@@ -51,7 +51,7 @@ type Props = IProps & IDispatchProps & IStateProps & WithTranslation;
 
 class SiteVisitCalendarView extends Component<Props, IScreenState> {
   public state = {
-    currentDate: DateUtils.getUtcFormattedDate(new Date().toDateString(), 'DD, MMMM YYYY'),
+    currentDate: DateUtils.getUtcFormattedDate(new Date().toDateString(), DateFormats.DD_MMMMYYYY),
     timeSlot: [allSlot].concat(TimeSlot),
     isCalendarVisible: false,
     selectedSlot: 0,
@@ -78,6 +78,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   public render(): React.ReactNode {
     const { t, isLoading } = this.props;
     const { currentDate, isCalendarVisible, visitsData } = this.state;
+    const date = DateUtils.getUtcFormatted(currentDate, DateFormats.DD_MMMMYYYY, DateFormats.YYYYMMDD);
     return (
       <>
         <CalendarHeader
@@ -105,7 +106,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
           isShadowView
           sheetHeight={580}
         >
-          <CalendarComponent allowPastDates selectedDate={currentDate} onSelect={this.onSelectDate} />
+          <CalendarComponent allowPastDates selectedDate={date} onSelect={this.onSelectDate} />
         </BottomSheet>
         <Loader visible={isLoading} />
       </>
@@ -160,7 +161,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
             const badge = this.getBadgesData(status);
             return (
               <>
-                <Badge title={badge.label} badgeColor={badge.color} badgeStyle={styles.badge} />
+                {badge && <Badge title={badge.label} badgeColor={badge.color} badgeStyle={styles.badge} />}
                 {assetVisit.map((item) => {
                   return (
                     <>
@@ -192,44 +193,49 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   };
 
   private onSelectDate = (date: string): void => {
-    this.setState({
-      currentDate: DateUtils.getDisplayDate(date, 'DD, MMMM YYYY'),
-      isCalendarVisible: false,
-    });
+    this.setState(
+      {
+        currentDate: DateUtils.getDisplayDate(date, DateFormats.DD_MMMMYYYY),
+        isCalendarVisible: false,
+        selectedSlot: 0,
+      },
+      () => this.getVisitsData()
+    );
   };
 
-  // TODO: (Shikha) - Refactor
-  private getBadgesData = (status: string): ILabelColor => {
+  private getBadgesData = (status: string): ILabelColor | null => {
+    const { currentDate } = this.state;
+    const date = DateUtils.getUtcFormatted(currentDate, DateFormats.DD_MMMMYYYY, DateFormats.YYYYMMDD);
+    const todayDate = DateUtils.getDisplayDate(new Date().toDateString(), DateFormats.YYYYMMDD);
     switch (status) {
       case VisitStatus.ACCEPTED:
         return {
           label: 'Completed',
           color: theme.colors.green,
         };
-        break;
       case VisitStatus.PENDING:
+        if (date < todayDate) {
+          return {
+            label: 'Missed',
+            color: theme.colors.error,
+          };
+        }
         return {
-          label: 'Missed',
+          label: 'Upcoming',
           color: theme.colors.green,
         };
-        break;
       case VisitStatus.CANCELLED:
         return {
           label: 'Cancelled',
           color: theme.colors.error,
         };
-        break;
       case VisitStatus.REJECTED:
         return {
           label: 'Declined',
           color: theme.colors.error,
         };
-        break;
       default:
-        return {
-          label: 'Completed',
-          color: theme.colors.green,
-        };
+        return null;
     }
   };
 
@@ -247,13 +253,13 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   private getVisitsData = (): void => {
     const { getAssetVisit, selectedAssetId } = this.props;
     const { currentDate, selectedSlot, timeSlot } = this.state;
-    const date = DateUtils.getUtcFormatted(currentDate, 'DD, MMM YYYY', 'YYYY-MM-DD');
+    const date = DateUtils.getUtcFormatted(currentDate, DateFormats.DD_MMMYYYY, DateFormats.YYYYMMDD);
     let start_datetime = '';
     if (selectedSlot > 0) {
       timeSlot.forEach((item) => {
         if (item.id === selectedSlot) {
           const formattedDate = DateUtils.getISOFormattedDate(date, item.from);
-          start_datetime = DateUtils.getUtcFormatted(formattedDate, 'YYYY-MM-DD hh:mm', DateFormats.ISO);
+          start_datetime = DateUtils.getUtcFormatted(formattedDate, DateFormats.YYYYMMDD_HM, DateFormats.ISO24Format);
         }
       });
     }
@@ -270,7 +276,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     const { currentDate } = this.state;
     this.setState(
       {
-        currentDate: DateUtils.getNextDate(1, currentDate, 'DD, MMMM YYYY', 'DD, MMMM YYYY'),
+        currentDate: DateUtils.getNextDate(1, currentDate, DateFormats.DD_MMMMYYYY, DateFormats.DD_MMMMYYYY),
         selectedSlot: 0,
       },
       (): void => this.getVisitsData()
@@ -281,7 +287,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     const { currentDate } = this.state;
     this.setState(
       {
-        currentDate: DateUtils.getPreviousDate(1, currentDate, 'DD, MMMM YYYY', 'DD, MMMM YYYY'),
+        currentDate: DateUtils.getPreviousDate(1, currentDate, DateFormats.DD_MMMMYYYY, DateFormats.DD_MMMMYYYY),
         selectedSlot: 0,
       },
       (): void => this.getVisitsData()
@@ -382,6 +388,7 @@ const styles = StyleSheet.create({
   },
   dividerStyle: {
     borderColor: theme.colors.darkTint10,
+    marginVertical: 10,
   },
   userView: {
     paddingHorizontal: 16,

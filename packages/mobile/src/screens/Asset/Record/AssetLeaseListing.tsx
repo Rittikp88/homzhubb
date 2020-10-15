@@ -411,6 +411,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   private handlePreviousStep = (index: number): void => {
     const { currentIndex } = this.state;
     const value = index - currentIndex;
+    // TODO: Add logic once Edit flow fix
     if (value < 0) {
       this.setState({ currentIndex: currentIndex + value });
       this.scrollToTop();

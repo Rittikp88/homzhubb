@@ -134,6 +134,7 @@ export const icons = {
   visit: 'visit',
   schedule: 'schedule',
   dart: 'dart',
+  doubleBar: 'double-bar',
 
   // COMMUTE
   train: 'train',
@@ -179,4 +180,10 @@ export const icons = {
   company: 'company',
   doubleCheck: 'double-check',
   filledWarning: 'filled-warning',
+
+  // settings
+  preference: 'preference',
+  lock: 'lock',
+  communication: 'communication',
+  hand: 'hand',
 };

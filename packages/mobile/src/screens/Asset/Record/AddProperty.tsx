@@ -230,7 +230,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     const { currentIndex } = this.state;
     const { navigation } = this.props;
     if (currentIndex < Routes.length - 1) {
-      this.setState({ currentIndex: currentIndex + 1 });
+      this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     } else {
       navigation.navigate(ScreensKeys.AssetPlanSelection);
@@ -247,7 +247,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
     const value = index - currentIndex;
     const notCompletedStep = assetCreation.stepList.findIndex((item) => !item);
-    if (index < currentIndex && index !== notCompletedStep) {
+    if (index < currentIndex || (index > currentIndex && index !== notCompletedStep)) {
       this.setState({ currentIndex: currentIndex + value, isNextStep: true });
       this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     }

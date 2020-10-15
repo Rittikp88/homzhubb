@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -22,6 +23,8 @@ import {
   IUpdateVisitPayload,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IRoutes {
   key: VisitStatusType;
@@ -50,11 +53,16 @@ interface IStateProps {
   isLoading: boolean;
 }
 
+type NavigationType =
+  | StackNavigationProp<MoreStackNavigatorParamList, ScreensKeys.PropertyVisits>
+  | StackNavigationProp<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
+
 interface IProps {
   isFromProperty?: boolean;
   onReschedule: (isNew?: boolean) => void;
   selectedAssetId?: number;
-  navigation?: any;
+  isViewChanged?: boolean;
+  navigation?: NavigationType;
   setVisitPayload?: (payload: IAssetVisitPayload) => void;
 }
 
@@ -77,6 +85,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         this.getVisitsData();
       });
     }
+
+    this.getVisitsData();
   }
 
   public componentWillUnmount(): void {
@@ -172,19 +182,17 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   };
 
   private onDropdownValueSelect = (startDate: string, endDate: string, visitType: VisitStatusType): void => {
-    const { getAssetVisit } = this.props;
+    const { getAssetVisit, selectedAssetId } = this.props;
     let status;
-    let start_date__lte = endDate;
+    const start_date__lte = endDate;
     const start_date__gte = startDate;
 
     switch (visitType) {
       case VisitStatusType.MISSED:
-        start_date__lte = DateUtils.getCurrentDateISO();
         status = VisitStatus.PENDING;
         break;
       case VisitStatusType.COMPLETED:
         status = VisitStatus.ACCEPTED;
-        start_date__lte = DateUtils.getCurrentDateISO();
         break;
       default:
     }
@@ -193,6 +201,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       start_date__lte,
       start_date__gte,
       ...(status && { status }),
+      ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
     };
 
     getAssetVisit(payload);
@@ -275,7 +284,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       ...(start_date_gte && { start_date__gte: start_date_gte }),
       ...(isFromProperty && lease_listing_id && { lease_listing_id }),
       ...(isFromProperty && sale_listing_id && { sale_listing_id }),
-      ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
+      ...(selectedAssetId && selectedAssetId !== 0 && { asset_id: selectedAssetId }),
       ...(status && { status }),
     };
 

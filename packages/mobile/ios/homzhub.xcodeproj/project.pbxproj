@@ -59,7 +59,7 @@
 		E87615A92487B40F008CCE33 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E87615A82487B40F008CCE33 /* GoogleService-Info.plist */; };
 		E8D63B9C24C6BF1D009F18C9 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		EA5C6D9BD314961403BCDED7 /* libPods-homzhub-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE19622E89A68F902597012 /* libPods-homzhub-tvOS.a */; };
-		F82EF01B3F604245A389E31A /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283B25CA30A4476B7361675 /* icomoon.ttf */; };
+		8FA5EB3FF73D4AAD8B6D4A78 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D8588126D76418DACDB617D /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +86,6 @@
 		00E356F21AD99517003FC87E /* homzhubTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = homzhubTests.m; sourceTree = "<group>"; };
 		05AD2501DEB94FEAA461E17A /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		0DEB6C15C5EB9CA7B942A665 /* Pods-homzhub-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homzhub-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-homzhub-tvOS/Pods-homzhub-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		1283B25CA30A4476B7361675 /* icomoon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.ttf; path = ../../common/src/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* homzhub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = homzhub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = homzhub/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = homzhub/AppDelegate.m; sourceTree = "<group>"; };
@@ -190,6 +189,7 @@
 		E87615A82487B40F008CCE33 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		8D8588126D76418DACDB617D /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../../common/src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,7 +274,7 @@
 				91EB2EB3156A4550A4A5A313 /* Raleway-Light.ttf */,
 				BF7AB555DA614F1CAC96AA3E /* Raleway-Medium.ttf */,
 				2AA5DB1BADC34556BB91B00D /* fonts.ts */,
-				1283B25CA30A4476B7361675 /* icomoon.ttf */,
+				8D8588126D76418DACDB617D /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -588,7 +588,7 @@
 				3CE0B25D5D2242B9A4ACD16F /* Raleway-Light.ttf in Resources */,
 				15882547F49946668123D15D /* Raleway-Medium.ttf in Resources */,
 				BE5A72445A0D406196536C66 /* fonts.ts in Resources */,
-				F82EF01B3F604245A389E31A /* icomoon.ttf in Resources */,
+				8FA5EB3FF73D4AAD8B6D4A78 /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

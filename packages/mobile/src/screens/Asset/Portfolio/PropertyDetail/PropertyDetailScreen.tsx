@@ -140,7 +140,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.SITE_VISITS:
         return (
           <View style={{ backgroundColor: theme.colors.white }}>
-            <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} />
+            <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} isFromProperty />
           </View>
         );
       case Tabs.DOCUMENTS:

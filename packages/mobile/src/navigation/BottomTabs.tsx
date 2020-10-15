@@ -41,7 +41,7 @@ export type BottomTabNavigatorParamList = {
 export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
   [ScreensKeys.MarketTrends]: undefined;
-  [ScreensKeys.AssetNotifications]: undefined;
+  [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
 };
 

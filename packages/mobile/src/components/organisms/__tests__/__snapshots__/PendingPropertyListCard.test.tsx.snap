@@ -78,7 +78,7 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
         />
       </ForwardRef>
       <ForwardRef
-        disabled={false}
+        disabled={true}
         style={
           Object {
             "alignItems": "center",
@@ -92,7 +92,7 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
       >
         <Icon
           allowFontScaling={false}
-          color="#0084F8"
+          color="#4C5F72"
           name="right-arrow"
           onPress={[Function]}
           size={16}
@@ -100,6 +100,56 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
         />
       </ForwardRef>
     </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 12,
+      }
+    }
+  >
+    <ShieldGroup
+      isInfoRequired={true}
+      propertyType="Apartment / Condo"
+      propertyTypeStyle={
+        Object {
+          "color": "#33495E",
+        }
+      }
+      text="It was popularised in the 1960s with the release of Letraset sheets."
+    />
+    <PropertyAddressCountry
+      containerStyle={
+        Object {
+          "marginBottom": 6,
+        }
+      }
+      subAddress=" "
+    />
+    <PropertyAmenities
+      containerStyle={
+        Object {
+          "marginBottom": 20,
+        }
+      }
+      data={
+        Array [
+          Object {
+            "icon": "bed",
+            "iconColor": "#33495E",
+            "iconSize": 20,
+            "label": "1 Beds",
+          },
+          Object {
+            "icon": "bath-tub",
+            "iconColor": "#33495E",
+            "iconSize": 20,
+            "label": "1 Baths",
+          },
+        ]
+      }
+      direction="row"
+    />
   </View>
 </View>
 `;
