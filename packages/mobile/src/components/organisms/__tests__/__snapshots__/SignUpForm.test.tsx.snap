@@ -13,11 +13,12 @@ exports[`Test cases for SignUpForm should render snapshot for dropdown selection
 SignUpForm {
   "context": Object {},
   "email": null,
+  "firstName": null,
   "formSchema": [Function],
   "handleDropdown": [Function],
   "handleSelection": [Function],
   "handleSubmit": [Function],
-  "name": null,
+  "lastName": null,
   "onCloseDropDown": [Function],
   "password": null,
   "phone": null,
@@ -35,7 +36,8 @@ SignUpForm {
     "isBottomSheetVisible": true,
     "user": Object {
       "email": "",
-      "name": "",
+      "firstName": "",
+      "lastName": "",
       "password": "",
       "phone": "",
     },
@@ -86,7 +88,8 @@ SignUpForm {
           initialValues={
             Object {
               "email": "",
-              "name": "",
+              "firstName": "",
+              "lastName": "",
               "password": "",
               "phone": "",
             }

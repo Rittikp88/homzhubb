@@ -8,6 +8,8 @@ export enum UserRole {
 export interface IUser {
   id?: number;
   full_name: string;
+  first_name?: string;
+  last_name?: string;
   email: string;
   phone_code: string;
   phone_number: string;
@@ -23,6 +25,12 @@ export class User {
 
   @JsonProperty('full_name', String)
   private _fullName = '';
+
+  @JsonProperty('first_name', String, true)
+  private _firstName = '';
+
+  @JsonProperty('last_name', String, true)
+  private _lastName = '';
 
   @JsonProperty('email', String)
   private _email = '';
@@ -52,6 +60,14 @@ export class User {
 
   get fullName(): string {
     return this._fullName;
+  }
+
+  get firstName(): string {
+    return this._firstName;
+  }
+
+  get lastName(): string {
+    return this._lastName;
   }
 
   get email(): string {

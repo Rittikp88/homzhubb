@@ -129,6 +129,8 @@
     "otpError": "Please enter a valid OTP",
     "loginOtp": "Login with OTP",
     "enterName": "Enter your name",
+    "enterFirstName": "Enter your first name",
+    "enterLastName": "Enter your last name",
     "enterEmail": "Enter your email",
     "newPassword": "New password",
     "enterPassword": "Enter your password",

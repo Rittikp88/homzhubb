@@ -114,7 +114,8 @@
     "no": "No",
     "phone": "Phone",
     "email": "E-mail",
-    "noServicesFound": "No Services Found"
+    "noServicesFound": "No Services Found",
+    "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -531,6 +532,36 @@
     "settings": "Settings",
     "referFriend": "Refer a friend",
     "paymentMethods": "Subscriptions & Payments",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "basicDetails": "Basic Details",
+    "changePassword": "Change Password",
+    "emergencyContact": "Emergency Contact",
+    "workInformation": "Work Information",
+    "addContactInfoText": "Add Contact Info",
+    "verifyYourEmailText": "Verify your email"
+  },
+  "MoreSettings": {
+    "loginSecurity": "Login & Security",
+    "faceId": "Face ID",
+    "fingerprint": "Fingerprint",
+    "twoFactorAuthentication": "Two Factor Authentication",
+    "preferencesText": "Preferences",
+    "darkTheme": "Dark Theme",
+    "currency": "Currency",
+    "language": "Language",
+    "financialYear": "Financial Year",
+    "dataAndPrivacy": "Data & Privacy",
+    "showLastName": "Show Last Name",
+    "showMobileNumber": "Show Mobile Number",
+    "showEmail": "Show E-mail ID'",
+    "analyseAppIssuesAndEvents": "Analyse App Issues & Events",
+    "communications": "Communications",
+    "pushNotifications": "Push Notifications",
+    "emailsText": "Email’s",
+    "messagesText": "Messages",
+    "appInfo": "App info",
+    "releaseNotes": "Release Notes",
+    "termsConditionsText": "Terms & Conditions",
+    "privacyPolicyText": "Privacy Policy"
   }
 }

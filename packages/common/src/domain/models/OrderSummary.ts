@@ -203,7 +203,7 @@ export class OrderSummary {
 
     summary.push(this.subTotal);
 
-    if (this.tax) {
+    if (this.tax && this.tax[0].taxAmount > 0) {
       const tax = this.tax[0];
       const title = `${tax.taxLabel}(${tax.taxPercentage}%)`;
       const taxData = new OrderTotalSummary(title, tax.taxAmount);

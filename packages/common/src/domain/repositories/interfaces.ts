@@ -40,7 +40,8 @@ export enum VisitStatus {
 
 // USER AUTH - START
 export interface ISignUpPayload {
-  full_name: string;
+  first_name: string;
+  last_name?: string;
   email: string;
   phone_code: string;
   phone_number: string;
@@ -365,6 +366,7 @@ export interface IOrderSummaryPayload {
   services?: number[];
   coins?: number;
   promo_code?: string;
+  asset?: number;
 }
 
 export interface IAssetVisitPayload {

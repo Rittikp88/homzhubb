@@ -197,8 +197,10 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
   };
 
   private getOrderSummary = async (data?: IOrderSummaryPayload): Promise<void> => {
+    const { propertyId } = this.props;
     const payload: IOrderSummaryPayload = {
       ...(this.getServiceIds().length > 0 && { services: this.getServiceIds() }),
+      ...(propertyId && { asset: propertyId }),
       ...(data?.coins && { coins: data.coins }),
       ...(data?.promo_code && { promo_code: data.promo_code }),
     };

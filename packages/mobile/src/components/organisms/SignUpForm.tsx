@@ -19,7 +19,8 @@ interface ISignUpFormProps extends WithTranslation {
 }
 
 interface IFormData {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
@@ -33,14 +34,16 @@ interface ISignUpFormState {
 }
 
 class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
-  public name: FormTextInput | null = null;
+  public firstName: FormTextInput | null = null;
+  public lastName: FormTextInput | null = null;
   public email: FormTextInput | null = null;
   public phone: FormTextInput | null = null;
   public password: FormTextInput | null = null;
 
   public state = {
     user: {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       phone: '',
       password: '',
@@ -66,12 +69,23 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
               <>
                 <FormTextInput
                   ref={(refs): void => {
-                    this.name = refs;
+                    this.firstName = refs;
                   }}
-                  name="name"
-                  label="Name"
+                  name="firstName"
+                  label="First Name"
                   inputType="name"
-                  placeholder={t('auth:enterName')}
+                  placeholder={t('auth:enterFirstName')}
+                  formProps={formProps}
+                  onSubmitEditing={onEmailFocus}
+                />
+                <FormTextInput
+                  ref={(refs): void => {
+                    this.lastName = refs;
+                  }}
+                  name="lastName"
+                  label="Last Name"
+                  inputType="name"
+                  placeholder={t('auth:enterLastName')}
                   formProps={formProps}
                   onSubmitEditing={onEmailFocus}
                 />
@@ -178,7 +192,8 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
     const { countryCode } = this.state;
     formActions.setSubmitting(true);
     const signUpData: ISignUpPayload = {
-      full_name: values.name,
+      first_name: values.firstName,
+      ...(values.lastName && { last_name: values.lastName }),
       email: values.email,
       phone_code: countryCode,
       phone_number: values.phone,
