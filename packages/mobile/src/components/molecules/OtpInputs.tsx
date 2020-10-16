@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderWidth: 1,
     borderRadius: 4,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    height: 48,
+    width: 48,
     borderColor: theme.colors.disabled,
   },
   errorText: {

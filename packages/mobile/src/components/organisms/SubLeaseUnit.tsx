@@ -1,13 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { cloneDeep } from 'lodash';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import {
+  Button,
   CheckboxGroup,
   FormButton,
   FurnishingSelection,
@@ -35,20 +37,13 @@ interface IProps {
   furnishing: FurnishingTypes;
   availableSpaces: SpaceType[];
   preferences: ICheckboxGroupData[];
-  onSubmit: (values: ILeaseTermParams, key?: string) => void;
-  onSpacesChange?: (id: number, type: SpaceChangeType, count?: number) => void;
+  onSubmit: (values: ILeaseTermParams, key?: string, proceed?: boolean) => void;
   singleLeaseUnitKey?: number;
   route?: { key: string; title: string; id?: number };
 }
 
 // CONSTANTS
 const LEASE_UNIT = 'Lease Unit';
-export enum SpaceChangeType {
-  INC = 'INC',
-  DEC = 'DEC',
-  EQL = 'EQL',
-  DEL = 'DEL',
-}
 
 const SubLeaseUnit = (props: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
@@ -60,7 +55,6 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
     preferences,
     availableSpaces,
     onSubmit,
-    onSpacesChange,
     route,
   } = props;
 
@@ -68,43 +62,27 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
   const [tenantPreferences, setPreferences] = useState<ICheckboxGroupData[]>([]);
   const [spaces, setSpaces] = useState<SpaceType[]>([]);
   const [furnishingType, setFurnishingType] = useState(furnishing);
-  const val = useRef<SpaceType[]>([]);
-
-  useEffect(() => {
-    if (spaces.length <= 0) {
-      setSpaces(cloneDeep(availableSpaces));
-    } else {
-      const nextState = spaces.map((space) => {
-        const newParentObj = availableSpaces.find((parentObj) => parentObj.id === space.id);
-        space.count = newParentObj?.count ?? space.count;
-        return space;
-      });
-      setSpaces(nextState);
-    }
-  }, [availableSpaces]);
 
   useEffect(() => {
     if (tenantPreferences.length <= 0) {
       setPreferences(cloneDeep(preferences));
     }
   }, [preferences]);
-  // HOOKS END
-
-  // CLEANUP
-  useEffect(() => {
-    val.current = spaces;
-  }, [spaces]);
 
   useEffect(() => {
-    return (): void => {
-      val.current.forEach((space) => {
-        if (space.count > 0 && onSpacesChange) {
-          onSpacesChange(space.id, SpaceChangeType.DEL, space.count);
-        }
+    if (spaces.length <= 0) {
+      setSpaces(cloneDeep(availableSpaces));
+    }
+    if (spaces.length > 0 && route?.id) {
+      const newSpaces = spaces.map((space) => {
+        const newSpace = availableSpaces.find((obj) => obj.id === space.id);
+        space.count = space.unitCount + (newSpace?.count ?? 0);
+        return space;
       });
-    };
-  }, []);
-  // CLEANUP END
+      setSpaces(newSpaces);
+    }
+  }, [availableSpaces]);
+  // HOOKS END
 
   // USER INTERACTION CALLBACKS
   const handlePreferences = useCallback(
@@ -123,44 +101,20 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
   );
 
   const handleSpaceFormChange = useCallback(
-    (id: number, count: number, description?: string): void => {
-      if (!onSpacesChange) {
-        return;
-      }
-
-      let type = SpaceChangeType.EQL;
-      // To Handle the counter atoms on mount callbacks
-      if (spaces.length === 0 && count > 0) {
-        onSpacesChange(id, SpaceChangeType.INC);
-        return;
-      }
-
-      // To handle the regular flow
-      const nextState: SpaceType[] = spaces.map((space: SpaceType) => {
+    (id: number, count: number): void => {
+      const nextState = spaces.map((space) => {
         if (space.id === id) {
-          if (count < space.unitCount) {
-            type = SpaceChangeType.DEC;
-          }
-          if (count > space.unitCount) {
-            type = SpaceChangeType.INC;
-          }
           space.unitCount = count;
         }
         return space;
       });
-
-      if (type === SpaceChangeType.EQL) {
-        return;
-      }
-
       setSpaces(nextState);
-      onSpacesChange(id, type);
     },
-    [spaces, onSpacesChange]
+    [spaces]
   );
 
   const onSubmitPress = useCallback(
-    (values: IFormData) => {
+    (values: IFormData, formikHelpers: any, proceed?: boolean) => {
       const params = {
         ...AssetService.extractLeaseParams(values, assetGroupType),
         tenant_preferences: tenantPreferences
@@ -186,7 +140,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
         params.lease_listing = singleLeaseUnitKey;
       }
 
-      onSubmit(params, route?.key);
+      onSubmit(params, route?.key, proceed);
     },
     [assetGroupType, onSubmit, tenantPreferences, route, furnishingType, spaces, availableSpaces, singleLeaseUnitKey]
   );
@@ -208,6 +162,19 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
       validate={FormUtils.validate(formSchema)}
     >
       {(formProps: FormikProps<IFormData>): React.ReactElement => {
+        const onAddUnit = async (): Promise<void> => {
+          const errors = await formProps.validateForm(formProps.values);
+          if (!ObjectUtils.isEmpty(errors)) {
+            formProps.setErrors(errors);
+            Object.keys(errors).forEach((key) => {
+              formProps.setFieldTouched(key);
+            });
+            return;
+          }
+          // @ts-ignore
+          onSubmitPress(formProps.values, {}, false);
+        };
+
         return (
           <>
             {route && availableSpaces.length > 0 && (
@@ -235,14 +202,26 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                 </AssetListingSection>
               )}
             </LeaseTermForm>
-            <FormButton
-              title={t('common:continue')}
-              type="primary"
-              formProps={formProps}
-              // @ts-ignore
-              onPress={formProps.handleSubmit}
-              containerStyle={styles.continue}
-            />
+            <View style={styles.buttonContainer}>
+              {route && (
+                <Button
+                  type="primary"
+                  title={t('saveUnit')}
+                  titleStyle={styles.buttonTitle}
+                  onPress={onAddUnit}
+                  containerStyle={[styles.continue, styles.saveUnit]}
+                />
+              )}
+              <FormButton
+                title={t('common:proceed')}
+                type="primary"
+                formProps={formProps}
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                titleStyle={styles.buttonTitle}
+                containerStyle={styles.continue}
+              />
+            </View>
           </>
         );
       }}
@@ -255,7 +234,7 @@ export { memoizedComponent as SubLeaseUnit };
 
 const styles = StyleSheet.create({
   continue: {
-    flex: 0,
+    flex: 1,
     marginTop: 20,
     marginBottom: 50,
   },
@@ -272,5 +251,14 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+  saveUnit: {
+    marginEnd: 16,
+  },
+  buttonTitle: {
+    marginHorizontal: 0,
   },
 });

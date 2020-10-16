@@ -90,7 +90,6 @@ export const recordAssetReducer = (
     case RecordAssetActionTypes.GET.ASSET_BY_ID:
       return {
         ...state,
-        ['assetDetails']: null,
         ['loaders']: { ...state.loaders, ['assetDetails']: true },
       };
     case RecordAssetActionTypes.GET.ASSET_BY_ID_SUCCESS:

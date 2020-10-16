@@ -115,6 +115,9 @@
     "phone": "Phone",
     "email": "E-mail",
     "noServicesFound": "No Services Found",
+    "proceed": "Proceed",
+    "minCount": "Cannot reduce beyond this",
+    "maxCount": "Cannot increase beyond this",
     "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet"
   },
   "auth": {
@@ -200,6 +203,8 @@
     "enterCarpetArea": "Enter carpet area",
     "selectAreaUnit": "Select Area Unit",
     "leaseDetails": "Lease Details",
+    "entire": "Entire",
+    "shared": "Shared",
     "propertyImages": "Property Images",
     "images": "Images",
     "propertyVerification": "Property Verification",
@@ -339,7 +344,12 @@
     "noVisits": "No Visits Found",
     "wantCancelVisit": "Do you want to cancel scheduled visit?",
     "cancelVisit": "Cancel Visit",
-    "specifyOthersText": "Specify Others"
+    "specifyOthersText": "Specify Others",
+    "lessUnitsToDelete": "You cannot delete!",
+    "cannotAddUnit": "You cannot add units!",
+    "finishCurrent": "You cannot add units! Please finish current unit!",
+    "unitCreated": "{{unit}} Created!",
+    "saveUnit": "Save unit"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { TabBar, TabView } from 'react-native-tab-view';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { TabView, NavigationState, SceneRendererProps } from 'react-native-tab-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -8,8 +8,8 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { ICheckboxGroupData, Label } from '@homzhub/common/src/components';
-import { SpaceChangeType, SubLeaseUnit } from '@homzhub/mobile/src/components/organisms/SubLeaseUnit';
+import { Divider, ICheckboxGroupData, Label } from '@homzhub/common/src/components';
+import { SubLeaseUnit } from '@homzhub/mobile/src/components/organisms/SubLeaseUnit';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
@@ -17,85 +17,88 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
-  isSplitAsUnits: boolean;
+  leaseType: LeaseTypes;
   currencyData: Currency;
   assetGroupType: AssetGroupTypes;
   furnishing: FurnishingTypes;
-  togglePropertyUnits: () => void;
   scrollToTop: () => void;
-  onNextStep: (type: TypeOfPlan) => Promise<void>;
+  onLeaseTypeChange: (leaseType: LeaseTypes) => void;
+  onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams) => Promise<void>;
+}
+
+interface IRoute {
+  key: string;
+  title: string;
+  id?: number;
 }
 
 interface IOwnState {
   currentIndex: number;
-  routes: { key: string; title: string; id?: number }[];
+  routes: IRoute[];
   singleLeaseUnitKey: number;
   preferences: ICheckboxGroupData[];
   availableSpaces: SpaceType[];
 }
 
+export enum LeaseTypes {
+  Entire = 'entire',
+  Shared = 'shared',
+}
+
 class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
+  private scrollRef = React.createRef<ScrollView>();
   public constructor(props: IProps) {
     super(props);
     const { t } = props;
     this.state = {
       currentIndex: 0,
       singleLeaseUnitKey: -1,
-      routes: [
-        { key: '1', title: t('unit', { unitNo: 1 }) },
-        { key: '2', title: t('unit', { unitNo: 2 }) },
-      ],
+      routes: [{ key: '1', title: t('unit', { unitNo: 1 }) }],
       preferences: [],
       availableSpaces: [],
     };
   }
 
   public componentDidMount = async (): Promise<void> => {
-    const { assetGroupType, currentAssetId, togglePropertyUnits } = this.props;
+    const { assetGroupType, currentAssetId } = this.props;
+
     try {
-      const response = await AssetRepository.getLeaseTerms(currentAssetId);
-      if (response.length > 1) {
-        togglePropertyUnits();
-      }
+      // TODO (Aditya 15/10/2020): Change this logic as per new response
+      await AssetRepository.getLeaseTerms(currentAssetId);
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
+
+    // Fetch the tenant preferences list
     if (assetGroupType === AssetGroupTypes.RES) {
       await this.getTenantPreferences();
     }
+
+    // Fetch all the spaces for the asset
     await this.getAvailableSpaces();
   };
 
   public render = (): React.ReactNode => {
-    const { isSplitAsUnits, currencyData, assetGroupType, furnishing } = this.props;
-    const { preferences, availableSpaces, routes, singleLeaseUnitKey } = this.state;
+    const { leaseType, currencyData, assetGroupType, furnishing } = this.props;
+    const { preferences, availableSpaces, singleLeaseUnitKey } = this.state;
 
     return (
       <>
-        {isSplitAsUnits ? (
-          <>
-            <TouchableOpacity onPress={this.onTabAdd}>
-              <Icon name={icons.plus} size={24} />
-            </TouchableOpacity>
-            {routes.length > 2 && (
-              <TouchableOpacity onPress={this.onDelete}>
-                <Icon name={icons.circularCrossFilled} size={24} color={theme.colors.active} />
-              </TouchableOpacity>
-            )}
-            {this.renderTab()}
-          </>
+        {leaseType === LeaseTypes.Shared ? (
+          this.renderTab()
         ) : (
           <SubLeaseUnit
             singleLeaseUnitKey={singleLeaseUnitKey}
-            onSubmit={this.onSubmit}
-            furnishing={furnishing}
-            preferences={preferences}
-            currencyData={currencyData}
             assetGroupType={assetGroupType}
+            furnishing={furnishing}
+            currencyData={currencyData}
+            preferences={preferences}
             availableSpaces={availableSpaces}
+            onSubmit={this.onSubmit}
           />
         )}
       </>
@@ -126,40 +129,67 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     return (
       <SubLeaseUnit
         route={route}
-        onSubmit={this.onSubmit}
-        onSpacesChange={this.onSpacesChange}
-        furnishing={furnishing}
-        preferences={preferences}
-        currencyData={currencyData}
         assetGroupType={assetGroupType}
+        furnishing={furnishing}
+        currencyData={currencyData}
+        preferences={preferences}
         availableSpaces={availableSpaces}
+        onSubmit={this.onSubmit}
       />
     );
   };
 
-  private renderTabBar = (props: any): React.ReactElement => {
-    const { currentIndex, routes } = this.state;
+  private renderTabBar = (
+    props: SceneRendererProps & {
+      navigationState: NavigationState<IRoute>;
+    }
+  ): React.ReactElement => {
+    const { routes, index } = props.navigationState;
+
+    let width = (theme.viewport.width - 88) / routes.length;
+    if (routes.length > 2) {
+      width = theme.viewport.width * 0.3;
+    }
+
     return (
-      <TabBar
-        {...props}
-        style={styles.tabBar}
-        indicatorStyle={styles.indicator}
-        renderLabel={({ route }): React.ReactElement => {
-          let style = {};
-          let type = 'regular';
+      <View style={styles.tabBar}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} ref={this.scrollRef}>
+          {routes.map((route, curIndex: number) => {
+            const isSelected = route.key === routes[index].key;
+            let style = {};
+            let type = 'regular';
 
-          if (route.key === routes[currentIndex].key) {
-            style = { color: theme.colors.active };
-            type = 'semiBold';
-          }
+            if (isSelected) {
+              style = { color: theme.colors.active };
+              type = 'semiBold';
+            }
 
-          return (
-            <Label type="large" textType={type as 'regular' | 'semiBold'} style={[styles.tabTitle, style]}>
-              {route.title}
-            </Label>
-          );
-        }}
-      />
+            const onPress = (): void => this.onTabChange(curIndex);
+
+            return (
+              <View key={route.key}>
+                <View style={[styles.tab, { width }]}>
+                  <TouchableOpacity onPress={onPress}>
+                    <Label type="large" textType={type as 'regular' | 'semiBold'} style={[styles.tabTitle, style]}>
+                      {route.title}
+                    </Label>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.onDelete}>
+                    <Icon name={icons.circularCrossFilled} size={20} color={theme.colors.active} />
+                  </TouchableOpacity>
+                </View>
+                <Divider containerStyles={isSelected ? styles.indicator : styles.disabledIndicator} />
+              </View>
+            );
+          })}
+        </ScrollView>
+        <View>
+          <TouchableOpacity onPress={this.onTabAdd} style={styles.addButton}>
+            <Icon name={icons.plus} color={theme.colors.active} size={24} />
+          </TouchableOpacity>
+          <Divider containerStyles={styles.disabledIndicator} />
+        </View>
+      </View>
     );
   };
 
@@ -168,21 +198,43 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   private onTabAdd = (): void => {
-    const { routes } = this.state;
+    const { routes, currentIndex } = this.state;
     const { t } = this.props;
-    this.setState({
-      routes: [...routes, { key: `${Math.random()}`, title: t('unit', { unitNo: routes.length + 1 }) }],
-    });
+
+    const areMandatoryFilled = this.checkAvailableMandatorySpaces();
+    if (areMandatoryFilled || !routes[currentIndex].id) {
+      const messageKey = areMandatoryFilled ? 'cannotAddUnit' : 'finishCurrent';
+      AlertHelper.error({ message: t(messageKey) });
+      return;
+    }
+
+    this.setState(
+      {
+        routes: [...routes, { key: `${Math.random()}`, title: t('unit', { unitNo: routes.length + 1 }) }],
+        currentIndex: routes.length,
+      },
+      (): void => {
+        setTimeout(() => {
+          this.scrollRef.current?.scrollToEnd({ animated: true });
+        }, 0);
+      }
+    );
   };
 
   private onDelete = async (): Promise<void> => {
     const { currentIndex, routes } = this.state;
     const { t, currentAssetId } = this.props;
 
+    if (routes.length === 1) {
+      AlertHelper.error({ message: t('lessUnitsToDelete') });
+      return;
+    }
+
     if (routes[currentIndex].id) {
       try {
         // @ts-ignore
         await AssetRepository.deleteLeaseTerm(currentAssetId, routes[currentIndex].id);
+        await this.getAvailableSpaces();
       } catch (err) {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
         return;
@@ -200,48 +252,32 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     });
   };
 
-  private onSpacesChange = (id: number, type: SpaceChangeType, count?: number): void => {
-    const { availableSpaces } = this.state;
-    const nextState = availableSpaces.map((space) => {
-      if (space.id === id) {
-        switch (type) {
-          case SpaceChangeType.INC:
-            space.count -= 1;
-            break;
-          case SpaceChangeType.DEC:
-            space.count += 1;
-            break;
-          case SpaceChangeType.DEL:
-            space.count += count ?? 0;
-            break;
-          default:
-            break;
-        }
-      }
-      return space;
-    });
-    this.setState({ availableSpaces: nextState });
-  };
-
-  private onSubmit = async (values: ILeaseTermParams, key?: string): Promise<void> => {
-    const { onNextStep, isSplitAsUnits, currentAssetId, scrollToTop } = this.props;
-    const { routes, currentIndex } = this.state;
+  private onSubmit = async (values: ILeaseTermParams, key?: string, proceed = true): Promise<void> => {
+    const { onNextStep, leaseType, currentAssetId, scrollToTop, t } = this.props;
+    const { routes } = this.state;
 
     try {
       const response = await AssetRepository.createLeaseTerms(currentAssetId, [values]);
 
-      if (isSplitAsUnits) {
+      if (leaseType === LeaseTypes.Shared) {
+        await this.getAvailableSpaces();
+
         const routesToUpdate = routes.map((route) => {
           if (route.key === key) {
             return { ...route, id: response.ids[0] };
           }
           return route;
         });
-        const newIndex = currentIndex === routes.length - 1 ? currentIndex : currentIndex + 1;
-        this.setState({ routes: routesToUpdate, currentIndex: newIndex }, scrollToTop);
+        this.setState({ routes: routesToUpdate }, scrollToTop);
+
+        AlertHelper.success({ message: t('unitCreated', { unit: values.lease_unit?.name }) });
+
+        if (proceed) {
+          await onNextStep(TypeOfPlan.RENT, { is_subleased: true });
+        }
       } else {
         this.setState({ singleLeaseUnitKey: response.ids[0] });
-        await onNextStep(TypeOfPlan.RENT);
+        await onNextStep(TypeOfPlan.RENT, { is_subleased: false });
       }
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
@@ -272,18 +308,57 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     }
   };
   // APIs END
+
+  // HELPERS
+
+  private checkAvailableMandatorySpaces = (): boolean => {
+    const { availableSpaces } = this.state;
+    let areMandatoryFilled = false;
+
+    for (let i = 0; i < availableSpaces.length; i++) {
+      if (availableSpaces[i].isMandatory && availableSpaces[i].count === 0) {
+        areMandatoryFilled = true;
+        break;
+      }
+    }
+
+    return areMandatoryFilled;
+  };
+
+  // HELPERS END
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.property)(LeaseTermController);
 
 const styles = StyleSheet.create({
-  tabTitle: {
-    color: theme.colors.darkTint3,
-  },
   tabBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: theme.colors.white,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
-  indicator: { backgroundColor: theme.colors.active, height: 2 },
+  tab: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 12,
+  },
+  tabTitle: {
+    color: theme.colors.darkTint3,
+    paddingHorizontal: 8,
+  },
+  addButton: {
+    paddingBottom: 10,
+  },
+  indicator: {
+    backgroundColor: theme.colors.active,
+    height: 2.5,
+  },
+  disabledIndicator: {
+    backgroundColor: theme.colors.disabled,
+    height: 2.5,
+  },
 });

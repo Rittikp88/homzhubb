@@ -406,6 +406,7 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isGated": false,
+      "_isSubleased": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {
         "_assetCreation": AssetCreationStep {
@@ -797,6 +798,7 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isGated": false,
+      "_isSubleased": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {
         "_assetCreation": AssetCreationStep {

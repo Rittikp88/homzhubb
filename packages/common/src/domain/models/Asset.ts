@@ -41,6 +41,7 @@ export enum PropertyStatus {
 export interface IAsset {
   id: number;
   project_name: string;
+  is_subleased: boolean;
   unit_number: string;
   posted_on: string;
   description: string;
@@ -163,6 +164,9 @@ export class Asset {
 
   @JsonProperty('block_number', String)
   private _blockNumber = '';
+
+  @JsonProperty('is_subleased', Boolean, true)
+  private _isSubleased = false;
 
   @JsonProperty('latitude', Number)
   private _latitude = 0;
@@ -520,6 +524,10 @@ export class Asset {
 
   get countryName(): string {
     return this._countryName;
+  }
+
+  get isSubleased(): boolean {
+    return this._isSubleased;
   }
 
   get countryIsoCode(): string {

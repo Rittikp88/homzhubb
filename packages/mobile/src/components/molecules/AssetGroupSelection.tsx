@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.disabled,
   },
   assetGroupName: {
+    textAlign: 'center',
     marginEnd: 4,
   },
   title: {

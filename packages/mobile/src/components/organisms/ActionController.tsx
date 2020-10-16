@@ -3,20 +3,21 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
-import LeaseTermController from '@homzhub/mobile/src/components/organisms/LeaseTermController';
+import LeaseTermController, { LeaseTypes } from '@homzhub/mobile/src/components/organisms/LeaseTermController';
 import { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 import { ManageTermController } from '@homzhub/mobile/src/components/organisms/ManageTermController';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   assetDetails: Asset;
   typeOfPlan: TypeOfPlan;
-  isSplitAsUnits: boolean;
+  leaseType: LeaseTypes;
   onNextStep: () => void;
   scrollToTop: () => void;
-  togglePropertyUnits: () => void;
+  onLeaseTypeChange: (leaseType: LeaseTypes) => void;
 }
 
 interface IDispatchProps {
@@ -38,7 +39,6 @@ class ActionController extends React.PureComponent<Props, {}> {
   };
 
   public render = (): React.ReactNode => {
-    const { isSplitAsUnits } = this.props;
     const {
       assetDetails: {
         id,
@@ -46,9 +46,10 @@ class ActionController extends React.PureComponent<Props, {}> {
         furnishing,
         country: { currencies },
       },
+      leaseType,
       typeOfPlan,
       scrollToTop,
-      togglePropertyUnits,
+      onLeaseTypeChange,
     } = this.props;
 
     return (
@@ -63,14 +64,14 @@ class ActionController extends React.PureComponent<Props, {}> {
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
           <LeaseTermController
-            isSplitAsUnits={isSplitAsUnits}
+            leaseType={leaseType}
             currentAssetId={id}
             assetGroupType={assetGroupCode}
             furnishing={furnishing}
             currencyData={currencies[0]}
             onNextStep={this.onNextStep}
             scrollToTop={scrollToTop}
-            togglePropertyUnits={togglePropertyUnits}
+            onLeaseTypeChange={onLeaseTypeChange}
           />
         )}
         {typeOfPlan === TypeOfPlan.MANAGE && (
@@ -85,7 +86,7 @@ class ActionController extends React.PureComponent<Props, {}> {
     );
   };
 
-  private onNextStep = async (type: TypeOfPlan): Promise<void> => {
+  private onNextStep = async (type: TypeOfPlan, params?: IUpdateAssetParams): Promise<void> => {
     const {
       onNextStep,
       assetDetails: { lastVisitedStepSerialized, id },
@@ -99,7 +100,8 @@ class ActionController extends React.PureComponent<Props, {}> {
         is_listing_created: true,
       },
     };
-    await AssetRepository.updateAsset(id, { last_visited_step });
+    const reqBody = params ? { last_visited_step, ...params } : { last_visited_step };
+    await AssetRepository.updateAsset(id, reqBody);
     onNextStep();
   };
 }

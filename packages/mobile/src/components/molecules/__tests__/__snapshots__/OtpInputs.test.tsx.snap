@@ -35,9 +35,9 @@ exports[`OtpInputs should call focus next function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -65,9 +65,9 @@ exports[`OtpInputs should call focus next function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -95,9 +95,9 @@ exports[`OtpInputs should call focus next function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -125,9 +125,9 @@ exports[`OtpInputs should call focus next function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -155,9 +155,9 @@ exports[`OtpInputs should call focus next function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -185,9 +185,9 @@ exports[`OtpInputs should call focus next function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -246,9 +246,9 @@ exports[`OtpInputs should call focus previous function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -276,9 +276,9 @@ exports[`OtpInputs should call focus previous function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -306,9 +306,9 @@ exports[`OtpInputs should call focus previous function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -336,9 +336,9 @@ exports[`OtpInputs should call focus previous function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -366,9 +366,9 @@ exports[`OtpInputs should call focus previous function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -396,9 +396,9 @@ exports[`OtpInputs should call focus previous function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -457,9 +457,9 @@ exports[`OtpInputs should call otp handler function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -487,9 +487,9 @@ exports[`OtpInputs should call otp handler function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -517,9 +517,9 @@ exports[`OtpInputs should call otp handler function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -547,9 +547,9 @@ exports[`OtpInputs should call otp handler function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -577,9 +577,9 @@ exports[`OtpInputs should call otp handler function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -607,9 +607,9 @@ exports[`OtpInputs should call otp handler function  1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -668,9 +668,9 @@ exports[`OtpInputs should call otp handler function  2`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -698,9 +698,9 @@ exports[`OtpInputs should call otp handler function  2`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -728,9 +728,9 @@ exports[`OtpInputs should call otp handler function  2`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -758,9 +758,9 @@ exports[`OtpInputs should call otp handler function  2`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -788,9 +788,9 @@ exports[`OtpInputs should call otp handler function  2`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -818,9 +818,9 @@ exports[`OtpInputs should call otp handler function  2`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -879,9 +879,9 @@ exports[`OtpInputs should match snapshot 1`] = `
             "borderColor": "#C9D6DF",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -909,9 +909,9 @@ exports[`OtpInputs should match snapshot 1`] = `
             "borderColor": "#C9D6DF",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -939,9 +939,9 @@ exports[`OtpInputs should match snapshot 1`] = `
             "borderColor": "#C9D6DF",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -969,9 +969,9 @@ exports[`OtpInputs should match snapshot 1`] = `
             "borderColor": "#C9D6DF",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -999,9 +999,9 @@ exports[`OtpInputs should match snapshot 1`] = `
             "borderColor": "#C9D6DF",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -1029,9 +1029,9 @@ exports[`OtpInputs should match snapshot 1`] = `
             "borderColor": "#C9D6DF",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -1079,9 +1079,9 @@ exports[`OtpInputs should match snapshot for error 1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -1109,9 +1109,9 @@ exports[`OtpInputs should match snapshot for error 1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -1139,9 +1139,9 @@ exports[`OtpInputs should match snapshot for error 1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -1169,9 +1169,9 @@ exports[`OtpInputs should match snapshot for error 1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -1199,9 +1199,9 @@ exports[`OtpInputs should match snapshot for error 1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"
@@ -1229,9 +1229,9 @@ exports[`OtpInputs should match snapshot for error 1`] = `
             "borderColor": "#F23C06",
             "borderRadius": 4,
             "borderWidth": 1,
-            "paddingHorizontal": 14,
-            "paddingVertical": 12,
+            "height": 48,
             "textAlign": "center",
+            "width": 48,
           }
         }
         testID="otpInput"

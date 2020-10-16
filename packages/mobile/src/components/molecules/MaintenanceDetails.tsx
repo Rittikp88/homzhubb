@@ -38,10 +38,10 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
   ];
 
   useEffect(() => {
-    if (maintenanceUnits.length > 0) {
+    if (maintenanceUnits.length > 0 && formProps.values[maintenanceUnitKey] === -1) {
       formProps.setFieldValue(maintenanceUnitKey, maintenanceUnits[0].value);
     }
-  }, []);
+  }, [maintenanceUnits]);
 
   return (
     <View style={styles.container}>

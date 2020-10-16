@@ -16,7 +16,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { Button, Image, Label, RNSwitch, Text } from '@homzhub/common/src/components';
+import { Button, Image, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
 import {
   ActionController,
   AddressWithStepIndicator,
@@ -28,6 +28,7 @@ import PropertyVerification from '@homzhub/mobile/src/components/organisms/Prope
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { LeaseTypes } from '@homzhub/mobile/src/components/organisms/LeaseTermController';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
@@ -56,7 +57,7 @@ interface IOwnState {
   currentIndex: number;
   isStepDone: boolean[];
   isActionSheetToggled: boolean;
-  isPropertyAsUnits: boolean;
+  leaseType: LeaseTypes;
   isSheetVisible: boolean;
   isNextStep: boolean;
 }
@@ -78,7 +79,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     currentIndex: 0,
     isStepDone: [],
     isActionSheetToggled: false,
-    isPropertyAsUnits: false,
+    leaseType: LeaseTypes.Entire,
     isSheetVisible: false,
     isNextStep: false,
   };
@@ -175,7 +176,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       t,
       selectedAssetPlan: { selectedPlan },
     } = this.props;
-    const { currentIndex, isPropertyAsUnits, isActionSheetToggled } = this.state;
+    const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
 
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
@@ -183,12 +184,16 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     return (
       <View style={styles.tabHeader}>
         {key === RouteKeys.Actions && selectedPlan === TypeOfPlan.RENT && (
-          <View style={[styles.tabRows, styles.switchTab]}>
-            <Text type="small" textType="semiBold">
-              {t('shareAsUnits')}
-            </Text>
-            <RNSwitch selected={isPropertyAsUnits} onToggle={this.togglePropertyUnits} />
-          </View>
+          <SelectionPicker
+            data={[
+              { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
+              { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+            ]}
+            optionWidth={(theme.viewport.width - 32) / 2}
+            selectedItem={[leaseType]}
+            containerStyles={styles.switchTab}
+            onValueChange={this.onTabChange}
+          />
         )}
         <View style={styles.tabRows}>
           <Text type="small" textType="semiBold">
@@ -247,7 +252,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactNode => {
-    const { isPropertyAsUnits } = this.state;
+    const { leaseType } = this.state;
     const {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
@@ -298,10 +303,10 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           <ActionController
             assetDetails={assetDetails}
             typeOfPlan={selectedPlan}
-            isSplitAsUnits={isPropertyAsUnits}
+            leaseType={leaseType}
             onNextStep={this.handleNextStep}
             scrollToTop={this.scrollToTop}
-            togglePropertyUnits={this.togglePropertyUnits}
+            onLeaseTypeChange={this.onTabChange}
           />
         );
     }
@@ -309,6 +314,10 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
   private onCloseSheet = (): void => {
     this.setState({ isSheetVisible: false });
+  };
+
+  private onTabChange = (leaseType: LeaseTypes): void => {
+    this.setState({ leaseType });
   };
 
   private openActionBottomSheet = (): React.ReactNode => {
@@ -342,11 +351,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         </Markdown>
       </BottomSheet>
     );
-  };
-
-  private togglePropertyUnits = (): void => {
-    const { isPropertyAsUnits } = this.state;
-    this.setState({ isPropertyAsUnits: !isPropertyAsUnits });
   };
 
   public getRoutes = (): IRoutes[] => {
@@ -505,7 +509,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   switchTab: {
-    marginBottom: 24,
+    marginBottom: 20,
+    marginTop: 4,
   },
   tabRows: {
     flexDirection: 'row',

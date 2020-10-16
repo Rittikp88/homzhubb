@@ -109,7 +109,8 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           name={{ title: space.name, id: space.id }}
           svgImage={space.attachment && space.attachment.link}
           onValueChange={handleCounterChange}
-          maxCount={flowType === FlowTypes.PostAssetFlow ? undefined : space.unitCount + space.count}
+          maxCount={flowType === FlowTypes.PostAssetFlow ? undefined : space.count}
+          minCount={space.isMandatory ? 1 : 0}
         />
       );
     });

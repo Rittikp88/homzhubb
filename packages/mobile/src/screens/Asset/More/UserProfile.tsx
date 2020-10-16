@@ -39,6 +39,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     if (!userProfile) {
       return null;
     }
+
     const { profileProgress, fullName, basicDetailsArray, emergencyContactArray, workInfoArray } = userProfile;
 
     return (
