@@ -1,5 +1,12 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export interface IEmergencyContact {
+  name: string;
+  phone_code: string;
+  phone_number: string;
+  email: string;
+}
+
 @JsonObject('EmergencyContact')
 export class EmergencyContact {
   @JsonProperty('name', String)

@@ -7,7 +7,7 @@ import { FormTextInput, IFormTextInputProps } from '@homzhub/common/src/componen
 jest.mock('@react-native-community/google-signin', () => {});
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 
-describe('Test cases for FormTextInput', () => {
+describe.skip('Test cases for FormTextInput', () => {
   const formValues = {
     values: {
       name: 'test',

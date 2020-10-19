@@ -4,6 +4,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Label, Text } from '@homzhub/common/src/components';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 
 export interface IDetailsInfo {
   icon: string;
@@ -16,12 +17,13 @@ export interface IDetailsInfo {
 interface IHeaderInfo {
   title: string;
   icon?: string;
-  onPress?: () => void;
+  onPress?: (title: string, formType?: UpdateUserFormTypes) => void;
 }
 
 interface IOwnProps extends WithTranslation {
   details?: IDetailsInfo[];
   headerInfo?: IHeaderInfo;
+  type?: UpdateUserFormTypes;
   onVerifyPress?: () => void;
   showDivider?: boolean;
 }
@@ -41,14 +43,15 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
 
   private renderEmptyView = (): React.ReactNode => {
     const { t } = this.props;
+
     return (
       <View style={styles.marginTop}>
         <Label style={styles.moreInfo} type="large">
           {t('common:loremIpsum')}
         </Label>
-        <TouchableOpacity style={styles.marginTop}>
+        <TouchableOpacity onPress={this.onIconPress} style={styles.marginTop}>
           <Label style={styles.addContactBtn} type="large" textType="semiBold">
-            {t('assetMore:addContactInfoText')}
+            {t('moreProfile:addContactInfoText')}
           </Label>
         </TouchableOpacity>
       </View>
@@ -81,7 +84,7 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
             </View>
             {type === 'EMAIL' && (
               <Label onPress={onVerifyPress} style={styles.verifyMail} type="large">
-                {t('assetMore:verifyYourEmailText')}
+                {t('moreProfile:verifyYourEmailText')}
               </Label>
             )}
           </View>
@@ -103,10 +106,17 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
           {headerInfo.title}
         </Text>
         {headerInfo.icon && (
-          <Icon size={20} name={headerInfo.icon} color={theme.colors.primaryColor} onPress={headerInfo.onPress} />
+          <Icon size={20} name={headerInfo.icon} color={theme.colors.primaryColor} onPress={this.onIconPress} />
         )}
       </View>
     );
+  };
+
+  private onIconPress = (): void => {
+    const { headerInfo, type } = this.props;
+    if (headerInfo?.onPress) {
+      headerInfo.onPress(headerInfo?.title, type);
+    }
   };
 }
 

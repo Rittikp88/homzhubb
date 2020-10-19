@@ -1,5 +1,14 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { LocationDetails } from '@homzhub/common/src/domain/models/LocationDetails';
+import { ILocationDetails, LocationDetails } from '@homzhub/common/src/domain/models/LocationDetails';
+
+export interface IAddress {
+  id: number;
+  address_line_1: string;
+  address_line_2: string;
+  postal_code: string;
+  is_primary: boolean;
+  location: ILocationDetails;
+}
 
 @JsonObject('Address')
 export class Address {

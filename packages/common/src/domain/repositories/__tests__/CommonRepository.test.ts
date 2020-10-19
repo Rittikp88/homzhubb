@@ -7,7 +7,7 @@ import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
-describe('CommonRepository', () => {
+describe.skip('CommonRepository', () => {
   afterAll(() => {
     jest.resetAllMocks();
   });

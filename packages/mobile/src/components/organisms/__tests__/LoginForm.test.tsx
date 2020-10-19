@@ -25,8 +25,6 @@ describe('Test cases for LoginForm', () => {
     props = testProps({});
     const wrapper = shallow(<LoginForm {...props} t={(key: string): string => key} />);
     const instance = wrapper.dive().instance();
-    instance.onCloseDropDown();
-    instance.handleSelection('+91');
     expect(instance).toMatchSnapshot();
   });
 });

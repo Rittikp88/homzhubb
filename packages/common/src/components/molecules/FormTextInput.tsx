@@ -10,7 +10,9 @@ import {
   TextInput as RNTextInput,
 } from 'react-native';
 import { FormikErrors, FormikProps } from 'formik';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
+import { CommonService } from '@homzhub/common/src/services/CommonService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { images } from '@homzhub/common/src/assets/images';
@@ -18,6 +20,8 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { TextInputSuffix } from '@homzhub/common/src/components/atoms/TextInputSuffix';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { BottomSheetListView } from '@homzhub/mobile/src/components';
 
 type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name' | 'decimal';
 
@@ -42,12 +46,16 @@ export interface IFormTextInputProps extends TextInputProps {
   isTouched?: boolean;
   editable?: boolean;
   onIconPress?: () => void;
+  onPhoneCodeChange?: (value: string) => void;
+  phoneFieldDropdownText?: string;
 }
 
 interface IFormTextInputState {
   showCurrencySymbol: boolean;
   showPassword: boolean;
   isFocused: boolean;
+  isBottomSheetVisible: boolean;
+  countryCodeData: IDropdownOption[];
 }
 
 export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputState> {
@@ -57,6 +65,8 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     showCurrencySymbol: false,
     showPassword: false,
     isFocused: false,
+    isBottomSheetVisible: false,
+    countryCodeData: [],
   };
 
   public render(): React.ReactNode {
@@ -79,11 +89,12 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       editable = true,
       maxLength = 40,
       onIconPress,
+      phoneFieldDropdownText = '',
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
     const { values, setFieldTouched } = formProps;
-    const { showPassword, isFocused, showCurrencySymbol } = this.state;
+    const { showPassword, isFocused, showCurrencySymbol, countryCodeData, isBottomSheetVisible } = this.state;
     const optionalText: string | null = isOptional ? 'Optional' : null;
 
     // @ts-ignore
@@ -173,7 +184,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
                 color={theme.colors.darkTint7}
                 size={12}
                 style={styles.iconStyle}
-                onPress={onIconPress}
+                onPress={onIconPress || this.loadCountryCode}
               />
             </View>
           );
@@ -207,35 +218,65 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     }
 
     return (
-      <WithFieldError error={error} hideError={hideError}>
-        <View style={styles.labelsContainer}>
-          <Label type="regular" style={labelStyles}>
-            {label}
-          </Label>
-          <Label type="small" style={styles.optionalText}>
-            {optionalText}
-          </Label>
-        </View>
-        <View style={containerStyle}>
-          <RNTextInput
-            ref={(input): void => {
-              this.inputText = input as any;
-            }}
-            {...inputProps}
-          />
-          {children}
-          {inputGroupPrefix}
-          {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}
-          {!!inputGroupSuffixText && <TextInputSuffix text={inputGroupSuffixText} />}
-        </View>
-        {helpText && (
-          <Label type="small" style={styles.helpText}>
-            {helpText}
-          </Label>
-        )}
-      </WithFieldError>
+      <>
+        <WithFieldError error={error} hideError={hideError}>
+          <View style={styles.labelsContainer}>
+            <Label type="regular" style={labelStyles}>
+              {label}
+            </Label>
+            <Label type="small" style={styles.optionalText}>
+              {optionalText}
+            </Label>
+          </View>
+          <View style={containerStyle}>
+            <RNTextInput
+              ref={(input): void => {
+                this.inputText = input as any;
+              }}
+              {...inputProps}
+            />
+            {children}
+            {inputGroupPrefix}
+            {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}
+            {!!inputGroupSuffixText && <TextInputSuffix text={inputGroupSuffixText} />}
+          </View>
+          {helpText && (
+            <Label type="small" style={styles.helpText}>
+              {helpText}
+            </Label>
+          )}
+        </WithFieldError>
+        <BottomSheetListView
+          data={countryCodeData}
+          selectedValue={inputPrefixText}
+          listTitle={phoneFieldDropdownText}
+          isBottomSheetVisible={isBottomSheetVisible}
+          onCloseDropDown={this.onCloseDropDown}
+          onSelectItem={this.handleSelection}
+        />
+      </>
     );
   }
+
+  private onCloseDropDown = (): void => {
+    this.setState({ isBottomSheetVisible: false });
+  };
+
+  private loadCountryCode = (): void => {
+    const { isBottomSheetVisible } = this.state;
+    CommonService.getCountryWithCode()
+      .then((res) => {
+        this.setState({ countryCodeData: res });
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: e.message });
+      });
+    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
+
+  public focus = (): void => {
+    this.inputText?.focus();
+  };
 
   private handleTextChange = (text: string): void => {
     const { formProps, inputType, name, onValueChange } = this.props;
@@ -264,6 +305,21 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     }
   };
 
+  private handleFocus = (): void => this.setState({ isFocused: true });
+
+  private handleBlur = (): void => this.setState({ isFocused: false });
+
+  private handleSelection = (value: string): void => {
+    const { isBottomSheetVisible } = this.state;
+    const { onPhoneCodeChange } = this.props;
+
+    if (onPhoneCodeChange) {
+      onPhoneCodeChange(value);
+    }
+
+    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
+
   private getFieldError = (): FormikErrors<any>[] | string | string[] | FormikErrors<any> | undefined => {
     const { name, formProps } = this.props;
     const { errors, touched } = formProps;
@@ -275,14 +331,6 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     this.setState({
       showPassword: !showPassword,
     });
-  };
-
-  private handleFocus = (): void => this.setState({ isFocused: true });
-
-  private handleBlur = (): void => this.setState({ isFocused: false });
-
-  public focus = (): void => {
-    this.inputText?.focus();
   };
 }
 

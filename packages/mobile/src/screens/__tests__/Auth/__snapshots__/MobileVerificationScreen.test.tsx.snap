@@ -46,15 +46,6 @@ exports[`Mobile verification Screen should render snapshot 1`] = `
       <Component />
     </Formik>
   </View>
-  <BottomSheetListView
-    data={Array []}
-    isBottomSheetVisible={false}
-    listTitle="countryRegion"
-    onCloseDropDown={[Function]}
-    onSelectItem={[Function]}
-    selectedValue="+91"
-    testID="bottomSheet"
-  />
 </View>
 `;
 
@@ -104,14 +95,5 @@ exports[`Mobile verification Screen should render snapshot when its not from log
       <Component />
     </Formik>
   </View>
-  <BottomSheetListView
-    data={Array []}
-    isBottomSheetVisible={false}
-    listTitle="countryRegion"
-    onCloseDropDown={[Function]}
-    onSelectItem={[Function]}
-    selectedValue="+91"
-    testID="bottomSheet"
-  />
 </View>
 `;

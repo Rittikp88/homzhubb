@@ -45,7 +45,19 @@ export function* logout(action: IFluxStandardAction<IRefreshTokenPayload>) {
   }
 }
 
+export function* userProfile() {
+  try {
+    const response = yield call(UserRepository.getUserProfile);
+    yield put(UserActions.getUserProfileSuccess(response));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(UserActions.getUserProfileFailure());
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
+  yield takeEvery(UserActionTypes.GET.USER_PROFILE, userProfile);
 }

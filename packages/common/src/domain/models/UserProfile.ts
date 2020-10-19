@@ -1,10 +1,23 @@
 import { icons } from '@homzhub/common/src/assets/icon';
 import { IDetailsInfo } from '@homzhub/mobile/src/components/molecules/DetailsCard';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Address } from '@homzhub/common/src/domain/models/Address';
-import { EmergencyContact } from '@homzhub/common/src/domain/models/EmergencyContact';
-import { User } from '@homzhub/common/src/domain/models/User';
-import { WorkInfo } from '@homzhub/common/src/domain/models/WorkInfo';
+import { Address, IAddress } from '@homzhub/common/src/domain/models/Address';
+import { EmergencyContact, IEmergencyContact } from '@homzhub/common/src/domain/models/EmergencyContact';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import { IWorkInfo, WorkInfo } from '@homzhub/common/src/domain/models/WorkInfo';
+
+export interface IUserProfile extends IUser {
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  email_verified: boolean;
+  social_image_url: string;
+  profile_progress: number;
+  referral_code: string;
+  user_address: IAddress[];
+  emergency_contact: IEmergencyContact;
+  work_info: IWorkInfo;
+}
 
 @JsonObject('UserProfile')
 export class UserProfile extends User {
@@ -112,7 +125,7 @@ export class UserProfile extends User {
   }
 
   get workInfo(): WorkInfo {
-    return this._workInfo ? this.workInfo : new WorkInfo();
+    return this._workInfo;
   }
 
   get workInfoArray(): IDetailsInfo[] | undefined {

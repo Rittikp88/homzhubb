@@ -2,9 +2,11 @@ import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
 import { IUser } from '@homzhub/common/src/domain/models/User';
+import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 
 export const initialUserState: IUserState = {
   user: null,
+  userProfile: null,
   isOnBoardingCompleted: false,
   isChangeStack: true,
   error: {
@@ -12,6 +14,7 @@ export const initialUserState: IUserState = {
   },
   loaders: {
     user: false,
+    userProfile: false,
   },
 };
 
@@ -53,6 +56,25 @@ export const userReducer = (
       };
     case UserActionTypes.SET.CHANGE_STACK:
       return { ...state, ['isChangeStack']: action.payload as boolean };
+    case UserActionTypes.GET.USER_PROFILE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userProfile']: true },
+      };
+    case UserActionTypes.GET.USER_PROFILE_SUCCESS:
+      return {
+        ...state,
+        ['userProfile']: action.payload as IUserProfile,
+        ['loaders']: {
+          ...state.loaders,
+          ['userProfile']: false,
+        },
+      };
+    case UserActionTypes.GET.USER_PROFILE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userProfile']: false },
+      };
     default:
       return state;
   }

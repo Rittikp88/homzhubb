@@ -68,16 +68,6 @@ describe('Mobile verification Screen', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should close dropdown', () => {
-    component.find('[testID="bottomSheet"]').prop('onCloseDropDown')();
-    expect(component.instance().state.isBottomSheetVisible).toBe(false);
-  });
-
-  it('should handle selection', () => {
-    component.find('[testID="bottomSheet"]').prop('onSelectItem')('INR');
-    expect(component.instance().state.countryCode).toBe('INR');
-  });
-
   it('should navigate back', () => {
     component.find(DetailedHeader).prop('onIconPress')();
     expect(mock).toHaveBeenCalled();

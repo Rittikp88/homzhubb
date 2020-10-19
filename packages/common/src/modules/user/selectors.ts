@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { User } from '@homzhub/common/src/domain/models/User';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { User } from '@homzhub/common/src/domain/models/User';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 
 const isLoggedIn = (state: IState): boolean => {
   return !!state.user.user;
@@ -38,10 +39,29 @@ const getIsChangeStack = (state: IState): boolean => {
   return isChangeStack;
 };
 
+const getUserProfile = (state: IState): UserProfile => {
+  const {
+    user: { userProfile },
+  } = state;
+
+  return ObjectMapper.deserialize(UserProfile, userProfile);
+};
+
+const isUserProfileLoading = (state: IState): boolean => {
+  const {
+    user: {
+      loaders: { userProfile },
+    },
+  } = state;
+  return userProfile;
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
   getUserDetails,
   getLoadingState,
   getIsChangeStack,
+  getUserProfile,
+  isUserProfileLoading,
 };

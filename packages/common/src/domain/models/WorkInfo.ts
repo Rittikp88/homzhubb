@@ -1,5 +1,13 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Company } from '@homzhub/common/src/domain/models/Company';
+import { Company, ICompany } from '@homzhub/common/src/domain/models/Company';
+
+export interface IWorkInfo {
+  id: number;
+  company_name: string;
+  work_email: string;
+  work_employee_id: string;
+  company: ICompany;
+}
 
 @JsonObject('WorkInfo')
 export class WorkInfo {

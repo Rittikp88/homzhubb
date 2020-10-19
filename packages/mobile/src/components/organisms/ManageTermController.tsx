@@ -33,6 +33,7 @@ interface IFormFields extends IFormData {
 interface IOwnState {
   currentTermId: number;
   isPropertyOccupied: boolean;
+  phoneCode: string;
   formData: IFormFields;
 }
 
@@ -46,6 +47,7 @@ interface IProps extends WithTranslation {
 class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   public state = {
     isPropertyOccupied: false,
+    phoneCode: '+91',
     currentTermId: -1,
     formData: {
       firstName: '',
@@ -152,6 +154,8 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
 
   private renderTenantForm = (formProps: FormikProps<IFormFields>): React.ReactNode => {
     const { t } = this.props;
+    const { phoneCode } = this.state;
+
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
@@ -190,7 +194,9 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
           placeholder={t('tenantPhone')}
           inputType="phone"
           maxLength={10}
-          inputPrefixText="+91"
+          inputPrefixText={phoneCode}
+          onPhoneCodeChange={this.handlePhoneCodeChange}
+          phoneFieldDropdownText={t('auth:countryRegion')}
           formProps={formProps}
         />
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
@@ -208,13 +214,13 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {
     formActions.setSubmitting(true);
     const { onNextStep, currentAssetId, assetGroupType } = this.props;
-    const { currentTermId } = this.state;
+    const { currentTermId, phoneCode } = this.state;
 
     const params: IManageTerm = {
       first_name: values.firstName,
       last_name: values.lastName,
       email: values.email,
-      phone_code: '+91',
+      phone_code: phoneCode,
       phone_number: values.phone,
       ...AssetService.extractLeaseParams(values, assetGroupType),
     };
@@ -241,6 +247,10 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
+  };
+
+  private handlePhoneCodeChange = (phoneCode: string): void => {
+    this.setState({ phoneCode });
   };
 
   private formSchema = (): yup.ObjectSchema => {

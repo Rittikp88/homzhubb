@@ -1,6 +1,8 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IRefreshTokenPayload, ILoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
+import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 
 const actionTypePrefix = 'User/';
 
@@ -12,6 +14,11 @@ export const UserActionTypes = {
     LOGOUT: `${actionTypePrefix}LOGOUT`,
     LOGOUT_SUCCESS: `${actionTypePrefix}LOGOUT_SUCCESS`,
     LOGOUT_FAILURE: `${actionTypePrefix}LOGOUT_FAILURE`,
+  },
+  GET: {
+    USER_PROFILE: `${actionTypePrefix}USER_PROFILE`,
+    USER_PROFILE_SUCCESS: `${actionTypePrefix}USER_PROFILE_SUCCESS`,
+    USER_PROFILE_FAILURE: `${actionTypePrefix}USER_PROFILE_FAILURE`,
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
@@ -70,7 +77,20 @@ const setChangeStack = (payload: boolean): IFluxStandardAction<boolean> => ({
   payload,
 });
 
-export type UserPayloadTypes = string | boolean | IUser;
+const getUserProfile = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.USER_PROFILE,
+});
+
+const getUserProfileSuccess = (payload: UserProfile): IFluxStandardAction<IUserProfile> => ({
+  type: UserActionTypes.GET.USER_PROFILE_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getUserProfileFailure = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.USER_PROFILE_FAILURE,
+});
+
+export type UserPayloadTypes = string | boolean | IUser | IUserProfile;
 export const UserActions = {
   login,
   loginSuccess,
@@ -80,4 +100,7 @@ export const UserActions = {
   logoutFailure,
   updateOnBoarding,
   setChangeStack,
+  getUserProfile,
+  getUserProfileSuccess,
+  getUserProfileFailure,
 };

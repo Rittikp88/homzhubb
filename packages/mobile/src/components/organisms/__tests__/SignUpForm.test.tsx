@@ -18,8 +18,6 @@ describe('Test cases for SignUpForm', () => {
   it('should render snapshot for dropdown selection', () => {
     const wrapper = shallow(<SignUpForm {...props} t={(key: string): string => key} />);
     const instance = wrapper.dive().instance();
-    instance.onCloseDropDown();
-    instance.handleSelection('+91');
     expect(instance).toMatchSnapshot();
   });
 });

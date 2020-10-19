@@ -1,7 +1,7 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
-import { CountryCode } from '@homzhub/common/src/domain/models/CountryCode';
+import { Country } from '@homzhub/common/src/domain/models/CountryCode';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
@@ -24,9 +24,9 @@ class CommonRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getCountryCodes = async (): Promise<CountryCode[]> => {
+  public getCountryCodes = async (): Promise<Country[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getCountryCodes());
-    return ObjectMapper.deserializeArray(CountryCode, response);
+    return ObjectMapper.deserializeArray(Country, response);
   };
 
   public getCurrencyCodes = async (): Promise<Currency[]> => {

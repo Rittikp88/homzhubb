@@ -396,3 +396,16 @@ export interface IRescheduleVisitPayload {
   end_date: string;
   comments?: string;
 }
+
+export interface IUpdateEmergencyContact {
+  emergency_contact_name: string;
+  emergency_contact_phone: string;
+  emergency_contact_phone_code: string;
+  emergency_contact_email: string;
+}
+
+export interface IUpdateWorkInfo {
+  company_name: string;
+  work_email: string;
+  work_employee_id: string;
+}

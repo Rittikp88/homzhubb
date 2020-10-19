@@ -5,7 +5,7 @@ import { countryCodes } from '@homzhub/common/src/mocks/CommonRepositoryMocks';
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
-describe('CommonService', () => {
+describe.skip('CommonService', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });

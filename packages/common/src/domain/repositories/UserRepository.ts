@@ -14,6 +14,8 @@ import {
   ISocialSignUpPayload,
   IRefreshTokenPayload,
   IUserExistsData,
+  IUpdateWorkInfo,
+  IUpdateEmergencyContact,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
@@ -31,6 +33,8 @@ const ENDPOINTS = {
   logout: (): string => 'users/logout/',
   getUserSubscription: (): string => 'user/service-plan/',
   getUserProfile: (): string => 'users/profile/',
+  updateEmergencyContact: (): string => 'users/emergency-contact/',
+  updateWorkInfo: (): string => 'users/work-info/',
 };
 
 class UserRepository {
@@ -105,6 +109,14 @@ class UserRepository {
   public getUserProfile = async (): Promise<UserProfile> => {
     const response = await this.apiClient.get(ENDPOINTS.getUserProfile());
     return ObjectMapper.deserialize(UserProfile, response);
+  };
+
+  public updateEmergencyContact = async (payload: IUpdateEmergencyContact): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.updateEmergencyContact(), payload);
+  };
+
+  public updateWorkInfo = async (payload: IUpdateWorkInfo): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.updateWorkInfo(), payload);
   };
 }
 

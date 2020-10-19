@@ -1,40 +1,65 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
-import { AnimatedProfileHeader, DetailsCard, ProgressBar } from '@homzhub/mobile/src/components';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { AnimatedProfileHeader, DetailsCard, ProgressBar, StateAwareComponent } from '@homzhub/mobile/src/components';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 
 type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.UserProfileScreen>;
-type IOwnProps = libraryProps;
 
-interface IOwnState {
-  userProfile: UserProfileModel | null;
+interface IDispatchProps {
+  getUserProfile: () => void;
 }
 
-class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
-  public state = {
-    userProfile: {} as UserProfileModel,
-  };
+interface IStateProps {
+  userProfile: UserProfileModel;
+  isLoading: boolean;
+}
 
-  public async componentDidMount(): Promise<void> {
-    const response = await UserRepository.getUserProfile();
+type IOwnProps = libraryProps & IStateProps & IDispatchProps;
 
-    this.setState({
-      userProfile: response,
-    });
+class UserProfile extends React.PureComponent<IOwnProps> {
+  private onFocusSubscription: any;
+
+  public componentDidMount(): void {
+    const { navigation, getUserProfile } = this.props;
+
+    if (navigation) {
+      this.onFocusSubscription = navigation.addListener('focus', () => {
+        getUserProfile();
+      });
+    }
   }
 
-  public render = (): React.ReactNode => {
+  public componentWillUnmount(): void {
+    const { navigation } = this.props;
+    if (navigation) {
+      this.onFocusSubscription();
+    }
+  }
+
+  public render = (): React.ReactElement => {
+    const { isLoading } = this.props;
+
+    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+  };
+
+  public renderComponent = (): React.ReactNode => {
     const { t } = this.props;
-    const { userProfile } = this.state;
+    const { userProfile } = this.props;
 
     if (!userProfile) {
       return null;
@@ -43,7 +68,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     const { profileProgress, fullName, basicDetailsArray, emergencyContactArray, workInfoArray } = userProfile;
 
     return (
-      <AnimatedProfileHeader sectionHeader={t('profile')} onBackPress={this.goBack}>
+      <AnimatedProfileHeader sectionHeader={t('assetMore:profile')} onBackPress={this.goBack}>
         <View style={styles.container}>
           <View style={styles.profileImage}>
             <View style={styles.initialsContainer}>
@@ -57,51 +82,57 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
                 name={icons.camera}
                 color={theme.colors.white}
                 style={styles.cameraIcon}
-                onPress={this.onPress}
+                onPress={FunctionUtils.noop}
               />
             </View>
           </View>
           <ProgressBar
             containerStyles={styles.progressBar}
-            title={t('profile')}
+            title={t('assetMore:profile')}
             progress={profileProgress || 0}
             width={theme.viewport.width > 400 ? 350 : 330}
           />
           <DetailsCard
-            headerInfo={{ title: t('basicDetails'), icon: icons.noteBook, onPress: this.onPress }}
+            headerInfo={{ title: t('basicDetails'), icon: icons.noteBook, onPress: this.onUpdatePress }}
             details={basicDetailsArray}
-            onVerifyPress={this.onPress}
+            type={UpdateUserFormTypes.BasicDetails}
+            onVerifyPress={FunctionUtils.noop}
             showDivider
           />
           <DetailsCard
-            headerInfo={{ title: t('changePassword'), icon: icons.rightArrow, onPress: this.onPress }}
+            headerInfo={{ title: t('changePassword'), icon: icons.rightArrow, onPress: FunctionUtils.noop }}
             showDivider
           />
           <DetailsCard
             headerInfo={{
               title: t('emergencyContact'),
               icon: emergencyContactArray ? icons.noteBook : undefined,
-              onPress: this.onPress,
+              onPress: this.onUpdatePress,
             }}
             details={emergencyContactArray}
-            onVerifyPress={this.onPress}
+            type={UpdateUserFormTypes.EmergencyContact}
             showDivider
           />
           <DetailsCard
             headerInfo={{
               title: t('workInformation'),
               icon: workInfoArray ? icons.noteBook : undefined,
-              onPress: this.onPress,
+              onPress: this.onUpdatePress,
             }}
             details={workInfoArray}
-            onVerifyPress={this.onPress}
+            type={UpdateUserFormTypes.WorkInfo}
           />
         </View>
       </AnimatedProfileHeader>
     );
   };
 
-  private onPress = (): void => {};
+  private onUpdatePress = (title: string, formType?: UpdateUserFormTypes): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.UpdateUserProfileScreen, { title, formType });
+  };
 
   private goBack = (): void => {
     const { navigation } = this.props;
@@ -109,7 +140,23 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetMore)(UserProfile);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserProfile, isUserProfileLoading } = UserSelector;
+  return {
+    userProfile: getUserProfile(state),
+    isLoading: isUserProfileLoading(state),
+  };
+};
+
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getUserProfile } = UserActions;
+  return bindActionCreators({ getUserProfile }, dispatch);
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.moreProfile)(UserProfile));
 
 const styles = StyleSheet.create({
   container: {

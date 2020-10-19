@@ -15,11 +15,9 @@ SignUpForm {
   "email": null,
   "firstName": null,
   "formSchema": [Function],
-  "handleDropdown": [Function],
-  "handleSelection": [Function],
+  "handlePhoneCodeChange": [Function],
   "handleSubmit": [Function],
   "lastName": null,
-  "onCloseDropDown": [Function],
   "password": null,
   "phone": null,
   "props": Object {
@@ -32,8 +30,6 @@ SignUpForm {
   "setState": [Function],
   "state": Object {
     "countryCode": "+91",
-    "countryCodeData": Array [],
-    "isBottomSheetVisible": true,
     "user": Object {
       "email": "",
       "firstName": "",
@@ -99,14 +95,6 @@ SignUpForm {
         >
           [Function]
         </Formik>
-        <BottomSheetListView
-          data={Array []}
-          isBottomSheetVisible={true}
-          listTitle="auth:countryRegion"
-          onCloseDropDown={[Function]}
-          onSelectItem={[Function]}
-          selectedValue="+91"
-        />
       </View>,
       "_rendering": false,
       "_updater": [Circular],

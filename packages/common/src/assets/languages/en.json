@@ -544,15 +544,9 @@
     "settings": "Settings",
     "referFriend": "Refer a friend",
     "paymentMethods": "Subscriptions & Payments",
-    "logout": "Log Out",
-    "basicDetails": "Basic Details",
-    "changePassword": "Change Password",
-    "emergencyContact": "Emergency Contact",
-    "workInformation": "Work Information",
-    "addContactInfoText": "Add Contact Info",
-    "verifyYourEmailText": "Verify your email"
+    "logout": "Log Out"
   },
-  "MoreSettings": {
+  "moreSettings": {
     "loginSecurity": "Login & Security",
     "faceId": "Face ID",
     "fingerprint": "Fingerprint",
@@ -575,5 +569,21 @@
     "releaseNotes": "Release Notes",
     "termsConditionsText": "Terms & Conditions",
     "privacyPolicyText": "Privacy Policy"
+  },
+  "moreProfile": {
+    "basicDetails": "Basic Details",
+    "changePassword": "Change Password",
+    "emergencyContact": "Emergency Contact",
+    "workInformation": "Work Information",
+    "addContactInfoText": "Add Contact Info",
+    "verifyYourEmailText": "Verify your email",
+    "contactName": "Contact Name",
+    "saveChanges": "Save Changes",
+    "companyName": "Company Name",
+    "companyEmail": "Company E-mail",
+    "updateProfile": "Update Profile",
+    "fieldRequiredError": "This field is required",
+    "editHeaderText": "Edit {{title}}",
+    "updateSuccessfulMessage": "Details updated successfully"
   }
 }

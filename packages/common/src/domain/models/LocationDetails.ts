@@ -1,5 +1,18 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export interface ILocationDetails {
+  id: number;
+  city_name: string;
+  region_name: string;
+  country_name: string;
+  iso2_code: string;
+  iso3_code: string;
+  phone_codes: string[];
+  city: number;
+  region: number;
+  country: number;
+}
+
 @JsonObject('LocationDetails')
 export class LocationDetails {
   @JsonProperty('id', Number)

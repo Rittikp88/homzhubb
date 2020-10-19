@@ -3,19 +3,21 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { CountryCode } from '@homzhub/common/src/domain/models/CountryCode';
+import { Country } from '@homzhub/common/src/domain/models/CountryCode';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
 class CommonService {
   public getCountryWithCode = async (): Promise<IDropdownOption[]> => {
     const response = await CommonRepository.getCountryCodes();
     const countryCodeOptions: IDropdownOption[] = [];
-    response.forEach((obj: CountryCode) => {
-      const data = {
-        label: `${obj.country} (${obj.countryCode})`,
-        value: obj.countryCode,
-      };
-      countryCodeOptions.push(data);
+    response.forEach((country: Country) => {
+      country.phoneCodes.forEach((code) => {
+        const data = {
+          label: `${country.name} (${code})`,
+          value: code,
+        };
+        countryCodeOptions.push(data);
+      });
     });
 
     return countryCodeOptions;

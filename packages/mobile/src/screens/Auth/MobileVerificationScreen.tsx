@@ -3,15 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { CommonService } from '@homzhub/common/src/services/CommonService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { SocialMediaKeys } from '@homzhub/common/src/assets/constants';
-import { FormTextInput, FormButton, DetailedHeader, IDropdownOption, Text } from '@homzhub/common/src/components';
-import { BottomSheetListView } from '@homzhub/mobile/src/components';
+import { FormTextInput, FormButton, DetailedHeader, Text } from '@homzhub/common/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -20,8 +17,6 @@ interface IVerificationState {
     phone: string;
   };
   countryCode: string;
-  isBottomSheetVisible: boolean;
-  countryCodeData: IDropdownOption[];
 }
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.MobileVerification>;
@@ -34,13 +29,11 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
       phone: '',
     },
     countryCode: '+91',
-    isBottomSheetVisible: false,
-    countryCodeData: [],
   };
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { isBottomSheetVisible, formData, countryCodeData, countryCode } = this.state;
+    const { formData, countryCode } = this.state;
     const { title, message, subTitle, buttonTitle } = this.getDisplayStrings();
     return (
       <View style={styles.container}>
@@ -65,7 +58,8 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
                   name="phone"
                   label="Phone"
                   inputPrefixText={countryCode}
-                  onIconPress={this.handleDropdown}
+                  onPhoneCodeChange={this.handlePhoneCodeChange}
+                  phoneFieldDropdownText={t('auth:countryRegion')}
                   placeholder={t('yourNumber')}
                   helpText={t('otpVerification')}
                 />
@@ -81,15 +75,6 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
             )}
           </Formik>
         </View>
-        <BottomSheetListView
-          data={countryCodeData}
-          selectedValue={countryCode}
-          listTitle={t('countryRegion')}
-          isBottomSheetVisible={isBottomSheetVisible}
-          onCloseDropDown={this.onCloseDropDown}
-          onSelectItem={this.handleSelection}
-          testID="bottomSheet"
-        />
       </View>
     );
   }
@@ -130,29 +115,13 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     });
   };
 
-  private onCloseDropDown = (): void => {
-    this.setState({ isBottomSheetVisible: false });
+  private handlePhoneCodeChange = (countryCode: string): void => {
+    this.setState({ countryCode });
   };
 
   private handleIconPress = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
-  };
-
-  private handleSelection = (value: string): void => {
-    this.setState({ countryCode: value });
-  };
-
-  private handleDropdown = (): void => {
-    const { isBottomSheetVisible } = this.state;
-    CommonService.getCountryWithCode()
-      .then((res) => {
-        this.setState({ countryCodeData: res });
-      })
-      .catch((e) => {
-        AlertHelper.error({ message: e.message });
-      });
-    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
   private getDisplayStrings = (): { title: string; subTitle: string; message: string; buttonTitle: string } => {
