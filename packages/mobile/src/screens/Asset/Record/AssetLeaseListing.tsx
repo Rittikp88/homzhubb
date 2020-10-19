@@ -27,8 +27,7 @@ import {
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { LeaseTypes } from '@homzhub/mobile/src/components/organisms/LeaseTermController';
+import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
@@ -107,8 +106,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   }
 
   public componentDidMount = (): void => {
-    const { getAssetById, getValueAddedServices } = this.props;
-    getAssetById();
+    const { getAssetById, getValueAddedServices, assetDetails } = this.props;
+    if (assetDetails) {
+      this.setState({ leaseType: assetDetails.assetLeaseType });
+    } else {
+      getAssetById();
+    }
     getValueAddedServices();
   };
 
@@ -116,9 +119,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const { assetDetails } = this.props;
     if (!prevProps.assetDetails && assetDetails) {
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        leaseType: assetDetails.isSubleased ? LeaseTypes.Shared : LeaseTypes.Entire,
-      });
+      this.setState({ leaseType: assetDetails.assetLeaseType });
     }
   };
 

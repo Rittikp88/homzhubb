@@ -1,16 +1,16 @@
 import { JsonObject, JsonProperty, ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { IAmenity, Amenity, AmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
+import { Amenity, AmenityGroup, IAmenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/CountryCode';
-import { LastVisitedStep, ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
-import { User, IUser } from '@homzhub/common/src/domain/models/User';
-import { Verification, IVerifications } from '@homzhub/common/src/domain/models/Verification';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
@@ -32,6 +32,11 @@ export interface IAssetSpaces {
 export enum DataType {
   TENANCIES = 'TENANCIES',
   PROPERTIES = 'PROPERTIES',
+}
+
+export enum LeaseTypes {
+  Entire = 'entire',
+  Shared = 'shared',
 }
 
 export enum PropertyStatus {
@@ -528,6 +533,10 @@ export class Asset {
 
   get isSubleased(): boolean {
     return this._isSubleased;
+  }
+
+  get assetLeaseType(): LeaseTypes {
+    return this.isSubleased ? LeaseTypes.Shared : LeaseTypes.Entire;
   }
 
   get countryIsoCode(): string {

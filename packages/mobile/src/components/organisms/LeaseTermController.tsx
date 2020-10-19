@@ -21,6 +21,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -34,14 +35,10 @@ interface IRoute {
   initialValues: ILeaseFormData;
 }
 
-export enum LeaseTypes {
-  Entire = 'entire',
-  Shared = 'shared',
-}
-
 interface IProps extends WithTranslation {
   currentAssetId: number;
   leaseType: LeaseTypes;
+  assetLeaseType: LeaseTypes;
   currencyData: Currency;
   assetGroupType: AssetGroupTypes;
   furnishing: FurnishingTypes;
@@ -300,19 +297,19 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
   // APIs
   private getInitData = async (): Promise<void> => {
-    const { currentAssetId, leaseType, t } = this.props;
+    const { currentAssetId, t, assetLeaseType } = this.props;
 
     try {
       const response = await AssetRepository.getLeaseTerms(currentAssetId);
 
-      if (response.length > 0 && leaseType === LeaseTypes.Entire) {
+      if (response.length > 0 && assetLeaseType === LeaseTypes.Entire) {
         this.setState({
           singleLeaseUnitKey: response[0].id,
           singleLeaseInitValues: this.extractInitValues(response[0]),
         });
       }
 
-      if (response.length > 0 && leaseType === LeaseTypes.Shared) {
+      if (response.length > 0 && assetLeaseType === LeaseTypes.Shared) {
         const routes: IRoute[] = [];
         ObjectUtils.sort(response, 'id').forEach((term: LeaseTerm) => {
           routes.push({

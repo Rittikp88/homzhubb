@@ -91,10 +91,11 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
   }, [preferences, initialValues.selectedPreferences]);
 
   useEffect(() => {
-    if (spaces.length <= 0) {
+    if (spaces.length <= 0 || (spaces.length > 0 && !route?.id)) {
       const toSet = cloneDeep(availableSpaces).map((space) => {
         const match = initialValues.spaces.find((parentSpace) => parentSpace.spaceType === space.id);
         space.unitCount = match?.count ?? space.unitCount;
+        space.count = space.unitCount + space.count;
 
         if (space.fieldType === 'CHECKBOX' && space.count === 0 && space.unitCount === 0) {
           space.isDisabled = true;

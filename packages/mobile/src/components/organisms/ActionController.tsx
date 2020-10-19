@@ -3,12 +3,12 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
-import LeaseTermController, { LeaseTypes } from '@homzhub/mobile/src/components/organisms/LeaseTermController';
+import LeaseTermController from '@homzhub/mobile/src/components/organisms/LeaseTermController';
 import { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 import { ManageTermController } from '@homzhub/mobile/src/components/organisms/ManageTermController';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
@@ -44,6 +44,7 @@ class ActionController extends React.PureComponent<Props, {}> {
         id,
         assetGroupCode,
         furnishing,
+        assetLeaseType,
         country: { currencies },
       },
       leaseType,
@@ -64,6 +65,7 @@ class ActionController extends React.PureComponent<Props, {}> {
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
           <LeaseTermController
+            assetLeaseType={assetLeaseType}
             leaseType={leaseType}
             currentAssetId={id}
             assetGroupType={assetGroupCode}
