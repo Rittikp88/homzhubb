@@ -6,13 +6,14 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/GuestStack';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, Label, SVGUri, Text } from '@homzhub/common/src/components';
-import { SnapCarousel, PaginationComponent } from '@homzhub/mobile/src/components';
+import { Button, SVGUri, Text } from '@homzhub/common/src/components';
+import { BottomSheet, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
+import { User, UserType } from '@homzhub/common/src/constants/OnBoarding';
 
 interface IDispatchProps {
   updateOnBoarding: (isOnBoardingCompleted: boolean) => void;
@@ -20,8 +21,10 @@ interface IDispatchProps {
 
 interface IOnBoardingScreenState {
   activeSlide: number;
-  ref: any;
   data: OnBoarding[];
+  isSheetVisible: boolean;
+  selectedType: string;
+  message: string;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<GuestStackNavigatorParamList, ScreensKeys.OnBoarding>;
@@ -30,8 +33,10 @@ type Props = IDispatchProps & libraryProps;
 export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScreenState> {
   public state = {
     activeSlide: 0,
-    ref: null,
     data: [],
+    isSheetVisible: false,
+    selectedType: '',
+    message: '',
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -40,86 +45,161 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { data, activeSlide } = this.state;
+    const { data, activeSlide, isSheetVisible, selectedType, message } = this.state;
 
     if (data.length === 0) {
       return null;
     }
 
-    const buttonText = activeSlide === data.length - 1 ? t('common:gotIt') : t('common:next');
     const currentSlide: OnBoarding = data[activeSlide];
     return (
       <SafeAreaView style={styles.container}>
-        {this.renderSkipButton()}
+        <View style={styles.textContainer}>
+          <Text type="large" textType="bold" style={styles.title}>
+            {currentSlide.title}
+          </Text>
+          <Text type="small" textType="regular" style={styles.description}>
+            {currentSlide.description}
+          </Text>
+        </View>
         <View style={styles.carousel}>
           <SnapCarousel
-            bubbleRef={this.updateRef}
             carouselData={data}
             carouselItem={this.renderCarouselItem}
             activeIndex={activeSlide}
             onSnapToItem={this.onSnapToItem}
-            testID="carsl"
           />
-          <PaginationComponent dotsLength={data.length} activeSlide={activeSlide} />
-        </View>
-        <View style={styles.textContainer}>
-          <Text type="large" textType="bold">
-            {currentSlide.title}
-          </Text>
-          <Label type="large" textType="regular" style={styles.description}>
-            {currentSlide.description}
-          </Label>
-          <Button
-            type="primary"
-            title={buttonText}
-            onPress={this.renderNextFrame}
-            containerStyle={styles.button}
-            testID="btnNextFrame"
+          <PaginationComponent
+            dotsLength={data.length}
+            activeSlide={activeSlide}
+            activeDotStyle={styles.activeDot}
+            inactiveDotStyle={styles.inactiveDot}
           />
         </View>
+        <Button
+          type="primary"
+          title={t('property:addProperty')}
+          icon={icons.plus}
+          iconSize={26}
+          iconColor={theme.colors.white}
+          onPress={this.onAddProperty}
+          containerStyle={styles.button}
+          titleStyle={styles.buttonTitle}
+          testID="btnAddProperty"
+        />
+        <Button
+          type="secondary"
+          title={t('property:searchProperty')}
+          icon={icons.search}
+          iconSize={20}
+          iconColor={theme.colors.blue}
+          titleStyle={styles.buttonTitle}
+          onPress={this.searchProperty}
+          containerStyle={styles.button}
+          testID="btnSearchProperty"
+        />
+        <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={450}>
+          <>
+            <Text type="regular" textType="semiBold" style={styles.sheetTitle}>
+              {t('iAm')}
+            </Text>
+            <View style={styles.sheetContent}>
+              {UserType.map((item) => {
+                const isSelected = selectedType === item.key;
+                return (
+                  <Button
+                    key={item.id}
+                    type={isSelected ? 'primary' : 'secondary'}
+                    fontType="regular"
+                    title={t(item.name)}
+                    icon={item.icon}
+                    iconSize={24}
+                    iconColor={isSelected ? theme.colors.white : theme.colors.darkTint3}
+                    titleStyle={[
+                      styles.selectionButton,
+                      { color: isSelected ? theme.colors.white : theme.colors.darkTint2 },
+                    ]}
+                    onPress={(): void => this.onSelectType(item.key)}
+                    containerStyle={styles.buttonContainer}
+                    testID="btnSelect"
+                  />
+                );
+              })}
+            </View>
+            {!!message && (
+              <Text type="small" textType="regular" style={styles.message}>
+                {message}
+              </Text>
+            )}
+            <Button
+              type="primary"
+              title={t('continue')}
+              disabled={!selectedType}
+              onPress={this.onContinue}
+              containerStyle={styles.continueBtn}
+              testID="btnContinue"
+            />
+          </>
+        </BottomSheet>
       </SafeAreaView>
     );
   }
 
   private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
-    return <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} />;
-  };
-
-  public renderNextFrame = async (): Promise<void> => {
-    const { activeSlide, ref, data } = this.state;
-    if (activeSlide < data.length - 1 && ref) {
-      // @ts-ignore
-      ref.snapToNext();
-      this.setState({ activeSlide: activeSlide + 1 });
-    } else {
-      await this.navigateToGettingStarted();
-    }
-  };
-
-  public renderSkipButton = (): React.ReactNode => {
-    const { t } = this.props;
-    const { data, activeSlide } = this.state;
-    if (activeSlide === data.length - 1) {
-      return <View style={styles.emptySkipView} />;
-    }
     return (
-      <View style={styles.skipLinkContainer}>
-        <Button
-          type="secondary"
-          title={t('skip')}
-          containerStyle={styles.skipLink}
-          onPress={this.navigateToGettingStarted}
-          testID="btnGettingStarted"
-        />
+      <View style={styles.carouselItem}>
+        <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} />
       </View>
     );
   };
 
-  public onSnapToItem = (slideNumber: number): void => {
+  private onSelectType = (key: User): void => {
+    const { t } = this.props;
+    let message = '';
+    switch (key) {
+      case User.OWNER:
+        message = t('auth:clickToSignUp');
+        break;
+      case User.AGENT:
+      case User.MANAGER:
+        message = t('auth:clickToFFM');
+        break;
+      default:
+        message = '';
+    }
+    this.setState({
+      selectedType: key,
+      message,
+    });
+  };
+
+  private onContinue = (): void => {
+    const { selectedType } = this.state;
+    const { navigation } = this.props;
+    if (selectedType === User.OWNER) {
+      navigation.navigate(ScreensKeys.AuthStack, { screen: ScreensKeys.SignUp, params: {} });
+      this.onCloseSheet();
+    }
+  };
+
+  private onAddProperty = (): void => {
+    const { isSheetVisible } = this.state;
+    this.setState({
+      isSheetVisible: !isSheetVisible,
+    });
+  };
+
+  private onCloseSheet = (): void => {
+    this.setState({
+      isSheetVisible: false,
+    });
+  };
+
+  private onSnapToItem = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
 
-  public getOnBoardingData = async (): Promise<void> => {
+  private getOnBoardingData = async (): Promise<void> => {
     try {
       const response = await CommonRepository.getOnBoarding();
       this.setState({
@@ -130,15 +210,9 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     }
   };
 
-  public navigateToGettingStarted = async (): Promise<void> => {
-    const { navigation, updateOnBoarding } = this.props;
-    updateOnBoarding(true);
-    await StorageService.set(StorageKeys.IS_ONBOARDING_COMPLETED, true);
-    navigation.navigate(ScreensKeys.GettingStarted);
-  };
-
-  public updateRef = (ref: any): void => {
-    this.setState({ ref });
+  private searchProperty = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.SearchStack);
   };
 }
 
@@ -146,37 +220,77 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.onBoardingScreenBackground,
-    justifyContent: 'space-around',
   },
   carousel: {
     flex: 1,
     alignSelf: 'center',
   },
   textContainer: {
-    flex: 1,
-    padding: theme.layout.screenPadding,
-    justifyContent: 'space-around',
+    paddingTop: 40,
     alignItems: 'center',
-    textAlign: 'center',
-  },
-  skipLinkContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  emptySkipView: {
-    height: 48,
-  },
-  skipLink: {
-    flex: 0,
-    backgroundColor: theme.colors.transparent,
-    borderWidth: 0,
-    alignItems: 'flex-end',
   },
   description: {
     textAlign: 'center',
+    color: theme.colors.lightGreen,
   },
   button: {
     flex: 0,
+    marginHorizontal: 36,
+    marginBottom: 10,
+    flexDirection: 'row-reverse',
+  },
+  buttonContainer: {
+    flex: 0,
+    marginHorizontal: 10,
+    marginBottom: 10,
+    paddingVertical: 15,
+    borderColor: theme.colors.disabled,
+    flexDirection: 'column-reverse',
+  },
+  activeDot: {
+    width: 16,
+    backgroundColor: theme.colors.blue,
+    borderColor: theme.colors.blue,
+  },
+  inactiveDot: {
+    backgroundColor: theme.colors.darkTint9,
+    borderColor: theme.colors.darkTint9,
+  },
+  title: {
+    color: theme.colors.blue,
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    fontSize: 30,
+  },
+  buttonTitle: {
+    marginHorizontal: 12,
+  },
+  sheetTitle: {
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  sheetContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 90,
+    marginHorizontal: 20,
+  },
+  selectionButton: {
+    marginHorizontal: 0,
+    width: 100,
+  },
+  message: {
+    textAlign: 'center',
+    color: theme.colors.darkTint5,
+    marginBottom: 8,
+  },
+  continueBtn: {
+    flex: 0,
+    justifyContent: 'center',
+    marginHorizontal: 30,
+  },
+  carouselItem: {
+    paddingHorizontal: 20,
   },
 });
 

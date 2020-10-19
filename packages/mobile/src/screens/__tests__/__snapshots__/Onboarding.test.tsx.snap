@@ -8,17 +8,44 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
     Object {
       "backgroundColor": "#F0F5F9",
       "flex": 1,
-      "justifyContent": "space-around",
     }
   }
 >
   <View
     style={
       Object {
-        "height": 48,
+        "alignItems": "center",
+        "paddingTop": 40,
       }
     }
-  />
+  >
+    <Text
+      style={
+        Object {
+          "color": "#0084F8",
+          "fontSize": 30,
+          "paddingHorizontal": 20,
+          "paddingTop": 10,
+        }
+      }
+      textType="bold"
+      type="large"
+    >
+      Maintain
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#4FA800",
+          "textAlign": "center",
+        }
+      }
+      textType="regular"
+      type="small"
+    >
+      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+    </Text>
+  </View>
   <View
     style={
       Object {
@@ -29,7 +56,6 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
   >
     <SnapCarousel
       activeIndex={2}
-      bubbleRef={[Function]}
       carouselData={
         Array [
           Object {
@@ -51,53 +77,208 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
       }
       carouselItem={[Function]}
       onSnapToItem={[Function]}
-      testID="carsl"
     />
     <PaginationComponent
+      activeDotStyle={
+        Object {
+          "backgroundColor": "#0084F8",
+          "borderColor": "#0084F8",
+          "width": 16,
+        }
+      }
       activeSlide={2}
       dotsLength={3}
+      inactiveDotStyle={
+        Object {
+          "backgroundColor": "#CCD1D7",
+          "borderColor": "#CCD1D7",
+        }
+      }
     />
   </View>
-  <View
-    style={
+  <Button
+    containerStyle={
       Object {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "space-around",
-        "padding": 16,
-        "textAlign": "center",
+        "flex": 0,
+        "flexDirection": "row-reverse",
+        "marginBottom": 10,
+        "marginHorizontal": 36,
       }
     }
+    icon="plus"
+    iconColor="#FFFFFF"
+    iconSize={26}
+    onPress={[Function]}
+    testID="btnAddProperty"
+    title="property:addProperty"
+    titleStyle={
+      Object {
+        "marginHorizontal": 12,
+      }
+    }
+    type="primary"
+  />
+  <Button
+    containerStyle={
+      Object {
+        "flex": 0,
+        "flexDirection": "row-reverse",
+        "marginBottom": 10,
+        "marginHorizontal": 36,
+      }
+    }
+    icon="search"
+    iconColor="#0084F8"
+    iconSize={20}
+    onPress={[Function]}
+    testID="btnSearchProperty"
+    title="property:searchProperty"
+    titleStyle={
+      Object {
+        "marginHorizontal": 12,
+      }
+    }
+    type="secondary"
+  />
+  <BottomSheet
+    onCloseSheet={[Function]}
+    sheetHeight={450}
+    visible={false}
   >
     <Text
-      textType="bold"
-      type="large"
-    >
-      Maintain
-    </Text>
-    <Label
       style={
         Object {
+          "marginBottom": 10,
           "textAlign": "center",
         }
       }
-      textType="regular"
-      type="large"
+      textType="semiBold"
+      type="regular"
     >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
-    </Label>
+      iAm
+    </Text>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 90,
+          "marginHorizontal": 20,
+        }
+      }
+    >
+      <Button
+        containerStyle={
+          Object {
+            "borderColor": "#C9D6DF",
+            "flex": 0,
+            "flexDirection": "column-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 10,
+            "paddingVertical": 15,
+          }
+        }
+        fontType="regular"
+        icon="owner"
+        iconColor="#33495E"
+        iconSize={24}
+        key="1"
+        onPress={[Function]}
+        testID="btnSelect"
+        title="property:propertyOwner"
+        titleStyle={
+          Array [
+            Object {
+              "marginHorizontal": 0,
+              "width": 100,
+            },
+            Object {
+              "color": "#19324A",
+            },
+          ]
+        }
+        type="secondary"
+      />
+      <Button
+        containerStyle={
+          Object {
+            "borderColor": "#C9D6DF",
+            "flex": 0,
+            "flexDirection": "column-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 10,
+            "paddingVertical": 15,
+          }
+        }
+        fontType="regular"
+        icon="agent"
+        iconColor="#33495E"
+        iconSize={24}
+        key="2"
+        onPress={[Function]}
+        testID="btnSelect"
+        title="property:propertyAgent"
+        titleStyle={
+          Array [
+            Object {
+              "marginHorizontal": 0,
+              "width": 100,
+            },
+            Object {
+              "color": "#19324A",
+            },
+          ]
+        }
+        type="secondary"
+      />
+      <Button
+        containerStyle={
+          Object {
+            "borderColor": "#C9D6DF",
+            "flex": 0,
+            "flexDirection": "column-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 10,
+            "paddingVertical": 15,
+          }
+        }
+        fontType="regular"
+        icon="manager"
+        iconColor="#33495E"
+        iconSize={24}
+        key="3"
+        onPress={[Function]}
+        testID="btnSelect"
+        title="property:propertyManager"
+        titleStyle={
+          Array [
+            Object {
+              "marginHorizontal": 0,
+              "width": 100,
+            },
+            Object {
+              "color": "#19324A",
+            },
+          ]
+        }
+        type="secondary"
+      />
+    </View>
     <Button
       containerStyle={
         Object {
           "flex": 0,
+          "justifyContent": "center",
+          "marginHorizontal": 30,
         }
       }
+      disabled={true}
       onPress={[Function]}
-      testID="btnNextFrame"
-      title="common:gotIt"
+      testID="btnContinue"
+      title="continue"
       type="primary"
     />
-  </View>
+  </BottomSheet>
 </ForwardRef(SafeAreaView)>
 `;
 
@@ -107,32 +288,43 @@ exports[`Onboarding Screen should render with data in state 1`] = `
     Object {
       "backgroundColor": "#F0F5F9",
       "flex": 1,
-      "justifyContent": "space-around",
     }
   }
 >
   <View
     style={
       Object {
-        "flexDirection": "row",
-        "justifyContent": "flex-end",
+        "alignItems": "center",
+        "paddingTop": 40,
       }
     }
   >
-    <Button
-      containerStyle={
+    <Text
+      style={
         Object {
-          "alignItems": "flex-end",
-          "backgroundColor": "transparent",
-          "borderWidth": 0,
-          "flex": 0,
+          "color": "#0084F8",
+          "fontSize": 30,
+          "paddingHorizontal": 20,
+          "paddingTop": 10,
         }
       }
-      onPress={[Function]}
-      testID="btnGettingStarted"
-      title="skip"
-      type="secondary"
-    />
+      textType="bold"
+      type="large"
+    >
+      Search
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#4FA800",
+          "textAlign": "center",
+        }
+      }
+      textType="regular"
+      type="small"
+    >
+      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+    </Text>
   </View>
   <View
     style={
@@ -144,7 +336,6 @@ exports[`Onboarding Screen should render with data in state 1`] = `
   >
     <SnapCarousel
       activeIndex={0}
-      bubbleRef={[Function]}
       carouselData={
         Array [
           Object {
@@ -166,53 +357,208 @@ exports[`Onboarding Screen should render with data in state 1`] = `
       }
       carouselItem={[Function]}
       onSnapToItem={[Function]}
-      testID="carsl"
     />
     <PaginationComponent
+      activeDotStyle={
+        Object {
+          "backgroundColor": "#0084F8",
+          "borderColor": "#0084F8",
+          "width": 16,
+        }
+      }
       activeSlide={0}
       dotsLength={3}
+      inactiveDotStyle={
+        Object {
+          "backgroundColor": "#CCD1D7",
+          "borderColor": "#CCD1D7",
+        }
+      }
     />
   </View>
-  <View
-    style={
+  <Button
+    containerStyle={
       Object {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "space-around",
-        "padding": 16,
-        "textAlign": "center",
+        "flex": 0,
+        "flexDirection": "row-reverse",
+        "marginBottom": 10,
+        "marginHorizontal": 36,
       }
     }
+    icon="plus"
+    iconColor="#FFFFFF"
+    iconSize={26}
+    onPress={[Function]}
+    testID="btnAddProperty"
+    title="property:addProperty"
+    titleStyle={
+      Object {
+        "marginHorizontal": 12,
+      }
+    }
+    type="primary"
+  />
+  <Button
+    containerStyle={
+      Object {
+        "flex": 0,
+        "flexDirection": "row-reverse",
+        "marginBottom": 10,
+        "marginHorizontal": 36,
+      }
+    }
+    icon="search"
+    iconColor="#0084F8"
+    iconSize={20}
+    onPress={[Function]}
+    testID="btnSearchProperty"
+    title="property:searchProperty"
+    titleStyle={
+      Object {
+        "marginHorizontal": 12,
+      }
+    }
+    type="secondary"
+  />
+  <BottomSheet
+    onCloseSheet={[Function]}
+    sheetHeight={450}
+    visible={false}
   >
     <Text
-      textType="bold"
-      type="large"
-    >
-      Search
-    </Text>
-    <Label
       style={
         Object {
+          "marginBottom": 10,
           "textAlign": "center",
         }
       }
-      textType="regular"
-      type="large"
+      textType="semiBold"
+      type="regular"
     >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
-    </Label>
+      iAm
+    </Text>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 90,
+          "marginHorizontal": 20,
+        }
+      }
+    >
+      <Button
+        containerStyle={
+          Object {
+            "borderColor": "#C9D6DF",
+            "flex": 0,
+            "flexDirection": "column-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 10,
+            "paddingVertical": 15,
+          }
+        }
+        fontType="regular"
+        icon="owner"
+        iconColor="#33495E"
+        iconSize={24}
+        key="1"
+        onPress={[Function]}
+        testID="btnSelect"
+        title="property:propertyOwner"
+        titleStyle={
+          Array [
+            Object {
+              "marginHorizontal": 0,
+              "width": 100,
+            },
+            Object {
+              "color": "#19324A",
+            },
+          ]
+        }
+        type="secondary"
+      />
+      <Button
+        containerStyle={
+          Object {
+            "borderColor": "#C9D6DF",
+            "flex": 0,
+            "flexDirection": "column-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 10,
+            "paddingVertical": 15,
+          }
+        }
+        fontType="regular"
+        icon="agent"
+        iconColor="#33495E"
+        iconSize={24}
+        key="2"
+        onPress={[Function]}
+        testID="btnSelect"
+        title="property:propertyAgent"
+        titleStyle={
+          Array [
+            Object {
+              "marginHorizontal": 0,
+              "width": 100,
+            },
+            Object {
+              "color": "#19324A",
+            },
+          ]
+        }
+        type="secondary"
+      />
+      <Button
+        containerStyle={
+          Object {
+            "borderColor": "#C9D6DF",
+            "flex": 0,
+            "flexDirection": "column-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 10,
+            "paddingVertical": 15,
+          }
+        }
+        fontType="regular"
+        icon="manager"
+        iconColor="#33495E"
+        iconSize={24}
+        key="3"
+        onPress={[Function]}
+        testID="btnSelect"
+        title="property:propertyManager"
+        titleStyle={
+          Array [
+            Object {
+              "marginHorizontal": 0,
+              "width": 100,
+            },
+            Object {
+              "color": "#19324A",
+            },
+          ]
+        }
+        type="secondary"
+      />
+    </View>
     <Button
       containerStyle={
         Object {
           "flex": 0,
+          "justifyContent": "center",
+          "marginHorizontal": 30,
         }
       }
+      disabled={true}
       onPress={[Function]}
-      testID="btnNextFrame"
-      title="common:next"
+      testID="btnContinue"
+      title="continue"
       type="primary"
     />
-  </View>
+  </BottomSheet>
 </ForwardRef(SafeAreaView)>
 `;
 

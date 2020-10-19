@@ -169,7 +169,9 @@
     "socialButtonPrefixSignUp": "Signup ",
     "emailAlreadyExists": "Email already exists",
     "phoneAlreadyExists": "Mobile number already exists",
-    "countryRegion": "Country/Region"
+    "countryRegion": "Country/Region",
+    "clickToSignUp": "Click \"Continue\" to Sign Up",
+    "clickToFFM": "Click \"Continue\" to open FFM Application"
   },
   "property": {
     "welcomeUser": "Welcome {{username}},",
@@ -351,7 +353,11 @@
     "cannotAddUnit": "You cannot add units!",
     "finishCurrent": "You cannot add units! Please finish current unit!",
     "unitCreated": "{{unit}} Created!",
-    "saveUnit": "Save unit"
+    "saveUnit": "Save unit",
+    "propertyOwner": "Property Owner",
+    "propertyAgent": "Property Agent",
+    "propertyManager": "Property Manager",
+    "searchProperty": "Search Property"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

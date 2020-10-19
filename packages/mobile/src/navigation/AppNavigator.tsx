@@ -1,7 +1,6 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { ScreensKeys, NestedNavigatorParams } from '@homzhub/mobile/src/navigation/interfaces';
-import AssetLandingScreen from '@homzhub/mobile/src/screens/Asset/AssetLandingScreen';
 import { BlankScreen } from '@homzhub/mobile/src/screens/BlankScreen';
 import { BottomTabNavigatorParamList, BottomTabs } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
@@ -24,7 +23,6 @@ export function AppNavigator(): React.ReactElement {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <AppStackNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
       <AppStackNavigator.Screen name={ScreensKeys.BlankScreen} component={BlankScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />

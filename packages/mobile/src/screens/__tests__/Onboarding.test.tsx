@@ -46,24 +46,6 @@ describe('Onboarding Screen', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should call render next frame on button press with navigation to Getting started', () => {
-    instance.setState({ data: OnboardingData, activeSlide: 0 });
-    component.find('[testID="btnNextFrame"]').prop('onPress')();
-    expect(mock).toHaveBeenCalled();
-  });
-
-  it('should call render next frame on button press', () => {
-    instance.setState({
-      data: OnboardingData,
-      activeSlide: 0,
-      ref: {
-        snapToNext: mock,
-      },
-    });
-    component.find('[testID="btnNextFrame"]').prop('onPress')();
-    expect(mock).toHaveBeenCalled();
-  });
-
   it('should call the update on boarding', () => {
     const dispatch = jest.fn();
     mapDispatchToProps(dispatch).updateOnBoarding(true);
@@ -71,18 +53,6 @@ describe('Onboarding Screen', () => {
       type: UserActionTypes.UPDATE_ONBOARDING,
       payload: true,
     });
-  });
-
-  it('should call change slide', () => {
-    instance.setState({ data: OnboardingData, activeSlide: 0 });
-    component.find('[testID="carsl"]').prop('onSnapToItem')(1);
-    expect(component.state('activeSlide')).toBe(1);
-  });
-
-  it('should call update ref', () => {
-    instance.setState({ data: OnboardingData, activeSlide: 0 });
-    component.find('[testID="carsl"]').prop('bubbleRef')(null);
-    expect(component.state('ref')).toBe(null);
   });
 
   it('should call get onboarding data', async () => {

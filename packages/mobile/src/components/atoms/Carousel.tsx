@@ -32,7 +32,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
       onSnapToItem,
       initialNumToRender = 10,
       sliderWidth = theme.viewport.width,
-      itemWidth = theme.viewport.width - 20,
+      itemWidth = theme.viewport.width - 30,
     } = this.props;
     return (
       <Carousel

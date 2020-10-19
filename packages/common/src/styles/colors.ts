@@ -31,6 +31,7 @@ const namedColors = {
   rental: '#6CCEC1',
   sell: '#FFB876',
   gold: '#FFD700',
+  lightGreen: '#4FA800',
 };
 
 const tintColors = {

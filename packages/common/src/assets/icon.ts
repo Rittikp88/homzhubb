@@ -135,6 +135,9 @@ export const icons = {
   schedule: 'schedule',
   dart: 'dart',
   doubleBar: 'double-bar',
+  owner: 'owner',
+  agent: 'agent',
+  manager: 'manager',
 
   // COMMUTE
   train: 'train',
