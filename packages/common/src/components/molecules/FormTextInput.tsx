@@ -21,7 +21,7 @@ import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { TextInputSuffix } from '@homzhub/common/src/components/atoms/TextInputSuffix';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { BottomSheetListView } from '@homzhub/mobile/src/components';
+import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
 type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name' | 'decimal';
 

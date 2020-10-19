@@ -30,20 +30,34 @@ import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { LeaseSpaceUnit } from '@homzhub/common/src/domain/models/LeaseSpaceUnit';
+import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
+
+// CONSTANTS
+const LEASE_UNIT = 'Lease Unit';
+
+export interface ILeaseFormData extends IFormData {
+  selectedPreferences: TenantPreference[];
+  spaces: LeaseSpaceUnit[];
+}
+
+export const initialLeaseFormData: ILeaseFormData = {
+  ...initialLeaseFormValues,
+  spaces: [],
+  selectedPreferences: [],
+};
 
 interface IProps {
   assetGroupType: AssetGroupTypes;
   currencyData: Currency;
   furnishing: FurnishingTypes;
   availableSpaces: SpaceType[];
-  preferences: ICheckboxGroupData[];
+  preferences: TenantPreference[];
   onSubmit: (values: ILeaseTermParams, key?: string, proceed?: boolean) => void;
+  initialValues: ILeaseFormData;
   singleLeaseUnitKey?: number;
   route?: { key: string; title: string; id?: number };
 }
-
-// CONSTANTS
-const LEASE_UNIT = 'Lease Unit';
 
 const SubLeaseUnit = (props: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
@@ -56,6 +70,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
     availableSpaces,
     onSubmit,
     route,
+    initialValues,
   } = props;
 
   // HOOKS
@@ -64,24 +79,45 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
   const [furnishingType, setFurnishingType] = useState(furnishing);
 
   useEffect(() => {
-    if (tenantPreferences.length <= 0) {
-      setPreferences(cloneDeep(preferences));
-    }
-  }, [preferences]);
+    const toSet = preferences.map((detail: TenantPreference) => {
+      const match = initialValues.selectedPreferences.find((preference) => preference.id === detail.id);
+      return {
+        id: detail.id,
+        label: detail.name,
+        isSelected: !!match,
+      };
+    });
+    setPreferences(toSet);
+  }, [preferences, initialValues.selectedPreferences]);
 
   useEffect(() => {
     if (spaces.length <= 0) {
-      setSpaces(cloneDeep(availableSpaces));
+      const toSet = cloneDeep(availableSpaces).map((space) => {
+        const match = initialValues.spaces.find((parentSpace) => parentSpace.spaceType === space.id);
+        space.unitCount = match?.count ?? space.unitCount;
+
+        if (space.fieldType === 'CHECKBOX' && space.count === 0 && space.unitCount === 0) {
+          space.isDisabled = true;
+        }
+
+        return space;
+      });
+      setSpaces(toSet);
     }
     if (spaces.length > 0 && route?.id) {
       const newSpaces = spaces.map((space) => {
         const newSpace = availableSpaces.find((obj) => obj.id === space.id);
         space.count = space.unitCount + (newSpace?.count ?? 0);
+
+        if (space.fieldType === 'CHECKBOX') {
+          space.isDisabled = space.unitCount === 0 && newSpace?.count === 0;
+        }
+
         return space;
       });
       setSpaces(newSpaces);
     }
-  }, [availableSpaces]);
+  }, [availableSpaces, initialValues.spaces]);
   // HOOKS END
 
   // USER INTERACTION CALLBACKS
@@ -123,14 +159,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
         furnishing: furnishingType,
         lease_unit: {
           name: route?.title ?? LEASE_UNIT,
-          spaces: spaces
-            .map((space) => {
-              if (route) {
-                return space.subLeaseSpaceList;
-              }
-              return space.spaceList;
-            })
-            .filter((item) => item.count > 0),
+          spaces: spaces.map((space) => space.spaceList),
         },
       };
 
@@ -158,7 +187,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
     <Formik
       enableReinitialize
       onSubmit={onSubmitPress}
-      initialValues={{ ...initialLeaseFormValues }}
+      initialValues={{ ...initialValues }}
       validate={FormUtils.validate(formSchema)}
     >
       {(formProps: FormikProps<IFormData>): React.ReactElement => {

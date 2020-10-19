@@ -66,7 +66,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       if (response.length <= 0) return;
       this.setState({
         currentTermId: response[0].id,
-        description: response[0].description ?? '',
+        description: response[0].description,
         formData: {
           expectedPrice: response[0].expectedPrice,
           availableFrom: DateUtils.getDisplayDate(response[0].availableFromDate, DateFormats.YYYYMMDD),

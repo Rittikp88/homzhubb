@@ -3,21 +3,41 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TabView, NavigationState, SceneRendererProps } from 'react-native-tab-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, ICheckboxGroupData, Label } from '@homzhub/common/src/components';
-import { SubLeaseUnit } from '@homzhub/mobile/src/components/organisms/SubLeaseUnit';
+import { Label } from '@homzhub/common/src/components';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import {
+  ILeaseFormData,
+  SubLeaseUnit,
+  initialLeaseFormData,
+} from '@homzhub/mobile/src/components/organisms/SubLeaseUnit';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
-import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+
+interface IRoute {
+  key: string;
+  title: string;
+  id?: number;
+  initialValues: ILeaseFormData;
+}
+
+export enum LeaseTypes {
+  Entire = 'entire',
+  Shared = 'shared',
+}
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
@@ -30,48 +50,35 @@ interface IProps extends WithTranslation {
   onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams) => Promise<void>;
 }
 
-interface IRoute {
-  key: string;
-  title: string;
-  id?: number;
-}
-
 interface IOwnState {
   currentIndex: number;
   routes: IRoute[];
   singleLeaseUnitKey: number;
-  preferences: ICheckboxGroupData[];
+  singleLeaseInitValues: ILeaseFormData;
+  preferences: TenantPreference[];
   availableSpaces: SpaceType[];
-}
-
-export enum LeaseTypes {
-  Entire = 'entire',
-  Shared = 'shared',
+  loading: boolean;
 }
 
 class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   private scrollRef = React.createRef<ScrollView>();
   public constructor(props: IProps) {
     super(props);
-    const { t } = props;
     this.state = {
       currentIndex: 0,
       singleLeaseUnitKey: -1,
-      routes: [{ key: '1', title: t('unit', { unitNo: 1 }) }],
+      singleLeaseInitValues: { ...initialLeaseFormData },
+      routes: [],
       preferences: [],
       availableSpaces: [],
+      loading: true,
     };
   }
 
   public componentDidMount = async (): Promise<void> => {
-    const { assetGroupType, currentAssetId } = this.props;
+    const { assetGroupType } = this.props;
 
-    try {
-      // TODO (Aditya 15/10/2020): Change this logic as per new response
-      await AssetRepository.getLeaseTerms(currentAssetId);
-    } catch (err) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
-    }
+    await this.getInitData();
 
     // Fetch the tenant preferences list
     if (assetGroupType === AssetGroupTypes.RES) {
@@ -80,11 +87,12 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
     // Fetch all the spaces for the asset
     await this.getAvailableSpaces();
+    this.setState({ loading: false });
   };
 
   public render = (): React.ReactNode => {
     const { leaseType, currencyData, assetGroupType, furnishing } = this.props;
-    const { preferences, availableSpaces, singleLeaseUnitKey } = this.state;
+    const { preferences, availableSpaces, singleLeaseUnitKey, singleLeaseInitValues, loading } = this.state;
 
     return (
       <>
@@ -92,6 +100,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
           this.renderTab()
         ) : (
           <SubLeaseUnit
+            initialValues={singleLeaseInitValues}
             singleLeaseUnitKey={singleLeaseUnitKey}
             assetGroupType={assetGroupType}
             furnishing={furnishing}
@@ -101,6 +110,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
             onSubmit={this.onSubmit}
           />
         )}
+        <Loader visible={loading} />
       </>
     );
   };
@@ -122,13 +132,14 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     );
   };
 
-  private renderScene = ({ route }: { route: { key: string; title: string } }): React.ReactNode => {
+  private renderScene = ({ route }: { route: IRoute }): React.ReactNode => {
     const { currencyData, assetGroupType, furnishing } = this.props;
     const { preferences, availableSpaces } = this.state;
 
     return (
       <SubLeaseUnit
         route={route}
+        initialValues={route.initialValues}
         assetGroupType={assetGroupType}
         furnishing={furnishing}
         currencyData={currencyData}
@@ -167,28 +178,22 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
             const onPress = (): void => this.onTabChange(curIndex);
 
             return (
-              <View key={route.key}>
-                <View style={[styles.tab, { width }]}>
-                  <TouchableOpacity onPress={onPress}>
-                    <Label type="large" textType={type as 'regular' | 'semiBold'} style={[styles.tabTitle, style]}>
-                      {route.title}
-                    </Label>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={this.onDelete}>
-                    <Icon name={icons.circularCrossFilled} size={20} color={theme.colors.active} />
-                  </TouchableOpacity>
-                </View>
-                <Divider containerStyles={isSelected ? styles.indicator : styles.disabledIndicator} />
+              <View key={route.key} style={[styles.tab, { width }, isSelected && styles.indicator]}>
+                <TouchableOpacity onPress={onPress}>
+                  <Label type="large" textType={type as 'regular' | 'semiBold'} style={[styles.tabTitle, style]}>
+                    {route.title}
+                  </Label>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.onDelete}>
+                  <Icon name={icons.circularCrossFilled} size={20} color={theme.colors.active} />
+                </TouchableOpacity>
               </View>
             );
           })}
         </ScrollView>
-        <View>
-          <TouchableOpacity onPress={this.onTabAdd} style={styles.addButton}>
-            <Icon name={icons.plus} color={theme.colors.active} size={24} />
-          </TouchableOpacity>
-          <Divider containerStyles={styles.disabledIndicator} />
-        </View>
+        <TouchableOpacity onPress={this.onTabAdd} style={styles.addButton}>
+          <Icon name={icons.plus} color={theme.colors.active} size={24} />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -210,7 +215,14 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
     this.setState(
       {
-        routes: [...routes, { key: `${Math.random()}`, title: t('unit', { unitNo: routes.length + 1 }) }],
+        routes: [
+          ...routes,
+          {
+            key: `${Math.random()}`,
+            title: t('unit', { unitNo: routes.length + 1 }),
+            initialValues: { ...initialLeaseFormData },
+          },
+        ],
         currentIndex: routes.length,
       },
       (): void => {
@@ -274,6 +286,8 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
         if (proceed) {
           await onNextStep(TypeOfPlan.RENT, { is_subleased: true });
+        } else {
+          await AssetRepository.updateAsset(currentAssetId, { is_subleased: true });
         }
       } else {
         this.setState({ singleLeaseUnitKey: response.ids[0] });
@@ -285,14 +299,47 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   // APIs
+  private getInitData = async (): Promise<void> => {
+    const { currentAssetId, leaseType, t } = this.props;
+
+    try {
+      const response = await AssetRepository.getLeaseTerms(currentAssetId);
+
+      if (response.length > 0 && leaseType === LeaseTypes.Entire) {
+        this.setState({
+          singleLeaseUnitKey: response[0].id,
+          singleLeaseInitValues: this.extractInitValues(response[0]),
+        });
+      }
+
+      if (response.length > 0 && leaseType === LeaseTypes.Shared) {
+        const routes: IRoute[] = [];
+        ObjectUtils.sort(response, 'id').forEach((term: LeaseTerm) => {
+          routes.push({
+            key: `${Math.random()}`,
+            id: term.id,
+            title: term.leaseUnit.name,
+            initialValues: this.extractInitValues(term),
+          });
+        });
+        this.setState({ routes });
+      }
+
+      if (response.length <= 0) {
+        this.setState({
+          routes: [{ key: '1', title: t('unit', { unitNo: 1 }), initialValues: { ...initialLeaseFormData } }],
+        });
+      }
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
+  };
+
   private getTenantPreferences = async (): Promise<void> => {
     const { currentAssetId } = this.props;
     try {
       const response = await RecordAssetRepository.getTenantPreferences(currentAssetId);
-      const preferenceList = response.map((item) => {
-        return item.menuItem;
-      });
-      this.setState({ preferences: preferenceList });
+      this.setState({ preferences: response });
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -325,6 +372,28 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     return areMandatoryFilled;
   };
 
+  private extractInitValues = (data: LeaseTerm): ILeaseFormData => {
+    return {
+      showMore: data.annualRentIncrementPercentage !== null,
+      monthlyRent: data.expectedPrice.toString(10),
+      securityDeposit: data.securityDeposit.toString(10),
+      annualIncrement:
+        data.annualRentIncrementPercentage === -1 ? '' : data.annualRentIncrementPercentage?.toString() ?? '',
+      description: data.description,
+      minimumLeasePeriod: data.minimumLeasePeriod,
+      maximumLeasePeriod: data.maximumLeasePeriod,
+      availableFrom: DateUtils.getDisplayDate(data.availableFromDate, DateFormats.YYYYMMDD),
+      utilityBy: data.utilityPaidBy,
+      rentFreePeriod: data.rentFreePeriod === -1 ? '' : data.rentFreePeriod?.toString() ?? '',
+      maintenanceBy: data.maintenancePaidBy,
+      maintenanceAmount: data.maintenanceAmount === -1 ? '' : data.maintenanceAmount?.toString() ?? '',
+      maintenanceSchedule: ScheduleTypes.MONTHLY,
+      maintenanceUnit: data.maintenanceUnit ?? -1,
+      spaces: data.leaseUnit.spaces,
+      selectedPreferences: data.tenantPreferences,
+    };
+  };
+
   // HELPERS END
 }
 
@@ -344,6 +413,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomColor: theme.colors.disabled,
+    borderBottomWidth: 2,
     paddingBottom: 12,
   },
   tabTitle: {
@@ -351,14 +422,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   addButton: {
+    borderBottomColor: theme.colors.disabled,
+    borderBottomWidth: 2,
     paddingBottom: 10,
   },
   indicator: {
-    backgroundColor: theme.colors.active,
-    height: 2.5,
-  },
-  disabledIndicator: {
-    backgroundColor: theme.colors.disabled,
-    height: 2.5,
+    borderBottomColor: theme.colors.active,
   },
 });

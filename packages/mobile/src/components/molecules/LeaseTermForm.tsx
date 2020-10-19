@@ -209,7 +209,7 @@ const LeaseTermForm = ({
               onSliderChange={onSliderChange}
               minSliderRange={MINIMUM_LEASE_PERIOD}
               maxSliderRange={MAXIMUM_LEASE_PERIOD}
-              minSliderValue={DEFAULT_LEASE_PERIOD}
+              minSliderValue={formProps.values[LeaseFormKeys.minimumLeasePeriod]}
               isLabelRequired
               labelText="Months"
             />
@@ -221,7 +221,7 @@ const LeaseTermForm = ({
                 onSliderChange={onTotalSliderChange}
                 minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
                 maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
-                minSliderValue={DEFAULT_LEASE_PERIOD}
+                minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
                 isLabelRequired
                 labelText="Months"
               />

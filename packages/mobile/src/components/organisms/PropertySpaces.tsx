@@ -105,7 +105,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
         <Counter
           key={index}
           containerStyles={styles.marginBottom}
-          defaultValue={space.value ? space.value : space.isMandatory ? 1 : 0}
+          defaultValue={space.unitCount ? space.unitCount : space.isMandatory ? 1 : 0}
           name={{ title: space.name, id: space.id }}
           svgImage={space.attachment && space.attachment.link}
           onValueChange={handleCounterChange}
@@ -139,7 +139,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
       spaceFields?.push(
         <InputWithCheckbox
           textValue={space.description}
-          selected={!!space.value}
+          selected={!!space.unitCount}
           key={index}
           onChange={handleInputWithCheckChange}
           placeholder={t('property:specifyOthersText')}
@@ -163,7 +163,12 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
 
     groupedSpaceTypes[SpaceFieldTypes.CheckBox]?.forEach((space) => {
       if (space.isPrimary === renderPrimary) {
-        checkboxData.push({ id: space.id, label: space.name, isSelected: !!space.value });
+        checkboxData.push({
+          id: space.id,
+          label: space.name,
+          isSelected: !!space.unitCount,
+          isDisabled: space.isDisabled,
+        });
       }
     });
     return checkboxData;

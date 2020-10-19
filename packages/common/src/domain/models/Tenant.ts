@@ -47,30 +47,11 @@ export class TenantPreference {
   @JsonProperty('name', String)
   private _name = 'Family';
 
-  @JsonProperty('is_selected', Boolean, true)
-  private _isSelected = false;
-
   get id(): number {
     return this._id;
   }
 
   get name(): string {
     return this._name;
-  }
-
-  get isSelected(): boolean {
-    return this._isSelected;
-  }
-
-  set isSelected(value: boolean) {
-    this._isSelected = value;
-  }
-
-  get menuItem(): IList {
-    return {
-      id: this.id,
-      label: this.name,
-      isSelected: this.isSelected,
-    };
   }
 }

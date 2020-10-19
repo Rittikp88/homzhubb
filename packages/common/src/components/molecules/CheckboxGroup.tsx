@@ -6,6 +6,7 @@ export interface ICheckboxGroupData {
   id: number;
   label: string;
   isSelected: boolean;
+  isDisabled?: boolean;
 }
 
 export interface ICheckboxGroupProps {
@@ -32,20 +33,21 @@ export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> 
   };
 
   private renderCheckbox = (item: ICheckboxGroupData): React.ReactElement => {
-    const { label, isSelected = false } = item;
+    const { label, isSelected = false, isDisabled = false } = item;
     const { onToggle, labelStyle = {}, testID } = this.props;
     const onCheckboxToggle = (): void => onToggle(item.id, !isSelected);
 
     return (
-      <RNCheckbox
-        key={`${item.id}`}
-        selected={isSelected}
-        label={label}
-        onToggle={onCheckboxToggle}
-        labelStyle={labelStyle}
-        containerStyle={styles.checkboxContainer}
-        testID={testID}
-      />
+      <View key={`${item.id}`} style={isDisabled && styles.disabled} pointerEvents={isDisabled ? 'none' : undefined}>
+        <RNCheckbox
+          selected={isSelected}
+          label={label}
+          onToggle={onCheckboxToggle}
+          labelStyle={labelStyle}
+          containerStyle={styles.checkboxContainer}
+          testID={testID}
+        />
+      </View>
     );
   };
 }
@@ -57,6 +59,9 @@ const styles = StyleSheet.create({
   },
   col: {
     flex: 0.5,
+  },
+  disabled: {
+    opacity: 0.5,
   },
   checkboxContainer: {
     marginVertical: 12,

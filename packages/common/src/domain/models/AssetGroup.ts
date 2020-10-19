@@ -30,9 +30,6 @@ export class SpaceType extends Unit {
   @JsonProperty('is_mandatory', Boolean)
   private _isMandatory = false;
 
-  @JsonProperty('value', Number, true)
-  private _value = 0;
-
   @JsonProperty('description', String, true)
   private _description = '';
 
@@ -41,8 +38,6 @@ export class SpaceType extends Unit {
 
   @JsonProperty('count', Number, true)
   private _count = -1;
-
-  private _unitCount = this.isMandatory ? 1 : 0;
 
   get fieldType(): string {
     return this._fieldType;
@@ -58,14 +53,6 @@ export class SpaceType extends Unit {
 
   get attachment(): Attachment {
     return this._attachment;
-  }
-
-  get value(): number {
-    return this._value;
-  }
-
-  set value(value: number) {
-    this._value = value;
   }
 
   set description(text: string) {
@@ -84,6 +71,9 @@ export class SpaceType extends Unit {
     this._count = value;
   }
 
+  // CUSTOM FIELDS
+  private _unitCount = 0;
+
   get unitCount(): number {
     return this._unitCount;
   }
@@ -92,17 +82,20 @@ export class SpaceType extends Unit {
     this._unitCount = value;
   }
 
-  get subLeaseSpaceList(): ISpaceCount {
-    return {
-      space_type: this.id,
-      count: this.unitCount,
-    };
+  private _isDisabled = false;
+
+  get isDisabled(): boolean {
+    return this._isDisabled;
+  }
+
+  set isDisabled(value: boolean) {
+    this._isDisabled = value;
   }
 
   get spaceList(): ISpaceCount {
     return {
       space_type: this.id,
-      count: this.count,
+      count: this.unitCount,
     };
   }
 }

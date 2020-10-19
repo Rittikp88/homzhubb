@@ -87,11 +87,13 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   public static getDerivedStateFromProps(props: Props, state: IOwnState): IOwnState | null {
     const { assetDetails } = props;
     const { isNextStep } = state;
+
     if (assetDetails) {
       const {
         isVerificationRequired,
         listing: { stepList },
       } = assetDetails.lastVisitedStep;
+      // For steps
       if (!isNextStep && isVerificationRequired) {
         return {
           ...state,
@@ -104,11 +106,21 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     return null;
   }
 
-  public componentDidMount(): void {
+  public componentDidMount = (): void => {
     const { getAssetById, getValueAddedServices } = this.props;
     getAssetById();
     getValueAddedServices();
-  }
+  };
+
+  public componentDidUpdate = (prevProps: Readonly<Props>, prevState: Readonly<IOwnState>): void => {
+    const { assetDetails } = this.props;
+    if (!prevProps.assetDetails && assetDetails) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        leaseType: assetDetails.isSubleased ? LeaseTypes.Shared : LeaseTypes.Entire,
+      });
+    }
+  };
 
   public render(): React.ReactNode {
     const { currentIndex, isStepDone, isSheetVisible } = this.state;
@@ -273,7 +285,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
         );
       case RouteKeys.Services:
-        this.scrollToTop();
         return (
           <ValueAddedServicesView
             propertyId={assetDetails.id}
@@ -415,9 +426,8 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   private handlePreviousStep = (index: number): void => {
     const { currentIndex } = this.state;
     const value = index - currentIndex;
-    // TODO: Add logic once Edit flow fix
-    if (value < 0) {
-      this.setState({ currentIndex: currentIndex + value });
+    if (index < currentIndex) {
+      this.setState({ currentIndex: currentIndex + value, isNextStep: true });
       this.scrollToTop();
     }
   };

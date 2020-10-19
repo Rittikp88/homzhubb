@@ -75,7 +75,7 @@ const getSpaceTypes = (state: IState): SpaceType[] => {
   spaceType.forEach((item) => {
     assetDetails?.spaces.forEach((space) => {
       if (item.id === space.id) {
-        item.value = space.count;
+        item.unitCount = space.count;
         item.description = space.description ? space.description : '';
       }
     });

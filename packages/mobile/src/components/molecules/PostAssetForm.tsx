@@ -27,14 +27,14 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
     try {
       const response = await GooglePlacesService.getLocationData(undefined, pincode);
       const addressComponents = ResponseHelper.getLocationDetails(response);
-      formProps.setFieldValue('city', addressComponents.city);
+      formProps.setFieldValue('city', addressComponents.city ?? addressComponents.area);
       formProps.setFieldValue('state', addressComponents.state);
       formProps.setFieldValue('country', addressComponents.country);
       formProps.setFieldValue('countryIsoCode', addressComponents.countryIsoCode);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
-  }, 1300);
+  }, 500);
 
   return (
     <>

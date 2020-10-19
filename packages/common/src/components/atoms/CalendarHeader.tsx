@@ -3,7 +3,8 @@ import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import moment from 'moment';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, Divider } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   isAllowPastDate?: boolean;

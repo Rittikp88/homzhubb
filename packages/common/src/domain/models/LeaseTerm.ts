@@ -42,10 +42,10 @@ export class LeaseTerm {
   private _maximumLeasePeriod = -1;
 
   @JsonProperty('rent_free_period', Number, true)
-  private _rentFreePeriod = -1;
+  private _rentFreePeriod = null;
 
   @JsonProperty('annual_rent_increment_percentage', Number, true)
-  private _annualRentIncrementPercentage = -1;
+  private _annualRentIncrementPercentage = null;
 
   @JsonProperty('available_from_date', String)
   private _availableFromDate = '';
@@ -57,13 +57,13 @@ export class LeaseTerm {
   private _utilityPaidBy = PaidByTypes.TENANT;
 
   @JsonProperty('maintenance_unit', Unit)
-  private _maintenanceUnit = new Unit();
+  private _maintenanceUnit: Unit | null = null;
 
   @JsonProperty('maintenance_amount', Number, true)
-  private _maintenanceAmount = -1;
+  private _maintenanceAmount = null;
 
   @JsonProperty('maintenance_payment_schedule', String, true)
-  private _maintenanceSchedule = '';
+  private _maintenanceSchedule = null;
 
   @JsonProperty('furnishing', String, true)
   private _furnishing = FurnishingTypes.NONE;
@@ -97,7 +97,7 @@ export class LeaseTerm {
     return this._minimumLeasePeriod;
   }
 
-  get annualRentIncrementPercentage(): number {
+  get annualRentIncrementPercentage(): number | null {
     return this._annualRentIncrementPercentage;
   }
 
@@ -117,8 +117,8 @@ export class LeaseTerm {
     return this._maintenanceAmount;
   }
 
-  get maintenanceSchedule(): ScheduleTypes {
-    return this._maintenanceSchedule as ScheduleTypes;
+  get maintenanceSchedule(): ScheduleTypes | null {
+    return this._maintenanceSchedule;
   }
 
   get furnishing(): string {
@@ -133,11 +133,11 @@ export class LeaseTerm {
     return this._maximumLeasePeriod;
   }
 
-  get maintenanceUnit(): number {
-    return this._maintenanceUnit.id;
+  get maintenanceUnit(): number | null {
+    return this._maintenanceUnit?.id ?? null;
   }
 
-  get rentFreePeriod(): number {
+  get rentFreePeriod(): number | null {
     return this._rentFreePeriod;
   }
 

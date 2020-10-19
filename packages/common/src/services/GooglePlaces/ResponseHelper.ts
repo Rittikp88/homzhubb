@@ -7,6 +7,7 @@ const LIMIT = 10;
 const LocationKeysToMatch = {
   country: 'country',
   state: 'administrative_area_level_1',
+  area: 'administrative_area_level_2',
   city: 'locality',
   pincode: 'postal_code',
 };

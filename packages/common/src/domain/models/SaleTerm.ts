@@ -33,17 +33,17 @@ export class SaleTerm {
   @JsonProperty('expected_booking_amount', Number)
   private _expectedBookingAmount = -1;
 
+  @JsonProperty('available_from_date', String)
+  private _availableFromDate = '';
+
   @JsonProperty('maintenance_amount', Number)
   private _maintenanceAmount = -1;
 
   @JsonProperty('maintenance_unit', Unit, true)
-  private _maintenanceUnit = new Unit();
+  private _maintenanceUnit: Unit | null = null;
 
   @JsonProperty('maintenance_payment_schedule', String, true)
-  private _maintenanceSchedule = ScheduleTypes.MONTHLY;
-
-  @JsonProperty('available_from_date', String)
-  private _availableFromDate = '';
+  private _maintenanceSchedule: ScheduleTypes | null = ScheduleTypes.MONTHLY;
 
   @JsonProperty('description', String)
   private _description = '';
@@ -64,7 +64,7 @@ export class SaleTerm {
     return this._maintenanceAmount.toString();
   }
 
-  get maintenanceSchedule(): ScheduleTypes {
+  get maintenanceSchedule(): ScheduleTypes | null {
     return this._maintenanceSchedule;
   }
 
@@ -76,7 +76,7 @@ export class SaleTerm {
     return this._description;
   }
 
-  get maintenanceUnit(): number {
-    return this._maintenanceUnit.id;
+  get maintenanceUnit(): number | null {
+    return this._maintenanceUnit?.id ?? null;
   }
 }

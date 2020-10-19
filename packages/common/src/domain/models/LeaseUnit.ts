@@ -10,4 +10,8 @@ export interface ILeaseUnit extends IUnit {
 export class LeaseUnit extends Unit {
   @JsonProperty('spaces', [LeaseSpaceUnit], true)
   private _spaces = [];
+
+  get spaces(): LeaseSpaceUnit[] {
+    return this._spaces;
+  }
 }
