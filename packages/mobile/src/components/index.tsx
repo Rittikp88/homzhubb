@@ -60,8 +60,7 @@ export { AddPropertyDetails } from '@homzhub/mobile/src/components/organisms/Add
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 export { ActionController } from '@homzhub/mobile/src/components/organisms/ActionController';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
-export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
-export { FinancialHeaderContainer } from '@homzhub/mobile/src/components/organisms/FinancialHeaderContainer';
+export { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 export { LoginForm } from '@homzhub/mobile/src/components/organisms/LoginForm';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';

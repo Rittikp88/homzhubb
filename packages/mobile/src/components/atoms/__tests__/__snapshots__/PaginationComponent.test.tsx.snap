@@ -29,10 +29,6 @@ exports[`PaginationComponent should match snapshot 1`] = `
     Array [
       Object {
         "backgroundColor": "#0084F8",
-        "borderRadius": 5,
-        "height": 10,
-        "marginHorizontal": 2,
-        "width": 10,
       },
       undefined,
     ]

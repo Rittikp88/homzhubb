@@ -30,18 +30,14 @@ const styles = StyleSheet.create({
   dotStyle: {
     width: 10,
     height: 10,
-    borderRadius: 5,
     marginHorizontal: 2,
-    borderColor: theme.colors.blue,
     borderStyle: 'solid',
     borderWidth: 3,
+    borderRadius: 5,
+    borderColor: theme.colors.blue,
     backgroundColor: theme.colors.white,
   },
   inactiveDotStyle: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginHorizontal: 2,
     backgroundColor: theme.colors.blue,
   },
 });

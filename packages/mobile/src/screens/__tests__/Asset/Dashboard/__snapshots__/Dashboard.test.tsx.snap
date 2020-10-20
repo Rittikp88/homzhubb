@@ -4,14 +4,15 @@ exports[`Dashboard Screen should render snapshot 1`] = `
 <AnimatedProfileHeader
   title="dashboard"
 >
-  <AssetMetricsList
+  <Memo(AssetMetricsList)
     containerStyle={
       Object {
         "marginVertical": 12,
       }
     }
+    data={Array []}
     onMetricsClicked={[Function]}
-    title={0}
+    title="0"
   />
   <AssetSummary
     containerStyle={

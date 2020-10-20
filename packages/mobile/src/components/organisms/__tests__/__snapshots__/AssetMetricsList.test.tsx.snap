@@ -7,8 +7,8 @@ exports[`AssetMetricsList should match snapshot 1`] = `
       Object {
         "backgroundColor": "#FFFFFF",
         "borderRadius": 4,
-        "flex": 0,
-        "minHeight": 80,
+        "paddingHorizontal": 16,
+        "paddingVertical": 12,
       },
       undefined,
     ]
@@ -19,27 +19,19 @@ exports[`AssetMetricsList should match snapshot 1`] = `
       Object {
         "alignItems": "center",
         "flexDirection": "row",
-        "justifyContent": "flex-start",
-        "paddingVertical": 10,
+        "marginBottom": 12,
       }
     }
   >
-    <View
+    <[object Object]
+      height={48}
       style={
         Object {
-          "flex": 0,
-          "paddingHorizontal": 15,
+          "marginEnd": 12,
         }
       }
-    >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../packages/common/src/assets/images/homzhubDashboard.png",
-          }
-        }
-      />
-    </View>
+      width={48}
+    />
     <View
       style={
         Object {
@@ -47,40 +39,23 @@ exports[`AssetMetricsList should match snapshot 1`] = `
         }
       }
     >
-      <View
+      <Text
         style={
           Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
+            "color": "#001B36",
           }
         }
+        textType="bold"
+        type="regular"
       >
-        <Text
-          style={
-            Object {
-              "color": "#001B36",
-            }
-          }
-          textType="bold"
-          type="regular"
-        >
-          0
-        </Text>
-      </View>
+        0
+      </Text>
     </View>
   </View>
-  <View
-    style={
-      Object {
-        "flex": 1,
-        "flexDirection": "row",
-        "flexWrap": "wrap",
-      }
-    }
-  >
-    <FlatList
-      data={
+  <SnapCarousel
+    activeIndex={0}
+    carouselData={
+      Array [
         Array [
           Miscellaneous {
             "_colorGradient": ColorGradient {
@@ -127,228 +102,11 @@ exports[`AssetMetricsList should match snapshot 1`] = `
             "_label": "Renewal",
             "_name": "RENEWAL",
           },
-          Miscellaneous {
-            "_colorGradient": ColorGradient {
-              "_angle": 180,
-              "_hexColorA": "#FD8313",
-              "_hexColorB": "#FFD2A9",
-              "_location": Array [
-                0,
-                1,
-              ],
-            },
-            "_count": 4,
-            "_currency_symbol": "",
-            "_label": "Sell",
-            "_name": "SELL",
-          },
-        ]
-      }
-      disableVirtualization={false}
-      horizontal={true}
-      initialNumToRender={10}
-      keyExtractor={[Function]}
-      maxToRenderPerBatch={10}
-      numColumns={1}
-      onEndReachedThreshold={2}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      showsHorizontalScrollIndicator={false}
-      testID="metricList"
-      updateCellsBatchingPeriod={50}
-      windowSize={21}
-    />
-  </View>
-</View>
-`;
-
-exports[`AssetMetricsList should match snapshot for keyExtractor 1`] = `"undefined-[object Object]"`;
-
-exports[`AssetMetricsList should match snapshot for optional props 1`] = `
-<View
-  style={
-    Array [
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderRadius": 4,
-        "flex": 0,
-        "minHeight": 80,
-      },
-      undefined,
-    ]
-  }
->
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "flex-start",
-        "paddingVertical": 10,
-      }
-    }
-  >
-    <View
-      style={
-        Object {
-          "flex": 0,
-          "paddingHorizontal": 15,
-        }
-      }
-    >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../packages/common/src/assets/images/homzhubDashboard.png",
-          }
-        }
-      />
-    </View>
-    <View
-      style={
-        Object {
-          "flex": 1,
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          }
-        }
-      >
-        <Text
-          style={
-            Object {
-              "color": "#001B36",
-            }
-          }
-          textType="bold"
-          type="regular"
-        >
-          0
-        </Text>
-        <View
-          style={
-            Object {
-              "marginRight": 12,
-            }
-          }
-        >
-          <Icon
-            allowFontScaling={false}
-            color="#0084F8"
-            name="plus"
-            onPress={[Function]}
-            size={40}
-            testID="icnPlus"
-          />
-        </View>
-      </View>
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-          }
-        }
-      >
-        <Text
-          style={
-            Object {
-              "color": "#4C5F72",
-            }
-          }
-          textType="semiBold"
-          type="small"
-        >
-          common:properties
-        </Text>
-        <Icon
-          allowFontScaling={false}
-          color="#99A4AF"
-          name="round-filled"
-          size={6}
-          style={
-            Object {
-              "paddingHorizontal": 8,
-              "paddingTop": 5,
-            }
-          }
-        />
-        <Label
-          textType="regular"
-          type="large"
-        >
-          common:homzhub subscribe
-        </Label>
-      </View>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "flex": 1,
-        "flexDirection": "row",
-        "flexWrap": "wrap",
-      }
-    }
-  >
-    <FlatList
-      data={
+        ],
         Array [
           Miscellaneous {
             "_colorGradient": ColorGradient {
               "_angle": 180,
-              "_hexColorA": "#61D773",
-              "_hexColorB": "#94EF90",
-              "_location": Array [
-                0,
-                1,
-              ],
-            },
-            "_count": 3,
-            "_currency_symbol": "",
-            "_label": "Occupied",
-            "_name": "OCCUPIED",
-          },
-          Miscellaneous {
-            "_colorGradient": ColorGradient {
-              "_angle": 180,
-              "_hexColorA": "#FDB113",
-              "_hexColorB": "#FFDB8F",
-              "_location": Array [
-                0,
-                1,
-              ],
-            },
-            "_count": 2,
-            "_currency_symbol": "",
-            "_label": "Vacant",
-            "_name": "VACANT",
-          },
-          Miscellaneous {
-            "_colorGradient": ColorGradient {
-              "_angle": 180,
-              "_hexColorA": "#D9AB65",
-              "_hexColorB": "#ECCFB4",
-              "_location": Array [
-                0,
-                1,
-              ],
-            },
-            "_count": 1,
-            "_currency_symbol": "",
-            "_label": "Renewal",
-            "_name": "RENEWAL",
-          },
-          Miscellaneous {
-            "_colorGradient": ColorGradient {
-              "_angle": 180,
               "_hexColorA": "#FD8313",
               "_hexColorB": "#FFD2A9",
               "_location": Array [
@@ -361,42 +119,46 @@ exports[`AssetMetricsList should match snapshot for optional props 1`] = `
             "_label": "Sell",
             "_name": "SELL",
           },
-        ]
+        ],
+      ]
+    }
+    carouselItem={[Function]}
+    itemWidth={686}
+    onSnapToItem={[Function]}
+    sliderWidth={686}
+  />
+  <PaginationComponent
+    activeDotStyle={
+      Array [
+        Object {
+          "height": 8.5,
+          "width": 8.5,
+        },
+        Object {
+          "borderWidth": 1.5,
+        },
+      ]
+    }
+    activeSlide={0}
+    containerStyle={
+      Object {
+        "marginTop": 12,
+        "paddingVertical": 0,
       }
-      disableVirtualization={false}
-      horizontal={true}
-      initialNumToRender={10}
-      keyExtractor={[Function]}
-      maxToRenderPerBatch={10}
-      numColumns={1}
-      onEndReachedThreshold={2}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      showsHorizontalScrollIndicator={false}
-      testID="metricList"
-      updateCellsBatchingPeriod={50}
-      windowSize={21}
-    />
-  </View>
+    }
+    dotsLength={2}
+    inactiveDotStyle={
+      Array [
+        Object {
+          "height": 8.5,
+          "width": 8.5,
+        },
+        Object {
+          "backgroundColor": "#C9D6DF",
+          "borderWidth": 0,
+        },
+      ]
+    }
+  />
 </View>
-`;
-
-exports[`AssetMetricsList should match snapshot for renderItem 1`] = `
-<AssetMetrics
-  angle={180}
-  colorA="#61D773"
-  colorB="#94EF90"
-  currency=""
-  header="Occupied"
-  itemsLength={4}
-  location={
-    Array [
-      0,
-      1,
-    ]
-  }
-  onPressMetrics={[Function]}
-  value={3}
-/>
 `;

@@ -104,8 +104,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         <AnimatedProfileHeader title={t('portfolio')}>
           <>
             <AssetMetricsList
-              showPlusIcon
-              title={metrics?.assetMetrics?.assets?.count ?? 0}
+              title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
               data={metrics?.assetMetrics?.assetGroups ?? []}
               subscription={metrics?.userServicePlan?.label}
               onPlusIconClicked={this.handleAddProperty}

@@ -9,16 +9,37 @@ exports[`Financials Screen should render snapshot 1`] = `
       title="financial"
     >
       <React.Fragment>
-        <FinancialHeaderContainer
-          expense={0}
-          income={0}
-          individualCardStyle={
+        <UNDEFINED
+          data={
+            Array [
+              Object {
+                "colorGradient": Object {
+                  "hexColorA": "#61D773",
+                  "hexColorB": "#94EF90",
+                },
+                "count": "0/-",
+                "currencySymbol": "INR",
+                "label": "assetFinancial:income",
+              },
+              Object {
+                "colorGradient": Object {
+                  "hexColorA": "#FDB113",
+                  "hexColorB": "#FFDB8F",
+                },
+                "count": "0/-",
+                "currencySymbol": "INR",
+                "label": "assetFinancial:expense",
+              },
+            ]
+          }
+          numOfElements={2}
+          onPlusIconClicked={[Function]}
+          textStyle={
             Object {
-              "alignItems": "center",
-              "paddingHorizontal": 25,
+              "color": "#FFFFFF",
+              "textAlign": "center",
             }
           }
-          onPlusIconClicked={[Function]}
           title="assetFinancial:recordsText"
         />
         <withI18nextTranslation(FinanceOverview) />

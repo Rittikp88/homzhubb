@@ -15,7 +15,6 @@ interface IProps {
   colorB: string;
   testID?: string;
   textStyle?: StyleProp<TextStyle>;
-  itemsLength?: number;
   onPressMetrics?: () => void;
 }
 
@@ -32,12 +31,10 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
     testID,
     textStyle,
     onPressMetrics,
-    itemsLength = 3,
   } = props;
 
   const [selected, onSelect] = useState(false);
   const isGradient = colorA && colorB;
-  const customStyle = customizedStyles(itemsLength);
   const handlePress = (): void => {
     onSelect(!selected);
     if (onPressMetrics) {
@@ -78,7 +75,7 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
           angle={angle}
           colors={[colorA, colorB]}
           locations={location}
-          style={[styles.container, cardStyle, customStyle.itemWidth]}
+          style={[styles.container, cardStyle]}
         >
           {renderItem()}
         </LinearGradient>
@@ -93,27 +90,19 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
   );
 };
 
-export { AssetMetrics };
+const memoizedComponent = React.memo(AssetMetrics);
+export { memoizedComponent as AssetMetrics };
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
     borderRadius: 8,
     paddingVertical: 10,
-    paddingHorizontal: 5,
-    shadowColor: theme.colors.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    paddingHorizontal: 12,
   },
   containerWithoutGradient: {
-    borderColor: theme.colors.lightBlue,
-    borderWidth: 1,
     backgroundColor: theme.colors.gradientK,
+    borderColor: theme.colors.lightBlue,
+    borderWidth: 1.5,
   },
   selectedContainer: {
     borderColor: theme.colors.blue,
@@ -130,12 +119,5 @@ const styles = StyleSheet.create({
   },
   valueWithoutGradient: {
     color: theme.colors.darkTint1,
-  },
-});
-
-// TODO: Add the return type
-const customizedStyles = (itemLength: number): any => ({
-  itemWidth: {
-    minWidth: itemLength > 3 ? (theme.viewport.width - 60) / 3 : (theme.viewport.width - 90) / 3,
   },
 });

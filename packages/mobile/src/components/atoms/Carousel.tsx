@@ -36,22 +36,22 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
     } = this.props;
     return (
       <Carousel
-        onLayout={this.updateRef}
+        testID={testID}
         data={carouselData}
         firstItem={activeIndex}
         sliderWidth={sliderWidth}
         itemWidth={itemWidth}
         renderItem={this.renderItem}
+        initialNumToRender={initialNumToRender}
         activeSlideOffset={ACTIVE_SLIDE_OFFSET}
-        onSnapToItem={onSnapToItem}
         contentContainerCustomStyle={contentStyle}
         containerCustomStyle={containerStyle}
+        onLayout={this.updateRef}
+        onSnapToItem={onSnapToItem}
         removeClippedSubviews
-        initialNumToRender={initialNumToRender}
         ref={(c): void => {
           this.carouselRef = c;
         }}
-        testID={testID}
       />
     );
   };

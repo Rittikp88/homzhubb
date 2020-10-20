@@ -34,22 +34,10 @@ exports[`AssetMetrics should match snapshot 1`] = `
       Array [
         Object {
           "borderRadius": 8,
-          "elevation": 5,
-          "margin": 10,
-          "paddingHorizontal": 5,
+          "paddingHorizontal": 12,
           "paddingVertical": 10,
-          "shadowColor": "#000",
-          "shadowOffset": Object {
-            "height": 2,
-            "width": 0,
-          },
-          "shadowOpacity": 0.25,
-          "shadowRadius": 3.84,
         },
         undefined,
-        Object {
-          "minWidth": 220,
-        },
       ]
     }
     useAngle={true}
@@ -126,22 +114,10 @@ exports[`AssetMetrics should match snapshot for currency 1`] = `
       Array [
         Object {
           "borderRadius": 8,
-          "elevation": 5,
-          "margin": 10,
-          "paddingHorizontal": 5,
+          "paddingHorizontal": 12,
           "paddingVertical": 10,
-          "shadowColor": "#000",
-          "shadowOffset": Object {
-            "height": 2,
-            "width": 0,
-          },
-          "shadowOpacity": 0.25,
-          "shadowRadius": 3.84,
         },
         undefined,
-        Object {
-          "minWidth": 220,
-        },
       ]
     }
     useAngle={true}
@@ -206,22 +182,10 @@ exports[`AssetMetrics should match snapshot for show plus icon 1`] = `
       Array [
         Object {
           "borderRadius": 8,
-          "elevation": 5,
-          "margin": 10,
-          "paddingHorizontal": 5,
+          "paddingHorizontal": 12,
           "paddingVertical": 10,
-          "shadowColor": "#000",
-          "shadowOffset": Object {
-            "height": 2,
-            "width": 0,
-          },
-          "shadowOpacity": 0.25,
-          "shadowRadius": 3.84,
         },
         undefined,
-        Object {
-          "minWidth": 220,
-        },
       ]
     }
     useAngle={true}

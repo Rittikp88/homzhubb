@@ -1,18 +1,19 @@
 import React from 'react';
-import { StatusBar, Image } from 'react-native';
+import { StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
+import Focused from '@homzhub/common/src/assets/images/homzhubLogo.svg';
+import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.svg';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images';
 import Portfolio from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
@@ -214,7 +215,7 @@ export const BottomTabs = (): React.ReactElement => {
         options={{
           tabBarLabel: t('assetDashboard:dashboard'),
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
-            return <Image source={focused ? images.dashboardFocused : images.dashboardUnfocused} />;
+            return focused ? <Focused /> : <Unfocused />;
           },
         }}
       />

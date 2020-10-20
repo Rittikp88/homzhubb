@@ -9,7 +9,7 @@ exports[`Portfolio Screen should render snapshot 1`] = `
         title="portfolio"
       >
         <React.Fragment>
-          <AssetMetricsList
+          <UNDEFINED
             containerStyle={
               Object {
                 "marginVertical": 12,
@@ -17,8 +17,7 @@ exports[`Portfolio Screen should render snapshot 1`] = `
             }
             data={Array []}
             onPlusIconClicked={[Function]}
-            showPlusIcon={true}
-            title={0}
+            title="0"
           />
           <React.Fragment>
             <Text

@@ -86,8 +86,8 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     return (
       <>
         <AssetMetricsList
-          title={metrics?.assetMetrics?.assets?.count ?? 0}
-          data={metrics?.assetMetrics?.miscellaneous}
+          title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
+          data={metrics?.assetMetrics?.miscellaneous ?? []}
           subscription={metrics?.userServicePlan?.label}
           containerStyle={styles.assetCards}
           onMetricsClicked={this.handleMetricsNavigation}

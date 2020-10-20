@@ -6,20 +6,22 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { theme } from '@homzhub/common/src/styles/theme';
 import {
   AnimatedProfileHeader,
-  FinancialHeaderContainer,
+  AssetMetricsList,
   PropertyDuesCardContainer,
   StateAwareComponent,
+  IMetricsData,
 } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
-import { propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
-import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
+import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
 
 interface IState {
   ledgerData: GeneralLedgers[];
@@ -56,19 +58,18 @@ export class Financials extends React.PureComponent<Props, IState> {
 
   private renderComponent = (): React.ReactElement => {
     const { t } = this.props;
-    const { ledgerData, transactionsData, scrollEnabled } = this.state;
+    const { transactionsData, scrollEnabled } = this.state;
     const { currency_symbol, totalDue, details } = propertyDues;
 
     return (
       <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
         <>
-          <FinancialHeaderContainer
-            onPlusIconClicked={this.onPlusIconPress}
-            // @ts-ignore
+          <AssetMetricsList
             title={t('assetFinancial:recordsText')}
-            income={LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.credit, ledgerData)}
-            expense={LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.debit, ledgerData)}
-            individualCardStyle={styles.individualCardStyle}
+            numOfElements={2}
+            data={this.getHeaderData()}
+            onPlusIconClicked={this.onPlusIconPress}
+            textStyle={styles.priceStyle}
           />
           <FinanceOverview />
           <PropertyDuesCardContainer currency={currency_symbol} totalDue={totalDue} propertyDues={details} />
@@ -97,6 +98,29 @@ export class Financials extends React.PureComponent<Props, IState> {
 
   private toggleScroll = (scrollEnabled: boolean): void => {
     this.setState({ scrollEnabled });
+  };
+
+  private getHeaderData = (): IMetricsData[] => {
+    const { t } = this.props;
+    const { ledgerData } = this.state;
+    const currentYear = DateUtils.getCurrentYear();
+
+    return [
+      {
+        label: t('assetFinancial:income', { year: currentYear }),
+        count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.credit, ledgerData)}/-`,
+        currencySymbol: 'INR',
+        // @ts-ignore
+        colorGradient: { hexColorA: theme.colors.gradientA, hexColorB: theme.colors.gradientB },
+      },
+      {
+        label: t('assetFinancial:expense', { year: currentYear }),
+        count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.debit, ledgerData)}/-`,
+        currencySymbol: 'INR',
+        // @ts-ignore
+        colorGradient: { hexColorA: theme.colors.gradientC, hexColorB: theme.colors.gradientD },
+      },
+    ];
   };
 
   private getGeneralLedgersPref = async (): Promise<void> => {
@@ -138,8 +162,8 @@ export class Financials extends React.PureComponent<Props, IState> {
 export default withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials);
 
 const styles = StyleSheet.create({
-  individualCardStyle: {
-    alignItems: 'center',
-    paddingHorizontal: 25,
+  priceStyle: {
+    textAlign: 'center',
+    color: theme.colors.white,
   },
 });
