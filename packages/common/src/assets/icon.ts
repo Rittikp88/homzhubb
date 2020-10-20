@@ -138,6 +138,8 @@ export const icons = {
   owner: 'owner',
   agent: 'agent',
   manager: 'manager',
+  furnishing: 'furnishing',
+  openParking: 'open-parking',
 
   // COMMUTE
   train: 'train',

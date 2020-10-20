@@ -288,8 +288,8 @@ export class BookVisit extends Component<Props, IVisitState> {
     }
     if (params && !params.sale_listing_id && !params.lease_listing_id) {
       this.setState({
-        leaseListingId: visitDetail.leaseListing,
-        saleListingId: visitDetail.saleListing,
+        leaseListingId: visitDetail.leaseListing && visitDetail.leaseListing > 0 ? visitDetail.leaseListing : null,
+        saleListingId: visitDetail.saleListing && visitDetail.saleListing > 0 ? visitDetail.saleListing : null,
       });
     }
   };

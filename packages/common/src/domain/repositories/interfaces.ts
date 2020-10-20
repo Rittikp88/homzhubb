@@ -20,6 +20,7 @@ export enum SpaceAvailableTypes {
   TOTAL_FLOORS = 'Total Floors',
   FLOOR_NUMBER = 'Floor number',
   BALCONY = 'Balcony',
+  OPEN_PARKING = 'Open Parking',
 }
 
 export enum VisitType {

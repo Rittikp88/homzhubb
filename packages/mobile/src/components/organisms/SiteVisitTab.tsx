@@ -5,7 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -184,7 +184,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   private onDropdownValueSelect = (startDate: string, endDate: string, visitType: VisitStatusType): void => {
     const { getAssetVisit, selectedAssetId } = this.props;
     let status;
-    const start_date__lte = endDate;
+    const start_date__lt = endDate;
     const start_date__gte = startDate;
 
     switch (visitType) {
@@ -198,7 +198,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
 
     const payload: IAssetVisitPayload = {
-      start_date__lte,
+      start_date__lt,
       start_date__gte,
       ...(status && { status }),
       ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
@@ -240,7 +240,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload } = this.props;
     const { currentIndex } = this.state;
     const currentRoute = Routes[currentIndex];
-    const date = DateUtils.getCurrentDateISO();
+    const date = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
     let start_date_lte;
     let start_date_gte;
     let lease_listing_id;
@@ -260,6 +260,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         break;
       default:
     }
+
     if (setVisitPayload) {
       setVisitPayload({
         ...(start_date_lte && { start_date__lte: start_date_lte }),

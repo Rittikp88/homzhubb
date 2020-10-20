@@ -45,7 +45,7 @@ interface IScreenState {
   visitsData: IVisitByKey[][];
 }
 
-const allSlot = { id: 0, from: 0, to: 0, icon: '', formatted: 'ALL' };
+const allSlot = { id: 0, from: 0, to: 0, icon: '', formatted: 'All' };
 
 type Props = IProps & IDispatchProps & IStateProps & WithTranslation;
 

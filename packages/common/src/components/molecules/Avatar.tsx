@@ -46,7 +46,7 @@ const Avatar = (props: IProps): React.ReactElement => {
             )}
             {rating && (
               <View style={styles.numberContainer}>
-                <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+                <Icon name={icons.roundFilled} color={theme.colors.disabled} size={10} style={styles.iconStyle} />
                 <Rating count={rating} />
               </View>
             )}

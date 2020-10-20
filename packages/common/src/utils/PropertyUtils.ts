@@ -2,18 +2,19 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ISlotItem } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
-import { UpcomingSlot } from '@homzhub/common/src/domain/models/AssetVisit';
+import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
+import { ISlotItem } from '@homzhub/common/src/domain/models/AssetVisit';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 
 class PropertyUtils {
   public getAmenities = (
     spaces: IData[],
-    floorNumber: number,
-    name: string,
+    furnishing: string,
+    code: AssetGroupTypes,
     carpetArea?: number | null,
     carpetAreaUnit?: string | null,
     isFullDetail?: boolean
@@ -30,58 +31,50 @@ class PropertyUtils {
       return space.name === SpaceAvailableTypes.BATHROOM;
     });
 
-    const carpetAreaValue = carpetArea ? carpetArea.toLocaleString() : '-';
-
-    const balcony: IData[] = spaces.filter((space: IData) => {
-      return space.name === SpaceAvailableTypes.BALCONY;
+    const openParking: IData[] = spaces.filter((space: IData) => {
+      return space.name === SpaceAvailableTypes.OPEN_PARKING;
     });
 
-    const ordinalSuffix = (value: number): string => {
-      return ['st', 'nd', 'rd'][((((value + 90) % 100) - 10) % 10) - 1] || 'th';
-    };
+    const bedRoom = bedroom.length > 0 && bedroom[0].count ? bedroom[0].count.toString() : '-';
 
-    const bedFloor =
-      name === 'Residential' && bedroom.length > 0 && bedroom[0].count
-        ? bedroom[0].count.toString()
-        : `${floorNumber}${isFullDetail ? ordinalSuffix(floorNumber) : ''}`;
     const baths = bathroom.length > 0 && bathroom[0].count ? bathroom[0].count.toString() : '-';
-    const balconies = balcony.length > 0 && balcony[0].count ? balcony[0].count.toString() : '-';
 
-    if ((name === 'Residential' && bedroom.length > 0) || floorNumber > 0) {
+    const parking = openParking.length > 0 && openParking[0].count ? openParking[0].count.toString() : '-';
+
+    if (code === AssetGroupTypes.RES) {
       amenities.push({
-        icon: name === 'Residential' ? icons.bed : icons.floor,
+        icon: icons.bed,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: isFullDetail ? (name === 'Residential' ? `${bedFloor} Beds` : `${bedFloor} Floor`) : bedFloor,
+        label: isFullDetail ? `${bedRoom} Beds` : bedRoom,
+      });
+      amenities.push({
+        icon: icons.bathTub,
+        iconSize: 20,
+        iconColor: theme.colors.darkTint3,
+        label: isFullDetail ? `${baths} Baths` : baths,
+      });
+    } else {
+      amenities.push({
+        icon: icons.furnishing,
+        iconSize: 20,
+        iconColor: theme.colors.darkTint3,
+        label: furnishing,
+      });
+      amenities.push({
+        icon: icons.openParking,
+        iconSize: 20,
+        iconColor: theme.colors.darkTint3,
+        label: parking,
       });
     }
 
-    if (bathroom.length > 0) {
-      amenities.push({
-        icon: name === 'Residential' ? icons.bathTub : icons.washroom,
-        iconSize: 20,
-        iconColor: theme.colors.darkTint3,
-        label: isFullDetail ? (name === 'Residential' ? `${baths} Baths` : `${baths} Washrooms`) : baths,
-      });
-    }
-
-    if (carpetArea && parseInt(carpetAreaValue, 10) !== 0) {
-      amenities.push({
-        icon: icons.area,
-        iconSize: 20,
-        iconColor: theme.colors.darkTint3,
-        label: isFullDetail ? `${carpetAreaValue} ${carpetAreaUnit}` : carpetAreaValue,
-      });
-    }
-
-    if (balcony.length > 0) {
-      amenities.push({
-        icon: icons.balcony,
-        iconSize: 20,
-        iconColor: theme.colors.darkTint3,
-        label: isFullDetail ? `${balconies} Balcony` : balconies,
-      });
-    }
+    amenities.push({
+      icon: icons.area,
+      iconSize: 20,
+      iconColor: theme.colors.darkTint3,
+      label: isFullDetail && carpetArea && carpetArea > 0 ? `${carpetArea} ${carpetAreaUnit}` : '-',
+    });
 
     return amenities;
   };

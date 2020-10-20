@@ -118,7 +118,9 @@
     "proceed": "Proceed",
     "minCount": "Cannot reduce beyond this",
     "maxCount": "Cannot increase beyond this",
-    "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet"
+    "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet",
+    "accept": "Accept",
+    "reject": "Reject"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -357,7 +359,12 @@
     "propertyOwner": "Property Owner",
     "propertyAgent": "Property Agent",
     "propertyManager": "Property Manager",
-    "searchProperty": "Search Property"
+    "searchProperties": "Search Properties",
+    "visitDeclined": "Visit Declined",
+    "visitScheduled": "Visit Scheduled",
+    "visitCancelled": "Visit Cancelled",
+    "awaiting": "Awaiting Confirmation...",
+    "buyer": "Buyer"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

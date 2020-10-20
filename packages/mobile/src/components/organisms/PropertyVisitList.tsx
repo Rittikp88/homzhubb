@@ -227,26 +227,26 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   };
 
   private getActions = (action: string): IVisitActions | null => {
-    const { handleAction } = this.props;
+    const { handleAction, t } = this.props;
     const { APPROVE, REJECT, CANCEL } = VisitActions;
     switch (action) {
       case APPROVE:
         return {
-          title: 'Accept',
+          title: t('common:accept'),
           color: theme.colors.green,
           icon: icons.circularCheckFilled,
           action: (id): void => handleAction(id, VisitActions.APPROVE),
         };
       case REJECT:
         return {
-          title: 'Reject',
+          title: t('reject'),
           color: theme.colors.error,
           icon: icons.circularCrossFilled,
           action: (id): void => handleAction(id, VisitActions.REJECT),
         };
       case CANCEL:
         return {
-          title: 'Cancel',
+          title: t('cancel'),
           color: theme.colors.error,
           action: (id): void => this.handleVisitCancel(id),
         };
@@ -256,28 +256,29 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   };
 
   private getVisitStatus = (status: string): IVisitActions | null => {
+    const { t } = this.props;
     switch (status) {
       case VisitStatus.ACCEPTED:
         return {
-          title: 'Visit Scheduled',
+          title: t('visitScheduled'),
           color: theme.colors.green,
           icon: icons.circularCheckFilled,
         };
       case VisitStatus.REJECTED:
         return {
-          title: 'Visit Declined',
+          title: t('visitDeclined'),
           color: theme.colors.error,
           icon: icons.circularCrossFilled,
         };
       case VisitStatus.CANCELLED:
         return {
-          title: 'Visit Cancelled',
+          title: t('visitCancelled'),
           color: theme.colors.error,
           icon: icons.circularCrossFilled,
         };
       case VisitStatus.PENDING:
         return {
-          title: 'Awaiting Confirmation...',
+          title: t('awaiting'),
           color: theme.colors.darkTint3,
           icon: icons.watch,
         };
@@ -309,17 +310,17 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     });
   };
 
-  // TODO: move to en.json
   private getUserRole = (role: RoleType): string => {
+    const { t } = this.props;
     switch (role) {
       case RoleType.PROPERTY_AGENT:
-        return 'Property agent';
+        return t('propertyAgent');
       case RoleType.BUYER:
-        return 'Buyer';
+        return t('buyer');
       case RoleType.TENANT:
-        return 'Tenant';
+        return t('tenant');
       case RoleType.OWNER:
-        return 'Owner';
+        return t('owner');
       default:
         return role;
     }

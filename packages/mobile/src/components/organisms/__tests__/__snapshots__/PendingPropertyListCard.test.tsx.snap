@@ -135,16 +135,22 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
       data={
         Array [
           Object {
-            "icon": "bed",
+            "icon": "furnishing",
             "iconColor": "#33495E",
             "iconSize": 20,
-            "label": "1 Beds",
+            "label": undefined,
           },
           Object {
-            "icon": "bath-tub",
+            "icon": "open-parking",
             "iconColor": "#33495E",
             "iconSize": 20,
-            "label": "1 Baths",
+            "label": "-",
+          },
+          Object {
+            "icon": "area",
+            "iconColor": "#33495E",
+            "iconSize": 20,
+            "label": "-",
           },
         ]
       }

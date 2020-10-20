@@ -172,16 +172,22 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               data={
                 Array [
                   Object {
-                    "icon": "bed",
+                    "icon": "furnishing",
                     "iconColor": "#33495E",
                     "iconSize": 20,
-                    "label": "1 Beds",
+                    "label": undefined,
                   },
                   Object {
-                    "icon": "bath-tub",
+                    "icon": "open-parking",
                     "iconColor": "#33495E",
                     "iconSize": 20,
-                    "label": "1 Baths",
+                    "label": "-",
+                  },
+                  Object {
+                    "icon": "area",
+                    "iconColor": "#33495E",
+                    "iconSize": 20,
+                    "label": "-",
                   },
                 ]
               }
@@ -226,7 +232,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                     textType="semiBold"
                     type="large"
                   >
-                    19 Oct 2020
+                    20 Oct 2020
                   </Label>
                 </View>
                 <View

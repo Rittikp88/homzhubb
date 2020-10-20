@@ -71,15 +71,15 @@ export class PropertyListCard extends React.Component<Props, {}> {
       carpetArea,
       carpetAreaUnit,
       spaces,
-      floorNumber,
-      assetGroup: { name },
+      furnishing,
+      assetGroup: { code },
     } = property;
     const currency: string = this.getCurrency();
     const price: number = this.getPrice();
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
-      floorNumber,
-      name,
+      furnishing,
+      code,
       carpetArea,
       carpetAreaUnit?.title ?? ''
     );

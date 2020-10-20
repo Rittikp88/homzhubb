@@ -107,11 +107,11 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
     const {
       attachments,
       projectName,
-      floorNumber,
+      furnishing,
       spaces,
       carpetAreaUnit,
       carpetArea,
-      assetGroup: { name },
+      assetGroup: { code },
       leaseTerm,
       saleTerm,
       isWishlisted,
@@ -119,7 +119,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
     } = item;
     const currency = this.getCurrency(item);
     const price = this.getPrice(item);
-    const amenities = PropertyUtils.getAmenities(spaces, floorNumber, name, carpetArea, carpetAreaUnit?.title ?? '');
+    const amenities = PropertyUtils.getAmenities(spaces, furnishing, code, carpetArea, carpetAreaUnit?.title ?? '');
     const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
     const isFavourite = isWishlisted ? isWishlisted.status : false;
 

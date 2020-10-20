@@ -6,7 +6,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
 <ForwardRef(SafeAreaView)
   style={
     Object {
-      "backgroundColor": "#F0F5F9",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
     }
   }
@@ -132,7 +132,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
     iconSize={20}
     onPress={[Function]}
     testID="btnSearchProperty"
-    title="property:searchProperty"
+    title="property:searchProperties"
     titleStyle={
       Object {
         "marginHorizontal": 12,
@@ -286,7 +286,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
 <ForwardRef(SafeAreaView)
   style={
     Object {
-      "backgroundColor": "#F0F5F9",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
     }
   }
@@ -412,7 +412,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
     iconSize={20}
     onPress={[Function]}
     testID="btnSearchProperty"
-    title="property:searchProperty"
+    title="property:searchProperties"
     titleStyle={
       Object {
         "marginHorizontal": 12,

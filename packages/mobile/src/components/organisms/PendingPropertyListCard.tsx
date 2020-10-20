@@ -99,7 +99,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       unitNumber,
       carpetArea,
       carpetAreaUnit,
-      floorNumber,
+      furnishing,
       blockNumber,
       address,
       lastVisitedStep,
@@ -107,8 +107,8 @@ export class PendingPropertyListCard extends Component<Props, IState> {
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
-      floorNumber,
-      item.assetGroup.name,
+      furnishing,
+      item.assetGroup.code,
       carpetArea,
       carpetAreaUnit?.title ?? '',
       true

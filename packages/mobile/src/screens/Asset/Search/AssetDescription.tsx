@@ -232,7 +232,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       spaces,
       carpetArea,
       carpetAreaUnit,
-      floorNumber,
+      furnishing,
       assetType,
       leaseTerm,
       saleTerm,
@@ -243,7 +243,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       country: { currencies },
       visitDate,
       verifications: { description },
-      assetGroup: { name },
+      assetGroup: { code, name },
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
 
@@ -251,8 +251,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
-      floorNumber,
-      name,
+      furnishing,
+      code,
       carpetArea,
       carpetAreaUnit?.title ?? '',
       true

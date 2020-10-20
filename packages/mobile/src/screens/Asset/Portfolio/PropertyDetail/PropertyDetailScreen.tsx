@@ -139,7 +139,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         return <NotificationTab />;
       case Tabs.SITE_VISITS:
         return (
-          <View style={{ backgroundColor: theme.colors.white }}>
+          <View style={styles.visitTab}>
             <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} isFromProperty />
           </View>
         );
@@ -218,5 +218,9 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: theme.colors.darkTint1,
     marginLeft: 12,
+  },
+  visitTab: {
+    backgroundColor: theme.colors.white,
+    height: 600,
   },
 });

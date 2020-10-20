@@ -9,22 +9,22 @@ export const MISSED_COMPLETED_DATA = {
   [DateFilter.thisWeek]: {
     label: `${translationKey}:thisWeek`,
     value: DateFilter.thisWeek,
-    startDate: DateUtils.getCurrentWeekStartDate(DateFormats.ISO24Format),
-    endDate: DateUtils.getCurrentWeekLastDate(DateFormats.ISO24Format),
+    startDate: DateUtils.getCurrentWeekStartDate(DateFormats.ISO24Format, 'isoWeek'),
+    endDate: DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format),
     dataGroupBy: DataGroupBy.week,
   },
   [DateFilter.lastWeek]: {
     label: `${translationKey}:lastWeek`,
     value: DateFilter.lastWeek,
-    startDate: DateUtils.getLastWeekStartDate(DateFormats.ISO24Format),
-    endDate: DateUtils.getLastWeekLastDate(DateFormats.ISO24Format),
+    startDate: DateUtils.getLastWeekStartDate(DateFormats.ISO24Format, 'isoWeek'),
+    endDate: DateUtils.getLastWeekLastDate(DateFormats.ISO24Format, 'isoWeek'),
     dataGroupBy: DataGroupBy.week,
   },
   [DateFilter.thisMonth]: {
     label: `${translationKey}:thisMonth`,
     value: DateFilter.thisMonth,
     startDate: DateUtils.getCurrentMonthStartDate(DateFormats.ISO24Format),
-    endDate: DateUtils.getCurrentMonthLastDate(DateFormats.ISO24Format),
+    endDate: DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format),
     dataGroupBy: DataGroupBy.month,
   },
   [DateFilter.lastMonth]: {
@@ -40,8 +40,8 @@ export const UPCOMING_DROPDOWN_DATA = {
   [DateFilter.thisWeek]: {
     label: `${translationKey}:thisWeek`,
     value: DateFilter.thisWeek,
-    startDate: DateUtils.getCurrentWeekStartDate(DateFormats.ISO24Format),
-    endDate: DateUtils.getCurrentWeekLastDate(DateFormats.ISO24Format),
+    startDate: DateUtils.getCurrentWeekStartDate(DateFormats.ISO24Format, 'isoWeek'),
+    endDate: DateUtils.getCurrentWeekLastDate(DateFormats.ISO24Format, 'isoWeek'),
     dataGroupBy: DataGroupBy.week,
   },
   [DateFilter.thisMonth]: {

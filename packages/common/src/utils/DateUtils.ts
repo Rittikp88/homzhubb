@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { unitOfTime } from 'moment';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
 export const MonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -108,29 +108,29 @@ class DateUtils {
     return moment().endOf('year').format('YYYY-MM-DD');
   };
 
-  public getCurrentWeekStartDate = (format?: string): string => {
+  public getCurrentWeekStartDate = (format?: string, unit?: unitOfTime.StartOf): string => {
     return moment()
-      .startOf('week')
+      .startOf(unit || 'week')
       .format(format || 'YYYY-MM-DD');
   };
 
-  public getCurrentWeekLastDate = (format?: string): string => {
+  public getCurrentWeekLastDate = (format?: string, unit?: unitOfTime.StartOf): string => {
     return moment()
-      .endOf('week')
+      .endOf(unit || 'week')
       .format(format || 'YYYY-MM-DD');
   };
 
-  public getLastWeekStartDate = (format?: string): string => {
+  public getLastWeekStartDate = (format?: string, unit?: unitOfTime.StartOf): string => {
     return moment()
       .subtract(1, 'week')
-      .startOf('week')
+      .startOf(unit || 'week')
       .format(format || 'YYYY-MM-DD');
   };
 
-  public getLastWeekLastDate = (format?: string): string => {
+  public getLastWeekLastDate = (format?: string, unit?: unitOfTime.StartOf): string => {
     return moment()
       .subtract(1, 'week')
-      .endOf('week')
+      .endOf(unit || 'week')
       .format(format || 'YYYY-MM-DD');
   };
 

@@ -89,7 +89,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
         />
         <Button
           type="secondary"
-          title={t('property:searchProperty')}
+          title={t('property:searchProperties')}
           icon={icons.search}
           iconSize={20}
           iconColor={theme.colors.blue}
@@ -219,7 +219,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.onBoardingScreenBackground,
+    backgroundColor: theme.colors.white,
   },
   carousel: {
     flex: 1,
