@@ -173,7 +173,10 @@
     "phoneAlreadyExists": "Mobile number already exists",
     "countryRegion": "Country/Region",
     "clickToSignUp": "Click \"Continue\" to Sign Up",
-    "clickToFFM": "Click \"Continue\" to open FFM Application"
+    "clickToFFM": "Click \"Continue\" to open FFM Application",
+    "updatePassword": "Update Password",
+    "createNewPassword": "Create a New Password",
+    "currentPassword": "Your Current Password"
   },
   "property": {
     "welcomeUser": "Welcome {{username}},",
@@ -597,6 +600,8 @@
     "updateProfile": "Update Profile",
     "fieldRequiredError": "This field is required",
     "editHeaderText": "Edit {{title}}",
-    "updateSuccessfulMessage": "Details updated successfully"
+    "updateSuccessfulMessage": "Details updated successfully",
+    "passwordChanged": "Password Changed Successfully",
+    "uniquePassword": "Please add a unique password"
   }
 }

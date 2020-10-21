@@ -16,6 +16,7 @@ import {
   IUserExistsData,
   IUpdateWorkInfo,
   IUpdateEmergencyContact,
+  IUpdatePassword,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
@@ -35,6 +36,7 @@ const ENDPOINTS = {
   getUserProfile: (): string => 'users/profile/',
   updateEmergencyContact: (): string => 'users/emergency-contact/',
   updateWorkInfo: (): string => 'users/work-info/',
+  changePassword: (): string => 'users/reset-password/',
 };
 
 class UserRepository {
@@ -117,6 +119,10 @@ class UserRepository {
 
   public updateWorkInfo = async (payload: IUpdateWorkInfo): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.updateWorkInfo(), payload);
+  };
+
+  public updatePassword = async (payload: IUpdatePassword): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.changePassword(), payload);
   };
 }
 

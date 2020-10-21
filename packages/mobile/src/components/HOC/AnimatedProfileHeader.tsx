@@ -5,7 +5,7 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components';
+import { Text, FontWeightType } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 
@@ -13,6 +13,7 @@ interface IProps {
   children: React.ReactElement;
   title?: string;
   sectionHeader?: string;
+  sectionTitleType?: FontWeightType;
   onProfileIconPress?: () => void;
   onBackPress?: () => void;
   isOuterScrollEnabled?: boolean;
@@ -56,7 +57,7 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
   }
 
   private renderSectionHeader = (): ReactElement => {
-    const { onBackPress, sectionHeader } = this.props;
+    const { onBackPress, sectionHeader, sectionTitleType = 'bold' } = this.props;
 
     return (
       <View style={styles.header}>
@@ -67,7 +68,7 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
           style={styles.iconStyle}
           onPress={onBackPress}
         />
-        <Text type="small" textType="bold">
+        <Text type="small" textType={sectionTitleType}>
           {sectionHeader}
         </Text>
       </View>

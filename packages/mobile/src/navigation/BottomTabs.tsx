@@ -30,6 +30,7 @@ import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigatio
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
+import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -69,6 +70,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
+  [ScreensKeys.UpdatePassword]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -136,6 +138,7 @@ export const MoreStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
+      <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
     </MoreStackNavigator.Navigator>
   );
 };

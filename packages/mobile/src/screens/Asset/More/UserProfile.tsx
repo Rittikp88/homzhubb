@@ -100,7 +100,7 @@ class UserProfile extends React.PureComponent<IOwnProps> {
             showDivider
           />
           <DetailsCard
-            headerInfo={{ title: t('changePassword'), icon: icons.rightArrow, onPress: FunctionUtils.noop }}
+            headerInfo={{ title: t('changePassword'), icon: icons.rightArrow, onPress: this.onChangePassword }}
             showDivider
           />
           <DetailsCard
@@ -132,6 +132,13 @@ class UserProfile extends React.PureComponent<IOwnProps> {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.UpdateUserProfileScreen, { title, formType });
+  };
+
+  private onChangePassword = (): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.UpdatePassword);
   };
 
   private goBack = (): void => {

@@ -37,6 +37,10 @@ export enum VisitStatus {
   CANCELLED = 'CANCELLED',
 }
 
+export enum UpdateTypes {
+  UPDATE_PASSWORD = 'UPDATE_PASSWORD',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -409,4 +413,14 @@ export interface IUpdateWorkInfo {
   company_name: string;
   work_email: string;
   work_employee_id: string;
+}
+
+interface IPasswordPayload {
+  old_password: string;
+  new_password: string;
+}
+
+export interface IUpdatePassword {
+  action: UpdateTypes;
+  payload: IPasswordPayload;
 }

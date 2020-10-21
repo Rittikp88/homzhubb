@@ -93,6 +93,7 @@ export enum ScreensKeys {
   UserProfileScreen = 'UserProfileScreen',
   UpdateUserProfileScreen = 'UpdateUserProfileScreen',
   SettingsScreen = 'SettingsScreen',
+  UpdatePassword = 'UpdatePassword',
 }
 
 export enum OtpNavTypes {
