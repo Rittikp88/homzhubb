@@ -1,5 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Country, ICountry } from '@homzhub/common/src/domain/models/CountryCode';
+import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 
 export interface IVisitAssetDetail {
   id: number;

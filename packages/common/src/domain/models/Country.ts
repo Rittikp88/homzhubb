@@ -1,10 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
-
-export interface ICarpetAreaUnit {
-  label: string;
-  value: string;
-}
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 export interface ICountry {
   id: number;
@@ -13,37 +9,6 @@ export interface ICountry {
   iso3_code: string;
   phone_codes: string[];
   currencies: ICurrency[];
-}
-
-@JsonObject('CountryCode')
-export class CountryCode {
-  @JsonProperty('id', Number)
-  private _id = 0;
-
-  @JsonProperty('alpha_code', String)
-  private _alphaCode = '';
-
-  @JsonProperty('country_code', String)
-  private _countryCode = '';
-
-  @JsonProperty('country', String)
-  private _country = '';
-
-  get id(): number {
-    return this._id;
-  }
-
-  get alphaCode(): string {
-    return this._alphaCode;
-  }
-
-  get countryCode(): string {
-    return this._countryCode;
-  }
-
-  get country(): string {
-    return this._country;
-  }
 }
 
 @JsonObject('Country')
@@ -88,5 +53,23 @@ export class Country {
 
   get currencies(): Currency[] {
     return this._currencies;
+  }
+
+  get phoneCodesDropdownData(): IDropdownOption[] {
+    const countryCodeOptions: IDropdownOption[] = [];
+
+    this.phoneCodes.forEach((code) => {
+      const data = {
+        label: `${this.name} (${code})`,
+        value: code,
+      };
+      countryCodeOptions.push(data);
+    });
+
+    return countryCodeOptions;
+  }
+
+  get flag(): string {
+    return `https://www.countryflags.io/${this.iso2Code}/flat/48.png`;
   }
 }

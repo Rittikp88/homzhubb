@@ -86,7 +86,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
               label={t('pincode')}
               maxLength={10}
               numberOfLines={1}
-              inputType="default"
+              inputType="number"
               onChangeText={onChangePincode}
               formProps={formProps}
             />

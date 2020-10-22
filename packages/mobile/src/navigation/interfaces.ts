@@ -1,7 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ISocialUserData } from '@homzhub/common/src/assets/constants';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -112,7 +111,6 @@ export interface IOtpNavProps extends IScreenCallback {
   countryCode: string;
   phone: string;
   userData?: ISignUpPayload;
-  ref: () => FormTextInput | null;
 }
 
 export interface IVerificationProps extends IScreenCallback {

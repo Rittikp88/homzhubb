@@ -98,15 +98,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
   };
 
   private onIconPress = (): void => {
-    const {
-      navigation,
-      route: { params },
-    } = this.props;
-
-    if (params && params.ref) {
-      params.ref()?.focus();
-    }
-
+    const { navigation } = this.props;
     navigation.goBack();
   };
 

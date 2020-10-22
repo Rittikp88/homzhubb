@@ -9,7 +9,6 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { FormTextInput } from '@homzhub/common/src/components';
 import { AnimatedHeader, LoginForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
@@ -85,7 +84,7 @@ export class LoginScreen extends Component<Props, ILoginScreenState> {
     navigation.navigate(ScreensKeys.SignUp, onCallback);
   };
 
-  private onOtpLoginPress = (values: ILoginFormData, ref: () => FormTextInput | null): void => {
+  private onOtpLoginPress = (values: ILoginFormData): void => {
     const {
       navigation,
       t,
@@ -96,7 +95,6 @@ export class LoginScreen extends Component<Props, ILoginScreenState> {
       title: t('auth:loginOtp'),
       countryCode: values.phone_code,
       phone: values.phone_number,
-      ref,
       ...(params && params.onCallback && { onCallback: params.onCallback }),
     });
   };

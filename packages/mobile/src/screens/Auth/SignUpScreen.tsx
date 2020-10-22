@@ -10,7 +10,6 @@ import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfac
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { FormTextInput } from '@homzhub/common/src/components';
 import { AnimatedHeader, SignUpForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 import { IUser } from '@homzhub/common/src/domain/models/User';
@@ -81,7 +80,7 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
     navigation.navigate(ScreensKeys.Login, onCallback);
   };
 
-  private onFormSubmit = (formData: ISignUpPayload, ref: () => FormTextInput | null): void => {
+  private onFormSubmit = (formData: ISignUpPayload): void => {
     const {
       navigation,
       t,
@@ -97,7 +96,6 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
         countryCode: formData.phone_code,
         phone: formData.phone_number,
         userData: formData,
-        ref,
         ...(params && params.onCallback && { onCallback: params.onCallback }),
       });
     }

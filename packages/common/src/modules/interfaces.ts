@@ -1,8 +1,9 @@
-import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
-import { ISearchState } from '@homzhub/common/src/modules/search/interface';
+import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { IPortfolioState } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
+import { ISearchState } from '@homzhub/common/src/modules/search/interface';
+import { IUserState } from '@homzhub/common/src/modules/user/interface';
 
 export interface IFluxStandardAction<Payload = undefined, Error = string> {
   type: string;
@@ -16,9 +17,10 @@ export interface ICallback {
 }
 
 export interface IState {
-  user: IUserState;
-  search: ISearchState;
   asset: IAssetState;
+  common: ICommonState;
   portfolio: IPortfolioState;
   recordAsset: IRecordAssetState;
+  search: ISearchState;
+  user: IUserState;
 }

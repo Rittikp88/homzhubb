@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { FormikHelpers } from 'formik/dist/types';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -22,20 +22,14 @@ interface IEmergencyContactForm {
   name: string;
   phone: string;
   email: string;
-}
-
-interface IState {
-  emergencyContactForm: IEmergencyContactForm;
   phoneCode: string;
 }
 
-export class EmergencyContactForm extends React.PureComponent<IProps, IState> {
+export class EmergencyContactForm extends React.PureComponent<IProps, IEmergencyContactForm> {
   public state = {
-    emergencyContactForm: {
-      name: '',
-      phone: '',
-      email: '',
-    },
+    name: '',
+    phone: '',
+    email: '',
     phoneCode: '',
   };
 
@@ -43,28 +37,25 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IState> {
     const { formData, phoneCode } = this.props;
 
     this.setState({
-      emergencyContactForm: {
-        name: (formData && formData.name) || '',
-        phone: (formData && formData.name) || '',
-        email: (formData && formData.email) || '',
-      },
-      phoneCode: phoneCode || '+91',
+      name: (formData && formData.name) || '',
+      phone: (formData && formData.name) || '',
+      email: (formData && formData.email) || '',
+      phoneCode: phoneCode || '',
     });
   }
 
   public render(): ReactElement {
     const { t } = this.props;
-    const { emergencyContactForm, phoneCode } = this.state;
 
     return (
       <>
         <Formik
           onSubmit={this.onSubmit}
-          initialValues={emergencyContactForm}
+          initialValues={{ ...this.state }}
           validate={FormUtils.validate(this.formSchema)}
           enableReinitialize
         >
-          {(formProps: FormikProps<FormikValues>): React.ReactNode => {
+          {(formProps: FormikProps<IEmergencyContactForm>): React.ReactNode => {
             return (
               <>
                 <View style={styles.container}>
@@ -79,10 +70,9 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IState> {
                     name="phone"
                     label={t('common:phone')}
                     maxLength={10}
-                    inputPrefixText={phoneCode}
+                    inputPrefixText={formProps.values.phoneCode}
                     inputType="phone"
                     placeholder={t('common:phone')}
-                    onPhoneCodeChange={this.handlePhoneCodeChange}
                     phoneFieldDropdownText={t('auth:countryRegion')}
                     formProps={formProps}
                   />
@@ -116,14 +106,13 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IState> {
     formikHelpers: FormikHelpers<IEmergencyContactForm>
   ): Promise<void> => {
     const { onFormSubmitSuccess } = this.props;
-    const { phoneCode } = this.state;
     formikHelpers.setSubmitting(true);
 
     const payload: IUpdateEmergencyContact = {
       emergency_contact_name: values.name,
       emergency_contact_email: values.email,
       emergency_contact_phone: values.phone,
-      emergency_contact_phone_code: phoneCode,
+      emergency_contact_phone_code: values.phoneCode,
     };
 
     try {
@@ -139,10 +128,6 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IState> {
     }
   };
 
-  private handlePhoneCodeChange = (phoneCode: string): void => {
-    this.setState({ phoneCode });
-  };
-
   private formSchema = (): yup.ObjectSchema<IEmergencyContactForm> => {
     const { t } = this.props;
 
@@ -150,6 +135,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IState> {
       name: yup.string().required(t('fieldRequiredError')),
       phone: yup.string().required(t('fieldRequiredError')),
       email: yup.string().required(t('fieldRequiredError')),
+      phoneCode: yup.string(),
     });
   };
 }

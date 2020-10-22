@@ -14,7 +14,6 @@ LoginForm {
   "context": Object {},
   "email": null,
   "formSchema": [Function],
-  "handlePhoneCodeChange": [Function],
   "handleSubmit": [Function],
   "password": null,
   "phone": null,
@@ -28,13 +27,11 @@ LoginForm {
   "renderLoginFields": [Function],
   "setState": [Function],
   "state": Object {
-    "countryCode": "+91",
-    "user": Object {
-      "email": "",
-      "isEmailFlow": false,
-      "password": "",
-      "phone": "",
-    },
+    "email": "",
+    "isEmailFlow": false,
+    "password": "",
+    "phone": "",
+    "phoneCode": "",
   },
   "updater": Updater {
     "_callbacks": Array [],
@@ -86,6 +83,7 @@ LoginForm {
               "isEmailFlow": false,
               "password": "",
               "phone": "",
+              "phoneCode": "",
             }
           }
           onSubmit={[Function]}

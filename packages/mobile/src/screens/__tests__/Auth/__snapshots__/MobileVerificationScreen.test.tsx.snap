@@ -38,6 +38,7 @@ exports[`Mobile verification Screen should render snapshot 1`] = `
       initialValues={
         Object {
           "phone": "",
+          "phoneCode": "",
         }
       }
       onSubmit={[Function]}
@@ -87,6 +88,7 @@ exports[`Mobile verification Screen should render snapshot when its not from log
       initialValues={
         Object {
           "phone": "",
+          "phoneCode": "",
         }
       }
       onSubmit={[Function]}

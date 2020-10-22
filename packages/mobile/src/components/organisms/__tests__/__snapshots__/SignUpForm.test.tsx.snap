@@ -15,7 +15,6 @@ SignUpForm {
   "email": null,
   "firstName": null,
   "formSchema": [Function],
-  "handlePhoneCodeChange": [Function],
   "handleSubmit": [Function],
   "lastName": null,
   "password": null,
@@ -29,14 +28,12 @@ SignUpForm {
   "refs": Object {},
   "setState": [Function],
   "state": Object {
-    "countryCode": "+91",
-    "user": Object {
-      "email": "",
-      "firstName": "",
-      "lastName": "",
-      "password": "",
-      "phone": "",
-    },
+    "email": "",
+    "firstName": "",
+    "lastName": "",
+    "password": "",
+    "phone": "",
+    "phoneCode": "",
   },
   "updater": Updater {
     "_callbacks": Array [],
@@ -88,6 +85,7 @@ SignUpForm {
               "lastName": "",
               "password": "",
               "phone": "",
+              "phoneCode": "",
             }
           }
           onSubmit={[Function]}

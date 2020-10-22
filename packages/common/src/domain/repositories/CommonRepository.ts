@@ -1,7 +1,7 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
-import { Country } from '@homzhub/common/src/domain/models/CountryCode';
+import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';

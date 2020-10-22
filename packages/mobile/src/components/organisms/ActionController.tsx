@@ -45,7 +45,7 @@ class ActionController extends React.PureComponent<Props, {}> {
         assetGroupCode,
         furnishing,
         assetLeaseType,
-        country: { currencies },
+        country: { currencies, phoneCodes },
       },
       leaseType,
       typeOfPlan,
@@ -81,6 +81,7 @@ class ActionController extends React.PureComponent<Props, {}> {
             currentAssetId={id}
             assetGroupType={assetGroupCode}
             currencyData={currencies[0]}
+            phoneCode={phoneCodes[0]}
             onNextStep={this.onNextStep}
           />
         )}

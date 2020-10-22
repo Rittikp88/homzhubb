@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -12,23 +12,19 @@ import { FormButton, FormTextInput, TermsCondition } from '@homzhub/common/src/c
 interface ISignUpFormProps extends WithTranslation {
   testID?: string;
   onPressLink: () => void;
-  onSubmitFormSuccess: (payload: ISignUpPayload, ref: () => FormTextInput | null) => void;
+  onSubmitFormSuccess: (payload: ISignUpPayload) => void;
 }
 
 interface IFormData {
   firstName: string;
   lastName: string;
   email: string;
+  phoneCode: string;
   phone: string;
   password: string;
 }
 
-interface ISignUpFormState {
-  user: IFormData;
-  countryCode: string;
-}
-
-class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
+class SignUpForm extends Component<ISignUpFormProps, IFormData> {
   public firstName: FormTextInput | null = null;
   public lastName: FormTextInput | null = null;
   public email: FormTextInput | null = null;
@@ -36,24 +32,25 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
   public password: FormTextInput | null = null;
 
   public state = {
-    user: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      password: '',
-    },
-    countryCode: '+91',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    phoneCode: '',
   };
 
   public render(): React.ReactNode {
     const { t, testID, onPressLink } = this.props;
-    const { user, countryCode } = this.state;
 
     return (
       <View style={styles.container}>
-        <Formik initialValues={{ ...user }} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
-          {(formProps: FormikProps<FormikValues>): React.ReactNode => {
+        <Formik<IFormData>
+          initialValues={{ ...this.state }}
+          validate={FormUtils.validate(this.formSchema)}
+          onSubmit={this.handleSubmit}
+        >
+          {(formProps: FormikProps<IFormData>): React.ReactNode => {
             const onEmailFocus = (): void => this.email?.focus();
             const onPasswordFocus = (): void => this.password?.focus();
             const onPhoneNumberFocus = (): void => this.phone?.focus();
@@ -101,10 +98,9 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
                   label="Phone"
                   inputType="phone"
                   maxLength={10}
-                  inputPrefixText={countryCode}
+                  inputPrefixText={formProps.values.phoneCode}
                   placeholder={t('auth:yourNumber')}
                   helpText={t('auth:otpVerification')}
-                  onPhoneCodeChange={this.handlePhoneCodeChange}
                   phoneFieldDropdownText={t('auth:countryRegion')}
                   formProps={formProps}
                   onSubmitEditing={onPasswordFocus}
@@ -138,10 +134,6 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
     );
   }
 
-  private handlePhoneCodeChange = (countryCode: string): void => {
-    this.setState({ countryCode });
-  };
-
   private formSchema = (): yup.ObjectSchema<{ email: string; name: string; phone: string; password: string }> => {
     const { t } = this.props;
     return yup.object().shape({
@@ -158,18 +150,17 @@ class SignUpForm extends Component<ISignUpFormProps, ISignUpFormState> {
 
   public handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
     const { onSubmitFormSuccess } = this.props;
-    const { countryCode } = this.state;
     formActions.setSubmitting(true);
     const signUpData: ISignUpPayload = {
       first_name: values.firstName,
       ...(values.lastName && { last_name: values.lastName }),
       email: values.email,
-      phone_code: countryCode,
+      phone_code: values.phoneCode,
       phone_number: values.phone,
       password: values.password,
     };
-    const phoneRef = (): FormTextInput | null => this.phone;
-    onSubmitFormSuccess(signUpData, phoneRef);
+
+    onSubmitFormSuccess(signUpData);
     formActions.setSubmitting(false);
   };
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -11,7 +11,7 @@ import { Button, FormButton, FormTextInput } from '@homzhub/common/src/component
 interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
   handleForgotPassword?: () => void;
-  onLoginSuccess: (payload: ILoginFormData, ref: () => FormTextInput | null) => void;
+  onLoginSuccess: (payload: ILoginFormData) => void;
   testID?: string;
 }
 
@@ -20,14 +20,10 @@ interface IFormData {
   phone: string;
   password: string;
   isEmailFlow: boolean;
+  phoneCode: string;
 }
 
-interface ILoginFormState {
-  user: IFormData;
-  countryCode: string;
-}
-
-class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
+class LoginForm extends Component<ILoginFormProps, IFormData> {
   public email: FormTextInput | null = null;
   public phone: FormTextInput | null = null;
   public password: FormTextInput | null = null;
@@ -35,24 +31,23 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
   public constructor(props: ILoginFormProps) {
     super(props);
     this.state = {
-      user: {
-        email: '',
-        phone: '',
-        password: '',
-        isEmailFlow: props.isEmailLogin || false,
-      },
-      countryCode: '+91',
+      email: '',
+      phone: '',
+      password: '',
+      isEmailFlow: props.isEmailLogin || false,
+      phoneCode: '',
     };
   }
 
   public render(): React.ReactNode {
     const { t, handleForgotPassword, testID } = this.props;
-    const { user } = this.state;
-    const formData = { ...user };
+    const { isEmailFlow } = this.state;
+    const formData = { ...this.state };
+
     return (
       <View style={styles.container}>
         <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
-          {(formProps: FormikProps<FormikValues>): React.ReactElement => (
+          {(formProps: FormikProps<IFormData>): React.ReactElement => (
             <>
               {this.renderLoginFields(formProps)}
               <FormButton
@@ -63,7 +58,7 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
                 title={t('login')}
                 containerStyle={styles.submitStyle}
               />
-              {user.isEmailFlow && (
+              {isEmailFlow && (
                 <Button
                   type="secondary"
                   title={t('auth:forgotPassword')}
@@ -81,12 +76,9 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
     );
   }
 
-  private renderLoginFields = (formProps: FormikProps<FormikValues>): React.ReactElement => {
+  private renderLoginFields = (formProps: FormikProps<IFormData>): React.ReactElement => {
     const { t } = this.props;
-    const {
-      user: { isEmailFlow },
-      countryCode,
-    } = this.state;
+    const { isEmailFlow } = this.state;
     const onPasswordFocus = (): void => this.password?.focus();
     return (
       <>
@@ -123,10 +115,9 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
             label="Phone"
             inputType="phone"
             maxLength={10}
-            inputPrefixText={countryCode}
+            inputPrefixText={formProps.values.phoneCode}
             placeholder={t('auth:yourNumber')}
             helpText={t('auth:otpVerification')}
-            onPhoneCodeChange={this.handlePhoneCodeChange}
             phoneFieldDropdownText={t('auth:countryRegion')}
             formProps={formProps}
           />
@@ -135,23 +126,18 @@ class LoginForm extends Component<ILoginFormProps, ILoginFormState> {
     );
   };
 
-  private handlePhoneCodeChange = (countryCode: string): void => {
-    this.setState({ countryCode });
-  };
-
   public handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
     const { onLoginSuccess } = this.props;
-    const { countryCode } = this.state;
     formActions.setSubmitting(true);
+
     const loginFormData: ILoginFormData = {
       email: values.email,
       password: values.password,
-      phone_code: countryCode,
+      phone_code: values.phoneCode,
       phone_number: values.phone,
     };
 
-    const phoneRef = (): FormTextInput | null => this.phone;
-    onLoginSuccess(loginFormData, phoneRef);
+    onLoginSuccess(loginFormData);
     formActions.setSubmitting(false);
   };
 

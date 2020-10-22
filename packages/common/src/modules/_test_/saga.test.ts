@@ -3,6 +3,7 @@ import rootSaga from '@homzhub/common/src/modules/sagas';
 import { watchUser } from '@homzhub/common/src/modules/user/saga';
 import { watchSearch } from '@homzhub/common/src/modules/search/saga';
 import { watchAsset } from '@homzhub/common/src/modules/asset/saga';
+import { watchCommonActions } from '@homzhub/common/src/modules/common/saga';
 import { watchPortfolio } from '@homzhub/common/src/modules/portfolio/saga';
 import { watchRecordAsset } from '@homzhub/common/src/modules/recordAsset/saga';
 
@@ -12,7 +13,7 @@ jest.mock('@react-native-community/google-signin', () => {});
 it('The root saga should react to actions', () => {
   const generator = rootSaga();
   expect(generator.next().value).toEqual(
-    all([watchUser(), watchSearch(), watchAsset(), watchPortfolio(), watchRecordAsset()])
+    all([watchUser(), watchSearch(), watchAsset(), watchPortfolio(), watchRecordAsset(), watchCommonActions()])
   );
   expect(generator.next().done).toBeTruthy();
 });

@@ -8,24 +8,37 @@ import {
   ViewStyle,
   Image,
   TextInput as RNTextInput,
+  TouchableOpacity,
 } from 'react-native';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { FormikErrors, FormikProps } from 'formik';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
-import { CommonService } from '@homzhub/common/src/services/CommonService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { TextInputSuffix } from '@homzhub/common/src/components/atoms/TextInputSuffix';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
+import { Country } from '@homzhub/common/src/domain/models/Country';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name' | 'decimal';
 
-export interface IFormTextInputProps extends TextInputProps {
+interface IStateProps {
+  countries: Country[];
+  defaultPhoneCode: string;
+}
+
+interface IDispatchProps {
+  getCountries: () => void;
+}
+
+export interface IFormTextInputProps extends TextInputProps, IStateProps, IDispatchProps {
   style?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   formProps: FormikProps<any>;
@@ -42,11 +55,11 @@ export interface IFormTextInputProps extends TextInputProps {
   inputGroupSuffixText?: string;
   hidePasswordRevealer?: boolean;
   disallowedCharacters?: RegExp;
+  phoneCodeKey?: string;
   onValueChange?: (text: string) => void;
   isTouched?: boolean;
   editable?: boolean;
   onIconPress?: () => void;
-  onPhoneCodeChange?: (value: string) => void;
   phoneFieldDropdownText?: string;
 }
 
@@ -55,10 +68,13 @@ interface IFormTextInputState {
   showPassword: boolean;
   isFocused: boolean;
   isBottomSheetVisible: boolean;
-  countryCodeData: IDropdownOption[];
+  phoneCodes: IDropdownOption[];
 }
 
-export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputState> {
+// CONSTANTS
+const PHONE_CODE = 'phoneCode';
+
+class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputState> {
   public inputText: RNTextInput | null = null;
 
   public state = {
@@ -66,7 +82,16 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     showPassword: false,
     isFocused: false,
     isBottomSheetVisible: false,
-    countryCodeData: [],
+    phoneCodes: [],
+  };
+
+  public componentDidMount = (): void => {
+    const { formProps, inputType, phoneCodeKey = PHONE_CODE, defaultPhoneCode, countries } = this.props;
+    if (inputType !== 'phone' || countries.length <= 0 || formProps.values[phoneCodeKey]) {
+      return;
+    }
+
+    formProps.setFieldValue(phoneCodeKey, defaultPhoneCode);
   };
 
   public render(): React.ReactNode {
@@ -88,13 +113,12 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
       isTouched = true,
       editable = true,
       maxLength = 40,
-      onIconPress,
       phoneFieldDropdownText = '',
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
     const { values, setFieldTouched } = formProps;
-    const { showPassword, isFocused, showCurrencySymbol, countryCodeData, isBottomSheetVisible } = this.state;
+    const { showPassword, isFocused, showCurrencySymbol, phoneCodes, isBottomSheetVisible } = this.state;
     const optionalText: string | null = isOptional ? 'Optional' : null;
 
     // @ts-ignore
@@ -169,24 +193,17 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
         ) : undefined;
         break;
       }
-      // TODO: (Shikha:18/05/20)- once backend is ready, refactor flag image part according data
       case 'phone':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
         if (inputPrefixText.length > 0) {
           inputGroupPrefix = (
-            <View style={styles.inputGroupPrefix}>
-              <Image source={images.flag} height={12} width={18} style={styles.flagStyle} />
+            <TouchableOpacity style={styles.inputGroupPrefix} onPress={this.fetchPhoneCodes}>
+              <Image source={{ uri: this.fetchFlag() }} style={styles.flagStyle} />
               <Label type="regular" style={styles.inputPrefixText}>
                 {inputPrefixText}
               </Label>
-              <Icon
-                name={icons.downArrowFilled}
-                color={theme.colors.darkTint7}
-                size={12}
-                style={styles.iconStyle}
-                onPress={onIconPress || this.loadCountryCode}
-              />
-            </View>
+              <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={12} style={styles.iconStyle} />
+            </TouchableOpacity>
           );
 
           const prefixFieldStyles = {
@@ -247,7 +264,7 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
           )}
         </WithFieldError>
         <BottomSheetListView
-          data={countryCodeData}
+          data={phoneCodes}
           selectedValue={inputPrefixText}
           listTitle={phoneFieldDropdownText}
           isBottomSheetVisible={isBottomSheetVisible}
@@ -262,16 +279,33 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     this.setState({ isBottomSheetVisible: false });
   };
 
-  private loadCountryCode = (): void => {
-    const { isBottomSheetVisible } = this.state;
-    CommonService.getCountryWithCode()
-      .then((res) => {
-        this.setState({ countryCodeData: res });
-      })
-      .catch((e) => {
-        AlertHelper.error({ message: e.message });
-      });
+  private fetchPhoneCodes = (): void => {
+    const { isBottomSheetVisible, phoneCodes } = this.state;
+    const { getCountries, countries } = this.props;
+
+    if (countries.length <= 0) {
+      getCountries();
+      return;
+    }
+
+    if (phoneCodes.length <= 0) {
+      const phoneCodesArr = countries.map((country) => country.phoneCodesDropdownData);
+      this.setState({ isBottomSheetVisible: !isBottomSheetVisible, phoneCodes: phoneCodesArr.flat() });
+      return;
+    }
+
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
+
+  private fetchFlag = (): string => {
+    const { formProps, countries, phoneCodeKey = PHONE_CODE } = this.props;
+    for (let i = 0; i < countries.length; i++) {
+      if (countries[i].phoneCodes.includes(formProps.values[phoneCodeKey])) {
+        return countries[i].flag;
+      }
+    }
+
+    return '';
   };
 
   public focus = (): void => {
@@ -311,11 +345,9 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
 
   private handleSelection = (value: string): void => {
     const { isBottomSheetVisible } = this.state;
-    const { onPhoneCodeChange } = this.props;
+    const { formProps, phoneCodeKey = PHONE_CODE } = this.props;
 
-    if (onPhoneCodeChange) {
-      onPhoneCodeChange(value);
-    }
+    formProps.setFieldValue(phoneCodeKey, value);
 
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
@@ -333,6 +365,26 @@ export class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextI
     });
   };
 }
+
+const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    countries: CommonSelectors.getCountryList(state),
+    defaultPhoneCode: CommonSelectors.getDefaultPhoneCode(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getCountries } = CommonActions;
+  return bindActionCreators(
+    {
+      getCountries,
+    },
+    dispatch
+  );
+};
+
+const HOC = connect(mapStateToProps, mapDispatchToProps)(FormTextInput);
+export { HOC as FormTextInput };
 
 const styles = StyleSheet.create({
   inputGroupPrefix: {
@@ -394,6 +446,9 @@ const styles = StyleSheet.create({
     ...theme.form.formLabel,
   },
   flagStyle: {
+    borderRadius: 2,
+    width: 24,
+    height: 24,
     marginEnd: 6,
   },
   iconStyle: {

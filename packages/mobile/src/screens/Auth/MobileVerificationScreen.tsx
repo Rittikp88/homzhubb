@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -13,28 +13,22 @@ import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IVerificationState {
-  formData: {
-    phone: string;
-  };
-  countryCode: string;
+  phone: string;
+  phoneCode: string;
 }
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.MobileVerification>;
 
 export class MobileVerificationScreen extends Component<Props, IVerificationState> {
-  public phone: FormTextInput | null = null;
-
   public state = {
-    formData: {
-      phone: '',
-    },
-    countryCode: '+91',
+    phone: '',
+    phoneCode: '',
   };
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { formData, countryCode } = this.state;
     const { title, message, subTitle, buttonTitle } = this.getDisplayStrings();
+
     return (
       <View style={styles.container}>
         <DetailedHeader icon={icons.leftArrow} title={title} subTitle={subTitle} onIconPress={this.handleIconPress} />
@@ -43,22 +37,18 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
             {message}
           </Text>
           <Formik
-            initialValues={{ ...formData }}
+            initialValues={{ ...this.state }}
             onSubmit={this.onSubmit}
             validate={FormUtils.validate(this.formSchema)}
           >
-            {(formProps: FormikProps<FormikValues>): React.ReactElement => (
+            {(formProps: FormikProps<IVerificationState>): React.ReactElement => (
               <>
                 <FormTextInput
-                  ref={(refs): void => {
-                    this.phone = refs;
-                  }}
                   formProps={formProps}
                   inputType="phone"
                   name="phone"
                   label="Phone"
-                  inputPrefixText={countryCode}
-                  onPhoneCodeChange={this.handlePhoneCodeChange}
+                  inputPrefixText={formProps.values.phoneCode}
                   phoneFieldDropdownText={t('auth:countryRegion')}
                   placeholder={t('yourNumber')}
                   helpText={t('otpVerification')}
@@ -79,7 +69,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     );
   }
 
-  private onSubmit = (values: { phone: string }, formActions: FormikHelpers<{ phone: string }>): void => {
+  private onSubmit = (values: IVerificationState, formActions: FormikHelpers<IVerificationState>): void => {
     formActions.setSubmitting(true);
     const {
       t,
@@ -94,29 +84,23 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
       },
       navigation,
     } = this.props;
-    const { countryCode } = this.state;
-    const { phone } = values;
+    const { phone, phoneCode } = values;
 
     navigation.navigate(ScreensKeys.OTP, {
-      ref: () => this.phone,
       type: OtpNavTypes.SocialMedia,
       title: isFromLogin ? t('loginOtp') : t('verifyNumber'),
       phone,
-      countryCode,
+      countryCode: phoneCode,
       userData: {
         full_name: `${first_name} ${last_name}`,
         email,
         phone_number: phone,
-        phone_code: countryCode,
+        phone_code: phoneCode,
         // TODO (Aditya 10-Jun-2020): How to solve this password issue?
         password: 'RandomPassword',
       },
       ...(onCallback && { onCallback }),
     });
-  };
-
-  private handlePhoneCodeChange = (countryCode: string): void => {
-    this.setState({ countryCode });
   };
 
   private handleIconPress = (): void => {

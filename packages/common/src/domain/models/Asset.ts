@@ -5,7 +5,7 @@ import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/A
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
-import { Country, ICountry } from '@homzhub/common/src/domain/models/CountryCode';
+import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
