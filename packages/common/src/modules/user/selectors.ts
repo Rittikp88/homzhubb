@@ -56,6 +56,10 @@ const isUserProfileLoading = (state: IState): boolean => {
   return userProfile;
 };
 
+const isAddPropertyFlow = (state: IState): boolean => {
+  return state.user.isAddPropertyFlow;
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -64,4 +68,5 @@ export const UserSelector = {
   getIsChangeStack,
   getUserProfile,
   isUserProfileLoading,
+  isAddPropertyFlow,
 };

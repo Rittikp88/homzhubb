@@ -16,6 +16,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Portfolio from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
+import AssetLandingScreen from '@homzhub/mobile/src/screens/Asset/AssetLandingScreen';
 import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
 import More from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
@@ -24,7 +25,7 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import { IUpdateProfileProps, NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
@@ -54,6 +55,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
+  [ScreensKeys.PropertyPostLandingScreen]: undefined;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -105,6 +107,8 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.PortfolioLandingScreen} component={Portfolio} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
+      <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
+      <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
     </PortfolioNavigator.Navigator>
   );
 };
@@ -166,6 +170,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.AuthStack,
       ScreensKeys.BookVisit,
       ScreensKeys.PropertyFilters,
+      ScreensKeys.PropertyPostStack,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };
@@ -195,12 +200,13 @@ export const BottomTabs = (): React.ReactElement => {
         listeners={{
           blur: (): IFluxStandardAction => dispatch(PortfolioActions.setInitialState()),
         }}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetPortfolio:portfolio'),
           tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
             <Icon name={icons.portfolio} color={color} size={22} />
           ),
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Financials}

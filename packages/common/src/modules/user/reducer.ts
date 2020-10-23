@@ -9,6 +9,7 @@ export const initialUserState: IUserState = {
   userProfile: null,
   isOnBoardingCompleted: false,
   isChangeStack: true,
+  isAddPropertyFlow: false,
   error: {
     user: '',
   },
@@ -75,6 +76,8 @@ export const userReducer = (
         ...state,
         ['loaders']: { ...state.loaders, ['userProfile']: false },
       };
+    case UserActionTypes.SET.IS_ADD_PROPERTY_FLOW:
+      return { ...state, ['isAddPropertyFlow']: action.payload as boolean };
     default:
       return state;
   }

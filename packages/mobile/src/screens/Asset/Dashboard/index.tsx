@@ -12,6 +12,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import {
   AnimatedProfileHeader,
   AssetMetricsList,
@@ -31,6 +32,7 @@ interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
   setAssetId: (payload: number) => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
+  setAddPropertyFlow: (payload: boolean) => void;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
@@ -50,9 +52,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   public componentDidMount = (): void => {
-    const { navigation } = this.props;
+    const { navigation, setAddPropertyFlow } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
       this.getScreenData().then();
+      setAddPropertyFlow(false);
     });
   };
 
@@ -171,8 +174,9 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentFilter } = PortfolioActions;
+  const { setAddPropertyFlow } = UserActions;
   const { setAssetId, setSelectedPlan } = RecordAssetActions;
-  return bindActionCreators({ setCurrentFilter, setAssetId, setSelectedPlan }, dispatch);
+  return bindActionCreators({ setCurrentFilter, setAssetId, setSelectedPlan, setAddPropertyFlow }, dispatch);
 };
 
 export default connect(

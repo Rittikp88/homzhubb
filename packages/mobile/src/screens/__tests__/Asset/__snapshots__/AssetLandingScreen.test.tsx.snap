@@ -1,134 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Landing Screen Component should render landing screen 1`] = `
-<GradientBackground>
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "padding": 24,
+    }
+  }
+>
+  <Memo(StatusBarComponent)
+    backgroundColor="#FFFFFF"
+    isTranslucent={true}
+  />
   <View
     style={
       Object {
-        "backgroundColor": "#FFFFFF",
-        "borderRadius": 8,
-        "elevation": 20,
-        "flex": 1,
-        "margin": 16,
-        "maxHeight": 1234,
-        "paddingHorizontal": 16,
-        "shadowColor": "#000",
-        "shadowOffset": Object {
-          "height": 10,
-          "width": 0,
-        },
-        "shadowOpacity": 0.51,
-        "shadowRadius": 13.16,
-        "width": 750,
+        "alignItems": "center",
+        "flex": 0.9,
+        "justifyContent": "space-around",
       }
     }
   >
-    <View
-      style={
+    <Image
+      source={
         Object {
-          "alignItems": "center",
-          "flex": 0.9,
-          "justifyContent": "space-around",
+          "testUri": "../../../packages/common/src/assets/images/landingScreenLogo.png",
         }
       }
+    />
+    <Text
+      textType="semiBold"
+      type="regular"
     >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../packages/common/src/assets/images/landingScreenLogo.png",
-          }
-        }
-      />
-      <Text
-        textType="semiBold"
-        type="regular"
-      >
-        welcomeUser
-      </Text>
-      <Text
-        style={
-          Object {
-            "textAlign": "center",
-          }
-        }
-        textType="regular"
-        type="small"
-      >
-        description
-      </Text>
-      <SVGUri
-        height={133}
-        preserveAspectRatio="xMidYMid meet"
-        uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg"
-        viewBox="0 0 295 133"
-        width={295}
-      />
-      <Label
-        textType="regular"
-        type="regular"
-      >
-        searchProject
-      </Label>
-    </View>
-    <View
+      welcomeUser
+    </Text>
+    <Text
       style={
         Object {
-          "alignItems": "stretch",
-          "justifyContent": "space-around",
-          "marginVertical": 20,
+          "textAlign": "center",
         }
       }
+      textType="regular"
+      type="small"
     >
-      <Button
-        containerStyle={
-          Object {
-            "flex": 0,
-            "marginVertical": 5,
-          }
-        }
-        onPress={[Function]}
-        testID="btnAddProperty"
-        title="addProperty"
-        type="primary"
-      />
-      <Button
-        containerStyle={
-          Object {
-            "flex": 0,
-            "marginVertical": 5,
-          }
-        }
-        onPress={[Function]}
-        title="Dashboard"
-        type="secondary"
-      />
-      <Label
-        style={
-          Object {
-            "alignSelf": "center",
-            "marginVertical": 10,
-          }
-        }
-        textType="regular"
-        type="large"
-      >
-        logoutHelperText
-          
-        <Label
-          onPress={[Function]}
-          style={
-            Object {
-              "color": "#0084F8",
-            }
-          }
-          testID="lblLogout"
-          textType="bold"
-          type="large"
-        >
-          common:logout
-        </Label>
-      </Label>
-    </View>
+      description
+    </Text>
+    <SVGUri
+      height={133}
+      preserveAspectRatio="xMidYMid meet"
+      uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg"
+      viewBox="0 0 295 133"
+      width={295}
+    />
+    <Label
+      textType="regular"
+      type="regular"
+    >
+      searchProject
+    </Label>
   </View>
-</GradientBackground>
+  <Button
+    containerStyle={
+      Object {
+        "flex": 0,
+      }
+    }
+    onPress={[Function]}
+    testID="btnAddProperty"
+    title="addProperty"
+    type="primary"
+  />
+</View>
 `;

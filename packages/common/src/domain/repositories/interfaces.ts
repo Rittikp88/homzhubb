@@ -368,7 +368,7 @@ export interface IGetSaleTermsParams {
 }
 
 export interface IOrderSummaryPayload {
-  services?: number[];
+  value_added_services?: number[];
   coins?: number;
   promo_code?: string;
   asset?: number;

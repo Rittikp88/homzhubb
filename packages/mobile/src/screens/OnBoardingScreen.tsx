@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -11,12 +12,13 @@ import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/Gue
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, SVGUri, Text } from '@homzhub/common/src/components';
-import { BottomSheet, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { BottomSheet, PaginationComponent, SnapCarousel, StatusBarComponent } from '@homzhub/mobile/src/components';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { User, UserType } from '@homzhub/common/src/constants/OnBoarding';
 
 interface IDispatchProps {
   updateOnBoarding: (isOnBoardingCompleted: boolean) => void;
+  setAddPropertyFlow: (payload: boolean) => void;
 }
 
 interface IOnBoardingScreenState {
@@ -54,6 +56,10 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     const currentSlide: OnBoarding = data[activeSlide];
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent statusBarStyle={styles.statusBar} />
+        <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
+          {t('skip')}
+        </Text>
         <View style={styles.textContainer}>
           <Text type="large" textType="bold" style={styles.title}>
             {currentSlide.title}
@@ -148,7 +154,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
   private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
     return (
       <View style={styles.carouselItem}>
-        <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} />
+        <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} height={450} />
       </View>
     );
   };
@@ -175,9 +181,10 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 
   private onContinue = (): void => {
     const { selectedType } = this.state;
-    const { navigation } = this.props;
+    const { navigation, setAddPropertyFlow } = this.props;
     if (selectedType === User.OWNER) {
       navigation.navigate(ScreensKeys.AuthStack, { screen: ScreensKeys.SignUp, params: {} });
+      setAddPropertyFlow(true);
       this.onCloseSheet();
     }
   };
@@ -199,6 +206,11 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     this.setState({ activeSlide: slideNumber });
   };
 
+  private handleSkip = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.AuthStack, { screen: ScreensKeys.Login, params: {} });
+  };
+
   private getOnBoardingData = async (): Promise<void> => {
     try {
       const response = await CommonRepository.getOnBoarding();
@@ -217,6 +229,9 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 }
 
 const styles = StyleSheet.create({
+  statusBar: {
+    height: PlatformUtils.isIOS() ? 20 : 0,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -255,6 +270,9 @@ const styles = StyleSheet.create({
   inactiveDot: {
     backgroundColor: theme.colors.darkTint9,
     borderColor: theme.colors.darkTint9,
+    borderRadius: 5,
+    width: 10,
+    height: 10,
   },
   title: {
     color: theme.colors.blue,
@@ -292,13 +310,19 @@ const styles = StyleSheet.create({
   carouselItem: {
     paddingHorizontal: 20,
   },
+  skip: {
+    color: theme.colors.blue,
+    alignSelf: 'flex-end',
+    marginHorizontal: 20,
+  },
 });
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { updateOnBoarding } = UserActions;
+  const { updateOnBoarding, setAddPropertyFlow } = UserActions;
   return bindActionCreators(
     {
       updateOnBoarding,
+      setAddPropertyFlow,
     },
     dispatch
   );

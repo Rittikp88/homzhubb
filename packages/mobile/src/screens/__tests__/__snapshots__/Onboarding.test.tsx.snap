@@ -11,6 +11,29 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
     }
   }
 >
+  <Memo(StatusBarComponent)
+    backgroundColor="#FFFFFF"
+    isTranslucent={true}
+    statusBarStyle={
+      Object {
+        "height": 20,
+      }
+    }
+  />
+  <Text
+    onPress={[Function]}
+    style={
+      Object {
+        "alignSelf": "flex-end",
+        "color": "#0084F8",
+        "marginHorizontal": 20,
+      }
+    }
+    textType="bold"
+    type="small"
+  >
+    skip
+  </Text>
   <View
     style={
       Object {
@@ -92,6 +115,9 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         Object {
           "backgroundColor": "#CCD1D7",
           "borderColor": "#CCD1D7",
+          "borderRadius": 5,
+          "height": 10,
+          "width": 10,
         }
       }
     />
@@ -291,6 +317,29 @@ exports[`Onboarding Screen should render with data in state 1`] = `
     }
   }
 >
+  <Memo(StatusBarComponent)
+    backgroundColor="#FFFFFF"
+    isTranslucent={true}
+    statusBarStyle={
+      Object {
+        "height": 20,
+      }
+    }
+  />
+  <Text
+    onPress={[Function]}
+    style={
+      Object {
+        "alignSelf": "flex-end",
+        "color": "#0084F8",
+        "marginHorizontal": 20,
+      }
+    }
+    textType="bold"
+    type="small"
+  >
+    skip
+  </Text>
   <View
     style={
       Object {
@@ -372,6 +421,9 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         Object {
           "backgroundColor": "#CCD1D7",
           "borderColor": "#CCD1D7",
+          "borderRadius": 5,
+          "height": 10,
+          "width": 10,
         }
       }
     />

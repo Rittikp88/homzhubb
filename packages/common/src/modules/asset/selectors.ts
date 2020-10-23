@@ -3,6 +3,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
+import { Count } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetVisit, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -134,6 +135,17 @@ const getVisitLoadingState = (state: IState): boolean => {
   return visits;
 };
 
+const getAssetCount = (state: IState): number => {
+  const {
+    asset: { assetCount },
+  } = state;
+
+  if (!assetCount) return 0;
+
+  const countObj = ObjectMapper.deserialize(Count, assetCount);
+  return countObj.count;
+};
+
 export const AssetSelectors = {
   getAssetReviews,
   getAsset,
@@ -145,4 +157,5 @@ export const AssetSelectors = {
   getVisitById,
   getVisitIds,
   getVisitLoadingState,
+  getAssetCount,
 };

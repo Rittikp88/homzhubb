@@ -15,7 +15,7 @@ import {
   IUpdateVisitPayload,
   IRescheduleVisitPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
@@ -81,6 +81,7 @@ const ENDPOINTS = {
   attachmentUpload: (): string => 'attachments/upload/',
   assetDescriptionDropdownValues: (): string => 'assets/list-of-values/',
   availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
+  assetCount: (): string => 'assets/count/',
 };
 
 class AssetRepository {
@@ -298,6 +299,11 @@ class AssetRepository {
   public getAllVisitAsset = async (): Promise<VisitAssetDetail[]> => {
     const response = await this.apiClient.get(ENDPOINTS.allVisitAsset());
     return ObjectMapper.deserializeArray(VisitAssetDetail, response);
+  };
+
+  public getAssetCount = async (): Promise<Count> => {
+    const response = await this.apiClient.get(ENDPOINTS.assetCount());
+    return ObjectMapper.deserialize(Count, response);
   };
 }
 

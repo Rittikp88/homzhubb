@@ -2,6 +2,7 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 import { AssetActionTypes, AssetPayloadTypes } from '@homzhub/common/src/modules/asset/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { ICount } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 
@@ -23,6 +24,7 @@ export const initialAssetState: IAssetState = {
   documents: [],
   visits: [],
   visitIds: [],
+  assetCount: null,
 };
 
 export const assetReducer = (
@@ -105,6 +107,11 @@ export const assetReducer = (
         ...state,
         ['loaders']: { ...state.loaders, ['visits']: false },
         ['error']: { ...state.error, ['visits']: action.error as string },
+      };
+    case AssetActionTypes.GET.ASSET_COUNT_SUCCESS:
+      return {
+        ...state,
+        ['assetCount']: action.payload as ICount,
       };
     case AssetActionTypes.SET.VISIT_IDS:
       return { ...state, ['visitIds']: action.payload as number[] };

@@ -115,7 +115,12 @@
     "phone": "Phone",
     "email": "E-mail",
     "noServicesFound": "No Services Found",
-    "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet"
+    "proceed": "Proceed",
+    "minCount": "Cannot reduce beyond this",
+    "maxCount": "Cannot increase beyond this",
+    "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet",
+    "accept": "Accept",
+    "reject": "Reject"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -126,6 +131,8 @@
     "otpError": "Please enter a valid OTP",
     "loginOtp": "Login with OTP",
     "enterName": "Enter your name",
+    "enterFirstName": "Enter your first name",
+    "enterLastName": "Enter your last name",
     "enterEmail": "Enter your email",
     "newPassword": "New password",
     "enterPassword": "Enter your password",
@@ -164,7 +171,12 @@
     "socialButtonPrefixSignUp": "Signup ",
     "emailAlreadyExists": "Email already exists",
     "phoneAlreadyExists": "Mobile number already exists",
-    "countryRegion": "Country/Region"
+    "countryRegion": "Country/Region",
+    "clickToSignUp": "Click \"Continue\" to Sign Up",
+    "clickToFFM": "Click \"Continue\" to open FFM Application",
+    "updatePassword": "Update Password",
+    "createNewPassword": "Create a New Password",
+    "currentPassword": "Your Current Password"
   },
   "property": {
     "welcomeUser": "Welcome {{username}},",
@@ -200,6 +212,8 @@
     "enterCarpetArea": "Enter carpet area",
     "selectAreaUnit": "Select Area Unit",
     "leaseDetails": "Lease Details",
+    "entire": "Entire",
+    "shared": "Shared",
     "propertyImages": "Property Images",
     "images": "Images",
     "propertyVerification": "Property Verification",
@@ -339,7 +353,21 @@
     "noVisits": "No Visits Found",
     "wantCancelVisit": "Do you want to cancel scheduled visit?",
     "cancelVisit": "Cancel Visit",
-    "specifyOthersText": "Specify Others"
+    "specifyOthersText": "Specify Others",
+    "lessUnitsToDelete": "You cannot delete!",
+    "cannotAddUnit": "You cannot add units!",
+    "finishCurrent": "You cannot add units! Please finish current unit!",
+    "unitCreated": "{{unit}} Created!",
+    "saveUnit": "Save unit",
+    "propertyOwner": "Property Owner",
+    "propertyAgent": "Property Agent",
+    "propertyManager": "Property Manager",
+    "searchProperties": "Search Properties",
+    "visitDeclined": "Visit Declined",
+    "visitScheduled": "Visit Scheduled",
+    "visitCancelled": "Visit Cancelled",
+    "awaiting": "Awaiting Confirmation...",
+    "buyer": "Buyer"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -532,15 +560,9 @@
     "settings": "Settings",
     "referFriend": "Refer a friend",
     "paymentMethods": "Subscriptions & Payments",
-    "logout": "Log Out",
-    "basicDetails": "Basic Details",
-    "changePassword": "Change Password",
-    "emergencyContact": "Emergency Contact",
-    "workInformation": "Work Information",
-    "addContactInfoText": "Add Contact Info",
-    "verifyYourEmailText": "Verify your email"
+    "logout": "Log Out"
   },
-  "MoreSettings": {
+  "moreSettings": {
     "loginSecurity": "Login & Security",
     "faceId": "Face ID",
     "fingerprint": "Fingerprint",
@@ -563,5 +585,23 @@
     "releaseNotes": "Release Notes",
     "termsConditionsText": "Terms & Conditions",
     "privacyPolicyText": "Privacy Policy"
+  },
+  "moreProfile": {
+    "basicDetails": "Basic Details",
+    "changePassword": "Change Password",
+    "emergencyContact": "Emergency Contact",
+    "workInformation": "Work Information",
+    "addContactInfoText": "Add Contact Info",
+    "verifyYourEmailText": "Verify your email",
+    "contactName": "Contact Name",
+    "saveChanges": "Save Changes",
+    "companyName": "Company Name",
+    "companyEmail": "Company E-mail",
+    "updateProfile": "Update Profile",
+    "fieldRequiredError": "This field is required",
+    "editHeaderText": "Edit {{title}}",
+    "updateSuccessfulMessage": "Details updated successfully",
+    "passwordChanged": "Password Changed Successfully",
+    "uniquePassword": "Please add a unique password"
   }
 }

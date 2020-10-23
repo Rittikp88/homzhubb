@@ -285,6 +285,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private verifyData = (): void => {
     const { navigation, tenancies, properties } = this.props;
+
     if ((!tenancies && !properties) || (tenancies && tenancies.length === 0 && properties && properties.length === 0)) {
       navigation.dispatch(
         CommonActions.reset({

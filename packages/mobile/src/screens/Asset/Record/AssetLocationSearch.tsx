@@ -21,11 +21,17 @@ import {
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys, IAssetLocationMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
-interface IState {
+interface IScreenState {
   searchString: string;
   suggestions: GooglePlaceData[];
   showAutoDetect: boolean;
+}
+
+interface IStateProps {
+  isAddPropertyFlow: boolean;
 }
 
 interface IDispatchProps {
@@ -35,10 +41,11 @@ interface IDispatchProps {
 /* eslint-disable @typescript-eslint/indent */
 type Props = WithTranslation &
   IDispatchProps &
+  IStateProps &
   NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLocationSearch>;
 /* eslint-enable @typescript-eslint/indent */
 
-export class AssetLocationSearch extends React.PureComponent<Props, IState> {
+export class AssetLocationSearch extends React.PureComponent<Props, IScreenState> {
   public state = {
     searchString: '',
     suggestions: [],
@@ -93,11 +100,17 @@ export class AssetLocationSearch extends React.PureComponent<Props, IState> {
 
   private onBackPress = (): void => {
     const {
-      navigation: { goBack },
+      navigation: { goBack, navigate },
       resetState,
+      isAddPropertyFlow,
     } = this.props;
     resetState();
-    goBack();
+
+    if (isAddPropertyFlow) {
+      navigate(ScreensKeys.BottomTabs);
+    } else {
+      goBack();
+    }
   };
 
   private onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
@@ -151,6 +164,12 @@ const styles = StyleSheet.create({
   bar: { height: 4, backgroundColor: theme.colors.green },
 });
 
+const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    isAddPropertyFlow: UserSelector.isAddPropertyFlow(state),
+  };
+};
+
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { resetState } = RecordAssetActions;
   return bindActionCreators(
@@ -162,6 +181,6 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch));

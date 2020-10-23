@@ -7,7 +7,7 @@ interface IUserServicePlan {
   label: string;
 }
 
-interface ICount {
+export interface ICount {
   count: number;
 }
 

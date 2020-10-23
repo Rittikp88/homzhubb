@@ -47,11 +47,6 @@ describe('Landing Screen Component', () => {
     expect(mock).toHaveBeenCalled();
   });
 
-  it('should call logout', () => {
-    component.find('[testID="lblLogout"]').prop('onPress')();
-    expect(mock).toHaveBeenCalled();
-  });
-
   it('should verify data from mapStateToProps', () => {
     const user = {
       full_name: 'John Doe',

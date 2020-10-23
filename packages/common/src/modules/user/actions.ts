@@ -22,6 +22,7 @@ export const UserActionTypes = {
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
+    IS_ADD_PROPERTY_FLOW: `${actionTypePrefix}IS_ADD_PROPERTY_FLOW`,
   },
   UPDATE_ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
 };
@@ -90,6 +91,11 @@ const getUserProfileFailure = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.USER_PROFILE_FAILURE,
 });
 
+const setAddPropertyFlow = (payload: boolean): IFluxStandardAction<boolean> => ({
+  type: UserActionTypes.SET.IS_ADD_PROPERTY_FLOW,
+  payload,
+});
+
 export type UserPayloadTypes = string | boolean | IUser | IUserProfile;
 export const UserActions = {
   login,
@@ -103,4 +109,5 @@ export const UserActions = {
   getUserProfile,
   getUserProfileSuccess,
   getUserProfileFailure,
+  setAddPropertyFlow,
 };

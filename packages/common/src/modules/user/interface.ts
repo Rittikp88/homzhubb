@@ -6,6 +6,7 @@ export interface IUserState {
   userProfile: IUserProfile | null;
   isOnBoardingCompleted: boolean;
   isChangeStack: boolean;
+  isAddPropertyFlow: boolean;
   error: {
     user: string;
   };
