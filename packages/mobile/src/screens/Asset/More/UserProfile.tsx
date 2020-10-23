@@ -11,7 +11,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, DetailsCard, ProgressBar, StateAwareComponent } from '@homzhub/mobile/src/components';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
@@ -75,15 +75,6 @@ class UserProfile extends React.PureComponent<IOwnProps> {
               <Text type="large" textType="regular" style={styles.initials}>
                 {StringUtils.getInitials(fullName || '')}
               </Text>
-            </View>
-            <View style={[styles.cameraContainer, styles.roundBorder]}>
-              <Icon
-                size={16}
-                name={icons.camera}
-                color={theme.colors.white}
-                style={styles.cameraIcon}
-                onPress={FunctionUtils.noop}
-              />
             </View>
           </View>
           <ProgressBar
@@ -171,26 +162,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
   },
-  roundBorder: {
-    borderWidth: 1,
-    borderColor: theme.colors.white,
-    borderRadius: 50,
-  },
   profileImage: {
     marginTop: 16,
     alignItems: 'center',
-  },
-  cameraContainer: {
-    width: 24,
-    height: 24,
-    backgroundColor: theme.colors.primaryColor,
-    bottom: 21,
-    left: 24,
-  },
-  cameraIcon: {
-    alignSelf: 'center',
-    position: 'relative',
-    top: 2,
   },
   progressBar: {
     marginBottom: 24,

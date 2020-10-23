@@ -1,13 +1,15 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -16,15 +18,16 @@ import {
   IEmailLoginPayload,
   ILoginPayload,
   IOtpLoginPayload,
+  IUpdateProfile,
   LoginTypes,
+  UpdateProfileTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
-import { Loader, OtpInputs } from '@homzhub/mobile/src/components';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { User, IUser } from '@homzhub/common/src/domain/models/User';
+import { Loader, OtpInputs, OtpTypes } from '@homzhub/mobile/src/components';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
   isLoading: boolean;
@@ -89,7 +92,11 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
               testID="icnEdit"
             />
           </View>
-          <OtpInputs error={error ? t('otpError') : undefined} bubbleOtp={this.verifyOtp} toggleError={toggleError} />
+          <OtpInputs
+            error={error ? t('otpError') : undefined}
+            bubbleOtp={this.handleOtpVerification}
+            toggleError={toggleError}
+          />
           <OtpTimer onResentPress={this.fetchOtp} />
         </View>
         <Loader visible={isLoading} />
@@ -239,6 +246,62 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
 
   private toggleErrorState = (error: boolean): void => {
     this.setState({ error });
+  };
+
+  private handleOtpVerification = async (otp: string, otpType?: OtpTypes): Promise<void> => {
+    const {
+      route: {
+        params: { profileDetails },
+      },
+    } = this.props;
+
+    if (!profileDetails) {
+      await this.verifyOtp(otp);
+      return;
+    }
+
+    this.updateProfileDetails(otp);
+  };
+
+  private updateProfileDetails = async (otp: string, otpType?: OtpTypes): Promise<void> => {
+    const {
+      route: {
+        params: { profileDetails },
+      },
+      navigation,
+    } = this.props;
+
+    if (!profileDetails) {
+      return;
+    }
+    const { first_name, last_name, phone_code, phone_number, email } = profileDetails;
+
+    const payload: IUpdateProfile = {
+      action: UpdateProfileTypes.UPDATE_BY_OTP,
+      payload: {
+        new_phone: true,
+        phone_otp: parseInt(otp, 10),
+        profile_details: {
+          first_name,
+          last_name,
+          phone_code,
+          phone_number,
+          email,
+        },
+      },
+    };
+
+    try {
+      await UserRepository.updateUserProfileByActions(payload);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreensKeys.UpdateUserProfileScreen }],
+        })
+      );
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
   };
 }
 

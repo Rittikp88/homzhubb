@@ -24,7 +24,12 @@ import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTren
 import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notifications';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
-import { IUpdateProfileProps, NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  IOtpNavProps,
+  IUpdateProfileProps,
+  NestedNavigatorParams,
+  ScreensKeys,
+} from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
@@ -32,6 +37,7 @@ import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
+import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -67,6 +73,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.More]: undefined;
   [ScreensKeys.UserProfileScreen]: undefined;
   [ScreensKeys.UpdateUserProfileScreen]: IUpdateProfileProps;
+  [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.SettingsScreen]: undefined;
   [ScreensKeys.PropertyVisits]: undefined;
   [ScreensKeys.MarketTrends]: undefined;
@@ -137,6 +144,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.More} component={More} />
       <MoreStackNavigator.Screen name={ScreensKeys.UserProfileScreen} component={UserProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdateUserProfileScreen} component={UpdateUserProfile} />
+      <MoreStackNavigator.Screen name={ScreensKeys.OTP} component={Otp} />
       <MoreStackNavigator.Screen name={ScreensKeys.SettingsScreen} component={Settings} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />

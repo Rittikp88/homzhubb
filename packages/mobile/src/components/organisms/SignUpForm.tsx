@@ -134,18 +134,13 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
     );
   }
 
-  private formSchema = (): yup.ObjectSchema<{
-    email: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
-    password: string;
-  }> => {
+  private formSchema = (): yup.ObjectSchema<IFormData> => {
     const { t } = this.props;
     return yup.object().shape({
       firstName: yup.string().matches(FormUtils.nameRegex, t('auth:onlyAlphabets')).required(t('auth:nameRequired')),
       lastName: yup.string(),
       email: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
+      phoneCode: yup.string(),
       phone: yup.string().required(t('auth:numberRequired')),
       password: yup
         .string()

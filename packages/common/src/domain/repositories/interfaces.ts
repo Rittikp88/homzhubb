@@ -41,6 +41,11 @@ export enum UpdateTypes {
   UPDATE_PASSWORD = 'UPDATE_PASSWORD',
 }
 
+export enum UpdateProfileTypes {
+  GET_OTP_OR_UPDATE = 'GET_OTP_OR_UPDATE',
+  UPDATE_BY_OTP = 'UPDATE_BY_OTP',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -423,4 +428,34 @@ interface IPasswordPayload {
 export interface IUpdatePassword {
   action: UpdateTypes;
   payload: IPasswordPayload;
+}
+
+export interface IProfileDetails {
+  first_name: string;
+  last_name: string;
+  phone_code: string;
+  phone_number: string;
+  email: string;
+}
+
+export interface IUpdateProfilePayload {
+  phone_otp?: number;
+  new_phone?: boolean;
+  email_otp?: number;
+  new_email?: boolean;
+  password?: string;
+  profile_details: IProfileDetails;
+}
+
+export interface IUpdateProfileResponse {
+  phone_otp?: boolean;
+  new_phone?: boolean;
+  email_otp?: boolean;
+  new_email?: boolean;
+  user_id?: number;
+}
+
+export interface IUpdateProfile {
+  action: UpdateProfileTypes;
+  payload: IUpdateProfilePayload;
 }

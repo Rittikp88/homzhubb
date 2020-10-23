@@ -21,12 +21,6 @@ export interface IUserProfile extends IUser {
 
 @JsonObject('UserProfile')
 export class UserProfile extends User {
-  @JsonProperty('first_name', String)
-  private _firstName = '';
-
-  @JsonProperty('last_name', String)
-  private _lastName = '';
-
   @JsonProperty('date_of_birth', String, true)
   private _dateOfBirth = '';
 
@@ -51,13 +45,8 @@ export class UserProfile extends User {
   @JsonProperty('work_info', WorkInfo)
   private _workInfo = new WorkInfo();
 
-  get firstName(): string {
-    return this._firstName;
-  }
-
-  get lastName(): string {
-    return this._lastName;
-  }
+  @JsonProperty('is_password_created', Boolean)
+  private _isPasswordCreated = false;
 
   get dateOfBirth(): string {
     return this._dateOfBirth;
@@ -83,6 +72,14 @@ export class UserProfile extends User {
     return this._userAddress;
   }
 
+  get address(): string {
+    return this.userAddress && this.userAddress.length > 0 ? this.userAddress[0].addressLine1 : '';
+  }
+
+  get isPasswordCreated(): boolean {
+    return this._isPasswordCreated;
+  }
+
   get emergencyContact(): EmergencyContact {
     return this._emergencyContact;
   }
@@ -103,9 +100,7 @@ export class UserProfile extends User {
       },
       {
         icon: icons.marker,
-        ...(this.userAddress && this.userAddress.length > 0
-          ? { text: this.userAddress[0].addressLine1 }
-          : { helperText: 'Address' }),
+        ...(this.address ? { text: this.address } : { helperText: 'Address' }),
       },
     ];
   }

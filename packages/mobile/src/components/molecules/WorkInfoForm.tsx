@@ -134,7 +134,7 @@ export default withTranslation(LocaleConstants.namespacesKey.moreProfile)(WorkIn
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 24,
+    marginBottom: 24,
     paddingHorizontal: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
   },

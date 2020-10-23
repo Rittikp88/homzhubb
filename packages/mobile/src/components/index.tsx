@@ -36,6 +36,7 @@ export { HeaderCard } from '@homzhub/mobile/src/components/molecules/HeaderCard'
 export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeaseProgress';
 export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
+export { OtpTypes } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 export type { IPersonalData } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 export { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';

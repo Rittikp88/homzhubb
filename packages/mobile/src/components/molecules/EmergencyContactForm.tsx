@@ -15,7 +15,6 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   onFormSubmitSuccess?: () => void;
   formData?: IEmergencyContactForm;
-  phoneCode: string;
 }
 
 interface IEmergencyContactForm {
@@ -34,13 +33,13 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
   };
 
   public componentDidMount(): void {
-    const { formData, phoneCode } = this.props;
+    const { formData } = this.props;
 
     this.setState({
       name: (formData && formData.name) || '',
-      phone: (formData && formData.name) || '',
+      phone: (formData && formData.phone) || '',
       email: (formData && formData.email) || '',
-      phoneCode: phoneCode || '',
+      phoneCode: (formData && formData.phoneCode) || '',
     });
   }
 

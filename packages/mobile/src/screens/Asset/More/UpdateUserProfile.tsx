@@ -3,16 +3,18 @@ import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IProfileDetails, IUpdateProfileResponse } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
+import UserProfileForm from '@homzhub/mobile/src/components/molecules/UserProfileForm';
 import EmergencyContactForm from '@homzhub/mobile/src/components/molecules/EmergencyContactForm';
 import WorkInfoForm from '@homzhub/mobile/src/components/molecules/WorkInfoForm';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 type navigationProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.UpdateUserProfileScreen>;
 
@@ -42,10 +44,11 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps> {
   private renderFormOnType = (): React.ReactNode => {
     const {
       route: {
-        params: { formType },
+        params: { formType = '' },
       },
-      userProfile: { emergencyContact, workInfo },
+      userProfile,
     } = this.props;
+    const { emergencyContact, workInfo } = userProfile;
 
     switch (formType) {
       case UpdateUserFormTypes.EmergencyContact:
@@ -56,8 +59,8 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps> {
               name: emergencyContact.name,
               email: emergencyContact.email,
               phone: emergencyContact.phoneNumber,
+              phoneCode: emergencyContact.phoneCode,
             }}
-            phoneCode={emergencyContact.phoneCode}
           />
         );
       case UpdateUserFormTypes.WorkInfo:
@@ -72,14 +75,26 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps> {
           />
         );
       default:
-        return null;
+        return (
+          <UserProfileForm
+            formData={{
+              firstName: userProfile.firstName,
+              lastName: userProfile.lastName,
+              phoneCode: userProfile.countryCode,
+              phone: userProfile.phoneNumber,
+              email: userProfile.email,
+            }}
+            onFormSubmitSuccess={this.onUpdateProfileSuccess}
+            isPasswordVerificationRequired={userProfile.isPasswordCreated}
+          />
+        );
     }
   };
 
   private renderSectionHeader = (): string => {
     const {
       route: {
-        params: { title, formType },
+        params: { title, formType = '' },
       },
       t,
     } = this.props;
@@ -90,8 +105,33 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps> {
       case UpdateUserFormTypes.WorkInfo:
         return t('editHeaderText', { title });
       default:
-        return t('basicDetails');
+        return title ? t('editHeaderText', { title: t('assetMore:profile') }) : t('editProfile');
     }
+  };
+
+  private onUpdateProfileSuccess = (
+    profileDetails: IProfileDetails,
+    profileUpdateResponse?: IUpdateProfileResponse
+  ): void => {
+    const { navigation, t } = this.props;
+    const { phone_number: phone, phone_code: phoneCode } = profileDetails;
+
+    if (!profileUpdateResponse) {
+      AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
+      this.goBack();
+      return;
+    }
+    const { email_otp: emailOtp, phone_otp: phoneOtp } = profileUpdateResponse;
+    const otpType =
+      emailOtp && phoneOtp ? OtpNavTypes.UpdateProfileByEmailPhoneOtp : OtpNavTypes.UpdateProfileByPhoneOtp;
+
+    navigation.navigate(ScreensKeys.OTP, {
+      type: otpType,
+      title: t('otpVerificationText'),
+      countryCode: phoneCode,
+      phone,
+      profileDetails,
+    });
   };
 
   private onFormSubmissionSuccess = (): void => {

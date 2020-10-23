@@ -5,9 +5,15 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
+export enum OtpTypes {
+  Phone = 'Phone',
+  Email = 'Email',
+}
+
 interface IProps {
   error?: string;
-  bubbleOtp: (otp: string) => void;
+  otpType?: OtpTypes;
+  bubbleOtp: (otp: string, otpType?: OtpTypes) => void;
   toggleError: () => void;
 }
 
