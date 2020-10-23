@@ -32,11 +32,15 @@
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>None</string>
-			<key>CFBundleURLName</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
 			<string></string>
+			<key>CFBundleURLName</key>
+			<string>homzhub</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
+			<array>
+				<string>homzhub</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

@@ -6,6 +6,7 @@
 #import <React/RCTI18nUtil.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import <React/RCTLinkingManager.h>
 
 #if DEBUG && TARGET_OS_SIMULATOR
 #import <FlipperKit/FlipperClient.h>
@@ -59,13 +60,15 @@ static void InitializeFlipper(UIApplication *application) {
 
 
 
-    BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+    BOOL handledFB = [[FBSDKApplicationDelegate sharedInstance] application:application
       openURL:url
       sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
       annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
     ];
+    
+    BOOL handledDeepLink = [RCTLinkingManager application:application openURL:url options:options];
 
-    return handled;
+    return handledDeepLink || handledFB;
   }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
