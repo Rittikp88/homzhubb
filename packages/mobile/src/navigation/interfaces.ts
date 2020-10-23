@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ISocialUserData } from '@homzhub/common/src/assets/constants';
 import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
-import { IProfileDetails, ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
@@ -100,7 +100,7 @@ export enum OtpNavTypes {
   SignUp = 'SignUp',
   SocialMedia = 'SocialMedia',
   UpdateProfileByEmailPhoneOtp = 'UpdateProfileByEmailPhoneOtp',
-  UpdateProfileByPhoneOtp = 'UpdateProfileByPhoneOtp',
+  UpdateProfileByOtp = 'UpdateProfileByOtp',
 }
 
 export interface IScreenCallback {
@@ -111,9 +111,10 @@ export interface IOtpNavProps extends IScreenCallback {
   type: OtpNavTypes;
   title: string;
   countryCode: string;
-  phone: string;
+  otpSentTo: string;
+  email?: string;
   userData?: ISignUpPayload;
-  profileDetails?: IProfileDetails;
+  updateProfileCallback?: (phoneOtp: string, emailOtp?: string) => void;
 }
 
 export interface IVerificationProps extends IScreenCallback {

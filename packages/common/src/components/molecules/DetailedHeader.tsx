@@ -83,7 +83,7 @@ const styles = {
     color: theme.colors.primaryColor,
   },
   iconStyle: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingVertical: 10,
   },
 };

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -18,9 +17,7 @@ import {
   IEmailLoginPayload,
   ILoginPayload,
   IOtpLoginPayload,
-  IUpdateProfile,
   LoginTypes,
-  UpdateProfileTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -43,15 +40,27 @@ type IProps = IDispatchProps & IStateProps & libraryProps;
 
 interface IOtpState {
   error: boolean;
+  emailOtp?: string;
+  phoneOrEmailOtp?: string;
 }
 
 export class Otp extends React.PureComponent<IProps, IOtpState> {
   public state = {
     error: false,
+    emailOtp: '',
+    phoneOrEmailOtp: '',
   };
 
   public componentDidMount = async (): Promise<void> => {
-    await this.fetchOtp();
+    const {
+      route: {
+        params: { updateProfileCallback },
+      },
+    } = this.props;
+
+    if (!updateProfileCallback) {
+      await this.fetchOtp();
+    }
   };
 
   public render = (): React.ReactNode => {
@@ -61,13 +70,8 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       navigation: { goBack },
       route: { params },
     } = this.props;
-    const { error } = this.state;
     const title = params?.title ?? t('verifyNumber');
-    const phone = params?.phone ?? '';
-
-    const toggleError = (): void => {
-      this.toggleErrorState(false);
-    };
+    const otpSentTo = params?.otpSentTo ?? '';
 
     return (
       <SafeAreaView style={styles.screen}>
@@ -79,28 +83,52 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
           <Label style={styles.subTitle} type="large" textType="regular">
             {t('enterOTP')}
           </Label>
-          <View style={styles.numberContainer}>
-            <Text type="small" textType="semiBold">
-              {phone}
-            </Text>
-            <Icon
-              name={icons.noteBook}
-              size={16}
-              color={theme.colors.active}
-              style={styles.icon}
-              onPress={this.onIconPress}
-              testID="icnEdit"
-            />
-          </View>
-          <OtpInputs
-            error={error ? t('otpError') : undefined}
-            bubbleOtp={this.handleOtpVerification}
-            toggleError={toggleError}
-          />
-          <OtpTimer onResentPress={this.fetchOtp} />
+          {this.renderOtpInputSection(otpSentTo, OtpTypes.PhoneOrEmail)}
+          {params.type === OtpNavTypes.UpdateProfileByEmailPhoneOtp
+            ? this.renderOtpInputSection(params?.email || '', OtpTypes.Email)
+            : null}
         </View>
         <Loader visible={isLoading} />
       </SafeAreaView>
+    );
+  };
+
+  private renderOtpInputSection = (otpSentTo: string, otpType?: OtpTypes): ReactElement => {
+    const {
+      t,
+      route: {
+        params: { type },
+      },
+    } = this.props;
+    const { error } = this.state;
+
+    const toggleError = (): void => {
+      this.toggleErrorState(false);
+    };
+
+    return (
+      <>
+        <View style={styles.numberContainer}>
+          <Text type="small" textType="semiBold">
+            {otpSentTo}
+          </Text>
+          <Icon
+            name={icons.noteBook}
+            size={16}
+            color={theme.colors.active}
+            style={styles.icon}
+            onPress={this.onIconPress}
+            testID="icnEdit"
+          />
+        </View>
+        <OtpInputs
+          error={type === OtpNavTypes.UpdateProfileByEmailPhoneOtp && error ? t('otpError') : undefined}
+          bubbleOtp={this.handleOtpVerification}
+          toggleError={toggleError}
+          otpType={otpType}
+        />
+        <OtpTimer onResentPress={this.fetchOtp} />
+      </>
     );
   };
 
@@ -131,12 +159,12 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
   private fetchOtp = async (): Promise<void> => {
     const {
       route: {
-        params: { phone, countryCode },
+        params: { otpSentTo, countryCode },
       },
     } = this.props;
 
     try {
-      await UserService.fetchOtp(phone, countryCode);
+      await UserService.fetchOtp(otpSentTo, countryCode);
     } catch (e) {
       AlertHelper.error({
         message: e.message,
@@ -147,7 +175,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
   private verifyOtp = async (otp: string): Promise<void> => {
     const {
       route: {
-        params: { phone, countryCode, type },
+        params: { otpSentTo, countryCode, type },
       },
     } = this.props;
 
@@ -157,7 +185,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     }
 
     try {
-      await UserService.verifyOtp(otp, phone, countryCode);
+      await UserService.verifyOtp(otp, otpSentTo, countryCode);
       await this.onVerifySuccess(otp);
     } catch (e) {
       this.toggleErrorState(true);
@@ -224,7 +252,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     const {
       login,
       route: {
-        params: { phone, countryCode, onCallback },
+        params: { otpSentTo, countryCode, onCallback },
       },
     } = this.props;
 
@@ -232,7 +260,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       action: LoginTypes.OTP,
       payload: {
         phone_code: countryCode,
-        phone_number: phone,
+        phone_number: otpSentTo,
         otp,
       },
     };
@@ -251,57 +279,29 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
   private handleOtpVerification = async (otp: string, otpType?: OtpTypes): Promise<void> => {
     const {
       route: {
-        params: { profileDetails },
+        params: { updateProfileCallback, type },
       },
     } = this.props;
 
-    if (!profileDetails) {
+    if (!updateProfileCallback) {
       await this.verifyOtp(otp);
       return;
     }
 
-    this.updateProfileDetails(otp);
-  };
-
-  private updateProfileDetails = async (otp: string, otpType?: OtpTypes): Promise<void> => {
-    const {
-      route: {
-        params: { profileDetails },
-      },
-      navigation,
-    } = this.props;
-
-    if (!profileDetails) {
+    if (type === OtpNavTypes.UpdateProfileByEmailPhoneOtp) {
+      this.setState(
+        () => (otpType === OtpTypes.PhoneOrEmail ? { phoneOrEmailOtp: otp } : { emailOtp: otp }),
+        () => {
+          const { emailOtp, phoneOrEmailOtp } = this.state;
+          if (emailOtp && phoneOrEmailOtp) {
+            updateProfileCallback(phoneOrEmailOtp, emailOtp);
+          }
+        }
+      );
       return;
     }
-    const { first_name, last_name, phone_code, phone_number, email } = profileDetails;
 
-    const payload: IUpdateProfile = {
-      action: UpdateProfileTypes.UPDATE_BY_OTP,
-      payload: {
-        new_phone: true,
-        phone_otp: parseInt(otp, 10),
-        profile_details: {
-          first_name,
-          last_name,
-          phone_code,
-          phone_number,
-          email,
-        },
-      },
-    };
-
-    try {
-      await UserRepository.updateUserProfileByActions(payload);
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreensKeys.UserProfileScreen }],
-        })
-      );
-    } catch (e) {
-      AlertHelper.error({ message: e.message });
-    }
+    updateProfileCallback(otp);
   };
 }
 
@@ -349,7 +349,6 @@ const styles = StyleSheet.create({
     marginStart: 8,
   },
   headerStyle: {
-    paddingTop: 0,
     borderBottomWidth: 0,
   },
 });

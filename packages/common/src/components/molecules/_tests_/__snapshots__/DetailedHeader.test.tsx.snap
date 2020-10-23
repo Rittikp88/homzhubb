@@ -122,7 +122,7 @@ exports[`Test cases for DetailedHeader should render snapshot with icon 1`] = `
       size={22}
       style={
         Object {
-          "paddingHorizontal": 20,
+          "paddingHorizontal": 15,
           "paddingVertical": 10,
         }
       }

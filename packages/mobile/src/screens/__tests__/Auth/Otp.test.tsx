@@ -35,7 +35,7 @@ describe('OTP Screen', () => {
         route={{
           params: {
             title: 'Otp',
-            phone: '99999999999',
+            otpSentTo: '99999999999',
             type: OtpNavTypes.Login,
             countryCode: 'INR',
             onCallback: mock,

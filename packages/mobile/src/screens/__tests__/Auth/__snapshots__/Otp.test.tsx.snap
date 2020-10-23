@@ -13,7 +13,6 @@ exports[`OTP Screen should match snapshot in error 1`] = `
     headerContainerStyle={
       Object {
         "borderBottomWidth": 0,
-        "paddingTop": 0,
       }
     }
     icon="left-arrow"
@@ -76,7 +75,7 @@ exports[`OTP Screen should match snapshot in error 1`] = `
     </View>
     <OtpInputs
       bubbleOtp={[Function]}
-      error="otpError"
+      otpType="PhoneOrEmail"
       toggleError={[Function]}
     />
     <OtpTimer
@@ -102,7 +101,6 @@ exports[`OTP Screen should render snapshot 1`] = `
     headerContainerStyle={
       Object {
         "borderBottomWidth": 0,
-        "paddingTop": 0,
       }
     }
     icon="left-arrow"
@@ -165,6 +163,7 @@ exports[`OTP Screen should render snapshot 1`] = `
     </View>
     <OtpInputs
       bubbleOtp={[Function]}
+      otpType="PhoneOrEmail"
       toggleError={[Function]}
     />
     <OtpTimer
@@ -190,7 +189,6 @@ exports[`OTP Screen should render snapshot with userData 1`] = `
     headerContainerStyle={
       Object {
         "borderBottomWidth": 0,
-        "paddingTop": 0,
       }
     }
     icon="left-arrow"
@@ -251,6 +249,7 @@ exports[`OTP Screen should render snapshot with userData 1`] = `
     </View>
     <OtpInputs
       bubbleOtp={[Function]}
+      otpType="PhoneOrEmail"
       toggleError={[Function]}
     />
     <OtpTimer
@@ -276,7 +275,6 @@ exports[`OTP Screen should verify otp 1`] = `
     headerContainerStyle={
       Object {
         "borderBottomWidth": 0,
-        "paddingTop": 0,
       }
     }
     icon="left-arrow"
@@ -339,6 +337,7 @@ exports[`OTP Screen should verify otp 1`] = `
     </View>
     <OtpInputs
       bubbleOtp={[Function]}
+      otpType="PhoneOrEmail"
       toggleError={[Function]}
     />
     <OtpTimer

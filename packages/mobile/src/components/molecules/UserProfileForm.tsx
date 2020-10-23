@@ -10,7 +10,6 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import {
-  IProfileDetails,
   IUpdateProfile,
   IUpdateProfileResponse,
   UpdateProfileTypes,
@@ -23,12 +22,12 @@ import PasswordVerificationForm from '@homzhub/mobile/src/components/molecules/P
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
-  onFormSubmitSuccess: (profileDetails: IProfileDetails, profileUpdateResponse?: IUpdateProfileResponse) => void;
+  onFormSubmitSuccess: (profileDetails: IUserProfileForm, profileUpdateResponse?: IUpdateProfileResponse) => void;
   formData?: IUserProfileForm;
   isPasswordVerificationRequired?: boolean;
 }
 
-interface IUserProfileForm {
+export interface IUserProfileForm {
   firstName: string;
   lastName: string;
   phone: string;
@@ -166,9 +165,8 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
 
   private onSubmit = async (password?: string): Promise<void> => {
     const { onFormSubmitSuccess } = this.props;
-    const {
-      userProfileForm: { firstName, lastName, email, phone, phoneCode },
-    } = this.state;
+    const { userProfileForm } = this.state;
+    const { firstName, lastName, email, phone, phoneCode } = userProfileForm;
     const profileDetails = {
       first_name: firstName,
       last_name: lastName,
@@ -176,7 +174,10 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       phone_number: phone,
       email,
     };
-    this.closeBottomSheet();
+
+    if (password) {
+      this.closeBottomSheet();
+    }
 
     const payload: IUpdateProfile = {
       action: UpdateProfileTypes.GET_OTP_OR_UPDATE,
@@ -188,7 +189,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
 
     try {
       const response = await UserRepository.updateUserProfileByActions(payload);
-      onFormSubmitSuccess({ ...profileDetails, ...{ password } }, response && response.user_id ? undefined : response);
+      onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
@@ -209,11 +210,14 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     }
 
     this.setState({ userProfileForm: { ...values } });
-
-    if (isPasswordVerificationRequired) {
+    if (
+      (formData?.phone !== phone || formData?.phoneCode !== phoneCode || formData?.email !== email) &&
+      isPasswordVerificationRequired
+    ) {
       this.setState({ isPasswordVerificationRequired });
       return;
     }
+
     await this.onSubmit();
   };
 

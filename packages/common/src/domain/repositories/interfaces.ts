@@ -430,7 +430,7 @@ export interface IUpdatePassword {
   payload: IPasswordPayload;
 }
 
-export interface IProfileDetails {
+export interface IProfileDetailsPayload {
   first_name: string;
   last_name: string;
   phone_code: string;
@@ -444,7 +444,7 @@ export interface IUpdateProfilePayload {
   email_otp?: number;
   new_email?: boolean;
   password?: string;
-  profile_details: IProfileDetails;
+  profile_details: IProfileDetailsPayload;
 }
 
 export interface IUpdateProfileResponse {

@@ -6,7 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 export enum OtpTypes {
-  Phone = 'Phone',
+  PhoneOrEmail = 'PhoneOrEmail',
   Email = 'Email',
 }
 
@@ -133,7 +133,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
   };
 
   private focusNext = (index: number, value: string): void => {
-    const { bubbleOtp } = this.props;
+    const { bubbleOtp, otpType } = this.props;
     const { otp }: { otp: string[] } = this.state;
     let currentFocus = index;
     otp[index] = value;
@@ -146,7 +146,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
 
     if (index === this.OtpTextInput.length - 1) {
       this.OtpTextInput[index].blur();
-      bubbleOtp(otp.join(''));
+      bubbleOtp(otp.join(''), otpType);
     }
     this.setState({ otp: [...otp], currentFocus });
   };
@@ -154,7 +154,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
   private otpHandler = (message: string): void => {
     const regexLiteral = new RegExp(`\\d{${this.OtpLength}}`, 'g');
     const otpCode: string[] | null = regexLiteral.exec(message);
-    const { bubbleOtp } = this.props;
+    const { bubbleOtp, otpType } = this.props;
 
     if (!otpCode || (otpCode && otpCode[0].length !== this.OtpLength)) {
       return;
@@ -168,7 +168,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
       }
     });
 
-    bubbleOtp(otpCode[0]);
+    bubbleOtp(otpCode[0], otpType);
     Keyboard.dismiss();
     if (this.isSMSListenerEnabled) {
       RNOtpVerify.removeListener();
