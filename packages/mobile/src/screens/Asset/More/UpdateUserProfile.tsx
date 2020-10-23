@@ -43,14 +43,12 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps> {
 
   private renderFormOnType = (): React.ReactNode => {
     const {
-      route: {
-        params: { formType = '' },
-      },
+      route: { params },
       userProfile,
     } = this.props;
     const { emergencyContact, workInfo } = userProfile;
 
-    switch (formType) {
+    switch (params ? params.formType : UpdateUserFormTypes.BasicDetails) {
       case UpdateUserFormTypes.EmergencyContact:
         return (
           <EmergencyContactForm
@@ -93,11 +91,15 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps> {
 
   private renderSectionHeader = (): string => {
     const {
-      route: {
-        params: { title, formType = '' },
-      },
+      route: { params },
       t,
     } = this.props;
+
+    if (!params) {
+      return t('editProfile');
+    }
+
+    const { title, formType } = params;
 
     switch (formType) {
       case UpdateUserFormTypes.EmergencyContact:
@@ -127,6 +129,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps> {
 
     navigation.navigate(ScreensKeys.OTP, {
       type: otpType,
+      // @ts-ignore
       title: t('otpVerificationText'),
       countryCode: phoneCode,
       phone,

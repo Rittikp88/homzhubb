@@ -296,7 +296,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{ name: ScreensKeys.UpdateUserProfileScreen }],
+          routes: [{ name: ScreensKeys.UserProfileScreen }],
         })
       );
     } catch (e) {
