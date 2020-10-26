@@ -102,14 +102,14 @@ const getAssetGroupId = (state: IState): number => {
   const {
     recordAsset: { assetDetails },
   } = state;
-  return assetDetails ? assetDetails.asset_group.id : 1;
+  return assetDetails?.asset_group.id ?? 0;
 };
 
 const getCountryId = (state: IState): number => {
   const {
     recordAsset: { assetDetails },
   } = state;
-  return assetDetails ? assetDetails.country.id : 1;
+  return assetDetails?.country.id ?? 0;
 };
 
 const getValueAddedServices = (state: IState): ValueAddedService[] => {

@@ -459,3 +459,9 @@ export interface IUpdateProfile {
   action: UpdateProfileTypes;
   payload: IUpdateProfilePayload;
 }
+
+export interface IPaymentSuccess {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+}

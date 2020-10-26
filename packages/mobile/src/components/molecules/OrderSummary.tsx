@@ -30,7 +30,12 @@ export class OrderSummary extends PureComponent<Props> {
 
   private renderList = ({ item }: { item: OrderTotalSummary }): React.ReactElement => {
     const { title, value, valueColor } = item;
-    const amount = valueColor === theme.colors.green ? `- ₹${value}` : `₹${value}`;
+    const {
+      summary: { currency },
+    } = this.props;
+    const amount =
+      valueColor === theme.colors.green ? `- ${currency.currencySymbol}${value}` : `${currency.currencySymbol}${value}`;
+
     return (
       <View style={styles.listItem}>
         <Text type="small" textType="semiBold" style={styles.listKey}>
@@ -44,7 +49,11 @@ export class OrderSummary extends PureComponent<Props> {
   };
 
   private renderTotalView = (total: OrderTotalSummary): React.ReactElement => {
+    const {
+      summary: { currency },
+    } = this.props;
     const { title, value } = total;
+
     return (
       <View style={styles.totalView}>
         <Divider containerStyles={styles.divider} />
@@ -53,7 +62,7 @@ export class OrderSummary extends PureComponent<Props> {
             {title}
           </Text>
           <Text type="small" textType="semiBold" style={styles.totalText}>
-            {`₹${value}`}
+            {`${currency.currencySymbol}${value}`}
           </Text>
         </View>
         <Divider containerStyles={styles.divider} />

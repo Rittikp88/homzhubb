@@ -112,7 +112,6 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
 
   private handleContinue = async (): Promise<void> => {
     const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
-    handleNextStep();
 
     const updateAssetPayload: IUpdateAssetParams = {
       last_visited_step: {
@@ -127,6 +126,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
 
     try {
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+      handleNextStep();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }

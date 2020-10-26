@@ -110,22 +110,16 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const { getAssetById, getValueAddedServices, assetDetails } = this.props;
     if (assetDetails) {
       this.setState({ leaseType: assetDetails.assetLeaseType });
+      getValueAddedServices();
     } else {
       getAssetById();
     }
-    getValueAddedServices();
   };
 
   public componentDidUpdate = (prevProps: Readonly<Props>, prevState: Readonly<IOwnState>): void => {
-    const {
-      assetDetails,
-      route: { params },
-      getValueAddedServices,
-    } = this.props;
+    const { assetDetails, getValueAddedServices } = this.props;
     if (!prevProps.assetDetails && assetDetails) {
-      if (params && params.isFromEdit) {
-        getValueAddedServices();
-      }
+      getValueAddedServices();
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ leaseType: assetDetails.assetLeaseType });
     }

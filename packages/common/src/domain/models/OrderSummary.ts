@@ -1,5 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 
 @JsonObject('Tax')
 export class Tax {
@@ -152,6 +153,9 @@ export class OrderSummary {
   @JsonProperty('coins', Coins, true)
   private _coins = new Coins();
 
+  @JsonProperty('currency', Currency)
+  private _currency = new Currency();
+
   @JsonProperty('promo', Promo, true)
   private _promo = new Promo();
 
@@ -186,6 +190,10 @@ export class OrderSummary {
     return this._tax;
   }
 
+  get currency(): Currency {
+    return this._currency;
+  }
+
   get summaryList(): OrderTotalSummary[] {
     const summary: OrderTotalSummary[] = [];
     summary.push(this.orderTotal);
@@ -196,7 +204,7 @@ export class OrderSummary {
     }
 
     if (this.promo && this.promo.promoApplied) {
-      const title = `Discount(${this.promo.percentageApplied}%)`;
+      const title = `Discount (${this.promo.percentageApplied.toFixed(2)}%)`;
       const promo = new OrderTotalSummary(title, this.promo.savedAmount, theme.colors.green);
       summary.push(promo);
     }

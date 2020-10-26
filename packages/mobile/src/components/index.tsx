@@ -38,7 +38,6 @@ export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/Mai
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { OtpTypes } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
-export type { IPersonalData } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 export { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 export { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
 export { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAddressCountry';
@@ -61,7 +60,8 @@ export { AddPropertyDetails } from '@homzhub/mobile/src/components/organisms/Add
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 export { ActionController } from '@homzhub/mobile/src/components/organisms/ActionController';
 export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
-export { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
+export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
+export type { IMetricsData } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 export { LoginForm } from '@homzhub/mobile/src/components/organisms/LoginForm';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';

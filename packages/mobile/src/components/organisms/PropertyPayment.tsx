@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { isEqual } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
+import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Label, Text } from '@homzhub/common/src/components';
@@ -13,10 +15,15 @@ import OrderSummary from '@homzhub/mobile/src/components/molecules/OrderSummary'
 import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
 import { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
-import { IOrderSummaryPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { Payment } from '@homzhub/common/src/domain/models/Payment';
+import { ValueAddedService, ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import {
+  IOrderSummaryPayload,
+  IPaymentSuccess,
+  IUpdateAssetParams,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IPaymentProps {
   goBackToService: () => void;
@@ -50,13 +57,16 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
   public async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IPaymentState>): Promise<void> {
     const { valueAddedServices, goBackToService } = this.props;
 
-    if (prevProps.valueAddedServices !== valueAddedServices) {
-      if (valueAddedServices.filter((service) => service.value).length === 0) {
-        goBackToService();
-      } else {
-        await this.getOrderSummary();
-      }
+    if (isEqual(prevProps.valueAddedServices, valueAddedServices)) {
+      return;
     }
+
+    if (valueAddedServices.filter((service) => service.value).length === 0) {
+      goBackToService();
+      return;
+    }
+
+    await this.getOrderSummary();
   }
 
   public render(): React.ReactNode {
@@ -82,9 +92,9 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
         {orderSummary.amountPayable && (
           <PaymentGateway
             type="primary"
-            amount={orderSummary.amountPayable}
             title={t('assetFinancial:payNow')}
             containerStyle={styles.payButton}
+            initiatePayment={this.initiatePayment}
             onPaymentSuccess={this.onPaymentSuccess}
           />
         )}
@@ -129,7 +139,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
               {item.valueBundle.label}
             </Text>
             <Text type="small" textType="semiBold" style={styles.serviceAmount}>
-              {`₹ ${item.bundlePrice}`}
+              {`${item.currency.currencySymbol} ${item.bundlePrice}`}
             </Text>
           </View>
           <TouchableOpacity onPress={removeService} style={styles.removeView}>
@@ -153,9 +163,8 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     await this.getOrderSummary({ coins: coins.currentBalance });
   };
 
-  private onPaymentSuccess = async (): Promise<void> => {
+  private onPaymentSuccess = async (paymentSuccessData: IPaymentSuccess): Promise<void> => {
     const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
-    handleNextStep();
 
     const updateAssetPayload: IUpdateAssetParams = {
       last_visited_step: {
@@ -169,7 +178,9 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     };
 
     try {
+      await PaymentRepository.valueAddedServicesPayment(paymentSuccessData);
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+      handleNextStep();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -181,6 +192,14 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
 
   private clearPromo = (): void => {
     this.setState({ isPromoFailed: false });
+  };
+
+  private initiatePayment = (): Promise<Payment> => {
+    const { propertyId } = this.props;
+    return PaymentRepository.valueAddedServices({
+      ...(this.getServiceIds().length > 0 && { value_added_services: this.getServiceIds() }),
+      ...(propertyId && { asset: propertyId }),
+    });
   };
 
   private getServiceIds = (): number[] => {
