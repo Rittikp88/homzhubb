@@ -38,6 +38,7 @@ import {
   WithShadowView,
   SVGUri,
   ContactPerson,
+  Button,
 } from '@homzhub/common/src/components';
 import {
   AssetRatings,
@@ -49,14 +50,17 @@ import {
   ShieldGroup,
   StateAwareComponent,
 } from '@homzhub/mobile/src/components';
+import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAmenitiesIcons, IFilter, ContactActions } from '@homzhub/common/src/domain/models/Search';
-import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
+import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -70,6 +74,9 @@ interface IDispatchProps {
   getAssetReviews: (id: number) => void;
   getAsset: (payload: IGetAssetPayload) => void;
   setChangeStack: (flag: boolean) => void;
+  setSelectedPlan: (payload: ISelectedAssetPlan) => void;
+  setAssetId: (payload: number) => void;
+  getAssetById: () => void;
 }
 
 interface IOwnState {
@@ -160,7 +167,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderComponent = (): React.ReactElement | null => {
-    const { t, reviews, assetDetails } = this.props;
+    const {
+      t,
+      reviews,
+      assetDetails,
+      route: {
+        params: { isPreview },
+      },
+    } = this.props;
     const { isFullScreen, isScroll } = this.state;
     if (!assetDetails) return null;
     const {
@@ -197,23 +211,47 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             </CollapsibleSection>
             {this.renderAmenities()}
             <CollapsibleSection title={t('highlights')} isDividerRequired>
-              {this.renderAssetHighlights()}
+              {this.renderAssetHighlights(assetDetails)}
             </CollapsibleSection>
             {this.renderMapSection()}
             <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
               <AssetRatings reviews={reviews} />
             </CollapsibleSection>
-            {this.renderSimilarProperties()}
+            {!isPreview && this.renderSimilarProperties()}
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
-        {!isFullScreen && (
+        {!isFullScreen && !isPreview && (
           <ContactPerson
             fullName={fullName}
             phoneNumber={`${countryCode}${phoneNumber}`}
             designation="Owner"
             onContactTypeClicked={this.onContactTypeClicked}
           />
+        )}
+        {!isFullScreen && isPreview && (
+          <View style={styles.buttonContainer}>
+            <Button
+              type="secondary"
+              title={t('common:edit')}
+              icon={icons.noteBook}
+              iconColor={theme.colors.blue}
+              iconSize={20}
+              titleStyle={styles.buttonTitle}
+              onPress={this.onEdit}
+              containerStyle={styles.editButton}
+            />
+            <Button
+              type="primary"
+              title={t('common:done')}
+              icon={icons.circularCheckFilled}
+              iconColor={theme.colors.white}
+              iconSize={20}
+              onPress={this.onDone}
+              titleStyle={styles.buttonTitle}
+              containerStyle={styles.doneButton}
+            />
+          </View>
         )}
       </>
     );
@@ -224,6 +262,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       assetDetails,
       t,
       filters: { asset_transaction_type },
+      route: {
+        params: { isPreview },
+      },
     } = this.props;
     if (!assetDetails) {
       return null;
@@ -244,6 +285,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       visitDate,
       verifications: { description },
       assetGroup: { code, name },
+      appPermissions,
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
 
@@ -262,7 +304,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       name,
       postedOn,
       (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? '',
-      asset_transaction_type,
+      asset_transaction_type || 0,
       saleTerm
     );
 
@@ -275,12 +317,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             currency={currencies[0].currencyCode ?? 'INR'}
             unit={asset_transaction_type === 0 ? 'mo' : ''}
           />
-          <TouchableOpacity style={styles.textIcon} onPress={this.onBookVisit}>
-            <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
-            <Text type="small" textType="regular" style={styles.primaryText}>
-              {scheduleVisit}
-            </Text>
-          </TouchableOpacity>
+          {appPermissions?.addListingVisit && (
+            <TouchableOpacity style={styles.textIcon} disabled={isPreview} onPress={this.onBookVisit}>
+              <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
+              <Text type="small" textType="regular" style={styles.primaryText}>
+                {scheduleVisit}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.apartmentContainer}>
           <PropertyAddress
@@ -289,7 +333,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             subAddress={`${unitNumber ?? ''} ${blockNumber ?? ''}`}
             subAddressStyle={styles.subAddress}
           />
-          <TouchableOpacity style={styles.textIcon} onPress={this.onExploreNeighborhood}>
+          <TouchableOpacity style={styles.textIcon} onPress={this.onExploreNeighborhood} disabled={isPreview || false}>
             <View style={styles.verticalDivider} />
             <Icon name={icons.houseMarker} size={30} color={theme.colors.blue} style={styles.iconStyle} />
           </TouchableOpacity>
@@ -297,6 +341,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         <Divider />
         <View style={styles.timelineContainer}>{this.renderPropertyTimelines(propertyTimelineData)}</View>
+        <Divider />
+        {isPreview && <PropertyReviewCard containerStyle={styles.reviewCard} />}
       </View>
     );
   };
@@ -388,8 +434,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private renderAmenities = (): React.ReactNode => {
     const { t, assetDetails } = this.props;
     const { amenitiesShowAll } = this.state;
-    const length = assetDetails?.amenities.length ?? 0;
-    let data = assetDetails?.amenities ?? [];
+    const length = assetDetails?.amenityGroup?.amenities.length ?? 0;
+    let data = assetDetails?.amenityGroup?.amenities ?? [];
 
     if (length > 6 && !amenitiesShowAll) {
       data = data.slice(0, 6);
@@ -408,8 +454,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           numColumns={3}
           contentContainerStyle={styles.listContainer}
           data={data}
-          keyExtractor={(item: Amenity): string => `${item.id}`}
-          renderItem={({ item }: { item: Amenity }): React.ReactElement => (
+          keyExtractor={(item: CategoryAmenityGroup): string => `${item.id}`}
+          renderItem={({ item }: { item: CategoryAmenityGroup }): React.ReactElement => (
             <View style={styles.amenityItem}>
               <SVGUri uri={item.attachment.link} height={30} width={30} />
               <Label type="regular" textType="regular" style={styles.amenityText}>
@@ -428,11 +474,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderAssetHighlights = (): React.ReactNode => {
-    const { assetDetails } = this.props;
+  private renderAssetHighlights = (assetDetails: Asset): React.ReactNode => {
     return (
       <FlatList<AssetHighlight>
-        data={assetDetails?.highlights}
+        data={assetDetails.highlights}
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         keyExtractor={(item: AssetHighlight): string => `${item.name}`}
@@ -449,7 +494,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderMapSection = (): React.ReactNode => {
-    const { t, assetDetails } = this.props;
+    const {
+      t,
+      assetDetails,
+      route: {
+        params: { isPreview },
+      },
+    } = this.props;
 
     if (!assetDetails) return null;
     const { latitude, longitude } = assetDetails;
@@ -477,7 +528,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             <CustomMarker selected />
           </Marker>
         </MapView>
-        <TouchableOpacity style={styles.exploreMapContainer} onPress={this.onExploreNeighborhood}>
+        <TouchableOpacity style={styles.exploreMapContainer} disabled={isPreview} onPress={this.onExploreNeighborhood}>
           <Label type="regular" textType="regular" style={styles.exploreMap}>
             {t('exploreMap')}
           </Label>
@@ -524,7 +575,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       <SimilarProperties
         onFavorite={this.onFavourite}
         propertyTermId={propertyTermId}
-        transaction_type={asset_transaction_type}
+        transaction_type={asset_transaction_type || 0}
         onSelectedProperty={this.loadSimilarProperty}
       />
     );
@@ -681,18 +732,63 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private onFavourite = async (): Promise<void> => {
-    const { navigation, assetDetails, isLoggedIn, setChangeStack } = this.props;
+  private onEdit = (): void => {
+    const {
+      navigation,
+      route: {
+        params: { propertyId },
+      },
+      setSelectedPlan,
+      setAssetId,
+      filters: { asset_transaction_type },
+      getAssetById,
+    } = this.props;
+    if (propertyId) {
+      setAssetId(propertyId);
+    }
+    const selectedPlan = asset_transaction_type === 0 ? TypeOfPlan.RENT : TypeOfPlan.SELL;
+    setSelectedPlan({ id: 1, selectedPlan });
+    getAssetById();
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AssetLeaseListing,
+      params: {
+        previousScreen: ScreensKeys.PropertyAssetDescription,
+        isFromEdit: true,
+      },
+    });
+  };
 
-    if (!assetDetails) return;
-    if (!isLoggedIn) {
-      setChangeStack(false);
-      navigation.navigate(ScreensKeys.AuthStack, {
-        screen: ScreensKeys.SignUp,
-        params: { onCallback: (): Promise<void> => this.handleFavourite(true) },
-      });
-    } else {
-      await this.handleFavourite();
+  private onDone = (): void => {
+    const { navigation } = this.props;
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensKeys.BottomTabs }],
+      })
+    );
+  };
+
+  private onFavourite = async (): Promise<void> => {
+    const {
+      navigation,
+      assetDetails,
+      isLoggedIn,
+      setChangeStack,
+      route: {
+        params: { isPreview },
+      },
+    } = this.props;
+    if (!isPreview) {
+      if (!assetDetails) return;
+      if (!isLoggedIn) {
+        setChangeStack(false);
+        navigation.navigate(ScreensKeys.AuthStack, {
+          screen: ScreensKeys.SignUp,
+          params: { onCallback: (): Promise<void> => this.handleFavourite(true) },
+        });
+      } else {
+        await this.handleFavourite();
+      }
     }
   };
 
@@ -721,7 +817,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     };
 
     try {
-      await LeadService.postLeadDetail(asset_transaction_type, payload);
+      await LeadService.postLeadDetail(asset_transaction_type || 0, payload);
       this.setState({ isFavourite: !isFavourite });
     } catch (e) {
       this.setState({ isFavourite: false });
@@ -764,7 +860,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public getCarouselData = (): Attachment[] => {
     const { assetDetails } = this.props;
     if (assetDetails && assetDetails?.attachments.length > 0) {
-      return assetDetails?.attachments;
+      return assetDetails.attachments;
     }
     return initialCarouselData;
   };
@@ -824,17 +920,19 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       route: {
-        params: { propertyTermId },
+        params: { propertyTermId, isPreview },
       },
     } = this.props;
     // TODO: Remove once will get proper url
     const url = `www.homzhub.com/propertydetails/${propertyTermId}`;
-    try {
-      await Share.share({
-        message: t('common:shareMessage', { url }),
-      });
-    } catch (error) {
-      AlertHelper.error({ message: error });
+    if (!isPreview) {
+      try {
+        await Share.share({
+          message: t('common:shareMessage', { url }),
+        });
+      } catch (error) {
+        AlertHelper.error({ message: error });
+      }
     }
   };
 }
@@ -852,7 +950,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getAssetReviews, getAsset } = AssetActions;
   const { setChangeStack } = UserActions;
-  return bindActionCreators({ getAssetReviews, getAsset, setChangeStack }, dispatch);
+  const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
+  return bindActionCreators(
+    { getAssetReviews, getAsset, setChangeStack, setAssetId, setSelectedPlan, getAssetById },
+    dispatch
+  );
 };
 
 export default connect(
@@ -1007,5 +1109,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     marginBottom: 14,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 16,
+    marginBottom: 22,
+  },
+  editButton: {
+    marginLeft: 10,
+    flexDirection: 'row-reverse',
+  },
+  doneButton: {
+    flexDirection: 'row-reverse',
+  },
+  buttonTitle: {
+    marginHorizontal: 4,
+  },
+  reviewCard: {
+    marginVertical: 10,
   },
 });

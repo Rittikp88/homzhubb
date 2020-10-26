@@ -155,6 +155,7 @@ export interface IMarkdownProps {
 export interface IAssetDescriptionProps {
   propertyTermId: number;
   propertyId?: number;
+  isPreview?: boolean;
 }
 
 export interface IContactProps {

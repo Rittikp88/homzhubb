@@ -93,9 +93,9 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
           <WorkInfoForm
             onFormSubmitSuccess={this.onFormSubmissionSuccess}
             formData={{
-              name: workInfo.companyName,
-              email: workInfo.workEmail,
-              workEmployeeId: workInfo.workEmployeeId,
+              name: workInfo ? workInfo.companyName : '',
+              email: workInfo ? workInfo.workEmail : '',
+              workEmployeeId: workInfo ? workInfo.workEmployeeId : '',
             }}
           />
         );
@@ -109,6 +109,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               phone: userProfile.phoneNumber,
               email: userProfile.email,
             }}
+            userFullName={userProfile.fullName}
             onFormSubmitSuccess={this.onUpdateProfileSuccess}
             isPasswordVerificationRequired={userProfile.isPasswordCreated}
           />

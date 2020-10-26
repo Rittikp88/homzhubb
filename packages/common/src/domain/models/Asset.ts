@@ -15,19 +15,7 @@ import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
-export interface ICarpetAreaUnit {
-  id: number;
-  label: string;
-  name: string;
-  title: string;
-}
-
-export interface IAssetSpaces {
-  id: number;
-  name: string;
-  count: number;
-  description?: string;
-}
+// ENUM START
 
 export enum DataType {
   TENANCIES = 'TENANCIES',
@@ -41,6 +29,22 @@ export enum LeaseTypes {
 
 export enum PropertyStatus {
   PENDING = 'PENDING',
+}
+
+// ENUM END
+
+export interface ICarpetAreaUnit {
+  id: number;
+  label: string;
+  name: string;
+  title: string;
+}
+
+export interface IAssetSpaces {
+  id: number;
+  name: string;
+  count: number;
+  description?: string;
 }
 
 export interface IAsset {
@@ -129,6 +133,16 @@ export class Count {
 
   get count(): number {
     return this._count;
+  }
+}
+
+@JsonObject('AppPermission')
+export class AppPermission {
+  @JsonProperty('add_listingvisit', Boolean)
+  private _addListingVisit = false;
+
+  get addListingVisit(): boolean {
+    return this._addListingVisit;
   }
 }
 
@@ -307,6 +321,9 @@ export class Asset {
 
   @JsonProperty('country_name', String)
   private _countryName = '';
+
+  @JsonProperty('app_permissions', AppPermission, true)
+  private _appPermissions = null;
 
   get projectName(): string {
     return this._projectName;
@@ -542,5 +559,9 @@ export class Asset {
   get countryIsoCode(): string {
     const { iso2Code } = this.country;
     return iso2Code;
+  }
+
+  get appPermissions(): AppPermission | null {
+    return this._appPermissions;
   }
 }

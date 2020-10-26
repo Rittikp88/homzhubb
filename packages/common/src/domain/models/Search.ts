@@ -108,23 +108,23 @@ export interface IFilterDetails {
 }
 
 export interface IFilter {
-  search_latitude: number;
-  search_longitude: number;
-  asset_transaction_type: number;
-  asset_type: number[];
-  min_price: number;
-  max_price: number;
-  min_area: number;
-  max_area: number;
-  area_unit: number;
-  furnishing_status: string;
-  room_count: number[];
-  bath_count: number;
-  asset_group: number;
-  search_address: string;
-  limit: number;
-  offset: number;
-  miscellaneous: {
+  search_latitude?: number;
+  search_longitude?: number;
+  asset_transaction_type?: number;
+  asset_type?: number[];
+  min_price?: number;
+  max_price?: number;
+  min_area?: number;
+  max_area?: number;
+  area_unit?: number;
+  furnishing_status?: string;
+  room_count?: number[];
+  bath_count?: number;
+  asset_group?: number;
+  search_address?: string;
+  limit?: number;
+  offset?: number;
+  miscellaneous?: {
     show_verified: boolean;
     agent_listed: boolean;
     search_radius: number;

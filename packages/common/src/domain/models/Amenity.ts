@@ -103,6 +103,9 @@ export class CategoryAmenityGroup {
   @JsonProperty('category', AssetAmenity)
   private _category = new AssetAmenity();
 
+  @JsonProperty('attachment', Attachment, true)
+  private _attachment = new Attachment();
+
   get id(): number {
     return this._id;
   }
@@ -113,6 +116,10 @@ export class CategoryAmenityGroup {
 
   get category(): AssetAmenity {
     return this._category;
+  }
+
+  get attachment(): Attachment {
+    return this._attachment;
   }
 }
 

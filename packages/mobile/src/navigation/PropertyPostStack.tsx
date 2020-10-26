@@ -6,6 +6,7 @@ import {
   IMarkdownProps,
   ScreensKeys,
   IPostAssetDetailsProps,
+  IAssetDescriptionProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { MarkdownView } from '@homzhub/mobile/src/screens/Asset/MarkdownView';
 import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
@@ -13,6 +14,7 @@ import AssetLocationSearch from '@homzhub/mobile/src/screens/Asset/Record/AssetL
 import AddProperty from '@homzhub/mobile/src/screens/Asset/Record/AddProperty';
 import AssetPlanSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetPlanSelection';
 import AssetLeaseListing from '@homzhub/mobile/src/screens/Asset/Record/AssetLeaseListing';
+import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import { BottomTabs } from '@homzhub/mobile/src/navigation/BottomTabs';
 
 export type PropertyPostStackParamList = {
@@ -21,9 +23,10 @@ export type PropertyPostStackParamList = {
   [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps | undefined;
   [ScreensKeys.AddProperty]: undefined | { previousScreen: string };
   [ScreensKeys.AssetPlanSelection]: undefined;
-  [ScreensKeys.AssetLeaseListing]: undefined | { previousScreen: string };
+  [ScreensKeys.AssetLeaseListing]: undefined | { previousScreen: string; isFromEdit?: boolean };
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
   [ScreensKeys.BottomTabs]: undefined;
+  [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };
 const PropertyPostStackNavigator = createStackNavigator<PropertyPostStackParamList>();
 
@@ -43,6 +46,7 @@ export const PropertyPostStack = (): React.ReactElement => {
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AddProperty} component={AddProperty} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.MarkdownScreen} component={MarkdownView} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
+      <PropertyPostStackNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
     </PropertyPostStackNavigator.Navigator>
   );
 };

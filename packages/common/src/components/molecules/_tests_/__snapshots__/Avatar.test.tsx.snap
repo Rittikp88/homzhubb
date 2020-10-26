@@ -47,10 +47,13 @@ exports[`Avatar should match snapshot 1`] = `
       style={
         Object {
           "marginHorizontal": 12,
+          "maxWidth": 200,
         }
       }
     >
       <Label
+        adjustsFontSizeToFit={true}
+        minimumFontScale={0.5}
         textType="regular"
         type="large"
       >
@@ -60,7 +63,6 @@ exports[`Avatar should match snapshot 1`] = `
         style={
           Object {
             "flexDirection": "row",
-            "justifyContent": "space-between",
           }
         }
       >
@@ -129,10 +131,13 @@ exports[`Avatar should match snapshot with phone number 1`] = `
       style={
         Object {
           "marginHorizontal": 12,
+          "maxWidth": 200,
         }
       }
     >
       <Label
+        adjustsFontSizeToFit={true}
+        minimumFontScale={0.5}
         textType="regular"
         type="large"
       >
@@ -142,7 +147,6 @@ exports[`Avatar should match snapshot with phone number 1`] = `
         style={
           Object {
             "flexDirection": "row",
-            "justifyContent": "space-between",
           }
         }
       >

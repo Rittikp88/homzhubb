@@ -91,7 +91,7 @@ class PropertyUtils {
     const formattedAvailableFrom = DateUtils.getDisplayDate(availableFrom, 'DD MMM YYYY');
     const postedOnDisplayDate = DateUtils.getDisplayDate(postedOn, 'DD MMM YYYY');
     const tenantedTillDisplayDate = DateUtils.getDisplayDate(saleTerm?.tenantedTill ?? '', 'DD MMM YYYY');
-    const availableFromDisplayDate = availableFromDate < currentDay ? 'Immediately' : formattedAvailableFrom;
+    const availableFromDisplayDate = availableFromDate <= currentDay ? 'Immediately' : formattedAvailableFrom;
     switch (transaction_type) {
       // 0 - RENT and 1 - BUY
       case 0:

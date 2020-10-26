@@ -66,6 +66,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
+    shadowColor: theme.colors.darkTint7,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.8,
   },
   iconContainer: {
     flexDirection: 'row',

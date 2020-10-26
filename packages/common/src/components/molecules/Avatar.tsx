@@ -29,10 +29,10 @@ const Avatar = (props: IProps): React.ReactElement => {
           </Text>
         </View>
         <View style={styles.nameContainer}>
-          <Label textType="regular" type="large">
+          <Label textType="regular" type="large" minimumFontScale={0.5} adjustsFontSizeToFit>
             {fullName}
           </Label>
-          <View style={styles.container}>
+          <View style={styles.leftView}>
             <Label textType="regular" type="regular" style={styles.designation}>
               {designation}
             </Label>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     marginHorizontal: 12,
+    maxWidth: 200,
   },
   numberContainer: {
     flexDirection: 'row',

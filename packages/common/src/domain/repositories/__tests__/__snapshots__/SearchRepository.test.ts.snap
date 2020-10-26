@@ -239,6 +239,7 @@ AssetSearch {
         },
       ],
       "_amenityGroup": null,
+      "_appPermissions": null,
       "_assetGroup": Data {
         "_code": "",
         "_count": 0,
@@ -635,6 +636,7 @@ AssetSearch {
         },
       ],
       "_amenityGroup": null,
+      "_appPermissions": null,
       "_assetGroup": Data {
         "_code": "",
         "_count": 0,

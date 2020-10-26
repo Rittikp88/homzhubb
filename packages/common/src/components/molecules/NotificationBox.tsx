@@ -1,12 +1,12 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Notifications } from '@homzhub/common/src/domain/models/AssetNotifications';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   data: Notifications[];
@@ -57,7 +57,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
                 {item.notificationType}
               </Label>
               <Label type="regular" textType="regular" style={styles.labels}>
-                {DateUtils.timeDifference(item.createdAt)}
+                {TimeUtils.getLocaltimeDifference(item.createdAt)}
               </Label>
             </View>
             <Label type="large" textType="regular" style={styles.descriptionText}>

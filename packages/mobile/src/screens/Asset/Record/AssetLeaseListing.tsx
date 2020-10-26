@@ -10,6 +10,7 @@ import Markdown from 'react-native-easy-markdown';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -29,6 +30,7 @@ import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPa
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 interface IStateProps {
@@ -42,6 +44,7 @@ interface IDispatchProps {
   getAssetById: () => void;
   setValueAddedServices: (payload: ISelectedValueServices) => void;
   getValueAddedServices: () => void;
+  setFilter: (payload: IFilter) => void;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLeaseListing>;
@@ -86,13 +89,11 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   public static getDerivedStateFromProps(props: Props, state: IOwnState): IOwnState | null {
     const { assetDetails } = props;
     const { isNextStep } = state;
-
     if (assetDetails) {
       const {
         isVerificationRequired,
         listing: { stepList },
       } = assetDetails.lastVisitedStep;
-      // For steps
       if (!isNextStep && isVerificationRequired) {
         return {
           ...state,
@@ -116,8 +117,15 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   public componentDidUpdate = (prevProps: Readonly<Props>, prevState: Readonly<IOwnState>): void => {
-    const { assetDetails } = this.props;
+    const {
+      assetDetails,
+      route: { params },
+      getValueAddedServices,
+    } = this.props;
     if (!prevProps.assetDetails && assetDetails) {
+      if (params && params.isFromEdit) {
+        getValueAddedServices();
+      }
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ leaseType: assetDetails.assetLeaseType });
     }
@@ -434,15 +442,19 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToDashboard = (): void => {
-    const { navigation, resetState } = this.props;
+    const { navigation, resetState, assetDetails, setFilter } = this.props;
     this.setState({ isSheetVisible: false });
     resetState();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: ScreensKeys.BottomTabs }],
-      })
-    );
+
+    const type = assetDetails?.lastVisitedStep.listing.type === TypeOfPlan.RENT ? 0 : 1;
+    setFilter({ asset_transaction_type: type });
+
+    // TODO: Remove hardcode id after api response fixed
+    navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+      propertyTermId: 11,
+      isPreview: true,
+      propertyId: assetDetails?.id || 0,
+    });
   };
 
   private handleNextStep = (): void => {
@@ -469,12 +481,21 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   public handleSkip = (): void => {
+    const { navigation, resetState } = this.props;
     const { currentIndex } = this.state;
     if (currentIndex < this.getRoutes().length - 2) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollToTop();
-    } else {
+    } else if (currentIndex === this.getRoutes().length - 1) {
       this.setState({ isSheetVisible: true });
+    } else {
+      resetState();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreensKeys.BottomTabs }],
+        })
+      );
     }
   };
 
@@ -494,12 +515,14 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { resetState, getAssetById, setValueAddedServices, getValueAddedServices } = RecordAssetActions;
+  const { setFilter } = SearchActions;
   return bindActionCreators(
     {
       resetState,
       getAssetById,
       setValueAddedServices,
       getValueAddedServices,
+      setFilter,
     },
     dispatch
   );

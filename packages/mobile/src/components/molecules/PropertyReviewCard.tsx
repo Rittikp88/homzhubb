@@ -1,15 +1,19 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Property from '@homzhub/common/src/assets/images/property.svg';
 import { Label, Text } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-export const PropertyReviewCard = (): React.ReactElement => {
+interface IProps {
+  containerStyle: StyleProp<ViewStyle>;
+}
+
+export const PropertyReviewCard = ({ containerStyle }: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Property />
       <Text type="small" textType="semiBold" style={styles.heading}>
         {t('reviewingProperty')}

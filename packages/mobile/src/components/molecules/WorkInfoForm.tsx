@@ -79,6 +79,14 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
                     placeholder={t('companyEmail')}
                     formProps={formProps}
                   />
+                  <FormTextInput
+                    name="workEmployeeId"
+                    label={t('workEmployeeId')}
+                    numberOfLines={1}
+                    inputType="default"
+                    placeholder={t('workEmployeeId')}
+                    formProps={formProps}
+                  />
                 </View>
                 <FormButton
                   formProps={formProps}

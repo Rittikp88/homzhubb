@@ -24,6 +24,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   onFormSubmitSuccess: (profileDetails: IUserProfileForm, profileUpdateResponse?: IUpdateProfileResponse) => void;
   formData?: IUserProfileForm;
+  userFullName?: string;
   isPasswordVerificationRequired?: boolean;
 }
 
@@ -67,7 +68,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
   }
 
   public render(): ReactElement {
-    const { t } = this.props;
+    const { t, userFullName } = this.props;
     const { userProfileForm, isPasswordVerificationRequired } = this.state;
 
     return (
@@ -85,7 +86,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                   <View style={styles.profileImage}>
                     <View style={styles.initialsContainer}>
                       <Text type="large" textType="regular" style={styles.initials}>
-                        {StringUtils.getInitials('S P')}
+                        {StringUtils.getInitials(userFullName || '')}
                       </Text>
                     </View>
                     <View style={[styles.cameraContainer, styles.roundBorder]}>

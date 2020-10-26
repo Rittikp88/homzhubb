@@ -28,7 +28,7 @@ export function AppNavigator(): React.ReactElement {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      {!isAddPropertyFlow && assetCount > 0 ? (
+      {assetCount > 0 && !isAddPropertyFlow ? (
         <AppStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
       ) : (
         <AppStackNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />

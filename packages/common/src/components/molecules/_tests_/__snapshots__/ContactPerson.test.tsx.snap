@@ -9,6 +9,12 @@ exports[`ContactPerson should match snapshot 1`] = `
       "flexDirection": "row",
       "justifyContent": "space-between",
       "padding": 16,
+      "shadowColor": "#99A4AF",
+      "shadowOffset": Object {
+        "height": 0,
+        "width": 0,
+      },
+      "shadowOpacity": 0.8,
     }
   }
 >

@@ -36,7 +36,10 @@ export class SaleTerm {
   @JsonProperty('available_from_date', String)
   private _availableFromDate = '';
 
-  @JsonProperty('maintenance_amount', Number)
+  @JsonProperty('tenanted_till', String, true)
+  private _tenantedTill = '';
+
+  @JsonProperty('maintenance_amount', Number, true)
   private _maintenanceAmount = -1;
 
   @JsonProperty('maintenance_unit', Unit, true)
@@ -78,5 +81,9 @@ export class SaleTerm {
 
   get maintenanceUnit(): number | null {
     return this._maintenanceUnit?.id ?? null;
+  }
+
+  get tenantedTill(): string {
+    return this._tenantedTill;
   }
 }

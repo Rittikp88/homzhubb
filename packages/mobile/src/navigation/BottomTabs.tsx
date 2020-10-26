@@ -99,6 +99,7 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.DashboardLandingScreen} component={Dashboard} />
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
+      <DashboardNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
     </DashboardNavigator.Navigator>
   );
 };
@@ -229,12 +230,13 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.Dashboard}
         component={isLoggedIn ? DashboardStack : DefaultLogin}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetDashboard:dashboard'),
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
             return focused ? <Focused /> : <Unfocused />;
           },
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Search}
