@@ -11,6 +11,7 @@ import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.sv
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -160,6 +161,7 @@ export const BottomTabs = (): React.ReactElement => {
   const { t } = useTranslation();
   const routeName = getFocusedRouteNameFromRoute(useRoute()) ?? ScreensKeys.Dashboard;
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
+  const assetCount: number = useSelector(AssetSelectors.getAssetCount);
   const dispatch = useDispatch();
   // Initial Route for guest and logged in user gets decided here
   if (PlatformUtils.isAndroid()) {
@@ -184,9 +186,15 @@ export const BottomTabs = (): React.ReactElement => {
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };
 
+  const initialRoute = isLoggedIn
+    ? assetCount < 0
+      ? ScreensKeys.Portfolio
+      : ScreensKeys.Dashboard
+    : ScreensKeys.Search;
+
   return (
     <BottomTabNavigator.Navigator
-      initialRouteName={isLoggedIn ? ScreensKeys.Dashboard : ScreensKeys.Search}
+      initialRouteName={initialRoute}
       lazy
       tabBarOptions={{
         activeTintColor: theme.colors.primaryColor,

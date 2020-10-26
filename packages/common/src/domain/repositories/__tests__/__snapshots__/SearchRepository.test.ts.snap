@@ -431,6 +431,7 @@ AssetSearch {
         },
       },
       "_latitude": 25.619,
+      "_leaseListingId": Array [],
       "_leaseTerm": null,
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
@@ -442,6 +443,7 @@ AssetSearch {
       "_powerBackup": false,
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
+      "_saleListingId": Array [],
       "_saleTerm": null,
       "_serviceTickets": Count {
         "_count": 0,
@@ -828,6 +830,7 @@ AssetSearch {
         },
       },
       "_latitude": 25.619,
+      "_leaseListingId": Array [],
       "_leaseTerm": null,
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
@@ -839,6 +842,7 @@ AssetSearch {
       "_powerBackup": false,
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
+      "_saleListingId": Array [],
       "_saleTerm": null,
       "_serviceTickets": Count {
         "_count": 0,

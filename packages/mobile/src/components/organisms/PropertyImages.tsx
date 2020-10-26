@@ -4,18 +4,16 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhub/common/src/components';
 import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IPropertySelectedImages, IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
@@ -240,41 +238,34 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
           type: image.mime,
         });
       });
-      const baseUrl = ConfigHelper.getBaseUrl();
-      const user: IUser | null = await StorageService.get(StorageKeys.USER);
-      fetch(`${baseUrl}attachments/upload/`, {
-        method: 'POST',
-        headers: {
-          'content-type': 'multipart/form-data',
-          // @ts-ignore
-          Authorization: `Bearer ${user.access_token}`,
-        },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          const { data } = responseJson;
-          const localSelectedImages: IPropertySelectedImages[] = [];
-          images.forEach((image, index: number) => {
-            localSelectedImages.push({
-              id: null,
-              description: '',
-              is_cover_image: false,
-              asset: propertyId,
-              attachment: data[index].id,
-              link: data[index].link,
-              file_name: 'localImage',
-              isLocalImage: true,
-            });
-          });
-          if (selectedImages.length === 0) {
-            localSelectedImages[0].is_cover_image = true;
-          }
-          this.setState({
-            // @ts-ignore
-            selectedImages: selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages)),
+
+      try {
+        const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
+
+        const { data } = response;
+        const localSelectedImages: IPropertySelectedImages[] = [];
+        images.forEach((image, index: number) => {
+          localSelectedImages.push({
+            id: null,
+            description: '',
+            is_cover_image: false,
+            asset: propertyId,
+            attachment: data[index].id,
+            link: data[index].link,
+            file_name: 'localImage',
+            isLocalImage: true,
           });
         });
+        if (selectedImages.length === 0) {
+          localSelectedImages[0].is_cover_image = true;
+        }
+        this.setState({
+          // @ts-ignore
+          selectedImages: selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages)),
+        });
+      } catch (e) {
+        AlertHelper.error({ message: e.message });
+      }
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

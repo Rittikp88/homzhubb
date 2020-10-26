@@ -12,6 +12,13 @@ export enum AttachmentError {
   UPLOAD_IMAGE_ERROR = 'File is corrupted',
 }
 
+export enum AttachmentType {
+  ASSET_IMAGE = 'asset_images',
+  ASSET_DOCUMENT = 'asset_documents',
+  ASSET_VERIFICATION = 'verification_documents',
+  ASSET_RECORD = 'financial_record',
+}
+
 export const AllowedAttachmentFormats = {
   ImgJpeg: 'image/jpeg',
   ImgJpg: 'image/jpg',
@@ -24,10 +31,10 @@ export const AllowedAttachmentFormats = {
 const baseUrl = ConfigHelper.getBaseUrl();
 
 class AttachmentService {
-  public uploadImage = async (formData: any): Promise<any> => {
+  public uploadImage = async (formData: any, type: AttachmentType): Promise<any> => {
     const user: IUser | null = await StorageService.get(StorageKeys.USER);
 
-    return await fetch(`${baseUrl}attachments/upload/`, {
+    return await fetch(`${baseUrl}attachments/upload/?category=${type}`, {
       method: 'POST',
       headers: {
         'content-type': 'multipart/form-data',

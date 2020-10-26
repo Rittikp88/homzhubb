@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
-import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -274,7 +274,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         const formData = new FormData();
         // @ts-ignore
         formData.append('files[]', attachment);
-        const response = await AttachmentService.uploadImage(formData);
+        const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_RECORD);
         const { data } = response;
         attachmentId = data[0].id;
       }

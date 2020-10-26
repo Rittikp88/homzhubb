@@ -322,6 +322,12 @@ export class Asset {
   @JsonProperty('country_name', String)
   private _countryName = '';
 
+  @JsonProperty('sale_listing_id', [Number], true)
+  private _saleListingId = [];
+
+  @JsonProperty('lease_listing_id', [Number], true)
+  private _leaseListingId = [];
+
   @JsonProperty('app_permissions', AppPermission, true)
   private _appPermissions = null;
 
@@ -563,5 +569,13 @@ export class Asset {
 
   get appPermissions(): AppPermission | null {
     return this._appPermissions;
+  }
+
+  get saleListingId(): number[] {
+    return this._saleListingId;
+  }
+
+  get leaseListingId(): number[] {
+    return this._leaseListingId;
   }
 }

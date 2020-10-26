@@ -18,6 +18,7 @@ import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -59,7 +60,6 @@ import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAmenitiesIcons, IFilter, ContactActions } from '@homzhub/common/src/domain/models/Search';
 import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 interface IStateProps {
@@ -278,6 +278,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       leaseTerm,
       saleTerm,
       postedOn,
+      address,
       projectName,
       unitNumber,
       blockNumber,
@@ -330,7 +331,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <PropertyAddress
             isIcon={false}
             primaryAddress={projectName}
-            subAddress={`${unitNumber ?? ''} ${blockNumber ?? ''}`}
+            subAddress={address || `${unitNumber ?? ''} ${blockNumber ?? ''}`}
             subAddressStyle={styles.subAddress}
           />
           <TouchableOpacity style={styles.textIcon} onPress={this.onExploreNeighborhood} disabled={isPreview || false}>
@@ -746,6 +747,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (propertyId) {
       setAssetId(propertyId);
     }
+
     const selectedPlan = asset_transaction_type === 0 ? TypeOfPlan.RENT : TypeOfPlan.SELL;
     setSelectedPlan({ id: 1, selectedPlan });
     getAssetById();

@@ -368,7 +368,9 @@
     "visitScheduled": "Visit Scheduled",
     "visitCancelled": "Visit Cancelled",
     "awaiting": "Awaiting Confirmation...",
-    "buyer": "Buyer"
+    "buyer": "Buyer",
+    "paymentSuccessMsg": "The payment was completed successfully.",
+    "previewOwnProperty": "Click on \"Continue\" to preview your property"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

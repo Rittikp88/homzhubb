@@ -5,7 +5,6 @@ import { ScreensKeys, NestedNavigatorParams } from '@homzhub/mobile/src/navigati
 import { BlankScreen } from '@homzhub/mobile/src/screens/BlankScreen';
 import { BottomTabNavigatorParamList, BottomTabs } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 
 export type AppStackParamList = {
@@ -19,8 +18,8 @@ export type AppStackParamList = {
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
 
 export function AppNavigator(): React.ReactElement {
-  const assetCount = useSelector(AssetSelectors.getAssetCount);
   const isAddPropertyFlow = useSelector(UserSelector.isAddPropertyFlow);
+
   return (
     <AppStackNavigator.Navigator
       screenOptions={{
@@ -28,7 +27,7 @@ export function AppNavigator(): React.ReactElement {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      {assetCount > 0 && !isAddPropertyFlow ? (
+      {!isAddPropertyFlow ? (
         <AppStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
       ) : (
         <AppStackNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />

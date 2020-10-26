@@ -6,6 +6,7 @@ import { StorageKeys, StorageService } from '@homzhub/common/src/services/storag
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ILoginPayload, IRefreshTokenPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User, IUser } from '@homzhub/common/src/domain/models/User';
@@ -22,6 +23,7 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
 
     yield put(UserActions.loginSuccess(serializedUser));
     yield StorageService.set<IUser>('@user', serializedUser);
+    yield put(AssetActions.getAssetCount());
     if (callback) {
       callback();
     }

@@ -8,7 +8,11 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { AllowedAttachmentFormats, AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import {
+  AllowedAttachmentFormats,
+  AttachmentService,
+  AttachmentType,
+} from '@homzhub/common/src/services/AttachmentService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -18,8 +22,8 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, UploadBox, EmptyState } from '@homzhub/common/src/components';
-import { SearchBar, DocumentCard, Loader } from '@homzhub/mobile/src/components';
+import { Divider, EmptyState, UploadBox } from '@homzhub/common/src/components';
+import { DocumentCard, Loader, SearchBar } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -202,7 +206,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     // @ts-ignore
     formData.append('files[]', DocumentSource);
     try {
-      const response = await AttachmentService.uploadImage(formData);
+      const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_DOCUMENT);
       const { data } = response;
       const attachmentId = data[0].id;
       const payload: ICreateDocumentPayload = {

@@ -3,27 +3,28 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-import { findIndex, cloneDeep } from 'lodash';
+import { cloneDeep, findIndex } from 'lodash';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import {
-  AttachmentService,
-  AttachmentError,
   AllowedAttachmentFormats,
+  AttachmentError,
+  AttachmentService,
+  AttachmentType,
 } from '@homzhub/common/src/services/AttachmentService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
-import { Text, Label, UploadBox, ImageThumbnail, Button } from '@homzhub/common/src/components';
+import { Button, ImageThumbnail, Label, Text, UploadBox } from '@homzhub/common/src/components';
 import {
+  ExistingVerificationDocuments,
   IExistingVerificationDocuments,
+  IPostVerificationDocuments,
   VerificationDocumentCategory,
   VerificationDocumentTypes,
-  ExistingVerificationDocuments,
-  IPostVerificationDocuments,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -262,7 +263,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     this.setState({ isLoading: true });
 
     try {
-      const response = await AttachmentService.uploadImage(formData);
+      const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_VERIFICATION);
 
       const { data } = response;
       const postRequestBody: IPostVerificationDocuments[] = [];

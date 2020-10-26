@@ -3,8 +3,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { CommonActions } from '@react-navigation/native';
 import { TabView } from 'react-native-tab-view';
+import { CommonActions } from '@react-navigation/native';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -14,10 +14,10 @@ import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images';
+import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { Button, Image, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
+import { Button, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
 import {
   ActionController,
   AddressWithStepIndicator,
@@ -87,17 +87,29 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   public static getDerivedStateFromProps(props: Props, state: IOwnState): IOwnState | null {
-    const { assetDetails } = props;
+    const {
+      assetDetails,
+      route: { params },
+    } = props;
     const { isNextStep } = state;
     if (assetDetails) {
       const {
         isVerificationRequired,
+        isPropertyReady,
         listing: { stepList },
       } = assetDetails.lastVisitedStep;
+
       if (!isNextStep && isVerificationRequired) {
         return {
           ...state,
           currentIndex: 1,
+          isStepDone: stepList,
+        };
+      }
+
+      if (!isNextStep && isPropertyReady && params && params.isFromEdit) {
+        return {
+          ...state,
           isStepDone: stepList,
         };
       }
@@ -179,8 +191,8 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
         </ScrollView>
         {this.openActionBottomSheet()}
-        <BottomSheet visible={isSheetVisible} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
-          {this.renderContinueView()}
+        <BottomSheet visible={isSheetVisible} sheetHeight={480} onCloseSheet={this.onCloseSheet}>
+          {this.renderContinueView(assetDetails)}
         </BottomSheet>
       </>
     );
@@ -242,23 +254,32 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderContinueView = (): ReactElement => {
+  private renderContinueView = (assetDetails: Asset): ReactElement => {
     const { t } = this.props;
+    const {
+      lastVisitedStep: {
+        isVerificationRequired,
+        listing: { type },
+      },
+    } = assetDetails;
+    const isReadyToPreview = type !== TypeOfPlan.MANAGE && !isVerificationRequired;
+    const title = isReadyToPreview ? t('previewOwnProperty') : t('clickContinueToDashboard');
+
     return (
       <>
         <View style={styles.sheetContent}>
           <Text type="large" style={styles.sheetTitle}>
-            {t('congratulations')}
+            {t('common:congratulations')}
           </Text>
-          <Text type="small">You are now a HomzHub Lite Member</Text>
-          <Image source={images.check} style={styles.image} />
+          <Text type="small">{t('paymentSuccessMsg')}</Text>
+          <PropertySearch style={styles.image} />
           <Label type="large" style={styles.continue}>
-            {t('clickContinueToDashboard')}
+            {title}
           </Label>
         </View>
         <Button
           type="primary"
-          title={t('continue')}
+          title={t('common:continue')}
           containerStyle={styles.buttonStyle}
           onPress={this.navigateToDashboard}
         />
@@ -440,15 +461,38 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     this.setState({ isSheetVisible: false });
     resetState();
 
-    const type = assetDetails?.lastVisitedStep.listing.type === TypeOfPlan.RENT ? 0 : 1;
-    setFilter({ asset_transaction_type: type });
+    if (assetDetails) {
+      const {
+        id,
+        leaseListingId,
+        saleListingId,
+        lastVisitedStep: {
+          listing: { type },
+          isPropertyReady,
+        },
+      } = assetDetails;
+      if (!isPropertyReady) {
+        const planType = type === TypeOfPlan.RENT ? 0 : 1;
+        setFilter({ asset_transaction_type: planType });
+        const saleId = saleListingId && saleListingId.length > 0 ? saleListingId[0] : 0;
+        const leaseId = leaseListingId && leaseListingId.length > 0 ? leaseListingId[0] : 0;
 
-    // TODO: Remove hardcode id after api response fixed
-    navigation.navigate(ScreensKeys.PropertyAssetDescription, {
-      propertyTermId: 11,
-      isPreview: true,
-      propertyId: assetDetails?.id || 0,
-    });
+        const propertyTermId = type === TypeOfPlan.RENT && leaseId > 0 ? leaseId : saleId;
+
+        navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+          propertyTermId,
+          isPreview: true,
+          propertyId: id,
+        });
+      } else {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: ScreensKeys.BottomTabs }],
+          })
+        );
+      }
+    }
   };
 
   private handleNextStep = (): void => {
@@ -477,11 +521,10 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   public handleSkip = (): void => {
     const { navigation, resetState } = this.props;
     const { currentIndex } = this.state;
+
     if (currentIndex < this.getRoutes().length - 2) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollToTop();
-    } else if (currentIndex === this.getRoutes().length - 1) {
-      this.setState({ isSheetVisible: true });
     } else {
       resetState();
       navigation.dispatch(
