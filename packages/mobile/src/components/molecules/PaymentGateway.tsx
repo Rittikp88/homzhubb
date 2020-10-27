@@ -7,6 +7,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
 import { IPaymentSuccess } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -33,15 +34,33 @@ interface IProps extends IButtonProps {
   onPaymentFailure?: (error: IRazorPayError) => void;
 }
 
-export class PaymentGateway extends React.PureComponent<IProps> {
-  public render = (): React.ReactElement => <Button {...this.props} onPress={this.onPress} />;
+interface IOwnState {
+  loading: boolean;
+}
+
+export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
+  public state = {
+    loading: false,
+  };
+
+  public render = (): React.ReactElement => {
+    const { loading } = this.state;
+    return (
+      <>
+        <Button {...this.props} onPress={this.onPress} />
+        <Loader visible={loading} />
+      </>
+    );
+  };
 
   private onPress = (): void => {
     const { initiatePayment } = this.props;
 
+    this.setState({ loading: true });
     initiatePayment()
       .then(this.onPayment)
       .catch((e) => {
+        this.setState({ loading: false });
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       });
   };
@@ -63,12 +82,14 @@ export class PaymentGateway extends React.PureComponent<IProps> {
       },
     };
 
+    this.setState({ loading: false });
     RazorpayCheckout.open(options)
       .then(onPaymentSuccess)
       .catch((error: IRazorPayError) => {
         if (onPaymentFailure) {
           onPaymentFailure(error);
         }
+        AlertHelper.error({ message: error.description });
       });
   };
 }
