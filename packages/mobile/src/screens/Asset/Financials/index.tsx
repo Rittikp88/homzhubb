@@ -11,7 +11,7 @@ import {
   AnimatedProfileHeader,
   AssetMetricsList,
   PropertyDuesCardContainer,
-  StateAwareComponent,
+  Loader,
   IMetricsData,
 } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
@@ -45,15 +45,26 @@ export class Financials extends React.PureComponent<Props, IState> {
   public componentDidMount(): void {
     const { navigation } = this.props;
 
-    this.onFocusSubscription = navigation.addListener('focus', (): void => {
-      this.getGeneralLedgersPref().then();
-      this.getGeneralLedgers().then();
-    });
+    this.onFocusSubscription = navigation.addListener(
+      'focus',
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      async (): Promise<void> => {
+        this.setState({ isLoading: true });
+        await this.getGeneralLedgersPref();
+        await this.getGeneralLedgers();
+        this.setState({ isLoading: false });
+      }
+    );
   }
 
   public render = (): React.ReactElement => {
     const { isLoading } = this.state;
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+    return (
+      <>
+        {this.renderComponent()}
+        <Loader visible={isLoading} />
+      </>
+    );
   };
 
   private renderComponent = (): React.ReactElement => {
@@ -111,20 +122,19 @@ export class Financials extends React.PureComponent<Props, IState> {
         count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.credit, ledgerData)}/-`,
         currencySymbol: 'INR',
         // @ts-ignore
-        colorGradient: { hexColorA: theme.colors.gradientA, hexColorB: theme.colors.gradientB },
+        colorGradient: { hexColorA: theme.colors.gradientA, hexColorB: theme.colors.gradientB, location: [0, 1] },
       },
       {
         label: t('assetFinancial:expense', { year: currentYear }),
         count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.debit, ledgerData)}/-`,
         currencySymbol: 'INR',
         // @ts-ignore
-        colorGradient: { hexColorA: theme.colors.gradientC, hexColorB: theme.colors.gradientD },
+        colorGradient: { hexColorA: theme.colors.gradientC, hexColorB: theme.colors.gradientD, location: [0, 1] },
       },
     ];
   };
 
   private getGeneralLedgersPref = async (): Promise<void> => {
-    this.setState({ isLoading: true });
     try {
       const response: GeneralLedgers[] = await LedgerService.getLedgerPerformances(
         DateUtils.getCurrentYearStartDate(),
@@ -132,28 +142,22 @@ export class Financials extends React.PureComponent<Props, IState> {
         DataGroupBy.year
       );
 
-      this.setState({ ledgerData: response, isLoading: false });
+      this.setState({ ledgerData: response });
     } catch (e) {
-      this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
   private getGeneralLedgers = async (): Promise<void> => {
     const { transactionsData } = this.state;
-    this.setState(() => {
-      return { isLoading: false };
-    });
 
     try {
       const response: FinancialTransactions = await LedgerService.getGeneralLedgers(transactionsData.length);
 
       this.setState({
         transactionsData: [...transactionsData, ...response.results],
-        isLoading: false,
       });
     } catch (e) {
-      this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };

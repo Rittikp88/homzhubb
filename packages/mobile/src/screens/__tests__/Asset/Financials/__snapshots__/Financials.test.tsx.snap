@@ -1,79 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Financials Screen should render snapshot 1`] = `
-<StateAwareComponent
-  loading={false}
-  renderComponent={
-    <UNDEFINED
-      isOuterScrollEnabled={true}
-      title="financial"
-    >
-      <React.Fragment>
-        <UNDEFINED
-          data={
-            Array [
-              Object {
-                "colorGradient": Object {
-                  "hexColorA": "#61D773",
-                  "hexColorB": "#94EF90",
-                },
-                "count": "0/-",
-                "currencySymbol": "INR",
-                "label": "assetFinancial:income",
-              },
-              Object {
-                "colorGradient": Object {
-                  "hexColorA": "#FDB113",
-                  "hexColorB": "#FFDB8F",
-                },
-                "count": "0/-",
-                "currencySymbol": "INR",
-                "label": "assetFinancial:expense",
-              },
-            ]
-          }
-          numOfElements={2}
-          onPlusIconClicked={[Function]}
-          textStyle={
-            Object {
-              "color": "#FFFFFF",
-              "textAlign": "center",
-            }
-          }
-          title="assetFinancial:recordsText"
-        />
-        <withI18nextTranslation(FinanceOverview) />
-        <PropertyDuesCardContainer
-          currency="USD"
-          propertyDues={
-            Array [
-              Object {
-                "address": "Sindhi Society, Chembur, Mumbai- 400071",
-                "currency_symbol": "USD",
-                "dueCategory": "Plumbing fees",
-                "price": 20000,
-                "propertyName": "Eaton Garth Manor",
-              },
-              Object {
-                "address": "Sindhi Society, Chembur, Mumbai- 400071",
-                "currency_symbol": "USD",
-                "dueCategory": "Plumbing fees",
-                "price": 30000,
-                "propertyName": "Eaton Garth Manor",
-              },
-              Object {
-                "address": "Sindhi Society, Chembur, Mumbai- 400071",
-                "currency_symbol": "USD",
-                "dueCategory": "Plumbing fees",
-                "price": 20000,
-                "propertyName": "Eaton Garth Manor",
-              },
-            ]
-          }
-          totalDue={70000}
-        />
-      </React.Fragment>
-    </UNDEFINED>
-  }
-/>
+<Fragment>
+  <Connect(AnimatedProfileHeader)
+    isOuterScrollEnabled={true}
+    title="financial"
+  >
+    <Memo(AssetMetricsList)
+      data={
+        Array [
+          Object {
+            "colorGradient": Object {
+              "hexColorA": "#61D773",
+              "hexColorB": "#94EF90",
+              "location": Array [
+                0,
+                1,
+              ],
+            },
+            "count": "0/-",
+            "currencySymbol": "INR",
+            "label": "assetFinancial:income",
+          },
+          Object {
+            "colorGradient": Object {
+              "hexColorA": "#FDB113",
+              "hexColorB": "#FFDB8F",
+              "location": Array [
+                0,
+                1,
+              ],
+            },
+            "count": "0/-",
+            "currencySymbol": "INR",
+            "label": "assetFinancial:expense",
+          },
+        ]
+      }
+      numOfElements={2}
+      onPlusIconClicked={[Function]}
+      textStyle={
+        Object {
+          "color": "#FFFFFF",
+          "textAlign": "center",
+        }
+      }
+      title="assetFinancial:recordsText"
+    />
+    <withI18nextTranslation(FinanceOverview) />
+    <PropertyDuesCardContainer
+      currency="USD"
+      propertyDues={
+        Array [
+          Object {
+            "address": "Sindhi Society, Chembur, Mumbai- 400071",
+            "currency_symbol": "USD",
+            "dueCategory": "Plumbing fees",
+            "price": 20000,
+            "propertyName": "Eaton Garth Manor",
+          },
+          Object {
+            "address": "Sindhi Society, Chembur, Mumbai- 400071",
+            "currency_symbol": "USD",
+            "dueCategory": "Plumbing fees",
+            "price": 30000,
+            "propertyName": "Eaton Garth Manor",
+          },
+          Object {
+            "address": "Sindhi Society, Chembur, Mumbai- 400071",
+            "currency_symbol": "USD",
+            "dueCategory": "Plumbing fees",
+            "price": 20000,
+            "propertyName": "Eaton Garth Manor",
+          },
+        ]
+      }
+      totalDue={70000}
+    />
+  </Connect(AnimatedProfileHeader)>
+  <Loader
+    visible={false}
+  />
+</Fragment>
 `;
