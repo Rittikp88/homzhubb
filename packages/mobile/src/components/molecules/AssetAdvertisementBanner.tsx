@@ -51,7 +51,7 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
     return (
       <Image
         source={{
-          uri: item?.attachment?.link ?? '',
+          uri: item.attachment.link,
         }}
         style={styles.carouselImage}
       />

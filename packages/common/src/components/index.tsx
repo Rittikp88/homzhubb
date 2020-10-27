@@ -15,6 +15,7 @@ export { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbn
 export { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';
 export { ModalView } from '@homzhub/common/src/components/atoms/ModalView';
 export { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
+export { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
 export { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 export { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 export { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';

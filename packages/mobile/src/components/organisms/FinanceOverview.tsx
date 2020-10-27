@@ -14,7 +14,7 @@ import {
 } from '@homzhub/common/src/constants/FinanceOverview';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Dropdown, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
+import { Dropdown, Label, SelectionPicker, Text, OnFocusCallback } from '@homzhub/common/src/components';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
 import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
 import { GeneralLedgers, DataGroupBy, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -46,6 +46,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
     const { currentTab, selectedTimeRange, data } = this.state;
     return (
       <View style={styles.container}>
+        <OnFocusCallback callback={this.getGeneralLedgers} />
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('overallPerformance')}
         </Text>
@@ -102,6 +103,7 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
 
   public getGeneralLedgers = async (): Promise<void> => {
     const { selectedTimeRange, currentTab } = this.state;
+    // @ts-ignore
     const { endDate, startDate, dataGroupBy } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
     const getTransactionGroupBy = (): DataGroupBy => {
       if (currentTab === TabKeys.cashFlow) {

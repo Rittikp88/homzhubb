@@ -4,12 +4,10 @@ import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -20,13 +18,17 @@ import {
   AssetSummary,
   Loader,
 } from '@homzhub/mobile/src/components';
-import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
-import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import AssetSubscriptionPlan from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';
-import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
+import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
+import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 
 interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
@@ -40,6 +42,7 @@ type Props = WithTranslation & libraryProps & IDispatchProps;
 
 interface IDashboardState {
   metrics: AssetMetrics;
+  pendingProperties: Asset[];
   isLoading: boolean;
 }
 
@@ -48,6 +51,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   public state = {
     metrics: {} as AssetMetrics,
+    pendingProperties: [],
     isLoading: false,
   };
 
@@ -65,12 +69,14 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   public render = (): React.ReactElement => {
     const { t } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, pendingProperties } = this.state;
+
     return (
       <AnimatedProfileHeader title={t('dashboard')}>
         <>
           {this.renderAssetMetricsAndUpdates()}
           <PendingPropertyListCard
+            data={pendingProperties}
             onPressComplete={this.onCompleteDetails}
             onSelectAction={this.handleActionSelection}
           />
@@ -107,6 +113,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     );
   };
 
+  // HANDLERS
   private onCompleteDetails = (assetId: number): void => {
     const { navigation, setAssetId } = this.props;
     setAssetId(assetId);
@@ -119,10 +126,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private onViewAll = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.MarketTrends);
-  };
-
-  private getScreenData = async (): Promise<void> => {
-    await this.getAssetMetrics();
   };
 
   private handleDues = (): void => {
@@ -158,6 +161,13 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       params: { previousScreen: ScreensKeys.Dashboard },
     });
   };
+  // HANDLERS end
+
+  // APIs
+  private getScreenData = async (): Promise<void> => {
+    await this.getAssetMetrics();
+    await this.getPendingProperties();
+  };
 
   private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
@@ -170,6 +180,16 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       AlertHelper.error({ message: error });
     }
   };
+
+  private getPendingProperties = async (): Promise<void> => {
+    try {
+      const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
+      this.setState({ pendingProperties: response });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+  // APIs end
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {

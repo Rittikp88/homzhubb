@@ -92,6 +92,13 @@ export class SpaceType extends Unit {
     this._isDisabled = value;
   }
 
+  get spaceListEntire(): ISpaceCount {
+    return {
+      space_type: this.id,
+      count: this.count,
+    };
+  }
+
   get spaceList(): ISpaceCount {
     return {
       space_type: this.id,

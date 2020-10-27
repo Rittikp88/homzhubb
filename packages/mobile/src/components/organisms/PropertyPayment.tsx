@@ -130,16 +130,21 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     if (!item.value) {
       return null;
     }
+    const {
+      price,
+      currency: { currencySymbol },
+      valueBundle: { label },
+    } = item;
 
     return (
       <>
         <View style={styles.serviceItem}>
           <View style={styles.content}>
             <Text type="small" textType="semiBold" style={styles.serviceName}>
-              {item.valueBundle.label}
+              {label}
             </Text>
             <Text type="small" textType="semiBold" style={styles.serviceAmount}>
-              {`${item.currency.currencySymbol} ${item.bundlePrice}`}
+              {`${currencySymbol} ${price}`}
             </Text>
           </View>
           <TouchableOpacity onPress={removeService} style={styles.removeView}>

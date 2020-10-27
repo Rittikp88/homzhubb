@@ -4,34 +4,28 @@ import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
+import { Text } from '@homzhub/common/src/components';
+import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView, Loader } from '@homzhub/mobile/src/components';
+import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
+import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
+import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
-import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import {
   IGetPropertiesPayload,
   IGetTenanciesPayload,
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
-import { Text } from '@homzhub/common/src/components';
-import {
-  AnimatedProfileHeader,
-  AssetMetricsList,
-  BottomSheetListView,
-  Loader,
-  StateAwareComponent,
-} from '@homzhub/mobile/src/components';
-import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
-import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
-import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -88,11 +82,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { isTenanciesLoading } = this.props;
     const { isLoading } = this.state;
     return (
-      <StateAwareComponent
-        loading={isTenanciesLoading || isLoading}
-        renderComponent={this.renderComponent()}
-        testID="stateAware"
-      />
+      <>
+        {this.renderComponent()}
+        <Loader visible={isLoading || isTenanciesLoading} />
+      </>
     );
   };
 

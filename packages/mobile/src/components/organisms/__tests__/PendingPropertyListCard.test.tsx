@@ -8,8 +8,7 @@ let props: any;
 let wrapper: ShallowWrapper;
 
 describe('PendingPropertyListCard', () => {
-  wrapper = shallow(<PendingPropertyListCard {...props} t={(key: string): string => key} />);
-  wrapper.setState({ data: [mockAsset] });
+  wrapper = shallow(<PendingPropertyListCard {...props} t={(key: string): string => key} data={[mockAsset]} />);
 
   it('should match snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();

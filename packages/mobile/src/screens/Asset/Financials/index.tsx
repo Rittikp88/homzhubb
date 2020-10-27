@@ -73,7 +73,7 @@ export class Financials extends React.PureComponent<Props, IState> {
           />
           <FinanceOverview />
           <PropertyDuesCardContainer currency={currency_symbol} totalDue={totalDue} propertyDues={details} />
-          {transactionsData && transactionsData.length > 0 && (
+          {transactionsData.length > 0 && (
             <TransactionCardsContainer
               shouldEnableOuterScroll={this.toggleScroll}
               transactionsData={transactionsData}

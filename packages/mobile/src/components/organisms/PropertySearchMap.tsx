@@ -117,7 +117,6 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       isWishlisted,
       id,
     } = item;
-    const currency = this.getCurrency(item);
     const price = this.getPrice(item);
     const amenities = PropertyUtils.getAmenities(spaces, furnishing, code, carpetArea, carpetAreaUnit?.title ?? '');
     const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
@@ -150,7 +149,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
               : 'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
         }}
         name={projectName}
-        currency={currency}
+        currency={item.country.currencies[0]}
         price={price}
         priceUnit={transaction_type === 0 ? 'mo' : ''}
         isFavorite={isFavourite}
@@ -181,14 +180,6 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
         latitude,
       },
     });
-  };
-
-  public getCurrency = (item: Asset): string => {
-    const {
-      country: { currencies },
-    } = item;
-
-    return currencies[0].currencyCode || 'INR';
   };
 
   public getPrice = (item: Asset): number => {

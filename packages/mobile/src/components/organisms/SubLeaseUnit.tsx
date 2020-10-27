@@ -160,7 +160,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
         furnishing: furnishingType,
         lease_unit: {
           name: route?.title ?? LEASE_UNIT,
-          spaces: spaces.map((space) => space.spaceList),
+          spaces: spaces.map((space) => (route ? space.spaceList : space.spaceListEntire)),
         },
       };
 

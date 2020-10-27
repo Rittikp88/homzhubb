@@ -315,7 +315,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         <View style={styles.apartmentContainer}>
           <PricePerUnit
             price={(Number(leaseTerm?.expectedPrice) || Number(saleTerm?.expectedPrice)) ?? 0}
-            currency={currencies[0].currencyCode ?? 'INR'}
+            currency={currencies[0]}
             unit={asset_transaction_type === 0 ? 'mo' : ''}
           />
           {appPermissions?.addListingVisit && (

@@ -1,5 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 import { Links } from '@homzhub/common/src/domain/models/PaginationLinks';
@@ -28,12 +29,6 @@ export class FinancialRecords {
   @JsonProperty('category', LedgerCategory)
   private _category: LedgerCategory | null = null;
 
-  @JsonProperty('currency_code', String)
-  private _currencyCode = 'INR';
-
-  @JsonProperty('currency_symbol', String)
-  private _currencySymbol = '';
-
   @JsonProperty('amount', Number)
   private _amount = 0;
 
@@ -55,6 +50,9 @@ export class FinancialRecords {
   @JsonProperty('asset', Asset)
   private _asset: Asset | null = null;
 
+  @JsonProperty('currency', Currency)
+  private _currency: Currency = new Currency();
+
   @JsonProperty('attachment', Attachment, true)
   private _attachment: Attachment = new Attachment();
 
@@ -68,14 +66,6 @@ export class FinancialRecords {
 
   get category(): string {
     return this._category?.name || '';
-  }
-
-  get currencyCode(): string {
-    return this._currencyCode;
-  }
-
-  get currencySymbol(): string {
-    return this._currencySymbol;
   }
 
   get amount(): number {
@@ -111,6 +101,18 @@ export class FinancialRecords {
   }
 
   get attachmentDetails(): Attachment {
+    return this._attachment;
+  }
+
+  get asset(): Asset | null {
+    return this._asset;
+  }
+
+  get currency(): Currency {
+    return this._currency;
+  }
+
+  get attachment(): Attachment {
     return this._attachment;
   }
 }

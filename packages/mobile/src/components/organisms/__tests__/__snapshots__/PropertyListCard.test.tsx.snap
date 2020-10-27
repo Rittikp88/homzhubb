@@ -67,7 +67,13 @@ exports[`PropertyListCard should match snapshot 1`] = `
       }
     >
       <PricePerUnit
-        currency="INR"
+        currency={
+          Object {
+            "currency_code": "",
+            "currency_name": "",
+            "currency_symbol": "",
+          }
+        }
         price={NaN}
         textSizeType="regular"
         unit=""
@@ -174,7 +180,13 @@ exports[`PropertyListCard should match snapshot for optional props 1`] = `
       }
     >
       <PricePerUnit
-        currency="INR"
+        currency={
+          Object {
+            "currency_code": "",
+            "currency_name": "",
+            "currency_symbol": "",
+          }
+        }
         price={NaN}
         textSizeType="regular"
         unit="mo"

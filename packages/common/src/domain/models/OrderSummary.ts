@@ -160,7 +160,7 @@ export class OrderSummary {
   private _promo = new Promo();
 
   @JsonProperty('tax', [Tax], true)
-  private _tax = [new Tax()];
+  private _tax = [];
 
   get orderTotal(): OrderTotalSummary {
     return new OrderTotalSummary('Order Total', this._orderTotal);
@@ -211,12 +211,11 @@ export class OrderSummary {
 
     summary.push(this.subTotal);
 
-    if (this.tax && this.tax[0].taxAmount > 0) {
-      const tax = this.tax[0];
+    this.tax.forEach((tax) => {
       const title = `${tax.taxLabel}(${tax.taxPercentage}%)`;
       const taxData = new OrderTotalSummary(title, tax.taxAmount);
       summary.push(taxData);
-    }
+    });
 
     return summary;
   }

@@ -7,7 +7,7 @@ import { Label, Text } from '@homzhub/common/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
-  containerStyle: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const PropertyReviewCard = ({ containerStyle }: IProps): React.ReactElement => {

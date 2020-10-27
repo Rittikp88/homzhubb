@@ -47,45 +47,47 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
     }
 
     return (
-      <View style={[styles.container, containerStyle]}>
-        <SearchBar
-          placeholder={t('assetDashboard:searchByKeyword')}
-          value={searchString}
-          updateValue={this.updateSearchString}
-          containerStyle={styles.searchStyle}
-        />
+      <>
+        <View style={[styles.container, containerStyle]}>
+          <SearchBar
+            placeholder={t('assetDashboard:searchByKeyword')}
+            value={searchString}
+            updateValue={this.updateSearchString}
+            containerStyle={styles.searchStyle}
+          />
 
-        {this.dynamicSearch().map((item: ValueAddedService) => {
-          const {
-            id,
-            valueBundle: {
-              valueBundleItems,
-              label,
-              attachment: { link },
-            },
-            bundlePrice,
-            discountedPrice,
-          } = item;
+          {this.dynamicSearch().map((item: ValueAddedService) => {
+            const {
+              id,
+              valueBundle: {
+                valueBundleItems,
+                label,
+                attachment: { link },
+              },
+              bundlePrice,
+              discountedPrice,
+            } = item;
 
-          const handleToggle = (value: boolean): void => {
-            setValueAddedServices({ id, value });
-          };
+            const handleToggle = (value: boolean): void => {
+              setValueAddedServices({ id, value });
+            };
 
-          return (
-            <CardWithCheckbox
-              containerStyle={styles.cardContainer}
-              key={id}
-              heading={label}
-              image={link}
-              price={bundlePrice}
-              discountedPrice={discountedPrice > 0 ? discountedPrice : undefined}
-              bundleItems={valueBundleItems}
-              onToggle={handleToggle}
-              selected={item.value}
-            />
-          );
-        })}
-
+            return (
+              <CardWithCheckbox
+                key={id}
+                heading={label}
+                selected={item.value}
+                image={link}
+                price={bundlePrice}
+                discountedPrice={discountedPrice}
+                bundleItems={valueBundleItems}
+                currency={item.currency}
+                containerStyle={styles.cardContainer}
+                onToggle={handleToggle}
+              />
+            );
+          })}
+        </View>
         <Button
           disabled={valueAddedServices.filter((service) => service.value).length === 0}
           type="primary"
@@ -93,7 +95,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
           containerStyle={styles.buttonStyle}
           onPress={this.handleContinue}
         />
-      </View>
+      </>
     );
   };
 
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    margin: 16,
+    marginVertical: 20,
   },
   searchStyle: {
     marginBottom: 24,

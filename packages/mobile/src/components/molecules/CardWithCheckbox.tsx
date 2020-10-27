@@ -2,17 +2,19 @@ import React, { ReactElement } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider, ImageRound, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 interface IOwnProps {
   heading: string;
   image: string;
   price: number;
-  discountedPrice?: number;
+  discountedPrice: number;
   bundleItems: Unit[];
   selected: boolean;
   onToggle: (value: boolean) => void;
   containerStyle?: any;
+  currency: Currency;
 }
 
 interface IOwnState {
@@ -25,7 +27,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
   };
 
   public render = (): React.ReactElement => {
-    const { heading, image, price, discountedPrice, containerStyle, selected } = this.props;
+    const { heading, image, price, discountedPrice, containerStyle, selected, currency } = this.props;
     const { showMore } = this.state;
     const {
       colors: { moreSeparator, white },
@@ -46,17 +48,17 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
               </View>
               <View style={styles.rowStyle}>
                 <PricePerUnit
-                  textStyle={[styles.price, styles.marginRight]}
+                  price={discountedPrice || price}
+                  currency={currency}
                   textSizeType="small"
-                  price={price}
-                  currency="INR"
+                  textStyle={[styles.price, styles.marginRight]}
                 />
-                {discountedPrice && (
+                {discountedPrice > 0 && (
                   <PricePerUnit
-                    textStyle={styles.originalPrice}
+                    price={price}
+                    currency={currency}
                     textSizeType="small"
-                    price={discountedPrice}
-                    currency="INR"
+                    textStyle={styles.originalPrice}
                   />
                 )}
               </View>

@@ -32,7 +32,7 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
         label,
         assetName,
         amount,
-        currencyCode,
+        currency,
         entryType,
         attachmentDetails: { fileName },
       },
@@ -74,7 +74,7 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
             <PricePerUnit
               textSizeType="small"
               textStyle={textStyle}
-              currency={currencyCode}
+              currency={currency}
               prefixText={pricePrefixText}
               price={amount}
             />

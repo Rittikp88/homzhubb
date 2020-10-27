@@ -27,6 +27,7 @@ exports[`Dashboard Screen should render snapshot 1`] = `
     serviceTickets={0}
   />
   <withI18nextTranslation(PendingPropertyListCard)
+    data={Array []}
     onPressComplete={[Function]}
     onSelectAction={[Function]}
   />

@@ -72,9 +72,9 @@ export class PropertyListCard extends React.Component<Props, {}> {
       carpetAreaUnit,
       spaces,
       furnishing,
+      country: { currencies },
       assetGroup: { code },
     } = property;
-    const currency: string = this.getCurrency();
     const price: number = this.getPrice();
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
@@ -87,22 +87,13 @@ export class PropertyListCard extends React.Component<Props, {}> {
       <View style={styles.amenities}>
         <PricePerUnit
           price={price}
-          currency={currency}
+          currency={currencies[0]}
           unit={transaction_type === 0 ? 'mo' : ''}
           textSizeType={textSizeType}
         />
         <PropertyAmenities data={amenitiesData} direction="row" contentContainerStyle={styles.amenitiesContainer} />
       </View>
     );
-  };
-
-  public getCurrency = (): string => {
-    const {
-      property: {
-        country: { currencies },
-      },
-    } = this.props;
-    return currencies[0].currencyCode || 'INR';
   };
 
   public getPrice = (): number => {

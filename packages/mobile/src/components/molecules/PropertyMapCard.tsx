@@ -3,6 +3,7 @@ import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-n
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Favorite, Image, Label, PricePerUnit } from '@homzhub/common/src/components';
 import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
@@ -10,7 +11,7 @@ interface IProps {
   source: ImageSourcePropType;
   name: string;
   price: number;
-  currency: string;
+  currency: Currency;
   priceUnit: string;
   isFavorite: boolean;
   onFavorite: () => void;

@@ -24,7 +24,7 @@ export class ValueAddedService {
   private _bundlePrice = -1;
 
   @JsonProperty('discounted_price', Number, true)
-  private _discountedPrice = -1;
+  private _discountedPrice = 0;
 
   @JsonProperty('currency', Currency, true)
   private _currency = new Currency();
@@ -45,6 +45,10 @@ export class ValueAddedService {
 
   get discountedPrice(): number {
     return this._discountedPrice;
+  }
+
+  get price(): number {
+    return this.discountedPrice || this.bundlePrice;
   }
 
   get currency(): Currency {

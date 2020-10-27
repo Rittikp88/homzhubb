@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Label, Text } from '@homzhub/common/src/components';
 import { PropertyAmenities, PropertyAddressCountry, ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
-import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
-import { IActions, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { IActions, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 const actionButtons: IActions[] = [
@@ -24,13 +21,13 @@ const actionButtons: IActions[] = [
 ];
 
 interface IProps {
+  data: Asset[];
   onPressComplete: (assetId: number) => void;
   onSelectAction: (payload: IActions, assetId: number) => void;
 }
 
 interface IState {
   currentPropertyIndex: number;
-  data: Asset[];
   isActionsVisible: boolean;
 }
 
@@ -39,17 +36,12 @@ type Props = IProps & WithTranslation;
 export class PendingPropertyListCard extends Component<Props, IState> {
   public state = {
     currentPropertyIndex: 0,
-    data: [],
     isActionsVisible: false,
   };
 
-  public componentDidMount = async (): Promise<void> => {
-    await this.getPendingProperties();
-  };
-
   public render(): React.ReactNode {
-    const { currentPropertyIndex, data } = this.state;
-    const { t } = this.props;
+    const { currentPropertyIndex } = this.state;
+    const { t, data } = this.props;
     const currentProperty = data[currentPropertyIndex];
     const total = data.length;
 
@@ -204,17 +196,10 @@ export class PendingPropertyListCard extends Component<Props, IState> {
     );
   };
 
-  private getPendingProperties = async (): Promise<void> => {
-    try {
-      const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
-      this.setState({ data: response });
-    } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-    }
-  };
-
   private handleNext = (): void => {
-    const { currentPropertyIndex, data } = this.state;
+    const { currentPropertyIndex } = this.state;
+    const { data } = this.props;
+
     if (data.length !== currentPropertyIndex + 1) {
       this.setState({ currentPropertyIndex: currentPropertyIndex + 1 });
     }
