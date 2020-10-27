@@ -120,7 +120,8 @@
     "maxCount": "Cannot increase beyond this",
     "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet",
     "accept": "Accept",
-    "reject": "Reject"
+    "reject": "Reject",
+    "done": "Done"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -368,7 +369,9 @@
     "visitScheduled": "Visit Scheduled",
     "visitCancelled": "Visit Cancelled",
     "awaiting": "Awaiting Confirmation...",
-    "buyer": "Buyer"
+    "buyer": "Buyer",
+    "paymentSuccessMsg": "The payment was completed successfully.",
+    "previewOwnProperty": "Click on \"Continue\" to preview your property"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

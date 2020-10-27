@@ -187,7 +187,7 @@ export const BottomTabs = (): React.ReactElement => {
   };
 
   const initialRoute = isLoggedIn
-    ? assetCount < 0
+    ? assetCount < 1
       ? ScreensKeys.Portfolio
       : ScreensKeys.Dashboard
     : ScreensKeys.Search;

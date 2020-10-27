@@ -94,7 +94,7 @@ export class SignUpScreen extends Component<Props, ISignUpState> {
         type: OtpNavTypes.SignUp,
         title: t('auth:verifyNumber'),
         countryCode: formData.phone_code,
-        phone: formData.phone_number,
+        otpSentTo: formData.phone_number,
         userData: formData,
         ...(params && params.onCallback && { onCallback: params.onCallback }),
       });

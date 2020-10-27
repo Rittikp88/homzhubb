@@ -281,7 +281,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           type="primary"
           title={t('common:continue')}
           containerStyle={styles.buttonStyle}
-          onPress={this.navigateToDashboard}
+          onPress={this.handleContinue}
         />
       </>
     );
@@ -456,34 +456,17 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private navigateToDashboard = (): void => {
-    const { navigation, resetState, assetDetails, setFilter } = this.props;
+  private handleContinue = (): void => {
+    const { navigation, resetState, assetDetails } = this.props;
     this.setState({ isSheetVisible: false });
     resetState();
 
     if (assetDetails) {
       const {
-        id,
-        leaseListingId,
-        saleListingId,
-        lastVisitedStep: {
-          listing: { type },
-          isPropertyReady,
-        },
+        lastVisitedStep: { isPropertyReady },
       } = assetDetails;
-      if (!isPropertyReady) {
-        const planType = type === TypeOfPlan.RENT ? 0 : 1;
-        setFilter({ asset_transaction_type: planType });
-        const saleId = saleListingId && saleListingId.length > 0 ? saleListingId[0] : 0;
-        const leaseId = leaseListingId && leaseListingId.length > 0 ? leaseListingId[0] : 0;
-
-        const propertyTermId = type === TypeOfPlan.RENT && leaseId > 0 ? leaseId : saleId;
-
-        navigation.navigate(ScreensKeys.PropertyAssetDescription, {
-          propertyTermId,
-          isPreview: true,
-          propertyId: id,
-        });
+      if (isPropertyReady) {
+        this.navigateToPreview(assetDetails);
       } else {
         navigation.dispatch(
           CommonActions.reset({
@@ -495,21 +478,63 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     }
   };
 
+  private navigateToPreview = (assetDetails: Asset): void => {
+    const { navigation, setFilter } = this.props;
+    const {
+      id,
+      leaseListingId,
+      saleListingId,
+      lastVisitedStep: {
+        listing: { type },
+      },
+    } = assetDetails;
+    const planType = type === TypeOfPlan.RENT ? 0 : 1;
+    setFilter({ asset_transaction_type: planType });
+    const saleId = saleListingId && saleListingId.length > 0 ? saleListingId[0] : 0;
+    const leaseId = leaseListingId && leaseListingId.length > 0 ? leaseListingId[0] : 0;
+
+    const propertyTermId = type === TypeOfPlan.RENT && leaseId > 0 ? leaseId : saleId;
+
+    navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+      propertyTermId,
+      isPreview: true,
+      propertyId: id,
+    });
+  };
+
   private handleNextStep = (): void => {
     const { currentIndex, isStepDone } = this.state;
-    const { getAssetById } = this.props;
+    const {
+      getAssetById,
+      assetDetails,
+      route: { params },
+    } = this.props;
     const newStepDone: boolean[] = isStepDone;
     newStepDone[currentIndex] = true;
+
     this.setState({
       isStepDone: newStepDone,
       isNextStep: true,
     });
-    if (currentIndex < this.getRoutes().length - 1) {
-      this.setState({ currentIndex: currentIndex + 1 });
-      getAssetById();
-      this.scrollToTop();
-    } else {
-      this.setState({ isSheetVisible: true });
+
+    if (assetDetails) {
+      const {
+        isPropertyReady,
+        listing: { isPaymentDone },
+      } = assetDetails.lastVisitedStep;
+      if (currentIndex === 0 && params && params.isFromEdit) {
+        this.setState({ currentIndex: currentIndex + 1 });
+        getAssetById();
+        this.scrollToTop();
+      } else if ((currentIndex === 1 || isPropertyReady) && isPaymentDone) {
+        this.navigateToPreview(assetDetails);
+      } else if (currentIndex < this.getRoutes().length - 1) {
+        this.setState({ currentIndex: currentIndex + 1 });
+        getAssetById();
+        this.scrollToTop();
+      } else {
+        this.setState({ isSheetVisible: true });
+      }
     }
   };
 
@@ -519,10 +544,12 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   public handleSkip = (): void => {
-    const { navigation, resetState } = this.props;
+    const { navigation, resetState, assetDetails } = this.props;
     const { currentIndex } = this.state;
 
-    if (currentIndex < this.getRoutes().length - 2) {
+    if (assetDetails && assetDetails.lastVisitedStep.isPropertyReady) {
+      this.navigateToPreview(assetDetails);
+    } else if (currentIndex < this.getRoutes().length - 2) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollToTop();
     } else {

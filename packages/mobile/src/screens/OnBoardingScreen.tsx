@@ -230,7 +230,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 
 const styles = StyleSheet.create({
   statusBar: {
-    height: PlatformUtils.isIOS() ? 20 : 0,
+    height: PlatformUtils.isIOS() ? 20 : 40,
   },
   container: {
     flex: 1,

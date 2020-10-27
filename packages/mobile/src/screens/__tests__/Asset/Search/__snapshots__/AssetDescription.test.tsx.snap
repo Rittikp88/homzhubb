@@ -1,534 +1,531 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Markdown View should render snapshot 1`] = `
-<StateAwareComponent
-  loading={false}
-  renderComponent={null}
-/>
+<Fragment>
+  <Loader
+    visible={false}
+  />
+</Fragment>
 `;
 
 exports[`Markdown View should render snapshot with assetDetails 1`] = `
-<StateAwareComponent
-  loading={false}
-  renderComponent={
-    <React.Fragment>
-      <UNDEFINED
-        backgroundColor="transparent"
-        barStyle="light-content"
-        isTranslucent={true}
-        statusBarStyle={
+<Fragment>
+  <Loader
+    visible={false}
+  />
+  <Memo(StatusBarComponent)
+    backgroundColor="transparent"
+    barStyle="light-content"
+    isTranslucent={true}
+    statusBarStyle={
+      Object {
+        "height": 0,
+      }
+    }
+  />
+  <ParallaxScrollView
+    backgroundColor="transparent"
+    backgroundScrollSpeed={5}
+    backgroundSpeed={10}
+    contentBackgroundColor="#fff"
+    contentContainerStyle={null}
+    fadeOutForeground={true}
+    onChangeHeaderVisibility={[Function]}
+    outputScaleValue={5}
+    parallaxHeaderHeight={250}
+    renderBackground={[Function]}
+    renderContentBackground={[Function]}
+    renderFixedHeader={[Function]}
+    renderForeground={[Function]}
+    renderParallaxHeader={[Function]}
+    renderScrollComponent={[Function]}
+    renderStickyHeader={[Function]}
+    stickyHeaderHeight={100}
+    testID="parallaxView"
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+          "paddingHorizontal": 16,
+        }
+      }
+    >
+      <View
+        style={
           Object {
-            "height": 0,
+            "borderBottomColor": "#E5E8EB",
+            "borderBottomWidth": 1,
           }
         }
-      />
-      <ParallaxScrollView
-        backgroundColor="transparent"
-        backgroundScrollSpeed={5}
-        backgroundSpeed={10}
-        contentBackgroundColor="#fff"
-        contentContainerStyle={null}
-        fadeOutForeground={true}
-        onChangeHeaderVisibility={[Function]}
-        outputScaleValue={5}
-        parallaxHeaderHeight={250}
-        renderBackground={[Function]}
-        renderContentBackground={[Function]}
-        renderFixedHeader={[Function]}
-        renderForeground={[Function]}
-        renderParallaxHeader={[Function]}
-        renderScrollComponent={[Function]}
-        renderStickyHeader={[Function]}
-        stickyHeaderHeight={100}
-        testID="parallaxView"
       >
+        <ShieldGroup
+          isInfoRequired={true}
+          propertyType="Apartment / Condo"
+          text="It was popularised in the 1960s with the release of Letraset sheets."
+        />
         <View
           style={
             Object {
-              "backgroundColor": "#FFFFFF",
-              "flex": 1,
-              "paddingHorizontal": 16,
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginVertical": 8,
+            }
+          }
+        >
+          <PricePerUnit
+            currency={
+              Object {
+                "currency_code": "",
+                "currency_name": "",
+                "currency_symbol": "",
+              }
+            }
+            price={NaN}
+            unit="mo"
+          />
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginVertical": 8,
+            }
+          }
+        >
+          <PropertyAddress
+            isIcon={false}
+            subAddress=" "
+            subAddressStyle={
+              Object {
+                "marginHorizontal": 0,
+              }
+            }
+          />
+          <ForwardRef
+            disabled={false}
+            onPress={[Function]}
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "borderColor": "#E5E8EB",
+                  "borderWidth": 1,
+                  "height": 30,
+                  "marginRight": 14,
+                }
+              }
+            />
+            <Icon
+              allowFontScaling={false}
+              color="#0084F8"
+              name="house-marker"
+              size={30}
+              style={
+                Object {
+                  "marginHorizontal": 6,
+                }
+              }
+            />
+          </ForwardRef>
+        </View>
+        <PropertyAmenities
+          containerStyle={
+            Object {
+              "flexWrap": "wrap",
+              "justifyContent": "space-between",
+              "marginBottom": 14,
+            }
+          }
+          data={
+            Array [
+              Object {
+                "icon": "furnishing",
+                "iconColor": "#33495E",
+                "iconSize": 20,
+                "label": undefined,
+              },
+              Object {
+                "icon": "open-parking",
+                "iconColor": "#33495E",
+                "iconSize": 20,
+                "label": "-",
+              },
+              Object {
+                "icon": "area",
+                "iconColor": "#33495E",
+                "iconSize": 20,
+                "label": "-",
+              },
+            ]
+          }
+          direction="row"
+        />
+        <Divider />
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingVertical": 16,
             }
           }
         >
           <View
+            key="0"
             style={
               Object {
-                "borderBottomColor": "#E5E8EB",
-                "borderBottomWidth": 1,
+                "marginLeft": 4,
+                "marginRight": 20,
               }
             }
           >
-            <ShieldGroup
-              isInfoRequired={true}
-              propertyType="Apartment / Condo"
-              text="It was popularised in the 1960s with the release of Letraset sheets."
-            />
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
-                  "marginVertical": 8,
-                }
-              }
-            >
-              <PricePerUnit
-                currency={
-                  Object {
-                    "currency_code": "",
-                    "currency_name": "",
-                    "currency_symbol": "",
-                  }
-                }
-                price={NaN}
-                unit="mo"
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
-                  "marginVertical": 8,
-                }
-              }
-            >
-              <PropertyAddress
-                isIcon={false}
-                subAddress=" "
-                subAddressStyle={
-                  Object {
-                    "marginHorizontal": 0,
-                  }
-                }
-              />
-              <ForwardRef
-                disabled={false}
-                onPress={[Function]}
-                style={
-                  Object {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "borderColor": "#E5E8EB",
-                      "borderWidth": 1,
-                      "height": 30,
-                      "marginRight": 14,
-                    }
-                  }
-                />
-                <Icon
-                  allowFontScaling={false}
-                  color="#0084F8"
-                  name="house-marker"
-                  size={30}
-                  style={
-                    Object {
-                      "marginHorizontal": 6,
-                    }
-                  }
-                />
-              </ForwardRef>
-            </View>
-            <PropertyAmenities
-              containerStyle={
-                Object {
-                  "flexWrap": "wrap",
-                  "justifyContent": "space-between",
-                  "marginBottom": 14,
-                }
-              }
-              data={
-                Array [
-                  Object {
-                    "icon": "furnishing",
-                    "iconColor": "#33495E",
-                    "iconSize": 20,
-                    "label": undefined,
-                  },
-                  Object {
-                    "icon": "open-parking",
-                    "iconColor": "#33495E",
-                    "iconSize": 20,
-                    "label": "-",
-                  },
-                  Object {
-                    "icon": "area",
-                    "iconColor": "#33495E",
-                    "iconSize": 20,
-                    "label": "-",
-                  },
-                ]
-              }
-              direction="row"
-            />
-            <Divider />
-            <View
-              style={
-                Object {
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
-                  "paddingVertical": 16,
-                }
-              }
-            >
-              <React.Fragment>
-                <View
-                  style={
-                    Object {
-                      "marginLeft": 4,
-                      "marginRight": 20,
-                    }
-                  }
-                >
-                  <Label
-                    style={
-                      Object {
-                        "color": "#4C5F72",
-                      }
-                    }
-                    textType="regular"
-                    type="large"
-                  >
-                    Posted on
-                  </Label>
-                  <Label
-                    style={
-                      Object {
-                        "color": "#19324A",
-                      }
-                    }
-                    textType="semiBold"
-                    type="large"
-                  >
-                    27 Oct 2020
-                  </Label>
-                </View>
-                <View
-                  style={
-                    Object {
-                      "marginLeft": 4,
-                      "marginRight": 20,
-                    }
-                  }
-                >
-                  <Label
-                    style={
-                      Object {
-                        "color": "#4C5F72",
-                      }
-                    }
-                    textType="regular"
-                    type="large"
-                  >
-                    Available from
-                  </Label>
-                  <Label
-                    style={
-                      Object {
-                        "color": "#19324A",
-                      }
-                    }
-                    textType="semiBold"
-                    type="large"
-                  >
-                    Invalid date
-                  </Label>
-                </View>
-              </React.Fragment>
-            </View>
-            <Divider />
-          </View>
-          <UNDEFINED
-            isDividerRequired={true}
-            title="description"
-          >
-            <React.Fragment>
-              <Label
-                numberOfLines={3}
-                onTextLayout={[Function]}
-                style={
-                  Object {
-                    "color": "#4C5F72",
-                    "marginTop": 12,
-                  }
-                }
-                textType="regular"
-                type="large"
-              >
-                It is a long established fact that the readable content of a page when looking at its layout.
-              </Label>
-            </React.Fragment>
-          </UNDEFINED>
-          <UNDEFINED
-            isDividerRequired={true}
-            title="factsFeatures"
-          >
-            <FlatList
-              contentContainerStyle={
-                Object {
-                  "marginTop": 16,
-                }
-              }
-              data={
-                Array [
-                  Object {
-                    "locale_key": "security_deposit",
-                    "name": "Security Deposit",
-                    "value": "₹ 2 Lacs",
-                  },
-                  Object {
-                    "locale_key": "min_lease_period",
-                    "name": "Min Lease Period",
-                    "value": "3 Months",
-                  },
-                  Object {
-                    "locale_key": "maintenance_paid_by",
-                    "name": "Maintenance Paid By",
-                    "value": "Owner",
-                  },
-                  Object {
-                    "locale_key": "utilities_paid_by",
-                    "name": "Utilities Paid By",
-                    "value": "Tenant",
-                  },
-                  Object {
-                    "locale_key": "maintenance",
-                    "name": "Maintenance",
-                    "value": "₹ 5,000",
-                  },
-                  Object {
-                    "locale_key": "building_age",
-                    "name": "Building Age",
-                    "value": "5 Years",
-                  },
-                  Object {
-                    "locale_key": "building_type",
-                    "name": "Building Type",
-                    "value": "Apartment",
-                  },
-                ]
-              }
-              disableVirtualization={false}
-              horizontal={false}
-              initialNumToRender={10}
-              keyExtractor={[Function]}
-              maxToRenderPerBatch={10}
-              numColumns={2}
-              onEndReachedThreshold={2}
-              removeClippedSubviews={false}
-              renderItem={[Function]}
-              scrollEventThrottle={50}
-              updateCellsBatchingPeriod={50}
-              windowSize={21}
-            />
-          </UNDEFINED>
-          <View
-            style={
-              Object {
-                "marginTop": 24,
-              }
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "color": "#4C5F72",
-                }
-              }
-              textType="semiBold"
-              type="small"
-            >
-              amenities
-            </Text>
-            <FlatList
-              contentContainerStyle={
-                Object {
-                  "marginTop": 16,
-                }
-              }
-              data={Array []}
-              disableVirtualization={false}
-              horizontal={false}
-              initialNumToRender={10}
-              keyExtractor={[Function]}
-              maxToRenderPerBatch={10}
-              numColumns={3}
-              onEndReachedThreshold={2}
-              removeClippedSubviews={false}
-              renderItem={[Function]}
-              scrollEventThrottle={50}
-              updateCellsBatchingPeriod={50}
-              windowSize={21}
-            />
-            <Divider
-              containerStyles={
-                Object {
-                  "marginTop": 24,
-                }
-              }
-            />
-          </View>
-          <UNDEFINED
-            isDividerRequired={true}
-            title="highlights"
-          >
-            <FlatList
-              contentContainerStyle={
-                Object {
-                  "marginTop": 16,
-                }
-              }
-              data={
-                Array [
-                  Object {
-                    "covered": true,
-                    "name": "Power Backup",
-                  },
-                  Object {
-                    "covered": true,
-                    "name": "Gated Society",
-                  },
-                ]
-              }
-              disableVirtualization={false}
-              horizontal={false}
-              initialNumToRender={10}
-              keyExtractor={[Function]}
-              maxToRenderPerBatch={10}
-              numColumns={2}
-              onEndReachedThreshold={2}
-              removeClippedSubviews={false}
-              renderItem={[Function]}
-              scrollEventThrottle={50}
-              updateCellsBatchingPeriod={50}
-              windowSize={21}
-            />
-          </UNDEFINED>
-          <View
-            style={
-              Object {
-                "marginTop": 24,
-              }
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "color": "#4C5F72",
-                }
-              }
-              textType="semiBold"
-              type="small"
-            >
-              exploreNeighbourhood
-            </Text>
             <Label
               style={
                 Object {
-                  "color": "#33495E",
-                  "marginTop": 12,
+                  "color": "#4C5F72",
                 }
               }
               textType="regular"
               type="large"
-            />
-            <MapView
-              initialRegion={
-                Object {
-                  "latitude": 25.619,
-                  "latitudeDelta": 0.01,
-                  "longitude": 85.123,
-                  "longitudeDelta": 0.01,
-                }
-              }
-              pointerEvents="none"
-              provider="google"
+            >
+              Posted on
+            </Label>
+            <Label
               style={
                 Object {
-                  "flex": 1,
-                  "height": 180,
-                  "marginTop": 12,
+                  "color": "#19324A",
                 }
               }
+              textType="semiBold"
+              type="large"
             >
-              <MapMarker
-                coordinate={
-                  Object {
-                    "latitude": 25.619,
-                    "longitude": 85.123,
-                  }
-                }
-                stopPropagation={false}
-              >
-                <UNDEFINED
-                  selected={true}
-                />
-              </MapMarker>
-            </MapView>
-            <ForwardRef
-              onPress={[Function]}
-              style={
-                Object {
-                  "alignSelf": "center",
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": 4,
-                  "bottom": 36,
-                  "paddingHorizontal": 12,
-                  "paddingVertical": 6,
-                  "position": "absolute",
-                }
-              }
-            >
-              <Label
-                style={
-                  Object {
-                    "color": "#0084F8",
-                  }
-                }
-                textType="regular"
-                type="regular"
-              >
-                exploreMap
-              </Label>
-            </ForwardRef>
-            <Divider
-              containerStyles={
-                Object {
-                  "marginTop": 24,
-                }
-              }
-            />
+              27 Oct 2020
+            </Label>
           </View>
-          <UNDEFINED
-            isDividerRequired={true}
-            title="reviewsRatings"
+          <View
+            key="1"
+            style={
+              Object {
+                "marginLeft": 4,
+                "marginRight": 20,
+              }
+            }
           >
-            <UNDEFINED
-              reviews={Array []}
-            />
-          </UNDEFINED>
-          <withI18nextTranslation(SimilarProperties)
-            onFavorite={[Function]}
-            onSelectedProperty={[Function]}
-            propertyTermId={1}
-            transaction_type={0}
-          />
+            <Label
+              style={
+                Object {
+                  "color": "#4C5F72",
+                }
+              }
+              textType="regular"
+              type="large"
+            >
+              Available from
+            </Label>
+            <Label
+              style={
+                Object {
+                  "color": "#19324A",
+                }
+              }
+              textType="semiBold"
+              type="large"
+            >
+              Invalid date
+            </Label>
+          </View>
         </View>
-      </ParallaxScrollView>
-      <UNDEFINED
-        designation="Owner"
-        onContactTypeClicked={[Function]}
-        phoneNumber="undefinedundefined"
+        <Divider />
+      </View>
+      <Memo(CollapsibleSection)
+        isDividerRequired={true}
+        title="description"
+      >
+        <Label
+          numberOfLines={3}
+          onTextLayout={[Function]}
+          style={
+            Object {
+              "color": "#4C5F72",
+              "marginTop": 12,
+            }
+          }
+          textType="regular"
+          type="large"
+        >
+          It is a long established fact that the readable content of a page when looking at its layout.
+        </Label>
+      </Memo(CollapsibleSection)>
+      <Memo(CollapsibleSection)
+        isDividerRequired={true}
+        title="factsFeatures"
+      >
+        <FlatList
+          contentContainerStyle={
+            Object {
+              "marginTop": 16,
+            }
+          }
+          data={
+            Array [
+              Object {
+                "locale_key": "security_deposit",
+                "name": "Security Deposit",
+                "value": "₹ 2 Lacs",
+              },
+              Object {
+                "locale_key": "min_lease_period",
+                "name": "Min Lease Period",
+                "value": "3 Months",
+              },
+              Object {
+                "locale_key": "maintenance_paid_by",
+                "name": "Maintenance Paid By",
+                "value": "Owner",
+              },
+              Object {
+                "locale_key": "utilities_paid_by",
+                "name": "Utilities Paid By",
+                "value": "Tenant",
+              },
+              Object {
+                "locale_key": "maintenance",
+                "name": "Maintenance",
+                "value": "₹ 5,000",
+              },
+              Object {
+                "locale_key": "building_age",
+                "name": "Building Age",
+                "value": "5 Years",
+              },
+              Object {
+                "locale_key": "building_type",
+                "name": "Building Type",
+                "value": "Apartment",
+              },
+            ]
+          }
+          disableVirtualization={false}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          numColumns={2}
+          onEndReachedThreshold={2}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          updateCellsBatchingPeriod={50}
+          windowSize={21}
+        />
+      </Memo(CollapsibleSection)>
+      <View
+        style={
+          Object {
+            "marginTop": 24,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#4C5F72",
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          amenities
+        </Text>
+        <FlatList
+          contentContainerStyle={
+            Object {
+              "marginTop": 16,
+            }
+          }
+          data={Array []}
+          disableVirtualization={false}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          numColumns={3}
+          onEndReachedThreshold={2}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          updateCellsBatchingPeriod={50}
+          windowSize={21}
+        />
+        <Divider
+          containerStyles={
+            Object {
+              "marginTop": 24,
+            }
+          }
+        />
+      </View>
+      <Memo(CollapsibleSection)
+        isDividerRequired={true}
+        title="highlights"
+      >
+        <FlatList
+          contentContainerStyle={
+            Object {
+              "marginTop": 16,
+            }
+          }
+          data={
+            Array [
+              Object {
+                "covered": true,
+                "name": "Power Backup",
+              },
+              Object {
+                "covered": true,
+                "name": "Gated Society",
+              },
+            ]
+          }
+          disableVirtualization={false}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          numColumns={2}
+          onEndReachedThreshold={2}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          updateCellsBatchingPeriod={50}
+          windowSize={21}
+        />
+      </Memo(CollapsibleSection)>
+      <View
+        style={
+          Object {
+            "marginTop": 24,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#4C5F72",
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          exploreNeighbourhood
+        </Text>
+        <Label
+          style={
+            Object {
+              "color": "#33495E",
+              "marginTop": 12,
+            }
+          }
+          textType="regular"
+          type="large"
+        />
+        <MapView
+          initialRegion={
+            Object {
+              "latitude": 25.619,
+              "latitudeDelta": 0.01,
+              "longitude": 85.123,
+              "longitudeDelta": 0.01,
+            }
+          }
+          pointerEvents="none"
+          provider="google"
+          style={
+            Object {
+              "flex": 1,
+              "height": 180,
+              "marginTop": 12,
+            }
+          }
+        >
+          <MapMarker
+            coordinate={
+              Object {
+                "latitude": 25.619,
+                "longitude": 85.123,
+              }
+            }
+            stopPropagation={false}
+          >
+            <Memo(CustomMarker)
+              selected={true}
+            />
+          </MapMarker>
+        </MapView>
+        <ForwardRef
+          onPress={[Function]}
+          style={
+            Object {
+              "alignSelf": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 4,
+              "bottom": 36,
+              "paddingHorizontal": 12,
+              "paddingVertical": 6,
+              "position": "absolute",
+            }
+          }
+        >
+          <Label
+            style={
+              Object {
+                "color": "#0084F8",
+              }
+            }
+            textType="regular"
+            type="regular"
+          >
+            exploreMap
+          </Label>
+        </ForwardRef>
+        <Divider
+          containerStyles={
+            Object {
+              "marginTop": 24,
+            }
+          }
+        />
+      </View>
+      <Memo(CollapsibleSection)
+        isDividerRequired={true}
+        title="reviewsRatings"
+      >
+        <Memo(AssetRatings)
+          reviews={Array []}
+        />
+      </Memo(CollapsibleSection)>
+      <withI18nextTranslation(SimilarProperties)
+        onFavorite={[Function]}
+        onSelectedProperty={[Function]}
+        propertyTermId={1}
+        transaction_type={0}
       />
-    </React.Fragment>
-  }
-/>
+    </View>
+  </ParallaxScrollView>
+  <Memo(ContactPerson)
+    designation="Owner"
+    onContactTypeClicked={[Function]}
+    phoneNumber="undefinedundefined"
+  />
+</Fragment>
 `;

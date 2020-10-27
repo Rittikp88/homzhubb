@@ -49,7 +49,7 @@ import {
   PropertyAmenities,
   StatusBarComponent,
   ShieldGroup,
-  StateAwareComponent,
+  Loader,
 } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
@@ -163,7 +163,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public render = (): React.ReactNode => {
     const { isLoading } = this.props;
 
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+    return (
+      <>
+        <Loader visible={isLoading} />
+        {this.renderComponent()}
+      </>
+    );
   };
 
   private renderComponent = (): React.ReactElement | null => {

@@ -239,14 +239,14 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         };
       case REJECT:
         return {
-          title: t('reject'),
+          title: t('common:reject'),
           color: theme.colors.error,
           icon: icons.circularCrossFilled,
           action: (id): void => handleAction(id, VisitActions.REJECT),
         };
       case CANCEL:
         return {
-          title: t('cancel'),
+          title: t('common:cancel'),
           color: theme.colors.error,
           action: (id): void => this.handleVisitCancel(id),
         };
