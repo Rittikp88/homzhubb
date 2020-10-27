@@ -1,4 +1,5 @@
 import urlRegex from 'url-regex';
+import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 
 export class StringUtils {
   public static isValidUrl = (url: string): boolean => {
@@ -14,5 +15,10 @@ export class StringUtils {
   public static getInitials = (fullName: string): string => {
     const initials = fullName.match(/\b\w/g) || [];
     return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+  };
+
+  public static isValidEmail = (email: string): boolean => {
+    const regex = RegExp(FormUtils.emailRegex, 'g');
+    return regex.test(email);
   };
 }

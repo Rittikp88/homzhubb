@@ -5,6 +5,7 @@ import { Formik, FormikProps } from 'formik';
 import { FormikHelpers } from 'formik/dist/types';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
@@ -192,7 +193,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       const response = await UserRepository.updateUserProfileByActions(payload);
       onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 

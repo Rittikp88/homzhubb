@@ -20,6 +20,21 @@ class UserService {
     }
   };
 
+  public fetchEmailOtp = async (email: string): Promise<void> => {
+    const requestBody: IOtpVerify = {
+      action: OtpActionTypes.SEND_EMAIL_OTP,
+      payload: {
+        email,
+      },
+    };
+    try {
+      await UserRepository.Otp(requestBody);
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
+  };
+
   public verifyOtp = async (otp: string, phone_number: string, country_code: string): Promise<void> => {
     const requestBody: IOtpVerify = {
       action: OtpActionTypes.VERIFY,

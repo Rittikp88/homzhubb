@@ -1,45 +1,38 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 
 interface IProps {
   onIconPress: () => void;
 }
 
-interface IMoreProfileState {
-  user: IUser | null;
+interface IStateProps {
+  userProfile: UserProfileModel;
 }
 
-type Props = IProps;
+type Props = IProps & IStateProps;
 
-export class MoreProfile extends Component<Props, IMoreProfileState> {
-  public state = {
-    user: {} as IUser,
-  };
-
-  public componentDidMount = async (): Promise<void> => {
-    const user: IUser | null = await StorageService.get(StorageKeys.USER);
-    this.setState({ user });
-  };
-
+class MoreProfile extends Component<Props> {
   public render(): React.ReactNode {
     return <View style={styles.container}>{this.renderHeader()}</View>;
   }
 
   private renderHeader = (): React.ReactElement => {
-    const { onIconPress } = this.props;
-    const { user } = this.state;
+    const { onIconPress, userProfile } = this.props;
+
     return (
       <View style={styles.headerContainer}>
         <View style={styles.flexRow}>
           <View style={styles.initialsContainer}>
             <Text type="small" textType="regular" style={styles.initials}>
-              {StringUtils.getInitials(user?.full_name ?? 'User')}
+              {StringUtils.getInitials(userProfile?.fullName ?? 'User')}
             </Text>
           </View>
           <View style={styles.nameContainer}>
@@ -47,7 +40,7 @@ export class MoreProfile extends Component<Props, IMoreProfileState> {
               Hello!
             </Text>
             <Text type="regular" textType="semiBold">
-              {user?.full_name ?? 'User'}
+              {userProfile?.fullName ?? 'User'}
             </Text>
           </View>
         </View>
@@ -58,6 +51,16 @@ export class MoreProfile extends Component<Props, IMoreProfileState> {
     );
   };
 }
+
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserProfile } = UserSelector;
+  return {
+    userProfile: getUserProfile(state),
+  };
+};
+
+const moreProfile = connect(mapStateToProps)(MoreProfile);
+export { moreProfile as MoreProfile };
 
 const styles = StyleSheet.create({
   container: {

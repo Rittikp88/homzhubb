@@ -20,7 +20,6 @@ interface IProps extends WithTranslation {
 interface IWorkInfoForm {
   name: string;
   email: string;
-  workEmployeeId: string;
 }
 
 interface IState {
@@ -32,7 +31,6 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
     workInfoForm: {
       name: '',
       email: '',
-      workEmployeeId: '',
     },
   };
 
@@ -43,7 +41,6 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
       workInfoForm: {
         name: (formData && formData.name) || '',
         email: (formData && formData.email) || '',
-        workEmployeeId: (formData && formData.workEmployeeId) || '',
       },
     });
   }
@@ -79,14 +76,6 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
                     placeholder={t('companyEmail')}
                     formProps={formProps}
                   />
-                  <FormTextInput
-                    name="workEmployeeId"
-                    label={t('workEmployeeId')}
-                    numberOfLines={1}
-                    inputType="default"
-                    placeholder={t('workEmployeeId')}
-                    formProps={formProps}
-                  />
                 </View>
                 <FormButton
                   formProps={formProps}
@@ -111,7 +100,6 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
     const payload: IUpdateWorkInfo = {
       company_name: values.name,
       work_email: values.email,
-      work_employee_id: values.workEmployeeId,
     };
 
     try {
@@ -133,7 +121,6 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
     return yup.object().shape({
       name: yup.string().required(t('fieldRequiredError')),
       email: yup.string().required(t('fieldRequiredError')),
-      workEmployeeId: yup.string().required(t('fieldRequiredError')),
     });
   };
 }

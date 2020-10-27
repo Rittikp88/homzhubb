@@ -71,7 +71,7 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
             <View style={type === 'EMAIL' ? styles.rowStyle : undefined}>
               <View style={styles.subTitle}>
                 <Icon size={20} name={icon} color={text ? theme.colors.darkTint4 : theme.colors.darkTint8} />
-                <Label style={[styles.marginLeft, text ? {} : styles.helperTextColor]} type="large">
+                <Label style={[styles.textStyle, text ? {} : styles.helperTextColor]} type="large">
                   {text || helperText}
                 </Label>
               </View>
@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     color: theme.colors.primaryColor,
   },
-  marginLeft: {
+  textStyle: {
+    color: theme.colors.darkTint3,
     marginLeft: 10,
   },
   marginTop: {

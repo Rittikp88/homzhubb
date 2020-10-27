@@ -91,16 +91,15 @@ export class UserProfile extends User {
 
     return [
       { icon: icons.filledUser, ...(this.fullName ? { text: this.fullName } : { helperText: 'Name' }) },
-      { icon: icons.phone, ...(this.phoneNumber ? { text: this.phoneNumber } : { helperText: 'Phone Number' }) },
+      {
+        icon: icons.phone,
+        ...(this.phoneNumber ? { text: `(${this.countryCode}) ${this.phoneNumber}` } : { helperText: 'Phone Number' }),
+      },
       {
         icon: icons.email,
         ...(this.email ? { text: this.email } : { helperText: 'Email' }),
         type: 'EMAIL',
         emailVerified: this.emailVerified,
-      },
-      {
-        icon: icons.marker,
-        ...(this.address ? { text: this.address } : { helperText: 'Address' }),
       },
     ];
   }

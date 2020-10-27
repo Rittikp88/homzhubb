@@ -12,6 +12,7 @@ export enum LoginTypes {
 export enum OtpActionTypes {
   SEND = 'SEND_OTP',
   VERIFY = 'VERIFY_OTP',
+  SEND_EMAIL_OTP = 'SEND_EMAIL_OTP',
 }
 
 export enum SpaceAvailableTypes {
@@ -153,7 +154,7 @@ export interface IOtpVerifyPayload extends IOtpSendPayload {
 
 export interface IOtpVerify {
   action: OtpActionTypes;
-  payload: IOtpSendPayload | IOtpVerifyPayload;
+  payload: IOtpSendPayload | IOtpVerifyPayload | { email: string };
 }
 
 export interface IOtpVerifyResponse {
@@ -417,7 +418,6 @@ export interface IUpdateEmergencyContact {
 export interface IUpdateWorkInfo {
   company_name: string;
   work_email: string;
-  work_employee_id: string;
 }
 
 interface IPasswordPayload {
@@ -439,9 +439,9 @@ export interface IProfileDetailsPayload {
 }
 
 export interface IUpdateProfilePayload {
-  phone_otp?: number;
+  phone_otp?: string;
   new_phone?: boolean;
-  email_otp?: number;
+  email_otp?: string;
   new_email?: boolean;
   password?: string;
   profile_details: IProfileDetailsPayload;

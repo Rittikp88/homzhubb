@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Dashboard Screen should render snapshot 1`] = `
-<AnimatedProfileHeader
+<Connect(AnimatedProfileHeader)
   title="dashboard"
 >
   <Memo(AssetMetricsList)
@@ -51,5 +51,5 @@ exports[`Dashboard Screen should render snapshot 1`] = `
   <Loader
     visible={false}
   />
-</AnimatedProfileHeader>
+</Connect(AnimatedProfileHeader)>
 `;

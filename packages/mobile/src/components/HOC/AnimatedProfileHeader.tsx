@@ -1,13 +1,15 @@
 import React, { Component, ReactElement } from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
+import { connect } from 'react-redux';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, FontWeightType } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 
 interface IProps {
   children: React.ReactElement;
@@ -19,22 +21,13 @@ interface IProps {
   isOuterScrollEnabled?: boolean;
 }
 
-interface IAnimatedProfileHeaderState {
-  user: IUser | null;
+interface IStateProps {
+  userProfile: UserProfileModel;
 }
 
-type Props = IProps;
+type Props = IProps & IStateProps;
 
-export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHeaderState> {
-  public state = {
-    user: {} as IUser,
-  };
-
-  public componentDidMount = async (): Promise<void> => {
-    const user: IUser | null = await StorageService.get(StorageKeys.USER);
-    this.setState({ user });
-  };
-
+class AnimatedProfileHeader extends Component<Props> {
   public render(): React.ReactNode {
     const { children, isOuterScrollEnabled, onBackPress } = this.props;
     return (
@@ -76,8 +69,8 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
   };
 
   private renderHeader = (): React.ReactElement => {
-    const { title = '', onProfileIconPress } = this.props;
-    const { user } = this.state;
+    const { title = '', onProfileIconPress, userProfile } = this.props;
+
     return (
       <View style={styles.headerContainer}>
         <Text type="regular" textType="semiBold" style={styles.title}>
@@ -85,13 +78,23 @@ export class AnimatedProfileHeader extends Component<Props, IAnimatedProfileHead
         </Text>
         <View style={styles.initialsContainer}>
           <Text type="small" textType="regular" style={styles.initials} onPress={onProfileIconPress}>
-            {StringUtils.getInitials(user?.full_name ?? 'User')}
+            {StringUtils.getInitials(userProfile?.fullName ?? 'User')}
           </Text>
         </View>
       </View>
     );
   };
 }
+
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserProfile } = UserSelector;
+  return {
+    userProfile: getUserProfile(state),
+  };
+};
+
+const animatedProfileHeader = connect(mapStateToProps)(AnimatedProfileHeader);
+export { animatedProfileHeader as AnimatedProfileHeader };
 
 const styles = StyleSheet.create({
   container: {

@@ -24,6 +24,7 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     yield put(UserActions.loginSuccess(serializedUser));
     yield StorageService.set<IUser>('@user', serializedUser);
     yield put(AssetActions.getAssetCount());
+    yield put(UserActions.getUserProfile());
     if (callback) {
       callback();
     }

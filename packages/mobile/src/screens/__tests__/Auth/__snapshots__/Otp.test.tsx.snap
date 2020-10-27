@@ -75,6 +75,7 @@ exports[`OTP Screen should match snapshot in error 1`] = `
     </View>
     <OtpInputs
       bubbleOtp={[Function]}
+      error="otpError"
       otpType="PhoneOrEmail"
       toggleError={[Function]}
     />

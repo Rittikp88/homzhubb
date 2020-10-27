@@ -80,6 +80,7 @@ export default class App extends React.PureComponent<{}, IState> {
     if (userData) {
       store.dispatch(UserActions.loginSuccess(userData));
       store.dispatch(AssetActions.getAssetCount());
+      store.dispatch(UserActions.getUserProfile());
     }
 
     setTimeout(() => {

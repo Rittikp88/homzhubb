@@ -4,7 +4,7 @@ exports[`Add Record Screen should render snapshot 1`] = `
 <StateAwareComponent
   loading={true}
   renderComponent={
-    <AnimatedProfileHeader
+    <UNDEFINED
       title="financial"
     >
       <React.Fragment>
@@ -17,7 +17,7 @@ exports[`Add Record Screen should render snapshot 1`] = `
           title="addRecords"
         />
       </React.Fragment>
-    </AnimatedProfileHeader>
+    </UNDEFINED>
   }
 />
 `;

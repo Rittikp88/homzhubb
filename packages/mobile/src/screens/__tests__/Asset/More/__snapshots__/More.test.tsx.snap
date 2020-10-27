@@ -79,7 +79,7 @@ exports[`Financials Screen should match snapshot for renderSeparator 1`] = `
 `;
 
 exports[`Financials Screen should render snapshot 1`] = `
-<AnimatedProfileHeader
+<Connect(AnimatedProfileHeader)
   title="assetMore:more"
 >
   <View
@@ -89,7 +89,7 @@ exports[`Financials Screen should render snapshot 1`] = `
       }
     }
   >
-    <MoreProfile
+    <Connect(MoreProfile)
       onIconPress={[Function]}
     />
     <View
@@ -383,5 +383,5 @@ exports[`Financials Screen should render snapshot 1`] = `
       </View>
     </ForwardRef>
   </View>
-</AnimatedProfileHeader>
+</Connect(AnimatedProfileHeader)>
 `;

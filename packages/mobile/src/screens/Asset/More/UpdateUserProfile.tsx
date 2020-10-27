@@ -4,6 +4,7 @@ import { CommonActions } from '@react-navigation/native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import {
   IUpdateProfile,
@@ -61,8 +62,14 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
+    const { t } = this.props;
     return (
-      <AnimatedProfileHeader sectionHeader={this.renderSectionHeader()} onBackPress={this.goBack}>
+      <AnimatedProfileHeader
+        title={t('assetMore:more')}
+        sectionHeader={this.renderSectionHeader()}
+        onBackPress={this.goBack}
+        sectionTitleType="semiBold"
+      >
         <View style={styles.container}>{this.renderFormOnType()}</View>
       </AnimatedProfileHeader>
     );
@@ -95,7 +102,6 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
             formData={{
               name: workInfo ? workInfo.companyName : '',
               email: workInfo ? workInfo.workEmail : '',
-              workEmployeeId: workInfo ? workInfo.workEmployeeId : '',
             }}
           />
         );
@@ -155,6 +161,13 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     this.setState({ personalDetails: profileDetails, profileUpdateResponse });
     const { email_otp: emailOtp, phone_otp: phoneOtp } = profileUpdateResponse;
     const otpType = emailOtp && phoneOtp ? OtpNavTypes.UpdateProfileByEmailPhoneOtp : OtpNavTypes.UpdateProfileByOtp;
+    let otpSentTo = '';
+
+    if (phoneOtp) {
+      otpSentTo = `${phoneCode} ${phone}`;
+    } else if (emailOtp) {
+      otpSentTo = email;
+    }
 
     navigation.navigate(ScreensKeys.OTP, {
       type: otpType,
@@ -164,18 +177,19 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       phone,
       email,
       updateProfileCallback: this.updateProfileDetails,
+      otpSentTo,
     });
   };
 
   private onFormSubmissionSuccess = (): void => {
     const { t } = this.props;
 
-    AlertHelper.success({ message: t('updateSuccessfulMessage') });
+    AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
     this.goBack();
   };
 
   private updateProfileDetails = async (phoneOrEmailOtp: string, emailOtp?: string): Promise<void> => {
-    const { navigation } = this.props;
+    const { navigation, t } = this.props;
     const {
       personalDetails,
       profileUpdateResponse: { new_phone, new_email, phone_otp, email_otp },
@@ -187,8 +201,8 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       payload: {
         ...(new_phone && { new_phone }),
         ...(new_email && { new_email }),
-        ...(phone_otp && { phone_otp: parseInt(phoneOrEmailOtp, 10) }),
-        ...(email_otp && { email_otp: parseInt(emailOtp || '', 10) || parseInt(phoneOrEmailOtp, 10) }),
+        ...(phone_otp && { phone_otp: phoneOrEmailOtp }),
+        ...(email_otp && { email_otp: emailOtp || phoneOrEmailOtp }),
         profile_details: {
           first_name: firstName,
           last_name: lastName,
@@ -201,14 +215,16 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
     try {
       await UserRepository.updateUserProfileByActions(payload);
+      AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
+
       navigation.dispatch(
         CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreensKeys.UserProfileScreen }],
+          index: 1,
+          routes: [{ name: ScreensKeys.More }, { name: ScreensKeys.UserProfileScreen }],
         })
       );
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
@@ -232,6 +248,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 12,
     paddingBottom: 24,
     paddingHorizontal: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,

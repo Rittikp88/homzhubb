@@ -4,7 +4,7 @@ exports[`Financials Screen should render snapshot 1`] = `
 <StateAwareComponent
   loading={false}
   renderComponent={
-    <AnimatedProfileHeader
+    <UNDEFINED
       isOuterScrollEnabled={true}
       title="financial"
     >
@@ -73,7 +73,7 @@ exports[`Financials Screen should render snapshot 1`] = `
           totalDue={70000}
         />
       </React.Fragment>
-    </AnimatedProfileHeader>
+    </UNDEFINED>
   }
 />
 `;

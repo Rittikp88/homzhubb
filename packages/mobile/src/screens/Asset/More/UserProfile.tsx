@@ -68,7 +68,12 @@ class UserProfile extends React.PureComponent<IOwnProps> {
     const { profileProgress, fullName, basicDetailsArray, emergencyContactArray, workInfoArray } = userProfile;
 
     return (
-      <AnimatedProfileHeader sectionHeader={t('assetMore:profile')} onBackPress={this.goBack}>
+      <AnimatedProfileHeader
+        title={t('assetMore:more')}
+        sectionHeader={t('assetMore:profile')}
+        onBackPress={this.goBack}
+        sectionTitleType="semiBold"
+      >
         <View style={styles.container}>
           <View style={styles.profileImage}>
             <View style={styles.initialsContainer}>
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   profileImage: {
-    marginTop: 16,
+    marginTop: 18,
     alignItems: 'center',
   },
   progressBar: {

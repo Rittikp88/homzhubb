@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
@@ -122,7 +123,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
           />
         </View>
         <OtpInputs
-          error={type === OtpNavTypes.UpdateProfileByEmailPhoneOtp && error ? t('otpError') : undefined}
+          error={type !== OtpNavTypes.UpdateProfileByEmailPhoneOtp && error ? t('otpError') : undefined}
           bubbleOtp={this.handleOtpVerification}
           toggleError={toggleError}
           otpType={otpType}
@@ -164,6 +165,11 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     } = this.props;
 
     try {
+      if (StringUtils.isValidEmail(otpSentTo)) {
+        await UserService.fetchEmailOtp(otpSentTo);
+        return;
+      }
+
       await UserService.fetchOtp(otpSentTo, countryCode);
     } catch (e) {
       AlertHelper.error({

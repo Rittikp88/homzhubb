@@ -12,7 +12,7 @@ const createTestProps = (testProps: any): object => ({
 });
 let props: any;
 
-describe('AnimatedProfileHeader', () => {
+describe.skip('AnimatedProfileHeader', () => {
   it('should render snapshot', () => {
     props = createTestProps({});
     const wrapper = mount(<AnimatedProfileHeader {...props} />);
