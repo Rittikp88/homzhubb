@@ -90,7 +90,7 @@ exports[`Text Component Snapshot tests for <Text> Type: Large 1`] = `
     Array [
       Object {
         "fontSize": 24,
-        "lineHeight": 24,
+        "lineHeight": 26,
         "textAlign": "left",
       },
       Object {

@@ -62,7 +62,7 @@ const styles: IStyle = StyleSheet.create<IStyle>({
       rtl: 24,
       ltr: 24,
     }),
-    lineHeight: 24,
+    lineHeight: 26,
     textAlign: 'left',
   },
 });
