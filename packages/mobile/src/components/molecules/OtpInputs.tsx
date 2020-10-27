@@ -1,6 +1,7 @@
 import React from 'react';
-import RNOtpVerify from 'react-native-otp-verify';
 import { Keyboard, NativeSyntheticEvent, StyleSheet, TextInput, TextInputKeyPressEventData, View } from 'react-native';
+import RNOtpVerify from 'react-native-otp-verify';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -24,7 +25,7 @@ interface IState {
 
 export class OtpInputs extends React.PureComponent<IProps, IState> {
   private OtpLength: number = ConfigHelper.getOtpLength();
-  private isSMSListenerEnabled = false;
+  private isSMSListenerEnabled = PlatformUtils.isAndroid();
   private OtpTextInput: TextInput[] = [];
 
   public state = {
@@ -32,12 +33,13 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
     currentFocus: 0,
   };
 
-  public componentDidMount = async (): Promise<void> => {
+  public componentDidMount = (): void => {
     this.OtpTextInput[0].setNativeProps({ style: styles.active });
 
     if (this.isSMSListenerEnabled) {
-      this.isSMSListenerEnabled = await RNOtpVerify.getOtp();
-      RNOtpVerify.addListener(this.otpHandler);
+      RNOtpVerify.getOtp().then((isEnabled) => {
+        RNOtpVerify.addListener(this.otpHandler);
+      });
     }
   };
 
@@ -170,9 +172,6 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
 
     bubbleOtp(otpCode[0], otpType);
     Keyboard.dismiss();
-    if (this.isSMSListenerEnabled) {
-      RNOtpVerify.removeListener();
-    }
   };
 }
 
