@@ -77,6 +77,7 @@ export class Financials extends React.PureComponent<Props, IState> {
           <FinanceOverview />
           {transactionsData.length > 0 && (
             <TransactionCardsContainer
+              shouldEnableOuterScroll={this.toggleScroll}
               transactionsData={transactionsData}
               onEndReachedHandler={this.onEndReachedHandler}
             />
@@ -95,6 +96,10 @@ export class Financials extends React.PureComponent<Props, IState> {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.AddRecordScreen);
+  };
+
+  private toggleScroll = (scrollEnabled: boolean): void => {
+    this.setState({ scrollEnabled });
   };
 
   private getHeaderData = (): IMetricsData[] => {

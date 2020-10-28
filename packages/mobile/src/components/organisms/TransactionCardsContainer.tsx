@@ -11,12 +11,13 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProps extends WithTranslation {
   transactionsData: FinancialRecords[];
+  shouldEnableOuterScroll: (enable: boolean) => void;
   onEndReachedHandler: () => void;
 }
 
 export class TransactionCardsContainer extends React.PureComponent<IProps> {
   public render(): ReactElement {
-    const { t } = this.props;
+    const { t, shouldEnableOuterScroll, transactionsData } = this.props;
 
     return (
       <View style={styles.container}>
@@ -27,7 +28,14 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
           </Text>
         </View>
         <Divider />
-        <ScrollView onScroll={this.onScroll} scrollEventThrottle={1500} style={styles.contentContainer}>
+        <ScrollView
+          onScroll={this.onScroll}
+          onTouchStart={transactionsData.length > 4 ? (): void => shouldEnableOuterScroll(false) : undefined}
+          onMomentumScrollEnd={this.controlScroll}
+          onScrollEndDrag={this.controlScroll}
+          scrollEventThrottle={1500}
+          style={styles.contentContainer}
+        >
           {this.renderTransactionCard()}
         </ScrollView>
       </View>
@@ -60,6 +68,11 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
 
   private onDownloadDocument = async (key: string, fileName: string): Promise<void> => {
     await AttachmentService.downloadAttachment(key, fileName);
+  };
+
+  private controlScroll = (): void => {
+    const { shouldEnableOuterScroll } = this.props;
+    shouldEnableOuterScroll(true);
   };
 }
 

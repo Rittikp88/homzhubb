@@ -79,7 +79,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
         <TouchableOpacity key={`${item.id}`} onPress={onLinkPress} style={styles.trendContainer} testID="linkTouch">
           <Image source={{ uri: attachment?.link }} style={styles.image} />
           <View style={styles.trendValuesContainer}>
-            <Text type="small" textType="regular" style={styles.trendHeader}>
+            <Text type="small" textType="regular" style={styles.trendHeader} numberOfLines={2}>
               {title}
             </Text>
             <View style={styles.trendData}>
@@ -143,9 +143,10 @@ const styles = StyleSheet.create({
   },
   trendValuesContainer: {
     flex: 1,
+    justifyContent: 'space-between',
+    marginStart: 12,
   },
   trendData: {
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

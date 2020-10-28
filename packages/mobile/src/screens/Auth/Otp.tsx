@@ -73,6 +73,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     } = this.props;
     const title = params?.title ?? t('verifyNumber');
     const otpSentTo = params?.otpSentTo ?? '';
+    const countryCode = params?.countryCode ?? '';
 
     return (
       <SafeAreaView style={styles.screen}>
@@ -84,7 +85,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
           <Label style={styles.subTitle} type="large" textType="regular">
             {t('enterOTP')}
           </Label>
-          {this.renderOtpInputSection(otpSentTo, OtpTypes.PhoneOrEmail)}
+          {this.renderOtpInputSection(`${countryCode} ${otpSentTo}`, OtpTypes.PhoneOrEmail)}
           {params.type === OtpNavTypes.UpdateProfileByEmailPhoneOtp
             ? this.renderOtpInputSection(params?.email || '', OtpTypes.Email)
             : null}
