@@ -164,7 +164,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     let otpSentTo = '';
 
     if (phoneOtp) {
-      otpSentTo = `${phoneCode} ${phone}`;
+      otpSentTo = `${phone}`;
     } else if (emailOtp) {
       otpSentTo = email;
     }

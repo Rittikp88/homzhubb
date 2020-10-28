@@ -57,7 +57,7 @@ exports[`OTP Screen should match snapshot in error 1`] = `
         textType="semiBold"
         type="small"
       >
-        99999999999
+        INR 99999999999
       </Text>
       <Icon
         allowFontScaling={false}
@@ -146,7 +146,7 @@ exports[`OTP Screen should render snapshot 1`] = `
         textType="semiBold"
         type="small"
       >
-        99999999999
+        INR 99999999999
       </Text>
       <Icon
         allowFontScaling={false}
@@ -233,7 +233,9 @@ exports[`OTP Screen should render snapshot with userData 1`] = `
       <Text
         textType="semiBold"
         type="small"
-      />
+      >
+        INR 
+      </Text>
       <Icon
         allowFontScaling={false}
         color="#0084F8"
@@ -320,7 +322,7 @@ exports[`OTP Screen should verify otp 1`] = `
         textType="semiBold"
         type="small"
       >
-        99999999999
+        INR 99999999999
       </Text>
       <Icon
         allowFontScaling={false}

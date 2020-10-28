@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, Divider, ImageRound, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
+import { Button, Divider, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -41,7 +41,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
       <View style={[styles.container, containerStyle]}>
         <View style={[{ backgroundColor }, styles.padding]}>
           <View style={styles.rowStyle}>
-            <ImageRound width={70} height={70} source={{ uri: image }} />
+            <Image source={{ uri: image }} style={styles.image} />
             <View style={styles.content}>
               <View style={styles.headingStyle}>
                 <Label type="large" numberOfLines={3} style={styles.textStyle}>
@@ -180,5 +180,9 @@ const styles = StyleSheet.create({
   },
   label: {
     color: theme.colors.darkTint5,
+  },
+  image: {
+    width: 70,
+    height: 60,
   },
 });

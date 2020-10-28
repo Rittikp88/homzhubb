@@ -54,7 +54,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
               {t('pendingProperties', { total })}
             </Text>
           </View>
-          {data.length > 0 && (
+          {data.length > 1 && (
             <View style={styles.headingContent}>
               <TouchableOpacity style={styles.iconStyle}>
                 <Icon

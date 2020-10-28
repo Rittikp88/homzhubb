@@ -38,7 +38,10 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
   </View>
   <Divider />
   <ScrollViewMock
+    onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
+    onScrollEndDrag={[Function]}
+    onTouchStart={[Function]}
     scrollEventThrottle={1500}
     style={
       Object {

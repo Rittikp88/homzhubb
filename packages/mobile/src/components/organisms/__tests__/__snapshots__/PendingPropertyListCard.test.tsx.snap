@@ -47,59 +47,6 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
         pendingProperties
       </Text>
     </View>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "height": 40,
-        }
-      }
-    >
-      <ForwardRef
-        style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "#F0F5F9",
-            "height": 30,
-            "justifyContent": "center",
-            "marginRight": 6,
-            "width": 32,
-          }
-        }
-      >
-        <Icon
-          allowFontScaling={false}
-          color="#4C5F72"
-          name="left-arrow"
-          onPress={[Function]}
-          size={16}
-          testID="icnPrevious"
-        />
-      </ForwardRef>
-      <ForwardRef
-        disabled={true}
-        style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "#F0F5F9",
-            "height": 30,
-            "justifyContent": "center",
-            "marginRight": 6,
-            "width": 32,
-          }
-        }
-      >
-        <Icon
-          allowFontScaling={false}
-          color="#4C5F72"
-          name="right-arrow"
-          onPress={[Function]}
-          size={16}
-          testID="icnNext"
-        />
-      </ForwardRef>
-    </View>
   </View>
   <View
     style={

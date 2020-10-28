@@ -28,7 +28,7 @@ class MoreProfile extends Component<Props> {
     const { onIconPress, userProfile } = this.props;
 
     return (
-      <View style={styles.headerContainer}>
+      <TouchableOpacity onPress={onIconPress} style={styles.headerContainer}>
         <View style={styles.flexRow}>
           <View style={styles.initialsContainer}>
             <Text type="small" textType="regular" style={styles.initials}>
@@ -44,10 +44,8 @@ class MoreProfile extends Component<Props> {
             </Text>
           </View>
         </View>
-        <TouchableOpacity onPress={onIconPress}>
-          <Icon name={icons.rightArrow} size={18} color={theme.colors.lowPriority} />
-        </TouchableOpacity>
-      </View>
+        <Icon name={icons.rightArrow} size={18} color={theme.colors.lowPriority} />
+      </TouchableOpacity>
     );
   };
 }

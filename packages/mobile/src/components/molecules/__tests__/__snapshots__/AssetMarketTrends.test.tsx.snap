@@ -151,10 +151,13 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
       style={
         Object {
           "flex": 1,
+          "justifyContent": "space-between",
+          "marginStart": 12,
         }
       }
     >
       <Text
+        numberOfLines={2}
         style={
           Object {
             "color": "#19324A",
@@ -170,7 +173,6 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
             "alignItems": "center",
             "flexDirection": "row",
             "justifyContent": "space-between",
-            "marginTop": 20,
           }
         }
       >
