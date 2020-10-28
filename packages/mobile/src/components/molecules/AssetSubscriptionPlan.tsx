@@ -1,28 +1,23 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images';
-import { Text, Divider, Image, Button } from '@homzhub/common/src/components';
+import Plan from '@homzhub/common/src/assets/images/plan.svg';
+import { Text, Divider, Button } from '@homzhub/common/src/components';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
-import { ServiceBundleItems } from '@homzhub/common/src/domain/models/ServiceBundleItems';
-
-interface IProps {
-  containerStyle?: StyleProp<ViewStyle>;
-}
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IAssetSubscriptionPlanState {
   data: UserSubscription;
   isMoreToggled: boolean;
 }
 
-type Props = IProps & WithTranslation;
-
-export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubscriptionPlanState> {
+export class AssetSubscriptionPlan extends React.PureComponent<WithTranslation, IAssetSubscriptionPlanState> {
   public state = {
     data: {} as UserSubscription,
     isMoreToggled: false,
@@ -33,7 +28,7 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
   };
 
   public render(): React.ReactNode {
-    const { containerStyle, t } = this.props;
+    const { t } = this.props;
     const { data, isMoreToggled } = this.state;
 
     if (ObjectUtils.isEmpty(data)) {
@@ -42,31 +37,27 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
 
     const currentPlan = `${t('common:homzhub')} ${data.userServicePlan?.label}`;
     const recommendedPlan = `${t('common:homzhub')} ${data.recommendedPlan?.label}`;
+
     return (
-      <View style={[styles.container, containerStyle]}>
+      <View style={styles.container}>
         <View style={styles.currentSubscription}>
-          <View style={styles.flexThree}>
+          <View>
             <Text type="small" textType="regular" style={styles.planName}>
               {t('subscribedFor')}
             </Text>
-            <View style={styles.planNameRow}>
-              <Text type="regular" textType="bold" style={styles.planName}>
-                {currentPlan}
-              </Text>
-            </View>
+            <Text type="regular" textType="bold" style={styles.planName}>
+              {currentPlan}
+            </Text>
           </View>
-          <View style={styles.flexOne}>
-            <Image source={images.homzhubPlan} />
-          </View>
+          <Plan />
         </View>
         <Divider />
         <Text type="small" textType="semiBold" style={styles.subscriptionHelper}>
-          {`${t('subscriptionHelper')}`}
+          {`${t('subscriptionHelper')} `}
           <Text type="small" textType="bold" style={styles.planName}>
-            {' '}
-            {recommendedPlan}{' '}
+            {recommendedPlan}
           </Text>
-          {`${t('subscriptionHelperServices')}`}
+          {` ${t('subscriptionHelperServices')}`}
         </Text>
         {this.renderFeatures()}
         {data?.recommendedPlan?.serviceBundleItems.length > 5 && (
@@ -74,52 +65,39 @@ export class AssetSubscriptionPlan extends React.PureComponent<Props, IAssetSubs
             {isMoreToggled ? t('common:less') : t('common:more')}
           </Text>
         )}
-        <Button
-          title={t('upgrade')}
-          type="secondary"
-          containerStyle={styles.upgrade}
-          onPress={this.onUpgrade}
-          testID="btnUpgrade"
-        />
+        <Button title={t('upgrade')} type="secondary" onPress={this.onUpgrade} testID="btnUpgrade" />
       </View>
     );
   }
 
-  private renderKeyExtractor = (item: ServiceBundleItems, index: number): string => {
-    return `${item.id}-${index}`;
-  };
+  public renderFeatures = (): React.ReactNode => {
+    const {
+      data: {
+        recommendedPlan: { serviceBundleItems },
+      },
+      isMoreToggled,
+    } = this.state;
+    const bundleItems = isMoreToggled ? serviceBundleItems : serviceBundleItems.slice(0, 5);
 
-  public renderFeatures = (): React.ReactElement => {
-    const { data, isMoreToggled } = this.state;
-    const bundleItems = isMoreToggled
-      ? data?.recommendedPlan?.serviceBundleItems
-      : data?.recommendedPlan?.serviceBundleItems.slice(0, 5);
-    return (
-      <FlatList
-        data={bundleItems ?? []}
-        numColumns={1}
-        renderItem={({ item }: { item: ServiceBundleItems }): React.ReactElement => {
-          const { label } = item;
-          return (
-            <View style={styles.featuresData}>
-              <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />
-              <Text type="small" textType="regular" style={styles.featureName}>
-                {label}
-              </Text>
-            </View>
-          );
-        }}
-        testID="subscriptionList"
-        keyExtractor={this.renderKeyExtractor}
-      />
-    );
+    return bundleItems.map((item) => (
+      <View style={styles.featuresData} key={`${item.id}`}>
+        <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />
+        <Text type="small" textType="regular" style={styles.featureName}>
+          {item.label}
+        </Text>
+      </View>
+    ));
   };
 
   public onUpgrade = (): void => {};
 
   public getUserSubscription = async (): Promise<void> => {
-    const response: UserSubscription = await UserRepository.getUserSubscription();
-    this.setState({ data: response });
+    try {
+      const response: UserSubscription = await UserRepository.getUserSubscription();
+      this.setState({ data: response });
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
   };
 
   public toggleMore = (): void => {
@@ -132,48 +110,30 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Ass
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-    padding: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    marginTop: 16,
     borderRadius: 4,
+    backgroundColor: theme.colors.white,
   },
   currentSubscription: {
     flexDirection: 'row',
-    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   featuresData: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  flexThree: {
-    flex: 3,
-  },
-  flexOne: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: 20,
   },
   planName: {
     color: theme.colors.darkTint3,
-    marginVertical: 2,
   },
   featureName: {
-    marginLeft: 15,
-    flex: 1,
-  },
-  planNameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  upgrade: {
-    flex: 0,
-    marginVertical: 20,
+    marginStart: 16,
   },
   subscriptionHelper: {
-    marginVertical: 10,
+    marginVertical: 16,
     color: theme.colors.darkTint3,
   },
   more: {

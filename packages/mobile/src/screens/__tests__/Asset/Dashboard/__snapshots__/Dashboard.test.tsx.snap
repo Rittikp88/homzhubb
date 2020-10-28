@@ -33,21 +33,10 @@ exports[`Dashboard Screen should render snapshot 1`] = `
   />
   <withI18nextTranslation(FinanceOverview) />
   <withI18nextTranslation(AssetMarketTrends)
-    containerStyle={
-      Object {
-        "marginVertical": 12,
-      }
-    }
     onViewAll={[Function]}
   />
   <AssetAdvertisementBanner />
-  <withI18nextTranslation(AssetSubscriptionPlan)
-    containerStyle={
-      Object {
-        "marginVertical": 12,
-      }
-    }
-  />
+  <withI18nextTranslation(AssetSubscriptionPlan) />
   <Loader
     visible={false}
   />

@@ -6,6 +6,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     Object {
       "backgroundColor": "#FFFFFF",
       "marginTop": 16,
+      "paddingBottom": 8,
     }
   }
 >
@@ -24,7 +25,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
       size={22}
       style={
         Object {
-          "marginRight": 10,
+          "marginEnd": 12,
         }
       }
     />
@@ -36,9 +37,19 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     </Text>
   </View>
   <Divider />
-  <FlatList
-    data={
-      Array [
+  <ScrollViewMock
+    onScroll={[Function]}
+    scrollEventThrottle={1500}
+    style={
+      Object {
+        "maxHeight": 400,
+      }
+    }
+  >
+    <withI18nextTranslation(TransactionCard)
+      handleDownload={[Function]}
+      key="1"
+      transaction={
         FinancialRecords {
           "_amount": 27000,
           "_asset": Asset {
@@ -79,7 +90,13 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
           "_payerName": "Foobar",
           "_receiverName": "JohnDoe",
           "_transactionDate": "2020-06-20",
-        },
+        }
+      }
+    />
+    <withI18nextTranslation(TransactionCard)
+      handleDownload={[Function]}
+      key="2"
+      transaction={
         FinancialRecords {
           "_amount": 27000,
           "_asset": Asset {
@@ -120,7 +137,13 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
           "_payerName": "Foobar",
           "_receiverName": "JohnDoe",
           "_transactionDate": "2020-06-20",
-        },
+        }
+      }
+    />
+    <withI18nextTranslation(TransactionCard)
+      handleDownload={[Function]}
+      key="3"
+      transaction={
         FinancialRecords {
           "_amount": 27000,
           "_asset": Asset {
@@ -161,7 +184,13 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
           "_payerName": "Foobar",
           "_receiverName": "JohnDoe",
           "_transactionDate": "2020-06-20",
-        },
+        }
+      }
+    />
+    <withI18nextTranslation(TransactionCard)
+      handleDownload={[Function]}
+      key="4"
+      transaction={
         FinancialRecords {
           "_amount": 27000,
           "_asset": Asset {
@@ -202,7 +231,13 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
           "_payerName": "Foobar",
           "_receiverName": "JohnDoe",
           "_transactionDate": "2020-06-20",
-        },
+        }
+      }
+    />
+    <withI18nextTranslation(TransactionCard)
+      handleDownload={[Function]}
+      key="5"
+      transaction={
         FinancialRecords {
           "_amount": 27000,
           "_asset": Asset {
@@ -243,7 +278,13 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
           "_payerName": "Foobar",
           "_receiverName": "JohnDoe",
           "_transactionDate": "2020-06-20",
-        },
+        }
+      }
+    />
+    <withI18nextTranslation(TransactionCard)
+      handleDownload={[Function]}
+      key="6"
+      transaction={
         FinancialRecords {
           "_amount": 27000,
           "_asset": Asset {
@@ -284,7 +325,13 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
           "_payerName": "Foobar",
           "_receiverName": "JohnDoe",
           "_transactionDate": "2020-06-20",
-        },
+        }
+      }
+    />
+    <withI18nextTranslation(TransactionCard)
+      handleDownload={[Function]}
+      key="7"
+      transaction={
         FinancialRecords {
           "_amount": 27000,
           "_asset": Asset {
@@ -325,29 +372,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
           "_payerName": "Foobar",
           "_receiverName": "JohnDoe",
           "_transactionDate": "2020-06-20",
-        },
-      ]
-    }
-    disableVirtualization={false}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={0.1}
-    onMomentumScrollEnd={[Function]}
-    onScrollEndDrag={[Function]}
-    onTouchStart={[Function]}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    style={
-      Object {
-        "maxHeight": 400,
+        }
       }
-    }
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
+    />
+  </ScrollViewMock>
 </View>
 `;

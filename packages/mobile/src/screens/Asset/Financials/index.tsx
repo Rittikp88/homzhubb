@@ -7,13 +7,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  AnimatedProfileHeader,
-  AssetMetricsList,
-  PropertyDuesCardContainer,
-  Loader,
-  IMetricsData,
-} from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, AssetMetricsList, Loader, IMetricsData } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
@@ -21,7 +15,6 @@ import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/do
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { propertyDues } from '@homzhub/common/src/mocks/FinancialsTabMockData';
 
 interface IState {
   ledgerData: GeneralLedgers[];
@@ -70,7 +63,6 @@ export class Financials extends React.PureComponent<Props, IState> {
   private renderComponent = (): React.ReactElement => {
     const { t } = this.props;
     const { transactionsData, scrollEnabled } = this.state;
-    const { currency_symbol, totalDue, details } = propertyDues;
 
     return (
       <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
@@ -83,10 +75,8 @@ export class Financials extends React.PureComponent<Props, IState> {
             textStyle={styles.priceStyle}
           />
           <FinanceOverview />
-          <PropertyDuesCardContainer currency={currency_symbol} totalDue={totalDue} propertyDues={details} />
           {transactionsData.length > 0 && (
             <TransactionCardsContainer
-              shouldEnableOuterScroll={this.toggleScroll}
               transactionsData={transactionsData}
               onEndReachedHandler={this.onEndReachedHandler}
             />
@@ -105,10 +95,6 @@ export class Financials extends React.PureComponent<Props, IState> {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.AddRecordScreen);
-  };
-
-  private toggleScroll = (scrollEnabled: boolean): void => {
-    this.setState({ scrollEnabled });
   };
 
   private getHeaderData = (): IMetricsData[] => {

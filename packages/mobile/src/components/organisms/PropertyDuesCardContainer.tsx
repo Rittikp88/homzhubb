@@ -53,7 +53,7 @@ const renderPropertyDues = (propertyDues: IPropertyDuesData[], t: TFunction): Re
     const { propertyName, address, dueCategory, price, currency_symbol } = property;
 
     return (
-      <>
+      <View key={`${property.propertyName}${index}`}>
         <View style={styles.propertyName}>
           <Image style={styles.flag} source={images.flag} />
           <Text type="small" textType="semiBold">
@@ -76,7 +76,7 @@ const renderPropertyDues = (propertyDues: IPropertyDuesData[], t: TFunction): Re
           />
         </View>
         {index !== propertyDues.length - 1 ? <Divider containerStyles={styles.dividerStyles} /> : null}
-      </>
+      </View>
     );
   });
 };

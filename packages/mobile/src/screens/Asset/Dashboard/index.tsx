@@ -81,9 +81,9 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
             onSelectAction={this.handleActionSelection}
           />
           <FinanceOverview />
-          <AssetMarketTrends containerStyle={styles.assetCards} onViewAll={this.onViewAll} />
+          <AssetMarketTrends onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
-          <AssetSubscriptionPlan containerStyle={styles.assetCards} />
+          <AssetSubscriptionPlan />
           <Loader visible={isLoading} />
         </>
       </AnimatedProfileHeader>

@@ -48,35 +48,6 @@ exports[`Financials Screen should render snapshot 1`] = `
       title="assetFinancial:recordsText"
     />
     <withI18nextTranslation(FinanceOverview) />
-    <PropertyDuesCardContainer
-      currency="USD"
-      propertyDues={
-        Array [
-          Object {
-            "address": "Sindhi Society, Chembur, Mumbai- 400071",
-            "currency_symbol": "USD",
-            "dueCategory": "Plumbing fees",
-            "price": 20000,
-            "propertyName": "Eaton Garth Manor",
-          },
-          Object {
-            "address": "Sindhi Society, Chembur, Mumbai- 400071",
-            "currency_symbol": "USD",
-            "dueCategory": "Plumbing fees",
-            "price": 30000,
-            "propertyName": "Eaton Garth Manor",
-          },
-          Object {
-            "address": "Sindhi Society, Chembur, Mumbai- 400071",
-            "currency_symbol": "USD",
-            "dueCategory": "Plumbing fees",
-            "price": 20000,
-            "propertyName": "Eaton Garth Manor",
-          },
-        ]
-      }
-      totalDue={70000}
-    />
   </Connect(AnimatedProfileHeader)>
   <Loader
     visible={false}

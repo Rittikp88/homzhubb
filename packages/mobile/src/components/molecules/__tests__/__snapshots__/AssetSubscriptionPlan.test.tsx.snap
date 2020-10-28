@@ -3,37 +3,30 @@
 exports[`AssetSubscriptionPlan should match snapshot 1`] = `
 <View
   style={
-    Array [
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderRadius": 4,
-        "flex": 1,
-        "padding": 10,
-      },
-      undefined,
-    ]
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 4,
+      "marginTop": 16,
+      "paddingHorizontal": 16,
+      "paddingVertical": 20,
+    }
   }
 >
   <View
     style={
       Object {
+        "alignItems": "center",
         "flexDirection": "row",
-        "marginBottom": 10,
+        "justifyContent": "space-between",
+        "paddingBottom": 16,
       }
     }
   >
-    <View
-      style={
-        Object {
-          "flex": 3,
-        }
-      }
-    >
+    <View>
       <Text
         style={
           Object {
             "color": "#33495E",
-            "marginVertical": 2,
           }
         }
         textType="regular"
@@ -41,136 +34,104 @@ exports[`AssetSubscriptionPlan should match snapshot 1`] = `
       >
         subscribedFor
       </Text>
-      <View
+      <Text
         style={
           Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "flex-start",
+            "color": "#33495E",
           }
         }
+        textType="bold"
+        type="regular"
       >
-        <Text
-          style={
-            Object {
-              "color": "#33495E",
-              "marginVertical": 2,
-            }
-          }
-          textType="bold"
-          type="regular"
-        >
-          common:homzhub undefined
-        </Text>
-      </View>
+        common:homzhub Lite
+      </Text>
     </View>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../packages/common/src/assets/images/homzhubPlan.png",
-          }
-        }
-      />
-    </View>
+    <[object Object] />
   </View>
   <Divider />
   <Text
     style={
       Object {
         "color": "#33495E",
-        "marginVertical": 10,
+        "marginVertical": 16,
       }
     }
     textType="semiBold"
     type="small"
   >
-    subscriptionHelper
+    subscriptionHelper 
     <Text
       style={
         Object {
           "color": "#33495E",
-          "marginVertical": 2,
         }
       }
       textType="bold"
       type="small"
     >
-       
-      common:homzhub undefined
-       
+      common:homzhub HomzHub Pro
     </Text>
-    subscriptionHelperServices
+     subscriptionHelperServices
   </Text>
-  <FlatList
-    data={Array []}
-    disableVirtualization={false}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    testID="subscriptionList"
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
-  <Button
-    containerStyle={
+  <View
+    key="6"
+    style={
       Object {
-        "flex": 0,
-        "marginVertical": 20,
+        "flexDirection": "row",
+        "marginBottom": 20,
       }
     }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#2CBA67"
+      name="check-filled"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "marginStart": 16,
+        }
+      }
+      textType="regular"
+      type="small"
+    >
+      Promotion to our agent network
+    </Text>
+  </View>
+  <View
+    key="7"
+    style={
+      Object {
+        "flexDirection": "row",
+        "marginBottom": 20,
+      }
+    }
+  >
+    <Icon
+      allowFontScaling={false}
+      color="#2CBA67"
+      name="check-filled"
+      size={25}
+    />
+    <Text
+      style={
+        Object {
+          "marginStart": 16,
+        }
+      }
+      textType="regular"
+      type="small"
+    >
+      Verified tag on property
+    </Text>
+  </View>
+  <Button
     onPress={[Function]}
     testID="btnUpgrade"
     title="upgrade"
     type="secondary"
   />
-</View>
-`;
-
-exports[`AssetSubscriptionPlan should match snapshot for keyExtractor 1`] = `"undefined-[object Object]"`;
-
-exports[`AssetSubscriptionPlan should match snapshot for renderItem 1`] = `
-<View
-  style={
-    Object {
-      "alignItems": "center",
-      "flexDirection": "row",
-      "justifyContent": "flex-start",
-      "marginVertical": 10,
-    }
-  }
->
-  <Icon
-    allowFontScaling={false}
-    color="#2CBA67"
-    name="check-filled"
-    size={25}
-  />
-  <Text
-    style={
-      Object {
-        "flex": 1,
-        "marginLeft": 15,
-      }
-    }
-    textType="regular"
-    type="small"
-  >
-    Promotion to our agent network
-  </Text>
 </View>
 `;

@@ -7,7 +7,6 @@ export const images = {
   round: require('@homzhub/common/src/assets/images/round.png'),
   video: require('@homzhub/common/src/assets/images/video.png'),
   homzhubFinancials: require('@homzhub/common/src/assets/images/homzhubFinancials.png'),
-  homzhubPlan: require('@homzhub/common/src/assets/images/homzhubPlan.png'),
   property: require('@homzhub/common/src/assets/images/property.png'),
   check: require('@homzhub/common/src/assets/images/check.png'),
 };

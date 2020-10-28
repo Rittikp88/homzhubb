@@ -1,97 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssetMarketTrends should match snapshot for keyExtractor 1`] = `"undefined-[object Object]"`;
-
-exports[`AssetMarketTrends should match snapshot for renderItem 1`] = `
-<ForwardRef
-  onPress={[Function]}
-  style={
-    Object {
-      "alignItems": "center",
-      "borderColor": "#E5E8EB",
-      "borderRadius": 4,
-      "borderWidth": 0.5,
-      "flexDirection": "row",
-      "justifyContent": "center",
-      "margin": 10,
-      "padding": 10,
-    }
-  }
-  testID="linkTouch"
->
-  <Image
-    source={
-      Object {
-        "testUri": "../../../packages/common/src/assets/images/landingScreenLogo.png",
-      }
-    }
-    style={
-      Object {
-        "borderRadius": 4,
-        "height": 70,
-        "width": 70,
-      }
-    }
-  />
-  <View
-    style={
-      Object {
-        "flex": 1,
-        "marginStart": 10,
-      }
-    }
-  >
-    <Text
-      style={
-        Object {
-          "color": "#33495E",
-          "flexWrap": "wrap",
-        }
-      }
-      textType="regular"
-      type="small"
-    />
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "paddingTop": 10,
-        }
-      }
-    >
-      <Label
-        style={
-          Object {
-            "color": "#4C5F72",
-          }
-        }
-        textType="regular"
-        type="large"
-      />
-      <Icon
-        allowFontScaling={false}
-        color="#0084F8"
-        name="dart"
-        size={20}
-      />
-    </View>
-  </View>
-</ForwardRef>
-`;
-
 exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
 <View
   style={
-    Array [
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderRadius": 4,
-        "flex": 1,
-      },
-      undefined,
-    ]
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 4,
+      "flex": 1,
+      "marginTop": 16,
+      "paddingBottom": 8,
+      "paddingHorizontal": 16,
+      "paddingTop": 20,
+    }
   }
 >
   <View
@@ -100,38 +20,28 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
         "alignItems": "center",
         "flexDirection": "row",
         "justifyContent": "space-between",
-        "padding": 5,
-        "paddingVertical": 10,
+        "marginBottom": 16,
       }
     }
   >
-    <View
+    <Icon
+      allowFontScaling={false}
+      color="#4C5F72"
+      name="increase"
+      size={20}
+    />
+    <Text
       style={
         Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "marginLeft": 5,
+          "flex": 1,
+          "marginStart": 12,
         }
       }
+      textType="semiBold"
+      type="regular"
     >
-      <Icon
-        allowFontScaling={false}
-        color="#4C5F72"
-        name="increase"
-        size={20}
-      />
-      <Text
-        style={
-          Object {
-            "marginLeft": 8,
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        marketTrends
-      </Text>
-    </View>
+      marketTrends
+    </Text>
   </View>
   <View
     style={
@@ -156,14 +66,15 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
 exports[`AssetMarketTrends should match snapshot with results 1`] = `
 <View
   style={
-    Array [
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderRadius": 4,
-        "flex": 1,
-      },
-      undefined,
-    ]
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 4,
+      "flex": 1,
+      "marginTop": 16,
+      "paddingBottom": 8,
+      "paddingHorizontal": 16,
+      "paddingTop": 20,
+    }
   }
 >
   <View
@@ -172,46 +83,33 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
         "alignItems": "center",
         "flexDirection": "row",
         "justifyContent": "space-between",
-        "padding": 5,
-        "paddingVertical": 10,
+        "marginBottom": 16,
       }
     }
   >
-    <View
+    <Icon
+      allowFontScaling={false}
+      color="#4C5F72"
+      name="increase"
+      size={20}
+    />
+    <Text
       style={
         Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "marginLeft": 5,
+          "flex": 1,
+          "marginStart": 12,
         }
       }
+      textType="semiBold"
+      type="regular"
     >
-      <Icon
-        allowFontScaling={false}
-        color="#4C5F72"
-        name="increase"
-        size={20}
-      />
-      <Text
-        style={
-          Object {
-            "marginLeft": 8,
-          }
-        }
-        textType="semiBold"
-        type="regular"
-      >
-        marketTrends
-      </Text>
-    </View>
+      marketTrends
+    </Text>
     <Text
       onPress={[MockFunction]}
       style={
         Object {
-          "borderWidth": 0,
           "color": "#0084F8",
-          "flex": 0,
-          "marginRight": 15,
         }
       }
       textType="semiBold"
@@ -220,30 +118,79 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
       viewAll
     </Text>
   </View>
-  <FlatList
-    data={
-      Array [
-        Object {
-          "id": 0,
-          "link": "",
-          "posted_at": "",
-          "title": "",
-        },
-      ]
+  <ForwardRef
+    key="0"
+    onPress={[Function]}
+    style={
+      Object {
+        "borderColor": "#F0F5F9",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "marginBottom": 16,
+        "padding": 12,
+      }
     }
-    disableVirtualization={false}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    testID="trendsList"
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
+    testID="linkTouch"
+  >
+    <Image
+      source={
+        Object {
+          "uri": undefined,
+        }
+      }
+      style={
+        Object {
+          "borderRadius": 4,
+          "height": 80,
+          "width": 80,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#19324A",
+            "flexWrap": "wrap",
+          }
+        }
+        textType="regular"
+        type="small"
+      />
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginTop": 20,
+          }
+        }
+      >
+        <Label
+          style={
+            Object {
+              "color": "#667686",
+            }
+          }
+          textType="regular"
+          type="large"
+        />
+        <Icon
+          allowFontScaling={false}
+          color="#0084F8"
+          name="dart"
+          size={18}
+        />
+      </View>
+    </View>
+  </ForwardRef>
 </View>
 `;
