@@ -27,6 +27,20 @@ export const TenanciesAssetData = [
       label: 'Square feet',
       title: 'Sq.ft',
     },
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
+    },
     floor_number: 2,
     total_floors: 3,
     asset_type: {
@@ -106,6 +120,20 @@ export const PortfolioAssetData = [
       country_code: '+91',
       phone_number: '7903470293',
     },
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
+    },
   },
   {
     id: 2,
@@ -114,6 +142,20 @@ export const PortfolioAssetData = [
     type: 'RENTED',
     isPropertyCompleted: true,
     color: theme.colors.gradientA,
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
+    },
     images: [
       {
         file_name: 'House-1b',
@@ -136,6 +178,20 @@ export const PortfolioAssetData = [
     type: 'VACANT',
     isPropertyCompleted: true,
     color: theme.colors.highPriority,
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
+    },
     images: [
       {
         file_name: 'House-1b',
@@ -158,6 +214,20 @@ export const PortfolioAssetData = [
     type: 'VACANT',
     isPropertyCompleted: false,
     color: theme.colors.highPriority,
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
+    },
     images: [
       {
         file_name: 'House-1b',
@@ -173,6 +243,20 @@ export const PortfolioAssetData = [
     type: 'FOR SALE',
     isPropertyCompleted: true,
     color: theme.colors.mediumPriority,
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
+    },
     images: [
       {
         file_name: 'House-1b',
@@ -195,6 +279,20 @@ export const PortfolioAssetData = [
     type: 'MAINTAIN',
     isPropertyCompleted: true,
     color: theme.colors.informational,
+    country: {
+      id: 1,
+      name: '',
+      iso2_code: '',
+      iso3_code: '',
+      phone_codes: [],
+      currencies: [
+        {
+          currency_name: '',
+          currency_symbol: '',
+          currency_code: '',
+        },
+      ],
+    },
     images: [
       {
         file_name: 'House-1b',

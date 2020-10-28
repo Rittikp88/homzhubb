@@ -1,11 +1,14 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, ImageRound, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
+import { Button, Divider, ImageRound, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-interface IOwnProps {
+interface IOwnProps extends WithTranslation {
   heading: string;
   image: string;
   price: number;
@@ -13,7 +16,7 @@ interface IOwnProps {
   bundleItems: Unit[];
   selected: boolean;
   onToggle: (value: boolean) => void;
-  containerStyle?: any;
+  containerStyle?: StyleProp<ViewStyle>;
   currency: Currency;
 }
 
@@ -27,7 +30,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
   };
 
   public render = (): React.ReactElement => {
-    const { heading, image, price, discountedPrice, containerStyle, selected, currency } = this.props;
+    const { t, heading, image, price, discountedPrice, containerStyle, selected, currency } = this.props;
     const { showMore } = this.state;
     const {
       colors: { moreSeparator, white },
@@ -66,11 +69,15 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
           </View>
           {showMore && this.renderMoreContent()}
         </View>
-        <TouchableOpacity style={styles.moreBtn} onPress={this.toggleSubsection}>
-          <Label type="regular" textType="semiBold" style={styles.moreTextStyle}>
-            {showMore ? 'Show less' : 'Show more'}
-          </Label>
-        </TouchableOpacity>
+        <Button
+          type="secondary"
+          textType="label"
+          textSize="regular"
+          title={showMore ? t('showLess') : t('showMore')}
+          onPress={this.toggleSubsection}
+          containerStyle={styles.moreBtn}
+          titleStyle={styles.moreTextStyle}
+        />
       </View>
     );
   };
@@ -83,10 +90,10 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
         {bundleItems.map((item) => {
           return (
             <View key={item.id} style={[styles.rowStyle, styles.marginBottom]}>
-              <Label style={styles.marginRight} type="regular">
-                {'\u2B24'}
+              <Icon name={icons.roundFilled} color={theme.colors.disabled} size={10} style={styles.iconStyle} />
+              <Label type="regular" style={styles.label}>
+                {item.label}
               </Label>
-              <Label type="regular">{item.label}</Label>
             </View>
           );
         })}
@@ -106,11 +113,19 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
   };
 }
 
+export default withTranslation(LocaleConstants.namespacesKey.property)(CardWithCheckbox);
+
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: theme.colors.moreSeparator,
     borderRadius: 4,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.8,
+    elevation: 1,
   },
   content: {
     marginLeft: 10,
@@ -134,26 +149,36 @@ const styles = StyleSheet.create({
   },
   rowStyle: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   moreBtn: {
-    backgroundColor: theme.colors.lightBlue,
+    backgroundColor: theme.colors.blueTint10,
     alignItems: 'center',
-    paddingVertical: 6,
+    borderWidth: 0,
   },
   padding: {
     padding: 12,
   },
   moreTextStyle: {
     color: theme.colors.blue,
+    marginVertical: 6,
   },
   dividerStyles: {
     marginTop: 16,
     marginBottom: 12,
+    borderColor: theme.colors.background,
   },
   marginRight: {
     marginRight: 8,
   },
   marginBottom: {
     marginBottom: 14,
+  },
+  iconStyle: {
+    marginTop: 4,
+    marginHorizontal: 6,
+  },
+  label: {
+    color: theme.colors.darkTint5,
   },
 });

@@ -105,6 +105,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     const {
       projectName,
       address,
+      country: { flag },
       assetType: { name },
       lastVisitedStep: {
         assetCreation: { stepList },
@@ -121,6 +122,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
             propertyType={name}
             primaryAddress={projectName}
             subAddress={address}
+            countryFlag={flag}
             currentIndex={currentIndex}
             isStepDone={stepList}
             onEditPress={this.onEditPress}

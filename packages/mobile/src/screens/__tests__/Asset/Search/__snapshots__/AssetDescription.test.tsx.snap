@@ -102,7 +102,8 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             subAddress=" "
             subAddressStyle={
               Object {
-                "marginHorizontal": 0,
+                "marginLeft": 0,
+                "maxWidth": 310,
               }
             }
           />
@@ -152,7 +153,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                 "icon": "furnishing",
                 "iconColor": "#33495E",
                 "iconSize": 20,
-                "label": undefined,
+                "label": "None",
               },
               Object {
                 "icon": "open-parking",
@@ -209,7 +210,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              27 Oct 2020
+              28 Oct 2020
             </Label>
           </View>
           <View
@@ -262,9 +263,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           }
           textType="regular"
           type="large"
-        >
-          It is a long established fact that the readable content of a page when looking at its layout.
-        </Label>
+        />
       </Memo(CollapsibleSection)>
       <Memo(CollapsibleSection)
         isDividerRequired={true}
@@ -347,26 +346,18 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
         >
           amenities
         </Text>
-        <FlatList
-          contentContainerStyle={
+        <Label
+          style={
             Object {
-              "marginTop": 16,
+              "color": "#4C5F72",
+              "marginTop": 12,
             }
           }
-          data={Array []}
-          disableVirtualization={false}
-          horizontal={false}
-          initialNumToRender={10}
-          keyExtractor={[Function]}
-          maxToRenderPerBatch={10}
-          numColumns={3}
-          onEndReachedThreshold={2}
-          removeClippedSubviews={false}
-          renderItem={[Function]}
-          scrollEventThrottle={50}
-          updateCellsBatchingPeriod={50}
-          windowSize={21}
-        />
+          textType="regular"
+          type="large"
+        >
+          No Amenities Selected
+        </Label>
         <Divider
           containerStyles={
             Object {

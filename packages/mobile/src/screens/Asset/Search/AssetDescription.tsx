@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { CommonActions } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -209,12 +209,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <View style={styles.screen}>
             {this.renderHeaderSection()}
             <CollapsibleSection title={t('description')} isDividerRequired>
-              {this.renderAssetDescription()}
+              {this.renderAssetDescription(assetDetails)}
             </CollapsibleSection>
             <CollapsibleSection title={t('factsFeatures')} isDividerRequired>
-              {this.renderFactsAndFeatures()}
+              {this.renderFactsAndFeatures(assetDetails)}
             </CollapsibleSection>
-            {this.renderAmenities()}
+            {this.renderAmenities(assetDetails)}
             <CollapsibleSection title={t('highlights')} isDividerRequired>
               {this.renderAssetHighlights(assetDetails)}
             </CollapsibleSection>
@@ -372,9 +372,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderAssetDescription = (): React.ReactNode => {
-    const { t, assetDetails } = this.props;
+  private renderAssetDescription = (assetDetails: Asset): React.ReactNode => {
+    const { t } = this.props;
     const { descriptionShowMore, descriptionHide } = this.state;
+    const { leaseTerm, saleTerm, description } = assetDetails;
 
     const onLayout = (event: any): void => {
       const { lines } = event.nativeEvent;
@@ -388,10 +389,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     };
 
     const descriptionValue = (): string | undefined => {
-      if (assetDetails?.description === '') {
+      if (leaseTerm && leaseTerm.description !== '') {
+        return leaseTerm.description;
+      }
+      if (saleTerm && saleTerm.description !== '') {
+        return saleTerm.description;
+      }
+      if (description === '') {
         return t('noDescription');
       }
-      return assetDetails?.description;
+
+      return description;
     };
 
     return (
@@ -415,13 +423,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderFactsAndFeatures = (): React.ReactNode => {
-    const { assetDetails } = this.props;
+  private renderFactsAndFeatures = (assetDetails: Asset): React.ReactNode => {
     return (
       <FlatList<AssetFeature>
         numColumns={2}
         contentContainerStyle={styles.listContainer}
-        data={assetDetails?.features}
+        data={assetDetails.features}
         keyExtractor={(item: AssetFeature): string => item.name}
         renderItem={({ item }: { item: AssetFeature }): React.ReactElement => (
           <View style={styles.featureItem}>
@@ -437,11 +444,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderAmenities = (): React.ReactNode => {
-    const { t, assetDetails } = this.props;
+  private renderAmenities = (assetDetails: Asset): React.ReactNode => {
+    const { t } = this.props;
     const { amenitiesShowAll } = this.state;
-    const length = assetDetails?.amenityGroup?.amenities.length ?? 0;
-    let data = assetDetails?.amenityGroup?.amenities ?? [];
+    const { amenityGroup } = assetDetails;
+    const length = amenityGroup?.amenities.length ?? 0;
+    let data = amenityGroup?.amenities ?? [];
 
     if (length > 6 && !amenitiesShowAll) {
       data = data.slice(0, 6);
@@ -456,24 +464,32 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         <Text type="small" textType="semiBold" style={styles.textColor}>
           {t('amenities')}
         </Text>
-        <FlatList
-          numColumns={3}
-          contentContainerStyle={styles.listContainer}
-          data={data}
-          keyExtractor={(item: CategoryAmenityGroup): string => `${item.id}`}
-          renderItem={({ item }: { item: CategoryAmenityGroup }): React.ReactElement => (
-            <View style={styles.amenityItem}>
-              <SVGUri uri={item.attachment.link} height={30} width={30} />
-              <Label type="regular" textType="regular" style={styles.amenityText}>
-                {item.name}
-              </Label>
-            </View>
-          )}
-        />
-        {length > 6 && (
-          <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
-            {amenitiesShowAll ? t('property:showLess') : t('property:showAll', { total: length })}
+        {length < 1 ? (
+          <Label type="large" textType="regular" style={styles.description}>
+            {t('noAmenities')}
           </Label>
+        ) : (
+          <>
+            <FlatList
+              numColumns={3}
+              contentContainerStyle={styles.listContainer}
+              data={data}
+              keyExtractor={(item: CategoryAmenityGroup): string => `${item.id}`}
+              renderItem={({ item }: { item: CategoryAmenityGroup }): React.ReactElement => (
+                <View style={styles.amenityItem}>
+                  <SVGUri uri={item.attachment.link} height={30} width={30} />
+                  <Label type="regular" textType="regular" style={styles.amenityText}>
+                    {item.name}
+                  </Label>
+                </View>
+              )}
+            />
+            {length > 6 && (
+              <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
+                {amenitiesShowAll ? t('property:showLess') : t('property:showAll', { total: length })}
+              </Label>
+            )}
+          </>
         )}
         <Divider containerStyles={styles.divider} />
       </View>
@@ -481,20 +497,43 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderAssetHighlights = (assetDetails: Asset): React.ReactNode => {
+    const { t } = this.props;
+    const { highlights } = assetDetails;
+    if (!highlights || highlights.length < 1) {
+      return (
+        <Label type="large" textType="regular" style={styles.description}>
+          {t('noHighlights')}
+        </Label>
+      );
+    }
+    const selectedValues = highlights.filter((item) => item.covered).length;
+    if (selectedValues === 0) {
+      return (
+        <Label type="large" textType="regular" style={styles.description}>
+          {t('noHighlights')}
+        </Label>
+      );
+    }
     return (
       <FlatList<AssetHighlight>
-        data={assetDetails.highlights}
+        data={highlights}
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         keyExtractor={(item: AssetHighlight): string => `${item.name}`}
-        renderItem={({ item }: { item: AssetHighlight }): React.ReactElement => (
-          <View style={styles.highlightItemContainer}>
-            <Icon name={icons.check} color={theme.colors.completed} size={22} />
-            <Label type="large" textType="regular" style={styles.highlightText}>
-              {item.name}
-            </Label>
-          </View>
-        )}
+        renderItem={({ item }: { item: AssetHighlight }): React.ReactElement | null => {
+          if (item.covered) {
+            return (
+              <View style={styles.highlightItemContainer}>
+                <Icon name={icons.check} color={theme.colors.completed} size={22} />
+                <Label type="large" textType="regular" style={styles.highlightText}>
+                  {item.name}
+                </Label>
+              </View>
+            );
+          }
+
+          return null;
+        }}
       />
     );
   };
@@ -901,7 +940,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private getFormattedDate = (): string => {
     const date = DateUtils.getCurrentDate();
     const time = DateUtils.getCurrentTime();
-    return DateUtils.getISOFormat(date, Number(time));
+    const formatted = DateUtils.getISOFormattedDate(date, Number(time));
+    return DateUtils.getUtcFormatted(formatted, DateFormats.ISO, DateFormats.ISO24Format);
   };
 
   private getViewCounts = async (): Promise<void> => {
@@ -1104,7 +1144,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   subAddress: {
-    marginHorizontal: 0,
+    marginLeft: 0,
+    maxWidth: 310,
   },
   verticalDivider: {
     borderWidth: 1,

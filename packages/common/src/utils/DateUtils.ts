@@ -28,6 +28,7 @@ export const DateFormats = {
   DD_MMMMYYYY: 'DD, MMMM YYYY',
   DD_MMMYYYY: 'DD, MMM YYYY',
   YYYYMMDD_HM: 'YYYY-MM-DD hh:mm',
+  MMM_YYYY: 'MMM YYYY',
 };
 
 class DateUtils {

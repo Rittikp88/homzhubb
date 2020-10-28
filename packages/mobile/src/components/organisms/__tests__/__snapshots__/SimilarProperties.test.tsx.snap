@@ -46,6 +46,7 @@ exports[`SimilarProperties should match snapshot for renderItem 1`] = `
         "currencies": Array [],
       },
       "floor_number": 1,
+      "furnishing": "SEMI",
       "id": 1,
       "images": Array [
         Object {
@@ -133,6 +134,7 @@ exports[`SimilarProperties should match snapshot with similar properties 1`] = `
             "currencies": Array [],
           },
           "floor_number": 1,
+          "furnishing": "SEMI",
           "id": 1,
           "images": Array [
             Object {
@@ -201,6 +203,7 @@ exports[`SimilarProperties should match snapshot with similar properties 1`] = `
             "phone_codes": Array [],
           },
           "floor_number": 2,
+          "furnishing": "SEMI",
           "id": 2,
           "images": Array [
             Object {

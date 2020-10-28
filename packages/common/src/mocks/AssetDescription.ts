@@ -224,6 +224,7 @@ export const mockAsset = {
       },
     },
   ],
+  furnishing: 'NONE',
   highlights: [
     {
       name: 'Power Backup',

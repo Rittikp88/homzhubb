@@ -6,7 +6,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, Text } from '@homzhub/common/src/components';
-import { CardWithCheckbox } from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
+import CardWithCheckbox from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
 import { SearchBar } from '@homzhub/mobile/src/components';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';

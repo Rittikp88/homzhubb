@@ -110,6 +110,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       if (!isNextStep && isPropertyReady && params && params.isFromEdit) {
         return {
           ...state,
+          currentIndex: 0,
           isStepDone: stepList,
         };
       }
@@ -150,6 +151,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       projectName,
       assetType: { name },
       address,
+      country: { flag },
     } = assetDetails;
 
     const steps = this.getRoutes().map((route) => route.title);
@@ -168,6 +170,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             selectedPan={selectedPlan}
             badgeStyle={styles.badgeStyle}
             propertyType={name}
+            countryFlag={flag}
             primaryAddress={projectName}
             subAddress={address}
             currentIndex={currentIndex}
@@ -494,7 +497,9 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const leaseId = leaseListingId && leaseListingId.length > 0 ? leaseListingId[0] : 0;
 
     const propertyTermId = type === TypeOfPlan.RENT && leaseId > 0 ? leaseId : saleId;
-
+    this.setState({
+      isNextStep: false,
+    });
     navigation.navigate(ScreensKeys.PropertyAssetDescription, {
       propertyTermId,
       isPreview: true,

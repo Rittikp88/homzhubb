@@ -181,7 +181,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
           <>
             <PropertySearchMap
               properties={properties.results}
-              transaction_type={filters.asset_transaction_type}
+              transaction_type={filters.asset_transaction_type || 0}
               onSelectedProperty={this.navigateToAssetDetails}
               onFavorite={this.onFavourite}
               searchLocation={searchLocation}
@@ -300,8 +300,8 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
             isPriceRange
             range={priceRange}
             currencySymbol={currencySymbol}
-            minChangedValue={min_price}
-            maxChangedValue={max_price}
+            minChangedValue={min_price ?? 0}
+            maxChangedValue={max_price ?? 0}
             onChangeSlide={updateFilter}
             containerStyle={styles.priceRange}
           />
@@ -312,21 +312,21 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
             dropdownData={areaUnits}
             selectedUnit={area_unit}
             range={areaRange}
-            minChangedValue={min_area}
-            maxChangedValue={max_area}
+            minChangedValue={min_area ?? 0}
+            maxChangedValue={max_area ?? 0}
             onChangeSlide={updateFilter}
             onDropdownValueChange={this.handleDropdownValue}
             containerStyle={styles.priceRange}
           />
         );
       case OnScreenFilters.ROOMS:
-        return <RoomsFilter bedCount={room_count} bathroomCount={[bath_count]} onSelection={updateFilter} />;
+        return <RoomsFilter bedCount={room_count ?? []} bathroomCount={[bath_count ?? 0]} onSelection={updateFilter} />;
       case OnScreenFilters.TYPE:
         return (
           <AssetTypeFilter
             filterData={filterData}
-            asset_group={asset_group}
-            asset_type={asset_type}
+            asset_group={asset_group ?? 0}
+            asset_type={asset_type ?? []}
             updateAssetFilter={updateFilter}
           />
         );
@@ -460,7 +460,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     return (
       <>
         <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
-        {suggestions.length > 0 && search_address.length > 0 && (
+        {suggestions.length > 0 && !!search_address && search_address.length > 0 && (
           <SearchResults
             results={suggestions}
             onResultPress={this.onSuggestionPress}
@@ -582,7 +582,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     };
 
     try {
-      await LeadService.postLeadDetail(asset_transaction_type, payload);
+      await LeadService.postLeadDetail(asset_transaction_type || 0, payload);
       getProperties();
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
@@ -604,7 +604,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     const {
       filters: { search_address },
     } = this.props;
-    GooglePlacesService.autoComplete(search_address)
+    GooglePlacesService.autoComplete(search_address || '')
       .then((suggestions: GooglePlaceData[]) => {
         this.setState({ suggestions });
       })

@@ -1,23 +1,23 @@
 import React from 'react';
-import { StyleSheet, View, StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { images } from '@homzhub/common/src/assets/images';
+import { StyleSheet, View, StyleProp, TextStyle, ViewStyle, Image } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Image, Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components';
 
 interface IProps {
   primaryAddress: string;
   subAddress: string;
+  countryFlag: string;
   primaryAddressStyle?: StyleProp<TextStyle>;
   subAddressStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const PropertyAddressCountry = (props: IProps): React.ReactElement => {
-  const { primaryAddress, subAddress, primaryAddressStyle, subAddressStyle, containerStyle = {} } = props;
+  const { primaryAddress, subAddress, primaryAddressStyle, subAddressStyle, containerStyle = {}, countryFlag } = props;
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
       <View style={styles.flexRow}>
-        <Image source={images.flag} />
+        <Image source={{ uri: countryFlag }} style={styles.flagStyle} />
         <Text
           type="regular"
           textType="semiBold"
@@ -55,5 +55,10 @@ const styles = StyleSheet.create({
   subAddress: {
     color: theme.colors.darkTint3,
     marginVertical: 6,
+  },
+  flagStyle: {
+    borderRadius: 2,
+    width: 24,
+    height: 24,
   },
 });

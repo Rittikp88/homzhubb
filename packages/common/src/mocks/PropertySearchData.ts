@@ -23,6 +23,7 @@ export const PropertySearchData = [
       id: 2,
       name: 'Apartment / Condo',
     },
+    furnishing: 'SEMI',
     country: {
       currencies: [],
     },
@@ -96,6 +97,7 @@ export const PropertySearchData = [
         },
       ],
     },
+    furnishing: 'SEMI',
     spaces: [
       {
         id: 1,

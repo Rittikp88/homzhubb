@@ -75,6 +75,7 @@ exports[`PropertySearchMap should match snapshot 1`] = `
             "currencies": Array [],
           },
           "floor_number": 1,
+          "furnishing": "SEMI",
           "id": 1,
           "images": Array [
             Object {
@@ -143,6 +144,7 @@ exports[`PropertySearchMap should match snapshot 1`] = `
             "phone_codes": Array [],
           },
           "floor_number": 2,
+          "furnishing": "SEMI",
           "id": 2,
           "images": Array [
             Object {
@@ -271,6 +273,7 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
             "currencies": Array [],
           },
           "floor_number": 1,
+          "furnishing": "SEMI",
           "id": 1,
           "images": Array [
             Object {
@@ -339,6 +342,7 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
             "phone_codes": Array [],
           },
           "floor_number": 2,
+          "furnishing": "SEMI",
           "id": 2,
           "images": Array [
             Object {
@@ -467,6 +471,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
             "currencies": Array [],
           },
           "floor_number": 1,
+          "furnishing": "SEMI",
           "id": 1,
           "images": Array [
             Object {
@@ -535,6 +540,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
             "phone_codes": Array [],
           },
           "floor_number": 2,
+          "furnishing": "SEMI",
           "id": 2,
           "images": Array [
             Object {
@@ -663,6 +669,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
             "currencies": Array [],
           },
           "floor_number": 1,
+          "furnishing": "SEMI",
           "id": 1,
           "images": Array [
             Object {
@@ -731,6 +738,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
             "phone_codes": Array [],
           },
           "floor_number": 2,
+          "furnishing": "SEMI",
           "id": 2,
           "images": Array [
             Object {

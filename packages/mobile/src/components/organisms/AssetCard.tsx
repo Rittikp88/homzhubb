@@ -46,6 +46,7 @@ export class AssetCard extends Component<Props> {
       attachments,
       assetStatusInfo,
       address,
+      country: { flag },
     } = assetData;
     const handlePropertyView = (): void => onViewProperty && onViewProperty(id);
     const handleArrowPress = (): void => onPressArrow && onPressArrow(id);
@@ -93,6 +94,7 @@ export class AssetCard extends Component<Props> {
               )}
               <PropertyAddressCountry
                 primaryAddress={projectName}
+                countryFlag={flag}
                 subAddress={address ?? `${unitNumber} ${blockNumber}`}
                 containerStyle={styles.addressStyle}
               />

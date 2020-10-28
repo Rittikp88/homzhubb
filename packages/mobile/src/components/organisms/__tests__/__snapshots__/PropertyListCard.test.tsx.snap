@@ -90,7 +90,7 @@ exports[`PropertyListCard should match snapshot 1`] = `
               "icon": "furnishing",
               "iconColor": "#33495E",
               "iconSize": 20,
-              "label": undefined,
+              "label": "None",
             },
             Object {
               "icon": "open-parking",
@@ -203,7 +203,7 @@ exports[`PropertyListCard should match snapshot for optional props 1`] = `
               "icon": "furnishing",
               "iconColor": "#33495E",
               "iconSize": 20,
-              "label": undefined,
+              "label": "None",
             },
             Object {
               "icon": "open-parking",

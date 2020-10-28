@@ -1,4 +1,5 @@
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -41,6 +42,9 @@ class PropertyUtils {
 
     const parking = openParking.length > 0 && openParking[0].count ? openParking[0].count.toString() : '-';
 
+    const area =
+      carpetArea && carpetArea > 0 ? (isFullDetail ? `${carpetArea} ${carpetAreaUnit}` : `${carpetArea}`) : '-';
+
     if (code === AssetGroupTypes.RES) {
       amenities.push({
         icon: icons.bed,
@@ -59,7 +63,7 @@ class PropertyUtils {
         icon: icons.furnishing,
         iconSize: 20,
         iconColor: theme.colors.darkTint3,
-        label: furnishing,
+        label: StringUtils.toTitleCase(furnishing),
       });
       amenities.push({
         icon: icons.openParking,
@@ -73,7 +77,7 @@ class PropertyUtils {
       icon: icons.area,
       iconSize: 20,
       iconColor: theme.colors.darkTint3,
-      label: isFullDetail && carpetArea && carpetArea > 0 ? `${carpetArea} ${carpetAreaUnit}` : '-',
+      label: area,
     });
 
     return amenities;
@@ -88,9 +92,9 @@ class PropertyUtils {
   ): { label: string; value: string }[] => {
     const currentDay = new Date();
     const availableFromDate = new Date(availableFrom);
-    const formattedAvailableFrom = DateUtils.getDisplayDate(availableFrom, 'DD MMM YYYY');
-    const postedOnDisplayDate = DateUtils.getDisplayDate(postedOn, 'DD MMM YYYY');
-    const tenantedTillDisplayDate = DateUtils.getDisplayDate(saleTerm?.tenantedTill ?? '', 'DD MMM YYYY');
+    const formattedAvailableFrom = DateUtils.getDisplayDate(availableFrom, DateFormats.DDMMMYYYY);
+    const postedOnDisplayDate = DateUtils.getDisplayDate(postedOn, DateFormats.DDMMMYYYY);
+    const tenantedTillDisplayDate = DateUtils.getDisplayDate(saleTerm?.tenantedTill ?? '', DateFormats.MMM_YYYY);
     const availableFromDisplayDate = availableFromDate <= currentDay ? 'Immediately' : formattedAvailableFrom;
     switch (transaction_type) {
       // 0 - RENT and 1 - BUY

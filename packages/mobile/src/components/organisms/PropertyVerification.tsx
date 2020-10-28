@@ -72,7 +72,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
         </View>
         <Button
           type="primary"
-          title={t('common:saveAndContinue')}
+          title={t('common:continue')}
           disabled={totalDocuments.length < verificationTypes.length || isLoading}
           containerStyle={styles.buttonStyle}
           onPress={this.postPropertyVerificationDocuments}

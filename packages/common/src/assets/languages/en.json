@@ -473,7 +473,9 @@
     "malls": "Shopping Malls",
     "noDescription": "No Description",
     "messageSent": "Message Sent Successfully",
-    "scheduleVisit": "Schedule Site Visit"
+    "scheduleVisit": "Schedule Site Visit",
+    "noAmenities": "No Amenities Selected",
+    "noHighlights": "No Highlights Added"
   },
   "assetDashboard": {
     "notification": "Notifications",

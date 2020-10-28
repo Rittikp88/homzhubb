@@ -95,6 +95,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       blockNumber,
       address,
       lastVisitedStep,
+      country: { flag },
       verifications: { description },
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
@@ -111,6 +112,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         <ShieldGroup propertyType={name} propertyTypeStyle={styles.heading} text={description} isInfoRequired />
         <PropertyAddressCountry
           primaryAddress={projectName}
+          countryFlag={flag}
           subAddress={address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`}
           containerStyle={styles.addressStyle}
         />

@@ -27,7 +27,7 @@ type Props = libraryProps & IProps;
 export class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
-      property: { attachments, projectName, unitNumber, blockNumber, isWishlisted },
+      property: { attachments, projectName, unitNumber, blockNumber, isWishlisted, address },
       containerStyle,
       isCarousel,
       onSelectedProperty,
@@ -47,7 +47,7 @@ export class PropertyListCard extends React.Component<Props, {}> {
           <PropertyAddress
             isIcon
             primaryAddress={projectName}
-            subAddress={`${blockNumber ?? ''} ${unitNumber ?? ''}`}
+            subAddress={address || `${blockNumber ?? ''} ${unitNumber ?? ''}`}
           />
           <Divider containerStyles={styles.divider} />
           {this.renderPriceAndAmenities()}

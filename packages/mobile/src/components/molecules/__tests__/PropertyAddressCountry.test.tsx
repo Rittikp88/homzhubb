@@ -7,6 +7,7 @@ describe('PropertyAddressCountry', () => {
   const props = {
     primaryAddress: '2 BHK',
     subAddress: 'Delhi',
+    countryFlag: '',
   };
   it('should match snapshot', () => {
     const wrapper = shallow(<PropertyAddressCountry {...props} />);

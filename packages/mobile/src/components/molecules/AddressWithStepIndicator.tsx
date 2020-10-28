@@ -15,6 +15,7 @@ interface IProps {
   isStepDone: boolean[];
   primaryAddress: string;
   subAddress: string;
+  countryFlag: string;
   propertyType: string;
   icon?: string;
   onEditPress?: () => void;
@@ -40,6 +41,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     propertyType,
     onPressSteps,
     onEditPress,
+    countryFlag,
   } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
@@ -111,6 +113,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
       <PropertyAddressCountry
         primaryAddress={primaryAddress}
         subAddress={subAddress}
+        countryFlag={countryFlag}
         containerStyle={styles.addressView}
       />
       <FlatList

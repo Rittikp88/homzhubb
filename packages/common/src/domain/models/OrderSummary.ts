@@ -212,9 +212,11 @@ export class OrderSummary {
     summary.push(this.subTotal);
 
     this.tax.forEach((tax) => {
-      const title = `${tax.taxLabel}(${tax.taxPercentage}%)`;
-      const taxData = new OrderTotalSummary(title, tax.taxAmount);
-      summary.push(taxData);
+      if (tax.taxAmount > 0) {
+        const title = `${tax.taxLabel}(${tax.taxPercentage}%)`;
+        const taxData = new OrderTotalSummary(title, tax.taxAmount);
+        summary.push(taxData);
+      }
     });
 
     return summary;

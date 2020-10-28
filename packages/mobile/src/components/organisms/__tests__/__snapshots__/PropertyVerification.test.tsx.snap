@@ -255,7 +255,7 @@ exports[`PropertyVerification should match snapshot 1`] = `
     }
     disabled={true}
     onPress={[Function]}
-    title="common:saveAndContinue"
+    title="common:continue"
     type="primary"
   />
 </Fragment>

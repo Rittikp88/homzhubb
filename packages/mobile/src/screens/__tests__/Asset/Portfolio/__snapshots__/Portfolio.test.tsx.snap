@@ -63,6 +63,20 @@ exports[`Portfolio Screen should render snapshot 1`] = `
               "title": "Sq.ft",
             },
             "construction_year": null,
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
+            },
             "description": "",
             "digital_id": "8fad8389-6893-411a-bd4a-4b1575523d4a",
             "floor_number": 2,
@@ -168,6 +182,20 @@ magnam aliquam quaerat voluptatem.",
               "id": 1,
               "phone_number": "7903470293",
             },
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
+            },
             "id": 1,
             "images": Array [
               Object {
@@ -191,6 +219,20 @@ magnam aliquam quaerat voluptatem.",
               "full_name": "Anuvrat Somnath",
               "id": 1,
               "phone_number": "7903470293",
+            },
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
             },
             "id": 2,
             "images": Array [
@@ -216,6 +258,20 @@ magnam aliquam quaerat voluptatem.",
               "id": 1,
               "phone_number": "7903470293",
             },
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
+            },
             "id": 3,
             "images": Array [
               Object {
@@ -233,6 +289,20 @@ magnam aliquam quaerat voluptatem.",
           Object {
             "address": "Sindhi Society, Chembur, Mumbai- 400071",
             "color": "#FF8576",
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
+            },
             "id": 4,
             "images": Array [
               Object {
@@ -257,6 +327,20 @@ magnam aliquam quaerat voluptatem.",
               "id": 1,
               "phone_number": "7903470293",
             },
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
+            },
             "id": 5,
             "images": Array [
               Object {
@@ -280,6 +364,20 @@ magnam aliquam quaerat voluptatem.",
               "full_name": "Anuvrat Somnath",
               "id": 1,
               "phone_number": "7903470293",
+            },
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
             },
             "id": 6,
             "images": Array [
