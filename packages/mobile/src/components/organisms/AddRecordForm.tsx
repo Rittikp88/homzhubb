@@ -20,6 +20,7 @@ import {
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { IDocumentSource, UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 
@@ -43,6 +44,8 @@ interface IState {
   wordCount: number;
   formValues: IFormData;
   attachment?: IDocumentSource;
+  currencyCode: string;
+  currencySymbol: string;
 }
 
 interface IOwnProps extends WithTranslation {
@@ -54,6 +57,7 @@ interface IOwnProps extends WithTranslation {
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
   shouldLoad: (isLoading: boolean) => void;
+  defaultCurrency: Currency;
 }
 
 const MAX_WORD_COUNT = 200;
@@ -61,24 +65,30 @@ const MAX_WORD_COUNT = 200;
 export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   private resetForm: ((nextValues?: FormikValues) => void) | undefined;
 
-  public state = {
-    selectedFormType: FormType.Income,
-    wordCount: MAX_WORD_COUNT,
-    attachment: undefined,
-    formValues: {
-      property: 0,
-      label: '',
-      tellerName: '',
-      amount: 0,
-      category: '',
-      date: '',
-      notes: '',
-    },
-  };
+  public constructor(props: IOwnProps) {
+    super(props);
+    const { currencySymbol, currencyCode } = props.defaultCurrency;
+    this.state = {
+      selectedFormType: FormType.Income,
+      wordCount: MAX_WORD_COUNT,
+      attachment: undefined,
+      currencyCode,
+      currencySymbol,
+      formValues: {
+        property: 0,
+        label: '',
+        tellerName: '',
+        amount: 0,
+        category: '',
+        date: '',
+        notes: '',
+      },
+    };
+  }
 
   public render(): ReactElement {
     const { containerStyles, t, clear } = this.props;
-    const { selectedFormType, formValues, wordCount } = this.state;
+    const { selectedFormType, formValues, wordCount, currencyCode, currencySymbol } = this.state;
 
     if (clear) {
       this.clearForm();
@@ -111,6 +121,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   options={this.loadPropertyNames()}
                   placeholder={t('selectProperty')}
                   maxLabelLength={36}
+                  onChange={this.onChangeProperty}
                 />
                 <FormTextInput
                   formProps={formProps}
@@ -133,8 +144,8 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   name="amount"
                   label={t('amount')}
                   placeholder={t('amountPlaceholder')}
-                  inputPrefixText="₹"
-                  inputGroupSuffixText="INR"
+                  inputPrefixText={currencySymbol}
+                  inputGroupSuffixText={currencyCode}
                 />
                 <FormDropdown
                   formProps={formProps}
@@ -190,6 +201,23 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 
   private onFormTypeChange = (selectedType: number): void => {
     this.setState({ selectedFormType: selectedType });
+  };
+
+  private onChangeProperty = (value: string, formikProps?: FormikProps<FormikValues>): void => {
+    const { properties } = this.props;
+    properties.forEach((item) => {
+      if (item.id === Number(value)) {
+        const { currencies } = item.country;
+        this.setState({
+          currencyCode: currencies[0].currencyCode,
+          currencySymbol: currencies[0].currencySymbol,
+        });
+      }
+    });
+    if (formikProps) {
+      const { setFieldValue } = formikProps;
+      setFieldValue('property', value);
+    }
   };
 
   private initializeReset = (formProps: FormikProps<FormikValues>): void => {
@@ -263,9 +291,10 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 
   private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     const { property, label, tellerName, amount, category, notes, date } = values;
-    const { selectedFormType, attachment } = this.state;
+    const { selectedFormType, attachment, currencyCode } = this.state;
     const { shouldLoad } = this.props;
     let attachmentId = 0;
+
     shouldLoad(true);
 
     try {
@@ -290,10 +319,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         label,
         ...(tellerName && tellerInfo),
         amount,
-        category,
+        category: Number(category),
         transaction_date: date,
         ...(notes && { notes }),
         attachment: attachmentId || null,
+        currency: currencyCode,
       };
 
       await LedgerService.postGeneralLedgers(payload);

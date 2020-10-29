@@ -316,8 +316,9 @@ export interface IAddGeneralLedgerPayload {
   amount: number;
   category: number;
   transaction_date: string;
-  notes: string | null;
+  notes?: string | null;
   attachment: number | null;
+  currency: string;
 }
 
 export interface ICreateLedgerResult {

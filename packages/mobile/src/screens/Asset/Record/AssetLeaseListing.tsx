@@ -460,23 +460,21 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private handleContinue = (): void => {
-    const { navigation, resetState, assetDetails } = this.props;
+    const { resetState, assetDetails } = this.props;
     this.setState({ isSheetVisible: false });
     resetState();
 
     if (assetDetails) {
       const {
-        lastVisitedStep: { isPropertyReady },
+        lastVisitedStep: {
+          isPropertyReady,
+          listing: { type },
+        },
       } = assetDetails;
-      if (isPropertyReady) {
+      if (isPropertyReady && type !== TypeOfPlan.MANAGE) {
         this.navigateToPreview(assetDetails);
       } else {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: ScreensKeys.BottomTabs }],
-          })
-        );
+        this.navigateToDashboard();
       }
     }
   };
@@ -549,23 +547,32 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   public handleSkip = (): void => {
-    const { navigation, resetState, assetDetails } = this.props;
+    const { assetDetails } = this.props;
     const { currentIndex } = this.state;
 
     if (assetDetails && assetDetails.lastVisitedStep.isPropertyReady) {
-      this.navigateToPreview(assetDetails);
+      if (assetDetails.lastVisitedStep.listing.type !== TypeOfPlan.MANAGE) {
+        this.navigateToPreview(assetDetails);
+      } else {
+        this.navigateToDashboard();
+      }
     } else if (currentIndex < this.getRoutes().length - 2) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollToTop();
     } else {
-      resetState();
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreensKeys.BottomTabs }],
-        })
-      );
+      this.navigateToDashboard();
     }
+  };
+
+  private navigateToDashboard = (): void => {
+    const { navigation, resetState } = this.props;
+    resetState();
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensKeys.BottomTabs }],
+      })
+    );
   };
 
   private scrollToTop = (): void => {

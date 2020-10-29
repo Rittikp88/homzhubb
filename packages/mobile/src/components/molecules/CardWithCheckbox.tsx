@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, Divider, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 0,
     },
-    shadowOpacity: 0.8,
+    shadowOpacity: PlatformUtils.isIOS() ? 0.2 : 0.8,
     elevation: 1,
   },
   content: {

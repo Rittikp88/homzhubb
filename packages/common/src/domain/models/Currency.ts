@@ -9,13 +9,13 @@ export interface ICurrency {
 @JsonObject('Currency')
 export class Currency {
   @JsonProperty('currency_name', String)
-  private _currencyName = '';
+  private _currencyName = 'INR';
 
   @JsonProperty('currency_symbol', String)
-  private _currencySymbol = '';
+  private _currencySymbol = '₹';
 
   @JsonProperty('currency_code', String)
-  private _currencyCode = '';
+  private _currencyCode = 'INR';
 
   get currencyName(): string {
     return this._currencyName;

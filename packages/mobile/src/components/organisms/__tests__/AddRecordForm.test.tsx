@@ -13,6 +13,11 @@ describe('AddRecordForm', () => {
     clear: false,
     onFormClear: jest.fn(),
     shouldLoad: jest.fn(),
+    defaultCurrency: {
+      currencyName: 'INR',
+      currencySymbol: '',
+      currencyCode: 'INR',
+    },
     ...testProps,
   });
 

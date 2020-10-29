@@ -138,6 +138,7 @@
     "newPassword": "New password",
     "enterPassword": "Enter your password",
     "yourNumber": "Your mobile number",
+    "enterAddress": "Enter your address",
     "signup": "Signup",
     "nameRequired": "Please enter your name",
     "firstNameRequired": "Please enter the first name",
@@ -472,7 +473,9 @@
     "malls": "Shopping Malls",
     "noDescription": "No Description",
     "messageSent": "Message Sent Successfully",
-    "scheduleVisit": "Schedule Site Visit"
+    "scheduleVisit": "Schedule Site Visit",
+    "noAmenities": "No Amenities Selected",
+    "noHighlights": "No Highlights Added"
   },
   "assetDashboard": {
     "notification": "Notifications",
@@ -604,8 +607,14 @@
     "fieldRequiredError": "This field is required",
     "editHeaderText": "Edit {{title}}",
     "updateSuccessfulMessage": "Details updated successfully",
+    "passwordVerificationText": "Password Verification",
+    "enterYourPasswordText": "Enter your account password to Verify",
+    "continueToGetOtp": "Click \"Continue\" to get OTP",
+    "yourCurrentPassword": "Your Current Password",
     "passwordChanged": "Password Changed Successfully",
     "uniquePassword": "Please add a unique password",
-    "workEmployeeId": "Work Employee Id"
+    "otpVerificationText": "OTP Verification",
+    "profileUpdatedSuccessfully": "Profile Updated Successfully",
+    "editProfile": "Edit Profile"
   }
 }
