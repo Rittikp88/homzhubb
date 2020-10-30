@@ -64,6 +64,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                     inputType="default"
                     placeholder={t('contactName')}
                     formProps={formProps}
+                    isMandatory
                   />
                   <FormTextInput
                     name="phone"
@@ -74,6 +75,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                     placeholder={t('common:phone')}
                     phoneFieldDropdownText={t('auth:countryRegion')}
                     formProps={formProps}
+                    isMandatory
                   />
                   <FormTextInput
                     name="email"
@@ -82,6 +84,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                     inputType="email"
                     placeholder={t('common:email')}
                     formProps={formProps}
+                    isMandatory
                   />
                 </View>
                 <FormButton

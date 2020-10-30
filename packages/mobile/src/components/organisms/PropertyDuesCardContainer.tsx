@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { images } from '@homzhub/common/src/assets/images';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, Divider, Image, Label, PricePerUnit, Text } from '@homzhub/common/src/components';
 
@@ -55,7 +54,7 @@ const renderPropertyDues = (propertyDues: IPropertyDuesData[], t: TFunction): Re
     return (
       <View key={`${property.propertyName}${index}`}>
         <View style={styles.propertyName}>
-          <Image style={styles.flag} source={images.flag} />
+          <Image style={styles.flag} source={{ uri: '' }} />
           <Text type="small" textType="semiBold">
             {propertyName}
           </Text>

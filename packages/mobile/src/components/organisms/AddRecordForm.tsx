@@ -129,9 +129,9 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   name="label"
                   label={t('details')}
                   placeholder={t('detailsPlaceholder')}
+                  isMandatory
                 />
                 <FormTextInput
-                  isOptional
                   formProps={formProps}
                   inputType="default"
                   name="tellerName"
@@ -146,6 +146,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   placeholder={t('amountPlaceholder')}
                   inputPrefixText={currencySymbol}
                   inputGroupSuffixText={currencyCode}
+                  isMandatory
                 />
                 <FormDropdown
                   formProps={formProps}
@@ -154,6 +155,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   options={this.loadCategories()}
                   placeholder={t('categoryPlaceholder')}
                   maxLabelLength={36}
+                  isMandatory
                 />
                 <FormCalendar
                   allowPastDates
@@ -162,9 +164,9 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   textType="label"
                   label={t('addDate')}
                   placeHolder={t('addDatePlaceholder')}
+                  isMandatory
                 />
                 <FormTextInput
-                  isOptional
                   formProps={formProps}
                   inputType="default"
                   name="notes"

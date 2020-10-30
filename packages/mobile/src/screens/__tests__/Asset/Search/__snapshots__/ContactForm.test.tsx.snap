@@ -229,7 +229,6 @@ exports[`Contact Form Screen should render snapshot 1`] = `
             "marginVertical": 20,
           }
         }
-        isOptional={true}
         label="message"
         onMessageChange={[Function]}
         placeholder="typeYourMessage"

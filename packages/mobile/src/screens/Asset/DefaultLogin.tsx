@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { CommonActions } from '@react-navigation/native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { images } from '@homzhub/common/src/assets/images';
+import Logo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { Button, Text } from '@homzhub/common/src/components';
@@ -16,7 +16,7 @@ export class DefaultLogin extends React.PureComponent<IProps> {
     const { t } = this.props;
     return (
       <View style={styles.container}>
-        <Image source={images.landingScreenLogo} />
+        <Logo height={100} width={100} />
         <Text type="small" textType="regular" style={styles.loginText}>
           {t('pleaseSignup')}
         </Text>

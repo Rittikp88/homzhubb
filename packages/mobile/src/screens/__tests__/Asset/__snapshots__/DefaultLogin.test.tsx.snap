@@ -11,12 +11,9 @@ exports[`Default Login Screen should render snapshot 1`] = `
     }
   }
 >
-  <Image
-    source={
-      Object {
-        "testUri": "../../../packages/common/src/assets/images/landingScreenLogo.png",
-      }
-    }
+  <[object Object]
+    height={100}
+    width={100}
   />
   <Text
     style={

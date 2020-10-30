@@ -87,7 +87,6 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
             <TextArea
               label={t('message')}
               placeholder={t('typeYourMessage')}
-              isOptional
               value={message}
               containerStyle={styles.textArea}
               onMessageChange={this.handleMessageChange}

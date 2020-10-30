@@ -12,16 +12,7 @@ exports[`Test cases for FormDropdown should render snapshot 1`] = `
     }
     textType="regular"
     type="regular"
-  >
-    <Label
-      style={
-        Object {
-          "color": "#33495E",
-        }
-      }
-      type="small"
-    />
-  </Label>
+  />
   <Dropdown
     containerStyle={Object {}}
     data={

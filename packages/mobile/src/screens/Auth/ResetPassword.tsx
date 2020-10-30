@@ -48,6 +48,7 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
                   label="Password"
                   helpText={t('auth:passwordValidation')}
                   placeholder={t('auth:enterPassword')}
+                  isMandatory
                 />
                 <FormButton
                   formProps={formProps}

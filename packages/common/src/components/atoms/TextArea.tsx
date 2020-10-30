@@ -8,28 +8,20 @@ interface IProps {
   label?: string;
   value: string;
   placeholder: string;
-  isOptional?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   onMessageChange?: (text: string) => void;
   wordCountLimit?: number;
 }
 
 export const TextArea = (props: IProps): React.ReactElement => {
-  const { label, placeholder, isOptional, containerStyle = {}, onMessageChange, value, wordCountLimit = 250 } = props;
+  const { label, placeholder, containerStyle = {}, onMessageChange, value, wordCountLimit = 250 } = props;
   const { t } = useTranslation();
   const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
   return (
     <View style={containerStyle}>
-      <View style={styles.labelView}>
-        <Label type="large" style={styles.labelStyle}>
-          {label}
-        </Label>
-        {isOptional && (
-          <Label type="regular" style={{ color: theme.colors.darkTint3 }}>
-            {t('optional')}
-          </Label>
-        )}
-      </View>
+      <Label type="large" style={styles.labelStyle}>
+        {label}
+      </Label>
       <View style={styles.textAreaContainer}>
         <TextInput
           autoCorrect={false}
@@ -50,12 +42,8 @@ export const TextArea = (props: IProps): React.ReactElement => {
 
 const styles = StyleSheet.create({
   labelStyle: {
-    color: theme.colors.darkTint3,
-  },
-  labelView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginVertical: 6,
+    color: theme.colors.darkTint3,
   },
   textAreaContainer: {
     borderColor: theme.colors.disabled,

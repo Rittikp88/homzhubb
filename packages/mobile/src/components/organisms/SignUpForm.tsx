@@ -66,6 +66,7 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
                   inputType="name"
                   placeholder={t('auth:enterFirstName')}
                   formProps={formProps}
+                  isMandatory
                   onSubmitEditing={onEmailFocus}
                 />
                 <FormTextInput
@@ -86,6 +87,7 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
                   name="email"
                   label="Email"
                   inputType="email"
+                  isMandatory
                   placeholder={t('auth:enterEmail')}
                   formProps={formProps}
                   onSubmitEditing={onPhoneNumberFocus}
@@ -96,6 +98,7 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
                   }}
                   name="phone"
                   label="Phone"
+                  isMandatory
                   inputType="phone"
                   maxLength={10}
                   inputPrefixText={formProps.values.phoneCode}
@@ -112,6 +115,7 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
                   name="password"
                   label="Password"
                   inputType="password"
+                  isMandatory
                   placeholder={t('auth:newPassword')}
                   helpText={t('auth:passwordValidation')}
                   formProps={formProps}

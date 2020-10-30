@@ -12,6 +12,9 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
+import Google from '@homzhub/common/src/assets/images/google.svg';
+import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
+import LinkedIn from '@homzhub/common/src/assets/images/linkedin.svg';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Button, Label } from '@homzhub/common/src/components';
@@ -50,8 +53,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
             textSize="large"
             icon={icons.inboxOutline}
             iconColor={theme.colors.darkTint5}
-            iconSize={17}
-            iconStyle={styles.iconStyle}
+            iconSize={20}
             titleStyle={styles.buttonText}
             testID={testID}
           />
@@ -80,8 +82,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
             containerStyle={styles.socialMedia}
             textType="label"
             textSize="large"
-            image={this.getImageUrlForLib(socialMedia)}
-            imageStyle={styles.imageStyle}
+            node={this.getImageUrlForLib(socialMedia)}
             titleStyle={styles.buttonText}
             key={socialMedia.provider}
           />
@@ -213,11 +214,15 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
     await this.onSocialMediaLoginSuccess(responseObject);
   };
 
-  private getImageUrlForLib = (socialMedia: any): string => {
-    if (socialMedia.provider === SocialMediaKeys.Google) {
-      return require('@homzhub/common/src/assets/images/google.png');
+  private getImageUrlForLib = (socialMedia: any): React.ReactElement => {
+    switch (socialMedia.provider) {
+      case SocialMediaKeys.Facebook:
+        return <Facebook />;
+      case SocialMediaKeys.Google:
+        return <Google />;
+      default:
+        return <LinkedIn />;
     }
-    return require('@homzhub/common/src/assets/images/facebook.png');
   };
 }
 
@@ -253,13 +258,5 @@ const styles = StyleSheet.create({
   buttonText: {
     flex: 1,
     color: theme.colors.darkTint5,
-  },
-  iconStyle: {
-    paddingLeft: 10,
-  },
-  imageStyle: {
-    margin: 10,
-    height: 17,
-    width: 17,
   },
 });

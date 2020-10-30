@@ -1,5 +1,5 @@
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import React, { PureComponent } from 'react';
+import { Text as RNText, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { FormikProps, FormikValues } from 'formik';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
@@ -20,10 +20,10 @@ export interface IFormDropdownProps {
   listHeight?: number;
   formProps: FormikProps<any>;
   isDisabled?: boolean;
+  isMandatory?: boolean;
   onBlur?: () => void;
   onChange?: (value: string, props?: FormikProps<FormikValues>) => void;
   onError?: () => void;
-  optionalText?: string;
   dropdownContainerStyle?: StyleProp<ViewStyle>;
   maxLabelLength?: number;
   numColumns?: number;
@@ -41,12 +41,12 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
       formProps,
       placeholder,
       onChange,
-      optionalText,
       label,
       listTitle,
       listHeight,
       dropdownContainerStyle = {},
       maxLabelLength,
+      isMandatory = false,
       numColumns = 1,
       textType = 'label',
       textSize = 'regular',
@@ -83,9 +83,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
       <WithFieldError error={error}>
         <TextField type={textSize} textType={fontType} style={labelStyles}>
           {label}
-          <TextField type="small" style={styles.optionalText}>
-            {optionalText}
-          </TextField>
+          {isMandatory && <RNText style={styles.asterix}> *</RNText>}
         </TextField>
         <Dropdown
           // @ts-ignore
@@ -108,7 +106,9 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
 }
 
 const styles = StyleSheet.create({
-  optionalText: {
-    color: theme.colors.darkTint3,
+  asterix: {
+    color: theme.colors.error,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });

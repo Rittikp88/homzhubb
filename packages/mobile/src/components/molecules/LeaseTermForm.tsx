@@ -164,6 +164,7 @@ const LeaseTermForm = ({
             formProps={formProps}
             inputPrefixText={currencyData.currencySymbol}
             inputGroupSuffixText={currencyData.currencyCode}
+            isMandatory
           />
           <FormTextInput
             inputType="number"
@@ -174,6 +175,7 @@ const LeaseTermForm = ({
             formProps={formProps}
             inputPrefixText={currencyData.currencySymbol}
             inputGroupSuffixText={currencyData.currencyCode}
+            isMandatory
           />
           <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
             {values.showMore ? t('showLess') : t('showMore')}
@@ -200,6 +202,7 @@ const LeaseTermForm = ({
             name={LeaseFormKeys.availableFrom}
             textType="label"
             textSize="regular"
+            isMandatory
           />
           <>
             <Text type="small" textType="semiBold" style={styles.sliderTitle}>

@@ -71,6 +71,7 @@ class UpdatePassword extends Component<Props, IScreenState> {
                   label={t('currentPassword')}
                   inputType="password"
                   formProps={formProps}
+                  isMandatory
                 />
                 <FormTextInput
                   name="newPassword"
@@ -78,6 +79,7 @@ class UpdatePassword extends Component<Props, IScreenState> {
                   inputType="password"
                   helpText={t('passwordValidation')}
                   formProps={formProps}
+                  isMandatory
                 />
                 <FormButton
                   formProps={formProps}
