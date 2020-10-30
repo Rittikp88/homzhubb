@@ -18,11 +18,13 @@ export enum sideMenuItems {
   PAYMENT_METHODS = 'payment methods',
   LOGOUT = 'logout',
 }
+
 export interface IMenuItemList {
   id: number;
   name: string;
   icon: string;
 }
+
 export const MenuItemList: IMenuItemList[] = [
   {
     id: 1,
@@ -32,7 +34,7 @@ export const MenuItemList: IMenuItemList[] = [
   {
     id: 2,
     name: sideMenuItems.FINANCIALS,
-    icon: icons.barChartFilled,
+    icon: icons.barChartOutline,
   },
   {
     id: 3,

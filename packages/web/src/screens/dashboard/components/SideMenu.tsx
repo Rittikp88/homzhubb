@@ -10,11 +10,32 @@ interface IProps {
   onItemClick: (ItemId: number) => void;
 }
 
-const menuItem = (item: IMenuItemList, isActive: boolean, onItemPress: (item: number) => void): React.ReactNode => {
+export const SideMenu: React.FunctionComponent<IProps> = (props: IProps) => {
+  const [selectedItem, setSelectedItem] = useState(1);
+  const onItemPress = (item: number): void => {
+    setSelectedItem(item);
+  };
+  const isSelectedItem = (id: number): boolean => selectedItem === id;
+  return (
+    <View style={styles.menu}>
+      {MenuItemList.map((item, index) => {
+        return renderMenuItem(item, isSelectedItem(item.id), onItemPress);
+      })}
+    </View>
+  );
+};
+
+const renderMenuItem = (
+  item: IMenuItemList,
+  isActive: boolean,
+  onItemPress: (item: number) => void
+): React.ReactNode => {
+  const { menuItem, hoveredItem, activeBar, iconStyle } = styles;
   const iconColor = item.name === sideMenuItems.LOGOUT ? theme.colors.error : theme.colors.blue;
   let setTooltipTimeout: number;
   const hideTooltip = (): void => {
-    setTooltipTimeout = setTimeout(ReactTooltip.hide, 2000);
+    const TOOLTIP_TIMEOUT = 2000;
+    setTooltipTimeout = setTimeout(ReactTooltip.hide, TOOLTIP_TIMEOUT);
   };
   const clearTooltipTimeout = (): void => {
     ReactTooltip.hide();
@@ -26,33 +47,18 @@ const menuItem = (item: IMenuItemList, isActive: boolean, onItemPress: (item: nu
         <TouchableOpacity
           data-tip
           data-for={item.name}
-          data-hide="1000"
           activeOpacity={100}
           onPress={(): void => onItemPress(item.id)}
-          style={[styles.menuItem, (isHovered || isActive) && styles.hoveredItem]}
+          style={[menuItem, (isHovered || isActive) && hoveredItem]}
         >
-          <View style={[styles.activeBar, isActive && { opacity: 100 }]} />
-          <Icon name={item.icon} color={iconColor} size={24} style={styles.iconStyle} />
+          <View style={[activeBar, isActive && { opacity: 100 }]} />
+          <Icon name={item.icon} color={iconColor} size={24} style={iconStyle} />
           <ReactTooltip id={item.name} afterShow={hideTooltip} place="right" effect="solid" resizeHide={isHovered}>
             {item.name}
           </ReactTooltip>
         </TouchableOpacity>
       )}
     </Hoverable>
-  );
-};
-
-export const SideMenu: React.FunctionComponent<IProps> = (props: IProps) => {
-  const [activeItem, setActiveItem] = useState(1);
-  const onItemPress = (item: number): void => {
-    setActiveItem(item);
-  };
-  return (
-    <View style={styles.menu}>
-      {MenuItemList.map((item, index) => {
-        return menuItem(item, activeItem === item.id, onItemPress);
-      })}
-    </View>
   );
 };
 
