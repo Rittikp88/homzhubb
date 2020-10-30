@@ -1,76 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Landing Screen Component should render landing screen 1`] = `
-<View
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-      "padding": 24,
-    }
-  }
->
+<Fragment>
   <Memo(StatusBarComponent)
     backgroundColor="#FFFFFF"
     isTranslucent={true}
   />
-  <View
+  <ForwardRef(SafeAreaView)
     style={
       Object {
-        "alignItems": "center",
-        "flex": 0.9,
-        "justifyContent": "space-around",
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
       }
     }
   >
-    <Image
-      source={
-        Object {
-          "testUri": "../../../packages/common/src/assets/images/landingScreenLogo.png",
-        }
-      }
-    />
-    <Text
-      textType="semiBold"
-      type="regular"
-    >
-      welcomeUser
-    </Text>
-    <Text
+    <View
       style={
         Object {
-          "textAlign": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "marginHorizontal": 40,
         }
       }
-      textType="regular"
-      type="small"
     >
-      description
-    </Text>
-    <SVGUri
-      height={133}
-      preserveAspectRatio="xMidYMid meet"
-      uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg"
-      viewBox="0 0 295 133"
-      width={295}
-    />
-    <Label
-      textType="regular"
-      type="regular"
-    >
-      searchProject
-    </Label>
-  </View>
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-      }
-    }
-    onPress={[Function]}
-    testID="btnAddProperty"
-    title="addProperty"
-    type="primary"
-  />
-</View>
+      <[object Object]
+        height={60}
+        style={
+          Object {
+            "alignSelf": "center",
+            "marginBottom": 24,
+          }
+        }
+        width={60}
+      />
+      <Text
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+        textType="semiBold"
+        type="large"
+      >
+        welcomeUser
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#33495E",
+            "marginBottom": 36,
+            "marginTop": 28,
+            "textAlign": "center",
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        description
+      </Text>
+      <View
+        style={
+          Object {
+            "alignSelf": "center",
+            "height": 132,
+            "width": 296,
+          }
+        }
+      >
+        <SVGUri
+          preserveAspectRatio="xMidYMid meet"
+          uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg"
+        />
+      </View>
+      <Label
+        style={
+          Object {
+            "color": "#4C5F72",
+            "marginTop": 44,
+            "textAlign": "center",
+          }
+        }
+        textType="regular"
+        type="large"
+      >
+        searchProject
+      </Label>
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+            "marginTop": 16,
+          }
+        }
+        onPress={[Function]}
+        testID="btnAddProperty"
+        title="addProperty"
+        type="primary"
+      />
+    </View>
+  </ForwardRef(SafeAreaView)>
+</Fragment>
 `;

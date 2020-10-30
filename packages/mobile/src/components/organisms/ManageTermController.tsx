@@ -171,6 +171,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
               label={t('firstName')}
               placeholder={t('firstName')}
               formProps={formProps}
+              isMandatory
             />
           </View>
           <View style={styles.lastName}>
@@ -189,6 +190,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
           placeholder={t('tenantEmail')}
           inputType="email"
           formProps={formProps}
+          isMandatory
         />
         <FormTextInput
           name="phone"

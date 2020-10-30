@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { images } from '@homzhub/common/src/assets/images';
 
 export const Splash = (): React.ReactElement => {
   return (
@@ -15,7 +14,7 @@ export const Splash = (): React.ReactElement => {
     >
       <StatusBar translucent backgroundColor="transparent" />
       <View style={styles.logoContainer}>
-        <Image source={images.logo} />
+        <Image source={require('@homzhub/common/src/assets/images/logo.png')} />
       </View>
     </LinearGradient>
   );

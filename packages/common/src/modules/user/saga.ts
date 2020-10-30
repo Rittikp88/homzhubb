@@ -59,8 +59,20 @@ export function* userProfile() {
   }
 }
 
+export function* userPreferences() {
+  try {
+    const response = yield call(UserRepository.getUserPreferences);
+    yield put(UserActions.getUserPreferencesSuccess(response));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(UserActions.getUserPreferencesFailure());
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
   yield takeEvery(UserActionTypes.GET.USER_PROFILE, userProfile);
+  yield takeEvery(UserActionTypes.GET.USER_PREFERENCES, userPreferences);
 }

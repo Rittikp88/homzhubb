@@ -49,6 +49,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
                   name="phone"
                   label="Phone"
                   inputPrefixText={formProps.values.phoneCode}
+                  isMandatory
                   phoneFieldDropdownText={t('auth:countryRegion')}
                   placeholder={t('yourNumber')}
                   helpText={t('otpVerification')}

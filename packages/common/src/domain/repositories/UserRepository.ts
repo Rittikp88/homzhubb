@@ -22,7 +22,11 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
+import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
+import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
+import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
+import { SettingsScreenData } from '@homzhub/common/src/constants/Settings';
 
 const ENDPOINTS = {
   signUp: (): string => 'users/',
@@ -40,6 +44,8 @@ const ENDPOINTS = {
   updateWorkInfo: (): string => 'users/work-info/',
   changePassword: (): string => 'users/reset-password/',
   updateBasicProfile: (): string => 'users/basic-profile/',
+  getUserPreferences: (): string => 'users/settings/',
+  settingDropdownValues: (): string => 'user-settings/values/',
 };
 
 class UserRepository {
@@ -130,6 +136,20 @@ class UserRepository {
 
   public updateUserProfileByActions = async (payload: IUpdateProfile): Promise<IUpdateProfileResponse> => {
     return await this.apiClient.put(ENDPOINTS.updateBasicProfile(), payload);
+  };
+
+  public getSettingDropDownValues = async (): Promise<SettingsDropdownValues> => {
+    const response = await this.apiClient.get(ENDPOINTS.settingDropdownValues());
+    return ObjectMapper.deserialize(SettingsDropdownValues, response);
+  };
+
+  public getUserPreferences = async (): Promise<UserPreferences> => {
+    const response = await this.apiClient.get(ENDPOINTS.getUserPreferences());
+    return ObjectMapper.deserialize(UserPreferences, response);
+  };
+
+  public getSettingScreenData = (): SettingsData[] => {
+    return ObjectMapper.deserializeArray(SettingsData, SettingsScreenData);
   };
 }
 

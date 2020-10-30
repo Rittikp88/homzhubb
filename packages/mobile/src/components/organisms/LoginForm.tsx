@@ -92,6 +92,7 @@ class LoginForm extends Component<ILoginFormProps, IFormData> {
               label="Email"
               inputType="email"
               placeholder={t('auth:enterEmail')}
+              isMandatory
               formProps={formProps}
               onSubmitEditing={onPasswordFocus}
             />
@@ -103,6 +104,7 @@ class LoginForm extends Component<ILoginFormProps, IFormData> {
               label="Password"
               inputType="password"
               placeholder={t('auth:newPassword')}
+              isMandatory
               formProps={formProps}
             />
           </>
@@ -119,6 +121,7 @@ class LoginForm extends Component<ILoginFormProps, IFormData> {
             placeholder={t('auth:yourNumber')}
             helpText={t('auth:otpVerification')}
             phoneFieldDropdownText={t('auth:countryRegion')}
+            isMandatory
             formProps={formProps}
           />
         )}

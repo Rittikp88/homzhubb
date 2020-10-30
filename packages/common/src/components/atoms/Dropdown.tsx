@@ -11,7 +11,6 @@ import {
   Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { images } from '@homzhub/common/src/assets/images';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FontWeightType, Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
@@ -97,7 +96,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     <View pointerEvents={disable ? 'none' : 'auto'} style={disabledStyles}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
         {showImage ? (
-          <Image source={images.flag} height={12} width={18} style={imageStyle} />
+          <Image source={{ uri: '' }} height={12} width={18} style={imageStyle} />
         ) : (
           <Label type={fontSize} textType={fontWeight} style={[placeholderColor, textStyle]}>
             {label ?? placeholder}

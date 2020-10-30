@@ -41,7 +41,6 @@ describe.skip('Test cases for FormTextInput', () => {
   it('should render snapshot when input type is email', () => {
     props = testProps({
       inputType: 'email',
-      isOptional: true,
       helpText: 'Help',
     });
 

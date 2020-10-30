@@ -55,6 +55,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
           formProps={formProps}
           inputPrefixText={currencyData.currencySymbol}
           inputGroupSuffixText={currencyData.currencyCode}
+          isMandatory
         />
       </View>
       <View style={[styles.fieldContainer, styles.dropdownContainer]}>
@@ -68,6 +69,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
             options={scheduleOptions}
             formProps={formProps}
             dropdownContainerStyle={styles.dropdownContainerStyle}
+            isMandatory
           />
         )}
         {assetGroupType === AssetGroupTypes.COM && (
@@ -79,6 +81,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
             options={maintenanceUnits}
             formProps={formProps}
             dropdownContainerStyle={styles.dropdownContainerStyle}
+            isMandatory
           />
         )}
       </View>

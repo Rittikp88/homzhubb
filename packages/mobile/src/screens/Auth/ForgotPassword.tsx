@@ -45,6 +45,7 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
                   name="email"
                   label="Email"
                   placeholder={t('auth:enterEmail')}
+                  isMandatory
                 />
                 <FormButton
                   formProps={formProps}

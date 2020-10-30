@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { SocialMediaComponent } from '@homzhub/mobile/src/components';
 import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
@@ -16,7 +16,7 @@ describe('Test cases for SocialMediaComponent', () => {
     navigation: { navigate: jest.fn() },
   };
   // @ts-ignore
-  const wrapper = mount(<SocialMediaComponent {...props} t={(key: string): string => key} />);
+  const wrapper = shallow(<SocialMediaComponent {...props} t={(key: string): string => key} />);
 
   it('should render snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();

@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ViewStyle,
   ImageStyle,
-  Image,
 } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
@@ -17,6 +16,7 @@ export type ButtonType = 'primary' | 'secondary';
 
 export interface IButtonProps {
   type: ButtonType;
+  node?: React.ReactNode;
   title?: string;
   onPress?: (event: GestureResponderEvent) => void;
   disabled?: boolean;
@@ -29,8 +29,6 @@ export interface IButtonProps {
   icon?: string;
   iconSize?: number;
   iconColor?: string;
-  image?: any;
-  imageStyle?: StyleProp<ImageStyle>;
   iconStyle?: StyleProp<ImageStyle>;
   testID?: string;
 }
@@ -46,9 +44,8 @@ export class Button extends React.PureComponent<IButtonProps> {
       iconSize,
       iconColor,
       iconStyle,
-      image,
-      imageStyle,
       testID,
+      node,
     } = this.props;
     return (
       <TouchableOpacity
@@ -60,7 +57,7 @@ export class Button extends React.PureComponent<IButtonProps> {
       >
         {title && this.getTextField()}
         {!!icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
-        {image && <Image source={image} style={imageStyle} />}
+        {node && node}
       </TouchableOpacity>
     );
   };

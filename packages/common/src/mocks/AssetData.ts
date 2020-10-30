@@ -1,5 +1,4 @@
 import { theme } from '@homzhub/common/src/styles/theme';
-import { images } from '@homzhub/common/src/assets/images';
 
 export interface IAssetData {
   id: number;
@@ -110,7 +109,7 @@ export const PortfolioAssetData = [
       {
         file_name: 'House-1b',
         is_cover_image: false,
-        link: images.property,
+        link: 'https://images.livemint.com/rf/Image-621x414/LiveMint/Period1/2013/08/13/Photos/house--621x414.jpg',
       },
     ],
     contacts: {
@@ -160,7 +159,7 @@ export const PortfolioAssetData = [
       {
         file_name: 'House-1b',
         is_cover_image: false,
-        link: images.property,
+        link: 'https://images.livemint.com/rf/Image-621x414/LiveMint/Period1/2013/08/13/Photos/house--621x414.jpg',
       },
     ],
     contacts: {
@@ -196,7 +195,7 @@ export const PortfolioAssetData = [
       {
         file_name: 'House-1b',
         is_cover_image: false,
-        link: images.property,
+        link: 'https://images.livemint.com/rf/Image-621x414/LiveMint/Period1/2013/08/13/Photos/house--621x414.jpg',
       },
     ],
     contacts: {
@@ -232,7 +231,7 @@ export const PortfolioAssetData = [
       {
         file_name: 'House-1b',
         is_cover_image: false,
-        link: images.property,
+        link: 'https://images.livemint.com/rf/Image-621x414/LiveMint/Period1/2013/08/13/Photos/house--621x414.jpg',
       },
     ],
   },
@@ -261,7 +260,7 @@ export const PortfolioAssetData = [
       {
         file_name: 'House-1b',
         is_cover_image: false,
-        link: images.property,
+        link: 'https://images.livemint.com/rf/Image-621x414/LiveMint/Period1/2013/08/13/Photos/house--621x414.jpg',
       },
     ],
     contacts: {
@@ -297,7 +296,7 @@ export const PortfolioAssetData = [
       {
         file_name: 'House-1b',
         is_cover_image: false,
-        link: images.property,
+        link: 'https://images.livemint.com/rf/Image-621x414/LiveMint/Period1/2013/08/13/Photos/house--621x414.jpg',
       },
     ],
     contacts: {

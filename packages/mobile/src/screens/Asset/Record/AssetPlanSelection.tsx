@@ -11,7 +11,7 @@ import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/se
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { images } from '@homzhub/common/src/assets/images';
+import Check from '@homzhub/common/src/assets/images/check.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Button, Divider, Label, Text } from '@homzhub/common/src/components';
@@ -99,7 +99,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
             {t('common:congratulations')}
           </Text>
           <Text type="small">{t('property:yourDetailsAdded')}</Text>
-          <Image source={images.check} style={styles.image} />
+          <Check style={styles.image} />
           <Label type="large" style={styles.continue}>
             {t('property:clickContinue')}
           </Label>
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   image: {
-    marginVertical: 30,
+    marginVertical: 24,
   },
   continue: {
     marginBottom: 12,

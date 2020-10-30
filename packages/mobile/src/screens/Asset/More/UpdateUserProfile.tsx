@@ -161,23 +161,27 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     this.setState({ personalDetails: profileDetails, profileUpdateResponse });
     const { email_otp: emailOtp, phone_otp: phoneOtp } = profileUpdateResponse;
     const otpType = emailOtp && phoneOtp ? OtpNavTypes.UpdateProfileByEmailPhoneOtp : OtpNavTypes.UpdateProfileByOtp;
-    let otpSentTo = '';
+    let paramsObj = {};
 
     if (phoneOtp) {
-      otpSentTo = `${phone}`;
+      paramsObj = {
+        otpSentTo: phone,
+        countryCode: phoneCode,
+      };
     } else if (emailOtp) {
-      otpSentTo = email;
+      paramsObj = {
+        otpSentTo: email,
+      };
     }
 
     navigation.navigate(ScreensKeys.OTP, {
       type: otpType,
       // @ts-ignore
       title: t('otpVerificationText'),
-      countryCode: phoneCode,
       phone,
       email,
       updateProfileCallback: this.updateProfileDetails,
-      otpSentTo,
+      ...paramsObj,
     });
   };
 

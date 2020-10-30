@@ -181,7 +181,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           <TabView
             lazy
             renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
-            removeClippedSubviews
             initialLayout={TAB_LAYOUT}
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}

@@ -21,7 +21,6 @@ describe('Text Area', () => {
       value: 'Message',
       label: 'Some label',
       placeholder: 'placeholder',
-      isOptional: true,
     };
     wrapper = shallow(<TextArea {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();

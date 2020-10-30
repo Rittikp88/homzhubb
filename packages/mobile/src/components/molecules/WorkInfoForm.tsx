@@ -67,6 +67,7 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
                     inputType="default"
                     placeholder={t('companyName')}
                     formProps={formProps}
+                    isMandatory
                   />
                   <FormTextInput
                     name="email"
@@ -75,6 +76,7 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
                     inputType="email"
                     placeholder={t('companyEmail')}
                     formProps={formProps}
+                    isMandatory
                   />
                 </View>
                 <FormButton

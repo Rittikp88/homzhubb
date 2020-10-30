@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { images } from '@homzhub/common/src/assets/images';
+import Logo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import { Text, Label, Button, SVGUri } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -27,40 +27,39 @@ interface IDispatchProps {
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyPostLandingScreen>;
 type Props = IStateProps & IDispatchProps & libraryProps;
+const IMAGE = 'https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg';
 
 export class AssetLandingScreen extends React.PureComponent<Props> {
   public render(): React.ReactNode {
     const { t, user } = this.props;
     return (
-      <View style={styles.container}>
+      <>
         <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent />
-        <View style={styles.imagesContainer}>
-          <Image source={images.landingScreenLogo} />
-          <Text type="regular" textType="semiBold">
-            {t('welcomeUser', { username: user?.fullName })}
-          </Text>
-          <Text type="small" textType="regular" style={styles.description}>
-            {t('description')}
-          </Text>
-          <SVGUri
-            width={295}
-            height={133}
-            viewBox="0 0 295 133"
-            preserveAspectRatio="xMidYMid meet"
-            uri="https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg"
-          />
-          <Label type="regular" textType="regular">
-            {t('searchProject')}
-          </Label>
-        </View>
-        <Button
-          title={t('addProperty')}
-          type="primary"
-          onPress={this.onAddProperty}
-          containerStyle={styles.addProperty}
-          testID="btnAddProperty"
-        />
-      </View>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.contentContainer}>
+            <Logo width={60} height={60} style={styles.logo} />
+            <Text type="large" textType="semiBold" style={styles.title}>
+              {t('welcomeUser', { username: user?.fullName })}
+            </Text>
+            <Text type="regular" textType="regular" style={styles.description}>
+              {t('description')}
+            </Text>
+            <View style={styles.imageContainer}>
+              <SVGUri preserveAspectRatio="xMidYMid meet" uri={IMAGE} />
+            </View>
+            <Label type="large" textType="regular" style={styles.label}>
+              {t('searchProject')}
+            </Label>
+            <Button
+              title={t('addProperty')}
+              type="primary"
+              onPress={this.onAddProperty}
+              containerStyle={styles.addProperty}
+              testID="btnAddProperty"
+            />
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 
@@ -108,17 +107,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    padding: 24,
   },
-  imagesContainer: {
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flex: 0.9,
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 40,
+  },
+  imageContainer: {
+    alignSelf: 'center',
+    width: 296,
+    height: 132,
+  },
+  logo: {
+    alignSelf: 'center',
+    marginBottom: 24,
+  },
+  title: {
+    textAlign: 'center',
   },
   description: {
+    marginTop: 28,
+    marginBottom: 36,
     textAlign: 'center',
+    color: theme.colors.darkTint3,
+  },
+  label: {
+    marginTop: 44,
+    textAlign: 'center',
+    color: theme.colors.darkTint4,
   },
   addProperty: {
     flex: 0,
+    marginTop: 16,
   },
 });

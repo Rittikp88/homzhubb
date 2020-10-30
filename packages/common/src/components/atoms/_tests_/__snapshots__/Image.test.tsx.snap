@@ -4,7 +4,7 @@ exports[`<ImageRound /> renders a round image 1`] = `
 <Image
   source={
     Object {
-      "testUri": "../../../packages/common/src/assets/images/logo.png",
+      "uri": "https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg",
     }
   }
   style={
@@ -24,7 +24,7 @@ exports[`<ImageSquare /> renders a square image 1`] = `
 <Image
   source={
     Object {
-      "testUri": "../../../packages/common/src/assets/images/logo.png",
+      "uri": "https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg",
     }
   }
   style={

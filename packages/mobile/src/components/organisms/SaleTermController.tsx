@@ -106,6 +106,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                     formProps={formProps}
                     inputPrefixText={currencyData.currencySymbol}
                     inputGroupSuffixText={currencyData.currencyCode}
+                    isMandatory
                   />
                   <FormTextInput
                     inputType="number"
@@ -116,8 +117,15 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                     formProps={formProps}
                     inputPrefixText={currencyData.currencySymbol}
                     inputGroupSuffixText={currencyData.currencyCode}
+                    isMandatory
                   />
-                  <FormCalendar formProps={formProps} name="availableFrom" textType="label" textSize="regular" />
+                  <FormCalendar
+                    formProps={formProps}
+                    name="availableFrom"
+                    textType="label"
+                    textSize="regular"
+                    isMandatory
+                  />
                   <Text type="small" textType="semiBold" style={styles.headerTitle}>
                     {t('maintenance')}
                   </Text>

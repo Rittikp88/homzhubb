@@ -142,7 +142,6 @@ export class BookVisit extends Component<Props, IVisitState> {
           <TextArea
             label={t('message')}
             placeholder={t('typeYourMessage')}
-            isOptional
             value={message}
             containerStyle={styles.textArea}
             onMessageChange={this.handleMessageChange}

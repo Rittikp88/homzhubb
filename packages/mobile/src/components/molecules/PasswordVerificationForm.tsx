@@ -50,6 +50,7 @@ export class PasswordVerificationForm extends React.PureComponent<IProps, IState
                     inputType="password"
                     placeholder={t('yourCurrentPassword')}
                     formProps={formProps}
+                    isMandatory
                   />
                 </View>
                 <Label style={styles.textStyle} type="large">

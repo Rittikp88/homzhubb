@@ -4,26 +4,17 @@ exports[`Text Area should match snapshot 1`] = `
 <View
   style={Object {}}
 >
-  <View
+  <Label
     style={
       Object {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
+        "color": "#33495E",
         "marginVertical": 6,
       }
     }
+    type="large"
   >
-    <Label
-      style={
-        Object {
-          "color": "#33495E",
-        }
-      }
-      type="large"
-    >
-      Some label
-    </Label>
-  </View>
+    Some label
+  </Label>
   <View
     style={
       Object {
@@ -56,6 +47,7 @@ exports[`Text Area should match snapshot 1`] = `
       Array [
         Object {
           "color": "#33495E",
+          "marginVertical": 6,
         },
         Object {
           "paddingVertical": 6,
@@ -73,36 +65,17 @@ exports[`Text Area should match snapshot for optional 1`] = `
 <View
   style={Object {}}
 >
-  <View
+  <Label
     style={
       Object {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
+        "color": "#33495E",
         "marginVertical": 6,
       }
     }
+    type="large"
   >
-    <Label
-      style={
-        Object {
-          "color": "#33495E",
-        }
-      }
-      type="large"
-    >
-      Some label
-    </Label>
-    <Label
-      style={
-        Object {
-          "color": "#33495E",
-        }
-      }
-      type="regular"
-    >
-      optional
-    </Label>
-  </View>
+    Some label
+  </Label>
   <View
     style={
       Object {
@@ -135,6 +108,7 @@ exports[`Text Area should match snapshot for optional 1`] = `
       Array [
         Object {
           "color": "#33495E",
+          "marginVertical": 6,
         },
         Object {
           "paddingVertical": 6,

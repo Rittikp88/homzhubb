@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import {
-  StyleSheet,
-  StyleProp,
-  TextInputProps,
-  TextStyle,
   View,
-  ViewStyle,
   Image,
+  Text,
   TextInput as RNTextInput,
   TouchableOpacity,
+  TextStyle,
+  TextInputProps,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
 } from 'react-native';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -48,7 +49,7 @@ export interface IFormTextInputProps extends TextInputProps, IStateProps, IDispa
   label: string;
   helpText?: string;
   hideError?: boolean;
-  isOptional?: boolean;
+  isMandatory?: boolean;
   inputPrefixText?: string;
   inputGroupPrefix?: React.ReactNode;
   inputGroupSuffix?: React.ReactNode;
@@ -108,8 +109,8 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
       children,
       hideError,
       containerStyle = {},
-      isOptional,
       helpText,
+      isMandatory = false,
       isTouched = true,
       editable = true,
       maxLength = 40,
@@ -119,7 +120,6 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
     const { values, setFieldTouched } = formProps;
     const { showPassword, isFocused, showCurrencySymbol, phoneCodes, isBottomSheetVisible } = this.state;
-    const optionalText: string | null = isOptional ? 'Optional' : null;
 
     // @ts-ignore
     const inputFieldStyles = { ...theme.form.input, ...style };
@@ -237,14 +237,10 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
     return (
       <>
         <WithFieldError error={error} hideError={hideError}>
-          <View style={styles.labelsContainer}>
-            <Label type="regular" style={labelStyles}>
-              {label}
-            </Label>
-            <Label type="small" style={styles.optionalText}>
-              {optionalText}
-            </Label>
-          </View>
+          <Label type="regular" style={labelStyles}>
+            {label}
+            {isMandatory && <Text style={styles.asterix}> *</Text>}
+          </Label>
           <View style={containerStyle}>
             <RNTextInput
               ref={(input): void => {
@@ -437,14 +433,6 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
     marginTop: 6,
   },
-  labelsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  optionalText: {
-    ...theme.form.formLabel,
-  },
   flagStyle: {
     borderRadius: 2,
     width: 24,
@@ -453,5 +441,10 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     marginStart: 6,
+  },
+  asterix: {
+    color: theme.colors.error,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });

@@ -47,6 +47,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
           numberOfLines={1}
           placeholder={t('projectNamePlaceholder')}
           formProps={formProps}
+          isMandatory
         />
         <View style={styles.contentView}>
           <View style={styles.subContentView}>
@@ -57,6 +58,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
               numberOfLines={1}
               inputType="default"
               formProps={formProps}
+              isMandatory
             />
           </View>
           <View style={styles.flexOne}>
@@ -78,6 +80,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
           multiline
           formProps={formProps}
           style={styles.address}
+          isMandatory
         />
         <View style={styles.contentView}>
           <View style={styles.subContentView}>
@@ -89,6 +92,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
               inputType="number"
               onChangeText={onChangePincode}
               formProps={formProps}
+              isMandatory
             />
           </View>
           <View style={styles.flexOne}>

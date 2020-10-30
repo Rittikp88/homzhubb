@@ -3,10 +3,12 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
+import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 
 export const initialUserState: IUserState = {
   user: null,
   userProfile: null,
+  userPreferences: null,
   isOnBoardingCompleted: false,
   isChangeStack: true,
   isAddPropertyFlow: false,
@@ -16,6 +18,7 @@ export const initialUserState: IUserState = {
   loaders: {
     user: false,
     userProfile: false,
+    userPreferences: false,
   },
 };
 
@@ -78,6 +81,25 @@ export const userReducer = (
       };
     case UserActionTypes.SET.IS_ADD_PROPERTY_FLOW:
       return { ...state, ['isAddPropertyFlow']: action.payload as boolean };
+    case UserActionTypes.GET.USER_PREFERENCES:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userPreferences']: true },
+      };
+    case UserActionTypes.GET.USER_PREFERENCES_SUCCESS:
+      return {
+        ...state,
+        ['userPreferences']: action.payload as IUserPreferences,
+        ['loaders']: {
+          ...state.loaders,
+          ['userPreferences']: false,
+        },
+      };
+    case UserActionTypes.GET.USER_PREFERENCES_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userPreferences']: false },
+      };
     default:
       return state;
   }

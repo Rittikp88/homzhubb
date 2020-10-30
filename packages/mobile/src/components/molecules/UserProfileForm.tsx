@@ -106,6 +106,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                     inputType="default"
                     placeholder={t('auth:enterFirstName')}
                     formProps={formProps}
+                    isMandatory
                   />
                   <FormTextInput
                     name="lastName"
@@ -113,6 +114,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                     inputType="default"
                     placeholder={t('auth:enterLastName')}
                     formProps={formProps}
+                    isMandatory
                   />
                   <FormTextInput
                     name="phone"
@@ -124,6 +126,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                     helpText={t('auth:otpVerification')}
                     phoneFieldDropdownText={t('auth:countryRegion')}
                     formProps={formProps}
+                    isMandatory
                   />
                   <FormTextInput
                     name="email"
@@ -132,6 +135,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                     inputType="email"
                     placeholder={t('auth:enterEmail')}
                     formProps={formProps}
+                    isMandatory
                   />
                 </View>
                 <FormButton

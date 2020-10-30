@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { images } from '@homzhub/common/src/assets/images';
 import { Text, Button, Label, Image } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components';
 import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/GuestStack';
@@ -17,7 +16,7 @@ export class GettingStarted extends React.PureComponent<IProps> {
       <>
         <StatusBarComponent backgroundColor={theme.colors.background} isTranslucent />
         <View style={styles.container}>
-          <Image source={images.gettingStarted} style={styles.image} />
+          <Image source={{ uri: '' }} style={styles.image} />
           <Text type="regular" textType="semiBold" style={styles.header}>
             {t('header')}
           </Text>

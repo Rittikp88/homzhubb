@@ -79,7 +79,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
         <Image
           source={
             Object {
-              "testUri": "../../../packages/common/src/assets/images/flag.png",
+              "uri": "",
             }
           }
           style={
@@ -163,7 +163,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
         <Image
           source={
             Object {
-              "testUri": "../../../packages/common/src/assets/images/flag.png",
+              "uri": "",
             }
           }
           style={
@@ -247,7 +247,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
         <Image
           source={
             Object {
-              "testUri": "../../../packages/common/src/assets/images/flag.png",
+              "uri": "",
             }
           }
           style={

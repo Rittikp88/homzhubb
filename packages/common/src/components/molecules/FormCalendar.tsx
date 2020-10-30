@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, TextStyle } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, TextStyle, Text as RNText } from 'react-native';
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ interface IFormCalendarProps extends WithTranslation {
   iconColor?: string;
   placeHolder?: string;
   allowPastDates?: boolean;
+  isMandatory?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   placeHolderStyle?: StyleProp<TextStyle>;
   textType?: TextFieldType;
@@ -45,6 +46,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       allowPastDates,
       textType,
       iconColor,
+      isMandatory = false,
       textSize = 'regular',
       fontType = 'regular',
       placeHolderStyle = {},
@@ -67,6 +69,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       <View style={containerStyle}>
         <TextField type={textSize} textType={fontType} style={labelStyles}>
           {label || t('common:availableFrom')}
+          {isMandatory && <RNText style={styles.asterix}> *</RNText>}
         </TextField>
         <TouchableOpacity testID="toCalenderInput" style={styles.dateView} onPress={this.onCalendarOpen}>
           <View style={styles.dateLeft}>
@@ -134,6 +137,11 @@ const styles = StyleSheet.create({
   dateText: {
     marginLeft: 16,
     color: theme.colors.darkTint1,
+  },
+  asterix: {
+    color: theme.colors.error,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });
 const HOC = withTranslation()(FormCalendar);
