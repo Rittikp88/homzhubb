@@ -14,6 +14,7 @@ import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions'
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { AuthStackNavigator } from '@homzhub/mobile/src/navigation/AuthStack';
 import Portfolio from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import AssetLandingScreen from '@homzhub/mobile/src/screens/Asset/AssetLandingScreen';
@@ -27,6 +28,7 @@ import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
   IOtpNavProps,
   IUpdateProfileProps,
+  IWebviewProps,
   NestedNavigatorParams,
   ScreensKeys,
 } from '@homzhub/mobile/src/navigation/interfaces';
@@ -38,6 +40,7 @@ import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUser
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
+import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -80,6 +83,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.AssetNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.UpdatePassword]: undefined;
+  [ScreensKeys.WebViewScreen]: IWebviewProps;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -152,6 +156,7 @@ export const MoreStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
+      <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
     </MoreStackNavigator.Navigator>
   );
 };

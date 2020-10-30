@@ -1,83 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Financials Screen should match snapshot for keyExtractor 1`] = `"[object Object]"`;
-
-exports[`Financials Screen should match snapshot for renderItem 1`] = `
-<ForwardRef
-  onPress={[Function]}
->
-  <View
-    key="item-1"
-    style={
-      Object {
-        "alignItems": "center",
-        "flex": 1,
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "padding": 20,
-      }
-    }
-  >
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Icon
-        allowFontScaling={false}
-        color="#78B7FA"
-        name="alert"
-        size={22}
-        style={
-          Object {
-            "paddingHorizontal": 5,
-          }
-        }
-      />
-      <Text
-        allowFontScaling={true}
-        minimumFontScale={0.1}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "marginStart": 10,
-            },
-            Object {
-              "color": "#000",
-            },
-          ]
-        }
-        textType="regular"
-        type="small"
-      >
-        assetMore:notifications
-      </Text>
-    </View>
-    <Icon
-      allowFontScaling={false}
-      color="#78B7FA"
-      name="right-arrow"
-      size={18}
-    />
-  </View>
-</ForwardRef>
-`;
-
-exports[`Financials Screen should match snapshot for renderSeparator 1`] = `
-<Divider
-  containerStyles={
-    Object {
-      "borderColor": "#F2F9FF",
-      "borderWidth": 1,
-      "marginLeft": 65,
-    }
-  }
-/>
-`;
-
 exports[`Financials Screen should render snapshot 1`] = `
 <Connect(AnimatedProfileHeader)
   title="assetMore:more"
@@ -92,226 +14,834 @@ exports[`Financials Screen should render snapshot 1`] = `
     <Connect(MoreProfile)
       onIconPress={[Function]}
     />
-    <View
-      key="0"
+    <ForwardRef
+      onPress={[Function]}
     >
-      <FlatList
-        ItemSeparatorComponent={[Function]}
-        data={
-          Array [
-            Object {
-              "icon": "alert",
-              "iconColor": "#78B7FA",
-              "id": 1,
-              "textColor": "#000",
-              "title": "assetMore:notifications",
-              "type": "notifications",
-            },
-            Object {
-              "icon": "ticket",
-              "iconColor": "#78B7FA",
-              "id": 2,
-              "textColor": "#000",
-              "title": "assetMore:tickets",
-              "type": "tickets",
-            },
-            Object {
-              "icon": "documents",
-              "iconColor": "#78B7FA",
-              "id": 3,
-              "textColor": "#000",
-              "title": "assetMore:kycDocuments",
-              "type": "kycDocuments",
-            },
-          ]
-        }
-        disableVirtualization={false}
-        horizontal={false}
-        initialNumToRender={10}
-        key="0"
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={1}
-        onEndReachedThreshold={2}
-        removeClippedSubviews={false}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        testID="moreList"
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      />
-      <Divider
-        containerStyles={
+      <View
+        key="item-1"
+        style={
           Object {
-            "borderColor": "#F8FCFF",
-            "borderWidth": 10,
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
           }
         }
-      />
-    </View>
-    <View
-      key="1"
-    >
-      <FlatList
-        ItemSeparatorComponent={[Function]}
-        data={
-          Array [
+      >
+        <View
+          style={
             Object {
-              "icon": "heart-outline",
-              "iconColor": "#78B7FA",
-              "id": 4,
-              "textColor": "#000",
-              "title": "assetMore:savedProperties",
-              "type": "savedProperties",
-            },
-            Object {
-              "icon": "visit",
-              "iconColor": "#78B7FA",
-              "id": 4,
-              "textColor": "#000",
-              "title": "assetMore:propertyVisits",
-              "type": "propertyVisits",
-            },
-            Object {
-              "icon": "new-launch",
-              "iconColor": "#78B7FA",
-              "id": 5,
-              "textColor": "#000",
-              "title": "assetMore:newLaunches",
-              "type": "newLaunches",
-            },
-            Object {
-              "icon": "increase",
-              "iconColor": "#78B7FA",
-              "id": 6,
-              "textColor": "#000",
-              "title": "assetMore:marketTrends",
-              "type": "marketTrends",
-            },
-            Object {
-              "icon": "setting-outline",
-              "iconColor": "#78B7FA",
-              "id": 7,
-              "textColor": "#000",
-              "title": "assetMore:valueAddedServices",
-              "type": "valueAddedServices",
-            },
-          ]
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="alert"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:notifications
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
         }
-        disableVirtualization={false}
-        horizontal={false}
-        initialNumToRender={10}
-        key="1"
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={1}
-        onEndReachedThreshold={2}
-        removeClippedSubviews={false}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        testID="moreList"
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      />
-      <Divider
-        containerStyles={
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-2"
+        style={
           Object {
-            "borderColor": "#F8FCFF",
-            "borderWidth": 10,
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
           }
         }
-      />
-    </View>
-    <View
-      key="2"
-    >
-      <FlatList
-        ItemSeparatorComponent={[Function]}
-        data={
-          Array [
+      >
+        <View
+          style={
             Object {
-              "icon": "setting",
-              "iconColor": "#78B7FA",
-              "id": 8,
-              "textColor": "#000",
-              "title": "assetMore:settings",
-              "type": "settings",
-            },
-            Object {
-              "icon": "payment",
-              "iconColor": "#78B7FA",
-              "id": 9,
-              "textColor": "#000",
-              "title": "assetMore:paymentMethods",
-              "type": "paymentMethods",
-            },
-          ]
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="ticket"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:tickets
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
         }
-        disableVirtualization={false}
-        horizontal={false}
-        initialNumToRender={10}
-        key="2"
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={1}
-        onEndReachedThreshold={2}
-        removeClippedSubviews={false}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        testID="moreList"
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      />
-      <Divider
-        containerStyles={
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-3"
+        style={
           Object {
-            "borderColor": "#F8FCFF",
-            "borderWidth": 10,
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
           }
         }
-      />
-    </View>
-    <View
-      key="3"
-    >
-      <FlatList
-        ItemSeparatorComponent={[Function]}
-        data={
-          Array [
+      >
+        <View
+          style={
             Object {
-              "icon": "refer",
-              "iconColor": "#78B7FA",
-              "id": 10,
-              "textColor": "#000",
-              "title": "assetMore:referFriend",
-              "type": "referFriend",
-            },
-            Object {
-              "icon": "headset",
-              "iconColor": "#78B7FA",
-              "id": 11,
-              "textColor": "#000",
-              "title": "assetMore:support",
-              "type": "support",
-            },
-          ]
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="documents"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:kycDocuments
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F8FCFF",
+          "borderWidth": 10,
         }
-        disableVirtualization={false}
-        horizontal={false}
-        initialNumToRender={10}
-        key="3"
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={1}
-        onEndReachedThreshold={2}
-        removeClippedSubviews={false}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        testID="moreList"
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      />
-    </View>
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-4"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="heart-outline"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:savedProperties
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-4"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="visit"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:propertyVisits
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-5"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="new-launch"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:newLaunches
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-6"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="increase"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:marketTrends
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-7"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="setting-outline"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:valueAddedServices
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F8FCFF",
+          "borderWidth": 10,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-8"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="setting"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:settings
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-9"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="payment"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:paymentMethods
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F8FCFF",
+          "borderWidth": 10,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-10"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="refer"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:referFriend
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#F2F9FF",
+          "borderWidth": 1,
+          "marginLeft": 65,
+        }
+      }
+    />
+    <ForwardRef
+      onPress={[Function]}
+    >
+      <View
+        key="item-11"
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "padding": 20,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Icon
+            allowFontScaling={false}
+            color="#78B7FA"
+            name="headset"
+            size={22}
+            style={
+              Object {
+                "paddingHorizontal": 5,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={true}
+            minimumFontScale={0.1}
+            numberOfLines={2}
+            style={
+              Array [
+                Object {
+                  "marginStart": 10,
+                },
+                Object {
+                  "color": "#000",
+                },
+              ]
+            }
+            textType="regular"
+            type="small"
+          >
+            assetMore:support
+          </Text>
+        </View>
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="right-arrow"
+          size={18}
+        />
+      </View>
+    </ForwardRef>
     <Divider
       containerStyles={
         Object {

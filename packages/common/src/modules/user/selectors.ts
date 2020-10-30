@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
+import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 
 const isLoggedIn = (state: IState): boolean => {
   return !!state.user.user;
@@ -60,6 +61,23 @@ const isAddPropertyFlow = (state: IState): boolean => {
   return state.user.isAddPropertyFlow;
 };
 
+const getUserPreferences = (state: IState): UserPreferences => {
+  const {
+    user: { userPreferences },
+  } = state;
+
+  return ObjectMapper.deserialize(UserPreferences, userPreferences);
+};
+
+const isUserPreferencesLoading = (state: IState): boolean => {
+  const {
+    user: {
+      loaders: { userPreferences },
+    },
+  } = state;
+  return userPreferences;
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -69,4 +87,6 @@ export const UserSelector = {
   getUserProfile,
   isUserProfileLoading,
   isAddPropertyFlow,
+  getUserPreferences,
+  isUserPreferencesLoading,
 };

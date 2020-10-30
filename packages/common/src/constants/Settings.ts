@@ -1,38 +1,26 @@
 import { icons } from '@homzhub/common/src/assets/icon';
-
-export enum OptionTypes {
-  Switch = 'SWITCH',
-  Webview = 'WEBVIEW',
-  Dropdown = 'DROPDOWN',
-}
-
-export interface ISettingsOptions {
-  label: string;
-  type: OptionTypes;
-}
-
-export interface ISettingsData {
-  name: string;
-  icon?: string;
-  visible: boolean;
-  options: ISettingsOptions[];
-}
+import { ISettingsData } from '@homzhub/common/src/domain/models/SettingsData';
+import { OptionTypes } from '@homzhub/common/src/domain/models/SettingOptions';
+import { UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 
 export const SettingsScreenData: ISettingsData[] = [
   {
     name: 'loginSecurity',
-    icon: icons.document,
-    visible: true,
+    icon: icons.lock,
+    visible: false,
     options: [
       {
+        name: 'faceId',
         label: 'faceId',
         type: OptionTypes.Switch,
       },
       {
+        name: 'fingerprint',
         label: 'fingerprint',
         type: OptionTypes.Switch,
       },
       {
+        name: 'twoFactorAuthentication',
         label: 'twoFactorAuthentication',
         type: OptionTypes.Switch,
       },
@@ -40,45 +28,53 @@ export const SettingsScreenData: ISettingsData[] = [
   },
   {
     name: 'preferencesText',
-    icon: icons.document,
+    icon: icons.preference,
     visible: true,
     options: [
       {
-        label: 'darkTheme',
-        type: OptionTypes.Switch,
-      },
-      {
+        name: UserPreferencesKeys.CurrencyKey,
         label: 'currency',
         type: OptionTypes.Dropdown,
       },
       {
+        name: UserPreferencesKeys.LanguageKey,
         label: 'language',
         type: OptionTypes.Dropdown,
       },
       {
+        name: UserPreferencesKeys.FinancialYear,
         label: 'financialYear',
+        type: OptionTypes.Dropdown,
+      },
+      {
+        name: UserPreferencesKeys.MetricUnit,
+        label: 'metricSystem',
         type: OptionTypes.Dropdown,
       },
     ],
   },
   {
     name: 'dataAndPrivacy',
-    icon: icons.document,
-    visible: true,
+    icon: icons.hand,
+    visible: false,
     options: [
       {
+        name: 'showLastName',
         label: 'showLastName',
         type: OptionTypes.Switch,
       },
       {
+        name: 'showMobileNumber',
         label: 'showMobileNumber',
         type: OptionTypes.Switch,
       },
       {
+        name: 'showEmail',
         label: 'showEmail',
         type: OptionTypes.Switch,
       },
       {
+        name: 'analyseAppIssuesAndEvents',
         label: 'analyseAppIssuesAndEvents',
         type: OptionTypes.Switch,
       },
@@ -86,18 +82,21 @@ export const SettingsScreenData: ISettingsData[] = [
   },
   {
     name: 'communications',
-    icon: icons.document,
-    visible: true,
+    icon: icons.communication,
+    visible: false,
     options: [
       {
+        name: 'pushNotifications',
         label: 'pushNotifications',
         type: OptionTypes.Switch,
       },
       {
+        name: 'emailsText',
         label: 'emailsText',
         type: OptionTypes.Switch,
       },
       {
+        name: 'messagesText',
         label: 'messagesText',
         type: OptionTypes.Switch,
       },
@@ -105,20 +104,26 @@ export const SettingsScreenData: ISettingsData[] = [
   },
   {
     name: 'appInfo',
-    icon: icons.document,
+    icon: icons.detail,
     visible: true,
     options: [
       {
+        name: 'releaseNotes',
         label: 'releaseNotes',
         type: OptionTypes.Webview,
+        url: 'https://www.homzhub.com/privacyPolicy',
       },
       {
+        name: 'termsConditionsText',
         label: 'termsConditionsText',
         type: OptionTypes.Webview,
+        url: 'https://www.homzhub.com/privacyPolicy',
       },
       {
+        name: 'privacyPolicyText',
         label: 'privacyPolicyText',
         type: OptionTypes.Webview,
+        url: 'https://www.homzhub.com/privacyPolicy',
       },
     ],
   },

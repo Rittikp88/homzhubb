@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -31,21 +31,20 @@ export class More extends React.PureComponent<Props> {
         <View style={styles.moreStack}>
           <MoreProfile onIconPress={this.onIconPress} />
           {screenKeys.map(
-            (section: string, index: number): React.ReactElement => {
+            (section: string, sectionCount: number): React.ReactElement => {
               const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
-              const lastIndex = index === screenKeys.length - 1;
               return (
-                <View key={index}>
-                  <FlatList
-                    data={currentData}
-                    renderItem={this.renderItem}
-                    keyExtractor={this.renderKeyExtractor}
-                    ItemSeparatorComponent={this.renderSeparator}
-                    key={index}
-                    testID="moreList"
-                  />
-                  {!lastIndex && <Divider containerStyles={styles.listSeparator} />}
-                </View>
+                <React.Fragment key={sectionCount}>
+                  {currentData.map((item, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        {this.renderItem(item)}
+                        {index !== currentData.length - 1 && this.renderSeparator()}
+                      </React.Fragment>
+                    );
+                  })}
+                  {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
+                </React.Fragment>
               );
             }
           )}
@@ -55,9 +54,7 @@ export class More extends React.PureComponent<Props> {
     );
   };
 
-  private renderKeyExtractor = (item: IMoreScreenItem, index: number): string => index.toString();
-
-  public renderItem = ({ item }: { item: IMoreScreenItem }): React.ReactElement => {
+  public renderItem = (item: IMoreScreenItem): React.ReactElement => {
     const onPress = (): void => {
       this.handleNavigation(item.type);
     };
