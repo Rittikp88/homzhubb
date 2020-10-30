@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-const HomePage = lazy(() => import('../modules/dashboard'));
-const AboutPage = lazy(() => import('../components/staticPages/about'));
+const HomePage = lazy(() => import('@homzhub/web/src/screens/dashboard'));
+const AboutPage = lazy(() => import('@homzhub/web/src/components/staticPages/about'));
 
 export const MainRouter = (): React.ReactElement => {
   return (

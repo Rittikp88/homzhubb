@@ -1,29 +1,31 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components';
+import { SideMenu } from './components/SideMenu';
 
-class App extends React.PureComponent {
+class Dashboard extends React.PureComponent {
   public render(): React.ReactNode {
     return (
       <View style={styles.container}>
-        <Text type="regular" textType="bold">
-          Hello
-        </Text>
-        <Text type="large" textType="semiBold">
-          World
-        </Text>
+        <SideMenu onItemClick={this.sideMenuItemClicked} />
       </View>
     );
   }
+
+  private sideMenuItemClicked = (ItemId: number): void => {
+    // TODO: side menu item click handler
+  };
 }
 
-export default App;
+export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    minHeight: 'fit-content',
+    flexDirection: 'row',
+    padding: 40,
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: theme.colors.background,
   },
