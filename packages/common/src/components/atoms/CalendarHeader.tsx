@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -9,12 +9,16 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 interface IProps {
   isAllowPastDate?: boolean;
   headerTitle?: string;
+  headerYear?: string;
+  yearTitle?: string;
   isMonthView?: boolean;
+  isYearView?: boolean;
   isCurrentMonth?: boolean;
   maxDate?: string;
   onBackPress?: () => void;
   onNextPress?: () => void;
   onMonthPress?: () => void;
+  onYearPress?: () => void;
 }
 
 const CalendarHeader = (props: IProps): React.ReactElement => {
@@ -24,10 +28,15 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
     onBackPress,
     onNextPress,
     onMonthPress,
+    onYearPress,
     isCurrentMonth,
     headerTitle,
+    headerYear,
     isMonthView = false,
+    isYearView = false,
+    yearTitle,
   } = props;
+
   return (
     <>
       <View style={styles.headerContainer}>
@@ -37,14 +46,21 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
           size={22}
           color={!isAllowPastDate && isCurrentMonth ? theme.colors.disabled : theme.colors.primaryColor}
         />
-        <Text
-          type="small"
-          textType="semiBold"
-          onPress={onMonthPress}
-          style={StyleSheet.flatten([customStyles.headerTitle(isMonthView)])}
-        >
-          {headerTitle}
-        </Text>
+        {!isYearView && !isMonthView && (
+          <Text type="small" textType="semiBold" onPress={onMonthPress} style={styles.headerTitle}>
+            {headerTitle}
+          </Text>
+        )}
+        {isMonthView && (
+          <Text type="small" textType="semiBold" onPress={onYearPress} style={styles.headerTitle}>
+            {headerYear}
+          </Text>
+        )}
+        {isYearView && (
+          <Text type="small" textType="semiBold" style={styles.headerTitle}>
+            {yearTitle}
+          </Text>
+        )}
         <Icon
           name={icons.rightArrow}
           size={22}
@@ -68,10 +84,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 24,
   },
+  headerTitle: {
+    color: theme.colors.primaryColor,
+  },
 });
-
-const customStyles = {
-  headerTitle: (isMonthView: boolean): StyleProp<TextStyle> => ({
-    color: isMonthView ? theme.colors.darkTint2 : theme.colors.primaryColor,
-  }),
-};
