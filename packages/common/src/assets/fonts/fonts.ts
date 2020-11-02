@@ -7,6 +7,7 @@ import OpenSansSemibold from './OpenSans-SemiBold.ttf';
 import RalewayBold from './Raleway-Bold.ttf';
 import RalewayLight from './Raleway-Light.ttf';
 import RalewayMedium from './Raleway-Medium.ttf';
+import icomoon from './icomoon.ttf';
 
 const iconFontStyles = `
 @font-face {
@@ -44,6 +45,10 @@ const iconFontStyles = `
 @font-face {
   src: url(${RalewayMedium});
   font-family: Raleway-Medium;
+}
+@font-face {
+  src: url(${icomoon});
+  font-family: icomoon;
 }
 `;
 // Create stylesheet

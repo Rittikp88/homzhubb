@@ -4,6 +4,8 @@ import icoMoonConfig from '@homzhub/common/src/assets/selection.json';
 export default createIconSetFromIcoMoon(icoMoonConfig);
 
 export const icons = {
+  manageSubscription: 'manage-subscription',
+  dashboard: 'dashboard',
   location: 'location',
   search: 'search',
   leftArrow: 'left-arrow',
