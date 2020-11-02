@@ -2,14 +2,18 @@
 
 exports[`CalendarComponent should match snapshot when isMonthView is false 1`] = `
 CalendarComponent {
+  "componentDidMount": [Function],
   "context": Object {},
   "getSelectedDate": [Function],
+  "getYearsData": [Function],
   "handleBackPress": [Function],
   "handleMonthPress": [Function],
   "handleNextPress": [Function],
   "handleSelect": [Function],
+  "handleYearPress": [Function],
   "onDayPress": [Function],
   "onSelectMonth": [Function],
+  "onSelectYear": [Function],
   "props": Object {
     "onSelect": [MockFunction] {
       "calls": Array [
@@ -31,14 +35,34 @@ CalendarComponent {
   "renderHeader": [Function],
   "renderItem": [Function],
   "renderKeyExtractor": [Function],
-  "renderMonthView": [Function],
+  "renderListView": [Function],
   "setState": [Function],
   "state": Object {
-    "day": "30",
+    "day": "02",
     "isMonthView": false,
+    "isYearView": false,
     "month": 6,
     "selectedDate": "",
     "year": "2020",
+    "yearList": Array [
+      "2005",
+      "2006",
+      "2007",
+      "2008",
+      "2009",
+      "2010",
+      "2011",
+      "2012",
+      "2013",
+      "2014",
+      "2015",
+      "2016",
+      "2017",
+      "2018",
+      "2019",
+      "2020",
+    ],
+    "yearTitle": "2005 - 2020",
   },
   "updater": Updater {
     "_callbacks": Array [],
@@ -89,20 +113,23 @@ CalendarComponent {
       "_rendered": <View>
         <CalendarHeader
           headerTitle="July 2020"
+          headerYear="2020"
           isCurrentMonth={false}
           isMonthView={false}
           onBackPress={[Function]}
           onMonthPress={[Function]}
           onNextPress={[Function]}
+          onYearPress={[Function]}
+          yearTitle="2005 - 2020"
         />
         <React.Fragment>
           <Calendar
-            current="Thu Jul 30 2020"
+            current="Thu Jul 02 2020"
             enableSwipeMonths={false}
             hideArrows={true}
             markedDates={
               Object {
-                "2020-10-30": Object {
+                "2020-11-02": Object {
                   "customStyles": Object {
                     "container": Object {
                       "backgroundColor": "#0084F8",
@@ -116,7 +143,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2020-10-30T12:48:48.333Z}
+            minDate={2020-11-02T09:36:09.871Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -161,11 +188,14 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
 <View>
   <CalendarHeader
     headerTitle="June 2020"
+    headerYear="2020"
     isCurrentMonth={false}
     isMonthView={false}
     onBackPress={[Function]}
     onMonthPress={[Function]}
     onNextPress={[Function]}
+    onYearPress={[Function]}
+    yearTitle="2005 - 2020"
   />
   <Calendar
     current="2020-06-19"
@@ -188,7 +218,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2020-10-30T12:48:48.304Z}
+    minDate={2020-11-02T09:36:09.837Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={

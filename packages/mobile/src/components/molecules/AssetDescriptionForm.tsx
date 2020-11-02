@@ -2,10 +2,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormDropdown, FormTextInput, Text } from '@homzhub/common/src/components';
+import { FormCalendar, FormDropdown, FormTextInput, Text } from '@homzhub/common/src/components';
 import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 
@@ -64,13 +63,16 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           maxLabelLength={36}
           formProps={formProps}
         />
-        <FormDropdown
+        <FormCalendar
           formProps={formProps}
-          name="yearOfConstruction"
-          textType="label"
           label={t('yearOfConstruction')}
-          options={DateUtils.getYearList(20, 5)}
-          placeholder={t('assetFinancial:addDatePlaceholder')}
+          name="yearOfConstruction"
+          allowPastDates
+          isYearView
+          placeHolder={t('assetFinancial:addDatePlaceholder')}
+          placeHolderStyle={styles.placeHolderStyle}
+          dateStyle={styles.dateStyle}
+          textType="label"
         />
         <FormCounter
           containerStyles={styles.marginTop}
@@ -121,5 +123,11 @@ const styles = StyleSheet.create({
   },
   inputFieldStyle: {
     height: 40,
+  },
+  dateStyle: {
+    marginLeft: 0,
+  },
+  placeHolderStyle: {
+    color: theme.colors.darkTint8,
   },
 });

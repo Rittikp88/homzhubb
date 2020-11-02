@@ -11,6 +11,7 @@ import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomShee
 
 interface IFormCalendarProps extends WithTranslation {
   name: string;
+  isYearView?: boolean;
   formProps?: FormikProps<any>;
   selectedValue?: string;
   label?: string;
@@ -20,6 +21,7 @@ interface IFormCalendarProps extends WithTranslation {
   isMandatory?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   placeHolderStyle?: StyleProp<TextStyle>;
+  dateStyle?: StyleProp<TextStyle>;
   textType?: TextFieldType;
   textSize?: TextSizeType;
   fontType?: FontWeightType;
@@ -50,7 +52,9 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       textSize = 'regular',
       fontType = 'regular',
       placeHolderStyle = {},
+      dateStyle = {},
       maxDate,
+      isYearView = false,
     } = this.props;
     const { isCalendarVisible } = this.state;
     const availableDate = (): string => {
@@ -65,6 +69,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     if (textType === 'label') {
       TextField = Label;
     }
+    const isPlaceholderStyle = selectedValue === '' || !availableDate();
     return (
       <View style={containerStyle}>
         <TextField type={textSize} textType={fontType} style={labelStyles}>
@@ -73,8 +78,12 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
         </TextField>
         <TouchableOpacity testID="toCalenderInput" style={styles.dateView} onPress={this.onCalendarOpen}>
           <View style={styles.dateLeft}>
-            <Icon name={icons.calendar} color={iconColor || theme.colors.darkTint5} size={18} />
-            <Text type="small" textType="regular" style={[styles.dateText, selectedValue === '' && placeHolderStyle]}>
+            {!isYearView && <Icon name={icons.calendar} color={iconColor || theme.colors.darkTint5} size={18} />}
+            <Text
+              type="small"
+              textType="regular"
+              style={[styles.dateText, isPlaceholderStyle && placeHolderStyle, dateStyle]}
+            >
               {availableDate() || placeHolder}
             </Text>
           </View>
@@ -90,6 +99,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
           <CalendarComponent
             allowPastDates={allowPastDates}
             maxDate={maxDate}
+            isOnlyYearView={isYearView}
             onSelect={this.onDateSelected}
             selectedDate={selectedValue ?? formProps?.values[name]}
           />
