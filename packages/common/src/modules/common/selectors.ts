@@ -27,7 +27,7 @@ const getDefaultPhoneCode = (state: IState): string => {
     }
   }
 
-  return '';
+  return deviceCountry;
 };
 
 const getDefaultCurrency = (state: IState): Currency => {

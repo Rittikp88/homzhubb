@@ -89,7 +89,7 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
       <Label
         style={
           Object {
-            "color": "#2CBA67",
+            "color": "#F23C06",
           }
         }
         textType="semiBold"

@@ -18,7 +18,7 @@ export const RentAndMaintenance = ({ rentData, depositData }: IProps): React.Rea
         <View style={styles.contentView}>
           <Icon name={icons.home} color={theme.colors.darkTint3} size={20} style={styles.iconStyle} />
           <Label type="large">{label}: </Label>
-          <Label type="large" textType="semiBold" style={styles.status}>
+          <Label type="large" textType="semiBold" style={status === 'Due' ? styles.statusError : styles.status}>
             {status}
           </Label>
         </View>
@@ -30,7 +30,11 @@ export const RentAndMaintenance = ({ rentData, depositData }: IProps): React.Rea
         <View style={styles.contentView}>
           <Icon name={icons.settingOutline} color={theme.colors.darkTint3} size={20} style={styles.iconStyle} />
           <Label type="large">{depositData.label}: </Label>
-          <Label type="large" textType="semiBold" style={styles.status}>
+          <Label
+            type="large"
+            textType="semiBold"
+            style={depositData.status === 'Due' ? styles.statusError : styles.status}
+          >
             {depositData.status}
           </Label>
         </View>
@@ -56,6 +60,9 @@ const styles = StyleSheet.create({
   },
   status: {
     color: theme.colors.green,
+  },
+  statusError: {
+    color: theme.colors.error,
   },
   amount: {
     marginTop: 2,

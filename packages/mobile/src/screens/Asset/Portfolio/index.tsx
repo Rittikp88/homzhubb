@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, PickerItemProps, StyleSheet, View } from 'react-native';
+import { PickerItemProps, StyleSheet, View } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -123,24 +123,18 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderTenancies = (tenancies: Asset[]): React.ReactElement => {
     const { t } = this.props;
-    const { expandedTenanciesId } = this.state;
-    const renderListItem = ({ item, index }: { item: Asset; index: number }): React.ReactElement =>
-      this.renderList(item, index, DataType.TENANCIES);
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('tenancies')}
         </Text>
-        <FlatList data={tenancies} renderItem={renderListItem} extraData={expandedTenanciesId} testID="tenanciesList" />
+        {tenancies.map((tenancy, index) => this.renderList(tenancy, index, DataType.TENANCIES))}
       </>
     );
   };
 
   private renderPortfolio = (properties: Asset[]): React.ReactElement => {
     const { t } = this.props;
-    const { expandedAssetId } = this.state;
-    const renderListItem = ({ item, index }: { item: Asset; index: number }): React.ReactElement =>
-      this.renderList(item, index, DataType.PROPERTIES);
     return (
       <>
         <View style={styles.headingView}>
@@ -155,7 +149,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             testID="menu"
           />
         </View>
-        <FlatList data={properties} renderItem={renderListItem} extraData={expandedAssetId} />
+        {properties.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))}
       </>
     );
   };
