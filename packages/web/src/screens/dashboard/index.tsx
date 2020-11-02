@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SideMenu } from './components/SideMenu';
+import { SideMenu } from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 
 class Dashboard extends React.PureComponent {
   public render(): React.ReactNode {

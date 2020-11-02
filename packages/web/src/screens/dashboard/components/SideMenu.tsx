@@ -33,14 +33,19 @@ const renderMenuItem = (
   const { menuItem, hoveredItem, activeBar, iconStyle } = styles;
   const iconColor = item.name === sideMenuItems.LOGOUT ? theme.colors.error : theme.colors.blue;
   let setTooltipTimeout: number;
+  const TOOLTIP_TIMEOUT = 2000;
+
   const hideTooltip = (): void => {
-    const TOOLTIP_TIMEOUT = 2000;
     setTooltipTimeout = setTimeout(ReactTooltip.hide, TOOLTIP_TIMEOUT);
   };
+
   const clearTooltipTimeout = (): void => {
     ReactTooltip.hide();
     clearTimeout(setTooltipTimeout);
   };
+
+  const onMenuItemPress = (): void => onItemPress(item.id);
+
   return (
     <Hoverable onHoverOut={clearTooltipTimeout}>
       {(isHovered): React.ReactNode => (
@@ -48,7 +53,7 @@ const renderMenuItem = (
           data-tip
           data-for={item.name}
           activeOpacity={100}
-          onPress={(): void => onItemPress(item.id)}
+          onPress={onMenuItemPress}
           style={[menuItem, (isHovered || isActive) && hoveredItem]}
         >
           <View style={[activeBar, isActive && { opacity: 100 }]} />
