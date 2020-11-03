@@ -26,6 +26,7 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
+  IComingSoon,
   IOtpNavProps,
   IUpdateProfileProps,
   IWebviewProps,
@@ -41,6 +42,7 @@ import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
+import ComingSoonScreen from '@homzhub/common/src/screens/ComingSoonScreen';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -53,6 +55,7 @@ export type BottomTabNavigatorParamList = {
 
 export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
+  [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
@@ -84,6 +87,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.UpdatePassword]: undefined;
   [ScreensKeys.WebViewScreen]: IWebviewProps;
+  [ScreensKeys.ComingSoonScreen]: IComingSoon;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -104,6 +108,7 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
+      <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
     </DashboardNavigator.Navigator>
   );
 };
@@ -157,6 +162,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
+      <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
     </MoreStackNavigator.Navigator>
   );
 };

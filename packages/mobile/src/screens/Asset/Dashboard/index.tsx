@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -46,6 +45,8 @@ interface IDashboardState {
   isLoading: boolean;
 }
 
+const ShowInMvpRelease = false;
+
 export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   public focusListener: any;
 
@@ -83,7 +84,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           <FinanceOverview />
           <AssetMarketTrends onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
-          <AssetSubscriptionPlan />
+          {ShowInMvpRelease && <AssetSubscriptionPlan />}
           <Loader visible={isLoading} />
         </>
       </AnimatedProfileHeader>
@@ -107,6 +108,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           dues={metrics?.updates?.dues?.count ?? 0}
           containerStyle={styles.assetCards}
           onPressDue={this.handleDues}
+          onPressServiceTickets={this.handleServiceTickets}
           onPressNotification={this.handleNotification}
         />
       </>
@@ -129,13 +131,24 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   private handleDues = (): void => {
-    const { navigation } = this.props;
-    navigation.dispatch(
-      CommonActions.reset({
+    /**
+     *
+     navigation.dispatch(
+     CommonActions.reset({
         index: 0,
         routes: [{ name: ScreensKeys.Financials }],
       })
-    );
+     );
+     */
+    const { navigation, t } = this.props;
+
+    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('dues'), tabHeader: t('dashboard') });
+  };
+
+  private handleServiceTickets = (): void => {
+    const { navigation, t } = this.props;
+
+    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('tickets'), tabHeader: t('dashboard') });
   };
 
   private handleNotification = (): void => {

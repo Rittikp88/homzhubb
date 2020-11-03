@@ -121,7 +121,8 @@
     "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet",
     "accept": "Accept",
     "reject": "Reject",
-    "done": "Done"
+    "done": "Done",
+    "comingSoonText": "Coming soon..."
   },
   "auth": {
     "verifyNumber": "Verify your number",

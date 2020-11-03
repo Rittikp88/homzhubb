@@ -56,6 +56,8 @@ interface IAssetFiltersState {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyFilters>;
 type Props = libraryProps & IStateProps & IDispatchProps;
 
+const ShowInMvpRelease = false;
+
 export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
   /*eslint-disable */
   private FURNISHING = [
@@ -87,8 +89,8 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
             <View style={styles.screen}>
               <>
                 {this.renderTransactionType()}
-                {this.renderShowVerified()}
-                {this.renderAgentListed()}
+                {ShowInMvpRelease && this.renderShowVerified()}
+                {ShowInMvpRelease && this.renderAgentListed()}
                 {this.renderSearchRadius()}
                 {this.renderDateAdded()}
                 {this.renderPropertyAge()}

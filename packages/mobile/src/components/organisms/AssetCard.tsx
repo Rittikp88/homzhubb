@@ -33,6 +33,8 @@ interface IListProps {
 
 type Props = WithTranslation & IListProps;
 
+const ShowInMvpRelease = false;
+
 export class AssetCard extends Component<Props> {
   public render(): React.ReactNode {
     const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0 } = this.props;
@@ -62,16 +64,20 @@ export class AssetCard extends Component<Props> {
                   badgeColor={assetStatusInfo?.tag.color}
                   badgeStyle={styles.badgeStyle}
                 />
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                <Label type="large" style={styles.count}>
-                  {notifications?.count}
-                </Label>
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                <Label type="large" style={styles.count}>
-                  {serviceTickets?.count}
-                </Label>
+                {ShowInMvpRelease && (
+                  <>
+                    <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+                    <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                    <Label type="large" style={styles.count}>
+                      {notifications?.count}
+                    </Label>
+                    <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+                    <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                    <Label type="large" style={styles.count}>
+                      {serviceTickets?.count}
+                    </Label>
+                  </>
+                )}
               </View>
               <Icon
                 name={isExpanded ? icons.upArrow : icons.downArrow}

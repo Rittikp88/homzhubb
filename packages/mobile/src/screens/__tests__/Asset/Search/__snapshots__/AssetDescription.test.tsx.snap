@@ -497,14 +497,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           }
         />
       </View>
-      <Memo(CollapsibleSection)
-        isDividerRequired={true}
-        title="reviewsRatings"
-      >
-        <Memo(AssetRatings)
-          reviews={Array []}
-        />
-      </Memo(CollapsibleSection)>
       <withI18nextTranslation(SimilarProperties)
         onFavorite={[Function]}
         onSelectedProperty={[Function]}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -11,14 +11,23 @@ interface IProps {
   notification?: number;
   serviceTickets?: number;
   dues?: number;
-  onPressDue?: () => void;
   onPressNotification?: () => void;
+  onPressServiceTickets?: () => void;
+  onPressDue?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const AssetSummary = (props: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
-  const { notification = 0, serviceTickets = 0, dues = 0, containerStyle, onPressDue, onPressNotification } = props;
+  const {
+    notification = 0,
+    serviceTickets = 0,
+    dues = 0,
+    containerStyle,
+    onPressDue,
+    onPressNotification,
+    onPressServiceTickets,
+  } = props;
 
   return (
     <LinearGradient
@@ -38,7 +47,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         </Text>
       </TouchableOpacity>
       <Divider />
-      <View style={styles.summary}>
+      <TouchableOpacity onPress={onPressServiceTickets} style={styles.summary}>
         <Icon name={icons.headPhone} color={theme.colors.orange} size={25} />
         <Text
           type="small"
@@ -52,7 +61,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         <Text type="regular" textType="bold" style={styles.serviceTickets}>
           {serviceTickets}
         </Text>
-      </View>
+      </TouchableOpacity>
       <Divider />
       <TouchableOpacity style={styles.summary} onPress={onPressDue}>
         <Icon name={icons.wallet} color={theme.colors.danger} size={25} />

@@ -41,11 +41,6 @@ describe('Dashboard Screen', () => {
     expect(props.navigation.navigate).toBeCalled();
   });
 
-  it('should dispatch', () => {
-    component.instance().handleDues();
-    expect(props.navigation.dispatch).toBeCalled();
-  });
-
   it('should handle mapDispatchToProps', () => {
     const dispatch = jest.fn();
     mapDispatchToProps(dispatch).setCurrentFilter(Filters.ALL);
