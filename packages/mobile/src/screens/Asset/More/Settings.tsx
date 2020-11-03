@@ -5,8 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { IUpdateUserPreferences } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -16,7 +16,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Dropdown, Label, RNSwitch } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, Loader } from '@homzhub/mobile/src/components';
-import { OptionTypes, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
+import { OptionTypes, SelectedPreferenceType, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
 import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
@@ -26,6 +26,7 @@ type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorPa
 
 interface IDispatchProps {
   getUserPreferences: () => void;
+  updateUserPreferences: (payload: IUpdateUserPreferences) => void;
 }
 
 interface IStateProps {
@@ -136,6 +137,8 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
   private renderOptionTypes = (options: SettingOptions): ReactElement => {
     let renderElement: ReactElement;
     let navigateToWebview: () => void;
+    const handleChange = (value?: SelectedPreferenceType): void =>
+      this.handlePreferenceUpdate(options.name, value || !options.selected);
     switch (options.type) {
       case OptionTypes.Webview:
         navigateToWebview = (): void => this.navigateToWebview(options.url);
@@ -149,7 +152,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
           <Dropdown
             data={options.options}
             value={options.selected as string}
-            onDonePress={FunctionUtils.noop}
+            onDonePress={handleChange}
             icon={icons.downArrow}
             iconColor={theme.colors.primaryColor}
             containerStyle={styles.dropDownStyle}
@@ -159,7 +162,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
         );
         break;
       default:
-        renderElement = <RNSwitch selected onToggle={FunctionUtils.noop} />;
+        renderElement = <RNSwitch selected={options.selected as boolean} onToggle={handleChange} />;
     }
     return renderElement;
   };
@@ -167,6 +170,11 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
   private onBackPress = (): void => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  private handlePreferenceUpdate = (key: string, value: SelectedPreferenceType): void => {
+    const { updateUserPreferences } = this.props;
+    updateUserPreferences({ [key]: value });
   };
 
   private navigateToWebview = (url: string): void => {
@@ -227,6 +235,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     this.setState({ settingsData });
   };
 }
+
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserPreferences, isUserPreferencesLoading } = UserSelector;
   return {
@@ -236,8 +245,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getUserPreferences } = UserActions;
-  return bindActionCreators({ getUserPreferences }, dispatch);
+  const { getUserPreferences, updateUserPreferences } = UserActions;
+  return bindActionCreators({ getUserPreferences, updateUserPreferences }, dispatch);
 };
 
 export default connect(

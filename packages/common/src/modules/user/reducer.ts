@@ -53,7 +53,7 @@ export const userReducer = (
         ['loaders']: { ...state.loaders, ['user']: false },
         ['error']: { ...state.error, ['user']: action.error as string },
       };
-    case UserActionTypes.UPDATE_ONBOARDING:
+    case UserActionTypes.UPDATE.ONBOARDING:
       return {
         ...state,
         ['isOnBoardingCompleted']: action.payload as boolean,
@@ -81,6 +81,7 @@ export const userReducer = (
       };
     case UserActionTypes.SET.IS_ADD_PROPERTY_FLOW:
       return { ...state, ['isAddPropertyFlow']: action.payload as boolean };
+    case UserActionTypes.UPDATE.USER_PREFERENCES:
     case UserActionTypes.GET.USER_PREFERENCES:
       return {
         ...state,

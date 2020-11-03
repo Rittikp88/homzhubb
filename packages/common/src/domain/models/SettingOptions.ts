@@ -1,7 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { IDropdownOption } from '@homzhub/common/src/components';
 
-export type SelectedPreferenceType = boolean | string;
+export type SelectedPreferenceType = boolean | string | number;
 
 export enum OptionTypes {
   Switch = 'SWITCH',

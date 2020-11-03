@@ -19,6 +19,7 @@ import {
   IUpdatePassword,
   IUpdateProfile,
   IUpdateProfileResponse,
+  IUpdateUserPreferences,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
@@ -46,6 +47,7 @@ const ENDPOINTS = {
   updateBasicProfile: (): string => 'users/basic-profile/',
   getUserPreferences: (): string => 'users/settings/',
   settingDropdownValues: (): string => 'user-settings/values/',
+  updateUserPreferences: (): string => 'users/settings/',
 };
 
 class UserRepository {
@@ -145,6 +147,11 @@ class UserRepository {
 
   public getUserPreferences = async (): Promise<UserPreferences> => {
     const response = await this.apiClient.get(ENDPOINTS.getUserPreferences());
+    return ObjectMapper.deserialize(UserPreferences, response);
+  };
+
+  public updateUserPreferences = async (payload: IUpdateUserPreferences): Promise<UserPreferences> => {
+    const response = await this.apiClient.patch(ENDPOINTS.updateUserPreferences(), payload);
     return ObjectMapper.deserialize(UserPreferences, response);
   };
 

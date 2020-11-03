@@ -6,6 +6,7 @@ export interface IUnit {
   name?: string;
   label: string;
   title?: string;
+  code?: string;
 }
 
 @JsonObject('Unit')
@@ -25,12 +26,19 @@ export class Unit {
   @JsonProperty('title', String, true)
   private _title = '';
 
+  @JsonProperty('code', String, true)
+  private _code = '';
+
   get id(): number {
     return this._id;
   }
 
   get name(): string {
     return this._name;
+  }
+
+  get code(): string {
+    return this._code;
   }
 
   get label(): string {

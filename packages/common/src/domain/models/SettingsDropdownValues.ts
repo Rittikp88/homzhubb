@@ -1,12 +1,11 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { IDropdownOption } from '@homzhub/common/src/components';
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
-import { ILanguage, Language } from '@homzhub/common/src/domain/models/Language';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface ISettingsDropdownValues {
   currency: ICurrency[];
-  language: ILanguage[];
+  language: IUnit[];
   financial_year: IUnit[];
   metric_unit: IUnit[];
 }
@@ -16,8 +15,8 @@ export class SettingsDropdownValues {
   @JsonProperty('currency', [Currency])
   private _currency = [new Currency()];
 
-  @JsonProperty('language', [Language])
-  private _language = [new Language()];
+  @JsonProperty('language', [Unit])
+  private _language = [new Unit()];
 
   @JsonProperty('financial_year', [Unit])
   private _financialYear = [new Unit()];
@@ -33,13 +32,13 @@ export class SettingsDropdownValues {
 
   get language(): IDropdownOption[] {
     return this._language.map((item) => {
-      return { label: item.label, value: item.name };
+      return { label: item.label, value: item.id };
     });
   }
 
   get financialYear(): IDropdownOption[] {
     return this._financialYear.map((item) => {
-      return { label: item.label, value: item.name };
+      return { label: item.label, value: item.id };
     });
   }
 
