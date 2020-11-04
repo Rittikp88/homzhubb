@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import ReactTooltip from 'react-tooltip';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,7 +12,8 @@ interface IProps {
   onItemClick: (ItemId: number) => void;
 }
 
-export const SideMenu: React.FunctionComponent<IProps> = (props: IProps) => {
+const SideMenu: FC<IProps> = (props: IProps) => {
+  const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState(1);
   const onItemPress = (item: number): void => {
     setSelectedItem(item);
@@ -19,7 +22,7 @@ export const SideMenu: React.FunctionComponent<IProps> = (props: IProps) => {
   return (
     <View style={styles.menu}>
       {MenuItemList.map((item, index) => {
-        return renderMenuItem(item, isSelectedItem(item.id), onItemPress);
+        return renderMenuItem(item, t, isSelectedItem(item.id), onItemPress);
       })}
     </View>
   );
@@ -27,11 +30,12 @@ export const SideMenu: React.FunctionComponent<IProps> = (props: IProps) => {
 
 const renderMenuItem = (
   item: IMenuItemList,
+  t: TFunction,
   isActive: boolean,
   onItemPress: (item: number) => void
 ): React.ReactNode => {
   const { menuItem, hoveredItem, activeBar, iconStyle } = styles;
-  const iconColor = item.name === sideMenuItems.LOGOUT ? theme.colors.error : theme.colors.blue;
+  const iconColor = item.name === sideMenuItems.logout ? theme.colors.error : theme.colors.blue;
   let setTooltipTimeout: number;
   const TOOLTIP_TIMEOUT = 2000;
 
@@ -48,7 +52,7 @@ const renderMenuItem = (
 
   return (
     <Hoverable onHoverOut={clearTooltipTimeout}>
-      {(isHovered): React.ReactNode => (
+      {(isHovered: boolean): React.ReactNode => (
         <TouchableOpacity
           data-tip
           data-for={item.name}
@@ -59,7 +63,7 @@ const renderMenuItem = (
           <View style={[activeBar, isActive && { opacity: 100 }]} />
           <Icon name={item.icon} color={iconColor} size={24} style={iconStyle} />
           <ReactTooltip id={item.name} afterShow={hideTooltip} place="right" effect="solid" resizeHide={isHovered}>
-            {item.name}
+            {t(`sideMenuItems:${item.name}`)}
           </ReactTooltip>
         </TouchableOpacity>
       )}
@@ -75,6 +79,7 @@ const styles = StyleSheet.create({
     paddingVertical: theme.layout.screenPadding,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
+    zIndex: 1200,
   },
   menuItem: {
     position: 'relative',
@@ -98,3 +103,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto',
   },
 });
+
+export default SideMenu;

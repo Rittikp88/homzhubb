@@ -1,22 +1,22 @@
-import { icons } from '../assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 
 export enum sideMenuItems {
-  DASHBOARD = 'dashboard',
-  FINANCIALS = 'financials',
-  PORTFOLIO = 'portfolio',
-  NOTIFICATIONS = 'notifications',
-  TICKETS = 'tickets',
-  KYC_DOCUMENTS = 'kyc documents',
-  SAVED_PROPERTIES = 'saved properties',
-  PROPERTY_VISITS = 'property visits',
-  OFFERS = 'offers',
-  NEW_LAUNCHES = 'new launches',
-  MARKET_TRENDS = 'market trends',
-  VALUE_ADDED_SERVICES = 'value added services',
-  SETTINGS = 'settings',
-  MANAGE_SUBSCRIPTION = 'manage subscription',
-  PAYMENT_METHODS = 'payment methods',
-  LOGOUT = 'logout',
+  dashboard = 'dashboard',
+  financials = 'financials',
+  portfolio = 'portfolio',
+  notifications = 'notifications',
+  tickets = 'tickets',
+  kycDocuments = 'kycDocuments',
+  savedProperties = 'savedProperties',
+  propertyVisits = 'propertyVisits',
+  offers = 'offers',
+  newLaunches = 'newLaunches',
+  marketTrends = 'marketTrends',
+  valueAddedServices = 'valueAddedServices',
+  settings = 'settings',
+  manageSubscription = 'manageSubscription',
+  paymentMethods = 'paymentMethods',
+  logout = 'logout',
 }
 
 export interface IMenuItemList {
@@ -28,82 +28,82 @@ export interface IMenuItemList {
 export const MenuItemList: IMenuItemList[] = [
   {
     id: 1,
-    name: sideMenuItems.DASHBOARD,
+    name: sideMenuItems.dashboard,
     icon: icons.dashboard,
   },
   {
     id: 2,
-    name: sideMenuItems.FINANCIALS,
+    name: sideMenuItems.financials,
     icon: icons.barChartOutline,
   },
   {
     id: 3,
-    name: sideMenuItems.PORTFOLIO,
+    name: sideMenuItems.portfolio,
     icon: icons.portfolio,
   },
   {
     id: 4,
-    name: sideMenuItems.NOTIFICATIONS,
+    name: sideMenuItems.notifications,
     icon: icons.alert,
   },
   {
     id: 5,
-    name: sideMenuItems.TICKETS,
+    name: sideMenuItems.tickets,
     icon: icons.ticket,
   },
   {
     id: 6,
-    name: sideMenuItems.KYC_DOCUMENTS,
+    name: sideMenuItems.kycDocuments,
     icon: icons.documents,
   },
   {
     id: 7,
-    name: sideMenuItems.SAVED_PROPERTIES,
+    name: sideMenuItems.savedProperties,
     icon: icons.heartOutline,
   },
   {
     id: 8,
-    name: sideMenuItems.PROPERTY_VISITS,
+    name: sideMenuItems.propertyVisits,
     icon: icons.visit,
   },
   {
     id: 9,
-    name: sideMenuItems.OFFERS,
+    name: sideMenuItems.offers,
     icon: icons.offers,
   },
   {
     id: 10,
-    name: sideMenuItems.NEW_LAUNCHES,
+    name: sideMenuItems.newLaunches,
     icon: icons.newLaunch,
   },
   {
     id: 11,
-    name: sideMenuItems.MARKET_TRENDS,
+    name: sideMenuItems.marketTrends,
     icon: icons.increase,
   },
   {
     id: 12,
-    name: sideMenuItems.VALUE_ADDED_SERVICES,
+    name: sideMenuItems.valueAddedServices,
     icon: icons.settingOutline,
   },
   {
     id: 13,
-    name: sideMenuItems.SETTINGS,
+    name: sideMenuItems.settings,
     icon: icons.setting,
   },
   {
     id: 14,
-    name: sideMenuItems.MANAGE_SUBSCRIPTION,
+    name: sideMenuItems.manageSubscription,
     icon: icons.manageSubscription,
   },
   {
     id: 15,
-    name: sideMenuItems.PAYMENT_METHODS,
+    name: sideMenuItems.paymentMethods,
     icon: icons.payment,
   },
   {
     id: 16,
-    name: sideMenuItems.LOGOUT,
+    name: sideMenuItems.logout,
     icon: icons.logOut,
   },
 ];

@@ -25,6 +25,7 @@ enum namespacesKey {
   assetMore = 'assetMore',
   moreSettings = 'moreSettings',
   moreProfile = 'moreProfile',
+  sideMenuItems = 'sideMenuItems',
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;
