@@ -1,17 +1,20 @@
-import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { ScreensKeys } from '@homzhub/web/src/router/interfaces';
+import React, { Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 
 const Dashboard = lazy(() => import('@homzhub/web/src/screens/dashboard'));
-const AboutPage = lazy(() => import('@homzhub/web/src/components/staticPages/about'));
 
 export const MainRouter = (): React.ReactElement => {
+  const { DASHBOARD, APP_BASE } = RouteNames.protectedRoutes;
+  const { t } = useTranslation();
+
   return (
-    <Suspense fallback={<div>Loading Application...</div>}>
+    <Suspense fallback={<div>{t('webLoader:loadingText')}</div>}>
       <BrowserRouter>
         <Switch>
-          <Route exact path={ScreensKeys.dashboard} component={Dashboard} />
-          <Route exact path={ScreensKeys.about} component={AboutPage} />
+          <Route exact path={DASHBOARD} component={Dashboard} />
+          <Redirect exact path={APP_BASE} to={DASHBOARD} />
         </Switch>
       </BrowserRouter>
     </Suspense>

@@ -122,6 +122,11 @@
     "accept": "Accept",
     "reject": "Reject",
     "done": "Done",
+    "comingSoonText": "Coming soon...",
+    "copyrightContent": "© All rights reserved.© 2020-21 Copyright: ",
+    "homzhubLink": "Homzhub.com",
+    "terms": "Terms",
+    "privacy": "Privacy",
     "inTouch": "We’ll be in touch",
     "messageSent": "Message Sent!",
     "typeDescription": "Type your description here...",
@@ -129,7 +134,6 @@
     "subject": "Subject",
     "subjectPlaceholder": "Enter subject here",
     "homzhubTeam": "Homzhub team",
-    "comingSoonText": "Coming soon..."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -625,5 +629,8 @@
     "otpVerificationText": "OTP Verification",
     "profileUpdatedSuccessfully": "Profile Updated Successfully",
     "editProfile": "Edit Profile"
+  },
+  "webLoader": {
+    "loadingText": "Loading Application..."
   }
 }
