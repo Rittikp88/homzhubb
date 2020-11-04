@@ -7,13 +7,14 @@ import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IMenuItemList, MenuItemList, sideMenuItems } from '@homzhub/common/src/constants/DashBoard';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   onItemClick: (ItemId: number) => void;
 }
 
 const SideMenu: FC<IProps> = (props: IProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
   const [selectedItem, setSelectedItem] = useState(1);
   const onItemPress = (item: number): void => {
     setSelectedItem(item);
@@ -63,7 +64,7 @@ const renderMenuItem = (
           <View style={[activeBar, isActive && { opacity: 100 }]} />
           <Icon name={item.icon} color={iconColor} size={24} style={iconStyle} />
           <ReactTooltip id={item.name} afterShow={hideTooltip} place="right" effect="solid" resizeHide={isHovered}>
-            {t(`sideMenuItems:${item.name}`)}
+            {t(`${item.name}`)}
           </ReactTooltip>
         </TouchableOpacity>
       )}

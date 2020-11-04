@@ -14,6 +14,8 @@
     "cancel": "Cancel",
     "gotIt": "Got It",
     "skip": "Skip",
+    "offers": "Offers",
+    "manageSubscription": "Manage Subscription",
     "location": "Location",
     "termsCondition": "terms and conditions",
     "submit": "Submit",
@@ -617,23 +619,5 @@
     "otpVerificationText": "OTP Verification",
     "profileUpdatedSuccessfully": "Profile Updated Successfully",
     "editProfile": "Edit Profile"
-  },
-  "sideMenuItems": {
-    "dashboard": "dashboard",
-    "financials": "financials",
-    "portfolio": "portfolio",
-    "notifications": "notifications",
-    "tickets": "tickets",
-    "kycDocuments": "kyc documents",
-    "savedProperties": "saved properties",
-    "propertyVisits": "property visits",
-    "offers": "offers",
-    "newLaunches": "new launches",
-    "marketTrends": "market trends",
-    "valueAddedServices": "value added services",
-    "settings": "settings",
-    "manageSubscription": "manage subscription",
-    "paymentMethods": "payment methods",
-    "logout": "logout"
   }
 }

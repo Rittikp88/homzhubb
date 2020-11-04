@@ -1,20 +1,20 @@
 import { icons } from '@homzhub/common/src/assets/icon';
 
 export enum sideMenuItems {
-  dashboard = 'dashboard',
-  financials = 'financials',
-  portfolio = 'portfolio',
+  dashboard = 'assetDashboard:dashboard',
+  financials = 'assetFinancial:financial',
+  portfolio = 'assetPortfolio:portfolio',
   notifications = 'notifications',
   tickets = 'tickets',
   kycDocuments = 'kycDocuments',
   savedProperties = 'savedProperties',
   propertyVisits = 'propertyVisits',
-  offers = 'offers',
+  offers = 'common:offers',
   newLaunches = 'newLaunches',
   marketTrends = 'marketTrends',
   valueAddedServices = 'valueAddedServices',
   settings = 'settings',
-  manageSubscription = 'manageSubscription',
+  manageSubscription = 'common:manageSubscription',
   paymentMethods = 'paymentMethods',
   logout = 'logout',
 }
