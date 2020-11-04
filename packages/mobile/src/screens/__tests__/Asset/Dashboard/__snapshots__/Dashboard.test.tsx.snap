@@ -27,11 +27,6 @@ exports[`Dashboard Screen should render snapshot 1`] = `
     onPressServiceTickets={[Function]}
     serviceTickets={0}
   />
-  <withI18nextTranslation(PendingPropertyListCard)
-    data={Array []}
-    onPressComplete={[Function]}
-    onSelectAction={[Function]}
-  />
   <withI18nextTranslation(FinanceOverview) />
   <withI18nextTranslation(AssetMarketTrends)
     onViewAll={[Function]}

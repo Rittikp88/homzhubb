@@ -16,6 +16,7 @@ import {
   FormTextInput,
   IDropdownOption,
   SelectionPicker,
+  TextArea,
 } from '@homzhub/common/src/components';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { IDocumentSource, UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
@@ -34,7 +35,7 @@ interface IFormData {
   label: string;
   tellerName: string;
   amount: number;
-  category: string;
+  category: number;
   date: string;
   notes: string;
 }
@@ -79,7 +80,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         label: '',
         tellerName: '',
         amount: 0,
-        category: '',
+        category: 0,
         date: '',
         notes: '',
       },
@@ -88,7 +89,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 
   public render(): ReactElement {
     const { containerStyles, t, clear } = this.props;
-    const { selectedFormType, formValues, wordCount, currencyCode, currencySymbol } = this.state;
+    const { selectedFormType, formValues, currencyCode, currencySymbol } = this.state;
 
     if (clear) {
       this.clearForm();
@@ -111,6 +112,9 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
           enableReinitialize
         >
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
+            const handleNotes = (value: string): void => {
+              formProps.setFieldValue('notes', value);
+            };
             this.initializeReset(formProps);
 
             return (
@@ -166,17 +170,14 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   placeHolder={t('addDatePlaceholder')}
                   isMandatory
                 />
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="default"
-                  name="notes"
-                  label={t('notes')}
+                <TextArea
+                  value={formProps.values.notes}
                   placeholder={t('notesPlaceholder')}
-                  style={styles.inputStyle}
-                  helpText={t('common:charactersRemaining', { wordCount })}
-                  onValueChange={this.wordCount}
-                  multiline
-                  maxLength={MAX_WORD_COUNT}
+                  label={t('notes')}
+                  wordCountLimit={MAX_WORD_COUNT}
+                  helpText="Optional"
+                  containerStyle={styles.inputStyle}
+                  onMessageChange={handleNotes}
                 />
                 <UploadBoxComponent
                   icon={icons.document}
@@ -263,7 +264,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       label: yup.string().required(t('detailsError')),
       tellerName: yup.string(),
       amount: yup.number().required(t('amountError')),
-      category: yup.string().required(t('categoryError')),
+      category: yup.number().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
       notes: yup.string(),
     });
@@ -351,12 +352,9 @@ export default withTranslation([namespace.assetFinancial, namespace.common])(Add
 
 const styles = StyleSheet.create({
   inputStyle: {
-    height: 100,
-    justifyContent: 'flex-start',
-    textAlignVertical: 'top',
-    paddingTop: 10,
+    marginTop: 20,
   },
   uploadBox: {
-    marginVertical: 24,
+    marginVertical: 20,
   },
 });

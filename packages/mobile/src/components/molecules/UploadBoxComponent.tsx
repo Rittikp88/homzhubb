@@ -28,6 +28,7 @@ interface IProps {
   iconSize?: number;
   iconColor?: string;
   key?: number;
+  isClear?: boolean;
   onCapture: (DocumentSource: IDocumentSource) => void;
   onDelete: (key?: number) => void;
   displayThumbnail?: boolean;
@@ -40,6 +41,13 @@ export class UploadBoxComponent extends React.PureComponent<IProps, IState> {
       type: '',
       name: '',
     },
+  };
+
+  public componentDidUpdate = (prevProps: Readonly<IProps>): void => {
+    const { isClear } = this.props;
+    if (prevProps.isClear !== isClear && isClear) {
+      this.deleteDocument();
+    }
   };
 
   public render(): ReactElement {

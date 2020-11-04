@@ -69,6 +69,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
     };
 
     const error = touched[name] && errors[name] ? errors[name] : undefined;
+
     if (error) {
       labelStyles = { ...labelStyles, color: theme.colors.error };
     }

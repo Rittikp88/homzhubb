@@ -16,7 +16,7 @@ interface IOwnProps {
   clear?: boolean;
   containerStyles?: StyleProp<ViewStyle>;
   headerStyle?: StyleProp<ViewStyle>;
-  renderItem?: () => ReactElement;
+  renderItem?: () => ReactElement | null;
 }
 
 export class HeaderCard extends React.PureComponent<IOwnProps> {

@@ -6,7 +6,9 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
+import { ISupportPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   getCountryCodes: (): string => 'countries/',
@@ -15,6 +17,9 @@ const ENDPOINTS = {
   maintenanceUnits: (): string => 'list-of-values/maintenance-units/',
   onBoarding: (): string => 'onboardings/',
   socialMedia: (): string => 'social-providers/',
+  supportCategories: (): string => 'list-of-values/client-support-categories/',
+  supportContact: (): string => 'client-support/contacts/',
+  clientSupport: (): string => 'client-support/',
 };
 
 class CommonRepository {
@@ -52,6 +57,20 @@ class CommonRepository {
   public getMaintenanceUnits = async (): Promise<Unit[]> => {
     const response = await this.apiClient.get(ENDPOINTS.maintenanceUnits());
     return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public getSupportCategories = async (): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.supportCategories());
+    return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public getSupportContacts = async (): Promise<User> => {
+    const response = await this.apiClient.get(ENDPOINTS.supportContact());
+    return ObjectMapper.deserialize(User, response);
+  };
+
+  public postClientSupport = async (payload: ISupportPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.clientSupport(), payload);
   };
 }
 

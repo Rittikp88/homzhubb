@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, Divider } from '@homzhub/common/src/components';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   notification?: number;
@@ -37,9 +37,9 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       locations={[0, 1]}
       style={[styles.container, containerStyle]}
     >
-      <TouchableOpacity style={styles.summary} onPress={onPressNotification}>
+      <TouchableOpacity style={[styles.summary, styles.notificationView]} onPress={onPressNotification}>
         <Icon name={icons.alert} color={theme.colors.notificationGreen} size={25} />
-        <Text type="small" textType="semiBold" style={styles.notification} minimumFontScale={0.1} adjustsFontSizeToFit>
+        <Text type="small" textType="semiBold" style={styles.notification}>
           {t('notification')}
         </Text>
         <Text type="regular" textType="bold" style={styles.notification}>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   summary: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: theme.viewport.width / 3.5,
+    width: theme.viewport.width / 2.6,
   },
   notification: {
     color: theme.colors.notificationGreen,
@@ -99,5 +99,8 @@ const styles = StyleSheet.create({
   },
   dues: {
     color: theme.colors.danger,
+  },
+  notificationView: {
+    marginRight: 18,
   },
 });

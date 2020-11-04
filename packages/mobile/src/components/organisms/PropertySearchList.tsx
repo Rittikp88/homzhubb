@@ -76,7 +76,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
         property={item}
         onFavorite={onUpdateFavoritePropertyId}
         key={item.id}
-        transaction_type={filters.asset_transaction_type}
+        transaction_type={filters.asset_transaction_type || 0}
         isCarousel
         onSelectedProperty={navigateToAssetDescription}
         testID="listCard"
@@ -106,7 +106,9 @@ export class PropertySearchList extends React.PureComponent<Props> {
       getPropertiesListView,
       filters: { offset, limit },
     } = this.props;
-    setFilter({ offset: offset + limit });
+    if (offset && limit) {
+      setFilter({ offset: offset + limit });
+    }
     getPropertiesListView();
   };
 }

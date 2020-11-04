@@ -64,6 +64,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     textStyle = {},
     imageStyle = {},
     icon = icons.downArrowFilled,
+    image,
     testID,
     maxLabelLength = MAX_LABEL_COUNT,
     numColumns = 1,
@@ -95,8 +96,8 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   return (
     <View pointerEvents={disable ? 'none' : 'auto'} style={disabledStyles}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
-        {showImage ? (
-          <Image source={{ uri: '' }} height={12} width={18} style={imageStyle} />
+        {showImage && !!image ? (
+          <Image source={{ uri: image }} style={imageStyle} />
         ) : (
           <Label type={fontSize} textType={fontWeight} style={[placeholderColor, textStyle]}>
             {label ?? placeholder}

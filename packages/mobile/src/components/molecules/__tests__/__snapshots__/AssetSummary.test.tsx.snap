@@ -43,11 +43,16 @@ exports[`AssetSummary should match snapshot 1`] = `
 >
   <ForwardRef
     style={
-      Object {
-        "alignItems": "center",
-        "justifyContent": "center",
-        "width": 214.28571428571428,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "width": 288.46153846153845,
+        },
+        Object {
+          "marginRight": 18,
+        },
+      ]
     }
   >
     <Icon
@@ -57,8 +62,6 @@ exports[`AssetSummary should match snapshot 1`] = `
       size={25}
     />
     <Text
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.1}
       style={
         Object {
           "color": "#13AB46",
@@ -87,7 +90,7 @@ exports[`AssetSummary should match snapshot 1`] = `
       Object {
         "alignItems": "center",
         "justifyContent": "center",
-        "width": 214.28571428571428,
+        "width": 288.46153846153845,
       }
     }
   >
@@ -128,7 +131,7 @@ exports[`AssetSummary should match snapshot 1`] = `
       Object {
         "alignItems": "center",
         "justifyContent": "center",
-        "width": 214.28571428571428,
+        "width": 288.46153846153845,
       }
     }
   >
@@ -209,11 +212,16 @@ exports[`AssetSummary should match snapshot without values 1`] = `
 >
   <ForwardRef
     style={
-      Object {
-        "alignItems": "center",
-        "justifyContent": "center",
-        "width": 214.28571428571428,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "width": 288.46153846153845,
+        },
+        Object {
+          "marginRight": 18,
+        },
+      ]
     }
   >
     <Icon
@@ -223,8 +231,6 @@ exports[`AssetSummary should match snapshot without values 1`] = `
       size={25}
     />
     <Text
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.1}
       style={
         Object {
           "color": "#13AB46",
@@ -253,7 +259,7 @@ exports[`AssetSummary should match snapshot without values 1`] = `
       Object {
         "alignItems": "center",
         "justifyContent": "center",
-        "width": 214.28571428571428,
+        "width": 288.46153846153845,
       }
     }
   >
@@ -294,7 +300,7 @@ exports[`AssetSummary should match snapshot without values 1`] = `
       Object {
         "alignItems": "center",
         "justifyContent": "center",
-        "width": 214.28571428571428,
+        "width": 288.46153846153845,
       }
     }
   >

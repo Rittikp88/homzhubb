@@ -322,11 +322,17 @@ export class Asset {
   @JsonProperty('country_name', String)
   private _countryName = '';
 
-  @JsonProperty('sale_listing_id', [Number], true)
-  private _saleListingId = [];
+  @JsonProperty('sale_listing_ids', [Number], true)
+  private _saleListingIds = [];
 
-  @JsonProperty('lease_listing_id', [Number], true)
-  private _leaseListingId = [];
+  @JsonProperty('lease_listing_ids', [Number], true)
+  private _leaseListingIds = [];
+
+  @JsonProperty('sale_listing_id', Number, true)
+  private _saleListingId = -1;
+
+  @JsonProperty('lease_listing_id', Number, true)
+  private _leaseListingId = -1;
 
   @JsonProperty('app_permissions', AppPermission, true)
   private _appPermissions = null;
@@ -571,11 +577,19 @@ export class Asset {
     return this._appPermissions;
   }
 
-  get saleListingId(): number[] {
+  get saleListingIds(): number[] {
+    return this._saleListingIds;
+  }
+
+  get leaseListingIds(): number[] {
+    return this._leaseListingIds;
+  }
+
+  get saleListingId(): number {
     return this._saleListingId;
   }
 
-  get leaseListingId(): number[] {
+  get leaseListingId(): number {
     return this._leaseListingId;
   }
 }

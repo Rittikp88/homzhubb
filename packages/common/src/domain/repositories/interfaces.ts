@@ -468,6 +468,13 @@ export interface IPaymentSuccess {
   razorpay_signature: string;
 }
 
+export interface ISupportPayload {
+  support_category: number;
+  title: string;
+  description: string;
+  attachments: number[];
+}
+
 export interface IUpdateUserPreferences {
   [name: string]: SelectedPreferenceType;
 }

@@ -122,6 +122,13 @@
     "accept": "Accept",
     "reject": "Reject",
     "done": "Done",
+    "inTouch": "We’ll be in touch",
+    "messageSent": "Message Sent!",
+    "typeDescription": "Type your description here...",
+    "categoryExample": "Eg. Leasing",
+    "subject": "Subject",
+    "subjectPlaceholder": "Enter subject here",
+    "homzhubTeam": "Homzhub team",
     "comingSoonText": "Coming soon..."
   },
   "auth": {

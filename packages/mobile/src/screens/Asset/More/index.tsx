@@ -141,6 +141,13 @@ export class More extends React.PureComponent<Props> {
           })
         );
         break;
+      case MoreScreenTypes.SUPPORT:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.SupportScreen,
+          })
+        );
+        break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         break;

@@ -34,15 +34,16 @@ import {
   ScreensKeys,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
+import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
+import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
+import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
-import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
-import ComingSoonScreen from '@homzhub/common/src/screens/ComingSoonScreen';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -86,6 +87,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.AssetNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.UpdatePassword]: undefined;
+  [ScreensKeys.SupportScreen]: undefined;
   [ScreensKeys.WebViewScreen]: IWebviewProps;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
 };
@@ -161,6 +163,7 @@ export const MoreStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
+      <MoreStackNavigator.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
     </MoreStackNavigator.Navigator>
