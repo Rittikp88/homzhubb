@@ -10,17 +10,17 @@ export const SettingsScreenData: ISettingsData[] = [
     visible: false,
     options: [
       {
-        name: 'faceId',
+        name: UserPreferencesKeys.FaceId,
         label: 'faceId',
         type: OptionTypes.Switch,
       },
       {
-        name: 'fingerprint',
+        name: UserPreferencesKeys.Fingerprint,
         label: 'fingerprint',
         type: OptionTypes.Switch,
       },
       {
-        name: 'twoFactorAuthentication',
+        name: UserPreferencesKeys.TwoFactorAuthentication,
         label: 'twoFactorAuthentication',
         type: OptionTypes.Switch,
       },
@@ -59,22 +59,22 @@ export const SettingsScreenData: ISettingsData[] = [
     visible: false,
     options: [
       {
-        name: 'showLastName',
+        name: UserPreferencesKeys.ShowLastName,
         label: 'showLastName',
         type: OptionTypes.Switch,
       },
       {
-        name: 'showMobileNumber',
+        name: UserPreferencesKeys.ShowMobileNumber,
         label: 'showMobileNumber',
         type: OptionTypes.Switch,
       },
       {
-        name: 'showEmail',
+        name: UserPreferencesKeys.ShowEmail,
         label: 'showEmail',
         type: OptionTypes.Switch,
       },
       {
-        name: 'analyseAppIssuesAndEvents',
+        name: UserPreferencesKeys.AnalyseAppIssuesAndEvents,
         label: 'analyseAppIssuesAndEvents',
         type: OptionTypes.Switch,
       },
@@ -86,17 +86,17 @@ export const SettingsScreenData: ISettingsData[] = [
     visible: false,
     options: [
       {
-        name: 'pushNotifications',
+        name: UserPreferencesKeys.PushNotifications,
         label: 'pushNotifications',
         type: OptionTypes.Switch,
       },
       {
-        name: 'emailsText',
+        name: UserPreferencesKeys.EmailsText,
         label: 'emailsText',
         type: OptionTypes.Switch,
       },
       {
-        name: 'messagesText',
+        name: UserPreferencesKeys.MessagesText,
         label: 'messagesText',
         type: OptionTypes.Switch,
       },

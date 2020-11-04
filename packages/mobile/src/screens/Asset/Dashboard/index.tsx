@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -13,8 +12,8 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import {
   AnimatedProfileHeader,
-  AssetMetricsList,
   AssetAdvertisementBanner,
+  AssetMetricsList,
   AssetSummary,
   Loader,
 } from '@homzhub/mobile/src/components';
@@ -22,19 +21,21 @@ import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMar
 import AssetSubscriptionPlan from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
-import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, DataType, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
   setAssetId: (payload: number) => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   setAddPropertyFlow: (payload: boolean) => void;
+  setCurrentAsset: (payload: ISetAssetPayload) => void;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
@@ -45,6 +46,8 @@ interface IDashboardState {
   pendingProperties: Asset[];
   isLoading: boolean;
 }
+
+const ShowInMvpRelease = false;
 
 export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   public focusListener: any;
@@ -75,15 +78,18 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       <AnimatedProfileHeader title={t('dashboard')}>
         <>
           {this.renderAssetMetricsAndUpdates()}
-          <PendingPropertyListCard
-            data={pendingProperties}
-            onPressComplete={this.onCompleteDetails}
-            onSelectAction={this.handleActionSelection}
-          />
+          {pendingProperties.length > 0 && (
+            <PendingPropertyListCard
+              data={pendingProperties}
+              onPressComplete={this.onCompleteDetails}
+              onSelectAction={this.handleActionSelection}
+              onViewProperty={this.onViewProperty}
+            />
+          )}
           <FinanceOverview />
           <AssetMarketTrends onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
-          <AssetSubscriptionPlan />
+          {ShowInMvpRelease && <AssetSubscriptionPlan />}
           <Loader visible={isLoading} />
         </>
       </AnimatedProfileHeader>
@@ -107,6 +113,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           dues={metrics?.updates?.dues?.count ?? 0}
           containerStyle={styles.assetCards}
           onPressDue={this.handleDues}
+          onPressServiceTickets={this.handleServiceTickets}
           onPressNotification={this.handleNotification}
         />
       </>
@@ -128,14 +135,35 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     navigation.navigate(ScreensKeys.MarketTrends);
   };
 
+  private onViewProperty = (id: number): void => {
+    const { setCurrentAsset } = this.props;
+    setCurrentAsset({ id, dataType: DataType.PROPERTIES });
+    /**
+     * navigation.navigate(ScreensKeys.Portfolio, {
+      screen: ScreensKeys.PropertyDetailScreen,
+    });
+     */
+  };
+
   private handleDues = (): void => {
-    const { navigation } = this.props;
-    navigation.dispatch(
-      CommonActions.reset({
+    /**
+     *
+     navigation.dispatch(
+     CommonActions.reset({
         index: 0,
         routes: [{ name: ScreensKeys.Financials }],
       })
-    );
+     );
+     */
+    const { navigation, t } = this.props;
+
+    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('dues'), tabHeader: t('dashboard') });
+  };
+
+  private handleServiceTickets = (): void => {
+    const { navigation, t } = this.props;
+
+    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('tickets'), tabHeader: t('dashboard') });
   };
 
   private handleNotification = (): void => {
@@ -193,10 +221,13 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setCurrentFilter } = PortfolioActions;
+  const { setCurrentFilter, setCurrentAsset } = PortfolioActions;
   const { setAddPropertyFlow } = UserActions;
   const { setAssetId, setSelectedPlan } = RecordAssetActions;
-  return bindActionCreators({ setCurrentFilter, setAssetId, setSelectedPlan, setAddPropertyFlow }, dispatch);
+  return bindActionCreators(
+    { setCurrentFilter, setAssetId, setSelectedPlan, setAddPropertyFlow, setCurrentAsset },
+    dispatch
+  );
 };
 
 export default connect(

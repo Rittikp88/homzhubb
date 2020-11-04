@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { configureStore } from '@homzhub/common/src/modules/store';
-import { MainRouter } from '@homzhub/web/src/router/MainRouter';
+import { AppRouter } from '@homzhub/web/src/router/AppRouter';
 
 interface IState {
   isLocalizationInitialised: boolean;
@@ -31,7 +31,7 @@ export class App extends React.PureComponent<{}, IState> {
 
     return (
       <Provider store={store}>
-        <MainRouter />
+        <AppRouter />
       </Provider>
     );
   };

@@ -50,7 +50,7 @@ describe('Onboarding Screen', () => {
     const dispatch = jest.fn();
     mapDispatchToProps(dispatch).updateOnBoarding(true);
     expect(dispatch.mock.calls[0][0]).toEqual({
-      type: UserActionTypes.UPDATE_ONBOARDING,
+      type: UserActionTypes.UPDATE.ONBOARDING,
       payload: true,
     });
   });

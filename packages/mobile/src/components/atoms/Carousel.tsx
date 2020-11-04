@@ -1,6 +1,7 @@
 import React from 'react';
 import Carousel from 'react-native-snap-carousel';
 import { StyleProp, ViewStyle } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 interface ICarouselProps<T> {
@@ -48,7 +49,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
         containerCustomStyle={containerStyle}
         onLayout={this.updateRef}
         onSnapToItem={onSnapToItem}
-        removeClippedSubviews
+        removeClippedSubviews={PlatformUtils.isAndroid()}
         ref={(c): void => {
           this.carouselRef = c;
         }}

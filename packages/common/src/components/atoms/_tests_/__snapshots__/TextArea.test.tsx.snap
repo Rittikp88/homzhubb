@@ -4,17 +4,27 @@ exports[`Text Area should match snapshot 1`] = `
 <View
   style={Object {}}
 >
-  <Label
+  <View
     style={
       Object {
-        "color": "#33495E",
-        "marginVertical": 6,
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
       }
     }
-    type="large"
   >
-    Some label
-  </Label>
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 6,
+        }
+      }
+      type="large"
+    >
+      Some label
+    </Label>
+  </View>
   <View
     style={
       Object {
@@ -65,17 +75,27 @@ exports[`Text Area should match snapshot for optional 1`] = `
 <View
   style={Object {}}
 >
-  <Label
+  <View
     style={
       Object {
-        "color": "#33495E",
-        "marginVertical": 6,
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
       }
     }
-    type="large"
   >
-    Some label
-  </Label>
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 6,
+        }
+      }
+      type="large"
+    >
+      Some label
+    </Label>
+  </View>
   <View
     style={
       Object {

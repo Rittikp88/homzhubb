@@ -8,20 +8,28 @@ interface IProps {
   label?: string;
   value: string;
   placeholder: string;
+  helpText?: string;
   containerStyle?: StyleProp<ViewStyle>;
   onMessageChange?: (text: string) => void;
   wordCountLimit?: number;
 }
 
 export const TextArea = (props: IProps): React.ReactElement => {
-  const { label, placeholder, containerStyle = {}, onMessageChange, value, wordCountLimit = 250 } = props;
+  const { label, placeholder, containerStyle = {}, onMessageChange, value, wordCountLimit = 250, helpText } = props;
   const { t } = useTranslation();
   const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
   return (
     <View style={containerStyle}>
-      <Label type="large" style={styles.labelStyle}>
-        {label}
-      </Label>
+      <View style={styles.labelView}>
+        <Label type="large" style={styles.labelStyle}>
+          {label}
+        </Label>
+        {!!helpText && (
+          <Label type="regular" style={styles.labelHelper}>
+            {helpText}
+          </Label>
+        )}
+      </View>
       <View style={styles.textAreaContainer}>
         <TextInput
           autoCorrect={false}
@@ -57,5 +65,13 @@ const styles = StyleSheet.create({
   },
   helpText: {
     paddingVertical: 6,
+  },
+  labelView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  labelHelper: {
+    color: theme.colors.darkTint3,
   },
 });

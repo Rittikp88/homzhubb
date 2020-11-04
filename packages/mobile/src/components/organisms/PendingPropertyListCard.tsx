@@ -24,6 +24,7 @@ interface IProps {
   data: Asset[];
   onPressComplete: (assetId: number) => void;
   onSelectAction: (payload: IActions, assetId: number) => void;
+  onViewProperty: (id: number) => void;
 }
 
 interface IState {
@@ -83,6 +84,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
   }
 
   private renderCardItem = (item: Asset): React.ReactElement => {
+    const { onViewProperty } = this.props;
     const {
       id,
       spaces,
@@ -108,7 +110,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
     );
 
     return (
-      <View style={styles.cardContainer}>
+      <TouchableOpacity style={styles.cardContainer} onPress={(): void => onViewProperty(id)}>
         <ShieldGroup propertyType={name} propertyTypeStyle={styles.heading} text={description} isInfoRequired />
         <PropertyAddressCountry
           primaryAddress={projectName}
@@ -120,7 +122,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
           <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         )}
         {this.renderButtonsView(id, lastVisitedStep)}
-      </View>
+      </TouchableOpacity>
     );
   };
 

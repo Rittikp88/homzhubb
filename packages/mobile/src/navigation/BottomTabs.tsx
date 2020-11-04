@@ -26,6 +26,7 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
+  IComingSoon,
   IOtpNavProps,
   IUpdateProfileProps,
   IWebviewProps,
@@ -33,13 +34,15 @@ import {
   ScreensKeys,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
+import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
+import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
+import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
-import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 
 export type BottomTabNavigatorParamList = {
@@ -53,6 +56,7 @@ export type BottomTabNavigatorParamList = {
 
 export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
+  [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
@@ -83,7 +87,9 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.AssetNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.UpdatePassword]: undefined;
+  [ScreensKeys.SupportScreen]: undefined;
   [ScreensKeys.WebViewScreen]: IWebviewProps;
+  [ScreensKeys.ComingSoonScreen]: IComingSoon;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -104,6 +110,7 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
+      <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
     </DashboardNavigator.Navigator>
   );
 };
@@ -156,7 +163,9 @@ export const MoreStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
+      <MoreStackNavigator.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
+      <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
     </MoreStackNavigator.Navigator>
   );
 };

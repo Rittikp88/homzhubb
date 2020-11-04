@@ -77,14 +77,28 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
 
     return inputs.map((counter: number, index: number) => {
       const onChangeText = (value: string): void => {
-        if (!/\d/.test(value)) {
+        if (!/\d/.test(value) || PlatformUtils.isIOS()) {
           return;
         }
         this.focusNext(index, value);
       };
 
       const onKeyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>): void => {
-        this.focusPrevious(event.nativeEvent.key, index);
+        const { key } = event.nativeEvent;
+
+        if (key === 'Backspace') {
+          this.focusPrevious(key, index);
+          return;
+        }
+
+        if (PlatformUtils.isIOS() && /\d/.test(key)) {
+          if (otp[index]) {
+            const newIndex = otp.findIndex((item: string) => !item);
+            this.focusNext(newIndex, key);
+          } else {
+            this.focusNext(index, key);
+          }
+        }
       };
 
       let style = styles.textInput;

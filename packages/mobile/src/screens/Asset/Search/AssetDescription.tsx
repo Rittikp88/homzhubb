@@ -124,6 +124,8 @@ const initialState = {
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
 
+const ShowInMvpRelease = false;
+
 export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = initialState;
 
@@ -219,9 +221,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
               {this.renderAssetHighlights(assetDetails)}
             </CollapsibleSection>
             {this.renderMapSection()}
-            <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
-              <AssetRatings reviews={reviews} />
-            </CollapsibleSection>
+            {ShowInMvpRelease && (
+              <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
+                <AssetRatings reviews={reviews} />
+              </CollapsibleSection>
+            )}
             {!isPreview && this.renderSimilarProperties()}
           </View>
         </ParallaxScrollView>

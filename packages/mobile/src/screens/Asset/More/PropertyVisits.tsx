@@ -11,6 +11,7 @@ import { AnimatedProfileHeader, HeaderCard } from '@homzhub/mobile/src/component
 import { DropdownWithCountry } from '@homzhub/mobile/src/components/molecules/DropdownWithCountry';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/SiteVisitCalendarView';
+import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -21,7 +22,7 @@ interface IDispatchProps {
 
 interface IScreenState {
   isCalendarView: boolean;
-  countryData: PickerItemProps[];
+  countryData: Country[];
   propertiesByCountry: PickerItemProps[];
   selectedAssetId: number;
   visitPayload: IAssetVisitPayload;
@@ -138,10 +139,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     const response = await AssetService.getVisitAssetByCountry();
     const countryData = response.map((item) => {
       const result: VisitAssetDetail = item.results[0] as VisitAssetDetail;
-      return {
-        label: result.country.name,
-        value: result.country.id,
-      };
+      return result.country;
     });
 
     const propertiesByCountry: PickerItemProps[] = [defaultObj];

@@ -36,10 +36,9 @@ const MarketTrendsCarousel: FC<{}> = (props) => {
 
 const styles = StyleSheet.create({
   carousel_container: {
-    height: 'max-content',
     flexDirection: 'column',
     backgroundColor: theme.colors.background,
-    margin: 10,
+    marginVertical: 10,
   },
   title_container: {
     flexDirection: 'row',

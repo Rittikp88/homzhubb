@@ -36,7 +36,7 @@ const MarketTrendsCard: FC<IProps> = (props: IProps) => {
         </Label>
       </View>
       <View style={styles.description}>
-        <Text type="regular" textType="semiBold" style={styles.title}>
+        <Text type="small" textType="semiBold" style={styles.title}>
           How is the real estate market recovering?
         </Text>
         <Label type="regular" textType="regular" numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
@@ -52,17 +52,17 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     maxWidth: 322,
-    height: 377,
     flexDirection: 'column',
     borderRadius: 4,
     backgroundColor: theme.colors.white,
-    margin: 20,
+    marginHorizontal: 4,
+    marginBottom: 25,
   },
   image: {
     flex: 1,
     minWidth: 'calc(100% - 24px)',
     maxWidth: 298,
-    height: '50%',
+    minHeight: 160,
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
@@ -73,21 +73,22 @@ const styles = StyleSheet.create({
     height: 'max-content',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: theme.layout.screenPadding,
+    marginHorizontal: 16,
   },
   description: {
     flex: 1,
     flexDirection: 'column',
-    padding: theme.layout.screenPadding,
-    paddingTop: 8,
+    marginHorizontal: 16,
+    marginVertical: 8,
   },
   title: {
     flexBasis: 1,
-    marginBottom: theme.layout.screenPadding,
+    marginBottom: 8,
   },
   subTitle: {
     overflow: 'hidden',
     textAlign: 'justify',
+    marginBottom: 8,
   },
 });
 

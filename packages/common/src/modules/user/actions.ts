@@ -1,6 +1,10 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IRefreshTokenPayload, ILoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IRefreshTokenPayload,
+  ILoginPayload,
+  IUpdateUserPreferences,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
@@ -28,7 +32,10 @@ export const UserActionTypes = {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
     IS_ADD_PROPERTY_FLOW: `${actionTypePrefix}IS_ADD_PROPERTY_FLOW`,
   },
-  UPDATE_ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
+  UPDATE: {
+    ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
+    USER_PREFERENCES: `${actionTypePrefix}UPDATE_USER_PREFERENCES`,
+  },
 };
 
 const login = (payload: ILoginPayload): IFluxStandardAction<ILoginPayload> => {
@@ -73,7 +80,7 @@ const logoutFailure = (error: string): IFluxStandardAction => {
 };
 
 const updateOnBoarding = (updatedOnBoarding: boolean): IFluxStandardAction<boolean> => ({
-  type: UserActionTypes.UPDATE_ONBOARDING,
+  type: UserActionTypes.UPDATE.ONBOARDING,
   payload: updatedOnBoarding,
 });
 
@@ -117,6 +124,11 @@ const setAddPropertyFlow = (payload: boolean): IFluxStandardAction<boolean> => (
   payload,
 });
 
+const updateUserPreferences = (payload: IUpdateUserPreferences): IFluxStandardAction<IUpdateUserPreferences> => ({
+  type: UserActionTypes.UPDATE.USER_PREFERENCES,
+  payload,
+});
+
 export type UserPayloadTypes = string | boolean | IUser | IUserProfile | IUserPreferences;
 export const UserActions = {
   login,
@@ -134,4 +146,5 @@ export const UserActions = {
   getUserPreferences,
   getUserPreferencesSuccess,
   getUserPreferencesFailure,
+  updateUserPreferences,
 };

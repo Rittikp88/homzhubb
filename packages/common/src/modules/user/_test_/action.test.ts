@@ -53,7 +53,7 @@ describe('User Actions', () => {
   it('should call update onBoarding action', () => {
     const action = UserActions.updateOnBoarding(true);
     expect(action).toStrictEqual({
-      type: UserActionTypes.UPDATE_ONBOARDING,
+      type: UserActionTypes.UPDATE.ONBOARDING,
       payload: true,
     });
   });

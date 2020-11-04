@@ -48,7 +48,8 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <View
+  <ForwardRef
+    onPress={[Function]}
     style={
       Object {
         "marginVertical": 12,
@@ -103,6 +104,6 @@ exports[`PendingPropertyListCard should match snapshot 1`] = `
       }
       direction="row"
     />
-  </View>
+  </ForwardRef>
 </View>
 `;

@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignSelf: 'flex-start',
     paddingVertical: theme.layout.screenPadding,
+    marginRight: 24,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
     zIndex: 1200,

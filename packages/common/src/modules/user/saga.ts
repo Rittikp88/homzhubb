@@ -8,7 +8,11 @@ import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepo
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { ILoginPayload, IRefreshTokenPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  ILoginPayload,
+  IRefreshTokenPayload,
+  IUpdateUserPreferences,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { User, IUser } from '@homzhub/common/src/domain/models/User';
 
 export function* login(action: IFluxStandardAction<ILoginPayload>) {
@@ -70,9 +74,22 @@ export function* userPreferences() {
   }
 }
 
+export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPreferences>) {
+  const { payload } = action;
+  try {
+    const response = yield call(UserRepository.updateUserPreferences, payload as IUpdateUserPreferences);
+    yield put(UserActions.getUserPreferencesSuccess(response));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(UserActions.getUserPreferencesFailure());
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
   yield takeEvery(UserActionTypes.GET.USER_PROFILE, userProfile);
   yield takeEvery(UserActionTypes.GET.USER_PREFERENCES, userPreferences);
+  yield takeEvery(UserActionTypes.UPDATE.USER_PREFERENCES, updateUserPreferences);
 }

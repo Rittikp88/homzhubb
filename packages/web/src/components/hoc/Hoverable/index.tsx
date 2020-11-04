@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { element, func, oneOfType } from 'prop-types';
 import { isHoverEnabled } from './HoverState';
 
 interface IProps {

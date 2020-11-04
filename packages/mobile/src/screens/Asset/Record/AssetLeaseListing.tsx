@@ -482,16 +482,16 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     const { navigation, setFilter } = this.props;
     const {
       id,
-      leaseListingId,
-      saleListingId,
+      leaseListingIds,
+      saleListingIds,
       lastVisitedStep: {
         listing: { type },
       },
     } = assetDetails;
     const planType = type === TypeOfPlan.RENT ? 0 : 1;
     setFilter({ asset_transaction_type: planType });
-    const saleId = saleListingId && saleListingId.length > 0 ? saleListingId[0] : 0;
-    const leaseId = leaseListingId && leaseListingId.length > 0 ? leaseListingId[0] : 0;
+    const saleId = saleListingIds && saleListingIds.length > 0 ? saleListingIds[0] : 0;
+    const leaseId = leaseListingIds && leaseListingIds.length > 0 ? leaseListingIds[0] : 0;
 
     const propertyTermId = type === TypeOfPlan.RENT && leaseId > 0 ? leaseId : saleId;
     this.setState({

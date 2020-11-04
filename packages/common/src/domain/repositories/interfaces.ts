@@ -1,5 +1,6 @@
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
 
 // ENUMS
 
@@ -465,4 +466,15 @@ export interface IPaymentSuccess {
   razorpay_payment_id: string;
   razorpay_order_id: string;
   razorpay_signature: string;
+}
+
+export interface ISupportPayload {
+  support_category: number;
+  title: string;
+  description: string;
+  attachments: number[];
+}
+
+export interface IUpdateUserPreferences {
+  [name: string]: SelectedPreferenceType;
 }

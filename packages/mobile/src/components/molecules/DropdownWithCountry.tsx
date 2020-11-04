@@ -1,29 +1,47 @@
 import React, { useState } from 'react';
 import { PickerItemProps, StyleSheet, View } from 'react-native';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { Dropdown } from '@homzhub/common/src/components';
+import { Country } from '@homzhub/common/src/domain/models/Country';
 
 interface IProps {
-  countryData: PickerItemProps[];
+  countryData: Country[];
   dropdownData: PickerItemProps[];
   onSelectProperty: (value: number) => void;
 }
 
-export const DropdownWithCountry = (props: IProps): React.ReactElement => {
+export const DropdownWithCountry = (props: IProps): React.ReactElement | null => {
   const { dropdownData, countryData, onSelectProperty } = props;
   const [dataValue, setDataValue] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const onSelectData = (value: string | number): void => {
     setDataValue(value as number);
     onSelectProperty(value as number);
   };
 
+  if (countryData.length < 1) {
+    return null;
+  }
+
+  const handleCountrySelection = (value: string | number): void => {
+    const selectedCountry = countryData.findIndex((data) => data.iso2Code === value);
+    setSelectedIndex(selectedCountry);
+  };
+
+  const countryMenu = countryData.map((item) => {
+    return {
+      label: item.name,
+      value: item.iso2Code,
+    };
+  });
+
   return (
     <View style={styles.container}>
       <Dropdown
-        data={countryData}
+        data={countryMenu}
         showImage
-        value={1}
-        onDonePress={FunctionUtils.noop}
+        value={countryData[selectedIndex].iso2Code}
+        image={countryData[selectedIndex].flag}
+        onDonePress={handleCountrySelection}
         imageStyle={styles.image}
         containerStyle={styles.imageDropdown}
       />
@@ -51,6 +69,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderRadius: 4,
     width: 20,
+    height: 12,
   },
   imageDropdown: {
     paddingVertical: 10,

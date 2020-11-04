@@ -86,6 +86,7 @@ export enum ScreensKeys {
 
   // Common Screens
   BlankScreen = 'BlankScreen',
+  ComingSoonScreen = 'ComingSoonScreen',
   WebViewScreen = 'WebViewScreen',
 
   // More Stack
@@ -93,6 +94,7 @@ export enum ScreensKeys {
   UpdateUserProfileScreen = 'UpdateUserProfileScreen',
   SettingsScreen = 'SettingsScreen',
   UpdatePassword = 'UpdatePassword',
+  SupportScreen = 'SupportScreen',
 }
 
 export enum OtpNavTypes {
@@ -179,4 +181,9 @@ export interface IWebviewProps {
 export interface IUpdateProfileProps {
   title?: string;
   formType?: UpdateUserFormTypes;
+}
+
+export interface IComingSoon {
+  title: string;
+  tabHeader: string;
 }

@@ -55,8 +55,9 @@ export class More extends React.PureComponent<Props> {
   };
 
   public renderItem = (item: IMoreScreenItem): React.ReactElement => {
+    const { t } = this.props;
     const onPress = (): void => {
-      this.handleNavigation(item.type);
+      this.handleNavigation(item.type, t(item.title));
     };
     return <TouchableOpacity onPress={onPress}>{this.renderItemWithIcon(item, false)}</TouchableOpacity>;
   };
@@ -109,8 +110,8 @@ export class More extends React.PureComponent<Props> {
     navigate(ScreensKeys.UserProfileScreen);
   };
 
-  public handleNavigation = (type: MoreScreenTypes): void => {
-    const { navigation } = this.props;
+  public handleNavigation = (type: MoreScreenTypes, title: string): void => {
+    const { navigation, t } = this.props;
     switch (type) {
       case MoreScreenTypes.NOTIFICATIONS:
         navigation.dispatch(
@@ -140,12 +141,15 @@ export class More extends React.PureComponent<Props> {
           })
         );
         break;
-      default:
+      case MoreScreenTypes.SUPPORT:
         navigation.dispatch(
           CommonActions.navigate({
-            name: ScreensKeys.More,
+            name: ScreensKeys.SupportScreen,
           })
         );
+        break;
+      default:
+        navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         break;
     }
   };
