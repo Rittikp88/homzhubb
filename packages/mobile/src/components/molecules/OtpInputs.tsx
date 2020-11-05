@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: 48,
     borderColor: theme.colors.disabled,
+    color: theme.colors.darkTint1,
   },
   errorText: {
     marginTop: 8,

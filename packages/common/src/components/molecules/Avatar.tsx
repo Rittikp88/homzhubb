@@ -11,6 +11,7 @@ interface IProps {
   fullName: string;
   designation: string;
   phoneNumber?: string;
+  phoneCode?: string;
   rating?: number;
   date?: string;
   isRightIcon?: boolean;
@@ -18,7 +19,7 @@ interface IProps {
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
-  const { fullName, designation, containerStyle = {}, phoneNumber, rating, date, isRightIcon } = props;
+  const { fullName, designation, containerStyle = {}, phoneNumber, rating, date, isRightIcon, phoneCode } = props;
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -39,6 +40,11 @@ const Avatar = (props: IProps): React.ReactElement => {
             {phoneNumber && (
               <View style={styles.numberContainer}>
                 <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+                {!!phoneCode && (
+                  <Label textType="regular" type="regular" style={styles.designation}>
+                    {`(${phoneCode}) `}
+                  </Label>
+                )}
                 <Label textType="regular" type="regular" style={styles.designation}>
                   {phoneNumber}
                 </Label>

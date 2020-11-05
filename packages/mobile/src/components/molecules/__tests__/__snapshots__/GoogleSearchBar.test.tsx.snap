@@ -66,6 +66,7 @@ exports[`SearchBar should match snapshot 1`] = `
       returnKeyType="done"
       style={
         Object {
+          "color": "#001B36",
           "flex": 1,
         }
       }

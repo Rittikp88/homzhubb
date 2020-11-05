@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
+    color: theme.colors.darkTint1,
   },
   cancelButtonContainer: {
     backgroundColor: theme.colors.primaryColor,

@@ -68,10 +68,10 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     const { getFilterDetails, filters } = this.props;
     const { asset_group, asset_transaction_type, min_price, max_price } = filters;
     this.setState({
-      selectedPropertyType: asset_group,
-      selectedLookingType: asset_transaction_type,
-      minPriceRange: min_price,
-      maxPriceRange: max_price,
+      selectedPropertyType: asset_group ?? 0,
+      selectedLookingType: asset_transaction_type ?? 0,
+      minPriceRange: min_price ?? 0,
+      maxPriceRange: max_price ?? 0,
     });
     getFilterDetails({ asset_group: filters.asset_group });
   };
@@ -91,10 +91,10 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     }
     // eslint-disable-next-line react/no-did-update-set-state
     this.setState({
-      selectedPropertyType: asset_group,
-      selectedLookingType: asset_transaction_type,
-      minPriceRange: min_price,
-      maxPriceRange: max_price,
+      selectedPropertyType: asset_group ?? 0,
+      selectedLookingType: asset_transaction_type ?? 0,
+      minPriceRange: min_price ?? 0,
+      maxPriceRange: max_price ?? 0,
     });
   };
 
@@ -203,7 +203,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
           }}
           placeholder={t('enterLocation')}
           updateValue={this.onSearchStringUpdate}
-          value={search_address}
+          value={search_address || ''}
           containerStyle={styles.searchBarContainer}
           cancelButtonStyle={styles.cancelButtonStyle}
           cancelTextStyle={styles.cancelTextStyle}

@@ -98,10 +98,15 @@ export class Support extends Component<Props, IScreenState> {
       <View style={styles.content}>
         {/* TODO: Add selection picker once other flow is ready */}
         <View style={styles.contactView}>
-          <Text type="small" style={styles.title}>
+          <Text type="small" textType="semiBold" style={styles.title}>
             {t('youContacting')}
           </Text>
-          <Avatar fullName={contact.fullName} designation={t('homzhubTeam')} phoneNumber={contact.phoneNumber} />
+          <Avatar
+            fullName={contact.fullName}
+            designation={t('homzhubTeam')}
+            phoneCode={contact.countryCode}
+            phoneNumber={contact.phoneNumber}
+          />
         </View>
         <Divider />
         {this.renderForm()}
@@ -149,7 +154,6 @@ export class Support extends Component<Props, IScreenState> {
                 value={formProps.values.description}
                 placeholder={t('typeDescription')}
                 label={t('assetDescription:description')}
-                helpText={t('optional')}
                 containerStyle={styles.textArea}
                 onMessageChange={handleDescription}
               />
@@ -182,7 +186,7 @@ export class Support extends Component<Props, IScreenState> {
     return (
       <>
         <View style={styles.sheetContent}>
-          <Text type="large" style={styles.sheetTitle}>
+          <Text type="large" textType="semiBold" style={styles.sheetTitle}>
             {t('common:messageSent')}
           </Text>
           <Text type="small">{t('common:inTouch')}</Text>

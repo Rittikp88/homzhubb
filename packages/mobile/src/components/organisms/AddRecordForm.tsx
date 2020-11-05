@@ -175,7 +175,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   placeholder={t('notesPlaceholder')}
                   label={t('notes')}
                   wordCountLimit={MAX_WORD_COUNT}
-                  helpText="Optional"
                   containerStyle={styles.inputStyle}
                   onMessageChange={handleNotes}
                 />

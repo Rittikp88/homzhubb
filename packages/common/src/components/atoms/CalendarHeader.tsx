@@ -44,7 +44,7 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
           name={icons.leftArrow}
           onPress={onBackPress}
           size={22}
-          color={!isAllowPastDate && isCurrentMonth ? theme.colors.disabled : theme.colors.primaryColor}
+          color={!isAllowPastDate && isCurrentMonth && !isYearView ? theme.colors.disabled : theme.colors.primaryColor}
         />
         {!isYearView && !isMonthView && (
           <Text type="small" textType="semiBold" onPress={onMonthPress} style={styles.headerTitle}>

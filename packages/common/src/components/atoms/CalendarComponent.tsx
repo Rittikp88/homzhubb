@@ -4,6 +4,7 @@ import { View, FlatList, TouchableOpacity, StyleSheet, StyleProp, TextStyle, Vie
 import moment from 'moment';
 import { groupBy } from 'lodash';
 import { DateFormats, DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -128,14 +129,15 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const { isOnlyYearView, selectedDate } = this.props;
     const onPressItem = (): void => (isMonthView ? this.onSelectMonth(item, index) : this.onSelectYear(item, index));
     const isSelected = isYearView ? year === item : isOnlyYearView ? selectedDate === item : month === index;
+    const isDisable = isOnlyYearView && item > year;
 
     return (
       <TouchableOpacity
         key={index}
         style={StyleSheet.flatten([customStyles.renderItemView(isSelected)])}
-        onPress={onPressItem}
+        onPress={isDisable ? FunctionUtils.noop : onPressItem}
       >
-        <Label type="large" style={StyleSheet.flatten([customStyles.renderItemTitle(isSelected)])}>
+        <Label type="large" style={StyleSheet.flatten([customStyles.renderItemTitle(isSelected, isDisable)])}>
           {item}
         </Label>
       </TouchableOpacity>
@@ -240,7 +242,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
       month = moment(selectedDate).month();
     }
 
-    if (!allowPastDates && month === moment().month()) {
+    if (!allowPastDates && month === moment().month() && !isYearView) {
       return;
     }
 
@@ -372,8 +374,8 @@ const customStyles = {
     backgroundColor: isSelected ? theme.colors.primaryColor : theme.colors.white,
     borderRadius: 4,
   }),
-  renderItemTitle: (isSelected: boolean): StyleProp<TextStyle> => ({
+  renderItemTitle: (isSelected: boolean, isDisable?: boolean): StyleProp<TextStyle> => ({
     paddingVertical: 6,
-    color: isSelected ? theme.colors.white : theme.colors.darkTint2,
+    color: isSelected ? theme.colors.white : isDisable ? theme.colors.disabled : theme.colors.darkTint2,
   }),
 };

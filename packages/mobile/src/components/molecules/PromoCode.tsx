@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     paddingHorizontal: 16,
+    color: theme.colors.darkTint1,
   },
   button: {
     borderWidth: 0,
