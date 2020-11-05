@@ -223,7 +223,7 @@ exports[`ExploreSections should match snapshot for point of interest renderItem 
     }
     type="regular"
   >
-    56.00 Km
+    56.00 undefined
   </Label>
 </ForwardRef>
 `;
@@ -279,7 +279,7 @@ exports[`ExploreSections should match snapshot for point of interest renderItem 
     }
     type="regular"
   >
-    56.00 Km
+    56.00 undefined
   </Label>
 </ForwardRef>
 `;

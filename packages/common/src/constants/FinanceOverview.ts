@@ -49,8 +49,8 @@ export const FINANCIAL_DROPDOWN_DATA = {
   [DateFilter.thisFinancialYear]: {
     label: `${translationKey}:thisFinancialYear`,
     value: DateFilter.thisFinancialYear,
-    startDate: `${DateUtils.getCurrentYear()}-04-01`,
-    endDate: `${DateUtils.getNextYear()}-03-31`,
+    startDate: '',
+    endDate: '',
     dataGroupBy: DataGroupBy.year,
   },
   [DateFilter.lastYear]: {

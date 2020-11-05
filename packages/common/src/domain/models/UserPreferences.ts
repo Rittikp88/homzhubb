@@ -22,6 +22,12 @@ export enum UserPreferencesKeys {
   WebView = 'webview',
 }
 
+export enum MetricSystems {
+  KILOMETERS = 'km',
+  METERS = 'm',
+  MILES = 'mi',
+}
+
 export interface IUserPreferences {
   currency: ICurrency;
   language: IUnit;
@@ -123,8 +129,8 @@ export class UserPreferences {
     return this._financialYear.code;
   }
 
-  get metricUnit(): string {
-    return this._metricUnit;
+  get metricUnit(): MetricSystems {
+    return this._metricUnit as MetricSystems;
   }
 
   get accountDeactivated(): boolean {

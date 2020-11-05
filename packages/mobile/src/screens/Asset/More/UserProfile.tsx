@@ -64,7 +64,7 @@ class UserProfile extends React.PureComponent<IOwnProps> {
 
   public renderComponent = (): React.ReactNode => {
     const { t } = this.props;
-    const { userProfile } = this.props;
+    const { userProfile, navigation } = this.props;
 
     if (!userProfile) {
       return null;
@@ -76,7 +76,7 @@ class UserProfile extends React.PureComponent<IOwnProps> {
       <AnimatedProfileHeader
         title={t('assetMore:more')}
         sectionHeader={t('assetMore:profile')}
-        onBackPress={this.goBack}
+        onBackPress={navigation.goBack}
         sectionTitleType="semiBold"
       >
         <View style={styles.container}>
@@ -140,11 +140,6 @@ class UserProfile extends React.PureComponent<IOwnProps> {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.UpdatePassword);
-  };
-
-  private goBack = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
   };
 }
 

@@ -13,7 +13,7 @@ exports[`Login Screen should render login screen 1`] = `
     onLoginSuccess={[Function]}
     testID="loginForm"
   />
-  <withI18nextTranslation(SocialMediaComponent)
+  <Connect(withI18nextTranslation(SocialMediaComponent))
     isFromLogin={true}
     navigation={
       Object {
@@ -22,8 +22,6 @@ exports[`Login Screen should render login screen 1`] = `
       }
     }
     onEmailLogin={[Function]}
-    onLoginSuccessAction={[MockFunction]}
-    socialMediaItems={Array []}
     testID="socialEmailLogin"
   />
 </AnimatedHeader>

@@ -1,19 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
-import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
-import { LoginScreen, mapDispatchToProps } from '@homzhub/mobile/src/screens/Auth/LoginScreen';
-import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { LoginScreen } from '@homzhub/mobile/src/screens/Auth/LoginScreen';
 
 const mock = jest.fn();
 
 describe('Login Screen', () => {
   let component: any;
   let props: any;
-  let instance: any;
 
   beforeEach(() => {
     props = {
@@ -34,7 +28,6 @@ describe('Login Screen', () => {
         }}
       />
     );
-    instance = component.instance();
   });
 
   it('should render login screen', () => {
@@ -65,31 +58,5 @@ describe('Login Screen', () => {
     };
     component.find('[testID="loginForm"]').prop('onLoginSuccess')(values);
     expect(mock).toHaveBeenCalled();
-  });
-
-  it('should call the mapDispatchToProps', () => {
-    const dispatch = jest.fn();
-    const data = {
-      full_name: 'John doe',
-      email: 'john@gmail.com',
-      country_code: '_91',
-      phone_number: '9876543210',
-      access_token: 'access_token',
-      refresh_token: 'refresh_token',
-    };
-    mapDispatchToProps(dispatch).loginSuccess(data);
-    expect(dispatch.mock.calls[0][0]).toStrictEqual({
-      type: UserActionTypes.AUTH.LOGIN_SUCCESS,
-      payload: data,
-    });
-  });
-
-  it('should fetch the social media data', async () => {
-    const data = ObjectMapper.deserializeArray(SocialMediaProvider, SocialMediaData);
-    jest.spyOn(CommonRepository, 'getSocialMedia').mockImplementation(() => Promise.resolve(data));
-    await instance.componentDidMount();
-    const response = await CommonRepository.getSocialMedia();
-    component.setState({ socialMediaProviders: response });
-    expect(component.state('socialMediaProviders')).toStrictEqual(data);
   });
 });

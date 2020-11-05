@@ -6,27 +6,30 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
-import { PlaceTypes } from '@homzhub/common/src/services/GooglePlaces/constants';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { CustomMarker, SelectionPicker } from '@homzhub/common/src/components';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import ExploreSections from '@homzhub/mobile/src/components/molecules/ExploreSections';
 import { Header } from '@homzhub/mobile/src/components/molecules/Header';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { NeighborhoodTabs, PLACES_DATA } from '@homzhub/common/src/constants/AssetNeighbourhood';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
+import { PlaceTypes } from '@homzhub/common/src/services/GooglePlaces/constants';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const EXPANDED = theme.viewport.height * 0.45;
 
 // INTERFACES & TYPES
 interface IStateProps {
   asset: Asset | null;
+  metricSystem: MetricSystems;
 }
 interface IOwnState {
   selectedTab: NeighborhoodTabs;
@@ -64,7 +67,7 @@ export class AssetNeighbourhood extends React.Component<Props, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { asset, t } = this.props;
+    const { asset, t, metricSystem } = this.props;
     const { selectedTab, selectedPlaceType, isBottomSheetVisible, pointsOfInterest, selectedPlaceId } = this.state;
 
     if (!asset) return null;
@@ -123,6 +126,7 @@ export class AssetNeighbourhood extends React.Component<Props, IOwnState> {
             selectedPoiId={selectedPlaceId}
             pointsOfInterest={pointsOfInterest}
             onPoiPress={this.onPoiPress}
+            metricSystem={metricSystem}
           />
         </BottomSheet>
       </View>
@@ -188,14 +192,19 @@ export class AssetNeighbourhood extends React.Component<Props, IOwnState> {
 
   private fetchPOIs = async (): Promise<void> => {
     const { selectedPlaceType } = this.state;
-    const { asset } = this.props;
+    const { asset, metricSystem } = this.props;
 
     if (!asset) return;
     this.setState({ isApiActive: true });
     const { assetLocation } = asset;
 
     try {
-      const pointsOfInterest = await GooglePlacesService.getPOIs(assetLocation, selectedPlaceType);
+      const pointsOfInterest = await GooglePlacesService.getPOIs(
+        assetLocation,
+        selectedPlaceType,
+        undefined,
+        metricSystem
+      );
       this.setState({ pointsOfInterest, isApiActive: false });
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -209,17 +218,20 @@ const styles = StyleSheet.create({
   },
   floatingTab: {
     position: 'absolute',
+    alignItems: 'center',
     left: 0,
     right: 0,
     top: theme.viewport.height * 0.12,
-    alignItems: 'center',
   },
 });
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getAsset } = AssetSelectors;
+  const { getMetricSystem } = UserSelector;
+
   return {
     asset: getAsset(state),
+    metricSystem: getMetricSystem(state),
   };
 };
 

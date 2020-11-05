@@ -110,9 +110,21 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   };
 
   public getGeneralLedgers = async (): Promise<void> => {
+    const {
+      financialYear: { endDate: finEndDate, startDate: finStartDate },
+    } = this.props;
     const { selectedTimeRange, currentTab } = this.state;
+
     // @ts-ignore
-    const { endDate, startDate, dataGroupBy } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
+    let { endDate, startDate } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
+    // @ts-ignore
+    const { value, dataGroupBy } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
+
+    if (value === DateFilter.thisFinancialYear) {
+      endDate = finEndDate;
+      startDate = finStartDate;
+    }
+
     const getTransactionGroupBy = (): DataGroupBy => {
       if (currentTab === TabKeys.cashFlow) {
         // For bar graph, we need all data by months
@@ -195,22 +207,10 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   };
 
   public getFinancialDropdownData = (): IDropdownObject[] => {
-    const {
-      t,
-      financialYear: { startDate, endDate },
-    } = this.props;
+    const { t } = this.props;
     const data = Object.values(FINANCIAL_DROPDOWN_DATA);
 
     return data.map((currentData: IDropdownObject) => {
-      if (currentData.value === DateFilter.thisFinancialYear) {
-        return {
-          ...currentData,
-          startDate,
-          endDate,
-          label: t(currentData.label),
-        };
-      }
-
       return {
         ...currentData,
         label: t(currentData.label),

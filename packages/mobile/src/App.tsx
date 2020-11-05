@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { Provider } from 'react-redux';
 import FlashMessage, { MessageComponentProps } from 'react-native-flash-message';
@@ -9,7 +10,6 @@ import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/service
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { configureStore } from '@homzhub/common/src/modules/store';
-import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -89,9 +89,6 @@ export default class App extends React.PureComponent<{}, IState> {
     const userData = await StorageService.get<IUserTokens>(StorageKeys.USER);
     if (userData) {
       store.dispatch(UserActions.loginSuccess(userData));
-      store.dispatch(UserActions.getUserProfile());
-      store.dispatch(UserActions.getUserPreferences());
-      store.dispatch(AssetActions.getAssetCount());
     }
 
     const selectedLanguage: SupportedLanguages | null = await StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE);

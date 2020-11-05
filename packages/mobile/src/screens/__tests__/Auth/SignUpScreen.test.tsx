@@ -1,17 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
-import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
-import { SignUpScreen, mapDispatchToProps } from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
+import { SignUpScreen } from '@homzhub/mobile/src/screens/Auth/SignUpScreen';
 
 const mock = jest.fn();
 
 describe('SignUp Screen', () => {
   let component: any;
   let props: any;
-  let instance: any;
   beforeEach(() => {
     props = {
       loginSuccess: mock,
@@ -31,7 +27,6 @@ describe('SignUp Screen', () => {
         }}
       />
     );
-    instance = component.instance();
   });
 
   it('should render signup screen', () => {
@@ -46,32 +41,6 @@ describe('SignUp Screen', () => {
   it('should navigate to login screen', () => {
     component.find('[testID="headerEvents"]').prop('onLinkPress')();
     expect(mock).toHaveBeenCalled();
-  });
-
-  it('should handle mapDispatchToProps', () => {
-    const dispatch = jest.fn();
-    const data = {
-      full_name: 'John doe',
-      email: 'john@gmail.com',
-      country_code: '+91',
-      phone_number: '9876543210',
-      access_token: 'access_token',
-      refresh_token: 'refresh_token',
-    };
-    mapDispatchToProps(dispatch).loginSuccess(data);
-    expect(dispatch.mock.calls[0][0]).toStrictEqual({
-      type: UserActionTypes.AUTH.LOGIN_SUCCESS,
-      payload: data,
-    });
-  });
-
-  it('should fetch the social media data', async () => {
-    // @ts-ignore
-    jest.spyOn(CommonRepository, 'getSocialMedia').mockImplementation(() => Promise.resolve(SocialMediaData));
-    await instance.componentDidMount();
-    const response = await CommonRepository.getSocialMedia();
-    component.setState({ socialMediaProviders: response });
-    expect(component.state('socialMediaProviders')).toStrictEqual(SocialMediaData);
   });
 
   it('should handle signup form submit', () => {

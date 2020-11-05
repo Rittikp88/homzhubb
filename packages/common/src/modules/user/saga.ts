@@ -5,7 +5,6 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
-import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -27,10 +26,6 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
 
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
-
-    yield put(UserActions.getUserPreferences());
-    yield put(AssetActions.getAssetCount());
-    yield put(UserActions.getUserProfile());
 
     if (callback) {
       callback();

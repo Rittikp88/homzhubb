@@ -1,8 +1,10 @@
+import { MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
 import { Coordinate, PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 // Constants
 const RADIUS_OF_EARTH_IN_KM = 6371.071;
 const KM_TO_MILES_RATE = 1.60934;
+const KM_TO_METERS_RATE = 1000;
 const LIMIT = 10;
 const LocationKeysToMatch = {
   country: 'country',
@@ -13,7 +15,11 @@ const LocationKeysToMatch = {
 };
 
 class ResponseHelper {
-  public transformPOIs = (pointsOfInterest: any, originPoint: Coordinate): PointOfInterest[] => {
+  public transformPOIs = (
+    pointsOfInterest: any,
+    originPoint: Coordinate,
+    metricSystem: MetricSystems
+  ): PointOfInterest[] => {
     return pointsOfInterest.slice(0, LIMIT).map((POI: any) => {
       const {
         place_id,
@@ -27,12 +33,12 @@ class ResponseHelper {
         placeId: place_id,
         latitude,
         longitude,
-        distanceFromOrigin: this.haversineDistance(originPoint, { latitude, longitude }),
+        distanceFromOrigin: this.haversineDistance(originPoint, { latitude, longitude }, metricSystem),
       } as PointOfInterest;
     });
   };
 
-  private haversineDistance = (coordOrigin: Coordinate, coordDest: Coordinate, isMiles = false): number => {
+  private haversineDistance = (coordOrigin: Coordinate, coordDest: Coordinate, metricSystem: MetricSystems): number => {
     const { latitude: origLat, longitude: origLng } = coordOrigin;
     const { latitude: destLat, longitude: destLng } = coordDest;
 
@@ -50,9 +56,12 @@ class ResponseHelper {
 
     // Final Distance
     let finalDistance = RADIUS_OF_EARTH_IN_KM * c;
-    if (isMiles) {
+    if (metricSystem === MetricSystems.MILES) {
       finalDistance /= KM_TO_MILES_RATE;
+    } else if (metricSystem === MetricSystems.METERS) {
+      finalDistance *= KM_TO_METERS_RATE;
     }
+
     return finalDistance;
   };
 

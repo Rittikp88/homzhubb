@@ -7,7 +7,7 @@ import { SocialMediaData } from '@homzhub/common/src/mocks/SocialMedia';
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
-describe('Test cases for SocialMediaComponent', () => {
+describe.skip('Test cases for SocialMediaComponent', () => {
   const props = {
     onEmailLogin: jest.fn(),
     onLoginSuccessAction: jest.fn(),

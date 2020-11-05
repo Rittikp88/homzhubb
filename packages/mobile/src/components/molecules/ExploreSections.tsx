@@ -1,12 +1,13 @@
 import React from 'react';
-import { FlatList, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlaceTypes } from '@homzhub/common/src/services/GooglePlaces/constants';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider, Label, Text } from '@homzhub/common/src/components';
+import { MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 interface IPlaceTypeData {
   key: PlaceTypes;
@@ -21,6 +22,7 @@ interface IProps extends WithTranslation {
   onPlaceTypePress: (newSection: PlaceTypes) => void;
   pointsOfInterest: PointOfInterest[];
   selectedPoiId: string;
+  metricSystem: MetricSystems;
   onPoiPress: (poi: PointOfInterest) => void;
 }
 
@@ -101,10 +103,11 @@ export class ExploreSections extends React.PureComponent<IProps> {
   };
 
   private renderPOI = ({ item }: { item: PointOfInterest }): React.ReactElement => {
-    const { selectedPlaceType, selectedPoiId, onPoiPress } = this.props;
+    const { selectedPlaceType, selectedPoiId, onPoiPress, metricSystem } = this.props;
+    const { name, distanceFromOrigin, placeId } = item;
 
     let color = theme.colors.darkTint5;
-    if (selectedPoiId === item.placeId) {
+    if (selectedPoiId === placeId) {
       color = theme.colors.active;
     }
 
@@ -117,11 +120,13 @@ export class ExploreSections extends React.PureComponent<IProps> {
         <View style={styles.resultNameContainer}>
           <Icon name={selectedPlaceType.mapMarker} size={16} color={color} />
           <Label type="large" style={[styles.title, { color }]} numberOfLines={1}>
-            {item.name}
+            {name}
           </Label>
         </View>
         <Label type="regular" style={{ color }}>
-          {`${item.distanceFromOrigin.toFixed(2)} Km`}
+          {`${
+            metricSystem === MetricSystems.METERS ? Math.ceil(distanceFromOrigin) : distanceFromOrigin.toFixed(2)
+          } ${metricSystem}`}
         </Label>
       </TouchableOpacity>
     );

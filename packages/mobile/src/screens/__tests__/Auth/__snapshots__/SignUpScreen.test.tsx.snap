@@ -14,7 +14,7 @@ exports[`SignUp Screen should render signup screen 1`] = `
     onSubmitFormSuccess={[Function]}
     testID="signupForm"
   />
-  <withI18nextTranslation(SocialMediaComponent)
+  <Connect(withI18nextTranslation(SocialMediaComponent))
     isFromLogin={false}
     navigation={
       Object {
@@ -22,8 +22,6 @@ exports[`SignUp Screen should render signup screen 1`] = `
         "navigate": [MockFunction],
       }
     }
-    onLoginSuccessAction={[MockFunction]}
-    socialMediaItems={Array []}
   />
 </AnimatedHeader>
 `;

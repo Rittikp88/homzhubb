@@ -1,35 +1,54 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager, LoginResult } from 'react-native-fbsdk';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import Google from '@homzhub/common/src/assets/images/google.svg';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
 import LinkedIn from '@homzhub/common/src/assets/images/linkedin.svg';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { Button, Label } from '@homzhub/common/src/components';
-import { ISocialUserData, SocialMediaKeys } from '@homzhub/common/src/assets/constants';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SocialMediaKeys, ISocialUserData } from '@homzhub/common/src/assets/constants';
+import { LoginTypes, ISocialLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
-interface ISocialMediaProps extends WithTranslation {
+interface IDispatchProps {
+  loginSuccess: (data: IUserTokens) => void;
+}
+
+interface ISocialMediaProps {
   isFromLogin: boolean;
-  socialMediaItems: ISocialMediaProvider[];
   onEmailLogin?: () => void;
-  onLoginSuccessAction: (data: IUserTokens) => void;
   testID?: string;
   navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
 }
+type Props = ISocialMediaProps & WithTranslation & IDispatchProps;
 
-class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
+interface IOwnState {
+  socialMediaItems: ISocialMediaProvider[];
+}
+
+class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
+  public state = {
+    socialMediaItems: [],
+  };
+
+  public async componentDidMount(): Promise<void> {
+    await this.fetchSocialMedia();
+  }
+
   public render(): React.ReactNode {
     const { onEmailLogin, testID } = this.props;
     return (
@@ -62,35 +81,33 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
   }
 
   private renderButtons = (): React.ReactNode => {
-    const { socialMediaItems, isFromLogin, t } = this.props;
+    const { isFromLogin, t } = this.props;
+    const { socialMediaItems } = this.state;
     const titlePrefix = isFromLogin ? t('auth:socialButtonPrefixLogin') : t('auth:socialButtonPrefixSignUp');
 
-    return (
-      socialMediaItems &&
-      socialMediaItems.map((socialMedia) => {
-        const initiateSocialLogin = async (): Promise<void> => {
-          await this.initiateSocialLogin(socialMedia);
-        };
+    return socialMediaItems.map((socialMedia: ISocialMediaProvider) => {
+      const initiateSocialLogin = async (): Promise<void> => {
+        await this.initiateSocialLogin(socialMedia);
+      };
 
-        return (
-          <Button
-            title={`${titlePrefix}${socialMedia.description}`}
-            type="secondary"
-            onPress={initiateSocialLogin}
-            containerStyle={styles.socialMedia}
-            textType="label"
-            textSize="large"
-            node={this.getImageUrlForLib(socialMedia)}
-            titleStyle={styles.buttonText}
-            key={socialMedia.provider}
-          />
-        );
-      })
-    );
+      return (
+        <Button
+          title={`${titlePrefix}${socialMedia.description}`}
+          type="secondary"
+          onPress={initiateSocialLogin}
+          containerStyle={styles.socialMedia}
+          textType="label"
+          textSize="large"
+          node={this.getImageUrlForLib(socialMedia)}
+          titleStyle={styles.buttonText}
+          key={socialMedia.provider}
+        />
+      );
+    });
   };
 
   private onSocialMediaLoginSuccess = async (userData: ISocialUserData): Promise<void> => {
-    const { onLoginSuccessAction, navigation, isFromLogin } = this.props;
+    const { loginSuccess, navigation, isFromLogin } = this.props;
     const { provider, idToken } = userData;
 
     const socialLoginData: ISocialLoginPayload = {
@@ -114,7 +131,7 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
       // @ts-ignore
       const tokens = { refresh_token: response.refreshToken, access_token: response.accessToken };
 
-      onLoginSuccessAction(tokens);
+      loginSuccess(tokens);
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -215,6 +232,15 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
     await this.onSocialMediaLoginSuccess(responseObject);
   };
 
+  private fetchSocialMedia = async (): Promise<void> => {
+    try {
+      const response = await CommonRepository.getSocialMedia();
+      this.setState({ socialMediaItems: response });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
+
   private getImageUrlForLib = (socialMedia: any): React.ReactElement => {
     switch (socialMedia.provider) {
       case SocialMediaKeys.Facebook:
@@ -227,7 +253,20 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
   };
 }
 
-const HOC = withTranslation(LocaleConstants.namespacesKey.auth)(SocialMediaComponent);
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { loginSuccess } = UserActions;
+  return bindActionCreators(
+    {
+      loginSuccess,
+    },
+    dispatch
+  );
+};
+
+const HOC = connect(
+  null,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.auth)(SocialMediaComponent));
 export { HOC as SocialMediaComponent };
 
 const styles = StyleSheet.create({
