@@ -3,20 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ImageSquare, Label, Text } from '@homzhub/common/src/components';
 
-interface IMarketTrendsCard {
-  image: string;
-  type: string;
-  date: string;
-  heading: string;
-  description: string;
-}
-
-interface IProps {
-  data: string;
-}
-
 // TODO (BISHAL) - change dummy data with actual api data
-const MarketTrendsCard: FC<IProps> = (props: IProps) => {
+const MarketTrendsCard: FC = () => {
   return (
     <View style={styles.card}>
       <ImageSquare

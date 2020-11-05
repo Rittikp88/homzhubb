@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
-import MarketTrendsCard from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCard';
 import { Text } from '@homzhub/common/src/components';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
+import MarketTrendsCard from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCard';
 
 // TODO (BISHAL) - change dummy data with actual api data
-const MarketTrendsCarousel: FC<{}> = (props) => {
+const MarketTrendsCarousel: FC = () => {
   return (
     <View style={styles.carousel_container}>
       <View style={styles.title_container}>
@@ -17,18 +17,18 @@ const MarketTrendsCarousel: FC<{}> = (props) => {
         </Text>
       </View>
       <MultiCarousel>
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
-        <MarketTrendsCard data="saf" />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
+        <MarketTrendsCard />
       </MultiCarousel>
     </View>
   );

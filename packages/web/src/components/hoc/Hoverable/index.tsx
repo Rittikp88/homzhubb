@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { isHoverEnabled } from './HoverState';
+import { isHoverEnabled } from '@homzhub/web/src/components/hoc/Hoverable/HoverState';
 
 interface IProps {
   children: React.PropsWithChildren<{ showHover: boolean; isHovered: boolean }> | React.ReactNode;

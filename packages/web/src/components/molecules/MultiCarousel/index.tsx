@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import './MultiCarousel.scss';
+import '@homzhub/web/src/components/molecules/MultiCarousel/MultiCarousel.scss';
 
 interface IProps {
-  children: React.PropsWithChildren<{}>;
+  children: React.ReactNode;
 }
 
 const responsive = {
@@ -31,7 +31,7 @@ const responsive = {
   },
 };
 
-const Index: FC<IProps> = (props: IProps) => {
+const MultiCarousel: FC<IProps> = (props: IProps) => {
   const { children } = props;
   return (
     <Carousel
@@ -50,4 +50,4 @@ const Index: FC<IProps> = (props: IProps) => {
   );
 };
 
-export default Index;
+export default MultiCarousel;
