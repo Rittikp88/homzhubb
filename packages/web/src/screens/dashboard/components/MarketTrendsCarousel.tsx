@@ -9,8 +9,8 @@ import MarketTrendsCard from '@homzhub/web/src/screens/dashboard/components/Mark
 // TODO (BISHAL) - change dummy data with actual api data
 const MarketTrendsCarousel: FC = () => {
   return (
-    <View style={styles.carousel_container}>
-      <View style={styles.title_container}>
+    <View style={styles.carouselContainer}>
+      <View style={styles.titleContainer}>
         <Icon name={icons.increase} color={theme.colors.dark} size={24} style={styles.icon} />
         <Text type="regular" textType="semiBold" style={styles.title}>
           Market Trends
@@ -35,12 +35,11 @@ const MarketTrendsCarousel: FC = () => {
 };
 
 const styles = StyleSheet.create({
-  carousel_container: {
-    flexDirection: 'column',
+  carouselContainer: {
     backgroundColor: theme.colors.background,
     marginVertical: 10,
   },
-  title_container: {
+  titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },

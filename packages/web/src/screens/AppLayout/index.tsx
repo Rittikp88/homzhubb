@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { MainRouter } from '@homzhub/web/src/router/MainRouter';
-import Footer from '@homzhub/web/src/components/organisms/Footer';
+import Footer from '@homzhub/web/src/screens/AppLayout/Footer';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 
 class AppLayout extends React.PureComponent {

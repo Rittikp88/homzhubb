@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 
-const AppLayout = lazy(() => import('@homzhub/web/src/components/organisms/AppLayout'));
+const AppLayout = lazy(() => import('@homzhub/web/src/screens/AppLayout'));
 
 export const AppRouter = (): React.ReactElement => {
   const { APP_BASE } = RouteNames.protectedRoutes;
