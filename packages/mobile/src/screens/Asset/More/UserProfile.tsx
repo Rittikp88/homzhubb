@@ -13,7 +13,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components';
-import { AnimatedProfileHeader, DetailsCard, ProgressBar, StateAwareComponent } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, DetailsCard, Loader, ProgressBar } from '@homzhub/mobile/src/components';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
@@ -54,7 +54,12 @@ class UserProfile extends React.PureComponent<IOwnProps> {
   public render = (): React.ReactElement => {
     const { isLoading } = this.props;
 
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
+    return (
+      <>
+        {this.renderComponent()}
+        <Loader visible={isLoading} />
+      </>
+    );
   };
 
   public renderComponent = (): React.ReactNode => {

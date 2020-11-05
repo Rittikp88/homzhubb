@@ -253,6 +253,10 @@ class DateUtils {
     }
     return `${date}T${time}:00:00:000Z`;
   };
+
+  public getDaysInMonth = (month: number): number => {
+    return new Date(parseInt(this.getCurrentYear(), 10), month, 0).getDate();
+  };
 }
 
 const dateUtils = new DateUtils();

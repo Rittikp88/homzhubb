@@ -1,9 +1,9 @@
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
 export interface IUserState {
-  user: IUser | null;
+  tokens: IUserTokens | null;
   userProfile: IUserProfile | null;
   userPreferences: IUserPreferences | null;
   isOnBoardingCompleted: boolean;

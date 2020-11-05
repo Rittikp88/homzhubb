@@ -14,10 +14,6 @@ export enum DateFilter {
   lastWeek = 7,
 }
 
-export interface IFinancialDropdownData {
-  [key: string]: IDropdownObject;
-}
-
 export interface IDropdownObject {
   label: string;
   value: DateFilter;

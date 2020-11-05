@@ -13,8 +13,8 @@ export interface IUser {
   email: string;
   phone_code: string;
   phone_number: string;
-  access_token?: string;
-  refresh_token?: string;
+  access_token: string;
+  refresh_token: string;
   rating?: number;
 }
 

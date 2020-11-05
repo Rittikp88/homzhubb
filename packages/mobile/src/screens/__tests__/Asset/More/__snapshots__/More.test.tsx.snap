@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Financials Screen should render snapshot 1`] = `
-<Connect(AnimatedProfileHeader)
+<Memo(AnimatedProfileHeader)
   title="assetMore:more"
 >
   <View
@@ -851,7 +851,7 @@ exports[`Financials Screen should render snapshot 1`] = `
       }
     />
     <ForwardRef
-      onPress={[Function]}
+      onPress={[MockFunction]}
       style={
         Object {
           "alignItems": "center",
@@ -913,5 +913,5 @@ exports[`Financials Screen should render snapshot 1`] = `
       </View>
     </ForwardRef>
   </View>
-</Connect(AnimatedProfileHeader)>
+</Memo(AnimatedProfileHeader)>
 `;

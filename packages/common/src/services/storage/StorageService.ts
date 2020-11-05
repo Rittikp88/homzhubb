@@ -6,8 +6,13 @@ import { Storage, CryptoJS } from './index';
 
 export enum StorageKeys {
   IS_ONBOARDING_COMPLETED = '@is_onBoarding_completed',
+  USER_SELECTED_LANGUAGE = '@user_selected_language',
   USER = '@user',
-  IS_FROM = '@isFrom',
+}
+
+export interface IUserTokens {
+  access_token: string;
+  refresh_token: string;
 }
 
 class StorageService {

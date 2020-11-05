@@ -7,7 +7,7 @@ import {
   IApiRequestInterceptor,
   IApiResponseInterceptor,
 } from '@homzhub/common/src/network/Interfaces';
-import { IRefreshToken, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IRefreshToken } from '@homzhub/common/src/domain/repositories/interfaces';
 import { TOKEN_NOT_VALID } from '@homzhub/common/src/network/Constants';
 
 const REFRESH_TOKEN_ENDPOINT = 'token/refresh/';
@@ -18,12 +18,12 @@ class Interceptor implements IApiInterceptor {
   });
 
   public request = (): IApiRequestInterceptor => {
-    const onFulfilled = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-      const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-      if (!user) {
+    const onFulfilled = (config: AxiosRequestConfig): AxiosRequestConfig => {
+      const token = StoreProviderService.getUserToken();
+      if (!token) {
         return config;
       }
-      config.headers.Authorization = `Bearer ${user.access_token}`;
+      config.headers.Authorization = `Bearer ${token}`;
       return config;
     };
 
@@ -38,17 +38,17 @@ class Interceptor implements IApiInterceptor {
     const onRejected = async (error: AxiosError): Promise<any> => {
       const originalRequest: AxiosRequestConfig = error.config;
       const errorCode = error.response?.data?.error?.error_code || '';
-      const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
+      const token = StoreProviderService.getUserToken();
 
       // If not a token expiry error, proceed as usual, or not a logged in user
-      if (errorCode !== TOKEN_NOT_VALID || !user) {
+      if (errorCode !== TOKEN_NOT_VALID || !token) {
         throw error;
       }
 
       // eslint-disable-next-line no-useless-catch
       try {
         const response = await this.client.post(REFRESH_TOKEN_ENDPOINT, {
-          refresh: user.refresh_token,
+          refresh: token,
         });
 
         const { data } = response.data;
@@ -57,7 +57,9 @@ class Interceptor implements IApiInterceptor {
           refresh_token: data.refresh,
         };
 
-        await StorageService.set(StorageKeys.USER, { ...user, ...tokens });
+        StoreProviderService.loginSuccess(tokens);
+        await StorageService.set(StorageKeys.USER, tokens);
+
         originalRequest.headers = {
           Authorization: `Bearer ${tokens.access_token}`,
         };

@@ -4,9 +4,8 @@ exports[`AssetAdvertisementBanner should call function 1`] = `
 <View
   style={
     Object {
-      "borderRadius": 4,
       "height": 180,
-      "overflow": "hidden",
+      "marginTop": 16,
     }
   }
 >
@@ -50,8 +49,14 @@ exports[`AssetAdvertisementBanner should call function 1`] = `
       ]
     }
     carouselItem={[Function]}
-    itemWidth={750}
+    containerStyle={
+      Object {
+        "borderRadius": 4,
+      }
+    }
+    itemWidth={718}
     onSnapToItem={[Function]}
+    sliderWidth={718}
     testID="bannerSnap"
   />
   <PaginationComponent
@@ -65,7 +70,6 @@ exports[`AssetAdvertisementBanner should call function 1`] = `
       Object {
         "alignSelf": "center",
         "bottom": 0,
-        "flex": 0,
         "paddingVertical": 5,
         "position": "absolute",
       }
@@ -85,9 +89,8 @@ exports[`AssetAdvertisementBanner should match snapshot 1`] = `
 <View
   style={
     Object {
-      "borderRadius": 4,
       "height": 180,
-      "overflow": "hidden",
+      "marginTop": 16,
     }
   }
 >
@@ -131,8 +134,14 @@ exports[`AssetAdvertisementBanner should match snapshot 1`] = `
       ]
     }
     carouselItem={[Function]}
-    itemWidth={750}
+    containerStyle={
+      Object {
+        "borderRadius": 4,
+      }
+    }
+    itemWidth={718}
     onSnapToItem={[Function]}
+    sliderWidth={718}
     testID="bannerSnap"
   />
   <PaginationComponent
@@ -146,7 +155,6 @@ exports[`AssetAdvertisementBanner should match snapshot 1`] = `
       Object {
         "alignSelf": "center",
         "bottom": 0,
-        "flex": 0,
         "paddingVertical": 5,
         "position": "absolute",
       }
@@ -168,9 +176,8 @@ exports[`AssetAdvertisementBanner should match snapshot without banners 1`] = `
 <View
   style={
     Object {
-      "borderRadius": 4,
       "height": 180,
-      "overflow": "hidden",
+      "marginTop": 16,
     }
   }
 >
@@ -178,8 +185,14 @@ exports[`AssetAdvertisementBanner should match snapshot without banners 1`] = `
     activeIndex={0}
     carouselData={Array []}
     carouselItem={[Function]}
-    itemWidth={750}
+    containerStyle={
+      Object {
+        "borderRadius": 4,
+      }
+    }
+    itemWidth={718}
     onSnapToItem={[Function]}
+    sliderWidth={718}
     testID="bannerSnap"
   />
   <PaginationComponent
@@ -193,7 +206,6 @@ exports[`AssetAdvertisementBanner should match snapshot without banners 1`] = `
       Object {
         "alignSelf": "center",
         "bottom": 0,
-        "flex": 0,
         "paddingVertical": 5,
         "position": "absolute",
       }

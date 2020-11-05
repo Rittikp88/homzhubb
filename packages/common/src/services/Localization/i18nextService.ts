@@ -1,8 +1,7 @@
 import i18next, { i18n } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
-import languageDetector from '@homzhub/common/src/services/Localization/languageDetector';
-import { LocaleConstants, supportedLanguages } from '@homzhub/common/src/services/Localization/constants';
+import { LocaleConstants, SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 import { Logger } from '@homzhub/common/src/utils/Logger';
 
 class I18nextService {
@@ -12,11 +11,11 @@ class I18nextService {
     this._instance = i18next.createInstance();
   }
 
-  public init = async (): Promise<void> => {
-    this._instance.use(initReactI18next).use(languageDetector);
-    await this._instance.init(
+  public init = async (lng = SupportedLanguages.English): Promise<void> => {
+    await this._instance.use(initReactI18next).init(
       {
-        whitelist: LocaleConstants.whitelist,
+        lng,
+        supportedLngs: LocaleConstants.whitelist,
         resources: LocaleConstants.resources,
         fallbackLng: LocaleConstants.fallback,
         ns: LocaleConstants.namespaces,
@@ -50,7 +49,7 @@ class I18nextService {
     return map[key];
   }
 
-  public changeLanguage = async (lngCode: supportedLanguages): Promise<void> => {
+  public changeLanguage = async (lngCode: SupportedLanguages): Promise<void> => {
     await this._instance.changeLanguage(lngCode);
   };
 

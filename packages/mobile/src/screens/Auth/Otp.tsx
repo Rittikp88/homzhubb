@@ -5,9 +5,8 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserService } from '@homzhub/common/src/services/UserService';
@@ -24,7 +23,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
 import { Loader, OtpInputs, OtpTypes } from '@homzhub/mobile/src/components';
-import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
@@ -33,7 +32,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   login: (payload: ILoginPayload) => void;
-  loginSuccess: (data: IUser) => void;
+  loginSuccess: (data: IUserTokens) => void;
 }
 
 type libraryProps = NavigationScreenProps<AuthStackParamList, ScreensKeys.OTP> & WithTranslation;
@@ -247,9 +246,11 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
         otp,
         user_details: userData,
       });
-      const serializedUser: IUser = ObjectMapper.serialize(data);
-      loginSuccess(serializedUser);
-      await StorageService.set<IUser>('@user', serializedUser);
+
+      const tokens = { refresh_token: data.refreshToken, access_token: data.accessToken };
+
+      loginSuccess(tokens);
+      await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

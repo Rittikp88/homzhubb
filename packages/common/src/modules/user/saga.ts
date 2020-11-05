@@ -2,18 +2,18 @@
 import { call, put, takeEvery } from '@redux-saga/core/effects';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { User } from '@homzhub/common/src/domain/models/User';
+import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   ILoginPayload,
   IRefreshTokenPayload,
   IUpdateUserPreferences,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { User, IUser } from '@homzhub/common/src/domain/models/User';
 
 export function* login(action: IFluxStandardAction<ILoginPayload>) {
   if (!action.payload) return;
@@ -23,12 +23,15 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
   try {
     const userData: User = yield call(UserRepository.login, data);
 
-    const serializedUser = ObjectMapper.serialize<User, IUser>(userData);
+    const tokens = { refresh_token: userData.refreshToken, access_token: userData.accessToken };
 
-    yield put(UserActions.loginSuccess(serializedUser));
-    yield StorageService.set<IUser>('@user', serializedUser);
+    yield put(UserActions.loginSuccess(tokens));
+    yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
+
+    yield put(UserActions.getUserPreferences());
     yield put(AssetActions.getAssetCount());
     yield put(UserActions.getUserProfile());
+
     if (callback) {
       callback();
     }
@@ -39,10 +42,11 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
   }
 }
 
-export function* logout(action: IFluxStandardAction<IRefreshTokenPayload>) {
-  const { payload } = action;
+export function* logout() {
   try {
-    yield call(UserRepository.logout, payload as IRefreshTokenPayload);
+    const tokens: IUserTokens = yield StorageService.get(StorageKeys.USER);
+    yield call(UserRepository.logout, { refresh_token: tokens.refresh_token } as IRefreshTokenPayload);
+
     yield put(UserActions.logoutSuccess());
     yield StorageService.remove(StorageKeys.USER);
   } catch (e) {
@@ -77,7 +81,16 @@ export function* userPreferences() {
 export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPreferences>) {
   const { payload } = action;
   try {
-    const response = yield call(UserRepository.updateUserPreferences, payload as IUpdateUserPreferences);
+    const response: UserPreferences = yield call(
+      UserRepository.updateUserPreferences,
+      payload as IUpdateUserPreferences
+    );
+
+    // @ts-ignore
+    if (UserPreferencesKeys.LanguageKey === Object.keys(payload)[0]) {
+      yield StorageService.set(StorageKeys.USER_SELECTED_LANGUAGE, response.languageCode);
+    }
+
     yield put(UserActions.getUserPreferencesSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);

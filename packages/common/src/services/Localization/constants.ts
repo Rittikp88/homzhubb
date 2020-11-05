@@ -1,15 +1,15 @@
 // Add all languages you wish to support here
-export enum supportedLanguages {
-  English = 'en',
+export enum SupportedLanguages {
+  English = 'en-US',
 }
-const whitelist = Object.values(supportedLanguages);
+const whitelist = Object.values(SupportedLanguages);
 
 /**
  * Add translation files here, one per language
  * key must be from among the above enum `supportedLanguages`
  */
 const resources = {
-  en: require('@homzhub/common/src/assets/languages/en.json'),
+  [SupportedLanguages.English]: require('@homzhub/common/src/assets/languages/en.json'),
 };
 
 // Add namespaces here
@@ -28,8 +28,7 @@ enum namespacesKey {
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;
-
-const fallback = 'en';
+const fallback = SupportedLanguages.English;
 
 export const LocaleConstants = {
   whitelist,

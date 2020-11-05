@@ -28,10 +28,9 @@ describe('User Actions', () => {
   });
 
   it('should call logout action', () => {
-    const action = UserActions.logout({ refresh_token: 'refreshToken' });
+    const action = UserActions.logout();
     expect(action).toStrictEqual({
       type: UserActionTypes.AUTH.LOGOUT,
-      payload: { refresh_token: 'refreshToken' },
     });
   });
 

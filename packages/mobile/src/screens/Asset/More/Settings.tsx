@@ -25,7 +25,6 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SettingsScreen>;
 
 interface IDispatchProps {
-  getUserPreferences: () => void;
   updateUserPreferences: (payload: IUpdateUserPreferences) => void;
 }
 
@@ -48,9 +47,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   public componentDidMount(): void {
-    const { getUserPreferences } = this.props;
-
-    getUserPreferences();
+    this.getSettingData().then();
   }
 
   public async componentDidUpdate(prevProps: Readonly<IOwnProps>): Promise<void> {
@@ -65,31 +62,26 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     const { t, isUserPreferencesLoading } = this.props;
     const { settingsData, isLoading } = this.state;
 
-    if (isUserPreferencesLoading && isLoading) {
-      return <Loader visible />;
-    }
-
-    if (settingsData && settingsData.length <= 0) {
-      return null;
-    }
-
     return (
-      <AnimatedProfileHeader
-        title={t('assetMore:more')}
-        sectionHeader={t('assetMore:Settings')}
-        onBackPress={this.onBackPress}
-        sectionTitleType="semiBold"
-      >
-        <View style={styles.container}>
-          {settingsData.map((item: SettingsData, index) => {
-            return (
-              <React.Fragment key={index}>
-                {item.visible ? this.renderTitle(item, index < settingsData.length - 1) : null}
-              </React.Fragment>
-            );
-          })}
-        </View>
-      </AnimatedProfileHeader>
+      <>
+        <AnimatedProfileHeader
+          title={t('assetMore:more')}
+          sectionHeader={t('assetMore:Settings')}
+          onBackPress={this.onBackPress}
+          sectionTitleType="semiBold"
+        >
+          <View style={styles.container}>
+            {settingsData.map((item: SettingsData, index) => {
+              return (
+                <React.Fragment key={index}>
+                  {item.visible ? this.renderTitle(item, index < settingsData.length - 1) : null}
+                </React.Fragment>
+              );
+            })}
+          </View>
+        </AnimatedProfileHeader>
+        <Loader visible={isUserPreferencesLoading && isLoading} />
+      </>
     );
   };
 
@@ -245,8 +237,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getUserPreferences, updateUserPreferences } = UserActions;
-  return bindActionCreators({ getUserPreferences, updateUserPreferences }, dispatch);
+  const { updateUserPreferences } = UserActions;
+  return bindActionCreators({ updateUserPreferences }, dispatch);
 };
 
 export default connect(

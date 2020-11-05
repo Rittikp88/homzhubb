@@ -2,7 +2,7 @@
 
 exports[`Financials Screen should render snapshot 1`] = `
 <Fragment>
-  <Connect(AnimatedProfileHeader)
+  <Memo(AnimatedProfileHeader)
     isOuterScrollEnabled={true}
     title="financial"
   >
@@ -47,8 +47,8 @@ exports[`Financials Screen should render snapshot 1`] = `
       }
       title="assetFinancial:recordsText"
     />
-    <withI18nextTranslation(FinanceOverview) />
-  </Connect(AnimatedProfileHeader)>
+    <Connect(withI18nextTranslation(FinanceOverview)) />
+  </Memo(AnimatedProfileHeader)>
   <Loader
     visible={false}
   />

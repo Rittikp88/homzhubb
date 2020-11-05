@@ -1,17 +1,17 @@
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialRecordAssetState } from '@homzhub/common/src/modules/recordAsset/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
-import { userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { User } from '@homzhub/common/src/domain/models/User';
 
 const state: IState = {
   user: {
     ...initialUserState,
-    user: userData,
+    tokens: {
+      access_token: 'access_token',
+      refresh_token: 'refresh_token',
+    },
     isOnBoardingCompleted: false,
     isChangeStack: false,
     loaders: {
@@ -36,16 +36,6 @@ describe('User Selector', () => {
 
   it('should verify onBoarding completed', () => {
     expect(UserSelector.hasOnBoardingCompleted(state)).toBe(false);
-  });
-
-  it('should return user Detail', () => {
-    const user = ObjectMapper.deserialize(User, userData);
-    expect(UserSelector.getUserDetails(state)).toEqual(user);
-  });
-
-  it('should return null when no user', () => {
-    const updatedState = { ...state, ...{ user: { ...initialUserState, user: null } } };
-    expect(UserSelector.getUserDetails(updatedState)).toEqual(null);
   });
 
   it('should return logged in state', () => {

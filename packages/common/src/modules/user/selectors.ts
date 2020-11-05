@@ -1,27 +1,15 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { User } from '@homzhub/common/src/domain/models/User';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const isLoggedIn = (state: IState): boolean => {
-  return !!state.user.user;
+  return !!state.user.tokens;
 };
 
 const hasOnBoardingCompleted = (state: IState): boolean => {
   return state.user.isOnBoardingCompleted;
-};
-
-const getUserDetails = (state: IState): User | null => {
-  const {
-    user: { user },
-  } = state;
-
-  if (!user) {
-    return null;
-  }
-
-  return ObjectMapper.deserialize(User, user);
 };
 
 const getLoadingState = (state: IState): boolean => {
@@ -69,6 +57,29 @@ const getUserPreferences = (state: IState): UserPreferences => {
   return ObjectMapper.deserialize(UserPreferences, userPreferences);
 };
 
+const getUserFinancialYear = (state: IState): { startDate: string; endDate: string } => {
+  const userPreferences = getUserPreferences(state);
+
+  if (!userPreferences) {
+    return { startDate: '', endDate: '' };
+  }
+
+  const [startMonth, endMonth] = userPreferences.financialYearCode.split('-');
+  const currentMonth = DateUtils.getCurrentMonthIndex();
+
+  if (currentMonth >= parseInt(startMonth, 10)) {
+    return {
+      startDate: `${DateUtils.getCurrentYear()}-${startMonth}-01`,
+      endDate: `${DateUtils.getNextYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+    };
+  }
+
+  return {
+    startDate: `${DateUtils.getLastYear()}-${startMonth}-01`,
+    endDate: `${DateUtils.getCurrentYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+  };
+};
+
 const isUserPreferencesLoading = (state: IState): boolean => {
   const {
     user: {
@@ -81,12 +92,12 @@ const isUserPreferencesLoading = (state: IState): boolean => {
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
-  getUserDetails,
   getLoadingState,
   getIsChangeStack,
   getUserProfile,
   isUserProfileLoading,
   isAddPropertyFlow,
   getUserPreferences,
+  getUserFinancialYear,
   isUserPreferencesLoading,
 };

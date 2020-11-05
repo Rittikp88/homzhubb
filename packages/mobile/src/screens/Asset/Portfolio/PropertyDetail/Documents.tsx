@@ -26,13 +26,13 @@ import { Divider, EmptyState, UploadBox } from '@homzhub/common/src/components';
 import { DocumentCard, Loader, SearchBar } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { User } from '@homzhub/common/src/domain/models/User';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 
 interface IStateProps {
   currentAssetId: number;
   assetData: Asset | null;
   documents: AssetDocument[];
-  user: User | null;
+  user: UserProfile | null;
 }
 
 interface IDispatchProps {
@@ -245,7 +245,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     currentAssetId: PortfolioSelectors.getCurrentAssetId(state),
     assetData: PortfolioSelectors.getAssetById(state),
     documents: AssetSelectors.getAssetDocuments(state),
-    user: UserSelector.getUserDetails(state),
+    user: UserSelector.getUserProfile(state),
   };
 };
 

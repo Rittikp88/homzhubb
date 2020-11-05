@@ -12,10 +12,10 @@ import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AnimatedHeader, SignUpForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
 interface IDispatchProps {
-  loginSuccess: (data: IUser) => void;
+  loginSuccess: (data: IUserTokens) => void;
 }
 
 interface ISignUpState {

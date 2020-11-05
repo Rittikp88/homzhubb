@@ -1,12 +1,12 @@
-import { IUserState } from '@homzhub/common/src/modules/user/interface';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IUserState } from '@homzhub/common/src/modules/user/interface';
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
 export const initialUserState: IUserState = {
-  user: null,
+  tokens: null,
   userProfile: null,
   userPreferences: null,
   isOnBoardingCompleted: false,
@@ -37,13 +37,15 @@ export const userReducer = (
     case UserActionTypes.AUTH.LOGIN_SUCCESS:
       return {
         ...state,
-        ['user']: action.payload as IUser,
+        ['tokens']: action.payload as IUserTokens,
         ['loaders']: { ...state.loaders, ['user']: false },
       };
     case UserActionTypes.AUTH.LOGOUT_SUCCESS:
       return {
         ...state,
-        ['user']: null,
+        ['tokens']: null,
+        ['userProfile']: null,
+        ['userPreferences']: null,
         ['loaders']: { ...state.loaders, ['user']: false },
       };
     case UserActionTypes.AUTH.LOGOUT_FAILURE:

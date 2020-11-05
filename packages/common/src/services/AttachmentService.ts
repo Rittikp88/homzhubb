@@ -4,9 +4,8 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src//utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src//domain/repositories/AssetRepository';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 
 export enum AttachmentError {
   UPLOAD_IMAGE_ERROR = 'File is corrupted',
@@ -32,14 +31,13 @@ const baseUrl = ConfigHelper.getBaseUrl();
 
 class AttachmentService {
   public uploadImage = async (formData: any, type: AttachmentType): Promise<any> => {
-    const user: IUser | null = await StorageService.get(StorageKeys.USER);
+    const token = StoreProviderService.getUserToken();
 
     return await fetch(`${baseUrl}attachments/upload/?category=${type}`, {
       method: 'POST',
       headers: {
         'content-type': 'multipart/form-data',
-        // @ts-ignore
-        Authorization: `Bearer ${user.access_token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     })

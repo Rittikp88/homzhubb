@@ -2,7 +2,7 @@
 
 exports[`Portfolio Screen should render snapshot 1`] = `
 <Fragment>
-  <Connect(AnimatedProfileHeader)
+  <Memo(AnimatedProfileHeader)
     title="portfolio"
   >
     <Memo(AssetMetricsList)
@@ -422,7 +422,7 @@ magnam aliquam quaerat voluptatem.",
       onCloseDropDown={[Function]}
       onSelectItem={[Function]}
     />
-  </Connect(AnimatedProfileHeader)>
+  </Memo(AnimatedProfileHeader)>
   <Loader
     visible={false}
   />

@@ -1,13 +1,9 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import {
-  IRefreshTokenPayload,
-  ILoginPayload,
-  IUpdateUserPreferences,
-} from '@homzhub/common/src/domain/repositories/interfaces';
-import { IUser } from '@homzhub/common/src/domain/models/User';
+import { ILoginPayload, IUpdateUserPreferences } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
 const actionTypePrefix = 'User/';
 
@@ -45,7 +41,7 @@ const login = (payload: ILoginPayload): IFluxStandardAction<ILoginPayload> => {
   };
 };
 
-const loginSuccess = (data: IUser): IFluxStandardAction<IUser> => {
+const loginSuccess = (data: IUserTokens): IFluxStandardAction<IUserTokens> => {
   return {
     type: UserActionTypes.AUTH.LOGIN_SUCCESS,
     payload: data,
@@ -59,10 +55,9 @@ const loginFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-const logout = (data: IRefreshTokenPayload): IFluxStandardAction<IRefreshTokenPayload> => {
+const logout = (): IFluxStandardAction => {
   return {
     type: UserActionTypes.AUTH.LOGOUT,
-    payload: data,
   };
 };
 
@@ -129,7 +124,7 @@ const updateUserPreferences = (payload: IUpdateUserPreferences): IFluxStandardAc
   payload,
 });
 
-export type UserPayloadTypes = string | boolean | IUser | IUserProfile | IUserPreferences;
+export type UserPayloadTypes = string | boolean | IUserTokens | IUserProfile | IUserPreferences;
 export const UserActions = {
   login,
   loginSuccess,

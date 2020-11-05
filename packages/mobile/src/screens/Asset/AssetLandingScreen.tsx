@@ -1,13 +1,9 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
-import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Logo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
@@ -15,18 +11,14 @@ import { Text, Label, Button, SVGUri } from '@homzhub/common/src/components';
 import { StatusBarComponent } from '@homzhub/mobile/src/components';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
-import { User } from '@homzhub/common/src/domain/models/User';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 
 interface IStateProps {
-  user: User | null;
-}
-
-interface IDispatchProps {
-  logout: (data: IRefreshTokenPayload) => void;
+  user: UserProfile | null;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.PropertyPostLandingScreen>;
-type Props = IStateProps & IDispatchProps & libraryProps;
+type Props = IStateProps & libraryProps;
 const IMAGE = 'https://homzhub-bucket.s3.amazonaws.com/Group+1168.svg';
 
 export class AssetLandingScreen extends React.PureComponent<Props> {
@@ -67,40 +59,17 @@ export class AssetLandingScreen extends React.PureComponent<Props> {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
   };
-
-  public logout = async (): Promise<void> => {
-    const { logout } = this.props;
-    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-    if (!user) {
-      return;
-    }
-    const { refresh_token } = user;
-    const logoutPayload = {
-      refresh_token,
-    };
-    logout(logoutPayload);
-  };
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
   return {
-    user: UserSelector.getUserDetails(state),
+    user: UserSelector.getUserProfile(state),
   };
 };
 
-export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { logout } = UserActions;
-  return bindActionCreators(
-    {
-      logout,
-    },
-    dispatch
-  );
-};
-
-export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
+export default connect<IStateProps, null, WithTranslation, IState>(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withTranslation(LocaleConstants.namespacesKey.property)(AssetLandingScreen));
 
 const styles = StyleSheet.create({

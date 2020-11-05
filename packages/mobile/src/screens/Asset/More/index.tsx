@@ -4,8 +4,6 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { IRefreshTokenPayload, IUserPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -16,7 +14,7 @@ import { AnimatedProfileHeader, MoreProfile } from '@homzhub/mobile/src/componen
 import { MORE_SCREENS, LOGOUT, IMoreScreenItem, MoreScreenTypes } from '@homzhub/common/src/constants/MoreScreens';
 
 interface IDispatchProps {
-  logout: (data: IRefreshTokenPayload) => void;
+  logout: () => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.More>;
@@ -85,10 +83,11 @@ export class More extends React.PureComponent<Props> {
   };
 
   public renderLogout = (): React.ReactElement => {
+    const { logout } = this.props;
     return (
       <>
         {this.renderLogoutSeparator()}
-        <TouchableOpacity onPress={this.logout} style={styles.logout} testID="touchLogout">
+        <TouchableOpacity onPress={logout} style={styles.logout} testID="touchLogout">
           {this.renderItemWithIcon(LOGOUT, true)}
         </TouchableOpacity>
       </>
@@ -152,19 +151,6 @@ export class More extends React.PureComponent<Props> {
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         break;
     }
-  };
-
-  public logout = async (): Promise<void> => {
-    const { logout } = this.props;
-    const user: IUserPayload | null = (await StorageService.get(StorageKeys.USER)) ?? null;
-    if (!user) {
-      return;
-    }
-    const { refresh_token } = user;
-    const logoutPayload = {
-      refresh_token,
-    };
-    logout(logoutPayload);
   };
 }
 

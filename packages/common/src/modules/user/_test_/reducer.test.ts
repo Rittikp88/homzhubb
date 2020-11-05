@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { userReducer as reducer, initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { loginData, loginPayload } from '@homzhub/common/src/mocks/UserRepositoryMocks';
+import { loginPayload } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 
 describe('User Reducer', () => {
   it('should return the initial state', () => {
@@ -18,10 +18,19 @@ describe('User Reducer', () => {
   });
 
   it('should handle login Success', () => {
-    const state = reducer(initialUserState, UserActions.loginSuccess(loginData));
+    const state = reducer(
+      initialUserState,
+      UserActions.loginSuccess({
+        access_token: 'access_token',
+        refresh_token: 'refresh_token',
+      })
+    );
     expect(state).toStrictEqual({
       ...initialUserState,
-      ['user']: loginData,
+      ['tokens']: {
+        access_token: 'access_token',
+        refresh_token: 'refresh_token',
+      },
       ['loaders']: { ...state.loaders, ['user']: false },
     });
   });
@@ -48,7 +57,7 @@ describe('User Reducer', () => {
     const state = reducer(initialUserState, UserActions.logoutSuccess());
     expect(state).toStrictEqual({
       ...initialUserState,
-      ['user']: null,
+      ['tokens']: null,
       ['loaders']: { ...state.loaders, ['user']: false },
     });
   });

@@ -10,11 +10,11 @@ import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfac
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AnimatedHeader, LoginForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
 interface IDispatchProps {
-  loginSuccess: (data: IUser) => void;
+  loginSuccess: (data: IUserTokens) => void;
 }
 
 interface ILoginScreenState {

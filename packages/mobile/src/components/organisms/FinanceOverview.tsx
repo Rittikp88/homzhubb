@@ -1,36 +1,44 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { mapValues, groupBy, sumBy } from 'lodash';
+import { connect } from 'react-redux';
+import { groupBy, mapValues, sumBy } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Dropdown, Label, OnFocusCallback, SelectionPicker, Text } from '@homzhub/common/src/components';
+import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
+import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
+import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import {
   DateFilter,
-  MONTH_LABELS,
   FINANCIAL_DROPDOWN_DATA,
   IDropdownObject,
+  MONTH_LABELS,
 } from '@homzhub/common/src/constants/FinanceOverview';
-import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Dropdown, Label, SelectionPicker, Text, OnFocusCallback } from '@homzhub/common/src/components';
-import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
-import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
-import { GeneralLedgers, DataGroupBy, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 enum TabKeys {
   expenses = 1,
   cashFlow = 2,
 }
 
-interface IState {
+interface IOwnState {
   currentTab: TabKeys;
   selectedTimeRange: DateFilter;
   data: GeneralLedgers[];
 }
 
-export class FinanceOverview extends React.PureComponent<WithTranslation, IState> {
+interface IStateProps {
+  financialYear: { startDate: string; endDate: string };
+}
+type Props = IStateProps & WithTranslation;
+
+export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   public state = {
     currentTab: TabKeys.expenses,
     selectedTimeRange: DateFilter.thisMonth,
@@ -187,9 +195,22 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
   };
 
   public getFinancialDropdownData = (): IDropdownObject[] => {
-    const { t } = this.props;
+    const {
+      t,
+      financialYear: { startDate, endDate },
+    } = this.props;
     const data = Object.values(FINANCIAL_DROPDOWN_DATA);
+
     return data.map((currentData: IDropdownObject) => {
+      if (currentData.value === DateFilter.thisFinancialYear) {
+        return {
+          ...currentData,
+          startDate,
+          endDate,
+          label: t(currentData.label),
+        };
+      }
+
       return {
         ...currentData,
         label: t(currentData.label),
@@ -198,7 +219,17 @@ export class FinanceOverview extends React.PureComponent<WithTranslation, IState
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(FinanceOverview);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserFinancialYear } = UserSelector;
+  return {
+    financialYear: getUserFinancialYear(state),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(withTranslation(LocaleConstants.namespacesKey.assetDashboard)(FinanceOverview));
 
 const styles = StyleSheet.create({
   container: {

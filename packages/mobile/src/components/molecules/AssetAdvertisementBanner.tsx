@@ -11,6 +11,7 @@ interface IAssetAdvertisementBannerState {
   activeSlide: number;
 }
 
+const ITEM_WIDTH = theme.viewport.width - theme.layout.screenPadding * 2;
 export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdvertisementBannerState> {
   public state = {
     banners: {} as AssetAdvertisement,
@@ -31,8 +32,10 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
         <SnapCarousel
           carouselData={banners?.results ?? []}
           carouselItem={this.renderCarouselItem}
-          itemWidth={theme.viewport.width}
+          sliderWidth={ITEM_WIDTH}
+          itemWidth={ITEM_WIDTH}
           activeIndex={activeSlide}
+          containerStyle={styles.radius}
           onSnapToItem={this.onSnapToItem}
           testID="bannerSnap"
         />
@@ -70,13 +73,14 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 4,
+    marginTop: 16,
     height: 180,
-    overflow: 'hidden',
+  },
+  radius: {
+    borderRadius: 4,
   },
   overlay: {
     position: 'absolute',
-    flex: 0,
     alignSelf: 'center',
     bottom: 0,
     paddingVertical: 5,

@@ -4,9 +4,8 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager, LoginResult } from 'react-native-fbsdk';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ISocialLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -19,14 +18,13 @@ import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Button, Label } from '@homzhub/common/src/components';
 import { ISocialUserData, SocialMediaKeys } from '@homzhub/common/src/assets/constants';
-import { IUser } from '@homzhub/common/src/domain/models/User';
 import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 interface ISocialMediaProps extends WithTranslation {
   isFromLogin: boolean;
   socialMediaItems: ISocialMediaProvider[];
   onEmailLogin?: () => void;
-  onLoginSuccessAction: (data: IUser) => void;
+  onLoginSuccessAction: (data: IUserTokens) => void;
   testID?: string;
   navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
 }
@@ -112,9 +110,12 @@ class SocialMediaComponent extends React.PureComponent<ISocialMediaProps, {}> {
         });
         return;
       }
-      const serializedUser = ObjectMapper.serialize(response);
-      onLoginSuccessAction(serializedUser);
-      await StorageService.set<IUser>('@user', serializedUser);
+
+      // @ts-ignore
+      const tokens = { refresh_token: response.refreshToken, access_token: response.accessToken };
+
+      onLoginSuccessAction(tokens);
+      await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

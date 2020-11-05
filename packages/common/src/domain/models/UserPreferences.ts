@@ -111,8 +111,16 @@ export class UserPreferences {
     return this._language.id;
   }
 
+  get languageCode(): string {
+    return this._language.code;
+  }
+
   get financialYear(): number {
     return this._financialYear.id;
+  }
+
+  get financialYearCode(): string {
+    return this._financialYear.code;
   }
 
   get metricUnit(): string {

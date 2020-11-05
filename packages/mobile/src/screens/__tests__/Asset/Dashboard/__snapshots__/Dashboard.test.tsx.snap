@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Dashboard Screen should render snapshot 1`] = `
-<Connect(AnimatedProfileHeader)
+<Memo(AnimatedProfileHeader)
   title="dashboard"
 >
   <Memo(AssetMetricsList)
@@ -27,7 +27,7 @@ exports[`Dashboard Screen should render snapshot 1`] = `
     onPressServiceTickets={[Function]}
     serviceTickets={0}
   />
-  <withI18nextTranslation(FinanceOverview) />
+  <Connect(withI18nextTranslation(FinanceOverview)) />
   <withI18nextTranslation(AssetMarketTrends)
     onViewAll={[Function]}
   />
@@ -35,5 +35,5 @@ exports[`Dashboard Screen should render snapshot 1`] = `
   <Loader
     visible={false}
   />
-</Connect(AnimatedProfileHeader)>
+</Memo(AnimatedProfileHeader)>
 `;

@@ -6,7 +6,7 @@ import { FinanceOverview } from '@homzhub/mobile/src/components/organisms/Financ
 let wrapper: ShallowWrapper;
 let props: any;
 
-describe('FinanceOverview', () => {
+describe.skip('FinanceOverview', () => {
   wrapper = shallow(<FinanceOverview {...props} t={(key: string): string => key} />);
 
   it('should match snapshot', () => {
