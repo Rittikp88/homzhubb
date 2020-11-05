@@ -1,19 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SideMenu } from '@homzhub/web/src/screens/dashboard/components/SideMenu';
+import { theme } from '@homzhub/common/src/styles/theme';
+import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 
 class Dashboard extends React.PureComponent {
   public render(): React.ReactNode {
     return (
       <View style={styles.container}>
-        <SideMenu onItemClick={this.sideMenuItemClicked} />
+        <MarketTrendsCarousel />
       </View>
     );
   }
-
-  private sideMenuItemClicked = (ItemId: number): void => {
-    // TODO: side menu item click handler
-  };
 }
 
 export default Dashboard;
@@ -21,10 +18,8 @@ export default Dashboard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: 'fit-content',
-    flexDirection: 'row',
-    padding: 40,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: theme.colors.background,
   },
 });

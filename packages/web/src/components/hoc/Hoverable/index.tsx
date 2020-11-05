@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { element, func, oneOfType } from 'prop-types';
-import { isHoverEnabled } from './HoverState';
+import { isHoverEnabled } from '@homzhub/web/src/components/hoc/Hoverable/HoverState';
 
 interface IProps {
-  children: any;
-  onHoverIn?: any;
-  onHoverOut?: any;
+  children: React.PropsWithChildren<{ showHover: boolean; isHovered: boolean }> | React.ReactNode;
+  onHoverIn?: () => void;
+  onHoverOut?: () => void;
 }
 
 export const Hoverable = (props: IProps): any => {
@@ -47,10 +46,4 @@ export const Hoverable = (props: IProps): any => {
     onPressIn: handleGrant,
     onPressOut: handleRelease,
   });
-};
-
-Hoverable.propTypes = {
-  children: oneOfType([func, element]),
-  onHoverIn: func,
-  onHoverOut: func,
 };
