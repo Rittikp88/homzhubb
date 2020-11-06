@@ -195,6 +195,7 @@
     "currentPassword": "Your Current Password"
   },
   "property": {
+    "searchInWeb": "Search for projects,location,builders",
     "welcomeUser": "Welcome {{username}},",
     "description": "Let's add your first property on Homzhub",
     "searchProject": "Search for project or street name",
@@ -580,7 +581,8 @@
     "settings": "Settings",
     "referFriend": "Refer a friend",
     "paymentMethods": "Subscriptions & Payments",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "refer": "Refer & Earn"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

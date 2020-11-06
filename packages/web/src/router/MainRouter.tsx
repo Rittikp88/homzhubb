@@ -4,7 +4,6 @@ import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 
 const Dashboard = lazy(() => import('@homzhub/web/src/screens/dashboard'));
-
 export const MainRouter = (): React.ReactElement => {
   const { DASHBOARD, APP_BASE } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
