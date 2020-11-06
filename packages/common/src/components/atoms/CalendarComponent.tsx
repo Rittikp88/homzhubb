@@ -4,7 +4,6 @@ import { View, FlatList, TouchableOpacity, StyleSheet, StyleProp, TextStyle, Vie
 import moment from 'moment';
 import { groupBy } from 'lodash';
 import { DateFormats, DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';

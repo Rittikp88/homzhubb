@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef, RefObject } from 'react';
 import {
   View,
   Image,
@@ -76,7 +76,7 @@ interface IFormTextInputState {
 const PHONE_CODE = 'phoneCode';
 
 class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputState> {
-  public inputText: RNTextInput | null = null;
+  public inputText: RefObject<RNTextInput> = createRef();
 
   public state = {
     showCurrencySymbol: false,
@@ -242,12 +242,7 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
             {isMandatory && <Text style={styles.asterix}> *</Text>}
           </Label>
           <View style={containerStyle}>
-            <RNTextInput
-              ref={(input): void => {
-                this.inputText = input as any;
-              }}
-              {...inputProps}
-            />
+            <RNTextInput ref={this.inputText} {...inputProps} />
             {children}
             {inputGroupPrefix}
             {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}
@@ -305,7 +300,7 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
   };
 
   public focus = (): void => {
-    this.inputText?.focus();
+    this.inputText.current?.focus();
   };
 
   private handleTextChange = (text: string): void => {
@@ -379,7 +374,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-const HOC = connect(mapStateToProps, mapDispatchToProps)(FormTextInput);
+const HOC = connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(FormTextInput);
 export { HOC as FormTextInput };
 
 const styles = StyleSheet.create({

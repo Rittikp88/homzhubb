@@ -32,7 +32,7 @@ describe('Alert Helper', () => {
     AlertHelper.error({ message: 'Test Message' });
     expect(spy).toHaveBeenCalledWith({
       type: 'danger',
-      autoHide: false,
+      duration: 5000,
       message: 'Test Message',
       backgroundColor: theme.colors.error,
     });

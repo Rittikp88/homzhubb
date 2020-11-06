@@ -20,7 +20,7 @@ class AlertHelper {
     Keyboard.dismiss();
     const { message } = options;
     showMessage({
-      autoHide: false,
+      duration: 5000,
       message,
       type: 'danger',
       backgroundColor: theme.colors.error,

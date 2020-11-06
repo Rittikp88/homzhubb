@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
@@ -24,12 +23,10 @@ interface IFormData {
   password: string;
 }
 
-class SignUpForm extends Component<ISignUpFormProps, IFormData> {
-  public firstName: FormTextInput | null = null;
-  public lastName: FormTextInput | null = null;
-  public email: FormTextInput | null = null;
-  public phone: FormTextInput | null = null;
-  public password: FormTextInput | null = null;
+class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
+  public lastName: React.RefObject<any> = React.createRef();
+  public email: React.RefObject<any> = React.createRef();
+  public phone: React.RefObject<any> = React.createRef();
 
   public state = {
     firstName: '',
@@ -51,28 +48,23 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
           onSubmit={this.handleSubmit}
         >
           {(formProps: FormikProps<IFormData>): React.ReactNode => {
-            const onEmailFocus = (): void => this.email?.focus();
-            const onPasswordFocus = (): void => this.password?.focus();
-            const onPhoneNumberFocus = (): void => this.phone?.focus();
+            const onEmailFocus = (): void => this.email.current?.focus();
+            const onLastNameFocus = (): void => this.lastName.current?.focus();
+            const onPhoneNumberFocus = (): void => this.phone.current?.focus();
 
             return (
               <>
                 <FormTextInput
-                  ref={(refs): void => {
-                    this.firstName = refs;
-                  }}
                   name="firstName"
                   label="First Name"
                   inputType="name"
                   placeholder={t('auth:enterFirstName')}
                   formProps={formProps}
                   isMandatory
-                  onSubmitEditing={onEmailFocus}
+                  onSubmitEditing={onLastNameFocus}
                 />
                 <FormTextInput
-                  ref={(refs): void => {
-                    this.lastName = refs;
-                  }}
+                  ref={this.lastName}
                   name="lastName"
                   label="Last Name"
                   inputType="name"
@@ -81,9 +73,7 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
                   onSubmitEditing={onEmailFocus}
                 />
                 <FormTextInput
-                  ref={(refs): void => {
-                    this.email = refs;
-                  }}
+                  ref={this.email}
                   name="email"
                   label="Email"
                   inputType="email"
@@ -93,9 +83,7 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
                   onSubmitEditing={onPhoneNumberFocus}
                 />
                 <FormTextInput
-                  ref={(refs): void => {
-                    this.phone = refs;
-                  }}
+                  ref={this.phone}
                   name="phone"
                   label="Phone"
                   isMandatory
@@ -106,12 +94,8 @@ class SignUpForm extends Component<ISignUpFormProps, IFormData> {
                   helpText={t('auth:otpVerification')}
                   phoneFieldDropdownText={t('auth:countryRegion')}
                   formProps={formProps}
-                  onSubmitEditing={onPasswordFocus}
                 />
                 <FormTextInput
-                  ref={(refs): void => {
-                    this.password = refs;
-                  }}
                   name="password"
                   label="Password"
                   inputType="password"

@@ -12,11 +12,11 @@ exports[`Test cases for LoginForm should render snapshot 1`] = `
 exports[`Test cases for LoginForm should render snapshot for dropdown selection 1`] = `
 LoginForm {
   "context": Object {},
-  "email": null,
   "formSchema": [Function],
   "handleSubmit": [Function],
-  "password": null,
-  "phone": null,
+  "password": Object {
+    "current": null,
+  },
   "props": Object {
     "i18n": Object {},
     "onLoginSuccess": [MockFunction],
