@@ -134,8 +134,9 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     return (
       <TouchableOpacity
         key={index}
+        disabled={isDisable}
         style={StyleSheet.flatten([customStyles.renderItemView(isSelected)])}
-        onPress={isDisable ? FunctionUtils.noop : onPressItem}
+        onPress={onPressItem}
       >
         <Label type="large" style={StyleSheet.flatten([customStyles.renderItemTitle(isSelected, isDisable)])}>
           {item}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { PickerItemProps, ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Avatar, Button, Divider, Dropdown, EmptyState, Label, Text } from '@homzhub/common/src/components';
@@ -17,8 +16,6 @@ import {
 } from '@homzhub/common/src/domain/models/AssetVisit';
 import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
-import { MISSED_COMPLETED_DATA, UPCOMING_DROPDOWN_DATA } from '@homzhub/common/src/constants/SiteVisit';
 
 // CONSTANTS
 const confirmation = ['Yes', 'No'];
@@ -28,15 +25,16 @@ const confirmation = ['Yes', 'No'];
 interface IProps {
   visitType: VisitStatusType;
   visitData: IVisitByKey[];
+  dropdownData: PickerItemProps[];
   isLoading: boolean;
   isFromProperty?: boolean;
+  dropdownValue: number;
   handleAction: (id: number, action: VisitActions) => void;
   handleReschedule: (id: number) => void;
-  handleDropdown: (startDate: string, endDate: string, visitType: VisitStatusType) => void;
+  handleDropdown: (value: string | number, visitType: VisitStatusType) => void;
 }
 
 interface IScreenState {
-  dropdownValue: number;
   isCancelSheet: boolean;
   currentVisitId: number;
 }
@@ -45,15 +43,12 @@ type Props = IProps & WithTranslation;
 
 class PropertyVisitList extends Component<Props, IScreenState> {
   public state = {
-    dropdownValue: 1,
     isCancelSheet: false,
     currentVisitId: 0,
   };
 
   public render(): React.ReactNode {
-    const { visitData, isLoading, t } = this.props;
-    const { dropdownValue } = this.state;
-    const dropdownData = this.getDropdownData();
+    const { visitData, isLoading, t, dropdownData, dropdownValue, visitType, handleDropdown } = this.props;
     const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
     return (
       <>
@@ -67,7 +62,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             icon={icons.downArrow}
             textStyle={{ color: theme.colors.blue }}
             iconColor={theme.colors.blue}
-            onDonePress={this.handleDropdownSelection}
+            onDonePress={(value): void => handleDropdown(value, visitType)}
             containerStyle={styles.dropdownStyle}
           />
         </View>
@@ -287,29 +282,6 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     }
   };
 
-  private getDropdownData = (): IDropdownObject[] => {
-    const { visitType, t } = this.props;
-    let results;
-    switch (visitType) {
-      case VisitStatusType.UPCOMING:
-        results = Object.values(UPCOMING_DROPDOWN_DATA);
-        break;
-      case VisitStatusType.MISSED:
-      case VisitStatusType.COMPLETED:
-        results = Object.values(MISSED_COMPLETED_DATA);
-        break;
-      default:
-        results = Object.values(MISSED_COMPLETED_DATA);
-    }
-
-    return results.map((currentData: IDropdownObject) => {
-      return {
-        ...currentData,
-        label: t(currentData.label),
-      };
-    });
-  };
-
   private getUserRole = (role: RoleType): string => {
     const { t } = this.props;
     switch (role) {
@@ -331,23 +303,6 @@ class PropertyVisitList extends Component<Props, IScreenState> {
       isCancelSheet: true,
       currentVisitId: id,
     });
-  };
-
-  private handleDropdownSelection = (value: string | number): void => {
-    const { handleDropdown, visitType } = this.props;
-    const currentDate = DateUtils.getCurrentDateISO();
-    this.setState({
-      dropdownValue: value as number,
-    });
-    const data = this.getDropdownData();
-    const selectedData = data.find((item) => item.value === (value as number));
-    if (selectedData) {
-      const fromDate =
-        visitType === VisitStatusType.UPCOMING && selectedData.startDate < currentDate
-          ? currentDate
-          : selectedData.startDate;
-      handleDropdown(fromDate, selectedData.endDate, visitType);
-    }
   };
 }
 

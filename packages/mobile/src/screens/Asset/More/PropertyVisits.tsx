@@ -104,7 +104,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
   private handlePropertySelect = (value: number): void => {
     const { getAssetVisit } = this.props;
     const {
-      visitPayload: { start_date__gte, status },
+      visitPayload: { start_date__gte, status, start_date__lt },
       isCalendarView,
     } = this.state;
     this.setState({
@@ -115,6 +115,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
       ...(value > 0 && { asset_id: value }),
       ...(start_date__gte && isCalendarView && { start_datetime: start_date__gte }),
       ...(start_date__gte && !isCalendarView && { start_date__gte }),
+      ...(start_date__lt && !isCalendarView && { start_date__lt }),
       ...(status && { status }),
     };
 
