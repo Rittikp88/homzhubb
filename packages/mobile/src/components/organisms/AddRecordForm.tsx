@@ -42,7 +42,6 @@ interface IFormData {
 
 interface IState {
   selectedFormType: FormType;
-  wordCount: number;
   formValues: IFormData;
   attachment?: IDocumentSource;
   currencyCode: string;
@@ -71,7 +70,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { currencySymbol, currencyCode } = props.defaultCurrency;
     this.state = {
       selectedFormType: FormType.Income,
-      wordCount: MAX_WORD_COUNT,
       attachment: undefined,
       currencyCode,
       currencySymbol,
@@ -267,14 +265,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       date: yup.string().required(t('dateError')),
       notes: yup.string(),
     });
-  };
-
-  private wordCount = (value: string): void => {
-    const { wordCount } = this.state;
-
-    this.setState(() => ({
-      wordCount: wordCount === 0 ? 0 : MAX_WORD_COUNT - value.length,
-    }));
   };
 
   private handleUpload = (attachment: IDocumentSource): void => {

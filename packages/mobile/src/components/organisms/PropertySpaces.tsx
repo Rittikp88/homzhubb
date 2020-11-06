@@ -79,7 +79,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           <RNSwitch selected={showMore} onToggle={this.toggleMoreSwitch} />
         </View>
 
-        {showMore && this.renderSpaces(false)}
+        <View style={!showMore ? styles.displayNone : undefined}>{this.renderSpaces(false)}</View>
       </View>
     );
   }
@@ -218,5 +218,8 @@ const styles = StyleSheet.create({
   },
   threeDots: {
     marginRight: 12,
+  },
+  displayNone: {
+    display: 'none',
   },
 });

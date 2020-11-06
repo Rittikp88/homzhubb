@@ -248,7 +248,6 @@ export default connect(
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingTop: 42,
     paddingBottom: 8,
     backgroundColor: theme.colors.white,
@@ -281,7 +280,6 @@ const styles = StyleSheet.create({
   },
   dropDownStyle: {
     paddingHorizontal: 0,
-    paddingVertical: 0,
     borderWidth: 0,
   },
   primaryColor: {

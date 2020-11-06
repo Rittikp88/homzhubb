@@ -277,7 +277,11 @@ const LeaseTermForm = ({
         </>
       </AssetListingSection>
       {!isFromManage && children}
-      <AssetListingSection title={t('assetDescription:description')} containerStyles={styles.descriptionContainer}>
+      <AssetListingSection
+        title={t('assetDescription:description')}
+        containerStyles={styles.descriptionContainer}
+        contentContainerStyles={styles.paddingTop}
+      >
         <TextArea
           value={formProps.values[LeaseFormKeys.description]}
           wordCountLimit={MAX_DESCRIPTION_LENGTH}
@@ -355,5 +359,8 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.5,
+  },
+  paddingTop: {
+    paddingTop: 0,
   },
 });

@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   dateStyle: {
     alignItems: 'center',
-    width: 52,
+    width: 51,
     height: 60,
     borderWidth: 1,
     borderColor: theme.colors.shadow,
