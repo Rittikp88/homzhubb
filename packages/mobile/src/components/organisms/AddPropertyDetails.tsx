@@ -19,7 +19,7 @@ import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedS
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IDescriptionForm {
-  carpetArea?: number;
+  carpetArea?: string;
   areaUnit?: number;
   buildingGrade?: string;
   facing?: string;
@@ -57,7 +57,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
     this.state = {
       spacesForm: [],
       descriptionForm: {
-        carpetArea: (assetDetails && assetDetails.carpetArea) || undefined,
+        carpetArea: (assetDetails && assetDetails.carpetArea && assetDetails.carpetArea.toString()) || undefined,
         areaUnit: (assetDetails && assetDetails.carpetAreaUnit && assetDetails.carpetAreaUnit.id) || 1,
         buildingGrade: '',
         facing: (assetDetails && assetDetails.facing) || undefined,
@@ -179,7 +179,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
 
     const payload: IUpdateAssetParams = {
       carpet_area: carpetArea,
-      carpet_area_unit: areaUnit,
+      carpet_area_unit: parseInt(areaUnit, 10),
       facing,
       floor_type: flooringType,
       furnishing_description: furnishingDetails,
@@ -219,7 +219,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
 
   private formSchema = (): yup.ObjectSchema<IDescriptionForm & IFurnishingForm> => {
     return yup.object().shape({
-      carpetArea: yup.number().optional(),
+      carpetArea: yup.string().optional(),
       areaUnit: yup.number().optional(),
       buildingGrade: yup.string().optional(),
       facing: yup.string().optional(),

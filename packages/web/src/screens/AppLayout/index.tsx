@@ -4,11 +4,13 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { MainRouter } from '@homzhub/web/src/router/MainRouter';
 import Footer from '@homzhub/web/src/screens/AppLayout/Footer';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
+import Navbar from '@homzhub/web/src/components/molecules/Navbar';
 
 class AppLayout extends React.PureComponent {
   public render(): React.ReactNode {
     return (
       <View style={styles.container}>
+        <Navbar />
         <View style={styles.mainContent}>
           <SideMenu onItemClick={this.sideMenuItemClicked} />
           <MainRouter />

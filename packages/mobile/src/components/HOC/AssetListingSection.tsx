@@ -7,9 +7,15 @@ interface IProps {
   title: string;
   children: React.ReactElement;
   containerStyles?: StyleProp<ViewStyle>;
+  contentContainerStyles?: StyleProp<ViewStyle>;
 }
 
-const AssetListingSection = ({ title, children, containerStyles }: IProps): React.ReactElement => {
+const AssetListingSection = ({
+  title,
+  children,
+  containerStyles,
+  contentContainerStyles,
+}: IProps): React.ReactElement => {
   return (
     <View style={[styles.container, containerStyles]}>
       <View style={styles.titleContainer}>
@@ -17,7 +23,7 @@ const AssetListingSection = ({ title, children, containerStyles }: IProps): Reac
           {title}
         </Text>
       </View>
-      <View style={styles.contentContainer}>{children}</View>
+      <View style={[styles.contentContainer, contentContainerStyles]}>{children}</View>
     </View>
   );
 };

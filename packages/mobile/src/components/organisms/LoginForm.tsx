@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent, createRef, RefObject } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
@@ -23,10 +23,8 @@ interface IFormData {
   phoneCode: string;
 }
 
-class LoginForm extends Component<ILoginFormProps, IFormData> {
-  public email: FormTextInput | null = null;
-  public phone: FormTextInput | null = null;
-  public password: FormTextInput | null = null;
+class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
+  public password: RefObject<any> = createRef();
 
   public constructor(props: ILoginFormProps) {
     super(props);
@@ -79,15 +77,14 @@ class LoginForm extends Component<ILoginFormProps, IFormData> {
   private renderLoginFields = (formProps: FormikProps<IFormData>): React.ReactElement => {
     const { t } = this.props;
     const { isEmailFlow } = this.state;
-    const onPasswordFocus = (): void => this.password?.focus();
+
+    const onPasswordFocus = (): void => this.password.current?.focus();
+
     return (
       <>
         {isEmailFlow ? (
           <>
             <FormTextInput
-              ref={(refs): void => {
-                this.email = refs;
-              }}
               name="email"
               label="Email"
               inputType="email"
@@ -97,9 +94,7 @@ class LoginForm extends Component<ILoginFormProps, IFormData> {
               onSubmitEditing={onPasswordFocus}
             />
             <FormTextInput
-              ref={(refs): void => {
-                this.password = refs;
-              }}
+              ref={this.password}
               name="password"
               label="Password"
               inputType="password"
@@ -110,9 +105,6 @@ class LoginForm extends Component<ILoginFormProps, IFormData> {
           </>
         ) : (
           <FormTextInput
-            ref={(refs): void => {
-              this.phone = refs;
-            }}
             name="phone"
             label="Phone"
             inputType="phone"
