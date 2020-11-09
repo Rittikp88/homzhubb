@@ -52,7 +52,13 @@ class AssetHighlightCard extends Component<IProps, IState> {
     const isSelected = selectedAmenity.includes(item.id);
     return (
       <TouchableOpacity style={styles.amenityItem} onPress={(): void => onAmenityPress(item.id)}>
-        <SVGUri uri={item.attachment.link} height={30} width={30} />
+        <SVGUri
+          uri={item.attachment.link}
+          height={30}
+          width={30}
+          stroke={isSelected ? theme.colors.active : undefined}
+          strokeWidth={isSelected ? 0.5 : undefined}
+        />
         <Label type="regular" textType="regular" style={isSelected && { color: theme.colors.blue }}>
           {item.name}
         </Label>

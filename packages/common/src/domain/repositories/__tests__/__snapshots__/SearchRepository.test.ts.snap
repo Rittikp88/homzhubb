@@ -92,9 +92,11 @@ AssetSearch {
       "_amenities": Array [
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 7,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -113,9 +115,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 8,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -134,9 +138,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 9,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -155,9 +161,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 10,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -176,9 +184,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 11,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -197,9 +207,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 12,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -218,9 +230,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 13,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/19fe670df70c4ff8b9fc6de68bef8efb.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -248,32 +262,7 @@ AssetSearch {
         "_name": "",
       },
       "_assetHighlights": Array [],
-      "_assetStatusInfo": AssetStatusInfo {
-        "_action": null,
-        "_leaseListingId": null,
-        "_leaseTenantInfo": User {
-          "_accessToken": "",
-          "_countryCode": "",
-          "_email": "",
-          "_firstName": "",
-          "_fullName": "",
-          "_id": 0,
-          "_lastName": "",
-          "_phoneNumber": "",
-          "_rating": 0,
-          "_refreshToken": "",
-        },
-        "_leaseTransaction": LeaseTransaction {
-          "_leasePeriod": null,
-          "_rent": null,
-          "_securityDeposit": null,
-        },
-        "_saleListingId": null,
-        "_tag": LabelColor {
-          "_color": "",
-          "_label": "",
-        },
-      },
+      "_assetStatusInfo": null,
       "_assetType": Data {
         "_code": "",
         "_count": 0,
@@ -283,9 +272,11 @@ AssetSearch {
       },
       "_attachments": Array [
         Attachment {
+          "_attachmentLink": "",
           "_fileName": "prof.jpg",
           "_id": 0,
           "_isCoverImage": true,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
@@ -300,9 +291,11 @@ AssetSearch {
           "_presignedReferenceKey": "",
         },
         Attachment {
+          "_attachmentLink": "",
           "_fileName": "DjangoBackendLLD (1).jpg",
           "_id": 0,
           "_isCoverImage": false,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
@@ -431,9 +424,10 @@ AssetSearch {
         },
       },
       "_latitude": 25.619,
-      "_leaseListingId": -1,
+      "_leaseListingId": null,
       "_leaseListingIds": Array [],
       "_leaseTerm": null,
+      "_leaseUnitId": null,
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
       "_notifications": Count {
@@ -444,9 +438,10 @@ AssetSearch {
       "_powerBackup": false,
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
-      "_saleListingId": -1,
+      "_saleListingId": null,
       "_saleListingIds": Array [],
       "_saleTerm": null,
+      "_saleUnitId": null,
       "_serviceTickets": Count {
         "_count": 0,
       },
@@ -493,9 +488,11 @@ AssetSearch {
       "_amenities": Array [
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 7,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -514,9 +511,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 8,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -535,9 +534,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 9,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -556,9 +557,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 10,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -577,9 +580,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 11,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -598,9 +603,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 12,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -619,9 +626,11 @@ AssetSearch {
         },
         Amenity {
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 13,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/19fe670df70c4ff8b9fc6de68bef8efb.svg",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -649,32 +658,7 @@ AssetSearch {
         "_name": "",
       },
       "_assetHighlights": Array [],
-      "_assetStatusInfo": AssetStatusInfo {
-        "_action": null,
-        "_leaseListingId": null,
-        "_leaseTenantInfo": User {
-          "_accessToken": "",
-          "_countryCode": "",
-          "_email": "",
-          "_firstName": "",
-          "_fullName": "",
-          "_id": 0,
-          "_lastName": "",
-          "_phoneNumber": "",
-          "_rating": 0,
-          "_refreshToken": "",
-        },
-        "_leaseTransaction": LeaseTransaction {
-          "_leasePeriod": null,
-          "_rent": null,
-          "_securityDeposit": null,
-        },
-        "_saleListingId": null,
-        "_tag": LabelColor {
-          "_color": "",
-          "_label": "",
-        },
-      },
+      "_assetStatusInfo": null,
       "_assetType": Data {
         "_code": "",
         "_count": 0,
@@ -684,9 +668,11 @@ AssetSearch {
       },
       "_attachments": Array [
         Attachment {
+          "_attachmentLink": "",
           "_fileName": "prof.jpg",
           "_id": 0,
           "_isCoverImage": true,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
@@ -701,9 +687,11 @@ AssetSearch {
           "_presignedReferenceKey": "",
         },
         Attachment {
+          "_attachmentLink": "",
           "_fileName": "DjangoBackendLLD (1).jpg",
           "_id": 0,
           "_isCoverImage": false,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
@@ -832,9 +820,10 @@ AssetSearch {
         },
       },
       "_latitude": 25.619,
-      "_leaseListingId": -1,
+      "_leaseListingId": null,
       "_leaseListingIds": Array [],
       "_leaseTerm": null,
+      "_leaseUnitId": null,
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
       "_notifications": Count {
@@ -845,9 +834,10 @@ AssetSearch {
       "_powerBackup": false,
       "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
-      "_saleListingId": -1,
+      "_saleListingId": null,
       "_saleListingIds": Array [],
       "_saleTerm": null,
+      "_saleUnitId": null,
       "_serviceTickets": Count {
         "_count": 0,
       },

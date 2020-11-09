@@ -84,9 +84,11 @@ UserSubscription {
     "_serviceBundleItems": Array [
       ServiceBundleItems {
         "_attachment": Attachment {
+          "_attachmentLink": "",
           "_fileName": "name1.jpg",
           "_id": 1,
           "_isCoverImage": false,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/assest_documents/id.jpeg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
@@ -107,9 +109,11 @@ UserSubscription {
       },
       ServiceBundleItems {
         "_attachment": Attachment {
+          "_attachmentLink": "",
           "_fileName": "name1.jpg",
           "_id": 1,
           "_isCoverImage": false,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/assest_documents/id.jpeg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
@@ -137,9 +141,11 @@ UserSubscription {
     "_serviceBundleItems": Array [
       ServiceBundleItems {
         "_attachment": Attachment {
+          "_attachmentLink": "",
           "_fileName": "name2.jpg",
           "_id": 2,
           "_isCoverImage": false,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
@@ -160,9 +166,11 @@ UserSubscription {
       },
       ServiceBundleItems {
         "_attachment": Attachment {
+          "_attachmentLink": "",
           "_fileName": "name1.jpg",
           "_id": 1,
           "_isCoverImage": false,
+          "_label": "",
           "_link": "https://homzhub-bucket.s3.amazonaws.com/assest_documents/id.jpeg",
           "_mediaAttributes": MediaAttributes {
             "_duration": "",

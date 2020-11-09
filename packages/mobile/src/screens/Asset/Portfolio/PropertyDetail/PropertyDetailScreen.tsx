@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import { TabBar, TabView } from 'react-native-tab-view';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
+import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
-import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel, Loader } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -20,22 +21,26 @@ import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetai
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IPropertyDetailPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
 
-const TAB_LAYOUT = {
-  width: theme.viewport.width - theme.layout.screenPadding * 2,
-  height: theme.viewport.height,
-};
+const { height } = theme.viewport;
 
 interface IStateProps {
-  propertyData: Asset | null;
+  assetPayload: ISetAssetPayload;
 }
 
 interface IDetailState {
+  propertyData: Asset;
   attachments: Attachment[];
   isFullScreen: boolean;
   activeSlide: number;
   currentIndex: number;
+  heights: number[];
 }
 
 interface IRoutes {
@@ -49,42 +54,50 @@ type Props = WithTranslation & libraryProps & IStateProps;
 
 export class PropertyDetailScreen extends Component<Props, IDetailState> {
   public state = {
+    propertyData: {} as Asset,
     isFullScreen: false,
     activeSlide: 0,
     attachments: [],
     currentIndex: 0,
+    heights: Array(Routes.length).fill(height),
+  };
+
+  public componentDidMount = async (): Promise<void> => {
+    await this.getAssetDetail();
   };
 
   public render = (): React.ReactNode => {
-    const { t, propertyData } = this.props;
-    const { currentIndex } = this.state;
-    if (!propertyData) {
+    const {
+      t,
+      route: { params },
+    } = this.props;
+    const { currentIndex, propertyData, heights } = this.state;
+    if (isEmpty(propertyData)) {
       return null;
     }
+
+    const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
+
     return (
       <>
-        <AnimatedProfileHeader title={t('portfolio')}>
+        <AnimatedProfileHeader
+          title={title}
+          onBackPress={this.handleIconPress}
+          sectionHeader={t('propertyDetails')}
+          sectionTitleType="semiBold"
+        >
           <>
-            <View style={styles.header}>
-              <Icon
-                name={icons.leftArrow}
-                size={20}
-                color={theme.colors.primaryColor}
-                onPress={this.handleIconPress}
-                testID="icnBack"
-              />
-              <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                {t('propertyDetails')}
-              </Text>
-            </View>
-            <AssetCard assetData={propertyData} isDetailView enterFullScreen={this.onFullScreenToggle} />
+            <AssetCard
+              assetData={propertyData}
+              isDetailView
+              enterFullScreen={this.onFullScreenToggle}
+              containerStyle={styles.card}
+            />
             <TabView
-              lazy
-              renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
-              removeClippedSubviews
               swipeEnabled={false}
-              initialLayout={TAB_LAYOUT}
-              renderScene={({ route }): React.ReactElement => this.renderTabScene(route)}
+              style={{ height: heights[currentIndex] }}
+              initialLayout={theme.viewport}
+              renderScene={({ route }): React.ReactElement | null => this.renderTabScene(route)}
               onIndexChange={this.handleIndexChange}
               renderTabBar={(props): React.ReactElement => {
                 const {
@@ -130,25 +143,73 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     );
   };
 
-  private renderTabScene = (route: IRoutes): React.ReactElement => {
+  private renderTabScene = (route: IRoutes): React.ReactElement | null => {
     const { navigation } = this.props;
     switch (route.key) {
       case Tabs.NOTIFICATIONS:
         // TODO: Figure-out something to resolve this error
-        // @ts-ignore
-        return <NotificationTab />;
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 0)}>
+            {/** @ts-ignore * */}
+            <NotificationTab />
+          </View>
+        );
+      case Tabs.TICKETS:
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 1)}>
+            <DummyView />
+          </View>
+        );
+      case Tabs.OFFERS:
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 2)}>
+            <DummyView />
+          </View>
+        );
+      case Tabs.REVIEWS:
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 3)}>
+            <DummyView />
+          </View>
+        );
       case Tabs.SITE_VISITS:
         return (
-          <View style={styles.visitTab}>
+          <View style={styles.visitTab} onLayout={(e): void => this.onLayout(e, 4)}>
             <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} isFromProperty />
           </View>
         );
+      case Tabs.FINANCIALS:
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 5)}>
+            <DummyView />
+          </View>
+        );
+      case Tabs.MESSAGES:
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 6)}>
+            <DummyView />
+          </View>
+        );
       case Tabs.DOCUMENTS:
-        return <Documents />;
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 7)}>
+            <Documents />
+          </View>
+        );
       case Tabs.TENANT_HISTORY:
-        return <TenantHistoryScreen />;
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 8)}>
+            <TenantHistoryScreen />
+          </View>
+        );
+      case Tabs.DETAILS:
+        return (
+          <View onLayout={(e): void => this.onLayout(e, 9)}>
+            <DummyView />
+          </View>
+        );
       default:
-        return <DummyView />;
+        return null;
     }
   };
 
@@ -173,6 +234,17 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
+  private onLayout = (e: LayoutChangeEvent, index: number): void => {
+    const { heights } = this.state;
+    const { height: newHeight } = e.nativeEvent.layout;
+    const arrayToUpdate = [...heights];
+
+    if (newHeight === arrayToUpdate[index]) {
+      arrayToUpdate[index] = newHeight;
+      this.setState({ heights: arrayToUpdate });
+    }
+  };
+
   private navigateToBookVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.SearchStack, {
@@ -183,6 +255,25 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
+  };
+
+  private getAssetDetail = async (): Promise<void> => {
+    const {
+      assetPayload: { asset_id, assetType, listing_id },
+    } = this.props;
+    const payload: IPropertyDetailPayload = {
+      asset_id,
+      id: listing_id,
+      type: assetType,
+    };
+    try {
+      const response = await PortfolioRepository.getPropertyDetail(payload);
+      this.setState({
+        propertyData: response,
+      });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private updateSlide = (slideNumber: number): void => {
@@ -197,7 +288,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
-    propertyData: PortfolioSelectors.getAssetById(state),
+    assetPayload: PortfolioSelectors.getCurrentAssetPayload(state),
   };
 };
 
@@ -207,20 +298,10 @@ export default connect(
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(PropertyDetailScreen));
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: theme.colors.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0,
-  },
-  headerTitle: {
-    color: theme.colors.darkTint1,
-    marginLeft: 12,
-  },
   visitTab: {
     backgroundColor: theme.colors.white,
-    height: 600,
+  },
+  card: {
+    borderRadius: 0,
   },
 });

@@ -125,9 +125,11 @@ AssetAdvertisement {
   "_results": Array [
     AssetAdvertisementResults {
       "_attachment": Attachment {
+        "_attachmentLink": "",
         "_fileName": "DjangoBackendLLD (1).jpg",
         "_id": 14,
         "_isCoverImage": false,
+        "_label": "",
         "_link": "https://www.bookadsnow.com/images/mobile/Newspaper-banner_3.jpg",
         "_mediaAttributes": MediaAttributes {
           "_duration": "",
@@ -146,9 +148,11 @@ AssetAdvertisement {
     },
     AssetAdvertisementResults {
       "_attachment": Attachment {
+        "_attachmentLink": "",
         "_fileName": "DjangoBackendLLD (1).jpg",
         "_id": 14,
         "_isCoverImage": false,
+        "_label": "",
         "_link": "https://is1-3.housingcdn.com/4f2250e8/6ec86b0c4555a4f83e0ea77c552db2a0/v0/fs/vessella_meadows-narsingi-hyderabad-vessella_group.jpg",
         "_mediaAttributes": MediaAttributes {
           "_duration": "",
@@ -167,9 +171,11 @@ AssetAdvertisement {
     },
     AssetAdvertisementResults {
       "_attachment": Attachment {
+        "_attachmentLink": "",
         "_fileName": "DjangoBackendLLD (1).jpg",
         "_id": 14,
         "_isCoverImage": false,
+        "_label": "",
         "_link": "https://www.icicibank.com/managed-assets/images/blog/big/how-is-tax-on-sale-of-inherited-property-calculated.jpg",
         "_mediaAttributes": MediaAttributes {
           "_duration": "",

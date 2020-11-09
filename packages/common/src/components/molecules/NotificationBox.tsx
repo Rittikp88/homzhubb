@@ -3,7 +3,7 @@ import { FlatList, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } fr
 import { useTranslation } from 'react-i18next';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { SVGUri } from '@homzhub/common/src/components';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Notifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -49,12 +49,12 @@ const NotificationBox = (props: IProps): React.ReactElement => {
         )}
         <View style={styles.infoContainer}>
           <View style={styles.initialsContainer}>
-            <Icon name={icons.alert} size={20} color={theme.colors.primaryColor} testID="icnBack" />
+            <SVGUri uri={item.notificationType.attachmentLink} width={25} height={20} />
           </View>
           <View style={styles.description}>
             <View style={styles.nameAndTimeContainer}>
               <Label type="regular" textType="regular" style={styles.labels}>
-                {item.notificationType}
+                {item.notificationType.label}
               </Label>
               <Label type="regular" textType="regular" style={styles.labels}>
                 {TimeUtils.getLocaltimeDifference(item.createdAt)}

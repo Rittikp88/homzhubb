@@ -1,7 +1,8 @@
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getTenancies = (state: IState): Asset[] | null => {
   const {
@@ -39,12 +40,20 @@ const getPropertiesLoadingState = (state: IState): boolean => {
   return properties;
 };
 
+const getCurrentAssetPayload = (state: IState): ISetAssetPayload => {
+  const {
+    portfolio: { currentAsset },
+  } = state;
+
+  return currentAsset;
+};
+
 const getCurrentAssetId = (state: IState): number => {
   const {
     portfolio: { currentAsset },
   } = state;
 
-  return currentAsset.id;
+  return currentAsset.asset_id;
 };
 
 const getAssetById = (state: IState): Asset | null => {
@@ -54,9 +63,9 @@ const getAssetById = (state: IState): Asset | null => {
   if (!tenancies || !properties) return null;
 
   if (currentAsset.dataType === DataType.TENANCIES) {
-    return tenancies[currentAsset.id];
+    return tenancies[currentAsset.asset_id];
   }
-  return properties[currentAsset.id];
+  return properties[currentAsset.asset_id];
 };
 
 const getTenantHistory = (state: IState): TenantHistory[] | null => {
@@ -84,4 +93,5 @@ export const PortfolioSelectors = {
   getAssetById,
   getTenantHistory,
   getCurrentFilter,
+  getCurrentAssetPayload,
 };

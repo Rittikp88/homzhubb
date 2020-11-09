@@ -8,7 +8,7 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, FormTextInput, FurnishingSelection, Text, WithShadowView } from '@homzhub/common/src/components';
+import { Button, FormTextInput, FurnishingSelection } from '@homzhub/common/src/components';
 import { AssetDescriptionForm } from '@homzhub/mobile/src/components/molecules/AssetDescriptionForm';
 import { FlowTypes, PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
@@ -93,16 +93,13 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
             return (
               <>
                 <View style={styles.containerStyle}>
-                  <>
-                    <Text style={styles.headingStyle} type="small">
-                      {t('property:spacesText')}
-                    </Text>
+                  <AssetListingSection title={t('property:spacesText')}>
                     <PropertySpaces
                       flowType={FlowTypes.PostAssetFlow}
                       onChange={this.handleSpaceFormChange}
                       spacesTypes={spaceTypes}
                     />
-                  </>
+                  </AssetListingSection>
 
                   {descriptionDropdownValues && (
                     <AssetDescriptionForm dropDownOptions={descriptionDropdownValues} formProps={formProps} />
@@ -111,14 +108,12 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                   {descriptionDropdownValues && this.renderFurnishingFields(formProps)}
                 </View>
 
-                <WithShadowView>
-                  <Button
-                    type="primary"
-                    title={t('common:continue')}
-                    containerStyle={styles.buttonStyle}
-                    onPress={(): Promise<void> => this.onSubmit(formProps.values)}
-                  />
-                </WithShadowView>
+                <Button
+                  type="primary"
+                  title={t('common:continue')}
+                  containerStyle={styles.buttonStyle}
+                  onPress={(): Promise<void> => this.onSubmit(formProps.values)}
+                />
               </>
             );
           }}
@@ -257,16 +252,12 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    margin: 16,
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 28,
   },
   furnishingStyle: {
     marginTop: 16,
-  },
-  headingStyle: {
-    marginTop: 16,
-    paddingVertical: 16,
-    paddingLeft: 16,
-    backgroundColor: theme.colors.moreSeparator,
   },
   furnishingFieldStyle: {
     height: 85,

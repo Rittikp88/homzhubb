@@ -478,3 +478,17 @@ export interface ISupportPayload {
 export interface IUpdateUserPreferences {
   [name: string]: SelectedPreferenceType;
 }
+
+export enum DetailType {
+  ASSET = 'detail',
+  LEASE_LISTING = 'lease-listing',
+  SALE_LISTING = 'sale-listing',
+  LEASE_UNIT = 'lease-unit',
+  SALE_UNIT = 'sale-unit',
+}
+
+export interface IPropertyDetailPayload {
+  asset_id: number;
+  id: number;
+  type: DetailType;
+}

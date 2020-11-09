@@ -13,6 +13,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IActions, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 const actionButtons: IActions[] = [
   { id: 1, title: 'Invite Tenant', type: TypeOfPlan.MANAGE },
@@ -24,7 +25,7 @@ interface IProps {
   data: Asset[];
   onPressComplete: (assetId: number) => void;
   onSelectAction: (payload: IActions, assetId: number) => void;
-  onViewProperty: (id: number) => void;
+  onViewProperty: (data: ISetAssetPayload) => void;
 }
 
 interface IState {
@@ -57,20 +58,26 @@ export class PendingPropertyListCard extends Component<Props, IState> {
           </View>
           {data.length > 1 && (
             <View style={styles.headingContent}>
-              <TouchableOpacity style={styles.iconStyle}>
+              <TouchableOpacity
+                style={styles.iconStyle}
+                disabled={currentPropertyIndex === 0}
+                onPress={this.handlePrevious}
+              >
                 <Icon
                   name={icons.leftArrow}
                   size={16}
-                  onPress={this.handlePrevious}
                   color={currentPropertyIndex === 0 ? theme.colors.darkTint4 : theme.colors.primaryColor}
                   testID="icnPrevious"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconStyle} disabled={currentPropertyIndex === total - 1}>
+              <TouchableOpacity
+                style={styles.iconStyle}
+                disabled={currentPropertyIndex === total - 1}
+                onPress={this.handleNext}
+              >
                 <Icon
                   name={icons.rightArrow}
                   size={16}
-                  onPress={this.handleNext}
                   color={currentPropertyIndex === total - 1 ? theme.colors.darkTint4 : theme.colors.primaryColor}
                   testID="icnNext"
                 />
@@ -99,6 +106,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       lastVisitedStep,
       country: { flag },
       verifications: { description },
+      listingInfo,
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
@@ -109,8 +117,10 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       true
     );
 
+    const viewPayload = PropertyUtils.getAssetPayload(listingInfo, id);
+
     return (
-      <TouchableOpacity style={styles.cardContainer} onPress={(): void => onViewProperty(id)}>
+      <TouchableOpacity style={styles.cardContainer} onPress={(): void => onViewProperty(viewPayload)}>
         <ShieldGroup propertyType={name} propertyTypeStyle={styles.heading} text={description} isInfoRequired />
         <PropertyAddressCountry
           primaryAddress={projectName}

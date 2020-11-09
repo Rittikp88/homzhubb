@@ -156,7 +156,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
-    const handleViewProperty = (id: number): void => this.onViewProperty(id, type);
+    const handleViewProperty = (data: ISetAssetPayload): void => this.onViewProperty({ ...data, dataType: type });
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
     return (
       <AssetCard
@@ -178,9 +178,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.closeBottomSheet();
   };
 
-  private onViewProperty = (id: number, type: DataType): void => {
+  private onViewProperty = (data: ISetAssetPayload): void => {
     const { navigation, setCurrentAsset } = this.props;
-    setCurrentAsset({ id, dataType: type });
+    setCurrentAsset(data);
     navigation.navigate(ScreensKeys.PropertyDetailScreen);
   };
 

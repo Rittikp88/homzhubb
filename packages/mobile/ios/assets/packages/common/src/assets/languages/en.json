@@ -14,6 +14,8 @@
     "cancel": "Cancel",
     "gotIt": "Got It",
     "skip": "Skip",
+    "offers": "Offers",
+    "manageSubscription": "Manage Subscription",
     "location": "Location",
     "termsCondition": "terms and conditions",
     "submit": "Submit",
@@ -121,7 +123,19 @@
     "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet",
     "accept": "Accept",
     "reject": "Reject",
-    "done": "Done"
+    "done": "Done",
+    "comingSoonText": "Coming soon...",
+    "copyrightContent": "© All rights reserved.© 2020-21 Copyright: ",
+    "homzhubLink": "Homzhub.com",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "inTouch": "We’ll be in touch",
+    "messageSent": "Message Sent!",
+    "typeDescription": "Type your description here...",
+    "categoryExample": "Eg. Leasing",
+    "subject": "Subject",
+    "subjectPlaceholder": "Enter subject here",
+    "homzhubTeam": "Homzhub team"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -617,5 +631,8 @@
     "otpVerificationText": "OTP Verification",
     "profileUpdatedSuccessfully": "Profile Updated Successfully",
     "editProfile": "Edit Profile"
+  },
+  "webLoader": {
+    "loadingText": "Loading Application..."
   }
 }

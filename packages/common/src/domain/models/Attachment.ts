@@ -85,6 +85,9 @@ export class Attachment {
   @JsonProperty('name', String, true)
   private _name = '';
 
+  @JsonProperty('label', String, true)
+  private _label = '';
+
   @JsonProperty('link', String, true)
   private _link = '';
 
@@ -100,6 +103,9 @@ export class Attachment {
   @JsonProperty('presigned_reference_key', String, true)
   private _presignedReferenceKey = '';
 
+  @JsonProperty('attachment_link', String, true)
+  private _attachmentLink = '';
+
   get id(): number {
     return this._id;
   }
@@ -110,6 +116,10 @@ export class Attachment {
 
   get name(): string {
     return this._name;
+  }
+
+  get label(): string {
+    return this._label;
   }
 
   get link(): string {
@@ -130,5 +140,9 @@ export class Attachment {
 
   get presignedReferenceKey(): string {
     return this._presignedReferenceKey;
+  }
+
+  get attachmentLink(): string {
+    return this._attachmentLink;
   }
 }

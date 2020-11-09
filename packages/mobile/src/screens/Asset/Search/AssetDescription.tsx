@@ -763,7 +763,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: ScreensKeys.GettingStarted }],
+        routes: [{ name: ScreensKeys.BottomTabs }],
       })
     );
   };

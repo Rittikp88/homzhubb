@@ -1,4 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { DeeplinkMetaData } from '@homzhub/common/src/domain/models/DeeplinkMetaData';
 import { Links, ILinks } from '@homzhub/common/src/domain/models/PaginationLinks';
 
 export interface IAssetNotifications {
@@ -23,8 +25,11 @@ export class Notifications {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('notification_type', String)
-  private _notificationType = '';
+  @JsonProperty('notification_type', Attachment)
+  private _notificationType = new Attachment();
+
+  @JsonProperty('deeplink_metadata', DeeplinkMetaData)
+  private _deeplinkMetadata = new DeeplinkMetaData();
 
   @JsonProperty('title', String)
   private _title = '';
@@ -32,7 +37,7 @@ export class Notifications {
   @JsonProperty('message', String)
   private _message = '';
 
-  @JsonProperty('link', String)
+  @JsonProperty('link', String, true)
   private _link = '';
 
   @JsonProperty('created_at', String)
@@ -45,7 +50,7 @@ export class Notifications {
     return this._id;
   }
 
-  get notificationType(): string {
+  get notificationType(): Attachment {
     return this._notificationType;
   }
 
@@ -71,6 +76,10 @@ export class Notifications {
 
   set isRead(value: boolean) {
     this._isRead = value;
+  }
+
+  get deeplinkMetadata(): DeeplinkMetaData {
+    return this._deeplinkMetadata;
   }
 }
 

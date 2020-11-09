@@ -258,7 +258,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Documents);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: theme.colors.white,
     padding: 16,
   },
