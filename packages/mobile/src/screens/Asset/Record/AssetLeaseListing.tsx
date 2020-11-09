@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -62,6 +62,7 @@ interface IOwnState {
   leaseType: LeaseTypes;
   isSheetVisible: boolean;
   isNextStep: boolean;
+  tabViewHeights: number[];
 }
 
 enum RouteKeys {
@@ -70,9 +71,10 @@ enum RouteKeys {
   Services = 'services',
   Payment = 'payment',
 }
+const { height, width } = theme.viewport;
 const TAB_LAYOUT = {
-  width: theme.viewport.width - theme.layout.screenPadding * 2,
-  height: theme.viewport.height,
+  width: width - theme.layout.screenPadding * 2,
+  height,
 };
 
 class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
@@ -80,6 +82,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   public state = {
     currentIndex: 0,
     isStepDone: [],
+    tabViewHeights: [height, height, height, height * 0.5],
     isActionSheetToggled: false,
     leaseType: LeaseTypes.Entire,
     isSheetVisible: false,
@@ -179,8 +182,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
           {this.renderTabHeader()}
           <TabView
-            lazy
-            renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
             initialLayout={TAB_LAYOUT}
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
@@ -303,48 +304,56 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     switch (route.key) {
       case RouteKeys.Verification:
         return (
-          <PropertyVerification
-            propertyId={assetDetails.id}
-            typeOfPlan={selectedPlan}
-            updateStep={this.handleNextStep}
-            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 0)}>
+            <PropertyVerification
+              propertyId={assetDetails.id}
+              typeOfPlan={selectedPlan}
+              updateStep={this.handleNextStep}
+              lastVisitedStep={assetDetails.lastVisitedStepSerialized}
+            />
+          </View>
         );
       case RouteKeys.Services:
         return (
-          <ValueAddedServicesView
-            propertyId={assetDetails.id}
-            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
-            valueAddedServices={valueAddedServices}
-            setValueAddedServices={setValueAddedServices}
-            countryId={assetDetails?.country.id}
-            assetGroupId={assetDetails?.assetGroup.id}
-            typeOfPlan={selectedPlan}
-            handleNextStep={this.handleNextStep}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 1)}>
+            <ValueAddedServicesView
+              propertyId={assetDetails.id}
+              lastVisitedStep={assetDetails.lastVisitedStepSerialized}
+              valueAddedServices={valueAddedServices}
+              setValueAddedServices={setValueAddedServices}
+              countryId={assetDetails?.country.id}
+              assetGroupId={assetDetails?.assetGroup.id}
+              typeOfPlan={selectedPlan}
+              handleNextStep={this.handleNextStep}
+            />
+          </View>
         );
       case RouteKeys.Payment:
         return (
-          <PropertyPayment
-            goBackToService={this.goBackToServices}
-            propertyId={assetDetails.id}
-            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
-            valueAddedServices={valueAddedServices}
-            setValueAddedServices={setValueAddedServices}
-            typeOfPlan={selectedPlan}
-            handleNextStep={this.handleNextStep}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 2)}>
+            <PropertyPayment
+              goBackToService={this.goBackToServices}
+              propertyId={assetDetails.id}
+              lastVisitedStep={assetDetails.lastVisitedStepSerialized}
+              valueAddedServices={valueAddedServices}
+              setValueAddedServices={setValueAddedServices}
+              typeOfPlan={selectedPlan}
+              handleNextStep={this.handleNextStep}
+            />
+          </View>
         );
       default:
         return (
-          <ActionController
-            assetDetails={assetDetails}
-            typeOfPlan={selectedPlan}
-            leaseType={leaseType}
-            onNextStep={this.handleNextStep}
-            scrollToTop={this.scrollToTop}
-            onLeaseTypeChange={this.onTabChange}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 3)}>
+            <ActionController
+              assetDetails={assetDetails}
+              typeOfPlan={selectedPlan}
+              leaseType={leaseType}
+              onNextStep={this.handleNextStep}
+              scrollToTop={this.scrollToTop}
+              onLeaseTypeChange={this.onTabChange}
+            />
+          </View>
         );
     }
   };
@@ -355,6 +364,17 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
   private onTabChange = (leaseType: LeaseTypes): void => {
     this.setState({ leaseType });
+  };
+
+  private onLayout = (e: LayoutChangeEvent, index: number): void => {
+    const { tabViewHeights } = this.state;
+    const { height: newHeight } = e.nativeEvent.layout;
+    const arrayToUpdate = [...tabViewHeights];
+
+    if (newHeight !== arrayToUpdate[index]) {
+      arrayToUpdate[index] = newHeight;
+      this.setState({ tabViewHeights: arrayToUpdate });
+    }
   };
 
   private openActionBottomSheet = (): React.ReactNode => {

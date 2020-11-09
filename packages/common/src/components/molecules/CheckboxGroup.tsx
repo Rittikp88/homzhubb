@@ -54,7 +54,6 @@ export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
   },
   col: {

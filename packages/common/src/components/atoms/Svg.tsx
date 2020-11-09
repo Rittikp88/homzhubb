@@ -5,12 +5,32 @@ interface IProps {
   uri: string;
   width?: string | number;
   height?: string | number;
+  stroke?: string;
+  strokeWidth?: number;
   viewBox?: string;
   preserveAspectRatio?: string;
 }
 
-const SVGUri = ({ uri, width, height, viewBox, preserveAspectRatio }: IProps): React.ReactElement<Svg> => {
-  return <SvgUri uri={uri} height={height} width={width} viewBox={viewBox} preserveAspectRatio={preserveAspectRatio} />;
+const SVGUri = ({
+  uri,
+  width,
+  height,
+  viewBox,
+  preserveAspectRatio,
+  stroke,
+  strokeWidth,
+}: IProps): React.ReactElement<Svg> => {
+  return (
+    <SvgUri
+      uri={uri}
+      height={height}
+      width={width}
+      stroke={stroke}
+      strokeWidth={strokeWidth}
+      viewBox={viewBox}
+      preserveAspectRatio={preserveAspectRatio}
+    />
+  );
 };
 
 export { SVGUri };

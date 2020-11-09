@@ -1,5 +1,5 @@
 import React, { ReactElement, PureComponent, ReactNode } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, LayoutChangeEvent } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -29,12 +29,13 @@ const Routes: IRoutes[] = [
   { key: 'highlights', title: 'Highlights' },
   { key: 'gallery', title: 'Gallery' },
 ];
-
 const Steps = ['Details', 'Highlights', 'Gallery'];
+const { height } = theme.viewport;
 
 interface IScreenState {
   currentIndex: number;
   isNextStep: boolean;
+  heights: number[];
 }
 
 interface IStateProps {
@@ -72,6 +73,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     this.state = {
       currentIndex: 0,
       isNextStep: false,
+      heights: [height, height, height * 0.5],
     };
   }
 
@@ -98,7 +100,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   public render = (): ReactNode => {
-    const { currentIndex } = this.state;
+    const { currentIndex, heights } = this.state;
     const { t, assetDetail } = this.props;
 
     if (!assetDetail) return <Loader visible />;
@@ -131,9 +133,6 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
           />
           {this.renderTabHeader()}
           <TabView
-            lazy
-            renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
-            removeClippedSubviews
             initialLayout={theme.viewport}
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
@@ -143,6 +142,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
               index: currentIndex,
               routes: Routes,
             }}
+            style={{ height: heights[currentIndex] }}
           />
         </ScrollView>
       </View>
@@ -174,31 +174,37 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     switch (route.key) {
       case 'detail':
         return (
-          <AddPropertyDetails
-            assetId={assetId}
-            assetDetails={assetDetail}
-            spaceTypes={spaceTypes}
-            lastVisitedStep={lastVisitedStep}
-            handleNextStep={this.handleNextStep}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 0)}>
+            <AddPropertyDetails
+              assetId={assetId}
+              assetDetails={assetDetail}
+              spaceTypes={spaceTypes}
+              lastVisitedStep={lastVisitedStep}
+              handleNextStep={this.handleNextStep}
+            />
+          </View>
         );
       case 'highlights':
         return (
-          <AssetHighlights
-            propertyId={assetId}
-            propertyDetail={assetDetail}
-            lastVisitedStep={lastVisitedStep}
-            handleNextStep={this.handleNextStep}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 1)}>
+            <AssetHighlights
+              propertyId={assetId}
+              propertyDetail={assetDetail}
+              lastVisitedStep={lastVisitedStep}
+              handleNextStep={this.handleNextStep}
+            />
+          </View>
         );
       case 'gallery':
         return (
-          <PropertyImages
-            propertyId={assetId}
-            onPressContinue={this.handleNextStep}
-            lastVisitedStep={lastVisitedStep}
-            containerStyle={styles.propertyImagesContainer}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 2)}>
+            <PropertyImages
+              propertyId={assetId}
+              onPressContinue={this.handleNextStep}
+              lastVisitedStep={lastVisitedStep}
+              containerStyle={styles.propertyImagesContainer}
+            />
+          </View>
         );
       default:
         return null;
@@ -208,6 +214,17 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   private onEditPress = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.PostAssetDetails);
+  };
+
+  private onLayout = (e: LayoutChangeEvent, index: number): void => {
+    const { heights } = this.state;
+    const { height: newHeight } = e.nativeEvent.layout;
+    const arrayToUpdate = [...heights];
+
+    if (newHeight !== arrayToUpdate[index]) {
+      arrayToUpdate[index] = newHeight;
+      this.setState({ heights: arrayToUpdate });
+    }
   };
 
   private goBack = (): void => {

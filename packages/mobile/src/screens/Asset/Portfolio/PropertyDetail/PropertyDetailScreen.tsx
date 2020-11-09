@@ -8,11 +8,11 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
-import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel, Loader } from '@homzhub/mobile/src/components';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { Text } from '@homzhub/common/src/components';
+import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -91,9 +91,6 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
             </View>
             <AssetCard assetData={propertyData} isDetailView enterFullScreen={this.onFullScreenToggle} />
             <TabView
-              lazy
-              renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
-              removeClippedSubviews
               swipeEnabled={false}
               initialLayout={TAB_LAYOUT}
               renderScene={({ route }): React.ReactElement => this.renderTabScene(route)}

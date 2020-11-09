@@ -8,7 +8,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, CheckboxGroup, WithShadowView, ICheckboxGroupData } from '@homzhub/common/src/components';
+import { Button, CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components';
 import AssetHighlightCard from '@homzhub/mobile/src/components/molecules/AssetHighlightCard';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
@@ -79,22 +79,18 @@ export class AssetHighlights extends Component<Props, IState> {
     const highlights = propertyHighlight.filter((item) => item);
     const isButtonDisabled = selectedAmenity.length <= 0 && selectedDetails.length <= 0 && highlights.length <= 0;
     return (
-      <>
-        <View style={styles.container}>
-          {this.renderAmenities()}
-          {this.renderOtherDetails()}
-          {this.renderOtherHighlights()}
-        </View>
-        <WithShadowView>
-          <Button
-            type="primary"
-            title={t('continue')}
-            disabled={isButtonDisabled}
-            containerStyle={styles.buttonStyle}
-            onPress={this.handleContinue}
-          />
-        </WithShadowView>
-      </>
+      <View style={styles.container}>
+        {this.renderAmenities()}
+        {this.renderOtherDetails()}
+        {this.renderOtherHighlights()}
+        <Button
+          type="primary"
+          title={t('continue')}
+          disabled={isButtonDisabled}
+          containerStyle={styles.buttonStyle}
+          onPress={this.handleContinue}
+        />
+      </View>
     );
   }
 
@@ -321,22 +317,20 @@ export default withTranslation()(AssetHighlights);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginHorizontal: 16,
   },
   buttonStyle: {
     flex: 0,
-    margin: 16,
+    marginBottom: 28,
   },
   card: {
     marginBottom: 16,
   },
   iconButton: {
-    backgroundColor: theme.colors.secondaryColor,
     flex: 0,
+    backgroundColor: theme.colors.secondaryColor,
   },
   textInputContainer: {
-    flex: 1,
     borderWidth: 1,
     borderRadius: 4,
     flexDirection: 'row',
@@ -352,7 +346,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addButton: {
-    borderStyle: 'dashed',
+    flex: 0,
     marginTop: 8,
+    borderStyle: 'dashed',
   },
 });

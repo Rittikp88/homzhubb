@@ -14,7 +14,6 @@ import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState, Text } from '@homzhub/common/src/components';
-import { Loader } from '@homzhub/mobile/src/components';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
 import { IVisitByKey, VisitActions, VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -107,8 +106,6 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     return (
       <>
         <TabView
-          lazy
-          renderLazyPlaceholder={(): React.ReactElement => <Loader visible />}
           initialLayout={theme.viewport}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}

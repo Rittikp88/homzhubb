@@ -11,9 +11,10 @@ import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, ImageThumbnail, Text, UploadBox, WithShadowView } from '@homzhub/common/src/components';
+import { Button, ImageThumbnail, Text, UploadBox } from '@homzhub/common/src/components';
 import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IPropertySelectedImages, IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
@@ -54,14 +55,9 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
     return (
       <>
-        <View style={[styles.container, containerStyle]}>
-          <View style={styles.imageContainer}>
-            <View style={styles.imageHeader}>
-              <Text type="small" textType="semiBold" style={styles.headerText}>
-                {t('property:images')}
-              </Text>
-            </View>
-            <View style={styles.uploadContainer}>
+        <View style={containerStyle}>
+          <AssetListingSection title={t('property:images')}>
+            <>
               <UploadBox
                 icon={icons.gallery}
                 header={header}
@@ -69,9 +65,15 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
                 onPress={this.onPhotosUpload}
               />
               {this.renderImages()}
-            </View>
-          </View>
+            </>
+          </AssetListingSection>
           <>{this.renderVideo()}</>
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            containerStyle={styles.buttonStyle}
+            onPress={this.postAttachmentsForProperty}
+          />
         </View>
         <BottomSheet
           isShadowView
@@ -82,14 +84,6 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         >
           <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
         </BottomSheet>
-        <WithShadowView>
-          <Button
-            type="primary"
-            title={t('common:continue')}
-            containerStyle={styles.buttonStyle}
-            onPress={this.postAttachmentsForProperty}
-          />
-        </WithShadowView>
       </>
     );
   }
@@ -377,12 +371,6 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 export default withTranslation()(PropertyImages);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  uploadContainer: {
-    margin: 20,
-  },
   uploadImageContainer: {
     marginVertical: 20,
     flexDirection: 'row',
@@ -404,24 +392,10 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    margin: 16,
+    marginBottom: 20,
   },
   bottomSheetContainer: {
     margin: theme.layout.screenPadding,
-  },
-  imageContainer: {
-    backgroundColor: theme.colors.white,
-  },
-  imageHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderRadius: 4,
-    padding: 15,
-    backgroundColor: theme.colors.moreSeparator,
-  },
-  headerText: {
-    color: theme.colors.darkTint3,
   },
   videoContainer: {
     marginVertical: 20,
