@@ -43,7 +43,7 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
   const total = data?.length ?? 0;
   const detailsCompletionPercentage = lastVisitedStep?.assetCreation?.percentage ?? 0;
   const countryIconUrl = country?.flag;
-  const propertyType = assetType?.name ?? 'unknown';
+  const propertyType = assetType?.name ?? '-';
   const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
     spaces,
     furnishing,
@@ -93,7 +93,7 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
             primaryAddressTextStyles={addressTextStyle}
             subAddressTextStyles={subAddressTextStyle}
             subAddress={subAddress}
-            containerStyle={{ marginVertical: 21 }}
+            containerStyle={styles.addressCountry}
           />
           {amenitiesData.length > 0 && (
             <PropertyAmenities
@@ -149,7 +149,7 @@ const getNextPrevBtnLayout = (callback: (updateIndexBy: number) => void): React.
 };
 
 const getPropertyProgressStatus = (progress: number): React.ReactNode => {
-  return <ProgressBar progress={progress} width={10} containerStyles={{ marginBottom: 20 }} />;
+  return <ProgressBar progress={progress} width={10} containerStyles={styles.progressBar} />;
 };
 
 const styles = StyleSheet.create({
@@ -168,6 +168,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 24,
     paddingBottom: 16,
+  },
+  addressCountry: {
+    marginTop: 8,
+    marginBottom: 16,
   },
   nextBtn: {
     alignItems: 'center',
@@ -205,6 +209,9 @@ const styles = StyleSheet.create({
   propertyInfoBox: {
     justifyContent: undefined,
     marginRight: 16,
+  },
+  progressBar: {
+    marginBottom: 20,
   },
   actionBox: {
     marginHorizontal: 20,
