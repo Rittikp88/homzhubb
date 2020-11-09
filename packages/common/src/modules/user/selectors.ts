@@ -67,6 +67,13 @@ const getUserFinancialYear = (state: IState): { startDate: string; endDate: stri
   const [startMonth, endMonth] = userPreferences.financialYearCode.split('-');
   const currentMonth = DateUtils.getCurrentMonthIndex();
 
+  if (parseInt(endMonth, 10) === 12 && parseInt(startMonth, 10) === 1) {
+    return {
+      startDate: `${DateUtils.getCurrentYear()}-${startMonth}-01`,
+      endDate: `${DateUtils.getCurrentYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+    };
+  }
+
   if (currentMonth >= parseInt(startMonth, 10)) {
     return {
       startDate: `${DateUtils.getCurrentYear()}-${startMonth}-01`,

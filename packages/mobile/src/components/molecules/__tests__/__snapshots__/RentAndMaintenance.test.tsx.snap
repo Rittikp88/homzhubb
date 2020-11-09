@@ -33,18 +33,6 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
         type="large"
       >
         Rent
-        : 
-      </Label>
-      <Label
-        style={
-          Object {
-            "color": "#2CBA67",
-          }
-        }
-        textType="semiBold"
-        type="large"
-      >
-        Paid
       </Label>
     </View>
     <Text
@@ -84,18 +72,6 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
         type="large"
       >
         Deposit
-        : 
-      </Label>
-      <Label
-        style={
-          Object {
-            "color": "#F23C06",
-          }
-        }
-        textType="semiBold"
-        type="large"
-      >
-        Due
       </Label>
     </View>
     <Text

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { groupBy, mapValues, sumBy } from 'lodash';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -15,12 +15,7 @@ import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGr
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import {
-  DateFilter,
-  FINANCIAL_DROPDOWN_DATA,
-  IDropdownObject,
-  MONTH_LABELS,
-} from '@homzhub/common/src/constants/FinanceOverview';
+import { DateFilter, FINANCIAL_DROPDOWN_DATA, IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
 
 enum TabKeys {
   expenses = 1,
@@ -70,7 +65,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
         />
         <View style={styles.dateRow}>
           <View style={styles.dateSection}>
-            <Icon name={icons.calendar} size={22} />
+            <Icon name={icons.calendar} size={22} color={theme.colors.darkTint4} />
             <Label style={styles.dateText} type="large" textType="semiBold">
               {this.getCalendarLabels()}
             </Label>
@@ -170,7 +165,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
       return {
         data1,
         data2,
-        label: MONTH_LABELS,
+        label: MonthNames,
       };
     };
 
@@ -184,14 +179,15 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
           data1: sumForMonth(LedgerTypes.debit),
           data2: sumForMonth(LedgerTypes.credit),
           label: DateFilter.lastMonth
-            ? [MONTH_LABELS[DateUtils.getCurrentMonthIndex() - 1]]
-            : [MONTH_LABELS[DateUtils.getCurrentMonthIndex()]],
+            ? [MonthNames[DateUtils.getCurrentMonthIndex() - 1]]
+            : [MonthNames[DateUtils.getCurrentMonthIndex()]],
         };
     }
   };
 
   public getCalendarLabels = (): string => {
     const { selectedTimeRange } = this.state;
+
     switch (selectedTimeRange) {
       case DateFilter.thisYear:
         return DateUtils.getCurrentYear();
@@ -199,8 +195,18 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
         return DateUtils.getLastMonth();
       case DateFilter.lastYear:
         return DateUtils.getLastYear();
-      case DateFilter.thisFinancialYear:
-        return DateUtils.getCurrentFinancialYear();
+      case DateFilter.thisFinancialYear: {
+        const {
+          financialYear: { startDate, endDate },
+        } = this.props;
+
+        const startMonth = MonthNames[parseInt(startDate.split('-')[1], 10) - 1];
+        const startYear = startDate.split('-')[0];
+        const endMonth = MonthNames[parseInt(endDate.split('-')[1], 10) - 1];
+        const endYear = endDate.split('-')[0];
+
+        return `${startMonth} ${startYear} - ${endMonth} ${endYear}`;
+      }
       default:
         return DateUtils.getCurrentMonth();
     }

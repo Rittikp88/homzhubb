@@ -11,16 +11,13 @@ interface IProps {
 }
 
 export const RentAndMaintenance = ({ rentData, depositData }: IProps): React.ReactElement => {
-  const { label, currencySymbol, amount, status } = rentData;
+  const { label, currencySymbol, amount } = rentData;
   return (
     <View style={styles.container}>
       <View>
         <View style={styles.contentView}>
           <Icon name={icons.home} color={theme.colors.darkTint3} size={20} style={styles.iconStyle} />
-          <Label type="large">{label}: </Label>
-          <Label type="large" textType="semiBold" style={status === 'Due' ? styles.statusError : styles.status}>
-            {status}
-          </Label>
+          <Label type="large">{label}</Label>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
           {`${currencySymbol} ${amount}`}
@@ -29,14 +26,7 @@ export const RentAndMaintenance = ({ rentData, depositData }: IProps): React.Rea
       <View>
         <View style={styles.contentView}>
           <Icon name={icons.settingOutline} color={theme.colors.darkTint3} size={20} style={styles.iconStyle} />
-          <Label type="large">{depositData.label}: </Label>
-          <Label
-            type="large"
-            textType="semiBold"
-            style={depositData.status === 'Due' ? styles.statusError : styles.status}
-          >
-            {depositData.status}
-          </Label>
+          <Label type="large">{depositData.label}</Label>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
           {`${depositData.currencySymbol} ${depositData.amount}`}
@@ -57,12 +47,6 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     marginRight: 8,
-  },
-  status: {
-    color: theme.colors.green,
-  },
-  statusError: {
-    color: theme.colors.error,
   },
   amount: {
     marginTop: 2,
