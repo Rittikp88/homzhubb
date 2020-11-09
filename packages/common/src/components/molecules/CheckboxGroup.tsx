@@ -3,7 +3,7 @@ import { View, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 
 export interface ICheckboxGroupData {
-  id: number;
+  id: number | string;
   label: string;
   isSelected: boolean;
   isDisabled?: boolean;
@@ -11,7 +11,7 @@ export interface ICheckboxGroupData {
 
 export interface ICheckboxGroupProps {
   data: ICheckboxGroupData[];
-  onToggle: (id: number, isSelected: boolean) => void;
+  onToggle: (id: number | string, isSelected: boolean) => void;
   labelStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   testID?: string;

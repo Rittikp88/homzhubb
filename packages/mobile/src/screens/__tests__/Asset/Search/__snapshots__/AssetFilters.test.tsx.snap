@@ -378,27 +378,17 @@ exports[`Asset filter should render snapshot 1`] = `
         >
           common:select
         </Text>
-        <WithShadowView
-          outerViewStyle={
+        <Button
+          containerStyle={
             Object {
-              "marginBottom": 20,
-              "paddingBottom": 0,
-              "paddingTop": 10,
+              "flex": 0,
+              "margin": 16,
             }
           }
-        >
-          <Button
-            containerStyle={
-              Object {
-                "flex": 0,
-                "margin": 16,
-              }
-            }
-            onPress={[Function]}
-            title="showProperties"
-            type="primary"
-          />
-        </WithShadowView>
+          onPress={[Function]}
+          title="showProperties"
+          type="primary"
+        />
       </View>
     </ScrollViewMock>
   </ForwardRef(SafeAreaView)>
