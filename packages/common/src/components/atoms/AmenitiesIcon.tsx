@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { PlatformUtils } from '../../utils/PlatformUtils';
+import { Divider, Typography } from '@homzhub/common/src/components';
 
 interface IProps {
   direction: 'row' | 'column';
@@ -30,30 +29,16 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
   const renderText = (): React.ReactElement => {
     const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
     return (
-      <Text
-        type="small"
-        textType="regular"
+      <Typography
+        variant={PlatformUtils.isWeb() ? 'label' : 'text'}
+        size="regular"
+        fontWeight="regular"
         style={[styles.label, labelStyle]}
         minimumFontScale={0.5}
         adjustsFontSizeToFit
       >
         {label}
-      </Text>
-    );
-  };
-
-  const renderWebText = (): React.ReactElement => {
-    const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
-    return (
-      <Label
-        type="regular"
-        textType="regular"
-        style={[styles.label, labelStyle]}
-        minimumFontScale={0.5}
-        adjustsFontSizeToFit
-      >
-        {label}
-      </Label>
+      </Typography>
     );
   };
 
@@ -62,7 +47,7 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
       <>
         <View style={[styles.columnContainer, containerStyle]}>
           <Icon name={icon} size={iconSize} color={iconColor} />
-          {PlatformUtils.isWeb() ? renderWebText() : renderText()}
+          {renderText()}
         </View>
         {!isLastIndex && direction === 'column' && <Divider containerStyles={styles.divider} />}
       </>
@@ -73,7 +58,7 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
     return (
       <View style={[styles.rowContainer, containerStyle]}>
         <Icon name={icon} size={iconSize} color={iconColor} />
-        {PlatformUtils.isWeb() ? renderWebText() : renderText()}
+        {renderText()}
       </View>
     );
   };

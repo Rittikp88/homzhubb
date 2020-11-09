@@ -11,7 +11,7 @@ export interface ITypographyProps extends TextProps {
   maxLength?: number;
 }
 
-const Typography = ({
+export const Typography = ({
   variant,
   size,
   style,
@@ -33,5 +33,3 @@ const Typography = ({
     </TextField>
   );
 };
-
-export default Typography;

@@ -24,6 +24,7 @@ export { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionP
 export type { ISelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 export { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 export { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+export { Typography } from '@homzhub/common/src/components/atoms/Typography';
 export { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 export type { TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 export { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';

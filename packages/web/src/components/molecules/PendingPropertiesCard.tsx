@@ -8,15 +8,14 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import {
   AmenitiesShieldIconGroup,
   Button,
-  Label,
+  Typography,
   PropertyAddressCountry,
   PropertyAmenities,
-  Text,
 } from '@homzhub/common/src/components';
-import { ProgressBar } from '@homzhub/web/src/components/atoms/ProgressBar';
+import { ProgressBar } from '@homzhub/web/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 
 interface IProps {
@@ -78,16 +77,16 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
     <View style={styles.container}>
       <View style={styles.headerInfo}>
         <Icon name={icons.warning} color={theme.colors.darkTint3} size={16} style={styles.cardIcon} />
-        <Text type="small" textType="semiBold" style={[styles.title, styles.textColor1]}>
+        <Typography variant="text" size="small" fontWeight="semiBold" style={[styles.title, styles.textColor1]}>
           {t('pendingProperties', { total })}
-        </Text>
+        </Typography>
         {getNextPrevBtnLayout(updateCurrentAssetIndex)}
       </View>
       <View style={styles.mainBody}>
         <View style={styles.propertyDetails}>
-          <Label type="regular" textType="regular" style={styles.propertyType}>
+          <Typography variant="label" size="regular" fontWeight="regular" style={styles.propertyType}>
             {propertyType}
-          </Label>
+          </Typography>
           <PropertyAddressCountry
             primaryAddress={primaryAddress}
             countryFlag={countryIconUrl}
@@ -111,9 +110,9 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
       </View>
       <View style={styles.actionBox}>
         {getPropertyProgressStatus(detailsCompletionPercentage)}
-        <Label type="regular" textType="regular" style={styles.actionMsg}>
+        <Typography variant="label" size="regular" fontWeight="regular" style={styles.actionMsg}>
           {t('completeProperty')}
-        </Label>
+        </Typography>
         <Button type="primary" title={t('completeDetails')} containerStyle={styles.actionBtn} />
       </View>
     </View>

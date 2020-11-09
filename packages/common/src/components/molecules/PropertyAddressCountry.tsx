@@ -1,7 +1,8 @@
 import React from 'react';
 import { Image, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Typography, { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
+import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
+import { Typography } from '@homzhub/common/src/components';
 
 interface IProps {
   primaryAddress: string;
@@ -41,8 +42,8 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
       </View>
       <Typography
         variant={subAddressTextStyles?.variant ?? 'text'}
-        size={subAddressTextStyles?.size ?? 'regular'}
-        fontWeight={subAddressTextStyles?.fontWeight ?? 'semiBold'}
+        size={subAddressTextStyles?.size ?? 'small'}
+        fontWeight={subAddressTextStyles?.fontWeight ?? 'regular'}
         style={[styles.subAddress, subAddressStyle]}
         numberOfLines={2}
       >
