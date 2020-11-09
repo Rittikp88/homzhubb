@@ -43,6 +43,7 @@ export { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalen
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 export { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 export { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
+export { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 export { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 export { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 export { UncontrolledCheckboxGroup } from '@homzhub/common/src/components/molecules/UncontrolledCheckboxGroup';

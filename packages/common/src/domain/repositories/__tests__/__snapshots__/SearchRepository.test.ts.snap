@@ -428,6 +428,11 @@ AssetSearch {
       "_leaseListingIds": Array [],
       "_leaseTerm": null,
       "_leaseUnitId": null,
+      "_listingVisits": AssetListingVisits {
+        "_completedVisits": 0,
+        "_missedVisits": 0,
+        "_upcomingVisits": 0,
+      },
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
       "_notifications": Count {
@@ -436,7 +441,6 @@ AssetSearch {
       "_pinCode": "560097",
       "_postedOn": "2020-06-03",
       "_powerBackup": false,
-      "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
       "_saleListingId": null,
       "_saleListingIds": Array [],
@@ -824,6 +828,11 @@ AssetSearch {
       "_leaseListingIds": Array [],
       "_leaseTerm": null,
       "_leaseUnitId": null,
+      "_listingVisits": AssetListingVisits {
+        "_completedVisits": 0,
+        "_missedVisits": 0,
+        "_upcomingVisits": 0,
+      },
       "_longitude": 85.123,
       "_maintenancePaymentSchedule": "",
       "_notifications": Count {
@@ -832,7 +841,6 @@ AssetSearch {
       "_pinCode": "560097",
       "_postedOn": "2020-06-03",
       "_powerBackup": false,
-      "_progressPercentage": 0,
       "_projectName": "Malti Kunj",
       "_saleListingId": null,
       "_saleListingIds": Array [],

@@ -56,7 +56,6 @@ export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
   },

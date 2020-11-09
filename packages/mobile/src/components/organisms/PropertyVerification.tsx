@@ -67,9 +67,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const totalDocuments = existingDocuments.concat(localDocuments);
     return (
       <>
-        <View style={styles.container}>
-          <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
-        </View>
+        <View style={styles.container}>{this.renderVerificationTypes()}</View>
         <Button
           type="primary"
           title={t('common:continue')}
@@ -357,13 +355,9 @@ export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyV
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 16,
     marginTop: 4,
     backgroundColor: theme.colors.white,
-  },
-  proofContainer: {
-    flex: 1,
   },
   proofChild: {
     marginBottom: 10,

@@ -3,6 +3,7 @@ import { Amenity, AmenityGroup, IAmenity } from '@homzhub/common/src/domain/mode
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
+import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListingVisits';
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
@@ -253,9 +254,6 @@ export class Asset {
   @JsonProperty('is_favorite', Boolean, true)
   private _isFavorite = false;
 
-  @JsonProperty('progress_percentage', Number, true)
-  private _progressPercentage = 0;
-
   @JsonProperty('maintenance_payment_schedule', String, true)
   private _maintenancePaymentSchedule = '';
 
@@ -342,6 +340,9 @@ export class Asset {
 
   @JsonProperty('sale_unit_id', Number, true)
   private _saleUnitId: number | null = null;
+
+  @JsonProperty('listing_visits', AssetListingVisits, true)
+  private _listingVisits = new AssetListingVisits();
 
   get projectName(): string {
     return this._projectName;
@@ -456,14 +457,6 @@ export class Asset {
       longitude: this.longitude,
       latitude: this.latitude,
     };
-  }
-
-  get progressPercentage(): number {
-    return this._progressPercentage;
-  }
-
-  get formattedPercentage(): number {
-    return this.progressPercentage / 100;
   }
 
   get maintenancePaymentSchedule(): string {
@@ -605,6 +598,10 @@ export class Asset {
 
   get saleUnitId(): number | null {
     return this._saleUnitId;
+  }
+
+  get listingVisits(): AssetListingVisits {
+    return this._listingVisits;
   }
 
   get listingInfo(): AssetStatusInfo {

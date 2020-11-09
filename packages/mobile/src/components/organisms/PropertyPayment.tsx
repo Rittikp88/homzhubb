@@ -89,7 +89,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           onClear={this.clearPromo}
         />
         <OrderSummary summary={orderSummary} />
-        {orderSummary.amountPayable && (
+        {orderSummary.amountPayable >= 0 && (
           <PaymentGateway
             type="primary"
             title={t('assetFinancial:payNow')}
@@ -137,7 +137,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     } = item;
 
     return (
-      <>
+      <View key={`${item.id}`}>
         <View style={styles.serviceItem}>
           <View style={styles.content}>
             <Text type="small" textType="semiBold" style={styles.serviceName}>
@@ -155,7 +155,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           </TouchableOpacity>
         </View>
         <Divider containerStyles={styles.divider} />
-      </>
+      </View>
     );
   };
 
@@ -223,7 +223,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
   private getOrderSummary = async (data?: IOrderSummaryPayload): Promise<void> => {
     const { propertyId } = this.props;
     const payload: IOrderSummaryPayload = {
-      ...(this.getServiceIds().length > 0 && { value_added_services: this.getServiceIds() }),
+      value_added_services: this.getServiceIds(),
       ...(propertyId && { asset: propertyId }),
       ...(data?.coins && { coins: data.coins }),
       ...(data?.promo_code && { promo_code: data.promo_code }),
