@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.blueTint10,
     alignItems: 'center',
     borderWidth: 0,
+    flex: 0,
   },
   padding: {
     padding: 12,

@@ -3,43 +3,11 @@
 exports[`Asset Notifications Screen should render snapshot 1`] = `
 <Memo(AnimatedProfileHeader)
   isOuterScrollEnabled={true}
+  onBackPress={[Function]}
+  sectionHeader="notification"
+  sectionTitleType="semiBold"
   title="dashboard"
 >
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#FFFFFF",
-        "borderBottomLeftRadius": 0,
-        "borderBottomRightRadius": 0,
-        "borderRadius": 4,
-        "flexDirection": "row",
-        "justifyContent": "flex-start",
-        "padding": 10,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#0084F8"
-      name="left-arrow"
-      onPress={[Function]}
-      size={20}
-      testID="icnBack"
-    />
-    <Text
-      style={
-        Object {
-          "color": "#001B36",
-          "marginLeft": 12,
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      notification
-    </Text>
-  </View>
   <View
     style={
       Array [
@@ -80,43 +48,11 @@ exports[`Asset Notifications Screen should render snapshot 1`] = `
 exports[`Asset Notifications Screen should render snapshot with empty notifications 1`] = `
 <Memo(AnimatedProfileHeader)
   isOuterScrollEnabled={true}
+  onBackPress={[Function]}
+  sectionHeader="notification"
+  sectionTitleType="semiBold"
   title="dashboard"
 >
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#FFFFFF",
-        "borderBottomLeftRadius": 0,
-        "borderBottomRightRadius": 0,
-        "borderRadius": 4,
-        "flexDirection": "row",
-        "justifyContent": "flex-start",
-        "padding": 10,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#0084F8"
-      name="left-arrow"
-      onPress={[Function]}
-      size={20}
-      testID="icnBack"
-    />
-    <Text
-      style={
-        Object {
-          "color": "#001B36",
-          "marginLeft": 12,
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      notification
-    </Text>
-  </View>
   <View
     style={
       Array [

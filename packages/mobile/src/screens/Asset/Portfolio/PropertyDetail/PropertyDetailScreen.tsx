@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
@@ -77,7 +78,6 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
-
     return (
       <>
         <AnimatedProfileHeader
@@ -91,6 +91,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
               assetData={propertyData}
               isDetailView
               enterFullScreen={this.onFullScreenToggle}
+              onCompleteDetails={FunctionUtils.noop}
+              onOfferVisitPress={FunctionUtils.noop}
               containerStyle={styles.card}
             />
             <TabView
@@ -238,9 +240,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { heights } = this.state;
     const { height: newHeight } = e.nativeEvent.layout;
     const arrayToUpdate = [...heights];
-
-    if (newHeight === arrayToUpdate[index]) {
-      arrayToUpdate[index] = newHeight;
+    if (newHeight !== arrayToUpdate[index]) {
+      arrayToUpdate[index] = newHeight * 1.5;
       this.setState({ heights: arrayToUpdate });
     }
   };

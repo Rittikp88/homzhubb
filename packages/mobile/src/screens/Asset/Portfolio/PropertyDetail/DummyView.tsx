@@ -17,6 +17,7 @@ export default DummyView;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    minHeight: 150,
     paddingVertical: 50,
     backgroundColor: theme.colors.white,
   },
