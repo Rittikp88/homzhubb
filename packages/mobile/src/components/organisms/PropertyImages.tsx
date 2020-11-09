@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
@@ -130,15 +130,13 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     return (
       <>
         {coverPhoto}
-        <SafeAreaView>
-          <FlatList
-            data={selectedImages.slice(1, 7)}
-            numColumns={2}
-            renderItem={this.renderImagesList}
-            keyExtractor={this.renderKeyExtractor}
-            testID="ftlistRenderItem"
-          />
-        </SafeAreaView>
+        <FlatList
+          data={selectedImages.slice(1, 7)}
+          numColumns={2}
+          renderItem={this.renderImagesList}
+          keyExtractor={this.renderKeyExtractor}
+          testID="ftlistRenderItem"
+        />
       </>
     );
   };
@@ -377,7 +375,6 @@ const styles = StyleSheet.create({
   },
   uploadImageText: {
     color: theme.colors.darkTint4,
-    flex: 1,
     justifyContent: 'flex-start',
   },
   thumbnailContainer: {

@@ -25,14 +25,11 @@ exports[`AssetCard should match snapshot 1`] = `
   >
     <View
       style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          },
-          false,
-        ]
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
       }
     >
       <View

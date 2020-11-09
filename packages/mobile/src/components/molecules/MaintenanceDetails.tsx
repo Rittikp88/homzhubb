@@ -91,7 +91,6 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginTop: 4,
     flexDirection: 'row',
   },

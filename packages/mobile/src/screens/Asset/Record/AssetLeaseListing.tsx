@@ -142,7 +142,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   public render(): React.ReactNode {
-    const { currentIndex, isStepDone, isSheetVisible } = this.state;
+    const { currentIndex, isStepDone, isSheetVisible, tabViewHeights } = this.state;
     const {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
@@ -182,6 +182,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
           {this.renderTabHeader()}
           <TabView
+            lazy
             initialLayout={TAB_LAYOUT}
             renderScene={this.renderScene}
             onIndexChange={this.handleIndexChange}
@@ -191,6 +192,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
               index: currentIndex,
               routes: this.getRoutes(),
             }}
+            style={{ height: tabViewHeights[currentIndex] }}
           />
         </ScrollView>
         {this.openActionBottomSheet()}
@@ -304,7 +306,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     switch (route.key) {
       case RouteKeys.Verification:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 0)}>
+          <View onLayout={(e): void => this.onLayout(e, 1)}>
             <PropertyVerification
               propertyId={assetDetails.id}
               typeOfPlan={selectedPlan}
@@ -315,7 +317,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         );
       case RouteKeys.Services:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 1)}>
+          <View onLayout={(e): void => this.onLayout(e, 2)}>
             <ValueAddedServicesView
               propertyId={assetDetails.id}
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
@@ -330,7 +332,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         );
       case RouteKeys.Payment:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 2)}>
+          <View onLayout={(e): void => this.onLayout(e, 3)}>
             <PropertyPayment
               goBackToService={this.goBackToServices}
               propertyId={assetDetails.id}
@@ -344,7 +346,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         );
       default:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 3)}>
+          <View onLayout={(e): void => this.onLayout(e, 0)}>
             <ActionController
               assetDetails={assetDetails}
               typeOfPlan={selectedPlan}

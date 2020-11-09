@@ -6,6 +6,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Label } from '@homzhub/common/src/components';
+import { AssetCreationStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProgressBarProps {
   progress?: number;
@@ -15,6 +16,7 @@ interface IProgressBarProps {
   iconColor?: string;
   filledColor?: string;
   isPropertyVacant?: boolean;
+  assetCreation: AssetCreationStep;
   labelStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -30,9 +32,16 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
     iconColor,
     labelStyle = {},
     containerStyle = {},
+    assetCreation,
   } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetPortfolio);
+
+  const getTitle = (): string => {
+    if (!assetCreation.isDetailsDone) return t('addPropertyDetails');
+    if (!assetCreation.isHighlightsDone) return t('addPropertyHighlights');
+    return t('addPropertyImages');
+  };
 
   return (
     <View style={containerStyle}>
@@ -57,7 +66,7 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
       />
       {isPropertyVacant ? (
         <Label type="regular" style={styles.helperMsg}>
-          {t('addPropertyHighlights')}
+          {getTitle()}
         </Label>
       ) : (
         <View style={styles.container}>
@@ -73,7 +82,8 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
   );
 };
 
-export { LeaseProgress };
+const memoizedComponent = React.memo(LeaseProgress);
+export { memoizedComponent as LeaseProgress };
 
 const styles = StyleSheet.create({
   leaseHeading: {

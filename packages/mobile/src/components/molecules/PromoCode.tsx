@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
   },
   textInputContainer: {
-    flex: 1,
     borderWidth: 1,
     borderRadius: 5,
     flexDirection: 'row',

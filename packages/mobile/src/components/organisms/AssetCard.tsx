@@ -3,26 +3,23 @@ import { View, StyleSheet, TouchableOpacity, Image, StyleProp, ViewStyle } from 
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { placeHolderImage } from '@homzhub/common/src/styles/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Avatar, Badge, Button, Divider, Label } from '@homzhub/common/src/components';
+import PlaceHolder from '@homzhub/common/src/assets/images/imageLoader.svg';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Divider,
+  Label,
+  OffersVisitsSection,
+  OffersVisitsType,
+} from '@homzhub/common/src/components';
 import { PropertyAddressCountry, LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-
-const initialCarouselData: Attachment[] = [
-  {
-    link: placeHolderImage,
-    isCoverImage: true,
-    fileName: 'sample',
-    mediaType: 'IMAGE',
-    // @ts-ignore
-    mediaAttributes: {},
-  },
-];
 
 interface IListProps {
   assetData: Asset;
@@ -31,6 +28,8 @@ interface IListProps {
   expandedId?: number;
   onPressArrow?: (id: number) => void;
   enterFullScreen?: (attachments: Attachment[]) => void;
+  onCompleteDetails: (id: number) => void;
+  onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -66,11 +65,11 @@ export class AssetCard extends Component<Props> {
       <View style={styles.mainContainer}>
         <View style={[styles.container, containerStyle]}>
           {!isDetailView && (
-            <View style={[styles.topView, isExpanded && styles.expandedView]}>
+            <View style={styles.topView}>
               <View style={styles.topLeftView}>
                 <Badge
-                  title={assetStatusInfo?.tag.label || ''}
-                  badgeColor={assetStatusInfo?.tag.color || ''}
+                  title={assetStatusInfo?.tag.label ?? ''}
+                  badgeColor={assetStatusInfo?.tag.color ?? ''}
                   badgeStyle={styles.badgeStyle}
                 />
                 {ShowInMvpRelease && (
@@ -102,8 +101,8 @@ export class AssetCard extends Component<Props> {
               {(isExpanded || isDetailView) && this.renderAttachmentView(attachments, handlePropertyView)}
               {isDetailView && (
                 <Badge
-                  title={assetStatusInfo?.tag.label || ''}
-                  badgeColor={assetStatusInfo?.tag.color || ''}
+                  title={assetStatusInfo?.tag.label ?? ''}
+                  badgeColor={assetStatusInfo?.tag.color ?? ''}
                   badgeStyle={[styles.badgeStyle, styles.detailViewBadge]}
                 />
               )}
@@ -121,19 +120,18 @@ export class AssetCard extends Component<Props> {
     );
   }
 
-  private renderAttachmentView = (attachments: Attachment[], handlePropertyView: () => void): React.ReactElement => {
+  private renderAttachmentView = (attachments: Attachment[], handlePropertyView: () => void): React.ReactNode => {
     const { isDetailView, enterFullScreen } = this.props;
-    let item;
-    let handleFullScreen;
-    if (attachments && attachments.length > 0) {
-      // eslint-disable-next-line prefer-destructuring
-      item = attachments[0];
-      handleFullScreen = (): void => enterFullScreen && enterFullScreen(attachments);
-    } else {
-      // eslint-disable-next-line prefer-destructuring
-      item = initialCarouselData[0];
-      handleFullScreen = (): void => enterFullScreen && enterFullScreen(initialCarouselData);
-    }
+    const item = attachments[0];
+    const handleFullScreen = (): void => enterFullScreen && enterFullScreen(attachments);
+
+    if (!item)
+      return (
+        <View style={styles.placeholderImage}>
+          <PlaceHolder width="100%" />
+        </View>
+      );
+
     return (
       <TouchableOpacity onPress={isDetailView ? handleFullScreen : handlePropertyView}>
         {item.mediaType === 'IMAGE' && (
@@ -156,22 +154,23 @@ export class AssetCard extends Component<Props> {
     );
   };
 
-  private renderExpandedView = (): React.ReactElement | null => {
-    const { assetData, t } = this.props;
-    const { assetStatusInfo, formattedPercentage } = assetData;
+  private renderExpandedView = (): React.ReactNode => {
+    const { assetData, t, onOfferVisitPress, isDetailView } = this.props;
 
-    if (!assetStatusInfo) {
-      return null;
-    }
+    if (!assetData || !assetData.assetStatusInfo) return null;
 
     const {
-      action,
-      tag: { label },
-      leaseTenantInfo,
-      leaseListingId,
-      saleListingId,
-      leaseTransaction: { rent, securityDeposit, leasePeriod },
-    } = assetStatusInfo;
+      assetStatusInfo: {
+        action,
+        tag: { label },
+        leaseTenantInfo,
+        leaseListingId,
+        saleListingId,
+        leaseTransaction: { rent, securityDeposit, leasePeriod },
+      },
+      listingVisits: { upcomingVisits, missedVisits, completedVisits },
+      lastVisitedStep: { assetCreation },
+    } = assetData;
 
     const buttonAction = leasePeriod ? leasePeriod.action : action;
     const isListed = leaseListingId || saleListingId;
@@ -189,20 +188,43 @@ export class AssetCard extends Component<Props> {
             <RentAndMaintenance rentData={rent} depositData={securityDeposit} />
           </>
         )}
-        {(leasePeriod || (label === Filters.VACANT && !isListed)) && (
+        {(leasePeriod || (label === Filters.VACANT && assetCreation.percentage < 100)) && (
           <>
             <Divider containerStyles={styles.divider} />
             <LeaseProgress
-              progress={leasePeriod ? leasePeriod.totalSpendPeriod : formattedPercentage}
+              progress={leasePeriod ? leasePeriod.totalSpendPeriod : assetCreation.percentage / 100}
               fromDate={leasePeriod?.leaseStartDate}
               toDate={leasePeriod?.leaseEndDate}
               width={theme.viewport.width > 400 ? 320 : 280}
               isPropertyVacant={label === Filters.VACANT}
+              assetCreation={assetCreation}
             />
+            {assetCreation.percentage < 100 && (
+              <Button
+                type="primary"
+                textType="label"
+                textSize="regular"
+                fontType="semiBold"
+                containerStyle={styles.buttonStyle}
+                title={t('complete')}
+                titleStyle={styles.buttonTitle}
+                onPress={this.onCompleteDetails}
+              />
+            )}
           </>
         )}
+        {isListed && (
+          <OffersVisitsSection
+            onNav={onOfferVisitPress}
+            isDetailView={isDetailView}
+            values={{
+              [OffersVisitsType.offers]: [0, 0, 0],
+              [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
+            }}
+          />
+        )}
         <View style={styles.buttonGroup}>
-          {buttonAction && (
+          {ShowInMvpRelease && buttonAction && (
             <Button
               type="primary"
               textType="label"
@@ -213,20 +235,14 @@ export class AssetCard extends Component<Props> {
               titleStyle={styles.buttonTitle}
             />
           )}
-          {!isListed && formattedPercentage < 100 && (
-            <Button
-              type="primary"
-              textType="label"
-              textSize="regular"
-              fontType="semiBold"
-              containerStyle={styles.buttonStyle}
-              title={t('complete')}
-              titleStyle={styles.buttonTitle}
-            />
-          )}
         </View>
       </>
     );
+  };
+
+  private onCompleteDetails = (): void => {
+    const { onCompleteDetails, assetData } = this.props;
+    onCompleteDetails(assetData.id);
   };
 }
 
@@ -248,9 +264,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  expandedView: {
-    marginBottom: 18,
   },
   topLeftView: {
     flexDirection: 'row',
@@ -284,6 +297,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   image: {
+    marginTop: 12,
     minWidth: theme.viewport.width > 400 ? 350 : 300,
     height: 200,
   },
@@ -306,5 +320,9 @@ const styles = StyleSheet.create({
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  placeholderImage: {
+    backgroundColor: theme.colors.background,
+    marginTop: 12,
   },
 });
