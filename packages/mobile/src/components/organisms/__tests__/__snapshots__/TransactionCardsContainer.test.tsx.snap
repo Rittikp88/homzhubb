@@ -60,9 +60,11 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             "_projectName": "akn",
           },
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "",
             "_id": 0,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -107,9 +109,11 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             "_projectName": "Godrej Prime",
           },
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "Foobar.jpg",
             "_id": 1,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -154,9 +158,11 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             "_projectName": "Godrej Prime",
           },
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "Foobar.jpg",
             "_id": 1,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -201,9 +207,11 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             "_projectName": "Godrej Prime",
           },
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "Foobar.jpg",
             "_id": 1,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -248,9 +256,11 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             "_projectName": "Godrej Prime",
           },
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "Foobar.jpg",
             "_id": 1,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -295,9 +305,11 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             "_projectName": "Godrej Prime",
           },
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "Foobar.jpg",
             "_id": 1,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
@@ -342,9 +354,11 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             "_projectName": "Godrej Prime",
           },
           "_attachment": Attachment {
+            "_attachmentLink": "",
             "_fileName": "Foobar.jpg",
             "_id": 1,
             "_isCoverImage": false,
+            "_label": "",
             "_link": "",
             "_mediaAttributes": MediaAttributes {
               "_duration": "",

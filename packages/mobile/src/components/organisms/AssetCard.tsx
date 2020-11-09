@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { placeHolderImage } from '@homzhub/common/src/styles/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Avatar, Badge, Button, Divider, Label } from '@homzhub/common/src/components';
 import { PropertyAddressCountry, LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const initialCarouselData: Attachment[] = [
   {
@@ -24,7 +26,7 @@ const initialCarouselData: Attachment[] = [
 
 interface IListProps {
   assetData: Asset;
-  onViewProperty?: (id: number) => void;
+  onViewProperty?: (data: ISetAssetPayload) => void;
   isDetailView?: boolean;
   expandedId?: number;
   onPressArrow?: (id: number) => void;
@@ -50,7 +52,10 @@ export class AssetCard extends Component<Props> {
       address,
       country: { flag },
     } = assetData;
-    const handlePropertyView = (): void => onViewProperty && onViewProperty(id);
+
+    const detailPayload: ISetAssetPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
+
+    const handlePropertyView = (): void => onViewProperty && onViewProperty(detailPayload);
     const handleArrowPress = (): void => onPressArrow && onPressArrow(id);
     const isExpanded: boolean = expandedId === id;
     return (

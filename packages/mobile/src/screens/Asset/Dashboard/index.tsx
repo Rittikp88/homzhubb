@@ -21,7 +21,7 @@ import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMar
 import AssetSubscriptionPlan from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
-import { Asset, DataType, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -135,14 +135,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     navigation.navigate(ScreensKeys.MarketTrends);
   };
 
-  private onViewProperty = (id: number): void => {
-    const { setCurrentAsset } = this.props;
-    setCurrentAsset({ id, dataType: DataType.PROPERTIES });
-    /**
-     * navigation.navigate(ScreensKeys.Portfolio, {
-      screen: ScreensKeys.PropertyDetailScreen,
-    });
-     */
+  private onViewProperty = (data: ISetAssetPayload): void => {
+    const { setCurrentAsset, navigation } = this.props;
+    setCurrentAsset(data);
+    navigation.navigate(ScreensKeys.PropertyDetailScreen);
   };
 
   private handleDues = (): void => {

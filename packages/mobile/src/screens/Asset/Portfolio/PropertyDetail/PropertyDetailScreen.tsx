@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import { TabBar, TabView } from 'react-native-tab-view';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel, Loader } from '@homzhub/mobile/src/components';
+import { Text } from '@homzhub/common/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -20,6 +21,11 @@ import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetai
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IPropertyDetailPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
 
 const TAB_LAYOUT = {
@@ -28,10 +34,11 @@ const TAB_LAYOUT = {
 };
 
 interface IStateProps {
-  propertyData: Asset | null;
+  assetPayload: ISetAssetPayload;
 }
 
 interface IDetailState {
+  propertyData: Asset;
   attachments: Attachment[];
   isFullScreen: boolean;
   activeSlide: number;
@@ -49,16 +56,21 @@ type Props = WithTranslation & libraryProps & IStateProps;
 
 export class PropertyDetailScreen extends Component<Props, IDetailState> {
   public state = {
+    propertyData: {} as Asset,
     isFullScreen: false,
     activeSlide: 0,
     attachments: [],
     currentIndex: 0,
   };
 
+  public componentDidMount = async (): Promise<void> => {
+    await this.getAssetDetail();
+  };
+
   public render = (): React.ReactNode => {
-    const { t, propertyData } = this.props;
-    const { currentIndex } = this.state;
-    if (!propertyData) {
+    const { t } = this.props;
+    const { currentIndex, propertyData } = this.state;
+    if (isEmpty(propertyData)) {
       return null;
     }
     return (
@@ -185,6 +197,25 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     this.setState({ currentIndex: index });
   };
 
+  private getAssetDetail = async (): Promise<void> => {
+    const {
+      assetPayload: { asset_id, assetType, listing_id },
+    } = this.props;
+    const payload: IPropertyDetailPayload = {
+      asset_id,
+      id: listing_id,
+      type: assetType,
+    };
+    try {
+      const response = await PortfolioRepository.getPropertyDetail(payload);
+      this.setState({
+        propertyData: response,
+      });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
   private updateSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
@@ -197,7 +228,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   return {
-    propertyData: PortfolioSelectors.getAssetById(state),
+    assetPayload: PortfolioSelectors.getCurrentAssetPayload(state),
   };
 };
 

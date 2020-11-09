@@ -2,14 +2,16 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IData } from '@homzhub/common/src/domain/models/Asset';
-import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
+import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { ISlotItem } from '@homzhub/common/src/domain/models/AssetVisit';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
+import { DetailType, SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 class PropertyUtils {
   public getAmenities = (
@@ -145,6 +147,27 @@ class PropertyUtils {
     const time = timeObj?.formatted.split('-') ?? [''];
 
     return `Join next visit at ${time[0].trim()}, ${date}`;
+  };
+
+  public getAssetPayload = (info: AssetStatusInfo, id: number): ISetAssetPayload => {
+    const { leaseUnitId, saleUnitId, leaseListingId, saleListingId } = info;
+    const { LEASE_UNIT, SALE_UNIT, LEASE_LISTING, SALE_LISTING, ASSET } = DetailType;
+    // TODO: (Shikha) - Need to Refactor
+    /* eslint-disable */
+    return {
+      asset_id: id,
+      listing_id: leaseUnitId ?? saleUnitId ?? leaseUnitId ?? saleListingId ?? 0,
+      assetType: leaseUnitId
+        ? LEASE_UNIT
+        : saleUnitId
+        ? SALE_UNIT
+        : leaseListingId
+        ? LEASE_LISTING
+        : saleListingId
+        ? SALE_LISTING
+        : ASSET,
+    };
+    /* eslint-enable */
   };
 }
 

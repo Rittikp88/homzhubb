@@ -1,16 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { Text, NotificationBox, EmptyState } from '@homzhub/common/src/components';
 import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
 import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
 type Props = WithTranslation & libraryProps;
@@ -144,15 +146,19 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       offset,
       ...(searchText.length > 0 ? { q: searchText } : {}),
     };
-    const response = await DashboardRepository.getAssetNotifications(requestPayload);
-    if (!searchText) {
-      this.setState({
-        notifications: NotificationService.transformNotificationsData(response, notifications),
-      });
-    } else {
-      this.setState({
-        notifications: response,
-      });
+    try {
+      const response = await DashboardRepository.getAssetNotifications(requestPayload);
+      if (!searchText) {
+        this.setState({
+          notifications: NotificationService.transformNotificationsData(response, notifications),
+        });
+      } else {
+        this.setState({
+          notifications: response,
+        });
+      }
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 }

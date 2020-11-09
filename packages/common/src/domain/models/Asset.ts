@@ -275,7 +275,7 @@ export class Asset {
   private _serviceTickets: Count = new Count();
 
   @JsonProperty('asset_status_info', AssetStatusInfo, true)
-  private _assetStatusInfo: AssetStatusInfo = new AssetStatusInfo();
+  private _assetStatusInfo: AssetStatusInfo | null = null;
 
   @JsonProperty('visit_date', String, true)
   private _visitDate = '';
@@ -329,13 +329,19 @@ export class Asset {
   private _leaseListingIds = [];
 
   @JsonProperty('sale_listing_id', Number, true)
-  private _saleListingId = -1;
+  private _saleListingId: number | null = null;
 
   @JsonProperty('lease_listing_id', Number, true)
-  private _leaseListingId = -1;
+  private _leaseListingId: number | null = null;
 
   @JsonProperty('app_permissions', AppPermission, true)
   private _appPermissions = null;
+
+  @JsonProperty('lease_unit_id', Number, true)
+  private _leaseUnitId: number | null = null;
+
+  @JsonProperty('sale_unit_id', Number, true)
+  private _saleUnitId: number | null = null;
 
   get projectName(): string {
     return this._projectName;
@@ -476,7 +482,7 @@ export class Asset {
     return this._serviceTickets;
   }
 
-  get assetStatusInfo(): AssetStatusInfo {
+  get assetStatusInfo(): AssetStatusInfo | null {
     return this._assetStatusInfo;
   }
 
@@ -585,11 +591,23 @@ export class Asset {
     return this._leaseListingIds;
   }
 
-  get saleListingId(): number {
+  get saleListingId(): number | null {
     return this._saleListingId;
   }
 
-  get leaseListingId(): number {
+  get leaseListingId(): number | null {
     return this._leaseListingId;
+  }
+
+  get leaseUnitId(): number | null {
+    return this._leaseUnitId;
+  }
+
+  get saleUnitId(): number | null {
+    return this._saleUnitId;
+  }
+
+  get listingInfo(): AssetStatusInfo {
+    return new AssetStatusInfo(this.leaseListingId, this.saleListingId, this.leaseUnitId, this.saleUnitId);
   }
 }
