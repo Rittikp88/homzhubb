@@ -16,9 +16,8 @@ export default DummyView;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    paddingTop: 50,
+    paddingVertical: 50,
     backgroundColor: theme.colors.white,
   },
 });

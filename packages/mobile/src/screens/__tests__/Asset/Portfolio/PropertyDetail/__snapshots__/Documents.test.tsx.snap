@@ -29,7 +29,6 @@ exports[`Documents Screen should render snapshot 1`] = `
   style={
     Object {
       "backgroundColor": "#FFFFFF",
-      "flex": 1,
       "padding": 16,
     }
   }
@@ -68,7 +67,6 @@ exports[`Documents Screen should render snapshot with documents 1`] = `
   style={
     Object {
       "backgroundColor": "#FFFFFF",
-      "flex": 1,
       "padding": 16,
     }
   }

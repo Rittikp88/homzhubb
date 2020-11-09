@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, StyleProp, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -31,6 +31,7 @@ interface IListProps {
   expandedId?: number;
   onPressArrow?: (id: number) => void;
   enterFullScreen?: (attachments: Attachment[]) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 type Props = WithTranslation & IListProps;
@@ -39,7 +40,7 @@ const ShowInMvpRelease = false;
 
 export class AssetCard extends Component<Props> {
   public render(): React.ReactNode {
-    const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0 } = this.props;
+    const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0, containerStyle } = this.props;
     const {
       id,
       projectName,
@@ -52,21 +53,24 @@ export class AssetCard extends Component<Props> {
       address,
       country: { flag },
     } = assetData;
+    let detailPayload: ISetAssetPayload;
 
-    const detailPayload: ISetAssetPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
+    if (assetStatusInfo) {
+      detailPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
+    }
 
     const handlePropertyView = (): void => onViewProperty && onViewProperty(detailPayload);
     const handleArrowPress = (): void => onPressArrow && onPressArrow(id);
     const isExpanded: boolean = expandedId === id;
     return (
       <View style={styles.mainContainer}>
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
           {!isDetailView && (
             <View style={[styles.topView, isExpanded && styles.expandedView]}>
               <View style={styles.topLeftView}>
                 <Badge
-                  title={assetStatusInfo?.tag.label}
-                  badgeColor={assetStatusInfo?.tag.color}
+                  title={assetStatusInfo?.tag.label || ''}
+                  badgeColor={assetStatusInfo?.tag.color || ''}
                   badgeStyle={styles.badgeStyle}
                 />
                 {ShowInMvpRelease && (
@@ -98,8 +102,8 @@ export class AssetCard extends Component<Props> {
               {(isExpanded || isDetailView) && this.renderAttachmentView(attachments, handlePropertyView)}
               {isDetailView && (
                 <Badge
-                  title={assetStatusInfo?.tag.label}
-                  badgeColor={assetStatusInfo?.tag.color}
+                  title={assetStatusInfo?.tag.label || ''}
+                  badgeColor={assetStatusInfo?.tag.color || ''}
                   badgeStyle={[styles.badgeStyle, styles.detailViewBadge]}
                 />
               )}
@@ -152,19 +156,22 @@ export class AssetCard extends Component<Props> {
     );
   };
 
-  private renderExpandedView = (): React.ReactElement => {
+  private renderExpandedView = (): React.ReactElement | null => {
     const { assetData, t } = this.props;
+    const { assetStatusInfo, formattedPercentage } = assetData;
+
+    if (!assetStatusInfo) {
+      return null;
+    }
+
     const {
-      assetStatusInfo: {
-        action,
-        tag: { label },
-        leaseTenantInfo,
-        leaseListingId,
-        saleListingId,
-        leaseTransaction: { rent, securityDeposit, leasePeriod },
-      },
-      formattedPercentage,
-    } = assetData;
+      action,
+      tag: { label },
+      leaseTenantInfo,
+      leaseListingId,
+      saleListingId,
+      leaseTransaction: { rent, securityDeposit, leasePeriod },
+    } = assetStatusInfo;
 
     const buttonAction = leasePeriod ? leasePeriod.action : action;
     const isListed = leaseListingId || saleListingId;

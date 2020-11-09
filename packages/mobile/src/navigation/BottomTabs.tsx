@@ -60,12 +60,12 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
-  [ScreensKeys.PropertyDetailScreen]: undefined;
+  [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
 };
 
 export type PortfolioNavigatorParamList = {
   [ScreensKeys.PortfolioLandingScreen]: undefined;
-  [ScreensKeys.PropertyDetailScreen]: undefined;
+  [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;

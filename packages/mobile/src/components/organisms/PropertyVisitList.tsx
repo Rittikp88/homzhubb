@@ -87,7 +87,9 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             })}
           </ScrollView>
         ) : (
-          <EmptyState icon={icons.schedule} title={t('noVisits')} />
+          <View style={styles.emptyView}>
+            <EmptyState icon={icons.schedule} title={t('noVisits')} />
+          </View>
         )}
         <Loader visible={isLoading} />
         {this.renderCancelConfirmation()}
@@ -355,7 +357,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   scrollView: {
-    flex: 1,
     height: 450,
   },
   count: {
@@ -391,5 +392,8 @@ const styles = StyleSheet.create({
   confirmationTitle: {
     marginVertical: 0,
     paddingVertical: 8,
+  },
+  emptyView: {
+    marginBottom: 20,
   },
 });

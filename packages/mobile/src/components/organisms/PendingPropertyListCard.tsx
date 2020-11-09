@@ -58,20 +58,26 @@ export class PendingPropertyListCard extends Component<Props, IState> {
           </View>
           {data.length > 1 && (
             <View style={styles.headingContent}>
-              <TouchableOpacity style={styles.iconStyle}>
+              <TouchableOpacity
+                style={styles.iconStyle}
+                disabled={currentPropertyIndex === 0}
+                onPress={this.handlePrevious}
+              >
                 <Icon
                   name={icons.leftArrow}
                   size={16}
-                  onPress={this.handlePrevious}
                   color={currentPropertyIndex === 0 ? theme.colors.darkTint4 : theme.colors.primaryColor}
                   testID="icnPrevious"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconStyle} disabled={currentPropertyIndex === total - 1}>
+              <TouchableOpacity
+                style={styles.iconStyle}
+                disabled={currentPropertyIndex === total - 1}
+                onPress={this.handleNext}
+              >
                 <Icon
                   name={icons.rightArrow}
                   size={16}
-                  onPress={this.handleNext}
                   color={currentPropertyIndex === total - 1 ? theme.colors.darkTint4 : theme.colors.primaryColor}
                   testID="icnNext"
                 />

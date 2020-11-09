@@ -10,6 +10,7 @@ interface IOwnProps {
   titleFontWeight?: FontWeightType;
   subTitle?: string;
   icon?: string;
+  iconSize?: number;
   handleIcon?: () => void;
   onIconPress?: () => void;
   onClearPress?: () => void;
@@ -31,6 +32,7 @@ export class HeaderCard extends React.PureComponent<IOwnProps> {
       icon,
       handleIcon,
       headerStyle,
+      iconSize = 30,
       titleTextSize = 'regular',
       titleFontWeight = 'bold',
     } = this.props;
@@ -40,7 +42,7 @@ export class HeaderCard extends React.PureComponent<IOwnProps> {
         <View style={[styles.headerView, headerStyle]}>
           <View style={styles.iconContainer}>
             <Icon
-              size={30}
+              size={iconSize}
               name={icons.leftArrow}
               color={theme.colors.primaryColor}
               style={styles.iconStyle}
