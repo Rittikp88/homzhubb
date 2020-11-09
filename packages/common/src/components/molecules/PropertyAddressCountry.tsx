@@ -1,35 +1,53 @@
 import React from 'react';
-import { StyleSheet, View, StyleProp, TextStyle, ViewStyle, Image } from 'react-native';
+import { Image, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components';
+import Typography, { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 
 interface IProps {
   primaryAddress: string;
   subAddress: string;
   countryFlag: string;
+  primaryAddressTextStyles?: ITypographyProps;
+  subAddressTextStyles?: ITypographyProps;
   primaryAddressStyle?: StyleProp<TextStyle>;
   subAddressStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const PropertyAddressCountry = (props: IProps): React.ReactElement => {
-  const { primaryAddress, subAddress, primaryAddressStyle, subAddressStyle, containerStyle = {}, countryFlag } = props;
+  const {
+    primaryAddress,
+    subAddress,
+    primaryAddressTextStyles,
+    subAddressTextStyles,
+    primaryAddressStyle,
+    subAddressStyle,
+    containerStyle = {},
+    countryFlag,
+  } = props;
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
       <View style={styles.flexRow}>
         <Image source={{ uri: countryFlag }} style={styles.flagStyle} />
-        <Text
-          type="regular"
-          textType="semiBold"
+        <Typography
+          variant={primaryAddressTextStyles?.variant ?? 'text'}
+          size={primaryAddressTextStyles?.size ?? 'regular'}
+          fontWeight={primaryAddressTextStyles?.fontWeight ?? 'semiBold'}
           style={[styles.propertyNameText, primaryAddressStyle]}
           numberOfLines={1}
         >
           {primaryAddress}
-        </Text>
+        </Typography>
       </View>
-      <Text type="small" textType="regular" style={[styles.subAddress, subAddressStyle]}>
+      <Typography
+        variant={subAddressTextStyles?.variant ?? 'text'}
+        size={subAddressTextStyles?.size ?? 'regular'}
+        fontWeight={subAddressTextStyles?.fontWeight ?? 'semiBold'}
+        style={[styles.subAddress, subAddressStyle]}
+        numberOfLines={2}
+      >
         {subAddress}
-      </Text>
+      </Typography>
     </View>
   );
 };

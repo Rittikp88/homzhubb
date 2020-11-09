@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Favorite, Image, Label, PricePerUnit } from '@homzhub/common/src/components';
-import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
+import { Favorite, Image, Label, PropertyAmenities, PricePerUnit } from '@homzhub/common/src/components';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 

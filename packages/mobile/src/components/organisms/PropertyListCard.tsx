@@ -1,12 +1,17 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, PricePerUnit, PropertyAddress, TextSizeType } from '@homzhub/common/src/components';
+import {
+  Divider,
+  PricePerUnit,
+  PropertyAddress,
+  PropertyAmenities,
+  TextSizeType,
+} from '@homzhub/common/src/components';
 import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 import { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
-import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 

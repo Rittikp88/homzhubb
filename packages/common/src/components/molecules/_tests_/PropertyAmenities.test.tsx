@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 
 let props: any;
 let wrapper: ShallowWrapper;

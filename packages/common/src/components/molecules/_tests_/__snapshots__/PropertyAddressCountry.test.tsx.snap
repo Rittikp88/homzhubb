@@ -34,8 +34,10 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
         }
       }
     />
-    <Text
+    <Typography
+      fontWeight="semiBold"
       numberOfLines={1}
+      size="regular"
       style={
         Array [
           Object {
@@ -48,13 +50,15 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
           undefined,
         ]
       }
-      textType="semiBold"
-      type="regular"
+      variant="text"
     >
       2 BHK
-    </Text>
+    </Typography>
   </View>
-  <Text
+  <Typography
+    fontWeight="semiBold"
+    numberOfLines={2}
+    size="regular"
     style={
       Array [
         Object {
@@ -64,10 +68,9 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
         undefined,
       ]
     }
-    textType="regular"
-    type="small"
+    variant="text"
   >
     Delhi
-  </Text>
+  </Typography>
 </View>
 `;

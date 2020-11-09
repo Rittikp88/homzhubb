@@ -1,4 +1,4 @@
 export enum AssetGroupTypes {
-  COM = 'COM',
-  RES = 'RES',
+  COM = 'COM', // Commercial
+  RES = 'RES', // Residential
 }

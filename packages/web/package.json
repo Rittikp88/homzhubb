@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@homzhub/common": "0.0.1",
+    "@homzhub/mobile": "0.0.1",
     "crypto-js": "^4.0.0",
     "env-cmd": "^10.1.0",
     "exenv": "1.2.2",

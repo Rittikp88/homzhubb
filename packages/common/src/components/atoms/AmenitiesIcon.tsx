@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { PlatformUtils } from '../../utils/PlatformUtils';
 
 interface IProps {
   direction: 'row' | 'column';
@@ -41,12 +42,27 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
     );
   };
 
+  const renderWebText = (): React.ReactElement => {
+    const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
+    return (
+      <Label
+        type="regular"
+        textType="regular"
+        style={[styles.label, labelStyle]}
+        minimumFontScale={0.5}
+        adjustsFontSizeToFit
+      >
+        {label}
+      </Label>
+    );
+  };
+
   const renderColumn = (): React.ReactElement => {
     return (
       <>
-        <View style={styles.columnContainer}>
+        <View style={[styles.columnContainer, containerStyle]}>
           <Icon name={icon} size={iconSize} color={iconColor} />
-          {renderText()}
+          {PlatformUtils.isWeb() ? renderWebText() : renderText()}
         </View>
         {!isLastIndex && direction === 'column' && <Divider containerStyles={styles.divider} />}
       </>
@@ -57,7 +73,7 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
     return (
       <View style={[styles.rowContainer, containerStyle]}>
         <Icon name={icon} size={iconSize} color={iconColor} />
-        {renderText()}
+        {PlatformUtils.isWeb() ? renderWebText() : renderText()}
       </View>
     );
   };
