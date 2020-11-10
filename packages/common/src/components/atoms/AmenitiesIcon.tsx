@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Divider, Typography } from '@homzhub/common/src/components';
 
 interface IProps {
   direction: 'row' | 'column';
@@ -29,22 +29,23 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
   const renderText = (): React.ReactElement => {
     const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
     return (
-      <Text
-        type="small"
-        textType="regular"
+      <Typography
+        variant={PlatformUtils.isWeb() ? 'label' : 'text'}
+        size="regular"
+        fontWeight="regular"
         style={[styles.label, labelStyle]}
         minimumFontScale={0.5}
         adjustsFontSizeToFit
       >
         {label}
-      </Text>
+      </Typography>
     );
   };
 
   const renderColumn = (): React.ReactElement => {
     return (
       <>
-        <View style={styles.columnContainer}>
+        <View style={[styles.columnContainer, containerStyle]}>
           <Icon name={icon} size={iconSize} color={iconColor} />
           {renderText()}
         </View>

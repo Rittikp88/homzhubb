@@ -38,9 +38,7 @@ export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/Mai
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { OtpTypes } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
-export { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 export { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
-export { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAddressCountry';
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
 export { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';

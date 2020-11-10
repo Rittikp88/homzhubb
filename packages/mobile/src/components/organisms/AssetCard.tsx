@@ -13,8 +13,9 @@ import {
   Label,
   OffersVisitsSection,
   OffersVisitsType,
+  PropertyAddressCountry,
 } from '@homzhub/common/src/components';
-import { PropertyAddressCountry, LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
+import { LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
