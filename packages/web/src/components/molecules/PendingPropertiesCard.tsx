@@ -8,11 +8,11 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import {
   AmenitiesShieldIconGroup,
   Button,
-  Typography,
   PropertyAddressCountry,
   PropertyAmenities,
+  Typography,
 } from '@homzhub/common/src/components';
-import { ProgressBar } from '@homzhub/web/src/components';
+import { NextPrevBtn, ProgressBar } from '@homzhub/web/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
@@ -80,7 +80,7 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
         <Typography variant="text" size="small" fontWeight="semiBold" style={[styles.title, styles.textColor1]}>
           {t('pendingProperties', { total })}
         </Typography>
-        {getNextPrevBtnLayout(updateCurrentAssetIndex)}
+        <NextPrevBtn onBtnClick={updateCurrentAssetIndex} />
       </View>
       <View style={styles.mainBody}>
         <View style={styles.propertyDetails}>
@@ -119,35 +119,6 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
   );
 };
 
-const getNextPrevBtnLayout = (callback: (updateIndexBy: number) => void): React.ReactNode => {
-  const onPrevBtnClick = (): void => {
-    callback(-1);
-  };
-  const onNextBtnClick = (): void => {
-    callback(1);
-  };
-  return (
-    <>
-      <Button
-        type="secondary"
-        icon={icons.leftArrow}
-        iconSize={18}
-        iconColor={theme.colors.primaryColor}
-        containerStyle={styles.nextBtn}
-        onPress={onPrevBtnClick}
-      />
-      <Button
-        type="secondary"
-        icon={icons.rightArrow}
-        iconSize={18}
-        iconColor={theme.colors.primaryColor}
-        containerStyle={styles.nextBtn}
-        onPress={onNextBtnClick}
-      />
-    </>
-  );
-};
-
 const getPropertyProgressStatus = (progress: number): React.ReactNode => {
   return <ProgressBar progress={progress} width={10} containerStyles={styles.progressBar} />;
 };
@@ -172,15 +143,6 @@ const styles = StyleSheet.create({
   addressCountry: {
     marginTop: 8,
     marginBottom: 16,
-  },
-  nextBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 32,
-    height: 24,
-    border: 'none',
-    marginLeft: 8,
-    backgroundColor: theme.colors.lightGrayishBlue,
   },
   mainBody: {
     flexDirection: 'row',
