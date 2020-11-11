@@ -49,8 +49,8 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
       return null;
     }
 
-    return transactionsData.map((item) => (
-      <TransactionCard key={`${item.id}`} transaction={item} handleDownload={this.onDownloadDocument} />
+    return transactionsData.map((item, index) => (
+      <TransactionCard key={`${item.id}-${index}`} transaction={item} handleDownload={this.onDownloadDocument} />
     ));
   };
 

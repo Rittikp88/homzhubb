@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -83,9 +83,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
             {t('common:skip')}
           </Text>
         </View>
-        <View>
-          <FlatList data={assetPlan} renderItem={this.renderItem} keyExtractor={this.renderKeyExtractor} />
-        </View>
+        {assetPlan.map(this.renderItem)}
       </>
     );
   };
@@ -114,7 +112,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     );
   };
 
-  public renderItem = ({ item, index }: { item: AssetPlan; index: number }): React.ReactElement => {
+  public renderItem = (item: AssetPlan, index: number): React.ReactElement => {
     const { assetPlan, setSelectedPlan, navigation } = this.props;
 
     const onPress = (): void => {
@@ -124,7 +122,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     const isLastIndex = assetPlan.length === index + 1;
 
     return (
-      <>
+      <View key={`${item.id}-${index}`}>
         <TouchableOpacity onPress={onPress} style={styles.assetPlanItem} key={index}>
           <View style={styles.flexRow}>
             <Icon name={item.icon} size={25} color={theme.colors.primaryColor} />
@@ -140,12 +138,8 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
           <Icon name={icons.rightArrow} size={22} color={theme.colors.primaryColor} />
         </TouchableOpacity>
         {!isLastIndex && <Divider />}
-      </>
+      </View>
     );
-  };
-
-  private renderKeyExtractor = (item: AssetPlan, index: number): string => {
-    return `${item.id}-${index}`;
   };
 
   public renderAdvertisements = (): React.ReactNode => {

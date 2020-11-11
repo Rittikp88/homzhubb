@@ -243,6 +243,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
+    this.scrollToTop();
   };
 
   private handleSkip = (): void => {
@@ -250,7 +251,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     const { navigation } = this.props;
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
-      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      this.scrollToTop();
     } else {
       navigation.navigate(ScreensKeys.AssetPlanSelection);
     }
@@ -268,7 +269,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     const notCompletedStep = assetCreation.stepList.findIndex((item) => !item);
     if (index < currentIndex || (index > currentIndex && index !== notCompletedStep)) {
       this.setState({ currentIndex: currentIndex + value, isNextStep: true });
-      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      this.scrollToTop();
     }
   };
 
@@ -279,10 +280,14 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     getAssetById();
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
-      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      this.scrollToTop();
     } else {
       navigation.navigate(ScreensKeys.AssetPlanSelection);
     }
+  };
+
+  private scrollToTop = (): void => {
+    this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   };
 }
 

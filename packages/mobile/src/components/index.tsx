@@ -69,7 +69,7 @@ export { PropertySpaces } from '@homzhub/mobile/src/components/organisms/Propert
 export { SignUpForm } from '@homzhub/mobile/src/components/organisms/SignUpForm';
 export { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 export { SocialMediaComponent } from '@homzhub/mobile/src/components/organisms/SocialMediaComponent';
-export { TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
+export { default as TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 
 // HOC
 export { AnimatedServiceList } from '@homzhub/mobile/src/components/HOC/AnimatedServiceList';

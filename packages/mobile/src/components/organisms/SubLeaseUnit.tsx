@@ -22,7 +22,7 @@ import {
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
-import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
+import { FlowTypes, PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
@@ -214,7 +214,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                 <Text type="small" textType="semiBold" style={styles.title}>
                   {t('spacesText')}
                 </Text>
-                <PropertySpaces spacesTypes={spaces} onChange={handleSpaceFormChange} />
+                <PropertySpaces flowType={FlowTypes.LeaseFlow} spacesTypes={spaces} onChange={handleSpaceFormChange} />
                 <FurnishingSelection
                   value={furnishingType}
                   onFurnishingChange={setFurnishingType}
@@ -266,7 +266,6 @@ export { memoizedComponent as SubLeaseUnit };
 
 const styles = StyleSheet.create({
   continue: {
-    flex: 1,
     marginTop: 20,
     marginBottom: 50,
   },

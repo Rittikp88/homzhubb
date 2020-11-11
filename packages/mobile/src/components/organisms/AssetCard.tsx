@@ -196,7 +196,6 @@ export class AssetCard extends Component<Props> {
               progress={leasePeriod ? leasePeriod.totalSpendPeriod : assetCreation.percentage / 100}
               fromDate={leasePeriod?.leaseStartDate}
               toDate={leasePeriod?.leaseEndDate}
-              width={theme.viewport.width > 400 ? 320 : 280}
               isPropertyVacant={label === Filters.VACANT}
               assetCreation={assetCreation}
             />

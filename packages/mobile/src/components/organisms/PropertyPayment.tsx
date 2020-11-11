@@ -89,7 +89,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           onClear={this.clearPromo}
         />
         <OrderSummary summary={orderSummary} />
-        {orderSummary.amountPayable >= 0 && (
+        {orderSummary.amountPayable > 0 && (
           <PaymentGateway
             type="primary"
             title={t('assetFinancial:payNow')}

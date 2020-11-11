@@ -37,6 +37,7 @@ class AssetHighlightCard extends Component<IProps, IState> {
             containerStyle={styles.carouselContainer}
           />
           <PaginationComponent
+            containerStyle={styles.pagination}
             dotsLength={formattedData.length}
             activeSlide={activeSlide}
             activeDotStyle={styles.activeDot}
@@ -106,6 +107,9 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingTop: 16,
+  },
+  pagination: {
+    paddingVertical: 0,
   },
   amenityItem: {
     width: (theme.viewport.width - 32) / 3,

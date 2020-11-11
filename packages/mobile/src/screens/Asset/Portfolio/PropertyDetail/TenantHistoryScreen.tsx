@@ -85,15 +85,15 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
     const { tenantUser, leaseTransaction } = item;
     return (
       <View style={styles.content}>
-        <Avatar fullName={tenantUser?.fullName ?? ''} designation="Tenant" containerStyle={styles.avatar} />
+        <Avatar
+          designation={t('property:tenant')}
+          fullName={tenantUser?.fullName ?? ''}
+          containerStyle={styles.avatar}
+        />
         <LeaseProgress
           progress={leaseTransaction?.totalSpendPeriod}
-          width={theme.viewport.width > 400 ? 320 : 280}
           fromDate={leaseTransaction?.leaseStartDate ?? ''}
           toDate={leaseTransaction?.leaseEndDate ?? ''}
-          iconColor={theme.colors.darkTint5}
-          containerStyle={styles.progressContainer}
-          labelStyle={styles.progressLabel}
         />
         <Button
           type="secondary"
@@ -180,12 +180,6 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginBottom: 24,
-  },
-  progressContainer: {
-    marginLeft: 10,
-  },
-  progressLabel: {
-    color: theme.colors.darkTint4,
   },
   buttonStyle: {
     borderWidth: 0,

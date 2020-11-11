@@ -14,6 +14,7 @@ describe('Test cases for FormDropdown', () => {
     touched: {
       name: 'test',
     },
+    setFieldValue: jest.fn(),
   };
   const options = [
     {

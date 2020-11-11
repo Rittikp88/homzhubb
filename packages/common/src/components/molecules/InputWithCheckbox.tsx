@@ -43,13 +43,13 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
 
 const styles = StyleSheet.create({
   inputWithCheckbox: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 4,
     borderColor: theme.colors.disabled,
+    marginTop: 8,
   },
   checkboxStyle: {
     padding: 10,

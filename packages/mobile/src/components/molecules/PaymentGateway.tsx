@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 // @ts-ignore
 import RazorpayCheckout from 'react-native-razorpay';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -47,7 +48,7 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
     const { loading } = this.state;
     return (
       <>
-        <Button {...this.props} onPress={this.onPress} />
+        <Button {...this.props} onPress={this.onPress} containerStyle={styles.button} />
         <Loader visible={loading} />
       </>
     );
@@ -93,3 +94,10 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
       });
   };
 }
+
+const styles = StyleSheet.create({
+  button: {
+    flex: 0,
+    marginHorizontal: 16,
+  },
+});
