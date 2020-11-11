@@ -17,7 +17,7 @@ import { Button, Divider, Label, SelectionPicker, Text, WithShadowView } from '@
 import { CollapsibleSection, Header, Loader, StateAwareComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
-import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
+import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
 import { AssetVisit, ISlotItem } from '@homzhub/common/src/domain/models/AssetVisit';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';

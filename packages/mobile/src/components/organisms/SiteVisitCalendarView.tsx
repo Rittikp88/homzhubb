@@ -12,7 +12,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Avatar, Badge, Button, Divider, EmptyState } from '@homzhub/common/src/components';
 import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader';
-import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
+import { CalendarComponent } from '@homzhub/mobile/src/components/atoms/CalendarComponent';
 import { BottomSheet, Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
 import { AssetVisit, ISlotItem, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { AmenitiesIcon } from '@homzhub/common/src/components';
+import { AmenitiesIcon } from '@homzhub/common/src/components/atoms/AmenitiesIcon';
 
 interface IAmenitiesData {
   icon: string;

@@ -19,9 +19,11 @@ exports[`AmenitiesIcon should match snapshot 1`] = `
     name="balcony"
     size={40}
   />
-  <Text
+  <Typography
     adjustsFontSizeToFit={true}
+    fontWeight="regular"
     minimumFontScale={0.5}
+    size="small"
     style={
       Array [
         Object {
@@ -32,11 +34,10 @@ exports[`AmenitiesIcon should match snapshot 1`] = `
         },
       ]
     }
-    textType="regular"
-    type="small"
+    variant="text"
   >
     Some Label
-  </Text>
+  </Typography>
 </View>
 `;
 
@@ -61,9 +62,11 @@ exports[`AmenitiesIcon should match snapshot 2`] = `
       name="balcony"
       size={40}
     />
-    <Text
+    <Typography
       adjustsFontSizeToFit={true}
+      fontWeight="regular"
       minimumFontScale={0.5}
+      size="small"
       style={
         Array [
           Object {
@@ -74,11 +77,10 @@ exports[`AmenitiesIcon should match snapshot 2`] = `
           },
         ]
       }
-      textType="regular"
-      type="small"
+      variant="text"
     >
       Some Label
-    </Text>
+    </Typography>
   </View>
   <Divider
     containerStyles={

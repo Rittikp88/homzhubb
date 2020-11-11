@@ -39,7 +39,6 @@ export { DetailedHeader } from '@homzhub/common/src/components/molecules/Detaile
 export { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 export type { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 export { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-export { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 export { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 export { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 export { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';

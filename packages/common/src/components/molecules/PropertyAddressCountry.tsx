@@ -1,8 +1,7 @@
 import React from 'react';
 import { Image, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
-import { Typography } from '@homzhub/common/src/components';
+import { ITypographyProps, Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 interface IProps {
   primaryAddress: string;

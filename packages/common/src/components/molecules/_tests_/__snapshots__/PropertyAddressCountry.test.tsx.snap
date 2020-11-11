@@ -56,9 +56,9 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
     </Typography>
   </View>
   <Typography
-    fontWeight="semiBold"
+    fontWeight="regular"
     numberOfLines={2}
-    size="regular"
+    size="small"
     style={
       Array [
         Object {

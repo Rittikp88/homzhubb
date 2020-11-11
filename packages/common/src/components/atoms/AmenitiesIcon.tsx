@@ -3,7 +3,8 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, Typography } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 interface IProps {
   direction: 'row' | 'column';
@@ -31,7 +32,7 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
     return (
       <Typography
         variant={PlatformUtils.isWeb() ? 'label' : 'text'}
-        size="regular"
+        size={PlatformUtils.isWeb() ? 'regular' : 'small'}
         fontWeight="regular"
         style={[styles.label, labelStyle]}
         minimumFontScale={0.5}

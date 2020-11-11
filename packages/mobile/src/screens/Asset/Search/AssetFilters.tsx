@@ -24,7 +24,7 @@ import {
   Text,
   ICheckboxGroupData,
 } from '@homzhub/common/src/components';
-import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
+import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
 import { BottomSheet } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
 import { IFacing, IFilter, IFilterDetails, IPropertyAmenities } from '@homzhub/common/src/domain/models/Search';

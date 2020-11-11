@@ -24,7 +24,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ILeadPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILeadPayload, ISendNotificationPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -808,14 +808,29 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     });
   };
 
-  private onDone = (): void => {
-    const { navigation } = this.props;
+  private onDone = async (): Promise<void> => {
+    const { navigation, assetDetails } = this.props;
+    if (!assetDetails) return;
+
+    const { leaseTerm, saleTerm } = assetDetails;
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
         routes: [{ name: ScreensKeys.BottomTabs }],
       })
     );
+
+    // Trigger notification for under review properties
+    const payload: ISendNotificationPayload = {
+      lease_listings: leaseTerm ? [leaseTerm.id] : [],
+      sale_listing: saleTerm ? saleTerm.id : null,
+    };
+
+    try {
+      await AssetRepository.sendNotification(payload);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private onFavourite = async (): Promise<void> => {

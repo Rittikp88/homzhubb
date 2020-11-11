@@ -123,7 +123,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
 
   // USER INTERACTION CALLBACKS
   const handlePreferences = useCallback(
-    (id: number, isChecked: boolean): void => {
+    (id: number | string, isChecked: boolean): void => {
       const toUpdate = [...tenantPreferences];
 
       toUpdate.forEach((detail: ICheckboxGroupData) => {
