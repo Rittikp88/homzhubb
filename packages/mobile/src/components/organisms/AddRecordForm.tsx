@@ -10,15 +10,12 @@ import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/
 import { LedgerService } from '@homzhub/common/src/services/LedgerService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
-import {
-  FormButton,
-  FormDropdown,
-  FormTextInput,
-  IDropdownOption,
-  SelectionPicker,
-  TextArea,
-} from '@homzhub/common/src/components';
-import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
+import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
+import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { IDocumentSource, UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, StyleSheet } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 interface ISwitchOptions {
@@ -22,8 +23,9 @@ export const RNSwitch = (props: ISwitchOptions): React.ReactElement => {
   );
 };
 
+const scale = PlatformUtils.isAndroid() ? 1 : 0.7;
 const styles = StyleSheet.create({
   switch: {
-    transform: [{ scaleX: 0.7 }, { scaleY: 0.65 }],
+    transform: [{ scaleX: scale }, { scaleY: scale }],
   },
 });

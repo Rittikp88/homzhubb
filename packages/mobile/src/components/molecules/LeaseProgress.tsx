@@ -5,16 +5,16 @@ import * as Progress from 'react-native-progress';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { AssetCreationStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProgressBarProps {
   progress?: number;
   fromDate?: string;
   toDate?: string;
-  width?: number;
-  iconColor?: string;
   filledColor?: string;
   isPropertyVacant?: boolean;
+  assetCreation?: AssetCreationStep;
   labelStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -22,88 +22,88 @@ interface IProgressBarProps {
 const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
   const {
     progress,
-    width,
     filledColor = theme.colors.highPriority,
     isPropertyVacant,
     fromDate,
     toDate,
-    iconColor,
     labelStyle = {},
     containerStyle = {},
+    assetCreation,
   } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetPortfolio);
 
+  const getTitle = (): string => {
+    if (!assetCreation) return '';
+
+    if (!assetCreation.isDetailsDone) return t('addPropertyDetails');
+
+    if (!assetCreation.isHighlightsDone) return t('addPropertyHighlights');
+
+    return t('addPropertyImages');
+  };
+
   return (
-    <View style={containerStyle}>
-      <View style={styles.leaseHeading}>
-        <Icon
-          name={isPropertyVacant ? icons.house : icons.calendar}
-          color={iconColor || theme.colors.darkTint3}
-          size={22}
-          style={styles.calendarIcon}
-        />
+    <View style={[styles.container, containerStyle]}>
+      <Icon name={isPropertyVacant ? icons.house : icons.calendar} color={theme.colors.darkTint5} size={22} />
+      <View style={styles.contentContainer}>
         <Label type="large" style={[styles.label, labelStyle]}>
           {isPropertyVacant ? t('listingScore') : t('leasePeriod')}
         </Label>
-      </View>
-      <Progress.Bar
-        progress={progress}
-        width={width}
-        color={isPropertyVacant ? theme.colors.green : filledColor}
-        style={styles.barStyle}
-        unfilledColor={isPropertyVacant ? theme.colors.background : theme.colors.green}
-        borderRadius={5}
-      />
-      {isPropertyVacant ? (
-        <Label type="regular" style={styles.helperMsg}>
-          {t('addPropertyHighlights')}
-        </Label>
-      ) : (
-        <View style={styles.container}>
-          <Label type="regular" style={styles.date}>
-            {fromDate}
-          </Label>
-          <Label type="regular" style={styles.date}>
-            {toDate}
-          </Label>
+        <Progress.Bar
+          progress={progress}
+          width={null}
+          color={isPropertyVacant ? theme.colors.green : filledColor}
+          style={styles.barStyle}
+          unfilledColor={isPropertyVacant ? theme.colors.background : theme.colors.green}
+          borderRadius={4}
+        />
+        <View style={styles.subTitleContainer}>
+          {isPropertyVacant ? (
+            <Label type="regular" style={styles.text}>
+              {getTitle()}
+            </Label>
+          ) : (
+            <>
+              <Label type="regular" style={styles.text}>
+                {fromDate}
+              </Label>
+              <Label type="regular" style={styles.text}>
+                {toDate}
+              </Label>
+            </>
+          )}
         </View>
-      )}
+      </View>
     </View>
   );
 };
 
-export { LeaseProgress };
+const memoizedComponent = React.memo(LeaseProgress);
+export { memoizedComponent as LeaseProgress };
 
 const styles = StyleSheet.create({
-  leaseHeading: {
+  container: {
+    width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
   },
-  calendarIcon: {
-    marginRight: 8,
+  contentContainer: {
+    flex: 1,
+    marginStart: 8,
   },
   barStyle: {
     borderColor: theme.colors.background,
     marginTop: 8,
-    marginLeft: 26,
   },
-  container: {
+  subTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 6,
-    marginLeft: 28,
+    marginVertical: 6,
   },
-  date: {
+  text: {
     color: theme.colors.darkTint6,
-    marginTop: 6,
-  },
-  helperMsg: {
-    color: theme.colors.darkTint6,
-    marginTop: 6,
-    marginLeft: 28,
   },
   label: {
-    color: theme.colors.darkTint3,
+    color: theme.colors.darkTint4,
   },
 });

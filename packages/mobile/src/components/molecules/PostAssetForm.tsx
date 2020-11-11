@@ -6,7 +6,8 @@ import { debounce } from 'lodash';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { Divider, FormTextInput } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {

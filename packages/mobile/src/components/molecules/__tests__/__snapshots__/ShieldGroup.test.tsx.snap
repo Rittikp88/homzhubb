@@ -11,51 +11,10 @@ exports[`ShieldGroup should match snapshot 1`] = `
     }
   }
 >
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#F9A901"
-      name="badge"
-      onPress={[Function]}
-      size={23}
-      style={
-        Object {
-          "marginHorizontal": 3,
-        }
-      }
-      testID="info"
-    />
-    <Icon
-      allowFontScaling={false}
-      color="#F9A901"
-      name="badge"
-      onPress={[Function]}
-      size={23}
-      style={
-        Object {
-          "marginHorizontal": 3,
-        }
-      }
-    />
-    <Icon
-      allowFontScaling={false}
-      color="#B3BBC3"
-      name="badge"
-      onPress={[Function]}
-      size={23}
-      style={
-        Object {
-          "marginHorizontal": 3,
-        }
-      }
-    />
-  </View>
+  <AmenitiesShieldIconGroup
+    iconSize={23}
+    onBadgePress={[Function]}
+  />
   <BottomSheet
     headerTitle="Shield Status"
     isShadowView={true}
@@ -114,51 +73,10 @@ exports[`ShieldGroup should match snapshot with props 1`] = `
   >
     Villa
   </Text>
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#F9A901"
-      name="badge"
-      onPress={[Function]}
-      size={23}
-      style={
-        Object {
-          "marginHorizontal": 3,
-        }
-      }
-      testID="info"
-    />
-    <Icon
-      allowFontScaling={false}
-      color="#F9A901"
-      name="badge"
-      onPress={[Function]}
-      size={23}
-      style={
-        Object {
-          "marginHorizontal": 3,
-        }
-      }
-    />
-    <Icon
-      allowFontScaling={false}
-      color="#B3BBC3"
-      name="badge"
-      onPress={[Function]}
-      size={23}
-      style={
-        Object {
-          "marginHorizontal": 3,
-        }
-      }
-    />
-  </View>
+  <AmenitiesShieldIconGroup
+    iconSize={23}
+    onBadgePress={[Function]}
+  />
   <BottomSheet
     headerTitle="Shield Status"
     isShadowView={true}

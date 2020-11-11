@@ -5,7 +5,6 @@ exports[`Image Thumbnail should match snapshot for handleIconPress when onIconPr
   style={
     Array [
       Object {
-        "flex": 1,
         "marginTop": 10,
       },
       undefined,
@@ -68,7 +67,6 @@ exports[`Image Thumbnail should match snapshot for handleIconPress when onIconPr
   style={
     Array [
       Object {
-        "flex": 1,
         "marginTop": 10,
       },
       undefined,
@@ -131,7 +129,6 @@ exports[`Image Thumbnail should match snapshot for isCoverPhotoContainer 1`] = `
   style={
     Array [
       Object {
-        "flex": 1,
         "marginTop": 10,
       },
       undefined,
@@ -243,7 +240,6 @@ exports[`Image Thumbnail should match snapshot for isCoverPhotoContainer when is
   style={
     Array [
       Object {
-        "flex": 1,
         "marginTop": 10,
       },
       undefined,
@@ -355,7 +351,6 @@ exports[`Image Thumbnail should match snapshot for isLastThumbnail  1`] = `
   style={
     Array [
       Object {
-        "flex": 1,
         "marginTop": 10,
       },
       undefined,

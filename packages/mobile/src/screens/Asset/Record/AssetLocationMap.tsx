@@ -8,7 +8,9 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, Label, WithShadowView } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Header } from '@homzhub/mobile/src/components';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';

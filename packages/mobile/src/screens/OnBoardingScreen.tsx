@@ -11,7 +11,9 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/GuestStack';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, SVGUri, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet, PaginationComponent, SnapCarousel, StatusBarComponent } from '@homzhub/mobile/src/components';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { User, UserType } from '@homzhub/common/src/constants/OnBoarding';

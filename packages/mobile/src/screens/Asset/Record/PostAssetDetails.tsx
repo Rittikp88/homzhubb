@@ -12,7 +12,8 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormButton, WithShadowView } from '@homzhub/common/src/components';
+import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import {
   PostAssetForm,
   Header,

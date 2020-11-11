@@ -23,7 +23,7 @@ export class UncontrolledCheckboxGroup extends React.PureComponent<ICheckboxGrou
     return <CheckboxGroup containerStyle={containerStyle} data={data} onToggle={this.handleToggle} />;
   };
 
-  private handleToggle = (id: number, isSelected: boolean): void => {
+  private handleToggle = (id: number | string, isSelected: boolean): void => {
     const { data } = this.state;
     const { onToggle } = this.props;
 

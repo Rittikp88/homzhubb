@@ -18,7 +18,10 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
-import { Button, ImageThumbnail, Label, Text, UploadBox } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import {
   ExistingVerificationDocuments,
   IExistingVerificationDocuments,
@@ -67,9 +70,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const totalDocuments = existingDocuments.concat(localDocuments);
     return (
       <>
-        <View style={styles.container}>
-          <View style={styles.proofContainer}>{this.renderVerificationTypes()}</View>
-        </View>
+        <View style={styles.container}>{this.renderVerificationTypes()}</View>
         <Button
           type="primary"
           title={t('common:continue')}
@@ -357,13 +358,9 @@ export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyV
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 16,
     marginTop: 4,
     backgroundColor: theme.colors.white,
-  },
-  proofContainer: {
-    flex: 1,
   },
   proofChild: {
     marginBottom: 10,

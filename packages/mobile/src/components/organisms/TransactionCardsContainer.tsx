@@ -4,7 +4,8 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Text } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import TransactionCard from '@homzhub/mobile/src/components/molecules/TransactionCard';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -49,8 +50,8 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
       return null;
     }
 
-    return transactionsData.map((item) => (
-      <TransactionCard key={`${item.id}`} transaction={item} handleDownload={this.onDownloadDocument} />
+    return transactionsData.map((item, index) => (
+      <TransactionCard key={`${item.id}-${index}`} transaction={item} handleDownload={this.onDownloadDocument} />
     ));
   };
 

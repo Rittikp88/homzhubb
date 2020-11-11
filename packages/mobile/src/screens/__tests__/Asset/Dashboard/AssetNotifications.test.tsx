@@ -30,9 +30,4 @@ describe('Asset Notifications Screen', () => {
     component.setState({ notifications: { results: [] } });
     expect(toJson(component)).toMatchSnapshot();
   });
-
-  it('should navigate to previous screen ', () => {
-    component.find('[testID="icnBack"]').prop('onPress')();
-    expect(props.navigation.goBack).toHaveBeenCalled();
-  });
 });

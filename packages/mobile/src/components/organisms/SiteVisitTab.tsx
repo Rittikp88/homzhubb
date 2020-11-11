@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -13,7 +13,8 @@ import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { EmptyState, Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
 import { IVisitByKey, VisitActions, VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -44,6 +45,8 @@ const Routes: IRoutes[] = [
   { key: VisitStatusType.COMPLETED, title: 'Completed', color: theme.colors.green },
 ];
 
+const { height } = theme.viewport;
+
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
   setVisitIds: (payload: number[]) => void;
@@ -71,6 +74,7 @@ interface IProps {
 interface IScreenState {
   currentIndex: number;
   dropdownValue: number;
+  heights: number[];
 }
 
 type Props = IDispatchProps & IStateProps & IProps & WithTranslation;
@@ -80,6 +84,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   public state = {
     currentIndex: 0,
     dropdownValue: 1,
+    heights: [height, height, height],
   };
 
   public componentDidMount(): void {
@@ -102,11 +107,12 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   }
 
   public render(): React.ReactNode {
-    const { currentIndex } = this.state;
+    const { currentIndex, heights } = this.state;
     return (
       <>
         <TabView
           initialLayout={theme.viewport}
+          style={[styles.tabView, { height: heights[currentIndex] }]}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}
           renderTabBar={(props): React.ReactElement => {
@@ -148,47 +154,53 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       case VisitStatusType.UPCOMING:
         dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
         return (
-          <PropertyVisitList
-            visitType={VisitStatusType.UPCOMING}
-            visitData={visits}
-            dropdownData={dropdownData}
-            dropdownValue={dropdownValue}
-            isFromProperty={isFromProperty}
-            isLoading={isLoading}
-            handleAction={this.handleVisitActions}
-            handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.UPCOMING)}
-            handleDropdown={this.handleDropdownSelection}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 0)}>
+            <PropertyVisitList
+              visitType={VisitStatusType.UPCOMING}
+              visitData={visits}
+              dropdownData={dropdownData}
+              dropdownValue={dropdownValue}
+              isFromProperty={isFromProperty}
+              isLoading={isLoading}
+              handleAction={this.handleVisitActions}
+              handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.UPCOMING)}
+              handleDropdown={this.handleDropdownSelection}
+            />
+          </View>
         );
       case VisitStatusType.MISSED:
         dropdownData = this.getDropdownData(VisitStatusType.MISSED);
         return (
-          <PropertyVisitList
-            visitType={VisitStatusType.MISSED}
-            visitData={visits}
-            isLoading={isLoading}
-            dropdownValue={dropdownValue}
-            dropdownData={dropdownData}
-            isFromProperty={isFromProperty}
-            handleAction={this.handleVisitActions}
-            handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.MISSED)}
-            handleDropdown={this.handleDropdownSelection}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 1)}>
+            <PropertyVisitList
+              visitType={VisitStatusType.MISSED}
+              visitData={visits}
+              isLoading={isLoading}
+              dropdownValue={dropdownValue}
+              dropdownData={dropdownData}
+              isFromProperty={isFromProperty}
+              handleAction={this.handleVisitActions}
+              handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.MISSED)}
+              handleDropdown={this.handleDropdownSelection}
+            />
+          </View>
         );
       case VisitStatusType.COMPLETED:
         dropdownData = this.getDropdownData(VisitStatusType.COMPLETED);
         return (
-          <PropertyVisitList
-            visitType={VisitStatusType.COMPLETED}
-            visitData={visits}
-            isLoading={isLoading}
-            dropdownValue={dropdownValue}
-            dropdownData={dropdownData}
-            isFromProperty={isFromProperty}
-            handleAction={this.handleVisitActions}
-            handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED)}
-            handleDropdown={this.handleDropdownSelection}
-          />
+          <View onLayout={(e): void => this.onLayout(e, 2)}>
+            <PropertyVisitList
+              visitType={VisitStatusType.COMPLETED}
+              visitData={visits}
+              isLoading={isLoading}
+              dropdownValue={dropdownValue}
+              dropdownData={dropdownData}
+              isFromProperty={isFromProperty}
+              handleAction={this.handleVisitActions}
+              handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED)}
+              handleDropdown={this.handleDropdownSelection}
+            />
+          </View>
         );
       default:
         return <EmptyState />;
@@ -227,6 +239,17 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     };
 
     getAssetVisit(payload);
+  };
+
+  private onLayout = (e: LayoutChangeEvent, index: number): void => {
+    const { heights } = this.state;
+    const { height: newHeight } = e.nativeEvent.layout;
+    const arrayToUpdate = [...heights];
+
+    if (newHeight !== arrayToUpdate[index]) {
+      arrayToUpdate[index] = newHeight;
+      this.setState({ heights: arrayToUpdate });
+    }
   };
 
   private handleRescheduleVisit = (id: number, key: VisitStatusType): void => {
@@ -404,5 +427,8 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     color: theme.colors.darkTint3,
+  },
+  tabView: {
+    flex: 0,
   },
 });

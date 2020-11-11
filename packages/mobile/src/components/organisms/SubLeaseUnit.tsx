@@ -8,21 +8,18 @@ import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  Button,
-  CheckboxGroup,
-  FormButton,
-  FurnishingSelection,
-  ICheckboxGroupData,
-  Text,
-} from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+import { FurnishingSelection } from '@homzhub/common/src/components/atoms/FurnishingSelection';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import {
   IFormData,
   initialLeaseFormValues,
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
-import { PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
+import { FlowTypes, PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
@@ -123,7 +120,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
 
   // USER INTERACTION CALLBACKS
   const handlePreferences = useCallback(
-    (id: number, isChecked: boolean): void => {
+    (id: number | string, isChecked: boolean): void => {
       const toUpdate = [...tenantPreferences];
 
       toUpdate.forEach((detail: ICheckboxGroupData) => {
@@ -214,7 +211,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                 <Text type="small" textType="semiBold" style={styles.title}>
                   {t('spacesText')}
                 </Text>
-                <PropertySpaces spacesTypes={spaces} onChange={handleSpaceFormChange} />
+                <PropertySpaces flowType={FlowTypes.LeaseFlow} spacesTypes={spaces} onChange={handleSpaceFormChange} />
                 <FurnishingSelection
                   value={furnishingType}
                   onFurnishingChange={setFurnishingType}
@@ -266,7 +263,6 @@ export { memoizedComponent as SubLeaseUnit };
 
 const styles = StyleSheet.create({
   continue: {
-    flex: 1,
     marginTop: 20,
     marginBottom: 50,
   },

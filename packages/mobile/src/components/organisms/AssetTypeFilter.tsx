@@ -4,13 +4,9 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { remove } from 'lodash';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  SelectionPicker,
-  ISelectionPicker,
-  Text,
-  CheckboxGroup,
-  ICheckboxGroupData,
-} from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { SelectionPicker, ISelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
+import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { IAssetGroupList, IAssetTypes, IFilterDetails } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
@@ -53,13 +49,13 @@ export class AssetTypeFilter extends React.PureComponent<Props, {}> {
     updateAssetFilter('asset_type', []);
   };
 
-  private onAssetGroupChecked = (assetTypeId: number, isSelected: boolean): void => {
+  private onAssetGroupChecked = (assetTypeId: number | string, isSelected: boolean): void => {
     const { updateAssetFilter, asset_type } = this.props;
     if (!isSelected) {
       remove(asset_type, (asset) => asset === assetTypeId);
       updateAssetFilter('asset_type', [...asset_type]);
     } else {
-      updateAssetFilter('asset_type', [...asset_type, assetTypeId]);
+      updateAssetFilter('asset_type', [...asset_type, assetTypeId as number]);
     }
   };
 

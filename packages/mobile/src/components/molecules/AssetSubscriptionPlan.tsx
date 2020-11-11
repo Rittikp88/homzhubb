@@ -8,7 +8,9 @@ import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepo
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Plan from '@homzhub/common/src/assets/images/plan.svg';
-import { Text, Divider, Button } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 

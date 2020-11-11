@@ -5,7 +5,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
+import { Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { ISlotItem } from '@homzhub/common/src/domain/models/AssetVisit';
 
 interface ITimeSlotProps {

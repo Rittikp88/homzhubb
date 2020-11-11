@@ -1,6 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
-import { IDropdownOption, ISelectionPicker } from '@homzhub/common/src/components';
+import { ISelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 export enum AssetDescriptionDropdownTypes {
   Facing = 'facing',

@@ -5,7 +5,9 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { ImageThumbnail, Text, UploadBox } from '@homzhub/common/src/components';
+import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 
 export interface IDocumentSource {
   uri: string;

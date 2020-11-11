@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { FormikProps } from 'formik';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
-import { FormTextInput, FormDropdown } from '@homzhub/common/src/components';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -91,12 +92,12 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginTop: 4,
     flexDirection: 'row',
   },
   fieldContainer: {
     flex: 0.5,
+    justifyContent: 'flex-end',
   },
   dropdownContainer: {
     marginStart: 16,

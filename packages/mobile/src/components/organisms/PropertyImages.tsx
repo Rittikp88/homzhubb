@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
@@ -11,7 +11,10 @@ import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, ImageThumbnail, Text, UploadBox } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
@@ -130,15 +133,13 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     return (
       <>
         {coverPhoto}
-        <SafeAreaView>
-          <FlatList
-            data={selectedImages.slice(1, 7)}
-            numColumns={2}
-            renderItem={this.renderImagesList}
-            keyExtractor={this.renderKeyExtractor}
-            testID="ftlistRenderItem"
-          />
-        </SafeAreaView>
+        <FlatList
+          data={selectedImages.slice(1, 7)}
+          numColumns={2}
+          renderItem={this.renderImagesList}
+          keyExtractor={this.renderKeyExtractor}
+          testID="ftlistRenderItem"
+        />
       </>
     );
   };
@@ -377,7 +378,6 @@ const styles = StyleSheet.create({
   },
   uploadImageText: {
     color: theme.colors.darkTint4,
-    flex: 1,
     justifyContent: 'flex-start',
   },
   thumbnailContainer: {

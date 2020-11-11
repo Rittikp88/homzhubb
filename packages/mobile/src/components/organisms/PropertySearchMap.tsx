@@ -5,7 +5,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { CustomMarker } from '@homzhub/common/src/components';
+import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';

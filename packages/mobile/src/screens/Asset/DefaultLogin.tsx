@@ -6,7 +6,8 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Logo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { BottomTabNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { Button, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 type libraryProps = WithTranslation & NavigationScreenProps<BottomTabNavigatorParamList, ScreensKeys.DefaultLogin>;
 type IProps = libraryProps;

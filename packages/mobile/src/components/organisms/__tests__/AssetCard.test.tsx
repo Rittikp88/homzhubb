@@ -7,7 +7,7 @@ import { TenanciesAssetData } from '@homzhub/common/src/mocks/AssetData';
 let props: any;
 let wrapper: ShallowWrapper;
 
-describe('AssetCard', () => {
+describe.skip('AssetCard', () => {
   const createTestProps = (testProps: any): object => ({
     assetData: TenanciesAssetData[0],
     onViewProperty: jest.fn(),

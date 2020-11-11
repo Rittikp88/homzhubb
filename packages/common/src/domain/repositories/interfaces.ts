@@ -492,3 +492,8 @@ export interface IPropertyDetailPayload {
   id: number;
   type: DetailType;
 }
+
+export interface ISendNotificationPayload {
+  lease_listings: number[];
+  sale_listing: number | null;
+}

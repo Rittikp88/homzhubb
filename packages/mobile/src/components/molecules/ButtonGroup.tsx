@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IButtonGroupItem<T> {
   title: string;
@@ -56,7 +56,6 @@ export class ButtonGroup<T> extends React.PureComponent<IButtonGroupProps<T>> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
   },

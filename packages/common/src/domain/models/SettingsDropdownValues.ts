@@ -1,5 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { IDropdownOption } from '@homzhub/common/src/components';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 

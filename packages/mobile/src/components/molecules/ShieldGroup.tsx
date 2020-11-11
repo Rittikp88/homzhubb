@@ -3,8 +3,8 @@ import { StyleSheet, View, ScrollView, StyleProp, TextStyle } from 'react-native
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
 interface IProps {
@@ -33,24 +33,7 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: 
           {propertyType}
         </Text>
       )}
-      <View style={styles.badgesContainer}>
-        <Icon
-          name={icons.badge}
-          size={23}
-          color={theme.colors.warning}
-          style={styles.badges}
-          onPress={handleInfo}
-          testID="info"
-        />
-        <Icon name={icons.badge} size={23} color={theme.colors.warning} style={styles.badges} onPress={handleInfo} />
-        <Icon
-          name={icons.badge}
-          size={23}
-          color={theme.colors.disabledPreference}
-          style={styles.badges}
-          onPress={handleInfo}
-        />
-      </View>
+      <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={23} />
       <BottomSheet
         visible={isVisible}
         onCloseSheet={handleClose}
@@ -71,12 +54,6 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: 
 export { ShieldGroup };
 
 const styles = StyleSheet.create({
-  badgesContainer: {
-    flexDirection: 'row',
-  },
-  badges: {
-    marginHorizontal: 3,
-  },
   propertyTypeText: {
     color: theme.colors.primaryColor,
   },

@@ -4,7 +4,11 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, Divider, Label, PricePerUnit, RNCheckbox } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
+import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -156,6 +160,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.blueTint10,
     alignItems: 'center',
     borderWidth: 0,
+    flex: 0,
   },
   padding: {
     padding: 12,

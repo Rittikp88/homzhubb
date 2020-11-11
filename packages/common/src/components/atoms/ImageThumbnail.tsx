@@ -93,7 +93,6 @@ export class ImageThumbnail extends React.PureComponent<IProps, {}> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginTop: 10,
   },
   imageStyle: {

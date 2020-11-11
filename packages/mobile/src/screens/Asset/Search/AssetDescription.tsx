@@ -24,29 +24,26 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ILeadPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILeadPayload, ISendNotificationPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import {
-  CustomMarker,
-  Divider,
-  Label,
-  PricePerUnit,
-  PropertyAddress,
-  Text,
-  WithShadowView,
-  SVGUri,
-  ContactPerson,
-  Button,
-} from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
+import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import {
   AssetRatings,
   AssetDetailsImageCarousel,
   CollapsibleSection,
   FullScreenAssetDetailsCarousel,
-  PropertyAmenities,
   StatusBarComponent,
   ShieldGroup,
   Loader,
@@ -763,7 +760,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: ScreensKeys.GettingStarted }],
+        routes: [{ name: ScreensKeys.BottomTabs }],
       })
     );
   };
@@ -808,14 +805,29 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     });
   };
 
-  private onDone = (): void => {
-    const { navigation } = this.props;
+  private onDone = async (): Promise<void> => {
+    const { navigation, assetDetails } = this.props;
+    if (!assetDetails) return;
+
+    const { leaseTerm, saleTerm } = assetDetails;
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
         routes: [{ name: ScreensKeys.BottomTabs }],
       })
     );
+
+    // Trigger notification for under review properties
+    const payload: ISendNotificationPayload = {
+      lease_listings: leaseTerm ? [leaseTerm.id] : [],
+      sale_listing: saleTerm ? saleTerm.id : null,
+    };
+
+    try {
+      await AssetRepository.sendNotification(payload);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private onFavourite = async (): Promise<void> => {

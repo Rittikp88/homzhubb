@@ -2,8 +2,6 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { DataGroupBy } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-export const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 export enum DateFilter {
   thisMonth = 1,
   lastMonth = 2,

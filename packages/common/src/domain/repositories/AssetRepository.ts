@@ -14,6 +14,7 @@ import {
   IAssetVisitPayload,
   IUpdateVisitPayload,
   IRescheduleVisitPayload,
+  ISendNotificationPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -82,6 +83,7 @@ const ENDPOINTS = {
   assetDescriptionDropdownValues: (): string => 'assets/list-of-values/',
   availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
   assetCount: (): string => 'assets/count/',
+  sendNotification: (): string => 'assets/notifications/listing-reviews/',
 };
 
 class AssetRepository {
@@ -304,6 +306,10 @@ class AssetRepository {
   public getAssetCount = async (): Promise<Count> => {
     const response = await this.apiClient.get(ENDPOINTS.assetCount());
     return ObjectMapper.deserialize(Count, response);
+  };
+
+  public sendNotification = async (payload: ISendNotificationPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.sendNotification(), payload);
   };
 }
 

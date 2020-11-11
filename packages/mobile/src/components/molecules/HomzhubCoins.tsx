@@ -4,7 +4,8 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Coin from '@homzhub/common/src/assets/images/coin.svg';
-import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
 import { Coins } from '@homzhub/common/src/domain/models/OrderSummary';
 
 interface IOwnProps {

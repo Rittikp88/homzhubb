@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
@@ -25,7 +24,7 @@ export class MarketTrends extends React.PureComponent<Props> {
           title={t('marketTrends')}
           testID="header"
         />
-        <AssetMarketTrends limit={100} isHeaderVisible={false} containerStyle={styles.marketTrends} />
+        <AssetMarketTrends limit={100} isHeaderVisible={false} />
       </View>
     );
   };
@@ -41,8 +40,5 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Mar
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  marketTrends: {
-    padding: theme.layout.screenPadding,
   },
 });

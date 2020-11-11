@@ -38,9 +38,7 @@ export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/Mai
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { OtpTypes } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
-export { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 export { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
-export { PropertyAddressCountry } from '@homzhub/mobile/src/components/molecules/PropertyAddressCountry';
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
 export { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
@@ -71,7 +69,7 @@ export { PropertySpaces } from '@homzhub/mobile/src/components/organisms/Propert
 export { SignUpForm } from '@homzhub/mobile/src/components/organisms/SignUpForm';
 export { SaleTermController } from '@homzhub/mobile/src/components/organisms/SaleTermController';
 export { SocialMediaComponent } from '@homzhub/mobile/src/components/organisms/SocialMediaComponent';
-export { TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
+export { default as TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 
 // HOC
 export { AnimatedServiceList } from '@homzhub/mobile/src/components/HOC/AnimatedServiceList';

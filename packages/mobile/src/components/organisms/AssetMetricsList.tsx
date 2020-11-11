@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Logo from '@homzhub/common/src/assets/images/homzhubDashboard.svg';
-import { Label, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
@@ -113,17 +113,19 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
           <Text type="regular" textType="bold" style={styles.assetCount}>
             {title}
           </Text>
-          {subscription && (
-            <View style={styles.propertiesRow}>
-              <Text type="small" textType="semiBold" style={styles.propertyText}>
-                {t('common:properties')}
-              </Text>
-              <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.circleIcon} />
-              <Label type="large" textType="regular">
-                {`${t('common:homzhub')} ${subscription}`}
-              </Label>
-            </View>
-          )}
+          <View style={styles.propertiesRow}>
+            <Text type="small" textType="semiBold" style={styles.propertyText}>
+              {t('common:properties')}
+            </Text>
+            {subscription && (
+              <>
+                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.circleIcon} />
+                <Label type="large" textType="regular">
+                  {`${t('common:homzhub')} ${subscription}`}
+                </Label>
+              </>
+            )}
+          </View>
         </View>
         {onPlusIconClicked && (
           <Icon

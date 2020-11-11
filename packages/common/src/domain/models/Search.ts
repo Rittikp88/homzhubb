@@ -44,7 +44,7 @@ export interface ITransactionRange {
 }
 
 export interface IFacing {
-  id: number;
+  label: string;
   name: string;
 }
 
@@ -132,7 +132,7 @@ export interface IFilter {
     property_age: number;
     rent_free_period: number;
     expected_move_in_date: string;
-    facing: number[];
+    facing: string[];
     furnishing: FurnishingTypes[];
     propertyAmenity: number[];
   };

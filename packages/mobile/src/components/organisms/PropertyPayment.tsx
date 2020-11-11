@@ -9,7 +9,8 @@ import { PaymentRepository } from '@homzhub/common/src/domain/repositories/Payme
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Label, Text } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import HomzhubCoins from '@homzhub/mobile/src/components/molecules/HomzhubCoins';
 import OrderSummary from '@homzhub/mobile/src/components/molecules/OrderSummary';
 import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
@@ -89,7 +90,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           onClear={this.clearPromo}
         />
         <OrderSummary summary={orderSummary} />
-        {orderSummary.amountPayable && (
+        {orderSummary.amountPayable > 0 && (
           <PaymentGateway
             type="primary"
             title={t('assetFinancial:payNow')}
@@ -137,7 +138,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     } = item;
 
     return (
-      <>
+      <View key={`${item.id}`}>
         <View style={styles.serviceItem}>
           <View style={styles.content}>
             <Text type="small" textType="semiBold" style={styles.serviceName}>
@@ -155,7 +156,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           </TouchableOpacity>
         </View>
         <Divider containerStyles={styles.divider} />
-      </>
+      </View>
     );
   };
 
@@ -223,7 +224,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
   private getOrderSummary = async (data?: IOrderSummaryPayload): Promise<void> => {
     const { propertyId } = this.props;
     const payload: IOrderSummaryPayload = {
-      ...(this.getServiceIds().length > 0 && { value_added_services: this.getServiceIds() }),
+      value_added_services: this.getServiceIds(),
       ...(propertyId && { asset: propertyId }),
       ...(data?.coins && { coins: data.coins }),
       ...(data?.promo_code && { promo_code: data.promo_code }),

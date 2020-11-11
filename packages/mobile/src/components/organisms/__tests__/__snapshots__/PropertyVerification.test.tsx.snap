@@ -6,244 +6,235 @@ exports[`PropertyVerification should match snapshot 1`] = `
     style={
       Object {
         "backgroundColor": "#FFFFFF",
-        "flex": 1,
         "marginTop": 4,
         "paddingHorizontal": 16,
       }
     }
   >
     <View
+      key="0"
       style={
         Object {
-          "flex": 1,
+          "marginBottom": 10,
+          "marginTop": 20,
         }
       }
     >
-      <View
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        ID Proof
+      </Text>
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
+          }
+        }
+        header="Upload ID proof"
+        icon="id-proof"
+        onPress={[Function]}
+      />
+    </View>
+    <View
+      key="1"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        Click a selfie with the ID proof
+      </Text>
+      <[object Object]
+        style={
+          Object {
+            "alignSelf": "center",
+            "marginVertical": 12,
+          }
+        }
+      />
+      <Label
         key="0"
         style={
           Object {
-            "marginBottom": 10,
-            "marginTop": 20,
+            "color": "#33495E",
+            "marginBottom": 6,
           }
         }
+        textType="regular"
+        type="regular"
       >
-        <Text
-          style={
-            Object {
-              "color": "#4C5F72",
-            }
-          }
-          textType="semiBold"
-          type="small"
-        >
-          ID Proof
-        </Text>
-        <UploadBox
-          containerStyle={
-            Object {
-              "marginTop": 20,
-            }
-          }
-          header="Upload ID proof"
-          icon="id-proof"
-          onPress={[Function]}
-        />
-      </View>
-      <View
+        1. Make sure your face is clearly visible
+      </Label>
+      <Label
         key="1"
         style={
           Object {
-            "marginBottom": 10,
+            "color": "#33495E",
+            "marginBottom": 6,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        2. Please ensure that the ID is clearly visible in your photo
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
             "marginTop": 20,
           }
         }
-      >
-        <Text
-          style={
-            Object {
-              "color": "#4C5F72",
-            }
-          }
-          textType="semiBold"
-          type="small"
-        >
-          Click a selfie with the ID proof
-        </Text>
-        <[object Object]
-          style={
-            Object {
-              "alignSelf": "center",
-              "marginVertical": 12,
-            }
-          }
-        />
-        <Label
-          key="0"
-          style={
-            Object {
-              "color": "#33495E",
-              "marginBottom": 6,
-            }
-          }
-          textType="regular"
-          type="regular"
-        >
-          1. Make sure your face is clearly visible
-        </Label>
-        <Label
-          key="1"
-          style={
-            Object {
-              "color": "#33495E",
-              "marginBottom": 6,
-            }
-          }
-          textType="regular"
-          type="regular"
-        >
-          2. Please ensure that the ID is clearly visible in your photo
-        </Label>
-        <UploadBox
-          containerStyle={
-            Object {
-              "marginTop": 20,
-            }
-          }
-          header="Capture Your Selfie"
-          icon="selfie"
-          onPress={[Function]}
-        />
-      </View>
-      <View
-        key="2"
+        header="Capture Your Selfie"
+        icon="selfie"
+        onPress={[Function]}
+      />
+    </View>
+    <View
+      key="2"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
         style={
           Object {
-            "marginBottom": 10,
-            "marginTop": 20,
+            "color": "#4C5F72",
           }
         }
+        textType="semiBold"
+        type="small"
       >
-        <Text
-          style={
-            Object {
-              "color": "#4C5F72",
-            }
-          }
-          textType="semiBold"
-          type="small"
-        >
-          Upload Ownership Verification Document
-        </Text>
-        <Label
-          style={
-            Object {
-              "color": "#33495E",
-              "marginVertical": 10,
-            }
-          }
-          textType="regular"
-          type="regular"
-        >
-          You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
-        </Label>
-        <UploadBox
-          containerStyle={
-            Object {
-              "marginTop": 20,
-            }
-          }
-          header="Upload Document"
-          icon="document"
-          onPress={[Function]}
-        />
-      </View>
-      <View
-        key="3"
+        Upload Ownership Verification Document
+      </Text>
+      <Label
         style={
           Object {
-            "marginBottom": 10,
+            "color": "#33495E",
+            "marginVertical": 10,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
             "marginTop": 20,
           }
         }
-      >
-        <Text
-          style={
-            Object {
-              "color": "#4C5F72",
-            }
-          }
-          textType="semiBold"
-          type="small"
-        >
-          Upload Occupancy Document
-        </Text>
-        <Label
-          style={
-            Object {
-              "color": "#33495E",
-              "marginVertical": 10,
-            }
-          }
-          textType="regular"
-          type="regular"
-        >
-          You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
-        </Label>
-        <UploadBox
-          containerStyle={
-            Object {
-              "marginTop": 20,
-            }
-          }
-          header="Upload Document"
-          icon="document"
-          onPress={[Function]}
-        />
-      </View>
-      <View
-        key="4"
+        header="Upload Document"
+        icon="document"
+        onPress={[Function]}
+      />
+    </View>
+    <View
+      key="3"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
         style={
           Object {
-            "marginBottom": 10,
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
+      >
+        Upload Occupancy Document
+      </Text>
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+            "marginVertical": 10,
+          }
+        }
+        textType="regular"
+        type="regular"
+      >
+        You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
             "marginTop": 20,
           }
         }
+        header="Upload Document"
+        icon="document"
+        onPress={[Function]}
+      />
+    </View>
+    <View
+      key="4"
+      style={
+        Object {
+          "marginBottom": 10,
+          "marginTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+          }
+        }
+        textType="semiBold"
+        type="small"
       >
-        <Text
-          style={
-            Object {
-              "color": "#4C5F72",
-            }
+        Upload Property Tax
+      </Text>
+      <Label
+        style={
+          Object {
+            "color": "#33495E",
+            "marginVertical": 10,
           }
-          textType="semiBold"
-          type="small"
-        >
-          Upload Property Tax
-        </Text>
-        <Label
-          style={
-            Object {
-              "color": "#33495E",
-              "marginVertical": 10,
-            }
+        }
+        textType="regular"
+        type="regular"
+      >
+        You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
+      </Label>
+      <UploadBox
+        containerStyle={
+          Object {
+            "marginTop": 20,
           }
-          textType="regular"
-          type="regular"
-        >
-          You can upload Electricity bill or Property tax reciepts which mentions your name and the property address
-        </Label>
-        <UploadBox
-          containerStyle={
-            Object {
-              "marginTop": 20,
-            }
-          }
-          header="Upload Document"
-          icon="document"
-          onPress={[Function]}
-        />
-      </View>
+        }
+        header="Upload Document"
+        icon="document"
+        onPress={[Function]}
+      />
     </View>
   </View>
   <Button

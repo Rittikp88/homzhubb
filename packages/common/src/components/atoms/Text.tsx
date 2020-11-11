@@ -3,7 +3,7 @@ import { Text as RNText, StyleSheet, TextProps, StyleProp, TextStyle } from 'rea
 import { FontUtils } from '@homzhub/common/src/utils/FontUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
-export type TextFieldType = 'label' | 'text' | 'title';
+export type TextFieldType = 'label' | 'text';
 export type TextSizeType = 'small' | 'regular' | 'large';
 export type FontWeightType = 'light' | 'regular' | 'semiBold' | 'bold' | 'extraBold';
 

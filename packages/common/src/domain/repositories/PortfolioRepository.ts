@@ -13,7 +13,7 @@ const ENDPOINTS = {
   getTenancies: (): string => 'portfolio/tenancies/',
   getAssetDetails: (): string => 'portfolio/asset-details/',
   getTenantHistory: (id: number): string => `assets/${id}/lease-tenants/`,
-  getPropertyDetailById: (id: number): string => `assets/${id}/details/`,
+  getPropertyDetailById: (id: number): string => `assets/${id}/detail/`,
   getPropertyDetailByListing: (id: number, listingType: string, listingId: number): string =>
     `assets/${id}/${listingType}/${listingId}/`,
 };

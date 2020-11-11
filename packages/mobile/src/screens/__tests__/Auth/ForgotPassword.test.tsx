@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ForgotPassword } from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
-import { DetailedHeader } from '@homzhub/common/src/components';
+import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 
 const mock = jest.fn();
 

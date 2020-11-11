@@ -3,7 +3,7 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';

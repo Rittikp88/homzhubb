@@ -7,7 +7,7 @@ import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, Label } from '@homzhub/common/src/components';
+import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 

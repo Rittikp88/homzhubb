@@ -18,7 +18,7 @@ class Dashboard extends React.PureComponent<IProps> {
         <MarketTrendsCarousel />
         <InvestmentsCarousel
           // investType={investmentData.investType}
-          investType='Hello'
+          investType="Hello"
         />
       </View>
     );

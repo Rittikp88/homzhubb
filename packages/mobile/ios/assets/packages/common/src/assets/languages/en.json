@@ -195,6 +195,7 @@
     "currentPassword": "Your Current Password"
   },
   "property": {
+    "searchInWeb": "Search for projects,location,builders",
     "welcomeUser": "Welcome {{username}},",
     "description": "Let's add your first property on Homzhub",
     "searchProject": "Search for project or street name",
@@ -524,10 +525,18 @@
     "complete": "COMPLETE",
     "listingScore": "Listing Score",
     "leasePeriod": "Lease Period",
-    "addPropertyHighlights": "Add Property highlights for +10%",
+    "addPropertyDetails": "Add Property Details for +25%",
+    "addPropertyHighlights": "Add Property highlights for +25%",
+    "addPropertyImages": "Add Property Images for +25%",
     "propertyDetails": "Property Details",
     "rentalReceipts": "Rental Receipts",
     "searchByName": "Search by name",
+    "upcomingVisits": "Upcoming Visits",
+    "missedVisits": "Missed Visits",
+    "completedVisits": "Completed Visits",
+    "totalOffers": "Total Offers",
+    "highestOffer": "Highest Offer",
+    "lowestOffer": "Lowest Offer",
     "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}"
   },
   "assetFinancial": {
@@ -580,7 +589,8 @@
     "settings": "Settings",
     "referFriend": "Refer a friend",
     "paymentMethods": "Subscriptions & Payments",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "refer": "Refer & Earn"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

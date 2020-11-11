@@ -10,7 +10,10 @@ import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, FormButton, FormTextInput, Label, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import {
   IFormData,
   initialLeaseFormValues,

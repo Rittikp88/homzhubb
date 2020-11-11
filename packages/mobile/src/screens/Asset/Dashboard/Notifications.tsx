@@ -7,8 +7,8 @@ import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, NotificationBox, EmptyState } from '@homzhub/common/src/components';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
 import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -46,34 +46,19 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     const { scrollEnabled } = this.state;
     const title = params && params.isFromDashboard ? t('dashboard') : t('assetMore:more');
     return (
-      <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={title}>
-        <>
-          {this.renderHeader()}
-          {this.renderNotifications()}
-        </>
+      <AnimatedProfileHeader
+        isOuterScrollEnabled={scrollEnabled}
+        title={title}
+        onBackPress={this.handleIconPress}
+        sectionTitleType="semiBold"
+        sectionHeader={t('notification')}
+      >
+        {this.renderNotifications()}
       </AnimatedProfileHeader>
     );
   }
 
-  public renderHeader = (): React.ReactElement => {
-    const { t } = this.props;
-    return (
-      <View style={styles.header}>
-        <Icon
-          name={icons.leftArrow}
-          size={20}
-          color={theme.colors.primaryColor}
-          onPress={this.handleIconPress}
-          testID="icnBack"
-        />
-        <Text type="small" textType="semiBold" style={styles.headerTitle}>
-          {t('notification')}
-        </Text>
-      </View>
-    );
-  };
-
-  public renderNotifications = (): React.ReactNode => {
+  public renderNotifications = (): React.ReactElement => {
     const { t } = this.props;
     const { notifications, searchText } = this.state;
     let containerStyle = {
@@ -166,20 +151,6 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Notifications);
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: theme.colors.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 10,
-    borderRadius: 4,
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0,
-  },
-  headerTitle: {
-    color: theme.colors.darkTint1,
-    marginLeft: 12,
-  },
   searchbar: {
     margin: theme.layout.screenPadding,
   },

@@ -3,10 +3,13 @@ import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, PricePerUnit, PropertyAddress, TextSizeType } from '@homzhub/common/src/components';
+import { TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
+import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 import { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
-import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 

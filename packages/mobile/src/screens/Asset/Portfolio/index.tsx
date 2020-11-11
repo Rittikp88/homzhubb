@@ -11,7 +11,9 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
-import { Text } from '@homzhub/common/src/components';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView, Loader } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
@@ -39,6 +41,7 @@ interface IDispatchProps {
   getPropertyDetails: (payload: IGetPropertiesPayload) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setCurrentFilter: (payload: Filters) => void;
+  setAssetId: (payload: number) => void;
 }
 
 interface IPortfolioState {
@@ -165,6 +168,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         expandedId={type === DataType.PROPERTIES ? expandedAssetId : expandedTenanciesId}
         onViewProperty={handleViewProperty}
         onPressArrow={handleArrowPress}
+        onCompleteDetails={this.onCompleteDetails}
+        onOfferVisitPress={this.onOfferVisitPress}
       />
     );
   };
@@ -191,6 +196,17 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private onTenanciesCallback = (): void => {
     this.verifyData();
+  };
+
+  private onOfferVisitPress = (type: OffersVisitsType): void => {};
+
+  private onCompleteDetails = (assetId: number): void => {
+    const { navigation, setAssetId } = this.props;
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AddProperty,
+      params: { previousScreen: ScreensKeys.Dashboard },
+    });
   };
 
   private getScreenData = async (): Promise<void> => {
@@ -307,7 +323,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
-  return bindActionCreators({ getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter }, dispatch);
+  const { setAssetId } = RecordAssetActions;
+  return bindActionCreators(
+    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setAssetId },
+    dispatch
+  );
 };
 
 export default connect(

@@ -4,8 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormCalendar, FormDropdown, FormTextInput, Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
+import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 
 interface IProps {

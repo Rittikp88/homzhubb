@@ -5,7 +5,7 @@ import { MessageComponentProps } from 'react-native-flash-message';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 type IProps = MessageComponentProps & WithTranslation;
 class Toast extends React.PureComponent<IProps> {

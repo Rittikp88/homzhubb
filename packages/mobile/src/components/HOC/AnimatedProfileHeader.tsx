@@ -7,7 +7,7 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text, FontWeightType } from '@homzhub/common/src/components';
+import { Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 

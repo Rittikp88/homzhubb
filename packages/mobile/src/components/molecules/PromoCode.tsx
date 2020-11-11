@@ -3,7 +3,8 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button, Label, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Promo } from '@homzhub/common/src/domain/models/OrderSummary';
 
 interface IPromoProps {
@@ -99,7 +100,6 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
   },
   textInputContainer: {
-    flex: 1,
     borderWidth: 1,
     borderRadius: 5,
     flexDirection: 'row',

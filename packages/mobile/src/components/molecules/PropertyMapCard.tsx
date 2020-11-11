@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Favorite, Image, Label, PricePerUnit } from '@homzhub/common/src/components';
-import { PropertyAmenities } from '@homzhub/mobile/src/components/molecules/PropertyAmenities';
+import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
+import { Image } from '@homzhub/common/src/components/atoms/Image';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 

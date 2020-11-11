@@ -6,9 +6,12 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, Label, Text } from '@homzhub/common/src/components';
-import { PropertyAmenities, PropertyAddressCountry, ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
+import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IActions, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -58,20 +61,26 @@ export class PendingPropertyListCard extends Component<Props, IState> {
           </View>
           {data.length > 1 && (
             <View style={styles.headingContent}>
-              <TouchableOpacity style={styles.iconStyle}>
+              <TouchableOpacity
+                style={styles.iconStyle}
+                disabled={currentPropertyIndex === 0}
+                onPress={this.handlePrevious}
+              >
                 <Icon
                   name={icons.leftArrow}
                   size={16}
-                  onPress={this.handlePrevious}
                   color={currentPropertyIndex === 0 ? theme.colors.darkTint4 : theme.colors.primaryColor}
                   testID="icnPrevious"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconStyle} disabled={currentPropertyIndex === total - 1}>
+              <TouchableOpacity
+                style={styles.iconStyle}
+                disabled={currentPropertyIndex === total - 1}
+                onPress={this.handleNext}
+              >
                 <Icon
                   name={icons.rightArrow}
                   size={16}
-                  onPress={this.handleNext}
                   color={currentPropertyIndex === total - 1 ? theme.colors.darkTint4 : theme.colors.primaryColor}
                   testID="icnNext"
                 />

@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { ImageSquare, Label, Text } from '@homzhub/common/src/components';
+import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 // TODO (BISHAL) - change dummy data with actual api data
 const MarketTrendsCard: FC = () => {

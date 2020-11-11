@@ -6,7 +6,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
-import { CalendarComponent } from '@homzhub/common/src/components/atoms/CalendarComponent';
+import { CalendarComponent } from '@homzhub/mobile/src/components/atoms/CalendarComponent';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
 interface IFormCalendarProps extends WithTranslation {

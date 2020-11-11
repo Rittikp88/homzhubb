@@ -138,7 +138,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private onViewProperty = (data: ISetAssetPayload): void => {
     const { setCurrentAsset, navigation } = this.props;
     setCurrentAsset(data);
-    navigation.navigate(ScreensKeys.PropertyDetailScreen);
+    navigation.navigate(ScreensKeys.PropertyDetailScreen, { isFromDashboard: true });
   };
 
   private handleDues = (): void => {

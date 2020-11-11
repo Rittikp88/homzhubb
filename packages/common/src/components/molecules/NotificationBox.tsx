@@ -3,7 +3,7 @@ import { FlatList, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } fr
 import { useTranslation } from 'react-i18next';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SVGUri } from '@homzhub/common/src/components';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Notifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';

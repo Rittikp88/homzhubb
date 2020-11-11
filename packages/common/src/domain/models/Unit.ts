@@ -7,6 +7,7 @@ export interface IUnit {
   label: string;
   title?: string;
   code?: string;
+  value?: string;
 }
 
 @JsonObject('Unit')
@@ -22,6 +23,9 @@ export class Unit {
 
   @JsonProperty('label', String, true)
   private _label = '';
+
+  @JsonProperty('value', String, true)
+  private _value = '';
 
   @JsonProperty('title', String, true)
   private _title = '';
@@ -51,5 +55,9 @@ export class Unit {
 
   get order(): number {
     return this._order;
+  }
+
+  get value(): string {
+    return this._value;
   }
 }

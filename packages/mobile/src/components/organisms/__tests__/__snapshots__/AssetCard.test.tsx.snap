@@ -10,26 +10,26 @@ exports[`AssetCard should match snapshot 1`] = `
 >
   <View
     style={
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#FFFFFF",
-        "borderRadius": 4,
-        "borderWidth": 0.5,
-        "marginBottom": 2,
-        "padding": 16,
-      }
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderColor": "#FFFFFF",
+          "borderRadius": 4,
+          "borderWidth": 0.5,
+          "marginBottom": 2,
+          "padding": 16,
+        },
+        undefined,
+      ]
     }
   >
     <View
       style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          },
-          false,
-        ]
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
       }
     >
       <View
@@ -40,6 +40,7 @@ exports[`AssetCard should match snapshot 1`] = `
         }
       >
         <Badge
+          badgeColor=""
           badgeStyle={
             Object {
               "alignSelf": "flex-start",
@@ -48,6 +49,7 @@ exports[`AssetCard should match snapshot 1`] = `
               "paddingVertical": 1,
             }
           }
+          title=""
         />
       </View>
       <Icon
@@ -86,14 +88,17 @@ exports[`AssetCard should match snapshot for detail view 1`] = `
 >
   <View
     style={
-      Object {
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#FFFFFF",
-        "borderRadius": 4,
-        "borderWidth": 0.5,
-        "marginBottom": 2,
-        "padding": 16,
-      }
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderColor": "#FFFFFF",
+          "borderRadius": 4,
+          "borderWidth": 0.5,
+          "marginBottom": 2,
+          "padding": 16,
+        },
+        undefined,
+      ]
     }
   >
     <ForwardRef
@@ -104,6 +109,7 @@ exports[`AssetCard should match snapshot for detail view 1`] = `
         onPress={[Function]}
       />
       <Badge
+        badgeColor=""
         badgeStyle={
           Array [
             Object {
@@ -117,6 +123,7 @@ exports[`AssetCard should match snapshot for detail view 1`] = `
             },
           ]
         }
+        title=""
       />
       <PropertyAddressCountry
         containerStyle={

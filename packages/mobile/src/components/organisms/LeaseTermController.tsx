@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { LayoutChangeEvent, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TabView, NavigationState, SceneRendererProps } from 'react-native-tab-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -10,7 +10,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import {
   ILeaseFormData,
@@ -51,6 +51,7 @@ interface IOwnState {
   currentIndex: number;
   routes: IRoute[];
   singleLeaseUnitKey: number;
+  tabHeight: number;
   singleLeaseInitValues: ILeaseFormData;
   preferences: TenantPreference[];
   availableSpaces: SpaceType[];
@@ -64,6 +65,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     this.state = {
       currentIndex: 0,
       singleLeaseUnitKey: -1,
+      tabHeight: theme.viewport.height,
       singleLeaseInitValues: { ...initialLeaseFormData },
       routes: [],
       preferences: [],
@@ -113,7 +115,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   private renderTab = (): React.ReactNode => {
-    const { currentIndex, routes } = this.state;
+    const { currentIndex, routes, tabHeight } = this.state;
 
     return (
       <TabView
@@ -121,6 +123,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         renderTabBar={this.renderTabBar}
         renderScene={this.renderScene}
         onIndexChange={this.onTabChange}
+        style={[styles.tabContainer, { height: tabHeight }]}
         navigationState={{
           index: currentIndex,
           routes,
@@ -134,16 +137,18 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     const { preferences, availableSpaces } = this.state;
 
     return (
-      <SubLeaseUnit
-        route={route}
-        initialValues={route.initialValues}
-        assetGroupType={assetGroupType}
-        furnishing={furnishing}
-        currencyData={currencyData}
-        preferences={preferences}
-        availableSpaces={availableSpaces}
-        onSubmit={this.onSubmit}
-      />
+      <View onLayout={this.onUnitLayout}>
+        <SubLeaseUnit
+          route={route}
+          initialValues={route.initialValues}
+          assetGroupType={assetGroupType}
+          furnishing={furnishing}
+          currencyData={currencyData}
+          preferences={preferences}
+          availableSpaces={availableSpaces}
+          onSubmit={this.onSubmit}
+        />
+      </View>
     );
   };
 
@@ -193,6 +198,11 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         </TouchableOpacity>
       </View>
     );
+  };
+
+  private onUnitLayout = (e: LayoutChangeEvent): void => {
+    const { height } = e.nativeEvent.layout;
+    this.setState({ tabHeight: height });
   };
 
   private onTabChange = (index: number): void => {
@@ -405,6 +415,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 4,
     paddingHorizontal: 16,
     paddingTop: 16,
+  },
+  tabContainer: {
+    flex: 0,
   },
   tab: {
     flexDirection: 'row',

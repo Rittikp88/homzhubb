@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, SVGUri } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { AssetListingSection, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 
@@ -37,6 +38,7 @@ class AssetHighlightCard extends Component<IProps, IState> {
             containerStyle={styles.carouselContainer}
           />
           <PaginationComponent
+            containerStyle={styles.pagination}
             dotsLength={formattedData.length}
             activeSlide={activeSlide}
             activeDotStyle={styles.activeDot}
@@ -106,6 +108,9 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingTop: 16,
+  },
+  pagination: {
+    paddingVertical: 0,
   },
   amenityItem: {
     width: (theme.viewport.width - 32) / 3,

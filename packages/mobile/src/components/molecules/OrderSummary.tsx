@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, Text } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OrderTotalSummary, OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
 
 interface IOwnProps {
@@ -22,13 +23,13 @@ export class OrderSummary extends PureComponent<Props> {
         <Text type="small" textType="semiBold" style={styles.heading}>
           {t('property:orderSummary')}
         </Text>
-        <FlatList data={summaryList} renderItem={this.renderList} contentContainerStyle={styles.listContainer} />
+        <View style={styles.listContainer}>{summaryList?.map(this.renderList) ?? null}</View>
         {amountPayableText && this.renderTotalView(amountPayableText)}
       </View>
     );
   }
 
-  private renderList = ({ item }: { item: OrderTotalSummary }): React.ReactElement => {
+  private renderList = (item: OrderTotalSummary, index: number): React.ReactElement => {
     const { title, value, valueColor } = item;
     const {
       summary: { currency },
@@ -37,7 +38,7 @@ export class OrderSummary extends PureComponent<Props> {
       valueColor === theme.colors.green ? `- ${currency.currencySymbol}${value}` : `${currency.currencySymbol}${value}`;
 
     return (
-      <View style={styles.listItem}>
+      <View style={styles.listItem} key={`${item.title}-${index}`}>
         <Text type="small" textType="semiBold" style={styles.listKey}>
           {title}
         </Text>
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
   },
   listContainer: {
-    paddingVertical: 16,
+    marginVertical: 16,
   },
   listItem: {
     flexDirection: 'row',

@@ -22,7 +22,9 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, EmptyState, UploadBox } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { DocumentCard, Loader, SearchBar } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -258,7 +260,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Documents);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: theme.colors.white,
     padding: 16,
   },

@@ -9,7 +9,8 @@ import { NotificationService } from '@homzhub/common/src/services/NotificationSe
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { EmptyState, NotificationBox } from '@homzhub/common/src/components';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 

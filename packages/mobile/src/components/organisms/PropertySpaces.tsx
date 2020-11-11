@@ -3,14 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import {
-  UncontrolledCheckboxGroup,
-  Counter,
-  ICheckboxGroupData,
-  RNSwitch,
-  Text,
-  InputWithCheckbox,
-} from '@homzhub/common/src/components';
+import { Counter } from '@homzhub/common/src/components/atoms/Counter';
+import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { UncontrolledCheckboxGroup } from '@homzhub/common/src/components/molecules/UncontrolledCheckboxGroup';
+import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+import { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IGroupedSpaceType {
@@ -62,7 +60,9 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
 
   public render(): React.ReactNode {
     const { showMore, groupedSpaceTypes } = this.state;
+    const { flowType, spacesTypes, t } = this.props;
 
+    const moreItems = spacesTypes.findIndex((space) => !space.isPrimary);
     if (!groupedSpaceTypes) {
       return null;
     }
@@ -71,13 +71,15 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
       <View style={styles.containerStyle}>
         {this.renderSpaces(true)}
 
-        <View style={[styles.rowStyle, styles.marginBottom]}>
-          <View style={styles.rowStyle}>
+        {(flowType !== FlowTypes.LeaseFlow || moreItems > -1) && (
+          <View style={[styles.rowStyle, showMore && styles.marginBottom]}>
             <Icon style={styles.threeDots} name={icons.threeDots} size={22} />
-            <Text type="small">More</Text>
+            <Text type="small" style={styles.moreText}>
+              {t('assetMore:more')}
+            </Text>
+            <RNSwitch selected={showMore} onToggle={this.toggleMoreSwitch} />
           </View>
-          <RNSwitch selected={showMore} onToggle={this.toggleMoreSwitch} />
-        </View>
+        )}
 
         <View style={!showMore ? styles.displayNone : undefined}>{this.renderSpaces(false)}</View>
       </View>
@@ -96,6 +98,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
     };
 
     /* This part of the method renders Counters */
+    const counterLength = groupedSpaceTypes[SpaceFieldTypes.Counter]?.length ?? 0;
     const spaceFields = groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
       if (space.isPrimary !== renderPrimary) {
         return null;
@@ -104,7 +107,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
       return (
         <Counter
           key={index}
-          containerStyles={styles.marginBottom}
+          containerStyles={index === counterLength - 1 ? undefined : styles.marginBottom}
           defaultValue={space.unitCount ? space.unitCount : space.isMandatory ? 1 : 0}
           name={{ title: space.name, id: space.id }}
           svgImage={space.attachment && space.attachment.link}
@@ -202,12 +205,9 @@ const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: theme.colors.white,
     paddingHorizontal: theme.layout.screenPadding,
-    paddingTop: theme.layout.screenPadding,
-    paddingBottom: 24,
   },
   rowStyle: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   marginBottom: {
@@ -221,5 +221,8 @@ const styles = StyleSheet.create({
   },
   displayNone: {
     display: 'none',
+  },
+  moreText: {
+    flex: 1,
   },
 });
