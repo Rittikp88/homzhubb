@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { UploadBox } from '@homzhub/common/src/components';
+import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { icons } from '@homzhub/common/src/assets/icon';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');

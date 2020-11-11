@@ -23,6 +23,7 @@ module.exports = function override(config, env) {
     require.resolve('babel-plugin-react-native-web'),
     [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
     require.resolve('@babel/plugin-proposal-class-properties'),
+    require.resolve('@babel/plugin-transform-modules-commonjs'),
     require.resolve('babel-plugin-inline-react-svg'),
   ].concat(config.module.rules[2].oneOf[1].options.plugins);
   config.module.rules = config.module.rules.filter(Boolean);

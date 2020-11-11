@@ -17,11 +17,6 @@ exports[`Market Trends Screen should render snapshot 1`] = `
     type="primary"
   />
   <withI18nextTranslation(AssetMarketTrends)
-    containerStyle={
-      Object {
-        "padding": 16,
-      }
-    }
     isHeaderVisible={false}
     limit={100}
   />

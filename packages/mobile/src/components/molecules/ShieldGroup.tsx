@@ -3,7 +3,8 @@ import { StyleSheet, View, ScrollView, StyleProp, TextStyle } from 'react-native
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, AmenitiesShieldIconGroup } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 
 interface IProps {

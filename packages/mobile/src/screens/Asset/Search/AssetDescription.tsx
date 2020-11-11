@@ -29,19 +29,16 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import {
-  CustomMarker,
-  Divider,
-  Label,
-  PricePerUnit,
-  PropertyAddress,
-  PropertyAmenities,
-  Text,
-  WithShadowView,
-  SVGUri,
-  ContactPerson,
-  Button,
-} from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
+import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import {
   AssetRatings,
   AssetDetailsImageCarousel,

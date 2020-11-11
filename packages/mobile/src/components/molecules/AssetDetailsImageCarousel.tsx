@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { ImageVideoPagination } from '@homzhub/common/src/components';
+import { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 

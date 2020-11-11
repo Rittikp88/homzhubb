@@ -12,17 +12,14 @@ import { CommonRepository } from '@homzhub/common/src/domain/repositories/Common
 import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { icons } from '@homzhub/common/src/assets/icon';
 import Check from '@homzhub/common/src/assets/images/check.svg';
-import {
-  Avatar,
-  Button,
-  Divider,
-  FormButton,
-  FormDropdown,
-  FormTextInput,
-  IDropdownOption,
-  Text,
-  TextArea,
-} from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { AnimatedProfileHeader, BottomSheet, HeaderCard, UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { User } from '@homzhub/common/src/domain/models/User';

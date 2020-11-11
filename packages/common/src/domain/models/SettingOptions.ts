@@ -1,5 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { IDropdownOption } from '@homzhub/common/src/components';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 export type SelectedPreferenceType = boolean | string | number;
 

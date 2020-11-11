@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 // TODO: Delete this file once all tab screens are ready

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PickerItemProps, StyleSheet, View } from 'react-native';
-import { Dropdown } from '@homzhub/common/src/components';
+import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 
 interface IProps {

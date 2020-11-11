@@ -7,7 +7,7 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button, IButtonProps } from '@homzhub/common/src/components';
+import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
 import { IPaymentSuccess } from '@homzhub/common/src/domain/repositories/interfaces';

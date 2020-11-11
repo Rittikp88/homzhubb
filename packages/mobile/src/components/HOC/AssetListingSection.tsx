@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   title: string;

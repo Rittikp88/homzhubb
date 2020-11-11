@@ -6,7 +6,9 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { MarkdownType } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, Divider, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   onClickLink: (markdownKey: MarkdownType) => void;

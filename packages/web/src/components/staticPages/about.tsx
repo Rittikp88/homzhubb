@@ -1,5 +1,5 @@
 import React from 'react';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 class About extends React.PureComponent<{}, {}> {
   public render(): React.ReactNode {

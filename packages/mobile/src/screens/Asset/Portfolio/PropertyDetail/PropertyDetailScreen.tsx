@@ -12,7 +12,7 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';

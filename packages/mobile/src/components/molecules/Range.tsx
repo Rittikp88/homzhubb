@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Dropdown, Label, Slider, Text } from '@homzhub/common/src/components';
+import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Slider } from '@homzhub/common/src/components/atoms/Slider';
 
 interface IRange {
   min: number;

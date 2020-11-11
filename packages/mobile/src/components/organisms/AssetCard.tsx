@@ -5,16 +5,13 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import PlaceHolder from '@homzhub/common/src/assets/images/imageLoader.svg';
-import {
-  Avatar,
-  Badge,
-  Button,
-  Divider,
-  Label,
-  OffersVisitsSection,
-  OffersVisitsType,
-  PropertyAddressCountry,
-} from '@homzhub/common/src/components';
+import { Badge } from '@homzhub/common/src/components/atoms/Badge';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';

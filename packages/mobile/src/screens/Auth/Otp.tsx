@@ -21,7 +21,9 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { DetailedHeader, Label, OtpTimer, Text } from '@homzhub/common/src/components';
+import { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 import { Loader, OtpInputs, OtpTypes } from '@homzhub/mobile/src/components';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';

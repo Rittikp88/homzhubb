@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { SocialMediaKeys } from '@homzhub/common/src/assets/constants';
-import { DetailedHeader } from '@homzhub/common/src/components';
+import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 import { MobileVerificationScreen } from '@homzhub/mobile/src/screens/Auth/MobileVerificationScreen';
 
 const mock = jest.fn();

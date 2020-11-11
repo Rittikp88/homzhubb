@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, Text } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OrderTotalSummary, OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
 
 interface IOwnProps {

@@ -5,7 +5,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { theme } from '@homzhub/common/src/styles/theme';
 // @ts-ignore
 import YoutubeSVG from '@homzhub/common/src/assets/images/youtube.svg';
-import { Label, RNSwitch, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
 
 interface IProps {
   isToggled: boolean;

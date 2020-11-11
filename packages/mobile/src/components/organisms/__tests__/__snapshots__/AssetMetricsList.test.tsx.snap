@@ -50,6 +50,26 @@ exports[`AssetMetricsList should match snapshot 1`] = `
       >
         0
       </Text>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#4C5F72",
+            }
+          }
+          textType="semiBold"
+          type="small"
+        >
+          common:properties
+        </Text>
+      </View>
     </View>
   </View>
   <SnapCarousel

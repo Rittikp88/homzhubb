@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components';
+import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 
 interface IMultipleButtonGroupItem<T> {
   title: string;

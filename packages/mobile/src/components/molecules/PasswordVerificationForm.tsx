@@ -6,7 +6,9 @@ import { FormikHelpers } from 'formik/dist/types';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { FormButton, FormTextInput, Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {

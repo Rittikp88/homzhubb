@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Transaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
 interface IProps {

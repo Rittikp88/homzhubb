@@ -3,7 +3,8 @@ import { TouchableOpacity, StyleSheet, View, StyleProp, ViewStyle } from 'react-
 import Collapsible from 'react-native-collapsible';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider, Text } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface ICollapsibleSectionProps {
   title: string;

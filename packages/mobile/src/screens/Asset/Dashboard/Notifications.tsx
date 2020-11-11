@@ -7,7 +7,8 @@ import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { NotificationBox, EmptyState } from '@homzhub/common/src/components';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
 import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

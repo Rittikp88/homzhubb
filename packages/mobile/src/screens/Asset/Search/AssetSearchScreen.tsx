@@ -23,16 +23,11 @@ import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import {
-  Button,
-  ButtonType,
-  Divider,
-  FontWeightType,
-  IDropdownOption,
-  Label,
-  ToggleButton,
-  Text,
-} from '@homzhub/common/src/components';
+import { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Label, Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
+import { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { CurrentLocation, Loader, Range, RoomsFilter } from '@homzhub/mobile/src/components';
 import AssetTypeFilter from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';

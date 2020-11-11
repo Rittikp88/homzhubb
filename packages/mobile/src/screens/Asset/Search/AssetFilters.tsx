@@ -15,15 +15,12 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import {
-  Button,
-  CheckboxGroup,
-  Dropdown,
-  RNSwitch,
-  SelectionPicker,
-  Text,
-  ICheckboxGroupData,
-} from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
 import { BottomSheet } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';

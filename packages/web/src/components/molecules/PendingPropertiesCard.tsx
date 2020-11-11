@@ -5,17 +5,14 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  AmenitiesShieldIconGroup,
-  Button,
-  PropertyAddressCountry,
-  PropertyAmenities,
-  Typography,
-} from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Typography, ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
+import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
+import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { NextPrevBtn, ProgressBar } from '@homzhub/web/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
-import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 
 interface IProps {

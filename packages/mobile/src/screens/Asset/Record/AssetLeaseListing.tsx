@@ -17,7 +17,9 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
-import { Button, Label, SelectionPicker, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import {
   ActionController,
   AddressWithStepIndicator,

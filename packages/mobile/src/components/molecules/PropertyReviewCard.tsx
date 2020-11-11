@@ -3,7 +3,7 @@ import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Property from '@homzhub/common/src/assets/images/property.svg';
-import { Label, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {

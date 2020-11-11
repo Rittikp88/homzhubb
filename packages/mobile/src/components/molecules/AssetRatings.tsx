@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 
 interface IProps {

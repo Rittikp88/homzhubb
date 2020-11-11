@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProgressBarProps {
   progress: number;

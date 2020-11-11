@@ -14,7 +14,10 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Dropdown, Label, RNSwitch } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AnimatedProfileHeader, Loader } from '@homzhub/mobile/src/components';
 import { OptionTypes, SelectedPreferenceType, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';

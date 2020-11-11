@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { FontWeightType, Text, TextSizeType } from '@homzhub/common/src/components';
+import { FontWeightType, Text, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
 interface IOwnProps {
   title: string;

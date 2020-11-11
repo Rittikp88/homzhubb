@@ -11,16 +11,20 @@ import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label, WithShadowView, Text, Divider, Avatar, Button } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { StatusBarComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AssetLeadType } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { BedroomType, TimeSlot, UserType } from '@homzhub/common/src/constants/ContactFormData';
 
 interface ISlot {
@@ -66,7 +70,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
               {t('iAm')}
             </Text>
             <RadioButtonGroup
-              data={UserType as AssetLeadType[]}
+              data={UserType as Unit[]}
               onToggle={this.onUserToggle}
               containerStyle={styles.radioGroup}
               selectedValue={userType}

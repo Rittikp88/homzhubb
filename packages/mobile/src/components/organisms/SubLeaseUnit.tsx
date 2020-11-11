@@ -8,14 +8,11 @@ import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import {
-  Button,
-  CheckboxGroup,
-  FormButton,
-  FurnishingSelection,
-  ICheckboxGroupData,
-  Text,
-} from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+import { FurnishingSelection } from '@homzhub/common/src/components/atoms/FurnishingSelection';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import {
   IFormData,
   initialLeaseFormValues,

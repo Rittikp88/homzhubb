@@ -11,7 +11,10 @@ import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, ImageThumbnail, Text, UploadBox } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';

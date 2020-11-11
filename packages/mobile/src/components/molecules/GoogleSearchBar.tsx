@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, TextInput, TextStyle, View, ViewStyle } from 're
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 
 interface IProps {
   placeholder: string;

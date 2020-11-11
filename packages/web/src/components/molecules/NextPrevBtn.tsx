@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 
 interface IProps {
   onBtnClick: (updateIndexBy: number) => void;

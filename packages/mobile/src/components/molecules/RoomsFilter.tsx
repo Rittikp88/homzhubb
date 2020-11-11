@@ -5,7 +5,8 @@ import { remove } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { BATHROOM_FILTER, BEDROOM_FILTER, IFilterDataObject } from '@homzhub/common/src/constants/SearchFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SelectionPicker, Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 
 interface IProps {
   bedCount: number[];

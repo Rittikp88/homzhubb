@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { Avatar } from '@homzhub/common/src/components';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 
 const Navbar = (): React.ReactElement => {

@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button, Divider, Image, Label, PricePerUnit, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Image } from '@homzhub/common/src/components/atoms/Image';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IPropertyDuesData {
   propertyName: string;

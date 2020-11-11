@@ -3,14 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import {
-  UncontrolledCheckboxGroup,
-  Counter,
-  ICheckboxGroupData,
-  RNSwitch,
-  Text,
-  InputWithCheckbox,
-} from '@homzhub/common/src/components';
+import { Counter } from '@homzhub/common/src/components/atoms/Counter';
+import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { UncontrolledCheckboxGroup } from '@homzhub/common/src/components/molecules/UncontrolledCheckboxGroup';
+import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+import { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 
 interface IGroupedSpaceType {

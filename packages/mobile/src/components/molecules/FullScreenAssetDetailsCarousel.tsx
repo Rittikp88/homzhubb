@@ -4,7 +4,8 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Image, ImageVideoPagination } from '@homzhub/common/src/components';
+import { Image } from '@homzhub/common/src/components/atoms/Image';
+import { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';
 import { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 

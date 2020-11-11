@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { ImageRound, ImageSquare } from '@homzhub/common/src/components';
+import { ImageRound, ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});

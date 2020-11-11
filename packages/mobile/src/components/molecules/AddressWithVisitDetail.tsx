@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label, PropertyAddress, Text } from '@homzhub/common/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { VisitSlot } from '@homzhub/common/src/mocks/BookVisit';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 
 interface IProps {
   placeholder: string;

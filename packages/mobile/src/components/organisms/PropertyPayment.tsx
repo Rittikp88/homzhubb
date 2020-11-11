@@ -9,7 +9,8 @@ import { PaymentRepository } from '@homzhub/common/src/domain/repositories/Payme
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider, Label, Text } from '@homzhub/common/src/components';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import HomzhubCoins from '@homzhub/mobile/src/components/molecules/HomzhubCoins';
 import OrderSummary from '@homzhub/mobile/src/components/molecules/OrderSummary';
 import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';

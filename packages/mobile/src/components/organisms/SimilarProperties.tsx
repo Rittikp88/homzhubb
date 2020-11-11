@@ -4,7 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 

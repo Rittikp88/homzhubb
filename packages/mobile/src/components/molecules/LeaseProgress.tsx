@@ -5,7 +5,7 @@ import * as Progress from 'react-native-progress';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AssetCreationStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
 interface IProgressBarProps {

@@ -5,7 +5,8 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { PricePerUnit, Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 

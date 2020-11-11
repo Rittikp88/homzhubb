@@ -11,7 +11,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Header, AddressWithStepIndicator, AddPropertyDetails, Loader } from '@homzhub/mobile/src/components';
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';

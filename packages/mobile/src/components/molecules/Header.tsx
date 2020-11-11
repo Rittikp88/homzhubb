@@ -3,7 +3,7 @@ import { StatusBar, StyleSheet, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface ICommonHeaderProps {
   icon?: string;

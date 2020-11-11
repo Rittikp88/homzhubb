@@ -17,7 +17,9 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { FormButton, FormTextInput, Text } from '@homzhub/common/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { BottomSheet } from '@homzhub/mobile/src/components';
 import PasswordVerificationForm from '@homzhub/mobile/src/components/molecules/PasswordVerificationForm';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';

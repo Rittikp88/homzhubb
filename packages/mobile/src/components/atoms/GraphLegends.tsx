@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, PricePerUnit } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 interface IProps {

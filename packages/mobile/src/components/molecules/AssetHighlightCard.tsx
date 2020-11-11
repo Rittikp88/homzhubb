@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, SVGUri } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { AssetListingSection, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 

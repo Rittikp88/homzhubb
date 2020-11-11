@@ -10,7 +10,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label } from '@homzhub/common/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import {
   ILeaseFormData,

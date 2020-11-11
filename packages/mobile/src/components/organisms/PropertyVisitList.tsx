@@ -3,7 +3,12 @@ import { PickerItemProps, ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Avatar, Button, Divider, Dropdown, EmptyState, Label, Text } from '@homzhub/common/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet, Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
 import {
