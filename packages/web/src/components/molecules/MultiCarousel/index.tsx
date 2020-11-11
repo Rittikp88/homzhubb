@@ -11,8 +11,8 @@ const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 1200 },
-    items: 4,
-    slidesToSlide: 4,
+    items: 3,
+    slidesToSlide: 3,
   },
   desktop: {
     breakpoint: { max: 1200, min: 1024 },
@@ -36,7 +36,7 @@ const MultiCarousel: FC<IProps> = (props: IProps) => {
   return (
     <Carousel
       arrows={false}
-      autoPlay
+      // autoPlay
       autoPlaySpeed={3000}
       draggable
       focusOnSelect={false}
