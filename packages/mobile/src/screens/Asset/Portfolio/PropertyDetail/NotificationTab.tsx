@@ -1,24 +1,21 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
-import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetNotifications, Notifications } from '@homzhub/common/src/domain/models/AssetNotifications';
+import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 
-interface IStateProps {
-  propertyData: Asset | null;
+interface IProps {
+  assetStatusInfo: AssetStatusInfo | null;
 }
 
-type Props = WithTranslation & IStateProps;
+type Props = WithTranslation & IProps;
 
 interface IAssetNotificationsState {
   notifications: AssetNotifications;
@@ -54,8 +51,9 @@ export class NotificationTab extends React.Component<Props, IAssetNotificationsS
     );
   };
 
-  public onNotificationClicked = async (id: number): Promise<void> => {
+  public onNotificationClicked = async (data: Notifications): Promise<void> => {
     const { notifications } = this.state;
+    const { id } = data;
     await DashboardRepository.updateNotificationStatus(id);
     this.setState({ notifications: NotificationService.getUpdatedNotifications(id, notifications) });
   };
@@ -71,17 +69,14 @@ export class NotificationTab extends React.Component<Props, IAssetNotificationsS
   };
 
   public getAssetNotifications = async (): Promise<void> => {
-    const { propertyData } = this.props;
+    const { assetStatusInfo } = this.props;
     const { limit, offset, notifications } = this.state;
+
     const requestPayload = {
       limit,
       offset,
-      ...(propertyData?.assetStatusInfo.saleListingId
-        ? { sale_listing_id: propertyData?.assetStatusInfo?.saleListingId }
-        : {}),
-      ...(propertyData?.assetStatusInfo.leaseListingId
-        ? { lease_listing_id: propertyData?.assetStatusInfo?.leaseListingId }
-        : {}),
+      ...(assetStatusInfo?.saleListingId ? { sale_listing_id: assetStatusInfo?.saleListingId } : {}),
+      ...(assetStatusInfo?.leaseListingId ? { lease_listing_id: assetStatusInfo?.leaseListingId } : {}),
     };
     if (requestPayload.sale_listing_id || requestPayload.lease_listing_id) {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
@@ -92,16 +87,7 @@ export class NotificationTab extends React.Component<Props, IAssetNotificationsS
   };
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
-  return {
-    propertyData: PortfolioSelectors.getAssetById(state),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(withTranslation(LocaleConstants.namespacesKey.assetDashboard)(NotificationTab));
+export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(NotificationTab);
 
 const styles = StyleSheet.create({
   notificationContainer: {

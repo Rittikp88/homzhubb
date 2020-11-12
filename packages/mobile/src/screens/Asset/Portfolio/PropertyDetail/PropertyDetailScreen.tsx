@@ -13,7 +13,7 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel, Loader } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -42,6 +42,7 @@ interface IDetailState {
   activeSlide: number;
   currentIndex: number;
   heights: number[];
+  isLoading: boolean;
 }
 
 interface IRoutes {
@@ -61,6 +62,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     attachments: [],
     currentIndex: 0,
     heights: Array(Routes.length).fill(height),
+    isLoading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -72,7 +74,12 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { currentIndex, propertyData, heights } = this.state;
+    const { currentIndex, propertyData, heights, isLoading } = this.state;
+
+    if (isLoading) {
+      return <Loader visible />;
+    }
+
     if (isEmpty(propertyData)) {
       return null;
     }
@@ -147,13 +154,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
   private renderTabScene = (route: IRoutes): React.ReactElement | null => {
     const { navigation } = this.props;
+    const {
+      propertyData: { assetStatusInfo },
+    } = this.state;
     switch (route.key) {
       case Tabs.NOTIFICATIONS:
         // TODO: Figure-out something to resolve this error
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
-            {/** @ts-ignore * */}
-            <NotificationTab />
+            <NotificationTab assetStatusInfo={assetStatusInfo} />
           </View>
         );
       case Tabs.TICKETS:
@@ -267,12 +276,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       id: listing_id,
       type: assetType,
     };
+    this.setState({ isLoading: true });
     try {
       const response = await PortfolioRepository.getPropertyDetail(payload);
       this.setState({
         propertyData: response,
+        isLoading: false,
       });
     } catch (e) {
+      this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };

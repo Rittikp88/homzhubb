@@ -51,7 +51,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
   >
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="1"
+      key="1-0"
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -100,7 +100,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="2"
+      key="2-1"
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -149,7 +149,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="3"
+      key="3-2"
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -198,7 +198,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="4"
+      key="4-3"
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -247,7 +247,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="5"
+      key="5-4"
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -296,7 +296,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="6"
+      key="6-5"
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -345,7 +345,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="7"
+      key="7-6"
       transaction={
         FinancialRecords {
           "_amount": 27000,

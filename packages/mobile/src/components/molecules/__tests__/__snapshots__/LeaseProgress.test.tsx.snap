@@ -2,32 +2,35 @@
 
 exports[`Lease Progress should match snapshot 1`] = `
 <View
-  style={Object {}}
+  style={
+    Array [
+      Object {
+        "flexDirection": "row",
+        "width": "100%",
+      },
+      Object {},
+    ]
+  }
 >
+  <Icon
+    allowFontScaling={false}
+    color="#667686"
+    name="calendar"
+    size={22}
+  />
   <View
     style={
       Object {
-        "alignItems": "center",
-        "flexDirection": "row",
+        "flex": 1,
+        "marginStart": 8,
       }
     }
   >
-    <Icon
-      allowFontScaling={false}
-      color="#33495E"
-      name="calendar"
-      size={22}
-      style={
-        Object {
-          "marginRight": 8,
-        }
-      }
-    />
     <Label
       style={
         Array [
           Object {
-            "color": "#33495E",
+            "color": "#4C5F72",
           },
           Object {},
         ]
@@ -36,80 +39,80 @@ exports[`Lease Progress should match snapshot 1`] = `
     >
       leasePeriod
     </Label>
-  </View>
-  <Component
-    borderRadius={5}
-    color="#FF8576"
-    progress={70}
-    style={
-      Object {
-        "borderColor": "#F0F5F9",
-        "marginLeft": 26,
-        "marginTop": 8,
-      }
-    }
-    unfilledColor="#2CBA67"
-  />
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "marginBottom": 6,
-        "marginLeft": 28,
-      }
-    }
-  >
-    <Label
+    <Component
+      borderRadius={4}
+      color="#FF8576"
+      progress={70}
       style={
         Object {
-          "color": "#808D9B",
-          "marginTop": 6,
+          "borderColor": "#F0F5F9",
+          "marginTop": 8,
         }
       }
-      type="regular"
+      unfilledColor="#2CBA67"
+      width={null}
     />
-    <Label
+    <View
       style={
         Object {
-          "color": "#808D9B",
-          "marginTop": 6,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginVertical": 6,
         }
       }
-      type="regular"
-    />
+    >
+      <Label
+        style={
+          Object {
+            "color": "#808D9B",
+          }
+        }
+        type="regular"
+      />
+      <Label
+        style={
+          Object {
+            "color": "#808D9B",
+          }
+        }
+        type="regular"
+      />
+    </View>
   </View>
 </View>
 `;
 
 exports[`Lease Progress should match snapshot 2`] = `
 <View
-  style={Object {}}
+  style={
+    Array [
+      Object {
+        "flexDirection": "row",
+        "width": "100%",
+      },
+      Object {},
+    ]
+  }
 >
+  <Icon
+    allowFontScaling={false}
+    color="#667686"
+    name="calendar"
+    size={22}
+  />
   <View
     style={
       Object {
-        "alignItems": "center",
-        "flexDirection": "row",
+        "flex": 1,
+        "marginStart": 8,
       }
     }
   >
-    <Icon
-      allowFontScaling={false}
-      color="#33495E"
-      name="calendar"
-      size={22}
-      style={
-        Object {
-          "marginRight": 8,
-        }
-      }
-    />
     <Label
       style={
         Array [
           Object {
-            "color": "#33495E",
+            "color": "#4C5F72",
           },
           Object {},
         ]
@@ -118,48 +121,45 @@ exports[`Lease Progress should match snapshot 2`] = `
     >
       leasePeriod
     </Label>
-  </View>
-  <Component
-    borderRadius={5}
-    color="#FF8576"
-    progress={70}
-    style={
-      Object {
-        "borderColor": "#F0F5F9",
-        "marginLeft": 26,
-        "marginTop": 8,
-      }
-    }
-    unfilledColor="#2CBA67"
-  />
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "marginBottom": 6,
-        "marginLeft": 28,
-      }
-    }
-  >
-    <Label
+    <Component
+      borderRadius={4}
+      color="#FF8576"
+      progress={70}
       style={
         Object {
-          "color": "#808D9B",
-          "marginTop": 6,
+          "borderColor": "#F0F5F9",
+          "marginTop": 8,
         }
       }
-      type="regular"
+      unfilledColor="#2CBA67"
+      width={null}
     />
-    <Label
+    <View
       style={
         Object {
-          "color": "#808D9B",
-          "marginTop": 6,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginVertical": 6,
         }
       }
-      type="regular"
-    />
+    >
+      <Label
+        style={
+          Object {
+            "color": "#808D9B",
+          }
+        }
+        type="regular"
+      />
+      <Label
+        style={
+          Object {
+            "color": "#808D9B",
+          }
+        }
+        type="regular"
+      />
+    </View>
   </View>
 </View>
 `;

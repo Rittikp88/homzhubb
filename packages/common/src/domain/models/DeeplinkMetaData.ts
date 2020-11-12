@@ -2,6 +2,9 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 
 export enum NotificationType {
   SYSTEM_NOTIFICATION = 'SYSTEM_NOTIFICATION',
+  SITE_VISIT = 'SITE_VISIT',
+  PROPERTY_DETAIL = 'PROPERTY_DETAIL',
+  PROPERTY_PREVIEW = 'PROPERTY_PREVIEW',
 }
 
 @JsonObject('DeeplinkMetaData')

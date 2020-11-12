@@ -1,4 +1,4 @@
-import moment, { unitOfTime } from 'moment';
+import moment, { Moment, unitOfTime } from 'moment';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
 export const MonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -256,6 +256,14 @@ class DateUtils {
 
   public getDaysInMonth = (month: number): number => {
     return new Date(parseInt(this.getCurrentYear(), 10), month, 0).getDate();
+  };
+
+  public getMomentObj = (date: string): Moment => {
+    return moment(date);
+  };
+
+  public getDateDiff = (date1: string, date2: string): number => {
+    return moment(date1).diff(date2);
   };
 }
 

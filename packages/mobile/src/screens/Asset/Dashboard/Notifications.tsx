@@ -1,21 +1,34 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
-import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  AssetNotifications,
+  Notifications as NotificationModel,
+} from '@homzhub/common/src/domain/models/AssetNotifications';
+import { NotificationType } from '@homzhub/common/src/domain/models/DeeplinkMetaData';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { DetailType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+
+interface IDispatchProps {
+  setCurrentAsset: (payload: ISetAssetPayload) => void;
+}
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
-type Props = WithTranslation & libraryProps;
+type Props = WithTranslation & libraryProps & IDispatchProps;
 
 interface IAssetNotificationsState {
   notifications: AssetNotifications;
@@ -91,10 +104,37 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     );
   };
 
-  public onNotificationClicked = async (id: number): Promise<void> => {
+  public onNotificationClicked = async (data: NotificationModel): Promise<void> => {
     const { notifications } = this.state;
-    await DashboardRepository.updateNotificationStatus(id);
-    this.setState({ notifications: NotificationService.getUpdatedNotifications(id, notifications) });
+    const {
+      navigation,
+      setCurrentAsset,
+      route: { params },
+    } = this.props;
+    const {
+      id,
+      deeplinkMetadata: { objectId, type, assetId, leaseListingId, saleListingId },
+      isRead,
+    } = data;
+
+    if (!isRead) {
+      await DashboardRepository.updateNotificationStatus(id);
+      this.setState({ notifications: NotificationService.getUpdatedNotifications(id, notifications) });
+    }
+
+    if (type === NotificationType.SITE_VISIT) {
+      navigation.navigate(ScreensKeys.PropertyVisits, { visitId: objectId });
+    } else if (type === NotificationType.PROPERTY_DETAIL || type === NotificationType.PROPERTY_PREVIEW) {
+      const payload: ISetAssetPayload = {
+        asset_id: assetId,
+        listing_id: leaseListingId > 0 ? leaseListingId : saleListingId,
+        assetType: leaseListingId > 0 ? DetailType.LEASE_LISTING : DetailType.SALE_LISTING,
+      };
+      setCurrentAsset(payload);
+      navigation.navigate(ScreensKeys.PropertyDetailScreen, {
+        isFromDashboard: params && params.isFromDashboard ? params.isFromDashboard : false,
+      });
+    }
   };
 
   public onLoadMore = (): void => {
@@ -148,7 +188,15 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Notifications);
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentAsset } = PortfolioActions;
+  return bindActionCreators({ setCurrentAsset }, dispatch);
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Notifications));
 
 const styles = StyleSheet.create({
   searchbar: {

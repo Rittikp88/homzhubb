@@ -61,6 +61,7 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
+  [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
 };
 
 export type PortfolioNavigatorParamList = {
@@ -112,7 +113,8 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
-      <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
+      <DashboardNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
+      <DashboardNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
     </DashboardNavigator.Navigator>
   );
 };

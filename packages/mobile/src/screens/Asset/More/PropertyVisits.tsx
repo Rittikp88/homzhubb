@@ -15,6 +15,7 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
@@ -67,7 +68,10 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private renderPropertyVisits = (): React.ReactElement => {
     const { isCalendarView, countryData, propertiesByCountry, selectedAssetId } = this.state;
-    const { navigation } = this.props;
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
     return (
       <>
         <DropdownWithCountry
@@ -82,6 +86,8 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
             onReschedule={this.rescheduleVisit}
             selectedAssetId={selectedAssetId}
             navigation={navigation}
+            visitId={params && params.visitId ? params.visitId : null}
+            currentStatus={VisitStatusType.MISSED}
             setVisitPayload={this.setVisitPayload}
           />
         )}
