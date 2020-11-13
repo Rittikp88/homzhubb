@@ -22,6 +22,7 @@ describe('Markdown View', () => {
       setChangeStack: mock,
       navigation: {
         goBack: mock,
+        addListener: mock,
       },
       route: {
         params: {

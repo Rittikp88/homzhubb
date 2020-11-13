@@ -36,6 +36,7 @@ import {
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
@@ -45,7 +46,6 @@ import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
-import BookVisit from '../screens/Asset/Search/BookVisit';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
