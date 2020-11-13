@@ -96,7 +96,8 @@ class PropertyUtils {
     const availableFromDate = new Date(availableFrom);
     const formattedAvailableFrom = DateUtils.getDisplayDate(availableFrom, DateFormats.DDMMMYYYY);
     const postedOnDisplayDate = DateUtils.getDisplayDate(postedOn, DateFormats.DDMMMYYYY);
-    const tenantedTillDisplayDate = DateUtils.getDisplayDate(saleTerm?.tenantedTill ?? '', DateFormats.MMM_YYYY);
+    // TODO: Uncomment once Tenanted Flow iss ready
+    // const tenantedTillDisplayDate = DateUtils.getDisplayDate(saleTerm?.tenantedTill ?? '', DateFormats.MMM_YYYY);
     const availableFromDisplayDate = availableFromDate <= currentDay ? 'Immediately' : formattedAvailableFrom;
     switch (transaction_type) {
       // 0 - RENT and 1 - BUY
@@ -109,7 +110,8 @@ class PropertyUtils {
         return [
           { label: 'Posted on', value: postedOnDisplayDate },
           { label: 'Possession', value: availableFromDisplayDate },
-          { label: 'Tenanted till', value: tenantedTillDisplayDate ?? '-' },
+          // TODO: Uncomment once Tenanted Flow iss ready
+          // { label: 'Tenanted till', value: tenantedTillDisplayDate ?? '-' },
         ];
       default:
         return [];

@@ -26,6 +26,7 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
+  IBookVisitProps,
   IComingSoon,
   IOtpNavProps,
   IUpdateProfileProps,
@@ -44,6 +45,7 @@ import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
+import BookVisit from '../screens/Asset/Search/BookVisit';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -62,6 +64,7 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
+  [ScreensKeys.BookVisit]: IBookVisitProps;
 };
 
 export type PortfolioNavigatorParamList = {
@@ -92,6 +95,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SupportScreen]: undefined;
   [ScreensKeys.WebViewScreen]: IWebviewProps;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
+  [ScreensKeys.BookVisit]: IBookVisitProps;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -115,6 +119,7 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
+      <DashboardNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
     </DashboardNavigator.Navigator>
   );
 };
@@ -170,6 +175,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
+      <MoreStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -272,12 +278,13 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.More}
         component={isLoggedIn ? MoreStack : DefaultLogin}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetMore:more'),
-          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <Icon name={icons.threeDots} color={color} size={22} />
-          ),
-        }}
+          tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
+            return <Icon name={icons.threeDots} color={color} size={22} />;
+          },
+        })}
       />
     </BottomTabNavigator.Navigator>
   );

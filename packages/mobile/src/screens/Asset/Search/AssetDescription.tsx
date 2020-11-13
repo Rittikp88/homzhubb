@@ -124,12 +124,16 @@ type Props = IStateProps & IDispatchProps & libraryProps;
 const ShowInMvpRelease = false;
 
 export class AssetDescription extends React.PureComponent<Props, IOwnState> {
+  public focusListener: any;
   public state = initialState;
 
   public componentDidMount = (): void => {
+    const { navigation } = this.props;
     const startDate = this.getFormattedDate();
     this.setState({ startDate });
-    this.getAssetData();
+    this.focusListener = navigation.addListener('focus', () => {
+      this.getAssetData();
+    });
   };
 
   // TODO: Do we require a byId reducer here?
