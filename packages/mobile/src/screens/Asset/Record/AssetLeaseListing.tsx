@@ -223,7 +223,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
               { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
               { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
             ]}
-            optionWidth={(theme.viewport.width - 32) / 2}
             selectedItem={[leaseType]}
             containerStyles={styles.switchTab}
             onValueChange={this.onTabChange}

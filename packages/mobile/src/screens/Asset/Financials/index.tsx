@@ -5,7 +5,7 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
-import { LedgerService } from '@homzhub/common/src/services/LedgerService';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AnimatedProfileHeader, AssetMetricsList, Loader, IMetricsData } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
@@ -110,14 +110,14 @@ export class Financials extends React.PureComponent<Props, IState> {
     return [
       {
         label: t('assetFinancial:income', { year: currentYear }),
-        count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.credit, ledgerData)}/-`,
+        count: `${LedgerUtils.totalByType(LedgerTypes.credit, ledgerData)}/-`,
         currencySymbol: 'INR',
         // @ts-ignore
         colorGradient: { hexColorA: theme.colors.gradientA, hexColorB: theme.colors.gradientB, location: [0, 1] },
       },
       {
         label: t('assetFinancial:expense', { year: currentYear }),
-        count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.debit, ledgerData)}/-`,
+        count: `${LedgerUtils.totalByType(LedgerTypes.debit, ledgerData)}/-`,
         currencySymbol: 'INR',
         // @ts-ignore
         colorGradient: { hexColorA: theme.colors.gradientC, hexColorB: theme.colors.gradientD, location: [0, 1] },
@@ -127,11 +127,11 @@ export class Financials extends React.PureComponent<Props, IState> {
 
   private getGeneralLedgersPref = async (): Promise<void> => {
     try {
-      const response: GeneralLedgers[] = await LedgerService.getLedgerPerformances(
-        DateUtils.getCurrentYearStartDate(),
-        DateUtils.getCurrentYearLastDate(),
-        DataGroupBy.year
-      );
+      const response: GeneralLedgers[] = await LedgerRepository.getLedgerPerformances({
+        transaction_date__gte: DateUtils.getCurrentYearStartDate(),
+        transaction_date__lte: DateUtils.getCurrentYearLastDate(),
+        transaction_date_group_by: DataGroupBy.year,
+      });
 
       this.setState({ ledgerData: response });
     } catch (e) {
@@ -143,7 +143,7 @@ export class Financials extends React.PureComponent<Props, IState> {
     const { transactionsData } = this.state;
 
     try {
-      const response: FinancialTransactions = await LedgerService.getGeneralLedgers(transactionsData.length);
+      const response: FinancialTransactions = await LedgerRepository.getGeneralLedgers(transactionsData.length);
 
       this.setState({
         transactionsData: [...transactionsData, ...response.results],

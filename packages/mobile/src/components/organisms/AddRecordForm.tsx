@@ -7,7 +7,7 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
-import { LedgerService } from '@homzhub/common/src/services/LedgerService';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
@@ -245,9 +245,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { selectedFormType } = this.state;
     const entryType = selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit;
 
-    return LedgerUtils.filterLegerCategoryOn(entryType, ledgerCategories).map((category: LedgerCategory) => {
-      return { value: category.id, label: category.name };
-    });
+    return LedgerUtils.filterByType<LedgerCategory, LedgerTypes>(entryType, ledgerCategories).map(
+      (category: LedgerCategory) => {
+        return { value: category.id, label: category.name };
+      }
+    );
   };
 
   private formSchema = (): yup.ObjectSchema<IFormData> => {
@@ -315,7 +317,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         currency: currencyCode,
       };
 
-      await LedgerService.postGeneralLedgers(payload);
+      await LedgerRepository.postGeneralLedgers(payload);
       shouldLoad(false);
       formActions.setSubmitting(false);
 

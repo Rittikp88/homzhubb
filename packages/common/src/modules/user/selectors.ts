@@ -57,20 +57,26 @@ const getUserPreferences = (state: IState): UserPreferences => {
   return ObjectMapper.deserialize(UserPreferences, userPreferences);
 };
 
-const getUserFinancialYear = (state: IState): { startDate: string; endDate: string } => {
+const getUserFinancialYear = (
+  state: IState
+): { startDate: string; endDate: string; startMonthIndex: number; endMonthIndex: number } => {
   const userPreferences = getUserPreferences(state);
 
   if (!userPreferences) {
-    return { startDate: '', endDate: '' };
+    return { startDate: '', endDate: '', startMonthIndex: 0, endMonthIndex: 0 };
   }
 
   const [startMonth, endMonth] = userPreferences.financialYearCode.split('-');
+  const startMonthIndex = parseInt(startMonth, 10) - 1;
+  const endMonthIndex = parseInt(endMonth, 10) - 1;
   const currentMonth = DateUtils.getCurrentMonthIndex();
 
   if (parseInt(endMonth, 10) === 12 && parseInt(startMonth, 10) === 1) {
     return {
       startDate: `${DateUtils.getCurrentYear()}-${startMonth}-01`,
       endDate: `${DateUtils.getCurrentYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+      startMonthIndex,
+      endMonthIndex,
     };
   }
 
@@ -78,12 +84,16 @@ const getUserFinancialYear = (state: IState): { startDate: string; endDate: stri
     return {
       startDate: `${DateUtils.getCurrentYear()}-${startMonth}-01`,
       endDate: `${DateUtils.getNextYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+      startMonthIndex,
+      endMonthIndex,
     };
   }
 
   return {
     startDate: `${DateUtils.getLastYear()}-${startMonth}-01`,
     endDate: `${DateUtils.getCurrentYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+    startMonthIndex,
+    endMonthIndex,
   };
 };
 

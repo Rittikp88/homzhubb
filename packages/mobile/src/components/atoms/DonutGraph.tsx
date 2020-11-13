@@ -18,6 +18,7 @@ const DonutGraph = (props: IProps): React.ReactElement => {
 
   useEffect(() => {
     const transformedData: IGeneralLedgerGraphData[] = [];
+
     data.forEach((ledger: GeneralLedgers, index: number) => {
       const { category, amount } = ledger;
       transformedData.push({
@@ -27,13 +28,13 @@ const DonutGraph = (props: IProps): React.ReactElement => {
         svg: { fill: theme.randomHex() },
       });
     });
+
     setDonutData(transformedData);
   }, [data]);
 
   const render = (): React.ReactElement => {
-    if (data.length === 0) {
-      return <EmptyState />;
-    }
+    if (data.length === 0) return <EmptyState />;
+
     return (
       <View style={styles.container}>
         <PieChart style={styles.pieChart} data={donutData} innerRadius={INNER_RADIUS} />
@@ -43,6 +44,7 @@ const DonutGraph = (props: IProps): React.ReactElement => {
   };
   return render();
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

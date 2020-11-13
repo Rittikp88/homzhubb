@@ -258,6 +258,11 @@ class DateUtils {
     return new Date(parseInt(this.getCurrentYear(), 10), month, 0).getDate();
   };
 
+  public getMonthRange = (startIndex: number, endIndex: number): string[] => {
+    if (startIndex === 0 && endIndex === 11) return MonthNames;
+    return [...MonthNames.slice(startIndex), ...MonthNames.slice(0, endIndex + 1)];
+  };
+
   public getMomentObj = (date: string): Moment => {
     return moment(date);
   };
