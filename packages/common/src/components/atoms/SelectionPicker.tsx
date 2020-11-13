@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity, StyleProp, ViewStyle, ScrollView, LayoutChangeEvent } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -9,94 +9,96 @@ export interface ISelectionPicker<T> {
   value: T;
 }
 
-interface IItem<T> {
-  item: ISelectionPicker<T>;
-  index: number;
-}
-
 interface IProps<T> {
   data: ISelectionPicker<T>[];
   selectedItem: T[];
   onValueChange: (selectedValue: T) => void;
-  optionWidth?: number;
+  itemWidth?: number;
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
-class SelectionPicker<T> extends React.PureComponent<IProps<T>> {
+interface IOwnState {
+  tabWidth: number;
+}
+
+export class SelectionPicker<T> extends React.PureComponent<IProps<T>, IOwnState> {
+  public state = {
+    tabWidth: theme.viewport.width / 2,
+  };
+
   public render(): React.ReactElement {
     const { data, containerStyles } = this.props;
     return (
-      <View style={[styles.container, containerStyles]}>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={data}
-          renderItem={(item: IItem<T>): React.ReactElement => this.renderItem(item)}
-          keyExtractor={this.keyExtractor}
-          testID="ftlist"
-        />
-      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={[styles.container, containerStyles]}
+        onLayout={this.onLayout}
+      >
+        {data.map(this.renderItem)}
+      </ScrollView>
     );
   }
 
-  public renderItem({ item, index }: IItem<T>): React.ReactElement {
-    const { onValueChange, data, selectedItem, optionWidth = (theme.viewport.width - 35) / 2 } = this.props;
+  public renderItem = (item: ISelectionPicker<T>, index: number): React.ReactElement => {
+    const { onValueChange, data, selectedItem, itemWidth } = this.props;
+    const { tabWidth } = this.state;
+
     const selected = selectedItem.includes(item.value);
-    const dataLength = data.length;
-    const isLastIndex = index === dataLength - 1;
-    const conditionalStyle = createConditionalStyles(selected, optionWidth);
+    const isLastIndex = index === data.length - 1;
+
+    // Styling
+    let color = theme.colors.active;
+    let backgroundColor = theme.colors.white;
+    if (selected) {
+      color = theme.colors.white;
+      backgroundColor = theme.colors.active;
+    }
+    // event
     const onPress = (): void => onValueChange(item.value);
+
     return (
-      <TouchableOpacity onPress={onPress} style={styles.item} testID="to">
-        <View
-          style={[styles.optionWrapper, conditionalStyle.selectedItem, conditionalStyle.itemWidth]}
-          key={`item-${index}`}
-        >
-          <Text type="small" textType="semiBold" style={conditionalStyle.itemStyle}>
-            {item.title}
-          </Text>
-        </View>
-        {!isLastIndex && <Divider containerStyles={styles.divider} key={`divider-${index}`} />}
+      <TouchableOpacity
+        key={`${item.value}`}
+        onPress={onPress}
+        style={[styles.itemContainer, { backgroundColor }]}
+        testID="to"
+      >
+        <Text type="small" textType="semiBold" style={[styles.item, { color, width: itemWidth ?? tabWidth }]}>
+          {item.title}
+        </Text>
+        {!isLastIndex && <Divider containerStyles={styles.divider} />}
       </TouchableOpacity>
     );
-  }
+  };
 
-  private keyExtractor = (item: ISelectionPicker<T>, index: number): string => index.toString();
+  private onLayout = (e: LayoutChangeEvent): void => {
+    const { width } = e.nativeEvent.layout;
+    const { data, itemWidth } = this.props;
+
+    if (itemWidth) return;
+
+    this.setState({ tabWidth: width / data.length });
+  };
 }
-
-export { SelectionPicker };
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: theme.colors.primaryColor,
     borderWidth: 1.5,
     borderRadius: 4,
+    borderColor: theme.colors.primaryColor,
   },
   divider: {
+    height: '100%',
     borderColor: theme.colors.disabled,
     borderWidth: 0.5,
-    marginTop: 6,
-    height: 25,
-  },
-  optionWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 7,
   },
   item: {
+    textAlign: 'center',
+    padding: 8,
+  },
+  itemContainer: {
     flexDirection: 'row',
-  },
-});
-
-const createConditionalStyles = (isSelected: boolean, optionWidth?: number): any => ({
-  itemStyle: {
-    color: isSelected ? theme.colors.white : theme.colors.darkTint4,
-  },
-  selectedItem: {
-    backgroundColor: isSelected ? theme.colors.primaryColor : theme.colors.white,
-  },
-  itemWidth: {
-    width: optionWidth,
   },
 });

@@ -13,7 +13,6 @@ exports[`GraphLegends should match snapshot 1`] = `
         "flexDirection": "row",
         "flexWrap": "wrap",
         "justifyContent": "center",
-        "marginTop": 16,
       },
     ]
   }

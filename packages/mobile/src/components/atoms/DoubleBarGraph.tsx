@@ -16,20 +16,23 @@ interface IProps {
     label: string[];
   };
 }
+
 // SVG OPTIONS
 const SVG_FONT = { fontSize: 12, fill: theme.colors.darkTint6, fontWeight: '600' as '600' };
-const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7 };
+const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7, width: '100%' };
 // INSET OPTIONS
 const VERTICAL_INSET = { top: 8, bottom: 8 };
 const HORIZONTAL_INSET = { left: 24, right: 24 };
 // VIEWPORT CONSTANTS
 const Y_GRID_WIDTH = theme.viewport.width / 7;
 const HEIGHT = theme.viewport.height * 0.5;
-const WIDTH = theme.viewport.width * 1.5;
+const WIDTH = theme.viewport.width * 1.75;
+
 const DoubleBarGraph = (props: IProps): React.ReactElement => {
   const {
     data: { data1, data2, label },
   } = props;
+
   const barData = [
     {
       data: data1,
@@ -78,14 +81,14 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
               />
               <BarChart
                 contentInset={VERTICAL_INSET}
-                style={[styles.barGraph, label.length <= 3 && styles.derivedWidth]}
+                style={[styles.barGraph, label.length === 1 && styles.derivedWidth]}
                 data={barData}
               >
                 <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
               </BarChart>
             </View>
             <XAxis
-              style={[styles.xAxis, label.length <= 3 && styles.derivedWidth]}
+              style={[styles.xAxis, label.length === 1 && styles.xAxisDerivedWidth]}
               data={label}
               contentInset={HORIZONTAL_INSET}
               svg={SVG_FONT}
@@ -105,7 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   barGraph: {
-    flex: 1,
     width: WIDTH,
     height: HEIGHT,
   },
@@ -119,10 +121,14 @@ const styles = StyleSheet.create({
   xAxis: {
     marginStart: Y_GRID_WIDTH,
     width: WIDTH,
-    padding: 10,
+    padding: 12,
   },
   derivedWidth: {
-    width: theme.viewport.width - 100,
+    width: theme.viewport.width * 0.7,
+  },
+  xAxisDerivedWidth: {
+    width: theme.viewport.width * 0.7,
+    paddingLeft: theme.viewport.width * 0.275,
   },
 });
 const memoizedComponent = React.memo(DoubleBarGraph);

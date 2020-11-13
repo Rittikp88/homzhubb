@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexWrap: 'wrap',
-    marginTop: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },

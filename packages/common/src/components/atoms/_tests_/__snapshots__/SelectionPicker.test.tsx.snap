@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectionPicker should match snapshot 1`] = `
-<View
+<ScrollViewMock
+  horizontal={true}
+  onLayout={[Function]}
+  showsHorizontalScrollIndicator={false}
   style={
     Array [
       Object {
@@ -13,147 +16,91 @@ exports[`SelectionPicker should match snapshot 1`] = `
     ]
   }
 >
-  <FlatList
-    data={
-      Array [
-        Object {
-          "title": "Title 1",
-          "value": 0,
-        },
-        Object {
-          "title": "Title 2",
-          "value": 1,
-        },
-      ]
-    }
-    disableVirtualization={false}
-    horizontal={true}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    showsHorizontalScrollIndicator={false}
-    testID="ftlist"
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
-</View>
-`;
-
-exports[`SelectionPicker should match snapshot for carouselItem 1`] = `
-<ForwardRef
-  onPress={[Function]}
-  style={
-    Object {
-      "flexDirection": "row",
-    }
-  }
-  testID="to"
->
-  <View
-    key="item-undefined"
+  <ForwardRef
+    key="0"
+    onPress={[Function]}
     style={
       Array [
         Object {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "padding": 7,
+          "flexDirection": "row",
         },
         Object {
           "backgroundColor": "#0084F8",
         },
-        Object {
-          "width": 20,
-        },
       ]
     }
+    testID="to"
   >
     <Text
       style={
-        Object {
-          "color": "#FFFFFF",
-        }
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#FFFFFF",
+            "width": 375,
+          },
+        ]
       }
       textType="semiBold"
       type="small"
     >
       Title 1
     </Text>
-  </View>
-  <Divider
-    containerStyles={
-      Object {
-        "borderColor": "#C9D6DF",
-        "borderWidth": 0.5,
-        "height": 25,
-        "marginTop": 6,
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 0.5,
+          "height": "100%",
+        }
       }
-    }
-    key="divider-undefined"
-  />
-</ForwardRef>
-`;
-
-exports[`SelectionPicker should match snapshot for carouselItem without optional width 1`] = `
-<ForwardRef
-  onPress={[Function]}
-  style={
-    Object {
-      "flexDirection": "row",
-    }
-  }
-  testID="to"
->
-  <View
-    key="item-undefined"
+    />
+  </ForwardRef>
+  <ForwardRef
+    key="1"
+    onPress={[Function]}
     style={
       Array [
         Object {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "padding": 7,
+          "flexDirection": "row",
         },
         Object {
-          "backgroundColor": "#0084F8",
-        },
-        Object {
-          "width": 357.5,
+          "backgroundColor": "#FFFFFF",
         },
       ]
     }
+    testID="to"
   >
     <Text
       style={
-        Object {
-          "color": "#FFFFFF",
-        }
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#0084F8",
+            "width": 375,
+          },
+        ]
       }
       textType="semiBold"
       type="small"
     >
-      Title 1
+      Title 2
     </Text>
-  </View>
-  <Divider
-    containerStyles={
-      Object {
-        "borderColor": "#C9D6DF",
-        "borderWidth": 0.5,
-        "height": 25,
-        "marginTop": 6,
-      }
-    }
-    key="divider-undefined"
-  />
-</ForwardRef>
+  </ForwardRef>
+</ScrollViewMock>
 `;
 
 exports[`SelectionPicker should match snapshot for optional width 1`] = `
-<View
+<ScrollViewMock
+  horizontal={true}
+  onLayout={[Function]}
+  showsHorizontalScrollIndicator={false}
   style={
     Array [
       Object {
@@ -165,33 +112,82 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
     ]
   }
 >
-  <FlatList
-    data={
+  <ForwardRef
+    key="0"
+    onPress={[Function]}
+    style={
       Array [
         Object {
-          "title": "Title 1",
-          "value": 0,
+          "flexDirection": "row",
         },
         Object {
-          "title": "Title 2",
-          "value": 1,
+          "backgroundColor": "#0084F8",
         },
       ]
     }
-    disableVirtualization={false}
-    horizontal={true}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    showsHorizontalScrollIndicator={false}
-    testID="ftlist"
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
-</View>
+    testID="to"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#FFFFFF",
+            "width": 375,
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Title 1
+    </Text>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 0.5,
+          "height": "100%",
+        }
+      }
+    />
+  </ForwardRef>
+  <ForwardRef
+    key="1"
+    onPress={[Function]}
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+    testID="to"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#0084F8",
+            "width": 375,
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Title 2
+    </Text>
+  </ForwardRef>
+</ScrollViewMock>
 `;
