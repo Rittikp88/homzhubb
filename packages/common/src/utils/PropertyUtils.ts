@@ -152,24 +152,14 @@ class PropertyUtils {
   };
 
   public getAssetPayload = (info: AssetStatusInfo, id: number): ISetAssetPayload => {
-    const { leaseUnitId, saleUnitId, leaseListingId, saleListingId } = info;
-    const { LEASE_UNIT, SALE_UNIT, LEASE_LISTING, SALE_LISTING, ASSET } = DetailType;
+    const { leaseUnitId, leaseListingId, saleListingId } = info;
+    const { LEASE_UNIT, LEASE_LISTING, SALE_LISTING, ASSET } = DetailType;
     // TODO: (Shikha) - Need to Refactor
-    /* eslint-disable */
     return {
       asset_id: id,
-      listing_id: leaseUnitId ?? saleUnitId ?? leaseUnitId ?? saleListingId ?? 0,
-      assetType: leaseUnitId
-        ? LEASE_UNIT
-        : saleUnitId
-        ? SALE_UNIT
-        : leaseListingId
-        ? LEASE_LISTING
-        : saleListingId
-        ? SALE_LISTING
-        : ASSET,
+      listing_id: leaseUnitId ?? leaseListingId ?? saleListingId ?? 0,
+      assetType: leaseUnitId ? LEASE_UNIT : leaseListingId ? LEASE_LISTING : saleListingId ? SALE_LISTING : ASSET,
     };
-    /* eslint-enable */
   };
 }
 

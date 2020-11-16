@@ -485,7 +485,6 @@ export enum DetailType {
   LEASE_LISTING = 'lease-listing',
   SALE_LISTING = 'sale-listing',
   LEASE_UNIT = 'lease-unit',
-  SALE_UNIT = 'sale-unit',
 }
 
 export interface IPropertyDetailPayload {
