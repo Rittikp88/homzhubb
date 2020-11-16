@@ -142,7 +142,7 @@ export const icons = {
   manager: 'manager',
   furnishing: 'furnishing',
   openParking: 'open-parking',
-
+  vacantProperty: 'vacant-property',
   // COMMUTE
   train: 'train',
   trainMarker: 'train-marker',

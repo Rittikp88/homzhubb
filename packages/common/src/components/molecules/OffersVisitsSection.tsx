@@ -12,12 +12,12 @@ export enum OffersVisitsType {
 }
 
 const Data = [
-  // {
-  //   type: OffersVisitsType.offers,
-  //   title: 'common:offers',
-  //   icon: icons.offers,
-  //   sections: ['totalOffers', 'highestOffer', 'lowestOffer'],
-  // },
+  {
+    type: OffersVisitsType.offers,
+    title: 'common:offers',
+    icon: icons.offers,
+    sections: ['totalOffers', 'highestOffer', 'lowestOffer'],
+  },
   {
     type: OffersVisitsType.visits,
     title: 'assetMore:propertyVisits',
