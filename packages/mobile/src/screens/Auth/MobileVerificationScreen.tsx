@@ -6,6 +6,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -16,7 +17,6 @@ import { FormButton } from '@homzhub/common/src/components/molecules/FormButton'
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 
 interface IVerificationState {
   phone: string;
