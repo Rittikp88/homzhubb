@@ -463,10 +463,13 @@ export interface IUpdateProfile {
   payload: IUpdateProfilePayload;
 }
 
-export interface IPaymentSuccess {
-  razorpay_payment_id: string;
-  razorpay_order_id: string;
-  razorpay_signature: string;
+export interface IPaymentParams {
+  razorpay_payment_id?: string;
+  razorpay_order_id?: string;
+  razorpay_signature?: string;
+  code?: number;
+  payment_transaction_id?: number;
+  user_invoice_id?: number;
 }
 
 export interface ISupportPayload {

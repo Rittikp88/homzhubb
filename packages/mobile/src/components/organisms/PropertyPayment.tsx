@@ -22,7 +22,7 @@ import { ValueAddedService, ISelectedValueServices } from '@homzhub/common/src/d
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import {
   IOrderSummaryPayload,
-  IPaymentSuccess,
+  IPaymentParams,
   IUpdateAssetParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -96,7 +96,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
             title={t('assetFinancial:payNow')}
             containerStyle={styles.payButton}
             initiatePayment={this.initiatePayment}
-            onPaymentSuccess={this.onPaymentSuccess}
+            paymentApi={this.paymentApi}
           />
         )}
         <View style={styles.secureView}>
@@ -169,24 +169,26 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     await this.getOrderSummary({ coins: coins.currentBalance });
   };
 
-  private onPaymentSuccess = async (paymentSuccessData: IPaymentSuccess): Promise<void> => {
+  private paymentApi = async (paymentParams: IPaymentParams): Promise<void> => {
     const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
 
-    const updateAssetPayload: IUpdateAssetParams = {
-      last_visited_step: {
-        ...lastVisitedStep,
-        listing: {
-          ...lastVisitedStep.listing,
-          type: typeOfPlan,
-          is_payment_done: true,
-        },
-      },
-    };
-
     try {
-      await PaymentRepository.valueAddedServicesPayment(paymentSuccessData);
-      await AssetRepository.updateAsset(propertyId, updateAssetPayload);
-      handleNextStep();
+      await PaymentRepository.valueAddedServicesPayment(paymentParams);
+
+      if (paymentParams.razorpay_order_id) {
+        const updateAssetPayload: IUpdateAssetParams = {
+          last_visited_step: {
+            ...lastVisitedStep,
+            listing: {
+              ...lastVisitedStep.listing,
+              type: typeOfPlan,
+              is_payment_done: true,
+            },
+          },
+        };
+        await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+        handleNextStep();
+      }
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
