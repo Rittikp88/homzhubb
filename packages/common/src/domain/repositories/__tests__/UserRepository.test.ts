@@ -9,7 +9,7 @@ import {
   socialLogin,
   socialLoginNoUser,
 } from '@homzhub/common/src/mocks/UserRepositoryMocks';
-import { AssetSubscriptionPlanData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { AssetSubscriptionData } from '@homzhub/common/src/mocks/AssetSubscriptionData';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -167,7 +167,7 @@ describe('UserRepository', () => {
   it('should get user subscription', async () => {
     jest
       .spyOn(BootstrapAppService.clientInstance, 'get')
-      .mockImplementation(() => Promise.resolve(AssetSubscriptionPlanData));
+      .mockImplementation(() => Promise.resolve(AssetSubscriptionData));
     const response = await UserRepository.getUserSubscription();
     expect(response).toMatchSnapshot();
   });
