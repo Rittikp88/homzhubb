@@ -14,6 +14,9 @@ import { FormButton } from '@homzhub/common/src/components/molecules/FormButton'
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AlertHelper } from '../../utils/AlertHelper';
 
 interface IVerificationState {
   phone: string;
@@ -73,7 +76,10 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     );
   }
 
-  private onSubmit = (values: IVerificationState, formActions: FormikHelpers<IVerificationState>): void => {
+  private onSubmit = async (
+    values: IVerificationState,
+    formActions: FormikHelpers<IVerificationState>
+  ): Promise<void> => {
     formActions.setSubmitting(true);
     const {
       t,
@@ -90,21 +96,32 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     } = this.props;
     const { phone, phoneCode } = values;
 
-    navigation.navigate(ScreensKeys.OTP, {
-      type: OtpNavTypes.SocialMedia,
-      title: isFromLogin ? t('loginOtp') : t('verifyNumber'),
-      phone,
-      countryCode: phoneCode,
-      userData: {
-        full_name: `${first_name} ${last_name}`,
-        email,
-        phone_number: phone,
-        phone_code: phoneCode,
-        // TODO (Aditya 10-Jun-2020): How to solve this password issue?
-        password: 'RandomPassword',
-      },
-      ...(onCallback && { onCallback }),
-    });
+    try {
+      const formattedPhone = `${phoneCode}~${phone}`;
+      const isPhoneUsed = await UserRepository.phoneExists(formattedPhone);
+      if (isPhoneUsed.is_exists) {
+        AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
+        return;
+      }
+      navigation.navigate(ScreensKeys.OTP, {
+        type: OtpNavTypes.SocialMedia,
+        title: isFromLogin ? t('loginOtp') : t('verifyNumber'),
+        otpSentTo: phone,
+        countryCode: phoneCode,
+        userData: {
+          first_name,
+          last_name,
+          email,
+          phone_number: phone,
+          phone_code: phoneCode,
+          // TODO (Aditya 10-Jun-2020): How to solve this password issue?
+          password: 'RandomPassword@123',
+        },
+        ...(onCallback && { onCallback }),
+      });
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
   };
 
   private handleIconPress = (): void => {

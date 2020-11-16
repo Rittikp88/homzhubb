@@ -23,7 +23,7 @@ import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SocialMediaKeys, ISocialUserData } from '@homzhub/common/src/assets/constants';
 import { LoginTypes, ISocialLoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { ISocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
 
 interface IDispatchProps {
   loginSuccess: (data: IUserTokens) => void;
@@ -38,7 +38,7 @@ interface ISocialMediaProps {
 type Props = ISocialMediaProps & WithTranslation & IDispatchProps;
 
 interface IOwnState {
-  socialMediaItems: ISocialMediaProvider[];
+  socialMediaItems: SocialMediaProvider[];
 }
 
 class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
@@ -86,7 +86,7 @@ class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
     const { socialMediaItems } = this.state;
     const titlePrefix = isFromLogin ? t('auth:socialButtonPrefixLogin') : t('auth:socialButtonPrefixSignUp');
 
-    return socialMediaItems.map((socialMedia: ISocialMediaProvider) => {
+    return socialMediaItems.map((socialMedia: SocialMediaProvider) => {
       const initiateSocialLogin = async (): Promise<void> => {
         await this.initiateSocialLogin(socialMedia);
       };
@@ -139,9 +139,9 @@ class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private initiateSocialLogin = async (socialMedia: any): Promise<void> => {
+  private initiateSocialLogin = async (socialMedia: SocialMediaProvider): Promise<void> => {
     if (socialMedia.provider === SocialMediaKeys.Google) {
-      await this.googleSignIn(socialMedia.client_id);
+      await this.googleSignIn(socialMedia.clientID);
       return;
     }
     await this.facebookLogin();
@@ -194,7 +194,11 @@ class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
 
   private facebookLogin = async (): Promise<void> => {
     try {
-      const loginResult: LoginResult = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      const loginResult: LoginResult = await LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+        'user_friends',
+      ]);
 
       if (loginResult.isCancelled) {
         AlertHelper.error({ message: 'Sign in Cancelled' });

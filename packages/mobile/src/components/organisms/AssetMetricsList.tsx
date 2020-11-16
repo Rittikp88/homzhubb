@@ -24,6 +24,7 @@ interface IProps {
   title?: string;
   subscription?: string;
   numOfElements?: number;
+  isSubTextRequired?: boolean;
   onPlusIconClicked?: () => void;
   onMetricsClicked?: (name: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
@@ -42,6 +43,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     onMetricsClicked,
     numOfElements = 3,
     textStyle = {},
+    isSubTextRequired = true,
   } = props;
 
   // HOOKS
@@ -114,9 +116,11 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
             {title}
           </Text>
           <View style={styles.propertiesRow}>
-            <Text type="small" textType="semiBold" style={styles.propertyText}>
-              {t('common:properties')}
-            </Text>
+            {isSubTextRequired && (
+              <Text type="small" textType="semiBold" style={styles.propertyText}>
+                {t('common:properties')}
+              </Text>
+            )}
             {subscription && (
               <>
                 <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.circleIcon} />

@@ -460,5 +460,6 @@ const styles = StyleSheet.create({
   },
   tabView: {
     flex: 0,
+    backgroundColor: theme.colors.white,
   },
 });
