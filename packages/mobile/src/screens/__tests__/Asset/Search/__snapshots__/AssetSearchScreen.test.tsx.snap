@@ -725,6 +725,7 @@ exports[`Asset Search Screen should render snapshot with filterData 1`] = `
             "paddingTop": 10,
             "position": "absolute",
             "top": 0,
+            "width": "100%",
           }
         }
       />
