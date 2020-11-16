@@ -54,13 +54,16 @@ class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
     const { onEmailLogin, testID } = this.props;
     return (
       <View style={styles.buttonContainer}>
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Label style={styles.labelText} type="large" textType="regular">
-            or
-          </Label>
-          <View style={styles.line} />
-        </View>
+        {/** TODO: (Shikha) - Remove condition once Social media id issue resolved. * */}
+        {onEmailLogin && (
+          <View style={styles.lineContainer}>
+            <View style={styles.line} />
+            <Label style={styles.labelText} type="large" textType="regular">
+              or
+            </Label>
+            <View style={styles.line} />
+          </View>
+        )}
         {onEmailLogin && (
           <Button
             title="Log in with Email"
@@ -76,7 +79,8 @@ class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
             testID={testID}
           />
         )}
-        {this.renderButtons()}
+        {/** TODO: (Shikha) - Uncomment once Social media id issue resolved. ** /}
+        {/*{this.renderButtons()} */}
       </View>
     );
   }

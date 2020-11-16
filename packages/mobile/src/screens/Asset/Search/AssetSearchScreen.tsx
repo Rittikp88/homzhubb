@@ -736,6 +736,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   trayContainer: {
+    width: '100%',
     backgroundColor: theme.colors.white,
     padding: 15,
     paddingTop: 10,

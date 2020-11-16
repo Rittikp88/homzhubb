@@ -301,6 +301,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       setValueAddedServices,
       valueAddedServices,
     } = this.props;
+    const isManage = selectedPlan === TypeOfPlan.MANAGE;
 
     if (!assetDetails) return null;
 
@@ -318,7 +319,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         );
       case RouteKeys.Services:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 2)}>
+          <View onLayout={(e): void => this.onLayout(e, isManage ? 1 : 2)}>
             <ValueAddedServicesView
               propertyId={assetDetails.id}
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
@@ -333,7 +334,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         );
       case RouteKeys.Payment:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 3)}>
+          <View onLayout={(e): void => this.onLayout(e, isManage ? 2 : 3)}>
             <PropertyPayment
               goBackToService={this.goBackToServices}
               propertyId={assetDetails.id}
