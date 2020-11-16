@@ -4,8 +4,8 @@ import { PaymentNote } from '@homzhub/common/src/domain/models/PaymentNote';
 
 @JsonObject('Payment')
 export class Payment {
-  @JsonProperty('payment_transaction', Number)
-  private _paymentTransaction = -1;
+  @JsonProperty('payment_transaction_id', Number)
+  private _paymentTransactionId = -1;
 
   @JsonProperty('amount', Number)
   private _amount = 0;
@@ -22,8 +22,11 @@ export class Payment {
   @JsonProperty('order_id', String)
   private _orderId = '';
 
-  @JsonProperty('user_invoice', String)
+  @JsonProperty('user_invoice_no', String)
   private _userInvoice = '';
+
+  @JsonProperty('user_invoice_id', Number)
+  private _userInvoiceId = -1;
 
   @JsonProperty('prefill', PaymentPreFill)
   private _prefill = new PaymentPreFill();
@@ -31,8 +34,8 @@ export class Payment {
   @JsonProperty('notes', PaymentNote)
   private _notes = new PaymentNote();
 
-  get paymentTransaction(): number {
-    return this._paymentTransaction;
+  get paymentTransactionId(): number {
+    return this._paymentTransactionId;
   }
 
   get amount(): number {
@@ -65,5 +68,9 @@ export class Payment {
 
   get notes(): PaymentNote {
     return this._notes;
+  }
+
+  get userInvoiceId(): number {
+    return this._userInvoiceId;
   }
 }

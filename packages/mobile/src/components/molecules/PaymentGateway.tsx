@@ -10,7 +10,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
-import { IPaymentSuccess } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IPaymentParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 let options = {
   image: '',
@@ -31,8 +31,7 @@ interface IRazorPayError {
 
 interface IProps extends IButtonProps {
   initiatePayment: () => Promise<Payment>;
-  onPaymentSuccess: (paymentSuccessData: IPaymentSuccess) => void;
-  onPaymentFailure?: (error: IRazorPayError) => void;
+  paymentApi: (paymentSuccessData: IPaymentParams) => void;
 }
 
 interface IOwnState {
@@ -67,8 +66,18 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
   };
 
   private onPayment = (paymentDetails: Payment): void => {
-    const { onPaymentFailure, onPaymentSuccess } = this.props;
-    const { description, name, currency, amount, prefill, notes, orderId: order_id } = paymentDetails;
+    const { paymentApi } = this.props;
+    const {
+      description,
+      name,
+      currency,
+      amount,
+      prefill,
+      notes,
+      orderId: order_id,
+      paymentTransactionId: payment_transaction_id,
+      userInvoiceId: user_invoice_id,
+    } = paymentDetails;
 
     options = {
       ...options,
@@ -85,11 +94,13 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
 
     this.setState({ loading: false });
     RazorpayCheckout.open(options)
-      .then(onPaymentSuccess)
+      .then(paymentApi)
       .catch((error: IRazorPayError) => {
-        if (onPaymentFailure) {
-          onPaymentFailure(error);
-        }
+        paymentApi({
+          code: error.code,
+          payment_transaction_id,
+          user_invoice_id,
+        });
         AlertHelper.error({ message: error.description });
       });
   };

@@ -2,7 +2,7 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { IOrderSummaryPayload, IPaymentSuccess } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IOrderSummaryPayload, IPaymentParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   valueAddedServices: 'value-added-services/payment/',
@@ -21,7 +21,7 @@ class PaymentRepository {
     return ObjectMapper.deserialize(Payment, response);
   };
 
-  public valueAddedServicesPayment = async (paymentDetails: IPaymentSuccess): Promise<void> => {
+  public valueAddedServicesPayment = async (paymentDetails: IPaymentParams): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.valueAddedServicesPayment, paymentDetails);
   };
 }
