@@ -79,7 +79,7 @@ export class SelectionPicker<T> extends React.PureComponent<IProps<T>, IOwnState
 
     if (itemWidth) return;
 
-    this.setState({ tabWidth: (width - 4) / data.length });
+    this.setState({ tabWidth: (width - 5) / data.length });
   };
 }
 
