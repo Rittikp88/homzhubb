@@ -93,8 +93,8 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
       this.handleSpacesChange(id || -1, count);
     };
 
-    const handleCheckboxGroupToggle = (id: number, isSelected: boolean): void => {
-      this.handleSpacesChange(id, isSelected ? 1 : 0);
+    const handleCheckboxGroupToggle = (id: number | string, isSelected: boolean): void => {
+      this.handleSpacesChange(id as number, isSelected ? 1 : 0);
     };
 
     /* This part of the method renders Counters */

@@ -377,10 +377,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   pdfContainer: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
-    padding: 20,
+    padding: 16,
     borderColor: theme.colors.primaryColor,
     borderWidth: 1,
     borderStyle: 'solid',

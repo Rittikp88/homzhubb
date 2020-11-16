@@ -397,7 +397,14 @@ export class Asset {
   }
 
   get highlights(): AssetHighlight[] {
-    return this._highlights;
+    const highlight = ObjectMapper.deserializeArray(AssetHighlight, this._highlights);
+    if (this.assetHighlights.length > 0) {
+      this.assetHighlights.forEach((item) => {
+        highlight.push(ObjectMapper.deserialize(AssetHighlight, { covered: true, name: item }));
+      });
+    }
+
+    return highlight;
   }
 
   get features(): AssetFeature[] {

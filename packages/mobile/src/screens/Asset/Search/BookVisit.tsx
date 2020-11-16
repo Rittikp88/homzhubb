@@ -421,18 +421,8 @@ export class BookVisit extends Component<Props, IVisitState> {
   };
 
   private goBack = (): void => {
-    const {
-      navigation,
-      route: {
-        params: { propertyTermId },
-      },
-    } = this.props;
-
-    if (propertyTermId) {
-      navigation.replace(ScreensKeys.PropertyAssetDescription, { propertyTermId });
-    } else {
-      navigation.goBack();
-    }
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 }
 

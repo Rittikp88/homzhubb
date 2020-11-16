@@ -15,7 +15,6 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
@@ -87,7 +86,6 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
             selectedAssetId={selectedAssetId}
             navigation={navigation}
             visitId={params && params.visitId ? params.visitId : null}
-            currentStatus={VisitStatusType.MISSED}
             setVisitPayload={this.setVisitPayload}
           />
         )}
@@ -130,10 +128,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private rescheduleVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SearchStack, {
-      screen: ScreensKeys.BookVisit,
-      params: { isReschedule: !isNew },
-    });
+    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
   };
 
   private setVisitPayload = (payload: IAssetVisitPayload): void => {

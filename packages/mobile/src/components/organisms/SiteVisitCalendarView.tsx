@@ -213,6 +213,12 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     const todayDate = DateUtils.getDisplayDate(new Date().toDateString(), DateFormats.YYYYMMDD);
     switch (status) {
       case VisitStatus.ACCEPTED:
+        if (date > todayDate) {
+          return {
+            label: 'Upcoming',
+            color: theme.colors.green,
+          };
+        }
         return {
           label: 'Completed',
           color: theme.colors.green,

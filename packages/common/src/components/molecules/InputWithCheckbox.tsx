@@ -44,7 +44,7 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
 const styles = StyleSheet.create({
   inputWithCheckbox: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 4,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   inputStyle: {
-    flex: 1,
+    flex: 0,
     paddingVertical: 10,
     paddingRight: 10,
     paddingLeft: 0,
