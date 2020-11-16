@@ -51,6 +51,7 @@ exports[`RoomsFilter should match snapshot 1`] = `
       ]
     }
     onValueChange={[Function]}
+    optionWidth={118.33333333333333}
     selectedItem={
       Array [
         1,
@@ -104,6 +105,7 @@ exports[`RoomsFilter should match snapshot 1`] = `
       ]
     }
     onValueChange={[Function]}
+    optionWidth={118.33333333333333}
     selectedItem={
       Array [
         1,

@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectionPicker should match snapshot 1`] = `
-<ScrollViewMock
-  horizontal={true}
-  onLayout={[Function]}
-  showsHorizontalScrollIndicator={false}
+<View
   style={
     Array [
       Object {
@@ -16,91 +13,39 @@ exports[`SelectionPicker should match snapshot 1`] = `
     ]
   }
 >
-  <ForwardRef
-    key="0"
-    onPress={[Function]}
-    style={
+  <FlatList
+    data={
       Array [
         Object {
-          "flexDirection": "row",
+          "title": "Title 1",
+          "value": 0,
         },
         Object {
-          "backgroundColor": "#0084F8",
+          "title": "Title 2",
+          "value": 1,
         },
       ]
     }
-    testID="to"
-  >
-    <Text
-      style={
-        Array [
-          Object {
-            "padding": 8,
-            "textAlign": "center",
-          },
-          Object {
-            "color": "#FFFFFF",
-            "width": 375,
-          },
-        ]
-      }
-      textType="semiBold"
-      type="small"
-    >
-      Title 1
-    </Text>
-    <Divider
-      containerStyles={
-        Object {
-          "borderColor": "#C9D6DF",
-          "borderWidth": 0.5,
-          "height": "100%",
-        }
-      }
-    />
-  </ForwardRef>
-  <ForwardRef
-    key="1"
-    onPress={[Function]}
-    style={
-      Array [
-        Object {
-          "flexDirection": "row",
-        },
-        Object {
-          "backgroundColor": "#FFFFFF",
-        },
-      ]
-    }
-    testID="to"
-  >
-    <Text
-      style={
-        Array [
-          Object {
-            "padding": 8,
-            "textAlign": "center",
-          },
-          Object {
-            "color": "#0084F8",
-            "width": 375,
-          },
-        ]
-      }
-      textType="semiBold"
-      type="small"
-    >
-      Title 2
-    </Text>
-  </ForwardRef>
-</ScrollViewMock>
+    disableVirtualization={false}
+    horizontal={true}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    showsHorizontalScrollIndicator={false}
+    testID="ftlist"
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+</View>
 `;
 
 exports[`SelectionPicker should match snapshot for optional width 1`] = `
-<ScrollViewMock
-  horizontal={true}
-  onLayout={[Function]}
-  showsHorizontalScrollIndicator={false}
+<View
   style={
     Array [
       Object {
@@ -112,82 +57,33 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
     ]
   }
 >
-  <ForwardRef
-    key="0"
-    onPress={[Function]}
-    style={
+  <FlatList
+    data={
       Array [
         Object {
-          "flexDirection": "row",
+          "title": "Title 1",
+          "value": 0,
         },
         Object {
-          "backgroundColor": "#0084F8",
+          "title": "Title 2",
+          "value": 1,
         },
       ]
     }
-    testID="to"
-  >
-    <Text
-      style={
-        Array [
-          Object {
-            "padding": 8,
-            "textAlign": "center",
-          },
-          Object {
-            "color": "#FFFFFF",
-            "width": 375,
-          },
-        ]
-      }
-      textType="semiBold"
-      type="small"
-    >
-      Title 1
-    </Text>
-    <Divider
-      containerStyles={
-        Object {
-          "borderColor": "#C9D6DF",
-          "borderWidth": 0.5,
-          "height": "100%",
-        }
-      }
-    />
-  </ForwardRef>
-  <ForwardRef
-    key="1"
-    onPress={[Function]}
-    style={
-      Array [
-        Object {
-          "flexDirection": "row",
-        },
-        Object {
-          "backgroundColor": "#FFFFFF",
-        },
-      ]
-    }
-    testID="to"
-  >
-    <Text
-      style={
-        Array [
-          Object {
-            "padding": 8,
-            "textAlign": "center",
-          },
-          Object {
-            "color": "#0084F8",
-            "width": 375,
-          },
-        ]
-      }
-      textType="semiBold"
-      type="small"
-    >
-      Title 2
-    </Text>
-  </ForwardRef>
-</ScrollViewMock>
+    disableVirtualization={false}
+    horizontal={true}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    showsHorizontalScrollIndicator={false}
+    testID="ftlist"
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+</View>
 `;
