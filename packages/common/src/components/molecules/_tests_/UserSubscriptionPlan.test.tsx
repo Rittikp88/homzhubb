@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import AssetSubscriptionPlan from '@homzhub/common/src/components/molecules/AssetSubscriptionPlan';
+import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { AssetSubscriptionData } from '@homzhub/common/src/mocks/AssetSubscriptionData';
 
@@ -42,7 +42,7 @@ describe('AssetSubscriptionPlan', () => {
     });
     jest.spyOn(React, 'useEffect').mockImplementationOnce((f) => f());
     jest.spyOn(UserRepository, 'getUserSubscription').mockImplementation(() => Promise.resolve(deserializedValue));
-    wrapper = shallow(<AssetSubscriptionPlan {...props} />);
+    wrapper = shallow(<UserSubscriptionPlan {...props} />);
     console.debug(wrapper);
   });
 

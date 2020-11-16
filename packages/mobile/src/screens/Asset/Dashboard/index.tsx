@@ -18,7 +18,7 @@ import {
   Loader,
 } from '@homzhub/mobile/src/components';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
-import AssetSubscriptionPlan from '@homzhub/common/src/components/molecules/AssetSubscriptionPlan';
+import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
@@ -90,7 +90,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           <FinanceOverview />
           <AssetMarketTrends onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
-          {ShowInMvpRelease && <AssetSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
+          {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
           <Loader visible={isLoading} />
         </>
       </AnimatedProfileHeader>

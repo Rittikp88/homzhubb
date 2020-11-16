@@ -19,23 +19,23 @@ interface IProps {
   onApiFailure: (err: IApiClientError) => void;
 }
 
-const AssetSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
+const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
   const [data, setData] = React.useState({} as UserSubscription);
   const [isMoreToggled, setIsMoreToggled] = React.useState(false);
 
-  const getUserSubscription = async (failure: (err: IApiClientError) => void): Promise<void> => {
+  const getUserSubscription = async (): Promise<void> => {
     try {
       const response: UserSubscription = await UserRepository.getUserSubscription();
       setData(response);
     } catch (err) {
-      failure(err.details);
+      onApiFailure(err.details);
     }
   };
 
   React.useEffect(() => {
-    getUserSubscription(onApiFailure);
+    getUserSubscription();
   }, [onApiFailure]);
 
   if (ObjectUtils.isEmpty(data)) {
@@ -142,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AssetSubscriptionPlan;
+export default UserSubscriptionPlan;
