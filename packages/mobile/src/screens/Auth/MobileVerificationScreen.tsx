@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -15,8 +17,6 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { AlertHelper } from '../../utils/AlertHelper';
 
 interface IVerificationState {
   phone: string;

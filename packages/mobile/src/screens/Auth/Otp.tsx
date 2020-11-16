@@ -254,7 +254,6 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       loginSuccess(tokens);
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     } catch (e) {
-      console.log(e.details)
       AlertHelper.error({ message: e.message });
     }
   };

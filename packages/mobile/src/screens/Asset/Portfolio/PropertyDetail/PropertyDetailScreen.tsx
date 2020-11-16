@@ -311,9 +311,6 @@ export default connect(
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(PropertyDetailScreen));
 
 const styles = StyleSheet.create({
-  visitTab: {
-    backgroundColor: theme.colors.white,
-  },
   card: {
     borderRadius: 0,
   },
