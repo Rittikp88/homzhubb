@@ -150,7 +150,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
     const { visits, isLoading, isFromProperty } = this.props;
-    const { dropdownValue } = this.state;
+    const { dropdownValue, heights, currentIndex } = this.state;
     let dropdownData;
 
     switch (route.key) {
@@ -357,6 +357,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     let sale_listing_id;
     let start_date_lt;
     let status;
+    let status__neq;
     switch (currentRoute.key) {
       case VisitStatusType.UPCOMING:
         dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
@@ -372,7 +373,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       case VisitStatusType.COMPLETED:
         dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
         key = VisitStatusType.COMPLETED;
-        status = VisitStatus.ACCEPTED;
+        status__neq = VisitStatus.PENDING;
         start_date_lte = date;
         break;
       default:
@@ -394,6 +395,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         ...(start_date_gte && { start_date__gte: start_date_gte }),
         ...(start_date_lt && { start_date__lt: start_date_lt }),
         ...(status && { status }),
+        ...(status__neq && { status__neq }),
       });
     }
 
@@ -422,6 +424,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         ...(isFromProperty && sale_listing_id && { sale_listing_id }),
         ...(selectedAssetId && selectedAssetId !== 0 && { asset_id: selectedAssetId }),
         ...(status && { status }),
+        ...(status__neq && { status__neq }),
       };
     }
 

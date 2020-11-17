@@ -282,7 +282,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
       month = moment(selectedDate).month();
     }
 
-    if (isMonthView) {
+    if (isMonthView && Number(year) < MAX_YEAR - 1) {
       const nextYear = Number(year) + 1;
       this.getSelectedDate(month, nextYear);
       this.setState({ year: nextYear.toString() });
