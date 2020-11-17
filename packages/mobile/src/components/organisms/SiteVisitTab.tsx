@@ -150,7 +150,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
     const { visits, isLoading, isFromProperty } = this.props;
-    const { dropdownValue, heights, currentIndex } = this.state;
+    const { dropdownValue } = this.state;
     let dropdownData;
 
     switch (route.key) {
