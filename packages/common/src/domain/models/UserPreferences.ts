@@ -136,4 +136,8 @@ export class UserPreferences {
   get accountDeactivated(): boolean {
     return this._accountDeactivated;
   }
+
+  get currencyObj(): Currency {
+    return this._currency;
+  }
 }

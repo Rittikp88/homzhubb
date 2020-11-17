@@ -43,7 +43,7 @@ exports[`AssetSubscriptionPlan should match snapshot 1`] = `
         textType="bold"
         type="regular"
       >
-        common:homzhub Lite
+        common:homzhub undefined
       </Text>
     </View>
     <[object Object] />
@@ -69,64 +69,23 @@ exports[`AssetSubscriptionPlan should match snapshot 1`] = `
       textType="bold"
       type="small"
     >
-      common:homzhub HomzHub Pro
+      common:homzhub undefined
     </Text>
      subscriptionHelperServices
   </Text>
   <View
-    key="6"
     style={
-      Object {
-        "flexDirection": "row",
-        "marginBottom": 20,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#2CBA67"
-      name="check-filled"
-      size={25}
-    />
-    <Text
-      style={
+      Array [
         Object {
-          "marginStart": 16,
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      Promotion to our agent network
-    </Text>
-  </View>
-  <View
-    key="7"
-    style={
-      Object {
-        "flexDirection": "row",
-        "marginBottom": 20,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#2CBA67"
-      name="check-filled"
-      size={25}
-    />
-    <Text
-      style={
+          "flexDirection": "column",
+          "flexWrap": "wrap",
+        },
         Object {
-          "marginStart": 16,
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      Verified tag on property
-    </Text>
-  </View>
+          "maxHeight": 200,
+        },
+      ]
+    }
+  />
   <Button
     onPress={[Function]}
     testID="btnUpgrade"

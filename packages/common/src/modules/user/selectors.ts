@@ -1,7 +1,9 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences, MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const isLoggedIn = (state: IState): boolean => {
@@ -105,6 +107,14 @@ const getMetricSystem = (state: IState): MetricSystems => {
   return userPreferences.metricUnit;
 };
 
+const getCurrency = (state: IState): Currency => {
+  const userPreferences = getUserPreferences(state);
+  if (!userPreferences) {
+    return CommonSelectors.getDefaultCurrency(state);
+  }
+  return userPreferences.currencyObj;
+};
+
 const isUserPreferencesLoading = (state: IState): boolean => {
   const {
     user: {
@@ -126,4 +136,5 @@ export const UserSelector = {
   getUserFinancialYear,
   isUserPreferencesLoading,
   getMetricSystem,
+  getCurrency,
 };

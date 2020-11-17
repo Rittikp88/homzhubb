@@ -93,7 +93,7 @@ export class FinancialRecords {
   }
 
   get tellerName(): string {
-    return this.entryType === LedgerTypes.credit ? this.receiverName : this.payerName;
+    return this.entryType === LedgerTypes.credit ? this.payerName : this.receiverName;
   }
 
   get assetName(): string {

@@ -18,7 +18,7 @@ import {
   Loader,
 } from '@homzhub/mobile/src/components';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
-import AssetSubscriptionPlan from '@homzhub/mobile/src/components/molecules/AssetSubscriptionPlan';
+import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
@@ -29,6 +29,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 
 interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
@@ -89,7 +90,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           <FinanceOverview />
           <AssetMarketTrends onViewAll={this.onViewAll} />
           <AssetAdvertisementBanner />
-          {ShowInMvpRelease && <AssetSubscriptionPlan />}
+          {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
           <Loader visible={isLoading} />
         </>
       </AnimatedProfileHeader>
@@ -121,6 +122,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   // HANDLERS
+  private onAssetSubscriptionApiFailure = (err: IApiClientError): void => {
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(err) });
+  };
+
   private onCompleteDetails = (assetId: number): void => {
     const { navigation, setAssetId } = this.props;
     setAssetId(assetId);

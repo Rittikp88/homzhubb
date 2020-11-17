@@ -44,7 +44,7 @@ export class Financials extends React.PureComponent<Props, IState> {
       async (): Promise<void> => {
         this.setState({ isLoading: true });
         await this.getGeneralLedgersPref();
-        await this.getGeneralLedgers();
+        await this.getGeneralLedgers(true);
         this.setState({ isLoading: false });
       }
     );
@@ -140,14 +140,20 @@ export class Financials extends React.PureComponent<Props, IState> {
     }
   };
 
-  private getGeneralLedgers = async (): Promise<void> => {
+  private getGeneralLedgers = async (reset = false): Promise<void> => {
     const { transactionsData } = this.state;
 
     try {
-      const response: FinancialTransactions = await LedgerRepository.getGeneralLedgers(transactionsData.length);
+      const response: FinancialTransactions = await LedgerRepository.getGeneralLedgers(
+        reset ? 0 : transactionsData.length
+      );
+
+      if (response.results.length === 0) {
+        return;
+      }
 
       this.setState({
-        transactionsData: [...transactionsData, ...response.results],
+        transactionsData: reset ? [...response.results] : [...transactionsData, ...response.results],
       });
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });

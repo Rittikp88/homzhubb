@@ -52,7 +52,7 @@ const renderMenuItem = (
   const onMenuItemPress = (): void => onItemPress(item.id);
 
   return (
-    <Hoverable onHoverOut={clearTooltipTimeout}>
+    <Hoverable onHoverOut={clearTooltipTimeout} key={item.id}>
       {(isHovered: boolean): React.ReactNode => (
         <TouchableOpacity
           data-tip
