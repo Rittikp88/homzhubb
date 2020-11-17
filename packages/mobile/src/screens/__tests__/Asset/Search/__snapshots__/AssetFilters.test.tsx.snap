@@ -116,36 +116,32 @@ exports[`Asset filter should render snapshot 1`] = `
                 "value": 1,
               },
               Object {
-                "label": "propertySearch:within5km",
-                "value": 2,
-              },
-              Object {
                 "label": "propertySearch:withinQuarterkm",
                 "value": 3,
-              },
-              Object {
-                "label": "propertySearch:within10km",
-                "value": 4,
               },
               Object {
                 "label": "propertySearch:withinHalfkm",
                 "value": 5,
               },
               Object {
-                "label": "propertySearch:within20km",
-                "value": 6,
-              },
-              Object {
                 "label": "propertySearch:within1km",
                 "value": 7,
               },
               Object {
-                "label": "propertySearch:within30km",
-                "value": 8,
+                "label": "propertySearch:within5km",
+                "value": 2,
               },
               Object {
-                "label": "propertySearch:within3km",
-                "value": 9,
+                "label": "propertySearch:within10km",
+                "value": 4,
+              },
+              Object {
+                "label": "propertySearch:within20km",
+                "value": 6,
+              },
+              Object {
+                "label": "propertySearch:within30km",
+                "value": 8,
               },
               Object {
                 "label": "propertySearch:within40km",
@@ -188,19 +184,19 @@ exports[`Asset filter should render snapshot 1`] = `
                 "value": 1,
               },
               Object {
-                "label": "propertySearch:last3days",
+                "label": "propertySearch:last24hours",
                 "value": 2,
               },
               Object {
-                "label": "propertySearch:last14days",
+                "label": "propertySearch:last3days",
                 "value": 3,
               },
               Object {
-                "label": "propertySearch:last24hours",
+                "label": "propertySearch:last7days",
                 "value": 4,
               },
               Object {
-                "label": "propertySearch:last7days",
+                "label": "propertySearch:last14days",
                 "value": 5,
               },
               Object {
@@ -277,6 +273,7 @@ exports[`Asset filter should render snapshot 1`] = `
         />
         <withI18nextTranslation(FormCalendar)
           bubbleSelectedDate={[Function]}
+          calendarTitle="expectedMoveInDate"
           fontType="semiBold"
           label="expectedMoveInDate"
           name="expected_move_in_date"

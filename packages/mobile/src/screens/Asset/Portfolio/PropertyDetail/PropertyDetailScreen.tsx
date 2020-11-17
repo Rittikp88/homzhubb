@@ -185,7 +185,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         );
       case Tabs.SITE_VISITS:
         return (
-          <View style={styles.visitTab} onLayout={(e): void => this.onLayout(e, 4)}>
+          <View onLayout={(e): void => this.onLayout(e, 4)}>
             <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} isFromProperty />
           </View>
         );
@@ -311,9 +311,6 @@ export default connect(
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(PropertyDetailScreen));
 
 const styles = StyleSheet.create({
-  visitTab: {
-    backgroundColor: theme.colors.white,
-  },
   card: {
     borderRadius: 0,
   },

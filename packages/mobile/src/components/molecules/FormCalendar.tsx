@@ -11,6 +11,7 @@ import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomShee
 
 interface IFormCalendarProps extends WithTranslation {
   name: string;
+  calendarTitle?: string;
   isYearView?: boolean;
   formProps?: FormikProps<any>;
   selectedValue?: string;
@@ -55,6 +56,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       dateStyle = {},
       maxDate,
       isYearView = false,
+      calendarTitle,
     } = this.props;
     const { isCalendarVisible } = this.state;
     const availableDate = (): string => {
@@ -92,7 +94,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
         <BottomSheet
           visible={isCalendarVisible}
           onCloseSheet={this.onCalendarClose}
-          headerTitle={t('common:availableFrom')}
+          headerTitle={calendarTitle ?? t('common:availableFrom')}
           isShadowView
           sheetHeight={580}
         >

@@ -162,6 +162,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   name="date"
                   textType="label"
                   label={t('addDate')}
+                  calendarTitle={t('addDate')}
                   placeHolder={t('addDatePlaceholder')}
                   isMandatory
                 />

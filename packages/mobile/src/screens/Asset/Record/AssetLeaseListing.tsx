@@ -599,7 +599,9 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private scrollToTop = (): void => {
-    this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    setTimeout(() => {
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    }, 100);
   };
 }
 

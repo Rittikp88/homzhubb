@@ -233,6 +233,7 @@ export class BookVisit extends Component<Props, IVisitState> {
           name="selectDate"
           textSize="small"
           fontType="semiBold"
+          calendarTitle={t('selectDate')}
           placeHolder={t('datePlaceholder')}
           maxDate={maxDate}
           selectedValue={selectedDate}

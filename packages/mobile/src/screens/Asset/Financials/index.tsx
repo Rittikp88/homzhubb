@@ -70,6 +70,7 @@ export class Financials extends React.PureComponent<Props, IState> {
           <AssetMetricsList
             title={t('assetFinancial:recordsText')}
             numOfElements={2}
+            isSubTextRequired={false}
             data={this.getHeaderData()}
             onPlusIconClicked={this.onPlusIconPress}
             textStyle={styles.priceStyle}
