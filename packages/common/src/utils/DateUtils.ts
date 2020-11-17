@@ -270,6 +270,10 @@ class DateUtils {
   public getDateDiff = (date1: string, date2: string): number => {
     return moment(date1).diff(date2);
   };
+
+  public getCurrentDate24Format = (): string => {
+    return moment().format(DateFormats.ISO24Format);
+  };
 }
 
 const dateUtils = new DateUtils();

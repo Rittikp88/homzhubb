@@ -966,6 +966,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private getViewCounts = async (): Promise<void> => {
     const { startDate } = this.state;
+    const { isLoggedIn } = this.props;
     const endDate = this.getFormattedDate();
     const payload = {
       visit_type: VisitType.PROPERTY_VIEW,
@@ -975,11 +976,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       lease_listing: 1,
       sale_listing: null,
     };
-    try {
-      await AssetRepository.propertyVisit(payload);
-    } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e);
-      AlertHelper.error({ message: error });
+    if (isLoggedIn) {
+      try {
+        await AssetRepository.propertyVisit(payload);
+      } catch (e) {
+        const error = ErrorUtils.getErrorMessage(e);
+        AlertHelper.error({ message: error });
+      }
     }
   };
 

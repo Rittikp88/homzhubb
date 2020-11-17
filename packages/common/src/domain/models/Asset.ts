@@ -140,7 +140,7 @@ export class Count {
 
 @JsonObject('AppPermission')
 export class AppPermission {
-  @JsonProperty('add_listingvisit', Boolean)
+  @JsonProperty('add_listingvisit', Boolean, true)
   private _addListingVisit = false;
 
   get addListingVisit(): boolean {

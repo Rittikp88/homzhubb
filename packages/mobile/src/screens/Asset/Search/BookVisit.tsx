@@ -317,7 +317,7 @@ export class BookVisit extends Component<Props, IVisitState> {
     } = this.props;
     const payload: IUpcomingVisitPayload = {
       visit_type: visitType[0],
-      start_date__gte: DateUtils.getCurrentDate(),
+      start_date__gte: DateUtils.getCurrentDate24Format(),
       lease_listing_id: params.lease_listing_id ?? leaseListingId,
       sale_listing_id: params.sale_listing_id ?? saleListingId,
     };

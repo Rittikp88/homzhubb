@@ -247,7 +247,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     }
 
     if (isMonthView) {
-      const previousYear = Number(year) - 1;
+      const previousYear = Number(year) > INITIAL_YEAR ? Number(year) - 1 : Number(year);
       this.getSelectedDate(month, previousYear);
       this.setState({ year: previousYear.toString() });
     } else if ((isYearView || isOnlyYearView) && value > INITIAL_YEAR) {
@@ -283,7 +283,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     }
 
     if (isMonthView) {
-      const nextYear = Number(year) + 1;
+      const nextYear = Number(year) < MAX_YEAR - 1 ? Number(year) + 1 : Number(year);
       this.getSelectedDate(month, nextYear);
       this.setState({ year: nextYear.toString() });
     } else if ((isYearView || isOnlyYearView) && value < MAX_YEAR - 1) {
