@@ -255,6 +255,7 @@ export interface IUpdateAssetParams {
   construction_year?: number;
   furnishing?: string;
   is_subleased?: boolean;
+  is_managed?: boolean;
 }
 
 // ASSET - END
