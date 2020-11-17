@@ -21,11 +21,6 @@ interface IProps {
 type Props = IProps & WithTranslation;
 
 export class PropertySearchList extends React.PureComponent<Props> {
-  public componentWillUnmount(): void {
-    const { setFilter } = this.props;
-    setFilter({ offset: 0 });
-  }
-
   public render(): React.ReactNode {
     const { properties, t } = this.props;
     if (properties.count === 0) {
@@ -104,11 +99,11 @@ export class PropertySearchList extends React.PureComponent<Props> {
     const {
       setFilter,
       getPropertiesListView,
-      filters: { offset, limit },
+      filters: { offset },
+      properties,
     } = this.props;
-    if (offset && limit) {
-      setFilter({ offset: offset + limit });
-    }
+
+    setFilter({ offset: (offset ?? 0) + properties.results.length });
     getPropertiesListView();
   };
 }
