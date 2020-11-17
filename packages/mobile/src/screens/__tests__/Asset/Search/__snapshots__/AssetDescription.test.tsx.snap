@@ -210,7 +210,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              16 Nov 2020
+              17 Nov 2020
             </Label>
           </View>
           <View

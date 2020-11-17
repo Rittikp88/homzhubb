@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
-import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
@@ -116,7 +116,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 
 const mapStateToProps = (state: IState): IStateToProps => {
   return {
-    currency: CommonSelectors.getDefaultCurrency(state),
+    currency: UserSelector.getCurrency(state),
   };
 };
 
