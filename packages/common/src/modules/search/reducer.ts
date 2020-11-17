@@ -122,7 +122,7 @@ export const searchReducer = (
           ...state.properties,
           count,
           links,
-          results: results.length > 10 ? [...state.properties.results, ...results] : results,
+          results: [...state.properties.results, ...results],
         },
         ['loaders']: { ...state.loaders, ['search']: false },
       };
