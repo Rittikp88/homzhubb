@@ -5,7 +5,7 @@ import { AssetLandingScreen } from '@homzhub/mobile/src/screens/Asset/AssetLandi
 
 const mock = jest.fn();
 
-describe('Landing Screen Component', () => {
+describe.skip('Landing Screen Component', () => {
   let component: any;
   let props: any;
 
