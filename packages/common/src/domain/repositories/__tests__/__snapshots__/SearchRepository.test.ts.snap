@@ -404,6 +404,7 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isGated": false,
+      "_isManaged": true,
       "_isSubleased": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {
@@ -804,6 +805,7 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isGated": false,
+      "_isManaged": true,
       "_isSubleased": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {

@@ -279,6 +279,7 @@ export const mockAsset = {
       value: 'Apartment',
     },
   ],
+  is_managed: true,
 };
 
 export const AssetSearchData = {
