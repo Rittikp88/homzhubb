@@ -25,7 +25,7 @@ exports[`PropertySearchMap should match snapshot 1`] = `
           "longitude": "85.12300000",
         }
       }
-      key="1"
+      key="10"
       onPress={[Function]}
       stopPropagation={false}
     >
@@ -40,7 +40,7 @@ exports[`PropertySearchMap should match snapshot 1`] = `
           "longitude": "85.12350000",
         }
       }
-      key="2"
+      key="21"
       onPress={[Function]}
       stopPropagation={false}
     >
@@ -223,7 +223,7 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
           "longitude": "85.12300000",
         }
       }
-      key="1"
+      key="10"
       onPress={[Function]}
       stopPropagation={false}
     >
@@ -238,7 +238,7 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
           "longitude": "85.12350000",
         }
       }
-      key="2"
+      key="21"
       onPress={[Function]}
       stopPropagation={false}
     >
@@ -421,7 +421,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
           "longitude": "85.12300000",
         }
       }
-      key="1"
+      key="10"
       onPress={[Function]}
       stopPropagation={false}
     >
@@ -436,7 +436,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
           "longitude": "85.12350000",
         }
       }
-      key="2"
+      key="21"
       onPress={[Function]}
       stopPropagation={false}
     >
@@ -619,7 +619,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
           "longitude": "85.12300000",
         }
       }
-      key="1"
+      key="10"
       onPress={[Function]}
       stopPropagation={false}
     >
@@ -634,7 +634,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
           "longitude": "85.12350000",
         }
       }
-      key="2"
+      key="21"
       onPress={[Function]}
       stopPropagation={false}
     >

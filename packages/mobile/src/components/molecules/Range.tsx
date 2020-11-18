@@ -26,6 +26,8 @@ interface IProps {
   onDropdownValueChange?: (value: string | number) => void;
 }
 
+const ShowInMvpRelease = false;
+
 export const Range = (props: IProps): React.ReactElement => {
   const {
     dropdownData,
@@ -83,17 +85,19 @@ export const Range = (props: IProps): React.ReactElement => {
         <Text type="small" textType="semiBold" style={styles.priceRange}>
           {isPriceRange ? t('priceRange') : t('propertySearch:carpetArea')}
         </Text>
-        <Dropdown
-          data={dropdownData}
-          icon={icons.downArrow}
-          iconColor={theme.colors.darkTint5}
-          iconSize={8}
-          textStyle={styles.dropdownTextStyle}
-          value={dropdownValue}
-          onDonePress={onUnitChange}
-          containerStyle={styles.dropdownContainer}
-          testID="areaUnit"
-        />
+        {ShowInMvpRelease && (
+          <Dropdown
+            data={dropdownData}
+            icon={icons.downArrow}
+            iconColor={theme.colors.darkTint5}
+            iconSize={8}
+            textStyle={styles.dropdownTextStyle}
+            value={dropdownValue}
+            onDonePress={onUnitChange}
+            containerStyle={styles.dropdownContainer}
+            testID="areaUnit"
+          />
+        )}
       </View>
       <View style={styles.sliderView}>
         <Text type="regular" style={styles.sliderValue}>

@@ -30,11 +30,11 @@ enum FormType {
 interface IFormData {
   property: number;
   label: string;
-  tellerName: string;
+  tellerName?: string;
   amount: number;
   category: number;
   date: string;
-  notes: string;
+  notes?: string;
 }
 
 interface IState {
@@ -259,11 +259,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     return yup.object().shape({
       property: yup.number().required(t('propertyError')),
       label: yup.string().required(t('detailsError')),
-      tellerName: yup.string(),
+      tellerName: yup.string().optional(),
       amount: yup.number().required(t('amountError')),
       category: yup.number().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
-      notes: yup.string(),
+      notes: yup.string().optional(),
     });
   };
 

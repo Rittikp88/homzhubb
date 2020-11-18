@@ -106,7 +106,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
       },
     } = this.props;
 
-    if (!entryType && !tellerName && !fileName) {
+    if (!tellerName && !fileName && !notes) {
       return (
         <Label style={styles.noDescriptionText} type="large">
           {t('noDescriptionText')}
