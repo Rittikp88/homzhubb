@@ -192,7 +192,9 @@
     "clickToFFM": "Click \"Continue\" to open FFM Application",
     "updatePassword": "Update Password",
     "createNewPassword": "Create a New Password",
-    "currentPassword": "Your Current Password"
+    "currentPassword": "Your Current Password",
+    "resetLink": "Reset Link has been sent to your email",
+    "emailNotExists": "Email does not exists"
   },
   "property": {
     "searchInWeb": "Search for projects,location,builders",
@@ -386,7 +388,8 @@
     "awaiting": "Awaiting Confirmation...",
     "buyer": "Buyer",
     "paymentSuccessMsg": "The payment was completed successfully.",
-    "previewOwnProperty": "Click on \"Continue\" to preview your property"
+    "previewOwnProperty": "Click on \"Continue\" to preview your property",
+    "validVideoUrl": "Enter a valid video url"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -537,7 +540,9 @@
     "totalOffers": "Total Offers",
     "highestOffer": "Highest Offer",
     "lowestOffer": "Lowest Offer",
-    "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}"
+    "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}",
+    "noPropertiesAdded": "You haven't added any properties",
+    "noFilterProperties": "You don't have any {{filter}} properties"
   },
   "assetFinancial": {
     "financial": "Financials",

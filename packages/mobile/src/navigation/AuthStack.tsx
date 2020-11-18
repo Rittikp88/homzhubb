@@ -7,6 +7,7 @@ import {
   IResetPasswordProps,
   IScreenCallback,
   IWebviewProps,
+  IForgotPasswordProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
@@ -24,7 +25,7 @@ export type AuthStackParamList = {
   [ScreensKeys.Login]: IScreenCallback;
   [ScreensKeys.EmailLogin]: IScreenCallback | undefined;
   [ScreensKeys.OTP]: IOtpNavProps;
-  [ScreensKeys.ForgotPassword]: IScreenCallback;
+  [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
   [ScreensKeys.SuccessResetPassword]: IScreenCallback;
   [ScreensKeys.WebViewScreen]: IWebviewProps;

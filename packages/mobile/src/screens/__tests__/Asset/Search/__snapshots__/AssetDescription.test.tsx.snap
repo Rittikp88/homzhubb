@@ -505,10 +505,5 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
       />
     </View>
   </ParallaxScrollView>
-  <Memo(ContactPerson)
-    designation="Owner"
-    onContactTypeClicked={[Function]}
-    phoneNumber="undefinedundefined"
-  />
 </Fragment>
 `;

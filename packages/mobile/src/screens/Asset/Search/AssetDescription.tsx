@@ -187,6 +187,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (!assetDetails) return null;
     const {
       contacts: { fullName, phoneNumber, countryCode },
+      appPermissions,
     } = assetDetails;
 
     const statusBarHeight = isScroll ? 0 : PlatformUtils.isIOS() ? 55 : 40;
@@ -231,7 +232,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
-        {!isFullScreen && !isPreview && (
+        {appPermissions?.addListingVisit && !isFullScreen && !isPreview && (
           <ContactPerson
             fullName={fullName}
             phoneNumber={`${countryCode}${phoneNumber}`}

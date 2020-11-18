@@ -92,7 +92,12 @@ class UpdatePassword extends Component<Props, IScreenState> {
                   disabled={!currentPassword && !newPassword}
                   containerStyle={styles.button}
                 />
-                <Text type="small" textType="semiBold" style={styles.forgotText}>
+                <Text
+                  type="small"
+                  textType="semiBold"
+                  style={styles.forgotText}
+                  onPress={this.navigateToForgotPassword}
+                >
                   {t('forgotPassword')}
                 </Text>
               </View>
@@ -151,6 +156,11 @@ class UpdatePassword extends Component<Props, IScreenState> {
         .min(8, t('minimumCharacters'))
         .required(t('passwordRequired')),
     });
+  };
+
+  private navigateToForgotPassword = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ForgotPassword, { isFromMore: true });
   };
 }
 

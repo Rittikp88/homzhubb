@@ -7,7 +7,6 @@ import {
   IOtpLoginPayload,
   IOtpVerify,
   IOtpVerifyResponse,
-  IResetPasswordData,
   ISignUpPayload,
   ISocialLogin,
   ISocialLoginPayload,
@@ -98,7 +97,7 @@ class UserRepository {
     return await this.apiClient.post(ENDPOINTS.otp(), requestPayload);
   };
 
-  public resetPassword = async (payload: IForgotPasswordPayload): Promise<IResetPasswordData> => {
+  public resetPassword = async (payload: IForgotPasswordPayload): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
   };
 

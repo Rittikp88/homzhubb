@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { isEmpty } from 'lodash';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -9,6 +10,7 @@ import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -35,6 +37,10 @@ interface IStateProps {
   assetPayload: ISetAssetPayload;
 }
 
+interface IDispatchProps {
+  setAssetId: (payload: number) => void;
+}
+
 interface IDetailState {
   propertyData: Asset;
   attachments: Attachment[];
@@ -52,7 +58,7 @@ interface IRoutes {
 }
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
-type Props = WithTranslation & libraryProps & IStateProps;
+type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class PropertyDetailScreen extends Component<Props, IDetailState> {
   public state = {
@@ -98,7 +104,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
               assetData={propertyData}
               isDetailView
               enterFullScreen={this.onFullScreenToggle}
-              onCompleteDetails={FunctionUtils.noop}
+              onCompleteDetails={this.onCompleteDetails}
               onOfferVisitPress={FunctionUtils.noop}
               containerStyle={styles.card}
             />
@@ -255,6 +261,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
+  private onCompleteDetails = (assetId: number): void => {
+    const { navigation, setAssetId } = this.props;
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AddProperty,
+      params: { previousScreen: ScreensKeys.Dashboard },
+    });
+  };
+
   private navigateToBookVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.SearchStack, {
@@ -305,9 +320,14 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setAssetId } = RecordAssetActions;
+  return bindActionCreators({ setAssetId }, dispatch);
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(PropertyDetailScreen));
 
 const styles = StyleSheet.create({

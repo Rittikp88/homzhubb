@@ -337,7 +337,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
-    const { propertyId, onPressContinue, lastVisitedStep } = this.props;
+    const { propertyId, onPressContinue, lastVisitedStep, t } = this.props;
     const { selectedImages, isVideoToggled, videoUrl } = this.state;
     const attachmentIds: IPropertyImagesPostPayload[] = [];
     selectedImages.forEach((selectedImage: AssetGallery) =>
@@ -345,8 +345,13 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     );
     if (isVideoToggled && !!videoUrl) {
       const payload = [{ link: videoUrl }];
-      const urlResponse: IYoutubeResponse[] = await AssetRepository.postAttachmentUpload(payload);
-      attachmentIds.push({ attachment: urlResponse[0].id, is_cover_image: false });
+      try {
+        const urlResponse: IYoutubeResponse[] = await AssetRepository.postAttachmentUpload(payload);
+        attachmentIds.push({ attachment: urlResponse[0].id, is_cover_image: false });
+      } catch (e) {
+        AlertHelper.error({ message: t('property:validVideoUrl') });
+        return;
+      }
     }
 
     const updateAssetPayload: IUpdateAssetParams = {

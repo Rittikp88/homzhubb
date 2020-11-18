@@ -27,7 +27,10 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
   };
 
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     const formData = { ...this.state };
     return (
       <View style={styles.container}>
@@ -61,25 +64,24 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
               </>
             )}
           </Formik>
-          <Text
-            type="small"
-            textType="semiBold"
-            style={styles.backToLoginLink}
-            onPress={this.navigateToLogin}
-            testID="txtLogin"
-          >
-            {t('auth:backToLogin')}
-          </Text>
+          {params && !params.isFromMore && (
+            <Text
+              type="small"
+              textType="semiBold"
+              style={styles.backToLoginLink}
+              onPress={this.navigateToLogin}
+              testID="txtLogin"
+            >
+              {t('auth:backToLogin')}
+            </Text>
+          )}
         </View>
       </View>
     );
   }
 
-  private onSubmit = (formProps: IForgotPasswordState): void => {
-    const {
-      navigation,
-      route: { params },
-    } = this.props;
+  private onSubmit = async (formProps: IForgotPasswordState): Promise<void> => {
+    const { t } = this.props;
     const { email } = formProps;
     const payload = {
       action: 'SEND_EMAIL',
@@ -87,23 +89,22 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
         email,
       },
     };
-    UserRepository.resetPassword(payload)
-      .then((response) => {
-        const { email_exists, token } = response;
-        if (email_exists) {
-          navigation.navigate(ScreensKeys.ResetPassword, {
-            token,
-            email,
-            ...(params && params.onCallback && { onCallback: params.onCallback }),
+    try {
+      const emailData = await UserRepository.emailExists(email);
+      if (emailData.is_exists) {
+        UserRepository.resetPassword(payload)
+          .then(() => {
+            AlertHelper.success({ message: t('auth:resetLink') });
+          })
+          .catch((err) => {
+            AlertHelper.error({ message: err });
           });
-        } else {
-          AlertHelper.error({ message: 'Email does not exists' });
-        }
-        return null;
-      })
-      .catch((err) => {
-        AlertHelper.error({ message: err });
-      });
+      } else {
+        AlertHelper.error({ message: t('auth:emailNotExists') });
+      }
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
   };
 
   public navigateToLogin = (): void => {

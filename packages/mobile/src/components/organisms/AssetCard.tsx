@@ -196,7 +196,7 @@ export class AssetCard extends Component<Props> {
               isPropertyVacant={label === Filters.VACANT}
               assetCreation={assetCreation}
             />
-            {assetCreation.percentage < 100 && (
+            {label !== Filters.OCCUPIED && assetCreation.percentage < 100 && (
               <Button
                 type="primary"
                 textType="label"

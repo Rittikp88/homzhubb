@@ -140,18 +140,15 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   public onLoadMore = (): void => {
     const { limit, offset, notifications } = this.state;
     if (notifications.results && notifications.results.length !== notifications.count) {
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      this.setState({ offset: offset + limit }, async () => {
-        await this.getAssetNotifications();
+      this.setState({ offset: offset + limit }, () => {
+        this.getAssetNotifications().then();
       });
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public onUpdateSearchText = async (value: string): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    this.setState({ searchText: value, limit: 50, offset: 0 }, async () => {
-      await this.getAssetNotifications();
+  public onUpdateSearchText = (value: string): void => {
+    this.setState({ searchText: value, limit: 50, offset: 0 }, () => {
+      this.getAssetNotifications().then();
     });
   };
 

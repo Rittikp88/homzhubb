@@ -3,12 +3,15 @@
 exports[`EmptyState should match snapshot 1`] = `
 <View
   style={
-    Object {
-      "alignItems": "center",
-      "backgroundColor": "#FFFFFF",
-      "justifyContent": "center",
-      "minHeight": 150,
-    }
+    Array [
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "justifyContent": "center",
+        "minHeight": 150,
+      },
+      undefined,
+    ]
   }
 >
   <Icon

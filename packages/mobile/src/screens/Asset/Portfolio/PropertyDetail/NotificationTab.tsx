@@ -53,9 +53,11 @@ export class NotificationTab extends React.Component<Props, IAssetNotificationsS
 
   public onNotificationClicked = async (data: Notifications): Promise<void> => {
     const { notifications } = this.state;
-    const { id } = data;
-    await DashboardRepository.updateNotificationStatus(id);
-    this.setState({ notifications: NotificationService.getUpdatedNotifications(id, notifications) });
+    const { id, isRead } = data;
+    if (!isRead) {
+      await DashboardRepository.updateNotificationStatus(id);
+      this.setState({ notifications: NotificationService.getUpdatedNotifications(id, notifications) });
+    }
   };
 
   public onLoadMore = (): void => {

@@ -129,6 +129,10 @@ export interface IResetPasswordProps extends IScreenCallback {
   email?: string;
 }
 
+export interface IForgotPasswordProps extends IScreenCallback {
+  isFromMore?: boolean;
+}
+
 // Post Property
 export interface IAssetLocationMapProps {
   placeData: GooglePlaceDetail;

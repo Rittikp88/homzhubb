@@ -1,6 +1,5 @@
 import React from 'react';
 import { PickerItemProps, StyleSheet, View } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView, Loader } from '@homzhub/mobile/src/components';
@@ -107,7 +107,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
               containerStyle={styles.assetCards}
             />
             {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
-            {properties && properties.length > 0 && this.renderPortfolio(properties)}
+            {this.renderPortfolio(properties)}
             <BottomSheetListView
               data={filters}
               selectedValue={currentFilter}
@@ -136,8 +136,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     );
   };
 
-  private renderPortfolio = (properties: Asset[]): React.ReactElement => {
-    const { t } = this.props;
+  private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
+    const { t, currentFilter } = this.props;
+    const filter = currentFilter.toLowerCase();
+    const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties', { filter });
+
     return (
       <>
         <View style={styles.headingView}>
@@ -152,7 +155,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             testID="menu"
           />
         </View>
-        {properties.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))}
+        {properties && properties.length > 0 ? (
+          properties.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
+        ) : (
+          <EmptyState title={title} icon={icons.house} iconSize={40} containerStyle={styles.emptyView} />
+        )}
       </>
     );
   };
@@ -287,16 +294,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private verifyData = (): void => {
-    const { navigation, tenancies, properties } = this.props;
+    const { tenancies, properties } = this.props;
 
-    if ((!tenancies && !properties) || (tenancies && tenancies.length === 0 && properties && properties.length === 0)) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreensKeys.PropertyPostLandingScreen }],
-        })
-      );
-    } else if ((tenancies && tenancies.length > 0) || (properties && properties.length > 0)) {
+    if ((tenancies && tenancies.length > 0) || (properties && properties.length > 0)) {
       if (tenancies && tenancies.length > 0) {
         this.setState({
           expandedTenanciesId: tenancies[0].id,
@@ -348,5 +348,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  emptyView: {
+    minHeight: 200,
   },
 });

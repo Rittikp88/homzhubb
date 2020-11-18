@@ -28,6 +28,7 @@ import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
   IBookVisitProps,
   IComingSoon,
+  IForgotPasswordProps,
   IOtpNavProps,
   IUpdateProfileProps,
   IWebviewProps,
@@ -40,6 +41,7 @@ import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
+import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
@@ -96,6 +98,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.WebViewScreen]: IWebviewProps;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.BookVisit]: IBookVisitProps;
+  [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -176,6 +179,7 @@ export const MoreStack = (): React.ReactElement => {
       <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <MoreStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
     </MoreStackNavigator.Navigator>
   );
 };
