@@ -80,7 +80,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
               this.onMarkerPress(index);
             };
             return (
-              <Marker key={property.id} coordinate={{ latitude, longitude }} onPress={onMarkerPress}>
+              <Marker key={`${property.id}${index}`} coordinate={{ latitude, longitude }} onPress={onMarkerPress}>
                 <CustomMarker selected={index === currentSlide} />
               </Marker>
             );

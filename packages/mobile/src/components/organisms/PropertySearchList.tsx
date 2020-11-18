@@ -35,7 +35,6 @@ export class PropertySearchList extends React.PureComponent<Props> {
           data={properties.results}
           renderItem={this.renderItem}
           keyExtractor={this.renderKeyExtractor}
-          // @ts-ignore
           ListFooterComponent={this.renderFooter}
           onEndReached={this.loadMoreProperties}
           onEndReachedThreshold={0.8}
@@ -79,7 +78,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
     );
   };
 
-  public renderFooter = (): React.ReactNode => {
+  public renderFooter = (): React.ReactElement | null => {
     const { t, properties } = this.props;
     if (properties.count === properties.results.length) {
       return null;
