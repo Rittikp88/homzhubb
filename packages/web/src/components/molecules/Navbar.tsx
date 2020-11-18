@@ -46,9 +46,10 @@ const Navbar = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   containerNavbar: {
-    padding: 5,
-    marginLeft: '7%',
-    marginRight: '7%',
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: '7%',
+    paddingRight: '7%',
     marginBottom: 20,
     display: 'flex',
     flexDirection: 'row',

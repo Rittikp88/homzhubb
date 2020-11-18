@@ -143,6 +143,9 @@ export const icons = {
   furnishing: 'furnishing',
   openParking: 'open-parking',
   vacantProperty: 'vacant-property',
+  openTemplate: 'open-template',
+  closeTemplate: 'close-template',
+  billPamphlet: 'bill-pamphlet',
   // COMMUTE
   train: 'train',
   trainMarker: 'train-marker',
