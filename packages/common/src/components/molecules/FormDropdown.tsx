@@ -33,15 +33,6 @@ export interface IFormDropdownProps {
 }
 
 export class FormDropdown extends PureComponent<IFormDropdownProps> {
-  public componentDidMount = (): void => {
-    const { formProps, name, options } = this.props;
-    if (formProps.values[name] || options.length <= 0) {
-      return;
-    }
-
-    formProps.setFieldValue(name, options[0].value);
-  };
-
   public render(): React.ReactNode {
     const {
       name,

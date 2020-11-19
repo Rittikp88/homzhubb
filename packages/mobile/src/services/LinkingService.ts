@@ -37,8 +37,6 @@ class LinkingService {
       config: {
         screens: {
           ...this.getNestedScreens(userLoggedIn),
-          // Todo (Sriram 2020.09.11) This screen has to be replaced with 404 screen
-          [ScreensKeys.BlankScreen]: '*',
         },
       },
     };

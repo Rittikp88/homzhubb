@@ -52,6 +52,7 @@ interface IPortfolioState {
   isSpinnerLoading: boolean;
   expandedTenanciesId: number;
   expandedAssetId: number;
+  assetType: string;
 }
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
@@ -68,6 +69,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     isSpinnerLoading: false,
     expandedTenanciesId: 0,
     expandedAssetId: 0,
+    assetType: '',
   };
 
   public componentDidMount = (): void => {
@@ -105,6 +107,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
               subscription={metrics?.userServicePlan?.label}
               onPlusIconClicked={this.handleAddProperty}
               containerStyle={styles.assetCards}
+              onMetricsClicked={this.onMetricsClicked}
             />
             {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
             {this.renderPortfolio(properties)}
@@ -126,20 +129,29 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderTenancies = (tenancies: Asset[]): React.ReactElement => {
     const { t } = this.props;
+    const { assetType } = this.state;
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('tenancies')}
         </Text>
-        {tenancies.map((tenancy, index) => this.renderList(tenancy, index, DataType.TENANCIES))}
+        {(assetType
+          ? tenancies.filter((item) => item.assetGroup.name === assetType)
+          : tenancies
+        ).map((tenancy, index) => this.renderList(tenancy, index, DataType.TENANCIES))}
       </>
     );
   };
 
   private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
     const { t, currentFilter } = this.props;
+    const { assetType } = this.state;
     const filter = currentFilter.toLowerCase();
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties', { filter });
+
+    const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
+
+    const isEmpty = !data || data.length <= 0;
 
     return (
       <>
@@ -155,10 +167,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             testID="menu"
           />
         </View>
-        {properties && properties.length > 0 ? (
-          properties.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
+        {isEmpty ? (
+          <EmptyState title={title} icon={icons.home} containerStyle={styles.emptyView} />
         ) : (
-          <EmptyState title={title} icon={icons.house} iconSize={40} containerStyle={styles.emptyView} />
+          data.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
         )}
       </>
     );
@@ -194,6 +206,14 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { navigation, setCurrentAsset } = this.props;
     setCurrentAsset(data);
     navigation.navigate(ScreensKeys.PropertyDetailScreen);
+  };
+
+  private onMetricsClicked = (name: string): void => {
+    const { assetType } = this.state;
+    if (assetType === name) {
+      name = '';
+    }
+    this.setState({ assetType: name });
   };
 
   private onPropertiesCallback = (): void => {

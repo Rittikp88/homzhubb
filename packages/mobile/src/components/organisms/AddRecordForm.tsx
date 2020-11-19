@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
@@ -76,7 +77,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         tellerName: '',
         amount: 0,
         category: 0,
-        date: '',
+        date: DateUtils.getCurrentDate(),
         notes: '',
       },
     };
@@ -158,6 +159,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                 />
                 <FormCalendar
                   allowPastDates
+                  maxDate={DateUtils.getCurrentDate()}
                   formProps={formProps}
                   name="date"
                   textType="label"

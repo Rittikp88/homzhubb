@@ -15,12 +15,10 @@ import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { RootNavigator } from '@homzhub/mobile/src/navigation/RootNavigator';
 import { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
-import { BlankScreen } from '@homzhub/mobile/src/screens/BlankScreen'; // For Testing on UI
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 
 interface IState {
   booting: boolean;
-  showBlankScreen: boolean; // For Testing on UI
 }
 
 StoreProviderService.init(configureStore);
@@ -29,7 +27,6 @@ const store = StoreProviderService.getStore();
 export default class App extends React.PureComponent<{}, IState> {
   public state = {
     booting: true,
-    showBlankScreen: false, // For Testing on UI, change to false for regular flow
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -37,11 +34,7 @@ export default class App extends React.PureComponent<{}, IState> {
   };
 
   public render = (): React.ReactNode => {
-    const { booting, showBlankScreen } = this.state;
-    // For UI Testing Remove once app goes live
-    if (showBlankScreen) {
-      return <BlankScreen />;
-    }
+    const { booting } = this.state;
 
     return (
       <Provider store={store}>

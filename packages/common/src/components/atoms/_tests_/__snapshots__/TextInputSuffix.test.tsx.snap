@@ -4,11 +4,12 @@ exports[`TextInputSuffix should match snapshot 1`] = `
 <Label
   style={
     Object {
-      "bottom": 14,
+      "bottom": 12,
       "color": "#808D9B",
+      "lineHeight": 24,
       "position": "absolute",
       "right": 6,
-      "top": 13,
+      "top": 12,
     }
   }
   type="large"

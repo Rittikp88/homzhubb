@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleProp, StyleSheet, TextStyle, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { GooglePlaceData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,30 +14,18 @@ export interface IProps extends WithTranslation {
 
 export class SearchResults extends React.PureComponent<IProps, {}> {
   public render = (): React.ReactNode => {
-    const { results } = this.props;
+    const { results, t, listTitleStyle = {} } = this.props;
     return (
-      <FlatList
-        keyboardShouldPersistTaps="always"
-        data={results}
-        renderItem={this.renderSearchResult}
-        ListHeaderComponent={this.renderListHeader}
-        keyExtractor={this.keyExtractor}
-        contentContainerStyle={styles.sectionsContainer}
-        testID="resultList"
-      />
+      <View style={styles.sectionsContainer}>
+        <Label type="large" textType="semiBold" style={[styles.listTitle, listTitleStyle]}>
+          {t('common:searchResults')}
+        </Label>
+        {results.map(this.renderSearchResult)}
+      </View>
     );
   };
 
-  private renderListHeader = (): React.ReactElement => {
-    const { t, listTitleStyle = {} } = this.props;
-    return (
-      <Label type="large" textType="semiBold" style={[styles.listTitle, listTitleStyle]}>
-        {t('common:searchResults')}
-      </Label>
-    );
-  };
-
-  private renderSearchResult = ({ item }: { item: GooglePlaceData }): React.ReactElement => {
+  private renderSearchResult = (item: GooglePlaceData): React.ReactElement => {
     const { onResultPress } = this.props;
 
     const onPress = (): void => {
@@ -45,15 +33,18 @@ export class SearchResults extends React.PureComponent<IProps, {}> {
     };
 
     return (
-      <TouchableOpacity key={item.id} style={styles.listItemContainer} onPress={onPress} testID="pressResult">
+      <TouchableOpacity
+        key={`${item.place_id}`}
+        testID="pressResult"
+        onPress={onPress}
+        style={styles.listItemContainer}
+      >
         <Label type="large" style={styles.listItemTitle} numberOfLines={2}>
           {item.description}
         </Label>
       </TouchableOpacity>
     );
   };
-
-  private keyExtractor = (item: GooglePlaceData): string => item.id;
 }
 
 const styles = StyleSheet.create({

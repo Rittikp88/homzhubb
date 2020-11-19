@@ -138,6 +138,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
 
     return (
       <Formik
+        validateOnMount
         enableReinitialize
         initialValues={formData}
         onSubmit={this.onSubmit}

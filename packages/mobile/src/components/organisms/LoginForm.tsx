@@ -3,12 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
@@ -123,9 +125,23 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     );
   };
 
-  public handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
-    const { onLoginSuccess } = this.props;
+  public handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
+    const { onLoginSuccess, isEmailLogin, t } = this.props;
     formActions.setSubmitting(true);
+
+    if (!isEmailLogin) {
+      try {
+        const phone = `${values.phoneCode}~${values.phone}`;
+        const isPhoneUsed = await UserRepository.phoneExists(phone);
+        if (!isPhoneUsed.is_exists) {
+          AlertHelper.error({ message: t('auth:phoneNotExists') });
+          return;
+        }
+      } catch (err) {
+        AlertHelper.error({ message: t('common:genericErrorMessage') });
+        return;
+      }
+    }
 
     const loginFormData: ILoginFormData = {
       email: values.email,

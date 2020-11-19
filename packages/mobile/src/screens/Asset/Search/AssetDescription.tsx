@@ -56,7 +56,7 @@ import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAmenitiesIcons, IFilter, ContactActions } from '@homzhub/common/src/domain/models/Search';
 import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 interface IStateProps {
@@ -93,18 +93,6 @@ const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
 const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 100;
-
-const initialCarouselData: Attachment[] = [
-  {
-    link:
-      'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
-    isCoverImage: true,
-    fileName: 'sample',
-    mediaType: 'IMAGE',
-    // @ts-ignore
-    mediaAttributes: {},
-  },
-];
 
 // TODO: Do we require a byId reducer here?
 const initialState = {
@@ -205,9 +193,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
           backgroundSpeed={10}
           onChangeHeaderVisibility={(isChanged: boolean): void => this.setState({ isScroll: isChanged })}
-          renderForeground={(): React.ReactElement => this.renderCarousel()}
-          renderStickyHeader={(): React.ReactElement => this.renderStickyHeader()}
-          renderFixedHeader={(): React.ReactElement | null => this.renderFixedHeader()}
+          renderForeground={this.renderCarousel}
+          renderStickyHeader={this.renderStickyHeader}
+          renderFixedHeader={this.renderFixedHeader}
           testID="parallaxView"
         >
           <View style={styles.screen}>
@@ -591,10 +579,16 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private renderCarousel = (): React.ReactElement => {
     const { activeSlide } = this.state;
+    const { assetDetails } = this.props;
+
+    if (assetDetails && assetDetails?.attachments.length <= 0) {
+      return <ImagePlaceholder height="100%" containerStyle={styles.placeholder} />;
+    }
+
     return (
       <AssetDetailsImageCarousel
         enterFullScreen={this.onFullScreenToggle}
-        data={this.getCarouselData()}
+        data={assetDetails?.attachments ?? []}
         activeSlide={activeSlide}
         updateSlide={this.updateSlide}
       />
@@ -603,12 +597,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private renderFullscreenCarousel = (): React.ReactNode => {
     const { isFullScreen, activeSlide } = this.state;
+    const { assetDetails } = this.props;
+
     if (!isFullScreen) return null;
     return (
       <FullScreenAssetDetailsCarousel
         onFullScreenToggle={this.onFullScreenToggle}
         activeSlide={activeSlide}
-        data={this.getCarouselData()}
+        data={assetDetails?.attachments ?? []}
         updateSlide={this.updateSlide}
         onShare={this.handleShare}
       />
@@ -924,14 +920,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails?.contacts ?? null, propertyTermId });
   };
 
-  public getCarouselData = (): Attachment[] => {
-    const { assetDetails } = this.props;
-    if (assetDetails && assetDetails?.attachments.length > 0) {
-      return assetDetails.attachments;
-    }
-    return initialCarouselData;
-  };
-
   public updateSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
@@ -1199,5 +1187,8 @@ const styles = StyleSheet.create({
   },
   reviewCard: {
     marginVertical: 10,
+  },
+  placeholder: {
+    backgroundColor: theme.colors.darkTint5,
   },
 });

@@ -187,6 +187,7 @@
     "socialButtonPrefixSignUp": "Signup ",
     "emailAlreadyExists": "Email already exists",
     "phoneAlreadyExists": "Mobile number already exists",
+    "phoneNotExists": "Mobile number does not exist",
     "countryRegion": "Country/Region",
     "clickToSignUp": "Click \"Continue\" to Sign Up",
     "clickToFFM": "Click \"Continue\" to open FFM Application",

@@ -503,7 +503,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToPreview = (assetDetails: Asset): void => {
-    const { navigation, setFilter } = this.props;
+    const { navigation, setFilter, resetState } = this.props;
     const {
       id,
       leaseListingIds,
@@ -526,6 +526,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       isPreview: true,
       propertyId: id,
     });
+    resetState();
   };
 
   private handleNextStep = (): void => {
