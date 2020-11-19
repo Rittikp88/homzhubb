@@ -66,7 +66,7 @@ exports[`PropertyListCard should match snapshot 1`] = `
         }
       }
     >
-      <PricePerUnit
+      <Memo(PricePerUnit)
         currency={
           Object {
             "currency_code": "",
@@ -179,7 +179,7 @@ exports[`PropertyListCard should match snapshot for optional props 1`] = `
         }
       }
     >
-      <PricePerUnit
+      <Memo(PricePerUnit)
         currency={
           Object {
             "currency_code": "",

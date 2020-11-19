@@ -45,7 +45,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
         assetDashboard:dues
       </Text>
     </View>
-    <PricePerUnit
+    <Memo(PricePerUnit)
       currency="INR"
       price={1200}
       priceTransformation={false}
@@ -116,7 +116,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
           >
             Plumbing fees
           </Label>
-          <PricePerUnit
+          <Memo(PricePerUnit)
             currency="USD"
             price={20000}
             priceTransformation={false}
@@ -200,7 +200,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
           >
             Plumbing fees
           </Label>
-          <PricePerUnit
+          <Memo(PricePerUnit)
             currency="USD"
             price={30000}
             priceTransformation={false}
@@ -284,7 +284,7 @@ exports[`PropertyDuesCardContainer should match snapshot 1`] = `
           >
             Plumbing fees
           </Label>
-          <PricePerUnit
+          <Memo(PricePerUnit)
             currency="USD"
             price={20000}
             priceTransformation={false}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
+import { useSelector } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -12,6 +14,7 @@ interface IProps {
 
 const GraphLegends = (props: IProps): React.ReactElement => {
   const { direction, data } = props;
+  const currency = useSelector(UserSelector.getCurrency);
   let directionStyle = {};
   let directionLegendStyle: ViewStyle = styles.legendContainerColumn;
 
@@ -31,7 +34,7 @@ const GraphLegends = (props: IProps): React.ReactElement => {
             <Label type="regular" textType="regular" style={styles.textColor}>
               {legend.title}
             </Label>
-            <PricePerUnit price={legend.value} currency="INR" textSizeType="small" textFontWeight="regular" />
+            <PricePerUnit price={legend.value} currency={currency} textSizeType="small" textFontWeight="regular" />
           </View>
         </View>
       ))}

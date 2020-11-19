@@ -138,16 +138,17 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public onLoadMore = (): void => {
-    const { limit, offset, notifications } = this.state;
+    const { notifications } = this.state;
     if (notifications.results && notifications.results.length !== notifications.count) {
-      this.setState({ offset: offset + limit }, () => {
+      this.setState({ offset: notifications.results.length }, () => {
         this.getAssetNotifications().then();
       });
     }
   };
 
   public onUpdateSearchText = (value: string): void => {
-    this.setState({ searchText: value, limit: 50, offset: 0 }, () => {
+    const { notifications } = this.state;
+    this.setState({ searchText: value, limit: 50, offset: notifications.results.length }, () => {
       this.getAssetNotifications().then();
     });
   };

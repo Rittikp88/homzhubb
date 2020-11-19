@@ -111,15 +111,15 @@ export class Financials extends React.PureComponent<Props, IState> {
     return [
       {
         label: t('assetFinancial:income', { year: currentYear }),
-        count: `${LedgerUtils.totalByType(LedgerTypes.credit, ledgerData)}/-`,
-        currencySymbol: 'INR',
+        count: `${LedgerUtils.totalByType(LedgerTypes.credit, ledgerData)}`,
+        isCurrency: true,
         // @ts-ignore
         colorGradient: { hexColorA: theme.colors.gradientA, hexColorB: theme.colors.gradientB, location: [0, 1] },
       },
       {
         label: t('assetFinancial:expense', { year: currentYear }),
-        count: `${LedgerUtils.totalByType(LedgerTypes.debit, ledgerData)}/-`,
-        currencySymbol: 'INR',
+        count: `${LedgerUtils.totalByType(LedgerTypes.debit, ledgerData)}`,
+        isCurrency: true,
         // @ts-ignore
         colorGradient: { hexColorA: theme.colors.gradientC, hexColorB: theme.colors.gradientD, location: [0, 1] },
       },

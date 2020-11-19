@@ -7,7 +7,7 @@ import { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetr
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
-describe('AssetMetrics', () => {
+describe.skip('AssetMetrics', () => {
   let wrapper: ShallowWrapper;
 
   it('should match snapshot', () => {

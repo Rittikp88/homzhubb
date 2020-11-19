@@ -55,7 +55,7 @@ exports[`PropertyMapCard should match snapshot 1`] = `
           }
         }
       >
-        <PricePerUnit
+        <Memo(PricePerUnit)
           currency=""
           price={0}
           unit=""
@@ -149,7 +149,7 @@ exports[`PropertyMapCard should match snapshot when isFavourite is true 1`] = `
           }
         }
       >
-        <PricePerUnit
+        <Memo(PricePerUnit)
           currency=""
           price={0}
           unit=""

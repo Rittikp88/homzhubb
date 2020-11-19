@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 
 interface IProps {
   header: string;
+  selectedAssetType?: string;
   value: string | number;
-  currency?: string;
+  isCurrency: boolean;
   cardStyle?: StyleProp<ViewStyle>;
   angle?: number;
   location?: number[];
@@ -27,17 +30,18 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
     colorA,
     colorB,
     location,
-    currency,
     cardStyle,
     testID,
     textStyle,
     onPressMetrics,
+    isCurrency,
+    selectedAssetType,
   } = props;
 
-  const [selected, onSelect] = useState(false);
+  const currency = useSelector(UserSelector.getCurrency);
   const isGradient = colorA && colorB;
+
   const handlePress = (): void => {
-    onSelect(!selected);
     if (onPressMetrics) {
       onPressMetrics();
     }
@@ -53,8 +57,8 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
         >
           {header}
         </Text>
-        {currency ? (
-          <PricePerUnit textStyle={textStyle} priceTransformation={false} currency={currency} price={value as number} />
+        {isCurrency ? (
+          <PricePerUnit textStyle={textStyle} currency={currency} priceTransformation={false} price={value as number} />
         ) : (
           <Text
             type="large"
@@ -82,7 +86,12 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
         </LinearGradient>
       ) : (
         <View
-          style={[styles.container, cardStyle, styles.containerWithoutGradient, selected && styles.selectedContainer]}
+          style={[
+            styles.container,
+            cardStyle,
+            styles.containerWithoutGradient,
+            header === selectedAssetType && styles.selectedContainer,
+          ]}
         >
           {renderItem()}
         </View>

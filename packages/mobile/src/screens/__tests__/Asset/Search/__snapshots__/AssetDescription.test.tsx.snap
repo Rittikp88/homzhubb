@@ -75,7 +75,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             }
           }
         >
-          <PricePerUnit
+          <Memo(PricePerUnit)
             currency={
               Object {
                 "currency_code": "",

@@ -2,11 +2,13 @@
 import { call, put, takeEvery } from '@redux-saga/core/effects';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
+import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   ILoginPayload,
@@ -64,8 +66,14 @@ export function* userProfile() {
 
 export function* userPreferences() {
   try {
-    const response = yield call(UserRepository.getUserPreferences);
+    const response: UserPreferences = yield call(UserRepository.getUserPreferences);
     yield put(UserActions.getUserPreferencesSuccess(response));
+
+    const currentLanguage = yield I18nService.getLanguage();
+    if (currentLanguage !== response.languageCode) {
+      yield StorageService.set(StorageKeys.USER_SELECTED_LANGUAGE, response.languageCode);
+      yield I18nService.changeLanguage(response.languageCode as SupportedLanguages);
+    }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });
@@ -81,9 +89,9 @@ export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPr
       payload as IUpdateUserPreferences
     );
 
-    // @ts-ignore
-    if (UserPreferencesKeys.LanguageKey === Object.keys(payload)[0]) {
+    if (payload && UserPreferencesKeys.LanguageKey === Object.keys(payload)[0]) {
       yield StorageService.set(StorageKeys.USER_SELECTED_LANGUAGE, response.languageCode);
+      yield I18nService.changeLanguage(response.languageCode as SupportedLanguages);
     }
 
     yield put(UserActions.getUserPreferencesSuccess(response));

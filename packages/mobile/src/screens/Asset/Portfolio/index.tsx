@@ -96,7 +96,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderComponent = (): React.ReactElement => {
     const { t, tenancies, properties, currentFilter } = this.props;
-    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading } = this.state;
+    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading, assetType } = this.state;
     return (
       <>
         <AnimatedProfileHeader title={t('portfolio')}>
@@ -108,6 +108,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
               onPlusIconClicked={this.handleAddProperty}
               containerStyle={styles.assetCards}
               onMetricsClicked={this.onMetricsClicked}
+              selectedAssetType={assetType}
             />
             {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
             {this.renderPortfolio(properties)}
@@ -170,7 +171,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         {isEmpty ? (
           <EmptyState title={title} icon={icons.home} containerStyle={styles.emptyView} />
         ) : (
-          data.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
+          data?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
         )}
       </>
     );
