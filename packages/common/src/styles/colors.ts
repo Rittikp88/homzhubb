@@ -112,6 +112,11 @@ const grayShades = {
   gray3: '#828282',
 };
 
+const chartColors = {
+  income: '#2EC1AC',
+  expense: '#EA5455',
+};
+
 export const colors = {
   ...namedColors,
   ...themedColors,
@@ -120,4 +125,5 @@ export const colors = {
   ...opacity,
   ...gradientAssetMetrics,
   ...grayShades,
+  ...chartColors,
 };

@@ -1,46 +1,119 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
+// import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment'; //TODOS LAKSHIT
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
+import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
+import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import InvestmentFooter from './InvestmentFooter';
 
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
-  investType: string;
+  // investmentData: PropertyInvestment;
+  investmentData: any;
 }
 
 const InvestmentsCard = (props: IProps): React.ReactElement => {
-  const { investType } = props;
+  const { investmentData } = props;
+  const {
+    address,
+    asset_type,
+    furnishing,
+    spaces,
+    project_name,
+    carpetArea,
+    carpetAreaUnit,
+    unitNumber,
+    blockNumber,
+  } = investmentData;
+
+  const primaryAddress = project_name;
+  const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
+  const propertyType = asset_type?.name;
+  const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
+    spaces,
+    furnishing,
+    AssetGroupTypes.RES,
+    carpetArea,
+    carpetAreaUnit?.title ?? '',
+    true
+  );
+  const handleInfo = (): void => {
+    // empty
+  };
+
+  const propertyTitle = (param: string): string => {
+    switch (param) {
+      case 'Sale':
+        return 'For Sale by Owner';
+      case 'Ready':
+        return 'Ready to move';
+      case 'New':
+        return 'New Launch';
+      default:
+        return 'New Launch';
+    }
+  };
+  const badgeInfo = [
+    { color: theme.colors.completed },
+    { color: theme.colors.completed },
+    { color: theme.colors.completed },
+  ];
+  const badgeTitle = propertyTitle(investmentData.investmentStatus);
   return (
     <View style={styles.card}>
-      <ImageSquare
-        style={styles.image}
-        size={50}
-        source={{
-          uri:
-            'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
-        }}
-      />
-      <View style={styles.info}>
-        <Label type="regular" textType="regular">
-          Blog
-        </Label>
-        <Label type="regular" textType="regular">
-          12/03/88
-        </Label>
+      <View>
+        <ImageSquare
+          style={styles.image}
+          size={50}
+          source={{
+            uri:
+              'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+          }}
+        />
+        <Badge
+          title={badgeTitle}
+          badgeColor={theme.colors.imageVideoPaginationBackground}
+          badgeStyle={styles.propertyBadge}
+        />
       </View>
-      <View style={styles.description}>
-        <Text type="small" textType="semiBold" style={styles.title}>
-          How is the real estate market recovering?
-        </Text>
-        <Label type="regular" textType="regular" numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed dalskdjfkajsl Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit
-        </Label>
+      <View style={styles.mainBody}>
+        <View style={styles.propertyRating}>
+          <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
+            {propertyType}
+          </Typography>
+          <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={21} badgesInfo={badgeInfo} />
+        </View>
+        <PropertyAddress
+          isIcon={false}
+          primaryAddress={primaryAddress}
+          primaryAddressStyle={styles.addressTextStyle}
+          subAddressStyle={styles.subAddressTextStyle}
+          subAddress={subAddress}
+          containerStyle={styles.propertyAddress}
+        />
+        <View>
+          <Typography variant="text" size="small" fontWeight="semiBold" style={styles.propertyValue}>
+            From ₹32.5 Lacs - ₹48 Lacs
+          </Typography>
+        </View>
+        {amenitiesData.length > 0 && (
+          <PropertyAmenities
+            data={amenitiesData}
+            direction="column"
+            containerStyle={styles.propertyInfoBox}
+            contentContainerStyle={styles.cardIcon}
+          />
+        )}
       </View>
       <View>
-        <InvestmentFooter investType={investType} />
+        <InvestmentFooter investmentData={investmentData} />
       </View>
     </View>
   );
@@ -67,26 +140,61 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     margin: 12,
   },
-  info: {
-    height: 'max-content',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginHorizontal: 16,
+  propertyAddress: {
+    display: 'flex',
+    marginTop: 8,
+    marginBottom: 8,
+    minHeight: 60,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
-  description: {
-    flex: 1,
+  mainBody: {
     flexDirection: 'column',
-    marginHorizontal: 16,
-    marginVertical: 8,
+    marginTop: 16,
+    marginHorizontal: 20,
+    marginBottom: 0,
+    minHeight: '200px',
   },
-  title: {
-    flexBasis: 1,
-    marginBottom: 8,
+  propertyRating: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  subTitle: {
-    overflow: 'hidden',
-    textAlign: 'justify',
-    marginBottom: 8,
+  propertyValue: {
+    color: theme.colors.darkTint2,
+    paddingBottom: 15,
+  },
+  propertyType: {
+    color: theme.colors.primaryColor,
+  },
+  propertyInfo: {
+    marginRight: 16,
+    color: theme.colors.darkTint3,
+  },
+  propertyInfoBox: {
+    justifyContent: 'space-around',
+    marginRight: 16,
+  },
+  cardIcon: {
+    marginRight: 8,
+  },
+  propertyBadge: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: '2px 6px',
+    position: 'absolute',
+    height: 25,
+    marginLeft: 24,
+    marginTop: 24,
+  },
+  addressTextStyle: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  subAddressTextStyle: {
+    fontSize: 14,
+    fontWeight: '400',
+    marginVertical: 0,
   },
 });
 

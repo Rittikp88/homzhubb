@@ -26,6 +26,11 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: 
     setVisible(false);
   };
   const customStyle = customizedStyles(!!propertyType);
+  const badgeInfo = [
+    { color: theme.colors.warning },
+    { color: theme.colors.warning },
+    { color: theme.colors.disabledPreference },
+  ];
   return (
     <View style={customStyle.container}>
       {!!propertyType && (
@@ -33,7 +38,7 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: 
           {propertyType}
         </Text>
       )}
-      <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={23} />
+      <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={23} badgesInfo={badgeInfo} />
       <BottomSheet
         visible={isVisible}
         onCloseSheet={handleClose}

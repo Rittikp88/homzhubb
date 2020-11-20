@@ -36,7 +36,11 @@ const PropertyAddress = (props: IProps): React.ReactElement => {
       </Text>
       <View style={styles.flexRow}>
         {isIcon && <Icon name={icons.locationMarker} size={25} color={theme.colors.darkTint3} />}
-        <Label type="large" textType="regular" style={[styles.subAddress, subAddressStyle]}>
+        <Label
+          type="large"
+          textType="regular"
+          style={[styles.subAddress, isIcon && styles.subAddressMargin, subAddressStyle]}
+        >
           {subAddress}
         </Label>
       </View>
@@ -64,6 +68,8 @@ const styles = StyleSheet.create({
   subAddress: {
     color: theme.colors.darkTint3,
     marginVertical: 6,
+  },
+  subAddressMargin: {
     marginHorizontal: 10,
   },
 });

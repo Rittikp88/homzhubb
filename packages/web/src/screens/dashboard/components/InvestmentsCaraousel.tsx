@@ -5,12 +5,16 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import InvestmentsCard from '@homzhub/web/src/screens/dashboard/components/InvestmentsCard';
-
+import { InvestmentMockData } from './InvestmentMockDetails';
+// import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment';
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
-  investType: string;
+  // investmentData: PropertyInvestment[];
+  investmentData: any[];
 }
 const InvestmentsCarousel = (props: IProps): React.ReactElement => {
+  // const{ investmentData } = props;
+  const investmentDataArray = InvestmentMockData;
   return (
     <View style={styles.carouselContainer}>
       <View style={styles.titleContainer}>
@@ -20,14 +24,10 @@ const InvestmentsCarousel = (props: IProps): React.ReactElement => {
         </Text>
       </View>
       <MultiCarousel>
-        <InvestmentsCard investType="New" />
-        <InvestmentsCard investType="Sale" />
-        <InvestmentsCard investType="Ready" />
-        <InvestmentsCard investType="New" />
-        <InvestmentsCard investType="Sale" />
-        <InvestmentsCard investType="Ready" />
-        <InvestmentsCard investType="New" />
-        <InvestmentsCard investType="Sale" />
+        {/* {investmentDataArray.map((item)=>(<InvestmentsCard investmentData={item} />)) } */}
+        {investmentDataArray.map((item) => (
+          <InvestmentsCard key={item.id} investmentData={item} />
+        ))}
       </MultiCarousel>
     </View>
   );

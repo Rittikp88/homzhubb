@@ -2,24 +2,21 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
+import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment';
 import InvestmentsCarousel from './components/InvestmentsCaraousel';
+import PropertyVisualsEstimates from './components/PropertyVisualEstimates';
 
 interface IProps {
-  investmentData: IInvestmentData;
-}
-interface IInvestmentData {
-  investType: string;
+  investmentDataArray: PropertyInvestment[];
 }
 class Dashboard extends React.PureComponent<IProps> {
   public render(): React.ReactNode {
-    // const { investmentData } = this.props;
+    const { investmentDataArray } = this.props;
     return (
       <View style={styles.container}>
+        <PropertyVisualsEstimates />
+        <InvestmentsCarousel investmentData={investmentDataArray} />
         <MarketTrendsCarousel />
-        <InvestmentsCarousel
-          // investType={investmentData.investType}
-          investType="Hello"
-        />
       </View>
     );
   }
