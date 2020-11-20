@@ -37,7 +37,8 @@ const Navbar = (): React.ReactElement => {
           </Text>
         </View>
         <View style={styles.navbarFunctionsInner}>
-          <Avatar fullName={t('')} designation={t('')} />
+          {/** TODO: Replace name once login API integrated * */}
+          <Avatar fullName={t('User')} isOnlyAvatar />
         </View>
       </View>
     </View>

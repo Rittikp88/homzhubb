@@ -508,6 +508,9 @@ export interface ISendNotificationPayload {
   sale_listing: number | null;
 }
 
+export interface IProfileImage {
+  profile_picture: number;
+}
 export interface IEmailVerification {
   action: EmailVerificationActions;
   payload: IEmailVerificationPayload;

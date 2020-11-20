@@ -54,6 +54,8 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
         <HeaderCard
           title={t('assetMore:propertyVisits')}
           titleFontWeight="semiBold"
+          titleTextSize="small"
+          iconSize={24}
           renderItem={(): React.ReactElement => this.renderPropertyVisits()}
           onIconPress={this.handleBack}
           handleIcon={this.handleCalendarPress}

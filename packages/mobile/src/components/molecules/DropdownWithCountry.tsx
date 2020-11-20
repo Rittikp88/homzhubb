@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
     height: 12,
   },
   imageDropdown: {
-    paddingVertical: 10,
+    paddingVertical: 11,
   },
   text: {
     marginRight: 40,
   },
   labelDropdown: {
     paddingVertical: 8,
-    width: 220,
+    width: 200,
   },
 });

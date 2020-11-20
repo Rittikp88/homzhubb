@@ -70,7 +70,6 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                   <FormTextInput
                     name="phone"
                     label={t('common:phone')}
-                    maxLength={10}
                     inputPrefixText={formProps.values.phoneCode}
                     inputType="phone"
                     placeholder={t('common:phone')}

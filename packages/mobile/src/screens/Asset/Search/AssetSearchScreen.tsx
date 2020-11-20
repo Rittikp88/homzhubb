@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@react-native-community/geolocation';
-import { debounce } from 'lodash';
+import { debounce, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -81,6 +81,7 @@ interface IPropertySearchScreenState {
   isSearchBarFocused: boolean;
   suggestions: GooglePlaceData[];
   areaUnits: IDropdownOption[];
+  favouriteProperties: number[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertySearchScreen>;
@@ -96,6 +97,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     suggestions: [],
     isSearchBarFocused: false,
     areaUnits: [],
+    favouriteProperties: [],
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -156,7 +158,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   }
 
-  private renderMenuTray = (): React.ReactNode => {
+  private renderMenuTray = (): React.ReactElement | null => {
     const { isMenuTrayCollapsed } = this.state;
     if (!isMenuTrayCollapsed) {
       return null;
@@ -164,8 +166,8 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     return <View style={styles.trayContainer}>{this.renderCollapsibleTray()}</View>;
   };
 
-  private renderContent = (): React.ReactNode => {
-    const { isMapView } = this.state;
+  private renderContent = (): React.ReactElement | null => {
+    const { isMapView, favouriteProperties } = this.state;
     const { properties, setFilter, filters, getPropertiesListView, searchLocation } = this.props;
     if (!properties) {
       return null;
@@ -179,6 +181,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               transaction_type={filters.asset_transaction_type || 0}
               onSelectedProperty={this.navigateToAssetDetails}
               onFavorite={this.onFavourite}
+              favIds={favouriteProperties}
               searchLocation={searchLocation}
             />
             {this.renderNoResults()}
@@ -190,6 +193,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               properties={properties}
               filters={filters}
               setFilter={setFilter}
+              favIds={favouriteProperties}
               getPropertiesListView={getPropertiesListView}
               onFavorite={this.onFavourite}
               onSelectedProperty={this.navigateToAssetDetails}
@@ -202,7 +206,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  private renderNoResults = (): React.ReactNode => {
+  private renderNoResults = (): React.ReactElement | null => {
     const { properties, t } = this.props;
     if (properties.count > 0) {
       return null;
@@ -216,7 +220,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  private renderNoResultsListView = (): React.ReactNode => {
+  private renderNoResultsListView = (): React.ReactElement | null => {
     const { properties, t } = this.props;
     if (properties.count > 0) {
       return null;
@@ -238,7 +242,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  private renderCollapsibleTray = (): React.ReactNode => {
+  private renderCollapsibleTray = (): React.ReactElement | null => {
     const { selectedOnScreenFilter, areaUnits } = this.state;
     const {
       filterData,
@@ -330,7 +334,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     }
   };
 
-  private renderSearchContainer = (): React.ReactNode => {
+  private renderSearchContainer = (): React.ReactElement | null => {
     const { isSearchBarFocused } = this.state;
     const {
       filters: { search_address },
@@ -360,7 +364,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  private renderFilterTray = (): React.ReactNode => {
+  private renderFilterTray = (): React.ReactElement | null => {
     const {
       t,
       filters: { search_address, asset_group },
@@ -447,7 +451,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  private renderSearchResults = (): React.ReactNode => {
+  private renderSearchResults = (): React.ReactElement | null => {
     const { suggestions } = this.state;
     const {
       filters: { search_address },
@@ -466,7 +470,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  private renderBar = (): React.ReactNode => {
+  private renderBar = (): React.ReactElement | null => {
     const { isMapView, isMenuTrayCollapsed, isSearchBarFocused } = this.state;
     const { t, properties } = this.props;
     if (!properties) return null;
@@ -560,8 +564,8 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     const {
       navigation,
       filters: { asset_transaction_type },
-      getProperties,
     } = this.props;
+    const { favouriteProperties } = this.state;
 
     if (isFromLogin) {
       navigation.navigate(ScreensKeys.PropertySearchScreen);
@@ -576,9 +580,18 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       },
     };
 
+    let favProperties: number[] = cloneDeep(favouriteProperties);
+
     try {
       await LeadService.postLeadDetail(asset_transaction_type || 0, payload);
-      getProperties();
+      if (favProperties.includes(propertyTermId)) {
+        favProperties = favProperties.filter((item) => item !== propertyTermId);
+      } else {
+        favProperties.push(propertyTermId);
+      }
+      this.setState({
+        favouriteProperties: favProperties,
+      });
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
@@ -713,13 +726,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginHorizontal: 5,
+    paddingVertical: 10,
+    flex: 0,
   },
   filterButtons: {
     flex: 0,
   },
   menuButtonText: {
     marginVertical: 8,
-    marginHorizontal: 24,
+    marginHorizontal: 20,
   },
   propertiesFound: {
     backgroundColor: theme.colors.white,
@@ -776,12 +791,12 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint12,
     borderWidth: 1,
     margin: theme.layout.screenPadding,
-    marginBottom: 0,
+    marginBottom: 10,
     padding: 8,
   },
   address: {
     marginStart: 15,
-    width: 300,
+    width: 220,
   },
   flexRow: {
     flexDirection: 'row',

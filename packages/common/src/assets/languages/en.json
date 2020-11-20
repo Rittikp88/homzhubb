@@ -195,7 +195,8 @@
     "createNewPassword": "Create a New Password",
     "currentPassword": "Your Current Password",
     "resetLink": "Reset Link has been sent to your email",
-    "emailNotExists": "Email does not exists"
+    "emailNotExists": "Email does not exists",
+    "validPhone": "Please enter a valid number"
   },
   "property": {
     "searchInWeb": "Search for projects,location,builders",

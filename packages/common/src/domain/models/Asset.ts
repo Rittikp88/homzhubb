@@ -294,6 +294,9 @@ export class Asset {
   @JsonProperty('is_gated', Boolean, true)
   private _isGated = false;
 
+  @JsonProperty('is_verification_document_uploaded', Boolean, true)
+  private _isVerificationDocumentUploaded = false;
+
   @JsonProperty('power_backup', Boolean, true)
   private _powerBackup = false;
 
@@ -621,5 +624,9 @@ export class Asset {
 
   get isManaged(): boolean {
     return this._isManaged;
+  }
+
+  get isVerificationDocumentUploaded(): boolean {
+    return this._isVerificationDocumentUploaded;
   }
 }

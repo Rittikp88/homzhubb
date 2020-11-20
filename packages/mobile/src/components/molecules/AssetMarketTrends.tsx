@@ -7,6 +7,7 @@ import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -77,7 +78,11 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
 
       return (
         <TouchableOpacity key={`${item.id}`} onPress={onLinkPress} style={styles.trendContainer} testID="linkTouch">
-          <Image source={{ uri: attachment?.link }} style={styles.image} />
+          {attachment && !!attachment.link ? (
+            <Image source={{ uri: attachment?.link }} style={styles.image} />
+          ) : (
+            <ImagePlaceholder height={80} width={80} containerStyle={styles.placeHolderImage} />
+          )}
           <View style={styles.trendValuesContainer}>
             <Text type="small" textType="regular" style={styles.trendHeader} numberOfLines={2}>
               {title}
@@ -110,7 +115,6 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Ass
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 16,
     paddingTop: 20,
     paddingBottom: 8,
     paddingHorizontal: 16,
@@ -163,6 +167,11 @@ const styles = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
+    borderRadius: 4,
+  },
+  placeHolderImage: {
+    borderColor: theme.colors.darkTint10,
+    borderWidth: 1,
     borderRadius: 4,
   },
 });

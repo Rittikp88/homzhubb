@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { EmailVerificationActions, IEmailVerification } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -15,7 +14,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { AnimatedProfileHeader, DetailsCard, Loader, ProgressBar } from '@homzhub/mobile/src/components';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -73,7 +72,14 @@ class UserProfile extends React.PureComponent<IOwnProps> {
       return null;
     }
 
-    const { profileProgress, fullName, basicDetailsArray, emergencyContactArray, workInfoArray } = userProfile;
+    const {
+      profileProgress,
+      fullName,
+      basicDetailsArray,
+      emergencyContactArray,
+      workInfoArray,
+      profilePicture,
+    } = userProfile;
 
     return (
       <AnimatedProfileHeader
@@ -84,11 +90,14 @@ class UserProfile extends React.PureComponent<IOwnProps> {
       >
         <View style={styles.container}>
           <View style={styles.profileImage}>
-            <View style={styles.initialsContainer}>
-              <Text type="large" textType="regular" style={styles.initials}>
-                {StringUtils.getInitials(fullName || '')}
-              </Text>
-            </View>
+            <Avatar
+              isOnlyAvatar
+              fullName={fullName || ''}
+              imageSize={80}
+              onPressCamera={this.onUpdatePress}
+              initialsContainerStyle={styles.initialsContainer}
+              image={profilePicture}
+            />
           </View>
           <ProgressBar
             containerStyles={styles.progressBar}
@@ -132,7 +141,7 @@ class UserProfile extends React.PureComponent<IOwnProps> {
     );
   };
 
-  private onUpdatePress = (title: string, formType?: UpdateUserFormTypes): void => {
+  private onUpdatePress = (title?: string, formType?: UpdateUserFormTypes): void => {
     const {
       navigation: { navigate },
     } = this.props;
@@ -204,8 +213,5 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkTint7,
     borderColor: theme.colors.white,
     borderWidth: 1,
-  },
-  initials: {
-    color: theme.colors.white,
   },
 });

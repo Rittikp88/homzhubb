@@ -15,6 +15,7 @@ interface IProps {
   getPropertiesListView: () => void;
   setFilter: (payload: any) => void;
   filters: IFilter;
+  favIds: number[];
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
 }
 
@@ -22,7 +23,7 @@ type Props = IProps & WithTranslation;
 
 export class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
-    const { properties, t } = this.props;
+    const { properties, t, favIds } = this.props;
     if (properties.count === 0) {
       return null;
     }
@@ -38,6 +39,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
           ListFooterComponent={this.renderFooter}
           onEndReached={this.loadMoreProperties}
           onEndReachedThreshold={0.8}
+          extraData={favIds}
           testID="resultList"
         />
       </View>
@@ -45,7 +47,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
   }
 
   public renderItem = ({ item }: { item: Asset }): React.ReactElement => {
-    const { onFavorite, filters, onSelectedProperty } = this.props;
+    const { onFavorite, filters, onSelectedProperty, favIds } = this.props;
     const onUpdateFavoritePropertyId = (): void => {
       const { leaseTerm, saleTerm, isWishlisted } = item;
       const isFavourite = isWishlisted ? isWishlisted.status : false;
@@ -70,6 +72,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
         property={item}
         onFavorite={onUpdateFavoritePropertyId}
         key={item.id}
+        favIds={favIds}
         transaction_type={filters.asset_transaction_type || 0}
         isCarousel
         onSelectedProperty={navigateToAssetDescription}

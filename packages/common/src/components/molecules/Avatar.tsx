@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -9,55 +9,92 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   fullName: string;
-  designation: string;
+  isOnlyAvatar?: boolean;
+  image?: string;
+  designation?: string;
   phoneNumber?: string;
   phoneCode?: string;
   rating?: number;
   date?: string;
   isRightIcon?: boolean;
+  imageSize?: number;
+  onPressCamera?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
+  initialsContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
-  const { fullName, designation, containerStyle = {}, phoneNumber, rating, date, isRightIcon, phoneCode } = props;
+  const {
+    fullName,
+    designation,
+    containerStyle = {},
+    phoneNumber,
+    rating,
+    date,
+    isRightIcon,
+    phoneCode,
+    isOnlyAvatar = false,
+    image,
+    initialsContainerStyle,
+    imageSize = 42,
+    onPressCamera,
+  } = props;
 
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.leftView}>
-        <View style={styles.initialsContainer}>
-          <Text type="small" textType="regular" style={styles.initials}>
-            {StringUtils.getInitials(fullName)}
-          </Text>
-        </View>
-        <View style={styles.nameContainer}>
-          <Label textType="regular" type="large" minimumFontScale={0.5} adjustsFontSizeToFit>
-            {fullName}
-          </Label>
-          <View style={styles.leftView}>
-            <Label textType="regular" type="regular" style={styles.designation}>
-              {designation}
+        <>
+          {image ? (
+            <Image
+              source={{
+                uri: image,
+              }}
+              style={{ height: imageSize, width: imageSize, borderRadius: imageSize / 2 }}
+            />
+          ) : (
+            <View style={[styles.initialsContainer, initialsContainerStyle]}>
+              <Text type="small" textType="regular" style={styles.initials}>
+                {StringUtils.getInitials(fullName)}
+              </Text>
+            </View>
+          )}
+          {onPressCamera && (
+            <TouchableOpacity style={styles.editView} onPress={onPressCamera} activeOpacity={0.8}>
+              <Icon name={icons.camera} size={14} color={theme.colors.white} />
+            </TouchableOpacity>
+          )}
+        </>
+        {!isOnlyAvatar && (
+          <View style={styles.nameContainer}>
+            <Label textType="regular" type="large" minimumFontScale={0.5} adjustsFontSizeToFit>
+              {fullName}
             </Label>
-            {phoneNumber && (
-              <View style={styles.numberContainer}>
-                <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
-                {!!phoneCode && (
+            <View style={styles.leftView}>
+              <Label textType="regular" type="regular" style={styles.designation}>
+                {designation}
+              </Label>
+              {phoneNumber && (
+                <View style={styles.numberContainer}>
+                  <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+                  {!!phoneCode && (
+                    <Label textType="regular" type="regular" style={styles.designation}>
+                      {`(${phoneCode}) `}
+                    </Label>
+                  )}
                   <Label textType="regular" type="regular" style={styles.designation}>
-                    {`(${phoneCode}) `}
+                    {phoneNumber}
                   </Label>
-                )}
-                <Label textType="regular" type="regular" style={styles.designation}>
-                  {phoneNumber}
-                </Label>
-              </View>
-            )}
-            {rating && (
-              <View style={styles.numberContainer}>
-                <Icon name={icons.roundFilled} color={theme.colors.disabled} size={10} style={styles.iconStyle} />
-                <Rating count={rating} />
-              </View>
-            )}
+                </View>
+              )}
+              {rating && (
+                <View style={styles.numberContainer}>
+                  <Icon name={icons.roundFilled} color={theme.colors.disabled} size={10} style={styles.iconStyle} />
+                  <Rating count={rating} />
+                </View>
+              )}
+            </View>
           </View>
-        </View>
+        )}
       </View>
       {(isRightIcon || date) && (
         <View style={styles.rightView}>
@@ -108,6 +145,17 @@ const styles = StyleSheet.create({
   iconStyle: {
     marginTop: 6,
     marginHorizontal: 4,
+  },
+  editView: {
+    ...(theme.circleCSS(26) as object),
+    backgroundColor: theme.colors.blue,
+    borderColor: theme.colors.white,
+    borderWidth: 2,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 60,
+    left: 50,
   },
 });
 

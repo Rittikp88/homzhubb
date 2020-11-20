@@ -112,7 +112,6 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
             name="phone"
             label="Phone"
             inputType="phone"
-            maxLength={10}
             inputPrefixText={formProps.values.phoneCode}
             placeholder={t('auth:yourNumber')}
             helpText={t('auth:otpVerification')}

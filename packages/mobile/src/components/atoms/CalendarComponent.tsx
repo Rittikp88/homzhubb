@@ -4,12 +4,10 @@ import { View, FlatList, TouchableOpacity, StyleSheet, StyleProp, TextStyle, Vie
 import moment from 'moment';
 import { groupBy } from 'lodash';
 import { DateFormats, DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 
 // CONSTANTS START
 
@@ -178,9 +176,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
             },
           }}
         />
-        <WithShadowView outerViewStyle={styles.shadowView}>
-          <Button type="primary" title="Select" containerStyle={styles.buttonStyle} onPress={this.handleSelect} />
-        </WithShadowView>
+        <Button type="primary" title="Select" containerStyle={styles.buttonStyle} onPress={this.handleSelect} />
       </>
     );
   };
@@ -345,11 +341,6 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
 }
 
 const styles = StyleSheet.create({
-  shadowView: {
-    paddingTop: 10,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
-    paddingBottom: 0,
-  },
   buttonStyle: {
     flex: 0,
     margin: 16,
@@ -367,9 +358,8 @@ const customStyles = {
     color: isMonthView ? theme.colors.darkTint2 : theme.colors.primaryColor,
   }),
   renderItemView: (isSelected: boolean): StyleProp<ViewStyle> => ({
-    width: 80,
+    width: 90,
     marginVertical: 12,
-    marginHorizontal: 10,
     alignItems: 'center',
     backgroundColor: isSelected ? theme.colors.primaryColor : theme.colors.white,
     borderRadius: 4,

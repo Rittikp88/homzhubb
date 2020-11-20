@@ -174,7 +174,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { isFullScreen, isScroll } = this.state;
     if (!assetDetails) return null;
     const {
-      contacts: { fullName, phoneNumber, countryCode },
+      contacts: { fullName, phoneNumber, countryCode, profilePicture },
       appPermissions,
     } = assetDetails;
 
@@ -225,6 +225,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             fullName={fullName}
             phoneNumber={`${countryCode}${phoneNumber}`}
             designation="Owner"
+            image={profilePicture}
             onContactTypeClicked={this.onContactTypeClicked}
           />
         )}

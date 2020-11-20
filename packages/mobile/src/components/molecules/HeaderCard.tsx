@@ -61,7 +61,7 @@ export class HeaderCard extends React.PureComponent<IOwnProps> {
           )}
           {!!icon && (
             <Icon
-              size={30}
+              size={26}
               name={icon}
               color={theme.colors.primaryColor}
               style={styles.iconStyle}

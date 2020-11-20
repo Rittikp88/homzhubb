@@ -24,7 +24,7 @@ const getDefaultPhoneCode = (state: IState): string => {
 
   for (let i = 0; i < countries.length; i++) {
     if (countries[i].iso2Code === deviceCountry) {
-      return countries[i].phoneCodes[0];
+      return countries[i].phoneCodes[0].phoneCode;
     }
   }
 

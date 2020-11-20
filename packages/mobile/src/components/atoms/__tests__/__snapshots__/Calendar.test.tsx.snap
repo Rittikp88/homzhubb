@@ -143,7 +143,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2020-11-20T08:29:01.619Z}
+            minDate={2020-11-20T10:12:49.604Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -153,27 +153,17 @@ CalendarComponent {
             }
             theme={Object {}}
           />
-          <WithShadowView
-            outerViewStyle={
+          <Button
+            containerStyle={
               Object {
-                "marginBottom": 20,
-                "paddingBottom": 0,
-                "paddingTop": 10,
+                "flex": 0,
+                "margin": 16,
               }
             }
-          >
-            <Button
-              containerStyle={
-                Object {
-                  "flex": 0,
-                  "margin": 16,
-                }
-              }
-              onPress={[Function]}
-              title="Select"
-              type="primary"
-            />
-          </WithShadowView>
+            onPress={[Function]}
+            title="Select"
+            type="primary"
+          />
         </React.Fragment>
       </View>,
       "_rendering": false,
@@ -218,7 +208,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2020-11-20T08:29:01.606Z}
+    minDate={2020-11-20T10:12:49.594Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={
@@ -228,26 +218,16 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
     }
     theme={Object {}}
   />
-  <WithShadowView
-    outerViewStyle={
+  <Button
+    containerStyle={
       Object {
-        "marginBottom": 20,
-        "paddingBottom": 0,
-        "paddingTop": 10,
+        "flex": 0,
+        "margin": 16,
       }
     }
-  >
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "margin": 16,
-        }
-      }
-      onPress={[Function]}
-      title="Select"
-      type="primary"
-    />
-  </WithShadowView>
+    onPress={[Function]}
+    title="Select"
+    type="primary"
+  />
 </View>
 `;

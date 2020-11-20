@@ -163,6 +163,7 @@ export class AssetCard extends Component<Props> {
       },
       listingVisits: { upcomingVisits, missedVisits, completedVisits },
       lastVisitedStep: { assetCreation },
+      isVerificationDocumentUploaded,
     } = assetData;
 
     const buttonAction = leasePeriod ? leasePeriod.action : action;
@@ -205,7 +206,7 @@ export class AssetCard extends Component<Props> {
             )}
           </>
         )}
-        {isListed && (
+        {isVerificationDocumentUploaded && isListed && (
           <OffersVisitsSection
             onNav={onOfferVisitPress}
             isDetailView={isDetailView}

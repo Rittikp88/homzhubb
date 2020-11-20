@@ -10,6 +10,7 @@ User {
   "_id": 0,
   "_lastName": "",
   "_phoneNumber": "99999999",
+  "_profilePicture": "",
   "_rating": 0,
   "_refreshToken": "refresh_token",
 }
@@ -25,6 +26,7 @@ User {
   "_id": 0,
   "_lastName": "",
   "_phoneNumber": "99999999",
+  "_profilePicture": "",
   "_rating": 0,
   "_refreshToken": "refresh_token",
 }
@@ -58,6 +60,7 @@ User {
   "_id": 0,
   "_lastName": "",
   "_phoneNumber": "99999999",
+  "_profilePicture": "",
   "_rating": 0,
   "_refreshToken": "refresh_token",
 }

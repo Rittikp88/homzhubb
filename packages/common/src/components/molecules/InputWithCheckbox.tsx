@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   inputStyle: {
-    flex: 0,
+    flex: 1,
     paddingVertical: 10,
     paddingRight: 10,
     paddingLeft: 0,
