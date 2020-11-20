@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -25,7 +25,7 @@ interface IOwnProps extends WithTranslation {
   details?: IDetailsInfo[];
   headerInfo?: IHeaderInfo;
   type?: UpdateUserFormTypes;
-  onVerifyPress?: () => void;
+  onVerifyPress?: (email: string, type: UpdateUserFormTypes) => void;
   showDivider?: boolean;
 }
 
@@ -60,31 +60,37 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
   };
 
   private renderDetails = (): React.ReactNode => {
-    const { details, onVerifyPress, t } = this.props;
+    const { details, onVerifyPress, type, t } = this.props;
 
     return (
       details &&
       details.map((item, index) => {
-        const { text, type, icon, emailVerified, helperText } = item;
+        const { text, type: textType, icon, emailVerified, helperText } = item;
+
+        const handleEmailVerifyPress = (): void => {
+          if (onVerifyPress) {
+            onVerifyPress(text ?? '', type ?? UpdateUserFormTypes.BasicDetails);
+          }
+        };
 
         return (
           <View style={styles.marginTop} key={index}>
-            <View style={type === 'EMAIL' ? styles.rowStyle : undefined}>
+            <View style={textType === 'EMAIL' ? styles.rowStyle : undefined}>
               <View style={styles.subTitle}>
                 <Icon size={20} name={icon} color={text ? theme.colors.darkTint4 : theme.colors.darkTint8} />
                 <Label style={[styles.textStyle, text ? {} : styles.helperTextColor]} type="large">
                   {text || helperText}
                 </Label>
               </View>
-              {type === 'EMAIL' &&
+              {textType === 'EMAIL' &&
                 (emailVerified ? (
                   <Icon size={20} name={icons.doubleCheck} color={theme.colors.completed} />
                 ) : (
                   <Icon size={20} name={icons.filledWarning} color={theme.colors.error} />
                 ))}
             </View>
-            {type === 'EMAIL' && (
-              <Label onPress={onVerifyPress} style={styles.verifyMail} type="large">
+            {textType === 'EMAIL' && (
+              <Label onPress={handleEmailVerifyPress} style={styles.verifyMail} type="large">
                 {t('moreProfile:verifyYourEmailText')}
               </Label>
             )}

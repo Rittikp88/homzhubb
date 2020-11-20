@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { IForgotPasswordPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -83,12 +84,13 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
   private onSubmit = async (formProps: IForgotPasswordState): Promise<void> => {
     const { t } = this.props;
     const { email } = formProps;
-    const payload = {
+    const payload: IForgotPasswordPayload = {
       action: 'SEND_EMAIL',
       payload: {
         email,
       },
     };
+
     try {
       const emailData = await UserRepository.emailExists(email);
       if (emailData.is_exists) {

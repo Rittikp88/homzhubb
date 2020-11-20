@@ -1,4 +1,5 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 
@@ -10,6 +11,7 @@ export const CommonActionTypes = {
   },
   SET: {
     DEVICE_COUNTRY: `${actionTypePrefix}DEVICE_COUNTRY`,
+    REDIRECTION_DETAILS: `${actionTypePrefix}REDIRECTION_DETAILS`,
   },
 };
 
@@ -27,9 +29,15 @@ const setDeviceCountry = (countryCode: string): IFluxStandardAction<string> => (
   payload: countryCode,
 });
 
-export type CommonActionPayloadTypes = ICountry[] | string;
+const setRedirectionDetails = (payload: IRedirectionDetails): IFluxStandardAction<IRedirectionDetails> => ({
+  type: CommonActionTypes.SET.REDIRECTION_DETAILS,
+  payload,
+});
+
+export type CommonActionPayloadTypes = ICountry[] | IRedirectionDetails | string;
 export const CommonActions = {
   getCountries,
   getCountriesSuccess,
   setDeviceCountry,
+  setRedirectionDetails,
 };

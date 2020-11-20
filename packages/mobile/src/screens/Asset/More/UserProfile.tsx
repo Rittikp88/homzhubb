@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { EmailVerificationActions, IEmailVerification } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -97,7 +100,7 @@ class UserProfile extends React.PureComponent<IOwnProps> {
             headerInfo={{ title: t('basicDetails'), icon: icons.noteBook, onPress: this.onUpdatePress }}
             details={basicDetailsArray}
             type={UpdateUserFormTypes.BasicDetails}
-            onVerifyPress={FunctionUtils.noop}
+            onVerifyPress={this.onVerifyPress}
             showDivider
           />
           <DetailsCard
@@ -121,6 +124,7 @@ class UserProfile extends React.PureComponent<IOwnProps> {
               onPress: this.onUpdatePress,
             }}
             details={workInfoArray}
+            onVerifyPress={this.onVerifyPress}
             type={UpdateUserFormTypes.WorkInfo}
           />
         </View>
@@ -133,6 +137,25 @@ class UserProfile extends React.PureComponent<IOwnProps> {
       navigation: { navigate },
     } = this.props;
     navigate(ScreensKeys.UpdateUserProfileScreen, { title, formType });
+  };
+
+  private onVerifyPress = async (email: string, type: UpdateUserFormTypes): Promise<void> => {
+    const { t } = this.props;
+
+    const payload: IEmailVerification = {
+      action: EmailVerificationActions.GET_VERIFICATION_EMAIL,
+      payload: {
+        email,
+        is_work_email: type !== UpdateUserFormTypes.BasicDetails,
+      },
+    };
+
+    try {
+      await UserRepository.sendOrVerifyEmail(payload);
+      AlertHelper.info({ message: t('emailVerificationSetAlert', { email }) });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private onChangePassword = (): void => {

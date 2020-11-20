@@ -48,6 +48,18 @@ export enum UpdateProfileTypes {
   UPDATE_BY_OTP = 'UPDATE_BY_OTP',
 }
 
+export enum DetailType {
+  ASSET = 'detail',
+  LEASE_LISTING = 'lease-listing',
+  SALE_LISTING = 'sale-listing',
+  LEASE_UNIT = 'lease-unit',
+}
+
+export enum EmailVerificationActions {
+  GET_VERIFICATION_EMAIL = 'GET_VERIFICATION_EMAIL',
+  VERIFY_EMAIL = 'VERIFY_EMAIL',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -118,7 +130,7 @@ export interface IForgotPasswordPayload {
   action: string;
   payload: {
     email?: string;
-    token?: string | number;
+    verification_id?: string | number;
     password?: string;
   };
 }
@@ -485,13 +497,6 @@ export interface IUpdateUserPreferences {
   [name: string]: SelectedPreferenceType;
 }
 
-export enum DetailType {
-  ASSET = 'detail',
-  LEASE_LISTING = 'lease-listing',
-  SALE_LISTING = 'sale-listing',
-  LEASE_UNIT = 'lease-unit',
-}
-
 export interface IPropertyDetailPayload {
   asset_id: number;
   id: number;
@@ -501,4 +506,16 @@ export interface IPropertyDetailPayload {
 export interface ISendNotificationPayload {
   lease_listings: number[];
   sale_listing: number | null;
+}
+
+export interface IEmailVerification {
+  action: EmailVerificationActions;
+  payload: IEmailVerificationPayload;
+}
+
+export interface IEmailVerificationPayload {
+  email?: string;
+  is_work_email?: boolean;
+  verification_id?: string;
+  verification_metadata?: {};
 }

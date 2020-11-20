@@ -646,7 +646,8 @@
     "uniquePassword": "Please add a unique password",
     "otpVerificationText": "OTP Verification",
     "profileUpdatedSuccessfully": "Profile Updated Successfully",
-    "editProfile": "Edit Profile"
+    "editProfile": "Edit Profile",
+    "emailVerificationSetAlert": "A verification request has been sent to {{email}}"
   },
   "webLoader": {
     "loadingText": "Loading Application..."

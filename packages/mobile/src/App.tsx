@@ -5,6 +5,7 @@ import FlashMessage, { MessageComponentProps } from 'react-native-flash-message'
 import { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
@@ -30,6 +31,7 @@ export default class App extends React.PureComponent<{}, IState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
+    await LinkingService.firebaseInit();
     await this.bootUp();
   };
 
@@ -48,6 +50,25 @@ export default class App extends React.PureComponent<{}, IState> {
 
   private bootUp = async (): Promise<void> => {
     // FETCH COUNTRY OF THE DEVICE
+    await this.setLocationDetails();
+
+    const isOnBoardingCompleted = (await StorageService.get<boolean>(StorageKeys.IS_ONBOARDING_COMPLETED)) ?? false;
+    store.dispatch(UserActions.updateOnBoarding(isOnBoardingCompleted));
+
+    const userData = await StorageService.get<IUserTokens>(StorageKeys.USER);
+    if (userData) {
+      store.dispatch(UserActions.loginSuccess(userData));
+    }
+
+    const selectedLanguage: SupportedLanguages | null = await StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE);
+    await I18nService.init(selectedLanguage || undefined);
+
+    setTimeout(() => {
+      this.setState({ booting: false });
+    }, 500);
+  };
+
+  private setLocationDetails = async (): Promise<void> => {
     const permission = await PermissionsService.checkPermission(PERMISSION_TYPE.location);
 
     let deviceCountry = 'IN';
@@ -75,20 +96,5 @@ export default class App extends React.PureComponent<{}, IState> {
     }
     store.dispatch(CommonActions.setDeviceCountry(deviceCountry));
     store.dispatch(CommonActions.getCountries());
-
-    const isOnBoardingCompleted = (await StorageService.get<boolean>(StorageKeys.IS_ONBOARDING_COMPLETED)) ?? false;
-    store.dispatch(UserActions.updateOnBoarding(isOnBoardingCompleted));
-
-    const userData = await StorageService.get<IUserTokens>(StorageKeys.USER);
-    if (userData) {
-      store.dispatch(UserActions.loginSuccess(userData));
-    }
-
-    const selectedLanguage: SupportedLanguages | null = await StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE);
-    await I18nService.init(selectedLanguage || undefined);
-
-    setTimeout(() => {
-      this.setState({ booting: false });
-    }, 500);
   };
 }

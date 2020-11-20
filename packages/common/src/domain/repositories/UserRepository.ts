@@ -19,6 +19,7 @@ import {
   IUpdateProfile,
   IUpdateProfileResponse,
   IUpdateUserPreferences,
+  IEmailVerification,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
@@ -47,6 +48,7 @@ const ENDPOINTS = {
   getUserPreferences: (): string => 'users/settings/',
   settingDropdownValues: (): string => 'user-settings/values/',
   updateUserPreferences: (): string => 'users/settings/',
+  sendOrVerifyEmail: (): string => 'users/verifications/',
 };
 
 class UserRepository {
@@ -156,6 +158,10 @@ class UserRepository {
 
   public getSettingScreenData = (): SettingsData[] => {
     return ObjectMapper.deserializeArray(SettingsData, SettingsScreenData);
+  };
+
+  public sendOrVerifyEmail = async (payload: IEmailVerification): Promise<void> => {
+    await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail(), payload);
   };
 }
 

@@ -31,7 +31,7 @@ describe('Success Password Screen', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should navigate to login screen', () => {
+  it.skip('should navigate to login screen', () => {
     component.find('[testID="btnLogin"]').prop('onPress')();
     expect(mock).toHaveBeenCalled();
   });

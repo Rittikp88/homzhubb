@@ -1,4 +1,5 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -43,9 +44,18 @@ const getDefaultCurrency = (state: IState): Currency => {
   return new Currency();
 };
 
+const getRedirectionDetails = (state: IState): IRedirectionDetails => {
+  const {
+    common: { redirectionDetails },
+  } = state;
+
+  return redirectionDetails;
+};
+
 export const CommonSelectors = {
   getCountryList,
   getDefaultPhoneCode,
   getDeviceCountry,
   getDefaultCurrency,
+  getRedirectionDetails,
 };

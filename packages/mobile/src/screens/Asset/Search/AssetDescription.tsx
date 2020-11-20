@@ -12,7 +12,7 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { DynamicLinkTypes, LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -40,13 +40,13 @@ import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactP
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import {
-  AssetRatings,
   AssetDetailsImageCarousel,
+  AssetRatings,
   CollapsibleSection,
   FullScreenAssetDetailsCarousel,
-  StatusBarComponent,
-  ShieldGroup,
   Loader,
+  ShieldGroup,
+  StatusBarComponent,
 } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
@@ -54,7 +54,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
-import { IAmenitiesIcons, IFilter, ContactActions } from '@homzhub/common/src/domain/models/Search';
+import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -983,7 +983,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       },
     } = this.props;
     // TODO: Remove once will get proper url
-    const url = `www.homzhub.com/propertydetails/${propertyTermId}`;
+    const url = await LinkingService.buildShortLink(
+      DynamicLinkTypes.ASSET_DESCRIPTION,
+      `propertyTermId=${propertyTermId}`
+    );
+
     if (!isPreview) {
       try {
         await Share.share({

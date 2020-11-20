@@ -1,6 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
+import { PhoneCode } from '@homzhub/common/src/domain/models/PhoneCode';
 
 export interface ICountry {
   id: number;
@@ -25,7 +26,7 @@ export class Country {
   @JsonProperty('iso3_code', String)
   private _iso3Code = '';
 
-  @JsonProperty('phone_codes', [String])
+  @JsonProperty('phone_codes', [PhoneCode])
   private _phoneCodes = [];
 
   @JsonProperty('currencies', [Currency])
@@ -47,7 +48,7 @@ export class Country {
     return this._iso3Code;
   }
 
-  get phoneCodes(): string[] {
+  get phoneCodes(): PhoneCode[] {
     return this._phoneCodes;
   }
 
@@ -57,15 +58,13 @@ export class Country {
 
   get phoneCodesDropdownData(): IDropdownOption[] {
     const countryCodeOptions: IDropdownOption[] = [];
-
-    this.phoneCodes.forEach((code) => {
+    this.phoneCodes.forEach((item) => {
       const data = {
-        label: `${this.name} (${code})`,
-        value: code,
+        label: `${this.name} (${item.phoneCode})`,
+        value: item.phoneCode,
       };
       countryCodeOptions.push(data);
     });
-
     return countryCodeOptions;
   }
 

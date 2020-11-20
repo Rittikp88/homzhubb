@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { IForgotPasswordPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
@@ -76,10 +77,10 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
         params: { token, onCallback },
       },
     } = this.props;
-    const payload = {
+    const payload: IForgotPasswordPayload = {
       action: 'SET_PASSWORD',
       payload: {
-        token,
+        verification_id: token,
         password,
       },
     };

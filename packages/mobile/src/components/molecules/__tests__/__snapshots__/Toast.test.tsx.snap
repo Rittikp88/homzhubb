@@ -123,5 +123,29 @@ exports[`Toast should match snapshot for type success 1`] = `
       Test Message
     </Label>
   </View>
+  <ForwardRef
+    onPress={[Function]}
+    style={
+      Object {
+        "borderRadius": 4,
+      }
+    }
+    testID="tohighPress"
+    underlayColor="#FF8576"
+  >
+    <Label
+      style={
+        Object {
+          "color": "#FFFFFF",
+          "marginHorizontal": 16,
+          "marginVertical": 4,
+        }
+      }
+      textType="semiBold"
+      type="large"
+    >
+      ok
+    </Label>
+  </ForwardRef>
 </View>
 `;

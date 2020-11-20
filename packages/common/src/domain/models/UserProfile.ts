@@ -131,7 +131,7 @@ export class UserProfile extends User {
 
     return [
       { icon: icons.filledUser, ...(companyName ? { text: companyName } : { helperText: 'Company Name' }) },
-      { icon: icons.email, ...(workEmail ? { text: workEmail } : { helperText: 'Work Email' }) },
+      { icon: icons.email, ...(workEmail ? { text: workEmail } : { helperText: 'Work Email' }), type: 'EMAIL' },
     ];
   }
 }

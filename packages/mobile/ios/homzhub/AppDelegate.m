@@ -8,6 +8,9 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTLinkingManager.h>
 
+
+@import Firebase;
+
 #if DEBUG && TARGET_OS_SIMULATOR
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -36,6 +39,11 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG && TARGET_OS_SIMULATOR
   InitializeFlipper(application);
 #endif
+  
+
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
   
   [GMSServices provideAPIKey:@"AIzaSyC6E-iEcPeohwZXXMtSQCRDhpwDmoTIcTo"];
 

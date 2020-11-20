@@ -27,6 +27,17 @@ class AlertHelper {
     });
   };
 
+  public info = (options: IToastProps): void => {
+    Keyboard.dismiss();
+    const { message } = options;
+    showMessage({
+      duration: 5000,
+      message,
+      type: 'info',
+      backgroundColor: theme.colors.alertInfo,
+    });
+  };
+
   public dismiss(): void {
     hideMessage();
   }
