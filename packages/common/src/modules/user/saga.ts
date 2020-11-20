@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
+import { select } from 'redux-saga/effects';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 import {
   ILoginPayload,
   IRefreshTokenPayload,
@@ -21,11 +27,14 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
   } = action;
   try {
     const userData: User = yield call(UserRepository.login, data);
-
     const tokens = { refresh_token: userData.refreshToken, access_token: userData.accessToken };
 
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
+
+    const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
+    yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
+    yield put(CommonActions.setRedirectionDetails({ redirectionLink: '', shouldRedirect: false }));
 
     if (callback) {
       callback();
@@ -64,8 +73,14 @@ export function* userProfile() {
 
 export function* userPreferences() {
   try {
-    const response = yield call(UserRepository.getUserPreferences);
+    const response: UserPreferences = yield call(UserRepository.getUserPreferences);
     yield put(UserActions.getUserPreferencesSuccess(response));
+
+    const currentLanguage = yield I18nService.getLanguage();
+    if (currentLanguage !== response.languageCode) {
+      yield StorageService.set(StorageKeys.USER_SELECTED_LANGUAGE, response.languageCode);
+      yield I18nService.changeLanguage(response.languageCode as SupportedLanguages);
+    }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });
@@ -81,9 +96,9 @@ export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPr
       payload as IUpdateUserPreferences
     );
 
-    // @ts-ignore
-    if (UserPreferencesKeys.LanguageKey === Object.keys(payload)[0]) {
+    if (payload && UserPreferencesKeys.LanguageKey === Object.keys(payload)[0]) {
       yield StorageService.set(StorageKeys.USER_SELECTED_LANGUAGE, response.languageCode);
+      yield I18nService.changeLanguage(response.languageCode as SupportedLanguages);
     }
 
     yield put(UserActions.getUserPreferencesSuccess(response));

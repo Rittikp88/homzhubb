@@ -101,6 +101,10 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
 
     const onPress = (): void => {
       if (type === Type.AssetGroup) {
+        if (item.id === selectedAssetGroup) {
+          return;
+        }
+
         this.setState({ selectedAssetGroup: item.id });
         onAssetGroupSelected(-1);
         setTimeout(() => {

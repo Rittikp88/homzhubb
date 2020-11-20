@@ -15,7 +15,7 @@ export interface IMetricsData {
   count: string | number;
   label?: string;
   id?: number;
-  currencySymbol?: string;
+  isCurrency?: boolean;
   colorGradient?: ColorGradient;
 }
 
@@ -23,7 +23,9 @@ interface IProps {
   data: IMetricsData[];
   title?: string;
   subscription?: string;
+  selectedAssetType?: string;
   numOfElements?: number;
+  isSubTextRequired?: boolean;
   onPlusIconClicked?: () => void;
   onMetricsClicked?: (name: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
@@ -37,11 +39,13 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     title = 0,
     subscription,
     data,
+    selectedAssetType,
     onPlusIconClicked,
     containerStyle,
     onMetricsClicked,
     numOfElements = 3,
     textStyle = {},
+    isSubTextRequired = true,
   } = props;
 
   // HOOKS
@@ -88,7 +92,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
                 key={`${item.label ?? item.name}`}
                 header={item.label ?? item.name}
                 value={item.count}
-                currency={item.currencySymbol ?? ''}
+                isCurrency={item.isCurrency ?? false}
                 colorA={item.colorGradient?.hexColorA ?? ''}
                 colorB={item.colorGradient?.hexColorB ?? ''}
                 location={item.colorGradient?.location ?? []}
@@ -96,13 +100,14 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
                 angle={item.colorGradient?.angle ?? 0}
                 onPressMetrics={handlePress}
                 textStyle={textStyle}
+                selectedAssetType={selectedAssetType}
               />
             );
           })}
         </View>
       );
     },
-    [onMetricsClicked]
+    [onMetricsClicked, numOfElements, selectedAssetType]
   );
 
   return (
@@ -114,9 +119,11 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
             {title}
           </Text>
           <View style={styles.propertiesRow}>
-            <Text type="small" textType="semiBold" style={styles.propertyText}>
-              {t('common:properties')}
-            </Text>
+            {isSubTextRequired && (
+              <Text type="small" textType="semiBold" style={styles.propertyText}>
+                {t('common:properties')}
+              </Text>
+            )}
             {subscription && (
               <>
                 <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.circleIcon} />

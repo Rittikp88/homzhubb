@@ -52,6 +52,7 @@ export interface IAsset {
   id: number;
   project_name: string;
   is_subleased: boolean;
+  is_managed: boolean;
   unit_number: string;
   posted_on: string;
   description: string;
@@ -139,7 +140,7 @@ export class Count {
 
 @JsonObject('AppPermission')
 export class AppPermission {
-  @JsonProperty('add_listingvisit', Boolean)
+  @JsonProperty('add_listingvisit', Boolean, true)
   private _addListingVisit = false;
 
   get addListingVisit(): boolean {
@@ -187,6 +188,9 @@ export class Asset {
 
   @JsonProperty('is_subleased', Boolean, true)
   private _isSubleased = false;
+
+  @JsonProperty('is_managed', Boolean)
+  private _isManaged = false;
 
   @JsonProperty('latitude', Number)
   private _latitude = 0;
@@ -289,6 +293,9 @@ export class Asset {
 
   @JsonProperty('is_gated', Boolean, true)
   private _isGated = false;
+
+  @JsonProperty('is_verification_document_uploaded', Boolean, true)
+  private _isVerificationDocumentUploaded = false;
 
   @JsonProperty('power_backup', Boolean, true)
   private _powerBackup = false;
@@ -397,7 +404,14 @@ export class Asset {
   }
 
   get highlights(): AssetHighlight[] {
-    return this._highlights;
+    const highlight = ObjectMapper.deserializeArray(AssetHighlight, this._highlights);
+    if (this.assetHighlights.length > 0) {
+      this.assetHighlights.forEach((item) => {
+        highlight.push(ObjectMapper.deserialize(AssetHighlight, { covered: true, name: item }));
+      });
+    }
+
+    return highlight;
   }
 
   get features(): AssetFeature[] {
@@ -606,5 +620,13 @@ export class Asset {
 
   get listingInfo(): AssetStatusInfo {
     return new AssetStatusInfo(this.leaseListingId, this.saleListingId, this.leaseUnitId, this.saleUnitId);
+  }
+
+  get isManaged(): boolean {
+    return this._isManaged;
+  }
+
+  get isVerificationDocumentUploaded(): boolean {
+    return this._isVerificationDocumentUploaded;
   }
 }

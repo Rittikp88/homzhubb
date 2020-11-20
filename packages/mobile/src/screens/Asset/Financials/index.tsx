@@ -5,7 +5,7 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
-import { LedgerService } from '@homzhub/common/src/services/LedgerService';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AnimatedProfileHeader, AssetMetricsList, Loader, IMetricsData } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
@@ -44,7 +44,7 @@ export class Financials extends React.PureComponent<Props, IState> {
       async (): Promise<void> => {
         this.setState({ isLoading: true });
         await this.getGeneralLedgersPref();
-        await this.getGeneralLedgers();
+        await this.getGeneralLedgers(true);
         this.setState({ isLoading: false });
       }
     );
@@ -70,6 +70,7 @@ export class Financials extends React.PureComponent<Props, IState> {
           <AssetMetricsList
             title={t('assetFinancial:recordsText')}
             numOfElements={2}
+            isSubTextRequired={false}
             data={this.getHeaderData()}
             onPlusIconClicked={this.onPlusIconPress}
             textStyle={styles.priceStyle}
@@ -110,15 +111,15 @@ export class Financials extends React.PureComponent<Props, IState> {
     return [
       {
         label: t('assetFinancial:income', { year: currentYear }),
-        count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.credit, ledgerData)}/-`,
-        currencySymbol: 'INR',
+        count: `${LedgerUtils.totalByType(LedgerTypes.credit, ledgerData)}`,
+        isCurrency: true,
         // @ts-ignore
         colorGradient: { hexColorA: theme.colors.gradientA, hexColorB: theme.colors.gradientB, location: [0, 1] },
       },
       {
         label: t('assetFinancial:expense', { year: currentYear }),
-        count: `${LedgerUtils.getSumOfTransactionsOfType(LedgerTypes.debit, ledgerData)}/-`,
-        currencySymbol: 'INR',
+        count: `${LedgerUtils.totalByType(LedgerTypes.debit, ledgerData)}`,
+        isCurrency: true,
         // @ts-ignore
         colorGradient: { hexColorA: theme.colors.gradientC, hexColorB: theme.colors.gradientD, location: [0, 1] },
       },
@@ -127,11 +128,11 @@ export class Financials extends React.PureComponent<Props, IState> {
 
   private getGeneralLedgersPref = async (): Promise<void> => {
     try {
-      const response: GeneralLedgers[] = await LedgerService.getLedgerPerformances(
-        DateUtils.getCurrentYearStartDate(),
-        DateUtils.getCurrentYearLastDate(),
-        DataGroupBy.year
-      );
+      const response: GeneralLedgers[] = await LedgerRepository.getLedgerPerformances({
+        transaction_date__gte: DateUtils.getCurrentYearStartDate(),
+        transaction_date__lte: DateUtils.getCurrentYearLastDate(),
+        transaction_date_group_by: DataGroupBy.year,
+      });
 
       this.setState({ ledgerData: response });
     } catch (e) {
@@ -139,14 +140,20 @@ export class Financials extends React.PureComponent<Props, IState> {
     }
   };
 
-  private getGeneralLedgers = async (): Promise<void> => {
+  private getGeneralLedgers = async (reset = false): Promise<void> => {
     const { transactionsData } = this.state;
 
     try {
-      const response: FinancialTransactions = await LedgerService.getGeneralLedgers(transactionsData.length);
+      const response: FinancialTransactions = await LedgerRepository.getGeneralLedgers(
+        reset ? 0 : transactionsData.length
+      );
+
+      if (response.results.length === 0) {
+        return;
+      }
 
       this.setState({
-        transactionsData: [...transactionsData, ...response.results],
+        transactionsData: reset ? [...response.results] : [...transactionsData, ...response.results],
       });
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });

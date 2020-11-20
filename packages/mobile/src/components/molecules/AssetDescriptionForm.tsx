@@ -72,6 +72,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           name="yearOfConstruction"
           allowPastDates
           isYearView
+          calendarTitle={t('yearOfConstruction')}
           placeHolder={t('assetFinancial:addDatePlaceholder')}
           placeHolderStyle={styles.placeHolderStyle}
           dateStyle={styles.dateStyle}

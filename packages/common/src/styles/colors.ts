@@ -32,6 +32,7 @@ const namedColors = {
   sell: '#FFB876',
   gold: '#FFD700',
   lightGreen: '#4FA800',
+  alertInfo: '#52616B',
 };
 
 const tintColors = {

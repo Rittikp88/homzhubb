@@ -3,12 +3,12 @@ import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
@@ -16,21 +16,12 @@ interface IProps {
   title?: string;
   sectionHeader?: string;
   sectionTitleType?: FontWeightType;
-  onProfileIconPress?: () => void;
   onBackPress?: () => void;
   isOuterScrollEnabled?: boolean;
 }
 
 const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
-  const {
-    title = '',
-    sectionHeader,
-    isOuterScrollEnabled,
-    sectionTitleType = 'bold',
-    children,
-    onBackPress,
-    onProfileIconPress,
-  } = props;
+  const { title = '', sectionHeader, isOuterScrollEnabled, sectionTitleType = 'bold', children, onBackPress } = props;
   const userProfile = useSelector(UserSelector.getUserProfile);
   const navigation = useNavigation();
 
@@ -46,10 +37,14 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
           <Text type="regular" textType="semiBold" style={styles.title}>
             {title}
           </Text>
-          <TouchableOpacity onPress={onProfilePress} style={styles.initialsContainer} activeOpacity={0.6}>
-            <Text type="small" textType="regular" style={styles.initials} onPress={onProfileIconPress}>
-              {StringUtils.getInitials(userProfile?.fullName ?? 'User')}
-            </Text>
+          <TouchableOpacity onPress={onProfilePress}>
+            <Avatar
+              isOnlyAvatar
+              imageSize={35}
+              fullName={userProfile?.fullName ?? 'User'}
+              image={userProfile?.profilePicture ?? ''}
+              initialsContainerStyle={styles.initialsContainer}
+            />
           </TouchableOpacity>
         </View>
       </>
@@ -105,9 +100,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkTint7,
     borderColor: theme.colors.white,
     borderWidth: 1,
-  },
-  initials: {
-    color: theme.colors.white,
   },
   headerContainer: {
     backgroundColor: theme.colors.primaryColor,

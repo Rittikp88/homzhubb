@@ -1,24 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Market Trends Screen should render snapshot 1`] = `
-<View
-  style={
-    Object {
-      "flex": 1,
-    }
-  }
+<Memo(AnimatedProfileHeader)
+  onBackPress={[Function]}
+  sectionHeader="marketTrends"
+  sectionTitleType="semiBold"
+  title="dashboard"
 >
-  <Memo(Header)
-    icon="left-arrow"
-    isHeadingVisible={true}
-    onIconPress={[Function]}
-    testID="header"
-    title="marketTrends"
-    type="primary"
-  />
   <withI18nextTranslation(AssetMarketTrends)
     isHeaderVisible={false}
     limit={100}
   />
-</View>
+</Memo(AnimatedProfileHeader)>
 `;

@@ -16,6 +16,7 @@ const ENDPOINTS = {
   postLedgers: (): string => 'general-ledgers/',
   getLedgers: (): string => 'general-ledgers/',
 };
+const PAGE_LIMIT = 10;
 
 class LedgerRepository {
   private apiClient: IApiClient;
@@ -38,7 +39,7 @@ class LedgerRepository {
     return await this.apiClient.post(ENDPOINTS.postLedgers(), payload);
   };
 
-  public getGeneralLedgers = async (offset: number, limit: number): Promise<FinancialTransactions> => {
+  public getGeneralLedgers = async (offset: number, limit: number = PAGE_LIMIT): Promise<FinancialTransactions> => {
     const response = await this.apiClient.get(ENDPOINTS.getLedgers(), { limit, offset });
     return ObjectMapper.deserialize(FinancialTransactions, response);
   };

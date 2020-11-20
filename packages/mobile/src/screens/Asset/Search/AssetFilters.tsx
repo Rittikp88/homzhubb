@@ -300,6 +300,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         selectedValue={miscellaneous?.expected_move_in_date}
         name="expected_move_in_date"
         label={t('expectedMoveInDate')}
+        calendarTitle={t('expectedMoveInDate')}
         placeHolder={t('selectMoveInDate')}
         textType="text"
         textSize="small"

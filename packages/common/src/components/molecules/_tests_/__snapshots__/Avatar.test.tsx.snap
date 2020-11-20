@@ -21,14 +21,17 @@ exports[`Avatar should match snapshot 1`] = `
   >
     <View
       style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#808D9B",
-          "borderRadius": 21,
-          "height": 42,
-          "justifyContent": "center",
-          "width": 42,
-        }
+        Array [
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#808D9B",
+            "borderRadius": 21,
+            "height": 42,
+            "justifyContent": "center",
+            "width": 42,
+          },
+          undefined,
+        ]
       }
     >
       <Text
@@ -105,14 +108,17 @@ exports[`Avatar should match snapshot with phone number 1`] = `
   >
     <View
       style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#808D9B",
-          "borderRadius": 21,
-          "height": 42,
-          "justifyContent": "center",
-          "width": 42,
-        }
+        Array [
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#808D9B",
+            "borderRadius": 21,
+            "height": 42,
+            "justifyContent": "center",
+            "width": 42,
+          },
+          undefined,
+        ]
       }
     >
       <Text

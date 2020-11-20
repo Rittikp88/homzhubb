@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { isEmpty } from 'lodash';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -9,11 +10,12 @@ import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel, Loader } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -35,6 +37,10 @@ interface IStateProps {
   assetPayload: ISetAssetPayload;
 }
 
+interface IDispatchProps {
+  setAssetId: (payload: number) => void;
+}
+
 interface IDetailState {
   propertyData: Asset;
   attachments: Attachment[];
@@ -42,6 +48,7 @@ interface IDetailState {
   activeSlide: number;
   currentIndex: number;
   heights: number[];
+  isLoading: boolean;
 }
 
 interface IRoutes {
@@ -51,7 +58,7 @@ interface IRoutes {
 }
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
-type Props = WithTranslation & libraryProps & IStateProps;
+type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class PropertyDetailScreen extends Component<Props, IDetailState> {
   public state = {
@@ -61,6 +68,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     attachments: [],
     currentIndex: 0,
     heights: Array(Routes.length).fill(height),
+    isLoading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -72,7 +80,12 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { currentIndex, propertyData, heights } = this.state;
+    const { currentIndex, propertyData, heights, isLoading } = this.state;
+
+    if (isLoading) {
+      return <Loader visible />;
+    }
+
     if (isEmpty(propertyData)) {
       return null;
     }
@@ -91,7 +104,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
               assetData={propertyData}
               isDetailView
               enterFullScreen={this.onFullScreenToggle}
-              onCompleteDetails={FunctionUtils.noop}
+              onCompleteDetails={this.onCompleteDetails}
               onOfferVisitPress={FunctionUtils.noop}
               containerStyle={styles.card}
             />
@@ -147,13 +160,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
   private renderTabScene = (route: IRoutes): React.ReactElement | null => {
     const { navigation } = this.props;
+    const {
+      propertyData: { assetStatusInfo },
+    } = this.state;
     switch (route.key) {
       case Tabs.NOTIFICATIONS:
         // TODO: Figure-out something to resolve this error
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
-            {/** @ts-ignore * */}
-            <NotificationTab />
+            <NotificationTab assetStatusInfo={assetStatusInfo} />
           </View>
         );
       case Tabs.TICKETS:
@@ -176,7 +191,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         );
       case Tabs.SITE_VISITS:
         return (
-          <View style={styles.visitTab} onLayout={(e): void => this.onLayout(e, 4)}>
+          <View onLayout={(e): void => this.onLayout(e, 4)}>
             <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} isFromProperty />
           </View>
         );
@@ -246,6 +261,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
+  private onCompleteDetails = (assetId: number): void => {
+    const { navigation, setAssetId } = this.props;
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AddProperty,
+      params: { previousScreen: ScreensKeys.Dashboard },
+    });
+  };
+
   private navigateToBookVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.SearchStack, {
@@ -267,12 +291,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       id: listing_id,
       type: assetType,
     };
+    this.setState({ isLoading: true });
     try {
       const response = await PortfolioRepository.getPropertyDetail(payload);
       this.setState({
         propertyData: response,
+        isLoading: false,
       });
     } catch (e) {
+      this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
@@ -293,15 +320,17 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setAssetId } = RecordAssetActions;
+  return bindActionCreators({ setAssetId }, dispatch);
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(PropertyDetailScreen));
 
 const styles = StyleSheet.create({
-  visitTab: {
-    backgroundColor: theme.colors.white,
-  },
   card: {
     borderRadius: 0,
   },

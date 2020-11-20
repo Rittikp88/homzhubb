@@ -22,6 +22,7 @@ interface IProps {
   textSizeType?: TextSizeType;
   onSelectedProperty: () => void;
   testID?: string;
+  favIds?: number[];
 }
 
 type libraryProps = WithTranslation;
@@ -30,13 +31,21 @@ type Props = libraryProps & IProps;
 export class PropertyListCard extends React.Component<Props, {}> {
   public render(): React.ReactElement {
     const {
-      property: { attachments, projectName, unitNumber, blockNumber, isWishlisted, address },
+      property: { attachments, projectName, unitNumber, blockNumber, isWishlisted, address, leaseTerm, saleTerm },
       containerStyle,
       isCarousel,
       onSelectedProperty,
       onFavorite,
+      favIds,
     } = this.props;
-    const isFavorite = isWishlisted ? isWishlisted.status : false;
+    let isFavorite = isWishlisted ? isWishlisted.status : false;
+    if (favIds && favIds.length > 0) {
+      favIds.forEach((favId) => {
+        if ((leaseTerm && favId === leaseTerm.id) || (saleTerm && saleTerm.id === favId)) {
+          isFavorite = true;
+        }
+      });
+    }
     return (
       <View style={[styles.container, containerStyle]}>
         <PropertyListImageCarousel

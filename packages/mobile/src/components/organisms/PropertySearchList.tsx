@@ -15,19 +15,15 @@ interface IProps {
   getPropertiesListView: () => void;
   setFilter: (payload: any) => void;
   filters: IFilter;
+  favIds: number[];
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
 }
 
 type Props = IProps & WithTranslation;
 
 export class PropertySearchList extends React.PureComponent<Props> {
-  public componentWillUnmount(): void {
-    const { setFilter } = this.props;
-    setFilter({ offset: 0 });
-  }
-
   public render(): React.ReactNode {
-    const { properties, t } = this.props;
+    const { properties, t, favIds } = this.props;
     if (properties.count === 0) {
       return null;
     }
@@ -40,10 +36,10 @@ export class PropertySearchList extends React.PureComponent<Props> {
           data={properties.results}
           renderItem={this.renderItem}
           keyExtractor={this.renderKeyExtractor}
-          // @ts-ignore
           ListFooterComponent={this.renderFooter}
           onEndReached={this.loadMoreProperties}
           onEndReachedThreshold={0.8}
+          extraData={favIds}
           testID="resultList"
         />
       </View>
@@ -51,7 +47,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
   }
 
   public renderItem = ({ item }: { item: Asset }): React.ReactElement => {
-    const { onFavorite, filters, onSelectedProperty } = this.props;
+    const { onFavorite, filters, onSelectedProperty, favIds } = this.props;
     const onUpdateFavoritePropertyId = (): void => {
       const { leaseTerm, saleTerm, isWishlisted } = item;
       const isFavourite = isWishlisted ? isWishlisted.status : false;
@@ -76,6 +72,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
         property={item}
         onFavorite={onUpdateFavoritePropertyId}
         key={item.id}
+        favIds={favIds}
         transaction_type={filters.asset_transaction_type || 0}
         isCarousel
         onSelectedProperty={navigateToAssetDescription}
@@ -84,7 +81,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
     );
   };
 
-  public renderFooter = (): React.ReactNode => {
+  public renderFooter = (): React.ReactElement | null => {
     const { t, properties } = this.props;
     if (properties.count === properties.results.length) {
       return null;
@@ -104,11 +101,11 @@ export class PropertySearchList extends React.PureComponent<Props> {
     const {
       setFilter,
       getPropertiesListView,
-      filters: { offset, limit },
+      filters: { offset },
+      properties,
     } = this.props;
-    if (offset && limit) {
-      setFilter({ offset: offset + limit });
-    }
+
+    setFilter({ offset: (offset ?? 0) + properties.results.length });
     getPropertiesListView();
   };
 }

@@ -154,9 +154,10 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
   }
 
   private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
+    const viewBox = theme.viewport.width > 350 ? '0 20 327 220' : '0 65 327 220';
     return (
       <View style={styles.carouselItem}>
-        <SVGUri viewBox="0 0 327 220" preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} height={450} />
+        <SVGUri viewBox={viewBox} preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} height={450} />
       </View>
     );
   };
@@ -257,8 +258,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   buttonContainer: {
+    width: 90,
     flex: 0,
-    marginHorizontal: 10,
+    marginRight: 10,
     marginBottom: 10,
     paddingVertical: 15,
     borderColor: theme.colors.disabled,
@@ -287,7 +289,7 @@ const styles = StyleSheet.create({
   },
   sheetTitle: {
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   sheetContent: {
     flexDirection: 'row',

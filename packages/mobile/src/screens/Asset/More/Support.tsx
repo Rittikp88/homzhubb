@@ -20,7 +20,13 @@ import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { AnimatedProfileHeader, BottomSheet, HeaderCard, UploadBoxComponent } from '@homzhub/mobile/src/components';
+import {
+  AnimatedProfileHeader,
+  BottomSheet,
+  HeaderCard,
+  Loader,
+  UploadBoxComponent,
+} from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -38,6 +44,7 @@ interface IScreenState {
   attachment?: IDocumentSource;
   isFormSubmitted: boolean;
   isClearAttachment: boolean;
+  isLoading: boolean;
 }
 
 type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SupportScreen>;
@@ -56,6 +63,7 @@ export class Support extends Component<Props, IScreenState> {
     attachment: undefined,
     isFormSubmitted: false,
     isClearAttachment: false,
+    isLoading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -65,7 +73,7 @@ export class Support extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { isFormSubmitted } = this.state;
+    const { isFormSubmitted, isLoading } = this.state;
     return (
       <>
         <AnimatedProfileHeader title={t('assetMore:more')}>
@@ -83,6 +91,7 @@ export class Support extends Component<Props, IScreenState> {
         <BottomSheet visible={isFormSubmitted} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
           {this.renderContinueView()}
         </BottomSheet>
+        <Loader visible={isLoading} />
       </>
     );
   }
@@ -238,6 +247,7 @@ export class Support extends Component<Props, IScreenState> {
   };
 
   private getCategories = async (): Promise<void> => {
+    this.setState({ isLoading: true });
     try {
       const response = await CommonRepository.getSupportCategories();
       const formattedData = response.map((item) => {
@@ -246,17 +256,21 @@ export class Support extends Component<Props, IScreenState> {
           value: item.id,
         };
       });
+      this.setState({ isLoading: false });
       this.setState({ categories: formattedData });
     } catch (e) {
+      this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
   private getContact = async (): Promise<void> => {
+    this.setState({ isLoading: true });
     try {
       const response: User = await CommonRepository.getSupportContacts();
-      this.setState({ contact: response });
+      this.setState({ contact: response, isLoading: false });
     } catch (e) {
+      this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };

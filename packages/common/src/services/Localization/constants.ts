@@ -1,6 +1,7 @@
 // Add all languages you wish to support here
 export enum SupportedLanguages {
   English = 'en-US',
+  Marathi = 'mr-IN',
 }
 const whitelist = Object.values(SupportedLanguages);
 
@@ -10,6 +11,7 @@ const whitelist = Object.values(SupportedLanguages);
  */
 const resources = {
   [SupportedLanguages.English]: require('@homzhub/common/src/assets/languages/en.json'),
+  [SupportedLanguages.Marathi]: require('@homzhub/common/src/assets/languages/mr.json'),
 };
 
 // Add namespaces here

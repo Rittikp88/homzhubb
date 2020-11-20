@@ -1,32 +1,36 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, TouchableOpacity, StyleProp, TextStyle } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, StyleProp, TextStyle, LayoutChangeEvent } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 
-interface IState {
-  shouldExpand: boolean;
-}
-
 interface IProps extends WithTranslation {
   transaction: FinancialRecords;
+  isExpanded: boolean;
   handleDownload: (refKey: string, fileName: string) => void;
+  onCardPress: (height: number) => void;
 }
 
-class TransactionCard extends React.PureComponent<IProps, IState> {
+interface IOwnState {
+  height: number;
+}
+
+class TransactionCard extends React.PureComponent<IProps, IOwnState> {
   public state = {
-    shouldExpand: false,
+    height: 100,
   };
 
   public render(): ReactElement {
-    const { shouldExpand } = this.state;
+    const { height } = this.state;
     const {
+      isExpanded,
       transaction: {
         transactionDate,
         category,
@@ -37,6 +41,7 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
         entryType,
         attachmentDetails: { fileName },
       },
+      onCardPress,
     } = this.props;
     const textLength = theme.viewport.width / 20;
 
@@ -47,10 +52,11 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
       textStyle = { color: theme.colors.highPriority };
       pricePrefixText = '-';
     }
+    const onPress = (): void => onCardPress(height);
 
     return (
-      <>
-        <TouchableOpacity onPress={this.toggleAccordion} style={styles.transactionCardContainer}>
+      <View onLayout={this.onLayout}>
+        <TouchableOpacity onPress={onPress} style={styles.transactionCardContainer}>
           <View style={styles.commonAlignStyle}>
             <View style={styles.dateStyle}>
               <Label type="regular" textType="bold">
@@ -79,11 +85,12 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
               prefixText={pricePrefixText}
               price={amount}
             />
-            <Icon name={shouldExpand ? icons.upArrow : icons.downArrow} size={24} style={styles.iconStyle} />
+            <Icon name={isExpanded ? icons.upArrow : icons.downArrow} size={24} style={styles.iconStyle} />
           </View>
         </TouchableOpacity>
-        {shouldExpand && this.renderTransactionDetails()}
-      </>
+        {isExpanded && this.renderTransactionDetails()}
+        <Divider />
+      </View>
     );
   }
 
@@ -98,9 +105,8 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
         attachmentDetails: { fileName, presignedReferenceKey },
       },
     } = this.props;
-    const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
 
-    if (!entryType && !tellerName && !fileName) {
+    if (!tellerName && !fileName && !notes) {
       return (
         <Label style={styles.noDescriptionText} type="large">
           {t('noDescriptionText')}
@@ -108,19 +114,27 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
       );
     }
 
+    const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
+    let nameLabel = t('paidToText');
+    if (entryType === LedgerTypes.credit) {
+      nameLabel = t('receivedFrom');
+    }
+
     return (
       <View style={styles.transactionDetailContainer}>
-        {tellerName ? (
-          <View style={styles.commonMarginStyle}>
-            <Label type="regular">{entryType === LedgerTypes.credit ? t('receivedFrom') : t('paidToText')}</Label>
-            <View style={styles.paidToStyles}>
-              <Label type="large">{tellerName}</Label>
-            </View>
+        <View style={styles.commonMarginStyle}>
+          <Label type="regular" style={styles.label}>
+            {nameLabel}
+          </Label>
+          <View style={styles.paidToStyles}>
+            <Label type="large">{tellerName}</Label>
           </View>
-        ) : null}
-        {fileName ? (
+        </View>
+        {!!fileName && (
           <View style={styles.commonMarginStyle}>
-            <Label type="regular">{t('invoice')}</Label>
+            <Label type="regular" style={styles.label}>
+              {t('invoice')}
+            </Label>
             <TouchableOpacity onPress={onDownload} style={styles.commonAlignStyle}>
               <Label style={styles.attachmentStyles} type="large">
                 {fileName}
@@ -128,21 +142,26 @@ class TransactionCard extends React.PureComponent<IProps, IState> {
               <Icon name={icons.download} size={20} color={theme.colors.primaryColor} />
             </TouchableOpacity>
           </View>
-        ) : null}
-        {notes ? (
+        )}
+        {!!notes && (
           <View>
-            <Label type="regular">{t('notes')}</Label>
+            <Label type="regular" style={styles.label}>
+              {t('notes')}
+            </Label>
             <Label type="large">{notes}</Label>
           </View>
-        ) : null}
+        )}
       </View>
     );
   };
 
-  private toggleAccordion = (): void => {
-    this.setState((prev) => ({
-      shouldExpand: !prev.shouldExpand,
-    }));
+  private onLayout = (e: LayoutChangeEvent): void => {
+    const { height: newHeight } = e.nativeEvent.layout;
+    const { height } = this.state;
+    if (newHeight === height) {
+      return;
+    }
+    this.setState({ height: newHeight });
   };
 }
 
@@ -190,5 +209,8 @@ const styles = StyleSheet.create({
   },
   noDescriptionText: {
     textAlign: 'center',
+  },
+  label: {
+    color: theme.colors.darkTint5,
   },
 });

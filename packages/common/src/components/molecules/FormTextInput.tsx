@@ -39,7 +39,7 @@ interface IDispatchProps {
   getCountries: () => void;
 }
 
-export interface IFormTextInputProps extends TextInputProps, IStateProps, IDispatchProps {
+export interface IFormTextInputProps extends TextInputProps {
   style?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   formProps: FormikProps<any>;
@@ -72,10 +72,12 @@ interface IFormTextInputState {
   phoneCodes: IDropdownOption[];
 }
 
+type Props = IStateProps & IDispatchProps & IFormTextInputProps;
+
 // CONSTANTS
 const PHONE_CODE = 'phoneCode';
 
-class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputState> {
+class FormTextInput extends PureComponent<Props, IFormTextInputState> {
   public inputText: RefObject<RNTextInput> = createRef();
 
   public state = {
@@ -213,6 +215,7 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
 
           inputProps = {
             ...inputProps,
+            maxLength: this.fetchPhoneLength(true),
             style: prefixFieldStyles,
           };
         }
@@ -278,7 +281,6 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
       getCountries();
       return;
     }
-
     if (phoneCodes.length <= 0) {
       const phoneCodesArr = countries.map((country) => country.phoneCodesDropdownData);
       this.setState({ isBottomSheetVisible: !isBottomSheetVisible, phoneCodes: phoneCodesArr.flat() });
@@ -291,12 +293,26 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
   private fetchFlag = (): string => {
     const { formProps, countries, phoneCodeKey = PHONE_CODE } = this.props;
     for (let i = 0; i < countries.length; i++) {
-      if (countries[i].phoneCodes.includes(formProps.values[phoneCodeKey])) {
+      if (countries[i].phoneCodes[0].phoneCode.includes(formProps.values[phoneCodeKey])) {
         return countries[i].flag;
       }
     }
 
     return '';
+  };
+
+  private fetchPhoneLength = (isMax?: boolean): number => {
+    const { formProps, countries, phoneCodeKey = PHONE_CODE } = this.props;
+    for (let i = 0; i < countries.length; i++) {
+      if (countries[i].phoneCodes[0].phoneCode.includes(formProps.values[phoneCodeKey])) {
+        if (isMax) {
+          return countries[i].phoneCodes[0].phoneNumberMaxLength;
+        }
+        return countries[i].phoneCodes[0].phoneNumberMinLength;
+      }
+    }
+
+    return 10;
   };
 
   public focus = (): void => {
@@ -332,7 +348,21 @@ class FormTextInput extends PureComponent<IFormTextInputProps, IFormTextInputSta
 
   private handleFocus = (): void => this.setState({ isFocused: true });
 
-  private handleBlur = (): void => this.setState({ isFocused: false });
+  private handleBlur = (): void => {
+    const {
+      formProps: { values, setFieldError },
+      name,
+      inputType,
+    } = this.props;
+
+    this.setState({ isFocused: false });
+    if (inputType === 'phone') {
+      if (values.phone.length < this.fetchPhoneLength()) {
+        // TODO: Need to figure-out translation isssue
+        setFieldError(name, 'Please enter a valid number');
+      }
+    }
+  };
 
   private handleSelection = (value: string): void => {
     const { isBottomSheetVisible } = this.state;
@@ -373,7 +403,6 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     dispatch
   );
 };
-
 const HOC = connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(FormTextInput);
 export { HOC as FormTextInput };
 

@@ -48,6 +48,18 @@ export enum UpdateProfileTypes {
   UPDATE_BY_OTP = 'UPDATE_BY_OTP',
 }
 
+export enum DetailType {
+  ASSET = 'detail',
+  LEASE_LISTING = 'lease-listing',
+  SALE_LISTING = 'sale-listing',
+  LEASE_UNIT = 'lease-unit',
+}
+
+export enum EmailVerificationActions {
+  GET_VERIFICATION_EMAIL = 'GET_VERIFICATION_EMAIL',
+  VERIFY_EMAIL = 'VERIFY_EMAIL',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -118,7 +130,7 @@ export interface IForgotPasswordPayload {
   action: string;
   payload: {
     email?: string;
-    token?: string | number;
+    verification_id?: string | number;
     password?: string;
   };
 }
@@ -255,6 +267,7 @@ export interface IUpdateAssetParams {
   construction_year?: number;
   furnishing?: string;
   is_subleased?: boolean;
+  is_managed?: boolean;
 }
 
 // ASSET - END
@@ -393,6 +406,8 @@ export interface IAssetVisitPayload {
   start_date__gt?: string;
   start_date__lt?: string;
   status?: VisitStatus;
+  status__neq?: VisitStatus;
+  id?: number;
 }
 
 export interface IUpdateVisitPayload {
@@ -462,10 +477,13 @@ export interface IUpdateProfile {
   payload: IUpdateProfilePayload;
 }
 
-export interface IPaymentSuccess {
-  razorpay_payment_id: string;
-  razorpay_order_id: string;
-  razorpay_signature: string;
+export interface IPaymentParams {
+  razorpay_payment_id?: string;
+  razorpay_order_id?: string;
+  razorpay_signature?: string;
+  code?: number;
+  payment_transaction_id?: number;
+  user_invoice_id?: number;
 }
 
 export interface ISupportPayload {
@@ -479,14 +497,6 @@ export interface IUpdateUserPreferences {
   [name: string]: SelectedPreferenceType;
 }
 
-export enum DetailType {
-  ASSET = 'detail',
-  LEASE_LISTING = 'lease-listing',
-  SALE_LISTING = 'sale-listing',
-  LEASE_UNIT = 'lease-unit',
-  SALE_UNIT = 'sale-unit',
-}
-
 export interface IPropertyDetailPayload {
   asset_id: number;
   id: number;
@@ -496,4 +506,19 @@ export interface IPropertyDetailPayload {
 export interface ISendNotificationPayload {
   lease_listings: number[];
   sale_listing: number | null;
+}
+
+export interface IProfileImage {
+  profile_picture: number;
+}
+export interface IEmailVerification {
+  action: EmailVerificationActions;
+  payload: IEmailVerificationPayload;
+}
+
+export interface IEmailVerificationPayload {
+  email?: string;
+  is_work_email?: boolean;
+  verification_id?: string;
+  verification_metadata?: {};
 }

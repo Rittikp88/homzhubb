@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -12,12 +13,12 @@ export enum OffersVisitsType {
 }
 
 const Data = [
-  // {
-  //   type: OffersVisitsType.offers,
-  //   title: 'common:offers',
-  //   icon: icons.offers,
-  //   sections: ['totalOffers', 'highestOffer', 'lowestOffer'],
-  // },
+  {
+    type: OffersVisitsType.offers,
+    title: 'common:offers',
+    icon: icons.offers,
+    sections: ['totalOffers', 'highestOffer', 'lowestOffer'],
+  },
   {
     type: OffersVisitsType.visits,
     title: 'assetMore:propertyVisits',
@@ -35,13 +36,15 @@ interface IProps {
   };
 }
 
+// TODO: Display the Offer section post the MVP
 const OffersVisitsSection = (props: IProps): React.ReactElement => {
   const { values } = props;
   const { t } = useTranslation();
+  const data = PlatformUtils.isWeb() ? Data : Data.slice(1);
 
   return (
     <View style={styles.container}>
-      {Data.map((item) => {
+      {data.map((item) => {
         // const onPress = (): void => onNav && onNav(item.type);
         return (
           <View key={item.type}>

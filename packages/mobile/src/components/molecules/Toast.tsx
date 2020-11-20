@@ -14,17 +14,18 @@ class Toast extends React.PureComponent<IProps> {
       t,
       message: { message, type },
     } = this.props;
-    const icon = type === 'danger' ? icons.circularCrossFilled : icons.circularCheckFilled;
+    const icon =
+      type === 'danger' ? icons.circularCrossFilled : type === 'info' ? undefined : icons.circularCheckFilled;
 
     return (
       <View style={this.getContainerStyle()}>
         <View style={styles.iconMessageContainer}>
-          <Icon name={icon} size={20} color={theme.colors.white} style={styles.icon} />
+          {icon && <Icon name={icon} size={20} color={theme.colors.white} style={styles.icon} />}
           <Label type="large" style={styles.text} numberOfLines={2}>
             {message}
           </Label>
         </View>
-        {type === 'danger' && (
+        {(type === 'danger' || 'info') && (
           <TouchableHighlight
             testID="tohighPress"
             style={styles.buttonContainer}

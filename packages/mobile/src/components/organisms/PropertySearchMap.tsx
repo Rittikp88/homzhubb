@@ -19,6 +19,7 @@ interface IProps {
   searchLocation: Point;
   properties: Asset[];
   transaction_type: number;
+  favIds: number[];
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
   onFavorite: (propertyTermId: number, isFavourite: boolean) => void;
 }
@@ -49,9 +50,9 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
     }
   };
 
-  public render = (): React.ReactNode => {
+  public render(): React.ReactNode {
     const { currentSlide } = this.state;
-    const { properties, searchLocation } = this.props;
+    const { properties, searchLocation, favIds } = this.props;
     let { lat: initLatitude, lng: initLongitude } = searchLocation;
 
     if (properties.length > 0) {
@@ -80,7 +81,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
               this.onMarkerPress(index);
             };
             return (
-              <Marker key={property.id} coordinate={{ latitude, longitude }} onPress={onMarkerPress}>
+              <Marker key={`${property.id}${index}`} coordinate={{ latitude, longitude }} onPress={onMarkerPress}>
                 <CustomMarker selected={index === currentSlide} />
               </Marker>
             );
@@ -89,6 +90,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
         <SnapCarousel
           containerStyle={styles.carouselStyle}
           carouselData={properties}
+          extraData={favIds}
           activeIndex={currentSlide}
           itemWidth={SLIDER_WIDTH}
           carouselItem={this.renderCarouselItem}
@@ -100,10 +102,10 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
         />
       </>
     );
-  };
+  }
 
   private renderCarouselItem = (item: Asset): React.ReactElement => {
-    const { transaction_type, onSelectedProperty, onFavorite } = this.props;
+    const { transaction_type, onSelectedProperty, onFavorite, favIds } = this.props;
     const {
       attachments,
       projectName,
@@ -120,7 +122,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
     const price = this.getPrice(item);
     const amenities = PropertyUtils.getAmenities(spaces, furnishing, code, carpetArea, carpetAreaUnit?.title ?? '');
     const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
-    const isFavourite = isWishlisted ? isWishlisted.status : false;
+    let isFavourite = isWishlisted ? isWishlisted.status : false;
 
     const navigateToAssetDetails = (): void => {
       if (leaseTerm) {
@@ -140,14 +142,19 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       }
     };
 
+    if (favIds && favIds.length > 0) {
+      favIds.forEach((favId) => {
+        if (leaseTerm && favId === leaseTerm.id) {
+          isFavourite = true;
+        } else if (saleTerm && favId === saleTerm.id) {
+          isFavourite = true;
+        }
+      });
+    }
+
     return (
       <PropertyMapCard
-        source={{
-          uri:
-            image.length > 0
-              ? image[0].link
-              : 'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
-        }}
+        source={image[0]?.link ?? null}
         name={projectName}
         currency={item.country.currencies[0]}
         price={price}

@@ -38,7 +38,7 @@ CalendarComponent {
   "renderListView": [Function],
   "setState": [Function],
   "state": Object {
-    "day": "11",
+    "day": "20",
     "isMonthView": false,
     "isYearView": false,
     "month": 6,
@@ -124,12 +124,12 @@ CalendarComponent {
         />
         <React.Fragment>
           <Calendar
-            current="Sat Jul 11 2020"
+            current="Mon Jul 20 2020"
             enableSwipeMonths={false}
             hideArrows={true}
             markedDates={
               Object {
-                "2020-11-11": Object {
+                "2020-11-20": Object {
                   "customStyles": Object {
                     "container": Object {
                       "backgroundColor": "#0084F8",
@@ -143,7 +143,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2020-11-11T13:21:40.775Z}
+            minDate={2020-11-20T10:12:49.604Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -153,27 +153,17 @@ CalendarComponent {
             }
             theme={Object {}}
           />
-          <WithShadowView
-            outerViewStyle={
+          <Button
+            containerStyle={
               Object {
-                "marginBottom": 20,
-                "paddingBottom": 0,
-                "paddingTop": 10,
+                "flex": 0,
+                "margin": 16,
               }
             }
-          >
-            <Button
-              containerStyle={
-                Object {
-                  "flex": 0,
-                  "margin": 16,
-                }
-              }
-              onPress={[Function]}
-              title="Select"
-              type="primary"
-            />
-          </WithShadowView>
+            onPress={[Function]}
+            title="Select"
+            type="primary"
+          />
         </React.Fragment>
       </View>,
       "_rendering": false,
@@ -218,7 +208,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2020-11-11T13:21:40.759Z}
+    minDate={2020-11-20T10:12:49.594Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={
@@ -228,26 +218,16 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
     }
     theme={Object {}}
   />
-  <WithShadowView
-    outerViewStyle={
+  <Button
+    containerStyle={
       Object {
-        "marginBottom": 20,
-        "paddingBottom": 0,
-        "paddingTop": 10,
+        "flex": 0,
+        "margin": 16,
       }
     }
-  >
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "margin": 16,
-        }
-      }
-      onPress={[Function]}
-      title="Select"
-      type="primary"
-    />
-  </WithShadowView>
+    onPress={[Function]}
+    title="Select"
+    type="primary"
+  />
 </View>
 `;

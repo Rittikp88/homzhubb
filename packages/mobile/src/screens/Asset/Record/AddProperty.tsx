@@ -287,7 +287,9 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private scrollToTop = (): void => {
-    this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    setTimeout(() => {
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    }, 100);
   };
 }
 

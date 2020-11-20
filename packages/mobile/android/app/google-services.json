@@ -1,10 +1,40 @@
 {
-  "web": {
-    "client_id": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
-    "project_id": "homzhub-1589889329369",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_secret": "NdnStJW8DhpKfTpEJng64aR3"
-  }
+  "project_info": {
+    "project_number": "638609269566",
+    "firebase_url": "https://homzhub-7a1d5.firebaseio.com",
+    "project_id": "homzhub-7a1d5",
+    "storage_bucket": "homzhub-7a1d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638609269566:android:b51cd4354cfea79b08826f",
+        "android_client_info": {
+          "package_name": "com.homzhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638609269566-ua8cvuv0i35b0ep1kns14mavtc7uccpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATBMf9KD6pWgOpKmOxw5sF-dFdxxF19tQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638609269566-ua8cvuv0i35b0ep1kns14mavtc7uccpm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }

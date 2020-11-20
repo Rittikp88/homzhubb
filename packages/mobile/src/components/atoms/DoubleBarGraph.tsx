@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import { useSelector } from 'react-redux';
 import { BarChart, XAxis, YAxis, Grid } from 'react-native-svg-charts';
 import { PathProps } from 'react-native-svg';
 import { sum } from 'lodash';
-import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -16,20 +17,24 @@ interface IProps {
     label: string[];
   };
 }
+
 // SVG OPTIONS
 const SVG_FONT = { fontSize: 12, fill: theme.colors.darkTint6, fontWeight: '600' as '600' };
-const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7 };
+const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7, width: '100%' };
 // INSET OPTIONS
 const VERTICAL_INSET = { top: 8, bottom: 8 };
 const HORIZONTAL_INSET = { left: 24, right: 24 };
 // VIEWPORT CONSTANTS
 const Y_GRID_WIDTH = theme.viewport.width / 7;
 const HEIGHT = theme.viewport.height * 0.5;
-const WIDTH = theme.viewport.width * 1.5;
+const WIDTH = theme.viewport.width * 1.75;
+
 const DoubleBarGraph = (props: IProps): React.ReactElement => {
   const {
     data: { data1, data2, label },
   } = props;
+  const currency = useSelector(UserSelector.getCurrency);
+
   const barData = [
     {
       data: data1,
@@ -57,55 +62,54 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
     ];
   };
 
-  const render = (): React.ReactElement => {
-    const isData1Empty = data1.every((value) => value === 0);
-    const isData2Empty = data2.every((value) => value === 0);
-    if (isData1Empty && isData2Empty) {
-      return <EmptyState />;
-    }
+  const isData1Empty = data1.every((value) => value === 0);
+  const isData2Empty = data2.every((value) => value === 0);
+  if (isData1Empty && isData2Empty) {
+    return <EmptyState />;
+  }
 
-    return (
-      <>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.barGraphContainer}>
-            <View style={styles.yContainer}>
-              <YAxis
-                style={styles.yGrid}
-                contentInset={VERTICAL_INSET}
-                data={data1.concat(data2)}
-                svg={SVG_FONT}
-                formatLabel={(value: number): string => `₹ ${CurrencyUtils.getCurrency('INR', value)}`}
-              />
-              <BarChart
-                contentInset={VERTICAL_INSET}
-                style={[styles.barGraph, label.length <= 3 && styles.derivedWidth]}
-                data={barData}
-              >
-                <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
-              </BarChart>
-            </View>
-            <XAxis
-              style={[styles.xAxis, label.length <= 3 && styles.derivedWidth]}
-              data={label}
-              contentInset={HORIZONTAL_INSET}
+  return (
+    <>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View style={styles.barGraphContainer}>
+          <View style={styles.yContainer}>
+            <YAxis
+              style={styles.yGrid}
+              contentInset={VERTICAL_INSET}
+              data={data1.concat(data2)}
               svg={SVG_FONT}
-              formatLabel={(value, index: number): string => label[index]}
+              formatLabel={(value: number): string => `${currency.currencySymbol}${value}`}
             />
+            <BarChart
+              contentInset={VERTICAL_INSET}
+              style={[styles.barGraph, label.length === 1 && styles.derivedWidth]}
+              data={barData}
+            >
+              <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
+            </BarChart>
           </View>
-        </ScrollView>
-        <GraphLegends direction="row" data={barGraphLegends()} />
-      </>
-    );
-  };
-
-  return render();
+          <XAxis
+            style={[styles.xAxis, label.length === 1 && styles.xAxisDerivedWidth]}
+            data={label}
+            contentInset={HORIZONTAL_INSET}
+            svg={SVG_FONT}
+            formatLabel={(value, index: number): string => label[index]}
+          />
+        </View>
+      </ScrollView>
+      <GraphLegends direction="row" data={barGraphLegends()} />
+    </>
+  );
 };
+
+const memoizedComponent = React.memo(DoubleBarGraph);
+export { memoizedComponent as DoubleBarGraph };
+
 const styles = StyleSheet.create({
   barGraphContainer: {
     flexDirection: 'column',
   },
   barGraph: {
-    flex: 1,
     width: WIDTH,
     height: HEIGHT,
   },
@@ -119,11 +123,13 @@ const styles = StyleSheet.create({
   xAxis: {
     marginStart: Y_GRID_WIDTH,
     width: WIDTH,
-    padding: 10,
+    padding: 12,
   },
   derivedWidth: {
-    width: theme.viewport.width - 100,
+    width: theme.viewport.width * 0.7,
+  },
+  xAxisDerivedWidth: {
+    width: theme.viewport.width * 0.7,
+    paddingLeft: theme.viewport.width * 0.275,
   },
 });
-const memoizedComponent = React.memo(DoubleBarGraph);
-export { memoizedComponent as DoubleBarGraph };

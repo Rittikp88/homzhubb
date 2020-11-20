@@ -1,3 +1,4 @@
+import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { CommonActionPayloadTypes, CommonActionTypes } from '@homzhub/common/src/modules/common/actions';
@@ -6,6 +7,10 @@ import { ICountry } from '@homzhub/common/src/domain/models/Country';
 export const initialCommonState: ICommonState = {
   countries: [],
   deviceCountry: '',
+  redirectionDetails: {
+    redirectionLink: '',
+    shouldRedirect: false,
+  },
 };
 
 export const commonReducer = (
@@ -27,6 +32,11 @@ export const commonReducer = (
       return {
         ...state,
         ['deviceCountry']: action.payload as string,
+      };
+    case CommonActionTypes.SET.REDIRECTION_DETAILS:
+      return {
+        ...state,
+        ['redirectionDetails']: action.payload as IRedirectionDetails,
       };
     default:
       return {

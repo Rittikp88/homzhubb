@@ -4,10 +4,10 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import PlaceHolder from '@homzhub/common/src/assets/images/imageLoader.svg';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
@@ -123,12 +123,7 @@ export class AssetCard extends Component<Props> {
     const item = attachments[0];
     const handleFullScreen = (): void => enterFullScreen && enterFullScreen(attachments);
 
-    if (!item)
-      return (
-        <View style={styles.placeholderImage}>
-          <PlaceHolder width="100%" />
-        </View>
-      );
+    if (!item) return <ImagePlaceholder containerStyle={styles.placeholderImage} />;
 
     return (
       <TouchableOpacity onPress={isDetailView ? handleFullScreen : handlePropertyView}>
@@ -168,6 +163,7 @@ export class AssetCard extends Component<Props> {
       },
       listingVisits: { upcomingVisits, missedVisits, completedVisits },
       lastVisitedStep: { assetCreation },
+      isVerificationDocumentUploaded,
     } = assetData;
 
     const buttonAction = leasePeriod ? leasePeriod.action : action;
@@ -196,7 +192,7 @@ export class AssetCard extends Component<Props> {
               isPropertyVacant={label === Filters.VACANT}
               assetCreation={assetCreation}
             />
-            {assetCreation.percentage < 100 && (
+            {label !== Filters.OCCUPIED && assetCreation.percentage < 100 && (
               <Button
                 type="primary"
                 textType="label"
@@ -210,7 +206,7 @@ export class AssetCard extends Component<Props> {
             )}
           </>
         )}
-        {isListed && (
+        {isVerificationDocumentUploaded && isListed && (
           <OffersVisitsSection
             onNav={onOfferVisitPress}
             isDetailView={isDetailView}
@@ -319,7 +315,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   placeholderImage: {
-    backgroundColor: theme.colors.background,
     marginTop: 12,
   },
 });

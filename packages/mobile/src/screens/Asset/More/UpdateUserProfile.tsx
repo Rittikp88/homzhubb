@@ -116,6 +116,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               email: userProfile.email,
             }}
             userFullName={userProfile.fullName}
+            profileImage={userProfile.profilePicture}
             onFormSubmitSuccess={this.onUpdateProfileSuccess}
             isPasswordVerificationRequired={userProfile.isPasswordCreated}
           />
@@ -157,7 +158,6 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       this.goBack();
       return;
     }
-
     this.setState({ personalDetails: profileDetails, profileUpdateResponse });
     const { email_otp: emailOtp, phone_otp: phoneOtp } = profileUpdateResponse;
     const otpType = emailOtp && phoneOtp ? OtpNavTypes.UpdateProfileByEmailPhoneOtp : OtpNavTypes.UpdateProfileByOtp;

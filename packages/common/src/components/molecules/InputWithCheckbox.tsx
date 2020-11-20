@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
@@ -14,28 +14,36 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
   const { onChange, selected = false, textValue = '', placeholder } = props;
   const [isSelected, setIsSelected] = useState(selected);
   const [text, setText] = useState(textValue);
+  const ref: React.RefObject<TextInput> = useRef(null);
 
   useEffect(() => {
     onChange(isSelected, text);
   }, [isSelected, text]);
 
+  useEffect(() => {
+    if (isSelected && ref.current) {
+      ref.current.focus();
+    }
+  }, [isSelected]);
+
   const onCheckboxToggle = (): void => {
     setIsSelected((prev) => !prev);
   };
+
+  const onFocus = (): void => setIsSelected(true);
 
   return (
     <TouchableOpacity onPress={onCheckboxToggle} style={styles.inputWithCheckbox}>
       <RNCheckbox containerStyle={styles.checkboxStyle} onToggle={onCheckboxToggle} selected={isSelected} />
       <TextInput
-        autoFocus
+        editable
+        ref={ref}
         value={text}
-        editable={isSelected}
         style={styles.inputStyle}
-        onChangeText={(value: string): void => {
-          setText(value);
-        }}
+        onChangeText={setText}
         underlineColorAndroid="transparent"
         placeholder={placeholder}
+        onFocus={onFocus}
       />
     </TouchableOpacity>
   );
@@ -44,7 +52,7 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
 const styles = StyleSheet.create({
   inputWithCheckbox: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 4,

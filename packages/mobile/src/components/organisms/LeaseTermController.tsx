@@ -279,8 +279,6 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       const response = await AssetRepository.createLeaseTerms(currentAssetId, [values]);
 
       if (leaseType === LeaseTypes.Shared) {
-        await this.getAvailableSpaces();
-
         const routesToUpdate = routes.map((route) => {
           if (route.key === key) {
             return { ...route, id: response.ids[0] };
@@ -291,6 +289,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
         AlertHelper.success({ message: t('unitCreated', { unit: values.lease_unit?.name }) });
 
+        await this.getAvailableSpaces();
         if (proceed) {
           await onNextStep(TypeOfPlan.RENT, { is_subleased: true });
         } else {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 
 interface IProps {
@@ -24,24 +24,26 @@ class MoreProfile extends Component<Props> {
     return <View style={styles.container}>{this.renderHeader()}</View>;
   }
 
-  private renderHeader = (): React.ReactElement => {
+  private renderHeader = (): React.ReactElement | null => {
     const { onIconPress, userProfile } = this.props;
 
     return (
       <TouchableOpacity onPress={onIconPress} style={styles.headerContainer}>
         <View style={styles.flexRow}>
-          <View style={styles.initialsContainer}>
-            <Text type="small" textType="regular" style={styles.initials}>
-              {StringUtils.getInitials(userProfile?.fullName ?? 'User')}
-            </Text>
-          </View>
+          <Avatar
+            isOnlyAvatar
+            imageSize={60}
+            fullName={userProfile?.fullName ?? 'User'}
+            initialsContainerStyle={styles.initialsContainer}
+            image={userProfile?.profilePicture ?? ''}
+          />
           <View style={styles.nameContainer}>
-            <Text type="small" textType="regular">
-              Hello!
-            </Text>
             <Text type="regular" textType="semiBold">
               {userProfile?.fullName ?? 'User'}
             </Text>
+            <Label type="large" textType="semiBold" style={styles.progressMsg}>
+              {`${userProfile?.profileProgress}% Profile Completed`}
+            </Label>
           </View>
         </View>
         <Icon name={icons.rightArrow} size={18} color={theme.colors.lowPriority} />
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
     marginStart: 12,
     justifyContent: 'center',
   },
-  initials: {
-    color: theme.colors.white,
+  progressMsg: {
+    color: theme.colors.green,
   },
 });

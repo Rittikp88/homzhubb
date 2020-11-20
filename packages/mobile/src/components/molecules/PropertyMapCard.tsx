@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -11,7 +12,7 @@ import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   amenitiesData: IAmenitiesIcons[];
-  source: ImageSourcePropType;
+  source: string | null;
   name: string;
   price: number;
   currency: Currency;
@@ -37,7 +38,11 @@ export class PropertyMapCard extends React.PureComponent<IProps> {
     return (
       <TouchableOpacity onPress={onSelectedProperty}>
         <View style={styles.container}>
-          <Image source={source} style={styles.image} borderBottomLeftRadius={4} borderTopLeftRadius={4} />
+          {source ? (
+            <Image source={{ uri: source }} style={styles.image} borderBottomLeftRadius={4} borderTopLeftRadius={4} />
+          ) : (
+            <ImagePlaceholder width={120} height={120} />
+          )}
           <View style={styles.detailsContainer}>
             <View style={styles.row}>
               <PricePerUnit price={price} unit={priceUnit} currency={currency} />

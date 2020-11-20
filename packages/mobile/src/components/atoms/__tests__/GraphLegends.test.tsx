@@ -6,7 +6,7 @@ import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends'
 
 let props: any;
 
-describe('GraphLegends', () => {
+describe.skip('GraphLegends', () => {
   beforeEach(() => {
     props = {
       direction: 'row',

@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   heading: {
     marginTop: 12,
     color: theme.colors.darkTint3,
+    textAlign: 'center',
   },
   subHeading: {
     textAlign: 'center',

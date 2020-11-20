@@ -7,7 +7,7 @@ exports[`PricePerUnit should match snapshot 1`] = `
   textType="semiBold"
   type="regular"
 >
-  ₹ 1,000
+  $ 1,000
 </Text>
 `;
 
@@ -18,7 +18,7 @@ exports[`PricePerUnit should render with currency other than INR 1`] = `
   textType="semiBold"
   type="regular"
 >
-  ₹ 1,000
+  $ 1,000
   <Label
     adjustsFontSizeToFit={true}
     minimumFontScale={0.5}
@@ -38,7 +38,7 @@ exports[`PricePerUnit should render with priceTransformation 1`] = `
   textType="semiBold"
   type="regular"
 >
-  ₹ 1,000
+  $ 1,000
   <Label
     adjustsFontSizeToFit={true}
     minimumFontScale={0.5}
@@ -58,7 +58,7 @@ exports[`PricePerUnit should render with priceTransformation false 1`] = `
   textType="semiBold"
   type="regular"
 >
-  ₹ 1000
+  $ 1000
   <Label
     adjustsFontSizeToFit={true}
     minimumFontScale={0.5}
@@ -78,7 +78,7 @@ exports[`PricePerUnit should render with unit 1`] = `
   textType="semiBold"
   type="regular"
 >
-  ₹ 1,000
+  $ 1,000
   <Label
     adjustsFontSizeToFit={true}
     minimumFontScale={0.5}

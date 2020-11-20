@@ -15,6 +15,7 @@ export interface IUser {
   phone_number: string;
   access_token: string;
   refresh_token: string;
+  profile_picture?: string;
   rating?: number;
 }
 
@@ -40,6 +41,9 @@ export class User {
 
   @JsonProperty('phone_number', String)
   private _phoneNumber = '';
+
+  @JsonProperty('profile_picture', String, true)
+  private _profilePicture = '';
 
   @JsonProperty('refresh_token', String, true)
   private _refreshToken = '';
@@ -88,5 +92,9 @@ export class User {
 
   get rating(): number {
     return this._rating;
+  }
+
+  get profilePicture(): string {
+    return this._profilePicture;
   }
 }

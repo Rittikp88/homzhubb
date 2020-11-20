@@ -4,7 +4,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment';
 import InvestmentsCarousel from './components/InvestmentsCaraousel';
-import PropertyVisualsEstimates from './components/PropertyVisualEstimates';
+// import PropertyVisualsEstimates from './components/PropertyVisualEstimates'; todos Lakshit
 
 interface IProps {
   investmentDataArray: PropertyInvestment[];
@@ -14,7 +14,7 @@ class Dashboard extends React.PureComponent<IProps> {
     const { investmentDataArray } = this.props;
     return (
       <View style={styles.container}>
-        <PropertyVisualsEstimates />
+        {/* <PropertyVisualsEstimates /> */}
         <InvestmentsCarousel investmentData={investmentDataArray} />
         <MarketTrendsCarousel />
       </View>

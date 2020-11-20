@@ -7,7 +7,6 @@ import {
   IOtpLoginPayload,
   IOtpVerify,
   IOtpVerifyResponse,
-  IResetPasswordData,
   ISignUpPayload,
   ISocialLogin,
   ISocialLoginPayload,
@@ -20,9 +19,11 @@ import {
   IUpdateProfile,
   IUpdateProfileResponse,
   IUpdateUserPreferences,
+  IProfileImage,
+  IEmailVerification,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
+import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
@@ -48,6 +49,8 @@ const ENDPOINTS = {
   getUserPreferences: (): string => 'users/settings/',
   settingDropdownValues: (): string => 'user-settings/values/',
   updateUserPreferences: (): string => 'users/settings/',
+  updateProfileImage: (): string => 'users/profile-pictures/',
+  sendOrVerifyEmail: (): string => 'users/verifications/',
 };
 
 class UserRepository {
@@ -98,7 +101,7 @@ class UserRepository {
     return await this.apiClient.post(ENDPOINTS.otp(), requestPayload);
   };
 
-  public resetPassword = async (payload: IForgotPasswordPayload): Promise<IResetPasswordData> => {
+  public resetPassword = async (payload: IForgotPasswordPayload): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
   };
 
@@ -157,6 +160,14 @@ class UserRepository {
 
   public getSettingScreenData = (): SettingsData[] => {
     return ObjectMapper.deserializeArray(SettingsData, SettingsScreenData);
+  };
+
+  public updateProfileImage = async (payload: IProfileImage): Promise<IUserProfile> => {
+    return await this.apiClient.put(ENDPOINTS.updateProfileImage(), payload);
+  };
+
+  public sendOrVerifyEmail = async (payload: IEmailVerification): Promise<void> => {
+    await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail(), payload);
   };
 }
 

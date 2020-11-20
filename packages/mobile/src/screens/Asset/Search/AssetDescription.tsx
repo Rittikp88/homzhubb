@@ -12,7 +12,7 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { DynamicLinkTypes, LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -40,13 +40,13 @@ import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactP
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import {
-  AssetRatings,
   AssetDetailsImageCarousel,
+  AssetRatings,
   CollapsibleSection,
   FullScreenAssetDetailsCarousel,
-  StatusBarComponent,
-  ShieldGroup,
   Loader,
+  ShieldGroup,
+  StatusBarComponent,
 } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
@@ -54,9 +54,9 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
-import { IAmenitiesIcons, IFilter, ContactActions } from '@homzhub/common/src/domain/models/Search';
+import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 
 interface IStateProps {
@@ -94,18 +94,6 @@ const relativeWidth = (num: number): number => (realWidth * num) / 100;
 const PARALLAX_HEADER_HEIGHT = 250;
 const STICKY_HEADER_HEIGHT = 100;
 
-const initialCarouselData: Attachment[] = [
-  {
-    link:
-      'https://www.investopedia.com/thmb/7GOsX_NmY3KrIYoZPWOu6SldNFI=/735x0/houses_and_land-5bfc3326c9e77c0051812eb3.jpg',
-    isCoverImage: true,
-    fileName: 'sample',
-    mediaType: 'IMAGE',
-    // @ts-ignore
-    mediaAttributes: {},
-  },
-];
-
 // TODO: Do we require a byId reducer here?
 const initialState = {
   isFullScreen: false,
@@ -124,12 +112,16 @@ type Props = IStateProps & IDispatchProps & libraryProps;
 const ShowInMvpRelease = false;
 
 export class AssetDescription extends React.PureComponent<Props, IOwnState> {
+  public focusListener: any;
   public state = initialState;
 
   public componentDidMount = (): void => {
+    const { navigation } = this.props;
     const startDate = this.getFormattedDate();
     this.setState({ startDate });
-    this.getAssetData();
+    this.focusListener = navigation.addListener('focus', () => {
+      this.getAssetData();
+    });
   };
 
   // TODO: Do we require a byId reducer here?
@@ -182,7 +174,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { isFullScreen, isScroll } = this.state;
     if (!assetDetails) return null;
     const {
-      contacts: { fullName, phoneNumber, countryCode },
+      contacts: { fullName, phoneNumber, countryCode, profilePicture },
+      appPermissions,
     } = assetDetails;
 
     const statusBarHeight = isScroll ? 0 : PlatformUtils.isIOS() ? 55 : 40;
@@ -200,9 +193,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
           backgroundSpeed={10}
           onChangeHeaderVisibility={(isChanged: boolean): void => this.setState({ isScroll: isChanged })}
-          renderForeground={(): React.ReactElement => this.renderCarousel()}
-          renderStickyHeader={(): React.ReactElement => this.renderStickyHeader()}
-          renderFixedHeader={(): React.ReactElement | null => this.renderFixedHeader()}
+          renderForeground={this.renderCarousel}
+          renderStickyHeader={this.renderStickyHeader}
+          renderFixedHeader={this.renderFixedHeader}
           testID="parallaxView"
         >
           <View style={styles.screen}>
@@ -227,11 +220,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
-        {!isFullScreen && !isPreview && (
+        {appPermissions?.addListingVisit && !isFullScreen && !isPreview && (
           <ContactPerson
             fullName={fullName}
             phoneNumber={`${countryCode}${phoneNumber}`}
             designation="Owner"
+            image={profilePicture}
             onContactTypeClicked={this.onContactTypeClicked}
           />
         )}
@@ -586,10 +580,16 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private renderCarousel = (): React.ReactElement => {
     const { activeSlide } = this.state;
+    const { assetDetails } = this.props;
+
+    if (assetDetails && assetDetails?.attachments.length <= 0) {
+      return <ImagePlaceholder height="100%" containerStyle={styles.placeholder} />;
+    }
+
     return (
       <AssetDetailsImageCarousel
         enterFullScreen={this.onFullScreenToggle}
-        data={this.getCarouselData()}
+        data={assetDetails?.attachments ?? []}
         activeSlide={activeSlide}
         updateSlide={this.updateSlide}
       />
@@ -598,12 +598,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private renderFullscreenCarousel = (): React.ReactNode => {
     const { isFullScreen, activeSlide } = this.state;
+    const { assetDetails } = this.props;
+
     if (!isFullScreen) return null;
     return (
       <FullScreenAssetDetailsCarousel
         onFullScreenToggle={this.onFullScreenToggle}
         activeSlide={activeSlide}
-        data={this.getCarouselData()}
+        data={assetDetails?.attachments ?? []}
         updateSlide={this.updateSlide}
         onShare={this.handleShare}
       />
@@ -919,14 +921,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails?.contacts ?? null, propertyTermId });
   };
 
-  public getCarouselData = (): Attachment[] => {
-    const { assetDetails } = this.props;
-    if (assetDetails && assetDetails?.attachments.length > 0) {
-      return assetDetails.attachments;
-    }
-    return initialCarouselData;
-  };
-
   public updateSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
@@ -962,6 +956,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private getViewCounts = async (): Promise<void> => {
     const { startDate } = this.state;
+    const { isLoggedIn } = this.props;
     const endDate = this.getFormattedDate();
     const payload = {
       visit_type: VisitType.PROPERTY_VIEW,
@@ -971,11 +966,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       lease_listing: 1,
       sale_listing: null,
     };
-    try {
-      await AssetRepository.propertyVisit(payload);
-    } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e);
-      AlertHelper.error({ message: error });
+    if (isLoggedIn) {
+      try {
+        await AssetRepository.propertyVisit(payload);
+      } catch (e) {
+        const error = ErrorUtils.getErrorMessage(e);
+        AlertHelper.error({ message: error });
+      }
     }
   };
 
@@ -987,7 +984,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       },
     } = this.props;
     // TODO: Remove once will get proper url
-    const url = `www.homzhub.com/propertydetails/${propertyTermId}`;
+    const url = await LinkingService.buildShortLink(
+      DynamicLinkTypes.ASSET_DESCRIPTION,
+      `propertyTermId=${propertyTermId}`
+    );
+
     if (!isPreview) {
       try {
         await Share.share({
@@ -1191,5 +1192,8 @@ const styles = StyleSheet.create({
   },
   reviewCard: {
     marginVertical: 10,
+  },
+  placeholder: {
+    backgroundColor: theme.colors.darkTint5,
   },
 });

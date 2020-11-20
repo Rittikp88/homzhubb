@@ -21,36 +21,32 @@ export const AdvancedFilters = {
       label: `${translationKey}:thisAreaOnly`,
     },
     {
-      value: 2,
-      label: `${translationKey}:within5km`,
-    },
-    {
       value: 3,
       label: `${translationKey}:withinQuarterkm`,
-    },
-    {
-      value: 4,
-      label: `${translationKey}:within10km`,
     },
     {
       value: 5,
       label: `${translationKey}:withinHalfkm`,
     },
     {
-      value: 6,
-      label: `${translationKey}:within20km`,
-    },
-    {
       value: 7,
       label: `${translationKey}:within1km`,
     },
     {
-      value: 8,
-      label: `${translationKey}:within30km`,
+      value: 2,
+      label: `${translationKey}:within5km`,
     },
     {
-      value: 9,
-      label: `${translationKey}:within3km`,
+      value: 4,
+      label: `${translationKey}:within10km`,
+    },
+    {
+      value: 6,
+      label: `${translationKey}:within20km`,
+    },
+    {
+      value: 8,
+      label: `${translationKey}:within30km`,
     },
     {
       value: 10,
@@ -64,19 +60,19 @@ export const AdvancedFilters = {
     },
     {
       value: 2,
-      label: `${translationKey}:last3days`,
-    },
-    {
-      value: 3,
-      label: `${translationKey}:last14days`,
-    },
-    {
-      value: 4,
       label: `${translationKey}:last24hours`,
     },
     {
-      value: 5,
+      value: 3,
+      label: `${translationKey}:last3days`,
+    },
+    {
+      value: 4,
       label: `${translationKey}:last7days`,
+    },
+    {
+      value: 5,
+      label: `${translationKey}:last14days`,
     },
     {
       value: 6,

@@ -69,12 +69,14 @@ interface IProps {
   isViewChanged?: boolean;
   navigation?: NavigationType;
   setVisitPayload?: (payload: IAssetVisitPayload) => void;
+  visitId?: number | null;
 }
 
 interface IScreenState {
   currentIndex: number;
   dropdownValue: number;
   heights: number[];
+  isFromNav: boolean;
 }
 
 type Props = IDispatchProps & IStateProps & IProps & WithTranslation;
@@ -85,6 +87,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     currentIndex: 0,
     dropdownValue: 1,
     heights: [height, height, height],
+    isFromNav: true,
   };
 
   public componentDidMount(): void {
@@ -95,7 +98,6 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         this.getVisitsData();
       });
     }
-
     this.getVisitsData();
   }
 
@@ -108,6 +110,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { currentIndex, heights } = this.state;
+    const statusIndex = this.getVisitStatus();
     return (
       <>
         <TabView
@@ -137,7 +140,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
           }}
           swipeEnabled={false}
           navigationState={{
-            index: currentIndex,
+            index: statusIndex || currentIndex,
             routes: Routes,
           }}
         />
@@ -297,6 +300,26 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
   };
 
+  private getVisitStatus = (): number | null => {
+    const { visits } = this.props;
+
+    if (visits.length === 1) {
+      // @ts-ignore
+      const { startDate, status } = visits[0].results[0];
+      const formattedDate = DateUtils.getDisplayDate(startDate, DateFormats.ISO24Format);
+      const currentDate = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
+      const dateDiff = DateUtils.getDateDiff(formattedDate, currentDate);
+      if (dateDiff > 0) {
+        return 0; // UPCOMING
+      }
+      if (dateDiff < 0 && status === VisitStatus.PENDING) {
+        return 1; // MISSED
+      }
+      return 2; // COMPLETED
+    }
+    return null;
+  };
+
   private getDropdownData = (visitType: VisitStatusType): IDropdownObject[] => {
     const { t } = this.props;
     let results;
@@ -321,8 +344,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   };
 
   private getVisitsData = (): void => {
-    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload } = this.props;
-    const { currentIndex, dropdownValue } = this.state;
+    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload, visitId } = this.props;
+    const { currentIndex, dropdownValue, isFromNav } = this.state;
     const currentRoute = Routes[currentIndex];
     const date = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
     let dropdownData: IDropdownObject[] = [];
@@ -334,6 +357,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     let sale_listing_id;
     let start_date_lt;
     let status;
+    let status__neq;
     switch (currentRoute.key) {
       case VisitStatusType.UPCOMING:
         dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
@@ -349,7 +373,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       case VisitStatusType.COMPLETED:
         dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
         key = VisitStatusType.COMPLETED;
-        status = VisitStatus.ACCEPTED;
+        status__neq = VisitStatus.PENDING;
         start_date_lte = date;
         break;
       default:
@@ -371,6 +395,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         ...(start_date_gte && { start_date__gte: start_date_gte }),
         ...(start_date_lt && { start_date__lt: start_date_lt }),
         ...(status && { status }),
+        ...(status__neq && { status__neq }),
       });
     }
 
@@ -384,16 +409,24 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         sale_listing_id = asset.assetStatusInfo.saleListingId;
       }
     }
-
-    const payload: IAssetVisitPayload = {
-      ...(start_date_lte && { start_date__lte: start_date_lte }),
-      ...(start_date_lt && { start_date__lt: start_date_lt }),
-      ...(start_date_gte && { start_date__gte: start_date_gte }),
-      ...(isFromProperty && lease_listing_id && { lease_listing_id }),
-      ...(isFromProperty && sale_listing_id && { sale_listing_id }),
-      ...(selectedAssetId && selectedAssetId !== 0 && { asset_id: selectedAssetId }),
-      ...(status && { status }),
-    };
+    let payload: IAssetVisitPayload;
+    if (isFromNav && visitId) {
+      payload = {
+        id: visitId,
+      };
+      this.setState({ isFromNav: false });
+    } else {
+      payload = {
+        ...(start_date_lte && { start_date__lte: start_date_lte }),
+        ...(start_date_lt && { start_date__lt: start_date_lt }),
+        ...(start_date_gte && { start_date__gte: start_date_gte }),
+        ...(isFromProperty && lease_listing_id && { lease_listing_id }),
+        ...(isFromProperty && sale_listing_id && { sale_listing_id }),
+        ...(selectedAssetId && selectedAssetId !== 0 && { asset_id: selectedAssetId }),
+        ...(status && { status }),
+        ...(status__neq && { status__neq }),
+      };
+    }
 
     getAssetVisit(payload);
   };
@@ -430,5 +463,6 @@ const styles = StyleSheet.create({
   },
   tabView: {
     flex: 0,
+    backgroundColor: theme.colors.white,
   },
 });

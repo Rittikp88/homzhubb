@@ -37,7 +37,8 @@ const Navbar = (): React.ReactElement => {
           </Text>
         </View>
         <View style={styles.navbarFunctionsInner}>
-          <Avatar fullName={t('')} designation={t('')} />
+          {/** TODO: Replace name once login API integrated * */}
+          <Avatar fullName={t('User')} isOnlyAvatar />
         </View>
       </View>
     </View>
@@ -46,9 +47,10 @@ const Navbar = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   containerNavbar: {
-    padding: 5,
-    marginLeft: '7%',
-    marginRight: '7%',
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: '7%',
+    paddingRight: '7%',
     marginBottom: 20,
     display: 'flex',
     flexDirection: 'row',

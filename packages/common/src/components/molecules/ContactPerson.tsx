@@ -11,6 +11,7 @@ interface IProps {
   fullName: string;
   designation: string;
   phoneNumber: string;
+  image?: string;
   onContactTypeClicked: (type: ContactActions, phoneNumber: string, message: string) => void;
 }
 
@@ -21,11 +22,11 @@ const OPTIONS = [
 ];
 
 const ContactPerson = (props: IProps): React.ReactElement => {
-  const { fullName, designation, phoneNumber, onContactTypeClicked } = props;
+  const { fullName, designation, phoneNumber, onContactTypeClicked, image } = props;
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      <Avatar fullName={fullName} designation={designation} />
+      <Avatar fullName={fullName} designation={designation} image={image} />
       <View style={styles.iconContainer}>
         {OPTIONS.map((item, index: number) => {
           const { icon, id } = item;

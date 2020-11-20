@@ -24,7 +24,11 @@ exports[`PropertyMapCard should match snapshot 1`] = `
     <Image
       borderBottomLeftRadius={4}
       borderTopLeftRadius={4}
-      source={Object {}}
+      source={
+        Object {
+          "uri": Object {},
+        }
+      }
       style={
         Object {
           "height": 120,
@@ -51,7 +55,7 @@ exports[`PropertyMapCard should match snapshot 1`] = `
           }
         }
       >
-        <PricePerUnit
+        <Memo(PricePerUnit)
           currency=""
           price={0}
           unit=""
@@ -114,7 +118,11 @@ exports[`PropertyMapCard should match snapshot when isFavourite is true 1`] = `
     <Image
       borderBottomLeftRadius={4}
       borderTopLeftRadius={4}
-      source={Object {}}
+      source={
+        Object {
+          "uri": Object {},
+        }
+      }
       style={
         Object {
           "height": 120,
@@ -141,7 +149,7 @@ exports[`PropertyMapCard should match snapshot when isFavourite is true 1`] = `
           }
         }
       >
-        <PricePerUnit
+        <Memo(PricePerUnit)
           currency=""
           price={0}
           unit=""

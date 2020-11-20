@@ -4,10 +4,11 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
-import { LedgerService } from '@homzhub/common/src/services/LedgerService';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
@@ -30,11 +31,11 @@ enum FormType {
 interface IFormData {
   property: number;
   label: string;
-  tellerName: string;
+  tellerName?: string;
   amount: number;
   category: number;
   date: string;
-  notes: string;
+  notes?: string;
 }
 
 interface IState {
@@ -76,7 +77,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         tellerName: '',
         amount: 0,
         category: 0,
-        date: '',
+        date: DateUtils.getCurrentDate(),
         notes: '',
       },
     };
@@ -158,10 +159,12 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                 />
                 <FormCalendar
                   allowPastDates
+                  maxDate={DateUtils.getCurrentDate()}
                   formProps={formProps}
                   name="date"
                   textType="label"
                   label={t('addDate')}
+                  calendarTitle={t('addDate')}
                   placeHolder={t('addDatePlaceholder')}
                   isMandatory
                 />
@@ -245,9 +248,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { selectedFormType } = this.state;
     const entryType = selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit;
 
-    return LedgerUtils.filterLegerCategoryOn(entryType, ledgerCategories).map((category: LedgerCategory) => {
-      return { value: category.id, label: category.name };
-    });
+    return LedgerUtils.filterByType<LedgerCategory, LedgerTypes>(entryType, ledgerCategories).map(
+      (category: LedgerCategory) => {
+        return { value: category.id, label: category.name };
+      }
+    );
   };
 
   private formSchema = (): yup.ObjectSchema<IFormData> => {
@@ -256,11 +261,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     return yup.object().shape({
       property: yup.number().required(t('propertyError')),
       label: yup.string().required(t('detailsError')),
-      tellerName: yup.string(),
+      tellerName: yup.string().optional(),
       amount: yup.number().required(t('amountError')),
       category: yup.number().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
-      notes: yup.string(),
+      notes: yup.string().optional(),
     });
   };
 
@@ -315,7 +320,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         currency: currencyCode,
       };
 
-      await LedgerService.postGeneralLedgers(payload);
+      await LedgerRepository.postGeneralLedgers(payload);
       shouldLoad(false);
       formActions.setSubmitting(false);
 

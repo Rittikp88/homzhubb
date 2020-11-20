@@ -20,11 +20,12 @@ import {
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
-import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IFormFields extends IFormData {
   firstName: string;
@@ -45,7 +46,7 @@ interface IProps extends WithTranslation {
   phoneCode: string;
   assetGroupType: AssetGroupTypes;
   currentAssetId: number;
-  onNextStep: (type: TypeOfPlan) => Promise<void>;
+  onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams) => Promise<void>;
 }
 
 class ManageTermController extends React.PureComponent<IProps, IOwnState> {
@@ -249,7 +250,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   private onNextStep = async (): Promise<void> => {
     const { onNextStep } = this.props;
     try {
-      await onNextStep(TypeOfPlan.MANAGE);
+      await onNextStep(TypeOfPlan.MANAGE, { is_managed: true });
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }

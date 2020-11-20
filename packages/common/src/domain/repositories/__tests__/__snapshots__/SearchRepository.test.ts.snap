@@ -329,6 +329,7 @@ AssetSearch {
         "_id": 1,
         "_lastName": "",
         "_phoneNumber": "7903470293",
+        "_profilePicture": "",
         "_rating": 0,
         "_refreshToken": "",
       },
@@ -404,7 +405,9 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isGated": false,
+      "_isManaged": true,
       "_isSubleased": false,
+      "_isVerificationDocumentUploaded": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {
         "_assetCreation": AssetCreationStep {
@@ -729,6 +732,7 @@ AssetSearch {
         "_id": 1,
         "_lastName": "",
         "_phoneNumber": "7903470293",
+        "_profilePicture": "",
         "_rating": 0,
         "_refreshToken": "",
       },
@@ -804,7 +808,9 @@ AssetSearch {
       "_id": 1,
       "_isFavorite": false,
       "_isGated": false,
+      "_isManaged": true,
       "_isSubleased": false,
+      "_isVerificationDocumentUploaded": false,
       "_isWishlisted": null,
       "_lastVisitedStep": LastVisitedStep {
         "_assetCreation": AssetCreationStep {

@@ -8,7 +8,6 @@ import {
   IPostAssetDetailsProps,
   IAssetDescriptionProps,
 } from '@homzhub/mobile/src/navigation/interfaces';
-import { BottomTabs } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { MarkdownView } from '@homzhub/mobile/src/screens/Asset/MarkdownView';
 import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
 import AssetLocationSearch from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
@@ -25,7 +24,6 @@ export type PropertyPostStackParamList = {
   [ScreensKeys.AssetPlanSelection]: undefined;
   [ScreensKeys.AssetLeaseListing]: undefined | { previousScreen: string; isFromEdit?: boolean };
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
-  [ScreensKeys.BottomTabs]: undefined;
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };
 const PropertyPostStackNavigator = createStackNavigator<PropertyPostStackParamList>();
@@ -45,7 +43,6 @@ export const PropertyPostStack = (): React.ReactElement => {
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetLeaseListing} component={AssetLeaseListing} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AddProperty} component={AddProperty} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.MarkdownScreen} component={MarkdownView} />
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
     </PropertyPostStackNavigator.Navigator>
   );

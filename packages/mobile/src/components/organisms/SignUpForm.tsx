@@ -90,7 +90,6 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
                   label="Phone"
                   isMandatory
                   inputType="phone"
-                  maxLength={10}
                   inputPrefixText={formProps.values.phoneCode}
                   placeholder={t('auth:yourNumber')}
                   helpText={t('auth:otpVerification')}

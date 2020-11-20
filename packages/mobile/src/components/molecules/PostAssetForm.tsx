@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
@@ -17,25 +17,33 @@ interface IProps {
 const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
 
-  const onChangePincode = (pincode: string): void => {
+  const onChangePincode = useCallback(async (pincode: string): Promise<void> => {
     formProps.setFieldValue('pincode', pincode);
-    if (pincode.length >= 5) {
-      updateValues(pincode);
-    }
-  };
+    await updateValues(pincode);
+  }, []);
 
-  const updateValues = debounce(async (pincode: string): Promise<void> => {
-    try {
-      const response = await GooglePlacesService.getLocationData(undefined, pincode);
-      const addressComponents = ResponseHelper.getLocationDetails(response);
-      formProps.setFieldValue('city', addressComponents.city ?? addressComponents.area);
-      formProps.setFieldValue('state', addressComponents.state);
-      formProps.setFieldValue('country', addressComponents.country);
-      formProps.setFieldValue('countryIsoCode', addressComponents.countryIsoCode);
-    } catch (e) {
-      AlertHelper.error({ message: e.message });
-    }
-  }, 500);
+  const updateValues = useCallback(
+    debounce(async (pincode: string): Promise<void> => {
+      if (pincode.length === 0) {
+        formProps.setFieldValue('city', '');
+        formProps.setFieldValue('state', '');
+        formProps.setFieldValue('country', '');
+        formProps.setFieldValue('countryIsoCode', '');
+        return;
+      }
+      try {
+        const response = await GooglePlacesService.getLocationData(undefined, pincode);
+        const addressComponents = ResponseHelper.getLocationDetails(response);
+        formProps.setFieldValue('city', addressComponents.city ?? addressComponents.area);
+        formProps.setFieldValue('state', addressComponents.state);
+        formProps.setFieldValue('country', addressComponents.country);
+        formProps.setFieldValue('countryIsoCode', addressComponents.countryIsoCode);
+      } catch (e) {
+        AlertHelper.error({ message: e.message });
+      }
+    }, 500),
+    []
+  );
 
   return (
     <>

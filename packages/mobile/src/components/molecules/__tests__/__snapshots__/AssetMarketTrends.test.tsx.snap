@@ -5,9 +5,7 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
   style={
     Object {
       "backgroundColor": "#FFFFFF",
-      "borderRadius": 4,
       "flex": 1,
-      "marginTop": 16,
       "paddingBottom": 8,
       "paddingHorizontal": 16,
       "paddingTop": 20,
@@ -68,9 +66,7 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
   style={
     Object {
       "backgroundColor": "#FFFFFF",
-      "borderRadius": 4,
       "flex": 1,
-      "marginTop": 16,
       "paddingBottom": 8,
       "paddingHorizontal": 16,
       "paddingTop": 20,
@@ -133,19 +129,16 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
     }
     testID="linkTouch"
   >
-    <Image
-      source={
+    <Memo(ImagePlaceholder)
+      containerStyle={
         Object {
-          "uri": undefined,
-        }
-      }
-      style={
-        Object {
+          "borderColor": "#E5E8EB",
           "borderRadius": 4,
-          "height": 80,
-          "width": 80,
+          "borderWidth": 1,
         }
       }
+      height={80}
+      width={80}
     />
     <View
       style={

@@ -16,7 +16,17 @@ interface IProps extends WithTranslation {
   onEndReachedHandler: () => void;
 }
 
-export class TransactionCardsContainer extends React.PureComponent<IProps> {
+interface IOwnState {
+  expandedItem: number;
+}
+
+export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnState> {
+  private scrollRef = React.createRef<ScrollView>();
+
+  public state = {
+    expandedItem: -1,
+  };
+
   public render(): ReactElement {
     const { t, shouldEnableOuterScroll, transactionsData } = this.props;
 
@@ -30,6 +40,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
         </View>
         <Divider />
         <ScrollView
+          ref={this.scrollRef}
           onScroll={this.onScroll}
           onTouchStart={transactionsData.length > 4 ? (): void => shouldEnableOuterScroll(false) : undefined}
           onMomentumScrollEnd={this.controlScroll}
@@ -37,22 +48,49 @@ export class TransactionCardsContainer extends React.PureComponent<IProps> {
           scrollEventThrottle={1500}
           style={styles.contentContainer}
         >
-          {this.renderTransactionCard()}
+          {transactionsData.map(this.renderTransactionCard)}
         </ScrollView>
       </View>
     );
   }
 
-  private renderTransactionCard = (): React.ReactNode => {
+  private renderTransactionCard = (item: FinancialRecords, index: number): React.ReactNode => {
+    const { expandedItem } = this.state;
+    const onCardPress = (height: number): void => this.onCardPress(index, height);
+
+    return (
+      <TransactionCard
+        key={`${item.id}-${index}`}
+        isExpanded={expandedItem === index}
+        transaction={item}
+        onCardPress={onCardPress}
+        handleDownload={this.onDownloadDocument}
+      />
+    );
+  };
+
+  private onCardPress = (expandedItem: number, height: number): void => {
+    const { expandedItem: prev } = this.state;
     const { transactionsData } = this.props;
 
-    if (transactionsData.length < 1) {
-      return null;
+    if (prev === expandedItem) {
+      this.setState({ expandedItem: -1 });
+      if (expandedItem > transactionsData.length - 5) {
+        setTimeout(() => {
+          this.scrollRef.current?.scrollToEnd();
+        }, 0);
+      }
+      return;
     }
 
-    return transactionsData.map((item, index) => (
-      <TransactionCard key={`${item.id}-${index}`} transaction={item} handleDownload={this.onDownloadDocument} />
-    ));
+    this.setState({ expandedItem }, () => {
+      if (expandedItem > transactionsData.length - 5 && !transactionsData[expandedItem].attachment.fileName) {
+        setTimeout(() => {
+          this.scrollRef.current?.scrollToEnd();
+        }, 0);
+      }
+      this.scrollRef.current?.scrollTo({ y: expandedItem * height, animated: true });
+    });
   };
 
   private onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>): void => {
@@ -83,7 +121,6 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 16,
     backgroundColor: theme.colors.white,
-    paddingBottom: 8,
   },
   transactionHeader: {
     flexDirection: 'row',

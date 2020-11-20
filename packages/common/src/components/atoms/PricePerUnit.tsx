@@ -16,7 +16,7 @@ interface IProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-export const PricePerUnit = (props: IProps): React.ReactElement => {
+const PricePerUnit = (props: IProps): React.ReactElement => {
   const {
     price,
     prefixText,
@@ -29,24 +29,22 @@ export const PricePerUnit = (props: IProps): React.ReactElement => {
     textFontWeight = 'semiBold',
   } = props;
 
-  // TODO (27/10/2020): Clear up the below code to take the currency data from the Currency model and not from hardcoded data
   const transformedPrice = priceTransformation
     ? CurrencyUtils.getCurrency(currency.currencyCode ?? currency, price)
     : price;
-  const priceWithCurrency = `${currency.currencySymbol ?? currency === 'INR' ? '₹' : '$'} ${transformedPrice}`;
-
-  const renderLabel = (): React.ReactElement => {
-    return (
-      <Label type="large" textType="regular" style={labelStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
-        / {unit}
-      </Label>
-    );
-  };
+  const priceWithCurrency = `${currency.currencySymbol} ${transformedPrice}`;
 
   return (
     <Text type={textSizeType} textType={textFontWeight} style={textStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
       {prefixText ? `${prefixText} ${priceWithCurrency}` : priceWithCurrency}
-      {unit.length > 0 && renderLabel()}
+      {unit.length > 0 && (
+        <Label type="large" textType="regular" style={labelStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
+          / {unit}
+        </Label>
+      )}
     </Text>
   );
 };
+
+const memoizedComponent = React.memo(PricePerUnit);
+export { memoizedComponent as PricePerUnit };

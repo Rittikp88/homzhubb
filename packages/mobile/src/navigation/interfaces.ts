@@ -85,7 +85,6 @@ export enum ScreensKeys {
   BookVisit = 'BookVisit',
 
   // Common Screens
-  BlankScreen = 'BlankScreen',
   ComingSoonScreen = 'ComingSoonScreen',
   WebViewScreen = 'WebViewScreen',
 
@@ -127,6 +126,10 @@ export interface IVerificationProps extends IScreenCallback {
 export interface IResetPasswordProps extends IScreenCallback {
   token?: string | number;
   email?: string;
+}
+
+export interface IForgotPasswordProps extends IScreenCallback {
+  isFromMore?: boolean;
 }
 
 // Post Property

@@ -54,6 +54,8 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
         <HeaderCard
           title={t('assetMore:propertyVisits')}
           titleFontWeight="semiBold"
+          titleTextSize="small"
+          iconSize={24}
           renderItem={(): React.ReactElement => this.renderPropertyVisits()}
           onIconPress={this.handleBack}
           handleIcon={this.handleCalendarPress}
@@ -67,7 +69,10 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private renderPropertyVisits = (): React.ReactElement => {
     const { isCalendarView, countryData, propertiesByCountry, selectedAssetId } = this.state;
-    const { navigation } = this.props;
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
     return (
       <>
         <DropdownWithCountry
@@ -82,6 +87,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
             onReschedule={this.rescheduleVisit}
             selectedAssetId={selectedAssetId}
             navigation={navigation}
+            visitId={params && params.visitId ? params.visitId : null}
             setVisitPayload={this.setVisitPayload}
           />
         )}
@@ -124,10 +130,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private rescheduleVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SearchStack, {
-      screen: ScreensKeys.BookVisit,
-      params: { isReschedule: !isNew },
-    });
+    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
   };
 
   private setVisitPayload = (payload: IAssetVisitPayload): void => {

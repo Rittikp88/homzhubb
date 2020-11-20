@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -15,6 +16,7 @@ interface IProps {
 
 export const RootNavigator = (props: IProps): React.ReactElement => {
   const { booting } = props;
+  const redirectionDetails = useSelector(CommonSelectors.getRedirectionDetails);
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const isChangeStack = useSelector(UserSelector.getIsChangeStack);
   const dispatch = useDispatch();
@@ -34,7 +36,12 @@ export const RootNavigator = (props: IProps): React.ReactElement => {
   }
 
   return (
-    <NavigationContainer linking={LinkingService.getLinkingOptions(isLoggedIn)}>
+    <NavigationContainer
+      ref={NavigationService.setTopLevelNavigator}
+      onReady={(): void => {
+        NavigationService.handleDynamicLinkNavigation(redirectionDetails).then();
+      }}
+    >
       {isLoggedIn && isChangeStack ? <AppNavigator /> : <GuestStack />}
     </NavigationContainer>
   );

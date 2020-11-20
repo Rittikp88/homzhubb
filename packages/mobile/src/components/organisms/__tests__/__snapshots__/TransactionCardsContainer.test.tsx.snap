@@ -6,7 +6,6 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     Object {
       "backgroundColor": "#FFFFFF",
       "marginTop": 16,
-      "paddingBottom": 8,
     }
   }
 >
@@ -51,7 +50,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
   >
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="1"
+      isExpanded={false}
+      key="1-0"
+      onCardPress={[Function]}
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -100,7 +101,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="2"
+      isExpanded={false}
+      key="2-1"
+      onCardPress={[Function]}
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -149,7 +152,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="3"
+      isExpanded={false}
+      key="3-2"
+      onCardPress={[Function]}
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -198,7 +203,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="4"
+      isExpanded={false}
+      key="4-3"
+      onCardPress={[Function]}
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -247,7 +254,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="5"
+      isExpanded={false}
+      key="5-4"
+      onCardPress={[Function]}
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -296,7 +305,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="6"
+      isExpanded={false}
+      key="6-5"
+      onCardPress={[Function]}
       transaction={
         FinancialRecords {
           "_amount": 27000,
@@ -345,7 +356,9 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
     />
     <withI18nextTranslation(TransactionCard)
       handleDownload={[Function]}
-      key="7"
+      isExpanded={false}
+      key="7-6"
+      onCardPress={[Function]}
       transaction={
         FinancialRecords {
           "_amount": 27000,

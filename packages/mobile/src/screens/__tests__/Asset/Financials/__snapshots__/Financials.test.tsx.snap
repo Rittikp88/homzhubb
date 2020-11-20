@@ -18,8 +18,8 @@ exports[`Financials Screen should render snapshot 1`] = `
                 1,
               ],
             },
-            "count": "0/-",
-            "currencySymbol": "INR",
+            "count": "0",
+            "isCurrency": true,
             "label": "assetFinancial:income",
           },
           Object {
@@ -31,12 +31,13 @@ exports[`Financials Screen should render snapshot 1`] = `
                 1,
               ],
             },
-            "count": "0/-",
-            "currencySymbol": "INR",
+            "count": "0",
+            "isCurrency": true,
             "label": "assetFinancial:expense",
           },
         ]
       }
+      isSubTextRequired={false}
       numOfElements={2}
       onPlusIconClicked={[Function]}
       textStyle={

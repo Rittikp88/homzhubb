@@ -223,7 +223,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
               { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
               { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
             ]}
-            optionWidth={(theme.viewport.width - 32) / 2}
             selectedItem={[leaseType]}
             containerStyles={styles.switchTab}
             onValueChange={this.onTabChange}
@@ -302,6 +301,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       setValueAddedServices,
       valueAddedServices,
     } = this.props;
+    const isManage = selectedPlan === TypeOfPlan.MANAGE;
 
     if (!assetDetails) return null;
 
@@ -319,7 +319,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         );
       case RouteKeys.Services:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 2)}>
+          <View onLayout={(e): void => this.onLayout(e, isManage ? 1 : 2)}>
             <ValueAddedServicesView
               propertyId={assetDetails.id}
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
@@ -334,7 +334,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         );
       case RouteKeys.Payment:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 3)}>
+          <View onLayout={(e): void => this.onLayout(e, isManage ? 2 : 3)}>
             <PropertyPayment
               goBackToService={this.goBackToServices}
               propertyId={assetDetails.id}
@@ -503,7 +503,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToPreview = (assetDetails: Asset): void => {
-    const { navigation, setFilter } = this.props;
+    const { navigation, setFilter, resetState } = this.props;
     const {
       id,
       leaseListingIds,
@@ -526,6 +526,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
       isPreview: true,
       propertyId: id,
     });
+    resetState();
   };
 
   private handleNextStep = (): void => {
@@ -599,7 +600,9 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private scrollToTop = (): void => {
-    this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    setTimeout(() => {
+      this.scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    }, 100);
   };
 }
 

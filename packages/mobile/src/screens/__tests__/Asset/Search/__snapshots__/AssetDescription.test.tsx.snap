@@ -75,7 +75,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             }
           }
         >
-          <PricePerUnit
+          <Memo(PricePerUnit)
             currency={
               Object {
                 "currency_code": "",
@@ -210,7 +210,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              11 Nov 2020
+              20 Nov 2020
             </Label>
           </View>
           <View
@@ -505,10 +505,5 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
       />
     </View>
   </ParallaxScrollView>
-  <Memo(ContactPerson)
-    designation="Owner"
-    onContactTypeClicked={[Function]}
-    phoneNumber="undefinedundefined"
-  />
 </Fragment>
 `;

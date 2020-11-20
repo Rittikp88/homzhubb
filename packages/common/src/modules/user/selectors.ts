@@ -1,7 +1,9 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences, MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const isLoggedIn = (state: IState): boolean => {
@@ -57,20 +59,26 @@ const getUserPreferences = (state: IState): UserPreferences => {
   return ObjectMapper.deserialize(UserPreferences, userPreferences);
 };
 
-const getUserFinancialYear = (state: IState): { startDate: string; endDate: string } => {
+const getUserFinancialYear = (
+  state: IState
+): { startDate: string; endDate: string; startMonthIndex: number; endMonthIndex: number } => {
   const userPreferences = getUserPreferences(state);
 
   if (!userPreferences) {
-    return { startDate: '', endDate: '' };
+    return { startDate: '', endDate: '', startMonthIndex: 0, endMonthIndex: 0 };
   }
 
   const [startMonth, endMonth] = userPreferences.financialYearCode.split('-');
+  const startMonthIndex = parseInt(startMonth, 10) - 1;
+  const endMonthIndex = parseInt(endMonth, 10) - 1;
   const currentMonth = DateUtils.getCurrentMonthIndex();
 
   if (parseInt(endMonth, 10) === 12 && parseInt(startMonth, 10) === 1) {
     return {
       startDate: `${DateUtils.getCurrentYear()}-${startMonth}-01`,
       endDate: `${DateUtils.getCurrentYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+      startMonthIndex,
+      endMonthIndex,
     };
   }
 
@@ -78,12 +86,16 @@ const getUserFinancialYear = (state: IState): { startDate: string; endDate: stri
     return {
       startDate: `${DateUtils.getCurrentYear()}-${startMonth}-01`,
       endDate: `${DateUtils.getNextYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+      startMonthIndex,
+      endMonthIndex,
     };
   }
 
   return {
     startDate: `${DateUtils.getLastYear()}-${startMonth}-01`,
     endDate: `${DateUtils.getCurrentYear()}-${endMonth}-${DateUtils.getDaysInMonth(parseInt(endMonth, 10))}`,
+    startMonthIndex,
+    endMonthIndex,
   };
 };
 
@@ -93,6 +105,14 @@ const getMetricSystem = (state: IState): MetricSystems => {
     return MetricSystems.KILOMETERS;
   }
   return userPreferences.metricUnit;
+};
+
+const getCurrency = (state: IState): Currency => {
+  const userPreferences = getUserPreferences(state);
+  if (!userPreferences) {
+    return CommonSelectors.getDefaultCurrency(state);
+  }
+  return userPreferences.currencyObj;
 };
 
 const isUserPreferencesLoading = (state: IState): boolean => {
@@ -116,4 +136,5 @@ export const UserSelector = {
   getUserFinancialYear,
   isUserPreferencesLoading,
   getMetricSystem,
+  getCurrency,
 };

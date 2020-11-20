@@ -3,6 +3,8 @@
 const { PERMISSIONS, RESULTS } = require('react-native-permissions/lib/commonjs/constants');
 require('../../../setupTests');
 
+jest.mock('@react-native-firebase/app', () => {});
+jest.mock('@react-native-firebase/dynamic-links', () => {});
 jest.mock('@ptomasroos/react-native-multi-slider', () => {});
 jest.mock('react-native-orientation-locker', () => {});
 jest.mock('@react-native-community/geolocation', () => {});

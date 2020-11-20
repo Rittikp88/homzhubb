@@ -19,7 +19,7 @@
     "test:common": "yarn workspace @homzhub/common run test",
     "test:mobile": "yarn workspace @homzhub/mobile run test",
     "test:web": "yarn workspace @homzhub/web run test",
-    "build:web": "yarn workspace @homzhub/web run build",
+    "build:web": "yarn workspace @homzhub/web run build:dev",
     "android": "jetify && yarn workspace @homzhub/mobile run android",
     "android:bundle": "jetify && yarn workspace @homzhub/mobile run android:bundle",
     "android:build": "jetify && yarn workspace @homzhub/mobile run android:build",

@@ -1,6 +1,5 @@
 import React from 'react';
 import { PickerItemProps, StyleSheet, View } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView, Loader } from '@homzhub/mobile/src/components';
@@ -52,6 +52,7 @@ interface IPortfolioState {
   isSpinnerLoading: boolean;
   expandedTenanciesId: number;
   expandedAssetId: number;
+  assetType: string;
 }
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
@@ -68,6 +69,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     isSpinnerLoading: false,
     expandedTenanciesId: 0,
     expandedAssetId: 0,
+    assetType: '',
   };
 
   public componentDidMount = (): void => {
@@ -94,7 +96,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderComponent = (): React.ReactElement => {
     const { t, tenancies, properties, currentFilter } = this.props;
-    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading } = this.state;
+    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading, assetType } = this.state;
     return (
       <>
         <AnimatedProfileHeader title={t('portfolio')}>
@@ -105,9 +107,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
               subscription={metrics?.userServicePlan?.label}
               onPlusIconClicked={this.handleAddProperty}
               containerStyle={styles.assetCards}
+              onMetricsClicked={this.onMetricsClicked}
+              selectedAssetType={assetType}
             />
             {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
-            {properties && properties.length > 0 && this.renderPortfolio(properties)}
+            {this.renderPortfolio(properties)}
             <BottomSheetListView
               data={filters}
               selectedValue={currentFilter}
@@ -126,18 +130,30 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderTenancies = (tenancies: Asset[]): React.ReactElement => {
     const { t } = this.props;
+    const { assetType } = this.state;
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('tenancies')}
         </Text>
-        {tenancies.map((tenancy, index) => this.renderList(tenancy, index, DataType.TENANCIES))}
+        {(assetType
+          ? tenancies.filter((item) => item.assetGroup.name === assetType)
+          : tenancies
+        ).map((tenancy, index) => this.renderList(tenancy, index, DataType.TENANCIES))}
       </>
     );
   };
 
-  private renderPortfolio = (properties: Asset[]): React.ReactElement => {
-    const { t } = this.props;
+  private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
+    const { t, currentFilter } = this.props;
+    const { assetType } = this.state;
+    const filter = currentFilter.toLowerCase();
+    const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties', { filter });
+
+    const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
+
+    const isEmpty = !data || data.length <= 0;
+
     return (
       <>
         <View style={styles.headingView}>
@@ -152,7 +168,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             testID="menu"
           />
         </View>
-        {properties.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))}
+        {isEmpty ? (
+          <EmptyState title={title} icon={icons.home} containerStyle={styles.emptyView} />
+        ) : (
+          data?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
+        )}
       </>
     );
   };
@@ -187,6 +207,14 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { navigation, setCurrentAsset } = this.props;
     setCurrentAsset(data);
     navigation.navigate(ScreensKeys.PropertyDetailScreen);
+  };
+
+  private onMetricsClicked = (name: string): void => {
+    const { assetType } = this.state;
+    if (assetType === name) {
+      name = '';
+    }
+    this.setState({ assetType: name });
   };
 
   private onPropertiesCallback = (): void => {
@@ -287,16 +315,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private verifyData = (): void => {
-    const { navigation, tenancies, properties } = this.props;
+    const { tenancies, properties } = this.props;
 
-    if ((!tenancies && !properties) || (tenancies && tenancies.length === 0 && properties && properties.length === 0)) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreensKeys.PropertyPostLandingScreen }],
-        })
-      );
-    } else if ((tenancies && tenancies.length > 0) || (properties && properties.length > 0)) {
+    if ((tenancies && tenancies.length > 0) || (properties && properties.length > 0)) {
       if (tenancies && tenancies.length > 0) {
         this.setState({
           expandedTenanciesId: tenancies[0].id,
@@ -348,5 +369,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  emptyView: {
+    minHeight: 200,
   },
 });

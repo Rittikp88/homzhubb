@@ -10,7 +10,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProps {
   data: Notifications[];
-  onPress: (id: number) => void;
+  onPress: (data: Notifications) => void;
   shouldEnableOuterScroll?: (scrollEnabled: boolean) => void;
   onLoadMore: () => void;
   unreadCount: number;
@@ -35,9 +35,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
     }
 
     const onBubblePress = (): void => {
-      if (!item.isRead) {
-        onPress(item.id);
-      }
+      onPress(item);
     };
 
     return (
@@ -80,6 +78,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
         data={data}
         renderItem={renderItem}
         initialNumToRender={10}
+        showsVerticalScrollIndicator={false}
         onTouchStart={(): void => {
           if (shouldEnableOuterScroll) {
             shouldEnableOuterScroll(false);

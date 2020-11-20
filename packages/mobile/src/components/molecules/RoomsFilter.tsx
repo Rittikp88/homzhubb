@@ -15,7 +15,6 @@ interface IProps {
 }
 
 const OPTION_WIDTH = (theme.viewport.width - 40) / 6;
-
 export const RoomsFilter = (props: IProps): React.ReactElement => {
   const { bedCount, bathroomCount, onSelection } = props;
 
@@ -60,8 +59,8 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         data={translateData(BEDROOM_FILTER)}
         selectedItem={bedCount}
         onValueChange={onUpdateBedroomCount}
-        optionWidth={OPTION_WIDTH}
         testID="bedPicker"
+        optionWidth={OPTION_WIDTH}
       />
       <Text type="small" textType="semiBold" style={[styles.textStyle, styles.pickerMargin]}>
         {t('baths')}
@@ -70,8 +69,8 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         data={translateData(BATHROOM_FILTER)}
         selectedItem={bathroomCount}
         onValueChange={onUpdateBathroomCount}
-        optionWidth={OPTION_WIDTH}
         testID="bathPicker"
+        optionWidth={OPTION_WIDTH}
       />
     </View>
   );

@@ -19,9 +19,4 @@ describe('Market Trends Screen', () => {
   it('should render snapshot', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
-
-  it('should navigate to previous screen ', () => {
-    component.find('[testID="header"]').prop('onIconPress')();
-    expect(props.navigation.goBack).toHaveBeenCalled();
-  });
 });

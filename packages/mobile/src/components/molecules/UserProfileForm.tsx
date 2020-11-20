@@ -1,14 +1,16 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { Formik, FormikProps } from 'formik';
 import { FormikHelpers } from 'formik/dist/types';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import {
   IUpdateProfile,
@@ -16,7 +18,7 @@ import {
   UpdateProfileTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
@@ -28,6 +30,7 @@ interface IProps extends WithTranslation {
   onFormSubmitSuccess: (profileDetails: IUserProfileForm, profileUpdateResponse?: IUpdateProfileResponse) => void;
   formData?: IUserProfileForm;
   userFullName?: string;
+  profileImage?: string;
   isPasswordVerificationRequired?: boolean;
 }
 
@@ -42,6 +45,7 @@ export interface IUserProfileForm {
 interface IState {
   userProfileForm: IUserProfileForm;
   isPasswordVerificationRequired?: boolean;
+  selectedImage: ImagePickerResponse;
 }
 
 export class UserProfileForm extends React.PureComponent<IProps, IState> {
@@ -54,6 +58,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       phoneCode: '',
     },
     isPasswordVerificationRequired: false,
+    selectedImage: {} as ImagePickerResponse,
   };
 
   public componentDidMount(): void {
@@ -71,8 +76,8 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
   }
 
   public render(): ReactElement {
-    const { t, userFullName } = this.props;
-    const { userProfileForm, isPasswordVerificationRequired } = this.state;
+    const { t, userFullName, profileImage } = this.props;
+    const { userProfileForm, isPasswordVerificationRequired, selectedImage } = this.state;
 
     return (
       <>
@@ -87,20 +92,14 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
               <>
                 <View style={styles.container}>
                   <View style={styles.profileImage}>
-                    <View style={styles.initialsContainer}>
-                      <Text type="large" textType="regular" style={styles.initials}>
-                        {StringUtils.getInitials(userFullName || '')}
-                      </Text>
-                    </View>
-                    <View style={[styles.cameraContainer, styles.roundBorder]}>
-                      <Icon
-                        size={16}
-                        name={icons.camera}
-                        color={theme.colors.white}
-                        style={styles.cameraIcon}
-                        onPress={FunctionUtils.noop}
-                      />
-                    </View>
+                    <Avatar
+                      isOnlyAvatar
+                      imageSize={80}
+                      fullName={userFullName || ''}
+                      image={selectedImage.path ?? profileImage}
+                      onPressCamera={this.handleProfileImageUpload}
+                      initialsContainerStyle={styles.initialsContainer}
+                    />
                   </View>
                   <FormTextInput
                     name="firstName"
@@ -121,7 +120,6 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                   <FormTextInput
                     name="phone"
                     label={t('common:phone')}
-                    maxLength={10}
                     inputPrefixText={formProps.values.phoneCode}
                     inputType="phone"
                     placeholder={t('auth:yourNumber')}
@@ -173,7 +171,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
 
   private onSubmit = async (password?: string): Promise<void> => {
     const { onFormSubmitSuccess } = this.props;
-    const { userProfileForm } = this.state;
+    const { userProfileForm, selectedImage } = this.state;
     const { firstName, lastName, email, phone, phoneCode } = userProfileForm;
     const profileDetails = {
       first_name: firstName,
@@ -197,9 +195,50 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
 
     try {
       const response = await UserRepository.updateUserProfileByActions(payload);
+      if (!ObjectUtils.isEmpty(selectedImage)) {
+        await this.uploadProfileImage();
+      }
       onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
+  private uploadProfileImage = async (): Promise<void> => {
+    const { selectedImage } = this.state;
+    try {
+      const formData = new FormData();
+      formData.append('files[]', {
+        // @ts-ignore
+        name: PlatformUtils.isIOS()
+          ? selectedImage.filename
+          : selectedImage.path.substring(selectedImage.path.lastIndexOf('/') + 1),
+        uri: selectedImage.path,
+        type: selectedImage.mime,
+      });
+      const imageData = await AttachmentService.uploadImage(formData, AttachmentType.PROFILE_IMAGE);
+      const { data } = imageData;
+      await UserRepository.updateProfileImage({ profile_picture: data[0].id });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
+  private handleProfileImageUpload = async (): Promise<void> => {
+    try {
+      // @ts-ignore
+      const image: ImagePickerResponse = await ImagePicker.openPicker({
+        multiple: false,
+        compressImageMaxWidth: 400,
+        compressImageMaxHeight: 400,
+        compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
+        includeBase64: true,
+        mediaType: 'photo',
+        freeStyleCropEnabled: true,
+      });
+      this.setState({ selectedImage: image });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
     }
   };
 
@@ -258,26 +297,9 @@ const styles = StyleSheet.create({
     flex: 0,
     margin: 16,
   },
-  roundBorder: {
-    borderWidth: 1,
-    borderColor: theme.colors.white,
-    borderRadius: 50,
-  },
   profileImage: {
     marginTop: 16,
     alignItems: 'center',
-  },
-  cameraContainer: {
-    width: 24,
-    height: 24,
-    backgroundColor: theme.colors.primaryColor,
-    bottom: 21,
-    left: 24,
-  },
-  cameraIcon: {
-    alignSelf: 'center',
-    position: 'relative',
-    top: 2,
   },
   initialsContainer: {
     ...(theme.circleCSS(80) as object),
@@ -286,9 +308,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkTint7,
     borderColor: theme.colors.white,
     borderWidth: 1,
-  },
-  initials: {
-    color: theme.colors.white,
   },
   commonTextStyle: {
     textAlign: 'center',

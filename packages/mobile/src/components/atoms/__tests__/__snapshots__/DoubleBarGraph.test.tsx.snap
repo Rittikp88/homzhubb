@@ -87,13 +87,10 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
           style={
             Array [
               Object {
-                "flex": 1,
                 "height": 667,
-                "width": 1125,
+                "width": 1312.5,
               },
-              Object {
-                "width": 650,
-              },
+              false,
             ]
           }
         >
@@ -107,6 +104,7 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
                   5,
                   5,
                 ],
+                "width": "100%",
               }
             }
           />
@@ -133,12 +131,10 @@ exports[`DoubleBarGraph should match snapshot 1`] = `
           Array [
             Object {
               "marginStart": 107.14285714285714,
-              "padding": 10,
-              "width": 1125,
+              "padding": 12,
+              "width": 1312.5,
             },
-            Object {
-              "width": 650,
-            },
+            false,
           ]
         }
         svg={
