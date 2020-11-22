@@ -25,7 +25,7 @@ export class UserProfile extends User {
   private _dateOfBirth = '';
 
   @JsonProperty('email_verified', Boolean)
-  private _emailVerified = false;
+  private _isPersonalEmailVerified = false;
 
   @JsonProperty('social_image_url', String)
   private _socialImageUrl = '';
@@ -52,8 +52,12 @@ export class UserProfile extends User {
     return this._dateOfBirth;
   }
 
-  get emailVerified(): boolean {
-    return this._emailVerified;
+  get isPersonalEmailVerified(): boolean {
+    return this._isPersonalEmailVerified;
+  }
+
+  get isWorkEmailVerified(): boolean {
+    return this.workInfo.emailVerified;
   }
 
   get socialImageUrl(): string {
@@ -99,7 +103,7 @@ export class UserProfile extends User {
         icon: icons.email,
         ...(this.email ? { text: this.email } : { helperText: 'Email' }),
         type: 'EMAIL',
-        emailVerified: this.emailVerified,
+        emailVerified: this.isPersonalEmailVerified,
       },
     ];
   }
@@ -131,7 +135,12 @@ export class UserProfile extends User {
 
     return [
       { icon: icons.filledUser, ...(companyName ? { text: companyName } : { helperText: 'Company Name' }) },
-      { icon: icons.email, ...(workEmail ? { text: workEmail } : { helperText: 'Work Email' }), type: 'EMAIL' },
+      {
+        icon: icons.email,
+        ...(workEmail ? { text: workEmail } : { helperText: 'Work Email' }),
+        type: 'EMAIL',
+        emailVerified: this.isWorkEmailVerified,
+      },
     ];
   }
 }

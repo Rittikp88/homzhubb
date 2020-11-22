@@ -4,9 +4,12 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IForgotPasswordPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
@@ -69,39 +72,42 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
     );
   }
 
-  private onSubmit = (formProps: IResetPasswordState): void => {
+  private onSubmit = async (formProps: IResetPasswordState): Promise<void> => {
     const { password } = formProps;
+    const userData = await StorageService.get<IUserTokens>(StorageKeys.USER);
     const {
       navigation,
       route: {
-        params: { token, onCallback },
+        params: { verification_id },
       },
+      t,
     } = this.props;
     const payload: IForgotPasswordPayload = {
       action: 'SET_PASSWORD',
       payload: {
-        verification_id: token,
+        verification_id,
         password,
       },
     };
+
     UserRepository.resetPassword(payload)
       .then(() => {
-        const callback = onCallback ? { onCallback } : {};
-        navigation.navigate(ScreensKeys.SuccessResetPassword, callback);
-        return null;
+        if (userData) {
+          StoreProviderService.logoutUserAndClearTokens();
+          AlertHelper.success({ message: t('auth:PasswordChangedText') });
+          return;
+        }
+
+        navigation.navigate(ScreensKeys.SuccessResetPassword);
       })
-      .catch((err) => {
-        AlertHelper.error({ message: err });
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       });
   };
 
   public handleIconPress = (): void => {
-    const {
-      navigation,
-      route: { params },
-    } = this.props;
-    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
-    navigation.navigate(ScreensKeys.EmailLogin, onCallback);
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 
   private formSchema = (): yup.ObjectSchema<{ password: string }> => {

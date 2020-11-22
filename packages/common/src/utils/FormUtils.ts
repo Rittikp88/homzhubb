@@ -15,7 +15,7 @@ class FormUtils {
 
   public passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?])[0-9a-zA-Z!@#$%^&*?]*$/;
 
-  public emailRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?])[0-9a-zA-Z!@#$%^&*?]*$/;
+  public emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
   public validate = (getValidationSchema: any): any => {
     return (values: any[]): any => {

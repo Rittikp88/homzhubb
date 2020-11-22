@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { CommonActions } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -35,14 +35,14 @@ export class SuccessResetPassword extends Component<Props, {}> {
   }
 
   public navigateToLogin = (): void => {
-    const {
-      navigation,
-      route: { params },
-    } = this.props;
-    const onCallback = params && params.onCallback ? { onCallback: params.onCallback } : {};
+    const { navigation } = this.props;
 
-    StoreProviderService.logoutUser();
-    navigation.navigate(ScreensKeys.Login, onCallback);
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensKeys.Login }],
+      })
+    );
   };
 }
 

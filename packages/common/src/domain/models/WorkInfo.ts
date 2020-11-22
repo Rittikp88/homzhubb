@@ -23,6 +23,9 @@ export class WorkInfo {
   @JsonProperty('work_employee_id', String)
   private _workEmployeeId = '';
 
+  @JsonProperty('email_verified', Boolean)
+  private _emailVerified = false;
+
   @JsonProperty('company', Company)
   private _company = new Company();
 
@@ -44,5 +47,9 @@ export class WorkInfo {
 
   get company(): Company {
     return this._company;
+  }
+
+  get emailVerified(): boolean {
+    return this._emailVerified;
   }
 }

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -32,9 +32,13 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
 
-    const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
-    yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
-    yield put(CommonActions.setRedirectionDetails({ redirectionLink: '', shouldRedirect: false }));
+    if (!PlatformUtils.isWeb()) {
+      const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
+
+      if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
+        yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
+      }
+    }
 
     if (callback) {
       callback();

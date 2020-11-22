@@ -8,14 +8,14 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { IUpdatePassword, ResetPasswordTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IUpdatePassword, UpdateTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IChangePasswordForm {
   currentPassword: string;
@@ -126,7 +126,7 @@ class UpdatePassword extends Component<Props, IScreenState> {
     }
 
     const updatePayload: IUpdatePassword = {
-      action: UpdateTypes.UPDATE_PASSWORD,
+      action: ResetPasswordTypes.UPDATE_PASSWORD,
       payload: {
         old_password: currentPassword,
         new_password: newPassword,

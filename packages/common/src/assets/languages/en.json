@@ -135,7 +135,8 @@
     "categoryExample": "Eg. Leasing",
     "subject": "Subject",
     "subjectPlaceholder": "Enter subject here",
-    "homzhubTeam": "Homzhub team"
+    "homzhubTeam": "Homzhub team",
+    "invalidLink": "Can not open one of these links."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -196,7 +197,8 @@
     "currentPassword": "Your Current Password",
     "resetLink": "Reset Link has been sent to your email",
     "emailNotExists": "Email does not exists",
-    "validPhone": "Please enter a valid number"
+    "validPhone": "Please enter a valid number",
+    "PasswordChangedText": "Password changed! Log back in."
   },
   "property": {
     "searchInWeb": "Search for projects,location,builders",
@@ -648,7 +650,11 @@
     "otpVerificationText": "OTP Verification",
     "profileUpdatedSuccessfully": "Profile Updated Successfully",
     "editProfile": "Edit Profile",
-    "emailVerificationSetAlert": "A verification request has been sent to {{email}}"
+    "emailVerificationSetAlert": "A verification request has been sent to {{email}}",
+    "emailVerifiedText": "Email Verified!",
+    "emailVerifiedDescription": "You have successfully verified the email",
+    "emailNotVerifiedText": "Email Not Verified!",
+    "emailNotVerifiedDescription": "The email verification link has expired"
   },
   "webLoader": {
     "loadingText": "Loading Application..."

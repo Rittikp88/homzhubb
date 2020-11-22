@@ -27,7 +27,7 @@ export type AuthStackParamList = {
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
-  [ScreensKeys.SuccessResetPassword]: IScreenCallback;
+  [ScreensKeys.SuccessResetPassword]: undefined;
   [ScreensKeys.WebViewScreen]: IWebviewProps;
 };
 

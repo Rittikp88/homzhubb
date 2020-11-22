@@ -26,7 +26,10 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
   const navigation = useNavigation();
 
   const onProfilePress = useCallback(() => {
-    navigation.navigate(ScreensKeys.More);
+    navigation.navigate(ScreensKeys.More, {
+      screen: ScreensKeys.UserProfileScreen,
+      initial: false,
+    });
   }, [navigation]);
 
   return (

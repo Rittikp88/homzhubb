@@ -31,6 +31,7 @@ import {
   IForgotPasswordProps,
   IOtpNavProps,
   IUpdateProfileProps,
+  IVerifyEmail,
   IWebviewProps,
   NestedNavigatorParams,
   ScreensKeys,
@@ -48,6 +49,8 @@ import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
+import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
+import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -84,8 +87,8 @@ export type FinancialsNavigatorParamList = {
 };
 
 export type MoreStackNavigatorParamList = {
-  [ScreensKeys.More]: undefined;
-  [ScreensKeys.UserProfileScreen]: undefined;
+  [ScreensKeys.MoreScreen]: undefined;
+  [ScreensKeys.UserProfileScreen]: IVerifyEmail;
   [ScreensKeys.UpdateUserProfileScreen]: IUpdateProfileProps;
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.SettingsScreen]: undefined;
@@ -165,7 +168,7 @@ export const MoreStack = (): React.ReactElement => {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <MoreStackNavigator.Screen name={ScreensKeys.More} component={More} />
+      <MoreStackNavigator.Screen name={ScreensKeys.MoreScreen} component={More} />
       <MoreStackNavigator.Screen name={ScreensKeys.UserProfileScreen} component={UserProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdateUserProfileScreen} component={UpdateUserProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.OTP} component={Otp} />
@@ -177,6 +180,8 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
       <MoreStackNavigator.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
+      <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
+      <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <MoreStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
       <MoreStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
