@@ -23,6 +23,10 @@ class StoreProviderService {
     store.dispatch(UserActions.logoutSuccess());
   }
 
+  public logoutUserAndClearTokens(): void {
+    store.dispatch(UserActions.logout());
+  }
+
   public loginSuccess(tokens: IUserTokens): void {
     store.dispatch(UserActions.loginSuccess(tokens));
   }

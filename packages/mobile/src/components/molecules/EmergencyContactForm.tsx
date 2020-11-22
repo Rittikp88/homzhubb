@@ -16,6 +16,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   onFormSubmitSuccess?: () => void;
   formData?: IEmergencyContactForm;
+  basicDetails: IBasicDetails;
 }
 
 interface IEmergencyContactForm {
@@ -23,6 +24,11 @@ interface IEmergencyContactForm {
   phone: string;
   email: string;
   phoneCode: string;
+}
+
+interface IBasicDetails {
+  phone: string;
+  email: string;
 }
 
 export class EmergencyContactForm extends React.PureComponent<IProps, IEmergencyContactForm> {
@@ -131,12 +137,15 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
   };
 
   private formSchema = (): yup.ObjectSchema<IEmergencyContactForm> => {
-    const { t } = this.props;
+    const {
+      t,
+      basicDetails: { email, phone },
+    } = this.props;
 
     return yup.object().shape({
       name: yup.string().required(t('fieldRequiredError')),
-      phone: yup.string().required(t('fieldRequiredError')),
-      email: yup.string().required(t('fieldRequiredError')),
+      phone: yup.string().required(t('fieldRequiredError')).notOneOf([phone]),
+      email: yup.string().required(t('fieldRequiredError')).notOneOf([email]),
       phoneCode: yup.string(),
     });
   };

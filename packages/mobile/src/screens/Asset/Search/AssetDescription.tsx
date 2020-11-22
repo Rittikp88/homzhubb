@@ -12,7 +12,7 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { DynamicLinkTypes, LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -58,6 +58,7 @@ import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/do
 import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { DynamicLinkParamKeys, DynamicLinkTypes } from '@homzhub/mobile/src/services/constants';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -985,8 +986,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     // TODO: Remove once will get proper url
     const url = await LinkingService.buildShortLink(
-      DynamicLinkTypes.ASSET_DESCRIPTION,
-      `propertyTermId=${propertyTermId}`
+      DynamicLinkTypes.AssetDescription,
+      `${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
     );
 
     if (!isPreview) {

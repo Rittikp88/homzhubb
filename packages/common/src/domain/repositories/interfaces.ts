@@ -39,8 +39,10 @@ export enum VisitStatus {
   CANCELLED = 'CANCELLED',
 }
 
-export enum UpdateTypes {
+export enum ResetPasswordTypes {
   UPDATE_PASSWORD = 'UPDATE_PASSWORD',
+  SET_PASSWORD = 'SET_PASSWORD',
+  SEND_EMAIL = 'SEND_EMAIL',
 }
 
 export enum UpdateProfileTypes {
@@ -443,7 +445,7 @@ interface IPasswordPayload {
 }
 
 export interface IUpdatePassword {
-  action: UpdateTypes;
+  action: ResetPasswordTypes;
   payload: IPasswordPayload;
 }
 

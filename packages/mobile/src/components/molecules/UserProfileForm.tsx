@@ -97,7 +97,9 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                       imageSize={80}
                       fullName={userFullName || ''}
                       image={selectedImage.path ?? profileImage}
-                      onPressCamera={() => this.handleProfileImageUpload(formProps)}
+                      onPressCamera={(): void => {
+                        this.handleProfileImageUpload(formProps).then();
+                      }}
                       initialsContainerStyle={styles.initialsContainer}
                     />
                   </View>

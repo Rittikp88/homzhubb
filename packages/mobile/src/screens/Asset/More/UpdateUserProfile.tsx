@@ -93,6 +93,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               phone: emergencyContact.phoneNumber,
               phoneCode: emergencyContact.phoneCode,
             }}
+            basicDetails={{ email: userProfile.email, phone: userProfile.phoneNumber }}
           />
         );
       case UpdateUserFormTypes.WorkInfo:
@@ -103,6 +104,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               name: workInfo ? workInfo.companyName : '',
               email: workInfo ? workInfo.workEmail : '',
             }}
+            basicDetails={{ email: userProfile.email }}
           />
         );
       default:
@@ -193,7 +195,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   private updateProfileDetails = async (phoneOrEmailOtp: string, emailOtp?: string): Promise<void> => {
-    const { navigation, t } = this.props;
+    const { t } = this.props;
     const {
       personalDetails,
       profileUpdateResponse: { new_phone, new_email, phone_otp, email_otp },
@@ -219,14 +221,9 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
     try {
       await UserRepository.updateUserProfileByActions(payload);
-      AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
 
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{ name: ScreensKeys.More }, { name: ScreensKeys.UserProfileScreen }],
-        })
-      );
+      AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
+      this.goBack();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -234,7 +231,16 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
   private goBack = (): void => {
     const { navigation } = this.props;
-    navigation.goBack();
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [
+          { name: ScreensKeys.MoreScreen },
+          { name: ScreensKeys.UserProfileScreen, params: { verification_id: '' } },
+        ],
+      })
+    );
   };
 }
 

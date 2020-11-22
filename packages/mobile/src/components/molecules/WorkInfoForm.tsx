@@ -5,6 +5,7 @@ import { Formik, FormikProps, FormikValues } from 'formik';
 import { FormikHelpers } from 'formik/dist/types';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUpdateWorkInfo } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -16,10 +17,15 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   onFormSubmitSuccess?: () => void;
   formData?: IWorkInfoForm;
+  basicDetails: IBasicDetails;
 }
 
 interface IWorkInfoForm {
   name: string;
+  email: string;
+}
+
+interface IBasicDetails {
   email: string;
 }
 
@@ -114,16 +120,19 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
       }
     } catch (e) {
       formikHelpers.setSubmitting(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
   private formSchema = (): yup.ObjectSchema<IWorkInfoForm> => {
-    const { t } = this.props;
+    const {
+      t,
+      basicDetails: { email },
+    } = this.props;
 
     return yup.object().shape({
       name: yup.string().required(t('fieldRequiredError')),
-      email: yup.string().required(t('fieldRequiredError')),
+      email: yup.string().required(t('fieldRequiredError')).notOneOf([email]),
     });
   };
 }

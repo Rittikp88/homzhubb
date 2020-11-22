@@ -89,7 +89,7 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
                   <Icon size={20} name={icons.filledWarning} color={theme.colors.error} />
                 ))}
             </View>
-            {textType === 'EMAIL' && (
+            {textType === 'EMAIL' && !item.emailVerified && (
               <Label onPress={handleEmailVerifyPress} style={styles.verifyMail} type="large">
                 {t('moreProfile:verifyYourEmailText')}
               </Label>

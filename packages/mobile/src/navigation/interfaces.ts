@@ -89,6 +89,7 @@ export enum ScreensKeys {
   WebViewScreen = 'WebViewScreen',
 
   // More Stack
+  MoreScreen = 'MoreScreen',
   UserProfileScreen = 'UserProfileScreen',
   UpdateUserProfileScreen = 'UpdateUserProfileScreen',
   SettingsScreen = 'SettingsScreen',
@@ -124,8 +125,7 @@ export interface IVerificationProps extends IScreenCallback {
 }
 
 export interface IResetPasswordProps extends IScreenCallback {
-  token?: string | number;
-  email?: string;
+  verification_id: string;
 }
 
 export interface IForgotPasswordProps extends IScreenCallback {
@@ -189,4 +189,8 @@ export interface IUpdateProfileProps {
 export interface IComingSoon {
   title: string;
   tabHeader: string;
+}
+
+export interface IVerifyEmail {
+  verification_id: string;
 }

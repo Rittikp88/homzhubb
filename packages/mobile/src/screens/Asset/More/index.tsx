@@ -18,7 +18,7 @@ interface IDispatchProps {
   logout: () => void;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.More>;
+type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.MoreScreen>;
 type Props = libraryProps & IDispatchProps;
 
 export class More extends React.PureComponent<Props> {

@@ -7,6 +7,7 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { DynamicLinkParamKeys, DynamicLinkTypes } from '@homzhub/mobile/src/services/constants';
 
 // Todo: Import from firebase library
 type DynamicLinkType = {
@@ -17,11 +18,6 @@ type DynamicLinkType = {
 export interface IRedirectionDetails {
   redirectionLink: string;
   shouldRedirect: boolean;
-}
-
-export enum DynamicLinkTypes {
-  ASSET_DESCRIPTION = 'AssetDescription',
-  RESET_PASSWORD = 'RESET_PASSWORD',
 }
 
 const firebaseConfig = {
@@ -40,6 +36,7 @@ class LinkingService {
     await this.listenToDynamicLinks();
   };
 
+  // This method stores the dynamic link in the redux delegates the navigation errand to Navigation Service
   private handleDynamicLink = (url: string): void => {
     const store = StoreProviderService.getStore();
     const redirectionDetails = { redirectionLink: url, shouldRedirect: true };
@@ -48,7 +45,8 @@ class LinkingService {
     NavigationService.handleDynamicLinkNavigation(redirectionDetails).then();
   };
 
-  private listenToDynamicLinks = async (): Promise<any> => {
+  // This method listens to both background and foreground links
+  private listenToDynamicLinks = async (): Promise<void> => {
     /* This part of the code handles links opened when app is in foreground state */
     dynamicLinks().onLink((link: DynamicLinkType) => {
       this.handleDynamicLink(link.url);
@@ -76,10 +74,11 @@ class LinkingService {
       });
   };
 
+  // This methods helps to create a dynamic link using specified parameters
   public buildShortLink = async (type: DynamicLinkTypes, extraParams?: string): Promise<string> => {
     return await firebase.dynamicLinks().buildShortLink(
       {
-        link: `https://homzhub.com?type=${type}&${extraParams}`,
+        link: `https://homzhub.com?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
         android: {
           packageName: 'com.homzhub',
         },
