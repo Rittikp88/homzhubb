@@ -13,7 +13,6 @@ export interface IUserProfile extends IUser {
   email_verified: boolean;
   social_image_url: string;
   profile_progress: number;
-  profile_picture: string;
   referral_code: string;
   user_address: IAddress[];
   emergency_contact: IEmergencyContact;
@@ -33,9 +32,6 @@ export class UserProfile extends User {
 
   @JsonProperty('profile_progress', Number)
   private _profileProgress = 0;
-
-  @JsonProperty('profile_picture', String)
-  private _profilePicture = 0;
 
   @JsonProperty('referral_code', String)
   private _referralCode = '';
@@ -66,10 +62,6 @@ export class UserProfile extends User {
 
   get profileProgress(): number {
     return this._profileProgress;
-  }
-
-  get profilePicture(): string {
-    return this._profilePicture;
   }
 
   get referralCode(): string {

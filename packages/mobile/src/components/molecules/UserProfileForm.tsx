@@ -97,7 +97,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                       imageSize={80}
                       fullName={userFullName || ''}
                       image={selectedImage.path ?? profileImage}
-                      onPressCamera={this.handleProfileImageUpload}
+                      onPressCamera={() => this.handleProfileImageUpload(formProps)}
                       initialsContainerStyle={styles.initialsContainer}
                     />
                   </View>
@@ -224,7 +224,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     }
   };
 
-  private handleProfileImageUpload = async (): Promise<void> => {
+  private handleProfileImageUpload = async (formProps: FormikProps<IUserProfileForm>): Promise<void> => {
     try {
       // @ts-ignore
       const image: ImagePickerResponse = await ImagePicker.openPicker({
@@ -237,6 +237,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
         freeStyleCropEnabled: true,
       });
       this.setState({ selectedImage: image });
+      formProps.setFieldTouched('firstName');
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
