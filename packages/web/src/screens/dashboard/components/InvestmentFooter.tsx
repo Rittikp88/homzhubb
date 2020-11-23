@@ -1,8 +1,8 @@
 import React from 'react';
 import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment';
-import SalePropertyFooter from './SalePropertyFooter';
-import NewPropertyFooter from './NewPropertyFooter';
-import ReadyPropertyFooter from './ReadyPropertyFooter';
+import SalePropertyFooter from '@homzhub/web/src/screens/dashboard/components/SalePropertyFooter';
+import NewPropertyFooter from '@homzhub/web/src/screens/dashboard/components/NewPropertyFooter';
+import ReadyPropertyFooter from '@homzhub/web/src/screens/dashboard/components/ReadyPropertyFooter';
 
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
@@ -12,7 +12,6 @@ interface IProps {
 const InvestmentFooter = (props: IProps): React.ReactElement => {
   const { investmentData } = props;
   const { investmentStatus } = investmentData;
-  console.log('Type => ', investmentStatus);
   switch (investmentStatus) {
     case 'New':
       return <NewPropertyFooter />;

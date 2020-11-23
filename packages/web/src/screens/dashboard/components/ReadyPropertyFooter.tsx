@@ -20,12 +20,6 @@ const ReadyPropertyFooter = (): React.ReactElement => {
         containerStyle={styles.buttonVisit}
         titleStyle={styles.buttonScheduleText}
       />
-      {/* <View style={styles.buttonEnquiry}>
-               <Text>Enquiry</Text>
-           </View>
-           <View style={styles.buttonVisit}>
-               <Text>Schedule Visit</Text>
-           </View> */}
     </View>
   );
 };
@@ -47,7 +41,6 @@ const styles = StyleSheet.create({
   buttonEnquiry: {
     borderRadius: 4,
     width: 118,
-    // fontSize:"10%"
     padding: 0,
     justifyContent: 'center',
     borderStartColor: theme.colors.blue,
@@ -56,7 +49,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width: 156,
     paddingLeft: '2%',
-    // marginHorizontal:25
     justifyContent: 'center',
   },
   buttonEnquiryText: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
-// import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment'; //TODOS LAKSHIT
+// import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment'; //todos (LAKSHIT) - change dummy data with actual api data
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
@@ -11,11 +11,12 @@ import { PropertyAddress } from '@homzhub/common/src/components/molecules/Proper
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
-import InvestmentFooter from './InvestmentFooter';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import InvestmentFooter from '@homzhub/web/src/screens/dashboard/components/InvestmentFooter';
 
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
-  // investmentData: PropertyInvestment;
+  // investmentData: PropertyInvestment; todos (LAKSHIT) - change dummy data with actual api data
   investmentData: any;
 }
 
@@ -44,9 +45,6 @@ const InvestmentsCard = (props: IProps): React.ReactElement => {
     carpetAreaUnit?.title ?? '',
     true
   );
-  const handleInfo = (): void => {
-    // empty
-  };
 
   const propertyTitle = (param: string): string => {
     switch (param) {
@@ -88,7 +86,7 @@ const InvestmentsCard = (props: IProps): React.ReactElement => {
           <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
             {propertyType}
           </Typography>
-          <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={21} badgesInfo={badgeInfo} />
+          <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
         </View>
         <PropertyAddress
           isIcon={false}

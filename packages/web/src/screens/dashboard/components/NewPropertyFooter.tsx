@@ -47,9 +47,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // backgroundColor:theme.colors.error,
     backgroundColor: 'pink',
-    // opacity:0.1,
     paddingHorizontal: '4%',
   },
   infoDiscount: {
