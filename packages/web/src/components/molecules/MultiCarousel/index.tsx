@@ -1,18 +1,19 @@
 import React, { FC } from 'react';
-import Carousel from 'react-multi-carousel';
+import Carousel, { CarouselProps } from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import '@homzhub/web/src/components/molecules/MultiCarousel/MultiCarousel.scss';
 
 interface IProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  passedProps?: CarouselProps;
 }
 
-const responsive = {
+const defaultResponsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 1200 },
-    items: 4,
-    slidesToSlide: 4,
+    items: 3,
+    slidesToSlide: 3,
   },
   desktop: {
     breakpoint: { max: 1200, min: 1024 },
@@ -32,22 +33,20 @@ const responsive = {
 };
 
 const MultiCarousel: FC<IProps> = (props: IProps) => {
-  const { children } = props;
-  return (
-    <Carousel
-      arrows={false}
-      autoPlay
-      autoPlaySpeed={3000}
-      draggable
-      focusOnSelect={false}
-      infinite
-      renderDotsOutside
-      responsive={responsive}
-      showDots
-    >
-      {children}
-    </Carousel>
-  );
+  const { children, passedProps } = props;
+  const defaultProps = {
+    arrows: false,
+    autoPlay: false,
+    autoPlaySpeed: 3000,
+    draggable: true,
+    focusOnSelect: false,
+    infinite: true,
+    renderDotsOutside: true,
+    responsive: defaultResponsive,
+    showDots: true,
+  };
+  const carouselProps = passedProps ?? defaultProps;
+  return <Carousel {...carouselProps}>{children ?? <></>}</Carousel>;
 };
 
 export default MultiCarousel;

@@ -40,10 +40,9 @@ const MarketTrendsCard: FC = () => {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    maxWidth: 322,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
-    marginHorizontal: 4,
+    marginRight: 16,
     marginBottom: 25,
   },
   image: {
