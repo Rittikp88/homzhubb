@@ -12,10 +12,16 @@ import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader, FullScreenAssetDetailsCarousel, Loader } from '@homzhub/mobile/src/components';
+import {
+  AnimatedProfileHeader,
+  BottomSheetListView,
+  FullScreenAssetDetailsCarousel,
+  HeaderCard,
+  Loader,
+} from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -30,8 +36,13 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
+import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 
 const { height } = theme.viewport;
+
+// TODO: Need Refactor
+const menu = [{ label: 'Edit Listing', value: 'EDIT_LISTING' }];
 
 interface IStateProps {
   assetPayload: ISetAssetPayload;
@@ -39,6 +50,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   setAssetId: (payload: number) => void;
+  setSelectedPlan: (payload: ISelectedAssetPlan) => void;
 }
 
 interface IDetailState {
@@ -49,6 +61,8 @@ interface IDetailState {
   currentIndex: number;
   heights: number[];
   isLoading: boolean;
+  isMenuVisible: boolean;
+  selectedMenuItem: string;
 }
 
 interface IRoutes {
@@ -69,6 +83,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     currentIndex: 0,
     heights: Array(Routes.length).fill(height),
     isLoading: false,
+    isMenuVisible: false,
+    selectedMenuItem: '',
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -80,7 +96,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { currentIndex, propertyData, heights, isLoading } = this.state;
+    const { currentIndex, propertyData, heights, isLoading, isMenuVisible, selectedMenuItem } = this.state;
 
     if (isLoading) {
       return <Loader visible />;
@@ -90,16 +106,28 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       return null;
     }
 
+    const {
+      lastVisitedStep: {
+        listing: { isListingCreated },
+      },
+      assetStatusInfo,
+    } = propertyData;
+
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
+    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED && isListingCreated;
     return (
       <>
-        <AnimatedProfileHeader
-          title={title}
-          onBackPress={this.handleIconPress}
-          sectionHeader={t('propertyDetails')}
-          sectionTitleType="semiBold"
-        >
+        <AnimatedProfileHeader title={title}>
           <>
+            <HeaderCard
+              title={t('propertyDetails')}
+              onIconPress={this.handleIconPress}
+              handleIcon={this.handleMenuIcon}
+              titleFontWeight="semiBold"
+              titleTextSize="small"
+              iconSize={20}
+              icon={isMenuIconVisible ? icons.verticalDots : ''}
+            />
             <AssetCard
               assetData={propertyData}
               isDetailView
@@ -154,6 +182,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
           </>
         </AnimatedProfileHeader>
         {this.renderFullscreenCarousel()}
+        <BottomSheetListView
+          data={menu}
+          selectedValue={selectedMenuItem}
+          listTitle="Select action"
+          listHeight={200}
+          isBottomSheetVisible={isMenuVisible}
+          onCloseDropDown={this.onCloseMenu}
+          onSelectItem={this.onSelectMenuItem}
+        />
       </>
     );
   };
@@ -270,6 +307,32 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     });
   };
 
+  private onCloseMenu = (): void => {
+    this.setState({ isMenuVisible: false });
+  };
+
+  private onSelectMenuItem = (value: string): void => {
+    const { navigation, setSelectedPlan, setAssetId } = this.props;
+    const {
+      propertyData: {
+        id,
+        lastVisitedStep: {
+          listing: { type },
+        },
+      },
+    } = this.state;
+    if (value === 'EDIT_LISTING') {
+      setSelectedPlan({ id, selectedPlan: type });
+      setAssetId(id);
+      navigation.navigate(ScreensKeys.PropertyPostStack, {
+        screen: ScreensKeys.AssetLeaseListing,
+        params: { previousScreen: ScreensKeys.PropertyDetailScreen, isFromEdit: true },
+      });
+    }
+
+    this.onCloseMenu();
+  };
+
   private navigateToBookVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.SearchStack, {
@@ -312,6 +375,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { navigation } = this.props;
     navigation.goBack();
   };
+
+  private handleMenuIcon = (): void => {
+    this.setState({ isMenuVisible: true });
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -321,8 +388,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setAssetId } = RecordAssetActions;
-  return bindActionCreators({ setAssetId }, dispatch);
+  const { setAssetId, setSelectedPlan } = RecordAssetActions;
+  return bindActionCreators({ setAssetId, setSelectedPlan }, dispatch);
 };
 
 export default connect(

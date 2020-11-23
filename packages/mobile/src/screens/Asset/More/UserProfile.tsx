@@ -125,7 +125,6 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               containerStyles={styles.progressBar}
               title={t('assetMore:profile')}
               progress={profileProgress || 0}
-              width={theme.viewport.width > 400 ? 350 : 330}
             />
             <DetailsCard
               headerInfo={{ title: t('basicDetails'), icon: icons.noteBook, onPress: this.onUpdatePress }}

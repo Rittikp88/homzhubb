@@ -13,6 +13,7 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { GooglePlaceData, GooglePlaceDetail, Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -34,15 +35,11 @@ import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResult
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
-import {
-  ICarpetArea,
-  ICurrency,
-  IFilter,
-  IFilterDetails,
-  ITransactionRange,
-} from '@homzhub/common/src/domain/models/Search';
+import { ICarpetArea, IFilter, IFilterDetails, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
+import { Country } from '@homzhub/common/src/domain/models/Country';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -60,12 +57,13 @@ interface IStateProps {
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
   searchLocation: Point;
+  countryData: Country[];
   isLoggedIn: boolean;
+  defaultCurrency: Currency;
 }
 
-// TODO: (Shikha) Need to add types
 interface IDispatchProps {
-  setFilter: (payload: any) => void;
+  setFilter: (payload: IFilter) => void;
   getProperties: () => void;
   getPropertiesListView: () => void;
   setInitialFilters: () => void;
@@ -101,8 +99,15 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { filterData, filters, getFilterDetails, getProperties, navigation } = this.props;
+    const { filterData, filters, getFilterDetails, getProperties, navigation, setFilter, defaultCurrency } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
+      setFilter({ offset: 0 });
+      if (!filters.currency_code) {
+        setFilter({
+          currency_code: defaultCurrency.currencyCode,
+        });
+      }
+
       getProperties();
     });
 
@@ -246,7 +251,19 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     const { selectedOnScreenFilter, areaUnits } = this.state;
     const {
       filterData,
-      filters: { room_count, bath_count, asset_group, asset_type, min_price, max_price, min_area, max_area, area_unit },
+      countryData,
+      filters: {
+        room_count,
+        bath_count,
+        asset_group,
+        asset_type,
+        min_price,
+        max_price,
+        min_area,
+        max_area,
+        area_unit,
+        currency_code,
+      },
       setFilter,
       currencyData,
       getProperties,
@@ -264,9 +281,10 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       filters: { carpet_area },
     } = filterData;
 
-    currency.forEach((item: ICurrency) => {
-      currencySymbol = item.currency_symbol;
-    });
+    // TODO: Handle Multiple currency
+    const country = countryData.find((item) => item.currencies[0].currencyCode === currency_code);
+
+    currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currency_symbol;
 
     const updateFilter = (type: string, value: number | number[]): void => {
       setFilter({ [type]: value });
@@ -295,7 +313,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
         return (
           <Range
             dropdownData={currencyData}
-            selectedUnit="INR"
+            selectedUnit={currency_code}
             isPriceRange
             range={priceRange}
             currencySymbol={currencySymbol}
@@ -538,6 +556,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     const { setFilter, getProperties } = this.props;
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
+        this.setSearchedPropertyCurrency(placeDetail);
         setFilter({
           search_address: place.description,
           search_latitude: placeDetail.geometry.location.lat,
@@ -630,9 +649,11 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
   private handleDropdownValue = (value: string | number): void => {
     const { setFilter, getProperties } = this.props;
-    setFilter({ area_unit: value });
-    setFilter({ min_area: -1 });
-    setFilter({ max_area: -1 });
+    setFilter({
+      area_unit: value as number,
+      min_area: -1,
+      max_area: -1,
+    });
     getProperties();
   };
 
@@ -649,6 +670,15 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       propertyId,
     });
   };
+
+  private setSearchedPropertyCurrency = (placeDetail: GooglePlaceDetail): void => {
+    const { countryData, setFilter } = this.props;
+    const placeCountry = placeDetail.address_components.find((address) => address.types.includes('country'));
+    const country = countryData.find((item) => item.iso2Code === placeCountry?.short_name);
+    setFilter({
+      currency_code: country?.currencies[0].currencyCode,
+    });
+  };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -662,6 +692,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     getSearchLocationLatLong,
   } = SearchSelector;
   const { isLoggedIn } = UserSelector;
+  const { getCountryList, getDefaultCurrency } = CommonSelectors;
   return {
     properties: getProperties(state),
     filterData: getFilterDetail(state),
@@ -671,6 +702,8 @@ const mapStateToProps = (state: IState): IStateProps => {
     priceRange: getPriceRange(state),
     searchLocation: getSearchLocationLatLong(state),
     isLoggedIn: isLoggedIn(state),
+    countryData: getCountryList(state),
+    defaultCurrency: getDefaultCurrency(state),
   };
 };
 

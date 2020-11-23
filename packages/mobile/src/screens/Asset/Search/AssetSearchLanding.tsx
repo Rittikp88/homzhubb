@@ -11,6 +11,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -23,13 +24,15 @@ import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResult
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { WrapperSearchStackParamList } from '@homzhub/mobile/src/navigation/WrapperSearchStack';
-import { ICurrency, IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
+import { Country } from '@homzhub/common/src/domain/models/Country';
+import { IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
   filterData: IFilterDetails | null;
   filters: IFilter;
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
+  countryList: Country[];
   isLoading: boolean;
 }
 
@@ -135,7 +138,13 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
 
   private renderContent = (filterData: IFilterDetails): React.ReactElement => {
     const { selectedPropertyType, selectedLookingType, minPriceRange, maxPriceRange } = this.state;
-    const { t, currencyData, priceRange } = this.props;
+    const {
+      t,
+      currencyData,
+      priceRange,
+      filters: { currency_code },
+      countryList,
+    } = this.props;
     const {
       currency,
       asset_group_list,
@@ -147,9 +156,10 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
       return { title: item.title, value: item.id };
     });
 
-    currency.forEach((item: ICurrency) => {
-      currencySymbol = item.currency_symbol;
-    });
+    // TODO: Handle Multiple currency
+    const country = countryList.find((item) => item.currencies[0].currencyCode === currency_code);
+
+    currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currency_symbol;
 
     const assetTransaction = transaction_type.map((item, index) => {
       return { title: item.title, value: index };
@@ -176,7 +186,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
         <Range
           dropdownData={currencyData}
           isPriceRange
-          selectedUnit="INR"
+          selectedUnit={currency_code}
           currencySymbol={currencySymbol}
           onChangeSlide={this.updateFilter}
           range={priceRange}
@@ -252,6 +262,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     const { setFilter } = this.props;
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
+        this.setPropertiesCurrency(placeDetail);
         setFilter({
           search_address: place.description,
           search_latitude: placeDetail.geometry.location.lat,
@@ -326,6 +337,15 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
   private displayError = (e: Error): void => {
     AlertHelper.error({ message: e.message });
   };
+
+  private setPropertiesCurrency = (placeDetail: GooglePlaceDetail): void => {
+    const { countryList, setFilter } = this.props;
+    const placeCountry = placeDetail.address_components.find((address) => address.types.includes('country'));
+    const country = countryList.find((item) => item.iso2Code === placeCountry?.short_name);
+    setFilter({
+      currency_code: country?.currencies[0].currencyCode,
+    });
+  };
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
@@ -335,6 +355,7 @@ export const mapStateToProps = (state: IState): IStateProps => {
     currencyData: SearchSelector.getCurrencyData(state),
     priceRange: SearchSelector.getPriceRange(state),
     isLoading: SearchSelector.getLoadingState(state),
+    countryList: CommonSelectors.getCountryList(state),
   };
 };
 

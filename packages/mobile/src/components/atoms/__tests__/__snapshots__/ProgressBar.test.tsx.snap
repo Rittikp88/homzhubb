@@ -46,6 +46,7 @@ exports[`ProgressBar should match snapshot 1`] = `
         "borderColor": "#C9D6DF",
       }
     }
+    width={null}
   />
 </View>
 `;

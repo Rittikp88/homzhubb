@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
       width: 0,
       height: 0,
     },
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.6,
   },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   iconButton: {
-    padding: PlatformUtils.isWeb() ? 0 : 16,
+    paddingRight: 10,
     borderRadius: 4,
   },
 });

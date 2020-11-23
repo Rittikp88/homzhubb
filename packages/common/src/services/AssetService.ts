@@ -38,6 +38,7 @@ class AssetService {
       min_area,
       max_area,
       area_unit,
+      currency_code,
       miscellaneous: {
         show_verified,
         agent_listed,
@@ -61,6 +62,7 @@ class AssetService {
       longitude: search_longitude,
       limit,
       offset,
+      currency_code,
       bathroom__gte: bath_count,
       // move_in_date__gte: expected_move_in_date,
       ...(furnishing.length > 0 ? { furnishing__in: furnishing.toString() } : {}),

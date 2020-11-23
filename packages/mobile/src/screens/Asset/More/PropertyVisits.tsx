@@ -50,7 +50,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     const { t } = this.props;
     const { isCalendarView } = this.state;
     return (
-      <AnimatedProfileHeader isOuterScrollEnabled={false} title={t('assetMore:more')}>
+      <AnimatedProfileHeader isOuterScrollEnabled title={t('assetMore:more')}>
         <HeaderCard
           title={t('assetMore:propertyVisits')}
           titleFontWeight="semiBold"

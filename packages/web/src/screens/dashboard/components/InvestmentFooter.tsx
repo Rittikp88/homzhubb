@@ -1,12 +1,12 @@
 import React from 'react';
-import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import SalePropertyFooter from '@homzhub/web/src/screens/dashboard/components/SalePropertyFooter';
 import NewPropertyFooter from '@homzhub/web/src/screens/dashboard/components/NewPropertyFooter';
 import ReadyPropertyFooter from '@homzhub/web/src/screens/dashboard/components/ReadyPropertyFooter';
 
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
-  investmentData: PropertyInvestment;
+  investmentData: Asset;
 }
 
 const InvestmentFooter = (props: IProps): React.ReactElement => {

@@ -159,7 +159,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       <>
         {isCompleteDetailsRequired && (
           <>
-            <ProgressBar progress={percentage} width={theme.viewport.width > 400 ? 350 : 310} />
+            <ProgressBar progress={percentage} />
             <Button
               type="primary"
               title={t('completeDetails')}

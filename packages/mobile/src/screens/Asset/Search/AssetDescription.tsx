@@ -310,13 +310,23 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       saleTerm
     );
 
+    let currencyData = currencies[0];
+
+    if (leaseTerm && leaseTerm.currency) {
+      currencyData = leaseTerm.currency;
+    }
+
+    if (saleTerm && saleTerm.currency) {
+      currencyData = saleTerm.currency;
+    }
+
     return (
       <View style={styles.headerContainer}>
         <ShieldGroup propertyType={propertyType} text={description} isInfoRequired />
         <View style={styles.apartmentContainer}>
           <PricePerUnit
             price={(Number(leaseTerm?.expectedPrice) || Number(saleTerm?.expectedPrice)) ?? 0}
-            currency={currencies[0]}
+            currency={currencyData}
             unit={asset_transaction_type === 0 ? 'mo' : ''}
           />
           {appPermissions?.addListingVisit && (

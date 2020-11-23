@@ -17,7 +17,6 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { CollapsibleSection, Header, Loader, StateAwareComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
@@ -150,8 +149,6 @@ export class BookVisit extends Component<Props, IVisitState> {
             containerStyle={styles.textArea}
             onMessageChange={this.handleMessageChange}
           />
-        </ScrollView>
-        <WithShadowView>
           <Button
             type="primary"
             title={t('confirm')}
@@ -160,7 +157,7 @@ export class BookVisit extends Component<Props, IVisitState> {
             containerStyle={styles.buttonStyle}
             onPress={this.handleSubmit}
           />
-        </WithShadowView>
+        </ScrollView>
         <Loader visible={isSpinnerLoading} />
       </HandleBack>
     );
@@ -485,9 +482,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   buttonStyle: {
-    flex: 0,
-    flexDirection: 'row-reverse',
-    margin: 16,
+    marginVertical: 12,
   },
   buttonTitleStyle: {
     marginHorizontal: 12,

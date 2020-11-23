@@ -55,7 +55,8 @@ export const Range = (props: IProps): React.ReactElement => {
     }
   };
   const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(dropdownValue.toString(), value);
-  const currentCarpetAreaUnit = dropdownData.filter((obj: PickerItemProps) => obj.value === selectedUnit)[0].label;
+  const currentCarpetAreaUnit =
+    dropdownData.filter((obj: PickerItemProps) => obj.value === selectedUnit)[0]?.label ?? '';
   const getAreaValue = (value: number): string => `${value.toLocaleString()} ${currentCarpetAreaUnit}`;
 
   const maxChanged = isPriceRange

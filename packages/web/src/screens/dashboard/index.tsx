@@ -2,13 +2,13 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
-import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
 import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
 // import PropertyVisualsEstimates from './components/PropertyVisualEstimates'; todos Lakshit
 
 interface IProps {
-  investmentDataArray: PropertyInvestment[];
+  investmentDataArray: Asset[];
 }
 const Dashboard: FC<IProps> = (props: IProps) => {
   const { investmentDataArray } = props;

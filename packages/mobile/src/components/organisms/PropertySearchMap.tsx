@@ -123,6 +123,15 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
     const amenities = PropertyUtils.getAmenities(spaces, furnishing, code, carpetArea, carpetAreaUnit?.title ?? '');
     const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
     let isFavourite = isWishlisted ? isWishlisted.status : false;
+    let currencyData = item.country.currencies[0];
+
+    if (leaseTerm && leaseTerm.currency) {
+      currencyData = leaseTerm.currency;
+    }
+
+    if (saleTerm && saleTerm.currency) {
+      currencyData = saleTerm.currency;
+    }
 
     const navigateToAssetDetails = (): void => {
       if (leaseTerm) {
@@ -156,7 +165,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       <PropertyMapCard
         source={image[0]?.link ?? null}
         name={projectName}
-        currency={item.country.currencies[0]}
+        currency={currencyData}
         price={price}
         priceUnit={transaction_type === 0 ? 'mo' : ''}
         isFavorite={isFavourite}

@@ -82,6 +82,7 @@ export interface IAsset {
   facing: string;
   floor_type: string;
   last_visited_step: ILastVisitedStep;
+  investmentStatus?: string;
 }
 
 export interface IData {
@@ -350,6 +351,13 @@ export class Asset {
 
   @JsonProperty('listing_visits', AssetListingVisits, true)
   private _listingVisits = new AssetListingVisits();
+
+  @JsonProperty('investment status', String, true)
+  private _investmentStatus = '';
+
+  get investmentStatus(): string {
+    return this._investmentStatus;
+  }
 
   get projectName(): string {
     return this._projectName;
