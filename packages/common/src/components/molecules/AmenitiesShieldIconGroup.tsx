@@ -1,39 +1,31 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 
 interface IProps {
   iconSize: number;
   onBadgePress: () => void;
+  badgesInfo: IBadgeInfo[];
 }
 
-export const AmenitiesShieldIconGroup: FC<IProps> = ({ onBadgePress, iconSize }: IProps) => {
+interface IBadgeInfo {
+  color: string;
+}
+
+export const AmenitiesShieldIconGroup: FC<IProps> = ({ onBadgePress, iconSize, badgesInfo }: IProps) => {
   return (
     <View style={styles.badgesContainer}>
-      <Icon
-        name={icons.badge}
-        size={iconSize}
-        color={theme.colors.warning}
-        style={styles.badges}
-        onPress={onBadgePress}
-        testID="info"
-      />
-      <Icon
-        name={icons.badge}
-        size={iconSize}
-        color={theme.colors.warning}
-        style={styles.badges}
-        onPress={onBadgePress}
-      />
-      <Icon
-        name={icons.badge}
-        size={iconSize}
-        color={theme.colors.disabledPreference}
-        style={styles.badges}
-        onPress={onBadgePress}
-      />
+      {badgesInfo?.map((item, index) => (
+        <Icon
+          key={index}
+          name={icons.badge}
+          size={iconSize}
+          color={item.color}
+          style={styles.badges}
+          onPress={onBadgePress}
+        />
+      ))}
     </View>
   );
 };

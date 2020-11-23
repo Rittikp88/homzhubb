@@ -70,6 +70,11 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
   const handleInfo = (): void => {
     // empty
   };
+  const badgeInfo = [
+    { color: theme.colors.warning },
+    { color: theme.colors.warning },
+    { color: theme.colors.disabledPreference },
+  ];
   return (
     <View style={styles.container}>
       <View style={styles.headerInfo}>
@@ -102,7 +107,7 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
           )}
         </View>
         <View style={styles.propertyRating}>
-          <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={21} />
+          <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={21} badgesInfo={badgeInfo} />
         </View>
       </View>
       <View style={styles.actionBox}>

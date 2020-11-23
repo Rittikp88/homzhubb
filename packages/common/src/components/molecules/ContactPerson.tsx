@@ -5,6 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { ContactActions } from '@homzhub/common/src/domain/models/Search';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 interface IProps {
   fullName: string;
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: PlatformUtils.isWeb() ? 0 : 16,
     shadowColor: theme.colors.darkTint7,
     shadowOffset: {
       width: 0,

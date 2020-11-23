@@ -2,12 +2,21 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
+import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
+// import PropertyVisualsEstimates from './components/PropertyVisualEstimates'; todos Lakshit
 
-const Dashboard: FC = () => {
+interface IProps {
+  investmentDataArray: Asset[];
+}
+const Dashboard: FC<IProps> = (props: IProps) => {
+  const { investmentDataArray } = props;
   return (
     <View style={styles.container}>
+      {/* <PropertyVisualsEstimates /> */}
       <PropertyOverview />
+      <InvestmentsCarousel investmentData={investmentDataArray} />
       <MarketTrendsCarousel />
     </View>
   );
