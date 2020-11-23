@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { cloneDeep } from 'lodash';
-import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -36,12 +37,14 @@ const LEASE_UNIT = 'Lease Unit';
 export interface ILeaseFormData extends IFormData {
   selectedPreferences: TenantPreference[];
   spaces: LeaseSpaceUnit[];
+  status: string;
 }
 
 export const initialLeaseFormData: ILeaseFormData = {
   ...initialLeaseFormValues,
   spaces: [],
   selectedPreferences: [],
+  status: '',
 };
 
 interface IProps {
@@ -84,8 +87,13 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
         isSelected: !!match,
       };
     });
+    if (initialValues.status === 'APPROVED') {
+      AlertHelper.info({
+        message: t('property:propertyEditMsg'),
+      });
+    }
     setPreferences(toSet);
-  }, [preferences, initialValues.selectedPreferences]);
+  }, [preferences, initialValues.selectedPreferences, initialValues.status]);
 
   useEffect(() => {
     if (spaces.length <= 0 || (spaces.length > 0 && !route?.id)) {
@@ -155,6 +163,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
           .filter((pref: ICheckboxGroupData) => pref.isSelected)
           .map((pref: ICheckboxGroupData) => pref.id),
         furnishing: furnishingType,
+        is_edited: true,
         lease_unit: {
           name: route?.title ?? LEASE_UNIT,
           spaces: spaces

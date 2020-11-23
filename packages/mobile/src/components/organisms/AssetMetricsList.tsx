@@ -112,22 +112,22 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.header}>
-        <Logo style={styles.logo} width={48} height={48} />
+      <View style={[styles.header, !isSubTextRequired && styles.financialView]}>
+        <Logo style={styles.logo} width={50} height={50} />
         <View style={styles.headerCenter}>
           <Text type="regular" textType="bold" style={styles.assetCount}>
             {title}
           </Text>
           <View style={styles.propertiesRow}>
             {isSubTextRequired && (
-              <Text type="small" textType="semiBold" style={styles.propertyText}>
+              <Label type="large" textType="semiBold" style={styles.propertyText}>
                 {t('common:properties')}
-              </Text>
+              </Label>
             )}
             {subscription && (
               <>
                 <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.circleIcon} />
-                <Label type="large" textType="regular">
+                <Label type="regular" textType="regular" style={styles.textStyle}>
                   {`${t('common:homzhub')} ${subscription}`}
                 </Label>
               </>
@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 12,
   },
   headerCenter: {
@@ -183,7 +182,6 @@ const styles = StyleSheet.create({
   },
   propertiesRow: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   sliderRow: {
     flexDirection: 'row',
@@ -199,7 +197,7 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
   },
   circleIcon: {
-    paddingTop: 4,
+    paddingTop: 10,
     paddingHorizontal: 6,
   },
   logo: {
@@ -215,5 +213,11 @@ const styles = StyleSheet.create({
   inactiveDot: {
     backgroundColor: theme.colors.disabled,
     borderWidth: 0,
+  },
+  financialView: {
+    alignItems: 'center',
+  },
+  textStyle: {
+    width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 48 : undefined,
   },
 });

@@ -23,6 +23,7 @@ export interface ILeaseTermParams {
   tenant_preferences?: number[];
   furnishing?: FurnishingTypes;
   lease_unit?: ILeaseUnit;
+  is_edited?: boolean;
 }
 
 @JsonObject('LeaseTerm')
@@ -80,6 +81,9 @@ export class LeaseTerm {
 
   @JsonProperty('currency', Currency, true)
   private _currency = null;
+
+  @JsonProperty('status', String, true)
+  private _status = '';
 
   get tenantPreferences(): TenantPreference[] {
     return this._tenantPreferences;
@@ -151,5 +155,9 @@ export class LeaseTerm {
 
   get currency(): Currency | null {
     return this._currency;
+  }
+
+  get status(): string {
+    return this._status;
   }
 }

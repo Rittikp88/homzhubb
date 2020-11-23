@@ -51,6 +51,7 @@ interface IStateProps {
 interface IDispatchProps {
   setAssetId: (payload: number) => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
+  getAssetById: () => void;
 }
 
 interface IDetailState {
@@ -75,6 +76,7 @@ type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKe
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class PropertyDetailScreen extends Component<Props, IDetailState> {
+  public focusListener: any;
   public state = {
     propertyData: {} as Asset,
     isFullScreen: false,
@@ -87,9 +89,16 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     selectedMenuItem: '',
   };
 
-  public componentDidMount = async (): Promise<void> => {
-    await this.getAssetDetail();
+  public componentDidMount = (): void => {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('focus', () => {
+      this.getAssetDetail().then();
+    });
   };
+
+  public componentWillUnmount(): void {
+    this.focusListener();
+  }
 
   public render = (): React.ReactNode => {
     const {
@@ -125,7 +134,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
               handleIcon={this.handleMenuIcon}
               titleFontWeight="semiBold"
               titleTextSize="small"
-              iconSize={20}
+              iconSize={18}
+              iconBackSize={24}
               icon={isMenuIconVisible ? icons.verticalDots : ''}
             />
             <AssetCard
@@ -312,7 +322,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private onSelectMenuItem = (value: string): void => {
-    const { navigation, setSelectedPlan, setAssetId } = this.props;
+    const { navigation, setSelectedPlan, setAssetId, getAssetById } = this.props;
     const {
       propertyData: {
         id,
@@ -324,6 +334,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     if (value === 'EDIT_LISTING') {
       setSelectedPlan({ id, selectedPlan: type });
       setAssetId(id);
+      getAssetById();
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
         params: { previousScreen: ScreensKeys.PropertyDetailScreen, isFromEdit: true },
@@ -388,8 +399,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setAssetId, setSelectedPlan } = RecordAssetActions;
-  return bindActionCreators({ setAssetId, setSelectedPlan }, dispatch);
+  const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
+  return bindActionCreators({ setAssetId, setSelectedPlan, getAssetById }, dispatch);
 };
 
 export default connect(

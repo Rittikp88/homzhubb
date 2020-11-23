@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PickerItemProps, ScrollView, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, PickerItemProps, ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -42,6 +42,7 @@ interface IProps {
 interface IScreenState {
   isCancelSheet: boolean;
   currentVisitId: number;
+  height: number;
 }
 
 type Props = IProps & WithTranslation;
@@ -50,13 +51,15 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   public state = {
     isCancelSheet: false,
     currentVisitId: 0,
+    height: theme.viewport.height,
   };
 
   public render(): React.ReactNode {
     const { visitData, isLoading, t, dropdownData, dropdownValue, visitType, handleDropdown } = this.props;
+    const { height } = this.state;
     const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
     return (
-      <>
+      <View onLayout={this.onLayout}>
         <View style={styles.headerView}>
           <Label type="regular" style={styles.count}>
             {t('totalVisit', { totalVisit })}
@@ -72,7 +75,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
           />
         </View>
         {visitData.length > 0 ? (
-          <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ height }} showsVerticalScrollIndicator={false}>
             {visitData.map((item) => {
               const results = item.results as AssetVisit[];
               return (
@@ -98,7 +101,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         )}
         <Loader visible={isLoading} />
         {this.renderCancelConfirmation()}
-      </>
+      </View>
     );
   }
 
@@ -226,6 +229,15 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     this.setState({
       isCancelSheet: false,
     });
+  };
+
+  // TODO: Need to refactor
+  private onLayout = (e: LayoutChangeEvent): void => {
+    const { height } = this.state;
+    const { height: newHeight } = e.nativeEvent.layout;
+    if (newHeight === height) {
+      this.setState({ height: newHeight });
+    }
   };
 
   private getActions = (action: string): IVisitActions | null => {
@@ -360,9 +372,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
     marginHorizontal: 16,
-  },
-  scrollView: {
-    height: 450,
   },
   count: {
     color: theme.colors.darkTint6,
