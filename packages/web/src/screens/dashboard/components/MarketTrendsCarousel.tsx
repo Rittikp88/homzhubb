@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import MarketTrendsCard from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCard';
 
@@ -12,9 +12,14 @@ const MarketTrendsCarousel: FC = () => {
     <View style={styles.carouselContainer}>
       <View style={styles.titleContainer}>
         <Icon name={icons.increase} color={theme.colors.dark} size={24} style={styles.icon} />
-        <Text type="regular" textType="semiBold" style={styles.title}>
+        <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.title}>
           Market Trends
-        </Text>
+        </Typography>
+        <TouchableWithoutFeedback>
+          <Typography variant="text" size="small" fontWeight="regular" style={styles.viewAll}>
+            View all
+          </Typography>
+        </TouchableWithoutFeedback>
       </View>
       <MultiCarousel>
         <MarketTrendsCard />
@@ -38,13 +43,19 @@ const styles = StyleSheet.create({
   carouselContainer: {
     backgroundColor: theme.colors.background,
     marginVertical: 10,
+    marginRight: -16,
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   title: {
+    flex: 1,
     color: theme.colors.dark,
+  },
+  viewAll: {
+    color: theme.colors.primaryColor,
+    margin: 16,
   },
   icon: {
     margin: 12,

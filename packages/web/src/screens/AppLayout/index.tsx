@@ -16,7 +16,7 @@ const AppLayout: FC = () => {
   return (
     <View style={styles.container}>
       <Navbar />
-      <View style={[styles.mainContent]}>
+      <View style={styles.mainContent}>
         {!isTablet && <SideMenu onItemClick={sideMenuItemClicked} />}
         <MainRouter />
       </View>

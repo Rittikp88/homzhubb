@@ -1,4 +1,6 @@
 node_modules/
+config-overrides.js
+jest.config.js
 dist/
 src/react-app-env.d.ts
 src/serviceWorker.ts

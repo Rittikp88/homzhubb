@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   carouselContainer: {
     backgroundColor: theme.colors.background,
     marginVertical: 10,
+    marginRight: -16,
   },
   titleContainer: {
     flexDirection: 'row',
