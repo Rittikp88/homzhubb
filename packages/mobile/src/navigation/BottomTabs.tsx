@@ -226,13 +226,14 @@ export const BottomTabs = (): React.ReactElement => {
       tabBarOptions={{
         activeTintColor: theme.colors.primaryColor,
         keyboardHidesTabBar: true,
+        labelStyle: {
+          marginBottom: theme.viewport.width > 350 ? 0 : 20,
+        },
         style: {
           borderTopWidth: 2,
-          paddingTop: PlatformUtils.isIOS() ? 8 : 3,
-          paddingBottom: PlatformUtils.isIOS() ? 30 : 4,
           height: PlatformUtils.isIOS() ? 90 : 60,
           shadowColor: theme.colors.shadow,
-          shadowOpacity: 1,
+          shadowOpacity: 0.5,
           shadowRadius: 20,
           shadowOffset: { width: 0, height: 0 },
         },

@@ -1,6 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 
 export interface ICreateSaleTermParams {
   expected_price: number;
@@ -51,6 +52,9 @@ export class SaleTerm {
   @JsonProperty('description', String)
   private _description = '';
 
+  @JsonProperty('currency', Currency, true)
+  private _currency = null;
+
   get id(): number {
     return this._id;
   }
@@ -85,5 +89,9 @@ export class SaleTerm {
 
   get tenantedTill(): string {
     return this._tenantedTill;
+  }
+
+  get currency(): Currency | null {
+    return this._currency;
   }
 }

@@ -26,7 +26,7 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
       </View>
       <Progress.Bar
         progress={progress / 100}
-        width={width}
+        width={width ?? null}
         color={filledColor}
         style={styles.barStyle}
         borderRadius={5}

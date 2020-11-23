@@ -23,6 +23,7 @@ export const initialSearchState: ISearchState = {
     search_address: '',
     limit: 10,
     offset: 0,
+    currency_code: '',
     miscellaneous: {
       show_verified: false,
       agent_listed: false,
@@ -59,7 +60,7 @@ export const searchReducer = (
 ): ISearchState => {
   // Handle the reset filter but not deleting the lat, long and address
   // TODO: Need a better way for resetting the filter
-  const { search_latitude, search_longitude, search_address } = state.filter;
+  const { search_latitude, search_longitude, search_address, currency_code } = state.filter;
   const filterData = {
     search_latitude,
     search_longitude,
@@ -71,6 +72,7 @@ export const searchReducer = (
     asset_type: [],
     limit: 10,
     offset: 0,
+    currency_code,
   };
   switch (action.type) {
     case SearchActionTypes.GET.FILTER_DETAILS:

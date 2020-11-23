@@ -124,6 +124,7 @@ export interface IFilter {
   search_address?: string;
   limit?: number;
   offset?: number;
+  currency_code?: string;
   miscellaneous?: {
     show_verified: boolean;
     agent_listed: boolean;

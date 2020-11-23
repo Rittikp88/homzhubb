@@ -620,7 +620,8 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   };
 
   private handleSubmit = (): void => {
-    const { getProperties, navigation } = this.props;
+    const { getProperties, navigation, setFilter } = this.props;
+    setFilter({ offset: 0 });
     getProperties();
     navigation.goBack();
   };

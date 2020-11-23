@@ -1,8 +1,9 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LeaseUnit, ILeaseUnit } from '@homzhub/common/src/domain/models/LeaseUnit';
 import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 
 export interface ILeaseTermParams {
   lease_listing?: number;
@@ -77,6 +78,9 @@ export class LeaseTerm {
   @JsonProperty('lease_unit', LeaseUnit, true)
   private _leaseUnit = new LeaseUnit();
 
+  @JsonProperty('currency', Currency, true)
+  private _currency = null;
+
   get tenantPreferences(): TenantPreference[] {
     return this._tenantPreferences;
   }
@@ -143,5 +147,9 @@ export class LeaseTerm {
 
   get leaseUnit(): LeaseUnit {
     return this._leaseUnit;
+  }
+
+  get currency(): Currency | null {
+    return this._currency;
   }
 }
