@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.moreSeparator,
   },
   contentContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: theme.layout.screenPadding,
     paddingTop: 12,
     paddingBottom: 16,
   },

@@ -12,6 +12,19 @@ exports[`ShieldGroup should match snapshot 1`] = `
   }
 >
   <AmenitiesShieldIconGroup
+    badgesInfo={
+      Array [
+        Object {
+          "color": "#F9A901",
+        },
+        Object {
+          "color": "#F9A901",
+        },
+        Object {
+          "color": "#B3BBC3",
+        },
+      ]
+    }
     iconSize={23}
     onBadgePress={[Function]}
   />
@@ -74,6 +87,19 @@ exports[`ShieldGroup should match snapshot with props 1`] = `
     Villa
   </Text>
   <AmenitiesShieldIconGroup
+    badgesInfo={
+      Array [
+        Object {
+          "color": "#F9A901",
+        },
+        Object {
+          "color": "#F9A901",
+        },
+        Object {
+          "color": "#B3BBC3",
+        },
+      ]
+    }
     iconSize={23}
     onBadgePress={[Function]}
   />

@@ -95,7 +95,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
             return (
               <>
                 <View style={styles.containerStyle}>
-                  <AssetListingSection title={t('property:spacesText')}>
+                  <AssetListingSection contentContainerStyles={styles.paddingStyle} title={t('property:spacesText')}>
                     <PropertySpaces
                       flowType={FlowTypes.PostAssetFlow}
                       onChange={this.handleSpaceFormChange}
@@ -104,7 +104,9 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                   </AssetListingSection>
 
                   {descriptionDropdownValues && (
-                    <AssetDescriptionForm dropDownOptions={descriptionDropdownValues} formProps={formProps} />
+                    <AssetListingSection title={t('assetDescription:description')}>
+                      <AssetDescriptionForm dropDownOptions={descriptionDropdownValues} formProps={formProps} />
+                    </AssetListingSection>
                   )}
 
                   {descriptionDropdownValues && this.renderFurnishingFields(formProps)}
@@ -265,5 +267,8 @@ const styles = StyleSheet.create({
     height: 85,
     textAlignVertical: 'top',
     paddingTop: 10,
+  },
+  paddingStyle: {
+    paddingHorizontal: 0,
   },
 });
