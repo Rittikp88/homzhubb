@@ -1,16 +1,23 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import DonutChart from 'components/atoms/DonutChart';
-import ColumnChart from 'components/atoms/ColumnChart';
+import DonutChart from '@homzhub/web/src/components/atoms/DonutChart';
+import ColumnChart from '@homzhub/web/src/components/atoms/ColumnChart';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 const PropertyVisualsEstimates = (): React.ReactElement => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.donutChart}>
+        <Typography variant="label" size="large" fontWeight="bold">
+          Cost Breakdown
+        </Typography>
         <DonutChart />
       </View>
       <View style={styles.ColumnChart}>
+        <Typography variant="label" size="large" fontWeight="bold">
+          Cash Flow
+        </Typography>
         <ColumnChart />
       </View>
     </View>
@@ -25,7 +32,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: theme.colors.white,
-    marginHorizontal: 4,
     borderTopColor: theme.colors.background,
     borderTopWidth: 1,
     paddingBottom: 15,
