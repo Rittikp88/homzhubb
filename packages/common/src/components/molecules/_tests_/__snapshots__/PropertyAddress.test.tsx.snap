@@ -49,8 +49,10 @@ exports[`PropertyAddress should match snapshot with icon 1`] = `
         Array [
           Object {
             "color": "#33495E",
-            "marginHorizontal": 10,
             "marginVertical": 6,
+          },
+          Object {
+            "marginHorizontal": 10,
           },
           undefined,
         ]
@@ -107,9 +109,9 @@ exports[`PropertyAddress should match snapshot without icon 1`] = `
         Array [
           Object {
             "color": "#33495E",
-            "marginHorizontal": 10,
             "marginVertical": 6,
           },
+          undefined,
           undefined,
         ]
       }

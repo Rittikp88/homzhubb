@@ -30,7 +30,7 @@ export class UserProfile extends User {
   @JsonProperty('social_image_url', String)
   private _socialImageUrl = '';
 
-  @JsonProperty('profile_progress', Number)
+  @JsonProperty('profile_progress', Number, true)
   private _profileProgress = 0;
 
   @JsonProperty('referral_code', String)

@@ -81,7 +81,7 @@ export class Support extends Component<Props, IScreenState> {
             title={t('assetMore:support')}
             titleFontWeight="semiBold"
             subTitle={t('clear')}
-            iconSize={24}
+            iconBackSize={24}
             titleTextSize="small"
             renderItem={(): React.ReactElement | null => this.renderContent()}
             onIconPress={this.onGoBack}

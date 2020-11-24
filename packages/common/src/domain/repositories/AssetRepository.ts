@@ -10,7 +10,6 @@ import {
   IPropertyImagesPostPayload,
   IMarkCoverImageAttachment,
   IUpdateAssetParams,
-  IGetSaleTermsParams,
   IAssetVisitPayload,
   IUpdateVisitPayload,
   IRescheduleVisitPayload,
@@ -132,8 +131,8 @@ class AssetRepository {
     await this.apiClient.delete(ENDPOINTS.updateLeaseTerms(assetId, leaseUnitId));
   };
 
-  public getSaleTerms = async (propertyId: number, params: IGetSaleTermsParams): Promise<SaleTerm[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.saleTerms(propertyId), params);
+  public getSaleTerms = async (propertyId: number): Promise<SaleTerm[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.saleTerms(propertyId));
     return ObjectMapper.deserializeArray(SaleTerm, response);
   };
 

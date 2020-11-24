@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
@@ -22,9 +21,6 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
 
   return (
     <>
-      <Text type="small" style={styles.headingStyle}>
-        {t('assetDescription:description')}
-      </Text>
       <View style={styles.formContainer}>
         <View style={styles.contentView}>
           <View style={styles.subContentView}>
@@ -101,15 +97,8 @@ const memoizedComponent = React.memo(AssetDescriptionForm);
 export { memoizedComponent as AssetDescriptionForm };
 
 const styles = StyleSheet.create({
-  headingStyle: {
-    marginTop: 16,
-    paddingVertical: 16,
-    paddingLeft: 16,
-    backgroundColor: theme.colors.moreSeparator,
-  },
   formContainer: {
     backgroundColor: theme.colors.white,
-    paddingHorizontal: 24,
     paddingBottom: 24,
   },
   contentView: {

@@ -16,21 +16,23 @@ exports[`AssetMetricsList should match snapshot 1`] = `
 >
   <View
     style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "marginBottom": 12,
-      }
+      Array [
+        Object {
+          "flexDirection": "row",
+          "marginBottom": 12,
+        },
+        false,
+      ]
     }
   >
     <[object Object]
-      height={48}
+      height={50}
       style={
         Object {
           "marginEnd": 12,
         }
       }
-      width={48}
+      width={50}
     />
     <View
       style={
@@ -53,22 +55,21 @@ exports[`AssetMetricsList should match snapshot 1`] = `
       <View
         style={
           Object {
-            "alignItems": "center",
             "flexDirection": "row",
           }
         }
       >
-        <Text
+        <Label
           style={
             Object {
               "color": "#4C5F72",
             }
           }
           textType="semiBold"
-          type="small"
+          type="large"
         >
           common:properties
-        </Text>
+        </Label>
       </View>
     </View>
   </View>

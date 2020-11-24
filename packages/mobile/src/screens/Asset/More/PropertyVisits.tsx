@@ -55,7 +55,8 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
           title={t('assetMore:propertyVisits')}
           titleFontWeight="semiBold"
           titleTextSize="small"
-          iconSize={24}
+          iconBackSize={24}
+          iconStyle={styles.calendarStyle}
           renderItem={(): React.ReactElement => this.renderPropertyVisits()}
           onIconPress={this.handleBack}
           handleIcon={this.handleCalendarPress}
@@ -180,5 +181,8 @@ const styles = StyleSheet.create({
   },
   headerStyle: {
     paddingHorizontal: 10,
+  },
+  calendarStyle: {
+    paddingRight: 12,
   },
 });

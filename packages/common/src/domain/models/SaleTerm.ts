@@ -11,6 +11,7 @@ export interface ICreateSaleTermParams {
   maintenance_unit?: number;
   maintenance_payment_schedule?: ScheduleTypes;
   description?: string;
+  is_edited?: boolean;
 }
 
 export interface IUpdateSaleTermParams {
@@ -21,6 +22,7 @@ export interface IUpdateSaleTermParams {
   maintenance_unit?: number;
   maintenance_payment_schedule?: ScheduleTypes;
   description?: string;
+  is_edited?: boolean;
 }
 
 @JsonObject('SaleTerm')
@@ -54,6 +56,9 @@ export class SaleTerm {
 
   @JsonProperty('currency', Currency, true)
   private _currency = null;
+
+  @JsonProperty('status', String, true)
+  private _status = '';
 
   get id(): number {
     return this._id;
@@ -93,5 +98,9 @@ export class SaleTerm {
 
   get currency(): Currency | null {
     return this._currency;
+  }
+
+  get status(): string {
+    return this._status;
   }
 }

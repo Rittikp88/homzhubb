@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,6 +10,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface ITitle {
   title: string;
+  titleStyle?: TextStyle;
   id?: number;
 }
 
@@ -64,7 +65,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
       <View style={styles.imageContainer}>
         {svgImage && <SVGUri height={25} width={25} uri={svgImage} />}
         {name && (
-          <Text style={styles.textStyle} type="small">
+          <Text style={[styles.textStyle, name.titleStyle]} type="small">
             {name.title}
           </Text>
         )}
@@ -93,5 +94,6 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     marginLeft: 12,
+    width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 48 : undefined,
   },
 });

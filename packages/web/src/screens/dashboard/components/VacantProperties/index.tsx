@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import PropertyDetails from '@homzhub/web/src/screens/dashboard/components/VacantProperties/PeopertyDetails';
+import PropertyDetails from '@homzhub/web/src/screens/dashboard/components/VacantProperties/PropertyDetails';
 import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdate';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
