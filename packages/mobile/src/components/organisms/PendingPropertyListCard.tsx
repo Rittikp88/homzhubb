@@ -8,6 +8,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
 import { ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
@@ -52,6 +53,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
 
     return (
       <View style={styles.container}>
+        <OnFocusCallback callback={this.resetIndex} />
         <View style={styles.headingView}>
           <View style={styles.headingContent}>
             <Icon name={icons.warning} size={16} />
@@ -227,6 +229,10 @@ export class PendingPropertyListCard extends Component<Props, IState> {
     if (currentPropertyIndex !== 0) {
       this.setState({ currentPropertyIndex: currentPropertyIndex - 1 });
     }
+  };
+
+  private resetIndex = (): void => {
+    this.setState({ currentPropertyIndex: 0 });
   };
 
   private handleActions = (): void => {
