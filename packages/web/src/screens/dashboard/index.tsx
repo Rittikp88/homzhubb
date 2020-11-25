@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { theme } from '@homzhub/common/src/styles/theme';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
@@ -29,6 +28,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: theme.colors.background,
   },
 });

@@ -6,5 +6,6 @@ export const RouteNames = {
     /* Mention protected route names here */
     APP_BASE: '/',
     DASHBOARD: '/dashboard',
+    FINANCIALS: '/financial',
   },
 };

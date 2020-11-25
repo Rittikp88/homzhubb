@@ -51,8 +51,6 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingLeft: '7%',
     paddingRight: '7%',
-    marginBottom: 20,
-    display: 'flex',
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
     justifyContent: 'space-between',

@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
   container: {
     bottom: '0%',
     width: '100%',
-    display: 'flex',
-    flex: 12,
     flexDirection: 'row',
     backgroundColor: theme.colors.background,
     border: `1px solid ${theme.colors.darkTint9}`,

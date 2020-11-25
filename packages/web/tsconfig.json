@@ -18,6 +18,6 @@
     "emitDecoratorMetadata": true,
     "allowJs": true
   },
-  "include": ["src", " ../common/src/assets/images/declarations.d.ts"],
+  "include": ["src", "src/declarations.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
