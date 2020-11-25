@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactApexCharts from 'react-apexcharts';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { series } from '@homzhub/web/src/components/atoms/mockColumnData';
+import { seriesColumn } from '@homzhub/web/src/components/atoms/mockChartsData';
 
 interface IProps {
   data?: {};
@@ -53,7 +53,7 @@ const initConfig = {
 class ColumnChart extends React.PureComponent<IProps> {
   public render(): React.ReactNode {
     const { options } = initConfig;
-    return <ReactApexCharts options={options} series={series} type="bar" height={200} />;
+    return <ReactApexCharts options={options} series={seriesColumn} type="bar" height={200} />;
   }
 }
 

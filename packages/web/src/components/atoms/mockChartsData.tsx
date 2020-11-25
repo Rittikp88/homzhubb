@@ -1,4 +1,4 @@
-export const series = [
+export const seriesColumn = [
   {
     name: 'Expense',
     data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
@@ -8,3 +8,4 @@ export const series = [
     data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
   },
 ];
+export const seriesDonut = [44, 55, 41];
