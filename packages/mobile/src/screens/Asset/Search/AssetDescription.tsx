@@ -995,7 +995,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { propertyTermId, isPreview },
       },
     } = this.props;
-    // TODO: Remove once will get proper url
+
     const url = await LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
       `${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`

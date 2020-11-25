@@ -1,6 +1,11 @@
 import Config from 'react-native-config';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
+export enum AppModes {
+  DEBUG = 'DEBUG',
+  RELEASE = 'RELEASE',
+}
+
 // For WEB
 const {
   REACT_APP_API_BASE_URL = '',
@@ -10,6 +15,7 @@ const {
   REACT_APP_STORAGE_SECRET = '',
   REACT_APP_RAZOR_API_KEY = '',
   REACT_APP_YOUTUBE_API_KEY = '',
+  REACT_APP_MODE = AppModes.DEBUG,
 } = process.env;
 
 // For MOBILE
@@ -21,6 +27,7 @@ const {
   REACT_NATIVE_APP_OTP_LENGTH,
   REACT_NATIVE_APP_STORAGE_SECRET,
   REACT_NATIVE_APP_YOUTUBE_API_KEY,
+  REACT_NATIVE_APP_MODE = AppModes.DEBUG,
 } = Config;
 
 class ConfigHelper {
@@ -31,6 +38,7 @@ class ConfigHelper {
   private readonly storageKey: string;
   private readonly razorPayApiKey: string;
   private readonly youtubeApiKey: string;
+  private readonly appMode: AppModes;
 
   constructor() {
     this.baseUrl = REACT_APP_API_BASE_URL;
@@ -40,6 +48,8 @@ class ConfigHelper {
     this.storageKey = REACT_APP_STORAGE_SECRET;
     this.razorPayApiKey = REACT_APP_RAZOR_API_KEY;
     this.youtubeApiKey = REACT_APP_YOUTUBE_API_KEY;
+    this.youtubeApiKey = REACT_NATIVE_APP_MODE;
+    this.appMode = REACT_APP_MODE as AppModes;
 
     if (PlatformUtils.isMobile()) {
       this.baseUrl = REACT_NATIVE_APP_API_BASE_URL;
@@ -49,6 +59,7 @@ class ConfigHelper {
       this.storageKey = REACT_NATIVE_APP_STORAGE_SECRET;
       this.razorPayApiKey = REACT_NATIVE_APP_RAZOR_API_KEY;
       this.youtubeApiKey = REACT_NATIVE_APP_YOUTUBE_API_KEY;
+      this.appMode = REACT_NATIVE_APP_MODE as AppModes;
     }
   }
 
@@ -65,6 +76,8 @@ class ConfigHelper {
   public getRazorApiKey = (): string => this.razorPayApiKey;
 
   public getYoutubeApiKey = (): string => this.youtubeApiKey;
+
+  public getAppMode = (): AppModes => this.appMode;
 }
 
 const configHelper = new ConfigHelper();

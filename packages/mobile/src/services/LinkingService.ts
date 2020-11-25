@@ -32,7 +32,10 @@ const firebaseConfig = {
 
 class LinkingService {
   public firebaseInit = async (): Promise<void> => {
-    firebase.initializeApp(firebaseConfig);
+    if (firebase.apps.length === 0) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
     await this.listenToDynamicLinks();
   };
 

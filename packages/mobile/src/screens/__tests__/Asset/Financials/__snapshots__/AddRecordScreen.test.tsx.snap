@@ -1,23 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Add Record Screen should render snapshot 1`] = `
-<StateAwareComponent
-  loading={true}
-  renderComponent={
-    <UNDEFINED
-      title="financial"
-    >
-      <React.Fragment>
-        <HeaderCard
-          clear={false}
-          onClearPress={[Function]}
-          onIconPress={[Function]}
-          renderItem={[Function]}
-          subTitle="common:clear"
-          title="addRecords"
-        />
-      </React.Fragment>
-    </UNDEFINED>
-  }
-/>
+<Fragment>
+  <Memo(AnimatedProfileHeader)
+    title="financial"
+  >
+    <HeaderCard
+      clear={0}
+      onClearPress={[Function]}
+      onIconPress={[Function]}
+      renderItem={[Function]}
+      subTitle="common:clear"
+      title="addRecords"
+    />
+  </Memo(AnimatedProfileHeader)>
+  <Loader
+    visible={false}
+  />
+</Fragment>
 `;
