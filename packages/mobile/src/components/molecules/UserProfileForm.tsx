@@ -32,6 +32,7 @@ interface IProps extends WithTranslation {
   userFullName?: string;
   profileImage?: string;
   isPasswordVerificationRequired?: boolean;
+  updateFormLoadingState: (isLoading: boolean) => void;
 }
 
 export interface IUserProfileForm {
@@ -172,7 +173,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
   }
 
   private onSubmit = async (password?: string): Promise<void> => {
-    const { onFormSubmitSuccess } = this.props;
+    const { onFormSubmitSuccess, updateFormLoadingState } = this.props;
     const { userProfileForm, selectedImage } = this.state;
     const { firstName, lastName, email, phone, phoneCode } = userProfileForm;
     const profileDetails = {
@@ -196,12 +197,17 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     };
 
     try {
+      updateFormLoadingState(true);
+
       const response = await UserRepository.updateUserProfileByActions(payload);
       if (!ObjectUtils.isEmpty(selectedImage)) {
         await this.uploadProfileImage();
       }
+      updateFormLoadingState(false);
+
       onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
     } catch (e) {
+      updateFormLoadingState(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };

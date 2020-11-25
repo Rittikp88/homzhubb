@@ -17,15 +17,11 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   onFormSubmitSuccess?: () => void;
   formData?: IWorkInfoForm;
-  basicDetails: IBasicDetails;
+  updateFormLoadingState: (isLoading: boolean) => void;
 }
 
 interface IWorkInfoForm {
   name: string;
-  email: string;
-}
-
-interface IBasicDetails {
   email: string;
 }
 
@@ -103,7 +99,7 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
   }
 
   private onSubmit = async (values: IWorkInfoForm, formikHelpers: FormikHelpers<IWorkInfoForm>): Promise<void> => {
-    const { onFormSubmitSuccess } = this.props;
+    const { onFormSubmitSuccess, updateFormLoadingState } = this.props;
     formikHelpers.setSubmitting(true);
 
     const payload: IUpdateWorkInfo = {
@@ -112,27 +108,28 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
     };
 
     try {
+      updateFormLoadingState(true);
       await UserRepository.updateWorkInfo(payload);
+
       formikHelpers.setSubmitting(false);
+      updateFormLoadingState(false);
 
       if (onFormSubmitSuccess) {
         onFormSubmitSuccess();
       }
     } catch (e) {
+      updateFormLoadingState(false);
       formikHelpers.setSubmitting(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
   private formSchema = (): yup.ObjectSchema<IWorkInfoForm> => {
-    const {
-      t,
-      basicDetails: { email },
-    } = this.props;
+    const { t } = this.props;
 
     return yup.object().shape({
       name: yup.string().required(t('fieldRequiredError')),
-      email: yup.string().required(t('fieldRequiredError')).notOneOf([email]),
+      email: yup.string().required(t('fieldRequiredError')),
     });
   };
 }

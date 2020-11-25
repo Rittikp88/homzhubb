@@ -657,7 +657,8 @@
     "emailVerifiedText": "Email Verified!",
     "emailVerifiedDescription": "You have successfully verified the email",
     "emailNotVerifiedText": "Email Not Verified!",
-    "emailNotVerifiedDescription": "The email verification link has expired"
+    "emailNotVerifiedDescription": "The email verification link has expired",
+    "duplicateEmailError": "Email cannot be same as that of your personal email."
   },
   "webLoader": {
     "loadingText": "Loading Application..."
