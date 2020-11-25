@@ -12,7 +12,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 // CONSTANTS START
 
 const INITIAL_YEAR = 1893;
-const MAX_YEAR = 2036;
+const MAX_YEAR = Number(DateUtils.getNextYear(16));
 
 // CONSTANTS END
 
@@ -126,16 +126,14 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const { isOnlyYearView, selectedDate } = this.props;
     const onPressItem = (): void => (isMonthView ? this.onSelectMonth(item, index) : this.onSelectYear(item, index));
     const isSelected = isYearView ? year === item : isOnlyYearView ? selectedDate === item : month === index;
-    const isDisable = isOnlyYearView && item > year;
 
     return (
       <TouchableOpacity
         key={index}
-        disabled={isDisable}
         style={StyleSheet.flatten([customStyles.renderItemView(isSelected)])}
         onPress={onPressItem}
       >
-        <Label type="large" style={StyleSheet.flatten([customStyles.renderItemTitle(isSelected, isDisable)])}>
+        <Label type="large" style={StyleSheet.flatten([customStyles.renderItemTitle(isSelected)])}>
           {item}
         </Label>
       </TouchableOpacity>

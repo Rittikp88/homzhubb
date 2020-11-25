@@ -62,7 +62,7 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
       <Label type="regular" style={[styles.textColor, !comments && styles.detail]}>
         {t('visitDetails')}
       </Label>
-      <View style={styles.detailContainer}>
+      <View style={theme.viewport.width > 375 && styles.detailContainer}>
         <View style={styles.content}>
           <Text type="small" textType="semiBold" style={textStyle}>
             {DateUtils.getDisplayDate(dateTime[0], 'DD MMM')}
@@ -77,7 +77,10 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
             {time?.formatted}
           </Text>
         </View>
-        <TouchableOpacity style={styles.content} onPress={onPressSchedule}>
+        <TouchableOpacity
+          style={[styles.content, theme.viewport.width <= 375 && styles.extraMargin]}
+          onPress={onPressSchedule}
+        >
           <Icon name={icons.schedule} color={theme.colors.blue} size={20} />
           <Text type="small" style={styles.scheduleText}>
             {isCompletedVisit ? t('newVisit') : isRescheduleAll ? t('rescheduleAll') : t('reschedule')}
@@ -120,5 +123,8 @@ const styles = StyleSheet.create({
   scheduleText: {
     color: theme.colors.blue,
     marginStart: 6,
+  },
+  extraMargin: {
+    marginTop: 6,
   },
 });

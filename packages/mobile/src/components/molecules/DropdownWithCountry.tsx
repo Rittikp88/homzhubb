@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PickerItemProps, StyleSheet, View } from 'react-native';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 
@@ -61,12 +62,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
+    marginHorizontal: 16,
     alignItems: 'center',
     marginTop: 20,
   },
   image: {
-    marginRight: 20,
+    marginRight: 16,
     borderRadius: 4,
     width: 20,
     height: 12,
@@ -75,10 +76,10 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
   },
   text: {
-    marginRight: 40,
+    marginRight: 20,
   },
   labelDropdown: {
     paddingVertical: 8,
-    width: 200,
+    width: theme.viewport.width > 350 ? 200 : undefined,
   },
 });

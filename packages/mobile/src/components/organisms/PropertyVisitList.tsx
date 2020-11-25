@@ -59,7 +59,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     const { height } = this.state;
     const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
     return (
-      <View onLayout={this.onLayout}>
+      <View onLayout={this.onLayout} style={styles.mainView}>
         <View style={styles.headerView}>
           <Label type="regular" style={styles.count}>
             {t('totalVisit', { totalVisit })}
@@ -122,11 +122,10 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         <View style={containerStyle}>
           <Avatar
             fullName={user.fullName}
-            isRightIcon
             designation={userRole}
             rating={user.rating}
             date={createdAt}
-            containerStyle={styles.horizontalStyle}
+            containerStyle={styles.avatar}
           />
           <AddressWithVisitDetail
             primaryAddress={asset.projectName}
@@ -149,11 +148,12 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   private renderUpcomingView = (item: AssetVisit): React.ReactElement => {
     const { actions, status, id } = item;
     const visitStatus = this.getVisitStatus(status);
+    const isSmallerView = (visitStatus?.title?.length ?? 0) > 16 && theme.viewport.width < 350;
 
     return (
       <>
         <Divider containerStyles={styles.dividerStyle} />
-        <View style={styles.buttonView}>
+        <View style={isSmallerView ? styles.buttonSmallerView : styles.buttonView}>
           {actions.length < 2 && (
             <Button
               type="secondary"
@@ -178,7 +178,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
                 iconSize={20}
                 onPress={onPressButton}
                 title={actionData.title}
-                containerStyle={styles.statusView}
+                containerStyle={[styles.statusView, isSmallerView && styles.smallStatusView]}
                 titleStyle={[styles.actionTitle, { color: actionData.color }]}
               />
             );
@@ -231,7 +231,6 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     });
   };
 
-  // TODO: Need to refactor
   private onLayout = (e: LayoutChangeEvent): void => {
     const { height } = this.state;
     const { height: newHeight } = e.nativeEvent.layout;
@@ -332,6 +331,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 16,
   },
+  mainView: {
+    marginBottom: 75,
+  },
   container: {
     borderWidth: 1,
     borderRadius: 5,
@@ -348,8 +350,12 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
+    marginHorizontal: 16,
+  },
+  buttonSmallerView: {
+    alignItems: 'flex-start',
     marginHorizontal: 16,
   },
   statusView: {
@@ -360,7 +366,7 @@ const styles = StyleSheet.create({
   },
   statusTitle: {
     marginVertical: 0,
-    marginHorizontal: 8,
+    marginHorizontal: 6,
   },
   actionTitle: {
     marginVertical: 0,
@@ -409,5 +415,12 @@ const styles = StyleSheet.create({
   },
   emptyView: {
     marginBottom: 20,
+  },
+  avatar: {
+    paddingHorizontal: 10,
+  },
+  smallStatusView: {
+    marginRight: 10,
+    marginTop: 4,
   },
 });

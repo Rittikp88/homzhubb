@@ -31,7 +31,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     phoneNumber,
     rating,
     date,
-    isRightIcon,
+    isRightIcon = false,
     phoneCode,
     isOnlyAvatar = false,
     image,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   rightView: {
-    alignItems: 'flex-end',
+    width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 80 : undefined,
   },
   initialsContainer: {
     ...(theme.circleCSS(42) as object),
@@ -142,8 +142,9 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
   },
   nameContainer: {
-    marginHorizontal: 12,
-    maxWidth: 200,
+    marginLeft: 12,
+    marginRight: 6,
+    width: theme.viewport.width / 2 - 40,
   },
   numberContainer: {
     flexDirection: 'row',

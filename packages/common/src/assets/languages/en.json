@@ -394,7 +394,8 @@
     "paymentSuccessMsg": "The payment was completed successfully.",
     "previewOwnProperty": "Click on \"Continue\" to preview your property",
     "validVideoUrl": "Enter a valid video url",
-    "propertyEditMsg": "You are about to edit your property. Until the changes are reviewed, your property will not appear in the search results"
+    "propertyEditMsg": "You are about to edit your property. Until the changes are reviewed, your property will not appear in the search results",
+    "yearOfPossession": "Year of Possession"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

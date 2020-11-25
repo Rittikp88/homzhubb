@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: 12,
-    minWidth: theme.viewport.width > 400 ? 350 : 300,
+    width: '100%',
     height: 200,
   },
   detailViewImage: {

@@ -76,7 +76,6 @@ type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKe
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class PropertyDetailScreen extends Component<Props, IDetailState> {
-  public focusListener: any;
   public state = {
     propertyData: {} as Asset,
     isFullScreen: false,
@@ -89,16 +88,9 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     selectedMenuItem: '',
   };
 
-  public componentDidMount = (): void => {
-    const { navigation } = this.props;
-    this.focusListener = navigation.addListener('focus', () => {
-      this.getAssetDetail().then();
-    });
+  public componentDidMount = async (): Promise<void> => {
+    await this.getAssetDetail();
   };
-
-  public componentWillUnmount(): void {
-    this.focusListener();
-  }
 
   public render = (): React.ReactNode => {
     const {
@@ -176,7 +168,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
                     renderLabel={({ route }): React.ReactElement => {
                       const isSelected = currentRoute.key === route.key;
                       return (
-                        <Text type="small" style={{ color: isSelected ? theme.colors.blue : theme.colors.darkTint3 }}>
+                        <Text
+                          type="small"
+                          style={[
+                            styles.label,
+                            isSelected && {
+                              color: theme.colors.blue,
+                            },
+                          ]}
+                        >
                           {route.title}
                         </Text>
                       );
@@ -411,5 +411,9 @@ export default connect(
 const styles = StyleSheet.create({
   card: {
     borderRadius: 0,
+  },
+  label: {
+    textAlign: 'center',
+    color: theme.colors.darkTint3,
   },
 });
