@@ -6,10 +6,11 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
-import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
-import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
-import { PendingPropertiesCard } from '@homzhub/web/src/components';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
+import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
+import { PendingPropertiesCard } from '@homzhub/web/src/components';
+import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 import { PendingProperties } from '@homzhub/common/src/mocks/PendingProperties';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
@@ -24,6 +25,7 @@ const Dashboard: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <PropertyOverview />
+      <PropertyVisualsEstimates />
       <View style={[styles.wrapper, isMobile && styles.row]}>
         <PendingPropertiesCard data={dummyData} />
         <UserSubscriptionPlan onApiFailure={FunctionUtils.noop} />
