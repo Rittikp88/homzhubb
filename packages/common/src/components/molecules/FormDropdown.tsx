@@ -54,6 +54,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
     } = this.props;
     const { values, errors, touched, setFieldValue, setFieldTouched } = formProps;
 
+    let errorStyle = {};
     let labelStyles = { ...theme.form.formLabel };
 
     const onSelect = (value: any): void => {
@@ -72,6 +73,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
 
     if (error) {
       labelStyles = { ...labelStyles, color: theme.colors.error };
+      errorStyle = { borderColor: theme.colors.error };
     }
 
     let TextField = Text;
@@ -97,7 +99,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
           placeholder={placeholder}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
-          containerStyle={dropdownContainerStyle}
+          containerStyle={StyleSheet.flatten([dropdownContainerStyle, errorStyle])}
           maxLabelLength={maxLabelLength}
           numColumns={numColumns}
         />

@@ -30,16 +30,17 @@ enum FormType {
 }
 
 interface IFormData {
-  property: number;
+  property: string;
   label: string;
   tellerName?: string;
-  amount: number;
-  category: number;
+  amount: string;
+  category: string;
   date: string;
   notes?: string;
 }
 
 interface IState {
+  ledgerCategories: LedgerCategory[];
   selectedFormType: FormType;
   formValues: IFormData;
   attachment?: IDocumentSource;
@@ -49,20 +50,19 @@ interface IState {
 
 interface IOwnProps extends WithTranslation {
   properties: Asset[];
-  ledgerCategories: LedgerCategory[];
   onSubmitFormSuccess?: () => void;
-  clear: boolean;
+  clear: number;
   onFormClear: () => void;
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
-  shouldLoad: (isLoading: boolean) => void;
+  toggleLoading: (isLoading: boolean) => void;
   defaultCurrency: Currency;
 }
 
 const MAX_WORD_COUNT = 200;
 
 export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
-  private resetForm: ((nextValues?: FormikValues) => void) | undefined;
+  public formRef: React.RefObject<any> = React.createRef();
 
   public constructor(props: IOwnProps) {
     super(props);
@@ -72,25 +72,42 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       attachment: undefined,
       currencyCode,
       currencySymbol,
+      ledgerCategories: [],
       formValues: {
-        property: 0,
+        property: '',
         label: '',
         tellerName: '',
-        amount: 0,
-        category: 0,
+        amount: '',
+        category: '',
         date: DateUtils.getCurrentDate(),
         notes: '',
       },
     };
   }
 
+  public async componentDidMount(): Promise<void> {
+    const { toggleLoading } = this.props;
+
+    toggleLoading(true);
+    const categories = await LedgerRepository.getLedgerCategories();
+
+    this.setState({ ledgerCategories: categories });
+    toggleLoading(false);
+  }
+
+  public componentDidUpdate = (prevProps: IOwnProps): void => {
+    const { clear: newVal } = this.props;
+    const { clear: oldVal } = prevProps;
+
+    if (newVal !== oldVal) {
+      this.formRef.current.resetForm();
+    }
+  };
+
   public render(): ReactElement {
-    const { containerStyles, t, clear } = this.props;
+    const { containerStyles, t } = this.props;
     const { selectedFormType, formValues, currencyCode, currencySymbol } = this.state;
 
-    if (clear) {
-      this.clearForm();
-    }
     // @ts-ignore
     return (
       <View style={containerStyles}>
@@ -103,6 +120,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
           onValueChange={this.onFormTypeChange}
         />
         <Formik
+          innerRef={this.formRef}
           onSubmit={this.handleSubmit}
           initialValues={{ ...formValues }}
           validate={FormUtils.validate(this.formSchema)}
@@ -112,7 +130,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
             const handleNotes = (value: string): void => {
               formProps.setFieldValue('notes', value);
             };
-            this.initializeReset(formProps);
 
             return (
               <>
@@ -123,6 +140,8 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   placeholder={t('selectProperty')}
                   maxLabelLength={36}
                   onChange={this.onChangeProperty}
+                  isMandatory
+                  label={t('property')}
                   listHeight={theme.viewport.height * 0.8}
                 />
                 <FormTextInput
@@ -222,21 +241,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     }
   };
 
-  private initializeReset = (formProps: FormikProps<FormikValues>): void => {
-    if (!this.resetForm) {
-      this.resetForm = formProps.resetForm;
-    }
-  };
-
-  private clearForm = (): void => {
-    const { onFormClear } = this.props;
-
-    if (this.resetForm && onFormClear) {
-      this.resetForm();
-      onFormClear();
-    }
-  };
-
   private loadPropertyNames = (): IDropdownOption[] => {
     const { properties } = this.props;
 
@@ -246,8 +250,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 
   private loadCategories = (): IDropdownOption[] => {
-    const { ledgerCategories } = this.props;
-    const { selectedFormType } = this.state;
+    const { selectedFormType, ledgerCategories } = this.state;
     const entryType = selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit;
 
     return LedgerUtils.filterByType<LedgerCategory, LedgerTypes>(entryType, ledgerCategories).map(
@@ -261,11 +264,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { t } = this.props;
 
     return yup.object().shape({
-      property: yup.number().required(t('propertyError')),
+      property: yup.string().required(t('propertyError')),
       label: yup.string().required(t('detailsError')),
       tellerName: yup.string().optional(),
-      amount: yup.number().required(t('amountError')),
-      category: yup.number().required(t('categoryError')),
+      amount: yup.string().required(t('amountError')),
+      category: yup.string().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
       notes: yup.string().optional(),
     });
@@ -288,10 +291,10 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     const { property, label, tellerName, amount, category, notes, date } = values;
     const { selectedFormType, attachment, currencyCode } = this.state;
-    const { shouldLoad } = this.props;
+    const { toggleLoading } = this.props;
     let attachmentId = 0;
 
-    shouldLoad(true);
+    toggleLoading(true);
 
     try {
       if (attachment) {
@@ -310,11 +313,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         selectedFormType === FormType.Income ? { payer_name: tellerName } : { receiver_name: tellerName };
 
       const payload = {
-        asset: property,
+        asset: Number(property),
         entry_type: selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit,
         label,
         ...(tellerName && tellerInfo),
-        amount,
+        amount: Number(amount),
         category: Number(category),
         transaction_date: date,
         ...(notes && { notes }),
@@ -323,7 +326,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       };
 
       await LedgerRepository.postGeneralLedgers(payload);
-      shouldLoad(false);
+      toggleLoading(false);
       formActions.setSubmitting(false);
 
       const { onSubmitFormSuccess } = this.props;
@@ -331,7 +334,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         onSubmitFormSuccess();
       }
     } catch (e) {
-      shouldLoad(false);
+      toggleLoading(false);
 
       formActions.setSubmitting(false);
       formActions.resetForm({});

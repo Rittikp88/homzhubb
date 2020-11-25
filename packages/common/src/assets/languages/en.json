@@ -564,6 +564,7 @@
     "amount": "Amount",
     "amountPlaceholder": "Enter your money",
     "category": "Category",
+    "property": "Property",
     "categoryPlaceholder": "Select your category",
     "addDate": "Add date",
     "addDatePlaceholder": "Select a date",

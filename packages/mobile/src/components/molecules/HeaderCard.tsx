@@ -14,7 +14,7 @@ interface IOwnProps {
   handleIcon?: () => void;
   onIconPress?: () => void;
   onClearPress?: () => void;
-  clear?: boolean;
+  clear?: number;
   iconSize?: number;
   iconStyle?: StyleProp<ViewStyle>;
   containerStyles?: StyleProp<ViewStyle>;
