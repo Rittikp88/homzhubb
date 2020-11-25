@@ -291,6 +291,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
+    paddingBottom: 12,
   },
   saveUnit: {
     marginEnd: 16,

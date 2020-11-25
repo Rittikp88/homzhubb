@@ -10,6 +10,7 @@ import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
@@ -122,6 +123,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   placeholder={t('selectProperty')}
                   maxLabelLength={36}
                   onChange={this.onChangeProperty}
+                  listHeight={theme.viewport.height * 0.8}
                 />
                 <FormTextInput
                   formProps={formProps}

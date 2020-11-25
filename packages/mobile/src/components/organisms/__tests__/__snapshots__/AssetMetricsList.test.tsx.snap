@@ -7,8 +7,7 @@ exports[`AssetMetricsList should match snapshot 1`] = `
       Object {
         "backgroundColor": "#FFFFFF",
         "borderRadius": 4,
-        "paddingHorizontal": 16,
-        "paddingVertical": 12,
+        "padding": 12,
       },
       undefined,
     ]
@@ -144,9 +143,9 @@ exports[`AssetMetricsList should match snapshot 1`] = `
       ]
     }
     carouselItem={[Function]}
-    itemWidth={686}
+    itemWidth={694}
     onSnapToItem={[Function]}
-    sliderWidth={686}
+    sliderWidth={694}
   />
   <PaginationComponent
     activeDotStyle={

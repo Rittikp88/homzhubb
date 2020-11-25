@@ -40,7 +40,6 @@ export { OtpTypes } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 export { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
-export { PropertyListImageCarousel } from '@homzhub/mobile/src/components/molecules/PropertyListImageCarousel';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 export { Range } from '@homzhub/mobile/src/components/molecules/Range';
 export { RentAndMaintenance } from '@homzhub/mobile/src/components/molecules/RentAndMaintenance';

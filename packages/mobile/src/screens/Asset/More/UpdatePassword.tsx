@@ -46,6 +46,7 @@ class UpdatePassword extends Component<Props, IScreenState> {
         sectionHeader={t('moreProfile:changePassword')}
         sectionTitleType="semiBold"
         onBackPress={this.goBack}
+        keyboardShouldPersistTaps
       >
         {this.renderForm()}
       </AnimatedProfileHeader>

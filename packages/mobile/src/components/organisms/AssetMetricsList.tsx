@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -32,8 +32,8 @@ interface IProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-const SLIDER_WIDTH = theme.viewport.width - theme.layout.screenPadding * 4;
-
+const COMPONENT_PADDING = 12;
+const SLIDER_WIDTH = theme.viewport.width - (theme.layout.screenPadding * 2 + COMPONENT_PADDING * 2);
 const AssetMetricsList = (props: IProps): React.ReactElement => {
   const {
     title = 0,
@@ -51,13 +51,6 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
   // HOOKS
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const itemWidth = useRef((SLIDER_WIDTH - 12 * (numOfElements - 1)) / numOfElements);
-  useEffect(() => {
-    itemWidth.current = (SLIDER_WIDTH - 12 * (numOfElements - 1)) / numOfElements;
-  }, [numOfElements]);
-  // HOOKS END
-
   // HELPERS
   const bubblePlusIcon = useCallback((): void => {
     if (onPlusIconClicked) {
@@ -80,10 +73,9 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     (items: IMetricsData[]): React.ReactElement => {
       return (
         <View style={styles.sliderRow}>
-          {items.map((item: IMetricsData, index: number) => {
+          {items.map((item: IMetricsData) => {
             const cardStyle = {
-              minWidth: itemWidth.current,
-              marginEnd: index === numOfElements - 1 ? 0 : 12,
+              minWidth: (SLIDER_WIDTH - COMPONENT_PADDING * (numOfElements - 1)) / numOfElements,
             };
             const handlePress = (): void => onMetricsClicked && onMetricsClicked(item.name);
 
@@ -168,8 +160,7 @@ export { memoizedComponent as AssetMetricsList };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 12,
-    paddingHorizontal: theme.layout.screenPadding,
+    padding: COMPONENT_PADDING,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
   },
@@ -184,6 +175,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   sliderRow: {
+    justifyContent: 'space-between',
     flexDirection: 'row',
   },
   paginationContainer: {

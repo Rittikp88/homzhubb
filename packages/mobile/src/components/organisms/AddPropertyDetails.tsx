@@ -104,7 +104,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                   </AssetListingSection>
 
                   {descriptionDropdownValues && (
-                    <AssetListingSection title={t('assetDescription:description')}>
+                    <AssetListingSection title={t('assetDescription:description')} containerStyles={styles.description}>
                       <AssetDescriptionForm dropDownOptions={descriptionDropdownValues} formProps={formProps} />
                     </AssetListingSection>
                   )}
@@ -270,5 +270,8 @@ const styles = StyleSheet.create({
   },
   paddingStyle: {
     paddingHorizontal: 0,
+  },
+  description: {
+    marginTop: 16,
   },
 });

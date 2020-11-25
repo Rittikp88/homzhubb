@@ -14,11 +14,11 @@ import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 // CONSTANTS
 const SEARCH_RADIUS_KILO_METRE = [50, 5, 0.25, 10, 0.5, 20, 1, 30, 3, 40];
 const DATE_ADDED = [
-  -1,
-  DateUtils.getDate(3),
-  DateUtils.getDate(14),
+  null,
   DateUtils.getDate(1),
+  DateUtils.getDate(3),
   DateUtils.getDate(7),
+  DateUtils.getDate(14),
   DateUtils.getDate(28),
 ];
 

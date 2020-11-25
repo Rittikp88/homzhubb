@@ -109,6 +109,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
               containerStyle={styles.assetCards}
               onMetricsClicked={this.onMetricsClicked}
               selectedAssetType={assetType}
+              numOfElements={2}
             />
             {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
             {this.renderPortfolio(properties)}
@@ -147,8 +148,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
     const { t, currentFilter } = this.props;
     const { assetType } = this.state;
-    const filter = currentFilter.toLowerCase();
-    const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties', { filter });
+    const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
 
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
 

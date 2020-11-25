@@ -22,7 +22,7 @@ import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { BottomSheet } from '@homzhub/mobile/src/components';
+import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import PasswordVerificationForm from '@homzhub/mobile/src/components/molecules/PasswordVerificationForm';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 

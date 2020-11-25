@@ -92,6 +92,8 @@ const opacity = {
   greenOpacity: '#DDF4E7',
   blueOpacity: 'rgba(0, 132, 248, 0.1)',
   reviewCardOpacity: 'rgba(44, 186, 103, 0.1)',
+  disabledOpacity: 'rgba(153, 164, 175, 0.1)',
+  activeOpacity: 'rgba(0, 132, 248, 0.1)',
 };
 
 const gradientAssetMetrics = {

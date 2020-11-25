@@ -8,7 +8,6 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AnimatedProfileHeader, HeaderCard, StateAwareComponent } from '@homzhub/mobile/src/components';
 import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -18,13 +17,13 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IScreenState {
   ledgerCategories: LedgerCategory[];
-  properties: Asset[];
   clearForm: boolean;
   isLoading: boolean;
 }
 
 interface IStateToProps {
   currency: Currency;
+  assets: Asset[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.AddRecordScreen>;
@@ -33,7 +32,6 @@ type IProps = libraryProps & IStateToProps;
 export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
   public state = {
     ledgerCategories: [],
-    properties: [],
     isLoading: false,
     clearForm: false,
   };
@@ -42,9 +40,8 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
     this.setState({ isLoading: true });
 
     const categories = await LedgerRepository.getLedgerCategories();
-    const properties = await AssetRepository.getPropertiesByStatus();
 
-    this.setState({ ledgerCategories: categories, properties, isLoading: false });
+    this.setState({ ledgerCategories: categories, isLoading: false });
   }
 
   public render(): ReactElement {
@@ -73,12 +70,12 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
   };
 
   private renderAddRecordForm = (): ReactElement => {
-    const { clearForm, ledgerCategories, properties } = this.state;
-    const { currency } = this.props;
+    const { clearForm, ledgerCategories } = this.state;
+    const { currency, assets } = this.props;
 
     return (
       <AddRecordForm
-        properties={properties}
+        properties={assets}
         ledgerCategories={ledgerCategories}
         clear={clearForm}
         defaultCurrency={currency}
@@ -117,6 +114,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 const mapStateToProps = (state: IState): IStateToProps => {
   return {
     currency: UserSelector.getCurrency(state),
+    assets: UserSelector.getUserAssets(state),
   };
 };
 

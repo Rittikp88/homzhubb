@@ -16,7 +16,7 @@ import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';
 import UserProfileForm, { IUserProfileForm } from '@homzhub/mobile/src/components/molecules/UserProfileForm';
 import EmergencyContactForm from '@homzhub/mobile/src/components/molecules/EmergencyContactForm';
 import WorkInfoForm from '@homzhub/mobile/src/components/molecules/WorkInfoForm';

@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -7,25 +9,36 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AnimatedProfileHeader, AssetMetricsList, Loader, IMetricsData } from '@homzhub/mobile/src/components';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
-interface IState {
+interface IOwnState {
   ledgerData: GeneralLedgers[];
   transactionsData: FinancialRecords[];
   isLoading: boolean;
   scrollEnabled: boolean;
 }
 
-type Props = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
+interface IStateProps {
+  assets: Asset[];
+}
+interface IDispatchProps {
+  getAssets: () => void;
+}
+type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
+type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
-export class Financials extends React.PureComponent<Props, IState> {
+export class Financials extends React.PureComponent<Props, IOwnState> {
   private onFocusSubscription: any;
 
   public state = {
@@ -36,13 +49,14 @@ export class Financials extends React.PureComponent<Props, IState> {
   };
 
   public componentDidMount(): void {
-    const { navigation } = this.props;
+    const { navigation, getAssets } = this.props;
 
     this.onFocusSubscription = navigation.addListener(
       'focus',
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       async (): Promise<void> => {
         this.setState({ isLoading: true });
+        getAssets();
         await this.getGeneralLedgersPref();
         await this.getGeneralLedgers(true);
         this.setState({ isLoading: false });
@@ -94,8 +108,16 @@ export class Financials extends React.PureComponent<Props, IState> {
 
   private onPlusIconPress = (): void => {
     const {
+      assets,
+      t,
       navigation: { navigate },
     } = this.props;
+
+    if (assets.length <= 0) {
+      AlertHelper.error({ message: t('addProperty') });
+      return;
+    }
+
     navigate(ScreensKeys.AddRecordScreen);
   };
 
@@ -161,7 +183,23 @@ export class Financials extends React.PureComponent<Props, IState> {
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserAssets } = UserSelector;
+  return {
+    assets: getUserAssets(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getAssets } = UserActions;
+  return bindActionCreators({ getAssets }, dispatch);
+};
+
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials));
+export default connectedComponent;
 
 const styles = StyleSheet.create({
   priceStyle: {

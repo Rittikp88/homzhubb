@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import Svg, { SvgUri } from 'react-native-svg';
 
 interface IProps {
@@ -9,6 +10,7 @@ interface IProps {
   strokeWidth?: number;
   viewBox?: string;
   preserveAspectRatio?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 const SVGUri = ({
@@ -19,6 +21,7 @@ const SVGUri = ({
   preserveAspectRatio,
   stroke,
   strokeWidth,
+  style,
 }: IProps): React.ReactElement<Svg> => {
   return (
     <SvgUri
@@ -29,6 +32,7 @@ const SVGUri = ({
       strokeWidth={strokeWidth}
       viewBox={viewBox}
       preserveAspectRatio={preserveAspectRatio}
+      style={style}
     />
   );
 };

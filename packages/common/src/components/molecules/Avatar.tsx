@@ -49,7 +49,14 @@ const Avatar = (props: IProps): React.ReactElement => {
               source={{
                 uri: image,
               }}
-              style={{ height: imageSize, width: imageSize, borderRadius: imageSize / 2 }}
+              /* eslint-disable-next-line react-native/no-inline-styles */
+              style={{
+                height: imageSize,
+                width: imageSize,
+                borderRadius: imageSize / 2,
+                borderColor: theme.colors.white,
+                borderWidth: 1,
+              }}
             />
           ) : (
             <View style={[styles.initialsContainer, initialsContainerStyle]}>

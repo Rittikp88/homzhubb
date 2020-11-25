@@ -22,6 +22,7 @@ interface IHeaderProps {
   onIconPress?: () => void;
   onLinkPress?: () => void;
   testID?: string;
+  keyboardShouldPersistTaps?: boolean;
 }
 
 const PARALLAX_HEADER_HEIGHT = 200;
@@ -41,6 +42,7 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
     iconColor = theme.colors.darkTint4,
     subTitleColor,
     subTitleType,
+    keyboardShouldPersistTaps = false,
   } = props;
 
   const stickyHeader = (): React.ReactElement => {
@@ -69,6 +71,7 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
       stickyHeaderHeight={STICKY_HEADER_HEIGHT}
       parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
       backgroundSpeed={10}
+      keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'always' : 'never'}
       renderForeground={(): React.ReactElement => (
         <DetailedHeader
           title={title}

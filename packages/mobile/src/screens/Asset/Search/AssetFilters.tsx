@@ -763,7 +763,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    margin: theme.layout.screenPadding,
+    marginVertical: 16,
   },
   toggleButton: {
     flexDirection: 'row',

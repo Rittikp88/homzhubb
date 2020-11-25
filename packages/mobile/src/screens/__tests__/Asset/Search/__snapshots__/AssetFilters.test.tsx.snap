@@ -379,7 +379,7 @@ exports[`Asset filter should render snapshot 1`] = `
           containerStyle={
             Object {
               "flex": 0,
-              "margin": 16,
+              "marginVertical": 16,
             }
           }
           onPress={[Function]}

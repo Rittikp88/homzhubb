@@ -30,143 +30,15 @@ exports[`AssetSummary should match snapshot 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "#FFFFFF",
         "borderRadius": 4,
+        "flex": 1,
         "flexDirection": "row",
-        "justifyContent": "space-around",
-        "padding": 10,
       },
       undefined,
     ]
   }
   useAngle={true}
->
-  <ForwardRef
-    style={
-      Array [
-        Object {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "width": 288.46153846153845,
-        },
-        Object {
-          "marginRight": 18,
-        },
-      ]
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#13AB46"
-      name="alert"
-      size={25}
-    />
-    <Text
-      style={
-        Object {
-          "color": "#13AB46",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      notification
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#13AB46",
-        }
-      }
-      textType="bold"
-      type="regular"
-    >
-      10
-    </Text>
-  </ForwardRef>
-  <Divider />
-  <ForwardRef
-    style={
-      Object {
-        "alignItems": "center",
-        "justifyContent": "center",
-        "width": 288.46153846153845,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#FB6E07"
-      name="head-phone"
-      size={25}
-    />
-    <Text
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.1}
-      style={
-        Object {
-          "color": "#FB6E07",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      tickets
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#FB6E07",
-        }
-      }
-      textType="bold"
-      type="regular"
-    >
-      10
-    </Text>
-  </ForwardRef>
-  <Divider />
-  <ForwardRef
-    style={
-      Object {
-        "alignItems": "center",
-        "justifyContent": "center",
-        "width": 288.46153846153845,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#D60D31"
-      name="wallet"
-      size={25}
-    />
-    <Text
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.1}
-      style={
-        Object {
-          "color": "#D60D31",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      dues
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#D60D31",
-        }
-      }
-      textType="bold"
-      type="regular"
-    >
-      10
-    </Text>
-  </ForwardRef>
-</LinearGradient>
+/>
 `;
 
 exports[`AssetSummary should match snapshot without values 1`] = `
@@ -199,141 +71,13 @@ exports[`AssetSummary should match snapshot without values 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "#FFFFFF",
         "borderRadius": 4,
+        "flex": 1,
         "flexDirection": "row",
-        "justifyContent": "space-around",
-        "padding": 10,
       },
       undefined,
     ]
   }
   useAngle={true}
->
-  <ForwardRef
-    style={
-      Array [
-        Object {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "width": 288.46153846153845,
-        },
-        Object {
-          "marginRight": 18,
-        },
-      ]
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#13AB46"
-      name="alert"
-      size={25}
-    />
-    <Text
-      style={
-        Object {
-          "color": "#13AB46",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      notification
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#13AB46",
-        }
-      }
-      textType="bold"
-      type="regular"
-    >
-      0
-    </Text>
-  </ForwardRef>
-  <Divider />
-  <ForwardRef
-    style={
-      Object {
-        "alignItems": "center",
-        "justifyContent": "center",
-        "width": 288.46153846153845,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#FB6E07"
-      name="head-phone"
-      size={25}
-    />
-    <Text
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.1}
-      style={
-        Object {
-          "color": "#FB6E07",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      tickets
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#FB6E07",
-        }
-      }
-      textType="bold"
-      type="regular"
-    >
-      0
-    </Text>
-  </ForwardRef>
-  <Divider />
-  <ForwardRef
-    style={
-      Object {
-        "alignItems": "center",
-        "justifyContent": "center",
-        "width": 288.46153846153845,
-      }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#D60D31"
-      name="wallet"
-      size={25}
-    />
-    <Text
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.1}
-      style={
-        Object {
-          "color": "#D60D31",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      dues
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#D60D31",
-        }
-      }
-      textType="bold"
-      type="regular"
-    >
-      0
-    </Text>
-  </ForwardRef>
-</LinearGradient>
+/>
 `;

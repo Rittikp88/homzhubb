@@ -16,6 +16,7 @@ export const RNSwitch = (props: ISwitchOptions): React.ReactElement => {
       disabled={disabled}
       style={styles.switch}
       trackColor={{ false: theme.colors.disabled, true: theme.colors.primaryColor }}
+      ios_backgroundColor={theme.colors.disabled}
       thumbColor={theme.colors.white}
       onValueChange={onToggle}
       value={selected}

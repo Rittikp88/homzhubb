@@ -547,7 +547,7 @@
     "lowestOffer": "Lowest Offer",
     "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}",
     "noPropertiesAdded": "You haven't added any properties",
-    "noFilterProperties": "You don't have any {{filter}} properties"
+    "noFilterProperties": "There are no properties for the selected filter"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -581,7 +581,8 @@
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg. Suresh Raina",
     "addedSuccessfullyMessage": "Added successfully",
-    "noDescriptionText": "No Description."
+    "noDescriptionText": "No Description.",
+    "addProperty": "Please add a property before adding a financial record"
   },
   "assetMore": {
     "more": "More",

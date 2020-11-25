@@ -1,4 +1,5 @@
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
+import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
@@ -12,6 +13,7 @@ export const initialUserState: IUserState = {
   isOnBoardingCompleted: false,
   isChangeStack: true,
   isAddPropertyFlow: false,
+  assets: [],
   error: {
     user: '',
   },
@@ -102,6 +104,11 @@ export const userReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['userPreferences']: false },
+      };
+    case UserActionTypes.GET.USER_ASSETS_SUCCESS:
+      return {
+        ...state,
+        assets: action.payload as IAsset[],
       };
     default:
       return state;

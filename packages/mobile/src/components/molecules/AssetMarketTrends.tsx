@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 8,
     paddingHorizontal: 16,
+    marginTop: 16,
     backgroundColor: theme.colors.white,
   },
   header: {

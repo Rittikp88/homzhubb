@@ -106,8 +106,7 @@ export { memoizedComponent as AssetMetrics };
 const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   containerWithoutGradient: {
     backgroundColor: theme.colors.gradientK,

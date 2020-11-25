@@ -7,10 +7,12 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
@@ -56,6 +58,7 @@ export function* logout() {
     yield call(UserRepository.logout, { refresh_token: tokens.refresh_token } as IRefreshTokenPayload);
 
     yield put(UserActions.logoutSuccess());
+    yield put(SearchActions.setInitialState());
     yield StorageService.remove(StorageKeys.USER);
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
@@ -113,10 +116,19 @@ export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPr
   }
 }
 
+export function* getUserAssets(action: IFluxStandardAction) {
+  try {
+    const response = yield call(AssetRepository.getPropertiesByStatus);
+    yield put(UserActions.getAssetsSuccess(response));
+    // eslint-disable-next-line no-empty
+  } catch (e) {}
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
   yield takeEvery(UserActionTypes.GET.USER_PROFILE, userProfile);
   yield takeEvery(UserActionTypes.GET.USER_PREFERENCES, userPreferences);
   yield takeEvery(UserActionTypes.UPDATE.USER_PREFERENCES, updateUserPreferences);
+  yield takeEvery(UserActionTypes.GET.USER_ASSETS, getUserAssets);
 }
