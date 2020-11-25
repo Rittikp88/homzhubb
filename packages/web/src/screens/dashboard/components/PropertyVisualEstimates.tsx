@@ -14,7 +14,7 @@ const PropertyVisualsEstimates = (): React.ReactElement => {
         </Typography>
         <DonutChart />
       </View>
-      <View style={styles.ColumnChart}>
+      <View style={styles.columnChart}>
         <Typography variant="label" size="large" fontWeight="bold">
           Cash Flow
         </Typography>
@@ -28,7 +28,6 @@ export default PropertyVisualsEstimates;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: theme.colors.white,
@@ -41,7 +40,7 @@ const styles = StyleSheet.create({
   donutChart: {
     flex: 0.3,
   },
-  ColumnChart: {
+  columnChart: {
     flex: 0.5,
   },
 });

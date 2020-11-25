@@ -10,9 +10,9 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
 import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
 import { PendingPropertiesCard } from '@homzhub/web/src/components';
+import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 import { PendingProperties } from '@homzhub/common/src/mocks/PendingProperties';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 
 interface IProps {
   investmentDataArray: Asset[];
