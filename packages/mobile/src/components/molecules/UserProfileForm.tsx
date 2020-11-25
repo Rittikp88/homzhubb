@@ -47,6 +47,7 @@ interface IState {
   userProfileForm: IUserProfileForm;
   isPasswordVerificationRequired?: boolean;
   selectedImage: ImagePickerResponse;
+  isImageError: boolean;
 }
 
 export class UserProfileForm extends React.PureComponent<IProps, IState> {
@@ -60,6 +61,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     },
     isPasswordVerificationRequired: false,
     selectedImage: {} as ImagePickerResponse,
+    isImageError: false,
   };
 
   public componentDidMount(): void {
@@ -203,9 +205,11 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       if (!ObjectUtils.isEmpty(selectedImage)) {
         await this.uploadProfileImage();
       }
+      const { isImageError } = this.state;
       updateFormLoadingState(false);
-
-      onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
+      if (!isImageError) {
+        onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
+      }
     } catch (e) {
       updateFormLoadingState(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -225,8 +229,14 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
         type: selectedImage.mime,
       });
       const imageData = await AttachmentService.uploadImage(formData, AttachmentType.PROFILE_IMAGE);
-      const { data } = imageData;
-      await UserRepository.updateProfileImage({ profile_picture: data[0].id });
+      const { data, error } = imageData;
+      if (data) {
+        this.setState({ isImageError: false });
+        await UserRepository.updateProfileImage({ profile_picture: data[0].id });
+      } else if (error && error.length > 0) {
+        this.setState({ isImageError: true });
+        AlertHelper.error({ message: error[0].message });
+      }
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }

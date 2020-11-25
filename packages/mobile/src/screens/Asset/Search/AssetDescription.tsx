@@ -1156,6 +1156,7 @@ const styles = StyleSheet.create({
   amenityText: {
     color: theme.colors.darkTint4,
     marginTop: 4,
+    textAlign: 'center',
   },
   exploreMapContainer: {
     position: 'absolute',
@@ -1174,7 +1175,7 @@ const styles = StyleSheet.create({
   },
   subAddress: {
     marginLeft: 0,
-    maxWidth: 310,
+    maxWidth: 240,
   },
   verticalDivider: {
     borderWidth: 1,

@@ -337,7 +337,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       getAssetById();
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
-        params: { previousScreen: ScreensKeys.PropertyDetailScreen, isFromEdit: true },
+        params: { previousScreen: ScreensKeys.Dashboard, isFromEdit: true },
       });
     }
 

@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   rightView: {
-    width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 80 : undefined,
+    flex: 1,
   },
   initialsContainer: {
     ...(theme.circleCSS(42) as object),

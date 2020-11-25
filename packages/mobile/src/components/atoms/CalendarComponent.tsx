@@ -52,7 +52,11 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   }
 
   public componentDidMount = (): void => {
-    const yearData = this.getYearsData();
+    const { selectedDate, isOnlyYearView } = this.props;
+    let yearData = this.getYearsData();
+    if (isOnlyYearView) {
+      yearData = this.getYearsData(Number(selectedDate));
+    }
     const title = `${yearData[0]} - ${yearData[yearData.length - 1]}`;
     this.setState({ yearTitle: title, yearList: yearData });
   };
@@ -125,7 +129,8 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const { month, isMonthView, isYearView, year } = this.state;
     const { isOnlyYearView, selectedDate } = this.props;
     const onPressItem = (): void => (isMonthView ? this.onSelectMonth(item, index) : this.onSelectYear(item, index));
-    const isSelected = isYearView ? year === item : isOnlyYearView ? selectedDate === item : month === index;
+    const yearView = isOnlyYearView ? Number(selectedDate) === Number(item) : month === index;
+    const isSelected = isYearView ? year === item : yearView;
 
     return (
       <TouchableOpacity
@@ -356,7 +361,7 @@ const customStyles = {
     color: isMonthView ? theme.colors.darkTint2 : theme.colors.primaryColor,
   }),
   renderItemView: (isSelected: boolean): StyleProp<ViewStyle> => ({
-    width: 90,
+    width: 80,
     marginVertical: 12,
     alignItems: 'center',
     backgroundColor: isSelected ? theme.colors.primaryColor : theme.colors.white,

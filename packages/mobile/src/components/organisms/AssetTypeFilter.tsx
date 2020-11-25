@@ -18,7 +18,7 @@ interface IProps {
 
 type Props = WithTranslation & IProps;
 
-export class AssetTypeFilter extends React.PureComponent<Props, {}> {
+export class AssetTypeFilter extends React.PureComponent<Props> {
   public render = (): React.ReactNode => {
     const { t, asset_group } = this.props;
     return (
@@ -59,7 +59,7 @@ export class AssetTypeFilter extends React.PureComponent<Props, {}> {
     }
   };
 
-  private assetGroupsListPickerData = (): ISelectionPicker[] => {
+  private assetGroupsListPickerData = (): ISelectionPicker<number>[] => {
     const {
       filterData: { asset_group_list },
     } = this.props;

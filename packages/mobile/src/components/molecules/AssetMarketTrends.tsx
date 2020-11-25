@@ -115,10 +115,9 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Ass
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 26,
     paddingBottom: 8,
     paddingHorizontal: 16,
-    marginTop: 16,
     backgroundColor: theme.colors.white,
   },
   header: {

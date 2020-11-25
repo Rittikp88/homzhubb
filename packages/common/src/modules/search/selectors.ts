@@ -85,8 +85,8 @@ const getSearchLocationLatLong = (state: IState): Point => {
   } = state;
 
   return {
-    lat: search_latitude,
-    lng: search_longitude,
+    lat: search_latitude ?? 0,
+    lng: search_longitude ?? 0,
   };
 };
 

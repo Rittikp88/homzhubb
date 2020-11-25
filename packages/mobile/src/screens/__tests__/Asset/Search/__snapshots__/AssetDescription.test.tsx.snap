@@ -103,7 +103,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             subAddressStyle={
               Object {
                 "marginLeft": 0,
-                "maxWidth": 310,
+                "maxWidth": 240,
               }
             }
           />
