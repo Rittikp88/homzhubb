@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
   },
   fieldContainer: {
     flex: 0.5,
-    justifyContent: 'flex-end',
   },
   dropdownContainer: {
     marginStart: 16,

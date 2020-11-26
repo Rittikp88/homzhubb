@@ -117,7 +117,12 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     return (
       <View style={styles.screen}>
         <Header icon={icons.leftArrow} title={t('property:addProperty')} onIconPress={this.goBack} />
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          style={styles.content}
+          showsVerticalScrollIndicator={false}
+          ref={this.scrollRef}
+        >
           <AddressWithStepIndicator
             icon={icons.noteBook}
             steps={Steps}

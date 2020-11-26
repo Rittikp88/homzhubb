@@ -152,7 +152,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                   containerStyle={styles.buttonStyle}
                 />
                 <BottomSheet
-                  sheetHeight={theme.viewport.height / 1.65}
+                  sheetHeight={theme.viewport.height / 1.6}
                   visible={isPasswordVerificationRequired}
                   onCloseSheet={this.closeBottomSheet}
                 >

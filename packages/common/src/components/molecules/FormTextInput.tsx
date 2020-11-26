@@ -123,8 +123,12 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     const { values, setFieldTouched } = formProps;
     const { showPassword, isFocused, showCurrencySymbol, phoneCodes, isBottomSheetVisible } = this.state;
 
-    // @ts-ignore
-    const inputFieldStyles = { ...theme.form.input, ...style };
+    const inputFieldStyles = {
+      ...theme.form.input,
+      // @ts-ignore
+      ...style,
+      ...(inputGroupSuffixText && { paddingRight: inputGroupSuffixText.length * 10 + 5 }),
+    };
     let labelStyles = { ...theme.form.formLabel };
 
     let inputProps = {
