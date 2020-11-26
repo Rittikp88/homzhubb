@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { GeolocationResponse } from '@react-native-community/geolocation';
+import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';

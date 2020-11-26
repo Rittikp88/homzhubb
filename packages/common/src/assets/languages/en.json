@@ -41,7 +41,7 @@
     "saveAndContinue": "Save & Continue",
     "nearMe": "Near Me",
     "enableLocationPermission": "Please enable location permission",
-    "errorFetchingLocation": "Error fetching your current location",
+    "errorFetchingLocation": "Sorry, we couldn't fetch your current location. Please type your location manually.",
     "searchProperties": "Search Properties",
     "loginToContinue": "Please login to continue",
     "priceRange": "Price Range",

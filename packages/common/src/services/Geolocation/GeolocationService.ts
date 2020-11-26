@@ -1,4 +1,8 @@
-import { GeolocationOptions, GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
+import {
+  GeolocationError,
+  GeolocationOptions,
+  GeolocationResponse,
+} from '@homzhub/common/src/services/Geolocation/interfaces';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import { Geolocation } from './index';

@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { Provider } from 'react-redux';
 import FlashMessage, { MessageComponentProps } from 'react-native-flash-message';
-import { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
+import { GeolocationError, GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';

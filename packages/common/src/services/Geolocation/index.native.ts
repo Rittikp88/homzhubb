@@ -1,1 +1,1 @@
-export { default as Geolocation } from '@react-native-community/geolocation';
+export { default as Geolocation } from 'react-native-geolocation-service';

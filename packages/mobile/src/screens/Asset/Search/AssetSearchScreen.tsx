@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, PickerItem
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { GeolocationResponse } from '@react-native-community/geolocation';
+import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { debounce, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { GeolocationResponse } from '@react-native-community/geolocation';
+import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';

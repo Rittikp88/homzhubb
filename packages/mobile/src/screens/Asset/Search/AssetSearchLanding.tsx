@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar, PickerItemProps, ScrollView } from 'react-
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { GeolocationResponse } from '@react-native-community/geolocation';
+import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
