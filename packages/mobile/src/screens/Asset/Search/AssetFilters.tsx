@@ -32,7 +32,6 @@ interface IStateProps {
   filterDetails: IFilterDetails | null;
 }
 
-// TODO: set the filter arguments type
 interface IDispatchProps {
   setFilter: (payload: any) => void;
   setInitialState: () => void;
@@ -82,25 +81,23 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           {this.renderHeader()}
           <ScrollView style={styles.flexOne}>
             <View style={styles.screen}>
-              <>
-                {this.renderTransactionType()}
-                {ShowInMvpRelease && this.renderShowVerified()}
-                {ShowInMvpRelease && this.renderAgentListed()}
-                {this.renderSearchRadius()}
-                {this.renderDateAdded()}
-                {this.renderPropertyAge()}
-                {asset_group === 2 && this.renderRentFreePeriod()}
-                {this.renderMoveInDate()}
-                {this.renderFacing()}
-                {this.renderFurnishing()}
-                {this.renderPropertyAmenities()}
-                <Button
-                  type="primary"
-                  title={t('showProperties')}
-                  containerStyle={styles.buttonStyle}
-                  onPress={this.handleSubmit}
-                />
-              </>
+              {this.renderTransactionType()}
+              {ShowInMvpRelease && this.renderShowVerified()}
+              {ShowInMvpRelease && this.renderAgentListed()}
+              {this.renderSearchRadius()}
+              {this.renderDateAdded()}
+              {this.renderPropertyAge()}
+              {asset_group === 2 && this.renderRentFreePeriod()}
+              {this.renderMoveInDate()}
+              {this.renderFacing()}
+              {this.renderFurnishing()}
+              {this.renderPropertyAmenities()}
+              <Button
+                type="primary"
+                title={t('showProperties')}
+                containerStyle={styles.buttonStyle}
+                onPress={this.handleSubmit}
+              />
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -342,7 +339,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         {isFacingToggled && (
           <BottomSheet
             isShadowView
-            sheetHeight={theme.viewport.height / 2}
+            sheetHeight={theme.viewport.height * 0.6}
             headerTitle={t('selectFacing')}
             visible={isFacingToggled}
             onCloseSheet={toggleFacing}
@@ -420,7 +417,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         {isPropertyAmenitiesToggled && (
           <BottomSheet
             isShadowView
-            sheetHeight={theme.viewport.height / 2}
+            sheetHeight={theme.viewport.height * 0.6}
             headerTitle={t('selectAmenities')}
             visible={isPropertyAmenitiesToggled}
             onCloseSheet={toggleAmenities}
@@ -475,6 +472,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         data={propertyAmenity.length > 0 ? findSelectedAmenities() : []}
         onItemSelect={handleDeselectAmenities}
         selectedItem={propertyAmenity}
+        buttonItemStyle={styles.buttonItemStyle}
       />
     );
   };
@@ -739,7 +737,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   screen: {
-    margin: theme.layout.screenPadding,
+    flex: 1,
+    marginTop: 8,
+    marginBottom: 16,
+    marginHorizontal: theme.layout.screenPadding,
   },
   header: {
     margin: theme.layout.screenPadding,
@@ -776,8 +777,9 @@ const styles = StyleSheet.create({
   },
   moreRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   checkboxGroupContainer: {
     margin: theme.layout.screenPadding,
@@ -787,5 +789,8 @@ const styles = StyleSheet.create({
   },
   helperIcon: {
     marginStart: 8,
+  },
+  buttonItemStyle: {
+    marginEnd: 4,
   },
 });

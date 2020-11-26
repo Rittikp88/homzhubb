@@ -82,12 +82,12 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
         {isShadowView ? (
           <>
             {renderHeader && <WithShadowView isBottomShadow>{header()}</WithShadowView>}
-            {children}
+            <View style={styles.contentContainer}>{children}</View>
           </>
         ) : (
           <>
             {renderHeader && header()}
-            {children}
+            <View style={styles.contentContainer}>{children}</View>
           </>
         )}
       </View>
@@ -99,6 +99,9 @@ const styles = StyleSheet.create({
   sheetContainer: {
     flex: 1,
     marginTop: 18,
+  },
+  contentContainer: {
+    flex: 1,
   },
   bottomSheetHeader: {
     flexDirection: 'row',

@@ -531,11 +531,27 @@ exports[`BottomSheet should render snapshot 1`] = `
                               </Label>
                             </View>
                           </View>
-                          <Text>
-                            <Text>
-                              Bottom Sheet
-                            </Text>
-                          </Text>
+                          <View
+                            style={
+                              Object {
+                                "flex": 1,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                Object {
+                                  "flex": 1,
+                                }
+                              }
+                            >
+                              <Text>
+                                <Text>
+                                  Bottom Sheet
+                                </Text>
+                              </Text>
+                            </View>
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -1082,11 +1098,27 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
                               </Label>
                             </View>
                           </View>
-                          <Text>
-                            <Text>
-                              Bottom Sheet
-                            </Text>
-                          </Text>
+                          <View
+                            style={
+                              Object {
+                                "flex": 1,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                Object {
+                                  "flex": 1,
+                                }
+                              }
+                            >
+                              <Text>
+                                <Text>
+                                  Bottom Sheet
+                                </Text>
+                              </Text>
+                            </View>
+                          </View>
                         </View>
                       </View>
                     </View>

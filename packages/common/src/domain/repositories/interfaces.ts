@@ -297,8 +297,8 @@ export interface IPropertySearchPayload {
   asset_type__in?: string;
   bedroom__gte?: number;
   bedroom__in?: number;
-  carpet_area__lt?: number;
-  carpet_area__gt?: number;
+  carpet_area__lte?: number;
+  carpet_area__gte?: number;
   carpet_area_unit?: number;
 }
 

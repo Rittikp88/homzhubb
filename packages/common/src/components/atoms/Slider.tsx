@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, LayoutChangeEvent } from 'react-native';
 import MultiSlider, { MarkerProps, LabelProps } from '@ptomasroos/react-native-multi-slider';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
@@ -16,10 +16,18 @@ interface ISliderProps {
   testID?: string;
 }
 
+interface IOwnState {
+  width: number;
+}
+
 const higherLength = theme.viewport.width > 400 ? 350 : 310;
 const SLIDER_LENGTH = theme.viewport.width > 350 ? higherLength : 260;
 
-export class Slider extends Component<ISliderProps> {
+export class Slider extends Component<ISliderProps, IOwnState> {
+  public state = {
+    width: 0,
+  };
+
   public render(): React.ReactNode {
     const { isMultipleSlider } = this.props;
     return <>{isMultipleSlider ? this.renderMultipleSlider() : this.renderSingleSlider()}</>;
@@ -54,26 +62,49 @@ export class Slider extends Component<ISliderProps> {
   private renderSingleSlider = (): React.ReactElement => {
     const { isLabelRequired = false, maxSliderRange, minSliderRange, minSliderValue = 0 } = this.props;
     return (
-      <MultiSlider
-        values={[minSliderValue]}
-        sliderLength={SLIDER_LENGTH}
-        min={minSliderRange}
-        max={maxSliderRange}
-        isMarkersSeparated
-        enableLabel={isLabelRequired}
-        customLabel={(e): React.ReactElement => this.renderLabel(e)}
-        onValuesChange={this.singleSliderValuesChange}
-        customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
-      />
+      <View onLayout={this.onLayout}>
+        <MultiSlider
+          values={[minSliderValue]}
+          sliderLength={SLIDER_LENGTH}
+          min={minSliderRange}
+          max={maxSliderRange}
+          isMarkersSeparated
+          enableLabel={isLabelRequired}
+          customLabel={(e): React.ReactElement => this.renderLabel(e)}
+          onValuesChange={this.singleSliderValuesChange}
+          customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
+        />
+      </View>
     );
   };
 
   private renderLabel = (e: LabelProps): React.ReactElement => {
     const { labelText = '' } = this.props;
+    const { width } = this.state;
+
+    const calcWidth = width - 60;
+    const { oneMarkerLeftPosition: left } = e;
+
+    const translateX = (): number => {
+      if (left <= 40) {
+        return 0;
+      }
+      if (left <= calcWidth) {
+        return left - theme.viewport.width * 0.075;
+      }
+      return calcWidth;
+    };
+
     return (
       <View
         style={[
-          { transform: [{ translateX: e.oneMarkerLeftPosition - theme.viewport.width * 0.075 }] },
+          {
+            transform: [
+              {
+                translateX: translateX(),
+              },
+            ],
+          },
           styles.textContainer,
         ]}
       >
@@ -83,6 +114,10 @@ export class Slider extends Component<ISliderProps> {
         </Label>
       </View>
     );
+  };
+
+  private onLayout = (e: LayoutChangeEvent): void => {
+    this.setState({ width: e.nativeEvent.layout.width });
   };
 
   private customMarkerLeft = (e: MarkerProps): React.ReactElement => {

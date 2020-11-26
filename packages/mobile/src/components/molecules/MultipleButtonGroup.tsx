@@ -22,13 +22,7 @@ interface IMultipleButtonGroupProps<T> {
 export class MultipleButtonGroup<T> extends React.PureComponent<IMultipleButtonGroupProps<T>> {
   public render(): React.ReactElement {
     const { data, containerStyle = {} } = this.props;
-    return (
-      <View style={[styles.container, containerStyle]}>
-        {data.map((item: IMultipleButtonGroupItem<T>) => {
-          return this.renderItem(item);
-        })}
-      </View>
-    );
+    return <View style={[styles.container, containerStyle]}>{data.map(this.renderItem)}</View>;
   }
 
   public renderItem = (item: IMultipleButtonGroupItem<T>): React.ReactElement => {
@@ -76,7 +70,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   item: {
-    margin: 5,
+    marginEnd: 10,
+    marginVertical: 4,
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 4,

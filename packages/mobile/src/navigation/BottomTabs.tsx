@@ -203,7 +203,6 @@ export const BottomTabs = (): React.ReactElement => {
     }
   }
 
-  // TODO: Need to add type
   const getTabBarVisibility = (route: any): boolean => {
     const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
     const notAllowedRoutes = [
@@ -213,6 +212,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.BookVisit,
       ScreensKeys.PropertyFilters,
       ScreensKeys.PropertyPostStack,
+      ScreensKeys.AssetNeighbourhood,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };
@@ -229,7 +229,7 @@ export const BottomTabs = (): React.ReactElement => {
           marginBottom: 4,
         },
         style: {
-          height: theme.viewport.height * 0.1,
+          height: PlatformUtils.isIOS() ? theme.viewport.height * 0.1 : 60,
           shadowOffset: {
             width: 0,
             height: 12,

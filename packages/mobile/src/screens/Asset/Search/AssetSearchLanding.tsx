@@ -36,7 +36,6 @@ interface IStateProps {
   isLoading: boolean;
 }
 
-// TODO: (Shikha) Need to add types
 interface IDispatchProps {
   getFilterDetails: (payload: any) => void;
   setFilter: (payload: any) => void;
@@ -166,7 +165,11 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     });
 
     return (
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <Text type="small" textType="semiBold" style={styles.label}>
           {t('propertyType')}
         </Text>
@@ -421,8 +424,10 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: theme.colors.white,
-    margin: theme.layout.screenPadding,
     flex: 1,
+  },
+  contentContainer: {
+    padding: theme.layout.screenPadding,
   },
   label: {
     color: theme.colors.darkTint4,

@@ -67,7 +67,10 @@ exports[`Asset filter should render snapshot 1`] = `
       <View
         style={
           Object {
-            "margin": 16,
+            "flex": 1,
+            "marginBottom": 16,
+            "marginHorizontal": 16,
+            "marginTop": 8,
           }
         }
       >
@@ -299,7 +302,8 @@ exports[`Asset filter should render snapshot 1`] = `
             Object {
               "alignItems": "center",
               "flexDirection": "row",
-              "justifyContent": "center",
+              "flexWrap": "wrap",
+              "justifyContent": "space-between",
             }
           }
         >
@@ -326,7 +330,8 @@ exports[`Asset filter should render snapshot 1`] = `
             Object {
               "alignItems": "center",
               "flexDirection": "row",
-              "justifyContent": "center",
+              "flexWrap": "wrap",
+              "justifyContent": "space-between",
             }
           }
         >

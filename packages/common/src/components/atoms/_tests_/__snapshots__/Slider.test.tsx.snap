@@ -2,19 +2,23 @@
 
 exports[`Slider should match snapshot 1`] = `
 <Fragment>
-  <Component
-    customLabel={[Function]}
-    customMarkerLeft={[Function]}
-    enableLabel={false}
-    isMarkersSeparated={true}
-    onValuesChange={[Function]}
-    sliderLength={350}
-    values={
-      Array [
-        0,
-      ]
-    }
-  />
+  <View
+    onLayout={[Function]}
+  >
+    <Component
+      customLabel={[Function]}
+      customMarkerLeft={[Function]}
+      enableLabel={false}
+      isMarkersSeparated={true}
+      onValuesChange={[Function]}
+      sliderLength={350}
+      values={
+        Array [
+          0,
+        ]
+      }
+    />
+  </View>
 </Fragment>
 `;
 

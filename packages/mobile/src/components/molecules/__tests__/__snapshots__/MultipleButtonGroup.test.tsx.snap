@@ -23,7 +23,8 @@ exports[`MultipleButtonGroup should match snapshot 1`] = `
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
-        "margin": 5,
+        "marginEnd": 10,
+        "marginVertical": 4,
         "paddingHorizontal": 12,
         "paddingVertical": 6,
       }
@@ -66,7 +67,8 @@ exports[`MultipleButtonGroup should match snapshot with optional props 1`] = `
         "borderColor": "#C9D6DF",
         "borderRadius": 4,
         "borderWidth": 1,
-        "margin": 5,
+        "marginEnd": 10,
+        "marginVertical": 4,
         "paddingHorizontal": 12,
         "paddingVertical": 6,
       }

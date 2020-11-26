@@ -222,7 +222,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     left: 0,
     right: 0,
-    top: theme.viewport.height * 0.12,
+    marginHorizontal: 12,
+    top: theme.viewport.height * 0.16,
   },
 });
 

@@ -90,8 +90,8 @@ class AssetService {
     if (asset_group === 2) {
       // Apply only for Commercial Properties
       Object.assign(finalPayload, {
-        carpet_area__lt: Number(max_area),
-        carpet_area__gt: Number(min_area),
+        carpet_area__lte: Number(max_area),
+        carpet_area__gte: Number(min_area),
         carpet_area_unit: area_unit,
       });
     }

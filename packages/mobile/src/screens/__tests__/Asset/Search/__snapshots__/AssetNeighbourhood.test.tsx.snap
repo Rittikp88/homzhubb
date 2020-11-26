@@ -49,9 +49,10 @@ exports[`AssetNeighbourhood should render snapshot 1`] = `
       Object {
         "alignItems": "center",
         "left": 0,
+        "marginHorizontal": 12,
         "position": "absolute",
         "right": 0,
-        "top": 160.07999999999998,
+        "top": 213.44,
       }
     }
   >
