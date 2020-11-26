@@ -74,17 +74,13 @@ const Card = ({ isActive, onCardSelect }: ICardProps): React.ReactElement => {
 };
 
 const EstPortfolioValue: FC = () => {
-  // fixme: (bishal) - .svg files typescript not working for web
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const logo = <HomzhubDashboard width={61} height={64} />;
   return (
     <View style={styles.portfolioContainer}>
       <Typography variant="text" size="small" fontWeight="regular" style={styles.heading}>
         Est. Portfolio Value
       </Typography>
       <View style={styles.propertiesValueWrapper}>
-        {logo}
+        <HomzhubDashboard width={61} height={64} />
         <View style={styles.propertiesValueContainer}>
           <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.valuation}>
             &#x20B9; 50 Lacs

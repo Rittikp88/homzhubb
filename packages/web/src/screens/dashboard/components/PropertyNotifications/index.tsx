@@ -17,7 +17,8 @@ const PropertyNotifications = (): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginLeft: 25,
+    marginVertical: 24,
+    justifyContent: 'space-between',
   },
 });
 

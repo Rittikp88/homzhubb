@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -9,8 +8,9 @@ import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
 import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
-import { PendingPropertiesCard } from '@homzhub/web/src/components';
+import PropertyNotifications from '@homzhub/web/src/screens/dashboard/components/PropertyNotifications';
 import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
+import { PendingPropertiesCard } from '@homzhub/web/src/components';
 import { PendingProperties } from '@homzhub/common/src/mocks/PendingProperties';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
@@ -25,6 +25,7 @@ const Dashboard: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <PropertyOverview />
+      <PropertyNotifications />
       <PropertyVisualsEstimates />
       <View style={[styles.wrapper, isMobile && styles.row]}>
         <PendingPropertiesCard data={dummyData} />
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: theme.colors.background,
   },
   wrapper: {
     flex: 1,

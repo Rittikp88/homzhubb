@@ -1,22 +1,23 @@
 import React from 'react';
 import {
   GestureResponderEvent,
-  StyleSheet,
+  ImageStyle,
   StyleProp,
+  StyleSheet,
   TextStyle,
   TouchableOpacity,
   ViewStyle,
-  ImageStyle,
 } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
-import { Text, Label, TextSizeType, FontWeightType, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
+import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
-export type ButtonType = 'primary' | 'secondary';
+export type ButtonType = 'primary' | 'secondary' | 'secondaryOutline';
 
 export interface IButtonProps {
   type: ButtonType;
   node?: React.ReactNode;
+  children?: React.ReactNode;
   title?: string;
   onPress?: (event: GestureResponderEvent) => void;
   disabled?: boolean;
@@ -46,6 +47,7 @@ export class Button extends React.PureComponent<IButtonProps> {
       iconStyle,
       testID,
       node,
+      children,
     } = this.props;
     return (
       <TouchableOpacity
@@ -58,6 +60,7 @@ export class Button extends React.PureComponent<IButtonProps> {
         {title && this.getTextField()}
         {!!icon && <Icon name={icon} size={iconSize} color={iconColor} style={iconStyle} />}
         {node && node}
+        {children && children}
       </TouchableOpacity>
     );
   };
@@ -79,13 +82,17 @@ export class Button extends React.PureComponent<IButtonProps> {
 
   private getContainerStyle = (): ViewStyle => {
     const { disabled, type, containerStyle = {} } = this.props;
-    let themedStyle = styles.primary;
+    let themedStyle: StyleProp<ViewStyle> = styles.primary;
     if (disabled) {
       themedStyle = styles.disabled;
     }
 
     if (type === 'secondary' && !disabled) {
       themedStyle = styles.secondary;
+    }
+
+    if (type === 'secondaryOutline' && !disabled) {
+      themedStyle = styles.secondaryOutline;
     }
     return StyleSheet.flatten([styles.container, themedStyle, containerStyle]);
   };
@@ -121,5 +128,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.active,
     backgroundColor: theme.colors.white,
+  },
+  secondaryOutline: {
+    borderWidth: 0.5,
+    borderColor: theme.colors.white,
   },
 });

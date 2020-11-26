@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import SplashImage from '@homzhub/common/src/assets/images/splash.svg';
+import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
@@ -18,7 +18,7 @@ const Navbar = (): React.ReactElement => {
   return (
     <View style={styles.containerNavbar}>
       <View style={styles.navbarLogo}>
-        <SplashImage />
+        <NavLogo />
       </View>
       <View style={styles.navbarSearch}>
         <SearchField placeholder={t('property:searchInWeb')} value={SearchText} updateValue={onChange} />
@@ -52,24 +52,15 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingLeft: '7%',
     paddingRight: '7%',
-    marginBottom: 20,
-    display: 'flex',
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
     justifyContent: 'space-between',
     alignItems: 'center',
-    zIndex: 100,
+    zIndex: 1200,
   },
   navbarLogo: {
-    marginTop: 10,
-    flex: 2,
+    marginRight: 16,
   },
-  navbarLogoImage: {
-    height: 50,
-    width: 200,
-    resizeMode: 'contain',
-  },
-
   navbarSearch: {
     flex: 3,
   },
