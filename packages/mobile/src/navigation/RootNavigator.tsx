@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
+import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -29,7 +30,8 @@ export const RootNavigator = (props: IProps): React.ReactElement => {
       dispatch(UserActions.getUserProfile());
       dispatch(AssetActions.getAssetCount());
     }
-  }, [isLoggedIn]);
+    GeolocationService.setLocationDetails(isLoggedIn).then();
+  }, [isLoggedIn, dispatch]);
 
   if (booting) {
     return <Splash />;

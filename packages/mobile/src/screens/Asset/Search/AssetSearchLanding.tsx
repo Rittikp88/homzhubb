@@ -320,7 +320,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
       .catch((e: Error): void => {
         AlertHelper.error({ message: e.message });
       });
-  }, 300);
+  }, 500);
 
   private onChangeProperty = (value: number): void => {
     const { setFilter } = this.props;

@@ -58,7 +58,8 @@ export function* getValueAddedServices() {
   try {
     const assetGroupId = yield select(RecordAssetSelectors.getAssetGroupId);
     const countryId = yield select(RecordAssetSelectors.getCountryId);
-    const data = yield call(RecordAssetRepository.getValueAddedServices, assetGroupId, countryId);
+    const city = yield select(RecordAssetSelectors.getCity);
+    const data = yield call(RecordAssetRepository.getValueAddedServices, assetGroupId, countryId, city);
     yield put(RecordAssetActions.getValueAddedServicesSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);

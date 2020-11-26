@@ -120,6 +120,13 @@ const getValueAddedServices = (state: IState): ValueAddedService[] => {
   return ObjectMapper.deserializeArray(ValueAddedService, valueAddedServices);
 };
 
+const getCity = (state: IState): string => {
+  const {
+    recordAsset: { assetDetails },
+  } = state;
+  return assetDetails?.city_name ?? '';
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
@@ -134,4 +141,5 @@ export const RecordAssetSelectors = {
   getAssetGroupId,
   getCountryId,
   getValueAddedServices,
+  getCity,
 };

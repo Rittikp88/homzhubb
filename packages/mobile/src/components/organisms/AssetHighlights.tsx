@@ -63,7 +63,8 @@ export class AssetHighlights extends Component<Props, IState> {
     const { propertyDetail } = this.props;
     await this.getAmenities();
     const propertyType = propertyDetail ? propertyDetail.assetGroup.name : '';
-    const data = OtherDetails.find((item: IOtherDetail) => item.name === propertyType);
+    const temp = cloneDeep(OtherDetails);
+    const data = temp.find((item: IOtherDetail) => item.name === propertyType);
     if (data) {
       this.setState({
         otherDetails: data.details,
