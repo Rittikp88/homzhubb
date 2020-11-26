@@ -190,6 +190,10 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       this.closeBottomSheet();
     }
 
+    if (!ObjectUtils.isEmpty(selectedImage)) {
+      await this.uploadProfileImage();
+    }
+
     const payload: IUpdateProfile = {
       action: UpdateProfileTypes.GET_OTP_OR_UPDATE,
       payload: {
@@ -202,9 +206,6 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       updateFormLoadingState(true);
 
       const response = await UserRepository.updateUserProfileByActions(payload);
-      if (!ObjectUtils.isEmpty(selectedImage)) {
-        await this.uploadProfileImage();
-      }
       const { isImageError } = this.state;
       updateFormLoadingState(false);
       if (!isImageError) {

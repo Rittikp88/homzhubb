@@ -21,13 +21,47 @@ exports[`Header should match snapshot 1`] = `
         }
       }
     >
-      <StatusBar
-        animated={false}
+      <Memo(StatusBarComponent)
         backgroundColor="#0084F8"
         barStyle="light-content"
-        showHideTransition="fade"
-        translucent={true}
-      />
+        isTranslucent={true}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 30,
+              },
+              Object {
+                "backgroundColor": "#0084F8",
+              },
+              Object {},
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "height": 30,
+                },
+                Object {
+                  "backgroundColor": "#0084F8",
+                },
+                Object {},
+              ]
+            }
+          >
+            <StatusBar
+              animated={false}
+              backgroundColor="#0084F8"
+              barStyle="light-content"
+              showHideTransition="fade"
+              translucent={true}
+            />
+          </View>
+        </View>
+      </Memo(StatusBarComponent)>
     </View>
   </View>
   <View
@@ -240,13 +274,47 @@ exports[`Header should match snapshot for secondary theme 1`] = `
         }
       }
     >
-      <StatusBar
-        animated={false}
+      <Memo(StatusBarComponent)
         backgroundColor="#FFFFFF"
         barStyle="dark-content"
-        showHideTransition="fade"
-        translucent={true}
-      />
+        isTranslucent={true}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 30,
+              },
+              Object {
+                "backgroundColor": "#FFFFFF",
+              },
+              Object {},
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "height": 30,
+                },
+                Object {
+                  "backgroundColor": "#FFFFFF",
+                },
+                Object {},
+              ]
+            }
+          >
+            <StatusBar
+              animated={false}
+              backgroundColor="#FFFFFF"
+              barStyle="dark-content"
+              showHideTransition="fade"
+              translucent={true}
+            />
+          </View>
+        </View>
+      </Memo(StatusBarComponent)>
     </View>
   </View>
   <View
@@ -460,13 +528,47 @@ exports[`Header should match snapshot without title 1`] = `
         }
       }
     >
-      <StatusBar
-        animated={false}
+      <Memo(StatusBarComponent)
         backgroundColor="#0084F8"
         barStyle="light-content"
-        showHideTransition="fade"
-        translucent={true}
-      />
+        isTranslucent={true}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "height": 30,
+              },
+              Object {
+                "backgroundColor": "#0084F8",
+              },
+              Object {},
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "height": 30,
+                },
+                Object {
+                  "backgroundColor": "#0084F8",
+                },
+                Object {},
+              ]
+            }
+          >
+            <StatusBar
+              animated={false}
+              backgroundColor="#0084F8"
+              barStyle="light-content"
+              showHideTransition="fade"
+              translucent={true}
+            />
+          </View>
+        </View>
+      </Memo(StatusBarComponent)>
     </View>
   </View>
   <View

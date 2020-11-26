@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
-import AppLayout from '@homzhub/web/src/screens/appLayout';
+import AppLayout from '@homzhub/web/src/screens/AppLayout';
 
 export const AppRouter = (): React.ReactElement => {
   const { APP_BASE } = RouteNames.protectedRoutes;

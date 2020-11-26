@@ -1,9 +1,10 @@
 import React from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StatusBarStyle, StyleSheet, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 
 interface ICommonHeaderProps {
   icon?: string;
@@ -39,11 +40,7 @@ const Header = (props: ICommonHeaderProps): React.ReactElement => {
   return (
     <>
       <View style={{ height: STATUSBAR_HEIGHT, backgroundColor }}>
-        <StatusBar
-          translucent
-          backgroundColor={backgroundColor}
-          barStyle={barStyle as 'light-content' | 'dark-content'}
-        />
+        <StatusBarComponent backgroundColor={backgroundColor} isTranslucent barStyle={barStyle as StatusBarStyle} />
       </View>
       <View style={[styles.container, { backgroundColor }]} testID={testID}>
         <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />

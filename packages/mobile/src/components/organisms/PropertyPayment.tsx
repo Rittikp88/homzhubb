@@ -10,6 +10,7 @@ import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/R
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import HomzhubCoins from '@homzhub/mobile/src/components/molecules/HomzhubCoins';
 import OrderSummary from '@homzhub/mobile/src/components/molecules/OrderSummary';
@@ -40,6 +41,7 @@ interface IPaymentState {
   isCoinApplied: boolean;
   isPromoFailed: boolean;
   orderSummary: Summary;
+  isLoading: boolean;
 }
 
 type Props = IPaymentProps & WithTranslation;
@@ -49,6 +51,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     isCoinApplied: false,
     isPromoFailed: false,
     orderSummary: {} as Summary,
+    isLoading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -71,7 +74,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
   }
 
   public render(): React.ReactNode {
-    const { isCoinApplied, orderSummary, isPromoFailed } = this.state;
+    const { isCoinApplied, orderSummary, isPromoFailed, isLoading } = this.state;
     const { t } = this.props;
 
     return (
@@ -105,6 +108,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
             {t('property:securePayment')}
           </Label>
         </View>
+        <Loader visible={isLoading} />
       </View>
     );
   }
@@ -171,6 +175,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
 
   private paymentApi = async (paymentParams: IPaymentParams): Promise<void> => {
     const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
+    this.setState({ isLoading: true });
 
     try {
       await PaymentRepository.valueAddedServicesPayment(paymentParams);
@@ -187,9 +192,11 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           },
         };
         await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+        this.setState({ isLoading: false });
         handleNextStep();
       }
     } catch (e) {
+      this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
@@ -231,10 +238,13 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
       ...(data?.coins && { coins: data.coins }),
       ...(data?.promo_code && { promo_code: data.promo_code }),
     };
+    this.setState({ isLoading: true });
     try {
       const response = await RecordAssetRepository.getOrderSummary(payload);
+      this.setState({ isLoading: false });
       this.setState({ orderSummary: response });
     } catch (e) {
+      this.setState({ isLoading: false });
       if (data?.promo_code) {
         this.setState({ isPromoFailed: true });
       }

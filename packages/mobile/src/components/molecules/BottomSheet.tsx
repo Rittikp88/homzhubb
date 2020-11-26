@@ -14,6 +14,7 @@ export interface IBottomSheetProps {
   renderHeader?: boolean;
   onCloseSheet?: () => void;
   sheetHeight?: number;
+  isCloseOnDrag?: boolean;
   sheetContainerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -28,6 +29,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
     isShadowView,
     headerTitle = '',
     renderHeader = true,
+    isCloseOnDrag = true,
   } = props;
 
   useEffect(() => {
@@ -68,9 +70,11 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
       ref={rbSheet}
       animationType="slide"
       height={sheetHeight}
-      closeOnDragDown
+      closeOnDragDown={isCloseOnDrag}
       dragFromTopOnly
       onClose={onCloseSheet}
+      closeOnPressMask={isCloseOnDrag}
+      closeOnPressBack={isCloseOnDrag}
       customStyles={{
         container: {
           borderTopLeftRadius: 10,

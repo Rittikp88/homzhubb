@@ -206,16 +206,19 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private renderTabScene = (route: IRoutes): React.ReactElement | null => {
-    const { navigation } = this.props;
     const {
-      propertyData: { assetStatusInfo },
+      navigation,
+      route: { params },
+    } = this.props;
+    const {
+      propertyData: { assetStatusInfo, isManaged },
     } = this.state;
     switch (route.key) {
       case Tabs.NOTIFICATIONS:
         // TODO: Figure-out something to resolve this error
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
-            <NotificationTab assetStatusInfo={assetStatusInfo} />
+            <NotificationTab isManagedProperty={isManaged} assetStatusInfo={assetStatusInfo} />
           </View>
         );
       case Tabs.TICKETS:
@@ -263,7 +266,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.TENANT_HISTORY:
         return (
           <View onLayout={(e): void => this.onLayout(e, 8)}>
-            <TenantHistoryScreen />
+            <TenantHistoryScreen isFromTenancies={params?.isFromTenancies ?? false} />
           </View>
         );
       case Tabs.DETAILS:

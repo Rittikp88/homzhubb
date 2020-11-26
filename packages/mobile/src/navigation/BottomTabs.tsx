@@ -74,7 +74,7 @@ export type DashboardNavigatorParamList = {
 
 export type PortfolioNavigatorParamList = {
   [ScreensKeys.PortfolioLandingScreen]: undefined;
-  [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
+  [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard?: boolean; isFromTenancies?: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;

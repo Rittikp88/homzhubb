@@ -1,24 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { remove, find, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
-import { StatusBarComponent, TimeSlotGroup } from '@homzhub/mobile/src/components';
+import { TimeSlotGroup, Header } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
@@ -60,44 +58,47 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
     const { t, navigation } = this.props;
     return (
       <HandleBack onBack={this.goBack} navigation={navigation}>
-        <StatusBarComponent backgroundColor="white" isTranslucent={false} statusBarStyle={styles.statusBar} />
-        <SafeAreaView style={styles.flexOne}>
-          {this.renderHeader()}
-          <ScrollView style={styles.scrollView}>
-            {this.renderContactDetail()}
-            <Divider containerStyles={styles.divider} />
-            <Text type="small" textType="semiBold" style={styles.userType}>
-              {t('iAm')}
-            </Text>
-            <RadioButtonGroup
-              data={UserType as Unit[]}
-              onToggle={this.onUserToggle}
-              containerStyle={styles.radioGroup}
-              selectedValue={userType}
-            />
-            <Label type="large" textType="semiBold" style={styles.label}>
-              {t('lookingFor')}
-            </Label>
-            <MultipleButtonGroup<string>
-              data={BedroomType}
-              onItemSelect={this.onSelectLookingType}
-              selectedItem={selectedSpaces}
-              containerStyle={styles.buttonGroup}
-            />
-            <Label type="large" textType="semiBold" style={styles.label}>
-              {t('preferredTime')}
-            </Label>
-            <TimeSlotGroup data={TimeSlot} selectedItem={selectedTime} onItemSelect={this.onTimeSelect} />
-            <TextArea
-              label={t('message')}
-              placeholder={t('typeYourMessage')}
-              value={message}
-              containerStyle={styles.textArea}
-              onMessageChange={this.handleMessageChange}
-            />
-          </ScrollView>
-        </SafeAreaView>
-        <WithShadowView outerViewStyle={styles.shadowView}>
+        <Header
+          icon={icons.close}
+          isBarVisible={false}
+          isHeadingVisible
+          title={t('contact')}
+          type="secondary"
+          onIconPress={this.goBack}
+          testID="header"
+        />
+        <ScrollView style={styles.scrollView}>
+          {this.renderContactDetail()}
+          <Divider containerStyles={styles.divider} />
+          <Text type="small" textType="semiBold" style={styles.userType}>
+            {t('iAm')}
+          </Text>
+          <RadioButtonGroup
+            data={UserType as Unit[]}
+            onToggle={this.onUserToggle}
+            containerStyle={styles.radioGroup}
+            selectedValue={userType}
+          />
+          <Label type="large" textType="semiBold" style={styles.label}>
+            {t('lookingFor')}
+          </Label>
+          <MultipleButtonGroup<string>
+            data={BedroomType}
+            onItemSelect={this.onSelectLookingType}
+            selectedItem={selectedSpaces}
+            containerStyle={styles.buttonGroup}
+          />
+          <Label type="large" textType="semiBold" style={styles.label}>
+            {t('preferredTime')}
+          </Label>
+          <TimeSlotGroup data={TimeSlot} selectedItem={selectedTime} onItemSelect={this.onTimeSelect} />
+          <TextArea
+            label={t('message')}
+            placeholder={t('typeYourMessage')}
+            value={message}
+            containerStyle={styles.textArea}
+            onMessageChange={this.handleMessageChange}
+          />
           <Button
             type="primary"
             title={t('sendMessage')}
@@ -109,22 +110,8 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
             containerStyle={styles.buttonStyle}
             onPress={this.handleSubmit}
           />
-        </WithShadowView>
+        </ScrollView>
       </HandleBack>
-    );
-  };
-
-  private renderHeader = (): React.ReactElement => {
-    const { t } = this.props;
-    return (
-      <WithShadowView>
-        <View style={styles.bottomSheetHeader}>
-          <Icon name={icons.close} size={22} color={theme.colors.darkTint3} onPress={this.goBack} />
-          <Text type="small" textType="semiBold" style={styles.headerTitle}>
-            {t('contact')}
-          </Text>
-        </View>
-      </WithShadowView>
     );
   };
 
@@ -232,7 +219,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
         },
       };
 
-      if (isLoggedIn) {
+      if (isLoggedIn && asset_transaction_type) {
         await LeadService.postLeadDetail(asset_transaction_type, payload);
         AlertHelper.success({ message: t('assetDescription:messageSent') });
         navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
@@ -263,14 +250,9 @@ const mapStateToProps = (state: IState): IStateProps => {
 export default connect(mapStateToProps, null)(withTranslation()(ContactForm));
 
 const styles = StyleSheet.create({
-  flexOne: {
-    flex: 1,
-  },
-  statusBar: {
-    height: PlatformUtils.isIOS() ? 50 : 10,
-  },
   scrollView: {
     paddingHorizontal: 16,
+    paddingVertical: 10,
     backgroundColor: theme.colors.white,
   },
   divider: {
@@ -293,23 +275,8 @@ const styles = StyleSheet.create({
   textArea: {
     marginVertical: 20,
   },
-  bottomSheetHeader: {
-    flexDirection: 'row',
-    alignContent: 'center',
-    paddingBottom: 20,
-    marginHorizontal: 24,
-  },
   buttonTitleStyle: {
     marginHorizontal: 12,
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-  },
-  shadowView: {
-    paddingTop: 4,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
-    paddingBottom: 0,
   },
   buttonStyle: {
     flex: 0,

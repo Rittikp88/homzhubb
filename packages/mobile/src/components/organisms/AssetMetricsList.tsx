@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textStyle: {
+    marginTop: 2,
     width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 48 : undefined,
   },
 });

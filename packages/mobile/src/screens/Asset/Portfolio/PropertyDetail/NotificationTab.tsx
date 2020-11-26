@@ -13,6 +13,7 @@ import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusIn
 
 interface IProps {
   assetStatusInfo: AssetStatusInfo | null;
+  isManagedProperty: boolean;
 }
 
 type Props = WithTranslation & IProps;
@@ -71,20 +72,19 @@ export class NotificationTab extends React.Component<Props, IAssetNotificationsS
   };
 
   public getAssetNotifications = async (): Promise<void> => {
-    const { assetStatusInfo } = this.props;
+    const { assetStatusInfo, isManagedProperty } = this.props;
     const { limit, offset, notifications } = this.state;
     if (!assetStatusInfo) return;
 
-    const { saleListingId, leaseListingId, leaseUnitId } = assetStatusInfo;
-    const leaseId = leaseUnitId || leaseListingId;
+    const { saleListingId, leaseListingId } = assetStatusInfo;
 
     const requestPayload = {
       limit,
       offset,
       ...(saleListingId && { sale_listing_id: saleListingId }),
-      ...(leaseId && { lease_listing_id: leaseId }),
+      ...(leaseListingId && { lease_listing_id: leaseListingId }),
     };
-    if (leaseId || saleListingId) {
+    if (!isManagedProperty && (saleListingId || leaseListingId)) {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
       this.setState({
         notifications: NotificationService.transformNotificationsData(response, notifications),

@@ -26,13 +26,18 @@ interface IDispatchProps {
   getTenantHistory: (payload: IGetHistoryPayload) => void;
 }
 
+interface IProps {
+  isFromTenancies: boolean;
+}
+
 interface IScreenState {
   tenantHistory: TenantHistory[];
   searchValue: string;
   isLoading: boolean;
+  showInMVP: boolean;
 }
 
-type Props = WithTranslation & IStateProps & IDispatchProps;
+type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
 
 export class TenantHistoryScreen extends Component<Props, IScreenState> {
   private search = debounce(() => {
@@ -51,6 +56,7 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
     tenantHistory: [],
     searchValue: '',
     isLoading: false,
+    showInMVP: false,
   };
 
   public componentDidMount = (): void => {
@@ -85,6 +91,7 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
 
   private renderItem = ({ item }: { item: TenantHistory }): React.ReactElement => {
     const { t } = this.props;
+    const { showInMVP } = this.state;
     const { tenantUser, leaseTransaction } = item;
     return (
       <View style={styles.content}>
@@ -98,17 +105,19 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
           fromDate={leaseTransaction?.leaseStartDate ?? ''}
           toDate={leaseTransaction?.leaseEndDate ?? ''}
         />
-        <Button
-          type="secondary"
-          title={t('assetPortfolio:rentalReceipts')}
-          textType="label"
-          textSize="large"
-          icon={icons.docFilled}
-          iconSize={18}
-          iconColor={theme.colors.blue}
-          containerStyle={styles.buttonStyle}
-          titleStyle={styles.buttonTitle}
-        />
+        {showInMVP && (
+          <Button
+            type="secondary"
+            title={t('assetPortfolio:rentalReceipts')}
+            textType="label"
+            textSize="large"
+            icon={icons.docFilled}
+            iconSize={18}
+            iconColor={theme.colors.blue}
+            containerStyle={styles.buttonStyle}
+            titleStyle={styles.buttonTitle}
+          />
+        )}
       </View>
     );
   };
@@ -145,9 +154,11 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
   };
 
   private getTenantHistoryData = (): void => {
-    const { assetId, getTenantHistory } = this.props;
-    this.setState({ isLoading: true });
-    getTenantHistory({ id: assetId, onCallback: this.onHistoryCallback });
+    const { assetId, getTenantHistory, isFromTenancies } = this.props;
+    if (!isFromTenancies) {
+      this.setState({ isLoading: true });
+      getTenantHistory({ id: assetId, onCallback: this.onHistoryCallback });
+    }
   };
 }
 const mapStateToProps = (state: IState): IStateProps => {

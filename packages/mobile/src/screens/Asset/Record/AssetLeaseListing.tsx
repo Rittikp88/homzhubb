@@ -198,7 +198,13 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           />
         </ScrollView>
         {this.openActionBottomSheet()}
-        <BottomSheet visible={isSheetVisible} sheetHeight={480} onCloseSheet={this.onCloseSheet}>
+        <BottomSheet
+          visible={isSheetVisible}
+          isCloseOnDrag={false}
+          renderHeader={false}
+          sheetHeight={450}
+          onCloseSheet={this.onCloseSheet}
+        >
           {this.renderContinueView(assetDetails)}
         </BottomSheet>
       </>
@@ -670,6 +676,7 @@ const styles = StyleSheet.create({
   },
   sheetContent: {
     alignItems: 'center',
+    paddingTop: 40,
   },
   sheetTitle: {
     marginBottom: 8,

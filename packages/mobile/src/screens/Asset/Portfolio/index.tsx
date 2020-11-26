@@ -206,7 +206,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private onViewProperty = (data: ISetAssetPayload): void => {
     const { navigation, setCurrentAsset } = this.props;
     setCurrentAsset(data);
-    navigation.navigate(ScreensKeys.PropertyDetailScreen);
+    navigation.navigate(ScreensKeys.PropertyDetailScreen, { isFromTenancies: data.dataType === DataType.TENANCIES });
   };
 
   private onMetricsClicked = (name: string): void => {
