@@ -5,7 +5,7 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { MainRouter } from '@homzhub/web/src/router/MainRouter';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Navbar, NavigationInfo } from '@homzhub/web/src/components';
-import Footer from '@homzhub/web/src/screens/AppLayout/Footer';
+import Footer from '@homzhub/web/src/screens/appLayout/Footer';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
