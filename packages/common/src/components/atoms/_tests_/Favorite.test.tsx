@@ -11,17 +11,12 @@ describe('Favorite', () => {
   beforeEach(() => {
     const props = {
       onFavorite: mock,
+      isFavorite: true,
     };
     wrapper = shallow(<Favorite {...props} />);
   });
 
   it('should match snapshot for selected true', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
-  it('should call On Favorite', () => {
-    // @ts-ignore
-    wrapper.find('[testID="icon"]').prop('onPress')();
-    expect(mock).toHaveBeenCalled();
   });
 });

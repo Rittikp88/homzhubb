@@ -10,6 +10,9 @@ export class AssetStatusInfo {
   @JsonProperty('lease_tenant_info', User, true)
   private _leaseTenantInfo: User = new User();
 
+  @JsonProperty('lease_owner_info', User, true)
+  private _leaseOwnerInfo: User = new User();
+
   @JsonProperty('lease_transaction', LeaseTransaction, true)
   private _leaseTransaction: LeaseTransaction = new LeaseTransaction();
 
@@ -46,6 +49,10 @@ export class AssetStatusInfo {
 
   get leaseTenantInfo(): User {
     return this._leaseTenantInfo;
+  }
+
+  get leaseOwnerInfo(): User {
+    return this._leaseOwnerInfo;
   }
 
   get leaseTransaction(): LeaseTransaction {

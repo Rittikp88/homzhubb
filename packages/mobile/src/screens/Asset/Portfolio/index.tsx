@@ -186,6 +186,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         assetData={item}
         key={index}
         expandedId={type === DataType.PROPERTIES ? expandedAssetId : expandedTenanciesId}
+        isFromTenancies={type === DataType.TENANCIES}
         onViewProperty={handleViewProperty}
         onPressArrow={handleArrowPress}
         onCompleteDetails={this.onCompleteDetails}

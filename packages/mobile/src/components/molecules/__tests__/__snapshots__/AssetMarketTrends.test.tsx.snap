@@ -3,13 +3,18 @@
 exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
 <View
   style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-      "paddingBottom": 8,
-      "paddingHorizontal": 16,
-      "paddingTop": 26,
-    }
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingBottom": 8,
+        "paddingHorizontal": 16,
+        "paddingTop": 26,
+      },
+      Object {
+        "marginTop": 16,
+      },
+    ]
   }
 >
   <View
@@ -64,13 +69,18 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
 exports[`AssetMarketTrends should match snapshot with results 1`] = `
 <View
   style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-      "paddingBottom": 8,
-      "paddingHorizontal": 16,
-      "paddingTop": 26,
-    }
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "paddingBottom": 8,
+        "paddingHorizontal": 16,
+        "paddingTop": 26,
+      },
+      Object {
+        "marginTop": 16,
+      },
+    ]
   }
 >
   <View

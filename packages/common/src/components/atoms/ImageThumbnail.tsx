@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   coverPhotoContainer: {
     flexDirection: 'row',
     backgroundColor: theme.colors.imageThumbnailBackground,
-    opacity: 0.5,
+    opacity: 0.8,
     height: 35,
     alignItems: 'center',
     paddingLeft: 10,

@@ -37,6 +37,7 @@ interface IPropertyImagesState {
   isBottomSheetVisible: boolean;
   isVideoToggled: boolean;
   videoUrl: string;
+  isSortImage: boolean;
 }
 
 class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
@@ -45,6 +46,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     isBottomSheetVisible: false,
     isVideoToggled: false,
     videoUrl: '',
+    isSortImage: true,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -165,12 +167,14 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public renderBottomSheetForPropertyImages = (): React.ReactNode => {
     const { t } = this.props;
-    const { selectedImages } = this.state;
+    const { selectedImages, isSortImage } = this.state;
     // Sort the images with cover image as first object and then the rest
-    selectedImages.sort((a, b) => {
-      // @ts-ignore
-      return b.isCoverImage - a.isCoverImage;
-    });
+    if (isSortImage) {
+      selectedImages.sort((a, b) => {
+        // @ts-ignore
+        return b.isCoverImage - a.isCoverImage;
+      });
+    }
     return selectedImages.map((currentImage: AssetGallery, index: number) => {
       const deletePropertyImage = async (): Promise<void> => await this.deletePropertyImage(currentImage);
       const markFavorite = async (): Promise<void> => await this.markAttachmentAsCoverImage(currentImage);
@@ -268,11 +272,11 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public onToggleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
-    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+    this.setState({ isBottomSheetVisible: !isBottomSheetVisible, isSortImage: true });
   };
 
   public onCloseBottomSheet = (): void => {
-    this.setState({ isBottomSheetVisible: false });
+    this.setState({ isBottomSheetVisible: false, isSortImage: true });
   };
 
   public deletePropertyImage = async (selectedImage: AssetGallery): Promise<void> => {
@@ -329,6 +333,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       clonedSelectedImages[newCoverImageIndex].isCoverImage = true;
       this.setState({
         selectedImages: clonedSelectedImages,
+        isSortImage: false,
       });
       return;
     }

@@ -33,6 +33,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -653,12 +654,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <Icon name={icons.leftArrow} size={26} color={color} onPress={this.onGoBack} />
         </View>
         <View style={styles.headerRightIcon}>
-          <Icon
-            name={isFavourite ? icons.filledHeart : icons.heartOutline}
-            size={22}
-            color={isFavourite ? theme.colors.favourite : color}
-            onPress={this.onFavourite}
-          />
+          <Favorite onFavorite={this.onFavourite} isFavorite={isFavourite} iconColor={color} iconSize={24} />
           <Icon name={icons.share} size={22} color={color} onPress={this.handleShare} />
         </View>
       </View>
@@ -1118,7 +1114,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'space-between',
     right: relativeWidth(4),
-    width: 80,
+    width: 60,
   },
   fixedSection: {
     position: 'absolute',

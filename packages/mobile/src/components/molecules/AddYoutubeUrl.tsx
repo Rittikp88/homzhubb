@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     marginStart: 10,
   },
   textInput: {
-    width: 350,
+    width: 320,
     textAlign: 'left',
     borderWidth: 1,
     borderRadius: 4,

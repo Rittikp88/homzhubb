@@ -16,6 +16,7 @@ import { LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/component
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -24,6 +25,7 @@ interface IListProps {
   onViewProperty?: (data: ISetAssetPayload) => void;
   isDetailView?: boolean;
   expandedId?: number;
+  isFromTenancies?: boolean;
   onPressArrow?: (id: number) => void;
   enterFullScreen?: (attachments: Attachment[]) => void;
   onCompleteDetails: (id: number) => void;
@@ -148,7 +150,7 @@ export class AssetCard extends Component<Props> {
   };
 
   private renderExpandedView = (): React.ReactNode => {
-    const { assetData, t, onOfferVisitPress, isDetailView } = this.props;
+    const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
 
     if (!assetData || !assetData.assetStatusInfo) return null;
 
@@ -159,6 +161,7 @@ export class AssetCard extends Component<Props> {
         leaseTenantInfo,
         leaseListingId,
         saleListingId,
+        leaseOwnerInfo,
         leaseTransaction: { rent, securityDeposit, leasePeriod },
       },
       listingVisits: { upcomingVisits, missedVisits, completedVisits },
@@ -168,12 +171,18 @@ export class AssetCard extends Component<Props> {
 
     const buttonAction = leasePeriod ? leasePeriod.action : action;
     const isListed = leaseListingId || saleListingId;
+    const user: User = isFromTenancies ? leaseOwnerInfo : leaseTenantInfo;
+
     return (
       <>
-        {!!leaseTenantInfo.fullName && (
+        {!!user.fullName && (
           <>
             <Divider containerStyles={styles.divider} />
-            <Avatar fullName={leaseTenantInfo.fullName} designation="Tenant" />
+            <Avatar
+              fullName={user.fullName}
+              image={user.profilePicture}
+              designation={isFromTenancies ? t('property:owner') : t('property:tenant')}
+            />
           </>
         )}
         {rent && securityDeposit && (

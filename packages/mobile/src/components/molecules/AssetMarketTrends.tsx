@@ -35,7 +35,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
     const { onViewAll, t, isHeaderVisible = true } = this.props;
     const { data } = this.state;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, isHeaderVisible && styles.headerView]}>
         {isHeaderVisible && (
           <View style={styles.header}>
             <Icon name={icons.increase} color={theme.colors.darkTint4} size={20} />
@@ -173,5 +173,8 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint10,
     borderWidth: 1,
     borderRadius: 4,
+  },
+  headerView: {
+    marginTop: 16,
   },
 });

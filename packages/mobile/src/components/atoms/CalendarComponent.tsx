@@ -361,7 +361,7 @@ const customStyles = {
     color: isMonthView ? theme.colors.darkTint2 : theme.colors.primaryColor,
   }),
   renderItemView: (isSelected: boolean): StyleProp<ViewStyle> => ({
-    width: 80,
+    width: theme.viewport.width * 0.24,
     marginVertical: 12,
     alignItems: 'center',
     backgroundColor: isSelected ? theme.colors.primaryColor : theme.colors.white,

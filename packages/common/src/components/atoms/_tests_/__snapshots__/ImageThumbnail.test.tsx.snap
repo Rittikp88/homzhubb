@@ -200,7 +200,7 @@ exports[`Image Thumbnail should match snapshot for isCoverPhotoContainer 1`] = `
             "borderRadius": 4,
             "flexDirection": "row",
             "height": 35,
-            "opacity": 0.5,
+            "opacity": 0.8,
             "paddingLeft": 10,
           }
         }
@@ -311,7 +311,7 @@ exports[`Image Thumbnail should match snapshot for isCoverPhotoContainer when is
             "borderRadius": 4,
             "flexDirection": "row",
             "height": 35,
-            "opacity": 0.5,
+            "opacity": 0.8,
             "paddingLeft": 10,
           }
         }

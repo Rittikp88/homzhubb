@@ -133,6 +133,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
             <AssetCard
               assetData={propertyData}
               isDetailView
+              isFromTenancies={params?.isFromTenancies ?? false}
               enterFullScreen={this.onFullScreenToggle}
               onCompleteDetails={this.onCompleteDetails}
               onOfferVisitPress={FunctionUtils.noop}
