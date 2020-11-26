@@ -3,11 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 
-// todo: (bishal) - fix logo svg
 const Navbar = (): React.ReactElement => {
   const { t } = useTranslation();
   const [SearchText, setSearchText] = useState('');
@@ -17,7 +17,9 @@ const Navbar = (): React.ReactElement => {
   };
   return (
     <View style={styles.containerNavbar}>
-      <View style={styles.navbarLogo}>LOGO GOES HERE</View>
+      <View style={styles.navbarLogo}>
+        <NavLogo />
+      </View>
       <View style={styles.navbarSearch}>
         <SearchField placeholder={t('property:searchInWeb')} value={SearchText} updateValue={onChange} />
       </View>
@@ -59,7 +61,6 @@ const styles = StyleSheet.create({
   navbarLogo: {
     marginRight: 16,
   },
-
   navbarSearch: {
     flex: 3,
   },

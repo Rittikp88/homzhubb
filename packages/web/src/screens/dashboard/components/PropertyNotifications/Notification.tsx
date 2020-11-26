@@ -67,7 +67,6 @@ const Notifications = (): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-    marginLeft: 15,
     marginRight: 15,
     maxHeight: 161,
     width: 322,
