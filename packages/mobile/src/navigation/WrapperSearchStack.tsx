@@ -17,7 +17,6 @@ export const WrapperSearchStack = (): React.ReactElement => {
       screenOptions={{
         headerShown: false,
       }}
-      mode="modal"
     >
       <WrapperSearchStackNavigator.Screen name={ScreensKeys.PropertySearchLanding} component={AssetSearchLanding} />
       <WrapperSearchStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
