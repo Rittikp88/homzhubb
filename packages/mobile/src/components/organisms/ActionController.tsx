@@ -81,7 +81,7 @@ class ActionController extends React.PureComponent<Props, {}> {
             currentAssetId={id}
             assetGroupType={assetGroupCode}
             currencyData={currencies[0]}
-            phoneCode={phoneCodes[0]}
+            phoneCode={phoneCodes[0].phoneCode}
             onNextStep={this.onNextStep}
           />
         )}

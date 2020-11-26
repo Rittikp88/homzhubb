@@ -6,7 +6,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import HomzhubDashboard from '@homzhub/common/src/assets/images/homzhubDashboard.svg';
 import { ImageRound } from '@homzhub/common/src/components/atoms/Image';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { MultiCarousel, NextPrevBtn } from '@homzhub/web/src/components';
+import { Hoverable, MultiCarousel, NextPrevBtn } from '@homzhub/web/src/components';
 
 interface ICardProps {
   isActive: boolean;
@@ -34,34 +34,42 @@ const PropertyOverview: FC = () => {
 
 const Card = ({ isActive, onCardSelect }: ICardProps): React.ReactElement => {
   return (
-    <TouchableOpacity activeOpacity={100} onPress={onCardSelect} style={[styles.card, isActive && styles.cardActive]}>
-      <ImageRound
-        style={styles.roundIcon}
-        size={54}
-        source={{
-          uri:
-            'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
-        }}
-      />
-      <View>
-        <Typography
-          variant="text"
-          size="large"
-          fontWeight="semiBold"
-          style={[styles.text, isActive && styles.activeText]}
+    <Hoverable>
+      {(isHovered: boolean): React.ReactNode => (
+        <TouchableOpacity
+          activeOpacity={100}
+          onPress={onCardSelect}
+          style={[styles.card, (isHovered || isActive) && styles.cardActive]}
         >
-          50
-        </Typography>
-        <Typography
-          variant="text"
-          size="small"
-          fontWeight="regular"
-          style={[styles.text, isActive && styles.activeText]}
-        >
-          Occupied
-        </Typography>
-      </View>
-    </TouchableOpacity>
+          <ImageRound
+            style={styles.roundIcon}
+            size={54}
+            source={{
+              uri:
+                'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+            }}
+          />
+          <View>
+            <Typography
+              variant="text"
+              size="large"
+              fontWeight="semiBold"
+              style={[styles.text, (isHovered || isActive) && styles.activeText]}
+            >
+              50
+            </Typography>
+            <Typography
+              variant="text"
+              size="small"
+              fontWeight="regular"
+              style={[styles.text, (isHovered || isActive) && styles.activeText]}
+            >
+              Occupied
+            </Typography>
+          </View>
+        </TouchableOpacity>
+      )}
+    </Hoverable>
   );
 };
 
@@ -174,6 +182,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 8,
+    marginBottom: 8,
   },
   portfolioContainer: {
     height: '100%',

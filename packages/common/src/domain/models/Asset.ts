@@ -403,6 +403,16 @@ export class Asset {
     return this._attachments;
   }
 
+  get images(): Attachment[] {
+    const { attachments } = this;
+    return attachments.filter((attachment) => attachment.mediaType !== 'VIDEO');
+  }
+
+  get sortedImages(): Attachment[] {
+    const { images } = this;
+    return images.sort((a, b) => Number(b.isCoverImage) - Number(a.isCoverImage));
+  }
+
   get postedOn(): string {
     return this._postedOn;
   }

@@ -22,6 +22,7 @@ export class SignUpScreen extends Component<Props> {
         onIconPress={this.onClosePress}
         onLinkPress={this.onLoginPress}
         testID="headerEvents"
+        keyboardShouldPersistTaps
       >
         <>
           <SignUpForm

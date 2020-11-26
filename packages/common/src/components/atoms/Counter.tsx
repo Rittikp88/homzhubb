@@ -34,6 +34,9 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
     onValueChange(count, name?.id);
   }, [count]);
 
+  const isDecDisabled = count <= minCount;
+  const isIncDisabled = count >= maxCount;
+
   const incrementCount = (): void => {
     if (count < maxCount) {
       setCount((prev) => prev + 1);
@@ -50,27 +53,50 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
     AlertHelper.error({ message: t('minCount') });
   };
 
-  const renderCounter = (): ReactElement => {
-    return (
-      <View style={[styles.counterContainer, styles.rowStyle]}>
-        <Icon name={icons.minus} color={theme.colors.primaryColor} size={20} onPress={decrementCount} />
-        <Label type="large">{count}</Label>
-        <Icon name={icons.plus} color={theme.colors.primaryColor} size={20} onPress={incrementCount} />
-      </View>
-    );
-  };
-
   return (
     <View style={[styles.rowStyle, containerStyles]}>
       <View style={styles.imageContainer}>
-        {svgImage && <SVGUri height={25} width={25} uri={svgImage} />}
+        {svgImage && <SVGUri height={24} width={24} uri={svgImage} style={styles.svgStyle} />}
         {name && (
           <Text style={[styles.textStyle, name.titleStyle]} type="small">
             {name.title}
           </Text>
         )}
       </View>
-      {renderCounter()}
+      <View style={[styles.counterContainer, styles.rowStyle]}>
+        <View
+          style={[
+            { backgroundColor: isDecDisabled ? theme.colors.disabledOpacity : theme.colors.activeOpacity },
+            styles.iconContainer,
+          ]}
+        >
+          <Icon
+            name={icons.minus}
+            color={isDecDisabled ? theme.colors.disabled : theme.colors.primaryColor}
+            size={20}
+            onPress={decrementCount}
+          />
+        </View>
+        <Label
+          type="large"
+          style={{ color: isDecDisabled || isIncDisabled ? theme.colors.darkTint5 : theme.colors.primaryColor }}
+        >
+          {count}
+        </Label>
+        <View
+          style={[
+            { backgroundColor: isIncDisabled ? theme.colors.disabledOpacity : theme.colors.activeOpacity },
+            styles.iconContainer,
+          ]}
+        >
+          <Icon
+            name={icons.plus}
+            color={isIncDisabled ? theme.colors.disabled : theme.colors.primaryColor}
+            size={20}
+            onPress={incrementCount}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -82,18 +108,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   counterContainer: {
-    borderColor: theme.colors.darkTint6,
+    borderColor: theme.colors.darkTint10,
     borderWidth: 1,
     borderRadius: 4,
-    width: 100,
+    width: 104,
     padding: 4,
   },
   imageContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  iconContainer: {
+    borderRadius: 2,
+  },
+  svgStyle: {
+    marginEnd: 12,
+  },
   textStyle: {
-    marginLeft: 12,
-    width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 48 : undefined,
+    width: 100,
   },
 });

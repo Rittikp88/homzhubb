@@ -1,6 +1,7 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences, MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
@@ -124,6 +125,16 @@ const isUserPreferencesLoading = (state: IState): boolean => {
   return userPreferences;
 };
 
+const getUserAssets = (state: IState): Asset[] => {
+  const {
+    user: { assets },
+  } = state;
+
+  if (assets.length <= 0) return [];
+
+  return ObjectMapper.deserializeArray(Asset, assets);
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -137,4 +148,5 @@ export const UserSelector = {
   isUserPreferencesLoading,
   getMetricSystem,
   getCurrency,
+  getUserAssets,
 };

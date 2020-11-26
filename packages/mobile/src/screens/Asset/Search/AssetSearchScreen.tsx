@@ -110,7 +110,6 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
       getProperties();
     });
-
     if (!filterData) {
       getFilterDetails({ asset_group: filters.asset_group });
     }
@@ -268,6 +267,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       currencyData,
       getProperties,
       priceRange,
+      getFilterDetails,
     } = this.props;
     let currencySymbol = '';
     let areaRange = { min: 0, max: 10 };
@@ -294,6 +294,9 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
         }, 500);
       } else {
         getProperties();
+        if (type === 'asset_group') {
+          getFilterDetails({ asset_group: value });
+        }
       }
     };
 

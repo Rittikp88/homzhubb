@@ -26,13 +26,18 @@ exports[`AddRecordForm should match snapshot 1`] = `
     enableReinitialize={true}
     initialValues={
       Object {
-        "amount": 0,
-        "category": 0,
-        "date": "2020-11-23",
+        "amount": "",
+        "category": "",
+        "date": "2020-11-25",
         "label": "",
         "notes": "",
-        "property": 0,
+        "property": "",
         "tellerName": "",
+      }
+    }
+    innerRef={
+      Object {
+        "current": null,
       }
     }
     onSubmit={[Function]}

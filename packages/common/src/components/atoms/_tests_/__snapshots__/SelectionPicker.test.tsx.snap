@@ -2,88 +2,248 @@
 
 exports[`SelectionPicker should match snapshot 1`] = `
 <View
+  onLayout={[Function]}
   style={
     Array [
       Object {
-        "borderColor": "#0084F8",
         "borderRadius": 4,
-        "borderWidth": 1.5,
+        "flexDirection": "row",
+        "width": "100%",
       },
       undefined,
     ]
   }
 >
-  <FlatList
-    data={
+  <ForwardRef
+    key="0"
+    onPress={[Function]}
+    style={
       Array [
         Object {
-          "title": "Title 1",
-          "value": 0,
+          "borderBottomColor": "#0084F8",
+          "borderBottomWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopWidth": 1.5,
+          "flexDirection": "row",
         },
         Object {
-          "title": "Title 2",
-          "value": 1,
+          "backgroundColor": "#0084F8",
+        },
+        Object {
+          "borderBottomColor": "#0084F8",
+          "borderBottomStartRadius": 4,
+          "borderBottomWidth": 1.5,
+          "borderStartColor": "#0084F8",
+          "borderStartWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopStartRadius": 4,
+          "borderTopWidth": 1.5,
+        },
+        false,
+      ]
+    }
+    testID="to"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#FFFFFF",
+            "width": 375,
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Title 1
+    </Text>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 0.5,
+          "height": "100%",
+        }
+      }
+    />
+  </ForwardRef>
+  <ForwardRef
+    key="1"
+    onPress={[Function]}
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#0084F8",
+          "borderBottomWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopWidth": 1.5,
+          "flexDirection": "row",
+        },
+        Object {
+          "backgroundColor": "#FFFFFF",
+        },
+        false,
+        Object {
+          "borderBottomColor": "#0084F8",
+          "borderBottomEndRadius": 4,
+          "borderBottomWidth": 1.5,
+          "borderEndColor": "#0084F8",
+          "borderEndWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopEndRadius": 4,
+          "borderTopWidth": 1.5,
         },
       ]
     }
-    disableVirtualization={false}
-    horizontal={true}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    showsHorizontalScrollIndicator={false}
-    testID="ftlist"
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
+    testID="to"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#0084F8",
+            "width": 375,
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Title 2
+    </Text>
+  </ForwardRef>
 </View>
 `;
 
 exports[`SelectionPicker should match snapshot for optional width 1`] = `
 <View
+  onLayout={[Function]}
   style={
     Array [
       Object {
-        "borderColor": "#0084F8",
         "borderRadius": 4,
-        "borderWidth": 1.5,
+        "flexDirection": "row",
+        "width": "100%",
       },
       undefined,
     ]
   }
 >
-  <FlatList
-    data={
+  <ForwardRef
+    key="0"
+    onPress={[Function]}
+    style={
       Array [
         Object {
-          "title": "Title 1",
-          "value": 0,
+          "borderBottomColor": "#0084F8",
+          "borderBottomWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopWidth": 1.5,
+          "flexDirection": "row",
         },
         Object {
-          "title": "Title 2",
-          "value": 1,
+          "backgroundColor": "#0084F8",
+        },
+        Object {
+          "borderBottomColor": "#0084F8",
+          "borderBottomStartRadius": 4,
+          "borderBottomWidth": 1.5,
+          "borderStartColor": "#0084F8",
+          "borderStartWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopStartRadius": 4,
+          "borderTopWidth": 1.5,
+        },
+        false,
+      ]
+    }
+    testID="to"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#FFFFFF",
+            "width": 375,
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Title 1
+    </Text>
+    <Divider
+      containerStyles={
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 0.5,
+          "height": "100%",
+        }
+      }
+    />
+  </ForwardRef>
+  <ForwardRef
+    key="1"
+    onPress={[Function]}
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#0084F8",
+          "borderBottomWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopWidth": 1.5,
+          "flexDirection": "row",
+        },
+        Object {
+          "backgroundColor": "#FFFFFF",
+        },
+        false,
+        Object {
+          "borderBottomColor": "#0084F8",
+          "borderBottomEndRadius": 4,
+          "borderBottomWidth": 1.5,
+          "borderEndColor": "#0084F8",
+          "borderEndWidth": 1.5,
+          "borderTopColor": "#0084F8",
+          "borderTopEndRadius": 4,
+          "borderTopWidth": 1.5,
         },
       ]
     }
-    disableVirtualization={false}
-    horizontal={true}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onEndReachedThreshold={2}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    showsHorizontalScrollIndicator={false}
-    testID="ftlist"
-    updateCellsBatchingPeriod={50}
-    windowSize={21}
-  />
+    testID="to"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "padding": 8,
+            "textAlign": "center",
+          },
+          Object {
+            "color": "#0084F8",
+            "width": 375,
+          },
+        ]
+      }
+      textType="semiBold"
+      type="small"
+    >
+      Title 2
+    </Text>
+  </ForwardRef>
 </View>
 `;

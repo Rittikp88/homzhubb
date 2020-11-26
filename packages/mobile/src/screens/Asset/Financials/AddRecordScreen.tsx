@@ -3,28 +3,24 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { AnimatedProfileHeader, HeaderCard, StateAwareComponent } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, HeaderCard, Loader } from '@homzhub/mobile/src/components';
 import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IScreenState {
-  ledgerCategories: LedgerCategory[];
-  properties: Asset[];
-  clearForm: boolean;
+  clearForm: number;
   isLoading: boolean;
 }
 
 interface IStateToProps {
   currency: Currency;
+  assets: Asset[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.AddRecordScreen>;
@@ -32,67 +28,51 @@ type IProps = libraryProps & IStateToProps;
 
 export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
   public state = {
-    ledgerCategories: [],
-    properties: [],
     isLoading: false,
-    clearForm: false,
+    clearForm: 0,
   };
 
-  public async componentDidMount(): Promise<void> {
-    this.setState({ isLoading: true });
-
-    const categories = await LedgerRepository.getLedgerCategories();
-    const properties = await AssetRepository.getPropertiesByStatus();
-
-    this.setState({ ledgerCategories: categories, properties, isLoading: false });
-  }
-
   public render(): ReactElement {
-    const { isLoading } = this.state;
-
-    return <StateAwareComponent loading={isLoading} renderComponent={this.renderComponent()} />;
-  }
-
-  private renderComponent = (): ReactElement => {
     const { t } = this.props;
-    const { clearForm } = this.state;
+    const { isLoading, clearForm } = this.state;
+
     return (
-      <AnimatedProfileHeader title={t('financial')}>
-        <>
+      <>
+        <AnimatedProfileHeader title={t('financial')}>
           <HeaderCard
             title={t('addRecords')}
-            clear={clearForm}
             subTitle={t('common:clear')}
             renderItem={this.renderAddRecordForm}
             onIconPress={this.goBack}
             onClearPress={this.onClearPress}
+            clear={clearForm}
           />
-        </>
-      </AnimatedProfileHeader>
+        </AnimatedProfileHeader>
+        <Loader visible={isLoading} />
+      </>
     );
-  };
+  }
 
   private renderAddRecordForm = (): ReactElement => {
-    const { clearForm, ledgerCategories, properties } = this.state;
-    const { currency } = this.props;
+    const { clearForm } = this.state;
+    const { currency, assets } = this.props;
 
     return (
       <AddRecordForm
-        properties={properties}
-        ledgerCategories={ledgerCategories}
+        properties={assets}
         clear={clearForm}
         defaultCurrency={currency}
         onFormClear={this.onClearPress}
         containerStyles={styles.addFormContainer}
         onSubmitFormSuccess={this.onSubmitFormSuccess}
-        shouldLoad={this.toggleLoading}
+        toggleLoading={this.toggleLoading}
       />
     );
   };
 
   private onClearPress = (): void => {
     const { clearForm } = this.state;
-    this.setState({ clearForm: !clearForm });
+    this.setState({ clearForm: clearForm + 1 });
   };
 
   private onSubmitFormSuccess = (): void => {
@@ -117,6 +97,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 const mapStateToProps = (state: IState): IStateToProps => {
   return {
     currency: UserSelector.getCurrency(state),
+    assets: UserSelector.getUserAssets(state),
   };
 };
 

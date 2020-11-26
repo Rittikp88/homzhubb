@@ -73,14 +73,18 @@ export class NotificationTab extends React.Component<Props, IAssetNotificationsS
   public getAssetNotifications = async (): Promise<void> => {
     const { assetStatusInfo } = this.props;
     const { limit, offset, notifications } = this.state;
+    if (!assetStatusInfo) return;
+
+    const { saleListingId, leaseListingId, leaseUnitId } = assetStatusInfo;
+    const leaseId = leaseUnitId || leaseListingId;
 
     const requestPayload = {
       limit,
       offset,
-      ...(assetStatusInfo?.saleListingId ? { sale_listing_id: assetStatusInfo?.saleListingId } : {}),
-      ...(assetStatusInfo?.leaseListingId ? { lease_listing_id: assetStatusInfo?.leaseListingId } : {}),
+      ...(saleListingId && { sale_listing_id: saleListingId }),
+      ...(leaseId && { lease_listing_id: leaseId }),
     };
-    if (requestPayload.sale_listing_id || requestPayload.lease_listing_id) {
+    if (leaseId || saleListingId) {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
       this.setState({
         notifications: NotificationService.transformNotificationsData(response, notifications),

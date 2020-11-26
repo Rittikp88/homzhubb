@@ -4,6 +4,7 @@ import { ILoginPayload, IUpdateUserPreferences } from '@homzhub/common/src/domai
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
+import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 
 const actionTypePrefix = 'User/';
 
@@ -23,6 +24,8 @@ export const UserActionTypes = {
     USER_PREFERENCES: `${actionTypePrefix}USER_PREFERENCES`,
     USER_PREFERENCES_SUCCESS: `${actionTypePrefix}USER_PREFERENCES_SUCCESS`,
     USER_PREFERENCES_FAILURE: `${actionTypePrefix}USER_PREFERENCES_FAILURE`,
+    USER_ASSETS: `${actionTypePrefix}USER_ASSETS`,
+    USER_ASSETS_SUCCESS: `${actionTypePrefix}USER_ASSETS_SUCCESS`,
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
@@ -124,7 +127,16 @@ const updateUserPreferences = (payload: IUpdateUserPreferences): IFluxStandardAc
   payload,
 });
 
-export type UserPayloadTypes = string | boolean | IUserTokens | IUserProfile | IUserPreferences;
+const getAssets = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.USER_ASSETS,
+});
+
+const getAssetsSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]> => ({
+  type: UserActionTypes.GET.USER_ASSETS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+export type UserPayloadTypes = string | boolean | IUserTokens | IUserProfile | IUserPreferences | IAsset[];
 export const UserActions = {
   login,
   loginSuccess,
@@ -142,4 +154,6 @@ export const UserActions = {
   getUserPreferencesSuccess,
   getUserPreferencesFailure,
   updateUserPreferences,
+  getAssets,
+  getAssetsSuccess,
 };

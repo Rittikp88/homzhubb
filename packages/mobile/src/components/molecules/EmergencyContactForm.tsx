@@ -17,6 +17,7 @@ interface IProps extends WithTranslation {
   onFormSubmitSuccess?: () => void;
   formData?: IEmergencyContactForm;
   basicDetails: IBasicDetails;
+  updateFormLoadingState: (isLoading: boolean) => void;
 }
 
 interface IEmergencyContactForm {
@@ -113,7 +114,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
     values: IEmergencyContactForm,
     formikHelpers: FormikHelpers<IEmergencyContactForm>
   ): Promise<void> => {
-    const { onFormSubmitSuccess } = this.props;
+    const { onFormSubmitSuccess, updateFormLoadingState } = this.props;
     formikHelpers.setSubmitting(true);
 
     const payload: IUpdateEmergencyContact = {
@@ -124,13 +125,17 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
     };
 
     try {
+      updateFormLoadingState(true);
       await UserRepository.updateEmergencyContact(payload);
+
       formikHelpers.setSubmitting(false);
+      updateFormLoadingState(false);
 
       if (onFormSubmitSuccess) {
         onFormSubmitSuccess();
       }
     } catch (e) {
+      updateFormLoadingState(false);
       formikHelpers.setSubmitting(false);
       AlertHelper.error({ message: e.message });
     }
@@ -145,7 +150,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
     return yup.object().shape({
       name: yup.string().required(t('fieldRequiredError')),
       phone: yup.string().required(t('fieldRequiredError')).notOneOf([phone]),
-      email: yup.string().required(t('fieldRequiredError')).notOneOf([email]),
+      email: yup.string().required(t('fieldRequiredError')).notOneOf([email], t('duplicateEmailError')),
       phoneCode: yup.string(),
     });
   };

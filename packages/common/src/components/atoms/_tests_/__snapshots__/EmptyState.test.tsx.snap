@@ -24,7 +24,8 @@ exports[`EmptyState should match snapshot 1`] = `
     style={
       Object {
         "color": "#808D9B",
-        "marginVertical": 15,
+        "marginVertical": 16,
+        "textAlign": "center",
       }
     }
     textType="semiBold"

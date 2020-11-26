@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -16,6 +15,14 @@ interface IProps {
   onPressServiceTickets?: () => void;
   onPressDue?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
+}
+
+interface IItem {
+  icon: string;
+  color: string;
+  title: string;
+  onPress?: () => void;
+  count: number;
 }
 
 const AssetSummary = (props: IProps): React.ReactElement => {
@@ -30,6 +37,34 @@ const AssetSummary = (props: IProps): React.ReactElement => {
     onPressServiceTickets,
   } = props;
 
+  // Data for the static part of the component
+  const [data, setData] = useState<IItem[]>([]);
+  useEffect(() => {
+    setData([
+      {
+        icon: icons.alert,
+        color: theme.colors.notificationGreen,
+        title: t('notification'),
+        onPress: onPressNotification,
+        count: notification,
+      },
+      {
+        icon: icons.headPhone,
+        color: theme.colors.orange,
+        title: t('tickets'),
+        onPress: onPressServiceTickets,
+        count: serviceTickets,
+      },
+      {
+        icon: icons.wallet,
+        color: theme.colors.danger,
+        title: t('dues'),
+        onPress: onPressDue,
+        count: dues,
+      },
+    ]);
+  }, [dues, notification, serviceTickets, onPressDue, onPressNotification, onPressServiceTickets]);
+
   return (
     <LinearGradient
       useAngle
@@ -38,41 +73,24 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       locations={[0, 1]}
       style={[styles.container, containerStyle]}
     >
-      <TouchableOpacity style={[styles.summary, styles.notificationView]} onPress={onPressNotification}>
-        <Icon name={icons.alert} color={theme.colors.notificationGreen} size={25} />
-        <Text type="small" textType="semiBold" style={styles.notification}>
-          {t('notification')}
-        </Text>
-        <Text type="regular" textType="bold" style={styles.notification}>
-          {notification}
-        </Text>
-      </TouchableOpacity>
-      <Divider />
-      <TouchableOpacity onPress={onPressServiceTickets} style={styles.summary}>
-        <Icon name={icons.headPhone} color={theme.colors.orange} size={25} />
-        <Text
-          type="small"
-          textType="semiBold"
-          style={styles.serviceTickets}
-          minimumFontScale={0.1}
-          adjustsFontSizeToFit
-        >
-          {t('tickets')}
-        </Text>
-        <Text type="regular" textType="bold" style={styles.serviceTickets}>
-          {serviceTickets}
-        </Text>
-      </TouchableOpacity>
-      <Divider />
-      <TouchableOpacity style={styles.summary} onPress={onPressDue}>
-        <Icon name={icons.wallet} color={theme.colors.danger} size={25} />
-        <Text type="small" textType="semiBold" style={styles.dues} minimumFontScale={0.1} adjustsFontSizeToFit>
-          {t('dues')}
-        </Text>
-        <Text type="regular" textType="bold" style={styles.dues}>
-          {dues}
-        </Text>
-      </TouchableOpacity>
+      {data.map((item, index) => {
+        const { icon, title, color, count, onPress } = item;
+        return (
+          <TouchableOpacity
+            key={title}
+            style={[styles.item, index !== data.length - 1 && styles.divider]}
+            onPress={onPress}
+          >
+            <Icon name={icon} color={color} size={25} />
+            <Text type="small" textType="semiBold" style={{ color }} numberOfLines={1}>
+              {title}
+            </Text>
+            <Text type="regular" textType="bold" style={{ color }}>
+              {count}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </LinearGradient>
   );
 };
@@ -81,27 +99,18 @@ export { AssetSummary };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
-    backgroundColor: theme.colors.white,
-    padding: 10,
     borderRadius: 4,
-    justifyContent: 'space-around',
   },
-  summary: {
-    justifyContent: 'center',
+  item: {
+    flex: 0.33,
     alignItems: 'center',
-    width: theme.viewport.width / 2.6,
+    justifyContent: 'center',
+    padding: 12,
   },
-  notification: {
-    color: theme.colors.notificationGreen,
-  },
-  serviceTickets: {
-    color: theme.colors.orange,
-  },
-  dues: {
-    color: theme.colors.danger,
-  },
-  notificationView: {
-    marginRight: 18,
+  divider: {
+    borderEndWidth: 1.5,
+    borderEndColor: theme.colors.disabled,
   },
 });

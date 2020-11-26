@@ -51,6 +51,7 @@ interface IStateProps {
 interface IDispatchProps {
   setAssetId: (payload: number) => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
+  getAssetById: () => void;
 }
 
 interface IDetailState {
@@ -125,7 +126,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
               handleIcon={this.handleMenuIcon}
               titleFontWeight="semiBold"
               titleTextSize="small"
-              iconSize={20}
+              iconSize={18}
+              iconBackSize={24}
               icon={isMenuIconVisible ? icons.verticalDots : ''}
             />
             <AssetCard
@@ -166,7 +168,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
                     renderLabel={({ route }): React.ReactElement => {
                       const isSelected = currentRoute.key === route.key;
                       return (
-                        <Text type="small" style={{ color: isSelected ? theme.colors.blue : theme.colors.darkTint3 }}>
+                        <Text
+                          type="small"
+                          style={[
+                            styles.label,
+                            isSelected && {
+                              color: theme.colors.blue,
+                            },
+                          ]}
+                        >
                           {route.title}
                         </Text>
                       );
@@ -312,7 +322,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private onSelectMenuItem = (value: string): void => {
-    const { navigation, setSelectedPlan, setAssetId } = this.props;
+    const { navigation, setSelectedPlan, setAssetId, getAssetById } = this.props;
     const {
       propertyData: {
         id,
@@ -324,9 +334,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     if (value === 'EDIT_LISTING') {
       setSelectedPlan({ id, selectedPlan: type });
       setAssetId(id);
+      getAssetById();
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
-        params: { previousScreen: ScreensKeys.PropertyDetailScreen, isFromEdit: true },
+        params: { previousScreen: ScreensKeys.Dashboard, isFromEdit: true },
       });
     }
 
@@ -388,8 +399,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setAssetId, setSelectedPlan } = RecordAssetActions;
-  return bindActionCreators({ setAssetId, setSelectedPlan }, dispatch);
+  const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
+  return bindActionCreators({ setAssetId, setSelectedPlan, getAssetById }, dispatch);
 };
 
 export default connect(
@@ -400,5 +411,9 @@ export default connect(
 const styles = StyleSheet.create({
   card: {
     borderRadius: 0,
+  },
+  label: {
+    textAlign: 'center',
+    color: theme.colors.darkTint3,
   },
 });

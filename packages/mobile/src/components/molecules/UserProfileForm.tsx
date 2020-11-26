@@ -22,7 +22,7 @@ import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { BottomSheet } from '@homzhub/mobile/src/components';
+import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import PasswordVerificationForm from '@homzhub/mobile/src/components/molecules/PasswordVerificationForm';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -32,6 +32,7 @@ interface IProps extends WithTranslation {
   userFullName?: string;
   profileImage?: string;
   isPasswordVerificationRequired?: boolean;
+  updateFormLoadingState: (isLoading: boolean) => void;
 }
 
 export interface IUserProfileForm {
@@ -46,6 +47,7 @@ interface IState {
   userProfileForm: IUserProfileForm;
   isPasswordVerificationRequired?: boolean;
   selectedImage: ImagePickerResponse;
+  isImageError: boolean;
 }
 
 export class UserProfileForm extends React.PureComponent<IProps, IState> {
@@ -59,6 +61,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     },
     isPasswordVerificationRequired: false,
     selectedImage: {} as ImagePickerResponse,
+    isImageError: false,
   };
 
   public componentDidMount(): void {
@@ -172,7 +175,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
   }
 
   private onSubmit = async (password?: string): Promise<void> => {
-    const { onFormSubmitSuccess } = this.props;
+    const { onFormSubmitSuccess, updateFormLoadingState } = this.props;
     const { userProfileForm, selectedImage } = this.state;
     const { firstName, lastName, email, phone, phoneCode } = userProfileForm;
     const profileDetails = {
@@ -196,12 +199,19 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     };
 
     try {
+      updateFormLoadingState(true);
+
       const response = await UserRepository.updateUserProfileByActions(payload);
       if (!ObjectUtils.isEmpty(selectedImage)) {
         await this.uploadProfileImage();
       }
-      onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
+      const { isImageError } = this.state;
+      updateFormLoadingState(false);
+      if (!isImageError) {
+        onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
+      }
     } catch (e) {
+      updateFormLoadingState(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
@@ -219,8 +229,14 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
         type: selectedImage.mime,
       });
       const imageData = await AttachmentService.uploadImage(formData, AttachmentType.PROFILE_IMAGE);
-      const { data } = imageData;
-      await UserRepository.updateProfileImage({ profile_picture: data[0].id });
+      const { data, error } = imageData;
+      if (data) {
+        this.setState({ isImageError: false });
+        await UserRepository.updateProfileImage({ profile_picture: data[0].id });
+      } else if (error && error.length > 0) {
+        this.setState({ isImageError: true });
+        AlertHelper.error({ message: error[0].message });
+      }
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }

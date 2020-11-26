@@ -10,11 +10,13 @@ interface IOwnProps {
   titleFontWeight?: FontWeightType;
   subTitle?: string;
   icon?: string;
-  iconSize?: number;
+  iconBackSize?: number;
   handleIcon?: () => void;
   onIconPress?: () => void;
   onClearPress?: () => void;
-  clear?: boolean;
+  clear?: number;
+  iconSize?: number;
+  iconStyle?: StyleProp<ViewStyle>;
   containerStyles?: StyleProp<ViewStyle>;
   headerStyle?: StyleProp<ViewStyle>;
   renderItem?: () => ReactElement | null;
@@ -32,7 +34,9 @@ export class HeaderCard extends React.PureComponent<IOwnProps> {
       icon,
       handleIcon,
       headerStyle,
-      iconSize = 30,
+      iconBackSize = 30,
+      iconSize = 26,
+      iconStyle,
       titleTextSize = 'regular',
       titleFontWeight = 'bold',
     } = this.props;
@@ -42,10 +46,10 @@ export class HeaderCard extends React.PureComponent<IOwnProps> {
         <View style={[styles.headerView, headerStyle]}>
           <View style={styles.iconContainer}>
             <Icon
-              size={iconSize}
+              size={iconBackSize}
               name={icons.leftArrow}
               color={theme.colors.primaryColor}
-              style={styles.iconStyle}
+              style={styles.backIconStyle}
               onPress={onIconPress}
             />
             <Text type={titleTextSize} textType={titleFontWeight}>
@@ -61,10 +65,10 @@ export class HeaderCard extends React.PureComponent<IOwnProps> {
           )}
           {!!icon && (
             <Icon
-              size={26}
+              size={iconSize}
               name={icon}
               color={theme.colors.primaryColor}
-              style={styles.iconStyle}
+              style={iconStyle}
               onPress={handleIcon}
             />
           )}
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  iconStyle: {
+  backIconStyle: {
     paddingRight: 12,
   },
   clearText: {

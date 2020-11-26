@@ -60,13 +60,7 @@ exports[`Splash Screen should match snapshot 1`] = `
       }
     }
   >
-    <Image
-      source={
-        Object {
-          "testUri": "../../../packages/common/src/assets/images/logo.png",
-        }
-      }
-    />
+    <[object Object] />
   </View>
 </LinearGradient>
 `;

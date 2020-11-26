@@ -64,8 +64,11 @@ class DateUtils {
     return moment.utc(new Date()).subtract(1, 'years').format('YYYY');
   };
 
-  public getNextYear = (): string => {
-    return moment.utc(new Date()).add(1, 'years').format('YYYY');
+  public getNextYear = (count?: number): string => {
+    return moment
+      .utc(new Date())
+      .add(count ?? 1, 'years')
+      .format('YYYY');
   };
 
   public getCurrentFinancialYear = (): string => {

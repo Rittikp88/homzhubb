@@ -18,10 +18,19 @@ interface IProps {
   sectionTitleType?: FontWeightType;
   onBackPress?: () => void;
   isOuterScrollEnabled?: boolean;
+  keyboardShouldPersistTaps?: boolean;
 }
 
 const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
-  const { title = '', sectionHeader, isOuterScrollEnabled, sectionTitleType = 'bold', children, onBackPress } = props;
+  const {
+    title = '',
+    sectionHeader,
+    isOuterScrollEnabled,
+    sectionTitleType = 'bold',
+    children,
+    onBackPress,
+    keyboardShouldPersistTaps = false,
+  } = props;
   const userProfile = useSelector(UserSelector.getUserProfile);
   const navigation = useNavigation();
 
@@ -51,7 +60,12 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
           </TouchableOpacity>
         </View>
       </>
-      <ScrollView scrollEnabled={isOuterScrollEnabled} showsVerticalScrollIndicator={false} nestedScrollEnabled>
+      <ScrollView
+        scrollEnabled={isOuterScrollEnabled}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'always' : 'never'}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled
+      >
         <>
           <View style={styles.headingView} />
           <View style={styles.scrollView}>

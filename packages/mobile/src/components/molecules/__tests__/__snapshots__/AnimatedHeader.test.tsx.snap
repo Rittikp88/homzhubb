@@ -8,6 +8,7 @@ exports[`Test cases for Header should render snapshot 1`] = `
   contentBackgroundColor="#fff"
   contentContainerStyle={null}
   fadeOutForeground={true}
+  keyboardShouldPersistTaps="never"
   onChangeHeaderVisibility={[Function]}
   outputScaleValue={5}
   parallaxHeaderHeight={200}

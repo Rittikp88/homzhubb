@@ -72,8 +72,8 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
         {this.renderSpaces(true)}
 
         {(flowType !== FlowTypes.LeaseFlow || moreItems > -1) && (
-          <View style={[styles.rowStyle, showMore && styles.marginBottom]}>
-            <Icon style={styles.threeDots} name={icons.threeDots} size={22} />
+          <View style={[styles.rowStyle, styles.marginBottom]}>
+            <Icon name={icons.threeDots} size={24} />
             <Text type="small" style={styles.moreText}>
               {t('assetMore:more')}
             </Text>
@@ -107,7 +107,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
       return (
         <Counter
           key={index}
-          containerStyles={index === counterLength - 1 ? undefined : styles.marginBottom}
+          containerStyles={index !== counterLength - 1 && styles.marginBottom}
           defaultValue={space.unitCount ? space.unitCount : space.isMandatory ? 1 : 0}
           name={{ title: space.name, id: space.id }}
           svgImage={space.attachment && space.attachment.link}
@@ -216,13 +216,11 @@ const styles = StyleSheet.create({
   marginTop: {
     marginTop: 16,
   },
-  threeDots: {
-    marginRight: 12,
-  },
   displayNone: {
     display: 'none',
   },
   moreText: {
+    marginStart: 12,
     flex: 1,
   },
 });

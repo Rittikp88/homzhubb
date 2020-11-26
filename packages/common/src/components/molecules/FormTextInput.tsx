@@ -190,7 +190,6 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
             icon={showPassword ? icons.eyeOpen : icons.eyeClosed}
             iconColor={showPassword ? theme.colors.primaryColor : theme.colors.disabled}
             iconSize={20}
-            iconStyle={styles.passwordIcon}
           />
         ) : undefined;
         break;
@@ -447,11 +446,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 0,
     backgroundColor: theme.colors.transparent,
-  },
-  passwordIcon: {
-    height: 16,
-    width: 20,
-    opacity: 0.4,
   },
   helpText: {
     color: theme.colors.darkTint4,

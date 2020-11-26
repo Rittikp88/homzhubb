@@ -2,6 +2,7 @@
 
 exports[`Switch should match snapshot for not selected 1`] = `
 <Switch
+  ios_backgroundColor="#C9D6DF"
   onValueChange={[MockFunction]}
   style={
     Object {
@@ -28,6 +29,7 @@ exports[`Switch should match snapshot for not selected 1`] = `
 
 exports[`Switch should match snapshot for selected 1`] = `
 <Switch
+  ios_backgroundColor="#C9D6DF"
   onValueChange={[MockFunction]}
   style={
     Object {

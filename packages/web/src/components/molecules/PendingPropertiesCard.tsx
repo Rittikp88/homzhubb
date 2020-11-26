@@ -2,11 +2,12 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Typography, ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
+import { ITypographyProps, Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
@@ -67,9 +68,6 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
       setCurrentAssetIndex(nextIndex);
     }
   };
-  const handleInfo = (): void => {
-    // empty
-  };
   const badgeInfo = [
     { color: theme.colors.warning },
     { color: theme.colors.warning },
@@ -86,9 +84,12 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
       </View>
       <View style={styles.mainBody}>
         <View style={styles.propertyDetails}>
-          <Typography variant="label" size="regular" fontWeight="regular" style={styles.propertyType}>
-            {propertyType}
-          </Typography>
+          <View style={styles.propertyRating}>
+            <Typography variant="label" size="regular" fontWeight="regular" style={styles.propertyType}>
+              {propertyType}
+            </Typography>
+            <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
+          </View>
           <PropertyAddressCountry
             primaryAddress={primaryAddress}
             countryFlag={countryIconUrl}
@@ -105,9 +106,6 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
               contentContainerStyle={styles.cardIcon}
             />
           )}
-        </View>
-        <View style={styles.propertyRating}>
-          <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={21} badgesInfo={badgeInfo} />
         </View>
       </View>
       <View style={styles.actionBox}>
@@ -127,7 +125,8 @@ const getPropertyProgressStatus = (progress: number): React.ReactNode => {
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: 496,
+    flex: 1,
+    marginRight: 16,
     backgroundColor: theme.colors.white,
     borderRadius: 4,
     marginTop: 24,
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
   headerInfo: {
     width: '100%',
     flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.background,
     paddingHorizontal: 20,
@@ -157,6 +156,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   propertyType: {
+    flex: 1,
     color: theme.colors.primaryColor,
   },
   propertyRating: {

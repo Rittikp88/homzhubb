@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -14,13 +16,14 @@ import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscrip
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { AssetSubscriptionData } from '@homzhub/common/src/mocks/AssetSubscriptionData';
 
 interface IProps {
   onApiFailure: (err: IApiClientError) => void;
 }
 
 const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
-  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
   const [data, setData] = React.useState({} as UserSubscription);
   const [isMoreToggled, setIsMoreToggled] = React.useState(false);
@@ -39,7 +42,12 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   }, [onApiFailure]);
 
   if (ObjectUtils.isEmpty(data)) {
-    return null;
+    // TODO: (Bishal) condition to be removed
+    if (PlatformUtils.isWeb()) {
+      setData(ObjectMapper.deserialize(UserSubscription, AssetSubscriptionData));
+    } else {
+      return null;
+    }
   }
 
   const currentPlan = `${t('common:homzhub')} ${data.userServicePlan?.label}`;
@@ -70,8 +78,8 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
         </Text>
         {` ${t('subscriptionHelperServices')}`}
       </Text>
-      {renderFeatures(data, isMoreToggled, isMobile)}
-      {isMobile && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
+      {renderFeatures(data, isMoreToggled, isTablet)}
+      {isTablet && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
         <Text type="small" textType="semiBold" style={styles.more} onPress={toggleMore}>
           {isMoreToggled ? t('common:less') : t('common:more')}
         </Text>
@@ -81,14 +89,14 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   );
 };
 
-const renderFeatures = (data: UserSubscription, isMoreToggled: boolean, isMobile: boolean): React.ReactNode => {
+const renderFeatures = (data: UserSubscription, isMoreToggled: boolean, isTablet: boolean): React.ReactNode => {
   const { recommendedPlan } = data;
   const serviceItems = recommendedPlan?.serviceBundleItems ?? [];
-  const bundleItems = isMoreToggled ? serviceItems : serviceItems.slice(0, 5);
-  const upgradeFeatures = isMobile ? bundleItems : serviceItems;
+  const bundleItems = isMoreToggled ? serviceItems : serviceItems.slice(0, 3);
+  const upgradeFeatures = isTablet ? bundleItems : serviceItems;
 
   return (
-    <View style={[styles.featuresDataContainer, !isMobile && styles.maxFeaturesDataHeight]}>
+    <View style={[styles.featuresDataContainer, !isTablet && styles.maxFeaturesDataHeight]}>
       {upgradeFeatures.map((item) => (
         <View style={styles.featuresData} key={`${item.id}`}>
           <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />
@@ -103,9 +111,10 @@ const renderFeatures = (data: UserSubscription, isMoreToggled: boolean, isMobile
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 16,
-    marginTop: 16,
+    marginTop: PlatformUtils.isWeb() ? 24 : 16,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
   },

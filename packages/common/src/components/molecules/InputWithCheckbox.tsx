@@ -40,6 +40,7 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
         ref={ref}
         value={text}
         style={styles.inputStyle}
+        placeholderTextColor={theme.colors.disabled}
         onChangeText={setText}
         underlineColorAndroid="transparent"
         placeholder={placeholder}
@@ -67,5 +68,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingRight: 10,
     paddingLeft: 0,
+    color: theme.colors.dark,
   },
 });

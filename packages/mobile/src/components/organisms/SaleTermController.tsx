@@ -62,10 +62,10 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { currentAssetId } = this.props;
+    const { currentAssetId, t } = this.props;
 
     try {
-      const response = await AssetRepository.getSaleTerms(currentAssetId, { status: 'DRAFT' });
+      const response = await AssetRepository.getSaleTerms(currentAssetId);
 
       if (response.length <= 0) return;
       this.setState({
@@ -80,6 +80,11 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
           maintenanceUnit: response[0].maintenanceUnit ?? -1,
         },
       });
+      if (response[0].status === 'APPROVED') {
+        AlertHelper.info({
+          message: t('property:propertyEditMsg'),
+        });
+      }
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
@@ -186,6 +191,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
       maintenance_payment_schedule: values.maintenanceSchedule,
       maintenance_unit: values.maintenanceUnit,
       description,
+      is_edited: true,
     };
 
     // Removing un-required field as per the flow

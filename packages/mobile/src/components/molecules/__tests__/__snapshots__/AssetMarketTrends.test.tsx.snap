@@ -8,7 +8,7 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
       "flex": 1,
       "paddingBottom": 8,
       "paddingHorizontal": 16,
-      "paddingTop": 20,
+      "paddingTop": 26,
     }
   }
 >
@@ -69,7 +69,7 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
       "flex": 1,
       "paddingBottom": 8,
       "paddingHorizontal": 16,
-      "paddingTop": 20,
+      "paddingTop": 26,
     }
   }
 >

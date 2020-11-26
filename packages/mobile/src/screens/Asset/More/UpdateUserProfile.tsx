@@ -16,7 +16,8 @@ import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
+import { Loader } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';
 import UserProfileForm, { IUserProfileForm } from '@homzhub/mobile/src/components/molecules/UserProfileForm';
 import EmergencyContactForm from '@homzhub/mobile/src/components/molecules/EmergencyContactForm';
 import WorkInfoForm from '@homzhub/mobile/src/components/molecules/WorkInfoForm';
@@ -36,6 +37,7 @@ type IOwnProps = libraryProps & IStateProps;
 interface IOwnState {
   personalDetails: IUserProfileForm;
   profileUpdateResponse: IUpdateProfileResponse;
+  isFormLoading: boolean;
 }
 
 export enum UpdateUserFormTypes {
@@ -59,10 +61,17 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       email_otp: false,
       phone_otp: false,
     },
+    isFormLoading: false,
   };
 
   public render = (): React.ReactNode => {
     const { t } = this.props;
+    const { isFormLoading } = this.state;
+
+    if (isFormLoading) {
+      return <Loader visible={isFormLoading} />;
+    }
+
     return (
       <AnimatedProfileHeader
         title={t('assetMore:more')}
@@ -94,6 +103,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               phoneCode: emergencyContact.phoneCode,
             }}
             basicDetails={{ email: userProfile.email, phone: userProfile.phoneNumber }}
+            updateFormLoadingState={this.changeLoadingStatus}
           />
         );
       case UpdateUserFormTypes.WorkInfo:
@@ -104,7 +114,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               name: workInfo ? workInfo.companyName : '',
               email: workInfo ? workInfo.workEmail : '',
             }}
-            basicDetails={{ email: userProfile.email }}
+            updateFormLoadingState={this.changeLoadingStatus}
           />
         );
       default:
@@ -121,6 +131,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
             profileImage={userProfile.profilePicture}
             onFormSubmitSuccess={this.onUpdateProfileSuccess}
             isPasswordVerificationRequired={userProfile.isPasswordCreated}
+            updateFormLoadingState={this.changeLoadingStatus}
           />
         );
     }
@@ -192,6 +203,10 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
     AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
     this.goBack();
+  };
+
+  private changeLoadingStatus = (isFormLoading: boolean): void => {
+    this.setState({ isFormLoading });
   };
 
   private updateProfileDetails = async (phoneOrEmailOtp: string, emailOtp?: string): Promise<void> => {

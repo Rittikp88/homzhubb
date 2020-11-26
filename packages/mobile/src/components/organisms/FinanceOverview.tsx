@@ -53,7 +53,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
     const { currentTab, selectedTimeRange, data } = this.state;
     return (
       <View style={styles.container}>
-        <OnFocusCallback callback={this.getGeneralLedgers} />
+        <OnFocusCallback isAsync callback={this.getGeneralLedgers} />
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('overallPerformance')}
         </Text>

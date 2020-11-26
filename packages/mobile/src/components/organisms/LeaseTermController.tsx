@@ -316,6 +316,11 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
           singleLeaseUnitKey: response[0].id,
           singleLeaseInitValues: this.extractInitValues(response[0]),
         });
+        if (response[0].status === 'APPROVED') {
+          AlertHelper.info({
+            message: t('property:propertyEditMsg'),
+          });
+        }
       }
 
       if (response.length > 0 && assetLeaseType === LeaseTypes.Shared) {
@@ -397,6 +402,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       maintenanceUnit: data.maintenanceUnit ?? -1,
       spaces: data.leaseUnit.spaces,
       selectedPreferences: data.tenantPreferences,
+      status: data.status,
     };
   };
 

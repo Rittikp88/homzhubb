@@ -201,7 +201,6 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
           label={t('common:phone')}
           placeholder={t('tenantPhone')}
           inputType="phone"
-          maxLength={10}
           inputPrefixText={formProps.values.phoneCode}
           phoneFieldDropdownText={t('auth:countryRegion')}
           formProps={formProps}

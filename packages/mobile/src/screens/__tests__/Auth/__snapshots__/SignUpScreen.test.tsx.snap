@@ -2,6 +2,7 @@
 
 exports[`SignUp Screen should render signup screen 1`] = `
 <AnimatedHeader
+  keyboardShouldPersistTaps={true}
   linkText="login"
   onIconPress={[Function]}
   onLinkPress={[Function]}

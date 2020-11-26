@@ -1,11 +1,22 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
-export const OnFocusCallback = ({ callback }: { callback: () => Promise<void> }): React.ReactElement => {
+interface IProps {
+  callback: any;
+  isAsync?: boolean;
+}
+
+// Use this component to leverage the react-navigation `onFocus` hook in a class based component.
+export const OnFocusCallback = (props: IProps): React.ReactElement => {
+  const { callback, isAsync = false } = props;
   useFocusEffect(
     useCallback(() => {
-      callback().then();
-    }, [callback])
+      if (isAsync) {
+        callback().then();
+        return;
+      }
+      callback();
+    }, [callback, isAsync])
   );
   return <></>;
 };

@@ -38,7 +38,7 @@ class MoreProfile extends Component<Props> {
             image={userProfile?.profilePicture ?? ''}
           />
           <View style={styles.nameContainer}>
-            <Text type="regular" textType="semiBold">
+            <Text maxLength={14} type="regular" textType="semiBold">
               {userProfile?.fullName ?? 'User'}
             </Text>
             <Label type="large" textType="semiBold" style={styles.progressMsg}>

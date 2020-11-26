@@ -61,7 +61,7 @@ class AssetHighlightCard extends Component<IProps, IState> {
           stroke={isSelected ? theme.colors.active : undefined}
           strokeWidth={isSelected ? 0.5 : undefined}
         />
-        <Label type="regular" textType="regular" style={isSelected && { color: theme.colors.blue }}>
+        <Label type="regular" textType="regular" style={[styles.label, isSelected && { color: theme.colors.blue }]}>
           {item.name}
         </Label>
       </TouchableOpacity>
@@ -123,5 +123,8 @@ const styles = StyleSheet.create({
   inactiveDot: {
     backgroundColor: theme.colors.darkTint10,
     borderWidth: 0,
+  },
+  label: {
+    textAlign: 'center',
   },
 });

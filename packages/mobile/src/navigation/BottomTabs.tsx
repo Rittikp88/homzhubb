@@ -222,20 +222,21 @@ export const BottomTabs = (): React.ReactElement => {
   return (
     <BottomTabNavigator.Navigator
       initialRouteName={initialRoute}
-      lazy
       tabBarOptions={{
         activeTintColor: theme.colors.primaryColor,
         keyboardHidesTabBar: true,
         labelStyle: {
-          marginBottom: theme.viewport.width > 350 ? 0 : 20,
+          marginBottom: 4,
         },
         style: {
-          borderTopWidth: 2,
-          height: PlatformUtils.isIOS() ? 90 : 60,
-          shadowColor: theme.colors.shadow,
-          shadowOpacity: 0.5,
-          shadowRadius: 20,
-          shadowOffset: { width: 0, height: 0 },
+          height: theme.viewport.height * 0.1,
+          shadowOffset: {
+            width: 0,
+            height: 12,
+          },
+          shadowOpacity: 0.58,
+          shadowRadius: 16,
+          elevation: 24,
         },
       }}
     >

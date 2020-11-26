@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -32,8 +32,8 @@ interface IProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-const SLIDER_WIDTH = theme.viewport.width - theme.layout.screenPadding * 4;
-
+const COMPONENT_PADDING = 12;
+const SLIDER_WIDTH = theme.viewport.width - (theme.layout.screenPadding * 2 + COMPONENT_PADDING * 2);
 const AssetMetricsList = (props: IProps): React.ReactElement => {
   const {
     title = 0,
@@ -51,13 +51,6 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
   // HOOKS
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const itemWidth = useRef((SLIDER_WIDTH - 12 * (numOfElements - 1)) / numOfElements);
-  useEffect(() => {
-    itemWidth.current = (SLIDER_WIDTH - 12 * (numOfElements - 1)) / numOfElements;
-  }, [numOfElements]);
-  // HOOKS END
-
   // HELPERS
   const bubblePlusIcon = useCallback((): void => {
     if (onPlusIconClicked) {
@@ -80,10 +73,9 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     (items: IMetricsData[]): React.ReactElement => {
       return (
         <View style={styles.sliderRow}>
-          {items.map((item: IMetricsData, index: number) => {
+          {items.map((item: IMetricsData) => {
             const cardStyle = {
-              minWidth: itemWidth.current,
-              marginEnd: index === numOfElements - 1 ? 0 : 12,
+              minWidth: (SLIDER_WIDTH - COMPONENT_PADDING * (numOfElements - 1)) / numOfElements,
             };
             const handlePress = (): void => onMetricsClicked && onMetricsClicked(item.name);
 
@@ -112,22 +104,22 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.header}>
-        <Logo style={styles.logo} width={48} height={48} />
+      <View style={[styles.header, !isSubTextRequired && styles.financialView]}>
+        <Logo style={styles.logo} width={50} height={50} />
         <View style={styles.headerCenter}>
           <Text type="regular" textType="bold" style={styles.assetCount}>
             {title}
           </Text>
           <View style={styles.propertiesRow}>
             {isSubTextRequired && (
-              <Text type="small" textType="semiBold" style={styles.propertyText}>
+              <Label type="large" textType="semiBold" style={styles.propertyText}>
                 {t('common:properties')}
-              </Text>
+              </Label>
             )}
             {subscription && (
               <>
                 <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.circleIcon} />
-                <Label type="large" textType="regular">
+                <Label type="regular" textType="regular" style={styles.textStyle}>
                   {`${t('common:homzhub')} ${subscription}`}
                 </Label>
               </>
@@ -168,14 +160,12 @@ export { memoizedComponent as AssetMetricsList };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 12,
-    paddingHorizontal: theme.layout.screenPadding,
+    padding: COMPONENT_PADDING,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 12,
   },
   headerCenter: {
@@ -183,9 +173,9 @@ const styles = StyleSheet.create({
   },
   propertiesRow: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   sliderRow: {
+    justifyContent: 'space-between',
     flexDirection: 'row',
   },
   paginationContainer: {
@@ -199,7 +189,7 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
   },
   circleIcon: {
-    paddingTop: 4,
+    paddingTop: 10,
     paddingHorizontal: 6,
   },
   logo: {
@@ -215,5 +205,11 @@ const styles = StyleSheet.create({
   inactiveDot: {
     backgroundColor: theme.colors.disabled,
     borderWidth: 0,
+  },
+  financialView: {
+    alignItems: 'center',
+  },
+  textStyle: {
+    width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 48 : undefined,
   },
 });

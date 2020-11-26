@@ -386,6 +386,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   thumbnailContainer: {
+    flex: 1,
     marginHorizontal: 5,
     marginVertical: 10,
   },

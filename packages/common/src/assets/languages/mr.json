@@ -542,7 +542,7 @@
     "lowestOffer": "सर्वात कमी ऑफर",
     "uploadedOn": "यावर अपलोड केलेले: {{uploadedBy}} by द्वारे, {{uploadedOn}}",
     "noPropertiesAdded": "आपण कोणतीही मालमत्ता जोडली नाही",
-    "noFilterProperties": "आपल्याकडे कोणतेही {{filter}} गुणधर्म नाहीत"
+    "noFilterProperties": "आपल्याकडे कोणतेही गुणधर्म नाहीत"
   },
   "assetFinancial": {
     "financial": "आर्थिक",
@@ -558,6 +558,7 @@
     "amount": "रक्कम",
     "amountPlaceholder": "आपले पैसे प्रविष्ट करा",
     "category": "वर्ग",
+    "property": "मालमत्ता",
     "categoryPlaceholder": "आपली श्रेणी निवडा",
     "addDate": "तारीख जोडा",
     "addDatePlaceholder": "एक तारीख निवडा",

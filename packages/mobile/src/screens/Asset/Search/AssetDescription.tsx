@@ -12,6 +12,7 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -442,7 +443,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
               {item.name}
             </Label>
             <Label type="large" textType="semiBold">
-              {item.value}
+              {StringUtils.toTitleCase(item.value.replace('_', ' '))}
             </Label>
           </View>
         )}
@@ -994,7 +995,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { propertyTermId, isPreview },
       },
     } = this.props;
-    // TODO: Remove once will get proper url
+
     const url = await LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
       `${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
@@ -1155,6 +1156,7 @@ const styles = StyleSheet.create({
   amenityText: {
     color: theme.colors.darkTint4,
     marginTop: 4,
+    textAlign: 'center',
   },
   exploreMapContainer: {
     position: 'absolute',
@@ -1173,7 +1175,7 @@ const styles = StyleSheet.create({
   },
   subAddress: {
     marginLeft: 0,
-    maxWidth: 310,
+    maxWidth: 240,
   },
   verticalDivider: {
     borderWidth: 1,

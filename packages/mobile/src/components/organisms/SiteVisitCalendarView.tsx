@@ -167,14 +167,14 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
               <>
                 {badge && <Badge title={badge.label} badgeColor={badge.color} badgeStyle={styles.badge} />}
                 {assetVisit.map((item) => {
+                  const designation = item.role.replace('_', ' ');
                   return (
                     <>
                       <Avatar
                         key={item.id}
                         fullName={item.user.fullName}
-                        designation={StringUtils.toTitleCase(item.role)}
+                        designation={StringUtils.toTitleCase(designation)}
                         rating={item.user.rating}
-                        isRightIcon
                         date={item.createdAt}
                         containerStyle={styles.avatar}
                       />
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   userView: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     marginVertical: 16,
   },
   avatar: {
