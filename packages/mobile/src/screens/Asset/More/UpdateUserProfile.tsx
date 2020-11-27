@@ -151,11 +151,11 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
     switch (formType) {
       case UpdateUserFormTypes.EmergencyContact:
-        return t('editHeaderText', { title });
+        return t('editContactDetails');
       case UpdateUserFormTypes.WorkInfo:
         return t('editHeaderText', { title });
       default:
-        return title ? t('editHeaderText', { title: t('assetMore:profile') }) : t('editProfile');
+        return title as string;
     }
   };
 

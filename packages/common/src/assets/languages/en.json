@@ -140,10 +140,10 @@
   },
   "auth": {
     "verifyNumber": "Verify your number",
-    "enterOTP": "Enter the 6-digit OTP, Homzhub sent to",
-    "receiveOtp": "Did not receive OTP?",
+    "enterOTP": "Please enter the verification code sent to",
+    "receiveOtp": "Didn't get the OTP?",
     "resend": "Resend",
-    "resendIn": "Resend in {{sec}} sec",
+    "resendIn": "Resend in {{sec}} s",
     "otpError": "Please enter a valid OTP",
     "loginOtp": "Login with OTP",
     "enterName": "Enter your name",
@@ -192,9 +192,9 @@
     "countryRegion": "Country/Region",
     "clickToSignUp": "Click \"Continue\" to Sign Up",
     "clickToFFM": "Click \"Continue\" to open FFM Application",
-    "updatePassword": "Update Password",
-    "createNewPassword": "Create a New Password",
-    "currentPassword": "Your Current Password",
+    "updatePassword": "Update",
+    "createNewPassword": "New Password",
+    "currentPassword": "Current Password",
     "resetLink": "Reset Link has been sent to your email",
     "emailNotExists": "Email does not exists",
     "validPhone": "Please enter a valid number",
@@ -631,7 +631,7 @@
     "privacyPolicyText": "Privacy Policy"
   },
   "moreProfile": {
-    "basicDetails": "Basic Details",
+    "basicDetails": "Personal Info",
     "changePassword": "Change Password",
     "emergencyContact": "Emergency Contact",
     "workInformation": "Work Information",
@@ -646,7 +646,7 @@
     "editHeaderText": "Edit {{title}}",
     "updateSuccessfulMessage": "Details updated successfully",
     "passwordVerificationText": "Password Verification",
-    "enterYourPasswordText": "Enter your account password to Verify",
+    "enterYourPasswordText": "Please enter your account password",
     "continueToGetOtp": "Click \"Continue\" to get OTP",
     "yourCurrentPassword": "Your Current Password",
     "passwordChanged": "Password Changed Successfully",
@@ -659,7 +659,8 @@
     "emailVerifiedDescription": "You have successfully verified the email",
     "emailNotVerifiedText": "Email Not Verified!",
     "emailNotVerifiedDescription": "The email verification link has expired",
-    "duplicateEmailError": "Email cannot be same as that of your personal email."
+    "duplicateEmailError": "Email cannot be same as that of your personal email.",
+    "editContactDetails": "Edit Contact Details"
   },
   "webLoader": {
     "loadingText": "Loading Application..."
