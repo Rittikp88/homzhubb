@@ -155,7 +155,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                 <TextArea
                   value={description}
                   wordCountLimit={MAX_DESCRIPTION_LENGTH}
-                  placeholder={t('common:typeHere')}
+                  placeholder={t('property:sellFlowFormDescription')}
                   onMessageChange={this.onDescriptionChange}
                 />
               </AssetListingSection>

@@ -290,7 +290,7 @@ const LeaseTermForm = ({
         <TextArea
           value={formProps.values[LeaseFormKeys.description]}
           wordCountLimit={MAX_DESCRIPTION_LENGTH}
-          placeholder={t('common:typeHere')}
+          placeholder={isFromManage ? t('property:manageFlowFormDescription') : t('property:rentFlowFormDescription')}
           onMessageChange={onDescriptionChange}
         />
       </AssetListingSection>

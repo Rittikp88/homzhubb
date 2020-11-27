@@ -31,7 +31,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
               maxLength={10}
               numberOfLines={1}
               inputType="number"
-              placeholder={t('common:enter')}
+              placeholder={t('carpetAreaPlaceholder')}
               formProps={formProps}
             />
           </View>

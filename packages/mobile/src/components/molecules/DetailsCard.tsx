@@ -43,12 +43,14 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
   };
 
   private renderEmptyView = (): React.ReactNode => {
-    const { t } = this.props;
+    const { t, type } = this.props;
 
     return (
       <View style={styles.marginTop}>
         <Label style={styles.moreInfo} type="large">
-          {t('common:loremIpsum')}
+          {type === UpdateUserFormTypes.EmergencyContact
+            ? t('moreProfile:emergencyEmptyState')
+            : t('moreProfile:workInfoEmptyState')}
         </Label>
         <TouchableOpacity onPress={this.onIconPress} style={styles.marginTop}>
           <Label style={styles.addContactBtn} type="large" textType="semiBold">
