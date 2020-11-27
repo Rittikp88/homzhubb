@@ -99,7 +99,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
         {showImage && !!image ? (
           <Image source={{ uri: image }} style={imageStyle} />
         ) : (
-          <Label type={fontSize} textType={fontWeight} style={[placeholderColor, textStyle]}>
+          <Label type={fontSize} numberOfLines={1} textType={fontWeight} style={[placeholderColor, textStyle]}>
             {label ?? placeholder}
           </Label>
         )}

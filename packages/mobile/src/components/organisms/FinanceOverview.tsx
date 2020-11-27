@@ -82,6 +82,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
             listHeight={theme.viewport.height / 2}
             testID="drpTimeRange"
             containerStyle={styles.dropdownStyle}
+            textStyle={styles.titleDropdown}
           />
         </View>
         {currentTab === TabKeys.expenses ? (
@@ -264,5 +265,8 @@ const styles = StyleSheet.create({
   },
   dropdownStyle: {
     width: 140,
+  },
+  titleDropdown: {
+    width: 80,
   },
 });

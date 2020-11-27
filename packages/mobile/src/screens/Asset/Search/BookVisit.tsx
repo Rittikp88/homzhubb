@@ -120,7 +120,11 @@ export class BookVisit extends Component<Props, IVisitState> {
           onIconPress={this.goBack}
           testID="header"
         />
-        <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.contentContainer}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
           {this.renderVisitType()}
           {!params.isReschedule && this.renderVisitorType()}
           <Divider containerStyles={styles.divider} />
@@ -437,9 +441,11 @@ export default connect(mapStateToProps, null)(withTranslation()(BookVisit));
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 20,
     backgroundColor: theme.colors.white,
+  },
+  content: {
+    paddingVertical: 20,
+    paddingHorizontal: 16,
   },
   userContainer: {
     paddingVertical: 24,
