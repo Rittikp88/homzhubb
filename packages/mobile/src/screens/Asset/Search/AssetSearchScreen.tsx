@@ -195,6 +195,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               favIds={favouriteProperties}
               getPropertiesListView={getPropertiesListView}
               onSelectedProperty={this.navigateToAssetDetails}
+              handleToggle={this.handleToggle}
             />
             {this.renderNoResultsListView()}
             {this.renderMenuTray()}
@@ -491,25 +492,20 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   private renderBar = (): React.ReactElement | null => {
     const { isMapView, isMenuTrayCollapsed, isSearchBarFocused } = this.state;
     const { t, properties } = this.props;
-    if (!properties) return null;
-    if (isMenuTrayCollapsed || isSearchBarFocused) {
+
+    if (isMenuTrayCollapsed || isSearchBarFocused || !properties || !isMapView) {
       return null;
     }
+
     const conditionalStyle = isMapView ? styles.flexRow : styles.flexRowReverse;
     return (
       <View style={[styles.bar, conditionalStyle]}>
-        {isMapView && (
-          <View style={styles.propertiesFound}>
-            <Label type="regular" textType="regular">
-              {(properties && properties.count) ?? 0} {t('propertiesFound')}
-            </Label>
-          </View>
-        )}
-        <ToggleButton
-          onToggle={this.handleToggle}
-          title={isMapView ? t('common:list') : t('common:map')}
-          icon={isMapView ? icons.list : icons.map}
-        />
+        <View style={styles.propertiesFound}>
+          <Label type="regular" textType="regular">
+            {(properties && properties.count) ?? 0} {t('propertiesFound')}
+          </Label>
+        </View>
+        <ToggleButton onToggle={this.handleToggle} title={t('common:list')} icon={icons.list} />
       </View>
     );
   };

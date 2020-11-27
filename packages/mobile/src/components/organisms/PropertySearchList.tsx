@@ -1,13 +1,15 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
 import PropertyListCard from '@homzhub/mobile/src/components/organisms/PropertyListCard';
-import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   properties: AssetSearch;
@@ -15,6 +17,7 @@ interface IProps {
   setFilter: (payload: any) => void;
   filters: IFilter;
   favIds: number[];
+  handleToggle: () => void;
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
 }
 
@@ -22,31 +25,45 @@ type Props = IProps & WithTranslation;
 
 export class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
-    const { properties, t, favIds } = this.props;
+    const { properties, t, favIds, handleToggle } = this.props;
     if (properties.count === 0) {
       return null;
     }
     return (
-      <View style={styles.container}>
-        <Label type="large" textType="semiBold" style={styles.label}>
-          {properties.count ?? 0} {t('propertiesFound')}
-        </Label>
+      <View>
         <FlatList
           data={properties.results}
           renderItem={this.renderItem}
           keyExtractor={this.renderKeyExtractor}
           ListFooterComponent={this.renderFooter}
+          ListHeaderComponent={(): React.ReactElement => (
+            <Label type="large" textType="semiBold" style={styles.label}>
+              {properties.count ?? 0} {t('propertiesFound')}
+            </Label>
+          )}
           onEndReached={this.loadMoreProperties}
           onEndReachedThreshold={0.8}
           extraData={favIds}
           testID="resultList"
+          showsVerticalScrollIndicator={false}
+          style={styles.container}
+        />
+        <ToggleButton
+          onToggle={handleToggle}
+          title={t('common:map')}
+          icon={icons.map}
+          containerStyle={styles.toggleButton}
         />
       </View>
     );
   }
 
-  public renderItem = ({ item }: { item: Asset }): React.ReactElement => {
+  public renderItem = ({ item, index }: { item: Asset; index: number }): React.ReactElement => {
     const { filters, onSelectedProperty } = this.props;
+    let containerStyle = {};
+    if (index === 0) {
+      containerStyle = { marginVertical: 0, marginBottom: 10 };
+    }
 
     const navigateToAssetDescription = (): void => {
       const { leaseTerm, saleTerm, id } = item;
@@ -65,6 +82,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
         isCarousel
         onSelectedProperty={navigateToAssetDescription}
         testID="listCard"
+        containerStyle={containerStyle}
       />
     );
   };
@@ -102,14 +120,20 @@ export default withTranslation(LocaleConstants.namespacesKey.propertySearch)(Pro
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    margin: theme.layout.screenPadding,
+    marginHorizontal: 16,
+    marginBottom: 16,
   },
   label: {
+    marginVertical: 20,
     color: theme.colors.darkTint4,
   },
   loading: {
     textAlign: 'center',
     alignSelf: 'center',
+  },
+  toggleButton: {
+    position: 'absolute',
+    top: 14,
+    right: 16,
   },
 });
