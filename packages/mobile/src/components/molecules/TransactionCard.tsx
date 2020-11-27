@@ -59,23 +59,27 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
         <TouchableOpacity onPress={onPress} style={styles.transactionCardContainer}>
           <View style={styles.commonAlignStyle}>
             <View style={styles.dateStyle}>
-              <Label type="regular" textType="bold">
+              <Label type="large" textType="bold" style={{ color: theme.colors.darkTint2 }}>
                 {DateUtils.getDisplayDate(transactionDate, DateFormats.DD)}
               </Label>
-              <Label type="large">{DateUtils.getDisplayDate(transactionDate, DateFormats.MMM)}</Label>
-            </View>
-            <View>
-              <View style={styles.commonAlignStyle}>
-                <Label type="regular">{category}</Label>
-                {fileName ? <Icon name={icons.attachment} size={12} /> : null}
-              </View>
-              <Label maxLength={textLength} type="large" textType="bold">
-                {label}
-              </Label>
-              <Label maxLength={textLength} type="large">
-                {assetName}
+              <Label type="regular" style={{ color: theme.colors.darkTint6 }}>
+                {DateUtils.getDisplayDate(transactionDate, DateFormats.MMM)}
               </Label>
             </View>
+          </View>
+          <View style={styles.textContainer}>
+            <View style={styles.commonAlignStyle}>
+              <Label type="regular" numberOfLines={1}>
+                {category}
+              </Label>
+              {fileName ? <Icon name={icons.attachment} size={12} /> : null}
+            </View>
+            <Label maxLength={textLength} type="large" textType="bold" numberOfLines={1}>
+              {label}
+            </Label>
+            <Label maxLength={textLength} type="large" numberOfLines={1}>
+              {assetName}
+            </Label>
           </View>
           <View style={styles.commonAlignStyle}>
             <PricePerUnit
@@ -180,13 +184,16 @@ const styles = StyleSheet.create({
   },
   dateStyle: {
     alignItems: 'center',
-    width: 51,
+    width: 52,
     height: 60,
     borderWidth: 1,
-    borderColor: theme.colors.shadow,
+    borderColor: theme.colors.darkTint10,
     borderRadius: 4,
-    padding: 10,
-    marginRight: 12,
+    paddingVertical: 12,
+    marginEnd: 12,
+  },
+  textContainer: {
+    flex: 1,
   },
   iconStyle: {
     marginLeft: 10,

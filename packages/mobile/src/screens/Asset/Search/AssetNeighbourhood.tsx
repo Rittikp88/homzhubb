@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     marginHorizontal: 12,
-    top: theme.viewport.height * 0.16,
+    top: 120,
   },
 });
 

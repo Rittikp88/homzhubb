@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -55,12 +54,10 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       <View style={styles.container}>
         <OnFocusCallback callback={this.resetIndex} />
         <View style={styles.headingView}>
-          <View style={styles.headingContent}>
-            <Icon name={icons.warning} size={16} />
-            <Text type="small" textType="semiBold" style={styles.label}>
-              {t('pendingProperties', { total })}
-            </Text>
-          </View>
+          <Icon name={icons.warning} size={18} />
+          <Text type="small" textType="semiBold" numberOfLines={1} style={styles.label}>
+            {t('pendingProperties', { total })}
+          </Text>
           {data.length > 1 && (
             <View style={styles.headingContent}>
               <TouchableOpacity
@@ -254,22 +251,23 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   headingView: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   headingContent: {
     flexDirection: 'row',
-    alignItems: 'center',
-    height: 40,
   },
   label: {
+    flex: 1,
+    marginEnd: 4,
     color: theme.colors.darkTint1,
     marginLeft: 10,
   },
   iconStyle: {
-    width: PlatformUtils.isIOS() ? 32 : 38,
-    height: PlatformUtils.isIOS() ? 30 : 35,
+    width: 32,
+    height: 28,
+    borderRadius: 4,
     backgroundColor: theme.colors.background,
     alignItems: 'center',
     justifyContent: 'center',

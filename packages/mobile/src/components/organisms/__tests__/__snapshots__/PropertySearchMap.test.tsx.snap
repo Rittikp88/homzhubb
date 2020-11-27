@@ -191,7 +191,7 @@ exports[`PropertySearchMap should match snapshot 1`] = `
         "position": "absolute",
       }
     }
-    itemWidth={690}
+    itemWidth={600}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -389,7 +389,7 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
         "position": "absolute",
       }
     }
-    itemWidth={690}
+    itemWidth={600}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -587,7 +587,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
         "position": "absolute",
       }
     }
-    itemWidth={690}
+    itemWidth={600}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -785,7 +785,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
         "position": "absolute",
       }
     }
-    itemWidth={690}
+    itemWidth={600}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -822,7 +822,7 @@ exports[`PropertySearchMap should match snapshot when properties are empty 1`] =
         "position": "absolute",
       }
     }
-    itemWidth={690}
+    itemWidth={600}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />

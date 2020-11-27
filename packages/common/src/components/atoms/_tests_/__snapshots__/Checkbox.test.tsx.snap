@@ -6,7 +6,6 @@ exports[`Checkbox should match snapshot for selected false 1`] = `
   style={
     Array [
       Object {
-        "alignItems": "center",
         "flexDirection": "row",
       },
       Object {},
@@ -24,6 +23,8 @@ exports[`Checkbox should match snapshot for selected false 1`] = `
     style={
       Array [
         Object {
+          "flex": 1,
+          "marginEnd": 4,
           "marginStart": 12,
         },
         Object {},
@@ -43,7 +44,6 @@ exports[`Checkbox should match snapshot for selected true 1`] = `
   style={
     Array [
       Object {
-        "alignItems": "center",
         "flexDirection": "row",
       },
       Object {},
@@ -61,6 +61,8 @@ exports[`Checkbox should match snapshot for selected true 1`] = `
     style={
       Array [
         Object {
+          "flex": 1,
+          "marginEnd": 4,
           "marginStart": 12,
         },
         Object {},

@@ -63,11 +63,10 @@ export class AssetHighlights extends Component<Props, IState> {
     const { propertyDetail } = this.props;
     await this.getAmenities();
     const propertyType = propertyDetail ? propertyDetail.assetGroup.name : '';
-    const temp = cloneDeep(OtherDetails);
-    const data = temp.find((item: IOtherDetail) => item.name === propertyType);
+    const data = OtherDetails.find((item: IOtherDetail) => item.name === propertyType);
     if (data) {
       this.setState({
-        otherDetails: data.details,
+        otherDetails: [...data.details],
       });
     }
     if (propertyDetail) {
@@ -209,6 +208,7 @@ export class AssetHighlights extends Component<Props, IState> {
 
   private getSelectedData = (propertyDetail: Asset): void => {
     const { selectedAmenity, otherDetails } = this.state;
+    const toUpdate = [...otherDetails];
     const newSelectedValues: number[] = selectedAmenity;
     const { amenityGroup, isGated, powerBackup, allDayAccess, cornerProperty, assetHighlights } = propertyDetail;
     if (amenityGroup) {
@@ -220,7 +220,7 @@ export class AssetHighlights extends Component<Props, IState> {
         selectedAmenity: newSelectedValues,
       });
     }
-    otherDetails.forEach((item: ICheckboxGroupData) => {
+    toUpdate.forEach((item: ICheckboxGroupData) => {
       switch (item.label) {
         case Details.isGated:
           item.isSelected = isGated;
@@ -238,7 +238,7 @@ export class AssetHighlights extends Component<Props, IState> {
           item.isSelected = false;
       }
     });
-    this.setState({ otherDetails });
+    this.setState({ otherDetails: toUpdate });
 
     if (assetHighlights.length > 0) {
       this.setState({

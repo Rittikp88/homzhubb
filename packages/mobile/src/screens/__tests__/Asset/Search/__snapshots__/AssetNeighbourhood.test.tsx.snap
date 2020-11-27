@@ -52,7 +52,7 @@ exports[`AssetNeighbourhood should render snapshot 1`] = `
         "marginHorizontal": 12,
         "position": "absolute",
         "right": 0,
-        "top": 213.44,
+        "top": 120,
       }
     }
   >

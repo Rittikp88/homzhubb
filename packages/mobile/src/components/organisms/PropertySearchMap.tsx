@@ -11,6 +11,13 @@ import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/Proper
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
+const {
+  viewport: { width },
+  DeviceDimensions: { SMALL },
+} = theme;
+const SLIDER_WIDTH = width <= SMALL.width ? 300 : width * 0.8;
+const MAP_DELTA = 0.1;
+
 interface IState {
   currentSlide: number;
 }
@@ -23,10 +30,7 @@ interface IProps {
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
   onFavorite: (propertyTermId: number, isFavourite: boolean) => void;
 }
-
 type Props = IProps & WithTranslation;
-const SLIDER_WIDTH = theme.viewport.width - 60;
-const MAP_DELTA = 0.1;
 
 export class PropertySearchMap extends React.PureComponent<Props, IState> {
   private mapRef: MapView | null = null;

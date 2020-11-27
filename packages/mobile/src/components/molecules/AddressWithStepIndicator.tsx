@@ -26,6 +26,9 @@ interface IProps {
   stepContainerStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
+const {
+  viewport: { width },
+} = theme;
 
 export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
   const {
@@ -97,7 +100,8 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         isDone = isStepDone[index];
       }
     });
-    return <View style={[styles.separator, isDone && styles.doneSeparator]} />;
+    // eslint-disable-next-line react/prop-types
+    return <View style={[styles.separator, isDone && styles.doneSeparator, { width: (width - 220) / steps.length }]} />;
   };
 
   const badge = badgeData();
@@ -148,7 +152,6 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: theme.colors.darkTint7,
-    width: 50,
     height: 2,
     marginTop: 10,
     opacity: 0.3,

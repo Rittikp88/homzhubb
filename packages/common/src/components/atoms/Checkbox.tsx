@@ -52,9 +52,10 @@ export { RNCheckbox };
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   label: {
     marginStart: 12,
+    marginEnd: 4,
+    flex: 1,
   },
 });

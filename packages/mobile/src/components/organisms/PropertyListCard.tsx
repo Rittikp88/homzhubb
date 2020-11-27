@@ -37,6 +37,7 @@ interface IState {
   activeSlide: number;
 }
 
+const ITEM_WIDTH = theme.viewport.width - 56;
 export class PropertyListCard extends React.PureComponent<Props, IState> {
   public state = {
     activeSlide: 0,
@@ -104,7 +105,8 @@ export class PropertyListCard extends React.PureComponent<Props, IState> {
             carouselData={sortedImages}
             carouselItem={this.renderCarouselItem}
             activeIndex={activeSlide}
-            sliderWidth={360}
+            itemWidth={ITEM_WIDTH}
+            sliderWidth={ITEM_WIDTH}
             onSnapToItem={this.onSnapToItem}
             testID="snapCarousel"
           />
@@ -234,7 +236,7 @@ export default withTranslation()(PropertyListCard);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
-    padding: 10,
+    padding: 12,
     borderRadius: 4,
     marginVertical: 10,
   },
@@ -245,13 +247,12 @@ const styles = StyleSheet.create({
   },
   amenities: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 6,
-    overflow: 'hidden',
   },
   amenitiesContainer: {
-    marginStart: 5,
+    marginTop: 8,
   },
   carouselContainer: {
     borderRadius: 4,

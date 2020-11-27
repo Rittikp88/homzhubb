@@ -402,14 +402,12 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     ];
     return (
       <>
-        <View style={styles.filterTray}>
-          <TouchableOpacity onPress={this.toggleSearchBar}>
-            <View style={styles.addressContainer}>
-              <Icon name={icons.search} size={20} color={theme.colors.darkTint5} />
-              <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
-                {search_address}
-              </Text>
-            </View>
+        <View style={styles.tray}>
+          <TouchableOpacity onPress={this.toggleSearchBar} style={styles.addressContainer}>
+            <Icon name={icons.search} size={20} color={theme.colors.darkTint5} />
+            <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
+              {search_address}
+            </Text>
           </TouchableOpacity>
           <View style={styles.menuTrayContainer}>
             {onScreenFilters.map((item: { type: OnScreenFilters; label: string }, index: number) => {
@@ -446,8 +444,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
                     iconColor={iconColor}
                     iconSize={20}
                     onPress={navigateToFilters}
-                    iconStyle={styles.menuButtonText}
-                    containerStyle={styles.filterButtons}
+                    containerStyle={styles.additionalFilterButton}
                   />
                 );
               }
@@ -739,6 +736,12 @@ export default connect(
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.propertySearch)(AssetSearchScreen));
 
+const {
+  colors,
+  viewport: { width, height },
+  layout: { screenPadding },
+  DeviceDimensions: { SMALL },
+} = theme;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -748,36 +751,43 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     height: PlatformUtils.isIOS() ? 30 : StatusBar.currentHeight,
-    backgroundColor: theme.colors.background,
+    backgroundColor: colors.background,
   },
   bar: {
     position: 'absolute',
     justifyContent: 'space-between',
     alignItems: 'center',
-    top: theme.viewport.height * 0.2,
-    width: theme.viewport.width,
-    paddingHorizontal: theme.layout.screenPadding,
+    top: height <= SMALL.height ? 130 : 140,
+    width,
+    paddingHorizontal: screenPadding,
+  },
+  tray: {
+    backgroundColor: colors.white,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   menuTrayContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginHorizontal: 5,
-    paddingVertical: 10,
-    flex: 0,
+    justifyContent: 'space-between',
   },
   filterButtons: {
     flex: 0,
+    width: (width - 68) / 4,
+  },
+  additionalFilterButton: {
+    flex: 0,
+    width: 56,
   },
   menuButtonText: {
     marginVertical: 8,
-    marginHorizontal: 20,
+    marginHorizontal: 4,
   },
   propertiesFound: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
     borderRadius: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    shadowColor: theme.colors.shadow,
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -788,7 +798,7 @@ const styles = StyleSheet.create({
   },
   trayContainer: {
     width: '100%',
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
     padding: 15,
     paddingTop: 10,
     position: 'absolute',
@@ -796,43 +806,37 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   searchBarContainer: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
   },
   cancelButtonStyle: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
   },
   cancelTextStyle: {
-    color: theme.colors.primaryColor,
+    color: colors.primaryColor,
   },
   resultListContainer: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
   },
   searchLocation: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
     position: 'absolute',
     top: 0,
     bottom: 0,
     right: 0,
     left: 0,
   },
-  filterTray: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-    justifyContent: 'space-around',
-  },
   addressContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 4,
-    borderColor: theme.colors.darkTint12,
+    borderColor: colors.darkTint12,
     borderWidth: 1,
-    margin: theme.layout.screenPadding,
-    marginBottom: 10,
+    marginBottom: 12,
     padding: 8,
   },
   address: {
-    marginStart: 15,
-    width: 220,
+    marginStart: 8,
+    flex: 1,
   },
   flexRow: {
     flexDirection: 'row',
@@ -842,7 +846,7 @@ const styles = StyleSheet.create({
   },
   noResults: {
     textAlign: 'center',
-    color: theme.colors.darkTint4,
+    color: colors.darkTint4,
   },
   noResultsContainer: {
     position: 'absolute',
@@ -851,10 +855,10 @@ const styles = StyleSheet.create({
     width: 250,
     alignSelf: 'center',
     borderRadius: 4,
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
   },
   priceRange: {
-    width: theme.viewport.width,
+    width,
     paddingRight: 30,
   },
   noResultsListContainer: {
@@ -863,17 +867,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   noResultText: {
-    color: theme.colors.darkTint3,
+    color: colors.darkTint3,
     marginVertical: 10,
   },
   helperText: {
-    color: theme.colors.darkTint6,
+    color: colors.darkTint6,
     textAlign: 'center',
     marginHorizontal: 20,
     marginVertical: 10,
   },
   resetFilters: {
-    color: theme.colors.primaryColor,
+    color: colors.primaryColor,
     marginVertical: 10,
   },
   button: {
