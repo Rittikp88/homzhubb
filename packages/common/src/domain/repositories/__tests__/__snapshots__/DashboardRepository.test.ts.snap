@@ -134,6 +134,7 @@ AssetAdvertisement {
         "_mediaAttributes": MediaAttributes {
           "_duration": "",
           "_thumbnail": "",
+          "_thumbnailBest": "",
           "_thumbnailHD": "",
           "_thumbnailSD": "",
           "_title": "",
@@ -157,6 +158,7 @@ AssetAdvertisement {
         "_mediaAttributes": MediaAttributes {
           "_duration": "",
           "_thumbnail": "",
+          "_thumbnailBest": "",
           "_thumbnailHD": "",
           "_thumbnailSD": "",
           "_title": "",
@@ -180,6 +182,7 @@ AssetAdvertisement {
         "_mediaAttributes": MediaAttributes {
           "_duration": "",
           "_thumbnail": "",
+          "_thumbnailBest": "",
           "_thumbnailHD": "",
           "_thumbnailSD": "",
           "_title": "",

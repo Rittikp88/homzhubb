@@ -415,7 +415,6 @@ const styles = StyleSheet.create({
   },
   shadowView: {
     paddingTop: 10,
-    marginBottom: PlatformUtils.isIOS() ? 20 : 0,
     paddingBottom: 0,
   },
   buttonStyle: {

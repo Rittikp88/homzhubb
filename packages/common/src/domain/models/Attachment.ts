@@ -46,6 +46,9 @@ export class MediaAttributes {
   @JsonProperty('thumbnail_hd', String, true)
   private _thumbnailHD = '';
 
+  @JsonProperty('thumbnail_best', String, true)
+  private _thumbnailBest = '';
+
   @JsonProperty('thumbnail_sd', String, true)
   private _thumbnailSD = '';
 
@@ -71,6 +74,10 @@ export class MediaAttributes {
 
   get thumbnailSD(): string {
     return this._thumbnailSD;
+  }
+
+  get thumbnailBest(): string {
+    return this._thumbnailBest;
   }
 }
 

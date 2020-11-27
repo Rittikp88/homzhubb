@@ -127,20 +127,28 @@ export class AssetCard extends Component<Props> {
 
     if (!item) return <ImagePlaceholder containerStyle={styles.placeholderImage} />;
 
+    const {
+      mediaAttributes: { thumbnailBest, thumbnailHD, thumbnail },
+      link,
+      mediaType,
+    } = item;
+
     return (
       <TouchableOpacity onPress={isDetailView ? handleFullScreen : handlePropertyView}>
-        {item.mediaType === 'IMAGE' && (
+        {mediaType === 'IMAGE' && (
           <Image
             source={{
-              uri: item.link,
+              uri: link,
             }}
             style={[styles.image, isDetailView && styles.detailViewImage]}
           />
         )}
-        {item.mediaType === 'VIDEO' && (
+        {mediaType === 'VIDEO' && (
           <>
             <Image
-              source={{ uri: item.mediaAttributes.thumbnailHD ?? item.mediaAttributes.thumbnail }}
+              source={{
+                uri: thumbnailBest ?? thumbnailHD ?? thumbnail,
+              }}
               style={[styles.image, isDetailView && styles.detailViewImage]}
             />
           </>

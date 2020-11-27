@@ -101,6 +101,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -124,6 +125,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -147,6 +149,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -170,6 +173,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -193,6 +197,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -216,6 +221,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -239,6 +245,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -281,6 +288,7 @@ AssetSearch {
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
             "_thumbnail": "",
+            "_thumbnailBest": "",
             "_thumbnailHD": "",
             "_thumbnailSD": "",
             "_title": "",
@@ -300,6 +308,7 @@ AssetSearch {
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
             "_thumbnail": "",
+            "_thumbnailBest": "",
             "_thumbnailHD": "",
             "_thumbnailSD": "",
             "_title": "",
@@ -505,6 +514,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -528,6 +538,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -551,6 +562,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -574,6 +586,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -597,6 +610,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -620,6 +634,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -643,6 +658,7 @@ AssetSearch {
             "_mediaAttributes": MediaAttributes {
               "_duration": "",
               "_thumbnail": "",
+              "_thumbnailBest": "",
               "_thumbnailHD": "",
               "_thumbnailSD": "",
               "_title": "",
@@ -685,6 +701,7 @@ AssetSearch {
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
             "_thumbnail": "",
+            "_thumbnailBest": "",
             "_thumbnailHD": "",
             "_thumbnailSD": "",
             "_title": "",
@@ -704,6 +721,7 @@ AssetSearch {
           "_mediaAttributes": MediaAttributes {
             "_duration": "",
             "_thumbnail": "",
+            "_thumbnailBest": "",
             "_thumbnailHD": "",
             "_thumbnailSD": "",
             "_title": "",
