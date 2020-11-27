@@ -147,8 +147,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public onUpdateSearchText = (value: string): void => {
-    const { notifications } = this.state;
-    this.setState({ searchText: value, limit: 50, offset: notifications.results.length }, () => {
+    this.setState({ searchText: value, limit: 50, offset: 0 }, () => {
       this.getAssetNotifications().then();
     });
   };

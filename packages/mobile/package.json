@@ -5,7 +5,7 @@
   "scripts": {
     "android": "ENVFILE=.env.development react-native run-android",
     "android:clean": "cd android && ./gradlew clean",
-    "android:bundle": "ENVFILE=.env.development react-native bundle --platform android --dev true --entry-file packages/mobile/index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
+    "android:bundle": "ENVFILE=.env.development react-native bundle --platform android --dev false --entry-file packages/mobile/index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "android:build": "ENVFILE=.env.development yarn android:clean && yarn android:bundle && cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
     "android:bundle:prod": "ENVFILE=.env react-native bundle --platform android --dev false --entry-file packages/mobile/index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "android:build:prod": "ENVFILE=.env yarn android:clean && yarn android:bundle:prod && cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
@@ -13,7 +13,7 @@
     "ios:clean": "rm -rf ios/build",
     "pod:install": "cd ios && pod install",
     "ios:build": "ENVFILE=.env.development yarn ios:clean && yarn ios:bundle",
-    "ios:bundle": "ENVFILE=.env.development react-native bundle --platform ios --dev true --entry-file packages/mobile/index.js --bundle-output ios/main.jsbundle --assets-dest ios",
+    "ios:bundle": "ENVFILE=.env.development react-native bundle --platform ios --dev false --entry-file packages/mobile/index.js --bundle-output ios/main.jsbundle --assets-dest ios",
     "ios:bundle:prod": "ENVFILE=.env react-native bundle --platform ios --dev false --entry-file packages/mobile/index.js --bundle-output ios/main.jsbundle --assets-dest ios",
     "ios:build:prod": "ENVFILE=.env yarn ios:clean && yarn ios:bundle:prod",
     "start": "ENVFILE=.env.development react-native start",

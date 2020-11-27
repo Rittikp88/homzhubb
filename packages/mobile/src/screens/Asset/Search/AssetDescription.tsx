@@ -1018,6 +1018,7 @@ const styles = StyleSheet.create({
   apartmentContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginVertical: 8,
   },
   timelineContainer: {

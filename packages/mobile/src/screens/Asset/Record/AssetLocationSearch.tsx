@@ -8,6 +8,7 @@ import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { CurrentLocation, Header } from '@homzhub/mobile/src/components';
@@ -36,14 +37,12 @@ interface IStateProps {
 
 interface IDispatchProps {
   resetState: () => void;
+  setAddPropertyFlow: (payload: boolean) => void;
 }
 
-/* eslint-disable @typescript-eslint/indent */
-type Props = WithTranslation &
-  IDispatchProps &
-  IStateProps &
-  NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLocationSearch>;
-/* eslint-enable @typescript-eslint/indent */
+type NavigationProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLocationSearch>;
+
+type Props = WithTranslation & NavigationProps & IDispatchProps & IStateProps;
 
 export class AssetLocationSearch extends React.PureComponent<Props, IScreenState> {
   public state = {
@@ -99,17 +98,13 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
   };
 
   private onBackPress = (): void => {
-    const {
-      navigation: { goBack, navigate },
-      resetState,
-      isAddPropertyFlow,
-    } = this.props;
+    const { navigation, resetState, isAddPropertyFlow, setAddPropertyFlow } = this.props;
     resetState();
 
     if (isAddPropertyFlow) {
-      navigate(ScreensKeys.BottomTabs);
+      setAddPropertyFlow(false);
     } else {
-      goBack();
+      navigation.goBack();
     }
   };
 
@@ -172,9 +167,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { resetState } = RecordAssetActions;
+  const { setAddPropertyFlow } = UserActions;
   return bindActionCreators(
     {
       resetState,
+      setAddPropertyFlow,
     },
     dispatch
   );

@@ -116,7 +116,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
                 isOnlyAvatar
                 fullName={fullName || ''}
                 imageSize={80}
-                onPressCamera={this.onUpdatePress}
+                onPressCamera={(): void => this.onUpdatePress(t('basicDetails'))}
                 initialsContainerStyle={styles.initialsContainer}
                 image={profilePicture}
               />

@@ -219,8 +219,8 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
         },
       };
 
-      if (isLoggedIn && asset_transaction_type) {
-        await LeadService.postLeadDetail(asset_transaction_type, payload);
+      if (isLoggedIn && (asset_transaction_type ?? 0) > -1) {
+        await LeadService.postLeadDetail(asset_transaction_type ?? 0, payload);
         AlertHelper.success({ message: t('assetDescription:messageSent') });
         navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
       } else {
