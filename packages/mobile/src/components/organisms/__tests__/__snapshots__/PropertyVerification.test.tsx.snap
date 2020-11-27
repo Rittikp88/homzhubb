@@ -241,7 +241,7 @@ exports[`PropertyVerification should match snapshot 1`] = `
     containerStyle={
       Object {
         "flex": 0,
-        "marginTop": 20,
+        "marginVertical": 20,
       }
     }
     disabled={true}

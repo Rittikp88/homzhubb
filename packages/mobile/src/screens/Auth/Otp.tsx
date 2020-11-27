@@ -140,25 +140,6 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     navigation.goBack();
   };
 
-  private onVerifySuccess = async (otp?: string): Promise<void> => {
-    const {
-      route: {
-        params: { type },
-      },
-    } = this.props;
-
-    switch (type) {
-      case OtpNavTypes.SignUp:
-        await this.signUp();
-        break;
-      case OtpNavTypes.Login:
-        this.loginOtp(otp ?? '');
-        break;
-      default:
-        break;
-    }
-  };
-
   private fetchOtp = async (): Promise<void> => {
     const {
       route: {
@@ -187,6 +168,11 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       },
     } = this.props;
 
+    if (type === OtpNavTypes.Login) {
+      this.loginOtp(otp ?? '');
+      return;
+    }
+
     if (type === OtpNavTypes.SocialMedia) {
       await this.socialSignUp(otp);
       return;
@@ -194,7 +180,9 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
 
     try {
       await UserService.verifyOtp(otp, otpSentTo, countryCode);
-      await this.onVerifySuccess(otp);
+      if (type === OtpNavTypes.SignUp) {
+        await this.signUp();
+      }
     } catch (e) {
       this.toggleErrorState(true);
     }

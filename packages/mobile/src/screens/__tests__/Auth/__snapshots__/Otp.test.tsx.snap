@@ -281,7 +281,39 @@ exports[`OTP Screen should verify otp 1`] = `
       }
     }
     icon="left-arrow"
-    onIconPress={[MockFunction]}
+    onIconPress={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {
+              "callback": [MockFunction] {
+                "calls": [Circular],
+                "results": Array [
+                  Object {
+                    "type": "return",
+                    "value": undefined,
+                  },
+                ],
+              },
+              "data": Object {
+                "action": "OTP_LOGIN",
+                "payload": Object {
+                  "otp": "123456",
+                  "phone_code": "INR",
+                  "phone_number": "99999999999",
+                },
+              },
+            },
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
   />
   <View
     style={

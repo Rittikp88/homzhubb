@@ -645,7 +645,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: theme.colors.background,
-    padding: theme.layout.screenPadding,
   },
   tabHeader: {
     paddingVertical: 16,
@@ -693,6 +692,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   screenContent: {
-    paddingBottom: 48,
+    paddingHorizontal: theme.layout.screenPadding,
+    paddingTop: theme.layout.screenPadding,
   },
 });

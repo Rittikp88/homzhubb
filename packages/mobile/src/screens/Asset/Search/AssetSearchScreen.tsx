@@ -405,9 +405,15 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
         <View style={styles.tray}>
           <TouchableOpacity onPress={this.toggleSearchBar} style={styles.addressContainer}>
             <Icon name={icons.search} size={20} color={theme.colors.darkTint5} />
-            <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
-              {search_address}
-            </Text>
+            {search_address ? (
+              <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
+                {search_address}
+              </Text>
+            ) : (
+              <Label type="large" textType="regular" style={styles.placeholder} numberOfLines={1}>
+                {t('enterLocation')}
+              </Label>
+            )}
           </TouchableOpacity>
           <View style={styles.menuTrayContainer}>
             {onScreenFilters.map((item: { type: OnScreenFilters; label: string }, index: number) => {
@@ -883,5 +889,9 @@ const styles = StyleSheet.create({
   button: {
     flex: 0,
     marginVertical: 10,
+  },
+  placeholder: {
+    marginStart: 8,
+    color: colors.darkTint7,
   },
 });

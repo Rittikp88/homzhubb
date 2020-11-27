@@ -192,9 +192,9 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           },
         };
         await AssetRepository.updateAsset(propertyId, updateAssetPayload);
-        this.setState({ isLoading: false });
         handleNextStep();
       }
+      this.setState({ isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });

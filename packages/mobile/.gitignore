@@ -70,3 +70,4 @@ Podfile.lock
 
 # Environment Variables
 .env
+.env.development

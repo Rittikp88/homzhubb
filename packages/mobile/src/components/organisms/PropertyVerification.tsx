@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
-    marginTop: 20,
+    marginVertical: 20,
   },
   pdfName: {
     flex: 0.9,
