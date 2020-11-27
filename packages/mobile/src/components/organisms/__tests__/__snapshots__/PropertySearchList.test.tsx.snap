@@ -196,7 +196,6 @@ exports[`PropertySearchList should match snapshot for renderItem 1`] = `
 <withI18nextTranslation(PropertyListCard)
   isCarousel={true}
   key="1"
-  onFavorite={[Function]}
   onSelectedProperty={[Function]}
   property={
     Object {

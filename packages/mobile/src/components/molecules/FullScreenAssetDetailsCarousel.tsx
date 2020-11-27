@@ -90,7 +90,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           useHardwareTextureAndroid={false}
           key={link}
         >
-          <Image source={{ uri: link }} style={styles.carouselImage} />
+          <Image source={{ uri: link }} style={styles.carouselImage} resizeMode="contain" />
         </ImageZoom>
       );
     }

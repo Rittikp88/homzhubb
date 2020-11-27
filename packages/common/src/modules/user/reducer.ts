@@ -3,6 +3,7 @@ import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IWishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
@@ -14,6 +15,7 @@ export const initialUserState: IUserState = {
   isChangeStack: true,
   isAddPropertyFlow: false,
   assets: [],
+  favouriteProperties: [],
   error: {
     user: '',
   },
@@ -109,6 +111,25 @@ export const userReducer = (
       return {
         ...state,
         assets: action.payload as IAsset[],
+      };
+    case UserActionTypes.GET.FAVOURITE_PROPERTIES:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['user']: true },
+      };
+    case UserActionTypes.GET.FAVOURITE_PROPERTIES_SUCCESS:
+      return {
+        ...state,
+        ['favouriteProperties']: action.payload as IWishlist[],
+        ['loaders']: {
+          ...state.loaders,
+          ['user']: false,
+        },
+      };
+    case UserActionTypes.SET.CLEAR_FAVOURITE_PROPERTIES:
+      return {
+        ...state,
+        ['favouriteProperties']: [],
       };
     default:
       return state;

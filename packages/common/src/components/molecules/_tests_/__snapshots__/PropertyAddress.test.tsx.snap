@@ -5,6 +5,7 @@ exports[`PropertyAddress should match snapshot with icon 1`] = `
   style={
     Array [
       Object {
+        "flex": 1,
         "flexDirection": "column",
         "justifyContent": "space-between",
       },
@@ -73,6 +74,7 @@ exports[`PropertyAddress should match snapshot without icon 1`] = `
   style={
     Array [
       Object {
+        "flex": 1,
         "flexDirection": "column",
         "justifyContent": "space-between",
       },

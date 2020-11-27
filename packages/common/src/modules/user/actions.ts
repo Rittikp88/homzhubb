@@ -5,6 +5,7 @@ import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/Use
 import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { IWishlist, Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 
 const actionTypePrefix = 'User/';
 
@@ -26,10 +27,13 @@ export const UserActionTypes = {
     USER_PREFERENCES_FAILURE: `${actionTypePrefix}USER_PREFERENCES_FAILURE`,
     USER_ASSETS: `${actionTypePrefix}USER_ASSETS`,
     USER_ASSETS_SUCCESS: `${actionTypePrefix}USER_ASSETS_SUCCESS`,
+    FAVOURITE_PROPERTIES: `${actionTypePrefix}FAVOURITE_PROPERTIES`,
+    FAVOURITE_PROPERTIES_SUCCESS: `${actionTypePrefix}FAVOURITE_PROPERTIES_SUCCESS`,
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
     IS_ADD_PROPERTY_FLOW: `${actionTypePrefix}IS_ADD_PROPERTY_FLOW`,
+    CLEAR_FAVOURITE_PROPERTIES: `${actionTypePrefix}CLEAR_FAVOURITE_PROPERTIES`,
   },
   UPDATE: {
     ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
@@ -136,7 +140,28 @@ const getAssetsSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]> => ({
   payload: ObjectMapper.serializeArray(payload),
 });
 
-export type UserPayloadTypes = string | boolean | IUserTokens | IUserProfile | IUserPreferences | IAsset[];
+const getFavouriteProperties = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.FAVOURITE_PROPERTIES,
+});
+
+const getFavouritePropertiesSuccess = (data: Wishlist[]): IFluxStandardAction<IWishlist[]> => ({
+  type: UserActionTypes.GET.FAVOURITE_PROPERTIES_SUCCESS,
+  payload: ObjectMapper.serializeArray(data),
+});
+
+const clearFavouriteProperties = (): IFluxStandardAction => ({
+  type: UserActionTypes.SET.CLEAR_FAVOURITE_PROPERTIES,
+});
+
+export type UserPayloadTypes =
+  | string
+  | boolean
+  | IUserTokens
+  | IUserProfile
+  | IUserPreferences
+  | IAsset[]
+  | IWishlist[];
+
 export const UserActions = {
   login,
   loginSuccess,
@@ -156,4 +181,7 @@ export const UserActions = {
   updateUserPreferences,
   getAssets,
   getAssetsSuccess,
+  getFavouriteProperties,
+  getFavouritePropertiesSuccess,
+  clearFavouriteProperties,
 };

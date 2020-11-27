@@ -25,9 +25,8 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ILeadPayload, ISendNotificationPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISendNotificationPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -634,7 +633,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     return (
       <SimilarProperties
-        onFavorite={this.onFavourite}
         propertyTermId={propertyTermId}
         transaction_type={asset_transaction_type || 0}
         onSelectedProperty={this.loadSimilarProperty}
@@ -643,9 +641,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderFixedHeader = (): React.ReactElement | null => {
-    const { isScroll, isFavourite } = this.state;
-    const { assetDetails } = this.props;
+    const { isScroll } = this.state;
+    const {
+      assetDetails,
+      route: { params },
+    } = this.props;
     if (!assetDetails) return null;
+    const { leaseTerm, saleTerm } = assetDetails;
     const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
     const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
     return (
@@ -654,7 +656,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <Icon name={icons.leftArrow} size={26} color={color} onPress={this.onGoBack} />
         </View>
         <View style={styles.headerRightIcon}>
-          <Favorite onFavorite={this.onFavourite} isFavorite={isFavourite} iconColor={color} iconSize={24} />
+          <Favorite
+            isDisable={params.isPreview}
+            iconColor={color}
+            iconSize={24}
+            leaseId={leaseTerm?.id}
+            saleId={saleTerm?.id}
+            fromScreen={ScreensKeys.PropertyAssetDescription}
+          />
           <Icon name={icons.share} size={22} color={color} onPress={this.handleShare} />
         </View>
       </View>
@@ -672,17 +681,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         </View>
       </WithShadowView>
     );
-  };
-
-  public onGetAssetCallback = ({ status }: { status: boolean }): void => {
-    const { navigation, assetDetails } = this.props;
-    if (!status) {
-      navigation.goBack();
-    }
-    if (assetDetails) {
-      const isFavourite = assetDetails.isWishlisted ? assetDetails.isWishlisted.status : false;
-      this.setState({ isFavourite });
-    }
   };
 
   private onFullScreenToggle = (): void => {
@@ -840,64 +838,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private onFavourite = async (): Promise<void> => {
-    const {
-      navigation,
-      assetDetails,
-      isLoggedIn,
-      setChangeStack,
-      route: {
-        params: { isPreview },
-      },
-    } = this.props;
-    if (!isPreview) {
-      if (!assetDetails) return;
-      if (!isLoggedIn) {
-        setChangeStack(false);
-        navigation.navigate(ScreensKeys.AuthStack, {
-          screen: ScreensKeys.SignUp,
-          params: { onCallback: (): Promise<void> => this.handleFavourite(true) },
-        });
-      } else {
-        await this.handleFavourite();
-      }
-    }
-  };
-
-  private handleFavourite = async (isFromLogin?: boolean): Promise<void> => {
-    const {
-      navigation,
-      route: {
-        params: { propertyTermId },
-      },
-      filters: { asset_transaction_type },
-    } = this.props;
-
-    if (isFromLogin) {
-      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
-    }
-
-    const { isFavourite } = this.state;
-
-    const payload: ILeadPayload = {
-      propertyTermId,
-      data: {
-        lead_type: 'WISHLIST',
-        is_wishlisted: !isFavourite,
-        user_search: null,
-      },
-    };
-
-    try {
-      await LeadService.postLeadDetail(asset_transaction_type || 0, payload);
-      this.setState({ isFavourite: !isFavourite });
-    } catch (e) {
-      this.setState({ isFavourite: false });
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
-    }
-  };
-
   private navigateToVisitForm = (): void => {
     const {
       navigation,
@@ -950,7 +890,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     const payload: IGetAssetPayload = {
       propertyTermId,
-      onCallback: this.onGetAssetCallback,
     };
     getAsset(payload);
   };
@@ -1078,7 +1017,6 @@ const styles = StyleSheet.create({
   },
   apartmentContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 8,
   },

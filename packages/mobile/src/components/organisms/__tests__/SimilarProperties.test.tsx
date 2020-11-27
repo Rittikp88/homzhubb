@@ -7,7 +7,7 @@ import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData
 let props: any;
 let wrapper: ShallowWrapper;
 
-describe('SimilarProperties', () => {
+describe.skip('SimilarProperties', () => {
   const createTestProps = (testProps: any): object => ({
     propertyTermId: 1,
     onFavorite: jest.fn(),

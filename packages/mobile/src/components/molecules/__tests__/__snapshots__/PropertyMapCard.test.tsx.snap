@@ -60,10 +60,7 @@ exports[`PropertyMapCard should match snapshot 1`] = `
           price={0}
           unit=""
         />
-        <Favorite
-          isFavorite={false}
-          onFavorite={[MockFunction]}
-        />
+        <Favorite />
       </View>
       <Label
         numberOfLines={1}
@@ -154,10 +151,7 @@ exports[`PropertyMapCard should match snapshot when isFavourite is true 1`] = `
           price={0}
           unit=""
         />
-        <Favorite
-          isFavorite={true}
-          onFavorite={[MockFunction]}
-        />
+        <Favorite />
       </View>
       <Label
         numberOfLines={1}

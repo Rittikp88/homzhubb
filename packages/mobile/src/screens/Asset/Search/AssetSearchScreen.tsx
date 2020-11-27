@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
-import { debounce, cloneDeep } from 'lodash';
+import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
@@ -20,8 +19,6 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { LeadService } from '@homzhub/common/src/services/LeadService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
@@ -184,8 +181,6 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               properties={properties.results}
               transaction_type={filters.asset_transaction_type || 0}
               onSelectedProperty={this.navigateToAssetDetails}
-              onFavorite={this.onFavourite}
-              favIds={favouriteProperties}
               searchLocation={searchLocation}
             />
             {this.renderNoResults()}
@@ -199,7 +194,6 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               setFilter={setFilter}
               favIds={favouriteProperties}
               getPropertiesListView={getPropertiesListView}
-              onFavorite={this.onFavourite}
               onSelectedProperty={this.navigateToAssetDetails}
             />
             {this.renderNoResultsListView()}
@@ -520,20 +514,6 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     );
   };
 
-  private onFavourite = async (propertyTermId: number, isFavourite: boolean): Promise<void> => {
-    const { navigation, isLoggedIn, setChangeStack } = this.props;
-
-    if (!isLoggedIn) {
-      setChangeStack(false);
-      navigation.navigate(ScreensKeys.AuthStack, {
-        screen: ScreensKeys.SignUp,
-        params: { onCallback: (): Promise<void> => this.handleFavoriteProperty(propertyTermId, isFavourite, true) },
-      });
-    } else {
-      await this.handleFavoriteProperty(propertyTermId, isFavourite);
-    }
-  };
-
   private onSearchStringUpdate = (searchString: string): void => {
     const { setFilter } = this.props;
     setFilter({ search_address: searchString });
@@ -579,48 +559,6 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
   public onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
     this.setState({ isSearchBarFocused });
-  };
-
-  private handleFavoriteProperty = async (
-    propertyTermId: number,
-    isFavourite: boolean,
-    isFromLogin?: boolean
-  ): Promise<void> => {
-    const {
-      navigation,
-      filters: { asset_transaction_type },
-    } = this.props;
-    const { favouriteProperties } = this.state;
-
-    if (isFromLogin) {
-      navigation.navigate(ScreensKeys.PropertySearchScreen);
-    }
-
-    const payload: ILeadPayload = {
-      propertyTermId,
-      data: {
-        lead_type: 'WISHLIST',
-        is_wishlisted: !isFavourite,
-        user_search: null,
-      },
-    };
-
-    let favProperties: number[] = cloneDeep(favouriteProperties);
-
-    try {
-      await LeadService.postLeadDetail(asset_transaction_type || 0, payload);
-      if (favProperties.includes(propertyTermId)) {
-        favProperties = favProperties.filter((item) => item !== propertyTermId);
-      } else {
-        favProperties.push(propertyTermId);
-      }
-      this.setState({
-        favouriteProperties: favProperties,
-      });
-    } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
-    }
   };
 
   public toggleSearchBar = (): void => {

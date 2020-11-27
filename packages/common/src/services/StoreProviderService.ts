@@ -23,6 +23,7 @@ class StoreProviderService {
   public logoutUser(): void {
     store.dispatch(UserActions.logoutSuccess());
     store.dispatch(SearchActions.setInitialState());
+    store.dispatch(UserActions.clearFavouriteProperties());
   }
 
   public logoutUserAndClearTokens(): void {

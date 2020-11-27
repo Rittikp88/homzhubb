@@ -53,6 +53,7 @@ export { PropertyAddress };
 
 const styles = StyleSheet.create({
   propertyAddressContainer: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
   },

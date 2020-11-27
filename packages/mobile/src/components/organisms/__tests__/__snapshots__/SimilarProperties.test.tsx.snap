@@ -22,7 +22,6 @@ exports[`SimilarProperties should match snapshot for renderItem 1`] = `
   }
   isCarousel={false}
   key="1"
-  onFavorite={[Function]}
   onSelectedProperty={[Function]}
   property={
     Object {

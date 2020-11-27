@@ -141,6 +141,7 @@ export class AssetCard extends Component<Props> {
               uri: link,
             }}
             style={[styles.image, isDetailView && styles.detailViewImage]}
+            resizeMode="contain"
           />
         )}
         {mediaType === 'VIDEO' && (
@@ -150,6 +151,7 @@ export class AssetCard extends Component<Props> {
                 uri: thumbnailBest ?? thumbnailHD ?? thumbnail,
               }}
               style={[styles.image, isDetailView && styles.detailViewImage]}
+              resizeMode="contain"
             />
           </>
         )}

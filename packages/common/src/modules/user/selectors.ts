@@ -5,6 +5,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences, MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const isLoggedIn = (state: IState): boolean => {
@@ -135,6 +136,16 @@ const getUserAssets = (state: IState): Asset[] => {
   return ObjectMapper.deserializeArray(Asset, assets);
 };
 
+const getFavouriteProperties = (state: IState): Wishlist[] => {
+  const {
+    user: { favouriteProperties },
+  } = state;
+
+  if (favouriteProperties.length <= 0) return [];
+
+  return ObjectMapper.deserializeArray(Wishlist, favouriteProperties);
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -149,4 +160,5 @@ export const UserSelector = {
   getMetricSystem,
   getCurrency,
   getUserAssets,
+  getFavouriteProperties,
 };

@@ -50,6 +50,7 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
               uri: item.link,
             }}
             style={styles.carouselImage}
+            resizeMode="contain"
           />
         )}
         {mediaType === 'VIDEO' && (
@@ -57,6 +58,7 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
             <Image
               source={{ uri: item.mediaAttributes.thumbnailHD ?? item.mediaAttributes.thumbnail }}
               style={styles.carouselImage}
+              resizeMode="contain"
             />
             <View style={styles.playButton}>
               <Icon name={icons.play} size={60} color={theme.colors.white} />

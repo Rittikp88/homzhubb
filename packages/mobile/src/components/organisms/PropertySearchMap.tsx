@@ -26,9 +26,7 @@ interface IProps {
   searchLocation: Point;
   properties: Asset[];
   transaction_type: number;
-  favIds: number[];
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
-  onFavorite: (propertyTermId: number, isFavourite: boolean) => void;
 }
 type Props = IProps & WithTranslation;
 
@@ -56,7 +54,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
 
   public render(): React.ReactNode {
     const { currentSlide } = this.state;
-    const { properties, searchLocation, favIds } = this.props;
+    const { properties, searchLocation } = this.props;
     let { lat: initLatitude, lng: initLongitude } = searchLocation;
 
     if (properties.length > 0) {
@@ -94,7 +92,6 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
         <SnapCarousel
           containerStyle={styles.carouselStyle}
           carouselData={properties}
-          extraData={favIds}
           activeIndex={currentSlide}
           itemWidth={SLIDER_WIDTH}
           carouselItem={this.renderCarouselItem}
@@ -109,7 +106,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
   }
 
   private renderCarouselItem = (item: Asset): React.ReactElement => {
-    const { transaction_type, onSelectedProperty, onFavorite, favIds } = this.props;
+    const { transaction_type, onSelectedProperty } = this.props;
     const {
       attachments,
       projectName,
@@ -120,13 +117,11 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       assetGroup: { code },
       leaseTerm,
       saleTerm,
-      isWishlisted,
       id,
     } = item;
     const price = this.getPrice(item);
     const amenities = PropertyUtils.getAmenities(spaces, furnishing, code, carpetArea, carpetAreaUnit?.title ?? '');
     const image = attachments.filter((currentImage: Attachment) => currentImage.isCoverImage);
-    let isFavourite = isWishlisted ? isWishlisted.status : false;
     let currencyData = item.country.currencies[0];
 
     if (leaseTerm && leaseTerm.currency) {
@@ -146,35 +141,16 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       }
     };
 
-    const handleFav = (): void => {
-      if (leaseTerm) {
-        onFavorite(leaseTerm.id, isFavourite);
-      }
-      if (saleTerm) {
-        onFavorite(saleTerm.id, isFavourite);
-      }
-    };
-
-    if (favIds && favIds.length > 0) {
-      favIds.forEach((favId) => {
-        if (leaseTerm && favId === leaseTerm.id) {
-          isFavourite = true;
-        } else if (saleTerm && favId === saleTerm.id) {
-          isFavourite = true;
-        }
-      });
-    }
-
     return (
       <PropertyMapCard
         source={image[0]?.link ?? null}
         name={projectName}
         currency={currencyData}
         price={price}
+        leaseListingId={leaseTerm?.id}
+        saleListingId={saleTerm?.id}
         priceUnit={transaction_type === 0 ? 'mo' : ''}
-        isFavorite={isFavourite}
         amenitiesData={amenities}
-        onFavorite={handleFav}
         onSelectedProperty={navigateToAssetDetails}
       />
     );

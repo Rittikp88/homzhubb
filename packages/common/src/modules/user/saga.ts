@@ -59,6 +59,7 @@ export function* logout() {
 
     yield put(UserActions.logoutSuccess());
     yield put(SearchActions.setInitialState());
+    yield put(UserActions.clearFavouriteProperties());
     yield StorageService.remove(StorageKeys.USER);
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
@@ -116,10 +117,18 @@ export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPr
   }
 }
 
-export function* getUserAssets(action: IFluxStandardAction) {
+export function* getUserAssets() {
   try {
     const response = yield call(AssetRepository.getPropertiesByStatus);
     yield put(UserActions.getAssetsSuccess(response));
+    // eslint-disable-next-line no-empty
+  } catch (e) {}
+}
+
+export function* getFavouriteProperties() {
+  try {
+    const response = yield call(UserRepository.getWishlistProperties);
+    yield put(UserActions.getFavouritePropertiesSuccess(response));
     // eslint-disable-next-line no-empty
   } catch (e) {}
 }
@@ -131,4 +140,5 @@ export function* watchUser() {
   yield takeEvery(UserActionTypes.GET.USER_PREFERENCES, userPreferences);
   yield takeEvery(UserActionTypes.UPDATE.USER_PREFERENCES, updateUserPreferences);
   yield takeEvery(UserActionTypes.GET.USER_ASSETS, getUserAssets);
+  yield takeEvery(UserActionTypes.GET.FAVOURITE_PROPERTIES, getFavouriteProperties);
 }

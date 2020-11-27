@@ -19,14 +19,12 @@ import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 
 interface IProps {
   property: Asset;
-  onFavorite: () => void;
   transaction_type: number;
   containerStyle?: StyleProp<ViewStyle>;
   isCarousel: boolean;
   textSizeType?: TextSizeType;
   onSelectedProperty: () => void;
   testID?: string;
-  favIds?: number[];
 }
 
 type libraryProps = WithTranslation;
@@ -81,19 +79,8 @@ export class PropertyListCard extends React.PureComponent<Props, IState> {
     const { activeSlide } = this.state;
     const {
       isCarousel,
-      onFavorite,
-      favIds,
-      property: { isWishlisted, leaseTerm, saleTerm, sortedImages },
+      property: { leaseTerm, saleTerm, sortedImages },
     } = this.props;
-
-    let isFavorite = isWishlisted ? isWishlisted.status : false;
-    if (favIds && favIds.length > 0) {
-      favIds.forEach((favId) => {
-        if ((leaseTerm && favId === leaseTerm.id) || (saleTerm && saleTerm.id === favId)) {
-          isFavorite = true;
-        }
-      });
-    }
 
     return (
       <View style={styles.carouselContainer}>
@@ -115,7 +102,7 @@ export class PropertyListCard extends React.PureComponent<Props, IState> {
         )}
         <View style={styles.overlay}>
           <View style={styles.favoriteContainer}>
-            <Favorite onFavorite={onFavorite} isFavorite={isFavorite} iconColor={theme.colors.white} />
+            <Favorite leaseId={leaseTerm?.id} saleId={saleTerm?.id} iconColor={theme.colors.white} />
           </View>
           {isCarousel && (
             <View style={styles.arrowContainer}>

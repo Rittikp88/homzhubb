@@ -26,7 +26,7 @@ class GeolocationService {
     Geolocation.getCurrentPosition(success, error, options);
   };
 
-  public setLocationDetails = async (isLoggedIn: boolean): Promise<void> => {
+  public setLocationDetails = async (isLoggedIn: boolean, searchAddress: string): Promise<void> => {
     const store = StoreProviderService.getStore();
     const permission = await PermissionsService.checkPermission(PERMISSION_TYPE.location);
 
@@ -42,7 +42,7 @@ class GeolocationService {
 
           const country = deviceLocation.address_components.find((address) => address.types.includes('country'));
           deviceCountry = country?.short_name ?? deviceCountry;
-          if (isLoggedIn) {
+          if (isLoggedIn && !searchAddress) {
             store.dispatch(
               SearchActions.setFilter({
                 search_latitude: lat,

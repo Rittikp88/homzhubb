@@ -27,6 +27,7 @@ import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/Use
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
+import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
 import { SettingsScreenData } from '@homzhub/common/src/constants/Settings';
 
@@ -51,6 +52,7 @@ const ENDPOINTS = {
   updateUserPreferences: (): string => 'users/settings/',
   updateProfileImage: (): string => 'users/profile-pictures/',
   sendOrVerifyEmail: (): string => 'users/verifications/',
+  wishlist: (): string => 'wishlists/',
 };
 
 class UserRepository {
@@ -168,6 +170,11 @@ class UserRepository {
 
   public sendOrVerifyEmail = async (payload: IEmailVerification): Promise<void> => {
     await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail(), payload);
+  };
+
+  public getWishlistProperties = async (): Promise<Wishlist[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.wishlist());
+    return ObjectMapper.deserializeArray(Wishlist, response);
   };
 }
 

@@ -10,7 +10,6 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
 interface IProps {
   propertyTermId: number;
-  onFavorite: (propertyId: number) => void;
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
   transaction_type: number;
 }
@@ -56,9 +55,8 @@ export class SimilarProperties extends React.PureComponent<Props, ISimilarProper
   }
 
   public renderCarouselItem = ({ item }: { item: Asset }): React.ReactElement => {
-    const { onFavorite, transaction_type, onSelectedProperty } = this.props;
+    const { transaction_type, onSelectedProperty } = this.props;
     const { leaseTerm, saleTerm, id } = item;
-    const onUpdateFavoritePropertyId = (propertyId: number): void => onFavorite(propertyId);
     const navigateToSelectedProperty = (): void => {
       if (leaseTerm) {
         onSelectedProperty(leaseTerm.id, id);
@@ -70,7 +68,6 @@ export class SimilarProperties extends React.PureComponent<Props, ISimilarProper
     return (
       <PropertyListCard
         property={item}
-        onFavorite={onUpdateFavoritePropertyId}
         key={item.id}
         transaction_type={transaction_type}
         isCarousel={false}

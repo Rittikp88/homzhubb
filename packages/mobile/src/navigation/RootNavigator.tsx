@@ -6,6 +6,7 @@ import { NavigationService } from '@homzhub/mobile/src/services/NavigationServic
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Splash } from '@homzhub/mobile/src/screens/Splash';
 import { GuestStack } from '@homzhub/mobile/src/navigation/GuestStack';
@@ -20,6 +21,7 @@ export const RootNavigator = (props: IProps): React.ReactElement => {
   const redirectionDetails = useSelector(CommonSelectors.getRedirectionDetails);
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const isChangeStack = useSelector(UserSelector.getIsChangeStack);
+  const searchAddress = useSelector(SearchSelector.getSearchAddress);
   const dispatch = useDispatch();
 
   // Fetch all user data as soon as user logs in
@@ -29,8 +31,9 @@ export const RootNavigator = (props: IProps): React.ReactElement => {
       dispatch(UserActions.getUserProfile());
       dispatch(UserActions.getUserProfile());
       dispatch(AssetActions.getAssetCount());
+      dispatch(UserActions.getFavouriteProperties());
     }
-    GeolocationService.setLocationDetails(isLoggedIn).then();
+    GeolocationService.setLocationDetails(isLoggedIn, searchAddress).then();
   }, [isLoggedIn, dispatch]);
 
   if (booting) {

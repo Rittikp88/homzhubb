@@ -70,7 +70,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             Object {
               "alignItems": "center",
               "flexDirection": "row",
-              "justifyContent": "space-between",
               "marginVertical": 8,
             }
           }
@@ -92,7 +91,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             Object {
               "alignItems": "center",
               "flexDirection": "row",
-              "justifyContent": "space-between",
               "marginVertical": 8,
             }
           }
@@ -498,7 +496,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
         />
       </View>
       <withI18nextTranslation(SimilarProperties)
-        onFavorite={[Function]}
         onSelectedProperty={[Function]}
         propertyTermId={1}
         transaction_type={0}

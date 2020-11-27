@@ -13,12 +13,12 @@ import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 interface IProps {
   amenitiesData: IAmenitiesIcons[];
   source: string | null;
+  leaseListingId?: number;
+  saleListingId?: number;
   name: string;
   price: number;
   currency: Currency;
   priceUnit: string;
-  isFavorite: boolean;
-  onFavorite: () => void;
   onSelectedProperty: () => void;
 }
 
@@ -27,13 +27,13 @@ export class PropertyMapCard extends React.PureComponent<IProps> {
     const {
       source,
       name,
-      isFavorite,
-      onFavorite,
       currency,
       price,
       priceUnit,
       amenitiesData,
       onSelectedProperty,
+      leaseListingId,
+      saleListingId,
     } = this.props;
     return (
       <TouchableOpacity onPress={onSelectedProperty}>
@@ -46,7 +46,7 @@ export class PropertyMapCard extends React.PureComponent<IProps> {
           <View style={styles.detailsContainer}>
             <View style={styles.row}>
               <PricePerUnit price={price} unit={priceUnit} currency={currency} />
-              <Favorite onFavorite={onFavorite} isFavorite={isFavorite} />
+              <Favorite leaseId={leaseListingId} saleId={saleListingId} />
             </View>
             <Label type="large" textType="semiBold" numberOfLines={1}>
               {name}
