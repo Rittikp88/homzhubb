@@ -106,7 +106,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   }
 
   private renderItem = (item: AssetVisit): React.ReactElement => {
-    const { asset, user, actions, startDate, endDate, id, role, createdAt, comments } = item;
+    const { asset, user, actions, startDate, endDate, id, role, createdAt, comments, isAssetOwner } = item;
     const { visitType, handleReschedule, isFromProperty } = this.props;
     const isMissed = visitType === VisitStatusType.MISSED;
     const isCompleted = visitType === VisitStatusType.COMPLETED;
@@ -131,6 +131,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             primaryAddress={asset.projectName}
             subAddress={asset.address}
             startDate={startDate}
+            isPropertyOwner={isAssetOwner}
             endDate={endDate}
             comments={comments}
             isFromProperty={isFromProperty}

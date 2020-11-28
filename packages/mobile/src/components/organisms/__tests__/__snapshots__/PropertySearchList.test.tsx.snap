@@ -1,29 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PropertySearchList should match snapshot 1`] = `
-<View
-  style={
-    Object {
-      "flex": 1,
-      "margin": 16,
-    }
-  }
->
-  <Label
-    style={
-      Object {
-        "color": "#4C5F72",
-      }
-    }
-    textType="semiBold"
-    type="large"
-  >
-    1
-     
-    propertiesFound
-  </Label>
+<View>
   <FlatList
     ListFooterComponent={[Function]}
+    ListHeaderComponent={[Function]}
     data={
       Array [
         Object {
@@ -166,9 +147,27 @@ exports[`PropertySearchList should match snapshot 1`] = `
     removeClippedSubviews={false}
     renderItem={[Function]}
     scrollEventThrottle={50}
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "marginBottom": 16,
+        "marginHorizontal": 16,
+      }
+    }
     testID="resultList"
     updateCellsBatchingPeriod={50}
     windowSize={21}
+  />
+  <ToggleButton
+    containerStyle={
+      Object {
+        "position": "absolute",
+        "right": 16,
+        "top": 14,
+      }
+    }
+    icon="map"
+    title="common:map"
   />
 </View>
 `;
@@ -194,6 +193,7 @@ exports[`PropertySearchList should match snapshot for keyExtractor 1`] = `"undef
 
 exports[`PropertySearchList should match snapshot for renderItem 1`] = `
 <withI18nextTranslation(PropertyListCard)
+  containerStyle={Object {}}
   isCarousel={true}
   key="1"
   onSelectedProperty={[Function]}
@@ -265,29 +265,10 @@ exports[`PropertySearchList should match snapshot for renderItem 1`] = `
 exports[`PropertySearchList should match snapshot when count is 0 1`] = `""`;
 
 exports[`PropertySearchList should match snapshot when count is not there 1`] = `
-<View
-  style={
-    Object {
-      "flex": 1,
-      "margin": 16,
-    }
-  }
->
-  <Label
-    style={
-      Object {
-        "color": "#4C5F72",
-      }
-    }
-    textType="semiBold"
-    type="large"
-  >
-    0
-     
-    propertiesFound
-  </Label>
+<View>
   <FlatList
     ListFooterComponent={[Function]}
+    ListHeaderComponent={[Function]}
     data={
       Array [
         Object {
@@ -430,9 +411,27 @@ exports[`PropertySearchList should match snapshot when count is not there 1`] = 
     removeClippedSubviews={false}
     renderItem={[Function]}
     scrollEventThrottle={50}
+    showsVerticalScrollIndicator={false}
+    style={
+      Object {
+        "marginBottom": 16,
+        "marginHorizontal": 16,
+      }
+    }
     testID="resultList"
     updateCellsBatchingPeriod={50}
     windowSize={21}
+  />
+  <ToggleButton
+    containerStyle={
+      Object {
+        "position": "absolute",
+        "right": 16,
+        "top": 14,
+      }
+    }
+    icon="map"
+    title="common:map"
   />
 </View>
 `;

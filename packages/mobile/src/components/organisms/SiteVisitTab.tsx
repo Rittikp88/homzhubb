@@ -115,7 +115,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       <>
         <TabView
           initialLayout={theme.viewport}
-          style={[styles.tabView, { height: heights[currentIndex] }]}
+          style={[styles.tabView, { minHeight: heights[currentIndex] }]}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}
           renderTabBar={(props): React.ReactElement => {

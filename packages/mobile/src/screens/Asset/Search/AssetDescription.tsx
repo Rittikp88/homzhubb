@@ -144,8 +144,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         propertyTermId: newPropertyTermId,
       };
       getAsset(payload);
+      const startDate = this.getFormattedDate();
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ ...initialState });
+      this.setState({ ...initialState, startDate });
     }
   }
 

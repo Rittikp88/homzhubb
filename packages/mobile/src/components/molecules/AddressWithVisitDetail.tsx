@@ -11,6 +11,7 @@ import { VisitSlot } from '@homzhub/common/src/mocks/BookVisit';
 
 interface IProps {
   primaryAddress: string;
+  isPropertyOwner?: boolean;
   subAddress: string;
   startDate: string;
   endDate: string;
@@ -35,6 +36,7 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
     onPressSchedule,
     isRescheduleAll = false,
     isFromProperty = false,
+    isPropertyOwner = false,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const dateTime = DateUtils.convertTimeFormat(startDate, 'YYYY-MM-DD HH');
@@ -77,15 +79,17 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
             {time?.formatted}
           </Text>
         </View>
-        <TouchableOpacity
-          style={[styles.content, theme.viewport.width <= 375 && styles.extraMargin]}
-          onPress={onPressSchedule}
-        >
-          <Icon name={icons.schedule} color={theme.colors.blue} size={20} />
-          <Text type="small" style={styles.scheduleText}>
-            {isCompletedVisit ? t('newVisit') : isRescheduleAll ? t('rescheduleAll') : t('reschedule')}
-          </Text>
-        </TouchableOpacity>
+        {!isPropertyOwner && (
+          <TouchableOpacity
+            style={[styles.content, theme.viewport.width <= 375 && styles.extraMargin]}
+            onPress={onPressSchedule}
+          >
+            <Icon name={icons.schedule} color={theme.colors.blue} size={20} />
+            <Text type="small" style={styles.scheduleText}>
+              {isCompletedVisit ? t('newVisit') : isRescheduleAll ? t('rescheduleAll') : t('reschedule')}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

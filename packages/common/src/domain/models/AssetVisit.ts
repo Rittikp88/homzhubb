@@ -100,6 +100,9 @@ export class AssetVisit {
   @JsonProperty('role', String)
   private _role = '';
 
+  @JsonProperty('is_asset_owner', Boolean, true)
+  private _is_asset_owner = false;
+
   @JsonProperty('created_at', String)
   private _createdAt = '';
 
@@ -163,5 +166,9 @@ export class AssetVisit {
 
   get asset(): VisitAssetDetail {
     return this._asset;
+  }
+
+  get isAssetOwner(): boolean {
+    return this._is_asset_owner;
   }
 }
