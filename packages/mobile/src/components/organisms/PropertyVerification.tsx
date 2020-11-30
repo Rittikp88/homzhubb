@@ -184,7 +184,9 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       const source = {
         uri: image.path,
         type: image.mime,
-        name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
+        name: PlatformUtils.isIOS()
+          ? image.filename ?? image.path.substring(image.path.lastIndexOf('/') + 1)
+          : image.path.substring(image.path.lastIndexOf('/') + 1),
       };
       this.updateLocalDocuments(verificationDocumentId, source, data);
     });

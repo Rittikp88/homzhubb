@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { LayoutChangeEvent, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, LayoutChangeEvent, ScrollView, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -7,6 +7,7 @@ import { TabView } from 'react-native-tab-view';
 import { CommonActions } from '@react-navigation/native';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -164,39 +165,41 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     return (
       <>
         <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
-        <ScrollView
-          style={styles.screen}
-          contentContainerStyle={styles.screenContent}
-          showsVerticalScrollIndicator={false}
-          ref={this.scrollRef}
-        >
-          <AddressWithStepIndicator
-            steps={steps}
-            selectedPan={selectedPlan}
-            badgeStyle={styles.badgeStyle}
-            propertyType={name}
-            countryFlag={flag}
-            primaryAddress={projectName}
-            subAddress={address}
-            currentIndex={currentIndex}
-            isStepDone={isStepDone}
-            onPressSteps={this.handlePreviousStep}
-          />
-          {this.renderTabHeader()}
-          <TabView
-            lazy
-            initialLayout={TAB_LAYOUT}
-            renderScene={this.renderScene}
-            onIndexChange={this.handleIndexChange}
-            renderTabBar={(): null => null}
-            swipeEnabled={false}
-            navigationState={{
-              index: currentIndex,
-              routes: this.getRoutes(),
-            }}
-            style={{ height: tabViewHeights[currentIndex] }}
-          />
-        </ScrollView>
+        <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
+          <ScrollView
+            style={styles.screen}
+            contentContainerStyle={styles.screenContent}
+            showsVerticalScrollIndicator={false}
+            ref={this.scrollRef}
+          >
+            <AddressWithStepIndicator
+              steps={steps}
+              selectedPan={selectedPlan}
+              badgeStyle={styles.badgeStyle}
+              propertyType={name}
+              countryFlag={flag}
+              primaryAddress={projectName}
+              subAddress={address}
+              currentIndex={currentIndex}
+              isStepDone={isStepDone}
+              onPressSteps={this.handlePreviousStep}
+            />
+            {this.renderTabHeader()}
+            <TabView
+              lazy
+              initialLayout={TAB_LAYOUT}
+              renderScene={this.renderScene}
+              onIndexChange={this.handleIndexChange}
+              renderTabBar={(): null => null}
+              swipeEnabled={false}
+              navigationState={{
+                index: currentIndex,
+                routes: this.getRoutes(),
+              }}
+              style={{ height: tabViewHeights[currentIndex] }}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
         {this.openActionBottomSheet()}
         <BottomSheet
           visible={isSheetVisible}
@@ -642,6 +645,9 @@ export default connect(
 )(withTranslation(LocaleConstants.namespacesKey.property)(AssetLeaseListing));
 
 const styles = StyleSheet.create({
+  flexOne: {
+    flex: 1,
+  },
   screen: {
     flex: 1,
     backgroundColor: theme.colors.background,

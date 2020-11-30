@@ -1,24 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test cases for Header should render snapshot 1`] = `
-<ParallaxScrollView
-  backgroundColor="#FFFFFF"
-  backgroundScrollSpeed={5}
-  backgroundSpeed={10}
-  contentBackgroundColor="#fff"
-  contentContainerStyle={null}
-  fadeOutForeground={true}
-  keyboardShouldPersistTaps="never"
-  onChangeHeaderVisibility={[Function]}
-  outputScaleValue={5}
-  parallaxHeaderHeight={200}
-  renderBackground={[Function]}
-  renderContentBackground={[Function]}
-  renderFixedHeader={[Function]}
-  renderForeground={[Function]}
-  renderParallaxHeader={[Function]}
-  renderScrollComponent={[Function]}
-  renderStickyHeader={[Function]}
-  stickyHeaderHeight={100}
-/>
+<KeyboardAvoidingView
+  behavior="padding"
+  enabled={true}
+  keyboardVerticalOffset={0}
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <ParallaxScrollView
+    backgroundColor="#FFFFFF"
+    backgroundScrollSpeed={5}
+    backgroundSpeed={10}
+    contentBackgroundColor="#fff"
+    contentContainerStyle={null}
+    fadeOutForeground={true}
+    keyboardShouldPersistTaps="never"
+    onChangeHeaderVisibility={[Function]}
+    outputScaleValue={5}
+    parallaxHeaderHeight={200}
+    renderBackground={[Function]}
+    renderContentBackground={[Function]}
+    renderFixedHeader={[Function]}
+    renderForeground={[Function]}
+    renderParallaxHeader={[Function]}
+    renderScrollComponent={[Function]}
+    renderStickyHeader={[Function]}
+    stickyHeaderHeight={100}
+  />
+</KeyboardAvoidingView>
 `;

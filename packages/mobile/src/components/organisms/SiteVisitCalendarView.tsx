@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue,
   },
   visitView: {
-    height: 450,
+    minHeight: 450,
     marginTop: 10,
   },
   visitCard: {

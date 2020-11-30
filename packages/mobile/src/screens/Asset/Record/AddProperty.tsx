@@ -1,9 +1,10 @@
 import React, { ReactElement, PureComponent, ReactNode } from 'react';
-import { View, StyleSheet, ScrollView, LayoutChangeEvent } from 'react-native';
+import { View, StyleSheet, ScrollView, LayoutChangeEvent, KeyboardAvoidingView } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -117,34 +118,36 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     return (
       <View style={styles.screen}>
         <Header icon={icons.leftArrow} title={t('property:addProperty')} onIconPress={this.goBack} />
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
-          <AddressWithStepIndicator
-            icon={icons.noteBook}
-            steps={Steps}
-            propertyType={name}
-            primaryAddress={projectName}
-            subAddress={address}
-            countryFlag={flag}
-            currentIndex={currentIndex}
-            isStepDone={stepList}
-            onEditPress={this.onEditPress}
-            containerStyle={styles.addressCard}
-            onPressSteps={this.handlePreviousStep}
-          />
-          {this.renderTabHeader()}
-          <TabView
-            initialLayout={theme.viewport}
-            renderScene={this.renderScene}
-            onIndexChange={this.handleIndexChange}
-            renderTabBar={(): null => null}
-            swipeEnabled={false}
-            navigationState={{
-              index: currentIndex,
-              routes: Routes,
-            }}
-            style={{ height: heights[currentIndex] }}
-          />
-        </ScrollView>
+        <KeyboardAvoidingView style={styles.screen} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
+          <ScrollView style={styles.content} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
+            <AddressWithStepIndicator
+              icon={icons.noteBook}
+              steps={Steps}
+              propertyType={name}
+              primaryAddress={projectName}
+              subAddress={address}
+              countryFlag={flag}
+              currentIndex={currentIndex}
+              isStepDone={stepList}
+              onEditPress={this.onEditPress}
+              containerStyle={styles.addressCard}
+              onPressSteps={this.handlePreviousStep}
+            />
+            {this.renderTabHeader()}
+            <TabView
+              initialLayout={theme.viewport}
+              renderScene={this.renderScene}
+              onIndexChange={this.handleIndexChange}
+              renderTabBar={(): null => null}
+              swipeEnabled={false}
+              navigationState={{
+                index: currentIndex,
+                routes: Routes,
+              }}
+              style={{ height: heights[currentIndex] }}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   };

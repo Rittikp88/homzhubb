@@ -75,7 +75,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
           />
         </View>
         {visitData.length > 0 ? (
-          <ScrollView style={{ height }} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ minHeight: height }} showsVerticalScrollIndicator={false}>
             {visitData.map((item) => {
               const results = item.results as AssetVisit[];
               return (

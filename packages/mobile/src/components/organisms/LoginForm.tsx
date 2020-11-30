@@ -1,10 +1,11 @@
 import React, { PureComponent, createRef, RefObject } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -48,34 +49,36 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     const ContainerComponent = isEmailFlow ? ScrollView : View;
 
     return (
-      <ContainerComponent style={styles.container}>
-        <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
-          {(formProps: FormikProps<IFormData>): React.ReactElement => (
-            <>
-              {this.renderLoginFields(formProps)}
-              <FormButton
-                // @ts-ignore
-                onPress={formProps.handleSubmit}
-                formProps={formProps}
-                type="primary"
-                title={t('login')}
-                containerStyle={styles.submitStyle}
-              />
-              {isEmailFlow && (
-                <Button
-                  type="secondary"
-                  title={t('auth:forgotPassword')}
-                  fontType="semiBold"
-                  textSize="small"
-                  onPress={handleForgotPassword}
-                  containerStyle={styles.forgotButtonStyle}
-                  testID={testID}
+      <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
+        <ContainerComponent style={styles.container}>
+          <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
+            {(formProps: FormikProps<IFormData>): React.ReactElement => (
+              <>
+                {this.renderLoginFields(formProps)}
+                <FormButton
+                  // @ts-ignore
+                  onPress={formProps.handleSubmit}
+                  formProps={formProps}
+                  type="primary"
+                  title={t('login')}
+                  containerStyle={styles.submitStyle}
                 />
-              )}
-            </>
-          )}
-        </Formik>
-      </ContainerComponent>
+                {isEmailFlow && (
+                  <Button
+                    type="secondary"
+                    title={t('auth:forgotPassword')}
+                    fontType="semiBold"
+                    textSize="small"
+                    onPress={handleForgotPassword}
+                    containerStyle={styles.forgotButtonStyle}
+                    testID={testID}
+                  />
+                )}
+              </>
+            )}
+          </Formik>
+        </ContainerComponent>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -200,5 +203,8 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     flex: 0,
     marginTop: 16,
+  },
+  flexOne: {
+    flex: 1,
   },
 });

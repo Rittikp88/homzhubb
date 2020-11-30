@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -60,10 +61,10 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
           </TouchableOpacity>
         </View>
       </>
-      <ScrollView
-        scrollEnabled={isOuterScrollEnabled}
+      <KeyboardAwareScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'always' : 'never'}
         showsVerticalScrollIndicator={false}
+        scrollEnabled={isOuterScrollEnabled}
         nestedScrollEnabled
       >
         <>
@@ -86,7 +87,7 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
             {children}
           </View>
         </>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
