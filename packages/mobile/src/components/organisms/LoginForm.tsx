@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef, RefObject } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -45,9 +45,10 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     const { t, handleForgotPassword, testID } = this.props;
     const { isEmailFlow } = this.state;
     const formData = { ...this.state };
+    const ContainerComponent = isEmailFlow ? ScrollView : View;
 
     return (
-      <View style={styles.container}>
+      <ContainerComponent style={styles.container}>
         <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
           {(formProps: FormikProps<IFormData>): React.ReactElement => (
             <>
@@ -74,7 +75,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
             </>
           )}
         </Formik>
-      </View>
+      </ContainerComponent>
     );
   }
 

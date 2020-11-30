@@ -17,7 +17,6 @@ interface IProps {
 
 const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
-  // Todo (Sriram: Look into this prefill issue of carpetArea)
 
   return (
     <>
@@ -27,11 +26,11 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
             <FormTextInput
               style={styles.inputFieldStyle}
               name="carpetArea"
-              label={t('carpetArea')}
+              label={t('propertySearch:carpetArea')}
               maxLength={10}
               numberOfLines={1}
               inputType="number"
-              placeholder={t('carpetAreaPlaceholder')}
+              placeholder={t('propertySearch:carpetAreaPlaceholder')}
               formProps={formProps}
             />
           </View>
