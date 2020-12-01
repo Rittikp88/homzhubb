@@ -201,7 +201,7 @@
     "PasswordChangedText": "Password changed! Log back in."
   },
   "property": {
-    "searchInWeb": "Search for projects,location,builders",
+    "searchInWeb": "Search for projects, location, builders",
     "welcomeUser": "Welcome {{username}},",
     "description": "Let's add your first property on Homzhub",
     "searchProject": "Search for project or street name",

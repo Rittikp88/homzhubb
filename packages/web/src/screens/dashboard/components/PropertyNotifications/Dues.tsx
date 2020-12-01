@@ -67,8 +67,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     marginLeft: 15,
+    marginVertical: 24,
     maxHeight: 161,
-    width: 322,
+    flex: 1,
     backgroundColor: theme.colors.white,
   },
   header: {
