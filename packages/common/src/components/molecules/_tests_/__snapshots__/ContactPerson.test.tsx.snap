@@ -39,9 +39,7 @@ exports[`ContactPerson should match snapshot 1`] = `
             "borderRadius": 4,
             "marginLeft": 24,
           },
-          Object {
-            "marginLeft": 12,
-          },
+          Object {},
         ]
       }
       testID="to"
@@ -63,7 +61,7 @@ exports[`ContactPerson should match snapshot 1`] = `
             "marginLeft": 24,
           },
           Object {
-            "marginLeft": 12,
+            "marginHorizontal": 12,
           },
         ]
       }
@@ -85,9 +83,7 @@ exports[`ContactPerson should match snapshot 1`] = `
             "borderRadius": 4,
             "marginLeft": 24,
           },
-          Object {
-            "marginLeft": 12,
-          },
+          Object {},
         ]
       }
       testID="to"

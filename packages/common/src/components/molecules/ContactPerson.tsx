@@ -33,6 +33,11 @@ const ContactPerson = (props: IProps): React.ReactElement => {
       <View style={styles.iconContainer}>
         {OPTIONS.map((item, index: number) => {
           const { icon, id } = item;
+          let conditionalStyle = {};
+
+          if (index === 1) {
+            conditionalStyle = { marginHorizontal: 12 };
+          }
 
           const onPress = (): void => {
             if (id === ContactActions.CALL) {
@@ -51,7 +56,10 @@ const ContactPerson = (props: IProps): React.ReactElement => {
           return (
             <TouchableOpacity
               key={id}
-              style={[styles.iconButton, isMobile && styles.iconButtonMobile]}
+              style={[
+                styles.iconButton,
+                PlatformUtils.isMobile() ? conditionalStyle : isMobile && styles.iconButtonMobile,
+              ]}
               onPress={onPress}
               testID="to"
             >
