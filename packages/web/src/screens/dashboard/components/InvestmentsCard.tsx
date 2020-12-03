@@ -16,7 +16,8 @@ import InvestmentFooter from '@homzhub/web/src/screens/dashboard/components/Inve
 
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
-  // investmentData: PropertyInvestment; todos (LAKSHIT) - change dummy data with actual api data
+  // todo (LAKSHIT) - change dummy data with actual api data
+  // investmentData: PropertyInvestment;
   investmentData: any;
 }
 
@@ -110,9 +111,7 @@ const InvestmentsCard = (props: IProps): React.ReactElement => {
           />
         )}
       </View>
-      <View>
-        <InvestmentFooter investmentData={investmentData} />
-      </View>
+      <InvestmentFooter investmentData={investmentData} />
     </View>
   );
 };

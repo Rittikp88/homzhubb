@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginVertical: 24,
     maxHeight: 161,
+    justifyContent: 'space-evenly',
     flex: 1,
     backgroundColor: theme.colors.white,
   },
@@ -94,9 +95,10 @@ const styles = StyleSheet.create({
   },
   data: {
     marginLeft: 10,
-    marginBottom: 15,
+    marginBottom: 16,
   },
   content: {
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
@@ -106,10 +108,7 @@ const styles = StyleSheet.create({
     marginLeft: -7,
     marginTop: -7,
   },
-  badgeContainer: {
-    padding: 20,
-    alignItems: 'center',
-  },
+  badgeContainer: { alignItems: 'center', justifyContent: 'center' },
 });
 
 export default Dues;

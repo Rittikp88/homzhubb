@@ -1,32 +1,34 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const Footer: FC = () => {
   const { t } = useTranslation();
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const textType = isMobile ? 'small' : 'large';
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isMobile && styles.containerMobile]}>
       <View style={styles.leftOptionsFooter}>
-        <Label type="large" textType="regular" style={styles.copyrightText}>
+        <Label type={textType} textType="regular" style={styles.copyrightText}>
           {t('copyrightContent')}
         </Label>
-        <Label type="large" textType="semiBold" style={styles.linkText}>
+        <Label type={textType} textType="semiBold" style={styles.linkText}>
           {t('homzhubLink')}
         </Label>
       </View>
       <View style={styles.rightOptionsFooter}>
         <View style={styles.optionTerm}>
-          <Label type="large" textType="semiBold" style={styles.linkText}>
+          <Label type={textType} textType="semiBold" style={styles.linkText}>
             {t('terms')}
           </Label>
         </View>
-        <View style={styles.optionPrivacy}>
-          <Label type="large" textType="semiBold" style={styles.linkText}>
-            {t('privacy')}
-          </Label>
-        </View>
+        <Label type={textType} textType="semiBold" style={styles.linkText}>
+          {t('privacy')}
+        </Label>
       </View>
     </View>
   );
@@ -40,13 +42,20 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     backgroundColor: theme.colors.background,
-    border: `1px solid ${theme.colors.darkTint9}`,
+    borderStyle: 'solid',
+    borderTopWidth: 1,
+    borderColor: theme.colors.darkTint9,
     minHeight: '81px',
     paddingVertical: '2%',
     paddingHorizontal: '3%',
   },
+  containerMobile: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   leftOptionsFooter: {
-    flex: 8,
+    flex: 1,
     alignItems: 'flex-start',
     flexDirection: 'row',
   },
@@ -57,17 +66,11 @@ const styles = StyleSheet.create({
     color: theme.colors.blue,
   },
   rightOptionsFooter: {
-    flex: 4,
+    flex: 0.5,
     flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   optionTerm: {
-    flex: 2,
-    alignItems: 'flex-end',
-    paddingLeft: '20%',
-  },
-  optionPrivacy: {
-    flex: 2,
-    alignItems: 'flex-end',
-    paddingRight: '20%',
+    marginRight: 42,
   },
 });

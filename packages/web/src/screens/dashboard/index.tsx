@@ -27,10 +27,17 @@ const Dashboard: FC<IProps> = (props: IProps) => {
       <PropertyOverview />
       <PropertyNotifications />
       <PropertyVisualsEstimates />
-      <View style={[styles.wrapper, isMobile && styles.row]}>
-        <PendingPropertiesCard data={dummyData} />
-        <UserSubscriptionPlan onApiFailure={FunctionUtils.noop} />
-      </View>
+      {isMobile ? (
+        <View style={[styles.wrapper, isMobile && styles.row]}>
+          <PendingPropertiesCard data={dummyData} />
+          <UserSubscriptionPlan onApiFailure={FunctionUtils.noop} />
+        </View>
+      ) : (
+        <>
+          <PendingPropertiesCard data={dummyData} />
+          <UserSubscriptionPlan onApiFailure={FunctionUtils.noop} />
+        </>
+      )}
       <InvestmentsCarousel investmentData={investmentDataArray} />
       <MarketTrendsCarousel />
     </View>

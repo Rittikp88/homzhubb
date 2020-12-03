@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 interface IProps {
@@ -16,7 +17,7 @@ class Divider extends React.PureComponent<IProps> {
 
 const styles = StyleSheet.create({
   separator: {
-    borderColor: theme.colors.disabled,
+    borderColor: PlatformUtils.isWeb() ? theme.colors.background : theme.colors.disabled,
     borderWidth: StyleSheet.hairlineWidth,
   },
 });

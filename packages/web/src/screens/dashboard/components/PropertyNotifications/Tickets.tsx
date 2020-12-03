@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     marginVertical: 24,
     padding: 15,
     maxHeight: 161,
+    justifyContent: 'space-evenly',
     flex: 1,
     backgroundColor: theme.colors.white,
   },
@@ -95,13 +96,14 @@ const styles = StyleSheet.create({
   },
   data: {
     marginLeft: 10,
-    marginBottom: 15,
+    marginBottom: 16,
   },
   content: {
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  badgeContainer: { padding: 20, alignItems: 'center' },
+  badgeContainer: { alignItems: 'center', justifyContent: 'center' },
 });
 
 export default Tickets;

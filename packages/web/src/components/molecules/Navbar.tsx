@@ -42,11 +42,12 @@ const NavItem: FC<INavItem> = ({ icon, text, index, isActive, onNavItemPress }: 
 
 const Navbar: FC = () => {
   const { t } = useTranslation();
+  const isDesktop = useDown(deviceBreakpoint.DESKTOP);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [isSelected, setIsSelected] = useState(-1);
   const [searchText, setSearchText] = useState('');
-  const navBarStyles = navBarStyle(isMobile, isTablet);
+  const navBarStyles = navBarStyle(isMobile, isTablet, isDesktop);
   const navItems = [
     {
       icon: icons.headset,
@@ -77,7 +78,7 @@ const Navbar: FC = () => {
         )}
         <View style={navBarStyles.logo}>{isMobile ? <HomzhubLogo /> : <NavLogo />}</View>
         <View style={navBarStyles.search}>
-          {!isMobile ? (
+          {!isTablet ? (
             <SearchField placeholder={t('property:searchInWeb')} value={searchText} updateValue={onChange} />
           ) : (
             <Button
@@ -122,7 +123,7 @@ interface INavBarStyle {
   searchIc: ViewStyle;
 }
 
-const navBarStyle = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
+const navBarStyle = (isMobile: boolean, isTablet: boolean, isDesktop: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
   StyleSheet.create<INavBarStyle>({
     container: {
       backgroundColor: theme.colors.white,
@@ -141,9 +142,10 @@ const navBarStyle = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyl
     },
     search: {
       flex: 1,
-      marginRight: isMobile || isTablet ? 0 : '10%',
-      marginLeft: isMobile || isTablet ? 0 : '7%',
-      alignItems: isMobile ? 'flex-end' : undefined,
+      maxWidth: 403,
+      marginRight: isTablet ? 0 : isDesktop ? '4%' : '10%',
+      marginLeft: isTablet ? 0 : isDesktop ? '2%' : '7%',
+      alignItems: isTablet ? 'flex-end' : undefined,
     },
     itemsContainer: {
       flexDirection: 'row',

@@ -11,22 +11,27 @@ interface IProps {
 const defaultResponsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
-    breakpoint: { max: 4000, min: 1200 },
-    items: 3,
-    slidesToSlide: 3,
+    breakpoint: { max: 4000, min: 1440 },
+    items: 4,
+    slidesToSlide: 2,
   },
   desktop: {
-    breakpoint: { max: 1200, min: 1024 },
+    breakpoint: { max: 1440, min: 1248 },
     items: 3,
     slidesToSlide: 3,
   },
+  laptop: {
+    breakpoint: { max: 1247, min: 1024 },
+    items: 2,
+    slidesToSlide: 2,
+  },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1023, min: 768 },
     items: 2,
     slidesToSlide: 2,
   },
   mobile: {
-    breakpoint: { max: 800, min: 0 },
+    breakpoint: { max: 767, min: 0 },
     items: 1,
     slidesToSlide: 1,
   },

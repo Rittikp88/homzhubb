@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { ContactActions } from '@homzhub/common/src/domain/models/Search';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   fullName: string;
@@ -24,17 +26,13 @@ const OPTIONS = [
 const ContactPerson = (props: IProps): React.ReactElement => {
   const { fullName, designation, phoneNumber, onContactTypeClicked, image } = props;
   const { t } = useTranslation();
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
     <View style={styles.container}>
       <Avatar fullName={fullName} designation={designation} image={image} />
       <View style={styles.iconContainer}>
         {OPTIONS.map((item, index: number) => {
           const { icon, id } = item;
-          let conditionalStyle = {};
-
-          if (index === 1) {
-            conditionalStyle = { marginHorizontal: 12 };
-          }
 
           const onPress = (): void => {
             if (id === ContactActions.CALL) {
@@ -51,7 +49,12 @@ const ContactPerson = (props: IProps): React.ReactElement => {
           };
 
           return (
-            <TouchableOpacity key={id} style={[styles.iconButton, conditionalStyle]} onPress={onPress} testID="to">
+            <TouchableOpacity
+              key={id}
+              style={[styles.iconButton, isMobile && styles.iconButtonMobile]}
+              onPress={onPress}
+              testID="to"
+            >
               <Icon name={icon} size={24} color={theme.colors.primaryColor} />
             </TouchableOpacity>
           );
@@ -80,8 +83,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iconButton: {
-    paddingRight: 10,
+    marginLeft: 24,
     borderRadius: 4,
+  },
+  iconButtonMobile: {
+    marginLeft: 12,
   },
 });
 
