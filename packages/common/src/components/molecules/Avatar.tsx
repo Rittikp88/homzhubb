@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
+import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     marginLeft: 12,
     marginRight: 6,
-    width: theme.viewport.width / 2 - 40,
+    width: PlatformUtils.isWeb() ? undefined : theme.viewport.width / 2 - 40,
   },
   numberContainer: {
     flexDirection: 'row',
