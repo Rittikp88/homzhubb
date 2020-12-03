@@ -89,6 +89,14 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
+    const {
+      route: { params },
+    } = this.props;
+    if (params && params.tabKey) {
+      this.setState({
+        currentIndex: Routes.findIndex((item) => item.key === params.tabKey),
+      });
+    }
     await this.getAssetDetail();
   };
 

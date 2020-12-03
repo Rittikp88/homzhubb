@@ -28,6 +28,7 @@ import {
   IGetTenanciesPayload,
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -179,7 +180,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
-    const handleViewProperty = (data: ISetAssetPayload): void => this.onViewProperty({ ...data, dataType: type });
+    const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
+      this.onViewProperty({ ...data, dataType: type }, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
     return (
       <AssetCard
@@ -204,10 +206,13 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.closeBottomSheet();
   };
 
-  private onViewProperty = (data: ISetAssetPayload): void => {
+  private onViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
     const { navigation, setCurrentAsset } = this.props;
     setCurrentAsset(data);
-    navigation.navigate(ScreensKeys.PropertyDetailScreen, { isFromTenancies: data.dataType === DataType.TENANCIES });
+    navigation.navigate(ScreensKeys.PropertyDetailScreen, {
+      isFromTenancies: data.dataType === DataType.TENANCIES,
+      ...(key && { tabKey: key }),
+    });
   };
 
   private onMetricsClicked = (name: string): void => {

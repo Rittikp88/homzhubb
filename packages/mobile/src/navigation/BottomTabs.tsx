@@ -26,10 +26,12 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
+  IAssetDescriptionProps,
   IBookVisitProps,
   IComingSoon,
   IForgotPasswordProps,
   IOtpNavProps,
+  IPropertyDetailProps,
   IUpdateProfileProps,
   IVerifyEmail,
   IWebviewProps,
@@ -48,6 +50,7 @@ import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUser
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
+import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
@@ -70,11 +73,12 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
   [ScreensKeys.BookVisit]: IBookVisitProps;
+  [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };
 
 export type PortfolioNavigatorParamList = {
   [ScreensKeys.PortfolioLandingScreen]: undefined;
-  [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard?: boolean; isFromTenancies?: boolean };
+  [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
@@ -126,6 +130,7 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
       <DashboardNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
+      <DashboardNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
     </DashboardNavigator.Navigator>
   );
 };

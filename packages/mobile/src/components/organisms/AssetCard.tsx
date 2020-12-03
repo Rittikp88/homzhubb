@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, StyleProp, ViewStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -19,10 +19,11 @@ import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IListProps {
   assetData: Asset;
-  onViewProperty?: (data: ISetAssetPayload) => void;
+  onViewProperty?: (data: ISetAssetPayload, key?: Tabs) => void;
   isDetailView?: boolean;
   expandedId?: number;
   isFromTenancies?: boolean;
@@ -58,7 +59,7 @@ export class AssetCard extends Component<Props> {
       detailPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
     }
 
-    const handlePropertyView = (): void => onViewProperty && onViewProperty(detailPayload);
+    const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(detailPayload, key);
     const handleArrowPress = (): void => onPressArrow && onPressArrow(id);
     const isExpanded: boolean = expandedId === id;
     return (
@@ -72,20 +73,23 @@ export class AssetCard extends Component<Props> {
                   badgeColor={assetStatusInfo?.tag.color ?? ''}
                   badgeStyle={styles.badgeStyle}
                 />
-                {ShowInMvpRelease && (
-                  <>
-                    <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                    <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                    <Label type="large" style={styles.count}>
-                      {notifications?.count}
-                    </Label>
-                    <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                    <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                    <Label type="large" style={styles.count}>
-                      {serviceTickets?.count}
-                    </Label>
-                  </>
-                )}
+                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+                <TouchableOpacity
+                  style={styles.topLeftView}
+                  onPress={(): void => handlePropertyView(Tabs.NOTIFICATIONS)}
+                >
+                  <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                  <Label type="large" style={styles.count}>
+                    {notifications?.count}
+                  </Label>
+                </TouchableOpacity>
+                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+                <TouchableOpacity style={styles.topLeftView} onPress={(): void => handlePropertyView(Tabs.TICKETS)}>
+                  <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                  <Label type="large" style={styles.count}>
+                    {serviceTickets?.count}
+                  </Label>
+                </TouchableOpacity>
               </View>
               <Icon
                 name={isExpanded ? icons.upArrow : icons.downArrow}
@@ -96,7 +100,7 @@ export class AssetCard extends Component<Props> {
               />
             </View>
           )}
-          <TouchableOpacity onPress={handlePropertyView} activeOpacity={isDetailView ? 1 : 0.3}>
+          <TouchableOpacity onPress={(): void => handlePropertyView()} activeOpacity={isDetailView ? 1 : 0.3}>
             <>
               {(isExpanded || isDetailView) && this.renderAttachmentView(attachments, handlePropertyView)}
               {isDetailView && (
