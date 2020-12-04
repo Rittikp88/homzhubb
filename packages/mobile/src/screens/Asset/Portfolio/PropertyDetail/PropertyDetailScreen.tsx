@@ -25,6 +25,7 @@ import {
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
+import DetailTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DetailTab';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
@@ -281,7 +282,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.DETAILS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 9)}>
-            <DummyView />
+            <DetailTab assetStatusInfo={assetStatusInfo} />
           </View>
         );
       default:

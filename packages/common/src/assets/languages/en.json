@@ -498,11 +498,12 @@
     "parks": "Parks",
     "atms": "ATMs",
     "malls": "Shopping Malls",
-    "noDescription": "No Description",
+    "noDescription": "No Description Added",
     "messageSent": "Message Sent Successfully",
     "scheduleVisit": "Schedule Site Visit",
     "noAmenities": "No Amenities Selected",
-    "noHighlights": "No Highlights Added"
+    "noHighlights": "No Highlights Added",
+    "noInformation": "No Information Added"
   },
   "assetDashboard": {
     "notification": "Notifications",

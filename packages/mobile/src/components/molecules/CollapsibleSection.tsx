@@ -14,6 +14,7 @@ interface ICollapsibleSectionProps {
   isDividerRequired?: boolean;
   titleStyle?: StyleProp<ViewStyle>;
   initialCollapsedValue?: boolean;
+  isCollapsibleRequired?: boolean;
 }
 const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement => {
   const {
@@ -24,6 +25,7 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
     titleStyle,
     isDividerRequired = false,
     onCollapse,
+    isCollapsibleRequired = true,
   } = props;
   const [isCollapsed, setIsCollapsed] = useState(initialCollapsedValue);
 
@@ -36,14 +38,21 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
 
   return (
     <>
-      <TouchableOpacity style={styles.ratingsHeading} onPress={onPress} testID="collapse">
+      <TouchableOpacity
+        style={styles.ratingsHeading}
+        disabled={!isCollapsibleRequired}
+        onPress={onPress}
+        testID="collapse"
+      >
         <View style={styles.leftView}>
           {icon && <Icon name={icon} size={22} color={theme.colors.darkTint4} />}
           <Text type="small" textType="semiBold" style={[styles.textColor, titleStyle]}>
             {title}
           </Text>
         </View>
-        <Icon name={isCollapsed ? icons.plus : icons.minus} size={20} color={theme.colors.darkTint4} />
+        {isCollapsibleRequired && (
+          <Icon name={isCollapsed ? icons.plus : icons.minus} size={20} color={theme.colors.darkTint4} />
+        )}
       </TouchableOpacity>
       <Collapsible collapsed={isCollapsed}>{children}</Collapsible>
       {isDividerRequired && <Divider containerStyles={styles.divider} />}
@@ -54,6 +63,7 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
 const styles = StyleSheet.create({
   divider: {
     marginTop: 24,
+    borderColor: theme.colors.darkTint10,
   },
   leftView: {
     flexDirection: 'row',
