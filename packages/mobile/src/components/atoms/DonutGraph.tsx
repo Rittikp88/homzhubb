@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { PieChart } from 'react-native-svg-charts';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -7,7 +7,7 @@ import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends'
 import { GeneralLedgers, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 const INNER_RADIUS = '70%';
-const HEIGHT = theme.viewport.height * 0.25;
+const HEIGHT = 225;
 interface IProps {
   data: GeneralLedgers[];
 }
@@ -36,25 +36,19 @@ const DonutGraph = (props: IProps): React.ReactElement => {
     if (data.length === 0) return <EmptyState />;
 
     return (
-      <View style={styles.container}>
+      <>
         <PieChart style={styles.pieChart} data={donutData} innerRadius={INNER_RADIUS} />
-        <GraphLegends direction="column" data={donutData} />
-      </View>
+        <GraphLegends data={donutData} />
+      </>
     );
   };
   return render();
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   pieChart: {
     flex: 1,
-    marginEnd: 16,
+    marginBottom: 16,
     height: HEIGHT,
   },
 });

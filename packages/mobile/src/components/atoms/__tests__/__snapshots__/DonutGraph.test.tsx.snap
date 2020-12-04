@@ -1,16 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DonutGraph should match snapshot 1`] = `
-<View
-  style={
-    Object {
-      "alignItems": "center",
-      "flex": 1,
-      "flexDirection": "row",
-      "justifyContent": "space-between",
-    }
-  }
->
+<Fragment>
   <PieChart
     data={Array []}
     endAngle={6.283185307179586}
@@ -22,8 +13,8 @@ exports[`DonutGraph should match snapshot 1`] = `
     style={
       Object {
         "flex": 1,
-        "height": 333.5,
-        "marginEnd": 16,
+        "height": 225,
+        "marginBottom": 16,
       }
     }
     valueAccessor={[Function]}
@@ -31,7 +22,6 @@ exports[`DonutGraph should match snapshot 1`] = `
   />
   <Memo(GraphLegends)
     data={Array []}
-    direction="column"
   />
-</View>
+</Fragment>
 `;

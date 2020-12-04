@@ -321,6 +321,15 @@ export interface IGeneralLedgerPayload {
   transaction_date__lte: string;
   transaction_date__gte: string;
   transaction_date_group_by: string;
+  asset_id?: number;
+  country_id?: number;
+}
+
+export interface ITransactionParams {
+  asset_id?: number;
+  country_id?: number;
+  offset: number;
+  limit: number;
 }
 
 export interface IAddGeneralLedgerPayload {

@@ -1,22 +1,21 @@
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
+import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IAddGeneralLedgerPayload,
   ICreateLedgerResult,
   IGeneralLedgerPayload,
+  ITransactionParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
-import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 
 const ENDPOINTS = {
-  getGeneralLedgers: (): string => 'general-ledgers/overall-performances/',
-  getLedgerCategories: (): string => 'general-ledger-categories/',
-  postLedgers: (): string => 'general-ledgers/',
-  getLedgers: (): string => 'general-ledgers/',
+  getGeneralLedgers: 'general-ledgers/overall-performances/',
+  getLedgerCategories: 'general-ledger-categories/',
+  genLedgers: 'general-ledgers/',
 };
-const PAGE_LIMIT = 10;
 
 class LedgerRepository {
   private apiClient: IApiClient;
@@ -26,21 +25,21 @@ class LedgerRepository {
   }
 
   public getLedgerPerformances = async (requestPayload: IGeneralLedgerPayload): Promise<GeneralLedgers[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.getGeneralLedgers(), requestPayload);
+    const response = await this.apiClient.get(ENDPOINTS.getGeneralLedgers, requestPayload);
     return ObjectMapper.deserializeArray(GeneralLedgers, response);
   };
 
   public getLedgerCategories = async (): Promise<LedgerCategory[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.getLedgerCategories());
+    const response = await this.apiClient.get(ENDPOINTS.getLedgerCategories);
     return ObjectMapper.deserializeArray(LedgerCategory, response);
   };
 
   public postGeneralLedgers = async (payload: IAddGeneralLedgerPayload): Promise<ICreateLedgerResult> => {
-    return await this.apiClient.post(ENDPOINTS.postLedgers(), payload);
+    return await this.apiClient.post(ENDPOINTS.genLedgers, payload);
   };
 
-  public getGeneralLedgers = async (offset: number, limit: number = PAGE_LIMIT): Promise<FinancialTransactions> => {
-    const response = await this.apiClient.get(ENDPOINTS.getLedgers(), { limit, offset });
+  public getGeneralLedgers = async (params: ITransactionParams): Promise<FinancialTransactions> => {
+    const response = await this.apiClient.get(ENDPOINTS.genLedgers, params);
     return ObjectMapper.deserialize(FinancialTransactions, response);
   };
 }

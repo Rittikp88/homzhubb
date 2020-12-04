@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
-import { BarChart, XAxis, YAxis, Grid } from 'react-native-svg-charts';
+// import { useSelector } from 'react-redux';
+import { BarChart, XAxis, Grid } from 'react-native-svg-charts';
 import { PathProps } from 'react-native-svg';
 import { sum } from 'lodash';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+// import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -25,7 +25,6 @@ const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7, widt
 const VERTICAL_INSET = { top: 8, bottom: 8 };
 const HORIZONTAL_INSET = { left: 24, right: 24 };
 // VIEWPORT CONSTANTS
-const Y_GRID_WIDTH = theme.viewport.width / 7;
 const HEIGHT = theme.viewport.height * 0.5;
 const WIDTH = theme.viewport.width * 1.75;
 
@@ -33,7 +32,7 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
   const {
     data: { data1, data2, label },
   } = props;
-  const currency = useSelector(UserSelector.getCurrency);
+  // const currency = useSelector(UserSelector.getCurrency);
 
   const barData = [
     {
@@ -72,22 +71,13 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
     <>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.barGraphContainer}>
-          <View style={styles.yContainer}>
-            <YAxis
-              style={styles.yGrid}
-              contentInset={VERTICAL_INSET}
-              data={data1.concat(data2)}
-              svg={SVG_FONT}
-              formatLabel={(value: number): string => `${currency.currencySymbol}${value}`}
-            />
-            <BarChart
-              contentInset={VERTICAL_INSET}
-              style={[styles.barGraph, label.length === 1 && styles.derivedWidth]}
-              data={barData}
-            >
-              <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
-            </BarChart>
-          </View>
+          <BarChart
+            contentInset={VERTICAL_INSET}
+            style={[styles.barGraph, label.length === 1 && styles.derivedWidth]}
+            data={barData}
+          >
+            <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
+          </BarChart>
           <XAxis
             style={[styles.xAxis, label.length === 1 && styles.xAxisDerivedWidth]}
             data={label}
@@ -97,7 +87,7 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
           />
         </View>
       </ScrollView>
-      <GraphLegends direction="row" data={barGraphLegends()} />
+      <GraphLegends data={barGraphLegends()} />
     </>
   );
 };
@@ -113,15 +103,7 @@ const styles = StyleSheet.create({
     width: WIDTH,
     height: HEIGHT,
   },
-  yContainer: {
-    flexDirection: 'row',
-  },
-  yGrid: {
-    width: Y_GRID_WIDTH,
-    alignItems: 'flex-start',
-  },
   xAxis: {
-    marginStart: Y_GRID_WIDTH,
     width: WIDTH,
     padding: 12,
   },

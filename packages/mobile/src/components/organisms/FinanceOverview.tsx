@@ -26,6 +26,11 @@ enum TabKeys {
   cashFlow = 2,
 }
 
+interface IOwnProps {
+  selectedProperty?: number;
+  selectedCountry?: number;
+}
+
 interface IOwnState {
   currentTab: TabKeys;
   selectedTimeRange: DateFilter;
@@ -35,17 +40,25 @@ interface IOwnState {
 interface IStateProps {
   financialYear: { startDate: string; endDate: string; startMonthIndex: number; endMonthIndex: number };
 }
-type Props = IStateProps & WithTranslation;
+type Props = IStateProps & IOwnProps & WithTranslation;
 
 export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   public state = {
     currentTab: TabKeys.expenses,
-    selectedTimeRange: DateFilter.thisMonth,
+    selectedTimeRange: DateFilter.thisYear,
     data: [],
   };
 
   public componentDidMount = async (): Promise<void> => {
     await this.getGeneralLedgers();
+  };
+
+  public componentDidUpdate = async (prevProps: Props): Promise<void> => {
+    const { selectedCountry: oldCountry, selectedProperty: oldProperty } = prevProps;
+    const { selectedProperty, selectedCountry } = this.props;
+    if (selectedProperty !== oldProperty || selectedCountry !== oldCountry) {
+      await this.getGeneralLedgers();
+    }
   };
 
   public render = (): React.ReactNode => {
@@ -147,6 +160,8 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
 
   public getGeneralLedgers = async (): Promise<void> => {
     const {
+      selectedCountry,
+      selectedProperty,
       financialYear: { endDate: finEndDate, startDate: finStartDate },
     } = this.props;
     const { selectedTimeRange, currentTab } = this.state;
@@ -166,6 +181,8 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
         transaction_date__gte: startDate,
         transaction_date__lte: endDate,
         transaction_date_group_by: currentTab === TabKeys.cashFlow ? DataGroupBy.month : dataGroupBy,
+        asset_id: selectedProperty || undefined,
+        country_id: selectedCountry || undefined,
       });
       this.setState({ data: response });
     } catch (err) {

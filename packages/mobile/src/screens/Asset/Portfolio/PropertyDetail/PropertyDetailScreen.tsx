@@ -24,6 +24,7 @@ import {
 } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
+import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
 import DetailTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DetailTab';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
@@ -65,6 +66,7 @@ interface IDetailState {
   isLoading: boolean;
   isMenuVisible: boolean;
   selectedMenuItem: string;
+  scrollEnabled: boolean;
 }
 
 interface IRoutes {
@@ -86,6 +88,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     heights: Array(Routes.length).fill(height),
     isLoading: false,
     isMenuVisible: false,
+    scrollEnabled: true,
     selectedMenuItem: '',
   };
 
@@ -106,7 +109,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { currentIndex, propertyData, heights, isLoading, isMenuVisible, selectedMenuItem } = this.state;
+    const {
+      currentIndex,
+      propertyData,
+      heights,
+      isLoading,
+      isMenuVisible,
+      selectedMenuItem,
+      scrollEnabled,
+    } = this.state;
 
     if (isLoading) {
       return <Loader visible />;
@@ -127,7 +138,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED && isListingCreated;
     return (
       <>
-        <AnimatedProfileHeader title={title}>
+        <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={title}>
           <>
             <HeaderCard
               title={t('propertyDetails')}
@@ -221,7 +232,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       route: { params },
     } = this.props;
     const {
-      propertyData: { assetStatusInfo, isManaged },
+      propertyData: { id, assetStatusInfo, isManaged },
     } = this.state;
     switch (route.key) {
       case Tabs.NOTIFICATIONS:
@@ -258,7 +269,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.FINANCIALS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 5)}>
-            <DummyView />
+            <TransactionCardsContainer selectedProperty={id} shouldEnableOuterScroll={this.toggleScroll} />
           </View>
         );
       case Tabs.MESSAGES:
@@ -402,6 +413,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
   private handleMenuIcon = (): void => {
     this.setState({ isMenuVisible: true });
+  };
+
+  private toggleScroll = (scrollEnabled: boolean): void => {
+    this.setState({ scrollEnabled });
   };
 }
 

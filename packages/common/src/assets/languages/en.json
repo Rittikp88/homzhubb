@@ -1,6 +1,7 @@
 {
   "common": {
     "homzhub": "Homzhub",
+    "all": "All",
     "description": "Your Property Custodian",
     "welcome": "Welcome To Homzhub",
     "login": "Login",
@@ -588,7 +589,8 @@
     "tellerPlaceholder": "Eg: Tenant",
     "addedSuccessfullyMessage": "Added successfully",
     "noDescriptionText": "No Description.",
-    "addProperty": "Please add a property before adding a financial record"
+    "addProperty": "Please add a property before adding a financial record",
+    "allProperties": "All properties"
   },
   "assetMore": {
     "more": "More",
