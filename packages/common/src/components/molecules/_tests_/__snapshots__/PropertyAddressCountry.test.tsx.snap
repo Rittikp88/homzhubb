@@ -43,9 +43,9 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
           Object {
             "alignItems": "center",
             "color": "#000",
+            "flex": 1,
             "justifyContent": "center",
-            "marginHorizontal": 10,
-            "width": 569.2307692307692,
+            "marginHorizontal": 12,
           },
           undefined,
         ]

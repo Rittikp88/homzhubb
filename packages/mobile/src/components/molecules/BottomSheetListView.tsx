@@ -17,6 +17,7 @@ interface IProps<T> {
   numColumns?: number;
 }
 
+const LIST_HEIGHT = theme.viewport.height <= theme.DeviceDimensions.SMALL.height ? 450 : 700;
 export class BottomSheetListView<T> extends Component<IProps<T>> {
   public render(): React.ReactNode {
     const {
@@ -25,7 +26,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
       selectedValue,
       listTitle,
       data,
-      listHeight = 750,
+      listHeight = LIST_HEIGHT,
       numColumns = 1,
     } = this.props;
     return (

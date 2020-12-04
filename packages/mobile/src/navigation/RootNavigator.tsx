@@ -32,6 +32,7 @@ export const RootNavigator = (props: IProps): React.ReactElement => {
       dispatch(UserActions.getUserProfile());
       dispatch(AssetActions.getAssetCount());
       dispatch(UserActions.getFavouriteProperties());
+      dispatch(UserActions.getAssets());
     }
 
     GeolocationService.setLocationDetails(isLoggedIn, searchAddress).then();

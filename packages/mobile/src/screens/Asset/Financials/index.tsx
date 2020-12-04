@@ -1,7 +1,6 @@
 import React from 'react';
 import { PickerItemProps, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -10,7 +9,6 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AnimatedProfileHeader, AssetMetricsList, Loader, IMetricsData } from '@homzhub/mobile/src/components';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
@@ -35,11 +33,8 @@ interface IOwnState {
 interface IStateProps {
   assets: Asset[];
 }
-interface IDispatchProps {
-  getAssets: () => void;
-}
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
-type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
+type Props = WithTranslation & libraryProps & IStateProps;
 
 export class Financials extends React.PureComponent<Props, IOwnState> {
   private onFocusSubscription: any;
@@ -53,11 +48,10 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   public componentDidMount(): void {
-    const { navigation, getAssets } = this.props;
+    const { navigation } = this.props;
 
     this.onFocusSubscription = navigation.addListener('focus', (): void => {
       this.setState({ selectedProperty: 0, selectedCountry: 0 }, () => {
-        getAssets();
         this.getGeneralLedgersPref().then();
       });
     });
@@ -207,15 +201,9 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssets } = UserActions;
-  return bindActionCreators({ getAssets }, dispatch);
-};
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials));
+const connectedComponent = connect(mapStateToProps)(
+  withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials)
+);
 export default connectedComponent;
 
 const styles = StyleSheet.create({

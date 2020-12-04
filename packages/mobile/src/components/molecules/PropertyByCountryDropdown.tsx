@@ -14,7 +14,6 @@ interface IProps {
   onCountryChange: (value: number) => void;
 }
 
-const LIST_HEIGHT = theme.viewport.height <= theme.DeviceDimensions.SMALL.height ? 450 : 600;
 const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => {
   const { propertyList, countryList, selectedCountry, selectedProperty, onPropertyChange, onCountryChange } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -53,7 +52,6 @@ const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => 
         onDonePress={handleCountrySelection}
         imageStyle={styles.image}
         containerStyle={styles.imageDropdown}
-        listHeight={LIST_HEIGHT}
       />
       <Dropdown
         data={[{ label: t('assetFinancial:allProperties'), value: 0 }, ...propertyList]}
@@ -62,7 +60,6 @@ const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => 
         onDonePress={onPropertyChange}
         containerStyle={styles.labelDropdown}
         parentContainerStyle={styles.labelParent}
-        listHeight={LIST_HEIGHT}
         textStyle={styles.text}
         fontWeight="semiBold"
       />
@@ -81,9 +78,9 @@ const styles = StyleSheet.create({
   },
   image: {
     marginRight: 16,
-    borderRadius: 4,
-    width: 22,
-    height: 16,
+    borderRadius: 6,
+    width: 26,
+    height: 22,
   },
   imageDropdown: {
     backgroundColor: theme.colors.white,

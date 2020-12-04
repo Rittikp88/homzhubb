@@ -31,7 +31,7 @@ exports[`AddRecordForm should match snapshot 1`] = `
         "date": "2020-12-04",
         "label": "",
         "notes": "",
-        "property": "",
+        "property": -1,
         "tellerName": "",
       }
     }

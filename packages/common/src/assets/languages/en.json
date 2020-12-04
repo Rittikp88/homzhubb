@@ -563,6 +563,7 @@
     "expense": "Expense {{year}}",
     "payNow": "Pay Now",
     "addRecords": "Add Records",
+    "addNewRecord": "Add new record",
     "selectProperty": "Select property",
     "details": "Details",
     "detailsPlaceholder": "Eg. Rent or Plumbing fees",

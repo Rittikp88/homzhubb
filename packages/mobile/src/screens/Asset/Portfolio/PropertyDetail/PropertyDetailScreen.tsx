@@ -14,6 +14,7 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import {
   AnimatedProfileHeader,
@@ -230,6 +231,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const {
       navigation,
       route: { params },
+      t,
     } = this.props;
     const {
       propertyData: { id, assetStatusInfo, isManaged },
@@ -268,7 +270,13 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         );
       case Tabs.FINANCIALS:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 5)}>
+          <View onLayout={(e): void => this.onLayout(e, 5)} style={styles.background}>
+            <Button
+              type="secondary"
+              title={t('assetFinancial:addNewRecord')}
+              containerStyle={styles.addRecordButton}
+              onPress={this.onRecordAdd}
+            />
             <TransactionCardsContainer selectedProperty={id} shouldEnableOuterScroll={this.toggleScroll} />
           </View>
         );
@@ -320,6 +328,14 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     if (attachments) {
       this.setState({ attachments });
     }
+  };
+
+  private onRecordAdd = (): void => {
+    const {
+      propertyData: { id },
+    } = this.state;
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.AddRecordScreen, { assetId: id });
   };
 
   private onLayout = (e: LayoutChangeEvent, index: number): void => {
@@ -443,5 +459,14 @@ const styles = StyleSheet.create({
   label: {
     textAlign: 'center',
     color: theme.colors.darkTint3,
+  },
+  addRecordButton: {
+    flex: 0,
+    marginTop: 16,
+    marginHorizontal: 16,
+    borderStyle: 'dashed',
+  },
+  background: {
+    backgroundColor: theme.colors.white,
   },
 });

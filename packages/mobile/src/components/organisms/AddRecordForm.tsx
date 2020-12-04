@@ -30,7 +30,7 @@ enum FormType {
 }
 
 interface IFormData {
-  property: string;
+  property: number;
   label: string;
   tellerName?: string;
   amount: string;
@@ -50,6 +50,7 @@ interface IState {
 
 interface IOwnProps extends WithTranslation {
   properties: Asset[];
+  assetId?: number;
   onSubmitFormSuccess?: () => void;
   clear: number;
   onFormClear: () => void;
@@ -66,7 +67,10 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 
   public constructor(props: IOwnProps) {
     super(props);
-    const { currencySymbol, currencyCode } = props.defaultCurrency;
+    const {
+      assetId,
+      defaultCurrency: { currencySymbol, currencyCode },
+    } = props;
     this.state = {
       selectedFormType: FormType.Income,
       attachment: undefined,
@@ -74,7 +78,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       currencySymbol,
       ledgerCategories: [],
       formValues: {
-        property: '',
+        property: assetId ?? -1,
         label: '',
         tellerName: '',
         amount: '',
@@ -86,8 +90,11 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   }
 
   public async componentDidMount(): Promise<void> {
-    const { toggleLoading } = this.props;
+    const { toggleLoading, assetId } = this.props;
 
+    if (assetId) {
+      this.onChangeProperty(`${assetId}`);
+    }
     toggleLoading(true);
     const categories = await LedgerRepository.getLedgerCategories();
 
@@ -105,7 +112,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 
   public render(): ReactElement {
-    const { containerStyles, t } = this.props;
+    const { containerStyles, t, assetId } = this.props;
     const { selectedFormType, formValues, currencyCode, currencySymbol } = this.state;
 
     // @ts-ignore
@@ -143,6 +150,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   isMandatory
                   label={t('property')}
                   listHeight={theme.viewport.height * 0.8}
+                  isDisabled={!!assetId}
                 />
                 <FormTextInput
                   formProps={formProps}
@@ -264,7 +272,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { t } = this.props;
 
     return yup.object().shape({
-      property: yup.string().required(t('propertyError')),
+      property: yup.number().moreThan(-1, t('propertyError')),
       label: yup.string().required(t('detailsError')),
       tellerName: yup.string().optional(),
       amount: yup.string().required(t('amountError')),

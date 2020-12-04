@@ -69,7 +69,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
     headerTitle="Title"
     isShadowView={true}
     onCloseSheet={[MockFunction]}
-    sheetHeight={750}
+    sheetHeight={700}
     visible={true}
   >
     <RBSheet
@@ -87,7 +87,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
         }
       }
       dragFromTopOnly={true}
-      height={750}
+      height={700}
       keyboardAvoidingViewEnabled={true}
       minClosingHeight={0}
       onClose={[MockFunction]}

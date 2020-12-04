@@ -5,11 +5,13 @@ import { ScreensKeys, NestedNavigatorParams } from '@homzhub/mobile/src/navigati
 import { BottomTabNavigatorParamList, BottomTabs } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
 
 export type AppStackParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
   [ScreensKeys.BottomTabs]: NestedNavigatorParams<BottomTabNavigatorParamList>;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
+  [ScreensKeys.AddRecordScreen]: { assetId?: number };
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
@@ -29,6 +31,7 @@ export function AppNavigator(): React.ReactElement {
       ) : (
         <AppStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
       )}
+      <AppStackNavigator.Screen name={ScreensKeys.AddRecordScreen} component={AddRecordScreen} />
     </AppStackNavigator.Navigator>
   );
 }

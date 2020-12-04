@@ -44,6 +44,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
     const { selectedProperty, selectedCountry } = this.props;
     if (selectedProperty !== oldProperty || selectedCountry !== oldCountry) {
       await this.getGeneralLedgers(true);
+      this.scrollRef.current?.scrollTo({ y: 0, animated: true });
     }
   };
 

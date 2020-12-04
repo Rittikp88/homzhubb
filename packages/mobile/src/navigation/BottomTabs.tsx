@@ -18,7 +18,6 @@ import { AuthStackNavigator } from '@homzhub/mobile/src/navigation/AuthStack';
 import Portfolio from '@homzhub/mobile/src/screens/Asset/Portfolio';
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import AssetLandingScreen from '@homzhub/mobile/src/screens/Asset/AssetLandingScreen';
-import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
 import More from '@homzhub/mobile/src/screens/Asset/More';
 import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
@@ -87,7 +86,6 @@ export type PortfolioNavigatorParamList = {
 
 export type FinancialsNavigatorParamList = {
   [ScreensKeys.FinancialsLandingScreen]: undefined;
-  [ScreensKeys.AddRecordScreen]: undefined;
 };
 
 export type MoreStackNavigatorParamList = {
@@ -161,7 +159,6 @@ export const FinancialsStack = (): React.ReactElement => {
       }}
     >
       <FinancialsNavigator.Screen name={ScreensKeys.FinancialsLandingScreen} component={Financials} />
-      <FinancialsNavigator.Screen name={ScreensKeys.AddRecordScreen} component={AddRecordScreen} />
     </FinancialsNavigator.Navigator>
   );
 };
