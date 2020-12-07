@@ -23,7 +23,7 @@ interface IProps {
 }
 
 const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
-  const isTablet = useDown(deviceBreakpoint.TABLET);
+  const isLaptop = useDown(deviceBreakpoint.LAPTOP);
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
   const [data, setData] = React.useState({} as UserSubscription);
   const [isMoreToggled, setIsMoreToggled] = React.useState(false);
@@ -78,8 +78,8 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
         </Text>
         {` ${t('subscriptionHelperServices')}`}
       </Text>
-      {renderFeatures(data, isMoreToggled, isTablet)}
-      {isTablet && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
+      {renderFeatures(data, isMoreToggled, isLaptop)}
+      {isLaptop && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
         <Text type="small" textType="semiBold" style={styles.more} onPress={toggleMore}>
           {isMoreToggled ? t('common:less') : t('common:more')}
         </Text>
@@ -89,14 +89,14 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   );
 };
 
-const renderFeatures = (data: UserSubscription, isMoreToggled: boolean, isTablet: boolean): React.ReactNode => {
+const renderFeatures = (data: UserSubscription, isMoreToggled: boolean, isLaptop: boolean): React.ReactNode => {
   const { recommendedPlan } = data;
   const serviceItems = recommendedPlan?.serviceBundleItems ?? [];
   const bundleItems = isMoreToggled ? serviceItems : serviceItems.slice(0, 3);
-  const upgradeFeatures = isTablet ? bundleItems : serviceItems;
+  const upgradeFeatures = isLaptop ? bundleItems : serviceItems;
 
   return (
-    <View style={[styles.featuresDataContainer, !isTablet && styles.maxFeaturesDataHeight]}>
+    <View style={[styles.featuresDataContainer, !isLaptop && styles.maxFeaturesDataHeight]}>
       {upgradeFeatures.map((item) => (
         <View style={styles.featuresData} key={`${item.id}`}>
           <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />

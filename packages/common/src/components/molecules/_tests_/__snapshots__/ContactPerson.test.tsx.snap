@@ -37,7 +37,7 @@ exports[`ContactPerson should match snapshot 1`] = `
         Array [
           Object {
             "borderRadius": 4,
-            "paddingRight": 10,
+            "marginLeft": 24,
           },
           Object {},
         ]
@@ -58,7 +58,7 @@ exports[`ContactPerson should match snapshot 1`] = `
         Array [
           Object {
             "borderRadius": 4,
-            "paddingRight": 10,
+            "marginLeft": 24,
           },
           Object {
             "marginHorizontal": 12,
@@ -81,7 +81,7 @@ exports[`ContactPerson should match snapshot 1`] = `
         Array [
           Object {
             "borderRadius": 4,
-            "paddingRight": 10,
+            "marginLeft": 24,
           },
           Object {},
         ]

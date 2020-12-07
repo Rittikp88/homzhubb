@@ -9,6 +9,10 @@ const initConfig = {
     chart: {
       type: 'donut',
     },
+    legend: {
+      position: 'bottom',
+      horizontalAlign: 'center',
+    },
     colors: [theme.colors.rental, theme.colors.sell, theme.colors.expense],
     responsive: [
       {
@@ -17,10 +21,6 @@ const initConfig = {
           chart: {},
           dataLabels: {
             enabled: false,
-          },
-          legend: {
-            position: 'bottom',
-            horizontalAlign: 'center',
           },
         },
       },
@@ -33,7 +33,7 @@ interface IProps {
 class DonutChart extends React.PureComponent<IProps> {
   public render(): React.ReactNode {
     const { options } = initConfig;
-    return <ReactApexCharts options={options} series={seriesDonut} type="donut" height={200} />;
+    return <ReactApexCharts options={options} series={seriesDonut} type="donut" height={280} />;
   }
 }
 

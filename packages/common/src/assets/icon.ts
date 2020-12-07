@@ -5,6 +5,7 @@ export default createIconSetFromIcoMoon(icoMoonConfig);
 
 export const icons = {
   manageSubscription: 'manage-subscription',
+  hamburgerMenu: 'hamburger-menu',
   dashboard: 'dashboard',
   location: 'location',
   search: 'search',

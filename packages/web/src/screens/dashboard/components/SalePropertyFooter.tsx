@@ -25,7 +25,6 @@ const SalePropertyFooter = (): React.ReactElement => {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    maxWidth: 322,
     backgroundColor: theme.colors.white,
     marginHorizontal: 4,
     borderTopColor: theme.colors.background,

@@ -9,11 +9,13 @@ import { InvestmentMockData } from '@homzhub/web/src/screens/dashboard/component
 // import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment';
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
-  // investmentData: PropertyInvestment[]; todos (LAKSHIT) - change dummy data with actual api data
+  // todo (LAKSHIT) - change dummy data with actual api data
+  // investmentData: PropertyInvestment[];
   investmentData: any[];
 }
 const InvestmentsCarousel = (props: IProps): React.ReactElement => {
-  // const{ investmentData } = props; todos (LAKSHIT) - change dummy data with actual api data
+  // todo (LAKSHIT) - change dummy data with actual api data
+  // const{ investmentData } = props;
   const investmentDataArray = InvestmentMockData;
   return (
     <View style={styles.carouselContainer}>
@@ -24,7 +26,9 @@ const InvestmentsCarousel = (props: IProps): React.ReactElement => {
         </Text>
       </View>
       <MultiCarousel>
-        {/* {investmentDataArray.map((item)=>(<InvestmentsCard investmentData={item} />)) } todos (LAKSHIT) - change dummy data with actual api data */}
+        {/* todo (LAKSHIT) - change dummy data with actual api data
+        {investmentDataArray.map((item)=>(<InvestmentsCard investmentData={item} />)) }
+         */}
         {investmentDataArray.map((item) => (
           <InvestmentsCard key={item.id} investmentData={item} />
         ))}
