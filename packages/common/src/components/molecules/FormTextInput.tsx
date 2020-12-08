@@ -27,6 +27,7 @@ import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFie
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name' | 'decimal';
 
@@ -260,14 +261,19 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
             </Label>
           )}
         </WithFieldError>
-        <BottomSheetListView
-          data={phoneCodes}
-          selectedValue={inputPrefixText}
-          listTitle={phoneFieldDropdownText}
-          isBottomSheetVisible={isBottomSheetVisible}
-          onCloseDropDown={this.onCloseDropDown}
-          onSelectItem={this.handleSelection}
-        />
+        {
+          // todo: remove dependency from mobile
+          PlatformUtils.isMobile() && (
+            <BottomSheetListView
+              data={phoneCodes}
+              selectedValue={inputPrefixText}
+              listTitle={phoneFieldDropdownText}
+              isBottomSheetVisible={isBottomSheetVisible}
+              onCloseDropDown={this.onCloseDropDown}
+              onSelectItem={this.handleSelection}
+            />
+          )
+        }
       </>
     );
   }
