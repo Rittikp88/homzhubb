@@ -5,9 +5,10 @@ export const FilterData = {
     {
       currency_code: 'INR',
       currency_symbol: '₹',
+      currency_name: '',
     },
   ],
-  asset_group_list: [
+  assetGroupList: [
     {
       id: 1,
       name: 'RESIDENTIAL',
@@ -45,6 +46,7 @@ export const FilterData = {
         {
           id: 2,
           name: 'Bathroom',
+          field_type: '',
         },
       ],
       title: 'Commercial',

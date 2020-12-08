@@ -137,7 +137,8 @@
     "subject": "Subject",
     "subjectPlaceholder": "What can we help you with?",
     "homzhubTeam": "Homzhub team",
-    "invalidLink": "Can not open one of these links."
+    "invalidLink": "Can not open one of these links.",
+    "sort": "Sort"
   },
   "auth": {
     "verifyNumber": "Verify your number",

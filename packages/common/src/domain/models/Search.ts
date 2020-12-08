@@ -1,5 +1,6 @@
 import { IMediaAttributes } from '@homzhub/common/src/domain/models/Attachment';
 import { ICarpetAreaUnit } from '@homzhub/common/src/domain/models/Asset';
+import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 
 export enum ContactActions {
@@ -8,75 +9,12 @@ export enum ContactActions {
   MAIL = 'MAIL',
 }
 
-export interface ICurrency {
-  currency_code: string;
-  currency_symbol: string;
-}
-
-export interface IAssetGroupList {
-  id: number;
-  name: string;
-  title: string;
-}
-
-export interface IAssetTypes {
-  id: number;
-  name: string;
-}
-
-export interface IAssetGroup {
-  id: number;
-  name: string;
-  asset_types: IAssetTypes[];
-  space_types: IAssetTypes[];
-}
-
-export interface ITransactionType {
-  title: string;
-  label: string;
-  min_price: number;
-  max_price: number;
-}
-
 export interface ITransactionRange {
   min: number;
   max: number;
 }
 
-export interface IFacing {
-  label: string;
-  name: string;
-}
-
-export interface IPropertyAmenities {
-  id: number;
-  name: string;
-  category: IAssetTypes;
-  attachment: { id: number; name: string; link: string };
-}
-
-export interface IAdditionalFilters {
-  facing: IFacing[];
-  property_amenities: IPropertyAmenities[];
-}
-
-export interface IFilters {
-  asset_group: IAssetGroup;
-  transaction_type: ITransactionType[];
-  carpet_area: ICarpetArea[];
-  additional_filters: IAdditionalFilters;
-}
-
-export interface ICarpetArea {
-  id: number;
-  name: string;
-  label: string;
-  title: string;
-  max_area: number;
-  min_area: number;
-}
-
-export interface ISpaces extends IAssetTypes {
+export interface ISpaces extends IUnit {
   count: number;
 }
 
@@ -101,12 +39,6 @@ export interface IAmenitiesIcons {
   label: string;
 }
 
-export interface IFilterDetails {
-  currency: ICurrency[];
-  asset_group_list: IAssetGroupList[];
-  filters: IFilters;
-}
-
 export interface IFilter {
   search_latitude?: number;
   search_longitude?: number;
@@ -125,6 +57,7 @@ export interface IFilter {
   limit?: number;
   offset?: number;
   currency_code?: string;
+  sort_by?: string;
   miscellaneous?: {
     show_verified: boolean;
     agent_listed: boolean;
@@ -141,7 +74,7 @@ export interface IFilter {
 
 export interface IProperties {
   id: number;
-  asset_group: IAssetTypes;
+  asset_group: IUnit;
   project_name: string;
   unit_number: string;
   block_number: string;
@@ -151,7 +84,7 @@ export interface IProperties {
   carpet_area_unit: ICarpetAreaUnit;
   floor_number: number;
   total_floors: number;
-  asset_type: IAssetTypes;
+  asset_type: IUnit;
   spaces: ISpaces[];
   lease_term?: IPropertyTerm | null;
   sale_term?: IPropertyTerm | null;

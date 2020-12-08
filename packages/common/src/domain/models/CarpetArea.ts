@@ -1,32 +1,24 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
+
+export interface ICarpetArea extends IUnit {
+  max_area: number;
+  min_area: number;
+}
 
 @JsonObject('CarpetArea')
-export class CarpetArea {
-  @JsonProperty('id', Number)
-  private _id = 0;
+export class CarpetArea extends Unit {
+  @JsonProperty('max_area', Number, true)
+  private _maxArea = 0;
 
-  @JsonProperty('name', String)
-  private _name = '';
+  @JsonProperty('min_area', Number, true)
+  private _minArea = 0;
 
-  @JsonProperty('label', String)
-  private _label = '';
-
-  @JsonProperty('title', String)
-  private _title = '';
-
-  get id(): number {
-    return this._id;
+  get maxArea(): number {
+    return this._maxArea;
   }
 
-  get name(): string {
-    return this._name;
-  }
-
-  get label(): string {
-    return this._label;
-  }
-
-  get title(): string {
-    return this._title;
+  get minArea(): number {
+    return this._minArea;
   }
 }

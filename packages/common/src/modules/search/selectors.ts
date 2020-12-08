@@ -2,20 +2,17 @@ import { PickerItemProps } from 'react-native';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import {
-  IFilterDetails,
-  IFilter,
-  ICurrency,
-  ITransactionRange,
-  ITransactionType,
-} from '@homzhub/common/src/domain/models/Search';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
+import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
+import { ITransactionType } from '@homzhub/common/src/domain/models/Transaction';
 
-const getFilterDetail = (state: IState): IFilterDetails | null => {
+const getFilterDetail = (state: IState): FilterDetail | null => {
   const {
     search: { filterDetails },
   } = state;
-  return filterDetails;
+  return ObjectMapper.deserialize(FilterDetail, filterDetails);
 };
 
 const getFilters = (state: IState): IFilter => {

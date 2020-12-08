@@ -8,11 +8,11 @@ import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { SearchActions, SearchActionTypes } from '@homzhub/common/src/modules/search/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
-import { IFilters } from '@homzhub/common/src/domain/models/Search';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
-export function* getFilterDetails(action: IFluxStandardAction<IFilters>) {
+export function* getFilterDetails(action: IFluxStandardAction<IFilter>) {
   try {
-    const data = yield call(SearchRepository.getFilterDetails, action.payload);
+    const data = yield call(SearchRepository.getFilterDetails, action.payload as IFilter);
     yield put(SearchActions.getFilterDetailsSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
