@@ -147,6 +147,8 @@ export const icons = {
   openTemplate: 'open-template',
   closeTemplate: 'close-template',
   billPamphlet: 'bill-pamphlet',
+  sort: 'sort',
+
   // COMMUTE
   train: 'train',
   trainMarker: 'train-marker',

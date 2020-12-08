@@ -44,8 +44,21 @@ import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 
 const { height } = theme.viewport;
 
+enum MenuItems {
+  EDIT_LISTING = 'EDIT_LISTING',
+  EDIT_PROPERTY = 'EDIT_PROPERTY',
+}
+
+export interface IEditPropertyFlow {
+  isEditPropertyFlow: boolean;
+  showBottomSheet: boolean;
+}
+
 // TODO: Need Refactor
-const menu = [{ label: 'Edit Listing', value: 'EDIT_LISTING' }];
+const menuItems = [
+  { label: 'Edit Listing', value: MenuItems.EDIT_LISTING },
+  { label: 'Edit Property', value: MenuItems.EDIT_PROPERTY },
+];
 
 interface IStateProps {
   assetPayload: ISetAssetPayload;
@@ -55,6 +68,8 @@ interface IDispatchProps {
   setAssetId: (payload: number) => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   getAssetById: () => void;
+  setEditPropertyFlow: (payload: boolean) => void;
+  toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
 
 interface IDetailState {
@@ -215,7 +230,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         </AnimatedProfileHeader>
         {this.renderFullscreenCarousel()}
         <BottomSheetListView
-          data={menu}
+          data={menuItems}
           selectedValue={selectedMenuItem}
           listTitle="Select action"
           listHeight={200}
@@ -362,7 +377,14 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private onSelectMenuItem = (value: string): void => {
-    const { navigation, setSelectedPlan, setAssetId, getAssetById } = this.props;
+    const {
+      navigation,
+      setSelectedPlan,
+      setAssetId,
+      getAssetById,
+      setEditPropertyFlow,
+      toggleEditPropertyFlowBottomSheet,
+    } = this.props;
     const {
       propertyData: {
         id,
@@ -371,13 +393,23 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         },
       },
     } = this.state;
-    if (value === 'EDIT_LISTING') {
-      setSelectedPlan({ id, selectedPlan: type });
-      setAssetId(id);
-      getAssetById();
+    setSelectedPlan({ id, selectedPlan: type });
+    setAssetId(id);
+    getAssetById();
+
+    if (value === MenuItems.EDIT_LISTING) {
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
-        params: { previousScreen: ScreensKeys.Dashboard, isFromEdit: true },
+        params: { previousScreen: ScreensKeys.Dashboard, isEditFlow: true },
+      });
+      return;
+    }
+
+    if (value === MenuItems.EDIT_PROPERTY) {
+      setEditPropertyFlow(true);
+      toggleEditPropertyFlowBottomSheet(true);
+      navigation.navigate(ScreensKeys.PropertyPostStack, {
+        screen: ScreensKeys.PostAssetDetails,
       });
     }
 
@@ -443,8 +475,17 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
-  return bindActionCreators({ setAssetId, setSelectedPlan, getAssetById }, dispatch);
+  const {
+    setAssetId,
+    setSelectedPlan,
+    getAssetById,
+    setEditPropertyFlow,
+    toggleEditPropertyFlowBottomSheet,
+  } = RecordAssetActions;
+  return bindActionCreators(
+    { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet },
+    dispatch
+  );
 };
 
 export default connect(

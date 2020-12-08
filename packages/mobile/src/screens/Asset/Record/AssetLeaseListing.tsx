@@ -113,7 +113,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         };
       }
 
-      if (!isNextStep && isPropertyReady && params && params.isFromEdit) {
+      if (!isNextStep && isPropertyReady && params && params.isEditFlow) {
         return {
           ...state,
           currentIndex: 0,
@@ -558,7 +558,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
         isPropertyReady,
         listing: { isPaymentDone },
       } = assetDetails.lastVisitedStep;
-      if (currentIndex === 0 && params && params.isFromEdit) {
+      if (currentIndex === 0 && params && params.isEditFlow) {
         this.setState({ currentIndex: currentIndex + 1 });
         getAssetById();
         this.scrollToTop();

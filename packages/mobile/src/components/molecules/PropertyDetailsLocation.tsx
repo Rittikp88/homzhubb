@@ -10,12 +10,13 @@ export interface IProps {
   propertyAddress: string;
   onNavigate: () => void;
   testID?: string;
+  isVerificationDone?: boolean;
 }
 
 type Props = IProps & WithTranslation;
 
 const PropertyDetailsLocation = (props: Props): React.ReactElement => {
-  const { t, propertyName, propertyAddress, onNavigate, testID } = props;
+  const { t, propertyName, propertyAddress, onNavigate, testID, isVerificationDone } = props;
   const navigateToMaps = (): void => {
     onNavigate();
   };
@@ -35,9 +36,11 @@ const PropertyDetailsLocation = (props: Props): React.ReactElement => {
           >
             {propertyName}
           </Label>
-          <Label type="large" textType="semiBold" style={styles.label} onPress={navigateToMaps} testID={testID}>
-            {t('common:change')}
-          </Label>
+          {!isVerificationDone && (
+            <Label type="large" textType="semiBold" style={styles.label} onPress={navigateToMaps} testID={testID}>
+              {t('common:change')}
+            </Label>
+          )}
         </View>
         <Label type="large" textType="regular" numberOfLines={1} style={styles.addressPadding}>
           {propertyAddress}

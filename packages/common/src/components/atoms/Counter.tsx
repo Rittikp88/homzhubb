@@ -23,19 +23,20 @@ export interface ICounterProps {
   minCount?: number;
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
+  disabled?: boolean;
 }
 
 export const Counter = (props: ICounterProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
-  const { onValueChange, defaultValue, name, svgImage, maxCount = 10, minCount = 0, containerStyles } = props;
+  const { onValueChange, defaultValue, name, svgImage, maxCount = 10, minCount = 0, containerStyles, disabled } = props;
   const [count, setCount] = useState(defaultValue);
 
   useEffect(() => {
     onValueChange(count, name?.id);
   }, [count]);
 
-  const isDecDisabled = count <= minCount;
-  const isIncDisabled = count >= maxCount;
+  const isDecDisabled = disabled || count <= minCount;
+  const isIncDisabled = disabled || count >= maxCount;
 
   const incrementCount = (): void => {
     if (count < maxCount) {
@@ -74,7 +75,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
             name={icons.minus}
             color={isDecDisabled ? theme.colors.disabled : theme.colors.primaryColor}
             size={20}
-            onPress={decrementCount}
+            onPress={disabled ? undefined : decrementCount}
           />
         </View>
         <Label
@@ -93,7 +94,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
             name={icons.plus}
             color={isIncDisabled ? theme.colors.disabled : theme.colors.primaryColor}
             size={20}
-            onPress={incrementCount}
+            onPress={disabled ? undefined : incrementCount}
           />
         </View>
       </View>

@@ -137,7 +137,10 @@
     "subject": "Subject",
     "subjectPlaceholder": "What can we help you with?",
     "homzhubTeam": "Homzhub team",
-    "invalidLink": "Can not open one of these links."
+    "invalidLink": "Can not open one of these links.",
+    "save": "Save",
+    "discard": "Discard",
+    "sort": "Sort"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -398,7 +401,9 @@
     "yearOfPossession": "Year of Possession",
     "rentFlowFormDescription": "Write a description to attract more views",
     "sellFlowFormDescription": "Write a description to attract more views",
-    "manageFlowFormDescription": "Any additional comments"
+    "manageFlowFormDescription": "Any additional comments",
+    "editPropertyCautionText": "You are about to edit your property. Until the changes are reviewed, your property will not appear in the search results",
+    "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

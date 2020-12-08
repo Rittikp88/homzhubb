@@ -21,4 +21,21 @@ export class ObjectUtils {
       return comparison;
     });
   };
+
+  public static groupBy = <T>(data: T[], key: string): { [key: string]: T[] } => {
+    const groupedEntity: { [key: string]: T[] } = {};
+
+    data.forEach((item: T) => {
+      // @ts-ignore
+      if (groupedEntity[item[key]]) {
+        // @ts-ignore
+        groupedEntity[item[key]].push(item);
+        return;
+      }
+      // @ts-ignore
+      groupedEntity[item[key]] = [item];
+    });
+
+    return groupedEntity;
+  };
 }

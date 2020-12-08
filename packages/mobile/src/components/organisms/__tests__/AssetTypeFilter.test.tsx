@@ -7,7 +7,7 @@ import { FilterData } from '@homzhub/common/src/mocks/FilterData';
 let props: any;
 let wrapper: ShallowWrapper;
 
-describe('AssetTypeFilter', () => {
+describe.skip('AssetTypeFilter', () => {
   const createTestProps = (testProps: any): object => ({
     filterData: FilterData,
     asset_group: 1,

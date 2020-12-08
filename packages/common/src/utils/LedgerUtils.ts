@@ -6,20 +6,6 @@ class LedgerUtils {
     return data.filter((ledger: D) => ledger.entryType === type);
   };
 
-  public groupByMonth = (data: GeneralLedgers[]): { [key: string]: GeneralLedgers[] } => {
-    const groupedEntity: { [key: string]: GeneralLedgers[] } = {};
-
-    data.forEach((ledger: GeneralLedgers) => {
-      if (groupedEntity[ledger.transactionDateLabel]) {
-        groupedEntity[ledger.transactionDateLabel].push(ledger);
-        return;
-      }
-      groupedEntity[ledger.transactionDateLabel] = [ledger];
-    });
-
-    return groupedEntity;
-  };
-
   // Sums up the total by CREDIT or DEBIT
   public totalByType = (type: LedgerTypes, data: GeneralLedgers[]): number => {
     const ledgersByCategory: GeneralLedgers[] = this.filterByType<GeneralLedgers, LedgerTypes>(type, data);
