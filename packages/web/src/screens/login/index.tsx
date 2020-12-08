@@ -80,7 +80,7 @@ const Login: FC<IProps> = (props: IProps) => {
               name="password"
               label="Password"
               inputType="password"
-              placeholder={t('newPassword')}
+              placeholder={t('enterPassword')}
               isMandatory
               formProps={formProps}
             />
