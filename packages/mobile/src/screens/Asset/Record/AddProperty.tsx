@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, LayoutChangeEvent, KeyboardAvoidingView }
 import { TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -16,6 +17,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Header, AddressWithStepIndicator, AddPropertyDetails, Loader } from '@homzhub/mobile/src/components';
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
+import { IEditPropertyFlow } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
@@ -44,12 +46,14 @@ interface IStateProps {
   spaceTypes: SpaceType[];
   assetDetail: Asset | null;
   lastVisitedStep: ILastVisitedStep | null;
+  editPropertyFlowDetails: IEditPropertyFlow;
 }
 
 interface IDispatchProps {
   getAssetGroups: () => void;
   getAssetById: () => void;
   resetState: () => void;
+  setEditPropertyFlow: (payload: boolean) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
@@ -171,7 +175,13 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private renderScene = ({ route }: { route: IRoutes }): ReactElement | null => {
-    const { spaceTypes, assetDetail, assetId, lastVisitedStep } = this.props;
+    const {
+      spaceTypes,
+      assetDetail,
+      assetId,
+      lastVisitedStep,
+      editPropertyFlowDetails: { isEditPropertyFlow },
+    } = this.props;
     if (!lastVisitedStep) return null;
 
     switch (route.key) {
@@ -179,6 +189,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
             <AddPropertyDetails
+              isEditPropertyFlow={isEditPropertyFlow}
               assetId={assetId}
               assetDetails={assetDetail}
               spaceTypes={spaceTypes}
@@ -278,13 +289,30 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private handleNextStep = (): void => {
     const { currentIndex } = this.state;
-    const { getAssetById, navigation } = this.props;
+    const {
+      getAssetById,
+      navigation,
+      editPropertyFlowDetails: { isEditPropertyFlow },
+      setEditPropertyFlow,
+    } = this.props;
+
     this.setState({ isNextStep: true });
     getAssetById();
+
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1 });
       this.scrollToTop();
     } else {
+      if (isEditPropertyFlow) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: ScreensKeys.DashboardLandingScreen }],
+          })
+        );
+        setEditPropertyFlow(false);
+        return;
+      }
       navigation.navigate(ScreensKeys.AssetPlanSelection);
     }
   };
@@ -297,18 +325,26 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentAssetId, getSpaceTypes, getAssetDetails, getLastVisitedStep } = RecordAssetSelectors;
+  const {
+    getCurrentAssetId,
+    getSpaceTypes,
+    getAssetDetails,
+    getLastVisitedStep,
+    getEditPropertyFlowDetails,
+  } = RecordAssetSelectors;
+
   return {
     assetId: getCurrentAssetId(state),
     spaceTypes: getSpaceTypes(state),
     assetDetail: getAssetDetails(state),
     lastVisitedStep: getLastVisitedStep(state),
+    editPropertyFlowDetails: getEditPropertyFlowDetails(state),
   };
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetById, resetState, getAssetGroups } = RecordAssetActions;
-  return bindActionCreators({ getAssetById, resetState, getAssetGroups }, dispatch);
+  const { getAssetById, resetState, getAssetGroups, setEditPropertyFlow } = RecordAssetActions;
+  return bindActionCreators({ getAssetById, resetState, getAssetGroups, setEditPropertyFlow }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddProperty));

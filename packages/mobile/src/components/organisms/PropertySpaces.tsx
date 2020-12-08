@@ -26,6 +26,7 @@ interface IOwnProps extends WithTranslation {
   spacesTypes: SpaceType[];
   onChange: (id: number, count: number, description?: string) => void;
   flowType?: FlowTypes;
+  isEditPropertyFlow?: boolean;
 }
 
 interface IOwnState {
@@ -87,7 +88,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
   }
 
   private renderSpaces = (renderPrimary: boolean): React.ReactNode => {
-    const { t, flowType } = this.props;
+    const { t, flowType, isEditPropertyFlow } = this.props;
     const { groupedSpaceTypes } = this.state;
     const handleCounterChange = (count: number, id?: number): void => {
       this.handleSpacesChange(id || -1, count);
@@ -114,6 +115,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           onValueChange={handleCounterChange}
           maxCount={flowType === FlowTypes.PostAssetFlow ? undefined : space.count}
           minCount={space.isMandatory ? 1 : 0}
+          disabled={isEditPropertyFlow && space.isPrimary}
         />
       );
     });

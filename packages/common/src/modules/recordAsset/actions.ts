@@ -32,6 +32,8 @@ export const RecordAssetActionTypes = {
     ASSET_ID: `${actionTypePrefix}ASSET_ID`,
     SELECTED_PLAN: `${actionTypePrefix}SELECTED_PLAN`,
     SELECTED_VALUE_SERVICES: `${actionTypePrefix}SELECTED_VALUE_SERVICES`,
+    EDIT_PROPERTY_FLOW: `${actionTypePrefix}EDIT_PROPERTY_FLOW`,
+    EDIT_PROPERTY_FLOW_BOTTOM_SHEET: `${actionTypePrefix}EDIT_PROPERTY_FLOW_BOTTOM_SHEET`,
   },
   RESET: `${actionTypePrefix}RESET`,
 };
@@ -119,6 +121,16 @@ const setValueAddedServices = (payload: ISelectedValueServices): IFluxStandardAc
   };
 };
 
+const setEditPropertyFlow = (payload: boolean): IFluxStandardAction<boolean> => ({
+  type: RecordAssetActionTypes.SET.EDIT_PROPERTY_FLOW,
+  payload,
+});
+
+const toggleEditPropertyFlowBottomSheet = (payload: boolean): IFluxStandardAction<boolean> => ({
+  type: RecordAssetActionTypes.SET.EDIT_PROPERTY_FLOW_BOTTOM_SHEET,
+  payload,
+});
+
 const resetState = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.RESET,
 });
@@ -133,6 +145,7 @@ export type RecordAssetPayloadTypes =
   | IValueAddedServices[]
   | ISelectedValueServices
   | IAsset
+  | boolean
   | undefined;
 
 export const RecordAssetActions = {
@@ -152,5 +165,7 @@ export const RecordAssetActions = {
   getValueAddedServices,
   getValueAddedServicesSuccess,
   setValueAddedServices,
+  setEditPropertyFlow,
+  toggleEditPropertyFlowBottomSheet,
   resetState,
 };
