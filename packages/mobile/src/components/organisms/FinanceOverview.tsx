@@ -6,6 +6,7 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -16,7 +17,7 @@ import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionP
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
 import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
-import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DateFilter, FINANCIAL_DROPDOWN_DATA, IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
@@ -82,7 +83,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
         <View style={styles.dateRow}>
           <View style={styles.dateSection}>
             <Icon name={icons.calendar} size={22} color={theme.colors.darkTint4} />
-            <Label style={styles.dateText} type="large" textType="semiBold">
+            <Label numberOfLines={1} style={styles.dateText} type="large" textType="semiBold">
               {this.renderCalenderLabel()}
             </Label>
           </View>
@@ -91,11 +92,10 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
             value={selectedTimeRange}
             // @ts-ignore
             onDonePress={this.onTimeRangeChange}
-            iconColor={theme.colors.active}
             listHeight={theme.viewport.height / 2}
             testID="drpTimeRange"
+            isOutline
             containerStyle={styles.dropdownStyle}
-            textStyle={styles.titleDropdown}
           />
         </View>
         {currentTab === TabKeys.expenses ? (
@@ -164,7 +164,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
       selectedProperty,
       financialYear: { endDate: finEndDate, startDate: finStartDate },
     } = this.props;
-    const { selectedTimeRange, currentTab } = this.state;
+    const { selectedTimeRange } = this.state;
 
     // @ts-ignore
     let { endDate, startDate } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
@@ -180,7 +180,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
       const response: GeneralLedgers[] = await LedgerRepository.getLedgerPerformances({
         transaction_date__gte: startDate,
         transaction_date__lte: endDate,
-        transaction_date_group_by: currentTab === TabKeys.cashFlow ? DataGroupBy.month : dataGroupBy,
+        transaction_date_group_by: dataGroupBy,
         asset_id: selectedProperty || undefined,
         country_id: selectedCountry || undefined,
       });
@@ -191,7 +191,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   };
 
   public getBarGraphData = (): { data1: number[]; data2: number[]; label: string[] } => {
-    const { selectedTimeRange, data } = this.state;
+    const { selectedTimeRange } = this.state;
 
     switch (selectedTimeRange) {
       case DateFilter.thisYear:
@@ -199,14 +199,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
       case DateFilter.lastYear:
         return this.getGraphDataForYear();
       default:
-        return {
-          data1: [LedgerUtils.totalByType(LedgerTypes.debit, data)],
-          data2: [LedgerUtils.totalByType(LedgerTypes.credit, data)],
-          label:
-            selectedTimeRange === DateFilter.lastMonth
-              ? [MonthNames[DateUtils.getCurrentMonthIndex() - 1]]
-              : [MonthNames[DateUtils.getCurrentMonthIndex()]],
-        };
+        return this.getGraphDataForMonth();
     }
   };
 
@@ -221,9 +214,10 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
       monthList = DateUtils.getMonthRange(startMonthIndex, endMonthIndex);
     }
 
-    const data1: number[] = new Array(12).fill(0);
-    const data2: number[] = new Array(12).fill(0);
-    const dataByMonth = LedgerUtils.groupByMonth(data);
+    let debitArray = new Array(12).fill(0);
+    let creditArray = new Array(12).fill(0);
+
+    const dataByMonth = ObjectUtils.groupBy<GeneralLedgers>(data, 'transactionDateLabel');
     Object.keys(dataByMonth).forEach((key: string) => {
       const currentMonthData = dataByMonth[key];
 
@@ -232,15 +226,98 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
 
       const currentMonth = MonthNames[parseInt(key.split('-')[1], 10) - 1];
       const currentMonthIndex = monthList.findIndex((month) => month === currentMonth);
-      data1[currentMonthIndex] = debitsSum;
-      data2[currentMonthIndex] = creditsSum;
+      debitArray[currentMonthIndex] = debitsSum;
+      creditArray[currentMonthIndex] = creditsSum;
     });
 
+    // Remove every entry in the future
+    const currentMonthIndex = monthList.findIndex((month) => month === DateUtils.getCurrentMonthName());
+    debitArray = debitArray.slice(0, currentMonthIndex + 1);
+    creditArray = creditArray.slice(0, currentMonthIndex + 1);
+    monthList = monthList.slice(0, currentMonthIndex + 1);
+
+    // Remove all trailing 0 values
+    const truncateIndex = this.lastNonZeroIndex(debitArray, creditArray);
+    if (truncateIndex >= 0) {
+      debitArray = debitArray.slice(0, truncateIndex + 1);
+      creditArray = creditArray.slice(0, truncateIndex + 1);
+      monthList = monthList.slice(0, truncateIndex + 1);
+    }
+
     return {
-      data1,
-      data2,
+      data1: debitArray,
+      data2: creditArray,
       label: monthList,
     };
+  };
+
+  private getGraphDataForMonth = (): { data1: number[]; data2: number[]; label: string[] } => {
+    const { selectedTimeRange, data } = this.state;
+    const currentYear = Number(DateUtils.getCurrentYear());
+    const requiredMonth =
+      selectedTimeRange === DateFilter.thisMonth
+        ? DateUtils.getCurrentMonthIndex()
+        : DateUtils.getCurrentMonthIndex() - 1;
+
+    const startingWeekNumber = DateUtils.getISOWeekNumber(new Date(currentYear, requiredMonth, 1));
+    const lastWeekNumber = DateUtils.getISOWeekNumber(new Date(currentYear, requiredMonth + 1, 0));
+    const weekCount = lastWeekNumber - startingWeekNumber;
+
+    let weekList = new Array(weekCount).fill('');
+    const weekListNumber = new Array(weekCount).fill(0);
+    for (let i = 0; i < weekCount; i++) {
+      weekList[i] = `Week ${i + 1}`;
+      weekListNumber[i] = Number(startingWeekNumber) + i;
+    }
+
+    let debitArray = new Array(weekCount).fill(0);
+    let creditArray = new Array(weekCount).fill(0);
+    const dataByWeek = ObjectUtils.groupBy<GeneralLedgers>(data, 'transactionDateLabel');
+
+    Object.keys(dataByWeek).forEach((key: string) => {
+      const currentWeekData = dataByWeek[key];
+
+      const debitsSum = LedgerUtils.totalByType(LedgerTypes.debit, currentWeekData);
+      const creditsSum = LedgerUtils.totalByType(LedgerTypes.credit, currentWeekData);
+
+      const currentWeek = Number(key.split('-')[1]);
+      const currentMonthIndex = weekListNumber.findIndex((week) => week === currentWeek);
+
+      debitArray[currentMonthIndex] = debitsSum;
+      creditArray[currentMonthIndex] = creditsSum;
+    });
+
+    // Remove every entry in the future
+    const currentWeekIndex = weekListNumber.findIndex((weekNo) => weekNo === DateUtils.getISOWeekNumber(new Date()));
+    if (currentWeekIndex >= 0) {
+      debitArray = debitArray.slice(0, currentWeekIndex + 1);
+      creditArray = creditArray.slice(0, currentWeekIndex + 1);
+      weekList = weekList.slice(0, currentWeekIndex + 1);
+    }
+
+    // Remove all trailing 0 values
+    const truncateIndex = this.lastNonZeroIndex(debitArray, creditArray);
+    if (truncateIndex >= 0) {
+      debitArray = debitArray.slice(0, truncateIndex + 1);
+      creditArray = creditArray.slice(0, truncateIndex + 1);
+      weekList = weekList.slice(0, truncateIndex + 1);
+    }
+
+    return {
+      data1: debitArray,
+      data2: creditArray,
+      label: weekList,
+    };
+  };
+
+  private lastNonZeroIndex = (debitArray: number[], creditArray: number[]): number => {
+    for (let i = debitArray.length - 1; i >= 0; i--) {
+      const debit = debitArray[i];
+      const credit = creditArray[i];
+      if (debit > 0 || credit > 0) return i;
+    }
+
+    return -1;
   };
 }
 
@@ -271,19 +348,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateSection: {
+    flex: 1,
     flexDirection: 'row',
   },
   title: {
     marginBottom: 16,
   },
   dateText: {
+    flex: 1,
     marginStart: 8,
     color: theme.colors.darkTint4,
   },
   dropdownStyle: {
     width: 140,
-  },
-  titleDropdown: {
-    width: 80,
   },
 });

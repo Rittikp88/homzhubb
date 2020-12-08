@@ -31,6 +31,9 @@ export class GeneralLedgers {
   @JsonProperty('category', String)
   private _category = '';
 
+  @JsonProperty('category_id', Number)
+  private _categoryId = -1;
+
   @JsonProperty('transaction_date_label', String)
   private _transactionDateLabel = '';
 
@@ -51,5 +54,9 @@ export class GeneralLedgers {
 
   get amount(): number {
     return this._amount;
+  }
+
+  get categoryId(): number {
+    return this._categoryId;
   }
 }

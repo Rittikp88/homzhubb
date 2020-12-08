@@ -42,6 +42,7 @@ export interface IProps {
   numColumns?: number;
   fontSize?: TextSizeType;
   fontWeight?: FontWeightType;
+  isOutline?: boolean;
 }
 
 export const Dropdown = (props: IProps): React.ReactElement => {
@@ -50,25 +51,28 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   const {
     value,
     data,
-    iconColor,
-    iconSize,
     iconStyle,
     listTitle,
     listHeight,
     disable = false,
     placeholder = '',
     onDonePress,
-    containerStyle = {},
     parentContainerStyle = {},
-    textStyle = {},
     imageStyle = {},
-    icon = icons.downArrowFilled,
     image,
+    fontSize = 'large',
     testID,
     numColumns = 1,
     showImage = false,
-    fontSize = 'large',
+    isOutline = false,
+  } = props;
+  let {
+    icon = icons.downArrowFilled,
     fontWeight = 'regular',
+    textStyle = {},
+    containerStyle = {},
+    iconSize = 16,
+    iconColor = theme.colors.darkTint7,
   } = props;
 
   const onValueChange = (changedValue: string | number): void => {
@@ -87,6 +91,22 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   const placeholderColor = !label ? styles.placeholderColor : {};
 
   const disabledStyles = StyleSheet.flatten([disable && styles.disabled]);
+
+  if (isOutline) {
+    containerStyle = StyleSheet.flatten([
+      containerStyle,
+      {
+        borderWidth: 0,
+        backgroundColor: theme.colors.lightGrayishBlue,
+        borderRadius: 2,
+      },
+    ]);
+    icon = icons.downArrow;
+    fontWeight = 'semiBold';
+    textStyle = StyleSheet.flatten([textStyle, { color: theme.colors.active }]);
+    iconSize = 20;
+    iconColor = theme.colors.active;
+  }
 
   return (
     <View pointerEvents={disable ? 'none' : 'auto'} style={[disabledStyles, parentContainerStyle]}>
@@ -107,12 +127,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
             {label ?? placeholder}
           </Label>
         )}
-        <Icon
-          name={icon}
-          size={iconSize ?? 16}
-          color={iconColor ?? theme.colors.darkTint7}
-          style={[styles.iconStyle, iconStyle]}
-        />
+        <Icon name={icon} size={iconSize} color={iconColor} style={[styles.iconStyle, iconStyle]} />
       </TouchableOpacity>
       <BottomSheetListView
         data={data}
