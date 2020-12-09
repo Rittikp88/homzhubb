@@ -13,7 +13,7 @@ import PropertyDetails from '@homzhub/web/src/screens/dashboard/components/Vacan
 import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdate';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-// todo (rajat) : fix styling
+// todo : fix styling
 const VacantProperties = (): React.ReactElement => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -24,7 +24,6 @@ const VacantProperties = (): React.ReactElement => {
       <View style={styles.header}>
         <View style={styles.headerText}>
           <Icon name={icons.vacantProperty} size={30} color={theme.colors.darkTint3} style={styles.headerIcon} />
-
           <Text type="small" textType="regular" minimumFontScale={0.5}>
             {t('Vacant Properties')}
           </Text>
@@ -38,7 +37,7 @@ const VacantProperties = (): React.ReactElement => {
         <View style={styles.propertyInfo}>
           <ImageSquare
             style={styles.image}
-            size={300}
+            size={150}
             source={{
               uri:
                 'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',

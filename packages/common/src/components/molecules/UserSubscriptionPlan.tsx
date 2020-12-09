@@ -23,6 +23,7 @@ interface IProps {
 }
 
 const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useDown(deviceBreakpoint.LAPTOP);
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
   const [data, setData] = React.useState({} as UserSubscription);
@@ -78,8 +79,8 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
         </Text>
         {` ${t('subscriptionHelperServices')}`}
       </Text>
-      {renderFeatures(data, isMoreToggled, isLaptop)}
-      {isLaptop && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
+      {renderFeatures(data, isMoreToggled, isLaptop, isMobile)}
+      {isMobile && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
         <Text type="small" textType="semiBold" style={styles.more} onPress={toggleMore}>
           {isMoreToggled ? t('common:less') : t('common:more')}
         </Text>
@@ -89,16 +90,22 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   );
 };
 
-const renderFeatures = (data: UserSubscription, isMoreToggled: boolean, isLaptop: boolean): React.ReactNode => {
+const renderFeatures = (
+  data: UserSubscription,
+  isMoreToggled: boolean,
+  isLaptop: boolean,
+  isMobile: boolean
+): React.ReactNode => {
   const { recommendedPlan } = data;
   const serviceItems = recommendedPlan?.serviceBundleItems ?? [];
-  const bundleItems = isMoreToggled ? serviceItems : serviceItems.slice(0, 3);
-  const upgradeFeatures = isLaptop ? bundleItems : serviceItems;
+  const displayServiceItems = serviceItems.length > 6 ? serviceItems.slice(0, 6) : serviceItems;
+  const bundleItems = isMoreToggled ? displayServiceItems : serviceItems.slice(0, 3);
+  const upgradeFeatures = isMobile ? bundleItems : isLaptop ? serviceItems.slice(0, 3) : displayServiceItems;
 
   return (
     <View style={[styles.featuresDataContainer, !isLaptop && styles.maxFeaturesDataHeight]}>
       {upgradeFeatures.map((item) => (
-        <View style={styles.featuresData} key={`${item.id}`}>
+        <View style={[styles.featuresData, !isLaptop && styles.featuresDataWidth]} key={`${item.id}`}>
           <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />
           <Text type="small" textType="regular" style={styles.featureName}>
             {item.label}
@@ -133,6 +140,10 @@ const styles = StyleSheet.create({
   },
   featuresData: {
     flexDirection: 'row',
+    marginBottom: 32,
+  },
+  featuresDataWidth: {
+    width: '50%',
     marginBottom: 20,
   },
   planName: {
