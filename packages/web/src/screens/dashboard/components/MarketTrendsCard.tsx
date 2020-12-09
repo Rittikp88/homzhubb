@@ -1,39 +1,51 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
+import { MarketTrendsResults } from '@homzhub/common/src/domain/models/MarketTrends';
 
-// TODO (BISHAL) - change dummy data with actual api data
-const MarketTrendsCard: FC = () => {
+interface IProps {
+  data: MarketTrendsResults;
+}
+
+const MarketTrendsCard: FC<IProps> = ({ data }: IProps) => {
+  const { title, postedAtDate, link, imageUrl } = data;
+  const onLinkPress = (): void => {
+    window.open(link);
+  };
   return (
-    <View style={styles.card}>
-      <ImageSquare
-        style={styles.image}
-        size={50}
-        source={{
-          uri:
-            'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
-        }}
-      />
+    <TouchableOpacity activeOpacity={1} onPress={onLinkPress} style={styles.card}>
+      {imageUrl && !!imageUrl ? (
+        <ImageSquare
+          style={styles.image}
+          size={50}
+          source={{
+            uri: imageUrl,
+          }}
+        />
+      ) : (
+        <ImagePlaceholder height={50} width={50} containerStyle={styles.image} />
+      )}
       <View style={styles.info}>
         <Label type="regular" textType="regular">
           Blog
         </Label>
         <Label type="regular" textType="regular">
-          12/03/88
+          {postedAtDate}
         </Label>
       </View>
       <View style={styles.description}>
         <Text type="small" textType="semiBold" style={styles.title}>
-          How is the real estate market recovering?
+          {title}
         </Text>
         <Label type="regular" textType="regular" numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed dalskdjfkajsl Lorem ipsum dolor sit amet,
           consectetur adipiscing elit
         </Label>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -64,7 +76,6 @@ const styles = StyleSheet.create({
   },
   description: {
     flex: 1,
-    flexDirection: 'column',
     marginHorizontal: 16,
     marginVertical: 8,
   },

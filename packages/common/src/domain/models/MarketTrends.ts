@@ -1,7 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ILinks, Links } from '@homzhub/common/src/domain/models/PaginationLinks';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 export interface IMarketTrends {
   count: number;
@@ -30,8 +29,11 @@ export class MarketTrendsResults {
   @JsonProperty('link', String)
   private _link = '';
 
-  @JsonProperty('attachment', Attachment, true)
-  private _attachment: Attachment | null = null;
+  @JsonProperty('image_url', String)
+  private _imageUrl = '';
+
+  @JsonProperty('trend_type', String)
+  private _trendType = '';
 
   get id(): number {
     return this._id;
@@ -49,12 +51,16 @@ export class MarketTrendsResults {
     return DateUtils.getDateFromISO(this._postedAt, 'DD/MM/YYYY');
   }
 
-  get link(): string {
-    return this._link;
+  get imageUrl(): string {
+    return this._imageUrl;
   }
 
-  get attachment(): Attachment | null {
-    return this._attachment;
+  get trendType(): string {
+    return this._trendType;
+  }
+
+  get link(): string {
+    return this._link;
   }
 }
 

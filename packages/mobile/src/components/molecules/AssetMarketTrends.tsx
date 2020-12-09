@@ -71,15 +71,15 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
     }
 
     return (results || []).map((item) => {
-      const { title, postedAtDate, link, attachment } = item;
+      const { title, postedAtDate, link, imageUrl } = item;
       const onLinkPress = async (): Promise<void> => {
         await LinkingService.canOpenURL(link);
       };
 
       return (
         <TouchableOpacity key={`${item.id}`} onPress={onLinkPress} style={styles.trendContainer} testID="linkTouch">
-          {attachment && !!attachment.link ? (
-            <Image source={{ uri: attachment?.link }} style={styles.image} />
+          {imageUrl && !!imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.image} />
           ) : (
             <ImagePlaceholder height={80} width={80} containerStyle={styles.placeHolderImage} />
           )}
