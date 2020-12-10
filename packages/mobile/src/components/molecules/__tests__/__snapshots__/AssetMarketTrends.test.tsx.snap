@@ -6,63 +6,46 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
     Array [
       Object {
         "backgroundColor": "#FFFFFF",
-        "flex": 1,
-        "paddingBottom": 8,
-        "paddingHorizontal": 16,
-        "paddingTop": 26,
+        "padding": 16,
+        "paddingBottom": 0,
       },
-      Object {
-        "marginTop": 16,
-      },
+      false,
     ]
   }
 >
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "marginBottom": 16,
+  <View>
+    <SelectionPicker
+      data={
+        Array [
+          Object {
+            "title": "Perspective",
+            "value": "PERSPECTIVE",
+          },
+          Object {
+            "title": "Video",
+            "value": "VIDEO",
+          },
+        ]
       }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#4C5F72"
-      name="increase"
-      size={20}
+      onValueChange={[Function]}
+      selectedItem={
+        Array [
+          "PERSPECTIVE",
+        ]
+      }
     />
-    <Text
-      style={
+    <SearchBar
+      containerStyle={
         Object {
-          "flex": 1,
-          "marginStart": 12,
+          "marginVertical": 16,
         }
       }
-      textType="semiBold"
-      type="regular"
-    >
-      marketTrends
-    </Text>
+      placeholder="searchByKeyword"
+      updateValue={[Function]}
+      value=""
+    />
   </View>
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "minHeight": 100,
-      }
-    }
-  >
-    <Text
-      textType="regular"
-      type="small"
-    >
-      noTrends
-    </Text>
-  </View>
+  <EmptyState />
 </View>
 `;
 
@@ -72,130 +55,45 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
     Array [
       Object {
         "backgroundColor": "#FFFFFF",
-        "flex": 1,
-        "paddingBottom": 8,
-        "paddingHorizontal": 16,
-        "paddingTop": 26,
+        "padding": 16,
+        "paddingBottom": 0,
       },
-      Object {
-        "marginTop": 16,
-      },
+      false,
     ]
   }
 >
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "marginBottom": 16,
+  <View>
+    <SelectionPicker
+      data={
+        Array [
+          Object {
+            "title": "Perspective",
+            "value": "PERSPECTIVE",
+          },
+          Object {
+            "title": "Video",
+            "value": "VIDEO",
+          },
+        ]
       }
-    }
-  >
-    <Icon
-      allowFontScaling={false}
-      color="#4C5F72"
-      name="increase"
-      size={20}
+      onValueChange={[Function]}
+      selectedItem={
+        Array [
+          "PERSPECTIVE",
+        ]
+      }
     />
-    <Text
-      style={
-        Object {
-          "flex": 1,
-          "marginStart": 12,
-        }
-      }
-      textType="semiBold"
-      type="regular"
-    >
-      marketTrends
-    </Text>
-    <Text
-      onPress={[MockFunction]}
-      style={
-        Object {
-          "color": "#0084F8",
-        }
-      }
-      textType="semiBold"
-      type="small"
-    >
-      viewAll
-    </Text>
-  </View>
-  <ForwardRef
-    key="0"
-    onPress={[Function]}
-    style={
-      Object {
-        "borderColor": "#F0F5F9",
-        "borderRadius": 4,
-        "borderWidth": 1,
-        "flexDirection": "row",
-        "marginBottom": 16,
-        "padding": 12,
-      }
-    }
-    testID="linkTouch"
-  >
-    <Memo(ImagePlaceholder)
+    <SearchBar
       containerStyle={
         Object {
-          "borderColor": "#E5E8EB",
-          "borderRadius": 4,
-          "borderWidth": 1,
+          "marginVertical": 16,
         }
       }
-      height={80}
-      width={80}
+      placeholder="searchByKeyword"
+      updateValue={[Function]}
+      value=""
     />
-    <View
-      style={
-        Object {
-          "flex": 1,
-          "justifyContent": "space-between",
-          "marginStart": 12,
-        }
-      }
-    >
-      <Text
-        numberOfLines={2}
-        style={
-          Object {
-            "color": "#19324A",
-            "flexWrap": "wrap",
-          }
-        }
-        textType="regular"
-        type="small"
-      />
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          }
-        }
-      >
-        <Label
-          style={
-            Object {
-              "color": "#667686",
-            }
-          }
-          textType="regular"
-          type="large"
-        />
-        <Icon
-          allowFontScaling={false}
-          color="#0084F8"
-          name="dart"
-          size={18}
-        />
-      </View>
-    </View>
-  </ForwardRef>
+  </View>
+  <EmptyState />
 </View>
 `;

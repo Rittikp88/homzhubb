@@ -4,7 +4,6 @@ import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modul
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview, IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
-import { Count, ICount } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { AssetVisit, IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -24,9 +23,6 @@ export const AssetActionTypes = {
     ASSET_VISIT: `${actionTypePrefix}ASSET_VISIT`,
     ASSET_VISIT_SUCCESS: `${actionTypePrefix}ASSET_VISIT_SUCCESS`,
     ASSET_VISIT_FAILURE: `${actionTypePrefix}ASSET_VISIT_FAILURE`,
-    ASSET_COUNT: `${actionTypePrefix}ASSET_COUNT`,
-    ASSET_COUNT_SUCCESS: `${actionTypePrefix}ASSET_COUNT_SUCCESS`,
-    ASSET_COUNT_FAILURE: `${actionTypePrefix}ASSET_COUNT_FAILURE`,
   },
   SET: {
     VISIT_IDS: `${actionTypePrefix}VISIT_IDS`,
@@ -103,21 +99,7 @@ const setVisitIds = (payload: number[]): IFluxStandardAction<number[]> => ({
   payload,
 });
 
-const getAssetCount = (): IFluxStandardAction => ({
-  type: AssetActionTypes.GET.ASSET_COUNT,
-});
-
-const getAssetCountSuccess = (data: Count): IFluxStandardAction<ICount> => ({
-  type: AssetActionTypes.GET.ASSET_COUNT_SUCCESS,
-  payload: ObjectMapper.serialize(data),
-});
-
-const getAssetCountFailure = (error: string): IFluxStandardAction<string> => ({
-  type: AssetActionTypes.GET.ASSET_COUNT_FAILURE,
-  error,
-});
-
-export type AssetPayloadTypes = number | IAssetReview[] | IAsset | IAssetVisit[] | number[] | ICount;
+export type AssetPayloadTypes = number | IAssetReview[] | IAsset | IAssetVisit[] | number[];
 
 export const AssetActions = {
   clearAsset,
@@ -134,7 +116,4 @@ export const AssetActions = {
   getAssetVisitSuccess,
   getAssetVisitFailure,
   setVisitIds,
-  getAssetCount,
-  getAssetCountSuccess,
-  getAssetCountFailure,
 };

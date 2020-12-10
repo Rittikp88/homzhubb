@@ -33,7 +33,6 @@ import {
   IPropertyDetailProps,
   IUpdateProfileProps,
   IVerifyEmail,
-  IWebviewProps,
   NestedNavigatorParams,
   ScreensKeys,
 } from '@homzhub/mobile/src/navigation/interfaces';
@@ -50,7 +49,6 @@ import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
-import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 
@@ -66,7 +64,6 @@ export type BottomTabNavigatorParamList = {
 export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
-  [ScreensKeys.MarketTrends]: undefined;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
@@ -95,12 +92,11 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.SettingsScreen]: undefined;
   [ScreensKeys.PropertyVisits]: undefined;
-  [ScreensKeys.MarketTrends]: undefined;
+  [ScreensKeys.MarketTrends]: { isFromDashboard: boolean };
   [ScreensKeys.AssetNotifications]: undefined;
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.UpdatePassword]: undefined;
   [ScreensKeys.SupportScreen]: undefined;
-  [ScreensKeys.WebViewScreen]: IWebviewProps;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
@@ -121,7 +117,6 @@ export const DashboardStack = (): React.ReactElement => {
       }}
     >
       <DashboardNavigator.Screen name={ScreensKeys.DashboardLandingScreen} component={Dashboard} />
-      <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
@@ -181,7 +176,6 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
       <MoreStackNavigator.Screen name={ScreensKeys.SupportScreen} component={Support} />
-      <AuthStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
       <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />

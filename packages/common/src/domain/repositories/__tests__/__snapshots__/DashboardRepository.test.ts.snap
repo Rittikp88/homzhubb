@@ -89,32 +89,6 @@ AssetMetrics {
 }
 `;
 
-exports[`DashboardRepository should get Market Trends 1`] = `
-MarketTrends {
-  "_count": 3,
-  "_links": Links {
-    "_next": "http://dev.homzhub.com/api/v1/market-trends/?limit=2&offset=2",
-    "_previous": "",
-  },
-  "_results": Array [
-    MarketTrendsResults {
-      "_attachment": null,
-      "_id": 1,
-      "_link": "http://bwsmartcities.businessworld.in/article/Green-Homes-Still-Waiting-for-Green-Shoots-of-Revival/11-02-2020-183924",
-      "_postedAt": "2020-07-01T04:03:07.256216Z",
-      "_title": "Top 5 Real Estate Trends for 2020",
-    },
-    MarketTrendsResults {
-      "_attachment": null,
-      "_id": 2,
-      "_link": "https://www.financialexpress.com/money/5-emerging-trends-that-may-reshape-real-estate-sector-in-2020/1788394/",
-      "_postedAt": "2020-07-01T04:03:07.256216Z",
-      "_title": "5 emerging trends that may reshape real estate sector in 2020",
-    },
-  ],
-}
-`;
-
 exports[`DashboardRepository should get advertisements 1`] = `
 AssetAdvertisement {
   "_count": 1,

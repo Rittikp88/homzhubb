@@ -9,6 +9,8 @@ import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusB
 interface ICommonHeaderProps {
   icon?: string;
   onIconPress?: () => void;
+  iconRight?: string;
+  onIconRightPress?: () => void;
   type?: 'primary' | 'secondary';
   isHeadingVisible?: boolean;
   isBarVisible?: boolean;
@@ -21,6 +23,8 @@ const Header = (props: ICommonHeaderProps): React.ReactElement => {
   const {
     title,
     onIconPress,
+    iconRight,
+    onIconRightPress,
     type = 'primary',
     icon = icons.leftArrow,
     isHeadingVisible = true,
@@ -48,6 +52,9 @@ const Header = (props: ICommonHeaderProps): React.ReactElement => {
           <Text numberOfLines={1} type="small" textType="semiBold" style={[styles.title, { color: textColor }]}>
             {title ?? ''}
           </Text>
+        )}
+        {iconRight && (
+          <Icon name={iconRight} size={22} color={textColor} style={styles.iconRight} onPress={onIconRightPress} />
         )}
       </View>
       {isBarVisible && <View style={styles.bar} />}
@@ -79,5 +86,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: BOTTOM_PADDING,
     left: 16,
+  },
+  iconRight: {
+    position: 'absolute',
+    bottom: BOTTOM_PADDING,
+    right: 16,
   },
 });

@@ -533,3 +533,10 @@ export interface IEmailVerificationPayload {
   verification_id?: string;
   verification_metadata?: {};
 }
+
+export interface IMarketTrendParams {
+  limit?: number;
+  offset?: number;
+  q?: string;
+  trend_type?: string;
+}

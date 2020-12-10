@@ -29,6 +29,8 @@ exports[`Dashboard Screen should render snapshot 1`] = `
   />
   <Connect(withI18nextTranslation(FinanceOverview)) />
   <withI18nextTranslation(AssetMarketTrends)
+    isDashboard={true}
+    onTrendPress={[Function]}
     onViewAll={[Function]}
   />
   <AssetAdvertisementBanner />

@@ -179,6 +179,7 @@ export interface IBookVisitProps {
 // Webview
 export interface IWebviewProps {
   url: string;
+  trendId?: number;
 }
 
 // User Profile

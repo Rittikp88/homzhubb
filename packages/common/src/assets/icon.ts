@@ -86,6 +86,7 @@ export const icons = {
   envelope: 'envelope',
   whatsapp: 'whatsapp',
   share: 'share',
+  shareExternal: 'share-external',
   sunRise: 'sun-rise',
   sunSet: 'sun-set',
   sun: 'sun',

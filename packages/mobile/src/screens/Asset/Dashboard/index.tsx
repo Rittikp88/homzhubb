@@ -88,7 +88,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
             />
           )}
           <FinanceOverview />
-          <AssetMarketTrends onViewAll={this.onViewAll} />
+          <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
           <AssetAdvertisementBanner />
           {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
           <Loader visible={isLoading} />
@@ -137,7 +137,18 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private onViewAll = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.MarketTrends);
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.More, {
+      screen: ScreensKeys.MarketTrends,
+      initial: false,
+      params: { isFromDashboard: true },
+    });
+  };
+
+  private onTrendPress = (url: string, trendId: number): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.WebViewScreen, { url, trendId });
   };
 
   private onViewProperty = (data: ISetAssetPayload): void => {

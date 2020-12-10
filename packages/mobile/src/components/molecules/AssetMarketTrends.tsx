@@ -1,123 +1,217 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, ImageBackground, StyleSheet, TouchableOpacity, View, Keyboard } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
-import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
-import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
-import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
+import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
+import { MarketTrendsResults, MarketTrendType } from '@homzhub/common/src/domain/models/MarketTrends';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
-  isHeaderVisible?: boolean;
+  isDashboard?: boolean;
   onViewAll?: () => void;
-  limit?: number;
+  shouldEnableOuterScroll?: (scrollEnabled: boolean) => void;
+  onTrendPress: (url: string, id: number) => void;
 }
 
 interface IMarketTrendsState {
-  data: MarketTrends;
+  data: MarketTrendsResults[];
+  selectedType: MarketTrendType;
+  searchQuery: string;
 }
 
 export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrendsState> {
   public state = {
-    data: {} as MarketTrends,
+    data: [],
+    selectedType: MarketTrendType.PERSPECTIVE,
+    searchQuery: '',
   };
 
+  private debouncedSearch = debounce(() => {
+    this.getMarketTrends(true).then();
+  }, 500);
+
   public componentDidMount = async (): Promise<void> => {
-    await this.getMarketTrends();
+    await this.getMarketTrends(true);
   };
 
   public render(): React.ReactNode {
-    const { onViewAll, t, isHeaderVisible = true } = this.props;
+    const { shouldEnableOuterScroll, isDashboard = false } = this.props;
     const { data } = this.state;
+
     return (
-      <View style={[styles.container, isHeaderVisible && styles.headerView]}>
-        {isHeaderVisible && (
-          <View style={styles.header}>
-            <Icon name={icons.increase} color={theme.colors.darkTint4} size={20} />
-            <Text type="regular" textType="semiBold" style={styles.headerText}>
-              {t('marketTrends')}
-            </Text>
-            {data.results?.length > 0 && (
-              <Text type="small" textType="semiBold" onPress={onViewAll} style={styles.viewAll}>
-                {t('viewAll')}
-              </Text>
-            )}
-          </View>
+      <View style={[styles.container, isDashboard && styles.headerView]}>
+        {this.renderHeader()}
+        {data.length > 0 ? (
+          <FlatList
+            data={data}
+            renderItem={this.renderTrends}
+            initialNumToRender={30}
+            onTouchStart={(): void => {
+              if (shouldEnableOuterScroll) {
+                shouldEnableOuterScroll(false);
+              }
+            }}
+            onMomentumScrollEnd={(): void => {
+              if (shouldEnableOuterScroll) {
+                shouldEnableOuterScroll(true);
+              }
+            }}
+            onEndReached={({ distanceFromEnd }: { distanceFromEnd: number }): void => {
+              if (distanceFromEnd > 0) {
+                this.onEndReached();
+              }
+            }}
+            onEndReachedThreshold={0.8}
+            nestedScrollEnabled
+            keyExtractor={this.keyExtractor}
+          />
+        ) : (
+          <EmptyState />
         )}
-        {this.renderTrends()}
       </View>
     );
   }
 
-  public renderTrends = (): React.ReactNode => {
-    const {
-      data: { results },
-    } = this.state;
-    const { t } = this.props;
+  private renderHeader = (): React.ReactNode => {
+    const { onViewAll, t, isDashboard = false } = this.props;
+    const { data, selectedType, searchQuery } = this.state;
 
-    if (results?.length === 0) {
+    if (isDashboard) {
       return (
-        <View style={styles.noData}>
-          <Text type="small" textType="regular">
-            {t('noTrends')}
+        <View style={styles.header}>
+          <Icon name={icons.increase} color={theme.colors.darkTint4} size={20} />
+          <Text type="small" textType="semiBold" style={styles.headerText}>
+            {t('marketTrends')}
           </Text>
+          {data.length > 0 && (
+            <Label type="large" textType="semiBold" onPress={onViewAll} style={styles.viewAll}>
+              {t('viewAll')}
+            </Label>
+          )}
         </View>
       );
     }
 
-    return (results || []).map((item) => {
-      const { title, postedAtDate, link, attachment } = item;
-      const onLinkPress = async (): Promise<void> => {
-        await LinkingService.canOpenURL(link);
-      };
+    return (
+      <View>
+        <SelectionPicker<MarketTrendType>
+          data={[
+            { title: 'Perspective', value: MarketTrendType.PERSPECTIVE },
+            { title: 'Video', value: MarketTrendType.VIDEO },
+          ]}
+          selectedItem={[selectedType]}
+          onValueChange={this.onTabChange}
+        />
+        <SearchBar
+          placeholder={t('searchByKeyword')}
+          value={searchQuery}
+          updateValue={this.onUpdateSearchText}
+          containerStyle={styles.searchBar}
+        />
+      </View>
+    );
+  };
 
-      return (
-        <TouchableOpacity key={`${item.id}`} onPress={onLinkPress} style={styles.trendContainer} testID="linkTouch">
-          {attachment && !!attachment.link ? (
-            <Image source={{ uri: attachment?.link }} style={styles.image} />
-          ) : (
-            <ImagePlaceholder height={80} width={80} containerStyle={styles.placeHolderImage} />
-          )}
-          <View style={styles.trendValuesContainer}>
-            <Text type="small" textType="regular" style={styles.trendHeader} numberOfLines={2}>
-              {title}
-            </Text>
-            <View style={styles.trendData}>
-              <Label type="large" textType="regular" style={styles.trendDate}>
-                {postedAtDate}
-              </Label>
-              <Icon name={icons.dart} color={theme.colors.primaryColor} size={18} />
-            </View>
+  public renderTrends = ({ item }: { item: MarketTrendsResults }): React.ReactElement => {
+    const { title, postedAtDate, link, imageUrl, id, trendType } = item;
+    const { onTrendPress } = this.props;
+
+    const onLinkPress = (): void => {
+      onTrendPress(link, id);
+    };
+
+    return (
+      <TouchableOpacity onPress={onLinkPress} style={styles.trendContainer} testID="linkTouch">
+        {imageUrl ? (
+          <ImageBackground source={{ uri: imageUrl }} style={styles.image}>
+            {trendType === MarketTrendType.VIDEO && (
+              <View style={styles.videoOverlay}>
+                <Icon name={icons.play} size={28} color={theme.colors.white} />
+              </View>
+            )}
+          </ImageBackground>
+        ) : (
+          <ImagePlaceholder height={80} width={80} containerStyle={styles.placeHolderImage} />
+        )}
+        <View style={styles.trendValuesContainer}>
+          <Label type="large" textType="regular" style={styles.trendHeader} numberOfLines={2}>
+            {title}
+          </Label>
+          <View style={styles.trendData}>
+            <Label type="regular" textType="regular" style={styles.trendDate}>
+              {postedAtDate}
+            </Label>
+            <Icon name={icons.dart} color={theme.colors.primaryColor} size={18} />
           </View>
-        </TouchableOpacity>
-      );
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  private onTabChange = (newType: MarketTrendType): void => {
+    Keyboard.dismiss();
+    this.setState({ selectedType: newType, searchQuery: '' }, () => {
+      this.getMarketTrends(true).then();
     });
   };
 
-  public getMarketTrends = async (): Promise<void> => {
-    const { limit = 2 } = this.props;
+  private onUpdateSearchText = (searchQuery: string): void => {
+    this.setState({ searchQuery }, this.debouncedSearch);
+  };
+
+  private onEndReached = (): void => {
+    const { isDashboard = false } = this.props;
+    if (isDashboard) {
+      return;
+    }
+    this.getMarketTrends().then();
+  };
+
+  public getMarketTrends = async (reset = false): Promise<void> => {
+    const { isDashboard } = this.props;
+    const { selectedType, searchQuery, data } = this.state;
+
+    let limit = 30;
+    let trend_type: MarketTrendType | undefined = selectedType;
+    let q: string | undefined = searchQuery;
+    if (isDashboard) {
+      limit = 2;
+      trend_type = undefined;
+      q = undefined;
+    }
+
     try {
-      const response: MarketTrends = await DashboardRepository.getMarketTrends(limit);
-      this.setState({ data: response });
+      const response = await CommonRepository.getMarketTrends({
+        limit,
+        trend_type,
+        q,
+        offset: reset ? 0 : data.length,
+      });
+
+      this.setState({ data: reset ? response.results : [...data, ...response.results] });
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
   };
+
+  private keyExtractor = (item: MarketTrendsResults): string => `${item.id}`;
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(AssetMarketTrends);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 26,
-    paddingBottom: 8,
-    paddingHorizontal: 16,
+    padding: 16,
+    paddingBottom: 0,
     backgroundColor: theme.colors.white,
   },
   header: {
@@ -158,11 +252,11 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint2,
     flexWrap: 'wrap',
   },
-  noData: {
+  videoOverlay: {
     flex: 1,
-    minHeight: 100,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.overlay,
   },
   image: {
     width: 80,
@@ -176,5 +270,8 @@ const styles = StyleSheet.create({
   },
   headerView: {
     marginTop: 16,
+  },
+  searchBar: {
+    marginVertical: 16,
   },
 });
