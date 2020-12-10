@@ -20,6 +20,7 @@ interface IProps {
   isRightIcon?: boolean;
   imageSize?: number;
   onPressCamera?: () => void;
+  onPressRightIcon?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   initialsContainerStyle?: StyleProp<ViewStyle>;
 }
@@ -39,6 +40,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     initialsContainerStyle,
     imageSize = 42,
     onPressCamera,
+    onPressRightIcon,
   } = props;
 
   return (
@@ -106,7 +108,15 @@ const Avatar = (props: IProps): React.ReactElement => {
       </View>
       {(isRightIcon || date) && (
         <View style={styles.rightView}>
-          {isRightIcon && <Icon name={icons.rightArrow} color={theme.colors.blue} size={20} style={styles.iconStyle} />}
+          {isRightIcon && onPressRightIcon && (
+            <Icon
+              name={icons.rightArrow}
+              color={theme.colors.blue}
+              size={20}
+              style={styles.iconStyle}
+              onPress={onPressRightIcon}
+            />
+          )}
           {date && (
             <Label textType="regular" type="regular" style={styles.designation}>
               {TimeUtils.getLocaltimeDifference(date)}
@@ -128,6 +138,7 @@ const styles = StyleSheet.create({
   },
   rightView: {
     flex: 1,
+    alignItems: 'flex-end',
   },
   initialsContainer: {
     ...(theme.circleCSS(42) as object),

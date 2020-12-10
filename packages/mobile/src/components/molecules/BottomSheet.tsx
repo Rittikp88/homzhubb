@@ -68,7 +68,6 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
   return (
     <RBSheet
       ref={rbSheet}
-      animationType="slide"
       height={sheetHeight}
       closeOnDragDown={isCloseOnDrag}
       dragFromTopOnly

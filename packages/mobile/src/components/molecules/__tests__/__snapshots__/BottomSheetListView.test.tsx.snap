@@ -73,7 +73,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
     visible={true}
   >
     <RBSheet
-      animationType="slide"
+      animationType="none"
       closeDuration={200}
       closeOnDragDown={true}
       closeOnPressBack={true}
@@ -95,7 +95,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
       openDuration={300}
     >
       <Component
-        animationType="slide"
+        animationType="none"
         hardwareAccelerated={false}
         onRequestClose={[Function]}
         supportedOrientations={
@@ -111,7 +111,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
         visible={true}
       >
         <Modal
-          animationType="slide"
+          animationType="none"
           hardwareAccelerated={false}
           onRequestClose={[Function]}
           supportedOrientations={

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { LayoutChangeEvent, PickerItemProps, ScrollView, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, PickerItemProps, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -28,15 +29,19 @@ const confirmation = ['Yes', 'No'];
 // END CONSTANTS
 
 interface IProps {
-  visitType: VisitStatusType;
+  visitType?: VisitStatusType;
   visitData: IVisitByKey[];
-  dropdownData: PickerItemProps[];
-  isLoading: boolean;
+  dropdownData?: PickerItemProps[];
+  isLoading?: boolean;
   isFromProperty?: boolean;
-  dropdownValue: number;
+  dropdownValue?: number;
+  isUserView?: boolean;
   handleAction: (id: number, action: VisitActions) => void;
+  handleUserView?: (id: number) => void;
+  handleConfirmation?: (id: number) => void;
   handleReschedule: (id: number) => void;
-  handleDropdown: (value: string | number, visitType: VisitStatusType) => void;
+  handleDropdown?: (value: string | number, visitType: VisitStatusType) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IScreenState {
@@ -55,38 +60,53 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   };
 
   public render(): React.ReactNode {
-    const { visitData, isLoading, t, dropdownData, dropdownValue, visitType, handleDropdown } = this.props;
+    const {
+      visitData,
+      isLoading,
+      t,
+      dropdownData,
+      dropdownValue,
+      visitType,
+      handleDropdown,
+      isUserView,
+      containerStyle,
+    } = this.props;
     const { height } = this.state;
     const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
     return (
-      <View onLayout={this.onLayout} style={styles.mainView}>
-        <View style={styles.headerView}>
-          <Label type="regular" style={styles.count}>
-            {t('totalVisit', { totalVisit })}
-          </Label>
-          <Dropdown
-            data={dropdownData}
-            value={dropdownValue}
-            icon={icons.downArrow}
-            textStyle={{ color: theme.colors.blue }}
-            iconColor={theme.colors.blue}
-            onDonePress={(value): void => handleDropdown(value, visitType)}
-            containerStyle={styles.dropdownStyle}
-          />
-        </View>
+      <View onLayout={this.onLayout} style={[styles.mainView, containerStyle]}>
+        {dropdownData && handleDropdown && visitType && (
+          <View style={styles.headerView}>
+            <Label type="regular" style={styles.count}>
+              {t('totalVisit', { totalVisit })}
+            </Label>
+            <Dropdown
+              isOutline
+              data={dropdownData}
+              value={dropdownValue ?? ''}
+              icon={icons.downArrow}
+              textStyle={{ color: theme.colors.blue }}
+              iconColor={theme.colors.blue}
+              onDonePress={(value): void => handleDropdown(value, visitType)}
+              containerStyle={styles.dropdownStyle}
+            />
+          </View>
+        )}
         {visitData.length > 0 ? (
           <ScrollView style={{ minHeight: height }} showsVerticalScrollIndicator={false}>
             {visitData.map((item) => {
               const results = item.results as AssetVisit[];
               return (
                 <>
-                  <View style={styles.dateView}>
-                    <View style={styles.dividerView} />
-                    <Text type="small" style={styles.horizontalStyle}>
-                      {item.key}
-                    </Text>
-                    <View style={styles.dividerView} />
-                  </View>
+                  {!isUserView && (
+                    <View style={styles.dateView}>
+                      <View style={styles.dividerView} />
+                      <Text type="small" style={styles.horizontalStyle}>
+                        {item.key}
+                      </Text>
+                      <View style={styles.dividerView} />
+                    </View>
+                  )}
                   {results.map((asset: AssetVisit) => {
                     return this.renderItem(asset);
                   })}
@@ -99,34 +119,39 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             <EmptyState icon={icons.schedule} title={t('noVisits')} />
           </View>
         )}
-        <Loader visible={isLoading} />
+        <Loader visible={isLoading ?? false} />
         {this.renderCancelConfirmation()}
       </View>
     );
   }
 
   private renderItem = (item: AssetVisit): React.ReactElement => {
-    const { asset, user, actions, startDate, endDate, id, role, createdAt, comments, isAssetOwner } = item;
-    const { visitType, handleReschedule, isFromProperty } = this.props;
-    const isMissed = visitType === VisitStatusType.MISSED;
-    const isCompleted = visitType === VisitStatusType.COMPLETED;
+    const { asset, user, actions, startDate, endDate, id, role, createdAt, comments, isAssetOwner, status } = item;
+    const { visitType, handleReschedule, isFromProperty, isUserView, handleUserView } = this.props;
+    const visitStatus = visitType ?? this.getUserVisitStatus(startDate, status);
+    const isMissed = visitStatus === VisitStatusType.MISSED;
+    const isCompleted = visitStatus === VisitStatusType.COMPLETED;
 
     const userRole = this.getUserRole(role);
 
     const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
 
     const onReschedule = (): void => handleReschedule(id);
+    const onPressIcon = (): void => handleUserView && handleUserView(user.id);
 
     return (
       <View style={styles.mainContainer} key={id}>
         <View style={containerStyle}>
-          <Avatar
-            fullName={user.fullName}
-            designation={userRole}
-            rating={user.rating}
-            date={createdAt}
-            containerStyle={styles.avatar}
-          />
+          {!isUserView && (
+            <Avatar
+              fullName={user.fullName}
+              isRightIcon
+              onPressRightIcon={onPressIcon}
+              designation={userRole}
+              date={createdAt}
+              containerStyle={styles.avatar}
+            />
+          )}
           <AddressWithVisitDetail
             primaryAddress={asset.projectName}
             subAddress={asset.address}
@@ -140,7 +165,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             onPressSchedule={onReschedule}
             containerStyle={styles.horizontalStyle}
           />
-          {visitType === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
+          {visitStatus === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
         </View>
       </View>
     );
@@ -241,7 +266,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   };
 
   private getActions = (action: string): IVisitActions | null => {
-    const { handleAction, t } = this.props;
+    const { handleAction, t, handleConfirmation } = this.props;
     const { APPROVE, REJECT, CANCEL } = VisitActions;
     switch (action) {
       case APPROVE:
@@ -262,7 +287,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         return {
           title: t('common:cancel'),
           color: theme.colors.error,
-          action: (id): void => this.handleVisitCancel(id),
+          action: (id): void => (handleConfirmation ? handleConfirmation(id) : this.handleVisitCancel(id)),
         };
       default:
         return null;
@@ -299,6 +324,19 @@ class PropertyVisitList extends Component<Props, IScreenState> {
       default:
         return null;
     }
+  };
+
+  private getUserVisitStatus = (startDate: string, status: string): VisitStatusType => {
+    const formattedDate = DateUtils.getDisplayDate(startDate, DateFormats.ISO24Format);
+    const currentDate = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
+    const dateDiff = DateUtils.getDateDiff(formattedDate, currentDate);
+    if (dateDiff > 0) {
+      return VisitStatusType.UPCOMING;
+    }
+    if (dateDiff < 0 && status === VisitStatus.PENDING) {
+      return VisitStatusType.MISSED;
+    }
+    return VisitStatusType.COMPLETED;
   };
 
   private getUserRole = (role: RoleType): string => {
@@ -384,8 +422,7 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint6,
   },
   dropdownStyle: {
-    borderWidth: 0,
-    backgroundColor: theme.colors.lightGrayishBlue,
+    width: 140,
   },
   dividerView: {
     borderBottomWidth: 1,

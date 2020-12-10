@@ -1,9 +1,16 @@
-import { Keyboard } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 import { hideMessage, showMessage } from 'react-native-flash-message';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 export interface IToastProps {
   message: string;
+}
+
+export interface IAlertProps {
+  title: string;
+  message: string;
+  onOkay: () => void;
+  onCancel?: () => void;
 }
 
 class AlertHelper {
@@ -41,6 +48,23 @@ class AlertHelper {
   public dismiss(): void {
     hideMessage();
   }
+
+  public alert = (options: IAlertProps): void => {
+    const { title, message, onOkay, onCancel } = options;
+    Alert.alert(
+      title,
+      message,
+      [
+        { text: 'OK', onPress: onOkay },
+        {
+          text: 'Cancel',
+          onPress: onCancel,
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 }
 
 const alertHelper = new AlertHelper();

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { PickerItemProps, StyleSheet, View } from 'react-native';
+import { PickerItemProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
@@ -12,10 +12,19 @@ interface IProps {
   selectedProperty: number;
   onPropertyChange: (value: number) => void;
   onCountryChange: (value: number) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => {
-  const { propertyList, countryList, selectedCountry, selectedProperty, onPropertyChange, onCountryChange } = props;
+  const {
+    propertyList,
+    countryList,
+    selectedCountry,
+    selectedProperty,
+    onPropertyChange,
+    onCountryChange,
+    containerStyle,
+  } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { t } = useTranslation();
 
@@ -43,7 +52,7 @@ const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => 
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Dropdown
         data={[{ label: t('common:all'), value: 0 }, ...countryOptions()]}
         showImage

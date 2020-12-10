@@ -6,7 +6,7 @@ exports[`BottomSheet should render snapshot 1`] = `
   visible={false}
 >
   <RBSheet
-    animationType="slide"
+    animationType="none"
     closeDuration={200}
     closeOnDragDown={true}
     closeOnPressBack={true}
@@ -28,7 +28,7 @@ exports[`BottomSheet should render snapshot 1`] = `
     openDuration={300}
   >
     <Component
-      animationType="slide"
+      animationType="none"
       hardwareAccelerated={false}
       onRequestClose={[Function]}
       supportedOrientations={
@@ -44,7 +44,7 @@ exports[`BottomSheet should render snapshot 1`] = `
       visible={false}
     >
       <Modal
-        animationType="slide"
+        animationType="none"
         hardwareAccelerated={false}
         onRequestClose={[Function]}
         supportedOrientations={
@@ -573,7 +573,7 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
   visible={true}
 >
   <RBSheet
-    animationType="slide"
+    animationType="none"
     closeDuration={200}
     closeOnDragDown={true}
     closeOnPressBack={true}
@@ -595,7 +595,7 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
     openDuration={300}
   >
     <Component
-      animationType="slide"
+      animationType="none"
       hardwareAccelerated={false}
       onRequestClose={[Function]}
       supportedOrientations={
@@ -611,7 +611,7 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
       visible={true}
     >
       <Modal
-        animationType="slide"
+        animationType="none"
         hardwareAccelerated={false}
         onRequestClose={[Function]}
         supportedOrientations={

@@ -230,9 +230,9 @@ export const BottomTabs = (): React.ReactElement => {
             width: 0,
             height: 12,
           },
-          shadowOpacity: 0.58,
+          shadowOpacity: 0.4,
           shadowRadius: 16,
-          elevation: 24,
+          elevation: 8,
         },
       }}
     >

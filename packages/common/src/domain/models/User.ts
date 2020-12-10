@@ -33,13 +33,13 @@ export class User {
   @JsonProperty('last_name', String, true)
   private _lastName = '';
 
-  @JsonProperty('email', String)
+  @JsonProperty('email', String, true)
   private _email = '';
 
   @JsonProperty('phone_code', String, true)
   private _countryCode = '';
 
-  @JsonProperty('phone_number', String)
+  @JsonProperty('phone_number', String, true)
   private _phoneNumber = '';
 
   @JsonProperty('profile_picture', String, true)
