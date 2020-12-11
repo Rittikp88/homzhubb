@@ -148,6 +148,13 @@ export class More extends React.PureComponent<Props> {
           })
         );
         break;
+      case MoreScreenTypes.REFER_FRIEND:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.ReferEarn,
+          })
+        );
+        break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         break;

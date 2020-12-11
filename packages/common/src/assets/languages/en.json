@@ -140,7 +140,11 @@
     "invalidLink": "Can not open one of these links.",
     "save": "Save",
     "discard": "Discard",
-    "sort": "Sort"
+    "sort": "Sort",
+    "sms": "SMS",
+    "mail": "Mail",
+    "share": "Share",
+    "whatsapp": "WhatsApp"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -610,9 +614,19 @@
     "savedProperties": "Saved Properties",
     "propertyVisits": "Property Visits",
     "marketTrends": "Market Trends",
+    "shareTrend": "Read this interesting article I found on homzhub -",
+    "noTrends": "There are no links matching your search term",
     "support": "Support",
     "settings": "Settings",
-    "referFriend": "Refer a friend",
+    "referFriend": "Refer & Earn",
+    "referMore": "Refer 5 Friends or more and",
+    "getRewarded": "GET REWARDED!",
+    "refCode": "REFERRAL CODE",
+    "refWith": "Refer your friends with",
+    "copiedCode": "Referral code copied to the clipboard",
+    "clickCopy": "Click below to copy the code",
+    "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
+    "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
     "paymentMethods": "Subscriptions & Payments",
     "logout": "Log Out",
     "refer": "Refer & Earn"

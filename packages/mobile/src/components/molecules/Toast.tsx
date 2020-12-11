@@ -14,8 +14,8 @@ class Toast extends React.PureComponent<IProps> {
       t,
       message: { message, type },
     } = this.props;
-    const icon =
-      type === 'danger' ? icons.circularCrossFilled : type === 'info' ? undefined : icons.circularCheckFilled;
+
+    const icon = type === 'danger' ? icons.circularCrossFilled : icons.circularCheckFilled;
 
     return (
       <View style={this.getContainerStyle()}>

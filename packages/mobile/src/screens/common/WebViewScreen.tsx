@@ -38,7 +38,7 @@ export const WebViewScreen = (props: Props): React.ReactElement => {
 
   const onShare = useCallback(async (): Promise<void> => {
     await Share.share({
-      message: `${t('')} ${url}`,
+      message: `${t('assetMore:shareTrend')} ${url}`,
     });
   }, [url, t]);
 

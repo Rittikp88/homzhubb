@@ -16,11 +16,16 @@ import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCal
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
-import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
+import { DoubleBarGraph, IGraphProps } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
 import { GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { DateFilter, FINANCIAL_DROPDOWN_DATA, IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
+import {
+  DateFilter,
+  DateRangeType,
+  FINANCIAL_DROPDOWN_DATA,
+  IDropdownObject,
+} from '@homzhub/common/src/constants/FinanceOverview';
 
 enum TabKeys {
   expenses = 1,
@@ -190,7 +195,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  public getBarGraphData = (): { data1: number[]; data2: number[]; label: string[] } => {
+  public getBarGraphData = (): IGraphProps => {
     const { selectedTimeRange } = this.state;
 
     switch (selectedTimeRange) {
@@ -203,7 +208,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private getGraphDataForYear = (): { data1: number[]; data2: number[]; label: string[] } => {
+  private getGraphDataForYear = (): IGraphProps => {
     const { selectedTimeRange, data } = this.state;
     const {
       financialYear: { startMonthIndex, endMonthIndex },
@@ -248,10 +253,11 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
       data1: debitArray,
       data2: creditArray,
       label: monthList,
+      type: DateRangeType.Year,
     };
   };
 
-  private getGraphDataForMonth = (): { data1: number[]; data2: number[]; label: string[] } => {
+  private getGraphDataForMonth = (): IGraphProps => {
     const { selectedTimeRange, data } = this.state;
     const currentYear = Number(DateUtils.getCurrentYear());
     const requiredMonth =
@@ -291,6 +297,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
       data1: debitArray,
       data2: creditArray,
       label: weekList,
+      type: DateRangeType.Month,
     };
   };
 

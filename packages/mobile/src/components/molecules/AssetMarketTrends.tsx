@@ -44,7 +44,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
   };
 
   public render(): React.ReactNode {
-    const { shouldEnableOuterScroll, isDashboard = false } = this.props;
+    const { t, shouldEnableOuterScroll, isDashboard = false } = this.props;
     const { data } = this.state;
 
     return (
@@ -75,7 +75,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
             keyExtractor={this.keyExtractor}
           />
         ) : (
-          <EmptyState />
+          <EmptyState title={t('assetMore:noTrends')} />
         )}
       </View>
     );

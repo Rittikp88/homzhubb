@@ -7,6 +7,7 @@ const namedColors = {
   blue: '#0084F8',
   completed: '#47C2B1',
   green: '#2CBA67',
+  referGreen: '#27AE60',
   warning: '#F9A901',
   mediumPriority: '#FBC02D',
   highPriority: '#FF8576',

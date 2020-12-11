@@ -128,6 +128,7 @@ export const icons = {
   newLaunch: 'new-launch',
   payment: 'payment',
   shareFilled: 'share-filled',
+  sms: 'sms',
   docFilled: 'doc-filled',
   upload: 'upload',
   files: 'files',

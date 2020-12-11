@@ -45,6 +45,7 @@ import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
+import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
@@ -97,6 +98,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.UpdatePassword]: undefined;
   [ScreensKeys.SupportScreen]: undefined;
+  [ScreensKeys.ReferEarn]: undefined;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
@@ -181,6 +183,7 @@ export const MoreStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <MoreStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
       <MoreStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
     </MoreStackNavigator.Navigator>
   );
 };

@@ -5,6 +5,7 @@ export enum DynamicLinkTypes {
   ResetPassword = 'RESET_PASSWORD',
   PrimaryEmailVerification = 'PRIMARY_EMAIL_VERIFICATION',
   WorkEmailVerification = 'WORK_EMAIL_VERIFICATION',
+  Referral = 'REFERRAL',
 }
 
 export enum RouteTypes {
@@ -17,6 +18,7 @@ export enum DynamicLinkParamKeys {
   RouteType = 'routeType',
   VerificationId = 'verificationId',
   PropertyTermId = 'propertyTermId',
+  ReferralCode = 'referralCode',
 }
 
 // Enums related to dynamic linking - ends
