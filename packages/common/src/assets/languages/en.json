@@ -141,6 +141,7 @@
     "save": "Save",
     "discard": "Discard",
     "sort": "Sort",
+    "wantToContinue": "Do you still want to continue?",
     "sms": "SMS",
     "mail": "Mail",
     "share": "Share",
@@ -407,7 +408,10 @@
     "sellFlowFormDescription": "Write a description to attract more views",
     "manageFlowFormDescription": "Any additional comments",
     "editPropertyCautionText": "You are about to edit your property. Until the changes are reviewed, your property will not appear in the search results",
-    "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?"
+    "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?",
+    "editProperty": "Edit Property",
+    "deleteProperty": "Delete Property",
+    "editListing": "Edit Listing"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -562,7 +566,9 @@
     "lowestOffer": "Lowest Offer",
     "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}",
     "noPropertiesAdded": "You haven't added any properties",
-    "noFilterProperties": "There are no properties for the selected filter"
+    "noFilterProperties": "There are no properties for the selected filter",
+    "deletePropertyDescription": "Sed mattis ultrices arcu turpis feugiat consequat, purus. In arcu leo sed a id imperdiet magna.",
+    "deleteConfirmation": "Do you want to delete property?"
   },
   "assetFinancial": {
     "financial": "Financials",
