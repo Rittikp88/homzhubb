@@ -8,6 +8,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -20,6 +21,7 @@ interface IProps {
   onBackPress?: () => void;
   isOuterScrollEnabled?: boolean;
   keyboardShouldPersistTaps?: boolean;
+  loading?: boolean;
 }
 
 const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
@@ -31,6 +33,7 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
     children,
     onBackPress,
     keyboardShouldPersistTaps = false,
+    loading = false,
   } = props;
   const userProfile = useSelector(UserSelector.getUserProfile);
   const navigation = useNavigation();
@@ -88,6 +91,7 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
           </View>
         </>
       </KeyboardAwareScrollView>
+      <Loader visible={loading} />
     </View>
   );
 };

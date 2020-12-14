@@ -29,6 +29,7 @@ import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscrip
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
 import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
+import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 import { SettingsScreenData } from '@homzhub/common/src/constants/Settings';
 
 const ENDPOINTS = {
@@ -53,6 +54,7 @@ const ENDPOINTS = {
   updateProfileImage: (): string => 'users/profile-pictures/',
   sendOrVerifyEmail: (): string => 'users/verifications/',
   wishlist: (): string => 'wishlists/',
+  interactions: (userId: number): string => `users/${userId}/interactions/`,
 };
 
 class UserRepository {
@@ -175,6 +177,11 @@ class UserRepository {
   public getWishlistProperties = async (): Promise<Wishlist[]> => {
     const response = await this.apiClient.get(ENDPOINTS.wishlist());
     return ObjectMapper.deserializeArray(Wishlist, response);
+  };
+
+  public getUserInteractions = async (id: number): Promise<UserInteraction> => {
+    const response = await this.apiClient.get(ENDPOINTS.interactions(id));
+    return ObjectMapper.deserialize(UserInteraction, response);
   };
 }
 

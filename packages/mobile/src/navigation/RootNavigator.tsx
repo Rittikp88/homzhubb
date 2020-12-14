@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
-import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -29,8 +28,6 @@ export const RootNavigator = (props: IProps): React.ReactElement => {
     if (isLoggedIn) {
       dispatch(UserActions.getUserPreferences());
       dispatch(UserActions.getUserProfile());
-      dispatch(UserActions.getUserProfile());
-      dispatch(AssetActions.getAssetCount());
       dispatch(UserActions.getFavouriteProperties());
       dispatch(UserActions.getAssets());
     }

@@ -140,7 +140,12 @@
     "invalidLink": "Can not open one of these links.",
     "save": "Save",
     "discard": "Discard",
-    "sort": "Sort"
+    "sort": "Sort",
+    "wantToContinue": "Do you still want to continue?",
+    "sms": "SMS",
+    "mail": "Mail",
+    "share": "Share",
+    "whatsapp": "WhatsApp"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -403,7 +408,10 @@
     "sellFlowFormDescription": "Write a description to attract more views",
     "manageFlowFormDescription": "Any additional comments",
     "editPropertyCautionText": "You are about to edit your property. Until the changes are reviewed, your property will not appear in the search results",
-    "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?"
+    "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?",
+    "editProperty": "Edit Property",
+    "deleteProperty": "Delete Property",
+    "editListing": "Edit Listing"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -558,7 +566,9 @@
     "lowestOffer": "Lowest Offer",
     "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}",
     "noPropertiesAdded": "You haven't added any properties",
-    "noFilterProperties": "There are no properties for the selected filter"
+    "noFilterProperties": "There are no properties for the selected filter",
+    "deletePropertyDescription": "Sed mattis ultrices arcu turpis feugiat consequat, purus. In arcu leo sed a id imperdiet magna.",
+    "deleteConfirmation": "Do you want to delete property?"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -610,9 +620,19 @@
     "savedProperties": "Saved Properties",
     "propertyVisits": "Property Visits",
     "marketTrends": "Market Trends",
+    "shareTrend": "Read this interesting article I found on homzhub -",
+    "noTrends": "There are no links matching your search term",
     "support": "Support",
     "settings": "Settings",
-    "referFriend": "Refer a friend",
+    "referFriend": "Refer & Earn",
+    "referMore": "Refer 5 Friends or more and",
+    "getRewarded": "GET REWARDED!",
+    "refCode": "REFERRAL CODE",
+    "refWith": "Refer your friends with",
+    "copiedCode": "Referral code copied to the clipboard",
+    "clickCopy": "Click below to copy the code",
+    "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
+    "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
     "paymentMethods": "Subscriptions & Payments",
     "logout": "Log Out",
     "refer": "Refer & Earn"

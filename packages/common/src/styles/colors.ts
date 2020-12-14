@@ -7,6 +7,7 @@ const namedColors = {
   blue: '#0084F8',
   completed: '#47C2B1',
   green: '#2CBA67',
+  referGreen: '#27AE60',
   warning: '#F9A901',
   mediumPriority: '#FBC02D',
   highPriority: '#FF8576',
@@ -95,6 +96,7 @@ const opacity = {
   reviewCardOpacity: 'rgba(44, 186, 103, 0.1)',
   disabledOpacity: 'rgba(153, 164, 175, 0.1)',
   activeOpacity: 'rgba(0, 132, 248, 0.1)',
+  boxShadow: 'rgba(0, 0, 0, 0.24)',
 };
 
 const gradientAssetMetrics = {

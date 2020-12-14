@@ -1,7 +1,6 @@
 import { ICallback } from '@homzhub/common/src/modules/interfaces';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
-import { ICount } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 
@@ -11,7 +10,6 @@ export interface IAssetState {
   documents: AssetDocument[];
   visits: IAssetVisit[];
   visitIds: number[];
-  assetCount: ICount | null;
   error: {
     asset: string;
     reviews: string;

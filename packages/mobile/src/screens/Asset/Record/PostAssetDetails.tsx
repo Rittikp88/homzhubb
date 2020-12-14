@@ -27,6 +27,7 @@ import {
 } from '@homzhub/mobile/src/components';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import { IEditPropertyFlow } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
@@ -207,38 +208,31 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderEditFlowCaution = (): ReactElement => {
+  private renderEditFlowCaution = (): ReactElement | null => {
     const {
       t,
       editPropertyFlowDetails: { showBottomSheet },
+      asset,
     } = this.props;
+    if (!asset) {
+      return null;
+    }
 
     return (
       <BottomSheet
         key="editFlowSheet"
-        sheetHeight={300}
+        sheetHeight={400}
+        headerTitle={t('editProperty')}
         visible={showBottomSheet}
         onCloseSheet={this.onBottomSheetClose}
       >
-        <View style={styles.sheetStyle}>
-          <Text type="regular" textType="regular">
-            {t('editPropertyCautionText')}
-          </Text>
-          <View style={styles.buttonGroupStyle}>
-            <Button
-              containerStyle={styles.marginRight}
-              type="primary"
-              title={t('common:continue')}
-              onPress={this.onBottomSheetClose}
-            />
-            <Button
-              containerStyle={styles.marginLeft}
-              type="primary"
-              title={t('common:cancel')}
-              onPress={this.goBack}
-            />
-          </View>
-        </View>
+        <PropertyConfirmationView
+          propertyData={asset}
+          description={t('editPropertyCautionText')}
+          message={t('common:wantToContinue')}
+          onCancel={this.goBack}
+          onContinue={this.onBottomSheetClose}
+        />
       </BottomSheet>
     );
   };

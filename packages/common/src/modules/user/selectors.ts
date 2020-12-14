@@ -146,6 +146,17 @@ const getFavouriteProperties = (state: IState): Wishlist[] => {
   return ObjectMapper.deserializeArray(Wishlist, favouriteProperties);
 };
 
+const getReferralCode = (state: IState): string => {
+  const {
+    user: { userProfile },
+  } = state;
+
+  if (!userProfile) return '';
+
+  const profile = ObjectMapper.deserialize(UserProfile, userProfile);
+  return profile.referralCode;
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -161,4 +172,5 @@ export const UserSelector = {
   getCurrency,
   getUserAssets,
   getFavouriteProperties,
+  getReferralCode,
 };

@@ -3,17 +3,18 @@ import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import MarketTrendsCard from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCard';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
+import { IMarketTrendParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const MarketTrendsCarousel: FC = () => {
   const [marketTrends, setMarketTrends] = useState({} as MarketTrends);
 
   useEffect(() => {
-    getMarketTrends((response) => setMarketTrends(response));
+    getMarketTrends((response) => setMarketTrends(response)).then();
   }, []);
 
   if (ObjectUtils.isEmpty(marketTrends)) {
@@ -43,8 +44,14 @@ const MarketTrendsCarousel: FC = () => {
 };
 
 const getMarketTrends = async (callback: (response: MarketTrends) => void): Promise<void> => {
+  const payload: IMarketTrendParams = {
+    limit: 9,
+    trend_type: undefined,
+    q: undefined,
+    offset: undefined,
+  };
   try {
-    const response: MarketTrends = await DashboardRepository.getMarketTrends(0);
+    const response = await CommonRepository.getMarketTrends(payload);
     callback(response);
   } catch (err) {
     // todo: handle error case

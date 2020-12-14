@@ -97,18 +97,75 @@ class LinkingService {
 
   public openDialer = async (phoneNumber: string): Promise<void> => {
     const url = `tel:${phoneNumber}`;
+
     if (!(await this.canOpenURL(url))) {
       return;
     }
+
+    await Linking.openURL(url);
+  };
+
+  public openSMS = async ({ message, phoneNumber }: { message: string; phoneNumber?: string }): Promise<void> => {
+    let url = 'sms:';
+    if (phoneNumber) {
+      url = `${url}${phoneNumber}?body=${message}`;
+    } else {
+      url = `${url}?body=${message}`;
+    }
+
+    if (!(await this.canOpenURL(url))) {
+      return;
+    }
+
+    await Linking.openURL(url);
+  };
+
+  public openEmail = async ({
+    body,
+    email,
+    subject,
+  }: {
+    body: string;
+    email?: string;
+    subject?: string;
+  }): Promise<void> => {
+    let url = 'mailto:';
+
+    if (email) {
+      url = `${url}${email}?body=${body}`;
+    } else {
+      url = `${url}?body=${body}`;
+    }
+    if (subject) {
+      url = `${url}&subject=${subject}`;
+    }
+
+    if (!(await this.canOpenURL(url))) {
+      return;
+    }
+
     await Linking.openURL(url);
   };
 
   public whatsappMessage = async (phoneNumber: string, message: string): Promise<void> => {
-    const url = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+    const url = `https://wa.me/${phoneNumber}/?text=${encodeURI(message)}`;
+
     if (!(await this.canOpenURL(url))) {
       AlertHelper.error({ message: I18nService.t('common:installWhatsapp') });
       return;
     }
+
+    await Linking.openURL(url);
+  };
+
+  public openWhatsapp = async (message: string): Promise<void> => {
+    const url = `https://wa.me/?text=${encodeURI(message)}`;
+
+    if (!(await this.canOpenURL(url))) {
+      AlertHelper.error({ message: I18nService.t('common:installWhatsapp') });
+      return;
+    }
+
     await Linking.openURL(url);
   };
 

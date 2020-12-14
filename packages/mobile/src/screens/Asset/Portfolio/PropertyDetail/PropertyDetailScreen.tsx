@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, PickerItemProps, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -9,6 +9,7 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
@@ -18,11 +19,13 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import {
   AnimatedProfileHeader,
-  BottomSheetListView,
+  BottomSheet,
   FullScreenAssetDetailsCarousel,
   HeaderCard,
   Loader,
 } from '@homzhub/mobile/src/components';
+import DropdownModal from '@homzhub/mobile/src/components/molecules/DropdownModal';
+import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
@@ -47,18 +50,13 @@ const { height } = theme.viewport;
 enum MenuItems {
   EDIT_LISTING = 'EDIT_LISTING',
   EDIT_PROPERTY = 'EDIT_PROPERTY',
+  DELETE_PROPERTY = 'DELETE_PROPERTY',
 }
 
 export interface IEditPropertyFlow {
   isEditPropertyFlow: boolean;
   showBottomSheet: boolean;
 }
-
-// TODO: Need Refactor
-const menuItems = [
-  { label: 'Edit Listing', value: MenuItems.EDIT_LISTING },
-  { label: 'Edit Property', value: MenuItems.EDIT_PROPERTY },
-];
 
 interface IStateProps {
   assetPayload: ISetAssetPayload;
@@ -81,7 +79,7 @@ interface IDetailState {
   heights: number[];
   isLoading: boolean;
   isMenuVisible: boolean;
-  selectedMenuItem: string;
+  isDeleteProperty: boolean;
   scrollEnabled: boolean;
 }
 
@@ -105,7 +103,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     isLoading: false,
     isMenuVisible: false,
     scrollEnabled: true,
-    selectedMenuItem: '',
+    isDeleteProperty: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -131,8 +129,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       heights,
       isLoading,
       isMenuVisible,
-      selectedMenuItem,
       scrollEnabled,
+      isDeleteProperty,
     } = this.state;
 
     if (isLoading) {
@@ -150,8 +148,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       assetStatusInfo,
     } = propertyData;
 
+    const menuItems = this.getMenuList(isListingCreated);
+
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
-    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED && isListingCreated;
+    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED;
     return (
       <>
         <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={title}>
@@ -229,15 +229,21 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
           </>
         </AnimatedProfileHeader>
         {this.renderFullscreenCarousel()}
-        <BottomSheetListView
-          data={menuItems}
-          selectedValue={selectedMenuItem}
-          listTitle="Select action"
-          listHeight={200}
-          isBottomSheetVisible={isMenuVisible}
-          onCloseDropDown={this.onCloseMenu}
-          onSelectItem={this.onSelectMenuItem}
-        />
+        <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
+        <BottomSheet
+          visible={isDeleteProperty}
+          headerTitle={t('property:deleteProperty')}
+          sheetHeight={400}
+          onCloseSheet={this.onCloseDeleteView}
+        >
+          <PropertyConfirmationView
+            propertyData={propertyData}
+            description={t('deletePropertyDescription')} // TODO: Replace with proper text
+            message={t('deleteConfirmation')}
+            onCancel={this.onCloseDeleteView}
+            onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
+          />
+        </BottomSheet>
       </>
     );
   };
@@ -350,6 +356,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       propertyData: { id },
     } = this.state;
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.AddRecordScreen, { assetId: id });
   };
 
@@ -376,6 +383,29 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     this.setState({ isMenuVisible: false });
   };
 
+  private onCloseDeleteView = (): void => {
+    this.setState({
+      isDeleteProperty: false,
+    });
+  };
+
+  private onDeleteProperty = async (id: number): Promise<void> => {
+    const { navigation } = this.props;
+    try {
+      await AssetRepository.deleteAsset(id);
+      this.setState(
+        {
+          isDeleteProperty: false,
+        },
+        () => {
+          navigation.navigate(ScreensKeys.PortfolioLandingScreen);
+        }
+      );
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
   private onSelectMenuItem = (value: string): void => {
     const {
       navigation,
@@ -397,6 +427,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     setAssetId(id);
     getAssetById();
 
+    this.onCloseMenu();
+
     if (value === MenuItems.EDIT_LISTING) {
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
@@ -413,7 +445,11 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       });
     }
 
-    this.onCloseMenu();
+    if (value === MenuItems.DELETE_PROPERTY) {
+      this.setState({
+        isDeleteProperty: true,
+      });
+    }
   };
 
   private navigateToBookVisit = (isNew?: boolean): void => {
@@ -450,6 +486,20 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
+  private getMenuList = (isListingCreated: boolean): PickerItemProps[] => {
+    const { t } = this.props;
+    const list = [
+      { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
+      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
+    ];
+
+    if (isListingCreated) {
+      list.splice(1, 0, { label: t('property:editListing'), value: MenuItems.EDIT_LISTING });
+    }
+
+    return list;
+  };
+
   private updateSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
@@ -460,7 +510,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private handleMenuIcon = (): void => {
-    this.setState({ isMenuVisible: true });
+    const { isMenuVisible } = this.state;
+    this.setState({ isMenuVisible: !isMenuVisible });
   };
 
   private toggleScroll = (scrollEnabled: boolean): void => {

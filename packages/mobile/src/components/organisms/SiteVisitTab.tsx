@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
-import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import EventWithProfile from '@homzhub/mobile/src/components/molecules/EventWithProfile';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
 import { IVisitByKey, VisitActions, VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -28,6 +32,7 @@ import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzh
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
 import { MISSED_COMPLETED_DATA, UPCOMING_DROPDOWN_DATA } from '@homzhub/common/src/constants/SiteVisit';
+import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 
 interface IRoutes {
   key: VisitStatusType;
@@ -77,6 +82,8 @@ interface IScreenState {
   dropdownValue: number;
   heights: number[];
   isFromNav: boolean;
+  userDetail: UserInteraction;
+  isProfileVisible: boolean;
 }
 
 type Props = IDispatchProps & IStateProps & IProps & WithTranslation;
@@ -88,6 +95,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     dropdownValue: 1,
     heights: [height, height, height],
     isFromNav: true,
+    userDetail: {} as UserInteraction,
+    isProfileVisible: false,
   };
 
   public componentDidMount(): void {
@@ -109,7 +118,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   }
 
   public render(): React.ReactNode {
-    const { currentIndex, heights } = this.state;
+    const { currentIndex, heights, userDetail, isProfileVisible } = this.state;
+    const { t } = this.props;
     const statusIndex = this.getVisitStatus();
     return (
       <>
@@ -144,6 +154,22 @@ class SiteVisitTab extends Component<Props, IScreenState> {
             routes: Routes,
           }}
         />
+        {!isEmpty(userDetail) && (
+          <BottomSheet
+            visible={isProfileVisible}
+            onCloseSheet={this.onCloseProfile}
+            headerTitle={t('assetMore:profile')}
+            isShadowView
+            sheetHeight={600}
+          >
+            <EventWithProfile
+              detail={userDetail}
+              handleVisitAction={this.handleVisitActions}
+              handleConfirmation={this.showConfirmation}
+              handleReschedule={this.handleSchedule}
+            />
+          </BottomSheet>
+        )}
       </>
     );
   }
@@ -168,6 +194,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               handleAction={this.handleVisitActions}
               handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.UPCOMING)}
               handleDropdown={this.handleDropdownSelection}
+              handleUserView={this.onShowProfile}
             />
           </View>
         );
@@ -185,6 +212,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               handleAction={this.handleVisitActions}
               handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.MISSED)}
               handleDropdown={this.handleDropdownSelection}
+              handleUserView={this.onShowProfile}
             />
           </View>
         );
@@ -202,6 +230,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               handleAction={this.handleVisitActions}
               handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED)}
               handleDropdown={this.handleDropdownSelection}
+              handleUserView={this.onShowProfile}
             />
           </View>
         );
@@ -255,6 +284,25 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
   };
 
+  private onCloseProfile = (): void => {
+    this.setState({
+      isProfileVisible: false,
+    });
+  };
+
+  private onShowProfile = (id: number): void => {
+    UserRepository.getUserInteractions(id)
+      .then((response) => {
+        this.setState({
+          isProfileVisible: true,
+          userDetail: response,
+        });
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      });
+  };
+
   private handleRescheduleVisit = (id: number, key: VisitStatusType): void => {
     const { onReschedule, setVisitIds } = this.props;
     setVisitIds([id]);
@@ -269,16 +317,25 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     this.setState({ currentIndex: index }, () => this.getVisitsData());
   };
 
-  private handleVisitActions = async (id: number, action: VisitActions): Promise<void> => {
+  private handleVisitActions = async (visitId: number, action: VisitActions, isUserView?: boolean): Promise<void> => {
+    const {
+      userDetail: {
+        user: { id },
+      },
+    } = this.state;
     const payload: IUpdateVisitPayload = {
-      id,
+      id: visitId,
       data: {
         status: action,
       },
     };
     try {
       await AssetRepository.updatePropertyVisit(payload);
-      this.getVisitsData();
+      if (isUserView) {
+        this.onShowProfile(id);
+      } else {
+        this.getVisitsData();
+      }
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -300,6 +357,12 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
   };
 
+  private handleSchedule = (): void => {
+    const { onReschedule } = this.props;
+    onReschedule();
+    this.onCloseProfile();
+  };
+
   private getVisitStatus = (): number | null => {
     const { visits } = this.props;
 
@@ -318,6 +381,15 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       return 2; // COMPLETED
     }
     return null;
+  };
+
+  private showConfirmation = (visitId: number): void => {
+    const { t } = this.props;
+    AlertHelper.alert({
+      title: t('property:cancelVisit'),
+      message: t('property:wantCancelVisit'),
+      onOkay: () => this.handleVisitActions(visitId, VisitActions.CANCEL, true).then(),
+    });
   };
 
   private getDropdownData = (visitType: VisitStatusType): IDropdownObject[] => {

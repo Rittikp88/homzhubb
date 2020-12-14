@@ -1,18 +1,10 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { ILinks, Links } from '@homzhub/common/src/domain/models/PaginationLinks';
+import { Links } from '@homzhub/common/src/domain/models/PaginationLinks';
 
-export interface IMarketTrends {
-  count: number;
-  links: ILinks;
-  results: IMarketTrendsResults[];
-}
-
-export interface IMarketTrendsResults {
-  id: number;
-  title: string;
-  posted_at: string;
-  link: string;
+export enum MarketTrendType {
+  PERSPECTIVE = 'PERSPECTIVE',
+  VIDEO = 'VIDEO',
 }
 
 @JsonObject('MarketTrendsResults')
@@ -35,6 +27,9 @@ export class MarketTrendsResults {
   @JsonProperty('trend_type', String)
   private _trendType = '';
 
+  @JsonProperty('description', String)
+  private _description = '';
+
   get id(): number {
     return this._id;
   }
@@ -43,8 +38,8 @@ export class MarketTrendsResults {
     return this._title;
   }
 
-  get postedAt(): string {
-    return this._postedAt;
+  get description(): string {
+    return this._description;
   }
 
   get postedAtDate(): string {
@@ -55,12 +50,12 @@ export class MarketTrendsResults {
     return this._imageUrl;
   }
 
-  get trendType(): string {
-    return this._trendType;
-  }
-
   get link(): string {
     return this._link;
+  }
+
+  get trendType(): MarketTrendType {
+    return this._trendType as MarketTrendType;
   }
 }
 

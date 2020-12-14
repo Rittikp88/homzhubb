@@ -20,6 +20,11 @@ export interface IDropdownObject {
   dataGroupBy: DataGroupBy;
 }
 
+export enum DateRangeType {
+  Month = 'month',
+  Year = 'year',
+}
+
 const translationKey = LocaleConstants.namespacesKey.common;
 
 export const FINANCIAL_DROPDOWN_DATA = {

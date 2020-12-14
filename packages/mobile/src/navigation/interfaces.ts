@@ -96,6 +96,7 @@ export enum ScreensKeys {
   SettingsScreen = 'SettingsScreen',
   UpdatePassword = 'UpdatePassword',
   SupportScreen = 'SupportScreen',
+  ReferEarn = 'ReferEarn',
 }
 
 export enum OtpNavTypes {
@@ -179,6 +180,7 @@ export interface IBookVisitProps {
 // Webview
 export interface IWebviewProps {
   url: string;
+  trendId?: number;
 }
 
 // User Profile

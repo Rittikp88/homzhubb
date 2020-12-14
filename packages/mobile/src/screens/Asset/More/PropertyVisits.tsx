@@ -83,6 +83,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
           propertyList={propertiesByCountry}
           onCountryChange={this.onCountryChange}
           onPropertyChange={this.handlePropertySelect}
+          containerStyle={styles.dropdownStyle}
         />
         {isCalendarView ? (
           <SiteVisitCalendarView onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
@@ -191,5 +192,8 @@ const styles = StyleSheet.create({
   },
   calendarStyle: {
     paddingRight: 12,
+  },
+  dropdownStyle: {
+    paddingHorizontal: 16,
   },
 });
