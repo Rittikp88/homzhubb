@@ -3,15 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
-import PropertyNotifications from '@homzhub/web/src/screens/dashboard/components/PropertyNotifications';
+import PropertyUpdates from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
 import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 import VacantProperties from '@homzhub/web/src/screens/dashboard/components/VacantProperties';
 import { PendingPropertiesCard } from '@homzhub/web/src/components';
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
+import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
@@ -22,13 +24,15 @@ const Dashboard: FC<IProps> = (props: IProps) => {
   const isMobile = useUp(deviceBreakpoint.MOBILE);
   const { investmentDataArray } = props;
   const [pendingProperty, setPendingProperty] = useState({} as Asset[]);
+  const [propertyMetrics, setPropertyMetrics] = useState({} as AssetMetrics);
   useEffect(() => {
-    getPendingProperties((response) => setPendingProperty(response));
+    getPropertyStatus(PropertyStatus.PENDING, (response) => setPendingProperty(response)).then();
+    getPropertyMetrics((response) => setPropertyMetrics(response)).then();
   }, []);
   return (
     <View style={styles.container}>
-      <PropertyOverview />
-      <PropertyNotifications />
+      <PropertyOverview data={propertyMetrics?.assetMetrics?.miscellaneous ?? []} />
+      <PropertyUpdates updatesData={propertyMetrics?.updates ?? {}} />
       <PropertyVisualsEstimates />
       {isMobile ? (
         <View style={[styles.wrapper, isMobile && styles.row]}>
@@ -48,13 +52,21 @@ const Dashboard: FC<IProps> = (props: IProps) => {
   );
 };
 
-const getPendingProperties = async (callback: (response: Asset[]) => void): Promise<void> => {
+const getPropertyStatus = async (statusType: PropertyStatus, callback: (response: Asset[]) => void): Promise<void> => {
   try {
-    const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
+    const response: Asset[] = await AssetRepository.getPropertiesByStatus(statusType);
     callback(response);
   } catch (e) {
     // todo handle error here
-    // AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+  }
+};
+
+const getPropertyMetrics = async (callback: (response: AssetMetrics) => void): Promise<void> => {
+  try {
+    const response: AssetMetrics = await DashboardRepository.getAssetMetrics();
+    callback(response);
+  } catch (e) {
+    // todo handle error here
   }
 };
 

@@ -8,17 +8,21 @@ import HomzhubDashboard from '@homzhub/common/src/assets/images/homzhubDashboard
 import { ImageRound } from '@homzhub/common/src/components/atoms/Image';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable, MultiCarousel, NextPrevBtn } from '@homzhub/web/src/components';
+import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface ICardProps {
+  data: Miscellaneous;
   isActive: boolean;
   onCardSelect: () => void;
 }
 
-// todo :(bishal) replace dummy data
-const PropertyOverview: FC = () => {
-  const dummyData = [1, 2, 3, 4, 5, 6, 7];
-  const [selectedCard, setSelectedCard] = useState(0);
+interface IProps {
+  data: Miscellaneous[];
+}
+
+const PropertyOverview: FC<IProps> = ({ data }: IProps) => {
+  const [selectedCard, setSelectedCard] = useState('');
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyOverviewStyle(isMobile);
   return (
@@ -26,9 +30,11 @@ const PropertyOverview: FC = () => {
       <EstPortfolioValue />
       <View style={styles.carouselContainer}>
         <MultiCarousel passedProps={customCarouselProps}>
-          {dummyData.map((value: number) => {
-            const onCardPress = (): void => setSelectedCard(value);
-            return <Card key={value} onCardSelect={onCardPress} isActive={selectedCard === value} />;
+          {data.map((item: Miscellaneous) => {
+            const onCardPress = (): void => setSelectedCard(item.label);
+            return (
+              <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
+            );
           })}
         </MultiCarousel>
       </View>
@@ -36,8 +42,8 @@ const PropertyOverview: FC = () => {
   );
 };
 
-const Card = ({ isActive, onCardSelect }: ICardProps): React.ReactElement => {
-  const styles = propertyOverviewStyle();
+const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement => {
+  const styles = cardStyle();
   return (
     <Hoverable>
       {(isHovered: boolean): React.ReactNode => (
@@ -61,7 +67,7 @@ const Card = ({ isActive, onCardSelect }: ICardProps): React.ReactElement => {
               fontWeight="semiBold"
               style={[styles.text, (isHovered || isActive) && styles.activeText]}
             >
-              50
+              {data.count}
             </Typography>
             <Typography
               variant="text"
@@ -69,7 +75,7 @@ const Card = ({ isActive, onCardSelect }: ICardProps): React.ReactElement => {
               fontWeight="regular"
               style={[styles.text, (isHovered || isActive) && styles.activeText]}
             >
-              Occupied
+              {data.label}
             </Typography>
           </View>
         </TouchableOpacity>
@@ -176,17 +182,53 @@ const customCarouselProps: CarouselProps = {
   responsive: CarouselResponsive,
 };
 
+interface ICardStyle {
+  card: ViewStyle;
+  text: ViewStyle;
+  activeText: ViewStyle;
+  cardActive: ViewStyle;
+  roundIcon: ImageStyle;
+}
+
+const cardStyle = (): StyleSheet.NamedStyles<ICardStyle> =>
+  StyleSheet.create<ICardStyle>({
+    card: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      margin: 8,
+      justifyContent: 'center',
+      minHeight: 72,
+      borderRadius: 4,
+      shadowOpacity: 0.08,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowRadius: 8,
+      shadowColor: theme.colors.shadow,
+      backgroundColor: theme.colors.white,
+    },
+    text: {
+      color: theme.colors.darkTint3,
+    },
+    activeText: {
+      color: theme.colors.white,
+    },
+    cardActive: {
+      backgroundColor: theme.colors.lightGreen,
+      color: theme.colors.white,
+    },
+    roundIcon: {
+      marginRight: 8,
+    },
+  });
+
 interface IPropertyOverviewStyle {
   container: ViewStyle;
   carouselContainer: ViewStyle;
   heading: ViewStyle;
   portfolioContainer: ViewStyle;
-  card: ViewStyle;
   upArrow: ViewStyle;
-  text: ViewStyle;
-  activeText: ViewStyle;
-  cardActive: ViewStyle;
-  roundIcon: ViewStyle;
   propertiesValueWrapper: ViewStyle;
   propertiesValueContainer: ViewStyle;
   valueContainer: ViewStyle;
@@ -218,37 +260,8 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IProp
       flex: 1,
       height: isMobile ? undefined : '100%',
     },
-    card: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      margin: 8,
-      justifyContent: 'center',
-      minHeight: 72,
-      borderRadius: 4,
-      shadowOpacity: 0.08,
-      shadowOffset: {
-        width: 0,
-        height: 0,
-      },
-      shadowRadius: 8,
-      shadowColor: theme.colors.shadow,
-      backgroundColor: theme.colors.white,
-    },
     upArrow: {
       transform: [{ rotate: '-90deg' }],
-    },
-    text: {
-      color: theme.colors.darkTint3,
-    },
-    activeText: {
-      color: theme.colors.white,
-    },
-    cardActive: {
-      backgroundColor: theme.colors.lightGreen,
-      color: theme.colors.white,
-    },
-    roundIcon: {
-      marginRight: 8,
     },
     propertiesValueWrapper: {
       flexDirection: 'row',
