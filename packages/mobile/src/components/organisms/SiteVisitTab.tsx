@@ -119,7 +119,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { currentIndex, heights, userDetail, isProfileVisible } = this.state;
-    const { t, onReschedule } = this.props;
+    const { t } = this.props;
     const statusIndex = this.getVisitStatus();
     return (
       <>

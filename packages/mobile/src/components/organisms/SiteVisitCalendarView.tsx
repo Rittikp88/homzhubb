@@ -94,7 +94,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   }
 
   public render(): React.ReactNode {
-    const { t, isLoading, onReschedule } = this.props;
+    const { t, isLoading } = this.props;
     const { currentDate, isCalendarVisible, visitsData, isProfileVisible, userDetail } = this.state;
     const date = DateUtils.getUtcFormatted(currentDate, DateFormats.DD_MMMMYYYY, DateFormats.YYYYMMDD);
     return (
