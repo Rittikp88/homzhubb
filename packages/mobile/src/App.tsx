@@ -58,8 +58,6 @@ export default class App extends React.PureComponent<{}, IState> {
     const selectedLanguage: SupportedLanguages | null = await StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE);
     await I18nService.init(selectedLanguage || undefined);
 
-    setTimeout(() => {
-      this.setState({ booting: false });
-    }, 500);
+    this.setState({ booting: false });
   };
 }
