@@ -39,7 +39,7 @@ interface IProps {
   handleAction: (id: number, action: VisitActions) => void;
   handleUserView?: (id: number) => void;
   handleConfirmation?: (id: number) => void;
-  handleReschedule: (id: number) => void;
+  handleReschedule: (id: number, userId?: number) => void;
   handleDropdown?: (value: string | number, visitType: VisitStatusType) => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -127,7 +127,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
 
   private renderItem = (item: AssetVisit): React.ReactElement => {
     const { asset, user, actions, startDate, endDate, id, role, createdAt, comments, isAssetOwner, status } = item;
-    const { visitType, handleReschedule, isFromProperty, isUserView, handleUserView } = this.props;
+    const { visitType, handleReschedule, isUserView, handleUserView } = this.props;
     const visitStatus = visitType ?? this.getUserVisitStatus(startDate, status);
     const isMissed = visitStatus === VisitStatusType.MISSED;
     const isCompleted = visitStatus === VisitStatusType.COMPLETED;
@@ -136,7 +136,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
 
     const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
 
-    const onReschedule = (): void => handleReschedule(id);
+    const onReschedule = (): void => handleReschedule(id, user.id);
     const onPressIcon = (): void => handleUserView && handleUserView(user.id);
 
     return (
@@ -159,7 +159,6 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             isPropertyOwner={isAssetOwner}
             endDate={endDate}
             comments={comments}
-            isFromProperty={isFromProperty}
             isMissedVisit={isMissed}
             isCompletedVisit={isCompleted}
             onPressSchedule={onReschedule}

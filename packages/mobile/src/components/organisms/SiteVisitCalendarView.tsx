@@ -184,7 +184,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
           subAddress={visitData[0].asset.address}
           startDate={visitData[0].startDate}
           endDate={visitData[0].endDate}
-          isPropertyOwner // TODO: Need to refactor
+          isPropertyOwner={visitData[0].isAssetOwner}
           onPressSchedule={(): void => this.handleRescheduleAll(visitData)}
           containerStyle={styles.addressView}
         />

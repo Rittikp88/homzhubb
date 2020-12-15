@@ -384,6 +384,7 @@ export interface IScheduleVisitPayload {
   sale_listing: number | null;
   lease_listing: number | null;
   comments?: string;
+  scheduled_for?: number;
 }
 
 export interface IPropertyImagesPostPayload {

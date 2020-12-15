@@ -48,7 +48,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
     const { data } = this.state;
 
     return (
-      <View style={[styles.container, isDashboard && styles.headerView]}>
+      <View style={[styles.container, isDashboard ? styles.headerView : { height: theme.viewport.height }]}>
         {this.renderHeader()}
         {data.length > 0 ? (
           <FlatList
@@ -180,7 +180,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
     const { isDashboard } = this.props;
     const { selectedType, searchQuery, data } = this.state;
 
-    let limit = 30;
+    let limit = 10;
     let trend_type: MarketTrendType | undefined = selectedType;
     let q: string | undefined = searchQuery;
     if (isDashboard) {

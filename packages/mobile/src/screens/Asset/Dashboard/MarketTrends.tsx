@@ -38,6 +38,7 @@ export class MarketTrends extends React.PureComponent<Props, IOwnState> {
     const { navigation, route } = this.props;
 
     if (route.params?.isFromDashboard ?? false) {
+      // @ts-ignore
       navigation.navigate(ScreensKeys.DashboardLandingScreen);
       navigation.popToTop();
       return;
@@ -52,6 +53,7 @@ export class MarketTrends extends React.PureComponent<Props, IOwnState> {
 
   private openWebView = (url: string, trendId: number): void => {
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.WebViewScreen, { url, trendId });
   };
 }

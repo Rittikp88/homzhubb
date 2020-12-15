@@ -42,6 +42,23 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
   const dateTime = DateUtils.convertTimeFormat(startDate, 'YYYY-MM-DD HH');
   const time = VisitSlot.find((item) => item.from === Number(dateTime[1]));
   const textStyle = [styles.textColor, isMissedVisit && styles.missedColor];
+  const isReschedule = isCompletedVisit || isMissedVisit || (!isCompletedVisit && !isMissedVisit && !isRescheduleAll);
+  const isRescheduleAllVisible = isRescheduleAll && isPropertyOwner;
+
+  const rescheduleView = (text: string): React.ReactElement => {
+    return (
+      <TouchableOpacity
+        style={[styles.content, theme.viewport.width <= 375 && styles.extraMargin]}
+        onPress={onPressSchedule}
+      >
+        <Icon name={icons.schedule} color={theme.colors.blue} size={20} />
+        <Text type="small" style={styles.scheduleText}>
+          {text}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={containerStyle}>
       {isFromProperty ? (
@@ -79,17 +96,8 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
             {time?.formatted}
           </Text>
         </View>
-        {!isPropertyOwner && (
-          <TouchableOpacity
-            style={[styles.content, theme.viewport.width <= 375 && styles.extraMargin]}
-            onPress={onPressSchedule}
-          >
-            <Icon name={icons.schedule} color={theme.colors.blue} size={20} />
-            <Text type="small" style={styles.scheduleText}>
-              {isCompletedVisit ? t('newVisit') : isRescheduleAll ? t('rescheduleAll') : t('reschedule')}
-            </Text>
-          </TouchableOpacity>
-        )}
+        {isReschedule && rescheduleView(isCompletedVisit ? t('newVisit') : t('reschedule'))}
+        {isRescheduleAllVisible && rescheduleView(t('rescheduleAll'))}
       </View>
     </View>
   );

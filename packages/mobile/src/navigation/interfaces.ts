@@ -175,6 +175,7 @@ export interface IBookVisitProps {
   sale_listing_id?: number;
   lease_listing_id?: number;
   isReschedule?: boolean;
+  userId?: number;
 }
 
 // Webview
