@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -16,7 +15,6 @@ import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscrip
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { AssetSubscriptionData } from '@homzhub/common/src/mocks/AssetSubscriptionData';
 
 interface IProps {
   onApiFailure: (err: IApiClientError) => void;
@@ -43,12 +41,7 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   }, [onApiFailure]);
 
   if (ObjectUtils.isEmpty(data)) {
-    // TODO: (Bishal) condition to be removed
-    if (PlatformUtils.isWeb()) {
-      setData(ObjectMapper.deserialize(UserSubscription, AssetSubscriptionData));
-    } else {
-      return null;
-    }
+    return null;
   }
 
   const currentPlan = `${t('common:homzhub')} ${data.userServicePlan?.label}`;

@@ -21,6 +21,7 @@ const namedColors = {
   danger: '#D60D31',
   orange: '#FB6E07',
   notificationGreen: '#13AB46',
+  notificationRed: '#E93F33',
   lightBlue: '#C2E4FF',
   lightGrayishBlue: '#F7FAFC',
   expense: '#FFC5BE',
