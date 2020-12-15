@@ -1,21 +1,46 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 
-const amenities = [
-  { id: 1, label: 'Beds', count: 2, Icon: icons.bed },
-  { id: 2, label: 'Baths', count: 2, Icon: icons.bathTub },
-  { id: 3, label: 'Sqft', count: 1200, Icon: icons.area },
-];
+interface IProps {
+  assetData: Asset;
+}
 
-const PropertyDetails = (): React.ReactElement => {
+const PropertyDetails = ({ assetData }: IProps): React.ReactElement => {
   const { t } = useTranslation();
+  const {
+    address,
+    furnishing,
+    spaces,
+    projectName,
+    carpetArea,
+    carpetAreaUnit,
+    country,
+    unitNumber,
+    blockNumber,
+  } = assetData;
+  const primaryAddress = projectName;
+  const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
+  const countryIconUrl = country?.flag;
+  const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
+    spaces,
+    furnishing,
+    AssetGroupTypes.RES,
+    carpetArea,
+    carpetAreaUnit?.title ?? '',
+    true
+  );
   const addressTextStyle: ITypographyProps = {
     size: 'small',
     fontWeight: 'semiBold',
@@ -28,41 +53,38 @@ const PropertyDetails = (): React.ReactElement => {
   };
   return (
     <View style={styles.container}>
-      <Badge title={t('Vacant')} badgeColor={theme.colors.highPriority} badgeStyle={styles.badge} />
-      <View>
-        <PropertyAddressCountry
-          primaryAddress={t('2BHK - Godrej Prime')}
-          countryFlag="https://www.countryflags.io/IN/flat/48.png"
-          primaryAddressTextStyles={addressTextStyle}
-          subAddressTextStyles={subAddressTextStyle}
-          subAddress={t('Sindhi Society, Chembur, Mumbai- 400071')}
-          containerStyle={styles.containerStyle}
+      <Badge title={t('assetDashboard:vacant')} badgeColor={theme.colors.highPriority} badgeStyle={styles.badge} />
+      <PropertyAddressCountry
+        primaryAddress={primaryAddress}
+        countryFlag={countryIconUrl}
+        primaryAddressTextStyles={addressTextStyle}
+        subAddressTextStyles={subAddressTextStyle}
+        subAddress={subAddress}
+        containerStyle={styles.containerStyle}
+      />
+      {amenitiesData.length > 0 && (
+        <PropertyAmenities
+          data={amenitiesData}
+          direction="row"
+          containerStyle={styles.propertyInfoBox}
+          contentContainerStyle={styles.cardIcon}
         />
-      </View>
-      <View style={styles.amenities}>
-        {amenities.map((Item) => (
-          <View key={Item.id} style={styles.amenitiesWrapper}>
-            <Icon name={Item.Icon} size={20} />
-
-            <Text type="small" style={styles.amenitiesName} textType="regular" minimumFontScale={0.5}>
-              {t(`${Item.count}${Item.label}`)}
-            </Text>
-          </View>
-        ))}
-      </View>
+      )}
       <View style={styles.warningWrapper}>
         <Icon name={icons.filledWarning} size={17} style={styles.Icon} />
-        <Text type="small" style={styles.warningText} textType="light" minimumFontScale={0.5}>
-          {t('Vacant since two weeks')}
-        </Text>
-      </View>{' '}
+        <Label type="large" style={styles.warningText} textType="regular">
+          Vacant since two weeks
+        </Label>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    flex: 1,
+    marginTop: 16,
+    marginRight: 16,
   },
   badge: {
     width: 88,
@@ -75,6 +97,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 12,
+  },
+  propertyInfoBox: {
+    justifyContent: undefined,
+    marginRight: 16,
+  },
+  cardIcon: {
+    marginRight: 8,
   },
   addressCountry: {
     marginTop: 8,
@@ -92,10 +121,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     color: theme.colors.darkTint3,
   },
-  amenities: {
-    flexDirection: 'row',
-    flex: 12,
-  },
   Icon: { color: theme.colors.danger },
   amenitiesWrapper: {
     flex: 4,
@@ -104,13 +129,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 0,
     marginRight: 20,
-  },
-  amenitiesName: {
-    fontSize: 12,
-    fontWeight: '600',
-    fontStyle: 'normal',
-    color: theme.colors.darkTint3,
-    marginLeft: 6,
   },
   warningWrapper: {
     marginTop: 25,
@@ -123,11 +141,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   warningText: {
-    fontWeight: '600',
-    fontSize: 14,
     color: theme.colors.danger,
   },
-  containerStyle: { margin: 15 },
+  containerStyle: {
+    marginVertical: 16,
+  },
 });
 
 export default PropertyDetails;
