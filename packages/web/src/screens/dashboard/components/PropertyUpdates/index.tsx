@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { AssetUpdates } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { IPropertyNotification, IPropertyNotificationDetails } from '@homzhub/common/src/constants/DashBoard';
 import PropertyUpdatesCard from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates/PropertyUpdatesCard';
+import { AssetUpdates } from '@homzhub/common/src/domain/models/AssetMetrics';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { IPropertyNotification, IPropertyNotificationDetails } from '@homzhub/common/src/constants/DashBoard';
 
 interface IProp {
   updatesData: AssetUpdates;

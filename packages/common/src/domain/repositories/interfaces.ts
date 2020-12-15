@@ -464,6 +464,14 @@ export interface IProfileDetailsPayload {
   phone_code: string;
   phone_number: string;
   email: string;
+  user_address: {
+    address: string;
+    postal_code: string;
+    city_name: string;
+    state_name: string;
+    country_name: string;
+    country_iso2_code: string;
+  } | null;
 }
 
 export interface IUpdateProfilePayload {
