@@ -1,5 +1,5 @@
 import React from 'react';
-import { PickerItemProps, StyleSheet } from 'react-native';
+import { PickerItemProps } from 'react-native';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
@@ -10,7 +10,7 @@ import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { AnimatedProfileHeader, AssetMetricsList, Loader, IMetricsData } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
@@ -58,21 +58,16 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   }
 
   public render = (): React.ReactElement => {
-    const { isLoading } = this.state;
-    return (
-      <>
-        {this.renderComponent()}
-        <Loader visible={isLoading} />
-      </>
-    );
-  };
-
-  private renderComponent = (): React.ReactElement => {
     const { t } = this.props;
-    const { scrollEnabled, selectedProperty, selectedCountry } = this.state;
+    const { scrollEnabled, selectedProperty, selectedCountry, isLoading } = this.state;
 
     return (
-      <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
+      <AnimatedProfileHeader
+        loading={isLoading}
+        isGradientHeader
+        isOuterScrollEnabled={scrollEnabled}
+        title={t('financial')}
+      >
         <>
           <AssetMetricsList
             title={t('assetFinancial:recordsText')}
@@ -80,7 +75,6 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
             isSubTextRequired={false}
             data={this.getHeaderData()}
             onPlusIconClicked={this.onPlusIconPress}
-            textStyle={styles.priceStyle}
           />
           <PropertyByCountryDropdown
             selectedProperty={selectedProperty}
@@ -143,18 +137,16 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
     return [
       {
-        label: t('assetFinancial:income', { year: currentYear }),
+        name: t('assetFinancial:income', { year: currentYear }),
         count: `${LedgerUtils.totalByType(LedgerTypes.credit, ledgerData)}`,
         isCurrency: true,
-        // @ts-ignore
-        colorGradient: { hexColorA: theme.colors.gradientA, hexColorB: theme.colors.gradientB, location: [0, 1] },
+        colorCode: theme.colors.incomeGreen,
       },
       {
-        label: t('assetFinancial:expense', { year: currentYear }),
+        name: t('assetFinancial:expense', { year: currentYear }),
         count: `${LedgerUtils.totalByType(LedgerTypes.debit, ledgerData)}`,
         isCurrency: true,
-        // @ts-ignore
-        colorGradient: { hexColorA: theme.colors.gradientC, hexColorB: theme.colors.gradientD, location: [0, 1] },
+        colorCode: theme.colors.expenseOrange,
       },
     ];
   };
@@ -205,10 +197,3 @@ const connectedComponent = connect(mapStateToProps)(
   withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials)
 );
 export default connectedComponent;
-
-const styles = StyleSheet.create({
-  priceStyle: {
-    textAlign: 'center',
-    color: theme.colors.white,
-  },
-});

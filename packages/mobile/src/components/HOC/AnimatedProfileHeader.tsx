@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import LinearGradient from 'react-native-linear-gradient';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -18,11 +19,20 @@ interface IProps {
   title?: string;
   sectionHeader?: string;
   sectionTitleType?: FontWeightType;
-  onBackPress?: () => void;
   isOuterScrollEnabled?: boolean;
   keyboardShouldPersistTaps?: boolean;
   loading?: boolean;
+  isGradientHeader?: boolean;
+  onBackPress?: () => void;
 }
+
+const { headerGradientA, headerGradientB, headerGradientC } = theme.colors;
+const gradientProps = {
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 0 },
+  colors: [headerGradientA, headerGradientB, headerGradientC],
+  locations: [0.2, 0.7, 0.9],
+};
 
 const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
   const {
@@ -31,9 +41,10 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
     isOuterScrollEnabled,
     sectionTitleType = 'bold',
     children,
-    onBackPress,
     keyboardShouldPersistTaps = false,
     loading = false,
+    isGradientHeader = false,
+    onBackPress,
   } = props;
   const userProfile = useSelector(UserSelector.getUserProfile);
   const navigation = useNavigation();
@@ -45,11 +56,20 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
     });
   }, [navigation]);
 
-  return (
-    <View style={styles.container}>
+  const renderContent = useCallback(
+    (): React.ReactElement => (
       <>
-        <StatusBarComponent backgroundColor={theme.colors.primaryColor} isTranslucent barStyle="light-content" />
-        <View style={styles.headerContainer}>
+        <StatusBarComponent
+          backgroundColor={isGradientHeader ? theme.colors.transparent : theme.colors.primaryColor}
+          isTranslucent
+          barStyle="light-content"
+        />
+        <View
+          style={[
+            styles.headerContainer,
+            { backgroundColor: isGradientHeader ? theme.colors.transparent : theme.colors.primaryColor },
+          ]}
+        >
           <Text type="regular" textType="semiBold" style={styles.title}>
             {title}
           </Text>
@@ -64,6 +84,13 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
           </TouchableOpacity>
         </View>
       </>
+    ),
+    [isGradientHeader, title, onProfilePress, userProfile]
+  );
+
+  return (
+    <View style={styles.container}>
+      {isGradientHeader ? <LinearGradient {...gradientProps}>{renderContent()}</LinearGradient> : renderContent()}
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'always' : 'never'}
         showsVerticalScrollIndicator={false}
@@ -71,7 +98,11 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
         nestedScrollEnabled
       >
         <>
-          <View style={styles.headingView} />
+          {isGradientHeader ? (
+            <LinearGradient {...gradientProps} style={styles.headingView} />
+          ) : (
+            <View style={[styles.headingView, { backgroundColor: theme.colors.primaryColor }]} />
+          )}
           <View style={styles.scrollView}>
             {onBackPress && (
               <View style={styles.header}>
@@ -110,7 +141,6 @@ const styles = StyleSheet.create({
     bottom: 85,
   },
   headingView: {
-    backgroundColor: theme.colors.primaryColor,
     height: 100,
     borderBottomWidth: 8,
     borderBottomColor: theme.colors.green,
@@ -124,7 +154,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   headerContainer: {
-    backgroundColor: theme.colors.primaryColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

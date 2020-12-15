@@ -134,7 +134,7 @@ export class AssetHighlights extends Component<Props, IState> {
                 <TextInput
                   placeholder={t('property:highlightPlaceholder')}
                   autoCorrect={false}
-                  autoCapitalize="none"
+                  autoCapitalize="words"
                   numberOfLines={1}
                   value={propertyHighlight[index]}
                   onChangeText={(text): void => this.handleTextChange(text, index)}

@@ -14,7 +14,7 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
-import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView, Loader } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -85,29 +85,21 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   }
 
   public render = (): React.ReactElement => {
-    const { isTenanciesLoading } = this.props;
-    const { isLoading } = this.state;
+    const { t, tenancies, properties, currentFilter, isTenanciesLoading } = this.props;
+    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading, assetType, isLoading } = this.state;
     return (
       <>
-        {this.renderComponent()}
-        <Loader visible={isLoading || isTenanciesLoading} />
-      </>
-    );
-  };
-
-  private renderComponent = (): React.ReactElement => {
-    const { t, tenancies, properties, currentFilter } = this.props;
-    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading, assetType } = this.state;
-    return (
-      <>
-        <AnimatedProfileHeader title={t('portfolio')}>
+        <AnimatedProfileHeader
+          isGradientHeader
+          loading={isLoading || isTenanciesLoading || isSpinnerLoading}
+          title={t('portfolio')}
+        >
           <>
             <AssetMetricsList
               title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
               data={metrics?.assetMetrics?.assetGroups ?? []}
               subscription={metrics?.userServicePlan?.label}
               onPlusIconClicked={this.handleAddProperty}
-              containerStyle={styles.assetCards}
               onMetricsClicked={this.onMetricsClicked}
               selectedAssetType={assetType}
               numOfElements={2}
@@ -125,7 +117,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
             />
           </>
         </AnimatedProfileHeader>
-        <Loader visible={isSpinnerLoading} />
       </>
     );
   };
@@ -363,9 +354,6 @@ export default connect(
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(Portfolio));
 
 const styles = StyleSheet.create({
-  assetCards: {
-    marginVertical: 12,
-  },
   title: {
     color: theme.colors.darkTint1,
     marginBottom: 16,

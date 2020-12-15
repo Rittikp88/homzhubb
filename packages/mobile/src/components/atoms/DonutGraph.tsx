@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { PieChart } from 'react-native-svg-charts';
+import { isEqual } from 'lodash';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -61,5 +62,6 @@ const styles = StyleSheet.create({
     height: HEIGHT,
   },
 });
-const memoizedComponent = React.memo(DonutGraph);
+
+const memoizedComponent = React.memo(DonutGraph, isEqual);
 export { memoizedComponent as DonutGraph };

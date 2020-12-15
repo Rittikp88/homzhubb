@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -8,7 +8,6 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
-import { ColorGradient } from '@homzhub/common/src/domain/models/AssetMetrics';
 
 export interface IMetricsData {
   name: string;
@@ -16,7 +15,7 @@ export interface IMetricsData {
   label?: string;
   id?: number;
   isCurrency?: boolean;
-  colorGradient?: ColorGradient;
+  colorCode: string;
 }
 
 interface IProps {
@@ -29,11 +28,10 @@ interface IProps {
   onPlusIconClicked?: () => void;
   onMetricsClicked?: (name: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
 }
 
 const COMPONENT_PADDING = 12;
-const SLIDER_WIDTH = theme.viewport.width - (theme.layout.screenPadding * 2 + COMPONENT_PADDING * 2);
+const SLIDER_WIDTH = theme.viewport.width - theme.layout.screenPadding * 2;
 const AssetMetricsList = (props: IProps): React.ReactElement => {
   const {
     title = 0,
@@ -44,7 +42,6 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     containerStyle,
     onMetricsClicked,
     numOfElements = 3,
-    textStyle = {},
     isSubTextRequired = true,
   } = props;
 
@@ -75,7 +72,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
         <View style={styles.sliderRow}>
           {items.map((item: IMetricsData) => {
             const cardStyle = {
-              minWidth: (SLIDER_WIDTH - COMPONENT_PADDING * (numOfElements - 1)) / numOfElements,
+              minWidth: (SLIDER_WIDTH - COMPONENT_PADDING * (numOfElements + 1)) / numOfElements,
             };
             const handlePress = (): void => onMetricsClicked && onMetricsClicked(item.name);
 
@@ -85,13 +82,9 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
                 header={item.label ?? item.name}
                 value={item.count}
                 isCurrency={item.isCurrency ?? false}
-                colorA={item.colorGradient?.hexColorA ?? ''}
-                colorB={item.colorGradient?.hexColorB ?? ''}
-                location={item.colorGradient?.location ?? []}
                 cardStyle={cardStyle}
-                angle={item.colorGradient?.angle ?? 0}
+                colorCode={item.colorCode}
                 onPressMetrics={handlePress}
-                textStyle={textStyle}
                 selectedAssetType={selectedAssetType}
               />
             );
@@ -160,13 +153,13 @@ export { memoizedComponent as AssetMetricsList };
 
 const styles = StyleSheet.create({
   container: {
-    padding: COMPONENT_PADDING,
+    paddingVertical: 12,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
   },
   header: {
+    marginHorizontal: 12,
     flexDirection: 'row',
-    marginBottom: 12,
   },
   headerCenter: {
     flex: 1,
@@ -175,7 +168,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   sliderRow: {
-    justifyContent: 'space-between',
     flexDirection: 'row',
   },
   paginationContainer: {

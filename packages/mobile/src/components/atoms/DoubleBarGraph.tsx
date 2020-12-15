@@ -1,9 +1,9 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { BarChart, Grid, XAxis } from 'react-native-svg-charts';
+import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import { PathProps } from 'react-native-svg';
-import { sum } from 'lodash';
+import { sum, isEqual } from 'lodash';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -29,6 +29,7 @@ const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7, widt
 const VERTICAL_INSET = { top: 8, bottom: 8 };
 // VIEWPORT CONSTANTS
 const HEIGHT = theme.viewport.height * 0.5;
+const Y_AXIS_WIDTH = 55;
 
 const DoubleBarGraph = (props: IProps): React.ReactElement => {
   const {
@@ -41,7 +42,6 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
     WIDTH = label.length <= 4 ? theme.viewport.width - 64 : theme.viewport.width;
     HORIZONTAL_INSET = { left: 24, right: 24 };
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
   const currency = useSelector(UserSelector.getCurrency);
 
   const barData = [
@@ -80,22 +80,31 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
   return (
     <>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View style={styles.barGraphContainer}>
-          <BarChart
-            contentInset={VERTICAL_INSET}
-            spacingInner={0.35}
-            style={{ width: WIDTH, height: HEIGHT }}
-            data={barData}
-          >
-            <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
-          </BarChart>
+        <View>
+          <View style={styles.rowContainer}>
+            <YAxis
+              contentInset={VERTICAL_INSET}
+              data={data1.concat(data2)}
+              svg={SVG_FONT}
+              formatLabel={(value: number): string => `${currency.currencySymbol} ${value}`}
+              style={styles.yAxis}
+            />
+            <BarChart
+              contentInset={VERTICAL_INSET}
+              spacingInner={0.35}
+              style={{ width: WIDTH, height: HEIGHT }}
+              data={barData}
+            >
+              <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
+            </BarChart>
+          </View>
           <XAxis
             spacingInner={0.35}
             style={[styles.xAxis, { width: WIDTH }]}
             data={label}
             contentInset={HORIZONTAL_INSET}
             svg={SVG_FONT}
-            formatLabel={(value, index: number): string => label[index]}
+            formatLabel={(_, index: number): string => label[index]}
           />
         </View>
       </ScrollView>
@@ -104,14 +113,19 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
   );
 };
 
-const memoizedComponent = React.memo(DoubleBarGraph);
+const memoizedComponent = React.memo(DoubleBarGraph, isEqual);
 export { memoizedComponent as DoubleBarGraph };
 
 const styles = StyleSheet.create({
-  barGraphContainer: {
-    flexDirection: 'column',
+  rowContainer: {
+    flexDirection: 'row',
   },
   xAxis: {
+    marginStart: Y_AXIS_WIDTH,
     paddingVertical: 12,
+  },
+  yAxis: {
+    alignItems: 'flex-start',
+    width: Y_AXIS_WIDTH,
   },
 });

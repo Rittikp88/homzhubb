@@ -133,7 +133,8 @@ export { memoizedComponent as ReferEarn };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 18,
     backgroundColor: theme.colors.white,
   },
   shareContainer: {
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
   },
   code: {
-    marginStart: 24,
+    marginStart: 8,
     color: theme.colors.white,
   },
   shareText: {

@@ -15,7 +15,6 @@ export interface IAddress {
   is_primary: boolean;
   location: ILocationDetails;
 }
-
 @JsonObject('Address')
 export class Address {
   @JsonProperty('id', Number)

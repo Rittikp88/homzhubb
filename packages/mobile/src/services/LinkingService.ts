@@ -107,10 +107,11 @@ class LinkingService {
 
   public openSMS = async ({ message, phoneNumber }: { message: string; phoneNumber?: string }): Promise<void> => {
     let url = 'sms:';
+    const delimiter = PlatformUtils.isIOS() ? '&' : '?';
     if (phoneNumber) {
-      url = `${url}${phoneNumber}?body=${message}`;
+      url = `${url}${phoneNumber}${delimiter}body=${message}`;
     } else {
-      url = `${url}?body=${message}`;
+      url = `${url}${delimiter}body=${message}`;
     }
 
     if (!(await this.canOpenURL(url))) {

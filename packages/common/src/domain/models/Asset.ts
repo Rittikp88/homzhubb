@@ -108,6 +108,13 @@ export class Data {
   @JsonProperty('description', String, true)
   private _description = '';
 
+  @JsonProperty('color_code', String, true)
+  private _colorCode = '';
+
+  get colorCode(): string {
+    return this._colorCode;
+  }
+
   get id(): number {
     return this._id;
   }
