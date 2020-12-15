@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
@@ -14,6 +13,7 @@ import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantP
 import PropertyDetails from '@homzhub/web/src/screens/dashboard/components/VacantProperties/PropertyDetails';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListingVisits';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
@@ -26,12 +26,12 @@ const VacantProperties: FC<IProps> = ({ data }: IProps) => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const styles = vacantPropertyStyle(isMobile, isTablet);
+  const total = data?.length ?? 0;
 
-  if (ObjectUtils.isEmpty(data)) {
+  if (total <= 0) {
     return null;
   }
 
-  const total = data?.length ?? 0;
   const coverImage =
     data[currentAssetIndex]?.attachments?.filter((currentImage: Attachment) => currentImage.isCoverImage)[0]?.link ??
     null;
@@ -69,11 +69,11 @@ const VacantProperties: FC<IProps> = ({ data }: IProps) => {
           ) : (
             <ImagePlaceholder width="100%" containerStyle={styles.image} />
           )}
-          <PropertyDetails assetData={data[currentAssetIndex]} />
+          <PropertyDetails assetData={data[currentAssetIndex] ?? ({} as Asset)} />
         </View>
         {!isTablet && <Divider containerStyles={styles.divider} />}
         <View style={styles.latestUpdates}>
-          <LatestUpdates propertyVisitsData={data[currentAssetIndex].listingVisits} />
+          <LatestUpdates propertyVisitsData={data[currentAssetIndex]?.listingVisits ?? ({} as AssetListingVisits)} />
         </View>
       </View>
     </View>
@@ -134,6 +134,8 @@ const vacantPropertyStyle = (isMobile: boolean, isTablet: boolean): IStyle =>
       minWidth: isMobile ? '100%' : undefined,
       minHeight: isMobile ? 210 : 'calc(100% - 16px)',
       alignSelf: 'flex-start',
+      alignItems: 'center',
+      justifyContent: 'center',
       borderRadius: 4,
       marginTop: 16,
       marginRight: isMobile ? 0 : 12,

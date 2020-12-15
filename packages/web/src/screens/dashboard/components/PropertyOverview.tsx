@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { ImageStyle, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -25,19 +26,22 @@ const PropertyOverview: FC<IProps> = ({ data }: IProps) => {
   const [selectedCard, setSelectedCard] = useState('');
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyOverviewStyle(isMobile);
+  const total = data?.length ?? 0;
   return (
     <View style={styles.container}>
       <EstPortfolioValue />
-      <View style={styles.carouselContainer}>
-        <MultiCarousel passedProps={customCarouselProps}>
-          {data.map((item: Miscellaneous) => {
-            const onCardPress = (): void => setSelectedCard(item.label);
-            return (
-              <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
-            );
-          })}
-        </MultiCarousel>
-      </View>
+      {total > 0 ? (
+        <View style={styles.carouselContainer}>
+          <MultiCarousel passedProps={customCarouselProps}>
+            {data.map((item: Miscellaneous) => {
+              const onCardPress = (): void => setSelectedCard(item.label);
+              return (
+                <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
+              );
+            })}
+          </MultiCarousel>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -137,6 +141,7 @@ const CarouselResponsive = {
 };
 
 const CarouselControlsGrp = ({ next, previous }: ButtonGroupProps): React.ReactElement => {
+  const { t } = useTranslation();
   const updateCarouselIndex = (updateIndexBy: number): void => {
     if (updateIndexBy === 1 && next) {
       next();
@@ -148,7 +153,7 @@ const CarouselControlsGrp = ({ next, previous }: ButtonGroupProps): React.ReactE
   return (
     <View style={styles.container}>
       <Typography variant="text" size="small" fontWeight="regular" style={styles.heading}>
-        Property Details
+        {t('assetPortfolio:propertyDetails')}
       </Typography>
       <Icon name={icons.setting} size={16} color={theme.colors.blue} style={styles.settings} />
       <NextPrevBtn onBtnClick={updateCarouselIndex} />

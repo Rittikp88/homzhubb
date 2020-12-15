@@ -35,7 +35,7 @@ const Dashboard: FC<IProps> = (props: IProps) => {
   }, []);
   const PendingPropertyAndUserSubscriptionComponent = (): React.ReactElement => (
     <>
-      {pendingProperty.length > 0 && <PendingPropertiesCard data={pendingProperty} />}
+      <PendingPropertiesCard data={pendingProperty} />
       <UserSubscriptionPlan onApiFailure={FunctionUtils.noop} />
     </>
   );

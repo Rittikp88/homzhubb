@@ -9,9 +9,8 @@ import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
-import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 
 interface IProps {
   assetData: Asset;
@@ -21,6 +20,7 @@ const PropertyDetails = ({ assetData }: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const {
     address,
+    assetGroup,
     furnishing,
     spaces,
     projectName,
@@ -34,9 +34,9 @@ const PropertyDetails = ({ assetData }: IProps): React.ReactElement => {
   const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
   const countryIconUrl = country?.flag;
   const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-    spaces,
+    spaces ?? ([] as Data[]),
     furnishing,
-    AssetGroupTypes.RES,
+    assetGroup.code,
     carpetArea,
     carpetAreaUnit?.title ?? '',
     true
@@ -131,20 +131,22 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   warningWrapper: {
-    marginTop: 25,
+    marginTop: 24,
     flexDirection: 'row',
     backgroundColor: 'rgba(242, 60, 6, 0.1)',
     width: 205,
     height: 23,
     borderRadius: 2,
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   warningText: {
+    marginLeft: 8,
     color: theme.colors.danger,
   },
   containerStyle: {
-    marginVertical: 16,
+    marginTop: 12,
+    marginBottom: 20,
   },
 });
 
