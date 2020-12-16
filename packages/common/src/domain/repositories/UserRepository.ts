@@ -21,6 +21,7 @@ import {
   IUpdateUserPreferences,
   IProfileImage,
   IEmailVerification,
+  IReferralResponse,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
@@ -55,6 +56,7 @@ const ENDPOINTS = {
   sendOrVerifyEmail: (): string => 'users/verifications/',
   wishlist: (): string => 'wishlists/',
   interactions: (userId: number): string => `users/${userId}/interactions/`,
+  verifyReferralCode: (code: string): string => `users/referrals/${code}/`,
 };
 
 class UserRepository {
@@ -182,6 +184,10 @@ class UserRepository {
   public getUserInteractions = async (id: number): Promise<UserInteraction> => {
     const response = await this.apiClient.get(ENDPOINTS.interactions(id));
     return ObjectMapper.deserialize(UserInteraction, response);
+  };
+
+  public verifyReferalCode = async (code: string): Promise<IReferralResponse> => {
+    return await this.apiClient.get(ENDPOINTS.verifyReferralCode(code));
   };
 }
 

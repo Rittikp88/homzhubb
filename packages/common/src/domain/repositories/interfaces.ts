@@ -72,6 +72,7 @@ export interface ISignUpPayload {
   phone_code: string;
   phone_number: string;
   password: string;
+  signup_referral_code?: string;
 }
 
 export interface ISocialSignUpPayload {
@@ -548,4 +549,8 @@ export interface IMarketTrendParams {
   offset?: number;
   q?: string;
   trend_type?: string;
+}
+
+export interface IReferralResponse {
+  is_applicable: boolean;
 }

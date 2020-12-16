@@ -145,7 +145,8 @@
     "sms": "SMS",
     "mail": "Mail",
     "share": "Share",
-    "whatsapp": "WhatsApp"
+    "whatsapp": "WhatsApp",
+    "invalidLinkError": "Nope you cant open these links"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -207,7 +208,11 @@
     "resetLink": "Reset Link has been sent to your email",
     "emailNotExists": "Email does not exists",
     "validPhone": "Please enter a valid number",
-    "PasswordChangedText": "Password changed! Log back in."
+    "PasswordChangedText": "Password changed! Log back in.",
+    "haveReferralCodeText": "Have a referral code?",
+    "referralCodePlaceholder": "Enter valid referral code",
+    "invalidReferralCodeError": "Please enter a valid referral Code",
+    "loggedInReferralCodeError": "This referral-code is only valid for new users."
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",

@@ -204,3 +204,7 @@ export interface IPropertyDetailProps {
   isFromTenancies?: boolean;
   tabKey?: Tabs;
 }
+
+export interface ISignUpParams extends IScreenCallback {
+  referralCode?: string;
+}
