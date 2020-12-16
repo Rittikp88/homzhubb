@@ -155,6 +155,13 @@ export class More extends React.PureComponent<Props> {
           })
         );
         break;
+      case MoreScreenTypes.KYC_DOCUMENTS:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: ScreensKeys.KYC,
+          })
+        );
+        break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         break;

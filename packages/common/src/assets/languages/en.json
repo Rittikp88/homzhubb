@@ -146,7 +146,9 @@
     "mail": "Mail",
     "share": "Share",
     "whatsapp": "WhatsApp",
-    "invalidLinkError": "Nope you cant open these links"
+    "unsupportedFormat": "Unsupported format",
+    "pleaseTryAgain": "Please try again.",
+    "invalidLinkError": "You can't open this link."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -638,9 +640,12 @@
     "clickCopy": "Click below to copy the code",
     "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
+    "shareDoc": "Hey, I have shared this document with you from the Homzhub app. Please use the link to download.",
     "paymentMethods": "Subscriptions & Payments",
     "logout": "Log Out",
-    "refer": "Refer & Earn"
+    "refer": "Refer & Earn",
+    "searchByDoc": "Search by document name",
+    "noDocs": "There are no documents matching your search term"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

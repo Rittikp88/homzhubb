@@ -52,6 +52,7 @@ import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePasswor
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
+import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -102,6 +103,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
+  [ScreensKeys.KYC]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -184,6 +186,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
       <MoreStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
       <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
+      <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
     </MoreStackNavigator.Navigator>
   );
 };
