@@ -58,9 +58,10 @@
 		C8E39350344548D8B642F458 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35C9381915564BBDA4C55CC6 /* OpenSans-SemiBold.ttf */; };
 		D0B11F371B00388BA34ACC25 /* libPods-homzhub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */; };
 		D32829F4309E422BBCAD942D /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5216AB4833944F1B067062E /* icomoon.ttf */; };
-		E84F86D0256550E300D3E651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E84F86CF256550E300D3E651 /* GoogleService-Info.plist */; };
+		E8748AF425837A1100C574F7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E8748AF325837A1000C574F7 /* GoogleService-Info.plist */; };
 		E8D63B9C24C6BF1D009F18C9 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		EA5C6D9BD314961403BCDED7 /* libPods-homzhub-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE19622E89A68F902597012 /* libPods-homzhub-tvOS.a */; };
+		F6C7B2B8D8AE4EC4BB7E58A0 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73A4D8D75A8243ECA0AC559A /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,7 +88,7 @@
 		00E356F21AD99517003FC87E /* homzhubTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = homzhubTests.m; sourceTree = "<group>"; };
 		05AD2501DEB94FEAA461E17A /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		0DEB6C15C5EB9CA7B942A665 /* Pods-homzhub-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homzhub-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-homzhub-tvOS/Pods-homzhub-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Homzhub - Property Investment And Management.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Homzhub - Property Investment And Management.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Homzhub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Homzhub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = homzhub/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = homzhub/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -120,7 +121,6 @@
 		A04799508A8C4BD789AA5913 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../../common/src/assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		A19394697092483CAC7A61DA /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		A4FB3A5041CA4816926E541A /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		A5216AB4833944F1B067062E /* icomoon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.ttf; path = ../../common/src/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		A7A119A2250F4BF600A9DF99 /* homzhub.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = homzhub.entitlements; path = homzhub/homzhub.entitlements; sourceTree = "<group>"; };
 		A7BED97CAA974EFA8E236585 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		A7D73E77247FBFF3006F9427 /* AIRDummyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRDummyView.m; sourceTree = "<group>"; };
@@ -192,6 +192,7 @@
 		E84F86CF256550E300D3E651 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		73A4D8D75A8243ECA0AC559A /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../../common/src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,7 +278,7 @@
 				91EB2EB3156A4550A4A5A313 /* Raleway-Light.ttf */,
 				BF7AB555DA614F1CAC96AA3E /* Raleway-Medium.ttf */,
 				26F007504DE64EDBA2DAEF56 /* fonts.ts */,
-				A5216AB4833944F1B067062E /* icomoon.ttf */,
+				73A4D8D75A8243ECA0AC559A /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -356,7 +357,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Homzhub - Property Investment And Management.app */,
+				13B07F961A680F5B00A75B9A /* Homzhub.app */,
 				00E356EE1AD99517003FC87E /* homzhubTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* homzhub-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* homzhub-tvOSTests.xctest */,
@@ -477,7 +478,7 @@
 			);
 			name = homzhub;
 			productName = homzhub;
-			productReference = 13B07F961A680F5B00A75B9A /* Homzhub - Property Investment And Management.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Homzhub.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* homzhub-tvOS */ = {
@@ -592,8 +593,8 @@
 				3CE0B25D5D2242B9A4ACD16F /* Raleway-Light.ttf in Resources */,
 				15882547F49946668123D15D /* Raleway-Medium.ttf in Resources */,
 				92D18F0E040D4034BB8E3C75 /* fonts.ts in Resources */,
-				E84F86D0256550E300D3E651 /* GoogleService-Info.plist in Resources */,
 				D32829F4309E422BBCAD942D /* icomoon.ttf in Resources */,
+				E8748AF425837A1100C574F7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1080,7 +1081,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Harish Taori (KB2425WYJP)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1146,14 +1147,14 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
-				MARKETING_VERSION = 0.3;
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
-				PRODUCT_NAME = "Homzhub - Property Investment And Management";
+				PRODUCT_NAME = Homzhub;
 				PROVISIONING_PROFILE_SPECIFIER = "Dev-homzhub";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1170,7 +1171,7 @@
 				CODE_SIGN_ENTITLEMENTS = homzhub/homzhub.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Homzhub Pte Ltd (9TKZH83J22)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1237,14 +1238,14 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
-				MARKETING_VERSION = 0.3;
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
-				PRODUCT_NAME = "Homzhub - Property Investment And Management";
+				PRODUCT_NAME = Homzhub;
 				PROVISIONING_PROFILE_SPECIFIER = "Distribution-Homzhub";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

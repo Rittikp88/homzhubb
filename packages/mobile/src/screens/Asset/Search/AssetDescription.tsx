@@ -59,7 +59,7 @@ import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { DynamicLinkParamKeys, DynamicLinkTypes } from '@homzhub/mobile/src/services/constants';
+import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -630,7 +630,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       screen: ScreensKeys.AssetLeaseListing,
       params: {
         previousScreen: ScreensKeys.PropertyAssetDescription,
-        isFromEdit: true,
+        isEditFlow: true,
       },
     });
   };
@@ -763,7 +763,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     const url = await LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
-      `${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
+      `${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}&${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
     );
 
     if (!isPreview) {

@@ -15,9 +15,7 @@ export class SignUpScreen extends Component<Props> {
     const {
       t,
       navigation,
-      route: {
-        params: { referralCode },
-      },
+      route: { params },
     } = this.props;
 
     return (
@@ -34,7 +32,7 @@ export class SignUpScreen extends Component<Props> {
           <SignUpForm
             onSubmitFormSuccess={this.onFormSubmit}
             onPressLink={this.handleTermsCondition}
-            referralCode={referralCode}
+            referralCode={params && params?.referralCode}
             testID="signupForm"
           />
           <SocialMediaComponent isFromLogin={false} navigation={navigation} />
