@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';
@@ -11,14 +11,15 @@ interface IProps {
   enterFullScreen: () => void;
   updateSlide: (index: number) => void;
   activeSlide: number;
+  containerStyles?: StyleProp<ViewStyle>;
 }
 
 export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { activeSlide, data } = this.props;
+    const { activeSlide, data, containerStyles } = this.props;
     const currentSlide: Attachment = data[activeSlide];
     return (
-      <View style={styles.carouselContainer}>
+      <View style={[styles.carouselContainer, containerStyles]}>
         <SnapCarousel
           carouselData={data}
           carouselItem={this.renderCarouselItem}

@@ -24,6 +24,7 @@ interface IProps {
   loading?: boolean;
   isGradientHeader?: boolean;
   onBackPress?: () => void;
+  detachedHeaderMode?: boolean;
 }
 
 const { headerGradientA, headerGradientB, headerGradientC } = theme.colors;
@@ -45,6 +46,7 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
     loading = false,
     isGradientHeader = false,
     onBackPress,
+    detachedHeaderMode = false,
   } = props;
   const userProfile = useSelector(UserSelector.getUserProfile);
   const navigation = useNavigation();
@@ -105,7 +107,7 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
           )}
           <View style={styles.scrollView}>
             {onBackPress && (
-              <View style={styles.header}>
+              <View style={detachedHeaderMode ? { ...styles.header, ...styles.detachedHeaderStyle } : styles.header}>
                 <Icon
                   size={24}
                   name={icons.leftArrow}
@@ -170,6 +172,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.layout.screenPadding,
     paddingTop: theme.layout.screenPaddingTop,
     backgroundColor: theme.colors.white,
+  },
+  detachedHeaderStyle: {
+    paddingTop: theme.layout.screenPadding,
+    paddingBottom: theme.layout.screenPadding,
+    borderRadius: 4,
+    marginBottom: theme.layout.screenPadding,
   },
   iconStyle: {
     paddingRight: 12,

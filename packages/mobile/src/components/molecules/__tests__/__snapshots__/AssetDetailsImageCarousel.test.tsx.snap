@@ -3,11 +3,14 @@
 exports[`AssetDetailsImageCarousel should match snapshot 1`] = `
 <View
   style={
-    Object {
-      "backgroundColor": "#001B36",
-      "borderRadius": 4,
-      "overflow": "hidden",
-    }
+    Array [
+      Object {
+        "backgroundColor": "#001B36",
+        "borderRadius": 4,
+        "overflow": "hidden",
+      },
+      undefined,
+    ]
   }
 >
   <SnapCarousel

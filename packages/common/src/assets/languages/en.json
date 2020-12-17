@@ -146,6 +146,7 @@
     "mail": "Mail",
     "share": "Share",
     "whatsapp": "WhatsApp",
+    "abbreviatedMonthText": "mo",
     "unsupportedFormat": "Unsupported format",
     "pleaseTryAgain": "Please try again.",
     "invalidLinkError": "You can't open this link."
@@ -647,6 +648,10 @@
     "paymentMethods": "Subscriptions & Payments",
     "logout": "Log Out",
     "refer": "Refer & Earn",
+    "makeAnOfferText": "Make an offer",
+    "scheduleVisit": "Schedule a Visit",
+    "noImagesText": "No Images",
+    "savedPropertiesEmptyText": "You do not have any properties saved",
     "searchByDoc": "Search by document name",
     "noDocs": "There are no documents matching your search term"
   },

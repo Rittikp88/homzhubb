@@ -126,7 +126,7 @@ export class BookVisit extends Component<Props, IVisitState> {
           showsVerticalScrollIndicator={false}
         >
           {this.renderVisitType()}
-          {!params.isReschedule && this.renderVisitorType()}
+          {!params?.isReschedule && this.renderVisitorType()}
           <Divider containerStyles={styles.divider} />
           {upcomingVisits.length > 0 && (
             <CollapsibleSection
@@ -285,7 +285,7 @@ export class BookVisit extends Component<Props, IVisitState> {
     const dateTime = DateUtils.convertTimeFormat(visitDetail.startDate, 'YYYY-MM-DD HH');
     const time = TimeSlot.find((item) => item.from === Number(dateTime[1]));
 
-    if (params && params.isReschedule) {
+    if (params && params?.isReschedule) {
       this.setState({
         selectedDate: visitDetail.startDate ? DateUtils.getDisplayDate(dateTime[0], 'll') : '',
         selectedTimeSlot: time ? time.id : 0,
@@ -409,7 +409,7 @@ export class BookVisit extends Component<Props, IVisitState> {
     };
 
     try {
-      if (params.isReschedule) {
+      if (params?.isReschedule) {
         await AssetRepository.reschedulePropertyVisit(reschedulePayload);
       } else {
         await AssetRepository.propertyVisit(payload);

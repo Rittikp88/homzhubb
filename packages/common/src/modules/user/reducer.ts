@@ -3,7 +3,6 @@ import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
-import { IWishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
@@ -120,7 +119,7 @@ export const userReducer = (
     case UserActionTypes.GET.FAVOURITE_PROPERTIES_SUCCESS:
       return {
         ...state,
-        ['favouriteProperties']: action.payload as IWishlist[],
+        ['favouriteProperties']: action.payload as IAsset[],
         ['loaders']: {
           ...state.loaders,
           ['user']: false,

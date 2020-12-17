@@ -23,13 +23,13 @@ import {
   IEmailVerification,
   IReferralResponse,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
-import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 import { SettingsScreenData } from '@homzhub/common/src/constants/Settings';
@@ -178,9 +178,9 @@ class UserRepository {
     await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail, payload);
   };
 
-  public getWishlistProperties = async (): Promise<Wishlist[]> => {
+  public getWishlistProperties = async (): Promise<Asset[]> => {
     const response = await this.apiClient.get(ENDPOINTS.wishlist);
-    return ObjectMapper.deserializeArray(Wishlist, response);
+    return ObjectMapper.deserializeArray(Asset, response);
   };
 
   public getUserInteractions = async (id: number): Promise<UserInteraction> => {

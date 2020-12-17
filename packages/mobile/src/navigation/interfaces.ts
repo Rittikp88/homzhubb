@@ -97,6 +97,7 @@ export enum ScreensKeys {
   UpdatePassword = 'UpdatePassword',
   SupportScreen = 'SupportScreen',
   ReferEarn = 'ReferEarn',
+  SavedPropertiesScreen = 'SavedPropertiesScreen',
   KYC = 'KYC',
 }
 
