@@ -7,5 +7,6 @@ export const RouteNames = {
     APP_BASE: '/',
     DASHBOARD: '/dashboard',
     FINANCIALS: '/financial',
+    HAVEANYQUESTIONSFORM : '/haveanyquestionsform'
   },
 };
