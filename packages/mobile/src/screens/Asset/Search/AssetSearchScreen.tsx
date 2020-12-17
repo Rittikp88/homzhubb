@@ -26,17 +26,18 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { CurrentLocation, Loader, Range, RoomsFilter } from '@homzhub/mobile/src/components';
+import { BottomSheetListView, CurrentLocation, Loader, Range, RoomsFilter } from '@homzhub/mobile/src/components';
 import AssetTypeFilter from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
-import { ICarpetArea, IFilter, IFilterDetails, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
+import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -48,7 +49,7 @@ export enum OnScreenFilters {
 
 interface IStateProps {
   properties: AssetSearch;
-  filterData: IFilterDetails | null;
+  filterData: FilterDetail | null;
   filters: IFilter;
   isLoading: boolean;
   currencyData: PickerItemProps[];
@@ -66,11 +67,12 @@ interface IDispatchProps {
   setInitialFilters: () => void;
   setInitialState: () => void;
   setChangeStack: (flag: boolean) => void;
-  getFilterDetails: (payload: any) => void;
+  getFilterDetails: (payload: IFilter) => void;
 }
 
 interface IPropertySearchScreenState {
   isMapView: boolean;
+  isSortVisible: boolean;
   selectedOnScreenFilter: OnScreenFilters | string;
   isMenuTrayCollapsed: boolean;
   isSearchBarFocused: boolean;
@@ -87,6 +89,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   private focusListener: any;
   public state = {
     isMapView: true,
+    isSortVisible: false,
     selectedOnScreenFilter: '',
     isMenuTrayCollapsed: false,
     suggestions: [],
@@ -110,6 +113,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     if (!filterData) {
       getFilterDetails({ asset_group: filters.asset_group });
     }
+
     try {
       const response = await CommonRepository.getCarpetAreaUnits();
       const areaUnitsDropdown: IDropdownOption[] = [];
@@ -125,14 +129,23 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     } catch (error) {
       AlertHelper.error({ message: error.message });
     }
+
+    if (filterData) {
+      setFilter({ sort_by: filterData.filters.defaultSort });
+    }
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
     const {
       filters: { search_address },
+      filterData,
+      setFilter,
     } = this.props;
     if (prevProps.filters.search_address !== search_address) {
       this.getAutocompleteSuggestions();
+    }
+    if (filterData && prevProps.filterData?.filters.defaultSort !== filterData.filters.defaultSort) {
+      setFilter({ sort_by: filterData.filters.defaultSort });
     }
   };
 
@@ -155,6 +168,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
           {this.renderBar()}
         </SafeAreaView>
         <Loader visible={isLoading} />
+        {this.renderSort()}
       </>
     );
   }
@@ -196,6 +210,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               getPropertiesListView={getPropertiesListView}
               onSelectedProperty={this.navigateToAssetDetails}
               handleToggle={this.handleToggle}
+              handleSortToggle={this.handleSortToggle}
             />
             {this.renderNoResultsListView()}
             {this.renderMenuTray()}
@@ -273,12 +288,13 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
     const {
       currency,
-      filters: { carpet_area },
+      filters: { carpetArea },
     } = filterData;
 
     // TODO: Handle Multiple currency
     const country = countryData.find((item) => item.currencies[0].currencyCode === currency_code);
 
+    // @ts-ignore
     currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currency_symbol;
 
     const updateFilter = (type: string, value: number | number[]): void => {
@@ -290,17 +306,17 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       } else {
         getProperties();
         if (type === 'asset_group') {
-          getFilterDetails({ asset_group: value });
+          getFilterDetails({ asset_group: value as number });
         }
       }
     };
 
-    if (carpet_area) {
-      carpet_area.forEach((units: ICarpetArea) => {
+    if (carpetArea) {
+      carpetArea.forEach((units: CarpetArea) => {
         if (units.id === area_unit) {
           areaRange = {
-            min: units.min_area,
-            max: units.max_area,
+            min: units.minArea,
+            max: units.maxArea,
           };
         }
       });
@@ -377,6 +393,32 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
         />
         {this.renderSearchResults()}
       </View>
+    );
+  };
+
+  private renderSort = (): React.ReactElement | null => {
+    const {
+      t,
+      filterData,
+      filters: { sort_by },
+    } = this.props;
+    const { isSortVisible } = this.state;
+    if (!filterData) {
+      return null;
+    }
+    const {
+      filters: { sortDropDownData, defaultSort },
+    } = filterData;
+
+    return (
+      <BottomSheetListView
+        data={sortDropDownData}
+        selectedValue={sort_by ?? defaultSort}
+        listTitle={t('common:sort')}
+        isBottomSheetVisible={isSortVisible}
+        onCloseDropDown={this.handleCloseSort}
+        onSelectItem={this.onSelectSort}
+      />
     );
   };
 
@@ -557,6 +599,13 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     this.setState({ isSearchBarFocused });
   };
 
+  private onSelectSort = (value: string): void => {
+    const { setFilter, getPropertiesListView } = this.props;
+    setFilter({ sort_by: value });
+    getPropertiesListView();
+    this.handleCloseSort();
+  };
+
   public toggleSearchBar = (): void => {
     const { isSearchBarFocused } = this.state;
     this.setState({ isSearchBarFocused: !isSearchBarFocused });
@@ -584,6 +633,18 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     const { isMapView } = this.state;
     this.setState({
       isMapView: !isMapView,
+    });
+  };
+
+  private handleSortToggle = (): void => {
+    this.setState({
+      isSortVisible: true,
+    });
+  };
+
+  private handleCloseSort = (): void => {
+    this.setState({
+      isSortVisible: false,
     });
   };
 

@@ -210,7 +210,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              28 Nov 2020
+              17 Dec 2020
             </Label>
           </View>
           <View
@@ -248,35 +248,163 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
         </View>
         <Divider />
       </View>
-      <Memo(CollapsibleSection)
-        isDividerRequired={true}
-        title="description"
-      >
-        <Label
-          numberOfLines={3}
-          onTextLayout={[Function]}
-          style={
-            Object {
-              "color": "#4C5F72",
-              "marginTop": 12,
-            }
-          }
-          textType="regular"
-          type="large"
-        />
-      </Memo(CollapsibleSection)>
-      <Memo(CollapsibleSection)
-        isDividerRequired={true}
-        title="factsFeatures"
-      >
-        <FlatList
-          contentContainerStyle={
-            Object {
-              "marginTop": 16,
-            }
-          }
-          data={
-            Array [
+      <withI18nextTranslation(PropertyDetail)
+        detail={
+          Object {
+            "amenities": Array [
+              Object {
+                "attachment": Object {
+                  "id": 7,
+                  "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/096a9ac6a0c144158a1a3b893e6e8661.svg",
+                  "name": "gym.svg",
+                },
+                "category": Object {
+                  "id": 1,
+                  "name": "General",
+                },
+                "id": 1,
+                "name": "Gymnasium",
+              },
+              Object {
+                "attachment": Object {
+                  "id": 8,
+                  "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/32cef5dd96c54363848f16a28157c9bd.svg",
+                  "name": "pool.svg",
+                },
+                "category": Object {
+                  "id": 1,
+                  "name": "General",
+                },
+                "id": 2,
+                "name": "Swimming Pool",
+              },
+              Object {
+                "attachment": Object {
+                  "id": 9,
+                  "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/e1b50cf36b274f82832d06d534740dfe.svg",
+                  "name": "cctv.svg",
+                },
+                "category": Object {
+                  "id": 1,
+                  "name": "General",
+                },
+                "id": 3,
+                "name": "CCTV Security",
+              },
+              Object {
+                "attachment": Object {
+                  "id": 10,
+                  "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/744c4c3752f34240aefad6b7ca31cdb0.svg",
+                  "name": "parking.svg",
+                },
+                "category": Object {
+                  "id": 1,
+                  "name": "General",
+                },
+                "id": 4,
+                "name": "Parking",
+              },
+              Object {
+                "attachment": Object {
+                  "id": 11,
+                  "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/8ef69654fe634098bfb3b0d749bb6abe.svg",
+                  "name": "wifi.svg",
+                },
+                "category": Object {
+                  "id": 1,
+                  "name": "General",
+                },
+                "id": 5,
+                "name": "Wifi",
+              },
+              Object {
+                "attachment": Object {
+                  "id": 12,
+                  "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/58f8157e972742f896044b2c943a7319.svg",
+                  "name": "intercom.svg",
+                },
+                "category": Object {
+                  "id": 1,
+                  "name": "General",
+                },
+                "id": 6,
+                "name": "Intercom",
+              },
+              Object {
+                "attachment": Object {
+                  "id": 13,
+                  "link": "https://homzhub-bucket.s3.us-east-1.amazonaws.com/19fe670df70c4ff8b9fc6de68bef8efb.svg",
+                  "name": "balcony.svg",
+                },
+                "category": Object {
+                  "id": 1,
+                  "name": "General",
+                },
+                "id": 7,
+                "name": "Balcony",
+              },
+            ],
+            "assetGroup": Object {
+              "id": 1,
+              "name": "Residential",
+            },
+            "assetLocation": Object {
+              "latitude": 25.619,
+              "longitude": 85.123,
+            },
+            "assetType": Object {
+              "id": 2,
+              "name": "Apartment / Condo",
+            },
+            "attachments": Array [
+              Object {
+                "file_name": "prof.jpg",
+                "is_cover_image": true,
+                "link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+                "media_attributes": Object {},
+                "media_type": "IMAGE",
+              },
+              Object {
+                "file_name": "DjangoBackendLLD (1).jpg",
+                "is_cover_image": false,
+                "link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
+                "media_attributes": Object {},
+                "media_type": "IMAGE",
+              },
+            ],
+            "block_number": "B",
+            "carpet_area": 5000,
+            "carpet_area_unit": Object {
+              "id": 1,
+              "label": "Square feet",
+              "name": "SQ_FT",
+              "title": "Sq.ft",
+            },
+            "city_name": "Bengaluru",
+            "contacts": Object {
+              "country_code": "+91",
+              "email": "anuvrat.somnath@nineleaps.com",
+              "full_name": "Anuvrat Somnath",
+              "id": 1,
+              "phone_number": "7903470293",
+            },
+            "country": Object {
+              "currencies": Array [
+                Object {
+                  "currency_code": "",
+                  "currency_name": "",
+                  "currency_symbol": "",
+                },
+              ],
+              "id": 1,
+              "iso2_code": "",
+              "iso3_code": "",
+              "name": "",
+              "phone_codes": Array [],
+            },
+            "country_name": "India",
+            "description": "It is a long established fact that the readable content of a page when looking at its layout.",
+            "features": Array [
               Object {
                 "locale_key": "security_deposit",
                 "name": "Security Deposit",
@@ -312,72 +440,10 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                 "name": "Building Type",
                 "value": "Apartment",
               },
-            ]
-          }
-          disableVirtualization={false}
-          horizontal={false}
-          initialNumToRender={10}
-          keyExtractor={[Function]}
-          maxToRenderPerBatch={10}
-          numColumns={2}
-          onEndReachedThreshold={2}
-          removeClippedSubviews={false}
-          renderItem={[Function]}
-          scrollEventThrottle={50}
-          updateCellsBatchingPeriod={50}
-          windowSize={21}
-        />
-      </Memo(CollapsibleSection)>
-      <View
-        style={
-          Object {
-            "marginTop": 24,
-          }
-        }
-      >
-        <Text
-          style={
-            Object {
-              "color": "#4C5F72",
-            }
-          }
-          textType="semiBold"
-          type="small"
-        >
-          amenities
-        </Text>
-        <Label
-          style={
-            Object {
-              "color": "#4C5F72",
-              "marginTop": 12,
-            }
-          }
-          textType="regular"
-          type="large"
-        >
-          noAmenities
-        </Label>
-        <Divider
-          containerStyles={
-            Object {
-              "marginTop": 24,
-            }
-          }
-        />
-      </View>
-      <Memo(CollapsibleSection)
-        isDividerRequired={true}
-        title="highlights"
-      >
-        <FlatList
-          contentContainerStyle={
-            Object {
-              "marginTop": 16,
-            }
-          }
-          data={
-            Array [
+            ],
+            "floor_number": 1,
+            "furnishing": "NONE",
+            "highlights": Array [
               Object {
                 "covered": true,
                 "name": "Power Backup",
@@ -386,22 +452,68 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                 "covered": true,
                 "name": "Gated Society",
               },
-            ]
+            ],
+            "id": 1,
+            "is_managed": true,
+            "lastVisitedStep": Object {
+              "assetCreation": Object {
+                "percentage": 10,
+              },
+              "listing": Object {
+                "type": "RENT",
+              },
+            },
+            "latitude": 25.619,
+            "leaseTerm": Object {
+              "annual_increment_percentage": 11,
+              "available_from_date": "2020-07-03",
+              "currency_code": "INR",
+              "furnishing_status": "Semi",
+              "id": 1,
+              "maintenance_amount": 1200,
+              "maintenance_paid_by": "5th Every Month",
+              "maintenance_schedule": null,
+              "minimum_lease_period": 11,
+              "monthly_rent_price": 20000,
+              "security_deposit_price": 40000,
+              "utility_paid_by": "2",
+            },
+            "longitude": 85.123,
+            "postal_code": "560097",
+            "posted_on": "2020-06-03",
+            "project_name": "Malti Kunj",
+            "saleTerm": Object {
+              "available_from_date": "2020-08-20",
+              "currency_code": "INR",
+              "expected_booking_amount": 1234,
+              "expected_price": 1234,
+              "id": 1,
+              "maintenance_amount": 100,
+              "maintenance_schedule": "MONTHLY",
+              "year_of_construction": 2000,
+            },
+            "spaces": Array [
+              Object {
+                "count": 1,
+                "id": 1,
+                "name": "Bedroom",
+              },
+              Object {
+                "count": 1,
+                "id": 2,
+                "name": "Bathroom",
+              },
+            ],
+            "state_name": "Karnataka",
+            "total_floors": 4,
+            "unit_number": "41",
+            "verifications": Object {
+              "description": "It was popularised in the 1960s with the release of Letraset sheets.",
+              "verification_status": 3,
+            },
           }
-          disableVirtualization={false}
-          horizontal={false}
-          initialNumToRender={10}
-          keyExtractor={[Function]}
-          maxToRenderPerBatch={10}
-          numColumns={2}
-          onEndReachedThreshold={2}
-          removeClippedSubviews={false}
-          renderItem={[Function]}
-          scrollEventThrottle={50}
-          updateCellsBatchingPeriod={50}
-          windowSize={21}
-        />
-      </Memo(CollapsibleSection)>
+        }
+      />
       <View
         style={
           Object {

@@ -7,10 +7,11 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { SelectionPicker, ISelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
-import { IAssetGroupList, IAssetTypes, IFilterDetails } from '@homzhub/common/src/domain/models/Search';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 interface IProps {
-  filterData: IFilterDetails;
+  filterData: FilterDetail;
   asset_group: number;
   asset_type: number[];
   updateAssetFilter: (type: string, value: number | number[]) => void;
@@ -61,9 +62,9 @@ export class AssetTypeFilter extends React.PureComponent<Props> {
 
   private assetGroupsListPickerData = (): ISelectionPicker<number>[] => {
     const {
-      filterData: { asset_group_list },
+      filterData: { assetGroupList },
     } = this.props;
-    return asset_group_list.map((assetGroup: IAssetGroupList) => ({
+    return assetGroupList.map((assetGroup: Unit) => ({
       title: assetGroup.title,
       value: assetGroup.id,
     }));
@@ -73,12 +74,12 @@ export class AssetTypeFilter extends React.PureComponent<Props> {
     const {
       filterData: {
         filters: {
-          asset_group: { asset_types },
+          assetGroup: { assetTypes },
         },
       },
       asset_type,
     } = this.props;
-    return asset_types.map((assetGroupType: IAssetTypes) => ({
+    return assetTypes.map((assetGroupType: Unit) => ({
       id: assetGroupType.id,
       label: assetGroupType.name,
       isSelected: asset_type.includes(assetGroupType.id),

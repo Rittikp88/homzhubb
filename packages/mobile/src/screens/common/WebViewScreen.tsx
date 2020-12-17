@@ -1,34 +1,57 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Share } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { icons } from '@homzhub/common/src/assets/icon';
+import { Header, Loader } from '@homzhub/mobile/src/components';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { Header, Loader } from '@homzhub/mobile/src/components';
 
 type Props = NavigationScreenProps<AuthStackParamList, ScreensKeys.WebViewScreen>;
 
-// TODO: (Shikha) - Need to refactor once webview url ready
 export const WebViewScreen = (props: Props): React.ReactElement => {
   const {
     navigation,
     route: {
-      params: { url },
+      params: { url, trendId },
     },
   } = props;
+  const { t } = useTranslation();
 
-  const handleBackPress = (): void => {
+  useEffect(() => {
+    if (!trendId) {
+      return;
+    }
+    try {
+      CommonRepository.updateMarketTrends(trendId).then();
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
+  }, []);
+
+  const handleBackPress = useCallback((): void => {
     navigation.goBack();
-  };
+  }, [navigation]);
 
-  const ActivityIndicatorLoadingView = (): React.ReactElement => {
-    // making a view to show to while loading the webpage
-    return <Loader visible />;
-  };
+  const onShare = useCallback(async (): Promise<void> => {
+    await Share.share({
+      message: `${t('assetMore:shareTrend')} ${url}`,
+    });
+  }, [url, t]);
+
+  const ActivityIndicatorLoadingView = useCallback((): React.ReactElement => <Loader visible />, []);
 
   return (
     <View style={styles.container}>
-      <Header icon={icons.leftArrow} onIconPress={handleBackPress} />
+      <Header
+        icon={icons.leftArrow}
+        onIconPress={handleBackPress}
+        iconRight={trendId ? icons.shareExternal : undefined}
+        onIconRightPress={trendId ? onShare : undefined}
+      />
       <WebView source={{ uri: url }} renderLoading={ActivityIndicatorLoadingView} startInLoadingState />
     </View>
   );

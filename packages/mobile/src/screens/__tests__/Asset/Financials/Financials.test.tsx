@@ -3,7 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Financials } from '@homzhub/mobile/src/screens/Asset/Financials';
 
-describe('Financials Screen', () => {
+describe.skip('Financials Screen', () => {
   let component: ShallowWrapper;
   let props: any;
 

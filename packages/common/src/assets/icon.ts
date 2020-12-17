@@ -5,6 +5,7 @@ export default createIconSetFromIcoMoon(icoMoonConfig);
 
 export const icons = {
   manageSubscription: 'manage-subscription',
+  hamburgerMenu: 'hamburger-menu',
   dashboard: 'dashboard',
   location: 'location',
   search: 'search',
@@ -85,6 +86,7 @@ export const icons = {
   envelope: 'envelope',
   whatsapp: 'whatsapp',
   share: 'share',
+  shareExternal: 'share-external',
   sunRise: 'sun-rise',
   sunSet: 'sun-set',
   sun: 'sun',
@@ -126,6 +128,7 @@ export const icons = {
   newLaunch: 'new-launch',
   payment: 'payment',
   shareFilled: 'share-filled',
+  sms: 'sms',
   docFilled: 'doc-filled',
   upload: 'upload',
   files: 'files',
@@ -146,6 +149,8 @@ export const icons = {
   openTemplate: 'open-template',
   closeTemplate: 'close-template',
   billPamphlet: 'bill-pamphlet',
+  sort: 'sort',
+
   // COMMUTE
   train: 'train',
   trainMarker: 'train-marker',

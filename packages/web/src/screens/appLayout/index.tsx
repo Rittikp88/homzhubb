@@ -14,8 +14,8 @@ const AppLayout: FC = () => {
   return (
     <View style={styles.container}>
       <Navbar />
+      <NavigationInfo />
       <View>
-        <NavigationInfo />
         <View style={styles.mainContent}>
           {!isTablet && <SideMenu onItemClick={FunctionUtils.noop} />}
           <MainRouter />
@@ -36,6 +36,5 @@ const styles = StyleSheet.create({
     width: '90vw',
     flexDirection: 'row',
     alignSelf: 'center',
-    maxWidth: '1280px',
   },
 });

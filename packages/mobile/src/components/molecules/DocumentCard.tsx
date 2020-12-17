@@ -14,6 +14,7 @@ interface IProps {
   handleShare: (link: string) => void;
   handleDelete: (id: number) => void;
   handleDownload: (refKey: string, fileName: string) => void;
+  canDelete?: boolean;
 }
 
 export const DocumentCard = ({
@@ -22,6 +23,7 @@ export const DocumentCard = ({
   userEmail,
   handleDelete,
   handleDownload,
+  canDelete = true,
 }: IProps): React.ReactElement => {
   const {
     attachment: { fileName, link, presignedReferenceKey },
@@ -37,17 +39,19 @@ export const DocumentCard = ({
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.leftView}>
-          <Label type="large" textType="semiBold" style={styles.title}>
+          <Label type="large" textType="semiBold" style={styles.title} numberOfLines={1}>
             {fileName}
           </Label>
-          <Label type="regular" style={styles.description}>
+          <Label type="regular" style={styles.description} numberOfLines={1}>
             {t('assetPortfolio:uploadedOn', { uploadedOn, uploadedBy })}
           </Label>
         </View>
         <Icon name={icons.doc} size={35} color={theme.colors.lowPriority} />
       </View>
       <View style={styles.iconContainer}>
-        <Icon name={icons.trash} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDelete} />
+        {canDelete && (
+          <Icon name={icons.trash} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDelete} />
+        )}
         <Icon name={icons.shareFilled} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onShare} />
         <Icon name={icons.download} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDownload} />
       </View>
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
   },
   leftView: {
     flex: 1,
+    marginEnd: 16,
   },
   title: {
     color: theme.colors.darkTint3,

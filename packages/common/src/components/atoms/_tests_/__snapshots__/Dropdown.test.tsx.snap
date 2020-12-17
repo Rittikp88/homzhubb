@@ -3,7 +3,12 @@
 exports[`Dropdown should match snapshot 1`] = `
 <View
   pointerEvents="auto"
-  style={Object {}}
+  style={
+    Array [
+      Object {},
+      Object {},
+    ]
+  }
 >
   <ForwardRef
     onPress={[Function]}
@@ -15,7 +20,6 @@ exports[`Dropdown should match snapshot 1`] = `
           "borderRadius": 4,
           "borderWidth": 1,
           "flexDirection": "row",
-          "justifyContent": "space-between",
           "paddingHorizontal": 16,
           "paddingVertical": 8,
         },
@@ -27,6 +31,9 @@ exports[`Dropdown should match snapshot 1`] = `
       numberOfLines={1}
       style={
         Array [
+          Object {
+            "flex": 1,
+          },
           Object {},
           Object {},
         ]
@@ -38,7 +45,7 @@ exports[`Dropdown should match snapshot 1`] = `
     </Label>
     <Icon
       allowFontScaling={false}
-      color="#C9D6DF"
+      color="#99A4AF"
       name="down-arrow-filled"
       size={16}
       style={
@@ -122,9 +129,12 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
 <View
   pointerEvents="none"
   style={
-    Object {
-      "opacity": 0.5,
-    }
+    Array [
+      Object {
+        "opacity": 0.5,
+      },
+      Object {},
+    ]
   }
 >
   <ForwardRef
@@ -137,7 +147,6 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
           "borderRadius": 4,
           "borderWidth": 1,
           "flexDirection": "row",
-          "justifyContent": "space-between",
           "paddingHorizontal": 16,
           "paddingVertical": 8,
         },
@@ -149,6 +158,9 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
       numberOfLines={1}
       style={
         Array [
+          Object {
+            "flex": 1,
+          },
           Object {
             "color": "#B2BBC3",
           },
@@ -162,7 +174,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
     </Label>
     <Icon
       allowFontScaling={false}
-      color="#C9D6DF"
+      color="#99A4AF"
       name="down-arrow-filled"
       size={16}
       style={
@@ -190,7 +202,12 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
 exports[`Dropdown should match snapshot when data is empty 1`] = `
 <View
   pointerEvents="auto"
-  style={Object {}}
+  style={
+    Array [
+      Object {},
+      Object {},
+    ]
+  }
 >
   <ForwardRef
     onPress={[Function]}
@@ -202,7 +219,6 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
           "borderRadius": 4,
           "borderWidth": 1,
           "flexDirection": "row",
-          "justifyContent": "space-between",
           "paddingHorizontal": 16,
           "paddingVertical": 8,
         },
@@ -214,6 +230,9 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
       numberOfLines={1}
       style={
         Array [
+          Object {
+            "flex": 1,
+          },
           Object {
             "color": "#B2BBC3",
           },
@@ -227,7 +246,7 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
     </Label>
     <Icon
       allowFontScaling={false}
-      color="#C9D6DF"
+      color="#99A4AF"
       name="down-arrow-filled"
       size={16}
       style={

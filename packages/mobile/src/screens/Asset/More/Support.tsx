@@ -153,7 +153,6 @@ export class Support extends Component<Props, IScreenState> {
                 placeholder={t('categoryExample')}
                 label={t('assetFinancial:category')}
                 isMandatory
-                maxLabelLength={36}
                 options={categories}
                 formProps={formProps}
                 dropdownContainerStyle={styles.dropdownStyle}

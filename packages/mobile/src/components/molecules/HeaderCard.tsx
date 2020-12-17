@@ -64,13 +64,9 @@ export class HeaderCard extends React.PureComponent<IOwnProps> {
             </TouchableOpacity>
           )}
           {!!icon && (
-            <Icon
-              size={iconSize}
-              name={icon}
-              color={theme.colors.primaryColor}
-              style={iconStyle}
-              onPress={handleIcon}
-            />
+            <TouchableOpacity onPress={handleIcon}>
+              <Icon size={iconSize} name={icon} color={theme.colors.primaryColor} style={iconStyle} />
+            </TouchableOpacity>
           )}
         </View>
         {renderItem && renderItem()}

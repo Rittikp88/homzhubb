@@ -6,12 +6,12 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { AnimatedProfileHeader, HeaderCard, Loader } from '@homzhub/mobile/src/components';
 import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 interface IScreenState {
   clearForm: number;
@@ -23,7 +23,7 @@ interface IStateToProps {
   assets: Asset[];
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.AddRecordScreen>;
+type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.AddRecordScreen>;
 type IProps = libraryProps & IStateToProps;
 
 export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
@@ -55,10 +55,11 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 
   private renderAddRecordForm = (): ReactElement => {
     const { clearForm } = this.state;
-    const { currency, assets } = this.props;
+    const { currency, assets, route } = this.props;
 
     return (
       <AddRecordForm
+        assetId={route.params?.assetId}
         properties={assets}
         clear={clearForm}
         defaultCurrency={currency}

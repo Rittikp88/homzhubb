@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useLocation } from 'react-router-dom';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import NavigationBreadCrumbBg from '@homzhub/common/src/assets/images/navigationBreadCrumbBg.svg';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import BreadCrumbs from '@homzhub/web/src/components/molecules/BreadCrumbs';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 
 const humanize = (str: string): string => {
   return str.replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
@@ -14,13 +16,12 @@ const humanize = (str: string): string => {
 
 export const NavigationInfo: FC = () => {
   const location = useLocation();
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
   return (
-    <>
-      <View style={styles.bgContainer}>
-        <NavigationBreadCrumbBg width="100%" height="15ew" />
-      </View>
-      <View style={styles.container}>
+    <View>
+      <div className="navigation-bg" />
+      <View style={[styles.container, isMobile && styles.containerMobile]}>
         <View>
           <Typography variant="text" size="regular" style={styles.link}>
             {currentScreen}
@@ -29,17 +30,19 @@ export const NavigationInfo: FC = () => {
             <BreadCrumbs />
           </View>
         </View>
-        <View style={styles.buttonsGrp}>
-          <Button type="secondaryOutline" containerStyle={styles.button}>
+        <View style={[styles.buttonsGrp, isMobile && styles.buttonsGrpMobile]}>
+          <Button type="secondaryOutline" containerStyle={[styles.button, isMobile && styles.countryBtnMobile]}>
             <Image source={{ uri: 'https://www.countryflags.io/IN/flat/48.png' }} style={styles.flagStyle} />
-            <Typography variant="label" size="large" style={styles.buttonTitle}>
-              India
-            </Typography>
+            {!isMobile && (
+              <Typography variant="label" size="large" style={styles.buttonTitle}>
+                India
+              </Typography>
+            )}
             <Icon name={icons.downArrow} color={theme.colors.white} />
           </Button>
           <Button type="secondaryOutline" containerStyle={styles.button}>
             <Typography variant="label" size="large" style={styles.buttonTitle}>
-              INR &#x20B9;
+              {!isMobile && 'INR'} &#x20B9;
             </Typography>
             <Icon name={icons.downArrow} color={theme.colors.white} />
           </Button>
@@ -51,26 +54,23 @@ export const NavigationInfo: FC = () => {
           </Button>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  bgContainer: {
-    width: '100%',
-    position: 'absolute',
-  },
   container: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    position: 'relative',
     width: '90vw',
     marginTop: 24,
     marginBottom: 20,
     alignSelf: 'center',
     alignItems: 'center',
-    top: 0,
-    left: 0,
+  },
+  containerMobile: {
+    flexDirection: 'column',
+    alignItems: undefined,
   },
   currentScreen: {
     color: theme.colors.white,
@@ -86,15 +86,21 @@ const styles = StyleSheet.create({
   buttonsGrp: {
     flexDirection: 'row',
   },
+  buttonsGrpMobile: {
+    marginTop: 16,
+  },
   button: {
     borderColor: theme.colors.white,
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     marginLeft: 16,
     maxWidth: 'max-content',
     height: 'max-content',
+  },
+  countryBtnMobile: {
+    marginLeft: 0,
   },
   buttonIconRight: {
     marginRight: 8,

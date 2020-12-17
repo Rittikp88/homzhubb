@@ -5,6 +5,7 @@ import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/Upda
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
@@ -95,6 +96,8 @@ export enum ScreensKeys {
   SettingsScreen = 'SettingsScreen',
   UpdatePassword = 'UpdatePassword',
   SupportScreen = 'SupportScreen',
+  ReferEarn = 'ReferEarn',
+  KYC = 'KYC',
 }
 
 export enum OtpNavTypes {
@@ -173,11 +176,13 @@ export interface IBookVisitProps {
   sale_listing_id?: number;
   lease_listing_id?: number;
   isReschedule?: boolean;
+  userId?: number;
 }
 
 // Webview
 export interface IWebviewProps {
   url: string;
+  trendId?: number;
 }
 
 // User Profile
@@ -193,4 +198,14 @@ export interface IComingSoon {
 
 export interface IVerifyEmail {
   verification_id: string;
+}
+
+export interface IPropertyDetailProps {
+  isFromDashboard?: boolean;
+  isFromTenancies?: boolean;
+  tabKey?: Tabs;
+}
+
+export interface ISignUpParams extends IScreenCallback {
+  referralCode?: string;
 }

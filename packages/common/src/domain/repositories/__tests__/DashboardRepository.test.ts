@@ -1,6 +1,6 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
-import { AssetAdvertisementData, AssetMetricsData, MarketTrendsData } from '@homzhub/common/src/mocks/AssetMetrics';
+import { AssetAdvertisementData, AssetMetricsData } from '@homzhub/common/src/mocks/AssetMetrics';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
@@ -8,12 +8,6 @@ jest.mock('@react-native-community/google-signin', () => {});
 describe('DashboardRepository', () => {
   afterAll(() => {
     jest.resetAllMocks();
-  });
-
-  it('should get Market Trends', async () => {
-    jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(MarketTrendsData));
-    const response = await DashboardRepository.getMarketTrends(2);
-    expect(response).toMatchSnapshot();
   });
 
   it('should get Asset Metrics', async () => {

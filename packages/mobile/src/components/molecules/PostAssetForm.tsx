@@ -12,9 +12,10 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProps {
   formProps: FormikProps<FormikValues>;
+  isVerificationDone?: boolean;
 }
 
-const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
+const PostAssetForm = ({ formProps, isVerificationDone }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
 
   const onChangePincode = useCallback(async (pincode: string): Promise<void> => {
@@ -57,6 +58,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
           placeholder={t('projectNamePlaceholder')}
           formProps={formProps}
           isMandatory
+          editable={!isVerificationDone}
         />
         <View style={styles.contentView}>
           <View style={styles.subContentView}>
@@ -68,6 +70,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
               inputType="default"
               formProps={formProps}
               isMandatory
+              editable={!isVerificationDone}
             />
           </View>
           <View style={styles.flexOne}>
@@ -78,6 +81,7 @@ const PostAssetForm = ({ formProps }: IProps): React.ReactElement => {
               numberOfLines={1}
               inputType="default"
               formProps={formProps}
+              editable={!isVerificationDone}
             />
           </View>
         </View>

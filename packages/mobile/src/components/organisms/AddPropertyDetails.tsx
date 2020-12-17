@@ -42,6 +42,7 @@ interface IOwnProps extends WithTranslation {
   spaceTypes: SpaceType[];
   handleNextStep: () => void;
   lastVisitedStep: ILastVisitedStep;
+  isEditPropertyFlow?: boolean;
 }
 
 interface IOwnState {
@@ -81,7 +82,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
   }
 
   public render(): ReactElement {
-    const { spaceTypes, t } = this.props;
+    const { spaceTypes, t, isEditPropertyFlow } = this.props;
     const { descriptionForm, furnishingForm, descriptionDropdownValues } = this.state;
 
     return (
@@ -100,6 +101,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                       flowType={FlowTypes.PostAssetFlow}
                       onChange={this.handleSpaceFormChange}
                       spacesTypes={spaceTypes}
+                      isEditPropertyFlow={isEditPropertyFlow}
                     />
                   </AssetListingSection>
 

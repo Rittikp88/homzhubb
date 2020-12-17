@@ -12,7 +12,13 @@ type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, Screens
 
 export class SignUpScreen extends Component<Props> {
   public render(): React.ReactNode {
-    const { t, navigation } = this.props;
+    const {
+      t,
+      navigation,
+      route: {
+        params: { referralCode },
+      },
+    } = this.props;
 
     return (
       <AnimatedHeader
@@ -28,6 +34,7 @@ export class SignUpScreen extends Component<Props> {
           <SignUpForm
             onSubmitFormSuccess={this.onFormSubmit}
             onPressLink={this.handleTermsCondition}
+            referralCode={referralCode}
             testID="signupForm"
           />
           <SocialMediaComponent isFromLogin={false} navigation={navigation} />
@@ -69,6 +76,14 @@ export class SignUpScreen extends Component<Props> {
       if (isPhoneUsed.is_exists) {
         AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
         return;
+      }
+
+      if (formData.signup_referral_code) {
+        const isValidCode = await UserRepository.verifyReferalCode(formData.signup_referral_code);
+        if (!isValidCode.is_applicable) {
+          AlertHelper.error({ message: t('auth:invalidReferralCodeError') });
+          return;
+        }
       }
 
       navigation.navigate(ScreensKeys.OTP, {

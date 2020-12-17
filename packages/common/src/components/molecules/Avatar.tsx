@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
+import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -19,6 +20,7 @@ interface IProps {
   isRightIcon?: boolean;
   imageSize?: number;
   onPressCamera?: () => void;
+  onPressRightIcon?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   initialsContainerStyle?: StyleProp<ViewStyle>;
 }
@@ -38,6 +40,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     initialsContainerStyle,
     imageSize = 42,
     onPressCamera,
+    onPressRightIcon,
   } = props;
 
   return (
@@ -105,7 +108,15 @@ const Avatar = (props: IProps): React.ReactElement => {
       </View>
       {(isRightIcon || date) && (
         <View style={styles.rightView}>
-          {isRightIcon && <Icon name={icons.rightArrow} color={theme.colors.blue} size={20} style={styles.iconStyle} />}
+          {isRightIcon && onPressRightIcon && (
+            <Icon
+              name={icons.rightArrow}
+              color={theme.colors.blue}
+              size={20}
+              style={styles.iconStyle}
+              onPress={onPressRightIcon}
+            />
+          )}
           {date && (
             <Label textType="regular" type="regular" style={styles.designation}>
               {TimeUtils.getLocaltimeDifference(date)}
@@ -127,6 +138,7 @@ const styles = StyleSheet.create({
   },
   rightView: {
     flex: 1,
+    alignItems: 'flex-end',
   },
   initialsContainer: {
     ...(theme.circleCSS(42) as object),
@@ -144,7 +156,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     marginLeft: 12,
     marginRight: 6,
-    width: theme.viewport.width / 2 - 40,
+    width: PlatformUtils.isWeb() ? undefined : theme.viewport.width / 2 - 40,
   },
   numberContainer: {
     flexDirection: 'row',

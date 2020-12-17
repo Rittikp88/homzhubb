@@ -9,60 +9,28 @@ AssetMetrics {
     },
     "_miscellaneous": Array [
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#61D773",
-          "_hexColorB": "#94EF90",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 3,
         "_currency_symbol": "",
         "_label": "Occupied",
         "_name": "OCCUPIED",
       },
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#FDB113",
-          "_hexColorB": "#FFDB8F",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 2,
         "_currency_symbol": "",
         "_label": "Vacant",
         "_name": "VACANT",
       },
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#D9AB65",
-          "_hexColorB": "#ECCFB4",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 1,
         "_currency_symbol": "",
         "_label": "Renewal",
         "_name": "RENEWAL",
       },
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#FD8313",
-          "_hexColorB": "#FFD2A9",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 4,
         "_currency_symbol": "",
         "_label": "Sell",
@@ -86,32 +54,6 @@ AssetMetrics {
     "_label": "HomzHub PRO",
     "_name": "HOMZHUB_PRO",
   },
-}
-`;
-
-exports[`DashboardRepository should get Market Trends 1`] = `
-MarketTrends {
-  "_count": 3,
-  "_links": Links {
-    "_next": "http://dev.homzhub.com/api/v1/market-trends/?limit=2&offset=2",
-    "_previous": "",
-  },
-  "_results": Array [
-    MarketTrendsResults {
-      "_attachment": null,
-      "_id": 1,
-      "_link": "http://bwsmartcities.businessworld.in/article/Green-Homes-Still-Waiting-for-Green-Shoots-of-Revival/11-02-2020-183924",
-      "_postedAt": "2020-07-01T04:03:07.256216Z",
-      "_title": "Top 5 Real Estate Trends for 2020",
-    },
-    MarketTrendsResults {
-      "_attachment": null,
-      "_id": 2,
-      "_link": "https://www.financialexpress.com/money/5-emerging-trends-that-may-reshape-real-estate-sector-in-2020/1788394/",
-      "_postedAt": "2020-07-01T04:03:07.256216Z",
-      "_title": "5 emerging trends that may reshape real estate sector in 2020",
-    },
-  ],
 }
 `;
 

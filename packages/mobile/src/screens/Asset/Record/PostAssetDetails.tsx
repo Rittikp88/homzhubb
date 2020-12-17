@@ -1,5 +1,5 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import React, { createRef, ReactElement } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -9,8 +9,11 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
@@ -20,13 +23,15 @@ import {
   PropertyDetailsLocation,
   AssetGroupSelection,
   Loader,
+  BottomSheet,
 } from '@homzhub/mobile/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
+import { IEditPropertyFlow } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
@@ -35,11 +40,14 @@ interface IStateProps {
   assetId: number;
   asset: Asset | null;
   lastVisitedStep: ILastVisitedStep | null;
+  editPropertyFlowDetails: IEditPropertyFlow;
 }
 
 interface IDispatchProps {
   setAssetId: (id: number) => void;
   getAssetGroups: () => void;
+  setEditPropertyFlow: (payload: boolean) => void;
+  toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
 
 interface IFormData {
@@ -61,6 +69,7 @@ interface IOwnState {
   latitude: number;
   longitude: number;
   assetGroupSelectionDisabled: boolean;
+  displayGoBackCaution: boolean;
 }
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostAssetDetails>;
 type Props = WithTranslation & libraryProps & IDispatchProps & IStateProps;
@@ -83,9 +92,11 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     assetGroupId: -1,
     longitude: 0,
     latitude: 0,
+    displayGoBackCaution: false,
   };
 
   private scrollView: ScrollView | null = null;
+  private formikInnerRef: React.RefObject<FormikProps<IFormData>> | null = createRef<FormikProps<IFormData>>();
 
   public componentDidMount = (): void => {
     const {
@@ -105,29 +116,34 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     this.setDataFromNavProps();
   };
 
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>): void {
+    const { asset } = this.props;
+    const { asset: prevAsset } = prevProps;
+
+    if (asset !== prevAsset) {
+      this.setDataFromAsset();
+    }
+  }
+
   public componentWillUnmount = (): void => {
     const { navigation } = this.props;
     navigation.removeListener('focus', this.onFocus);
   };
 
   public render(): React.ReactNode {
-    const {
-      t,
-      isLoading,
-      navigation: { goBack },
-    } = this.props;
+    const { isLoading } = this.props;
 
     return (
       <>
-        <Header title={t('headerTitle')} onIconPress={goBack} isBarVisible />
         <SafeAreaView style={styles.container}>{this.renderForm()}</SafeAreaView>
         <Loader visible={isLoading} />
+        {this.renderGoBackCaution()}
       </>
     );
   }
 
   private renderForm = (): React.ReactNode => {
-    const { t, assetGroups } = this.props;
+    const { t, assetGroups, asset } = this.props;
     const {
       formData,
       assetGroupTypeId,
@@ -143,10 +159,12 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
         initialValues={formData}
         onSubmit={this.onSubmit}
         validate={FormUtils.validate(this.formSchema)}
+        innerRef={this.formikInnerRef}
       >
         {(formProps: FormikProps<FormikValues>): React.ReactNode => {
           return (
             <>
+              <Header title={t('headerTitle')} onIconPress={this.handleGoBack} isBarVisible />
               <ScrollView
                 keyboardShouldPersistTaps="never"
                 showsVerticalScrollIndicator={false}
@@ -159,8 +177,9 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                   propertyAddress={address}
                   onNavigate={this.onChange}
                   testID="propertyLocation"
+                  isVerificationDone={asset?.isVerificationDocumentUploaded}
                 />
-                <PostAssetForm formProps={formProps} />
+                <PostAssetForm formProps={formProps} isVerificationDone={asset?.isVerificationDocumentUploaded} />
                 <AssetGroupSelection
                   isDisabled={assetGroupSelectionDisabled}
                   assetGroups={assetGroups}
@@ -181,10 +200,74 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                   formProps={formProps}
                 />
               </WithShadowView>
+              {this.renderEditFlowCaution()}
             </>
           );
         }}
       </Formik>
+    );
+  };
+
+  private renderEditFlowCaution = (): ReactElement | null => {
+    const {
+      t,
+      editPropertyFlowDetails: { showBottomSheet },
+      asset,
+    } = this.props;
+    if (!asset) {
+      return null;
+    }
+
+    return (
+      <BottomSheet
+        key="editFlowSheet"
+        sheetHeight={400}
+        headerTitle={t('editProperty')}
+        visible={showBottomSheet}
+        onCloseSheet={this.onBottomSheetClose}
+      >
+        <PropertyConfirmationView
+          propertyData={asset}
+          description={t('editPropertyCautionText')}
+          message={t('common:wantToContinue')}
+          onCancel={this.goBack}
+          onContinue={this.onBottomSheetClose}
+        />
+      </BottomSheet>
+    );
+  };
+
+  private renderGoBackCaution = (): ReactElement => {
+    const { t } = this.props;
+    const { displayGoBackCaution } = this.state;
+
+    return (
+      <BottomSheet
+        key="goBackCaution"
+        sheetHeight={300}
+        visible={displayGoBackCaution}
+        onCloseSheet={this.closeGoBackCaution}
+      >
+        <View style={styles.sheetStyle}>
+          <Text type="regular" textType="regular">
+            {t('saveYourDetailsCautionText')}
+          </Text>
+          <View style={styles.buttonGroupStyle}>
+            <Button
+              containerStyle={styles.marginRight}
+              type="primary"
+              title={t('common:save')}
+              onPress={this.onSavePress}
+            />
+            <Button
+              containerStyle={styles.marginLeft}
+              type="primary"
+              title={t('common:discard')}
+              onPress={this.goBack}
+            />
+          </View>
+        </View>
+      </BottomSheet>
     );
   };
 
@@ -195,7 +278,17 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     navigate(ScreensKeys.AssetLocationSearch);
   };
 
-  private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
+  private onBottomSheetClose = (): void => {
+    const { toggleEditPropertyFlowBottomSheet } = this.props;
+
+    toggleEditPropertyFlowBottomSheet(false);
+  };
+
+  private onSubmit = async (
+    values: IFormData,
+    formActions: FormikHelpers<IFormData>,
+    shouldGoBack?: boolean
+  ): Promise<void> => {
     const {
       projectName: project_name,
       unitNo: unit_number,
@@ -251,7 +344,12 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
         const response = await AssetRepository.createAsset(params);
         setAssetId(response.id);
       }
-      navigation.navigate(ScreensKeys.AddProperty);
+
+      if (!shouldGoBack) {
+        navigation.navigate(ScreensKeys.AddProperty);
+        return;
+      }
+      this.goBack();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -269,6 +367,45 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
 
     if (!params) return;
     this.setDataFromNavProps();
+  };
+
+  private onSavePress = async (): Promise<void> => {
+    if (!this.formikInnerRef) {
+      return;
+    }
+
+    const { current } = this.formikInnerRef;
+    await this.onSubmit(current?.values as IFormData, current as FormikHelpers<IFormData>, true);
+  };
+
+  private closeGoBackCaution = (): void => {
+    this.setState({ displayGoBackCaution: false });
+  };
+
+  private handleGoBack = (): void => {
+    if (!this.formikInnerRef) {
+      return;
+    }
+
+    const { current } = this.formikInnerRef;
+    if (current?.dirty) {
+      this.setState({ displayGoBackCaution: true });
+      return;
+    }
+    this.goBack();
+  };
+
+  private goBack = (): void => {
+    const {
+      navigation,
+      setEditPropertyFlow,
+      editPropertyFlowDetails: { isEditPropertyFlow },
+    } = this.props;
+
+    if (isEditPropertyFlow) {
+      setEditPropertyFlow(false);
+    }
+    navigation.goBack();
   };
 
   private setDataFromNavProps = (): void => {
@@ -371,6 +508,19 @@ const styles = StyleSheet.create({
     flex: 0,
     margin: 16,
   },
+  sheetStyle: {
+    paddingHorizontal: theme.layout.screenPadding,
+  },
+  buttonGroupStyle: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+  },
+  marginRight: {
+    marginRight: 5,
+  },
+  marginLeft: {
+    marginLeft: 5,
+  },
 });
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -380,6 +530,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     getCurrentAssetId,
     getAssetDetails,
     getLastVisitedStep,
+    getEditPropertyFlowDetails,
   } = RecordAssetSelectors;
   return {
     assetGroups: getAssetGroups(state),
@@ -387,15 +538,18 @@ const mapStateToProps = (state: IState): IStateProps => {
     isLoading: getAssetGroupsLoading(state),
     asset: getAssetDetails(state),
     lastVisitedStep: getLastVisitedStep(state),
+    editPropertyFlowDetails: getEditPropertyFlowDetails(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetGroups, setAssetId } = RecordAssetActions;
+  const { getAssetGroups, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } = RecordAssetActions;
   return bindActionCreators(
     {
       setAssetId,
       getAssetGroups,
+      setEditPropertyFlow,
+      toggleEditPropertyFlowBottomSheet,
     },
     dispatch
   );

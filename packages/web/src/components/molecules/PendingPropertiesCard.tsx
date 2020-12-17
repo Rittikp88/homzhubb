@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -12,9 +13,9 @@ import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecul
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { NextPrevBtn, ProgressBar } from '@homzhub/web/src/components';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
-import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   data: Asset[];
@@ -22,10 +23,16 @@ interface IProps {
 
 export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [currentAssetIndex, setCurrentAssetIndex] = useState(0);
+  const total = data?.length ?? 0;
+  if (total <= 0) {
+    return null;
+  }
   const {
     address,
     assetType,
+    assetGroup,
     furnishing,
     spaces,
     projectName,
@@ -38,14 +45,13 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
   } = data[currentAssetIndex];
   const primaryAddress = projectName;
   const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
-  const total = data?.length ?? 0;
   const detailsCompletionPercentage = lastVisitedStep?.assetCreation?.percentage ?? 0;
   const countryIconUrl = country?.flag;
   const propertyType = assetType?.name ?? '-';
   const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-    spaces,
+    spaces ?? ([] as Data[]),
     furnishing,
-    AssetGroupTypes.RES,
+    assetGroup.code,
     carpetArea,
     carpetAreaUnit?.title ?? '',
     true
@@ -74,7 +80,7 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
     { color: theme.colors.disabledPreference },
   ];
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isMobile && styles.containerMobile]}>
       <View style={styles.headerInfo}>
         <Icon name={icons.warning} color={theme.colors.darkTint3} size={16} style={styles.cardIcon} />
         <Typography variant="text" size="small" fontWeight="semiBold" style={[styles.title, styles.textColor1]}>
@@ -130,6 +136,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: 4,
     marginTop: 24,
+  },
+  containerMobile: {
+    marginRight: 0,
+    flex: undefined,
   },
   headerInfo: {
     width: '100%',

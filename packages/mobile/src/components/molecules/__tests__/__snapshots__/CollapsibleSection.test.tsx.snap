@@ -3,6 +3,7 @@
 exports[`CollapsibleSection should match snapshot 1`] = `
 <Fragment>
   <ForwardRef
+    disabled={false}
     onPress={[Function]}
     style={
       Object {
@@ -58,6 +59,7 @@ exports[`CollapsibleSection should match snapshot 1`] = `
 exports[`CollapsibleSection should match snapshot with press 1`] = `
 <Fragment>
   <ForwardRef
+    disabled={false}
     onPress={[Function]}
     style={
       Object {

@@ -22,7 +22,7 @@ export type PropertyPostStackParamList = {
   [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps | undefined;
   [ScreensKeys.AddProperty]: undefined | { previousScreen: string };
   [ScreensKeys.AssetPlanSelection]: undefined;
-  [ScreensKeys.AssetLeaseListing]: undefined | { previousScreen: string; isFromEdit?: boolean };
+  [ScreensKeys.AssetLeaseListing]: undefined | { previousScreen: string; isEditFlow?: boolean };
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };

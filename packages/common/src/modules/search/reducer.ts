@@ -2,8 +2,9 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 import { SearchActionTypes, SearchPayloadTypes } from '@homzhub/common/src/modules/search/actions';
-import { IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { IFilterDetails } from '@homzhub/common/src/domain/models/FilterDetail';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -24,6 +25,7 @@ export const initialSearchState: ISearchState = {
     limit: 10,
     offset: 0,
     currency_code: '',
+    sort_by: '',
     miscellaneous: {
       show_verified: false,
       agent_listed: false,

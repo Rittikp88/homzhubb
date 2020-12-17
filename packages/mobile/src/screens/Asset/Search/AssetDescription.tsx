@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -12,7 +12,6 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -25,7 +24,11 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ISendNotificationPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IAssetVisitPayload,
+  ISendNotificationPayload,
+  VisitType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -34,7 +37,6 @@ import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker'
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
-import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
@@ -50,13 +52,11 @@ import {
   StatusBarComponent,
 } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
+import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
-import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
-import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { DynamicLinkParamKeys, DynamicLinkTypes } from '@homzhub/mobile/src/services/constants';
@@ -76,14 +76,13 @@ interface IDispatchProps {
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   setAssetId: (payload: number) => void;
   getAssetById: () => void;
+  setVisitIds: (payload: number[]) => void;
+  getAssetVisit: (payload: IAssetVisitPayload) => void;
 }
 
 interface IOwnState {
   isFullScreen: boolean;
   activeSlide: number;
-  descriptionShowMore: boolean;
-  descriptionHide: boolean;
-  amenitiesShowAll: boolean;
   isScroll: boolean;
   isFavourite: boolean;
   startDate: string;
@@ -99,9 +98,6 @@ const STICKY_HEADER_HEIGHT = 100;
 // TODO: Do we require a byId reducer here?
 const initialState = {
   isFullScreen: false,
-  descriptionShowMore: false,
-  descriptionHide: true,
-  amenitiesShowAll: false,
   activeSlide: 0,
   isScroll: true,
   isFavourite: false,
@@ -203,16 +199,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         >
           <View style={styles.screen}>
             {this.renderHeaderSection()}
-            <CollapsibleSection title={t('description')} isDividerRequired>
-              {this.renderAssetDescription(assetDetails)}
-            </CollapsibleSection>
-            <CollapsibleSection title={t('factsFeatures')} isDividerRequired>
-              {this.renderFactsAndFeatures(assetDetails)}
-            </CollapsibleSection>
-            {this.renderAmenities(assetDetails)}
-            <CollapsibleSection title={t('highlights')} isDividerRequired>
-              {this.renderAssetHighlights(assetDetails)}
-            </CollapsibleSection>
+            <PropertyDetail detail={assetDetails} />
             {this.renderMapSection()}
             {ShowInMvpRelease && (
               <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
@@ -377,172 +364,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           );
         })}
       </>
-    );
-  };
-
-  private renderAssetDescription = (assetDetails: Asset): React.ReactNode => {
-    const { t } = this.props;
-    const { descriptionShowMore, descriptionHide } = this.state;
-    const { leaseTerm, saleTerm, description } = assetDetails;
-
-    const onLayout = (event: any): void => {
-      const { lines } = event.nativeEvent;
-      if (lines.length > 3 || (lines.length === 3 && lines[2].text.includes('\n'))) {
-        this.setState({ descriptionHide: false });
-      }
-    };
-
-    const onPress = (): void => {
-      this.setState({ descriptionShowMore: !descriptionShowMore });
-    };
-
-    const descriptionValue = (): string | undefined => {
-      if (leaseTerm && leaseTerm.description !== '') {
-        return leaseTerm.description;
-      }
-      if (saleTerm && saleTerm.description !== '') {
-        return saleTerm.description;
-      }
-      if (description === '') {
-        return t('noDescription');
-      }
-
-      return description;
-    };
-
-    return (
-      <>
-        <Label
-          type="large"
-          textType="regular"
-          style={styles.description}
-          // @ts-ignore
-          onTextLayout={onLayout}
-          numberOfLines={descriptionShowMore ? undefined : 3}
-        >
-          {descriptionValue()}
-        </Label>
-        {!descriptionHide && (
-          <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
-            {descriptionShowMore ? t('property:showLess') : t('property:showMore')}
-          </Label>
-        )}
-      </>
-    );
-  };
-
-  private renderFactsAndFeatures = (assetDetails: Asset): React.ReactNode => {
-    return (
-      <FlatList<AssetFeature>
-        numColumns={2}
-        contentContainerStyle={styles.listContainer}
-        data={assetDetails.features}
-        keyExtractor={(item: AssetFeature): string => item.name}
-        renderItem={({ item }: { item: AssetFeature }): React.ReactElement => (
-          <View style={styles.featureItem}>
-            <Label type="large" textType="regular" style={styles.featureTitle}>
-              {item.name}
-            </Label>
-            <Label type="large" textType="semiBold">
-              {StringUtils.toTitleCase(item.value.replace('_', ' '))}
-            </Label>
-          </View>
-        )}
-      />
-    );
-  };
-
-  private renderAmenities = (assetDetails: Asset): React.ReactNode => {
-    const { t } = this.props;
-    const { amenitiesShowAll } = this.state;
-    const { amenityGroup } = assetDetails;
-    const length = amenityGroup?.amenities.length ?? 0;
-    let data = amenityGroup?.amenities ?? [];
-
-    if (length > 6 && !amenitiesShowAll) {
-      data = data.slice(0, 6);
-    }
-
-    const onPress = (): void => {
-      this.setState({ amenitiesShowAll: !amenitiesShowAll });
-    };
-
-    return (
-      <View style={styles.sectionContainer}>
-        <Text type="small" textType="semiBold" style={styles.textColor}>
-          {t('amenities')}
-        </Text>
-        {length < 1 ? (
-          <Label type="large" textType="regular" style={styles.description}>
-            {t('noAmenities')}
-          </Label>
-        ) : (
-          <>
-            <FlatList
-              numColumns={3}
-              contentContainerStyle={styles.listContainer}
-              data={data}
-              keyExtractor={(item: CategoryAmenityGroup): string => `${item.id}`}
-              renderItem={({ item }: { item: CategoryAmenityGroup }): React.ReactElement => (
-                <View style={styles.amenityItem}>
-                  <SVGUri uri={item.attachment.link} height={30} width={30} />
-                  <Label type="regular" textType="regular" style={styles.amenityText}>
-                    {item.name}
-                  </Label>
-                </View>
-              )}
-            />
-            {length > 6 && (
-              <Label type="large" textType="semiBold" style={styles.helperText} onPress={onPress}>
-                {amenitiesShowAll ? t('property:showLess') : t('property:showAll', { total: length })}
-              </Label>
-            )}
-          </>
-        )}
-        <Divider containerStyles={styles.divider} />
-      </View>
-    );
-  };
-
-  private renderAssetHighlights = (assetDetails: Asset): React.ReactNode => {
-    const { t } = this.props;
-    const { highlights } = assetDetails;
-    if (!highlights || highlights.length < 1) {
-      return (
-        <Label type="large" textType="regular" style={styles.description}>
-          {t('noHighlights')}
-        </Label>
-      );
-    }
-    const selectedValues = highlights.filter((item) => item.covered).length;
-    if (selectedValues === 0) {
-      return (
-        <Label type="large" textType="regular" style={styles.description}>
-          {t('noHighlights')}
-        </Label>
-      );
-    }
-    return (
-      <FlatList<AssetHighlight>
-        data={highlights}
-        numColumns={2}
-        contentContainerStyle={styles.listContainer}
-        keyExtractor={(item: AssetHighlight): string => `${item.name}`}
-        renderItem={({ item }: { item: AssetHighlight }): React.ReactElement | null => {
-          if (item.covered) {
-            return (
-              <View style={styles.highlightItemContainer}>
-                <Icon name={icons.check} color={theme.colors.completed} size={22} />
-                <Label type="large" textType="regular" style={styles.highlightText}>
-                  {item.name}
-                </Label>
-              </View>
-            );
-          }
-
-          return null;
-        }}
-      />
     );
   };
 
@@ -845,15 +666,23 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       route: {
         params: { propertyTermId },
       },
+      setVisitIds,
       assetDetails,
+      getAssetVisit,
     } = this.props;
     if (!assetDetails) return;
-    const { leaseTerm, saleTerm } = assetDetails;
+    const { leaseTerm, saleTerm, nextVisit } = assetDetails;
+
+    if (nextVisit) {
+      setVisitIds([nextVisit.id]);
+      getAssetVisit({ id: nextVisit.id });
+    }
 
     const param = {
       propertyTermId,
       ...(leaseTerm && { lease_listing_id: leaseTerm.id }),
       ...(saleTerm && { sale_listing_id: saleTerm.id }),
+      ...(nextVisit && { isReschedule: true }),
     };
 
     navigation.navigate(ScreensKeys.BookVisit, param);
@@ -960,11 +789,20 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetReviews, getAsset } = AssetActions;
+  const { getAssetReviews, getAsset, setVisitIds, getAssetVisit } = AssetActions;
   const { setChangeStack } = UserActions;
   const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
   return bindActionCreators(
-    { getAssetReviews, getAsset, setChangeStack, setAssetId, setSelectedPlan, getAssetById },
+    {
+      getAssetReviews,
+      getAsset,
+      setChangeStack,
+      setAssetId,
+      setSelectedPlan,
+      getAssetById,
+      setVisitIds,
+      getAssetVisit,
+    },
     dispatch
   );
 };
@@ -983,24 +821,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.darkTint10,
-  },
-  listContainer: {
-    marginTop: 16,
-  },
-  featureItem: {
-    flex: 1,
-    marginBottom: 16,
-  },
-  amenityItem: {
-    width: (theme.viewport.width - 32) / 3,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  highlightItemContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
   },
   textColor: {
     color: theme.colors.darkTint4,
@@ -1032,18 +852,6 @@ const styles = StyleSheet.create({
   },
   primaryText: {
     color: theme.colors.primaryColor,
-  },
-  description: {
-    color: theme.colors.darkTint4,
-    marginTop: 12,
-  },
-  helperText: {
-    marginTop: 12,
-    color: theme.colors.active,
-  },
-  highlightText: {
-    color: theme.colors.darkTint4,
-    marginStart: 16,
   },
   headerLeftIcon: {
     position: 'absolute',
@@ -1084,15 +892,6 @@ const styles = StyleSheet.create({
   neighborhoodAddress: {
     marginTop: 12,
     color: theme.colors.darkTint3,
-  },
-  featureTitle: {
-    color: theme.colors.darkTint4,
-    marginBottom: 4,
-  },
-  amenityText: {
-    color: theme.colors.darkTint4,
-    marginTop: 4,
-    textAlign: 'center',
   },
   exploreMapContainer: {
     position: 'absolute',

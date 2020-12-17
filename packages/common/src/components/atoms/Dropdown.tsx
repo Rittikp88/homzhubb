@@ -16,8 +16,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { FontWeightType, Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 
-const MAX_LABEL_COUNT = 12;
-
 export interface IProps {
   data: PickerItemProps[];
   value: number | string;
@@ -37,13 +35,14 @@ export interface IProps {
   iconStyle?: StyleProp<ImageStyle>;
   itemStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  parentContainerStyle?: StyleProp<ViewStyle>;
   imageStyle?: StyleProp<ImageStyle>;
   textStyle?: StyleProp<TextStyle>;
   testID?: string;
-  maxLabelLength?: number;
   numColumns?: number;
   fontSize?: TextSizeType;
   fontWeight?: FontWeightType;
+  isOutline?: boolean;
 }
 
 export const Dropdown = (props: IProps): React.ReactElement => {
@@ -52,25 +51,28 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   const {
     value,
     data,
-    iconColor,
-    iconSize,
     iconStyle,
     listTitle,
     listHeight,
     disable = false,
     placeholder = '',
     onDonePress,
-    containerStyle = {},
-    textStyle = {},
+    parentContainerStyle = {},
     imageStyle = {},
-    icon = icons.downArrowFilled,
     image,
+    fontSize = 'large',
     testID,
-    maxLabelLength = MAX_LABEL_COUNT,
     numColumns = 1,
     showImage = false,
-    fontSize = 'large',
+    isOutline = false,
+  } = props;
+  let {
+    icon = icons.downArrowFilled,
     fontWeight = 'regular',
+    textStyle = {},
+    containerStyle = {},
+    iconSize = 16,
+    iconColor = theme.colors.darkTint7,
   } = props;
 
   const onValueChange = (changedValue: string | number): void => {
@@ -85,30 +87,47 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   const closeDropdown = (): void => setDropdownVisible(false);
 
   const selectedItem = data.find((d: PickerItemProps) => d.value === value);
-  const label =
-    selectedItem?.label && selectedItem?.label.length > maxLabelLength
-      ? `${(selectedItem?.label).substring(0, maxLabelLength)}...`
-      : selectedItem?.label;
+  const label = selectedItem?.label;
   const placeholderColor = !label ? styles.placeholderColor : {};
 
   const disabledStyles = StyleSheet.flatten([disable && styles.disabled]);
 
+  if (isOutline) {
+    containerStyle = StyleSheet.flatten([
+      containerStyle,
+      {
+        borderWidth: 0,
+        backgroundColor: theme.colors.lightGrayishBlue,
+        borderRadius: 2,
+      },
+    ]);
+    icon = icons.downArrow;
+    fontWeight = 'semiBold';
+    textStyle = StyleSheet.flatten([textStyle, { color: theme.colors.active }]);
+    iconSize = 20;
+    iconColor = theme.colors.active;
+  }
+
   return (
-    <View pointerEvents={disable ? 'none' : 'auto'} style={disabledStyles}>
+    <View pointerEvents={disable ? 'none' : 'auto'} style={[disabledStyles, parentContainerStyle]}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
         {showImage && !!image ? (
-          <Image source={{ uri: image }} style={imageStyle} />
+          image === 'globe' ? (
+            <Icon name={icons.earthFilled} size={22} color={theme.colors.active} />
+          ) : (
+            <Image source={{ uri: image }} style={imageStyle} />
+          )
         ) : (
-          <Label type={fontSize} numberOfLines={1} textType={fontWeight} style={[placeholderColor, textStyle]}>
+          <Label
+            type={fontSize}
+            numberOfLines={1}
+            textType={fontWeight}
+            style={[styles.text, placeholderColor, textStyle]}
+          >
             {label ?? placeholder}
           </Label>
         )}
-        <Icon
-          name={icon}
-          size={iconSize ?? 16}
-          color={iconColor ?? theme.colors.disabled}
-          style={[styles.iconStyle, iconStyle]}
-        />
+        <Icon name={icon} size={iconSize} color={iconColor} style={[styles.iconStyle, iconStyle]} />
       </TouchableOpacity>
       <BottomSheetListView
         data={data}
@@ -129,7 +148,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderWidth: 1,
@@ -144,5 +162,8 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.5,
+  },
+  text: {
+    flex: 1,
   },
 });

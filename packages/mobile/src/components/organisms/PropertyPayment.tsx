@@ -87,8 +87,9 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           coins={orderSummary.coins}
         />
         <PromoCode
+          type="regular"
           onApplyPromo={this.applyPromo}
-          promo={orderSummary.promo}
+          isPromoApplied={orderSummary.promo?.promoApplied}
           isError={isPromoFailed}
           onClear={this.clearPromo}
         />

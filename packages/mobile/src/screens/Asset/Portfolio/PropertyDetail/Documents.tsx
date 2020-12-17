@@ -3,6 +3,7 @@ import { FlatList, Share, StyleSheet, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -47,7 +48,7 @@ interface IDocumentState {
   isLoading: boolean;
 }
 
-type Props = IStateProps & IDispatchProps;
+type Props = IStateProps & IDispatchProps & WithTranslation;
 
 export class Documents extends PureComponent<Props, IDocumentState> {
   public state = {
@@ -74,17 +75,19 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   public render(): React.ReactNode {
     const { searchValue, isLoading } = this.state;
+    const { t } = this.props;
+
     return (
       <View style={styles.container}>
         <UploadBox
           icon={icons.document}
-          header="Upload Document"
-          subHeader="Supports: JPG, JPEG, PNG, PDF "
+          header={t('uploadDocument')}
+          subHeader={t('uploadDocHelperText')}
           containerStyle={styles.uploadBox}
           onPress={this.onCapture}
         />
         <SearchBar
-          placeholder="Search by document name"
+          placeholder={t('assetMore:searchByDoc')}
           value={searchValue}
           updateValue={this.onSearch}
           containerStyle={styles.searchBar}
@@ -152,6 +155,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   };
 
   private onCapture = async (): Promise<void> => {
+    const { t } = this.props;
     try {
       const document = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
@@ -162,18 +166,18 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         const documentSource = { uri: document.uri, type: document.type, name: document.name };
         await this.uploadDocument(documentSource);
       } else {
-        AlertHelper.error({ message: 'Unsupported format' });
+        AlertHelper.error({ message: t('unsupportedFormat') });
       }
     } catch (e) {
-      AlertHelper.error({ message: 'Please try again.' });
+      AlertHelper.error({ message: t('pleaseTryAgain') });
     }
   };
 
   private onShare = async (link: string): Promise<void> => {
-    // TODO: (Shikha) - Replace message
+    const { t } = this.props;
     try {
       await Share.share({
-        message: `Hey, I would like to share this document ${link}`,
+        message: `${t('assetMore:shareDoc')} ${link}`,
       });
     } catch (error) {
       AlertHelper.error({ message: error });
@@ -197,7 +201,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   private uploadDocument = async (DocumentSource: IDocumentSource): Promise<void> => {
     const { currentAssetId, assetData } = this.props;
-    if (!assetData) {
+    if (!assetData || !assetData.assetStatusInfo) {
       return;
     }
 
@@ -207,6 +211,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     const formData = new FormData();
     // @ts-ignore
     formData.append('files[]', DocumentSource);
+
     try {
       const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_DOCUMENT);
       const { data } = response;
@@ -256,7 +261,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   return bindActionCreators({ getAssetDocument }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Documents);
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Documents));
 
 const styles = StyleSheet.create({
   container: {

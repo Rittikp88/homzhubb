@@ -25,7 +25,6 @@ export interface IFormDropdownProps {
   onChange?: (value: string, props?: FormikProps<FormikValues>) => void;
   onError?: () => void;
   dropdownContainerStyle?: StyleProp<ViewStyle>;
-  maxLabelLength?: number;
   numColumns?: number;
   textType?: TextFieldType;
   textSize?: TextSizeType;
@@ -45,7 +44,6 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
       listTitle,
       listHeight,
       dropdownContainerStyle = {},
-      maxLabelLength,
       isMandatory = false,
       numColumns = 1,
       textType = 'label',
@@ -100,7 +98,6 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
           iconSize={16}
           iconColor={theme.colors.darkTint7}
           containerStyle={StyleSheet.flatten([dropdownContainerStyle, errorStyle])}
-          maxLabelLength={maxLabelLength}
           numColumns={numColumns}
         />
       </WithFieldError>

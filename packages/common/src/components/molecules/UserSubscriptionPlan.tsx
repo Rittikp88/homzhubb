@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -16,14 +15,14 @@ import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscrip
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { AssetSubscriptionData } from '@homzhub/common/src/mocks/AssetSubscriptionData';
 
 interface IProps {
   onApiFailure: (err: IApiClientError) => void;
 }
 
 const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
-  const isTablet = useDown(deviceBreakpoint.TABLET);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isLaptop = useDown(deviceBreakpoint.LAPTOP);
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
   const [data, setData] = React.useState({} as UserSubscription);
   const [isMoreToggled, setIsMoreToggled] = React.useState(false);
@@ -42,12 +41,7 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   }, [onApiFailure]);
 
   if (ObjectUtils.isEmpty(data)) {
-    // TODO: (Bishal) condition to be removed
-    if (PlatformUtils.isWeb()) {
-      setData(ObjectMapper.deserialize(UserSubscription, AssetSubscriptionData));
-    } else {
-      return null;
-    }
+    return null;
   }
 
   const currentPlan = `${t('common:homzhub')} ${data.userServicePlan?.label}`;
@@ -78,8 +72,8 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
         </Text>
         {` ${t('subscriptionHelperServices')}`}
       </Text>
-      {renderFeatures(data, isMoreToggled, isTablet)}
-      {isTablet && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
+      {renderFeatures(data, isMoreToggled, isLaptop, isMobile)}
+      {isMobile && data?.recommendedPlan?.serviceBundleItems.length > 5 && (
         <Text type="small" textType="semiBold" style={styles.more} onPress={toggleMore}>
           {isMoreToggled ? t('common:less') : t('common:more')}
         </Text>
@@ -89,16 +83,22 @@ const UserSubscriptionPlan: FC<IProps> = ({ onApiFailure }: IProps) => {
   );
 };
 
-const renderFeatures = (data: UserSubscription, isMoreToggled: boolean, isTablet: boolean): React.ReactNode => {
+const renderFeatures = (
+  data: UserSubscription,
+  isMoreToggled: boolean,
+  isLaptop: boolean,
+  isMobile: boolean
+): React.ReactNode => {
   const { recommendedPlan } = data;
   const serviceItems = recommendedPlan?.serviceBundleItems ?? [];
-  const bundleItems = isMoreToggled ? serviceItems : serviceItems.slice(0, 3);
-  const upgradeFeatures = isTablet ? bundleItems : serviceItems;
+  const displayServiceItems = serviceItems.length > 6 ? serviceItems.slice(0, 6) : serviceItems;
+  const bundleItems = isMoreToggled ? displayServiceItems : serviceItems.slice(0, 3);
+  const upgradeFeatures = isMobile ? bundleItems : isLaptop ? serviceItems.slice(0, 3) : displayServiceItems;
 
   return (
-    <View style={[styles.featuresDataContainer, !isTablet && styles.maxFeaturesDataHeight]}>
+    <View style={[styles.featuresDataContainer, !isLaptop && styles.maxFeaturesDataHeight]}>
       {upgradeFeatures.map((item) => (
-        <View style={styles.featuresData} key={`${item.id}`}>
+        <View style={[styles.featuresData, !isLaptop && styles.featuresDataWidth]} key={`${item.id}`}>
           <Icon name={icons.checkFilled} color={theme.colors.green} size={25} />
           <Text type="small" textType="regular" style={styles.featureName}>
             {item.label}
@@ -133,6 +133,10 @@ const styles = StyleSheet.create({
   },
   featuresData: {
     flexDirection: 'row',
+    marginBottom: 32,
+  },
+  featuresDataWidth: {
+    width: '50%',
     marginBottom: 20,
   },
   planName: {

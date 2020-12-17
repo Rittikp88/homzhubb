@@ -1,40 +1,36 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
+import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListingVisits';
 
-const LatestUpdates = (): React.ReactElement => {
+interface IProps {
+  propertyVisitsData: AssetListingVisits;
+}
+
+// TODO: (Bishal) replace offers dummy data once api is ready
+const LatestUpdates: FC<IProps> = ({ propertyVisitsData }: IProps) => {
   const { t } = useTranslation();
-
+  const { upcomingVisits, missedVisits, completedVisits } = propertyVisitsData;
   return (
-    <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <Text type="small" style={styles.text} textType="semiBold" minimumFontScale={0.5}>
-          {t('Latest Updates')}
-        </Text>
-      </View>
+    <>
+      <Text type="small" style={styles.title} textType="semiBold">
+        {t('assetDashboard:latestUpdates')}
+      </Text>
       <OffersVisitsSection
         values={{
           [OffersVisitsType.offers]: [3000, 2000, 1200],
-          [OffersVisitsType.visits]: [5, 7, 5],
+          [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
         }}
       />
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 5,
-  },
-  textContainer: {
-    marginTop: -20,
-    marginBottom: 10,
-  },
-  text: {
-    fontWeight: '600',
+  title: {
     color: theme.colors.darkTint4,
   },
 });

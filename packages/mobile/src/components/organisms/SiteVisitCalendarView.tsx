@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { groupBy } from 'lodash';
+import { groupBy, isEmpty } from 'lodash';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
@@ -19,12 +22,19 @@ import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader'
 import { CalendarComponent } from '@homzhub/mobile/src/components/atoms/CalendarComponent';
 import { BottomSheet, Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
-import { AssetVisit, ISlotItem, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
+import EventWithProfile from '@homzhub/mobile/src/components/molecules/EventWithProfile';
+import { AssetVisit, ISlotItem, IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IAssetVisitPayload, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IAssetVisitPayload,
+  IUpdateVisitPayload,
+  VisitStatus,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
@@ -37,7 +47,7 @@ interface IStateProps {
 }
 
 interface IProps {
-  onReschedule: () => void;
+  onReschedule: (isNew?: boolean) => void;
   selectedAssetId: number;
 }
 
@@ -45,8 +55,10 @@ interface IScreenState {
   currentDate: string;
   timeSlot: ISlotItem[];
   isCalendarVisible: boolean;
+  isProfileVisible: boolean;
   selectedSlot: number;
   visitsData: IVisitByKey[][];
+  userDetail: UserInteraction;
 }
 
 const allSlot = { id: 0, from: 0, to: 0, icon: '', formatted: 'All' };
@@ -58,8 +70,10 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     currentDate: DateUtils.getUtcFormattedDate(new Date().toDateString(), DateFormats.DD_MMMMYYYY),
     timeSlot: [allSlot].concat(TimeSlot),
     isCalendarVisible: false,
+    isProfileVisible: false,
     selectedSlot: 0,
     visitsData: [],
+    userDetail: {} as UserInteraction,
   };
 
   public static getDerivedStateFromProps(props: Props, state: IScreenState): IScreenState | null {
@@ -81,7 +95,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { t, isLoading } = this.props;
-    const { currentDate, isCalendarVisible, visitsData } = this.state;
+    const { currentDate, isCalendarVisible, visitsData, isProfileVisible, userDetail } = this.state;
     const date = DateUtils.getUtcFormatted(currentDate, DateFormats.DD_MMMMYYYY, DateFormats.YYYYMMDD);
     return (
       <>
@@ -112,6 +126,22 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
         >
           <CalendarComponent allowPastDates selectedDate={date} onSelect={this.onSelectDate} />
         </BottomSheet>
+        {!isEmpty(userDetail) && (
+          <BottomSheet
+            visible={isProfileVisible}
+            onCloseSheet={this.onCloseProfile}
+            headerTitle={t('Profile')}
+            isShadowView
+            sheetHeight={600}
+          >
+            <EventWithProfile
+              detail={userDetail}
+              handleVisitAction={this.handleVisitActions}
+              handleConfirmation={this.showConfirmation}
+              handleReschedule={this.handleSchedule}
+            />
+          </BottomSheet>
+        )}
         <Loader visible={isLoading} />
       </>
     );
@@ -154,7 +184,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
           subAddress={visitData[0].asset.address}
           startDate={visitData[0].startDate}
           endDate={visitData[0].endDate}
-          isPropertyOwner // TODO: Need to refactor
+          isPropertyOwner={visitData[0].isAssetOwner}
           onPressSchedule={(): void => this.handleRescheduleAll(visitData)}
           containerStyle={styles.addressView}
         />
@@ -172,11 +202,13 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
                   return (
                     <>
                       <Avatar
+                        isRightIcon
                         key={item.id}
                         fullName={item.user.fullName}
                         designation={StringUtils.toTitleCase(designation)}
-                        rating={item.user.rating}
-                        date={item.createdAt}
+                        date={item.updatedAt ?? item.createdAt}
+                        image={item.user.profilePicture}
+                        onPressRightIcon={(): void => this.onShowProfile(item.user.id)}
                         containerStyle={styles.avatar}
                       />
                       {results.length - 1 !== index && <Divider containerStyles={styles.dividerStyle} />}
@@ -197,6 +229,25 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     });
   };
 
+  private onShowProfile = (id: number): void => {
+    UserRepository.getUserInteractions(id)
+      .then((response) => {
+        this.setState({
+          isProfileVisible: true,
+          userDetail: response,
+        });
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      });
+  };
+
+  private onCloseProfile = (): void => {
+    this.setState({
+      isProfileVisible: false,
+    });
+  };
+
   private onSelectDate = (date: string): void => {
     this.setState(
       {
@@ -206,6 +257,44 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
       },
       () => this.getVisitsData()
     );
+  };
+
+  private showConfirmation = (visitId: number): void => {
+    const { t } = this.props;
+    AlertHelper.alert({
+      title: t('cancelVisit'),
+      message: t('wantCancelVisit'),
+      onOkay: () => this.handleVisitActions(visitId, VisitActions.CANCEL).then(),
+    });
+  };
+
+  private handleSchedule = (id: number): void => {
+    const { onReschedule, setVisitIds, getAssetVisit } = this.props;
+    setVisitIds([id]);
+    getAssetVisit({ id });
+    onReschedule(false);
+    this.onCloseProfile();
+  };
+
+  private handleVisitActions = async (visitId: number, action: VisitActions): Promise<void> => {
+    const {
+      userDetail: {
+        user: { id },
+      },
+    } = this.state;
+    const payload: IUpdateVisitPayload = {
+      id: visitId,
+      data: {
+        status: action,
+      },
+    };
+
+    try {
+      await AssetRepository.updatePropertyVisit(payload);
+      this.onShowProfile(id);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private getBadgesData = (status: string): ILabelColor | null => {
@@ -383,7 +472,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue,
   },
   visitView: {
-    height: 450,
+    minHeight: 450,
     marginTop: 10,
   },
   visitCard: {

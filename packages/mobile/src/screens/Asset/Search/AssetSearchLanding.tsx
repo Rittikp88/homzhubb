@@ -25,10 +25,11 @@ import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSear
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { WrapperSearchStackParamList } from '@homzhub/mobile/src/navigation/WrapperSearchStack';
 import { Country } from '@homzhub/common/src/domain/models/Country';
-import { IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
+import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
-  filterData: IFilterDetails | null;
+  filterData: FilterDetail | null;
   filters: IFilter;
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
@@ -135,7 +136,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     );
   }
 
-  private renderContent = (filterData: IFilterDetails): React.ReactElement => {
+  private renderContent = (filterData: FilterDetail): React.ReactElement => {
     const { selectedPropertyType, selectedLookingType, minPriceRange, maxPriceRange } = this.state;
     const {
       t,
@@ -146,21 +147,21 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     } = this.props;
     const {
       currency,
-      asset_group_list,
-      filters: { transaction_type },
+      assetGroupList,
+      filters: { transactionType },
     } = filterData;
     let currencySymbol = '';
 
-    const assetGroup = asset_group_list.map((item, index) => {
+    const assetGroup = assetGroupList.map((item, index) => {
       return { title: item.title, value: item.id };
     });
 
     // TODO: Handle Multiple currency
     const country = countryList.find((item) => item.currencies[0].currencyCode === currency_code);
 
-    currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currency_symbol;
+    currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currencySymbol;
 
-    const assetTransaction = transaction_type.map((item, index) => {
+    const assetTransaction = transactionType.map((item, index) => {
       return { title: item.title, value: index };
     });
 

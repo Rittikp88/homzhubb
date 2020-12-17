@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { PieChart } from 'react-native-svg-charts';
+import { isEqual } from 'lodash';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { GeneralLedgers, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
-const INNER_RADIUS = '70%';
-const HEIGHT = theme.viewport.height * 0.25;
+const INNER_RADIUS = '50%';
+const HEIGHT = 225;
 interface IProps {
   data: GeneralLedgers[];
 }
@@ -17,12 +19,20 @@ const DonutGraph = (props: IProps): React.ReactElement => {
   const [donutData, setDonutData] = useState<IGeneralLedgerGraphData[]>([]);
 
   useEffect(() => {
+    const ledgersByCategory = ObjectUtils.groupBy<GeneralLedgers>(data, 'categoryId');
     const transformedData: IGeneralLedgerGraphData[] = [];
 
-    data.forEach((ledger: GeneralLedgers, index: number) => {
-      const { category, amount } = ledger;
+    Object.keys(ledgersByCategory).forEach((categoryId) => {
+      const ledgers = ledgersByCategory[categoryId];
+      const { category } = ledgers[0];
+      let { amount } = ledgers[0];
+
+      if (ledgers.length > 1) {
+        amount = ledgersByCategory[categoryId].reduce((acc, ledger) => acc + ledger.amount, 0);
+      }
+
       transformedData.push({
-        key: index,
+        key: Number(categoryId),
         title: category,
         value: amount,
         svg: { fill: theme.randomHex() },
@@ -36,27 +46,22 @@ const DonutGraph = (props: IProps): React.ReactElement => {
     if (data.length === 0) return <EmptyState />;
 
     return (
-      <View style={styles.container}>
-        <PieChart style={styles.pieChart} data={donutData} innerRadius={INNER_RADIUS} />
-        <GraphLegends direction="column" data={donutData} />
-      </View>
+      <>
+        <PieChart style={styles.pieChart} padAngle={0.025} data={donutData} innerRadius={INNER_RADIUS} />
+        <GraphLegends data={donutData} />
+      </>
     );
   };
   return render();
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   pieChart: {
     flex: 1,
-    marginEnd: 16,
+    marginBottom: 16,
     height: HEIGHT,
   },
 });
-const memoizedComponent = React.memo(DonutGraph);
+
+const memoizedComponent = React.memo(DonutGraph, isEqual);
 export { memoizedComponent as DonutGraph };

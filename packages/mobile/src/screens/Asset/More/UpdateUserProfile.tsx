@@ -54,6 +54,12 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       phoneCode: '',
       phone: '',
       email: '',
+      address: '',
+      postalCode: '',
+      cityName: '',
+      stateName: '',
+      country: '',
+      countryIsoCode: '',
     },
     profileUpdateResponse: {
       new_phone: false,
@@ -120,17 +126,8 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       default:
         return (
           <UserProfileForm
-            formData={{
-              firstName: userProfile.firstName,
-              lastName: userProfile.lastName,
-              phoneCode: userProfile.countryCode,
-              phone: userProfile.phoneNumber,
-              email: userProfile.email,
-            }}
-            userFullName={userProfile.fullName}
-            profileImage={userProfile.profilePicture}
+            userData={userProfile}
             onFormSubmitSuccess={this.onUpdateProfileSuccess}
-            isPasswordVerificationRequired={userProfile.isPasswordCreated}
             updateFormLoadingState={this.changeLoadingStatus}
           />
         );
@@ -161,7 +158,8 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
   private onUpdateProfileSuccess = (
     profileDetails: IUserProfileForm,
-    profileUpdateResponse?: IUpdateProfileResponse
+    profileUpdateResponse?: IUpdateProfileResponse,
+    isAddressRequired?: boolean
   ): void => {
     const { navigation, t } = this.props;
     const { phone, phoneCode, email } = profileDetails;
@@ -193,7 +191,8 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       title: t('otpVerificationText'),
       phone,
       email,
-      updateProfileCallback: this.updateProfileDetails,
+      updateProfileCallback: (phoneOrEmailOtp: string, emailOTP?: string) =>
+        this.updateProfileDetails(phoneOrEmailOtp, emailOTP, isAddressRequired),
       ...paramsObj,
     });
   };
@@ -209,13 +208,38 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     this.setState({ isFormLoading });
   };
 
-  private updateProfileDetails = async (phoneOrEmailOtp: string, emailOtp?: string): Promise<void> => {
+  private updateProfileDetails = async (
+    phoneOrEmailOtp: string,
+    emailOtp?: string,
+    isAddressRequired?: boolean
+  ): Promise<void> => {
     const { t } = this.props;
     const {
       personalDetails,
       profileUpdateResponse: { new_phone, new_email, phone_otp, email_otp },
     } = this.state;
-    const { firstName, lastName, phoneCode, phone, email } = personalDetails;
+    const {
+      firstName,
+      lastName,
+      phoneCode,
+      phone,
+      email,
+      address,
+      cityName,
+      country,
+      stateName,
+      countryIsoCode,
+      postalCode,
+    } = personalDetails;
+
+    const userAddress = {
+      address,
+      postal_code: postalCode,
+      city_name: cityName,
+      state_name: stateName,
+      country_name: country,
+      country_iso2_code: countryIsoCode,
+    };
 
     const payload: IUpdateProfile = {
       action: UpdateProfileTypes.UPDATE_BY_OTP,
@@ -230,6 +254,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
           phone_code: phoneCode,
           phone_number: phone,
           email,
+          user_address: isAddressRequired ? userAddress : null,
         },
       },
     };

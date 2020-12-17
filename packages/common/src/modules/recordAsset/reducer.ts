@@ -23,6 +23,10 @@ export const initialRecordAssetState: IRecordAssetState = {
     selectedPlan: TypeOfPlan.RENT,
   },
   valueAddedServices: [],
+  editPropertyFlow: {
+    isEditPropertyFlow: false,
+    showBottomSheet: false,
+  },
   error: {
     assetPlan: '',
   },
@@ -126,6 +130,22 @@ export const recordAssetReducer = (
       return {
         ...state,
         ['valueAddedServices']: action.payload as IValueAddedServices[],
+      };
+    case RecordAssetActionTypes.SET.EDIT_PROPERTY_FLOW:
+      return {
+        ...state,
+        ['editPropertyFlow']: {
+          ...state.editPropertyFlow,
+          ['isEditPropertyFlow']: action.payload as boolean,
+        },
+      };
+    case RecordAssetActionTypes.SET.EDIT_PROPERTY_FLOW_BOTTOM_SHEET:
+      return {
+        ...state,
+        ['editPropertyFlow']: {
+          ...state.editPropertyFlow,
+          ['showBottomSheet']: action.payload as boolean,
+        },
       };
     case RecordAssetActionTypes.RESET:
       return initialRecordAssetState;

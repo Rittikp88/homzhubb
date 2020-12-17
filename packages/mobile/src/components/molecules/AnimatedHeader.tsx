@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -66,28 +66,30 @@ export const AnimatedHeader = (props: IHeaderProps): React.ReactElement => {
   };
 
   return (
-    <ParallaxScrollView
-      backgroundColor={theme.colors.white}
-      stickyHeaderHeight={STICKY_HEADER_HEIGHT}
-      parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
-      backgroundSpeed={10}
-      keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'always' : 'never'}
-      renderForeground={(): React.ReactElement => (
-        <DetailedHeader
-          title={title}
-          subTitle={subTitle}
-          subTitleColor={subTitleColor}
-          subTitleType={subTitleType}
-          linkText={linkText}
-          onLinkPress={onLinkPress}
-          testID={testID}
-        />
-      )}
-      renderStickyHeader={(): React.ReactElement => stickyHeader()}
-      renderFixedHeader={(): React.ReactElement => fixedHeader()}
-    >
-      {children}
-    </ParallaxScrollView>
+    <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
+      <ParallaxScrollView
+        backgroundColor={theme.colors.white}
+        stickyHeaderHeight={STICKY_HEADER_HEIGHT}
+        parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
+        backgroundSpeed={10}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'always' : 'never'}
+        renderForeground={(): React.ReactElement => (
+          <DetailedHeader
+            title={title}
+            subTitle={subTitle}
+            subTitleColor={subTitleColor}
+            subTitleType={subTitleType}
+            linkText={linkText}
+            onLinkPress={onLinkPress}
+            testID={testID}
+          />
+        )}
+        renderStickyHeader={(): React.ReactElement => stickyHeader()}
+        renderFixedHeader={(): React.ReactElement => fixedHeader()}
+      >
+        {children}
+      </ParallaxScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -107,5 +109,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: PlatformUtils.isIOS() ? 20 : 40,
     left: 20,
+  },
+  flexOne: {
+    flex: 1,
   },
 });

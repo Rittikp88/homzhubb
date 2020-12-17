@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -9,63 +9,46 @@ import { IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/Gener
 
 interface IProps {
   data: IGeneralLedgerGraphData[];
-  direction: 'row' | 'column';
 }
 
 const GraphLegends = (props: IProps): React.ReactElement => {
-  const { direction, data } = props;
+  const { data } = props;
   const currency = useSelector(UserSelector.getCurrency);
-  let directionStyle = {};
-  let directionLegendStyle: ViewStyle = styles.legendContainerColumn;
-
-  if (direction === 'row') {
-    directionStyle = styles.rowContainer;
-    directionLegendStyle = styles.legendContainerRow;
-  }
-
-  directionStyle = { ...directionStyle, ...{ flexDirection: direction } };
 
   return (
-    <View style={[styles.container, directionStyle]}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.container}>
       {data.map((legend: IGeneralLedgerGraphData, index: number) => (
-        <View style={[styles.legendContainer, directionLegendStyle]} key={`legend-${index}`}>
+        <View style={styles.legendContainer} key={`legend-${index}`}>
           <View style={[styles.color, { backgroundColor: legend.svg.fill }]} />
           <View>
             <Label type="regular" textType="regular" style={styles.textColor}>
               {legend.title}
             </Label>
-            <PricePerUnit price={legend.value} currency={currency} textSizeType="small" textFontWeight="regular" />
+            <PricePerUnit price={legend.value} currency={currency} textSizeType="small" textFontWeight="semiBold" />
           </View>
         </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  legendContainer: {
-    flexDirection: 'row',
-  },
-  rowContainer: {
-    flexWrap: 'wrap',
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  legendContainerRow: {
+  legendContainer: {
+    flexDirection: 'row',
     marginBottom: 16,
     marginHorizontal: 12,
-  },
-  legendContainerColumn: {
-    marginVertical: 16,
   },
   color: {
     marginEnd: 6,
     marginTop: 4,
-    ...(theme.circleCSS(12) as object),
+    height: 13,
+    width: 13,
+    borderRadius: 2,
   },
   textColor: {
     color: theme.colors.darkTint4,

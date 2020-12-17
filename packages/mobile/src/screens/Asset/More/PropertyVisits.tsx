@@ -8,7 +8,7 @@ import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { AnimatedProfileHeader, HeaderCard } from '@homzhub/mobile/src/components';
-import { DropdownWithCountry } from '@homzhub/mobile/src/components/molecules/DropdownWithCountry';
+import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/SiteVisitCalendarView';
 import { Country } from '@homzhub/common/src/domain/models/Country';
@@ -25,10 +25,9 @@ interface IScreenState {
   countryData: Country[];
   propertiesByCountry: PickerItemProps[];
   selectedAssetId: number;
+  selectedCountry: number;
   visitPayload: IAssetVisitPayload;
 }
-
-const defaultObj = { label: 'All Properties', value: 0 };
 
 type libraryProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyVisits>;
 type Props = WithTranslation & libraryProps & IDispatchProps;
@@ -39,6 +38,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     countryData: [],
     propertiesByCountry: [],
     selectedAssetId: 0,
+    selectedCountry: 0,
     visitPayload: {} as IAssetVisitPayload,
   };
 
@@ -69,17 +69,21 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
   }
 
   private renderPropertyVisits = (): React.ReactElement => {
-    const { isCalendarView, countryData, propertiesByCountry, selectedAssetId } = this.state;
+    const { isCalendarView, countryData, propertiesByCountry, selectedAssetId, selectedCountry } = this.state;
     const {
       navigation,
       route: { params },
     } = this.props;
     return (
       <>
-        <DropdownWithCountry
-          countryData={countryData}
-          dropdownData={propertiesByCountry}
-          onSelectProperty={this.handlePropertySelect}
+        <PropertyByCountryDropdown
+          selectedCountry={selectedCountry}
+          selectedProperty={selectedAssetId}
+          countryList={countryData}
+          propertyList={propertiesByCountry}
+          onCountryChange={this.onCountryChange}
+          onPropertyChange={this.handlePropertySelect}
+          containerStyle={styles.dropdownStyle}
         />
         {isCalendarView ? (
           <SiteVisitCalendarView onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
@@ -94,6 +98,10 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
         )}
       </>
     );
+  };
+
+  private onCountryChange = (countryId: number): void => {
+    this.setState({ selectedCountry: countryId });
   };
 
   private handleBack = (): void => {
@@ -129,9 +137,12 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     getAssetVisit(payload);
   };
 
-  private rescheduleVisit = (isNew?: boolean): void => {
+  private rescheduleVisit = (isNew?: boolean, userId?: number): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
+    navigation.navigate(ScreensKeys.BookVisit, {
+      isReschedule: !isNew,
+      ...(userId && { userId }),
+    });
   };
 
   private setVisitPayload = (payload: IAssetVisitPayload): void => {
@@ -147,7 +158,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
       return result.country;
     });
 
-    const propertiesByCountry: PickerItemProps[] = [defaultObj];
+    const propertiesByCountry: PickerItemProps[] = [];
 
     response.forEach((item) => {
       const results = item.results as VisitAssetDetail[];
@@ -184,5 +195,8 @@ const styles = StyleSheet.create({
   },
   calendarStyle: {
     paddingRight: 12,
+  },
+  dropdownStyle: {
+    paddingHorizontal: 16,
   },
 });

@@ -14,10 +14,11 @@ import { IFilter } from '@homzhub/common/src/domain/models/Search';
 interface IProps {
   properties: AssetSearch;
   getPropertiesListView: () => void;
-  setFilter: (payload: any) => void;
+  setFilter: (payload: IFilter) => void;
   filters: IFilter;
   favIds: number[];
   handleToggle: () => void;
+  handleSortToggle: () => void;
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
 }
 
@@ -25,7 +26,7 @@ type Props = IProps & WithTranslation;
 
 export class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
-    const { properties, t, favIds, handleToggle } = this.props;
+    const { properties, t, favIds, handleToggle, handleSortToggle } = this.props;
     if (properties.count === 0) {
       return null;
     }
@@ -47,6 +48,12 @@ export class PropertySearchList extends React.PureComponent<Props> {
           testID="resultList"
           showsVerticalScrollIndicator={false}
           style={styles.container}
+        />
+        <ToggleButton
+          onToggle={handleSortToggle}
+          title={t('common:sort')}
+          icon={icons.sort}
+          containerStyle={styles.sortButton}
         />
         <ToggleButton
           onToggle={handleToggle}
@@ -135,5 +142,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 14,
     right: 16,
+  },
+  sortButton: {
+    position: 'absolute',
+    top: 14,
+    right: '25%',
   },
 });

@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { IFilterDetails, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IAssetSearch, AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { FilterDetail, IFilterDetails } from '@homzhub/common/src/domain/models/FilterDetail';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'Search/';
 
@@ -27,18 +28,17 @@ export const SearchActionTypes = {
   },
 };
 
-// TODO: Type to be added
-const getFilterDetails = (payload: any): IFluxStandardAction<any> => {
+const getFilterDetails = (payload: IFilter): IFluxStandardAction<IFilter> => {
   return {
     type: SearchActionTypes.GET.FILTER_DETAILS,
     payload,
   };
 };
 
-const getFilterDetailsSuccess = (data: IFilterDetails): IFluxStandardAction<IFilterDetails> => {
+const getFilterDetailsSuccess = (data: FilterDetail): IFluxStandardAction<IFilterDetails> => {
   return {
     type: SearchActionTypes.GET.FILTER_DETAILS_SUCCESS,
-    payload: data,
+    payload: ObjectMapper.serialize(data),
   };
 };
 

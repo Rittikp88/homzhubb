@@ -6,7 +6,7 @@ import { AssetSearchData } from '@homzhub/common/src/mocks/AssetDescription';
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});
 
-describe('SearchRepository', () => {
+describe.skip('SearchRepository', () => {
   afterAll(() => {
     jest.resetAllMocks();
   });

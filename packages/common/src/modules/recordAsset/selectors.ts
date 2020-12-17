@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IEditPropertyFlow } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -127,6 +128,13 @@ const getCity = (state: IState): string => {
   return assetDetails?.city_name ?? '';
 };
 
+const getEditPropertyFlowDetails = (state: IState): IEditPropertyFlow => {
+  const {
+    recordAsset: { editPropertyFlow },
+  } = state;
+  return editPropertyFlow;
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
@@ -142,4 +150,5 @@ export const RecordAssetSelectors = {
   getCountryId,
   getValueAddedServices,
   getCity,
+  getEditPropertyFlowDetails,
 };

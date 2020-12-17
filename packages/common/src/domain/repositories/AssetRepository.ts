@@ -110,6 +110,10 @@ class AssetRepository {
     return await this.apiClient.patch(ENDPOINTS.updateAsset(id), requestBody);
   };
 
+  public deleteAsset = async (id: number): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.updateAsset(id));
+  };
+
   public getLeaseTerms = async (propertyId: number): Promise<LeaseTerm[]> => {
     const response = await this.apiClient.get(ENDPOINTS.leaseTerms(propertyId));
     return ObjectMapper.deserializeArray(LeaseTerm, response);

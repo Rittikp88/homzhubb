@@ -1,6 +1,7 @@
 {
   "common": {
     "homzhub": "Homzhub",
+    "all": "All",
     "description": "Your Property Custodian",
     "welcome": "Welcome To Homzhub",
     "login": "Login",
@@ -136,7 +137,18 @@
     "subject": "Subject",
     "subjectPlaceholder": "What can we help you with?",
     "homzhubTeam": "Homzhub team",
-    "invalidLink": "Can not open one of these links."
+    "invalidLink": "Can not open one of these links.",
+    "save": "Save",
+    "discard": "Discard",
+    "sort": "Sort",
+    "wantToContinue": "Do you still want to continue?",
+    "sms": "SMS",
+    "mail": "Mail",
+    "share": "Share",
+    "whatsapp": "WhatsApp",
+    "unsupportedFormat": "Unsupported format",
+    "pleaseTryAgain": "Please try again.",
+    "invalidLinkError": "You can't open this link."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -162,7 +174,7 @@
     "numberRequired": "Please enter your mobile number",
     "passwordRequired": "Please enter your password",
     "otpVerification": "We will send you an OTP via SMS for verification",
-    "passwordValidation": "Should contain a Uppercase/lowercase, a number and a special character",
+    "passwordValidation": "Your password should be atleast 8 characters long and should contain an uppercase, a lowercase, a special character and a number",
     "emailValidation": "Please enter valid email-id",
     "onlyAlphabets": "Only alphabets are allowed",
     "minimumCharacters": "Minimum 8 characters allowed",
@@ -198,10 +210,14 @@
     "resetLink": "Reset Link has been sent to your email",
     "emailNotExists": "Email does not exists",
     "validPhone": "Please enter a valid number",
-    "PasswordChangedText": "Password changed! Log back in."
+    "PasswordChangedText": "Password changed! Log back in.",
+    "haveReferralCodeText": "Have a referral code?",
+    "referralCodePlaceholder": "Enter valid referral code",
+    "invalidReferralCodeError": "Please enter a valid referral Code",
+    "loggedInReferralCodeError": "This referral-code is only valid for new users."
   },
   "property": {
-    "searchInWeb": "Search for projects,location,builders",
+    "searchInWeb": "Search for projects, location, builders",
     "welcomeUser": "Welcome {{username}},",
     "description": "Let's add your first property on Homzhub",
     "searchProject": "Search for project or street name",
@@ -230,7 +246,6 @@
     "headerTitle": "Details",
     "propertyType": "Property type",
     "spaceAvailable": "Space available",
-    "carpetArea": "Carpet area",
     "areaUnit": "Area unit",
     "enterCarpetArea": "Enter carpet area",
     "selectAreaUnit": "Select Area Unit",
@@ -398,7 +413,12 @@
     "yearOfPossession": "Year of Possession",
     "rentFlowFormDescription": "Write a description to attract more views",
     "sellFlowFormDescription": "Write a description to attract more views",
-    "manageFlowFormDescription": "Any additional comments"
+    "manageFlowFormDescription": "Any additional comments",
+    "editPropertyCautionText": "You are about to edit your property. Until the changes are reviewed, your property will not appear in the search results",
+    "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?",
+    "editProperty": "Edit Property",
+    "deleteProperty": "Delete Property",
+    "editListing": "Edit Listing"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -499,11 +519,12 @@
     "parks": "Parks",
     "atms": "ATMs",
     "malls": "Shopping Malls",
-    "noDescription": "No Description",
+    "noDescription": "No Description Added",
     "messageSent": "Message Sent Successfully",
     "scheduleVisit": "Schedule Site Visit",
     "noAmenities": "No Amenities Selected",
-    "noHighlights": "No Highlights Added"
+    "noHighlights": "No Highlights Added",
+    "noInformation": "No Information Added"
   },
   "assetDashboard": {
     "notification": "Notifications",
@@ -513,7 +534,10 @@
     "marketTrends": "Market Trends",
     "viewAll": "View all",
     "noTrends": "No Trends",
+    "vacant": "Vacant",
+    "latestUpdates": "Latest Updates",
     "pendingProperties": "Pending Properties ({{total}})",
+    "vacantProperties": "Vacant Properties ({{total}})",
     "completeProperty": "Please complete the property details so that we can serve you better",
     "completionStatus": "{{status}}% Complete",
     "completeDetails": "Complete Details",
@@ -552,7 +576,9 @@
     "lowestOffer": "Lowest Offer",
     "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}",
     "noPropertiesAdded": "You haven't added any properties",
-    "noFilterProperties": "There are no properties for the selected filter"
+    "noFilterProperties": "There are no properties for the selected filter",
+    "deletePropertyDescription": "Sed mattis ultrices arcu turpis feugiat consequat, purus. In arcu leo sed a id imperdiet magna.",
+    "deleteConfirmation": "Do you want to delete property?"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -562,6 +588,7 @@
     "expense": "Expense {{year}}",
     "payNow": "Pay Now",
     "addRecords": "Add Records",
+    "addNewRecord": "Add new record",
     "selectProperty": "Select property",
     "details": "Details",
     "detailsPlaceholder": "Eg. Rent or Plumbing fees",
@@ -588,7 +615,8 @@
     "tellerPlaceholder": "Eg: Tenant",
     "addedSuccessfullyMessage": "Added successfully",
     "noDescriptionText": "No Description.",
-    "addProperty": "Please add a property before adding a financial record"
+    "addProperty": "Please add a property before adding a financial record",
+    "allProperties": "All properties"
   },
   "assetMore": {
     "more": "More",
@@ -602,12 +630,25 @@
     "savedProperties": "Saved Properties",
     "propertyVisits": "Property Visits",
     "marketTrends": "Market Trends",
+    "shareTrend": "Read this interesting article I found on homzhub -",
+    "noTrends": "There are no links matching your search term",
     "support": "Support",
     "settings": "Settings",
-    "referFriend": "Refer a friend",
+    "referFriend": "Refer & Earn",
+    "referMore": "Refer 5 Friends or more and",
+    "getRewarded": "GET REWARDED!",
+    "refCode": "REFERRAL CODE",
+    "refWith": "Refer your friends with",
+    "copiedCode": "Referral code copied to the clipboard",
+    "clickCopy": "Click below to copy the code",
+    "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
+    "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
+    "shareDoc": "Hey, I have shared this document with you from the Homzhub app. Please use the link to download.",
     "paymentMethods": "Subscriptions & Payments",
     "logout": "Log Out",
-    "refer": "Refer & Earn"
+    "refer": "Refer & Earn",
+    "searchByDoc": "Search by document name",
+    "noDocs": "There are no documents matching your search term"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
@@ -619,7 +660,7 @@
     "currency": "Currency",
     "language": "Language",
     "financialYear": "Financial Year",
-    "metricSystem": "Metric System",
+    "metricSystem": "Units Of Measurement",
     "dataAndPrivacy": "Data & Privacy",
     "showLastName": "Show Last Name",
     "showMobileNumber": "Show Mobile Number",
@@ -664,6 +705,7 @@
     "emailNotVerifiedText": "Email Not Verified!",
     "emailNotVerifiedDescription": "The email verification link has expired",
     "duplicateEmailError": "Email cannot be same as that of your personal email.",
+    "duplicatePhoneError": "Your emergency contact number cannot be the same as your primary contact number",
     "editContactDetails": "Edit Contact Details",
     "emergencyEmptyState": "Emergency contact for when you might not be available to take decisions on urgent issues",
     "workInfoEmptyState": "You can add details of your workplace to unlock additional discounts"

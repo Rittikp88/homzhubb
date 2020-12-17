@@ -72,6 +72,7 @@ export interface ISignUpPayload {
   phone_code: string;
   phone_number: string;
   password: string;
+  signup_referral_code?: string;
 }
 
 export interface ISocialSignUpPayload {
@@ -321,6 +322,15 @@ export interface IGeneralLedgerPayload {
   transaction_date__lte: string;
   transaction_date__gte: string;
   transaction_date_group_by: string;
+  asset_id?: number;
+  country_id?: number;
+}
+
+export interface ITransactionParams {
+  asset_id?: number;
+  country_id?: number;
+  offset: number;
+  limit: number;
 }
 
 export interface IAddGeneralLedgerPayload {
@@ -375,6 +385,7 @@ export interface IScheduleVisitPayload {
   sale_listing: number | null;
   lease_listing: number | null;
   comments?: string;
+  scheduled_for?: number;
 }
 
 export interface IPropertyImagesPostPayload {
@@ -455,6 +466,14 @@ export interface IProfileDetailsPayload {
   phone_code: string;
   phone_number: string;
   email: string;
+  user_address: {
+    address: string;
+    postal_code: string;
+    city_name: string;
+    state_name: string;
+    country_name: string;
+    country_iso2_code: string;
+  } | null;
 }
 
 export interface IUpdateProfilePayload {
@@ -523,4 +542,15 @@ export interface IEmailVerificationPayload {
   is_work_email?: boolean;
   verification_id?: string;
   verification_metadata?: {};
+}
+
+export interface IMarketTrendParams {
+  limit?: number;
+  offset?: number;
+  q?: string;
+  trend_type?: string;
+}
+
+export interface IReferralResponse {
+  is_applicable: boolean;
 }

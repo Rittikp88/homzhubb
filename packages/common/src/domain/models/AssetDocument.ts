@@ -7,7 +7,7 @@ export class AssetDocument {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('asset', Number)
+  @JsonProperty('asset', Number, true)
   private _asset = 0;
 
   @JsonProperty('description', String, true)
@@ -27,6 +27,9 @@ export class AssetDocument {
 
   @JsonProperty('sale_listing_id', Number, true)
   private _saleListingId: number | null = null;
+
+  @JsonProperty('can_delete', Boolean, true)
+  private _canDelete = false;
 
   get id(): number {
     return this._id;
@@ -58,5 +61,9 @@ export class AssetDocument {
 
   get saleListingId(): number | null {
     return this._saleListingId;
+  }
+
+  get canDelete(): boolean {
+    return this._canDelete;
   }
 }

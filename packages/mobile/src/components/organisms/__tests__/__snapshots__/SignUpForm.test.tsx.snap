@@ -38,6 +38,7 @@ SignUpForm {
     "password": "",
     "phone": "",
     "phoneCode": "",
+    "referralCode": undefined,
   },
   "updater": Updater {
     "_callbacks": Array [],
@@ -82,6 +83,7 @@ SignUpForm {
         }
       >
         <Formik
+          enableReinitialize={true}
           initialValues={
             Object {
               "email": "",
@@ -90,6 +92,7 @@ SignUpForm {
               "password": "",
               "phone": "",
               "phoneCode": "",
+              "referralCode": undefined,
             }
           }
           onSubmit={[Function]}

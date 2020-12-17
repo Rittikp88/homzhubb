@@ -15,7 +15,6 @@ import {
   AssetAdvertisementBanner,
   AssetMetricsList,
   AssetSummary,
-  Loader,
 } from '@homzhub/mobile/src/components';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
@@ -76,7 +75,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     const { isLoading, pendingProperties } = this.state;
 
     return (
-      <AnimatedProfileHeader title={t('dashboard')}>
+      <AnimatedProfileHeader loading={isLoading} isGradientHeader title={t('dashboard')}>
         <>
           {this.renderAssetMetricsAndUpdates()}
           {pendingProperties.length > 0 && (
@@ -88,10 +87,9 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
             />
           )}
           <FinanceOverview />
-          <AssetMarketTrends onViewAll={this.onViewAll} />
+          <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
           <AssetAdvertisementBanner />
           {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
-          <Loader visible={isLoading} />
         </>
       </AnimatedProfileHeader>
     );
@@ -105,7 +103,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
           data={metrics?.assetMetrics?.miscellaneous ?? []}
           subscription={metrics?.userServicePlan?.label}
-          containerStyle={styles.assetCards}
           onMetricsClicked={this.handleMetricsNavigation}
         />
         <AssetSummary
@@ -137,7 +134,16 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private onViewAll = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.MarketTrends);
+    navigation.navigate(ScreensKeys.More, {
+      screen: ScreensKeys.MarketTrends,
+      initial: false,
+      params: { isFromDashboard: true },
+    });
+  };
+
+  private onTrendPress = (url: string, trendId: number): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.WebViewScreen, { url, trendId });
   };
 
   private onViewProperty = (data: ISetAssetPayload): void => {

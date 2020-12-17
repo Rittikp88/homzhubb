@@ -1,3 +1,4 @@
+import { IEditPropertyFlow } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -12,6 +13,7 @@ export interface IRecordAssetState {
   maintenanceUnits: IUnit[];
   selectedAssetPlan: ISelectedAssetPlan;
   valueAddedServices: IValueAddedServices[];
+  editPropertyFlow: IEditPropertyFlow;
   error: {
     assetPlan: string;
   };

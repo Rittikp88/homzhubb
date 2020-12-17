@@ -69,11 +69,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
     headerTitle="Title"
     isShadowView={true}
     onCloseSheet={[MockFunction]}
-    sheetHeight={750}
+    sheetHeight={700}
     visible={true}
   >
     <RBSheet
-      animationType="slide"
+      animationType="none"
       closeDuration={200}
       closeOnDragDown={true}
       closeOnPressBack={true}
@@ -87,7 +87,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
         }
       }
       dragFromTopOnly={true}
-      height={750}
+      height={700}
       keyboardAvoidingViewEnabled={true}
       minClosingHeight={0}
       onClose={[MockFunction]}
@@ -95,7 +95,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
       openDuration={300}
     >
       <Component
-        animationType="slide"
+        animationType="none"
         hardwareAccelerated={false}
         onRequestClose={[Function]}
         supportedOrientations={
@@ -111,7 +111,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
         visible={true}
       >
         <Modal
-          animationType="slide"
+          animationType="none"
           hardwareAccelerated={false}
           onRequestClose={[Function]}
           supportedOrientations={

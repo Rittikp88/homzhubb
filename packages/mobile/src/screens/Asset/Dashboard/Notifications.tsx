@@ -20,11 +20,13 @@ import {
 import { NotificationType } from '@homzhub/common/src/domain/models/DeeplinkMetaData';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
-import { DetailType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 interface IDispatchProps {
   setCurrentAsset: (payload: ISetAssetPayload) => void;
+  setFilter: (payload: IFilter) => void;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
@@ -106,11 +108,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
   public onNotificationClicked = async (data: NotificationModel): Promise<void> => {
     const { notifications } = this.state;
-    const {
-      navigation,
-      setCurrentAsset,
-      route: { params },
-    } = this.props;
+    const { navigation, setFilter } = this.props;
     const {
       id,
       deeplinkMetadata: { objectId, type, assetId, leaseListingId, saleListingId },
@@ -125,14 +123,10 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     if (type === NotificationType.SITE_VISIT) {
       navigation.navigate(ScreensKeys.PropertyVisits, { visitId: objectId });
     } else if (type === NotificationType.PROPERTY_DETAIL || type === NotificationType.PROPERTY_PREVIEW) {
-      const payload: ISetAssetPayload = {
-        asset_id: assetId,
-        listing_id: leaseListingId > 0 ? leaseListingId : saleListingId,
-        assetType: leaseListingId > 0 ? DetailType.LEASE_LISTING : DetailType.SALE_LISTING,
-      };
-      setCurrentAsset(payload);
-      navigation.navigate(ScreensKeys.PropertyDetailScreen, {
-        isFromDashboard: params && params.isFromDashboard ? params.isFromDashboard : false,
+      setFilter({ asset_transaction_type: leaseListingId > 0 ? 0 : 1 });
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+        propertyTermId: leaseListingId > 0 ? leaseListingId : saleListingId,
+        propertyId: assetId,
       });
     }
   };
@@ -147,7 +141,9 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   };
 
   public onUpdateSearchText = (value: string): void => {
-    this.setState({ searchText: value, limit: 50, offset: 0 }, () => {
+    const { notifications } = this.state;
+    const offset = value.length > 0 ? 0 : notifications.results.length;
+    this.setState({ searchText: value, limit: 50, offset }, () => {
       this.getAssetNotifications().then();
     });
   };
@@ -187,7 +183,8 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentAsset } = PortfolioActions;
-  return bindActionCreators({ setCurrentAsset }, dispatch);
+  const { setFilter } = SearchActions;
+  return bindActionCreators({ setCurrentAsset, setFilter }, dispatch);
 };
 
 export default connect(

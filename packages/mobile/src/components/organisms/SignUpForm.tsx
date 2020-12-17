@@ -9,11 +9,13 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
+import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
 
 interface ISignUpFormProps extends WithTranslation {
   testID?: string;
   onPressLink: () => void;
   onSubmitFormSuccess: (payload: ISignUpPayload) => void;
+  referralCode?: string;
 }
 
 interface IFormData {
@@ -23,6 +25,7 @@ interface IFormData {
   phoneCode: string;
   phone: string;
   password: string;
+  referralCode?: string;
 }
 
 class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
@@ -37,10 +40,16 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
     phone: '',
     password: '',
     phoneCode: '',
+    referralCode: '',
   };
 
+  public componentDidMount(): void {
+    const { referralCode } = this.props;
+    this.setState({ referralCode });
+  }
+
   public render(): React.ReactNode {
-    const { t, testID, onPressLink } = this.props;
+    const { t, testID, onPressLink, referralCode } = this.props;
 
     return (
       <View style={styles.container}>
@@ -48,6 +57,7 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
           initialValues={{ ...this.state }}
           validate={FormUtils.validate(this.formSchema)}
           onSubmit={this.handleSubmit}
+          enableReinitialize
         >
           {(formProps: FormikProps<IFormData>): React.ReactNode => {
             const onEmailFocus = (): void => this.email.current?.focus();
@@ -105,6 +115,13 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
                   helpText={t('auth:passwordValidation')}
                   formProps={formProps}
                 />
+                <PromoCode
+                  type="link"
+                  formDetails={{ formProps, name: 'referralCode' }}
+                  code={referralCode}
+                  containerStyles={styles.referralContainer}
+                  inputStyles={styles.referralInputStyle}
+                />
                 <TermsCondition onPressLink={onPressLink} />
                 <FormButton
                   // @ts-ignore
@@ -136,6 +153,7 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
         .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
         .min(8, t('auth:minimumCharacters'))
         .required(t('auth:passwordRequired')),
+      referralCode: yup.string().optional().uppercase().strict(true).max(10),
     });
   };
 
@@ -149,6 +167,7 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
       phone_code: values.phoneCode,
       phone_number: values.phone,
       password: values.password,
+      ...(values.referralCode && { signup_referral_code: values.referralCode }),
     };
 
     onSubmitFormSuccess(signUpData);
@@ -167,5 +186,12 @@ const styles = StyleSheet.create({
   submitStyle: {
     flex: 0,
     marginVertical: 4,
+  },
+  referralInputStyle: {
+    paddingVertical: 0,
+  },
+  referralContainer: {
+    marginBottom: 0,
+    marginHorizontal: 0,
   },
 });

@@ -101,10 +101,13 @@ export class AssetVisit {
   private _role = '';
 
   @JsonProperty('is_asset_owner', Boolean, true)
-  private _is_asset_owner = false;
+  private _isAssetOwner = false;
 
   @JsonProperty('created_at', String)
   private _createdAt = '';
+
+  @JsonProperty('updated_at', String, true)
+  private _updatedAt = '';
 
   @JsonProperty('actions', [String])
   private _actions = [];
@@ -169,6 +172,10 @@ export class AssetVisit {
   }
 
   get isAssetOwner(): boolean {
-    return this._is_asset_owner;
+    return this._isAssetOwner;
+  }
+
+  get updatedAt(): string {
+    return this._updatedAt;
   }
 }

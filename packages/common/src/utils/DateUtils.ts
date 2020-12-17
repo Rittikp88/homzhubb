@@ -52,6 +52,10 @@ class DateUtils {
     return moment.utc(new Date()).format('MMM YYYY');
   };
 
+  public getCurrentMonthName = (): string => {
+    return moment.utc(new Date()).format('MMM');
+  };
+
   public getLastMonth = (): string => {
     return moment.utc(new Date()).subtract(1, 'months').format('MMM YYYY');
   };
@@ -277,6 +281,8 @@ class DateUtils {
   public getCurrentDate24Format = (): string => {
     return moment().format(DateFormats.ISO24Format);
   };
+
+  public getISOWeekNumber = (date: Date): number => moment(date).isoWeek();
 }
 
 const dateUtils = new DateUtils();

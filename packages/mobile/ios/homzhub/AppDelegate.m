@@ -7,6 +7,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTLinkingManager.h>
+#import "RNSplashScreen.h"
 
 
 @import Firebase;
@@ -59,6 +60,7 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [RNSplashScreen show];
   return YES;
 }
 

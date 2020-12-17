@@ -60,6 +60,7 @@ exports[`DocumentCard should match snapshot 1`] = `
             style={
               Object {
                 "flex": 1,
+                "marginEnd": 16,
               }
             }
           >
@@ -67,10 +68,12 @@ exports[`DocumentCard should match snapshot 1`] = `
               style={
                 Object {
                   "flex": 1,
+                  "marginEnd": 16,
                 }
               }
             >
               <Label
+                numberOfLines={1}
                 style={
                   Object {
                     "color": "#33495E",
@@ -80,6 +83,7 @@ exports[`DocumentCard should match snapshot 1`] = `
                 type="large"
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Array [
                       Object {
@@ -98,6 +102,7 @@ exports[`DocumentCard should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    numberOfLines={1}
                     style={
                       Array [
                         Object {
@@ -120,6 +125,7 @@ exports[`DocumentCard should match snapshot 1`] = `
                 </Text>
               </Label>
               <Label
+                numberOfLines={1}
                 style={
                   Object {
                     "color": "#667686",
@@ -128,6 +134,7 @@ exports[`DocumentCard should match snapshot 1`] = `
                 type="regular"
               >
                 <Text
+                  numberOfLines={1}
                   style={
                     Array [
                       Object {
@@ -146,6 +153,7 @@ exports[`DocumentCard should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    numberOfLines={1}
                     style={
                       Array [
                         Object {

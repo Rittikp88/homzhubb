@@ -149,7 +149,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
 
     return yup.object().shape({
       name: yup.string().required(t('fieldRequiredError')),
-      phone: yup.string().required(t('fieldRequiredError')).notOneOf([phone]),
+      phone: yup.string().required(t('fieldRequiredError')).notOneOf([phone], t('duplicatePhoneError')),
       email: yup.string().required(t('fieldRequiredError')).notOneOf([email], t('duplicateEmailError')),
       phoneCode: yup.string(),
     });

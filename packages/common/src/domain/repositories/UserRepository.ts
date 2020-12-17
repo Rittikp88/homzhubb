@@ -21,7 +21,9 @@ import {
   IUpdateUserPreferences,
   IProfileImage,
   IEmailVerification,
+  IReferralResponse,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
@@ -29,30 +31,34 @@ import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscrip
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
 import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
+import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 import { SettingsScreenData } from '@homzhub/common/src/constants/Settings';
 
 const ENDPOINTS = {
-  signUp: (): string => 'users/',
-  socialSignUp: (): string => 'users/social-signup/',
-  login: (): string => 'users/login/',
-  socialLogin: (): string => 'users/social-login/',
-  otp: (): string => 'otp/verifications/',
-  forgotPasswordEmail: (): string => 'users/reset-password/',
+  signUp: 'users/',
+  socialSignUp: 'users/social-signup/',
+  login: 'users/login/',
+  socialLogin: 'users/social-login/',
+  otp: 'otp/verifications/',
+  forgotPasswordEmail: 'users/reset-password/',
+  logout: 'users/logout/',
+  getUserSubscription: 'user/service-plan/',
+  getUserProfile: 'users/profile/',
+  updateEmergencyContact: 'users/emergency-contact/',
+  updateWorkInfo: 'users/work-info/',
+  changePassword: 'users/reset-password/',
+  updateBasicProfile: 'users/basic-profile/',
+  getUserPreferences: 'users/settings/',
+  settingDropdownValues: 'user-settings/values/',
+  updateUserPreferences: 'users/settings/',
+  updateProfileImage: 'users/profile-pictures/',
+  sendOrVerifyEmail: 'users/verifications/',
+  wishlist: 'wishlists/',
+  KYCDocuments: 'kyc-documents/',
   emailExists: (emailId: string): string => `users/emails/${emailId}/`,
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
-  logout: (): string => 'users/logout/',
-  getUserSubscription: (): string => 'user/service-plan/',
-  getUserProfile: (): string => 'users/profile/',
-  updateEmergencyContact: (): string => 'users/emergency-contact/',
-  updateWorkInfo: (): string => 'users/work-info/',
-  changePassword: (): string => 'users/reset-password/',
-  updateBasicProfile: (): string => 'users/basic-profile/',
-  getUserPreferences: (): string => 'users/settings/',
-  settingDropdownValues: (): string => 'user-settings/values/',
-  updateUserPreferences: (): string => 'users/settings/',
-  updateProfileImage: (): string => 'users/profile-pictures/',
-  sendOrVerifyEmail: (): string => 'users/verifications/',
-  wishlist: (): string => 'wishlists/',
+  interactions: (userId: number): string => `users/${userId}/interactions/`,
+  verifyReferralCode: (code: string): string => `users/referrals/${code}/`,
 };
 
 class UserRepository {
@@ -63,11 +69,11 @@ class UserRepository {
   }
 
   public signUp = async (payload: ISignUpPayload): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.signUp(), payload);
+    return await this.apiClient.post(ENDPOINTS.signUp, payload);
   };
 
   public socialSignUp = async (payload: ISocialSignUpPayload): Promise<User> => {
-    const response = await this.apiClient.post(ENDPOINTS.socialSignUp(), payload);
+    const response = await this.apiClient.post(ENDPOINTS.socialSignUp, payload);
     return ObjectMapper.deserialize(User, {
       ...response.user,
       access_token: response.access_token,
@@ -76,7 +82,7 @@ class UserRepository {
   };
 
   public login = async (payload: IEmailLoginPayload | IOtpLoginPayload): Promise<User> => {
-    const response = await this.apiClient.post(ENDPOINTS.login(), payload);
+    const response = await this.apiClient.post(ENDPOINTS.login, payload);
     return ObjectMapper.deserialize(User, {
       ...response.user,
       access_token: response.access_token,
@@ -85,7 +91,7 @@ class UserRepository {
   };
 
   public socialLogin = async (payload: ISocialLoginPayload): Promise<User | { is_new_user: boolean }> => {
-    const response: ISocialLogin = await this.apiClient.post(ENDPOINTS.socialLogin(), payload);
+    const response: ISocialLogin = await this.apiClient.post(ENDPOINTS.socialLogin, payload);
     if (!response.user) {
       return {
         is_new_user: response.is_new_user ?? true,
@@ -100,11 +106,11 @@ class UserRepository {
   };
 
   public Otp = async (requestPayload: IOtpVerify): Promise<IOtpVerifyResponse> => {
-    return await this.apiClient.post(ENDPOINTS.otp(), requestPayload);
+    return await this.apiClient.post(ENDPOINTS.otp, requestPayload);
   };
 
   public resetPassword = async (payload: IForgotPasswordPayload): Promise<void> => {
-    return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail(), payload);
+    return await this.apiClient.put(ENDPOINTS.forgotPasswordEmail, payload);
   };
 
   public emailExists = async (emailId: string): Promise<IUserExistsData> => {
@@ -116,47 +122,47 @@ class UserRepository {
   };
 
   public logout = async (payload: IRefreshTokenPayload): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.logout(), payload);
+    return await this.apiClient.post(ENDPOINTS.logout, payload);
   };
 
   public getUserSubscription = async (): Promise<UserSubscription> => {
-    const response = await this.apiClient.get(ENDPOINTS.getUserSubscription());
+    const response = await this.apiClient.get(ENDPOINTS.getUserSubscription);
     return ObjectMapper.deserialize(UserSubscription, response);
   };
 
   public getUserProfile = async (): Promise<UserProfile> => {
-    const response = await this.apiClient.get(ENDPOINTS.getUserProfile());
+    const response = await this.apiClient.get(ENDPOINTS.getUserProfile);
     return ObjectMapper.deserialize(UserProfile, response);
   };
 
   public updateEmergencyContact = async (payload: IUpdateEmergencyContact): Promise<void> => {
-    return await this.apiClient.put(ENDPOINTS.updateEmergencyContact(), payload);
+    return await this.apiClient.put(ENDPOINTS.updateEmergencyContact, payload);
   };
 
   public updateWorkInfo = async (payload: IUpdateWorkInfo): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.updateWorkInfo(), payload);
+    return await this.apiClient.post(ENDPOINTS.updateWorkInfo, payload);
   };
 
   public updatePassword = async (payload: IUpdatePassword): Promise<void> => {
-    return await this.apiClient.put(ENDPOINTS.changePassword(), payload);
+    return await this.apiClient.put(ENDPOINTS.changePassword, payload);
   };
 
   public updateUserProfileByActions = async (payload: IUpdateProfile): Promise<IUpdateProfileResponse> => {
-    return await this.apiClient.put(ENDPOINTS.updateBasicProfile(), payload);
+    return await this.apiClient.put(ENDPOINTS.updateBasicProfile, payload);
   };
 
   public getSettingDropDownValues = async (): Promise<SettingsDropdownValues> => {
-    const response = await this.apiClient.get(ENDPOINTS.settingDropdownValues());
+    const response = await this.apiClient.get(ENDPOINTS.settingDropdownValues);
     return ObjectMapper.deserialize(SettingsDropdownValues, response);
   };
 
   public getUserPreferences = async (): Promise<UserPreferences> => {
-    const response = await this.apiClient.get(ENDPOINTS.getUserPreferences());
+    const response = await this.apiClient.get(ENDPOINTS.getUserPreferences);
     return ObjectMapper.deserialize(UserPreferences, response);
   };
 
   public updateUserPreferences = async (payload: IUpdateUserPreferences): Promise<UserPreferences> => {
-    const response = await this.apiClient.patch(ENDPOINTS.updateUserPreferences(), payload);
+    const response = await this.apiClient.patch(ENDPOINTS.updateUserPreferences, payload);
     return ObjectMapper.deserialize(UserPreferences, response);
   };
 
@@ -165,16 +171,30 @@ class UserRepository {
   };
 
   public updateProfileImage = async (payload: IProfileImage): Promise<IUserProfile> => {
-    return await this.apiClient.put(ENDPOINTS.updateProfileImage(), payload);
+    return await this.apiClient.put(ENDPOINTS.updateProfileImage, payload);
   };
 
   public sendOrVerifyEmail = async (payload: IEmailVerification): Promise<void> => {
-    await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail(), payload);
+    await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail, payload);
   };
 
   public getWishlistProperties = async (): Promise<Wishlist[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.wishlist());
+    const response = await this.apiClient.get(ENDPOINTS.wishlist);
     return ObjectMapper.deserializeArray(Wishlist, response);
+  };
+
+  public getUserInteractions = async (id: number): Promise<UserInteraction> => {
+    const response = await this.apiClient.get(ENDPOINTS.interactions(id));
+    return ObjectMapper.deserialize(UserInteraction, response);
+  };
+
+  public getKYCDocuments = async (): Promise<AssetDocument[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.KYCDocuments);
+    return ObjectMapper.deserializeArray(AssetDocument, response);
+  };
+
+  public verifyReferalCode = async (code: string): Promise<IReferralResponse> => {
+    return await this.apiClient.get(ENDPOINTS.verifyReferralCode(code));
   };
 }
 

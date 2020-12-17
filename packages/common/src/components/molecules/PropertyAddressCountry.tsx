@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
   },
   propertyNameText: {
     color: theme.colors.shadow,
-    width: (theme.viewport.width - 10) / 1.3,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 10,
+    flex: 1,
+    marginHorizontal: 12,
   },
   flexRow: {
     flexDirection: 'row',

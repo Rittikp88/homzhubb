@@ -24,43 +24,7 @@ exports[`Documents Screen should match snapshot for renderSeparator 1`] = `
 />
 `;
 
-exports[`Documents Screen should render snapshot 1`] = `
-<View
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "padding": 16,
-    }
-  }
->
-  <UploadBox
-    containerStyle={
-      Object {
-        "paddingVertical": 16,
-      }
-    }
-    header="Upload Document"
-    icon="document"
-    onPress={[Function]}
-    subHeader="Supports: JPG, JPEG, PNG, PDF "
-  />
-  <SearchBar
-    containerStyle={
-      Object {
-        "marginTop": 16,
-      }
-    }
-    placeholder="Search by document name"
-    testID="searchBar"
-    updateValue={[Function]}
-    value=""
-  />
-  <EmptyState />
-  <Loader
-    visible={true}
-  />
-</View>
-`;
+exports[`Documents Screen should render snapshot 1`] = `undefined`;
 
 exports[`Documents Screen should render snapshot with documents 1`] = `
 <View
