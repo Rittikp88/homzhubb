@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
@@ -12,7 +13,7 @@ interface IProps extends WithTranslation {
   assetGroups: AssetGroup[];
   selectedAssetGroupType: number;
   selectedAssetGroupId: number;
-  scrollRef: ScrollView | null;
+  scrollRef: KeyboardAwareScrollView | null;
   onAssetGroupSelected: (id: number) => void;
   isDisabled: boolean;
 }
@@ -108,7 +109,7 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
         this.setState({ selectedAssetGroup: item.id });
         onAssetGroupSelected(-1);
         setTimeout(() => {
-          scrollRef?.scrollToEnd({ animated: true });
+          scrollRef?.scrollToEnd(true);
         }, 0);
       } else {
         onAssetGroupSelected(item.id);

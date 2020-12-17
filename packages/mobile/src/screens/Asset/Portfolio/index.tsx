@@ -42,6 +42,7 @@ interface IDispatchProps {
   getPropertyDetails: (payload: IGetPropertiesPayload) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setCurrentFilter: (payload: Filters) => void;
+  setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
 }
 
@@ -226,8 +227,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private onOfferVisitPress = (type: OffersVisitsType): void => {};
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
     setAssetId(assetId);
+    setEditPropertyFlow(true);
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
       params: { previousScreen: ScreensKeys.Dashboard },
@@ -308,6 +311,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private handleAddProperty = (): void => {
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
   };
 
@@ -341,9 +345,9 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
-  const { setAssetId } = RecordAssetActions;
+  const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
   return bindActionCreators(
-    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setAssetId },
+    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setAssetId, setEditPropertyFlow },
     dispatch
   );
 };

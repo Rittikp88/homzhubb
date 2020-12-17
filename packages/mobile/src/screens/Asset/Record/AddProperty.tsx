@@ -1,9 +1,8 @@
-import React, { ReactElement, PureComponent, ReactNode } from 'react';
-import { View, StyleSheet, ScrollView, LayoutChangeEvent, KeyboardAvoidingView } from 'react-native';
+import React, { PureComponent, ReactElement, ReactNode } from 'react';
+import { KeyboardAvoidingView, LayoutChangeEvent, ScrollView, StyleSheet, View } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { CommonActions } from '@react-navigation/native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -14,13 +13,16 @@ import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/Prope
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { Header, AddressWithStepIndicator, AddPropertyDetails, Loader } from '@homzhub/mobile/src/components';
+import { AddPropertyDetails, AddressWithStepIndicator, Header, Loader } from '@homzhub/mobile/src/components';
 import AssetHighlights from '@homzhub/mobile/src/components/organisms/AssetHighlights';
 import PropertyImages from '@homzhub/mobile/src/components/organisms/PropertyImages';
 import { IEditPropertyFlow } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { DetailType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IRoutes {
   key: string;
@@ -54,6 +56,7 @@ interface IDispatchProps {
   getAssetById: () => void;
   resetState: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
+  setCurrentAsset: (payload: ISetAssetPayload) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
@@ -262,11 +265,24 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
 
   private handleSkip = (): void => {
     const { currentIndex } = this.state;
-    const { navigation } = this.props;
+    const {
+      navigation,
+      editPropertyFlowDetails: { isEditPropertyFlow },
+      setEditPropertyFlow,
+      resetState,
+    } = this.props;
     if (currentIndex < Routes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollToTop();
     } else {
+      this.handleCurrentAsset();
+      if (isEditPropertyFlow) {
+        resetState();
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.PropertyDetailScreen);
+        setEditPropertyFlow(false);
+        return;
+      }
       navigation.navigate(ScreensKeys.AssetPlanSelection);
     }
   };
@@ -287,6 +303,18 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     }
   };
 
+  private handleCurrentAsset = (): void => {
+    const { assetDetail, setCurrentAsset } = this.props;
+    if (assetDetail) {
+      const { id, leaseTerm, saleTerm } = assetDetail;
+      setCurrentAsset({
+        asset_id: id,
+        listing_id: leaseTerm?.id ?? saleTerm?.id ?? 0,
+        assetType: leaseTerm ? DetailType.LEASE_LISTING : saleTerm ? DetailType.SALE_LISTING : DetailType.ASSET,
+      });
+    }
+  };
+
   private handleNextStep = (): void => {
     const { currentIndex } = this.state;
     const {
@@ -294,6 +322,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
       navigation,
       editPropertyFlowDetails: { isEditPropertyFlow },
       setEditPropertyFlow,
+      resetState,
     } = this.props;
 
     this.setState({ isNextStep: true });
@@ -303,13 +332,11 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
       this.setState({ currentIndex: currentIndex + 1 });
       this.scrollToTop();
     } else {
+      this.handleCurrentAsset();
       if (isEditPropertyFlow) {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: ScreensKeys.DashboardLandingScreen }],
-          })
-        );
+        resetState();
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.PropertyDetailScreen);
         setEditPropertyFlow(false);
         return;
       }
@@ -344,7 +371,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getAssetById, resetState, getAssetGroups, setEditPropertyFlow } = RecordAssetActions;
-  return bindActionCreators({ getAssetById, resetState, getAssetGroups, setEditPropertyFlow }, dispatch);
+  const { setCurrentAsset } = PortfolioActions;
+  return bindActionCreators(
+    { getAssetById, resetState, getAssetGroups, setEditPropertyFlow, setCurrentAsset },
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddProperty));

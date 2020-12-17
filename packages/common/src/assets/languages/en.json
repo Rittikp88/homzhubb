@@ -215,7 +215,8 @@
     "haveReferralCodeText": "Have a referral code?",
     "referralCodePlaceholder": "Enter valid referral code",
     "invalidReferralCodeError": "Please enter a valid referral Code",
-    "loggedInReferralCodeError": "This referral-code is only valid for new users."
+    "loggedInReferralCodeError": "This referral-code is only valid for new users.",
+    "appNotReady": "App is not yet ready"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",

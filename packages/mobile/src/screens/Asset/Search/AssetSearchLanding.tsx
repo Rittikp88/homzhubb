@@ -15,6 +15,7 @@ import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -209,6 +210,13 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     } = this.props;
     return (
       <View style={styles.header}>
+        <Icon
+          size={24}
+          name={icons.leftArrow}
+          color={theme.colors.darkTint2}
+          style={styles.backIconStyle}
+          onPress={this.onGoBack}
+        />
         <Text type="regular">{t('findingRightProperty')}</Text>
         <Text type="regular" textType="bold" style={styles.madeEasy}>
           {t('madeEasy')}
@@ -251,6 +259,11 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
 
   private onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
     this.setState({ isSearchBarFocused });
+  };
+
+  private onGoBack = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 
   private onSearchStringUpdate = (searchString: string): void => {
@@ -435,5 +448,9 @@ const styles = StyleSheet.create({
   },
   priceRange: {
     marginVertical: 30,
+  },
+  backIconStyle: {
+    paddingVertical: 16,
+    marginBottom: 10,
   },
 });

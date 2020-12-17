@@ -26,7 +26,6 @@ import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/Pr
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
   IAssetDescriptionProps,
-  IBookVisitProps,
   IComingSoon,
   IForgotPasswordProps,
   IOtpNavProps,
@@ -36,9 +35,7 @@ import {
   NestedNavigatorParams,
   ScreensKeys,
 } from '@homzhub/mobile/src/navigation/interfaces';
-import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisits';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
@@ -68,19 +65,14 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
-  [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
-  [ScreensKeys.PropertyDetailScreen]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
-  [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };
 
 export type PortfolioNavigatorParamList = {
   [ScreensKeys.PortfolioLandingScreen]: undefined;
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
-  [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
-  [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
 };
 
@@ -102,7 +94,6 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SupportScreen]: undefined;
   [ScreensKeys.ReferEarn]: undefined;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
-  [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
   [ScreensKeys.SavedPropertiesScreen]: undefined;
   [ScreensKeys.KYC]: undefined;
@@ -124,11 +115,8 @@ export const DashboardStack = (): React.ReactElement => {
     >
       <DashboardNavigator.Screen name={ScreensKeys.DashboardLandingScreen} component={Dashboard} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
-      <DashboardNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
-      <DashboardNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
-      <DashboardNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
     </DashboardNavigator.Navigator>
   );
@@ -144,8 +132,6 @@ export const PortfolioStack = (): React.ReactElement => {
     >
       <PortfolioNavigator.Screen name={ScreensKeys.PortfolioLandingScreen} component={Portfolio} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
-      <PortfolioNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
-      <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
     </PortfolioNavigator.Navigator>
   );
@@ -177,7 +163,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.OTP} component={Otp} />
       <MoreStackNavigator.Screen name={ScreensKeys.SettingsScreen} component={Settings} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
-      <DashboardNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
+      <MoreStackNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
@@ -185,7 +171,6 @@ export const MoreStack = (): React.ReactElement => {
       <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
       <AuthStackNavigator.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
-      <MoreStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
       <MoreStackNavigator.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
       <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
       <MoreStackNavigator.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />

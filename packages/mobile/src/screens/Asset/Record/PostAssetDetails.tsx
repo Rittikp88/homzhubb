@@ -1,5 +1,6 @@
 import React, { createRef, ReactElement } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -95,7 +96,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     displayGoBackCaution: false,
   };
 
-  private scrollView: ScrollView | null = null;
+  private scrollView: KeyboardAwareScrollView | null = null;
   private formikInnerRef: React.RefObject<FormikProps<IFormData>> | null = createRef<FormikProps<IFormData>>();
 
   public componentDidMount = (): void => {
@@ -131,10 +132,11 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
   };
 
   public render(): React.ReactNode {
-    const { isLoading } = this.props;
+    const { isLoading, t } = this.props;
 
     return (
       <>
+        <Header title={t('headerTitle')} onIconPress={this.handleGoBack} isBarVisible />
         <SafeAreaView style={styles.container}>{this.renderForm()}</SafeAreaView>
         <Loader visible={isLoading} />
         {this.renderGoBackCaution()}
@@ -164,8 +166,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
         {(formProps: FormikProps<FormikValues>): React.ReactNode => {
           return (
             <>
-              <Header title={t('headerTitle')} onIconPress={this.handleGoBack} isBarVisible />
-              <ScrollView
+              <KeyboardAwareScrollView
                 keyboardShouldPersistTaps="never"
                 showsVerticalScrollIndicator={false}
                 ref={(ref): void => {
@@ -188,7 +189,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                   onAssetGroupSelected={this.onAssetGroupSelected}
                   scrollRef={this.scrollView}
                 />
-              </ScrollView>
+              </KeyboardAwareScrollView>
               <WithShadowView>
                 <FormButton
                   disabled={assetGroupTypeId === -1}
@@ -221,7 +222,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     return (
       <BottomSheet
         key="editFlowSheet"
-        sheetHeight={400}
+        sheetHeight={450}
         headerTitle={t('editProperty')}
         visible={showBottomSheet}
         onCloseSheet={this.onBottomSheetClose}

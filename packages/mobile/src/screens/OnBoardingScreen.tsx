@@ -142,7 +142,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             <Button
               type="primary"
               title={t('continue')}
-              disabled={!selectedType}
+              disabled={!selectedType || selectedType !== User.OWNER}
               onPress={this.onContinue}
               containerStyle={styles.continueBtn}
               testID="btnContinue"
@@ -171,7 +171,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
         break;
       case User.AGENT:
       case User.MANAGER:
-        message = t('auth:clickToFFM');
+        message = t('auth:appNotReady');
         break;
       default:
         message = '';

@@ -373,8 +373,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
     setAssetId(assetId);
+    setEditPropertyFlow(true);
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
       params: { previousScreen: ScreensKeys.Dashboard },
@@ -432,6 +434,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     this.onCloseMenu();
 
     if (value === MenuItems.EDIT_LISTING) {
+      // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
         params: { previousScreen: ScreensKeys.Dashboard, isEditFlow: true },
@@ -442,6 +445,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     if (value === MenuItems.EDIT_PROPERTY) {
       setEditPropertyFlow(true);
       toggleEditPropertyFlowBottomSheet(true);
+      // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.PostAssetDetails,
       });
@@ -456,10 +460,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
   private navigateToBookVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SearchStack, {
-      screen: ScreensKeys.BookVisit,
-      params: { isReschedule: !isNew },
-    });
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
   };
 
   private handleIndexChange = (index: number): void => {
