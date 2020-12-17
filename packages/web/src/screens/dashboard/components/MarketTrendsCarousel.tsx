@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
@@ -17,7 +16,8 @@ const MarketTrendsCarousel: FC = () => {
     getMarketTrends((response) => setMarketTrends(response)).then();
   }, []);
 
-  if (ObjectUtils.isEmpty(marketTrends)) {
+  const total = marketTrends?.results?.length ?? 0;
+  if (total <= 0) {
     return null;
   }
 

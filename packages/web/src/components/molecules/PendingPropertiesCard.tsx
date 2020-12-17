@@ -13,9 +13,8 @@ import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecul
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { NextPrevBtn, ProgressBar } from '@homzhub/web/src/components';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
-import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
@@ -26,9 +25,14 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [currentAssetIndex, setCurrentAssetIndex] = useState(0);
+  const total = data?.length ?? 0;
+  if (total <= 0) {
+    return null;
+  }
   const {
     address,
     assetType,
+    assetGroup,
     furnishing,
     spaces,
     projectName,
@@ -41,14 +45,13 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
   } = data[currentAssetIndex];
   const primaryAddress = projectName;
   const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
-  const total = data?.length ?? 0;
   const detailsCompletionPercentage = lastVisitedStep?.assetCreation?.percentage ?? 0;
   const countryIconUrl = country?.flag;
   const propertyType = assetType?.name ?? '-';
   const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-    spaces,
+    spaces ?? ([] as Data[]),
     furnishing,
-    AssetGroupTypes.RES,
+    assetGroup.code,
     carpetArea,
     carpetAreaUnit?.title ?? '',
     true
