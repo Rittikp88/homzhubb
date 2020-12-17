@@ -47,7 +47,7 @@ interface IStateProps {
 }
 
 interface IProps {
-  onReschedule: () => void;
+  onReschedule: (isNew?: boolean) => void;
   selectedAssetId: number;
 }
 
@@ -202,11 +202,12 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
                   return (
                     <>
                       <Avatar
+                        isRightIcon
                         key={item.id}
                         fullName={item.user.fullName}
                         designation={StringUtils.toTitleCase(designation)}
-                        date={item.createdAt}
-                        isRightIcon
+                        date={item.updatedAt ?? item.createdAt}
+                        image={item.user.profilePicture}
                         onPressRightIcon={(): void => this.onShowProfile(item.user.id)}
                         containerStyle={styles.avatar}
                       />
@@ -267,9 +268,11 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     });
   };
 
-  private handleSchedule = (): void => {
-    const { onReschedule } = this.props;
-    onReschedule();
+  private handleSchedule = (id: number): void => {
+    const { onReschedule, setVisitIds, getAssetVisit } = this.props;
+    setVisitIds([id]);
+    getAssetVisit({ id });
+    onReschedule(false);
     this.onCloseProfile();
   };
 

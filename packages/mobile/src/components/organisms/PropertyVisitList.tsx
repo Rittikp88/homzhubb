@@ -126,7 +126,20 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   }
 
   private renderItem = (item: AssetVisit): React.ReactElement => {
-    const { asset, user, actions, startDate, endDate, id, role, createdAt, comments, isAssetOwner, status } = item;
+    const {
+      asset,
+      user,
+      actions,
+      startDate,
+      endDate,
+      id,
+      role,
+      createdAt,
+      comments,
+      isAssetOwner,
+      status,
+      updatedAt,
+    } = item;
     const { visitType, handleReschedule, isUserView, handleUserView } = this.props;
     const visitStatus = visitType ?? this.getUserVisitStatus(startDate, status);
     const isMissed = visitStatus === VisitStatusType.MISSED;
@@ -148,7 +161,8 @@ class PropertyVisitList extends Component<Props, IScreenState> {
               isRightIcon
               onPressRightIcon={onPressIcon}
               designation={userRole}
-              date={createdAt}
+              date={updatedAt ?? createdAt}
+              image={user.profilePicture}
               containerStyle={styles.avatar}
             />
           )}

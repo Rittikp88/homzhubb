@@ -355,9 +355,11 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
   };
 
-  private handleSchedule = (): void => {
-    const { onReschedule } = this.props;
-    onReschedule();
+  private handleSchedule = (id: number): void => {
+    const { onReschedule, setVisitIds, getAssetVisit } = this.props;
+    setVisitIds([id]);
+    getAssetVisit({ id });
+    onReschedule(false);
     this.onCloseProfile();
   };
 
