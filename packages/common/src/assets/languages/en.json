@@ -654,9 +654,10 @@
     "makeAnOfferText": "Make an offer",
     "scheduleVisit": "Schedule a Visit",
     "noImagesText": "No Images",
-    "savedPropertiesEmptyText": "You do not have any properties saved",
+    "savedPropertiesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
     "searchByDoc": "Search by document name",
-    "noDocs": "There are no documents matching your search term"
+    "noDocs": "There are no documents matching your search term",
+    "savedProperties": "Saved Properties"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

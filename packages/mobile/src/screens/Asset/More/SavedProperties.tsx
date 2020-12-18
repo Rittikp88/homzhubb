@@ -19,6 +19,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { AnimatedProfileHeader, AssetDetailsImageCarousel, ShieldGroup } from '@homzhub/mobile/src/components';
@@ -66,6 +67,16 @@ export const SavedProperties = (props: NavigationProps): React.ReactNode => {
       // @ts-ignore
       title: t('makeAnOfferText'),
       tabHeader: t('assetMore:more'),
+    });
+  };
+
+  const navigateToSearchScreen = (): void => {
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs, {
+      screen: ScreensKeys.Search,
+      params: {
+        screen: ScreensKeys.PropertySearchScreen,
+      },
     });
   };
 
@@ -179,9 +190,10 @@ export const SavedProperties = (props: NavigationProps): React.ReactNode => {
             data={attachments}
             activeSlide={activeSlide}
             updateSlide={updateSlide}
+            containerStyles={styles.carouselStyle}
           />
         ) : (
-          <EmptyState title={t('noImagesText')} icon={icons.home} containerStyle={styles.emptyContainer} />
+          <ImagePlaceholder containerStyle={styles.imagePlaceHolder} />
         )}
         <Icon
           onPress={onCrossPress}
@@ -197,7 +209,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactNode => {
   return (
     <AnimatedProfileHeader
       title={t('more')}
-      sectionHeader={t('refer')}
+      sectionHeader={t('savedProperties')}
       onBackPress={navigation.goBack}
       sectionTitleType="semiBold"
       loading={loading}
@@ -252,7 +264,11 @@ export const SavedProperties = (props: NavigationProps): React.ReactNode => {
             );
           })
         ) : (
-          <EmptyState title={t('savedPropertiesEmptyText')} icon={icons.filledHeart} />
+          <EmptyState
+            title={t('savedPropertiesEmptyText')}
+            buttonProps={{ type: 'secondary', title: t('common:searchProperties'), onPress: navigateToSearchScreen }}
+            containerStyle={styles.emptyContainer}
+          />
         )}
       </>
     </AnimatedProfileHeader>
@@ -267,7 +283,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: 4,
   },
-  emptyContainer: {
+  imagePlaceHolder: {
     minHeight: 200,
     backgroundColor: theme.colors.disabled,
   },
@@ -310,5 +326,11 @@ const styles = StyleSheet.create({
   },
   screenPadding: {
     paddingHorizontal: theme.layout.screenPadding,
+  },
+  carouselStyle: {
+    height: 200,
+  },
+  emptyContainer: {
+    paddingVertical: '50%',
   },
 });
