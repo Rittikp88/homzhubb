@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { useTranslation } from 'react-i18next';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 
 export const MainRouter = (): React.ReactElement => {
   const { DASHBOARD } = RouteNames.protectedRoutes;

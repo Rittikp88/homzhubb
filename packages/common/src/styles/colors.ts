@@ -52,6 +52,7 @@ const tintColors = {
   darkTint12: '#E0E0E0',
 
   // blue
+  blueTint6: '#323E70',
   blueTint7: '#99CEFC',
   blueTint8: '#B2DAFD',
   blueTint9: '#CCE6FE',
