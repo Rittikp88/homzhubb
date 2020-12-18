@@ -137,9 +137,13 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     getAssetVisit(payload);
   };
 
-  private rescheduleVisit = (isNew?: boolean): void => {
+  private rescheduleVisit = (isNew?: boolean, userId?: number): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BookVisit, {
+      isReschedule: !isNew,
+      ...(userId && { userId }),
+    });
   };
 
   private setVisitPayload = (payload: IAssetVisitPayload): void => {

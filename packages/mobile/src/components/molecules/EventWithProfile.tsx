@@ -14,7 +14,7 @@ interface IProps extends WithTranslation {
   detail: UserInteraction;
   handleVisitAction: (visitId: number, action: VisitActions, isUserView?: boolean) => void;
   handleConfirmation: (id: number) => void;
-  handleReschedule: () => void;
+  handleReschedule: (id: number) => void;
 }
 
 class EventWithProfile extends Component<IProps> {
@@ -64,7 +64,7 @@ class EventWithProfile extends Component<IProps> {
     } = this.props;
 
     const groupData = groupBy(actions, (results) => {
-      return new Date(results.createdAt).getTime();
+      return results.updatedAt;
     });
 
     return Object.keys(groupData).map((date) => {

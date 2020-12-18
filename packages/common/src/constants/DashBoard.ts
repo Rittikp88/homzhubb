@@ -1,5 +1,19 @@
 import { icons } from '@homzhub/common/src/assets/icon';
 
+export interface IPropertyNotificationDetails {
+  label: string;
+  count: number;
+  icon: string;
+}
+
+export interface IPropertyNotification {
+  icon: string;
+  iconColor: string;
+  title: string;
+  count: number;
+  details: IPropertyNotificationDetails[];
+}
+
 export enum sideMenuItems {
   dashboard = 'assetDashboard:dashboard',
   financials = 'assetFinancial:financial',

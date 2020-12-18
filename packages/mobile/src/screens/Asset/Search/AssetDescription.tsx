@@ -24,7 +24,11 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import { ISendNotificationPayload, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IAssetVisitPayload,
+  ISendNotificationPayload,
+  VisitType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -55,7 +59,7 @@ import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { DynamicLinkParamKeys, DynamicLinkTypes } from '@homzhub/mobile/src/services/constants';
+import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -72,6 +76,8 @@ interface IDispatchProps {
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   setAssetId: (payload: number) => void;
   getAssetById: () => void;
+  setVisitIds: (payload: number[]) => void;
+  getAssetVisit: (payload: IAssetVisitPayload) => void;
 }
 
 interface IOwnState {
@@ -624,7 +630,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       screen: ScreensKeys.AssetLeaseListing,
       params: {
         previousScreen: ScreensKeys.PropertyAssetDescription,
-        isFromEdit: true,
+        isEditFlow: true,
       },
     });
   };
@@ -660,15 +666,23 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       route: {
         params: { propertyTermId },
       },
+      setVisitIds,
       assetDetails,
+      getAssetVisit,
     } = this.props;
     if (!assetDetails) return;
-    const { leaseTerm, saleTerm } = assetDetails;
+    const { leaseTerm, saleTerm, nextVisit } = assetDetails;
+
+    if (nextVisit) {
+      setVisitIds([nextVisit.id]);
+      getAssetVisit({ id: nextVisit.id });
+    }
 
     const param = {
       propertyTermId,
       ...(leaseTerm && { lease_listing_id: leaseTerm.id }),
       ...(saleTerm && { sale_listing_id: saleTerm.id }),
+      ...(nextVisit && { isReschedule: true }),
     };
 
     navigation.navigate(ScreensKeys.BookVisit, param);
@@ -749,7 +763,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     const url = await LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
-      `${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
+      `${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}&${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
     );
 
     if (!isPreview) {
@@ -775,11 +789,20 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetReviews, getAsset } = AssetActions;
+  const { getAssetReviews, getAsset, setVisitIds, getAssetVisit } = AssetActions;
   const { setChangeStack } = UserActions;
   const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
   return bindActionCreators(
-    { getAssetReviews, getAsset, setChangeStack, setAssetId, setSelectedPlan, getAssetById },
+    {
+      getAssetReviews,
+      getAsset,
+      setChangeStack,
+      setAssetId,
+      setSelectedPlan,
+      getAssetById,
+      setVisitIds,
+      getAssetVisit,
+    },
     dispatch
   );
 };

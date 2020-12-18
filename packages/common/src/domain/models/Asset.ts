@@ -108,6 +108,13 @@ export class Data {
   @JsonProperty('description', String, true)
   private _description = '';
 
+  @JsonProperty('color_code', String, true)
+  private _colorCode = '';
+
+  get colorCode(): string {
+    return this._colorCode;
+  }
+
   get id(): number {
     return this._id;
   }
@@ -170,6 +177,23 @@ export class Wishlisted {
 
   get status(): boolean {
     return this._status;
+  }
+}
+
+@JsonObject('NextVisit')
+export class NextVisit {
+  @JsonProperty('id', Number)
+  private _id = 0;
+
+  @JsonProperty('visit_date', String, true)
+  private _visitDate = '';
+
+  get id(): number {
+    return this._id;
+  }
+
+  get visitDate(): string {
+    return this._visitDate;
   }
 }
 
@@ -351,6 +375,9 @@ export class Asset {
 
   @JsonProperty('listing_visits', AssetListingVisits, true)
   private _listingVisits = new AssetListingVisits();
+
+  @JsonProperty('next_visit', NextVisit, true)
+  private _nextVisit = null;
 
   @JsonProperty('investment status', String, true)
   private _investmentStatus = '';
@@ -646,5 +673,9 @@ export class Asset {
 
   get isVerificationDocumentUploaded(): boolean {
     return this._isVerificationDocumentUploaded;
+  }
+
+  get nextVisit(): NextVisit | null {
+    return this._nextVisit;
   }
 }

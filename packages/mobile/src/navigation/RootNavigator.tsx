@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
@@ -7,7 +8,6 @@ import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { Splash } from '@homzhub/mobile/src/screens/Splash';
 import { GuestStack } from '@homzhub/mobile/src/navigation/GuestStack';
 import { AppNavigator } from '@homzhub/mobile/src/navigation/AppNavigator';
 
@@ -15,7 +15,7 @@ interface IProps {
   booting: boolean;
 }
 
-export const RootNavigator = (props: IProps): React.ReactElement => {
+export const RootNavigator = (props: IProps): React.ReactElement | null => {
   const { booting } = props;
   const redirectionDetails = useSelector(CommonSelectors.getRedirectionDetails);
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
@@ -33,11 +33,16 @@ export const RootNavigator = (props: IProps): React.ReactElement => {
     }
 
     GeolocationService.setLocationDetails(isLoggedIn, searchAddress).then();
-  }, [isLoggedIn, dispatch]);
+  }, [isLoggedIn, dispatch, searchAddress]);
 
-  if (booting) {
-    return <Splash />;
-  }
+  // Once booting is completed hide the native splash and render our RootNavigator
+  useEffect(() => {
+    if (!booting) {
+      SplashScreen.hide();
+    }
+  }, [booting]);
+
+  if (booting) return null;
 
   return (
     <NavigationContainer

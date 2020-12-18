@@ -1,45 +1,57 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
+import { MarketTrendsResults, MarketTrendType } from '@homzhub/common/src/domain/models/MarketTrends';
 
-// TODO (BISHAL) - change dummy data with actual api data
-const MarketTrendsCard: FC = () => {
+interface IProps {
+  data: MarketTrendsResults;
+}
+
+const MarketTrendsCard: FC<IProps> = ({ data }: IProps) => {
+  const { title, postedAtDate, link, imageUrl, trendType, description } = data;
+  const onLinkPress = (): void => {
+    window.open(link);
+  };
   return (
-    <View style={styles.card}>
-      <ImageSquare
-        style={styles.image}
-        size={50}
-        source={{
-          uri:
-            'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
-        }}
-      />
+    <TouchableOpacity activeOpacity={1} onPress={onLinkPress} style={styles.card}>
+      {imageUrl && !!imageUrl ? (
+        <ImageBackground source={{ uri: imageUrl }} style={styles.image}>
+          {trendType === MarketTrendType.VIDEO && (
+            <View style={styles.videoOverlay}>
+              <Icon name={icons.play} size={28} color={theme.colors.white} />
+            </View>
+          )}
+        </ImageBackground>
+      ) : (
+        <ImagePlaceholder height="100%" width="100%" containerStyle={styles.image} />
+      )}
       <View style={styles.info}>
         <Label type="regular" textType="regular">
           Blog
         </Label>
         <Label type="regular" textType="regular">
-          12/03/88
+          {postedAtDate}
         </Label>
       </View>
       <View style={styles.description}>
-        <Text type="small" textType="semiBold" style={styles.title}>
-          How is the real estate market recovering?
+        <Text type="small" textType="semiBold" numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
+          {title}
         </Text>
         <Label type="regular" textType="regular" numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed dalskdjfkajsl Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit
+          {description}
         </Label>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
     flex: 1,
+    height: '92%',
     borderRadius: 4,
     backgroundColor: theme.colors.white,
     marginRight: 16,
@@ -50,11 +62,20 @@ const styles = StyleSheet.create({
     minWidth: 'calc(100% - 24px)',
     maxWidth: 298,
     minHeight: 160,
+    maxHeight: 160,
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
     margin: 12,
+  },
+  videoOverlay: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.overlay,
   },
   info: {
     height: 'max-content',
@@ -64,12 +85,11 @@ const styles = StyleSheet.create({
   },
   description: {
     flex: 1,
-    flexDirection: 'column',
     marginHorizontal: 16,
     marginVertical: 8,
+    justifyContent: 'space-between',
   },
   title: {
-    flexBasis: 1,
     marginBottom: 8,
   },
   subTitle: {

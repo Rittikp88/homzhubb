@@ -7,10 +7,12 @@ const namedColors = {
   blue: '#0084F8',
   completed: '#47C2B1',
   green: '#2CBA67',
+  incomeGreen: '#61D773',
   referGreen: '#27AE60',
   warning: '#F9A901',
   mediumPriority: '#FBC02D',
   highPriority: '#FF8576',
+  expenseOrange: '#FDB113',
   error: '#F23C06',
   dark: '#001B36',
   background: '#F0F5F9',
@@ -21,6 +23,7 @@ const namedColors = {
   danger: '#D60D31',
   orange: '#FB6E07',
   notificationGreen: '#13AB46',
+  notificationRed: '#E93F33',
   lightBlue: '#C2E4FF',
   lightGrayishBlue: '#F7FAFC',
   expense: '#FFC5BE',
@@ -76,6 +79,9 @@ const gradientColors = {
   splashGradientB: '#03E5B7',
   propertyGradientA: '#409DFF',
   propertyGradientB: '#016EE2',
+  headerGradientA: namedColors.blue,
+  headerGradientB: '#2DC8C3',
+  headerGradientC: '#32CFBE',
 };
 
 // rgba functions for opacity
@@ -99,19 +105,6 @@ const opacity = {
   boxShadow: 'rgba(0, 0, 0, 0.24)',
 };
 
-const gradientAssetMetrics = {
-  gradientA: '#61D773',
-  gradientB: '#94EF90',
-  gradientC: '#FDB113',
-  gradientD: '#FFDB8F',
-  gradientF: '#84ECE4',
-  gradientG: '#FD8313',
-  gradientH: '#FFD2A9',
-  gradientI: '#aa7474',
-  gradientJ: '#fc3b3b',
-  gradientK: '#F1F6FA',
-};
-
 const grayShades = {
   grey1: '#F9FCFE',
   gray2: '#4F4F4F',
@@ -129,7 +122,6 @@ export const colors = {
   ...gradientColors,
   ...tintColors,
   ...opacity,
-  ...gradientAssetMetrics,
   ...grayShades,
   ...chartColors,
 };

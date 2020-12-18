@@ -145,7 +145,11 @@
     "sms": "SMS",
     "mail": "Mail",
     "share": "Share",
-    "whatsapp": "WhatsApp"
+    "whatsapp": "WhatsApp",
+    "abbreviatedMonthText": "mo",
+    "unsupportedFormat": "Unsupported format",
+    "pleaseTryAgain": "Please try again.",
+    "invalidLinkError": "You can't open this link."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -171,7 +175,7 @@
     "numberRequired": "Please enter your mobile number",
     "passwordRequired": "Please enter your password",
     "otpVerification": "We will send you an OTP via SMS for verification",
-    "passwordValidation": "Should contain a Uppercase/lowercase, a number and a special character",
+    "passwordValidation": "Your password should be atleast 8 characters long and should contain an uppercase, a lowercase, a special character and a number",
     "emailValidation": "Please enter valid email-id",
     "onlyAlphabets": "Only alphabets are allowed",
     "minimumCharacters": "Minimum 8 characters allowed",
@@ -207,7 +211,14 @@
     "resetLink": "Reset Link has been sent to your email",
     "emailNotExists": "Email does not exists",
     "validPhone": "Please enter a valid number",
-    "PasswordChangedText": "Password changed! Log back in."
+    "PasswordChangedText": "Password changed! Log back in.",
+    "haveReferralCodeText": "Have a referral code?",
+    "referralCodePlaceholder": "Enter valid referral code",
+    "invalidReferralCodeError": "Please enter a valid referral Code",
+    "loggedInReferralCodeError": "This referral-code is only valid for new users.",
+    "appNotReady": "App is not yet ready",
+    "maxTenCharacters": "You can enter at most 10 characters",
+    "upperCaseError": "Enter an upper case string"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -527,7 +538,10 @@
     "marketTrends": "Market Trends",
     "viewAll": "View all",
     "noTrends": "No Trends",
+    "vacant": "Vacant",
+    "latestUpdates": "Latest Updates",
     "pendingProperties": "Pending Properties ({{total}})",
+    "vacantProperties": "Vacant Properties ({{total}})",
     "completeProperty": "Please complete the property details so that we can serve you better",
     "completionStatus": "{{status}}% Complete",
     "completeDetails": "Complete Details",
@@ -633,9 +647,17 @@
     "clickCopy": "Click below to copy the code",
     "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
+    "shareDoc": "Hey, I have shared this document with you from the Homzhub app. Please use the link to download.",
     "paymentMethods": "Subscriptions & Payments",
     "logout": "Log Out",
-    "refer": "Refer & Earn"
+    "refer": "Refer & Earn",
+    "makeAnOfferText": "Make an offer",
+    "scheduleVisit": "Schedule a Visit",
+    "noImagesText": "No Images",
+    "savedPropertiesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
+    "searchByDoc": "Search by document name",
+    "noDocs": "There are no documents matching your search term",
+    "savedProperties": "Saved Properties"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
@@ -647,7 +669,7 @@
     "currency": "Currency",
     "language": "Language",
     "financialYear": "Financial Year",
-    "metricSystem": "Metric System",
+    "metricSystem": "Units Of Measurement",
     "dataAndPrivacy": "Data & Privacy",
     "showLastName": "Show Last Name",
     "showMobileNumber": "Show Mobile Number",
@@ -692,6 +714,7 @@
     "emailNotVerifiedText": "Email Not Verified!",
     "emailNotVerifiedDescription": "The email verification link has expired",
     "duplicateEmailError": "Email cannot be same as that of your personal email.",
+    "duplicatePhoneError": "Your emergency contact number cannot be the same as your primary contact number",
     "editContactDetails": "Edit Contact Details",
     "emergencyEmptyState": "Emergency contact for when you might not be available to take decisions on urgent issues",
     "workInfoEmptyState": "You can add details of your workplace to unlock additional discounts"

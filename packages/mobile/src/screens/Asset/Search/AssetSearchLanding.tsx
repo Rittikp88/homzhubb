@@ -15,6 +15,7 @@ import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -25,10 +26,11 @@ import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSear
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { WrapperSearchStackParamList } from '@homzhub/mobile/src/navigation/WrapperSearchStack';
 import { Country } from '@homzhub/common/src/domain/models/Country';
-import { IFilterDetails, IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
+import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 
 interface IStateProps {
-  filterData: IFilterDetails | null;
+  filterData: FilterDetail | null;
   filters: IFilter;
   currencyData: PickerItemProps[];
   priceRange: ITransactionRange;
@@ -135,7 +137,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     );
   }
 
-  private renderContent = (filterData: IFilterDetails): React.ReactElement => {
+  private renderContent = (filterData: FilterDetail): React.ReactElement => {
     const { selectedPropertyType, selectedLookingType, minPriceRange, maxPriceRange } = this.state;
     const {
       t,
@@ -146,21 +148,21 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     } = this.props;
     const {
       currency,
-      asset_group_list,
-      filters: { transaction_type },
+      assetGroupList,
+      filters: { transactionType },
     } = filterData;
     let currencySymbol = '';
 
-    const assetGroup = asset_group_list.map((item, index) => {
+    const assetGroup = assetGroupList.map((item, index) => {
       return { title: item.title, value: item.id };
     });
 
     // TODO: Handle Multiple currency
     const country = countryList.find((item) => item.currencies[0].currencyCode === currency_code);
 
-    currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currency_symbol;
+    currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currencySymbol;
 
-    const assetTransaction = transaction_type.map((item, index) => {
+    const assetTransaction = transactionType.map((item, index) => {
       return { title: item.title, value: index };
     });
 
@@ -208,6 +210,13 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     } = this.props;
     return (
       <View style={styles.header}>
+        <Icon
+          size={24}
+          name={icons.leftArrow}
+          color={theme.colors.darkTint2}
+          style={styles.backIconStyle}
+          onPress={this.onGoBack}
+        />
         <Text type="regular">{t('findingRightProperty')}</Text>
         <Text type="regular" textType="bold" style={styles.madeEasy}>
           {t('madeEasy')}
@@ -250,6 +259,11 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
 
   private onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
     this.setState({ isSearchBarFocused });
+  };
+
+  private onGoBack = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
   };
 
   private onSearchStringUpdate = (searchString: string): void => {
@@ -434,5 +448,9 @@ const styles = StyleSheet.create({
   },
   priceRange: {
     marginVertical: 30,
+  },
+  backIconStyle: {
+    paddingVertical: 16,
+    marginBottom: 10,
   },
 });

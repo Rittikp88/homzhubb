@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { remove, find, cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -67,7 +68,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
           onIconPress={this.goBack}
           testID="header"
         />
-        <ScrollView style={styles.scrollView}>
+        <KeyboardAwareScrollView style={styles.scrollView}>
           {this.renderContactDetail()}
           <Divider containerStyles={styles.divider} />
           <Text type="small" textType="semiBold" style={styles.userType}>
@@ -110,7 +111,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
             containerStyle={styles.buttonStyle}
             onPress={this.handleSubmit}
           />
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </HandleBack>
     );
   };

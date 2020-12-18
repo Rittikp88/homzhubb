@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle, View } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -9,37 +8,19 @@ import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit'
 
 interface IProps {
   header: string;
+  colorCode: string;
   selectedAssetType?: string;
   value: string | number;
   isCurrency: boolean;
   cardStyle?: StyleProp<ViewStyle>;
-  angle?: number;
-  location?: number[];
-  colorA: string;
-  colorB: string;
   testID?: string;
-  textStyle?: StyleProp<TextStyle>;
   onPressMetrics?: () => void;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const {
-    header,
-    value,
-    angle,
-    colorA,
-    colorB,
-    location,
-    cardStyle,
-    testID,
-    textStyle,
-    onPressMetrics,
-    isCurrency,
-    selectedAssetType,
-  } = props;
+  const { header, value, cardStyle, testID, onPressMetrics, isCurrency, selectedAssetType, colorCode } = props;
 
   const currency = useSelector(UserSelector.getCurrency);
-  const isGradient = colorA && colorB;
 
   const handlePress = (): void => {
     if (onPressMetrics) {
@@ -50,21 +31,18 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
   const renderItem = (): React.ReactElement => {
     return (
       <>
-        <Text
-          type="small"
-          textType="semiBold"
-          style={[styles.metrics, isGradient ? styles.textWithGradient : styles.textWithoutGradient]}
-        >
+        <Text type="small" textType="semiBold" style={styles.metricName}>
           {header}
         </Text>
         {isCurrency ? (
-          <PricePerUnit textStyle={textStyle} currency={currency} priceTransformation={false} price={value as number} />
+          <PricePerUnit
+            textStyle={styles.metricName}
+            currency={currency}
+            priceTransformation={false}
+            price={value as number}
+          />
         ) : (
-          <Text
-            type="large"
-            textType="semiBold"
-            style={[styles.metrics, isGradient ? styles.textWithGradient : styles.valueWithoutGradient]}
-          >
+          <Text type="large" textType="semiBold" style={styles.metricName}>
             {value}
           </Text>
         )}
@@ -74,28 +52,16 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
 
   return (
     <TouchableOpacity onPress={handlePress} testID={testID}>
-      {isGradient ? (
-        <LinearGradient
-          useAngle
-          angle={angle}
-          colors={[colorA, colorB]}
-          locations={location}
-          style={[styles.container, cardStyle]}
-        >
-          {renderItem()}
-        </LinearGradient>
-      ) : (
-        <View
-          style={[
-            styles.container,
-            cardStyle,
-            styles.containerWithoutGradient,
-            header === selectedAssetType && styles.selectedContainer,
-          ]}
-        >
-          {renderItem()}
-        </View>
-      )}
+      <View
+        style={[
+          styles.container,
+          cardStyle,
+          { backgroundColor: colorCode },
+          header === selectedAssetType && styles.selectedItem,
+        ]}
+      >
+        {renderItem()}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -107,26 +73,24 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
     paddingVertical: 8,
+    marginVertical: 12,
+    marginStart: 12,
   },
-  containerWithoutGradient: {
-    backgroundColor: theme.colors.gradientK,
-    borderColor: theme.colors.lightBlue,
-    borderWidth: 1.5,
-  },
-  selectedContainer: {
-    borderColor: theme.colors.blue,
-  },
-  metrics: {
+  metricName: {
     textAlign: 'center',
-    marginVertical: 5,
-  },
-  textWithGradient: {
+    marginVertical: 4,
     color: theme.colors.white,
   },
-  textWithoutGradient: {
-    color: theme.colors.darkTint4,
-  },
-  valueWithoutGradient: {
-    color: theme.colors.darkTint1,
+  selectedItem: {
+    borderWidth: 1.25,
+    borderColor: theme.colors.white,
+    shadowColor: theme.colors.shadow,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 5.46,
+    elevation: 9,
   },
 });

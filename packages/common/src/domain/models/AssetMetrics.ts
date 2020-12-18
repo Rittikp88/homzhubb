@@ -16,18 +16,11 @@ interface IAssetMetricsData {
   miscellaneous: IMiscellaneous;
 }
 
-interface IColorGradient {
-  angle: number;
-  location: number[];
-  hex_color_A: string;
-  hex_color_B: string;
-}
-
 interface IMiscellaneous {
   name: string;
   label: string;
   count: number;
-  color_gradient: IColorGradient;
+  colorCode: string;
 }
 
 interface IUpdates {
@@ -76,37 +69,6 @@ export class Count {
   }
 }
 
-@JsonObject('ColorGradient')
-export class ColorGradient {
-  @JsonProperty('angle', Number)
-  private _angle = 0;
-
-  @JsonProperty('location', [Number])
-  private _location = [];
-
-  @JsonProperty('hex_color_a', String)
-  private _hexColorA = '';
-
-  @JsonProperty('hex_color_b', String)
-  private _hexColorB = '';
-
-  get angle(): number {
-    return this._angle;
-  }
-
-  get location(): number[] {
-    return this._location;
-  }
-
-  get hexColorA(): string {
-    return this._hexColorA;
-  }
-
-  get hexColorB(): string {
-    return this._hexColorB;
-  }
-}
-
 @JsonObject('Miscellaneous')
 export class Miscellaneous {
   @JsonProperty('name', String)
@@ -121,8 +83,12 @@ export class Miscellaneous {
   @JsonProperty('currency_symbol', String, true)
   private _currency_symbol = '';
 
-  @JsonProperty('color_gradient', ColorGradient)
-  private _colorGradient = new ColorGradient();
+  @JsonProperty('color_code', String)
+  private _colorCode = '';
+
+  get colorCode(): string {
+    return this._colorCode;
+  }
 
   get name(): string {
     return this._name;
@@ -134,10 +100,6 @@ export class Miscellaneous {
 
   get count(): number {
     return this._count;
-  }
-
-  get colorGradient(): ColorGradient {
-    return this._colorGradient;
   }
 
   get currencySymbol(): string {

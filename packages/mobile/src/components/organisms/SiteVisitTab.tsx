@@ -69,7 +69,7 @@ type NavigationType =
 
 interface IProps {
   isFromProperty?: boolean;
-  onReschedule: (isNew?: boolean) => void;
+  onReschedule: (isNew?: boolean, userId?: number) => void;
   selectedAssetId?: number;
   isViewChanged?: boolean;
   navigation?: NavigationType;
@@ -175,7 +175,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   }
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
-    const { visits, isLoading, isFromProperty } = this.props;
+    const { visits, isLoading } = this.props;
     const { dropdownValue } = this.state;
     let dropdownData;
 
@@ -189,7 +189,6 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               visitData={visits}
               dropdownData={dropdownData}
               dropdownValue={dropdownValue}
-              isFromProperty={isFromProperty}
               isLoading={isLoading}
               handleAction={this.handleVisitActions}
               handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.UPCOMING)}
@@ -208,7 +207,6 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               isLoading={isLoading}
               dropdownValue={dropdownValue}
               dropdownData={dropdownData}
-              isFromProperty={isFromProperty}
               handleAction={this.handleVisitActions}
               handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.MISSED)}
               handleDropdown={this.handleDropdownSelection}
@@ -226,9 +224,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               isLoading={isLoading}
               dropdownValue={dropdownValue}
               dropdownData={dropdownData}
-              isFromProperty={isFromProperty}
               handleAction={this.handleVisitActions}
-              handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED)}
+              handleReschedule={(id, userId): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED, userId)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
             />
@@ -303,11 +300,11 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       });
   };
 
-  private handleRescheduleVisit = (id: number, key: VisitStatusType): void => {
+  private handleRescheduleVisit = (id: number, key: VisitStatusType, userId?: number): void => {
     const { onReschedule, setVisitIds } = this.props;
     setVisitIds([id]);
     if (key === VisitStatusType.COMPLETED) {
-      onReschedule(true);
+      onReschedule(true, userId);
     } else {
       onReschedule(false);
     }
@@ -318,20 +315,21 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   };
 
   private handleVisitActions = async (visitId: number, action: VisitActions, isUserView?: boolean): Promise<void> => {
-    const {
-      userDetail: {
-        user: { id },
-      },
-    } = this.state;
     const payload: IUpdateVisitPayload = {
       id: visitId,
       data: {
         status: action,
       },
     };
+
     try {
       await AssetRepository.updatePropertyVisit(payload);
       if (isUserView) {
+        const {
+          userDetail: {
+            user: { id },
+          },
+        } = this.state;
         this.onShowProfile(id);
       } else {
         this.getVisitsData();
@@ -357,9 +355,11 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
   };
 
-  private handleSchedule = (): void => {
-    const { onReschedule } = this.props;
-    onReschedule();
+  private handleSchedule = (id: number): void => {
+    const { onReschedule, setVisitIds, getAssetVisit } = this.props;
+    setVisitIds([id]);
+    getAssetVisit({ id });
+    onReschedule(false);
     this.onCloseProfile();
   };
 

@@ -72,6 +72,7 @@ export interface ISignUpPayload {
   phone_code: string;
   phone_number: string;
   password: string;
+  signup_referral_code?: string;
 }
 
 export interface ISocialSignUpPayload {
@@ -384,6 +385,7 @@ export interface IScheduleVisitPayload {
   sale_listing: number | null;
   lease_listing: number | null;
   comments?: string;
+  scheduled_for?: number;
 }
 
 export interface IPropertyImagesPostPayload {
@@ -464,6 +466,14 @@ export interface IProfileDetailsPayload {
   phone_code: string;
   phone_number: string;
   email: string;
+  user_address: {
+    address: string;
+    postal_code: string;
+    city_name: string;
+    state_name: string;
+    country_name: string;
+    country_iso2_code: string;
+  } | null;
 }
 
 export interface IUpdateProfilePayload {
@@ -539,4 +549,8 @@ export interface IMarketTrendParams {
   offset?: number;
   q?: string;
   trend_type?: string;
+}
+
+export interface IReferralResponse {
+  is_applicable: boolean;
 }

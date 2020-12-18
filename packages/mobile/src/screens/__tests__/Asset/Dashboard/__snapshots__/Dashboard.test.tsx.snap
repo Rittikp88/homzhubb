@@ -2,14 +2,11 @@
 
 exports[`Dashboard Screen should render snapshot 1`] = `
 <Memo(AnimatedProfileHeader)
+  isGradientHeader={true}
+  loading={false}
   title="dashboard"
 >
   <Memo(AssetMetricsList)
-    containerStyle={
-      Object {
-        "marginVertical": 12,
-      }
-    }
     data={Array []}
     onMetricsClicked={[Function]}
     title="0"
@@ -34,8 +31,5 @@ exports[`Dashboard Screen should render snapshot 1`] = `
     onViewAll={[Function]}
   />
   <AssetAdvertisementBanner />
-  <Loader
-    visible={false}
-  />
 </Memo(AnimatedProfileHeader)>
 `;

@@ -18,7 +18,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader, Loader } from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
 import { OptionTypes, SelectedPreferenceType, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
@@ -72,6 +72,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
           sectionHeader={t('assetMore:Settings')}
           onBackPress={this.onBackPress}
           sectionTitleType="semiBold"
+          loading={isUserPreferencesLoading || isLoading}
         >
           <View style={styles.container}>
             {settingsData.map((item: SettingsData, index) => {
@@ -83,7 +84,6 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
             })}
           </View>
         </AnimatedProfileHeader>
-        <Loader visible={isUserPreferencesLoading && isLoading} />
       </>
     );
   };
@@ -134,6 +134,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     let navigateToWebview: () => void;
     const handleChange = (value?: SelectedPreferenceType): void =>
       this.handlePreferenceUpdate(options.name, value || !options.selected);
+
     switch (options.type) {
       case OptionTypes.Webview:
         navigateToWebview = (): void => this.navigateToWebview(options.url);
@@ -159,6 +160,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
       default:
         renderElement = <RNSwitch selected={options.selected as boolean} onToggle={handleChange} />;
     }
+
     return renderElement;
   };
 
@@ -286,6 +288,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   primaryColor: {
+    flex: 0,
     color: theme.colors.primaryColor,
   },
 });

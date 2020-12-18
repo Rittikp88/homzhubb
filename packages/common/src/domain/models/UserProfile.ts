@@ -93,7 +93,9 @@ export class UserProfile extends User {
       return undefined;
     }
 
-    return [
+    let detailsArray: IDetailsInfo[] = [];
+
+    detailsArray = [
       { icon: icons.filledUser, ...(this.fullName ? { text: this.fullName } : { helperText: 'Name' }) },
       {
         icon: icons.phone,
@@ -106,6 +108,16 @@ export class UserProfile extends User {
         emailVerified: this.isPersonalEmailVerified,
       },
     ];
+
+    if (this.userAddress.length > 0) {
+      const { address, postalCode } = this.userAddress[0];
+      detailsArray.push({
+        icon: icons.marker,
+        text: `${address}, ${postalCode}`,
+      });
+    }
+
+    return detailsArray;
   }
 
   get emergencyContactArray(): IDetailsInfo[] | undefined {

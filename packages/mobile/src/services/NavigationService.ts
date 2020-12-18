@@ -90,6 +90,9 @@ class NavigationService {
           },
         });
         break;
+      case DynamicLinkTypes.Referral:
+        AlertHelper.error({ message: I18nService.t('auth:loggedInReferralCodeError') });
+        break;
       default:
         AlertHelper.error({ message: I18nService.t('common:invalidLink') });
         break;
@@ -124,8 +127,16 @@ class NavigationService {
           },
         });
         break;
+      case DynamicLinkTypes.Referral:
+        this.navigateTo(ScreensKeys.AuthStack, {
+          screen: ScreensKeys.SignUp,
+          params: {
+            referralCode: this.getValueOfParamFromUrl(DynamicLinkParamKeys.ReferralCode, url),
+          },
+        });
+        break;
       default:
-        AlertHelper.error({ message: 'Nope you cant open these links' });
+        AlertHelper.error({ message: I18nService.t('common:invalidLinkError') });
         break;
     }
   };

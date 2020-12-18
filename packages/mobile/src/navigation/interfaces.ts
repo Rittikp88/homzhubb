@@ -97,6 +97,8 @@ export enum ScreensKeys {
   UpdatePassword = 'UpdatePassword',
   SupportScreen = 'SupportScreen',
   ReferEarn = 'ReferEarn',
+  SavedPropertiesScreen = 'SavedPropertiesScreen',
+  KYC = 'KYC',
 }
 
 export enum OtpNavTypes {
@@ -175,6 +177,7 @@ export interface IBookVisitProps {
   sale_listing_id?: number;
   lease_listing_id?: number;
   isReschedule?: boolean;
+  userId?: number;
 }
 
 // Webview
@@ -202,4 +205,8 @@ export interface IPropertyDetailProps {
   isFromDashboard?: boolean;
   isFromTenancies?: boolean;
   tabKey?: Tabs;
+}
+
+export interface ISignUpParams extends IScreenCallback {
+  referralCode?: string;
 }

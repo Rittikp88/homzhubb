@@ -9,60 +9,28 @@ AssetMetrics {
     },
     "_miscellaneous": Array [
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#61D773",
-          "_hexColorB": "#94EF90",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 3,
         "_currency_symbol": "",
         "_label": "Occupied",
         "_name": "OCCUPIED",
       },
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#FDB113",
-          "_hexColorB": "#FFDB8F",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 2,
         "_currency_symbol": "",
         "_label": "Vacant",
         "_name": "VACANT",
       },
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#D9AB65",
-          "_hexColorB": "#ECCFB4",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 1,
         "_currency_symbol": "",
         "_label": "Renewal",
         "_name": "RENEWAL",
       },
       Miscellaneous {
-        "_colorGradient": ColorGradient {
-          "_angle": 180,
-          "_hexColorA": "#FD8313",
-          "_hexColorB": "#FFD2A9",
-          "_location": Array [
-            0,
-            1,
-          ],
-        },
+        "_colorCode": "#C2E4FF",
         "_count": 4,
         "_currency_symbol": "",
         "_label": "Sell",

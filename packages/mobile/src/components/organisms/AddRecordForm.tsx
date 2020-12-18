@@ -34,7 +34,7 @@ interface IFormData {
   label: string;
   tellerName?: string;
   amount: string;
-  category: string;
+  category: number;
   date: string;
   notes?: string;
 }
@@ -82,7 +82,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         label: '',
         tellerName: '',
         amount: '',
-        category: '',
+        category: 0,
         date: DateUtils.getCurrentDate(),
         notes: '',
       },
@@ -145,7 +145,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   name="property"
                   options={this.loadPropertyNames()}
                   placeholder={t('selectProperty')}
-                  maxLabelLength={36}
                   onChange={this.onChangeProperty}
                   isMandatory
                   label={t('property')}
@@ -183,7 +182,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   label={t('category')}
                   options={this.loadCategories()}
                   placeholder={t('categoryPlaceholder')}
-                  maxLabelLength={36}
                   isMandatory
                 />
                 <FormCalendar
@@ -276,7 +274,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       label: yup.string().required(t('detailsError')),
       tellerName: yup.string().optional(),
       amount: yup.string().required(t('amountError')),
-      category: yup.string().required(t('categoryError')),
+      category: yup.number().required(t('categoryError')),
       date: yup.string().required(t('dateError')),
       notes: yup.string().optional(),
     });

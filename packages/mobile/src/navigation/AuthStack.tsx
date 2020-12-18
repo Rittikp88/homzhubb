@@ -8,6 +8,7 @@ import {
   IScreenCallback,
   IWebviewProps,
   IForgotPasswordProps,
+  ISignUpParams,
 } from '@homzhub/mobile/src/navigation/interfaces';
 import EmailLoginScreen from '@homzhub/mobile/src/screens/Auth/EmailLoginScreen';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
@@ -20,7 +21,7 @@ import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 
 export type AuthStackParamList = {
-  [ScreensKeys.SignUp]: IScreenCallback;
+  [ScreensKeys.SignUp]: ISignUpParams;
   [ScreensKeys.MobileVerification]: IVerificationProps;
   [ScreensKeys.Login]: IScreenCallback;
   [ScreensKeys.EmailLogin]: IScreenCallback | undefined;

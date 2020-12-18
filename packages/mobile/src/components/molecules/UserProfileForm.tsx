@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { Formik, FormikProps } from 'formik';
 import { FormikHelpers } from 'formik/dist/types';
+import { debounce } from 'lodash';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -11,6 +12,8 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
+import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
+import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import {
   IUpdateProfile,
@@ -24,14 +27,16 @@ import { FormButton } from '@homzhub/common/src/components/molecules/FormButton'
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
 import PasswordVerificationForm from '@homzhub/mobile/src/components/molecules/PasswordVerificationForm';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
-  onFormSubmitSuccess: (profileDetails: IUserProfileForm, profileUpdateResponse?: IUpdateProfileResponse) => void;
-  formData?: IUserProfileForm;
-  userFullName?: string;
-  profileImage?: string;
-  isPasswordVerificationRequired?: boolean;
+  onFormSubmitSuccess: (
+    profileDetails: IUserProfileForm,
+    profileUpdateResponse?: IUpdateProfileResponse,
+    isAddressRequired?: boolean
+  ) => void;
+  userData?: UserProfile;
   updateFormLoadingState: (isLoading: boolean) => void;
 }
 
@@ -41,6 +46,12 @@ export interface IUserProfileForm {
   phone: string;
   email: string;
   phoneCode: string;
+  address: string;
+  postalCode: string;
+  cityName: string;
+  stateName: string;
+  country: string;
+  countryIsoCode: string;
 }
 
 interface IState {
@@ -48,6 +59,7 @@ interface IState {
   isPasswordVerificationRequired?: boolean;
   selectedImage: ImagePickerResponse;
   isImageError: boolean;
+  isAddressRequired: boolean;
 }
 
 export class UserProfileForm extends React.PureComponent<IProps, IState> {
@@ -58,28 +70,44 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       phone: '',
       email: '',
       phoneCode: '',
+      address: '',
+      postalCode: '',
+      cityName: '',
+      stateName: '',
+      country: '',
+      countryIsoCode: '',
     },
     isPasswordVerificationRequired: false,
     selectedImage: {} as ImagePickerResponse,
     isImageError: false,
+    isAddressRequired: false,
   };
 
   public componentDidMount(): void {
-    const { formData } = this.props;
+    const { userData } = this.props;
 
-    this.setState({
-      userProfileForm: {
-        firstName: (formData && formData.firstName) || '',
-        lastName: (formData && formData.lastName) || '',
-        phoneCode: (formData && formData.phoneCode) || '',
-        phone: (formData && formData.phone) || '',
-        email: (formData && formData.email) || '',
-      },
-    });
+    if (userData) {
+      this.setState({
+        userProfileForm: {
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          phoneCode: userData.countryCode,
+          phone: userData.phoneNumber,
+          email: userData.email,
+          address: userData.userAddress.length > 0 ? userData.userAddress[0].address : '',
+          postalCode: userData.userAddress.length > 0 ? userData.userAddress[0].postalCode : '',
+          cityName: userData.userAddress.length > 0 ? userData.userAddress[0].cityName : '',
+          stateName: userData.userAddress.length > 0 ? userData.userAddress[0].stateName : '',
+          country: userData.userAddress.length > 0 ? userData.userAddress[0].countryName : '',
+          countryIsoCode: userData.userAddress.length > 0 ? userData.userAddress[0].country.iso2Code : '',
+        },
+        isAddressRequired: userData.userAddress.length > 0,
+      });
+    }
   }
 
   public render(): ReactElement {
-    const { t, userFullName, profileImage } = this.props;
+    const { t, userData } = this.props;
     const { userProfileForm, isPasswordVerificationRequired, selectedImage } = this.state;
 
     return (
@@ -98,8 +126,8 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                     <Avatar
                       isOnlyAvatar
                       imageSize={80}
-                      fullName={userFullName || ''}
-                      image={selectedImage.path ?? profileImage}
+                      fullName={userData?.fullName ?? ''}
+                      image={selectedImage.path ?? userData?.profilePicture}
                       onPressCamera={(): void => {
                         this.handleProfileImageUpload(formProps).then();
                       }}
@@ -142,6 +170,64 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                     formProps={formProps}
                     isMandatory
                   />
+                  <FormTextInput
+                    name="address"
+                    label={t('property:address')}
+                    maxLength={100}
+                    inputType="default"
+                    multiline
+                    onChangeText={(value): void => this.onChangeAddress(value, formProps)}
+                    formProps={formProps}
+                    style={styles.address}
+                  />
+                  <View style={styles.contentView}>
+                    <View style={styles.subContentView}>
+                      <FormTextInput
+                        name="postalCode"
+                        label={t('property:pincode')}
+                        maxLength={10}
+                        numberOfLines={1}
+                        inputType="number"
+                        onChangeText={(code): Promise<void> => this.onChangePincode(code, formProps)}
+                        formProps={formProps}
+                      />
+                    </View>
+                    <View style={styles.flexOne}>
+                      <FormTextInput
+                        name="cityName"
+                        label={t('property:city')}
+                        maxLength={20}
+                        numberOfLines={1}
+                        inputType="default"
+                        editable={false}
+                        formProps={formProps}
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.contentView}>
+                    <View style={styles.subContentView}>
+                      <FormTextInput
+                        name="stateName"
+                        label={t('property:state')}
+                        maxLength={20}
+                        numberOfLines={1}
+                        inputType="default"
+                        editable={false}
+                        formProps={formProps}
+                      />
+                    </View>
+                    <View style={styles.flexOne}>
+                      <FormTextInput
+                        name="country"
+                        label={t('property:country')}
+                        maxLength={20}
+                        numberOfLines={1}
+                        editable={false}
+                        inputType="default"
+                        formProps={formProps}
+                      />
+                    </View>
+                  </View>
                 </View>
                 <FormButton
                   formProps={formProps}
@@ -174,16 +260,78 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     );
   }
 
+  private onChangeAddress = (value: string, formProps: FormikProps<IUserProfileForm>): void => {
+    formProps.setFieldValue('address', value);
+    this.setState({
+      isAddressRequired: value.length > 0,
+    });
+  };
+
+  private onChangePincode = async (pincode: string, formProps: FormikProps<IUserProfileForm>): Promise<void> => {
+    formProps.setFieldValue('postalCode', pincode);
+    this.setState({
+      isAddressRequired: true,
+    });
+    await this.updateValues(pincode, formProps);
+  };
+
+  // eslint-disable-next-line react/sort-comp
+  private updateValues = debounce(async (pincode: string, formProps: FormikProps<IUserProfileForm>): Promise<void> => {
+    if (pincode.length === 0) {
+      formProps.setFieldValue('cityName', '');
+      formProps.setFieldValue('stateName', '');
+      formProps.setFieldValue('country', '');
+      formProps.setFieldValue('countryIsoCode', '');
+      this.setState({
+        isAddressRequired: false,
+      });
+      return;
+    }
+    try {
+      const response = await GooglePlacesService.getLocationData(undefined, pincode);
+      const addressComponents = ResponseHelper.getLocationDetails(response);
+      formProps.setFieldValue('cityName', addressComponents.city ?? addressComponents.area);
+      formProps.setFieldValue('stateName', addressComponents.state);
+      formProps.setFieldValue('country', addressComponents.country);
+      formProps.setFieldValue('countryIsoCode', addressComponents.countryIsoCode);
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  }, 500);
+
   private onSubmit = async (password?: string): Promise<void> => {
     const { onFormSubmitSuccess, updateFormLoadingState } = this.props;
-    const { userProfileForm, selectedImage } = this.state;
-    const { firstName, lastName, email, phone, phoneCode } = userProfileForm;
+    const { userProfileForm, selectedImage, isAddressRequired } = this.state;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      phoneCode,
+      address,
+      postalCode,
+      cityName,
+      stateName,
+      country,
+      countryIsoCode,
+    } = userProfileForm;
+
+    const userAddress = {
+      address,
+      postal_code: postalCode,
+      city_name: cityName,
+      state_name: stateName,
+      country_name: country,
+      country_iso2_code: countryIsoCode,
+    };
+
     const profileDetails = {
       first_name: firstName,
       last_name: lastName,
       phone_code: phoneCode,
       phone_number: phone,
       email,
+      user_address: isAddressRequired ? userAddress : null,
     };
 
     if (password) {
@@ -209,7 +357,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       const { isImageError } = this.state;
       updateFormLoadingState(false);
       if (!isImageError) {
-        onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response);
+        onFormSubmitSuccess(userProfileForm, response && response.user_id ? undefined : response, isAddressRequired);
       }
     } catch (e) {
       updateFormLoadingState(false);
@@ -266,11 +414,23 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     values: IUserProfileForm,
     formikHelpers: FormikHelpers<IUserProfileForm>
   ): Promise<void> => {
-    const { isPasswordVerificationRequired, formData } = this.props;
-    const { phone, phoneCode, email } = values;
+    const { isAddressRequired } = this.state;
+    const { userData, t } = this.props;
+    const { phone, phoneCode, email, address, postalCode } = values;
 
     formikHelpers.setSubmitting(true);
-    if ((formData?.phone !== phone || formData?.phoneCode !== phoneCode) && formData?.email !== email) {
+
+    if (((userData && userData.userAddress?.length > 0) || isAddressRequired) && !address) {
+      formikHelpers.setFieldError('address', t('fieldRequiredError'));
+      return;
+    }
+
+    if (((userData && userData.userAddress?.length > 0) || isAddressRequired) && !postalCode) {
+      formikHelpers.setFieldError('postalCode', t('fieldRequiredError'));
+      return;
+    }
+
+    if ((userData?.phoneNumber !== phone || userData?.countryCode !== phoneCode) && userData?.email !== email) {
       formikHelpers.setFieldError('email', 'Both the fields cannot be edited');
       AlertHelper.error({ message: 'Both the fields cannot be edited' });
       return;
@@ -278,10 +438,10 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
 
     this.setState({ userProfileForm: { ...values } });
     if (
-      (formData?.phone !== phone || formData?.phoneCode !== phoneCode || formData?.email !== email) &&
-      isPasswordVerificationRequired
+      (userData?.phoneNumber !== phone || userData?.countryCode !== phoneCode || userData?.email !== email) &&
+      userData.isPasswordCreated
     ) {
-      this.setState({ isPasswordVerificationRequired });
+      this.setState({ isPasswordVerificationRequired: userData.isPasswordCreated });
       return;
     }
 
@@ -299,8 +459,14 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       firstName: yup.string().required(t('fieldRequiredError')),
       lastName: yup.string().required(t('fieldRequiredError')),
       email: yup.string().required(t('fieldRequiredError')),
-      phoneCode: yup.string(),
       phone: yup.string().required(t('fieldRequiredError')),
+      phoneCode: yup.string(),
+      address: yup.string(),
+      postalCode: yup.string(),
+      cityName: yup.string(),
+      stateName: yup.string(),
+      country: yup.string(),
+      countryIsoCode: yup.string(),
     });
   };
 }
@@ -337,5 +503,20 @@ const styles = StyleSheet.create({
   },
   helpText: {
     marginBottom: 32,
+  },
+  contentView: {
+    flexDirection: 'row',
+  },
+  subContentView: {
+    flex: 1,
+    marginRight: 16,
+  },
+  address: {
+    height: 80,
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
+  flexOne: {
+    flex: 1,
   },
 });

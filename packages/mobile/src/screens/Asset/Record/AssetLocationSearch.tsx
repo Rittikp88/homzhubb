@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import { CommonActions } from '@react-navigation/native';
 import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
@@ -99,10 +100,17 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
 
   private onBackPress = (): void => {
     const { navigation, resetState, isAddPropertyFlow, setAddPropertyFlow } = this.props;
+
     resetState();
 
     if (isAddPropertyFlow) {
       setAddPropertyFlow(false);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreensKeys.BottomTabs }],
+        })
+      );
     } else {
       navigation.goBack();
     }

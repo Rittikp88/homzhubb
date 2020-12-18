@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { LayoutChangeEvent, PickerItemProps, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, PickerItemProps, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -153,98 +153,100 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
     const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED;
     return (
-      <>
-        <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={title}>
-          <>
-            <HeaderCard
-              title={t('propertyDetails')}
-              onIconPress={this.handleIconPress}
-              handleIcon={this.handleMenuIcon}
-              titleFontWeight="semiBold"
-              titleTextSize="small"
-              iconSize={18}
-              iconBackSize={24}
-              icon={isMenuIconVisible ? icons.verticalDots : ''}
+      <TouchableWithoutFeedback onPress={this.onCloseMenu}>
+        <View style={styles.flexOne}>
+          <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={title}>
+            <View onStartShouldSetResponder={this.handleResponder}>
+              <HeaderCard
+                title={t('propertyDetails')}
+                onIconPress={this.handleIconPress}
+                handleIcon={this.handleMenuIcon}
+                titleFontWeight="semiBold"
+                titleTextSize="small"
+                iconSize={18}
+                iconBackSize={24}
+                icon={isMenuIconVisible ? icons.verticalDots : ''}
+              />
+              <AssetCard
+                assetData={propertyData}
+                isDetailView
+                isFromTenancies={params?.isFromTenancies ?? false}
+                enterFullScreen={this.onFullScreenToggle}
+                onCompleteDetails={this.onCompleteDetails}
+                onOfferVisitPress={FunctionUtils.noop}
+                containerStyle={styles.card}
+              />
+              <TabView
+                swipeEnabled={false}
+                style={{ height: heights[currentIndex] }}
+                initialLayout={theme.viewport}
+                renderScene={({ route }): React.ReactElement | null => this.renderTabScene(route)}
+                onIndexChange={this.handleIndexChange}
+                renderTabBar={(props): React.ReactElement => {
+                  const {
+                    navigationState: { index, routes },
+                  } = props;
+                  const currentRoute = routes[index];
+                  return (
+                    <TabBar
+                      {...props}
+                      scrollEnabled
+                      style={{ backgroundColor: theme.colors.white }}
+                      indicatorStyle={{ backgroundColor: theme.colors.blue }}
+                      renderIcon={({ route }): React.ReactElement => {
+                        const isSelected = currentRoute.key === route.key;
+                        return (
+                          <Icon
+                            name={route.icon}
+                            color={isSelected ? theme.colors.blue : theme.colors.darkTint3}
+                            size={22}
+                          />
+                        );
+                      }}
+                      renderLabel={({ route }): React.ReactElement => {
+                        const isSelected = currentRoute.key === route.key;
+                        return (
+                          <Text
+                            type="small"
+                            style={[
+                              styles.label,
+                              isSelected && {
+                                color: theme.colors.blue,
+                              },
+                            ]}
+                          >
+                            {route.title}
+                          </Text>
+                        );
+                      }}
+                    />
+                  );
+                }}
+                navigationState={{
+                  index: currentIndex,
+                  routes: Routes,
+                }}
+              />
+            </View>
+          </AnimatedProfileHeader>
+          {this.renderFullscreenCarousel()}
+          <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
+          <BottomSheet
+            visible={isDeleteProperty}
+            headerTitle={t('property:deleteProperty')}
+            sheetHeight={400}
+            onCloseSheet={this.onCloseDeleteView}
+          >
+            <PropertyConfirmationView
+              propertyData={propertyData}
+              description={t('deletePropertyDescription')} // TODO: Replace with proper text
+              message={t('deleteConfirmation')}
+              onCancel={this.onCloseDeleteView}
+              onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
             />
-            <AssetCard
-              assetData={propertyData}
-              isDetailView
-              isFromTenancies={params?.isFromTenancies ?? false}
-              enterFullScreen={this.onFullScreenToggle}
-              onCompleteDetails={this.onCompleteDetails}
-              onOfferVisitPress={FunctionUtils.noop}
-              containerStyle={styles.card}
-            />
-            <TabView
-              swipeEnabled={false}
-              style={{ height: heights[currentIndex] }}
-              initialLayout={theme.viewport}
-              renderScene={({ route }): React.ReactElement | null => this.renderTabScene(route)}
-              onIndexChange={this.handleIndexChange}
-              renderTabBar={(props): React.ReactElement => {
-                const {
-                  navigationState: { index, routes },
-                } = props;
-                const currentRoute = routes[index];
-                return (
-                  <TabBar
-                    {...props}
-                    scrollEnabled
-                    style={{ backgroundColor: theme.colors.white }}
-                    indicatorStyle={{ backgroundColor: theme.colors.blue }}
-                    renderIcon={({ route }): React.ReactElement => {
-                      const isSelected = currentRoute.key === route.key;
-                      return (
-                        <Icon
-                          name={route.icon}
-                          color={isSelected ? theme.colors.blue : theme.colors.darkTint3}
-                          size={22}
-                        />
-                      );
-                    }}
-                    renderLabel={({ route }): React.ReactElement => {
-                      const isSelected = currentRoute.key === route.key;
-                      return (
-                        <Text
-                          type="small"
-                          style={[
-                            styles.label,
-                            isSelected && {
-                              color: theme.colors.blue,
-                            },
-                          ]}
-                        >
-                          {route.title}
-                        </Text>
-                      );
-                    }}
-                  />
-                );
-              }}
-              navigationState={{
-                index: currentIndex,
-                routes: Routes,
-              }}
-            />
-          </>
-        </AnimatedProfileHeader>
-        {this.renderFullscreenCarousel()}
-        <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
-        <BottomSheet
-          visible={isDeleteProperty}
-          headerTitle={t('property:deleteProperty')}
-          sheetHeight={400}
-          onCloseSheet={this.onCloseDeleteView}
-        >
-          <PropertyConfirmationView
-            propertyData={propertyData}
-            description={t('deletePropertyDescription')} // TODO: Replace with proper text
-            message={t('deleteConfirmation')}
-            onCancel={this.onCloseDeleteView}
-            onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
-          />
-        </BottomSheet>
-      </>
+          </BottomSheet>
+        </View>
+      </TouchableWithoutFeedback>
     );
   };
 
@@ -371,8 +373,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
     setAssetId(assetId);
+    setEditPropertyFlow(true);
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
       params: { previousScreen: ScreensKeys.Dashboard },
@@ -430,6 +434,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     this.onCloseMenu();
 
     if (value === MenuItems.EDIT_LISTING) {
+      // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
         params: { previousScreen: ScreensKeys.Dashboard, isEditFlow: true },
@@ -440,6 +445,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     if (value === MenuItems.EDIT_PROPERTY) {
       setEditPropertyFlow(true);
       toggleEditPropertyFlowBottomSheet(true);
+      // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.PostAssetDetails,
       });
@@ -454,14 +460,20 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
   private navigateToBookVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SearchStack, {
-      screen: ScreensKeys.BookVisit,
-      params: { isReschedule: !isNew },
-    });
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
   };
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
+  };
+
+  private handleResponder = (): boolean => {
+    this.setState({
+      isMenuVisible: false,
+    });
+
+    return true;
   };
 
   private getAssetDetail = async (): Promise<void> => {
@@ -490,7 +502,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { t } = this.props;
     const list = [
       { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
-      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
+      // TODO: Uncomment when delete API becomes ready
+      // { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
     ];
 
     if (isListingCreated) {
@@ -545,6 +558,9 @@ export default connect(
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(PropertyDetailScreen));
 
 const styles = StyleSheet.create({
+  flexOne: {
+    flex: 1,
+  },
   card: {
     borderRadius: 0,
   },

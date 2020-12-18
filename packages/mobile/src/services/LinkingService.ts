@@ -21,13 +21,13 @@ export interface IRedirectionDetails {
 }
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyATBMf9KD6pWgOpKmOxw5sF-dFdxxF19tQ',
-  projectId: 'homzhub-7a1d5',
-  appId: '1:638609269566:android:b51cd4354cfea79b08826f',
-  databaseURL: 'https://homzhub-7a1d5.firebaseio.com/',
-  messagingSenderId: '638609269566',
-  authDomain: 'homzhub-7a1d5.firebaseapp.com',
-  storageBucket: 'homzhub-7a1d5.appspot.com',
+  apiKey: 'AIzaSyCX0TTAKXeT2wmxblaZeMOumS6VYI9t8C0',
+  projectId: 'homzhub-deeplinking',
+  appId: '1:894249713165:android:e57126d6061e41cb12df44',
+  databaseURL: 'https://homzhub-deeplinking.firebaseio.com/',
+  messagingSenderId: '894249713165',
+  authDomain: 'homzhub-deeplinking.firebaseapp.com',
+  storageBucket: 'homzhub-deeplinking.appspot.com',
 };
 
 class LinkingService {
@@ -89,7 +89,7 @@ class LinkingService {
           bundleId: 'com.homzhub.rn',
           appStoreId: '1516772395',
         },
-        domainUriPrefix: 'https://homzhubapp.page.link',
+        domainUriPrefix: 'https://homzhubapps.page.link',
       },
       firebase.dynamicLinks.ShortLinkType.UNGUESSABLE
     );
@@ -107,10 +107,11 @@ class LinkingService {
 
   public openSMS = async ({ message, phoneNumber }: { message: string; phoneNumber?: string }): Promise<void> => {
     let url = 'sms:';
+    const delimiter = PlatformUtils.isIOS() ? '&' : '?';
     if (phoneNumber) {
-      url = `${url}${phoneNumber}?body=${message}`;
+      url = `${url}${phoneNumber}${delimiter}body=${message}`;
     } else {
-      url = `${url}?body=${message}`;
+      url = `${url}${delimiter}body=${message}`;
     }
 
     if (!(await this.canOpenURL(url))) {
