@@ -502,7 +502,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { t } = this.props;
     const list = [
       { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
-      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
+      // TODO: Uncomment when delete API becomes ready
+      // { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
     ];
 
     if (isListingCreated) {

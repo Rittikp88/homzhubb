@@ -216,7 +216,9 @@
     "referralCodePlaceholder": "Enter valid referral code",
     "invalidReferralCodeError": "Please enter a valid referral Code",
     "loggedInReferralCodeError": "This referral-code is only valid for new users.",
-    "appNotReady": "App is not yet ready"
+    "appNotReady": "App is not yet ready",
+    "maxTenCharacters": "You can enter at most 10 characters",
+    "upperCaseError": "Enter an upper case string"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",

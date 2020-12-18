@@ -91,7 +91,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
     if (!isNextStep && assetDetail) {
       const { assetCreation } = assetDetail.lastVisitedStep;
       const newStepIndex = assetCreation.stepList.findIndex((item) => !item);
-      if (newStepIndex && currentIndex !== newStepIndex) {
+      if (newStepIndex >= 0 && currentIndex !== newStepIndex) {
         return {
           ...state,
           currentIndex: newStepIndex,
