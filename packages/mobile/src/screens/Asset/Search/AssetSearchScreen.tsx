@@ -511,14 +511,11 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   private renderSearchResults = (): React.ReactElement | null => {
-    const { suggestions } = this.state;
-    const {
-      filters: { search_address },
-    } = this.props;
+    const { suggestions, searchString } = this.state;
     return (
       <>
         <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
-        {suggestions.length > 0 && !!search_address && search_address.length > 0 && (
+        {suggestions.length > 0 && searchString.length > 0 && (
           <SearchResults
             results={suggestions}
             onResultPress={this.onSuggestionPress}

@@ -89,7 +89,6 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.PropertyVisits]: undefined;
   [ScreensKeys.MarketTrends]: { isFromDashboard: boolean };
   [ScreensKeys.AssetNotifications]: undefined;
-  [ScreensKeys.SearchStack]: NestedNavigatorParams<SearchStackParamList>;
   [ScreensKeys.UpdatePassword]: undefined;
   [ScreensKeys.SupportScreen]: undefined;
   [ScreensKeys.ReferEarn]: undefined;
@@ -164,8 +163,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.SettingsScreen} component={Settings} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
       <MoreStackNavigator.Screen name={ScreensKeys.MarketTrends} component={MarketTrends} />
-      <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
-      <MoreStackNavigator.Screen name={ScreensKeys.SearchStack} component={SearchStack} />
+      <MoreStackNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <MoreStackNavigator.Screen name={ScreensKeys.UpdatePassword} component={UpdatePassword} />
       <MoreStackNavigator.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <AuthStackNavigator.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
