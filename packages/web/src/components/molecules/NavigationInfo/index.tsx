@@ -1,23 +1,35 @@
-import React, { FC } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import React, { FC, useRef } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useLocation } from 'react-router-dom';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import BreadCrumbs from '@homzhub/web/src/components/molecules/BreadCrumbs';
+import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 
 const humanize = (str: string): string => {
   return str.replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
 };
 
+// todo: replace dummy data with actual data
 export const NavigationInfo: FC = () => {
   const location = useLocation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const myRef = useRef<PopupActions>(null);
+  const closePopup = (): void => {
+    if (myRef && myRef.current) {
+      myRef.current.close();
+    }
+  };
   const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
+  const popupOptionStyle = { marginTop: '4px' };
   return (
     <View>
       <div className="navigation-bg" />
@@ -46,14 +58,61 @@ export const NavigationInfo: FC = () => {
             </Typography>
             <Icon name={icons.downArrow} color={theme.colors.white} />
           </Button>
-          <Button type="secondary" containerStyle={styles.button}>
-            <Icon name={icons.plus} color={theme.colors.primaryColor} style={styles.buttonIconRight} />
-            <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
-              Quick Actions
-            </Typography>
-          </Button>
+          <Popover
+            forwardedRef={myRef}
+            options={AddMenuOptions(closePopup)}
+            popupProps={{
+              position: 'bottom right',
+              on: ['hover', 'click'],
+              arrow: false,
+              contentStyle: popupOptionStyle,
+              closeOnDocumentClick: true,
+              children: undefined,
+            }}
+          >
+            <Button type="secondary" containerStyle={styles.button}>
+              <Icon name={icons.plus} color={theme.colors.primaryColor} style={styles.buttonIconRight} />
+              <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
+                Add
+              </Typography>
+            </Button>
+          </Popover>
         </View>
       </View>
+    </View>
+  );
+};
+
+const AddMenuOptions = (onMenuOptionPress: () => void): React.ReactNode => {
+  const options = [
+    { label: 'Add Property' },
+    { label: 'Add Records' },
+    { label: 'Create Support Ticket' },
+    { label: 'Create Service Ticket' },
+  ];
+  const { primaryColor, darkTint4 } = theme.colors;
+  return (
+    <View style={styles.optionContainer}>
+      {options.map((item) => (
+        <Hoverable key={item.label}>
+          {(isHovered: boolean): React.ReactNode => (
+            <TouchableOpacity onPress={onMenuOptionPress} style={[styles.option, isHovered && styles.activeOption]}>
+              <Icon
+                name={icons.stackFilled}
+                color={isHovered ? primaryColor : darkTint4}
+                style={styles.buttonIconRight}
+              />
+              <Label
+                type="large"
+                textType="semiBold"
+                style={[styles.optionText, isHovered && styles.optionTextHovered]}
+              >
+                {item.label}
+              </Label>
+            </TouchableOpacity>
+          )}
+        </Hoverable>
+      ))}
     </View>
   );
 };
@@ -67,6 +126,26 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: 'center',
     alignItems: 'center',
+  },
+  optionContainer: {
+    backgroundColor: theme.colors.white,
+    paddingVertical: 8,
+  },
+  option: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  activeOption: {
+    backgroundColor: theme.colors.background,
+  },
+  optionText: {
+    color: theme.colors.darkTint4,
+  },
+  optionTextHovered: {
+    color: theme.colors.primaryColor,
   },
   containerMobile: {
     flexDirection: 'column',

@@ -47,7 +47,7 @@ const PropertyOverview: FC<IProps> = ({ data }: IProps) => {
 };
 
 const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement => {
-  const styles = cardStyle();
+  const styles = cardStyle(data.colorCode);
   return (
     <Hoverable>
       {(isHovered: boolean): React.ReactNode => (
@@ -195,7 +195,7 @@ interface ICardStyle {
   roundIcon: ImageStyle;
 }
 
-const cardStyle = (): StyleSheet.NamedStyles<ICardStyle> =>
+const cardStyle = (activeColor: string): StyleSheet.NamedStyles<ICardStyle> =>
   StyleSheet.create<ICardStyle>({
     card: {
       alignItems: 'center',
@@ -220,7 +220,7 @@ const cardStyle = (): StyleSheet.NamedStyles<ICardStyle> =>
       color: theme.colors.white,
     },
     cardActive: {
-      backgroundColor: theme.colors.lightGreen,
+      backgroundColor: activeColor,
       color: theme.colors.white,
     },
     roundIcon: {
