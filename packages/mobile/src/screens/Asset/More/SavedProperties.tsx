@@ -32,7 +32,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 type NavigationProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SavedPropertiesScreen>;
 
-export const SavedProperties = (props: NavigationProps): React.ReactNode => {
+export const SavedProperties = (props: NavigationProps): React.ReactElement => {
   const { navigation } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
 

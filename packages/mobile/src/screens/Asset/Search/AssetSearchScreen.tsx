@@ -71,6 +71,7 @@ interface IDispatchProps {
 }
 
 interface IPropertySearchScreenState {
+  searchString: string;
   isMapView: boolean;
   isSortVisible: boolean;
   selectedOnScreenFilter: OnScreenFilters | string;
@@ -85,18 +86,26 @@ type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList
 type Props = libraryProps & IStateProps & IDispatchProps;
 
 export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScreenState> {
-  private searchBar: typeof GoogleSearchBar | null = null;
   private focusListener: any;
-  public state = {
-    isMapView: true,
-    isSortVisible: false,
-    selectedOnScreenFilter: '',
-    isMenuTrayCollapsed: false,
-    suggestions: [],
-    isSearchBarFocused: false,
-    areaUnits: [],
-    favouriteProperties: [],
-  };
+
+  public constructor(props: Props) {
+    super(props);
+    const {
+      filters: { search_address },
+    } = props;
+
+    this.state = {
+      searchString: search_address ?? '',
+      isMapView: true,
+      isSortVisible: false,
+      selectedOnScreenFilter: '',
+      isMenuTrayCollapsed: false,
+      suggestions: [],
+      isSearchBarFocused: false,
+      areaUnits: [],
+      favouriteProperties: [],
+    };
+  }
 
   public componentDidMount = async (): Promise<void> => {
     const { filterData, filters, getFilterDetails, getProperties, navigation, setFilter, defaultCurrency } = this.props;
@@ -136,14 +145,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
-    const {
-      filters: { search_address },
-      filterData,
-      setFilter,
-    } = this.props;
-    if (prevProps.filters.search_address !== search_address) {
-      this.getAutocompleteSuggestions();
-    }
+    const { filterData, setFilter } = this.props;
     if (filterData && prevProps.filterData?.filters.defaultSort !== filterData.filters.defaultSort) {
       setFilter({ sort_by: filterData.filters.defaultSort });
     }
@@ -152,6 +154,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   public componentWillUnmount(): void {
     const { setChangeStack } = this.props;
     setChangeStack(true);
+    this.focusListener();
   }
 
   public render(): React.ReactNode {
@@ -367,24 +370,19 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   private renderSearchContainer = (): React.ReactElement | null => {
-    const { isSearchBarFocused } = this.state;
-    const {
-      filters: { search_address },
-    } = this.props;
+    const { isSearchBarFocused, searchString } = this.state;
     const { t } = this.props;
+
     if (!isSearchBarFocused) {
       return null;
     }
+
     return (
       <View style={styles.searchLocation}>
         <GoogleSearchBar
-          // @ts-ignore
-          onRef={(input: SearchBar): void => {
-            this.searchBar = input;
-          }}
           placeholder={t('enterLocation')}
           updateValue={this.onSearchStringUpdate}
-          value={search_address ?? ''}
+          value={searchString}
           autoFocus
           containerStyle={styles.searchBarContainer}
           cancelButtonStyle={styles.cancelButtonStyle}
@@ -513,14 +511,11 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   private renderSearchResults = (): React.ReactElement | null => {
-    const { suggestions } = this.state;
-    const {
-      filters: { search_address },
-    } = this.props;
+    const { suggestions, searchString } = this.state;
     return (
       <>
         <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
-        {suggestions.length > 0 && !!search_address && search_address.length > 0 && (
+        {suggestions.length > 0 && searchString.length > 0 && (
           <SearchResults
             results={suggestions}
             onResultPress={this.onSuggestionPress}
@@ -553,9 +548,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   private onSearchStringUpdate = (searchString: string): void => {
-    const { setFilter } = this.props;
-    setFilter({ search_address: searchString });
-    this.getAutocompleteSuggestions();
+    this.setState({ searchString }, this.getAutocompleteSuggestions);
   };
 
   private onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
@@ -567,6 +560,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       .then((locData) => {
         const { formatted_address } = locData;
         const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
+        this.setState({ searchString: `${primaryAddress} ${secondaryAddress}`, isSearchBarFocused: false });
         setFilter({
           search_address: `${primaryAddress} ${secondaryAddress}`,
           search_latitude: latitude,
@@ -587,12 +581,9 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
           search_longitude: placeDetail.geometry.location.lng,
         });
         getProperties();
+        this.setState({ isSearchBarFocused: false, searchString: place.description });
       })
       .catch(this.displayError);
-    if (this.searchBar) {
-      // @ts-ignore
-      this.searchBar.SearchTextInput.blur();
-    }
   };
 
   public onSearchBarFocusChange = (isSearchBarFocused: boolean): void => {
@@ -617,10 +608,8 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
   // eslint-disable-next-line react/sort-comp
   private getAutocompleteSuggestions = debounce((): void => {
-    const {
-      filters: { search_address },
-    } = this.props;
-    GooglePlacesService.autoComplete(search_address || '')
+    const { searchString } = this.state;
+    GooglePlacesService.autoComplete(searchString)
       .then((suggestions: GooglePlaceData[]) => {
         this.setState({ suggestions });
       })

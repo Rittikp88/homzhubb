@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
     flex: 0,
     justifyContent: 'center',
     marginHorizontal: 30,
+    height: 50,
   },
   carouselItem: {
     paddingHorizontal: 20,
