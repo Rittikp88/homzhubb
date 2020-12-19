@@ -33,7 +33,7 @@ export const RootNavigator = (props: IProps): React.ReactElement | null => {
     }
 
     GeolocationService.setLocationDetails(isLoggedIn, searchAddress).then();
-  }, [isLoggedIn, dispatch, searchAddress]);
+  }, [isLoggedIn]);
 
   // Once booting is completed hide the native splash and render our RootNavigator
   useEffect(() => {
