@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 
 const Accordian: React.FC = () => {
@@ -25,26 +25,26 @@ const Accordian: React.FC = () => {
         <View style={styles.accordianHeader}>
           <View style={styles.leftChild}>
             <View style={styles.calender}>
-              <Text type="small" textType="semiBold" style={styles.date}>
+              <Label type="large" textType="semiBold" style={styles.date}>
                 12
-              </Text>
-              <Text type="small" textType="light" style={styles.month}>
+              </Label>
+              <Label type="regular" textType="light" style={styles.month}>
                 Apr
-              </Text>
+              </Label>
             </View>
             <View>
               <View style={styles.iconContainer}>
-                <Text type="small" textType="regular" style={styles.text1}>
+                <Label type="regular" textType="regular" style={styles.text1}>
                   {t('property:maintenance')}
-                </Text>
+                </Label>
                 <Icon name={icons.attachment} size={18} color={theme.colors.darkTint4} />
               </View>
-              <Text type="small" textType="regular" style={styles.text2}>
+              <Label type="large" textType="semiBold" style={styles.text2}>
                 {t('assetFinancial:plumbingFees')}
-              </Text>
-              <Text type="small" textType="regular" style={styles.text3}>
+              </Label>
+              <Label type="large" textType="regular" style={styles.text2}>
                 Godrej Prime
-              </Text>
+              </Label>
             </View>
           </View>
           <View style={styles.rightChild}>
@@ -60,10 +60,10 @@ const Accordian: React.FC = () => {
           <View style={styles.title}>
             <Text type="small" textType="light" style={styles.titleContent}>
               {t('assetFinancial:paidTo')}
-            </Text>{' '}
+            </Text>
             <Text type="small" textType="light" style={styles.titleContent}>
               {t('assetFinancial:invoice')}
-            </Text>{' '}
+            </Text>
             <Text type="small" textType="light" style={styles.titleContent}>
               {t('assetFinancial:notes')}
             </Text>
@@ -115,11 +115,10 @@ const styles = StyleSheet.create({
   },
   divider: { borderColor: theme.colors.background },
   contentLeftChild: { flexDirection: 'row', justifyContent: 'space-around' },
-  text1: { fontSize: 12, lineHeight: 19, color: theme.colors.darkTint4 },
-  text2: { fontSize: 14, lineHeight: 19, color: theme.colors.darkTint3 },
-  text3: { fontSize: 14, lineHeight: 19, color: theme.colors.darkTint3 },
-  date: { fontSize: 14, color: theme.colors.darkTint2, marginTop: 10 },
-  month: { marginTop: -8, fontSize: 12, textAlign: 'center', color: theme.colors.darkTint6 },
+  text1: { color: theme.colors.darkTint4 },
+  text2: { color: theme.colors.darkTint3 },
+  date: { color: theme.colors.darkTint2, marginTop: 10 },
+  month: { textAlign: 'center', color: theme.colors.darkTint6 },
   leftChild: { flexDirection: 'row' },
   accordianContent: {
     paddingLeft: 85,
@@ -134,11 +133,11 @@ const styles = StyleSheet.create({
   iconContainer: { flexDirection: 'row' },
   rightChild: { flexDirection: 'row' },
   icon: { marginLeft: 10 },
-  amount: { fontSize: 16, lineHeight: 22, color: theme.colors.completed },
-  name: { lineHeight: 19, marginTop: 25, color: theme.colors.darkTint2 },
-  note: { lineHeight: 19, color: theme.colors.darkTint3, marginTop: 25 },
+  amount: { color: theme.colors.completed },
+  name: { marginTop: 25, color: theme.colors.darkTint2 },
+  note: { color: theme.colors.darkTint3, marginTop: 25 },
   attachment: { flexDirection: 'row', marginTop: 25 },
-  attachmentText: { color: theme.colors.active, lineHeight: 19 },
+  attachmentText: { color: theme.colors.active },
   occupation: { color: theme.colors.darkTint3, margin: 20 },
 });
 export default Accordian;

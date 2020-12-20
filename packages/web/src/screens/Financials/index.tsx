@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
 import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 import DuesCard from '@homzhub/web/src/screens/Financials/DuesCard';
 import Transactions from '@homzhub/web/src/screens/Financials/Transactions';
@@ -8,7 +7,6 @@ import Transactions from '@homzhub/web/src/screens/Financials/Transactions';
 const Financials: FC = () => {
   return (
     <View style={styles.container}>
-      <PropertyOverview />
       <PropertyVisualsEstimates />
       <DuesCard />
       <Transactions />

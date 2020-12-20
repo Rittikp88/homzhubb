@@ -17,7 +17,7 @@ const FrequentlyAskedQuestion = (): React.ReactElement => {
       <View style={styles.header}>
         <Text type="regular" textType="semiBold" style={styles.headerTitle}>
           {t('assetDashboard:Frequently Asked Questions')}
-        </Text>{' '}
+        </Text>
         <SearchField
           placeholder={t('property:search')}
           value={searchText}

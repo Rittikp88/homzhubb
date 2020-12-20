@@ -11,7 +11,7 @@ import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 
 const defaultResponsive = {
   desktop: {
-    breakpoint: { max: 1440, min: 0 },
+    breakpoint: { max: 3840, min: 0 },
     items: 1,
     slidesToSlide: 1,
   },
@@ -20,7 +20,6 @@ const CarouselProps = {
   children: undefined,
   arrows: false,
   autoPlay: false,
-  autoPlaySpeed: 3000,
   draggable: true,
   focusOnSelect: false,
   infinite: true,
@@ -121,7 +120,7 @@ const LogsCards: React.FC = () => {
             </Typography>
           </Button>
         </View>
-        <TextArea wordCountLimit={200} placeholder="Type here..." value="123" containerStyle={styles.textArea} />
+        <TextArea wordCountLimit={200} placeholder="Type here..." value="123" />
         <View style={styles.buttonGroup}>
           <Button type="secondaryOutline" containerStyle={styles.buttonStyle1}>
             <Text type="small" textType="semiBold" style={styles.buttonLabel}>
@@ -169,22 +168,7 @@ const styles = StyleSheet.create({
   secondChild: { flexDirection: 'row', maxWidth: 400, justifyContent: 'space-between', marginTop: 16 },
   titleLabel: { color: theme.colors.darkTint3 },
   titleData: { color: theme.colors.darkTint3 },
-  calender: {
-    borderWidth: 1,
-    borderColor: theme.colors.darkTint10,
-    borderRadius: 4,
-    alignItems: 'center',
-    height: 60,
-    width: 52,
-    marginRight: 12,
-  },
-  divider: { borderColor: theme.colors.background },
-  contentLeftChild: { flexDirection: 'row', justifyContent: 'space-around' },
-  text1: { fontSize: 12, lineHeight: 19, color: theme.colors.darkTint4 },
-  text2: { fontSize: 14, lineHeight: 19, color: theme.colors.darkTint3 },
-  text3: { fontSize: 14, lineHeight: 19, color: theme.colors.darkTint3 },
-  date: { fontSize: 14, color: theme.colors.darkTint2, marginTop: 10 },
-  month: { marginTop: -8, fontSize: 12, textAlign: 'center', color: theme.colors.darkTint6 },
+
   leftChild: { flexDirection: 'row' },
   accordianContent: {
     backgroundColor: theme.colors.white,
@@ -194,23 +178,9 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: -10,
   },
-  title: { marginRight: 40, marginBottom: 20 },
-  iconContainer: { flexDirection: 'row' },
   rightChild: { flexDirection: 'row' },
   icon: { marginLeft: 10 },
-  amount: { fontSize: 16, lineHeight: 22, color: theme.colors.completed },
-  name: { lineHeight: 19, marginTop: 25, color: theme.colors.darkTint2 },
-  note: { lineHeight: 19, color: theme.colors.darkTint3, marginTop: 25 },
-  attachment: { flexDirection: 'row', marginTop: 25 },
-  attachmentText: { color: theme.colors.active, lineHeight: 19 },
-  occupation: { color: theme.colors.darkTint3, margin: 20 },
-  videoContainer: {
-    height: 400,
-    backgroundColor: theme.colors.background,
-    margin: 16,
-    alignItems: 'center',
-  },
-  textArea: {},
+
   buttonWrapper: { alignItems: 'flex-end' },
   buttonStyle: {
     flexDirection: 'row',

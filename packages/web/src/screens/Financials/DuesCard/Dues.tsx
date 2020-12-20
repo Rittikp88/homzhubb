@@ -26,11 +26,11 @@ const Dues = (): React.ReactElement => {
       <View style={styles.container}>
         <View style={styles.propertyDetails}>
           <PropertyAddressCountry
-            primaryAddress={t('2BHK - Godrej Prime')}
+            primaryAddress="2BHK - Godrej Prime"
             countryFlag="https://www.countryflags.io/IN/flat/48.png"
             primaryAddressTextStyles={addressTextStyle}
             subAddressTextStyles={subAddressTextStyle}
-            subAddress={t('Sindhi Society, Chembur, Mumbai- 400071')}
+            subAddress="Sindhi Society, Chembur, Mumbai- 400071"
           />
         </View>
         <View style={styles.actions}>
