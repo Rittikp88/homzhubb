@@ -140,7 +140,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
                 indicatorStyle={{ backgroundColor: currentRoute.color }}
                 renderLabel={({ route }): React.ReactElement => {
                   return (
-                    <Text type="small" style={styles.tabLabel}>
+                    <Text type="small" style={styles.tabLabel} numberOfLines={1}>
                       {route.title}
                     </Text>
                   );

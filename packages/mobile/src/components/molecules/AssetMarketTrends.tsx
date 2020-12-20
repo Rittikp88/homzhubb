@@ -48,7 +48,7 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
     const { data } = this.state;
 
     return (
-      <View style={[styles.container, isDashboard ? styles.headerView : { height: theme.viewport.height }]}>
+      <View style={[styles.container, isDashboard ? styles.headerView : { height: theme.viewport.height * 0.7 }]}>
         {this.renderHeader()}
         {data.length > 0 ? (
           <FlatList

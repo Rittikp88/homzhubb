@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
+    color: theme.colors.darkTint1,
   },
   iconButton: {
     backgroundColor: theme.colors.secondaryColor,
