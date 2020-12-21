@@ -109,7 +109,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
           containerStyle={styles.button}
           testID="btnSearchProperty"
         />
-        <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={450}>
+        <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={500}>
           <>
             <Text type="regular" textType="semiBold" style={styles.sheetTitle}>
               {t('iAm')}
@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colors.darkTint5,
     marginBottom: 8,
+    paddingHorizontal: 10,
   },
   continueBtn: {
     flex: 0,
