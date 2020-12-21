@@ -69,59 +69,63 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
       Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
     </Text>
   </View>
-  <View
+  <SnapCarousel
+    activeIndex={2}
+    carouselData={
+      Array [
+        Object {
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+          "title": "Search",
+        },
+        Object {
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+          "title": "Post",
+        },
+        Object {
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+          "title": "Maintain",
+        },
+      ]
+    }
+    carouselItem={[Function]}
+    onSnapToItem={[Function]}
+  />
+  <PaginationComponent
+    activeDotStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderColor": "#0084F8",
+        "width": 16,
+      }
+    }
+    activeSlide={2}
+    dotsLength={3}
+    inactiveDotStyle={
+      Object {
+        "backgroundColor": "#CCD1D7",
+        "borderColor": "#CCD1D7",
+        "borderRadius": 5,
+        "height": 10,
+        "width": 10,
+      }
+    }
+  />
+  <Text
     style={
       Object {
         "alignSelf": "center",
-        "flex": 1,
+        "color": "#33495E",
+        "paddingBottom": 16,
       }
     }
+    textType="semiBold"
+    type="regular"
   >
-    <SnapCarousel
-      activeIndex={2}
-      carouselData={
-        Array [
-          Object {
-            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-            "title": "Search",
-          },
-          Object {
-            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-            "title": "Post",
-          },
-          Object {
-            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-            "title": "Maintain",
-          },
-        ]
-      }
-      carouselItem={[Function]}
-      onSnapToItem={[Function]}
-    />
-    <PaginationComponent
-      activeDotStyle={
-        Object {
-          "backgroundColor": "#0084F8",
-          "borderColor": "#0084F8",
-          "width": 16,
-        }
-      }
-      activeSlide={2}
-      dotsLength={3}
-      inactiveDotStyle={
-        Object {
-          "backgroundColor": "#CCD1D7",
-          "borderColor": "#CCD1D7",
-          "borderRadius": 5,
-          "height": 10,
-          "width": 10,
-        }
-      }
-    />
-  </View>
+    iAmLooking
+  </Text>
   <Button
     containerStyle={
       Object {
@@ -188,7 +192,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         Object {
           "flexDirection": "row",
           "justifyContent": "space-between",
-          "marginBottom": 90,
+          "marginBottom": 50,
           "marginHorizontal": 20,
         }
       }
@@ -297,6 +301,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
       containerStyle={
         Object {
           "flex": 0,
+          "height": 50,
           "justifyContent": "center",
           "marginHorizontal": 30,
         }
@@ -378,59 +383,63 @@ exports[`Onboarding Screen should render with data in state 1`] = `
       Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
     </Text>
   </View>
-  <View
+  <SnapCarousel
+    activeIndex={0}
+    carouselData={
+      Array [
+        Object {
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+          "title": "Search",
+        },
+        Object {
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+          "title": "Post",
+        },
+        Object {
+          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+          "title": "Maintain",
+        },
+      ]
+    }
+    carouselItem={[Function]}
+    onSnapToItem={[Function]}
+  />
+  <PaginationComponent
+    activeDotStyle={
+      Object {
+        "backgroundColor": "#0084F8",
+        "borderColor": "#0084F8",
+        "width": 16,
+      }
+    }
+    activeSlide={0}
+    dotsLength={3}
+    inactiveDotStyle={
+      Object {
+        "backgroundColor": "#CCD1D7",
+        "borderColor": "#CCD1D7",
+        "borderRadius": 5,
+        "height": 10,
+        "width": 10,
+      }
+    }
+  />
+  <Text
     style={
       Object {
         "alignSelf": "center",
-        "flex": 1,
+        "color": "#33495E",
+        "paddingBottom": 16,
       }
     }
+    textType="semiBold"
+    type="regular"
   >
-    <SnapCarousel
-      activeIndex={0}
-      carouselData={
-        Array [
-          Object {
-            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-            "title": "Search",
-          },
-          Object {
-            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-            "title": "Post",
-          },
-          Object {
-            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-            "title": "Maintain",
-          },
-        ]
-      }
-      carouselItem={[Function]}
-      onSnapToItem={[Function]}
-    />
-    <PaginationComponent
-      activeDotStyle={
-        Object {
-          "backgroundColor": "#0084F8",
-          "borderColor": "#0084F8",
-          "width": 16,
-        }
-      }
-      activeSlide={0}
-      dotsLength={3}
-      inactiveDotStyle={
-        Object {
-          "backgroundColor": "#CCD1D7",
-          "borderColor": "#CCD1D7",
-          "borderRadius": 5,
-          "height": 10,
-          "width": 10,
-        }
-      }
-    />
-  </View>
+    iAmLooking
+  </Text>
   <Button
     containerStyle={
       Object {
@@ -497,7 +506,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         Object {
           "flexDirection": "row",
           "justifyContent": "space-between",
-          "marginBottom": 90,
+          "marginBottom": 50,
           "marginHorizontal": 20,
         }
       }
@@ -606,6 +615,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
       containerStyle={
         Object {
           "flex": 0,
+          "height": 50,
           "justifyContent": "center",
           "marginHorizontal": 30,
         }

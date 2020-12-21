@@ -19,6 +19,7 @@ exports[`CollapsibleSection should match snapshot 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
+          "maxWidth": 250,
         }
       }
     >
@@ -75,6 +76,7 @@ exports[`CollapsibleSection should match snapshot with press 1`] = `
         Object {
           "alignItems": "center",
           "flexDirection": "row",
+          "maxWidth": 250,
         }
       }
     >

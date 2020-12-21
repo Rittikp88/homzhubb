@@ -207,8 +207,9 @@ export class AssetHighlights extends Component<Props, IState> {
   };
 
   private getSelectedData = (propertyDetail: Asset): void => {
-    const { selectedAmenity, otherDetails } = this.state;
+    const { selectedAmenity, otherDetails, selectedDetails } = this.state;
     const toUpdate = [...otherDetails];
+    const selectedValues: string[] = selectedDetails;
     const newSelectedValues: number[] = selectedAmenity;
     const { amenityGroup, isGated, powerBackup, allDayAccess, cornerProperty, assetHighlights } = propertyDetail;
     if (amenityGroup) {
@@ -238,7 +239,13 @@ export class AssetHighlights extends Component<Props, IState> {
           item.isSelected = false;
       }
     });
-    this.setState({ otherDetails: toUpdate });
+
+    toUpdate.forEach((item: ICheckboxGroupData) => {
+      if (item.isSelected) {
+        selectedValues.push(item.label);
+      }
+    });
+    this.setState({ otherDetails: toUpdate, selectedDetails: selectedValues });
 
     if (assetHighlights.length > 0) {
       this.setState({

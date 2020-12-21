@@ -10,7 +10,7 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
         "paddingBottom": 0,
       },
       Object {
-        "height": 1334,
+        "height": 933.8,
       },
     ]
   }
@@ -63,7 +63,7 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
         "paddingBottom": 0,
       },
       Object {
-        "height": 1334,
+        "height": 933.8,
       },
     ]
   }
