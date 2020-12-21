@@ -6,7 +6,7 @@ import AppLayout from '@homzhub/web/src/screens/appLayout';
 import Login from '@homzhub/web/src/screens/login';
 
 export const AppRouter = (): React.ReactElement => {
-  const { APP_BASE, DASHBOARD } = RouteNames.protectedRoutes;
+  const { APP_BASE, DASHBOARD, ADD_PROPERTY } = RouteNames.protectedRoutes;
   const { LOGIN } = RouteNames.publicRoutes;
   const { t } = useTranslation();
   return (
