@@ -17,7 +17,6 @@ const SVGUri = ({
   uri,
   width,
   height,
-  viewBox,
   preserveAspectRatio,
   stroke,
   strokeWidth,
@@ -30,7 +29,6 @@ const SVGUri = ({
       width={width}
       stroke={stroke}
       strokeWidth={strokeWidth}
-      viewBox={viewBox}
       preserveAspectRatio={preserveAspectRatio}
       style={style}
     />

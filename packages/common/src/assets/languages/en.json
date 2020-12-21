@@ -149,7 +149,8 @@
     "abbreviatedMonthText": "mo",
     "unsupportedFormat": "Unsupported format",
     "pleaseTryAgain": "Please try again.",
-    "invalidLinkError": "You can't open this link."
+    "invalidLinkError": "You can't open this link.",
+    "iAmLooking": "I am looking to"
   },
   "auth": {
     "verifyNumber": "Verify your number",

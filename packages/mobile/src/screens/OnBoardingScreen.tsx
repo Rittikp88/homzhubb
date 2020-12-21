@@ -70,7 +70,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             {currentSlide.description}
           </Text>
         </View>
-        <View style={styles.carousel}>
+        <>
           <SnapCarousel
             carouselData={data}
             carouselItem={this.renderCarouselItem}
@@ -83,7 +83,10 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             activeDotStyle={styles.activeDot}
             inactiveDotStyle={styles.inactiveDot}
           />
-        </View>
+        </>
+        <Text type="regular" textType="semiBold" style={styles.heading}>
+          {t('iAmLooking')}
+        </Text>
         <Button
           type="primary"
           title={t('property:addProperty')}
@@ -154,11 +157,12 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
   }
 
   private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
-    const viewBox = theme.viewport.width > 350 ? '0 20 327 220' : '0 65 327 220';
+    const {
+      viewport: { width },
+      DeviceDimensions: { SMALL },
+    } = theme;
     return (
-      <View style={styles.carouselItem}>
-        <SVGUri viewBox={viewBox} preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} height={450} />
-      </View>
+      <SVGUri uri={item.imageUrl} height={width > SMALL.width ? 500 : 170} width={width > SMALL.width ? 380 : 280} />
     );
   };
 
@@ -239,10 +243,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white,
   },
-  carousel: {
-    flex: 1,
-    alignSelf: 'center',
-  },
   textContainer: {
     paddingTop: 40,
     alignItems: 'center',
@@ -284,6 +284,11 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontSize: 30,
   },
+  heading: {
+    color: theme.colors.darkTint3,
+    alignSelf: 'center',
+    paddingBottom: 16,
+  },
   buttonTitle: {
     marginHorizontal: 12,
   },
@@ -294,7 +299,7 @@ const styles = StyleSheet.create({
   sheetContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 90,
+    marginBottom: 50,
     marginHorizontal: 20,
   },
   selectionButton: {
@@ -311,9 +316,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 30,
     height: 50,
-  },
-  carouselItem: {
-    paddingHorizontal: 20,
   },
   skip: {
     color: theme.colors.blue,

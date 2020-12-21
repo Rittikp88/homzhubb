@@ -201,25 +201,23 @@ class PropertyDetail extends Component<Props, IDetailState> {
         </Label>
       );
     }
+    const filterData = detail.highlights.filter((item) => item.covered);
+
     return (
       <FlatList<AssetHighlight>
-        data={detail?.highlights}
+        data={filterData}
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         keyExtractor={(item: AssetHighlight): string => `${item.name}`}
         renderItem={({ item }: { item: AssetHighlight }): React.ReactElement | null => {
-          if (item.covered) {
-            return (
-              <View style={styles.highlightItemContainer}>
-                <Icon name={icons.check} color={theme.colors.completed} size={22} />
-                <Label type="large" textType="regular" style={styles.highlightText}>
-                  {item.name}
-                </Label>
-              </View>
-            );
-          }
-
-          return null;
+          return (
+            <View style={styles.highlightItemContainer}>
+              <Icon name={icons.check} color={theme.colors.completed} size={22} />
+              <Label type="large" textType="regular" style={styles.highlightText}>
+                {item.name}
+              </Label>
+            </View>
+          );
         }}
       />
     );
@@ -237,7 +235,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   amenityItem: {
-    width: (theme.viewport.width - 32) / 3,
+    width: (theme.viewport.width - 32) / 3.4,
     alignItems: 'center',
     marginBottom: 16,
   },
@@ -246,6 +244,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+    marginRight: 16,
   },
   description: {
     color: theme.colors.darkTint4,

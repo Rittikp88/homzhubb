@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   leftView: {
     flexDirection: 'row',
     alignItems: 'center',
+    maxWidth: 250,
   },
   textColor: {
     color: theme.colors.darkTint4,
