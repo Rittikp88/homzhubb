@@ -1,8 +1,13 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
+import PostAssetDetails from '@homzhub/web/src/screens/postProperty/components/PostAssetDetails';
 
-const PropertyDetailsForm: FC = () => {
-  return <View style={styles.container} />;
+const PropertyDetails: FC = () => {
+  return (
+    <View style={styles.container}>
+      <PostAssetDetails />
+    </View>
+  );
 };
 const styles = StyleSheet.create({
   container: {
@@ -11,4 +16,4 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-export default PropertyDetailsForm;
+export default PropertyDetails;
