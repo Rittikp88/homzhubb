@@ -29,7 +29,8 @@
     "react-router-breadcrumbs-hoc": "^3.3.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-tooltip": "^4.2.10"
+    "react-tooltip": "^4.2.10",
+    "reactjs-popup": "^2.0.4"
   },
   "devDependencies": {
     "@types/crypto-js": "^3.1.45",

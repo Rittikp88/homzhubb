@@ -103,6 +103,7 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "add": "ADD",
+    "addCamelCase": "Add",
     "requiredText": "Please enter {{field}}",
     "congratulations": "Congratulations!",
     "havePromoCode": "Have a promo code?",
