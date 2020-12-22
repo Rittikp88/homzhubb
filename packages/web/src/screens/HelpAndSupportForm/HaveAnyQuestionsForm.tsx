@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
@@ -31,8 +31,11 @@ const HaveAnyQuestionsForm: React.FC = () => {
     <View style={styles.content}>
       <View>
         <View>
-          <Text type="small" textType="semiBold" style={styles.title}>
-            {t('youContacting')}
+          <Text type="regular" textType="semiBold" style={styles.title}>
+            {t('Have Any Questions?')}
+          </Text>
+          <Text type="small" textType="light" style={styles.subtitle}>
+            {t('Your Client Success Partner')}
           </Text>
           <Avatar
             fullName={contact.fullName}
@@ -41,11 +44,11 @@ const HaveAnyQuestionsForm: React.FC = () => {
             phoneNumber={contact.phoneNumber}
           />
         </View>
-        <Divider />
+        <Divider containerStyles={styles.divider} />
       </View>
 
       <Formik initialValues={formData} onSubmit={handleFormSubmit} validate={FormUtils.validate(formSchema)}>
-        {(formProps: FormikProps<IFormData>) => {
+        {(formProps: FormikProps<IFormData>): React.ReactElement => {
           const handleDescription = (value: string): void => {
             formProps.setFieldValue('description', value);
           };
@@ -67,6 +70,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
                 label={t('assetDescription:description')}
                 containerStyle={styles.textArea}
                 onMessageChange={handleDescription}
+                wordCountLimit={500}
               />
 
               <FormButton
@@ -92,8 +96,8 @@ const formSchema = (): yup.ObjectSchema<FormikValues> => {
   });
 };
 
-const handleFormSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>) => {
-  console.log(`Subject: ${values.subject}  Description: ${values.subject}  `);
+const handleFormSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
+  console.log(`Subject: ${values.subject}  Description: ${values.description}  `);
 };
 
 const styles = StyleSheet.create({
@@ -103,15 +107,25 @@ const styles = StyleSheet.create({
   },
 
   textArea: {
-    marginTop: 20,
+    marginTop: 16,
   },
   title: {
     marginBottom: 20,
   },
 
+  divider: {
+    marginTop: 16,
+  },
+
+  subtitle: {
+    marginTop: 8,
+    marginBottom: 16,
+  },
+
   content: {
     backgroundColor: theme.colors.white,
-    marginVertical: 24,
+    marginVertical: 20,
+    marginLeft: 20,
   },
 });
 

@@ -3,6 +3,7 @@ import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native'
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 interface IProps {
   label?: string;
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   textAreaContainer: {
     borderColor: theme.colors.disabled,
     borderWidth: 1,
-    padding: 5,
+    padding: PlatformUtils.isWeb() ? 0 : 5,
   },
   textArea: {
     height: 150,
