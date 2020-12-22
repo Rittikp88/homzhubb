@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
-import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';
+// import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';
+import { PERMISSION_TYPE_WEB, PermissionsServiceWeb } from '@homzhub/web/src/services/Permissions';
 import {
   GeolocationError,
   GeolocationOptions,
@@ -11,6 +13,7 @@ import {
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import { Geolocation } from './index';
+import { PlatformUtils } from '../../utils/PlatformUtils';
 
 const defaultPositionOptions: GeolocationOptions = {
   enableHighAccuracy: true,
@@ -28,10 +31,16 @@ class GeolocationService {
 
   public setLocationDetails = async (isLoggedIn: boolean, searchAddress: string): Promise<void> => {
     const store = StoreProviderService.getStore();
-    const permission = await PermissionsService.checkPermission(PERMISSION_TYPE.location);
+    let permission;
+    if (PlatformUtils.isWeb()) {
+      permission = await PermissionsServiceWeb.checkPermission(PERMISSION_TYPE_WEB.location);
+    } else if (PlatformUtils.isMobile()) {
+      // permission = await PermissionsService.checkPermission(PERMISSION_TYPE.location);
+    }
 
     let deviceCountry = 'IN';
     if (permission) {
+      // console.log('PlatfromUtils => ', PlatformUtils.isWeb());
       this.getCurrentPosition(
         async (data: GeolocationResponse): Promise<void> => {
           const { latitude: lat, longitude: lng } = data.coords;
