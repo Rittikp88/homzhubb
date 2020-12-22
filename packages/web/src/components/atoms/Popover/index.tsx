@@ -5,7 +5,7 @@ import '@homzhub/web/src/components/atoms/Popover/popoverStyle.scss';
 
 interface IProps {
   forwardedRef?: React.Ref<PopupActions>;
-  options: React.ReactNode | React.ReactElement;
+  content: React.ReactNode | React.ReactElement;
   children: JSX.Element;
   popupProps: PopupProps;
 }
@@ -14,11 +14,11 @@ interface IProps {
  * this component can be used to create any dropdown menus or modals
  */
 const Popover: FC<IProps> = (props: IProps) => {
-  const { options, children, popupProps, forwardedRef } = props;
+  const { content, children, popupProps, forwardedRef } = props;
 
   return (
     <Popup ref={forwardedRef} trigger={<div>{children}</div>} {...popupProps}>
-      {options}
+      {content}
     </Popup>
   );
 };

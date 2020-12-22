@@ -6,6 +6,7 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import HomzhubDashboard from '@homzhub/common/src/assets/images/homzhubDashboard.svg';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { ImageRound } from '@homzhub/common/src/components/atoms/Image';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable, MultiCarousel, NextPrevBtn } from '@homzhub/web/src/components';
@@ -155,7 +156,13 @@ const CarouselControlsGrp = ({ next, previous }: ButtonGroupProps): React.ReactE
       <Typography variant="text" size="small" fontWeight="regular" style={styles.heading}>
         {t('assetPortfolio:propertyDetails')}
       </Typography>
-      <Icon name={icons.setting} size={16} color={theme.colors.blue} style={styles.settings} />
+      <Button
+        icon={icons.gearFilled}
+        iconSize={16}
+        iconColor={theme.colors.blue}
+        containerStyle={styles.settings}
+        type="secondary"
+      />
       <NextPrevBtn onBtnClick={updateCarouselIndex} />
     </View>
   );
@@ -174,6 +181,13 @@ const propertyDetailsControlStyle = StyleSheet.create({
   },
   settings: {
     marginHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 32,
+    height: 24,
+    border: 'none',
+    marginLeft: 8,
+    backgroundColor: theme.colors.lightGrayishBlue,
   },
 });
 
