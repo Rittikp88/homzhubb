@@ -59,23 +59,25 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     return (
       <SafeAreaView style={styles.container}>
         <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent statusBarStyle={styles.statusBar} />
-        <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
-          {t('skip')}
-        </Text>
-        <View style={styles.textContainer}>
-          <Text type="large" textType="bold" style={styles.title}>
-            {currentSlide.title}
+        <View style={styles.flexOne}>
+          <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
+            {t('skip')}
           </Text>
-          <Text type="small" textType="regular" style={styles.description}>
-            {currentSlide.description}
-          </Text>
-        </View>
-        <>
+          <View style={styles.textContainer}>
+            <Text type="large" textType="bold" style={styles.title}>
+              {currentSlide.title}
+            </Text>
+            <Text type="small" textType="regular" style={styles.description}>
+              {currentSlide.description}
+            </Text>
+          </View>
           <SnapCarousel
             carouselData={data}
             carouselItem={this.renderCarouselItem}
             activeIndex={activeSlide}
             onSnapToItem={this.onSnapToItem}
+            itemWidth={theme.viewport.width - 30}
+            contentStyle={styles.imageView}
           />
           <PaginationComponent
             dotsLength={data.length}
@@ -83,32 +85,32 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             activeDotStyle={styles.activeDot}
             inactiveDotStyle={styles.inactiveDot}
           />
-        </>
-        <Text type="regular" textType="semiBold" style={styles.heading}>
-          {t('iAmLooking')}
-        </Text>
-        <Button
-          type="primary"
-          title={t('property:addProperty')}
-          icon={icons.plus}
-          iconSize={26}
-          iconColor={theme.colors.white}
-          onPress={this.onAddProperty}
-          containerStyle={styles.button}
-          titleStyle={styles.buttonTitle}
-          testID="btnAddProperty"
-        />
-        <Button
-          type="secondary"
-          title={t('property:searchProperties')}
-          icon={icons.search}
-          iconSize={20}
-          iconColor={theme.colors.blue}
-          titleStyle={styles.buttonTitle}
-          onPress={this.searchProperty}
-          containerStyle={styles.button}
-          testID="btnSearchProperty"
-        />
+          <Text type="regular" textType="semiBold" style={styles.heading}>
+            {t('iAmLooking')}
+          </Text>
+          <Button
+            type="primary"
+            title={t('property:addProperty')}
+            icon={icons.plus}
+            iconSize={26}
+            iconColor={theme.colors.white}
+            onPress={this.onAddProperty}
+            containerStyle={styles.button}
+            titleStyle={styles.buttonTitle}
+            testID="btnAddProperty"
+          />
+          <Button
+            type="secondary"
+            title={t('property:searchProperties')}
+            icon={icons.search}
+            iconSize={20}
+            iconColor={theme.colors.blue}
+            titleStyle={styles.buttonTitle}
+            onPress={this.searchProperty}
+            containerStyle={styles.button}
+            testID="btnSearchProperty"
+          />
+        </View>
         <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={500}>
           <>
             <Text type="regular" textType="semiBold" style={styles.sheetTitle}>
@@ -156,13 +158,29 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     );
   }
 
+  // TODO: Refactor
   private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
     const {
       viewport: { width },
-      DeviceDimensions: { SMALL },
+      DeviceDimensions: { SMALL, MEDIUM },
     } = theme;
+    /* eslint-disable */
+    const height =
+      width > SMALL.width
+        ? width > MEDIUM.width
+          ? PlatformUtils.isIOS()
+            ? 450
+            : 320
+          : width === MEDIUM.width
+            ? 280
+            : 220
+        : 150;
+    /* eslint-enable */
+    const imgWidth = width > SMALL.width ? (width > MEDIUM.width ? 320 : width === MEDIUM.width ? 350 : 330) : 280;
     return (
-      <SVGUri uri={item.imageUrl} height={width > SMALL.width ? 500 : 170} width={width > SMALL.width ? 380 : 280} />
+      <View style={styles.imageView}>
+        <SVGUri uri={item.imageUrl} height={height} width={imgWidth} />
+      </View>
     );
   };
 
@@ -238,6 +256,9 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 const styles = StyleSheet.create({
   statusBar: {
     height: PlatformUtils.isIOS() ? 20 : 40,
+  },
+  flexOne: {
+    flex: 1,
   },
   container: {
     flex: 1,
@@ -322,6 +343,9 @@ const styles = StyleSheet.create({
     color: theme.colors.blue,
     alignSelf: 'flex-end',
     marginHorizontal: 20,
+  },
+  imageView: {
+    alignItems: 'center',
   },
 });
 
