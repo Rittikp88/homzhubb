@@ -8,6 +8,6 @@ export const RouteNames = {
     APP_BASE: '/',
     DASHBOARD: '/dashboard',
     FINANCIALS: '/financial',
-    ADD_PROPERTY: '/addProperty',
+    ADD_PROPERTY: '/dashboard/addProperty',
   },
 };

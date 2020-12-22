@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -18,8 +18,8 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
 import { AssetGroupSelection } from '@homzhub/mobile/src/components/molecules/AssetGroupSelection';
+import { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -99,7 +99,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
   public render(): React.ReactNode {
     return (
       <>
-        <SafeAreaView style={styles.container}>{this.renderForm()}</SafeAreaView>
+        <View style={styles.container}>{this.renderForm()}</View>
       </>
     );
   }

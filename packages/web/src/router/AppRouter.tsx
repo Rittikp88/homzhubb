@@ -6,7 +6,7 @@ import AppLayout from '@homzhub/web/src/screens/appLayout';
 import Login from '@homzhub/web/src/screens/login';
 
 export const AppRouter = (): React.ReactElement => {
-  const { APP_BASE } = RouteNames.protectedRoutes;
+  const { APP_BASE, DASHBOARD } = RouteNames.protectedRoutes;
   const { LOGIN } = RouteNames.publicRoutes;
   const { t } = useTranslation();
   return (
@@ -14,7 +14,7 @@ export const AppRouter = (): React.ReactElement => {
       <BrowserRouter>
         <Switch>
           <Route path={LOGIN} component={Login} />
-          <Route path={APP_BASE} component={AppLayout} />
+          <Route path={DASHBOARD} component={AppLayout} />
           <Redirect exact path={APP_BASE} to={LOGIN} />
         </Switch>
       </BrowserRouter>
