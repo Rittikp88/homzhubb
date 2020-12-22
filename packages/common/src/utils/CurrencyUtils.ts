@@ -15,9 +15,7 @@ class CurrencyUtils {
           return `${Math.round(value / 10000000)}Cr`;
         }
         return '1B+';
-      case 'AUD':
-      case 'SGD':
-      case 'USD':
+      default:
         if (value <= 10000) {
           return value.toLocaleString();
         }
@@ -34,8 +32,6 @@ class CurrencyUtils {
           return `${Math.round(value / 1000000000)}B`;
         }
         return '1T+';
-      default:
-        return `${currency} ${value.toLocaleString()}`;
     }
   };
 }

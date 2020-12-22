@@ -366,8 +366,13 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { heights } = this.state;
     const { height: newHeight } = e.nativeEvent.layout;
     const arrayToUpdate = [...heights];
+    // TODO: Need to refactor
     if (newHeight !== arrayToUpdate[index]) {
-      arrayToUpdate[index] = newHeight * 1.5;
+      if (index !== Routes.length - 1) {
+        arrayToUpdate[index] = newHeight * 1.5;
+      } else {
+        arrayToUpdate[index] = newHeight * 1.1;
+      }
       this.setState({ heights: arrayToUpdate });
     }
   };
