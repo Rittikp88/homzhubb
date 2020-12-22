@@ -24,7 +24,8 @@ const randomHex = (): string => {
 };
 
 const DeviceDimensions = {
-  SMALL: { height: 568, width: 375 },
+  SMALL: { height: 568, width: 320 },
+  MEDIUM: { height: 1080, width: 375 },
 };
 
 export const constants = {
