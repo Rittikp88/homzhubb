@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import Accordian from '@homzhub/web/src/screens/Financials/Transactions/Accordian';
+import TransactionAccordian from '@homzhub/web/src/screens/Financials/Transactions/TransactionAccordian';
 
 const Transactions = (): React.ReactElement => {
   const { t } = useTranslation();
@@ -18,14 +18,14 @@ const Transactions = (): React.ReactElement => {
         </Text>
       </View>
       <ScrollView>
-        <Accordian />
-        <Accordian />
-        <Accordian />
-        <Accordian />
-        <Accordian /> <Accordian />
-        <Accordian />
-        <Accordian />
-        <Accordian />
+        <TransactionAccordian />
+        <TransactionAccordian />
+        <TransactionAccordian />
+        <TransactionAccordian />
+        <TransactionAccordian /> <TransactionAccordian />
+        <TransactionAccordian />
+        <TransactionAccordian />
+        <TransactionAccordian />
       </ScrollView>
     </View>
   );

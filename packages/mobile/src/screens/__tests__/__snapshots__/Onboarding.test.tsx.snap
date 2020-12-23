@@ -297,6 +297,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
       containerStyle={
         Object {
           "flex": 0,
+          "height": 50,
           "justifyContent": "center",
           "marginHorizontal": 30,
         }
@@ -606,6 +607,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
       containerStyle={
         Object {
           "flex": 0,
+          "height": 50,
           "justifyContent": "center",
           "marginHorizontal": 30,
         }
