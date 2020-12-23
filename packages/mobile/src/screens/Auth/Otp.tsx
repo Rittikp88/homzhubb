@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -7,25 +7,25 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserService } from '@homzhub/common/src/services/UserService';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
+import { OtpInputs, OtpTypes } from '@homzhub/mobile/src/components';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
+import { User } from '@homzhub/common/src/domain/models/User';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import {
   IEmailLoginPayload,
   ILoginPayload,
   IOtpLoginPayload,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
-import { Loader, OtpInputs, OtpTypes } from '@homzhub/mobile/src/components';
-import { User } from '@homzhub/common/src/domain/models/User';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
@@ -77,22 +77,21 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     const countryCode = params?.countryCode ?? '';
 
     return (
-      <SafeAreaView style={styles.screen}>
-        <DetailedHeader icon={icons.leftArrow} onIconPress={goBack} headerContainerStyle={styles.headerStyle} />
-        <View style={styles.container}>
-          <Text type="large" textType="semiBold">
-            {title}
-          </Text>
-          <Label style={styles.subTitle} type="large" textType="regular">
-            {t('enterOTP')}
-          </Label>
-          {this.renderOtpInputSection(`${countryCode} ${otpSentTo}`, OtpTypes.PhoneOrEmail)}
-          {params.type === OtpNavTypes.UpdateProfileByEmailPhoneOtp
-            ? this.renderOtpInputSection(params?.email || '', OtpTypes.Email)
-            : null}
-        </View>
-        <Loader visible={isLoading} />
-      </SafeAreaView>
+      <Screen
+        headerProps={{ type: 'secondary', onIconPress: goBack }}
+        pageHeaderProps={{
+          contentTitle: title,
+          contentSubTitle: t('enterOTP'),
+          disableDivider: true,
+        }}
+        isLoading={isLoading}
+        backgroundColor={theme.colors.white}
+      >
+        {this.renderOtpInputSection(`${countryCode} ${otpSentTo}`, OtpTypes.PhoneOrEmail)}
+        {params.type === OtpNavTypes.UpdateProfileByEmailPhoneOtp
+          ? this.renderOtpInputSection(params?.email || '', OtpTypes.Email)
+          : null}
+      </Screen>
     );
   };
 
@@ -326,27 +325,11 @@ export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
 )(withTranslation(LocaleConstants.namespacesKey.auth)(Otp));
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-  },
-  container: {
-    flex: 1,
-    marginTop: theme.layout.screenPaddingTop,
-    marginHorizontal: theme.layout.screenPadding,
-  },
   numberContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  subTitle: {
-    marginVertical: 8,
-    color: theme.colors.darkTint3,
-  },
   icon: {
     marginStart: 8,
-  },
-  headerStyle: {
-    borderBottomWidth: 0,
   },
 });

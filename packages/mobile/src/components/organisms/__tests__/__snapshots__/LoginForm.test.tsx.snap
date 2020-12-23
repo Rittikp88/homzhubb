@@ -77,31 +77,21 @@ LoginForm {
           }
         }
       >
-        <View
-          style={
+        <Formik
+          initialValues={
             Object {
-              "flex": 1,
-              "paddingHorizontal": 16,
-              "paddingTop": 10,
+              "email": "",
+              "isEmailFlow": false,
+              "password": "",
+              "phone": "",
+              "phoneCode": "",
             }
           }
+          onSubmit={[Function]}
+          validate={[Function]}
         >
-          <Formik
-            initialValues={
-              Object {
-                "email": "",
-                "isEmailFlow": false,
-                "password": "",
-                "phone": "",
-                "phoneCode": "",
-              }
-            }
-            onSubmit={[Function]}
-            validate={[Function]}
-          >
-            [Function]
-          </Formik>
-        </View>
+          [Function]
+        </Formik>
       </KeyboardAvoidingView>,
       "_rendering": false,
       "_updater": [Circular],

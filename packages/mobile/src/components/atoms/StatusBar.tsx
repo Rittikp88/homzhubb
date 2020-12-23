@@ -1,28 +1,45 @@
-import React from 'react';
-import { View, StyleSheet, StatusBar, StatusBarStyle, StyleProp, ViewStyle } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import React, { useState, useEffect, memo } from 'react';
+import { View, StatusBar, StatusBarStyle, NativeModules } from 'react-native';
 
-interface IProps {
-  backgroundColor: string;
-  isTranslucent: boolean;
-  barStyle?: StatusBarStyle;
-  statusBarStyle?: StyleProp<ViewStyle>;
+const { StatusBarManager } = NativeModules;
+
+export interface IStatusBarProps {
+  barStyle: StatusBarStyle;
+  statusBarBackground: string;
+  isStatusBarHidden?: boolean;
+  isStatusBarTranslucent?: boolean;
 }
 
-const StatusBarComponent = (props: IProps): React.ReactElement => {
-  const { isTranslucent, backgroundColor, barStyle = 'dark-content', statusBarStyle = {} } = props;
+const HomzhubStatusBar = (props: IStatusBarProps): React.ReactElement => {
+  const { barStyle, statusBarBackground, isStatusBarHidden = false, isStatusBarTranslucent = false } = props;
+
+  const [barHeight, setBarHeight] = useState(0);
+  useEffect(() => {
+    if (PlatformUtils.isIOS()) {
+      StatusBarManager.getHeight(({ height }: { height: number }) => {
+        setBarHeight(height);
+      });
+    }
+  }, []);
+
   return (
-    <View style={[styles.statusBar, { backgroundColor }, statusBarStyle]}>
-      <StatusBar translucent={isTranslucent} backgroundColor={backgroundColor} barStyle={barStyle} />
+    <View
+      style={{
+        backgroundColor: statusBarBackground,
+        height: barHeight,
+      }}
+    >
+      <StatusBar
+        animated
+        translucent={isStatusBarTranslucent}
+        hidden={isStatusBarHidden}
+        backgroundColor={statusBarBackground}
+        barStyle={barStyle}
+      />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  statusBar: {
-    height: PlatformUtils.isIOS() ? 30 : 0,
-  },
-});
-
-const memoizedComponent = React.memo(StatusBarComponent);
-export { memoizedComponent as StatusBarComponent };
+const memoizedComponent = memo(HomzhubStatusBar);
+export { memoizedComponent as StatusBar };
