@@ -49,7 +49,6 @@ import {
   FullScreenAssetDetailsCarousel,
   Loader,
   ShieldGroup,
-  StatusBarComponent,
 } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
@@ -170,22 +169,15 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { isPreview },
       },
     } = this.props;
-    const { isFullScreen, isScroll } = this.state;
+    const { isFullScreen } = this.state;
     if (!assetDetails) return null;
     const {
       contacts: { fullName, phoneNumber, countryCode, profilePicture },
       appPermissions,
     } = assetDetails;
 
-    const statusBarHeight = isScroll ? 0 : PlatformUtils.isIOS() ? 55 : 40;
     return (
       <>
-        <StatusBarComponent
-          backgroundColor={!isScroll ? theme.colors.white : 'transparent'}
-          isTranslucent
-          statusBarStyle={{ height: statusBarHeight }}
-          barStyle={isScroll ? 'light-content' : 'dark-content'}
-        />
         <ParallaxScrollView
           backgroundColor={theme.colors.transparent}
           stickyHeaderHeight={STICKY_HEADER_HEIGHT}

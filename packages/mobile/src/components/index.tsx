@@ -6,14 +6,12 @@ export { MoreProfile } from '@homzhub/mobile/src/components/atoms/MoreProfile';
 export { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 export { ProgressBar } from '@homzhub/mobile/src/components/atoms/ProgressBar';
 export { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
-export { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 export { RNVideo } from '@homzhub/mobile/src/components/atoms/Video';
 export { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';
 
 // Molecules
 export { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
 export { AddressWithStepIndicator } from '@homzhub/mobile/src/components/molecules/AddressWithStepIndicator';
-export { AnimatedHeader } from '@homzhub/mobile/src/components/molecules/AnimatedHeader';
 export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecules/AssetAdvertisementBanner';
 export { AssetDescriptionForm } from '@homzhub/mobile/src/components/molecules/AssetDescriptionForm';
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
@@ -30,7 +28,6 @@ export { CurrentLocation } from '@homzhub/mobile/src/components/molecules/Curren
 export { DetailsCard } from '@homzhub/mobile/src/components/molecules/DetailsCard';
 export { DocumentCard } from '@homzhub/mobile/src/components/molecules/DocumentCard';
 export { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
-export { GradientBackground } from '@homzhub/mobile/src/components/molecules/GradientBackground';
 export { Header } from '@homzhub/mobile/src/components/molecules/Header';
 export { HeaderCard } from '@homzhub/mobile/src/components/molecules/HeaderCard';
 export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeaseProgress';
@@ -71,7 +68,6 @@ export { SocialMediaComponent } from '@homzhub/mobile/src/components/organisms/S
 export { default as TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 
 // HOC
-export { AnimatedServiceList } from '@homzhub/mobile/src/components/HOC/AnimatedServiceList';
 export { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
 export { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';
 export { StateAwareComponent } from '@homzhub/mobile/src/components/HOC/StateAwareComponent';

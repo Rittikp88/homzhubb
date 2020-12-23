@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
 import { Text as RNText, StyleSheet, TextProps, StyleProp, TextStyle } from 'react-native';
-import { FontUtils } from '@homzhub/common/src/utils/FontUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
-export type TextFieldType = 'label' | 'text';
-export type TextSizeType = 'small' | 'regular' | 'large';
-export type FontWeightType = 'light' | 'regular' | 'semiBold' | 'bold' | 'extraBold';
+type TextFieldType = 'label' | 'text';
+type TextSizeType = 'small' | 'regular' | 'large';
+type FontWeightType = 'light' | 'regular' | 'semiBold' | 'bold' | 'extraBold';
 
 interface IStyle {
   labelSmall: TextStyle;
@@ -16,57 +15,6 @@ interface IStyle {
   textLarge: TextStyle;
 }
 
-const styles: IStyle = StyleSheet.create<IStyle>({
-  labelSmall: {
-    fontSize: I18nService.select<number>({
-      rtl: 10,
-      ltr: 10,
-    }),
-    lineHeight: 15,
-    textAlign: 'left',
-  },
-  labelRegular: {
-    fontSize: I18nService.select<number>({
-      rtl: 12,
-      ltr: 12,
-    }),
-    lineHeight: 18,
-    textAlign: 'left',
-  },
-  labelLarge: {
-    fontSize: I18nService.select<number>({
-      rtl: 14,
-      ltr: 14,
-    }),
-    lineHeight: 22,
-    textAlign: 'left',
-  },
-  textSmall: {
-    fontSize: I18nService.select<number>({
-      rtl: 16,
-      ltr: 16,
-    }),
-    lineHeight: 24,
-    textAlign: 'left',
-  },
-  textRegular: {
-    fontSize: I18nService.select<number>({
-      rtl: 20,
-      ltr: 20,
-    }),
-    lineHeight: 30,
-    textAlign: 'left',
-  },
-  textLarge: {
-    fontSize: I18nService.select<number>({
-      rtl: 24,
-      ltr: 24,
-    }),
-    lineHeight: 26,
-    textAlign: 'left',
-  },
-});
-
 interface IProps extends TextProps {
   children: string | React.ReactNode;
   type: TextSizeType;
@@ -75,9 +23,105 @@ interface IProps extends TextProps {
   maxLength?: number;
 }
 
+const fontFamilies = {
+  english: {
+    light: 'OpenSans-Light',
+    regular: 'OpenSans-Regular',
+    semiBold: 'OpenSans-SemiBold',
+    bold: 'OpenSans-Bold',
+    extraBold: 'OpenSans-ExtraBold',
+  },
+};
+
+const fontLineHeights = {
+  label: {
+    small: 15,
+    regular: 18,
+    large: 22,
+  },
+  text: {
+    small: 20,
+    regular: 30,
+    large: 26,
+  },
+};
+
+const fontSelection = {
+  light: {
+    fontFamily: I18nService.select<string>({
+      rtl: fontFamilies.english.light,
+      ltr: fontFamilies.english.light,
+    }),
+    ...I18nService.select<object>({
+      rtl: {
+        fontWeight: '300',
+      },
+      ltr: {
+        fontWeight: '300',
+      },
+    }),
+  },
+  regular: {
+    fontFamily: I18nService.select<string>({
+      rtl: fontFamilies.english.regular,
+      ltr: fontFamilies.english.regular,
+    }),
+    ...I18nService.select<object>({
+      rtl: {
+        fontWeight: '400',
+      },
+      ltr: {
+        fontWeight: '400',
+      },
+    }),
+  },
+  semiBold: {
+    fontFamily: I18nService.select<string>({
+      rtl: fontFamilies.english.semiBold,
+      ltr: fontFamilies.english.semiBold,
+    }),
+    ...I18nService.select<object>({
+      rtl: {
+        fontWeight: '600',
+      },
+      ltr: {
+        fontWeight: '600',
+      },
+    }),
+  },
+  bold: {
+    fontFamily: I18nService.select<string>({
+      rtl: fontFamilies.english.bold,
+      ltr: fontFamilies.english.bold,
+    }),
+    ...I18nService.select<object>({
+      rtl: {
+        fontWeight: '700',
+      },
+      ltr: {
+        fontWeight: '700',
+      },
+    }),
+  },
+  extraBold: {
+    fontFamily: I18nService.select<string>({
+      rtl: fontFamilies.english.extraBold,
+      ltr: fontFamilies.english.extraBold,
+    }),
+    ...I18nService.select<object>({
+      rtl: {
+        fontWeight: '800',
+      },
+      ltr: {
+        fontWeight: '800',
+      },
+    }),
+  },
+};
+
 const Label = ({ type, style, children, textType, maxLength, testID, ...props }: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
-  const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
+  const fontStyle: StyleProp<TextStyle> = fontSelection[textType ?? 'regular'];
   switch (type) {
     case 'large':
       defaultStyle = styles.labelLarge;
@@ -104,7 +148,7 @@ const Label = ({ type, style, children, textType, maxLength, testID, ...props }:
 
 const Text = ({ type, style, children, textType, testID, maxLength, ...props }: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
-  const fontStyle: StyleProp<TextStyle> = FontUtils.chooseFontStyle({ fontType: textType });
+  const fontStyle: StyleProp<TextStyle> = fontSelection[textType ?? 'regular'];
   switch (type) {
     case 'regular':
       defaultStyle = styles.textRegular;
@@ -129,4 +173,55 @@ const Text = ({ type, style, children, textType, testID, maxLength, ...props }: 
   );
 };
 
-export { Label, Text };
+export { Label, Text, fontLineHeights, TextFieldType, TextSizeType, FontWeightType };
+
+const styles: IStyle = StyleSheet.create<IStyle>({
+  labelSmall: {
+    fontSize: I18nService.select<number>({
+      rtl: 10,
+      ltr: 10,
+    }),
+    lineHeight: fontLineHeights.label.small,
+    textAlign: 'left',
+  },
+  labelRegular: {
+    fontSize: I18nService.select<number>({
+      rtl: 12,
+      ltr: 12,
+    }),
+    lineHeight: fontLineHeights.label.regular,
+    textAlign: 'left',
+  },
+  labelLarge: {
+    fontSize: I18nService.select<number>({
+      rtl: 14,
+      ltr: 14,
+    }),
+    lineHeight: fontLineHeights.label.large,
+    textAlign: 'left',
+  },
+  textSmall: {
+    fontSize: I18nService.select<number>({
+      rtl: 16,
+      ltr: 16,
+    }),
+    lineHeight: fontLineHeights.text.small,
+    textAlign: 'left',
+  },
+  textRegular: {
+    fontSize: I18nService.select<number>({
+      rtl: 20,
+      ltr: 20,
+    }),
+    lineHeight: fontLineHeights.text.regular,
+    textAlign: 'left',
+  },
+  textLarge: {
+    fontSize: I18nService.select<number>({
+      rtl: 24,
+      ltr: 24,
+    }),
+    lineHeight: fontLineHeights.text.large,
+    textAlign: 'left',
+  },
+});

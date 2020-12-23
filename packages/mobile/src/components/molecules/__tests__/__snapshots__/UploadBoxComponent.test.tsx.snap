@@ -250,7 +250,7 @@ exports[`UploadBoxComponent should match snapshot 1`] = `
                           Array [
                             Object {
                               "fontSize": 16,
-                              "lineHeight": 24,
+                              "lineHeight": 20,
                               "textAlign": "left",
                             },
                             Object {
@@ -271,7 +271,7 @@ exports[`UploadBoxComponent should match snapshot 1`] = `
                             Array [
                               Object {
                                 "fontSize": 16,
-                                "lineHeight": 24,
+                                "lineHeight": 20,
                                 "textAlign": "left",
                               },
                               Object {

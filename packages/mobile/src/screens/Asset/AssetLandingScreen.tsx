@@ -14,7 +14,6 @@ import Logo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
-import { StatusBarComponent } from '@homzhub/mobile/src/components';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -42,7 +41,6 @@ export class AssetLandingScreen extends React.PureComponent<Props> {
     const { t, user } = this.props;
     return (
       <>
-        <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent />
         <SafeAreaView style={styles.container}>
           <View style={styles.contentContainer}>
             <Logo width={60} height={60} style={styles.logo} />

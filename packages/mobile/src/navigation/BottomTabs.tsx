@@ -1,7 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useRoute } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
@@ -183,17 +181,8 @@ export const MoreStack = (): React.ReactElement => {
 
 export const BottomTabs = (): React.ReactElement => {
   const { t } = useTranslation();
-  const routeName = getFocusedRouteNameFromRoute(useRoute()) ?? ScreensKeys.Dashboard;
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const dispatch = useDispatch();
-  // Initial Route for guest and logged in user gets decided here
-  if (PlatformUtils.isAndroid()) {
-    if (isLoggedIn && routeName !== ScreensKeys.Search) {
-      StatusBar.setBackgroundColor(theme.colors.primaryColor);
-    } else {
-      StatusBar.setBackgroundColor(theme.colors.white);
-    }
-  }
 
   const getTabBarVisibility = (route: any): boolean => {
     const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';

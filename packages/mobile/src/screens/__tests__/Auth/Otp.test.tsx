@@ -9,7 +9,6 @@ import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
 import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { OtpInputs } from '@homzhub/mobile/src/components';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 import { Otp, mapDispatchToProps, mapStateToProps } from '@homzhub/mobile/src/screens/Auth/Otp';
 
 const mock = jest.fn();
@@ -82,12 +81,6 @@ describe('OTP Screen', () => {
   it('should verify otp', () => {
     component.find(OtpInputs).prop('bubbleOtp')('123456');
     expect(toJson(component)).toMatchSnapshot();
-  });
-
-  it('should navigate back', () => {
-    component.find(DetailedHeader).prop('onIconPress')();
-    component.find('[testID="icnEdit"]').prop('onPress')();
-    expect(props.navigation.goBack).toBeCalled();
   });
 
   it('should handle mapStateToProps', () => {

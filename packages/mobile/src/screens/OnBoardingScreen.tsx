@@ -14,7 +14,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { BottomSheet, PaginationComponent, SnapCarousel, StatusBarComponent } from '@homzhub/mobile/src/components';
+import { BottomSheet, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { User, UserType } from '@homzhub/common/src/constants/OnBoarding';
 
@@ -58,7 +58,6 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     const currentSlide: OnBoarding = data[activeSlide];
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent statusBarStyle={styles.statusBar} />
         <View style={styles.flexOne}>
           <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
             {t('skip')}
@@ -254,9 +253,6 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 }
 
 const styles = StyleSheet.create({
-  statusBar: {
-    height: PlatformUtils.isIOS() ? 20 : 40,
-  },
   flexOne: {
     flex: 1,
   },

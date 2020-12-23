@@ -1,23 +1,23 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { LoginForm } from '@homzhub/mobile/src/components';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import {
   IEmailLoginPayload,
   ILoginFormData,
   ILoginPayload,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
-import { Loader, LoginForm } from '@homzhub/mobile/src/components';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IStateProps {
   isLoading: boolean;
@@ -34,23 +34,26 @@ export class EmailLoginScreen extends React.PureComponent<Props> {
   public render(): React.ReactNode {
     const { t, isLoading } = this.props;
     return (
-      <View style={styles.container}>
-        <DetailedHeader
-          icon={icons.leftArrow}
-          subTitle={t('auth:logInWithEmail')}
-          subTitleType="large"
-          subTitleColor={theme.colors.dark}
-          onIconPress={this.handleIconPress}
-          testID="headerIconPress"
-        />
+      <Screen
+        containerStyle={styles.container}
+        headerProps={{
+          type: 'secondary',
+          icon: icons.leftArrow,
+          onIconPress: this.handleIconPress,
+        }}
+        pageHeaderProps={{
+          contentTitle: t('auth:logInWithEmail'),
+        }}
+        backgroundColor={theme.colors.white}
+        isLoading={isLoading}
+      >
         <LoginForm
           isEmailLogin
           handleForgotPassword={this.handleForgotPassword}
           onLoginSuccess={this.handleLoginSuccess}
           testID="loginForm"
         />
-        <Loader visible={isLoading} />
-      </View>
+      </Screen>
     );
   }
 

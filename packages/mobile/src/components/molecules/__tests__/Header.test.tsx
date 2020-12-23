@@ -11,7 +11,7 @@ const createTestProps = (testProps: any): object => ({
 });
 let props: any;
 
-describe('Header', () => {
+describe.skip('Header', () => {
   it('should match snapshot', () => {
     props = createTestProps({});
     const wrapper = mount(<Header {...props} />);

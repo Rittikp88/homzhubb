@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -7,14 +7,13 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { SocialMediaKeys } from '@homzhub/common/src/assets/constants';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { SocialMediaKeys } from '@homzhub/common/src/assets/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -36,43 +35,50 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     const { title, message, subTitle, buttonTitle } = this.getDisplayStrings();
 
     return (
-      <View style={styles.container}>
-        <DetailedHeader icon={icons.leftArrow} title={title} subTitle={subTitle} onIconPress={this.handleIconPress} />
-        <View style={styles.content}>
-          <Text type="small" style={styles.message}>
-            {message}
-          </Text>
-          <Formik
-            initialValues={{ ...this.state }}
-            onSubmit={this.onSubmit}
-            validate={FormUtils.validate(this.formSchema)}
-          >
-            {(formProps: FormikProps<IVerificationState>): React.ReactElement => (
-              <>
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="phone"
-                  name="phone"
-                  label="Phone"
-                  inputPrefixText={formProps.values.phoneCode}
-                  isMandatory
-                  phoneFieldDropdownText={t('auth:countryRegion')}
-                  placeholder={t('yourNumber')}
-                  helpText={t('otpVerification')}
-                />
-                <FormButton
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  formProps={formProps}
-                  type="primary"
-                  title={buttonTitle}
-                  containerStyle={styles.formButtonStyle}
-                />
-              </>
-            )}
-          </Formik>
-        </View>
-      </View>
+      <Screen
+        headerProps={{
+          type: 'secondary',
+          onIconPress: this.handleIconPress,
+        }}
+        pageHeaderProps={{
+          contentTitle: title,
+          contentSubTitle: subTitle,
+        }}
+        backgroundColor={theme.colors.white}
+      >
+        <Text type="small" style={styles.message}>
+          {message}
+        </Text>
+        <Formik
+          initialValues={{ ...this.state }}
+          onSubmit={this.onSubmit}
+          validate={FormUtils.validate(this.formSchema)}
+        >
+          {(formProps: FormikProps<IVerificationState>): React.ReactElement => (
+            <>
+              <FormTextInput
+                formProps={formProps}
+                inputType="phone"
+                name="phone"
+                label="Phone"
+                inputPrefixText={formProps.values.phoneCode}
+                isMandatory
+                phoneFieldDropdownText={t('auth:countryRegion')}
+                placeholder={t('yourNumber')}
+                helpText={t('otpVerification')}
+              />
+              <FormButton
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                formProps={formProps}
+                type="primary"
+                title={buttonTitle}
+                containerStyle={styles.formButtonStyle}
+              />
+            </>
+          )}
+        </Formik>
+      </Screen>
     );
   }
 
@@ -175,14 +181,6 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
 export default withTranslation(LocaleConstants.namespacesKey.auth)(MobileVerificationScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
   message: {
     color: theme.colors.darkTint3,
     marginBottom: 12,
