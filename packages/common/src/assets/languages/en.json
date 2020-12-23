@@ -103,6 +103,7 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "add": "ADD",
+    "addCamelCase": "Add",
     "requiredText": "Please enter {{field}}",
     "congratulations": "Congratulations!",
     "havePromoCode": "Have a promo code?",
@@ -149,7 +150,8 @@
     "abbreviatedMonthText": "mo",
     "unsupportedFormat": "Unsupported format",
     "pleaseTryAgain": "Please try again.",
-    "invalidLinkError": "You can't open this link."
+    "invalidLinkError": "You can't open this link.",
+    "iAmLooking": "I am looking to"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -216,7 +218,7 @@
     "referralCodePlaceholder": "Enter valid referral code",
     "invalidReferralCodeError": "Please enter a valid referral Code",
     "loggedInReferralCodeError": "This referral-code is only valid for new users.",
-    "appNotReady": "App is not yet ready",
+    "appNotReady": "Thanks for expressing interest on Homzhub. We are still working on the app for you. You can contact us on info@homzhub.com for more info.",
     "maxTenCharacters": "You can enter at most 10 characters",
     "upperCaseError": "Enter an upper case string"
   },

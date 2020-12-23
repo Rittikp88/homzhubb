@@ -88,9 +88,4 @@ describe('CurrencyUtils', () => {
       expect(value).toStrictEqual('1T+');
     });
   });
-
-  it('should return for default currency', () => {
-    const value = CurrencyUtils.getCurrency('JPN', 7000);
-    expect(value).toStrictEqual('JPN 7,000');
-  });
 });

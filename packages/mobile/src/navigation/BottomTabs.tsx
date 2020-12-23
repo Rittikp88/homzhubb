@@ -31,6 +31,7 @@ import {
   IOtpNavProps,
   IPropertyDetailProps,
   IUpdateProfileProps,
+  IUpdatePropertyProps,
   IVerifyEmail,
   NestedNavigatorParams,
   ScreensKeys,
@@ -51,6 +52,7 @@ import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
+import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -74,6 +76,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
+  [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -132,6 +135,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.PortfolioLandingScreen} component={Portfolio} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
+      <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
     </PortfolioNavigator.Navigator>
   );
 };

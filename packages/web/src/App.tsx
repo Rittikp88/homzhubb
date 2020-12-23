@@ -6,6 +6,7 @@ import { StoreProviderService } from '@homzhub/common/src/services/StoreProvider
 import { AppRouter } from '@homzhub/web/src/router/AppRouter';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { configureStore } from '@homzhub/common/src/modules/store';
+import '@homzhub/web/src/globalStyles.scss';
 
 interface IState {
   isLocalizationInitialised: boolean;

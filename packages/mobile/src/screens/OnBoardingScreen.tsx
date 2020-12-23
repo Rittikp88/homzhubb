@@ -59,23 +59,25 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     return (
       <SafeAreaView style={styles.container}>
         <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent statusBarStyle={styles.statusBar} />
-        <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
-          {t('skip')}
-        </Text>
-        <View style={styles.textContainer}>
-          <Text type="large" textType="bold" style={styles.title}>
-            {currentSlide.title}
+        <View style={styles.flexOne}>
+          <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
+            {t('skip')}
           </Text>
-          <Text type="small" textType="regular" style={styles.description}>
-            {currentSlide.description}
-          </Text>
-        </View>
-        <View style={styles.carousel}>
+          <View style={styles.textContainer}>
+            <Text type="large" textType="bold" style={styles.title}>
+              {currentSlide.title}
+            </Text>
+            <Text type="small" textType="regular" style={styles.description}>
+              {currentSlide.description}
+            </Text>
+          </View>
           <SnapCarousel
             carouselData={data}
             carouselItem={this.renderCarouselItem}
             activeIndex={activeSlide}
             onSnapToItem={this.onSnapToItem}
+            itemWidth={theme.viewport.width - 30}
+            contentStyle={styles.imageView}
           />
           <PaginationComponent
             dotsLength={data.length}
@@ -83,30 +85,33 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             activeDotStyle={styles.activeDot}
             inactiveDotStyle={styles.inactiveDot}
           />
+          <Text type="regular" textType="semiBold" style={styles.heading}>
+            {t('iAmLooking')}
+          </Text>
+          <Button
+            type="primary"
+            title={t('property:addProperty')}
+            icon={icons.plus}
+            iconSize={26}
+            iconColor={theme.colors.white}
+            onPress={this.onAddProperty}
+            containerStyle={styles.button}
+            titleStyle={styles.buttonTitle}
+            testID="btnAddProperty"
+          />
+          <Button
+            type="secondary"
+            title={t('property:searchProperties')}
+            icon={icons.search}
+            iconSize={20}
+            iconColor={theme.colors.blue}
+            titleStyle={styles.buttonTitle}
+            onPress={this.searchProperty}
+            containerStyle={styles.button}
+            testID="btnSearchProperty"
+          />
         </View>
-        <Button
-          type="primary"
-          title={t('property:addProperty')}
-          icon={icons.plus}
-          iconSize={26}
-          iconColor={theme.colors.white}
-          onPress={this.onAddProperty}
-          containerStyle={styles.button}
-          titleStyle={styles.buttonTitle}
-          testID="btnAddProperty"
-        />
-        <Button
-          type="secondary"
-          title={t('property:searchProperties')}
-          icon={icons.search}
-          iconSize={20}
-          iconColor={theme.colors.blue}
-          titleStyle={styles.buttonTitle}
-          onPress={this.searchProperty}
-          containerStyle={styles.button}
-          testID="btnSearchProperty"
-        />
-        <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={450}>
+        <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={500}>
           <>
             <Text type="regular" textType="semiBold" style={styles.sheetTitle}>
               {t('iAm')}
@@ -153,11 +158,28 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     );
   }
 
+  // TODO: Refactor
   private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
-    const viewBox = theme.viewport.width > 350 ? '0 20 327 220' : '0 65 327 220';
+    const {
+      viewport: { width },
+      DeviceDimensions: { SMALL, MEDIUM },
+    } = theme;
+    /* eslint-disable */
+    const height =
+      width > SMALL.width
+        ? width > MEDIUM.width
+          ? PlatformUtils.isIOS()
+            ? 450
+            : 320
+          : width === MEDIUM.width
+          ? 280
+          : 220
+        : 150;
+    /* eslint-enable */
+    const imgWidth = width > SMALL.width ? (width > MEDIUM.width ? 320 : width === MEDIUM.width ? 350 : 330) : 280;
     return (
-      <View style={styles.carouselItem}>
-        <SVGUri viewBox={viewBox} preserveAspectRatio="xMidYMid meet" uri={item.imageUrl} height={450} />
+      <View style={styles.imageView}>
+        <SVGUri uri={item.imageUrl} height={height} width={imgWidth} />
       </View>
     );
   };
@@ -235,13 +257,12 @@ const styles = StyleSheet.create({
   statusBar: {
     height: PlatformUtils.isIOS() ? 20 : 40,
   },
+  flexOne: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-  },
-  carousel: {
-    flex: 1,
-    alignSelf: 'center',
   },
   textContainer: {
     paddingTop: 40,
@@ -284,6 +305,11 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontSize: 30,
   },
+  heading: {
+    color: theme.colors.darkTint3,
+    alignSelf: 'center',
+    paddingBottom: 16,
+  },
   buttonTitle: {
     marginHorizontal: 12,
   },
@@ -294,7 +320,7 @@ const styles = StyleSheet.create({
   sheetContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 90,
+    marginBottom: 50,
     marginHorizontal: 20,
   },
   selectionButton: {
@@ -305,6 +331,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colors.darkTint5,
     marginBottom: 8,
+    paddingHorizontal: 10,
   },
   continueBtn: {
     flex: 0,
@@ -312,13 +339,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     height: 50,
   },
-  carouselItem: {
-    paddingHorizontal: 20,
-  },
   skip: {
     color: theme.colors.blue,
     alignSelf: 'flex-end',
     marginHorizontal: 20,
+  },
+  imageView: {
+    alignItems: 'center',
   },
 });
 

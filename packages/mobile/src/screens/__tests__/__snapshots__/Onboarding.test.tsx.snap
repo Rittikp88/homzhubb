@@ -20,63 +20,62 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
       }
     }
   />
-  <Text
-    onPress={[Function]}
-    style={
-      Object {
-        "alignSelf": "flex-end",
-        "color": "#0084F8",
-        "marginHorizontal": 20,
-      }
-    }
-    textType="bold"
-    type="small"
-  >
-    skip
-  </Text>
   <View
     style={
       Object {
-        "alignItems": "center",
-        "paddingTop": 40,
-      }
-    }
-  >
-    <Text
-      style={
-        Object {
-          "color": "#0084F8",
-          "fontSize": 30,
-          "paddingHorizontal": 20,
-          "paddingTop": 10,
-        }
-      }
-      textType="bold"
-      type="large"
-    >
-      Maintain
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#4FA800",
-          "textAlign": "center",
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
-    </Text>
-  </View>
-  <View
-    style={
-      Object {
-        "alignSelf": "center",
         "flex": 1,
       }
     }
   >
+    <Text
+      onPress={[Function]}
+      style={
+        Object {
+          "alignSelf": "flex-end",
+          "color": "#0084F8",
+          "marginHorizontal": 20,
+        }
+      }
+      textType="bold"
+      type="small"
+    >
+      skip
+    </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "paddingTop": 40,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#0084F8",
+            "fontSize": 30,
+            "paddingHorizontal": 20,
+            "paddingTop": 10,
+          }
+        }
+        textType="bold"
+        type="large"
+      >
+        Maintain
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#4FA800",
+            "textAlign": "center",
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+      </Text>
+    </View>
     <SnapCarousel
       activeIndex={2}
       carouselData={
@@ -99,6 +98,12 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         ]
       }
       carouselItem={[Function]}
+      contentStyle={
+        Object {
+          "alignItems": "center",
+        }
+      }
+      itemWidth={720}
       onSnapToItem={[Function]}
     />
     <PaginationComponent
@@ -121,54 +126,67 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         }
       }
     />
+    <Text
+      style={
+        Object {
+          "alignSelf": "center",
+          "color": "#33495E",
+          "paddingBottom": 16,
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    >
+      iAmLooking
+    </Text>
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="plus"
+      iconColor="#FFFFFF"
+      iconSize={26}
+      onPress={[Function]}
+      testID="btnAddProperty"
+      title="property:addProperty"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="primary"
+    />
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="search"
+      iconColor="#0084F8"
+      iconSize={20}
+      onPress={[Function]}
+      testID="btnSearchProperty"
+      title="property:searchProperties"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="secondary"
+    />
   </View>
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="plus"
-    iconColor="#FFFFFF"
-    iconSize={26}
-    onPress={[Function]}
-    testID="btnAddProperty"
-    title="property:addProperty"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="primary"
-  />
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="search"
-    iconColor="#0084F8"
-    iconSize={20}
-    onPress={[Function]}
-    testID="btnSearchProperty"
-    title="property:searchProperties"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="secondary"
-  />
   <BottomSheet
     onCloseSheet={[Function]}
-    sheetHeight={450}
+    sheetHeight={500}
     visible={false}
   >
     <Text
@@ -188,7 +206,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         Object {
           "flexDirection": "row",
           "justifyContent": "space-between",
-          "marginBottom": 90,
+          "marginBottom": 50,
           "marginHorizontal": 20,
         }
       }
@@ -330,63 +348,62 @@ exports[`Onboarding Screen should render with data in state 1`] = `
       }
     }
   />
-  <Text
-    onPress={[Function]}
-    style={
-      Object {
-        "alignSelf": "flex-end",
-        "color": "#0084F8",
-        "marginHorizontal": 20,
-      }
-    }
-    textType="bold"
-    type="small"
-  >
-    skip
-  </Text>
   <View
     style={
       Object {
-        "alignItems": "center",
-        "paddingTop": 40,
-      }
-    }
-  >
-    <Text
-      style={
-        Object {
-          "color": "#0084F8",
-          "fontSize": 30,
-          "paddingHorizontal": 20,
-          "paddingTop": 10,
-        }
-      }
-      textType="bold"
-      type="large"
-    >
-      Search
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#4FA800",
-          "textAlign": "center",
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
-    </Text>
-  </View>
-  <View
-    style={
-      Object {
-        "alignSelf": "center",
         "flex": 1,
       }
     }
   >
+    <Text
+      onPress={[Function]}
+      style={
+        Object {
+          "alignSelf": "flex-end",
+          "color": "#0084F8",
+          "marginHorizontal": 20,
+        }
+      }
+      textType="bold"
+      type="small"
+    >
+      skip
+    </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "paddingTop": 40,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#0084F8",
+            "fontSize": 30,
+            "paddingHorizontal": 20,
+            "paddingTop": 10,
+          }
+        }
+        textType="bold"
+        type="large"
+      >
+        Search
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#4FA800",
+            "textAlign": "center",
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+      </Text>
+    </View>
     <SnapCarousel
       activeIndex={0}
       carouselData={
@@ -409,6 +426,12 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         ]
       }
       carouselItem={[Function]}
+      contentStyle={
+        Object {
+          "alignItems": "center",
+        }
+      }
+      itemWidth={720}
       onSnapToItem={[Function]}
     />
     <PaginationComponent
@@ -431,54 +454,67 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         }
       }
     />
+    <Text
+      style={
+        Object {
+          "alignSelf": "center",
+          "color": "#33495E",
+          "paddingBottom": 16,
+        }
+      }
+      textType="semiBold"
+      type="regular"
+    >
+      iAmLooking
+    </Text>
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="plus"
+      iconColor="#FFFFFF"
+      iconSize={26}
+      onPress={[Function]}
+      testID="btnAddProperty"
+      title="property:addProperty"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="primary"
+    />
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="search"
+      iconColor="#0084F8"
+      iconSize={20}
+      onPress={[Function]}
+      testID="btnSearchProperty"
+      title="property:searchProperties"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="secondary"
+    />
   </View>
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="plus"
-    iconColor="#FFFFFF"
-    iconSize={26}
-    onPress={[Function]}
-    testID="btnAddProperty"
-    title="property:addProperty"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="primary"
-  />
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="search"
-    iconColor="#0084F8"
-    iconSize={20}
-    onPress={[Function]}
-    testID="btnSearchProperty"
-    title="property:searchProperties"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="secondary"
-  />
   <BottomSheet
     onCloseSheet={[Function]}
-    sheetHeight={450}
+    sheetHeight={500}
     visible={false}
   >
     <Text
@@ -498,7 +534,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         Object {
           "flexDirection": "row",
           "justifyContent": "space-between",
-          "marginBottom": 90,
+          "marginBottom": 50,
           "marginHorizontal": 20,
         }
       }
