@@ -172,8 +172,8 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             ? 450
             : 320
           : width === MEDIUM.width
-            ? 280
-            : 220
+          ? 280
+          : 220
         : 150;
     /* eslint-enable */
     const imgWidth = width > SMALL.width ? (width > MEDIUM.width ? 320 : width === MEDIUM.width ? 350 : 330) : 280;

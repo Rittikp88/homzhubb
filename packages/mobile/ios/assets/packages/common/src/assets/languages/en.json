@@ -149,7 +149,11 @@
     "abbreviatedMonthText": "mo",
     "unsupportedFormat": "Unsupported format",
     "pleaseTryAgain": "Please try again.",
-    "invalidLinkError": "You can't open this link."
+    "invalidLinkError": "You can't open this link.",
+    "reason": "Reason",
+    "reasonExample": "Eg. Reason Title",
+    "typeDescriptionHere": "Type your description here...",
+    "actionNotDone": "This action cannot be undone"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -422,7 +426,14 @@
     "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?",
     "editProperty": "Edit Property",
     "deleteProperty": "Delete Property",
-    "editListing": "Edit Listing"
+    "editListing": "Edit Listing",
+    "cancelListing": "Cancel Listing",
+    "terminateListing": "Lease Termination",
+    "renewListing": "Lease Renew",
+    "terminationDate":"Termination Date",
+    "selectMoveInDate": "Select Move-In date",
+    "deleteListing": "Delete Listing",
+    "terminate": "Terminate"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -656,8 +667,7 @@
     "noImagesText": "No Images",
     "savedPropertiesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
     "searchByDoc": "Search by document name",
-    "noDocs": "There are no documents matching your search term",
-    "savedProperties": "Saved Properties"
+    "noDocs": "There are no documents matching your search term"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

@@ -21,7 +21,7 @@ import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFil
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetPropertiesPayload,
@@ -175,6 +175,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
       this.onViewProperty({ ...data, dataType: type }, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
+    const onPressAction = (): void => this.handleActions(item.id);
     return (
       <AssetCard
         assetData={item}
@@ -185,6 +186,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         onPressArrow={handleArrowPress}
         onCompleteDetails={this.onCompleteDetails}
         onOfferVisitPress={this.onOfferVisitPress}
+        onHandleAction={onPressAction}
       />
     );
   };
@@ -307,6 +309,12 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private handleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
+
+  private handleActions = (assetId: number): void => {
+    const { navigation, setAssetId } = this.props;
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType: UpdatePropertyFormTypes.CancelListing });
   };
 
   private handleAddProperty = (): void => {

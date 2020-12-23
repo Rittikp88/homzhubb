@@ -30,6 +30,7 @@ interface IListProps {
   onPressArrow?: (id: number) => void;
   enterFullScreen?: (attachments: Attachment[]) => void;
   onCompleteDetails: (id: number) => void;
+  onHandleAction?: () => void;
   onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -162,7 +163,7 @@ export class AssetCard extends Component<Props> {
   };
 
   private renderExpandedView = (): React.ReactNode => {
-    const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
+    const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false, onHandleAction } = this.props;
 
     if (!assetData || !assetData.assetStatusInfo) return null;
 
@@ -247,6 +248,7 @@ export class AssetCard extends Component<Props> {
               containerStyle={[styles.buttonStyle, { backgroundColor: buttonAction.color }]}
               title={buttonAction.label}
               titleStyle={styles.buttonTitle}
+              onPress={onHandleAction}
             />
           )}
         </View>

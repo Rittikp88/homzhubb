@@ -20,159 +20,173 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
       }
     }
   />
-  <Text
-    onPress={[Function]}
-    style={
-      Object {
-        "alignSelf": "flex-end",
-        "color": "#0084F8",
-        "marginHorizontal": 20,
-      }
-    }
-    textType="bold"
-    type="small"
-  >
-    skip
-  </Text>
   <View
     style={
       Object {
-        "alignItems": "center",
-        "paddingTop": 40,
+        "flex": 1,
       }
     }
   >
     <Text
+      onPress={[Function]}
       style={
         Object {
+          "alignSelf": "flex-end",
           "color": "#0084F8",
-          "fontSize": 30,
-          "paddingHorizontal": 20,
-          "paddingTop": 10,
+          "marginHorizontal": 20,
         }
       }
       textType="bold"
-      type="large"
+      type="small"
     >
-      Maintain
+      skip
     </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "paddingTop": 40,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#0084F8",
+            "fontSize": 30,
+            "paddingHorizontal": 20,
+            "paddingTop": 10,
+          }
+        }
+        textType="bold"
+        type="large"
+      >
+        Maintain
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#4FA800",
+            "textAlign": "center",
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+      </Text>
+    </View>
+    <SnapCarousel
+      activeIndex={2}
+      carouselData={
+        Array [
+          Object {
+            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+            "title": "Search",
+          },
+          Object {
+            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+            "title": "Post",
+          },
+          Object {
+            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+            "title": "Maintain",
+          },
+        ]
+      }
+      carouselItem={[Function]}
+      contentStyle={
+        Object {
+          "alignItems": "center",
+        }
+      }
+      itemWidth={720}
+      onSnapToItem={[Function]}
+    />
+    <PaginationComponent
+      activeDotStyle={
+        Object {
+          "backgroundColor": "#0084F8",
+          "borderColor": "#0084F8",
+          "width": 16,
+        }
+      }
+      activeSlide={2}
+      dotsLength={3}
+      inactiveDotStyle={
+        Object {
+          "backgroundColor": "#CCD1D7",
+          "borderColor": "#CCD1D7",
+          "borderRadius": 5,
+          "height": 10,
+          "width": 10,
+        }
+      }
+    />
     <Text
       style={
         Object {
-          "color": "#4FA800",
-          "textAlign": "center",
+          "alignSelf": "center",
+          "color": "#33495E",
+          "paddingBottom": 16,
         }
       }
-      textType="regular"
-      type="small"
+      textType="semiBold"
+      type="regular"
     >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+      iAmLooking
     </Text>
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="plus"
+      iconColor="#FFFFFF"
+      iconSize={26}
+      onPress={[Function]}
+      testID="btnAddProperty"
+      title="property:addProperty"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="primary"
+    />
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="search"
+      iconColor="#0084F8"
+      iconSize={20}
+      onPress={[Function]}
+      testID="btnSearchProperty"
+      title="property:searchProperties"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="secondary"
+    />
   </View>
-  <SnapCarousel
-    activeIndex={2}
-    carouselData={
-      Array [
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-          "title": "Search",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-          "title": "Post",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-          "title": "Maintain",
-        },
-      ]
-    }
-    carouselItem={[Function]}
-    onSnapToItem={[Function]}
-  />
-  <PaginationComponent
-    activeDotStyle={
-      Object {
-        "backgroundColor": "#0084F8",
-        "borderColor": "#0084F8",
-        "width": 16,
-      }
-    }
-    activeSlide={2}
-    dotsLength={3}
-    inactiveDotStyle={
-      Object {
-        "backgroundColor": "#CCD1D7",
-        "borderColor": "#CCD1D7",
-        "borderRadius": 5,
-        "height": 10,
-        "width": 10,
-      }
-    }
-  />
-  <Text
-    style={
-      Object {
-        "alignSelf": "center",
-        "color": "#33495E",
-        "paddingBottom": 16,
-      }
-    }
-    textType="semiBold"
-    type="regular"
-  >
-    iAmLooking
-  </Text>
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="plus"
-    iconColor="#FFFFFF"
-    iconSize={26}
-    onPress={[Function]}
-    testID="btnAddProperty"
-    title="property:addProperty"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="primary"
-  />
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="search"
-    iconColor="#0084F8"
-    iconSize={20}
-    onPress={[Function]}
-    testID="btnSearchProperty"
-    title="property:searchProperties"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="secondary"
-  />
   <BottomSheet
     onCloseSheet={[Function]}
-    sheetHeight={450}
+    sheetHeight={500}
     visible={false}
   >
     <Text
@@ -334,159 +348,173 @@ exports[`Onboarding Screen should render with data in state 1`] = `
       }
     }
   />
-  <Text
-    onPress={[Function]}
-    style={
-      Object {
-        "alignSelf": "flex-end",
-        "color": "#0084F8",
-        "marginHorizontal": 20,
-      }
-    }
-    textType="bold"
-    type="small"
-  >
-    skip
-  </Text>
   <View
     style={
       Object {
-        "alignItems": "center",
-        "paddingTop": 40,
+        "flex": 1,
       }
     }
   >
     <Text
+      onPress={[Function]}
       style={
         Object {
+          "alignSelf": "flex-end",
           "color": "#0084F8",
-          "fontSize": 30,
-          "paddingHorizontal": 20,
-          "paddingTop": 10,
+          "marginHorizontal": 20,
         }
       }
       textType="bold"
-      type="large"
+      type="small"
     >
-      Search
+      skip
     </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "paddingTop": 40,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#0084F8",
+            "fontSize": 30,
+            "paddingHorizontal": 20,
+            "paddingTop": 10,
+          }
+        }
+        textType="bold"
+        type="large"
+      >
+        Search
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#4FA800",
+            "textAlign": "center",
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+      </Text>
+    </View>
+    <SnapCarousel
+      activeIndex={0}
+      carouselData={
+        Array [
+          Object {
+            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+            "title": "Search",
+          },
+          Object {
+            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+            "title": "Post",
+          },
+          Object {
+            "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+            "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+            "title": "Maintain",
+          },
+        ]
+      }
+      carouselItem={[Function]}
+      contentStyle={
+        Object {
+          "alignItems": "center",
+        }
+      }
+      itemWidth={720}
+      onSnapToItem={[Function]}
+    />
+    <PaginationComponent
+      activeDotStyle={
+        Object {
+          "backgroundColor": "#0084F8",
+          "borderColor": "#0084F8",
+          "width": 16,
+        }
+      }
+      activeSlide={0}
+      dotsLength={3}
+      inactiveDotStyle={
+        Object {
+          "backgroundColor": "#CCD1D7",
+          "borderColor": "#CCD1D7",
+          "borderRadius": 5,
+          "height": 10,
+          "width": 10,
+        }
+      }
+    />
     <Text
       style={
         Object {
-          "color": "#4FA800",
-          "textAlign": "center",
+          "alignSelf": "center",
+          "color": "#33495E",
+          "paddingBottom": 16,
         }
       }
-      textType="regular"
-      type="small"
+      textType="semiBold"
+      type="regular"
     >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+      iAmLooking
     </Text>
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="plus"
+      iconColor="#FFFFFF"
+      iconSize={26}
+      onPress={[Function]}
+      testID="btnAddProperty"
+      title="property:addProperty"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="primary"
+    />
+    <Button
+      containerStyle={
+        Object {
+          "flex": 0,
+          "flexDirection": "row-reverse",
+          "marginBottom": 10,
+          "marginHorizontal": 36,
+        }
+      }
+      icon="search"
+      iconColor="#0084F8"
+      iconSize={20}
+      onPress={[Function]}
+      testID="btnSearchProperty"
+      title="property:searchProperties"
+      titleStyle={
+        Object {
+          "marginHorizontal": 12,
+        }
+      }
+      type="secondary"
+    />
   </View>
-  <SnapCarousel
-    activeIndex={0}
-    carouselData={
-      Array [
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-          "title": "Search",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-          "title": "Post",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-          "title": "Maintain",
-        },
-      ]
-    }
-    carouselItem={[Function]}
-    onSnapToItem={[Function]}
-  />
-  <PaginationComponent
-    activeDotStyle={
-      Object {
-        "backgroundColor": "#0084F8",
-        "borderColor": "#0084F8",
-        "width": 16,
-      }
-    }
-    activeSlide={0}
-    dotsLength={3}
-    inactiveDotStyle={
-      Object {
-        "backgroundColor": "#CCD1D7",
-        "borderColor": "#CCD1D7",
-        "borderRadius": 5,
-        "height": 10,
-        "width": 10,
-      }
-    }
-  />
-  <Text
-    style={
-      Object {
-        "alignSelf": "center",
-        "color": "#33495E",
-        "paddingBottom": 16,
-      }
-    }
-    textType="semiBold"
-    type="regular"
-  >
-    iAmLooking
-  </Text>
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="plus"
-    iconColor="#FFFFFF"
-    iconSize={26}
-    onPress={[Function]}
-    testID="btnAddProperty"
-    title="property:addProperty"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="primary"
-  />
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="search"
-    iconColor="#0084F8"
-    iconSize={20}
-    onPress={[Function]}
-    testID="btnSearchProperty"
-    title="property:searchProperties"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="secondary"
-  />
   <BottomSheet
     onCloseSheet={[Function]}
-    sheetHeight={450}
+    sheetHeight={500}
     visible={false}
   >
     <Text
