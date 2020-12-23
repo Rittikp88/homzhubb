@@ -31,7 +31,7 @@ const AccordianContent: React.FC = () => {
     </View>
   );
 };
-const FrequentlyAskedQuestionCard: React.FC = () => {
+const FAQCards: React.FC = () => {
   return <Accordian headerComponent={<Header />} accordianContent={<AccordianContent />} />;
 };
 
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-export default FrequentlyAskedQuestionCard;
+export default FAQCards;

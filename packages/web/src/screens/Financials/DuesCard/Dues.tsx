@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 
 const Dues = (): React.ReactElement => {
   const { t } = useTranslation();

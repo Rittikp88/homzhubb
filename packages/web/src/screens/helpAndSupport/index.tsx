@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import FrequentlyAskedQuestion from './frequentlyAskedQuestions';
+import FAQComponent from '@homzhub/web/src/screens/helpAndSupport/FAQComponent';
 
 const HelpAndSupport: FC = () => {
   return (
     <View style={styles.container}>
-      <FrequentlyAskedQuestion />
+      <FAQComponent />
     </View>
   );
 };

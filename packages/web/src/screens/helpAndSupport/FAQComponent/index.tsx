@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import FrequentlyAskedQuestionCard from './frequentlyAskedQuestion';
+import FAQCards from '@homzhub/web/src/screens/helpAndSupport/FAQComponent/FAQCards';
 
-const FrequentlyAskedQuestion = (): React.ReactElement => {
+const FAQComponent = (): React.ReactElement => {
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
   const onChange = (text: string): void => {
@@ -30,25 +30,25 @@ const FrequentlyAskedQuestion = (): React.ReactElement => {
           {t('assetDashboard:General')}
         </Text>
       </View>
-      <FrequentlyAskedQuestionCard />
-      <FrequentlyAskedQuestionCard />
-      <FrequentlyAskedQuestionCard />
+      <FAQCards />
+      <FAQCards />
+      <FAQCards />
       <View style={styles.title}>
         <Text type="small" textType="semiBold" style={styles.text}>
           {t('assetDashboard:Payments')}
         </Text>
       </View>
-      <FrequentlyAskedQuestionCard />
-      <FrequentlyAskedQuestionCard />
-      <FrequentlyAskedQuestionCard />
+      <FAQCards />
+      <FAQCards />
+      <FAQCards />
       <View style={styles.title}>
         <Text type="small" textType="semiBold" style={styles.text}>
           {t('assetDashboard:Category Name')}
         </Text>
       </View>
-      <FrequentlyAskedQuestionCard />
-      <FrequentlyAskedQuestionCard />
-      <FrequentlyAskedQuestionCard />
+      <FAQCards />
+      <FAQCards />
+      <FAQCards />
     </View>
   );
 };
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   text: { color: theme.colors.blueTint6 },
   headerTitle: { color: theme.colors.darkTint1 },
 });
-export default FrequentlyAskedQuestion;
+export default FAQComponent;
