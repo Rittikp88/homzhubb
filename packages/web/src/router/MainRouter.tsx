@@ -4,6 +4,7 @@ import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import PostProperty from '@homzhub/web/src/screens/postProperty';
+import CaseLogsCard from 'screens/helpAndSupport/caseLogs';
 
 export const MainRouter = (): React.ReactElement => {
   const { DASHBOARD, ADD_PROPERTY, APP_BASE } = RouteNames.protectedRoutes;
@@ -13,7 +14,7 @@ export const MainRouter = (): React.ReactElement => {
     <Suspense fallback={<div>{t('webLoader:loadingText')}</div>}>
       <BrowserRouter>
         <Switch>
-          <Route exact path={DASHBOARD} component={Dashboard} />
+          <Route exact path={DASHBOARD} component={CaseLogsCard} />
           <Route exact path={ADD_PROPERTY} component={PostProperty} />
           <Redirect exact path={APP_BASE} to={DASHBOARD} />
         </Switch>

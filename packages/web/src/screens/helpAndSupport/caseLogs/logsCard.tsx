@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { Button } from '@homzhub/common/src/components/atoms/Button';

@@ -16,7 +16,7 @@ const CaseLogsCard = (): React.ReactElement => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text type="regular" textType="semiBold" style={styles.headerTitle}>
-          {t('assetDashboard:Case Logs(32)')}
+          Case Logs(32)
         </Text>
         <SearchField
           placeholder={t('property:search')}

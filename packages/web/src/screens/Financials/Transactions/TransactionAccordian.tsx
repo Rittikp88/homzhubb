@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginLeft: 85,
+    marginLeft: 88,
   },
   title: { marginRight: 40, marginBottom: 20 },
   iconContainer: { flexDirection: 'row' },
