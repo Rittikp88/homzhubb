@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>638609269566-48ej7l9i9pe4mttf1atlo9uptgk3251j.apps.googleusercontent.com</string>
+	<string>894249713165-4c1riqt38nv51dsvlumfhsoadmnjsomr.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.638609269566-48ej7l9i9pe4mttf1atlo9uptgk3251j</string>
+	<string>com.googleusercontent.apps.894249713165-4c1riqt38nv51dsvlumfhsoadmnjsomr</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAUKpPIb8QXdXf_9GtS7_ZEVUUJ_Oht61M</string>
+	<string>AIzaSyC7aQFTLVCwx1H-RwmTNyylPCV9baOT6As</string>
 	<key>GCM_SENDER_ID</key>
-	<string>638609269566</string>
+	<string>894249713165</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.homzhub.rn</string>
 	<key>PROJECT_ID</key>
-	<string>homzhub-7a1d5</string>
+	<string>homzhub-deeplinking</string>
 	<key>STORAGE_BUCKET</key>
-	<string>homzhub-7a1d5.appspot.com</string>
+	<string>homzhub-deeplinking.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:638609269566:ios:6ec440555b7bcef308826f</string>
+	<string>1:894249713165:ios:547c73551317e19312df44</string>
 	<key>DATABASE_URL</key>
-	<string>https://homzhub-7a1d5.firebaseio.com</string>
+	<string>https://homzhub-deeplinking.firebaseio.com</string>
 </dict>
 </plist>

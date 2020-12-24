@@ -60,6 +60,7 @@ export enum ScreensKeys {
   PortfolioLandingScreen = 'PortfolioLandingScreen',
   PropertyDetailScreen = 'PropertyDetailScreen',
   PropertyDetailsNotifications = 'PropertyDetailsNotifications',
+  UpdatePropertyScreen = 'UpdatePropertyScreen',
 
   // Financials Stack
   FinancialsLandingScreen = 'FinancialsLandingScreen',
@@ -97,6 +98,7 @@ export enum ScreensKeys {
   UpdatePassword = 'UpdatePassword',
   SupportScreen = 'SupportScreen',
   ReferEarn = 'ReferEarn',
+  SavedPropertiesScreen = 'SavedPropertiesScreen',
   KYC = 'KYC',
 }
 
@@ -106,6 +108,12 @@ export enum OtpNavTypes {
   SocialMedia = 'SocialMedia',
   UpdateProfileByEmailPhoneOtp = 'UpdateProfileByEmailPhoneOtp',
   UpdateProfileByOtp = 'UpdateProfileByOtp',
+}
+
+export enum UpdatePropertyFormTypes {
+  CancelListing = 'CANCEL_LISTING',
+  TerminateListing = 'TERMINATE_LISTING',
+  RenewListing = 'RENEW_LISTING',
 }
 
 export interface IScreenCallback {
@@ -204,6 +212,10 @@ export interface IPropertyDetailProps {
   isFromDashboard?: boolean;
   isFromTenancies?: boolean;
   tabKey?: Tabs;
+}
+
+export interface IUpdatePropertyProps {
+  formType: UpdatePropertyFormTypes;
 }
 
 export interface ISignUpParams extends IScreenCallback {

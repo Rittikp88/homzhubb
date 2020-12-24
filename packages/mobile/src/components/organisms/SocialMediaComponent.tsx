@@ -53,7 +53,7 @@ class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
   public render(): React.ReactNode {
     const { onEmailLogin, testID } = this.props;
     return (
-      <View style={styles.buttonContainer}>
+      <>
         {/** TODO: (Shikha) - Remove condition once Social media id issue resolved. * */}
         {onEmailLogin && (
           <View style={styles.lineContainer}>
@@ -81,7 +81,7 @@ class SocialMediaComponent extends React.PureComponent<Props, IOwnState> {
         )}
         {/** TODO: (Shikha) - Uncomment once Social media id issue resolved. ** /}
         {/*{this.renderButtons()} */}
-      </View>
+      </>
     );
   }
 
@@ -279,9 +279,6 @@ const HOC = connect(
 export { HOC as SocialMediaComponent };
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    padding: theme.layout.screenPadding,
-  },
   lineContainer: {
     flexDirection: 'row',
     marginTop: 10,

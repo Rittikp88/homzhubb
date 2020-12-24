@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "638609269566",
-    "firebase_url": "https://homzhub-7a1d5.firebaseio.com",
-    "project_id": "homzhub-7a1d5",
-    "storage_bucket": "homzhub-7a1d5.appspot.com"
+    "project_number": "894249713165",
+    "firebase_url": "https://homzhub-deeplinking.firebaseio.com",
+    "project_id": "homzhub-deeplinking",
+    "storage_bucket": "homzhub-deeplinking.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:638609269566:android:b51cd4354cfea79b08826f",
+        "mobilesdk_app_id": "1:894249713165:android:e57126d6061e41cb12df44",
         "android_client_info": {
           "package_name": "com.homzhub"
         }
       },
       "oauth_client": [
         {
-          "client_id": "638609269566-ua8cvuv0i35b0ep1kns14mavtc7uccpm.apps.googleusercontent.com",
+          "client_id": "894249713165-ig82ihgl39q5u4sqk5vu0u1vr67rqnhk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyATBMf9KD6pWgOpKmOxw5sF-dFdxxF19tQ"
+          "current_key": "AIzaSyCX0TTAKXeT2wmxblaZeMOumS6VYI9t8C0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "638609269566-ua8cvuv0i35b0ep1kns14mavtc7uccpm.apps.googleusercontent.com",
+              "client_id": "894249713165-ig82ihgl39q5u4sqk5vu0u1vr67rqnhk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

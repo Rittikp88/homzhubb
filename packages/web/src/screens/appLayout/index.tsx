@@ -2,14 +2,26 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import { MainRouter } from '@homzhub/web/src/router/MainRouter';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Navbar, NavigationInfo } from '@homzhub/web/src/components';
 import Footer from '@homzhub/web/src/screens/appLayout/Footer';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const AppLayout: FC = () => {
+interface IProps {
+  location: LocationParams;
+}
+type LocationParams = { pathname: string };
+
+const AppLayout: FC<IProps> = (props: IProps) => {
+  const { location } = props;
+  const { pathname } = location;
+  const { protectedRoutes } = RouteNames;
+  const { DASHBOARD } = protectedRoutes;
+  const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD], pathname);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   return (
     <View style={styles.container}>
@@ -17,7 +29,7 @@ const AppLayout: FC = () => {
       <NavigationInfo />
       <View>
         <View style={styles.mainContent}>
-          {!isTablet && <SideMenu onItemClick={FunctionUtils.noop} />}
+          {!isTablet && isSideMenuVisible && <SideMenu onItemClick={FunctionUtils.noop} />}
           <MainRouter />
         </View>
         <Footer />

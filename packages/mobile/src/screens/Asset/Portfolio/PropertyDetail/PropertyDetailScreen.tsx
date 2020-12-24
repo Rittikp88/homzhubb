@@ -366,15 +366,22 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { heights } = this.state;
     const { height: newHeight } = e.nativeEvent.layout;
     const arrayToUpdate = [...heights];
+    // TODO: Need to refactor
     if (newHeight !== arrayToUpdate[index]) {
-      arrayToUpdate[index] = newHeight * 1.5;
+      if (index !== Routes.length - 1) {
+        arrayToUpdate[index] = newHeight * 1.5;
+      } else {
+        arrayToUpdate[index] = newHeight * 1.1;
+      }
       this.setState({ heights: arrayToUpdate });
     }
   };
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
     setAssetId(assetId);
+    setEditPropertyFlow(true);
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
       params: { previousScreen: ScreensKeys.Dashboard },
@@ -432,6 +439,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     this.onCloseMenu();
 
     if (value === MenuItems.EDIT_LISTING) {
+      // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetLeaseListing,
         params: { previousScreen: ScreensKeys.Dashboard, isEditFlow: true },
@@ -442,6 +450,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     if (value === MenuItems.EDIT_PROPERTY) {
       setEditPropertyFlow(true);
       toggleEditPropertyFlowBottomSheet(true);
+      // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.PostAssetDetails,
       });
@@ -456,10 +465,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
   private navigateToBookVisit = (isNew?: boolean): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SearchStack, {
-      screen: ScreensKeys.BookVisit,
-      params: { isReschedule: !isNew },
-    });
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
   };
 
   private handleIndexChange = (index: number): void => {
@@ -500,7 +507,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { t } = this.props;
     const list = [
       { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
-      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
+      // TODO: Uncomment when delete API becomes ready
+      // { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
     ];
 
     if (isListingCreated) {

@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:homzhubapp.page.link</string>
+		<string>applinks:homzhubapps.page.link</string>
 	</array>
 </dict>
 </plist>

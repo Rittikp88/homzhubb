@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import { StyleProp, StyleSheet, TextInput, TextStyle, View, ViewStyle } from 'react-native';
 import { FormikProps } from 'formik';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -6,6 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
 interface IFormDetails {
   formProps: FormikProps<any>;
@@ -37,9 +38,8 @@ class PromoCode extends PureComponent<Props, IPromoState> {
   };
 
   public render(): React.ReactNode {
-    const { t, isError, isPromoApplied = false, containerStyles, inputStyles, type, formDetails, code } = this.props;
-    const { promoCode, showTextInput } = this.state;
-    const value = isPromoApplied ? `${promoCode} Applied!` : promoCode;
+    const { t, containerStyles, type, code } = this.props;
+    const { showTextInput } = this.state;
     const showTextField = type === 'regular' || showTextInput || code;
 
     return (
@@ -57,47 +57,91 @@ class PromoCode extends PureComponent<Props, IPromoState> {
             {t('auth:haveReferralCodeText')}
           </Label>
         )}
-        {showTextField && (
-          <View style={styles.textInputContainer}>
-            <TextInput
-              value={type === 'link' ? formDetails?.formProps.values[formDetails?.name] : value}
-              autoCorrect={false}
-              autoCapitalize="none"
-              placeholder={type === 'regular' ? t('promoPlaceholder') : t('auth:referralCodePlaceholder')}
-              numberOfLines={1}
-              onChangeText={this.handlePromoChange}
-              editable={!isPromoApplied}
-              style={[styles.textInput, isPromoApplied && { color: theme.colors.green }, inputStyles]}
-            />
-            {isPromoApplied || type === 'link' ? (
-              <Button
-                type="primary"
-                icon={icons.circularCrossFilled}
-                iconSize={20}
-                iconColor={theme.colors.darkTint8}
-                containerStyle={styles.iconButton}
-                onPress={this.onCrossPress}
-                testID="btnCross"
-              />
-            ) : (
-              <Button
-                type="secondary"
-                title={t('apply')}
-                containerStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={this.onApplyPress}
-              />
-            )}
-          </View>
-        )}
+        {type === 'regular' ? this.renderPromoCode() : this.renderReferralCode()}
+      </View>
+    );
+  }
+
+  private renderPromoCode = (): ReactElement => {
+    const { t, isError, isPromoApplied = false, inputStyles } = this.props;
+    const { promoCode } = this.state;
+    const value = isPromoApplied ? `${promoCode} Applied!` : promoCode;
+    return (
+      <>
+        <View style={styles.textInputContainer}>
+          <TextInput
+            value={value}
+            autoCorrect={false}
+            autoCapitalize="none"
+            placeholder={t('promoPlaceholder')}
+            numberOfLines={1}
+            onChangeText={this.handlePromoChange}
+            editable={!isPromoApplied}
+            style={[styles.textInput, isPromoApplied && { color: theme.colors.green }, inputStyles]}
+          />
+          {this.renderButton()}
+        </View>
         {isError && (
           <Label type="regular" textType="semiBold" style={styles.errorMsg}>
             {t('promoError')}
           </Label>
         )}
+      </>
+    );
+  };
+
+  private renderReferralCode = (): React.ReactNode => {
+    const { t, inputStyles, formDetails, code } = this.props;
+    const { showTextInput } = this.state;
+    const showTextField = showTextInput || code;
+
+    if (!formDetails) {
+      return null;
+    }
+
+    return (
+      <View style={inputStyles}>
+        {showTextField && (
+          <FormTextInput
+            formProps={formDetails.formProps}
+            inputType="default"
+            name={formDetails.name}
+            placeholder={t('auth:referralCodePlaceholder')}
+            numberOfLines={1}
+            maxLength={10}
+            inputGroupSuffix={this.renderButton()}
+          />
+        )}
       </View>
     );
-  }
+  };
+
+  private renderButton = (): React.ReactNode => {
+    const { t, isPromoApplied = false, type } = this.props;
+    return (
+      <>
+        {isPromoApplied || type === 'link' ? (
+          <Button
+            type="primary"
+            icon={icons.circularCrossFilled}
+            iconSize={20}
+            iconColor={theme.colors.darkTint8}
+            containerStyle={type === 'regular' ? styles.iconButton : styles.crossIconBgColor}
+            onPress={this.onCrossPress}
+            testID="btnCross"
+          />
+        ) : (
+          <Button
+            type="secondary"
+            title={t('apply')}
+            containerStyle={styles.button}
+            titleStyle={styles.buttonTitle}
+            onPress={this.onApplyPress}
+          />
+        )}
+      </>
+    );
+  };
 
   private onCrossPress = (): void => {
     const { onApplyPromo } = this.props;
@@ -123,7 +167,6 @@ class PromoCode extends PureComponent<Props, IPromoState> {
     if (onClear) {
       onClear();
     }
-    this.setFieldValue(text);
     this.setState({ promoCode: text });
   };
 
@@ -180,5 +223,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.secondaryColor,
     flex: 0,
     marginHorizontal: 16,
+  },
+  crossIconBgColor: {
+    backgroundColor: theme.colors.secondaryColor,
   },
 });

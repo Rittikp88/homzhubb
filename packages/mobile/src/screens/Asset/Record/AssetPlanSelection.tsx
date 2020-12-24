@@ -3,9 +3,9 @@ import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-nat
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { CommonActions } from '@react-navigation/native';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
@@ -20,15 +20,18 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet, Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { AssetAdvertisement, AssetAdvertisementResults } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 import { AssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 interface IDispatchProps {
   getAssetPlanList: () => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   resetState: () => void;
+  setCurrentAsset: (payload: ISetAssetPayload) => void;
 }
 
 interface IStateProps {
   assetPlan: AssetPlan[];
+  assetId: number;
 }
 
 type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetPlanSelection>;
@@ -186,12 +189,11 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   private onSkip = (): void => {
     const { navigation, resetState } = this.props;
     resetState();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: ScreensKeys.BottomTabs }],
-      })
-    );
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs, {
+      screen: ScreensKeys.Portfolio,
+      params: { screen: ScreensKeys.PropertyDetailScreen, initial: false },
+    });
   };
 
   private onCloseSheet = (): void => {
@@ -225,19 +227,22 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getAssetPlans } = RecordAssetSelectors;
+  const { getAssetPlans, getCurrentAssetId } = RecordAssetSelectors;
   return {
     assetPlan: getAssetPlans(state),
+    assetId: getCurrentAssetId(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getAssetPlanList, setSelectedPlan, resetState } = RecordAssetActions;
+  const { setCurrentAsset } = PortfolioActions;
   return bindActionCreators(
     {
       getAssetPlanList,
       setSelectedPlan,
       resetState,
+      setCurrentAsset,
     },
     dispatch
   );

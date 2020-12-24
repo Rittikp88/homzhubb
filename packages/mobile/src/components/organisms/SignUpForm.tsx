@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { theme } from '@homzhub/common/src/styles/theme';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
@@ -17,7 +19,6 @@ interface ISignUpFormProps extends WithTranslation {
   onSubmitFormSuccess: (payload: ISignUpPayload) => void;
   referralCode?: string;
 }
-
 interface IFormData {
   firstName: string;
   lastName: string;
@@ -27,12 +28,14 @@ interface IFormData {
   password: string;
   referralCode?: string;
 }
-
-class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
+interface IStateProps {
+  defaultPhoneCode: string;
+}
+type Props = IStateProps & ISignUpFormProps;
+class SignUpForm extends PureComponent<Props, IFormData> {
   public lastName: React.RefObject<any> = React.createRef();
   public email: React.RefObject<any> = React.createRef();
   public phone: React.RefObject<any> = React.createRef();
-
   public state = {
     firstName: '',
     lastName: '',
@@ -44,99 +47,104 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
   };
 
   public componentDidMount(): void {
-    const { referralCode } = this.props;
-    this.setState({ referralCode });
+    const { referralCode, defaultPhoneCode } = this.props;
+    this.setState({ referralCode, phoneCode: defaultPhoneCode });
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IFormData>): void {
+    const { defaultPhoneCode: prevDefaultPhoneCode } = prevProps;
+    const { referralCode, defaultPhoneCode } = this.props;
+    if (prevDefaultPhoneCode !== defaultPhoneCode) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ referralCode, phoneCode: defaultPhoneCode });
+    }
   }
 
   public render(): React.ReactNode {
     const { t, testID, onPressLink, referralCode } = this.props;
-
     return (
-      <View style={styles.container}>
-        <Formik<IFormData>
-          initialValues={{ ...this.state }}
-          validate={FormUtils.validate(this.formSchema)}
-          onSubmit={this.handleSubmit}
-          enableReinitialize
-        >
-          {(formProps: FormikProps<IFormData>): React.ReactNode => {
-            const onEmailFocus = (): void => this.email.current?.focus();
-            const onLastNameFocus = (): void => this.lastName.current?.focus();
-            const onPhoneNumberFocus = (): void => this.phone.current?.focus();
-
-            return (
-              <>
-                <FormTextInput
-                  name="firstName"
-                  label="First Name"
-                  inputType="name"
-                  placeholder={t('auth:enterFirstName')}
-                  formProps={formProps}
-                  isMandatory
-                  onSubmitEditing={onLastNameFocus}
-                />
-                <FormTextInput
-                  ref={this.lastName}
-                  name="lastName"
-                  label="Last Name"
-                  inputType="name"
-                  placeholder={t('auth:enterLastName')}
-                  formProps={formProps}
-                  onSubmitEditing={onEmailFocus}
-                />
-                <FormTextInput
-                  ref={this.email}
-                  name="email"
-                  label="Email"
-                  inputType="email"
-                  isMandatory
-                  placeholder={t('auth:enterEmail')}
-                  formProps={formProps}
-                  onSubmitEditing={onPhoneNumberFocus}
-                />
-                <FormTextInput
-                  ref={this.phone}
-                  name="phone"
-                  label="Phone"
-                  isMandatory
-                  inputType="phone"
-                  inputPrefixText={formProps.values.phoneCode}
-                  placeholder={t('auth:yourNumber')}
-                  helpText={t('auth:otpVerification')}
-                  phoneFieldDropdownText={t('auth:countryRegion')}
-                  formProps={formProps}
-                />
-                <FormTextInput
-                  name="password"
-                  label="Password"
-                  inputType="password"
-                  isMandatory
-                  placeholder={t('auth:newPassword')}
-                  helpText={t('auth:passwordValidation')}
-                  formProps={formProps}
-                />
-                <PromoCode
-                  type="link"
-                  formDetails={{ formProps, name: 'referralCode' }}
-                  code={referralCode}
-                  containerStyles={styles.referralContainer}
-                  inputStyles={styles.referralInputStyle}
-                />
-                <TermsCondition onPressLink={onPressLink} />
-                <FormButton
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  formProps={formProps}
-                  type="primary"
-                  title={t('auth:signup')}
-                  containerStyle={styles.submitStyle}
-                  testID={testID}
-                />
-              </>
-            );
-          }}
-        </Formik>
-      </View>
+      <Formik<IFormData>
+        initialValues={{ ...this.state }}
+        validate={FormUtils.validate(this.formSchema)}
+        onSubmit={this.handleSubmit}
+        enableReinitialize
+      >
+        {(formProps: FormikProps<IFormData>): React.ReactNode => {
+          const onEmailFocus = (): void => this.email.current?.focus();
+          const onLastNameFocus = (): void => this.lastName.current?.focus();
+          const onPhoneNumberFocus = (): void => this.phone.current?.focus();
+          return (
+            <>
+              <FormTextInput
+                name="firstName"
+                label="First Name"
+                inputType="name"
+                placeholder={t('auth:enterFirstName')}
+                formProps={formProps}
+                isMandatory
+                onSubmitEditing={onLastNameFocus}
+              />
+              <FormTextInput
+                ref={this.lastName}
+                name="lastName"
+                label="Last Name"
+                inputType="name"
+                placeholder={t('auth:enterLastName')}
+                formProps={formProps}
+                onSubmitEditing={onEmailFocus}
+              />
+              <FormTextInput
+                ref={this.email}
+                name="email"
+                label="Email"
+                inputType="email"
+                isMandatory
+                placeholder={t('auth:enterEmail')}
+                formProps={formProps}
+                onSubmitEditing={onPhoneNumberFocus}
+              />
+              <FormTextInput
+                ref={this.phone}
+                name="phone"
+                label="Phone"
+                isMandatory
+                inputType="phone"
+                inputPrefixText={formProps.values.phoneCode}
+                placeholder={t('auth:yourNumber')}
+                helpText={t('auth:otpVerification')}
+                phoneFieldDropdownText={t('auth:countryRegion')}
+                formProps={formProps}
+              />
+              <FormTextInput
+                name="password"
+                label="Password"
+                inputType="password"
+                isMandatory
+                placeholder={t('auth:newPassword')}
+                helpText={t('auth:passwordValidation')}
+                formProps={formProps}
+              />
+              <PromoCode
+                type="link"
+                formDetails={{ formProps, name: 'referralCode' }}
+                code={referralCode}
+                containerStyles={styles.referralContainer}
+                inputStyles={styles.referralInputStyle}
+              />
+              <TermsCondition onPressLink={onPressLink} />
+              <FormButton
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                formProps={formProps}
+                type="primary"
+                title={t('auth:signup')}
+                containerStyle={styles.submitStyle}
+                testID={testID}
+              />
+            </>
+          );
+        }}
+      </Formik>
     );
   }
 
@@ -153,7 +161,7 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
         .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
         .min(8, t('auth:minimumCharacters'))
         .required(t('auth:passwordRequired')),
-      referralCode: yup.string().optional().uppercase().strict(true).max(10),
+      referralCode: yup.string().optional().uppercase(t('auth:upperCaseError')).strict(true).max(10),
     });
   };
 
@@ -169,26 +177,26 @@ class SignUpForm extends PureComponent<ISignUpFormProps, IFormData> {
       password: values.password,
       ...(values.referralCode && { signup_referral_code: values.referralCode }),
     };
-
     onSubmitFormSuccess(signUpData);
     formActions.setSubmitting(false);
   };
 }
+const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    defaultPhoneCode: CommonSelectors.getDefaultPhoneCode(state),
+  };
+};
 
-const HOC = withTranslation()(SignUpForm);
+const HOC = withTranslation()(connect(mapStateToProps)(SignUpForm));
 export { HOC as SignUpForm };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: theme.layout.screenPadding,
-  },
   submitStyle: {
     flex: 0,
     marginVertical: 4,
   },
   referralInputStyle: {
-    paddingVertical: 0,
+    paddingTop: 12,
   },
   referralContainer: {
     marginBottom: 0,

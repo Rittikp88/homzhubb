@@ -6,23 +6,23 @@ import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import {
-  IUpdateProfile,
-  IUpdateProfileResponse,
-  UpdateProfileTypes,
-} from '@homzhub/common/src/domain/repositories/interfaces';
-import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Loader } from '@homzhub/mobile/src/components';
+import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';
 import UserProfileForm, { IUserProfileForm } from '@homzhub/mobile/src/components/molecules/UserProfileForm';
 import EmergencyContactForm from '@homzhub/mobile/src/components/molecules/EmergencyContactForm';
 import WorkInfoForm from '@homzhub/mobile/src/components/molecules/WorkInfoForm';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  IUpdateProfile,
+  IUpdateProfileResponse,
+  UpdateProfileTypes,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 type navigationProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.UpdateUserProfileScreen>;
 

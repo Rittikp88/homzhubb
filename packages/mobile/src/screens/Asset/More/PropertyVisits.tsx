@@ -139,6 +139,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private rescheduleVisit = (isNew?: boolean, userId?: number): void => {
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.BookVisit, {
       isReschedule: !isNew,
       ...(userId && { userId }),

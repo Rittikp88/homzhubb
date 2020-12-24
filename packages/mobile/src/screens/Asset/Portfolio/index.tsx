@@ -21,7 +21,7 @@ import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFil
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetPropertiesPayload,
@@ -42,6 +42,7 @@ interface IDispatchProps {
   getPropertyDetails: (payload: IGetPropertiesPayload) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setCurrentFilter: (payload: Filters) => void;
+  setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
 }
 
@@ -174,6 +175,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
       this.onViewProperty({ ...data, dataType: type }, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
+    const onPressAction = (): void => this.handleActions(item.id);
     return (
       <AssetCard
         assetData={item}
@@ -184,6 +186,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         onPressArrow={handleArrowPress}
         onCompleteDetails={this.onCompleteDetails}
         onOfferVisitPress={this.onOfferVisitPress}
+        onHandleAction={onPressAction}
       />
     );
   };
@@ -226,8 +229,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private onOfferVisitPress = (type: OffersVisitsType): void => {};
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
     setAssetId(assetId);
+    setEditPropertyFlow(true);
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
       params: { previousScreen: ScreensKeys.Dashboard },
@@ -306,8 +311,15 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
+  private handleActions = (assetId: number): void => {
+    const { navigation, setAssetId } = this.props;
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType: UpdatePropertyFormTypes.CancelListing });
+  };
+
   private handleAddProperty = (): void => {
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
   };
 
@@ -341,9 +353,9 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
-  const { setAssetId } = RecordAssetActions;
+  const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
   return bindActionCreators(
-    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setAssetId },
+    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setAssetId, setEditPropertyFlow },
     dispatch
   );
 };

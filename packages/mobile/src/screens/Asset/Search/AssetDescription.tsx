@@ -49,7 +49,6 @@ import {
   FullScreenAssetDetailsCarousel,
   Loader,
   ShieldGroup,
-  StatusBarComponent,
 } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
@@ -59,7 +58,7 @@ import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { DynamicLinkParamKeys, DynamicLinkTypes } from '@homzhub/mobile/src/services/constants';
+import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 interface IStateProps {
   reviews: AssetReview[];
@@ -170,22 +169,15 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { isPreview },
       },
     } = this.props;
-    const { isFullScreen, isScroll } = this.state;
+    const { isFullScreen } = this.state;
     if (!assetDetails) return null;
     const {
       contacts: { fullName, phoneNumber, countryCode, profilePicture },
       appPermissions,
     } = assetDetails;
 
-    const statusBarHeight = isScroll ? 0 : PlatformUtils.isIOS() ? 55 : 40;
     return (
       <>
-        <StatusBarComponent
-          backgroundColor={!isScroll ? theme.colors.white : 'transparent'}
-          isTranslucent
-          statusBarStyle={{ height: statusBarHeight }}
-          barStyle={isScroll ? 'light-content' : 'dark-content'}
-        />
         <ParallaxScrollView
           backgroundColor={theme.colors.transparent}
           stickyHeaderHeight={STICKY_HEADER_HEIGHT}
@@ -630,7 +622,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       screen: ScreensKeys.AssetLeaseListing,
       params: {
         previousScreen: ScreensKeys.PropertyAssetDescription,
-        isFromEdit: true,
+        isEditFlow: true,
       },
     });
   };
@@ -763,7 +755,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     const url = await LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
-      `${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
+      `${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}&${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
     );
 
     if (!isPreview) {

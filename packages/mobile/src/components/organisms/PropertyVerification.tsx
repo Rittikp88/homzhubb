@@ -66,15 +66,23 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public render(): React.ReactElement {
     const { t } = this.props;
-    const { verificationTypes, existingDocuments, localDocuments, isLoading } = this.state;
+    const { existingDocuments, localDocuments, isLoading } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
+
+    // TODO (21-12-2020): Remove this temp hack once camera module is refactored
+    const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
+    const containsAllReqd =
+      uploadedTypes.includes(VerificationDocumentCategory.ID_PROOF) &&
+      uploadedTypes.includes(VerificationDocumentCategory.OCCUPANCY_CERTIFICATE) &&
+      uploadedTypes.includes(VerificationDocumentCategory.PROPERTY_TAX);
+
     return (
       <>
         <View style={styles.container}>{this.renderVerificationTypes()}</View>
         <Button
           type="primary"
           title={t('common:continue')}
-          disabled={totalDocuments.length < verificationTypes.length || isLoading}
+          disabled={!containsAllReqd || isLoading}
           containerStyle={styles.buttonStyle}
           onPress={this.postPropertyVerificationDocuments}
         />

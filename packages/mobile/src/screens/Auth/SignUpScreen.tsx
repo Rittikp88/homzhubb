@@ -3,10 +3,13 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { SignUpForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AnimatedHeader, SignUpForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp>;
 
@@ -15,31 +18,35 @@ export class SignUpScreen extends Component<Props> {
     const {
       t,
       navigation,
-      route: {
-        params: { referralCode },
-      },
+      route: { params },
     } = this.props;
 
     return (
-      <AnimatedHeader
-        title={t('signUp')}
-        subTitle={t('auth:alreadyRegistered')}
-        linkText={t('login')}
-        onIconPress={this.onClosePress}
-        onLinkPress={this.onLoginPress}
-        testID="headerEvents"
+      <Screen
+        headerProps={{
+          type: 'secondary',
+          icon: icons.close,
+          onIconPress: this.onClosePress,
+        }}
+        pageHeaderProps={{
+          contentTitle: t('signUp'),
+          contentSubTitle: t('auth:alreadyRegistered'),
+          contentLink: t('login'),
+          onLinkPress: this.onLoginPress,
+        }}
+        backgroundColor={theme.colors.white}
         keyboardShouldPersistTaps
       >
         <>
           <SignUpForm
             onSubmitFormSuccess={this.onFormSubmit}
             onPressLink={this.handleTermsCondition}
-            referralCode={referralCode}
+            referralCode={params && params?.referralCode}
             testID="signupForm"
           />
           <SocialMediaComponent isFromLogin={false} navigation={navigation} />
         </>
-      </AnimatedHeader>
+      </Screen>
     );
   }
 

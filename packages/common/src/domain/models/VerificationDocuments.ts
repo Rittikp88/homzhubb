@@ -29,7 +29,8 @@ export interface IExistingVerificationDocuments {
 export enum VerificationDocumentCategory {
   ID_PROOF = 'ID_PROOF',
   SELFIE_ID_PROOF = 'SELFIE_ID_PROOF',
-  OWNERSHIP_VERIFICATION_DOCUMENT = 'OWNERSHIP_VERIFICATION_DOCUMENT',
+  OCCUPANCY_CERTIFICATE = 'OCCUPANCY_CERTIFICATE',
+  PROPERTY_TAX = 'PROPERTY_TAX',
 }
 
 export interface IPropertySelectedImages {

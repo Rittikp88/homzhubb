@@ -136,14 +136,27 @@ const getUserAssets = (state: IState): Asset[] => {
   return ObjectMapper.deserializeArray(Asset, assets);
 };
 
-const getFavouriteProperties = (state: IState): Wishlist[] => {
+const getFavouritePropertyIds = (state: IState): Wishlist[] => {
   const {
     user: { favouriteProperties },
   } = state;
 
   if (favouriteProperties.length <= 0) return [];
 
-  return ObjectMapper.deserializeArray(Wishlist, favouriteProperties);
+  const wishListIds = ObjectMapper.deserializeArray(Asset, favouriteProperties).map((property) => ({
+    lease_listing_id: property.leaseTerm?.id,
+    sale_listing_id: property.saleTerm?.id,
+  }));
+
+  return ObjectMapper.deserializeArray(Wishlist, wishListIds);
+};
+
+const getFavouriteProperties = (state: IState): Asset[] => {
+  const {
+    user: { favouriteProperties },
+  } = state;
+
+  return ObjectMapper.deserializeArray(Asset, favouriteProperties);
 };
 
 const getReferralCode = (state: IState): string => {
@@ -171,6 +184,7 @@ export const UserSelector = {
   getMetricSystem,
   getCurrency,
   getUserAssets,
+  getFavouritePropertyIds,
   getFavouriteProperties,
   getReferralCode,
 };

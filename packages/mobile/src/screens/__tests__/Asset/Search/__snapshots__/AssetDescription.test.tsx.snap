@@ -13,16 +13,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
   <Loader
     visible={false}
   />
-  <Memo(StatusBarComponent)
-    backgroundColor="transparent"
-    barStyle="light-content"
-    isTranslucent={true}
-    statusBarStyle={
-      Object {
-        "height": 0,
-      }
-    }
-  />
   <ParallaxScrollView
     backgroundColor="transparent"
     backgroundScrollSpeed={5}
@@ -210,7 +200,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              17 Dec 2020
+              23 Dec 2020
             </Label>
           </View>
           <View

@@ -144,7 +144,7 @@ const getFavouriteProperties = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.FAVOURITE_PROPERTIES,
 });
 
-const getFavouritePropertiesSuccess = (data: Wishlist[]): IFluxStandardAction<IWishlist[]> => ({
+const getFavouritePropertiesSuccess = (data: Wishlist[]): IFluxStandardAction<Asset[]> => ({
   type: UserActionTypes.GET.FAVOURITE_PROPERTIES_SUCCESS,
   payload: ObjectMapper.serializeArray(data),
 });

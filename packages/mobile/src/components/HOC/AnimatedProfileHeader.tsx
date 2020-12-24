@@ -10,7 +10,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
-import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -24,6 +23,7 @@ interface IProps {
   loading?: boolean;
   isGradientHeader?: boolean;
   onBackPress?: () => void;
+  detachedHeaderMode?: boolean;
 }
 
 const { headerGradientA, headerGradientB, headerGradientC } = theme.colors;
@@ -45,6 +45,7 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
     loading = false,
     isGradientHeader = false,
     onBackPress,
+    detachedHeaderMode = false,
   } = props;
   const userProfile = useSelector(UserSelector.getUserProfile);
   const navigation = useNavigation();
@@ -59,11 +60,6 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
   const renderContent = useCallback(
     (): React.ReactElement => (
       <>
-        <StatusBarComponent
-          backgroundColor={isGradientHeader ? theme.colors.transparent : theme.colors.primaryColor}
-          isTranslucent
-          barStyle="light-content"
-        />
         <View
           style={[
             styles.headerContainer,
@@ -105,7 +101,7 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
           )}
           <View style={styles.scrollView}>
             {onBackPress && (
-              <View style={styles.header}>
+              <View style={detachedHeaderMode ? { ...styles.header, ...styles.detachedHeaderStyle } : styles.header}>
                 <Icon
                   size={24}
                   name={icons.leftArrow}
@@ -170,6 +166,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.layout.screenPadding,
     paddingTop: theme.layout.screenPaddingTop,
     backgroundColor: theme.colors.white,
+  },
+  detachedHeaderStyle: {
+    paddingTop: theme.layout.screenPadding,
+    paddingBottom: theme.layout.screenPadding,
+    borderRadius: 4,
+    marginBottom: theme.layout.screenPadding,
   },
   iconStyle: {
     paddingRight: 12,

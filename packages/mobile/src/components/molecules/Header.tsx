@@ -1,63 +1,67 @@
 import React from 'react';
-import { StatusBar, StatusBarStyle, StyleSheet, View } from 'react-native';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
+import { StatusBar, IStatusBarProps } from '@homzhub/mobile/src/components/atoms/StatusBar';
 
-interface ICommonHeaderProps {
-  icon?: string;
-  onIconPress?: () => void;
-  iconRight?: string;
-  onIconRightPress?: () => void;
+export interface IHeaderProps {
   type?: 'primary' | 'secondary';
-  isHeadingVisible?: boolean;
-  isBarVisible?: boolean;
+  icon?: string;
+  iconRight?: string;
   title?: string;
+  barVisible?: boolean;
+  children?: React.ReactNode;
+  statusBarProps?: IStatusBarProps;
+  opacity?: number;
+  onIconPress?: () => void;
+  onIconRightPress?: () => void;
   testID?: string;
 }
-const STATUSBAR_HEIGHT = PlatformUtils.isIOS() ? 34 : StatusBar.currentHeight;
+const BOTTOM_PADDING = 12;
 
-const Header = (props: ICommonHeaderProps): React.ReactElement => {
+const Header = (props: IHeaderProps): React.ReactElement => {
   const {
     title,
-    onIconPress,
     iconRight,
-    onIconRightPress,
     type = 'primary',
     icon = icons.leftArrow,
-    isHeadingVisible = true,
-    isBarVisible = true,
+    barVisible = false,
     testID,
+    children,
+    statusBarProps,
+    opacity = 1,
+    onIconPress,
+    onIconRightPress,
   } = props;
 
   let backgroundColor = theme.colors.primaryColor;
-  let barStyle = 'light-content';
   let textColor = theme.colors.white;
+  let statusBarType = 'light-content';
   if (type === 'secondary') {
     backgroundColor = theme.colors.white;
     textColor = theme.colors.darkTint1;
-    barStyle = 'dark-content';
+    statusBarType = 'dark-content';
   }
 
   return (
     <>
-      <View style={{ height: STATUSBAR_HEIGHT, backgroundColor }}>
-        <StatusBarComponent backgroundColor={backgroundColor} isTranslucent barStyle={barStyle as StatusBarStyle} />
-      </View>
+      <StatusBar
+        statusBarBackground={backgroundColor}
+        barStyle={statusBarType as 'light-content' | 'dark-content'}
+        {...statusBarProps}
+      />
       <View style={[styles.container, { backgroundColor }]} testID={testID}>
         <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
-        {isHeadingVisible && (
-          <Text numberOfLines={1} type="small" textType="semiBold" style={[styles.title, { color: textColor }]}>
-            {title ?? ''}
-          </Text>
-        )}
+        <Animated.Text numberOfLines={1} style={[styles.title, { color: textColor, opacity }]}>
+          {title ?? ''}
+        </Animated.Text>
         {iconRight && (
           <Icon name={iconRight} size={22} color={textColor} style={styles.iconRight} onPress={onIconRightPress} />
         )}
       </View>
-      {isBarVisible && <View style={styles.bar} />}
+      {children}
+      {barVisible && <View style={styles.bar} />}
     </>
   );
 };
@@ -65,27 +69,29 @@ const Header = (props: ICommonHeaderProps): React.ReactElement => {
 const memoizedComponent = React.memo(Header);
 export { memoizedComponent as Header };
 
-const BOTTOM_PADDING = 12;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingBottom: BOTTOM_PADDING,
-    paddingTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    height: 44,
   },
   bar: {
     height: 4,
     backgroundColor: theme.colors.green,
   },
   title: {
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 24,
     textAlign: 'center',
     width: 300,
   },
   icon: {
     position: 'absolute',
     bottom: BOTTOM_PADDING,
-    left: 16,
+    left: 12,
   },
   iconRight: {
     position: 'absolute',

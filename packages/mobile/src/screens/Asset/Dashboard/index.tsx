@@ -59,10 +59,9 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   public componentDidMount = (): void => {
-    const { navigation, setAddPropertyFlow } = this.props;
+    const { navigation } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
       this.getScreenData().then();
-      setAddPropertyFlow(false);
     });
   };
 
@@ -126,6 +125,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private onCompleteDetails = (assetId: number): void => {
     const { navigation, setAssetId } = this.props;
     setAssetId(assetId);
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
       params: { previousScreen: ScreensKeys.Dashboard },
@@ -134,6 +134,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private onViewAll = (): void => {
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.More, {
       screen: ScreensKeys.MarketTrends,
       initial: false,
@@ -143,13 +144,18 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private onTrendPress = (url: string, trendId: number): void => {
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.WebViewScreen, { url, trendId });
   };
 
   private onViewProperty = (data: ISetAssetPayload): void => {
     const { setCurrentAsset, navigation } = this.props;
     setCurrentAsset(data);
-    navigation.navigate(ScreensKeys.PropertyDetailScreen, { isFromDashboard: true });
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs, {
+      screen: ScreensKeys.Portfolio,
+      params: { screen: ScreensKeys.PropertyDetailScreen, initial: false },
+    });
   };
 
   private handleDues = (): void => {
@@ -191,6 +197,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     const { navigation, setSelectedPlan, setAssetId } = this.props;
     setSelectedPlan({ id: item.id, selectedPlan: item.type });
     setAssetId(assetId);
+    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AssetLeaseListing,
       params: { previousScreen: ScreensKeys.Dashboard },

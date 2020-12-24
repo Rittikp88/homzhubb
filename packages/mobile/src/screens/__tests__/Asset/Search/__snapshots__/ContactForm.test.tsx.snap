@@ -18,7 +18,13 @@ exports[`Contact Form Screen should render snapshot 1`] = `
     title="contact"
     type="secondary"
   />
-  <ScrollViewMock
+  <KeyboardAwareScrollViewMock
+    enableAutomaticScroll={true}
+    enableOnAndroid={false}
+    enableResetScrollToCoords={true}
+    extraHeight={75}
+    extraScrollHeight={0}
+    keyboardOpeningTime={250}
     style={
       Object {
         "backgroundColor": "#FFFFFF",
@@ -26,6 +32,7 @@ exports[`Contact Form Screen should render snapshot 1`] = `
         "paddingVertical": 10,
       }
     }
+    viewIsInsideTabBar={false}
   >
     <Label
       style={
@@ -217,6 +224,6 @@ exports[`Contact Form Screen should render snapshot 1`] = `
       }
       type="primary"
     />
-  </ScrollViewMock>
+  </KeyboardAwareScrollViewMock>
 </HandleBack>
 `;

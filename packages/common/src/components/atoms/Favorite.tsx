@@ -36,7 +36,7 @@ const Favorite = (props: IProps): React.ReactElement => {
   const [isFavourite, setFavourite] = useState(false);
 
   // HOOKS START
-  const properties = useSelector(UserSelector.getFavouriteProperties);
+  const properties = useSelector(UserSelector.getFavouritePropertyIds);
   const filters = useSelector(SearchSelector.getFilters);
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const navigation = useNavigation();
@@ -45,6 +45,11 @@ const Favorite = (props: IProps): React.ReactElement => {
   // HOOKS END
 
   useEffect(() => {
+    if (properties.length === 0) {
+      setFavourite(false);
+      return;
+    }
+
     for (let i = 0; i < properties.length; i++) {
       const item = properties[i];
       if (item.leaseListingId && leaseId) {

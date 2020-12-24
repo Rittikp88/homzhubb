@@ -47,7 +47,7 @@ export interface IFormTextInputProps extends TextInputProps {
   inputType: SupportedInputType;
   labelTextType?: TextSizeType;
   name: string;
-  label: string;
+  label?: string;
   helpText?: string;
   hideError?: boolean;
   isMandatory?: boolean;
@@ -244,10 +244,12 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     return (
       <>
         <WithFieldError error={error} hideError={hideError}>
-          <Label type="regular" style={labelStyles}>
-            {label}
-            {isMandatory && <Text style={styles.asterix}> *</Text>}
-          </Label>
+          {label && (
+            <Label type="regular" style={labelStyles}>
+              {label}
+              {isMandatory && <Text style={styles.asterix}> *</Text>}
+            </Label>
+          )}
           <View style={containerStyle}>
             <RNTextInput ref={this.inputText} {...inputProps} />
             {children}
@@ -449,10 +451,10 @@ const styles = StyleSheet.create({
   inputGroupSuffix: {
     position: 'absolute',
     right: 6,
+    paddingVertical: 14,
   },
   passwordButton: {
     flex: 0,
-    paddingVertical: 14,
     paddingHorizontal: 10,
     borderWidth: 0,
     backgroundColor: theme.colors.transparent,

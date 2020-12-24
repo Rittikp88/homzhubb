@@ -15,6 +15,7 @@ import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -48,6 +49,7 @@ type libraryProps = NavigationScreenProps<WrapperSearchStackParamList, ScreensKe
 type Props = IStateProps & IDispatchProps & libraryProps & WithTranslation;
 
 interface ILandingState {
+  searchString: string;
   isSearchBarFocused: boolean;
   suggestions: GooglePlaceData[];
   selectedPropertyType: number;
@@ -58,9 +60,8 @@ interface ILandingState {
 }
 
 export class AssetSearchLanding extends React.PureComponent<Props, ILandingState> {
-  private searchBar: typeof GoogleSearchBar | null = null;
-
   public state = {
+    searchString: '',
     isSearchBarFocused: false,
     suggestions: [],
     selectedPropertyType: 0,
@@ -84,7 +85,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
 
   public componentDidUpdate = (prevProps: Props): void => {
     const {
-      filters: { asset_group, max_price, min_price, search_latitude, asset_transaction_type, search_address },
+      filters: { asset_group, max_price, min_price, search_latitude, asset_transaction_type },
       getFilterDetails,
     } = this.props;
 
@@ -92,9 +93,6 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
       getFilterDetails({ asset_group });
     }
 
-    if (prevProps.filters.search_address !== search_address) {
-      this.getAutocompleteSuggestions();
-    }
     // eslint-disable-next-line react/no-did-update-set-state
     this.setState({
       selectedPropertyType: asset_group ?? 0,
@@ -203,24 +201,26 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
   };
 
   private renderHeader = (): React.ReactNode => {
-    const {
-      t,
-      filters: { search_address },
-    } = this.props;
+    const { t } = this.props;
+    const { searchString } = this.state;
+
     return (
       <View style={styles.header}>
+        <Icon
+          size={24}
+          name={icons.leftArrow}
+          color={theme.colors.darkTint2}
+          style={styles.backIconStyle}
+          onPress={this.onGoBack}
+        />
         <Text type="regular">{t('findingRightProperty')}</Text>
         <Text type="regular" textType="bold" style={styles.madeEasy}>
           {t('madeEasy')}
         </Text>
         <GoogleSearchBar
-          // @ts-ignore
-          onRef={(input: SearchBar): void => {
-            this.searchBar = input;
-          }}
           placeholder={t('enterLocation')}
           updateValue={this.onSearchStringUpdate}
-          value={search_address || ''}
+          value={searchString}
           containerStyle={styles.searchBarContainer}
           cancelButtonStyle={styles.cancelButtonStyle}
           cancelTextStyle={styles.cancelTextStyle}
@@ -231,14 +231,12 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
   };
 
   private renderSearchResults = (): React.ReactNode => {
-    const {
-      filters: { search_address },
-    } = this.props;
-    const { suggestions } = this.state;
+    const { suggestions, searchString } = this.state;
+
     return (
       <>
         <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} />
-        {suggestions.length > 0 && search_address.length > 0 && (
+        {suggestions.length > 0 && searchString.length > 0 && (
           <SearchResults
             results={suggestions}
             onResultPress={this.onSuggestionPress}
@@ -253,13 +251,13 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     this.setState({ isSearchBarFocused });
   };
 
+  private onGoBack = (): void => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  };
+
   private onSearchStringUpdate = (searchString: string): void => {
-    const { setFilter } = this.props;
-    setFilter({ search_address: searchString });
-    if (searchString.length === 0) {
-      this.setState({ isLocationSelected: false });
-    }
-    this.getAutocompleteSuggestions();
+    this.setState({ searchString }, this.getAutocompleteSuggestions);
   };
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
@@ -272,13 +270,9 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
           search_latitude: placeDetail.geometry.location.lat,
           search_longitude: placeDetail.geometry.location.lng,
         });
-        this.setState({ isLocationSelected: true });
+        this.setState({ isLocationSelected: true, isSearchBarFocused: false, searchString: place.description });
       })
       .catch(this.displayError);
-    if (this.searchBar) {
-      // @ts-ignore
-      this.searchBar.SearchTextInput.blur();
-    }
   };
 
   private onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
@@ -286,22 +280,20 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
     const {
       coords: { latitude, longitude },
     } = data;
-    GooglePlacesService.getLocationData({ lng: longitude, lat: latitude })
-      .then((locData) => {
-        const { formatted_address } = locData;
-        const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
-        setFilter({
-          search_address: `${primaryAddress} ${secondaryAddress}`,
-          search_latitude: latitude,
-          search_longitude: longitude,
-        });
-        this.setState({ isLocationSelected: true });
-        if (this.searchBar) {
-          // @ts-ignore
-          this.searchBar.SearchTextInput.blur();
-        }
-      })
-      .catch(this.displayError);
+    GooglePlacesService.getLocationData({ lng: longitude, lat: latitude }).then((locData) => {
+      const { formatted_address } = locData;
+      const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
+      setFilter({
+        search_address: `${primaryAddress} ${secondaryAddress}`,
+        search_latitude: latitude,
+        search_longitude: longitude,
+      });
+      this.setState({
+        isLocationSelected: true,
+        isSearchBarFocused: false,
+        searchString: `${primaryAddress} ${secondaryAddress}`,
+      });
+    });
   };
 
   private onShowProperties = (): void => {
@@ -311,10 +303,9 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
 
   // eslint-disable-next-line react/sort-comp
   private getAutocompleteSuggestions = debounce((): void => {
-    const {
-      filters: { search_address },
-    } = this.props;
-    GooglePlacesService.autoComplete(search_address)
+    const { searchString } = this.state;
+
+    GooglePlacesService.autoComplete(searchString)
       .then((suggestions: GooglePlaceData[]) => {
         this.setState({ suggestions });
       })
@@ -435,5 +426,9 @@ const styles = StyleSheet.create({
   },
   priceRange: {
     marginVertical: 30,
+  },
+  backIconStyle: {
+    paddingVertical: 16,
+    marginBottom: 10,
   },
 });
