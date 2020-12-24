@@ -2,16 +2,16 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
-import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { useTranslation } from 'react-i18next';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { User } from '@homzhub/common/src/domain/models/User';
-import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 interface IFormData {
   subject: string;
