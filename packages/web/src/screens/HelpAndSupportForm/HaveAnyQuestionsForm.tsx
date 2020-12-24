@@ -89,7 +89,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
   );
 };
 
-const formSchema = (): yup.ObjectSchema<FormikValues> => {
+const formSchema = (): yup.ObjectSchema<IFormData> => {
   return yup.object().shape({
     subject: yup.string().required('This field is required'),
     description: yup.string(),
@@ -97,7 +97,7 @@ const formSchema = (): yup.ObjectSchema<FormikValues> => {
 };
 
 const handleFormSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
-  console.log(`Subject: ${values.subject}  Description: ${values.description}  `);
+  //
 };
 
 const styles = StyleSheet.create({
