@@ -5,7 +5,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { SignUpForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
+import { SignUpForm, AuthenticationGateways } from '@homzhub/mobile/src/components';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -44,7 +44,7 @@ export class SignUpScreen extends Component<Props> {
             referralCode={params && params?.referralCode}
             testID="signupForm"
           />
-          <SocialMediaComponent isFromLogin={false} navigation={navigation} />
+          <AuthenticationGateways isFromLogin={false} navigation={navigation} />
         </>
       </Screen>
     );

@@ -13,9 +13,9 @@ import { FormButton } from '@homzhub/common/src/components/molecules/FormButton'
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { SocialMediaKeys } from '@homzhub/common/src/assets/constants';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 interface IVerificationState {
   phone: string;
@@ -90,13 +90,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     const {
       t,
       route: {
-        params: {
-          isFromLogin,
-          userData: {
-            user: { first_name, last_name, email },
-          },
-          onCallback,
-        },
+        params: { isFromLogin, userData, onCallback },
       },
       navigation,
     } = this.props;
@@ -114,15 +108,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
         title: isFromLogin ? t('loginOtp') : t('verifyNumber'),
         otpSentTo: phone,
         countryCode: phoneCode,
-        userData: {
-          first_name,
-          last_name,
-          email,
-          phone_number: phone,
-          phone_code: phoneCode,
-          // TODO (Aditya 10-Jun-2020): How to solve this password issue?
-          password: 'RandomPassword@123',
-        },
+        socialUserData: userData,
         ...(onCallback && { onCallback }),
       });
     } catch (err) {
@@ -151,14 +137,14 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     const messageKey = isFromLogin ? 'enterNumberForProfileForLogin' : 'enterNumberForProfileForSignUp';
 
     if (isFromLogin) {
-      if (provider === SocialMediaKeys.Google) {
+      if (provider === SocialAuthKeys.Google) {
         title = t('loginWithGoogle');
       } else {
         title = t('loginWithFacebook');
       }
     }
 
-    if (!isFromLogin && provider === SocialMediaKeys.Google) {
+    if (!isFromLogin && provider === SocialAuthKeys.Google) {
       title = t('signUpWithGoogle');
     }
 

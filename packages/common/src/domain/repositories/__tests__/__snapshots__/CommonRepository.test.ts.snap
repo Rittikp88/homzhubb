@@ -100,17 +100,17 @@ Array [
 
 exports[`CommonRepository should fetch social media data 1`] = `
 Array [
-  SocialMediaProvider {
+  SocialAuthProvider {
     "_clientID": "1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6.apps.googleusercontent.com",
     "_description": "with Google",
     "_provider": "GOOGLE",
   },
-  SocialMediaProvider {
+  SocialAuthProvider {
     "_clientID": "",
     "_description": "with Facebook",
     "_provider": "FACEBOOK",
   },
-  SocialMediaProvider {
+  SocialAuthProvider {
     "_clientID": "",
     "_description": "with Linkedin",
     "_provider": "LINKEDIN",

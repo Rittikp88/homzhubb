@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "894249713165-3k466ns9jctl4gco38j6hkq3k8d3kv7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.homzhub",
+            "certificate_hash": "33f39769f23493aa5b96fdb6b305838e51c1c31b"
+          }
+        },
+        {
           "client_id": "894249713165-ig82ihgl39q5u4sqk5vu0u1vr67rqnhk.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -30,6 +38,14 @@
             {
               "client_id": "894249713165-ig82ihgl39q5u4sqk5vu0u1vr67rqnhk.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "894249713165-4c1riqt38nv51dsvlumfhsoadmnjsomr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.homzhub.rn",
+                "app_store_id": "1516772395"
+              }
             }
           ]
         }

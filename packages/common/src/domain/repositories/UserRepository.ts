@@ -22,6 +22,8 @@ import {
   IProfileImage,
   IEmailVerification,
   IReferralResponse,
+  IVerifyAuthToken,
+  IVerifyAuthTokenResponse,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -59,6 +61,7 @@ const ENDPOINTS = {
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
   interactions: (userId: number): string => `users/${userId}/interactions/`,
   verifyReferralCode: (code: string): string => `users/referrals/${code}/`,
+  verifyAuthToken: 'users/verify-token/',
 };
 
 class UserRepository {
@@ -81,7 +84,7 @@ class UserRepository {
     });
   };
 
-  public login = async (payload: IEmailLoginPayload | IOtpLoginPayload): Promise<User> => {
+  public login = async (payload: IEmailLoginPayload | IOtpLoginPayload | ISocialLoginPayload): Promise<User> => {
     const response = await this.apiClient.post(ENDPOINTS.login, payload);
     return ObjectMapper.deserialize(User, {
       ...response.user,
@@ -175,6 +178,7 @@ class UserRepository {
   };
 
   public sendOrVerifyEmail = async (payload: IEmailVerification): Promise<void> => {
+    console.log('this is verification payload repo-> ', payload);
     await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail, payload);
   };
 
@@ -195,6 +199,10 @@ class UserRepository {
 
   public verifyReferalCode = async (code: string): Promise<IReferralResponse> => {
     return await this.apiClient.get(ENDPOINTS.verifyReferralCode(code));
+  };
+
+  public verifyAuthToken = async (payload: IVerifyAuthToken): Promise<IVerifyAuthTokenResponse> => {
+    return await this.apiClient.post(ENDPOINTS.verifyAuthToken, payload);
   };
 }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { LoginForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
+import { LoginForm, AuthenticationGateways } from '@homzhub/mobile/src/components';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -31,7 +31,7 @@ export class LoginScreen extends Component<Props> {
       >
         <>
           <LoginForm onLoginSuccess={this.onOtpLoginPress} testID="loginForm" />
-          <SocialMediaComponent
+          <AuthenticationGateways
             isFromLogin
             onEmailLogin={this.onEmailLoginPress}
             navigation={navigation}

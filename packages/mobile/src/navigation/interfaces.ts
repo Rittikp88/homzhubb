@@ -1,11 +1,11 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ISocialUserData } from '@homzhub/common/src/assets/constants';
 import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
@@ -127,6 +127,7 @@ export interface IOtpNavProps extends IScreenCallback {
   otpSentTo: string;
   email?: string;
   userData?: ISignUpPayload;
+  socialUserData?: ISocialUserData;
   updateProfileCallback?: (phoneOtp: string, emailOtp?: string) => void;
 }
 
