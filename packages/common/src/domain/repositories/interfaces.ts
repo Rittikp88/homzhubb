@@ -1,6 +1,7 @@
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
+import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 // ENUMS
 
@@ -76,8 +77,11 @@ export interface ISignUpPayload {
 }
 
 export interface ISocialSignUpPayload {
+  provider: SocialAuthKeys;
+  id_token: string;
   otp: string;
-  user_details: ISignUpPayload;
+  phone_code: string;
+  phone_number: string;
 }
 
 export interface IEmailLoginPayload {
@@ -553,4 +557,14 @@ export interface IMarketTrendParams {
 
 export interface IReferralResponse {
   is_applicable: boolean;
+}
+
+export interface IVerifyAuthToken {
+  provider: string;
+  id_token: string;
+}
+
+export interface IVerifyAuthTokenResponse {
+  is_new_user: boolean;
+  is_token_verified: boolean;
 }

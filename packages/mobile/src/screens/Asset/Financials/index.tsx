@@ -10,10 +10,11 @@ import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { AnimatedProfileHeader, AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
+import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -62,36 +63,29 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     const { scrollEnabled, selectedProperty, selectedCountry, isLoading } = this.state;
 
     return (
-      <AnimatedProfileHeader
-        loading={isLoading}
-        isGradientHeader
-        isOuterScrollEnabled={scrollEnabled}
-        title={t('financial')}
-      >
-        <>
-          <AssetMetricsList
-            title={t('assetFinancial:recordsText')}
-            numOfElements={2}
-            isSubTextRequired={false}
-            data={this.getHeaderData()}
-            onPlusIconClicked={this.onPlusIconPress}
-          />
-          <PropertyByCountryDropdown
-            selectedProperty={selectedProperty}
-            selectedCountry={selectedCountry}
-            propertyList={this.getPropertyList()}
-            countryList={this.getCountryList()}
-            onPropertyChange={this.onPropertyChange}
-            onCountryChange={this.onCountryChange}
-          />
-          <FinanceOverview selectedProperty={selectedProperty} selectedCountry={selectedCountry} />
-          <TransactionCardsContainer
-            selectedProperty={selectedProperty}
-            selectedCountry={selectedCountry}
-            shouldEnableOuterScroll={this.toggleScroll}
-          />
-        </>
-      </AnimatedProfileHeader>
+      <UserScreen loading={isLoading} isGradient isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
+        <AssetMetricsList
+          title={t('assetFinancial:recordsText')}
+          numOfElements={2}
+          isSubTextRequired={false}
+          data={this.getHeaderData()}
+          onPlusIconClicked={this.onPlusIconPress}
+        />
+        <PropertyByCountryDropdown
+          selectedProperty={selectedProperty}
+          selectedCountry={selectedCountry}
+          propertyList={this.getPropertyList()}
+          countryList={this.getCountryList()}
+          onPropertyChange={this.onPropertyChange}
+          onCountryChange={this.onCountryChange}
+        />
+        <FinanceOverview selectedProperty={selectedProperty} selectedCountry={selectedCountry} />
+        <TransactionCardsContainer
+          selectedProperty={selectedProperty}
+          selectedCountry={selectedCountry}
+          shouldEnableOuterScroll={this.toggleScroll}
+        />
+      </UserScreen>
     );
   };
 

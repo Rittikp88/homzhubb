@@ -222,18 +222,21 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     const {
       loginSuccess,
       route: {
-        params: { userData },
+        params: { socialUserData, otpSentTo, countryCode },
       },
     } = this.props;
 
-    if (!userData) {
+    if (!socialUserData || !otpSentTo || !countryCode) {
       return;
     }
 
     try {
       const data: User = await UserRepository.socialSignUp({
+        provider: socialUserData.provider,
+        id_token: socialUserData.idToken,
         otp,
-        user_details: userData,
+        phone_code: countryCode,
+        phone_number: otpSentTo,
       });
 
       const tokens = { refresh_token: data.refreshToken, access_token: data.accessToken };

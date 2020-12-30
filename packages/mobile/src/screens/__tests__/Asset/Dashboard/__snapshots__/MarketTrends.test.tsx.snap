@@ -1,17 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Market Trends Screen should render snapshot 1`] = `
-<Memo(AnimatedProfileHeader)
-  isOuterScrollEnabled={true}
-  keyboardShouldPersistTaps={true}
+<Memo(UserScreen)
   onBackPress={[Function]}
-  sectionHeader="marketTrends"
-  sectionTitleType="semiBold"
+  pageTitle="assetMore:marketTrends"
+  scrollEnabled={false}
   title="assetMore:more"
 >
   <withI18nextTranslation(AssetMarketTrends)
     onTrendPress={[Function]}
-    shouldEnableOuterScroll={[Function]}
   />
-</Memo(AnimatedProfileHeader)>
+</Memo(UserScreen)>
 `;

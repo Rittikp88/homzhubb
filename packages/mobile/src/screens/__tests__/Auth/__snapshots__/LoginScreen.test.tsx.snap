@@ -23,7 +23,7 @@ exports[`Login Screen should render login screen 1`] = `
     onLoginSuccess={[Function]}
     testID="loginForm"
   />
-  <Connect(withI18nextTranslation(SocialMediaComponent))
+  <Connect(withI18nextTranslation(AuthenticationGateways))
     isFromLogin={true}
     navigation={
       Object {

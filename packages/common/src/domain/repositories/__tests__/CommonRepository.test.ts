@@ -30,9 +30,9 @@ describe.skip('CommonRepository', () => {
     expect(response).toMatchSnapshot();
   });
 
-  it('should fetch social media data', async () => {
+  it('should fetch social media data', () => {
     jest.spyOn(BootstrapAppService.clientInstance, 'get').mockImplementation(() => Promise.resolve(SocialMediaData));
-    const response = await CommonRepository.getSocialMedia();
+    const response = CommonRepository.getSocialMedia();
     expect(response).toMatchSnapshot();
   });
 

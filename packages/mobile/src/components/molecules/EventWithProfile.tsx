@@ -31,13 +31,7 @@ class EventWithProfile extends Component<IProps> {
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <Avatar
-            fullName={fullName}
-            isOnlyAvatar
-            imageSize={72}
-            image={profilePicture}
-            initialsContainerStyle={styles.initialContainer}
-          />
+          <Avatar fullName={fullName} isOnlyAvatar imageSize={72} image={profilePicture} />
           <Text type="regular" style={styles.name}>
             {fullName}
           </Text>
@@ -102,8 +96,5 @@ const styles = StyleSheet.create({
   },
   list: {
     marginHorizontal: 12,
-  },
-  initialContainer: {
-    ...(theme.circleCSS(72) as object),
   },
 });

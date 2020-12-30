@@ -54,15 +54,15 @@ const Avatar = (props: IProps): React.ReactElement => {
               }}
               /* eslint-disable-next-line react-native/no-inline-styles */
               style={{
-                height: imageSize,
-                width: imageSize,
-                borderRadius: imageSize / 2,
+                ...(theme.circleCSS(imageSize) as object),
                 borderColor: theme.colors.white,
                 borderWidth: 1,
               }}
             />
           ) : (
-            <View style={[styles.initialsContainer, initialsContainerStyle]}>
+            <View
+              style={[styles.initialsContainer, { ...(theme.circleCSS(imageSize) as object) }, initialsContainerStyle]}
+            >
               <Text type="small" textType="regular" style={styles.initials}>
                 {StringUtils.getInitials(fullName)}
               </Text>
@@ -141,10 +141,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   initialsContainer: {
-    ...(theme.circleCSS(42) as object),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.darkTint6,
+    borderWidth: 1,
+    borderColor: theme.colors.white,
   },
   designation: {
     color: theme.colors.darkTint5,

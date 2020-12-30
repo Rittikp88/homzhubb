@@ -25,9 +25,11 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1034466930282873</string>
+				<string>fb306770337332135</string>
 			</array>
 		</dict>
 		<dict>
@@ -47,14 +49,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1008014324415-kclkc41epc41nqjp0uc4gdgg528m1nc6</string>
+				<string>com.googleusercontent.apps.894249713165-4c1riqt38nv51dsvlumfhsoadmnjsomr</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
-	<string>1034466930282873</string>
+	<string>306770337332135</string>
 	<key>FacebookDisplayName</key>
 	<string>homzhub</string>
 	<key>LSRequiresIPhoneOS</key>

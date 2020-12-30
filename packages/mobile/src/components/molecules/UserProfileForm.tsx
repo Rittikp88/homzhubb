@@ -131,7 +131,6 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                       onPressCamera={(): void => {
                         this.handleProfileImageUpload(formProps).then();
                       }}
-                      initialsContainerStyle={styles.initialsContainer}
                     />
                   </View>
                   <FormTextInput
@@ -486,14 +485,6 @@ const styles = StyleSheet.create({
   profileImage: {
     marginTop: 16,
     alignItems: 'center',
-  },
-  initialsContainer: {
-    ...(theme.circleCSS(80) as object),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.darkTint7,
-    borderColor: theme.colors.white,
-    borderWidth: 1,
   },
   commonTextStyle: {
     textAlign: 'center',
