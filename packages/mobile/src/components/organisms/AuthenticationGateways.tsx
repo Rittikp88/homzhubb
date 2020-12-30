@@ -44,8 +44,8 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
     authProviders: [],
   };
 
-  public async componentDidMount(): Promise<void> {
-    await this.fetchSocialMedia();
+  public componentDidMount(): void {
+    this.fetchSocialMedia();
   }
 
   public render(): React.ReactNode {
@@ -145,9 +145,9 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private fetchSocialMedia = async (): Promise<void> => {
+  private fetchSocialMedia = (): void => {
     try {
-      const response = await CommonRepository.getSocialMedia();
+      const response = CommonRepository.getSocialMedia();
       this.setState({ authProviders: response });
     } catch (e) {
       AlertHelper.error({ message: e.message });

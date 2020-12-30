@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Dashboard Screen should render snapshot 1`] = `
-<Memo(AnimatedProfileHeader)
-  isGradientHeader={true}
+<Memo(UserScreen)
+  isGradient={true}
   loading={false}
   title="dashboard"
 >
@@ -31,5 +31,5 @@ exports[`Dashboard Screen should render snapshot 1`] = `
     onViewAll={[Function]}
   />
   <AssetAdvertisementBanner />
-</Memo(AnimatedProfileHeader)>
+</Memo(UserScreen)>
 `;

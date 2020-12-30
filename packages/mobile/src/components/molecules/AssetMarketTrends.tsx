@@ -18,7 +18,6 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   isDashboard?: boolean;
   onViewAll?: () => void;
-  shouldEnableOuterScroll?: (scrollEnabled: boolean) => void;
   onTrendPress: (url: string, id: number) => void;
 }
 
@@ -44,35 +43,21 @@ export class AssetMarketTrends extends React.PureComponent<IProps, IMarketTrends
   };
 
   public render(): React.ReactNode {
-    const { t, shouldEnableOuterScroll, isDashboard = false } = this.props;
+    const { t, isDashboard = false } = this.props;
     const { data } = this.state;
 
     return (
-      <View style={[styles.container, isDashboard ? styles.headerView : { height: theme.viewport.height * 0.7 }]}>
+      <View style={[styles.container, isDashboard && styles.headerView]}>
         {this.renderHeader()}
         {data.length > 0 ? (
           <FlatList
             data={data}
-            renderItem={this.renderTrends}
             initialNumToRender={30}
-            onTouchStart={(): void => {
-              if (shouldEnableOuterScroll) {
-                shouldEnableOuterScroll(false);
-              }
-            }}
-            onMomentumScrollEnd={(): void => {
-              if (shouldEnableOuterScroll) {
-                shouldEnableOuterScroll(true);
-              }
-            }}
-            onEndReached={({ distanceFromEnd }: { distanceFromEnd: number }): void => {
-              if (distanceFromEnd > 0) {
-                this.onEndReached();
-              }
-            }}
-            onEndReachedThreshold={0.8}
-            nestedScrollEnabled
             keyExtractor={this.keyExtractor}
+            renderItem={this.renderTrends}
+            onEndReached={this.onEndReached}
+            onEndReachedThreshold={0.8}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <EmptyState title={t('assetMore:noTrends')} />
@@ -210,6 +195,7 @@ export default withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Ass
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 16,
     paddingBottom: 0,
     backgroundColor: theme.colors.white,

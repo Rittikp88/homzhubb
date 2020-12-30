@@ -8,11 +8,10 @@ export interface IStatusBarProps {
   barStyle: StatusBarStyle;
   statusBarBackground: string;
   isStatusBarHidden?: boolean;
-  isStatusBarTranslucent?: boolean;
 }
 
 const HomzhubStatusBar = (props: IStatusBarProps): React.ReactElement => {
-  const { barStyle, statusBarBackground, isStatusBarHidden = false, isStatusBarTranslucent = false } = props;
+  const { barStyle, statusBarBackground, isStatusBarHidden = false } = props;
 
   const [barHeight, setBarHeight] = useState(0);
   useEffect(() => {
@@ -20,6 +19,8 @@ const HomzhubStatusBar = (props: IStatusBarProps): React.ReactElement => {
       StatusBarManager.getHeight(({ height }: { height: number }) => {
         setBarHeight(height);
       });
+    } else {
+      setBarHeight(StatusBar.currentHeight ?? 0);
     }
   }, []);
 
@@ -32,7 +33,7 @@ const HomzhubStatusBar = (props: IStatusBarProps): React.ReactElement => {
     >
       <StatusBar
         animated
-        translucent={isStatusBarTranslucent}
+        translucent={PlatformUtils.isAndroid()}
         hidden={isStatusBarHidden}
         backgroundColor={statusBarBackground}
         barStyle={barStyle}

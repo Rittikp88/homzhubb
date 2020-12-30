@@ -117,7 +117,6 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
                 fullName={fullName || ''}
                 imageSize={80}
                 onPressCamera={(): void => this.onUpdatePress(t('basicDetails'))}
-                initialsContainerStyle={styles.initialsContainer}
                 image={profilePicture}
               />
             </View>
@@ -279,14 +278,6 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     marginBottom: 24,
-  },
-  initialsContainer: {
-    ...(theme.circleCSS(80) as object),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.darkTint7,
-    borderColor: theme.colors.white,
-    borderWidth: 1,
   },
   buttonStyle: {
     flex: 0,
