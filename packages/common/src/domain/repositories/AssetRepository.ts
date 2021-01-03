@@ -83,6 +83,7 @@ const ENDPOINTS = {
   availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
   assetCount: (): string => 'assets/count/',
   sendNotification: (): string => 'assets/notifications/listing-reviews/',
+  valueServicesAssetList: (): string => 'assets?extra=asset_status_info',
 };
 
 class AssetRepository {
@@ -301,11 +302,6 @@ class AssetRepository {
     return await this.apiClient.put(ENDPOINTS.rescheduleVisit(), payload);
   };
 
-  public getAllVisitAsset = async (): Promise<VisitAssetDetail[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.allVisitAsset());
-    return ObjectMapper.deserializeArray(VisitAssetDetail, response);
-  };
-
   public getAssetCount = async (): Promise<Count> => {
     const response = await this.apiClient.get(ENDPOINTS.assetCount());
     return ObjectMapper.deserialize(Count, response);
@@ -313,6 +309,16 @@ class AssetRepository {
 
   public sendNotification = async (payload: ISendNotificationPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.sendNotification(), payload);
+  };
+
+  public getAllVisitAsset = async (): Promise<VisitAssetDetail[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.allVisitAsset());
+    return ObjectMapper.deserializeArray(VisitAssetDetail, response);
+  };
+
+  public getValueServicesAssetList = async (): Promise<Asset[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.valueServicesAssetList());
+    return ObjectMapper.deserializeArray(Asset, response);
   };
 }
 

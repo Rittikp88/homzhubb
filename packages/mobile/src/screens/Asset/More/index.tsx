@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { CommonActions } from '@react-navigation/native';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -113,60 +112,32 @@ export class More extends React.PureComponent<Props> {
     const { navigation, t } = this.props;
     switch (type) {
       case MoreScreenTypes.NOTIFICATIONS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.AssetNotifications,
-          })
-        );
+        navigation.navigate(ScreensKeys.AssetNotifications);
         break;
       case MoreScreenTypes.MARKET_TRENDS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.MarketTrends,
-          })
-        );
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.MarketTrends);
         break;
       case MoreScreenTypes.PROPERTY_VISITS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.PropertyVisits,
-          })
-        );
+        navigation.navigate(ScreensKeys.PropertyVisits);
         break;
       case MoreScreenTypes.SETTINGS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.SettingsScreen,
-          })
-        );
+        navigation.navigate(ScreensKeys.SettingsScreen);
         break;
       case MoreScreenTypes.SUPPORT:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.SupportScreen,
-          })
-        );
+        navigation.navigate(ScreensKeys.SupportScreen);
         break;
       case MoreScreenTypes.REFER_FRIEND:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.ReferEarn,
-          })
-        );
+        navigation.navigate(ScreensKeys.ReferEarn);
         break;
       case MoreScreenTypes.SAVED_PROPERTIES:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.SavedPropertiesScreen,
-          })
-        );
+        navigation.navigate(ScreensKeys.SavedPropertiesScreen);
         break;
       case MoreScreenTypes.KYC_DOCUMENTS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.KYC,
-          })
-        );
+        navigation.navigate(ScreensKeys.KYC);
+        break;
+      case MoreScreenTypes.VALUE_ADDED_SERVICES:
+        navigation.navigate(ScreensKeys.ValueAddedServices);
         break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });

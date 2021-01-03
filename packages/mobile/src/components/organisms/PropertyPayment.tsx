@@ -28,13 +28,13 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IPaymentProps {
-  goBackToService: () => void;
   valueAddedServices: ValueAddedService[];
   setValueAddedServices: (payload: ISelectedValueServices) => void;
-  handleNextStep: () => void;
-  typeOfPlan: TypeOfPlan;
   propertyId: number;
-  lastVisitedStep: ILastVisitedStep;
+  handleNextStep: () => void;
+  goBackToService?: () => void;
+  typeOfPlan?: TypeOfPlan;
+  lastVisitedStep?: ILastVisitedStep;
 }
 
 interface IPaymentState {
@@ -65,7 +65,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
       return;
     }
 
-    if (valueAddedServices.filter((service) => service.value).length === 0) {
+    if (goBackToService && valueAddedServices.filter((service) => service.value).length === 0) {
       goBackToService();
       return;
     }
@@ -156,7 +156,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           <TouchableOpacity onPress={removeService} style={styles.removeView}>
             <Icon name={icons.trash} color={theme.colors.blue} size={16} />
             <Label type="large" textType="semiBold" style={styles.removeText}>
-              {t('remove')}
+              {t('common:remove')}
             </Label>
           </TouchableOpacity>
         </View>
@@ -182,17 +182,19 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
       await PaymentRepository.valueAddedServicesPayment(paymentParams);
 
       if (paymentParams.razorpay_order_id) {
-        const updateAssetPayload: IUpdateAssetParams = {
-          last_visited_step: {
-            ...lastVisitedStep,
-            listing: {
-              ...lastVisitedStep.listing,
-              type: typeOfPlan,
-              is_payment_done: true,
+        if (lastVisitedStep && typeOfPlan) {
+          const updateAssetPayload: IUpdateAssetParams = {
+            last_visited_step: {
+              ...lastVisitedStep,
+              listing: {
+                ...lastVisitedStep.listing,
+                type: typeOfPlan,
+                is_payment_done: true,
+              },
             },
-          },
-        };
-        await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+          };
+          await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+        }
         handleNextStep();
       }
       this.setState({ isLoading: false });

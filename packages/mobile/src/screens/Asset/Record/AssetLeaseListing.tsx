@@ -334,8 +334,6 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
               valueAddedServices={valueAddedServices}
               setValueAddedServices={setValueAddedServices}
-              countryId={assetDetails?.country.id}
-              assetGroupId={assetDetails?.assetGroup.id}
               typeOfPlan={selectedPlan}
               handleNextStep={this.handleNextStep}
             />

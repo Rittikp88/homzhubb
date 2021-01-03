@@ -4,6 +4,8 @@ import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/Upda
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
 
@@ -100,6 +102,8 @@ export enum ScreensKeys {
   ReferEarn = 'ReferEarn',
   SavedPropertiesScreen = 'SavedPropertiesScreen',
   KYC = 'KYC',
+  ValueAddedServices = 'ValueAddedServices',
+  ServicesForSelectedAsset = 'ServicesForSelectedAsset',
 }
 
 export enum OtpNavTypes {
@@ -221,4 +225,20 @@ export interface IUpdatePropertyProps {
 
 export interface ISignUpParams extends IScreenCallback {
   referralCode?: string;
+}
+
+export interface IBadgeInfo {
+  title: string;
+  color: string;
+}
+
+export interface IServicesForSelectAssetParams {
+  propertyId: number;
+  serviceByIds: IGetServicesByIds;
+  badgeInfo: IBadgeInfo;
+  amenities: IAmenitiesIcons[];
+  assetType: string;
+  projectName: string;
+  address: string;
+  flag: string;
 }

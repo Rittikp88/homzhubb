@@ -23,6 +23,7 @@ interface IUserScreenProps {
   loading?: boolean;
   isOuterScrollEnabled?: boolean;
   onBackPress?: () => void;
+  rightNode?: React.ReactElement;
 }
 
 // Constants for Gradient background
@@ -44,6 +45,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     loading = false,
     isOuterScrollEnabled,
     onBackPress,
+    rightNode,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -68,7 +70,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
       <>
         <View style={{ backgroundColor: headerColor }}>
           <StatusBar barStyle="light-content" statusBarBackground={headerColor} />
-          <View style={[styles.header, { backgroundColor: headerColor }]}>
+          <View style={[styles.header, { backgroundColor: headerColor }, styles.rowStyle]}>
             <Text type="regular" textType="semiBold" style={styles.title}>
               {title}
             </Text>
@@ -93,17 +95,20 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     }
 
     return (
-      <View style={styles.pageHeaderContainer}>
-        <Icon
-          size={20}
-          name={icons.leftArrow}
-          color={theme.colors.primaryColor}
-          style={styles.backIconStyle}
-          onPress={onBackPress}
-        />
-        <Text type="small" textType="semiBold" style={styles.pageTitle}>
-          {pageTitle}
-        </Text>
+      <View style={[styles.pageHeaderContainer, styles.rowStyle]}>
+        <View style={styles.rowStyle}>
+          <Icon
+            size={20}
+            name={icons.leftArrow}
+            color={theme.colors.primaryColor}
+            style={styles.backIconStyle}
+            onPress={onBackPress}
+          />
+          <Text type="small" textType="semiBold" style={styles.pageTitle}>
+            {pageTitle}
+          </Text>
+        </View>
+        {rightNode && <View style={styles.rightNodeStyle}>{rightNode}</View>}
       </View>
     );
   };
@@ -147,7 +152,6 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   header: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 8,
     paddingBottom: 20 + MARGIN_TOP,
@@ -155,7 +159,6 @@ const styles = StyleSheet.create({
   },
   pageHeaderContainer: {
     padding: 12,
-    flexDirection: 'row',
     alignItems: 'center',
   },
   title: {
@@ -170,5 +173,12 @@ const styles = StyleSheet.create({
   bar: {
     height: 4,
     backgroundColor: theme.colors.green,
+  },
+  rightNodeStyle: {
+    position: 'absolute',
+    right: theme.layout.screenPadding,
+  },
+  rowStyle: {
+    flexDirection: 'row',
   },
 });

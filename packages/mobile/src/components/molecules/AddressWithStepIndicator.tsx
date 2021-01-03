@@ -1,11 +1,13 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { IBadgeInfo } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import { IAmenitiesData, PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -21,10 +23,13 @@ interface IProps {
   icon?: string;
   onEditPress?: () => void;
   selectedPan?: string;
+  badgeInfo?: IBadgeInfo;
+  amenities?: IAmenitiesData[];
   onPressSteps: (index: number) => void;
   badgeStyle?: StyleProp<ViewStyle>;
   stepContainerStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  stepIndicatorSeparatorStyle?: StyleProp<ViewStyle>;
 }
 const {
   viewport: { width },
@@ -37,7 +42,9 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     isStepDone,
     icon,
     selectedPan,
+    badgeInfo,
     badgeStyle,
+    amenities,
     stepContainerStyle = {},
     containerStyle = {},
     primaryAddress,
@@ -46,6 +53,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     onPressSteps,
     onEditPress,
     countryFlag,
+    stepIndicatorSeparatorStyle,
   } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
@@ -100,20 +108,31 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         isDone = isStepDone[index];
       }
     });
-    // eslint-disable-next-line react/prop-types
-    return <View style={[styles.separator, isDone && styles.doneSeparator, { width: (width - 220) / steps.length }]} />;
+    return (
+      <View
+        style={[
+          styles.separator,
+          isDone && styles.doneSeparator,
+          // eslint-disable-next-line react/prop-types
+          { width: (width - 220) / steps.length },
+          stepIndicatorSeparatorStyle,
+        ]}
+      />
+    );
   };
 
-  const badge = badgeData();
+  const badge = badgeInfo ? { label: badgeInfo.title, color: badgeInfo.color } : badgeData();
 
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.topView}>
-        <Text type="small" textType="regular">
+        <Text type="small" textType="regular" style={styles.propertyTypeStyle}>
           {propertyType}
         </Text>
         {icon && <Icon name={icon} size={23} color={blue} onPress={onEditPress} />}
-        {selectedPan && <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />}
+        {(selectedPan || badgeInfo) && (
+          <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />
+        )}
       </View>
       <PropertyAddressCountry
         primaryAddress={primaryAddress}
@@ -121,6 +140,14 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         countryFlag={countryFlag}
         containerStyle={styles.addressView}
       />
+      {amenities && (
+        <PropertyAmenities
+          containerStyle={styles.amenities}
+          contentContainerStyle={styles.amenitiesContentStyle}
+          data={amenities}
+          direction="row"
+        />
+      )}
       <FlatList
         keyExtractor={(step): string => step}
         data={steps}
@@ -171,5 +198,16 @@ const styles = StyleSheet.create({
   },
   doneStepLabel: {
     color: theme.colors.green,
+  },
+  amenities: {
+    marginTop: 10,
+    marginBottom: 14,
+    justifyContent: 'flex-start',
+  },
+  amenitiesContentStyle: {
+    marginRight: 16,
+  },
+  propertyTypeStyle: {
+    color: theme.colors.primaryColor,
   },
 });

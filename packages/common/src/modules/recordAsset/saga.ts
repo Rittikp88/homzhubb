@@ -9,6 +9,8 @@ import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/R
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 export function* getAssetPlanList() {
   try {
@@ -54,11 +56,19 @@ export function* getMaintenanceUnits() {
   }
 }
 
-export function* getValueAddedServices() {
+export function* getValueAddedServices(action: IFluxStandardAction<IGetServicesByIds>) {
+  const { payload } = action;
+  let assetGroupId = yield select(RecordAssetSelectors.getAssetGroupId);
+  let countryId = yield select(RecordAssetSelectors.getCountryId);
+  let city = yield select(RecordAssetSelectors.getCity);
+
+  if (payload) {
+    assetGroupId = payload.assetGroupId;
+    countryId = payload.countryId;
+    city = payload.city;
+  }
+
   try {
-    const assetGroupId = yield select(RecordAssetSelectors.getAssetGroupId);
-    const countryId = yield select(RecordAssetSelectors.getCountryId);
-    const city = yield select(RecordAssetSelectors.getCity);
     const data = yield call(RecordAssetRepository.getValueAddedServices, assetGroupId, countryId, city);
     yield put(RecordAssetActions.getValueAddedServicesSuccess(data));
   } catch (e) {

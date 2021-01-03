@@ -28,6 +28,7 @@ import {
   IForgotPasswordProps,
   IOtpNavProps,
   IPropertyDetailProps,
+  IServicesForSelectAssetParams,
   IUpdateProfileProps,
   IUpdatePropertyProps,
   IVerifyEmail,
@@ -51,6 +52,8 @@ import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetP
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
+import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
+import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -97,6 +100,8 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
   [ScreensKeys.SavedPropertiesScreen]: undefined;
   [ScreensKeys.KYC]: undefined;
+  [ScreensKeys.ValueAddedServices]: undefined;
+  [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -175,6 +180,8 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
       <MoreStackNavigator.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
     </MoreStackNavigator.Navigator>
   );
 };

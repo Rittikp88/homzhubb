@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { AmenitiesIcon } from '@homzhub/common/src/components/atoms/AmenitiesIcon';
 
-interface IAmenitiesData {
+export interface IAmenitiesData {
   icon: string;
   iconSize?: number;
   iconColor?: string;

@@ -22,9 +22,10 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
-import { AnimatedProfileHeader, AssetDetailsImageCarousel, ShieldGroup } from '@homzhub/mobile/src/components';
+import { AssetDetailsImageCarousel, ShieldGroup } from '@homzhub/mobile/src/components';
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
@@ -207,14 +208,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
   };
 
   return (
-    <AnimatedProfileHeader
-      title={t('more')}
-      sectionHeader={t('savedProperties')}
-      onBackPress={navigation.goBack}
-      sectionTitleType="semiBold"
-      loading={loading}
-      detachedHeaderMode
-    >
+    <UserScreen title={t('more')} pageTitle={t('savedProperties')} onBackPress={navigation.goBack} loading={loading}>
       <>
         {wishListedAssets && wishListedAssets.length > 0 ? (
           wishListedAssets.map((asset, index) => {
@@ -271,7 +265,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
           />
         )}
       </>
-    </AnimatedProfileHeader>
+    </UserScreen>
   );
 };
 
