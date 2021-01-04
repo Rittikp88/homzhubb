@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FinanceUtils } from '@homzhub/common/src/utils/FinanceUtil';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
-import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -16,16 +16,11 @@ import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCal
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
-import { DoubleBarGraph, IGraphProps } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
+import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
 import { GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import {
-  DateFilter,
-  DateRangeType,
-  FINANCIAL_DROPDOWN_DATA,
-  IDropdownObject,
-} from '@homzhub/common/src/constants/FinanceOverview';
+import { DateFilter, FINANCIAL_DROPDOWN_DATA, IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
 
 enum TabKeys {
   expenses = 1,
@@ -46,6 +41,7 @@ interface IOwnState {
 interface IStateProps {
   financialYear: { startDate: string; endDate: string; startMonthIndex: number; endMonthIndex: number };
 }
+
 type Props = IStateProps & IOwnProps & WithTranslation;
 
 export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
@@ -68,8 +64,9 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { t } = this.props;
+    const { t, financialYear } = this.props;
     const { currentTab, selectedTimeRange, data } = this.state;
+    const financeUtil = new FinanceUtils(selectedTimeRange, financialYear, data);
     return (
       <View style={styles.container}>
         <OnFocusCallback isAsync callback={this.getGeneralLedgers} />
@@ -106,7 +103,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
         {currentTab === TabKeys.expenses ? (
           <DonutGraph data={LedgerUtils.filterByType(LedgerTypes.debit, data)} />
         ) : (
-          <DoubleBarGraph data={this.getBarGraphData()} />
+          <DoubleBarGraph data={financeUtil.getBarGraphData(selectedTimeRange)} />
         )}
       </View>
     );
@@ -193,122 +190,6 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
-  };
-
-  public getBarGraphData = (): IGraphProps => {
-    const { selectedTimeRange } = this.state;
-
-    switch (selectedTimeRange) {
-      case DateFilter.thisYear:
-      case DateFilter.thisFinancialYear:
-      case DateFilter.lastYear:
-        return this.getGraphDataForYear();
-      default:
-        return this.getGraphDataForMonth();
-    }
-  };
-
-  private getGraphDataForYear = (): IGraphProps => {
-    const { selectedTimeRange, data } = this.state;
-    const {
-      financialYear: { startMonthIndex, endMonthIndex },
-    } = this.props;
-
-    let monthList = MonthNames;
-    if (selectedTimeRange === DateFilter.thisFinancialYear) {
-      monthList = DateUtils.getMonthRange(startMonthIndex, endMonthIndex);
-    }
-
-    let debitArray = new Array(12).fill(0);
-    let creditArray = new Array(12).fill(0);
-
-    const dataByMonth = ObjectUtils.groupBy<GeneralLedgers>(data, 'transactionDateLabel');
-    Object.keys(dataByMonth).forEach((key: string) => {
-      const currentMonthData = dataByMonth[key];
-
-      const debitsSum = LedgerUtils.totalByType(LedgerTypes.debit, currentMonthData);
-      const creditsSum = LedgerUtils.totalByType(LedgerTypes.credit, currentMonthData);
-
-      const currentMonth = MonthNames[parseInt(key.split('-')[1], 10) - 1];
-      const currentMonthIndex = monthList.findIndex((month) => month === currentMonth);
-      debitArray[currentMonthIndex] = debitsSum;
-      creditArray[currentMonthIndex] = creditsSum;
-    });
-
-    // Remove every entry in the future
-    const currentMonthIndex = monthList.findIndex((month) => month === DateUtils.getCurrentMonthName());
-    debitArray = debitArray.slice(0, currentMonthIndex + 1);
-    creditArray = creditArray.slice(0, currentMonthIndex + 1);
-    monthList = monthList.slice(0, currentMonthIndex + 1);
-
-    // Remove all trailing 0 values
-    const truncateIndex = this.lastNonZeroIndex(debitArray, creditArray);
-    if (truncateIndex >= 0) {
-      debitArray = debitArray.slice(0, truncateIndex + 1);
-      creditArray = creditArray.slice(0, truncateIndex + 1);
-      monthList = monthList.slice(0, truncateIndex + 1);
-    }
-
-    return {
-      data1: debitArray,
-      data2: creditArray,
-      label: monthList,
-      type: DateRangeType.Year,
-    };
-  };
-
-  private getGraphDataForMonth = (): IGraphProps => {
-    const { selectedTimeRange, data } = this.state;
-    const currentYear = Number(DateUtils.getCurrentYear());
-    const requiredMonth =
-      selectedTimeRange === DateFilter.thisMonth
-        ? DateUtils.getCurrentMonthIndex()
-        : DateUtils.getCurrentMonthIndex() - 1;
-
-    const startingWeekNumber = DateUtils.getISOWeekNumber(new Date(currentYear, requiredMonth, 1));
-    const lastWeekNumber = DateUtils.getISOWeekNumber(new Date(currentYear, requiredMonth + 1, 0));
-    const weekCount = lastWeekNumber - startingWeekNumber;
-
-    const weekList = new Array(weekCount).fill('');
-    const weekListNumber = new Array(weekCount).fill(0);
-    for (let i = 0; i < weekCount; i++) {
-      weekList[i] = `Week ${i + 1}`;
-      weekListNumber[i] = Number(startingWeekNumber) + i;
-    }
-
-    const debitArray = new Array(weekCount).fill(0);
-    const creditArray = new Array(weekCount).fill(0);
-    const dataByWeek = ObjectUtils.groupBy<GeneralLedgers>(data, 'transactionDateLabel');
-
-    Object.keys(dataByWeek).forEach((key: string) => {
-      const currentWeekData = dataByWeek[key];
-
-      const debitsSum = LedgerUtils.totalByType(LedgerTypes.debit, currentWeekData);
-      const creditsSum = LedgerUtils.totalByType(LedgerTypes.credit, currentWeekData);
-
-      const currentWeek = Number(key.split('-')[1]);
-      const currentMonthIndex = weekListNumber.findIndex((week) => week === currentWeek);
-
-      debitArray[currentMonthIndex] = debitsSum;
-      creditArray[currentMonthIndex] = creditsSum;
-    });
-
-    return {
-      data1: debitArray,
-      data2: creditArray,
-      label: weekList,
-      type: DateRangeType.Month,
-    };
-  };
-
-  private lastNonZeroIndex = (debitArray: number[], creditArray: number[]): number => {
-    for (let i = debitArray.length - 1; i >= 0; i--) {
-      const debit = debitArray[i];
-      const credit = creditArray[i];
-      if (debit > 0 || credit > 0) return i;
-    }
-
-    return -1;
   };
 }
 

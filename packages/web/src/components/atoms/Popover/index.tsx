@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import Popup from 'reactjs-popup';
 import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
+import 'reactjs-popup/dist/index.css';
 import '@homzhub/web/src/components/atoms/Popover/popoverStyle.scss';
 
 interface IProps {

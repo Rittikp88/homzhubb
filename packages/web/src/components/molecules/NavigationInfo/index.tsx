@@ -37,7 +37,7 @@ export const NavigationInfo: FC = () => {
     }
   };
   const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
-  const popupOptionStyle = { marginTop: '4px' };
+  const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch' };
   return (
     <View>
       <div className="navigation-bg" />
@@ -66,25 +66,27 @@ export const NavigationInfo: FC = () => {
             </Typography>
             <Icon name={icons.downArrow} color={theme.colors.white} />
           </Button>
-          <Popover
-            forwardedRef={popupRef}
-            content={<PopupMenuOptions options={quickActionOptions} onMenuOptionPress={closePopup} />}
-            popupProps={{
-              position: 'bottom right',
-              on: ['hover', 'click'],
-              arrow: false,
-              contentStyle: popupOptionStyle,
-              closeOnDocumentClick: true,
-              children: undefined,
-            }}
-          >
-            <Button type="secondary" containerStyle={[styles.button, styles.addBtn]}>
-              <Icon name={icons.plus} color={theme.colors.primaryColor} style={styles.buttonIconRight} />
-              <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
-                {t('addCamelCase')}
-              </Typography>
-            </Button>
-          </Popover>
+          <View style={[styles.addBtnContainer, isMobile && styles.addBtnContainerMobile]}>
+            <Popover
+              forwardedRef={popupRef}
+              content={<PopupMenuOptions options={quickActionOptions} onMenuOptionPress={closePopup} />}
+              popupProps={{
+                position: 'bottom right',
+                on: ['click'],
+                arrow: false,
+                contentStyle: popupOptionStyle,
+                closeOnDocumentClick: true,
+                children: undefined,
+              }}
+            >
+              <Button type="secondary" containerStyle={[styles.button, styles.addBtn]}>
+                <Icon name={icons.plus} color={theme.colors.primaryColor} style={styles.buttonIconRight} />
+                <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
+                  {t('addCamelCase')}
+                </Typography>
+              </Button>
+            </Popover>
+          </View>
         </View>
       </View>
     </View>
@@ -132,11 +134,20 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     marginLeft: 16,
-    maxWidth: 'max-content',
-    height: 'max-content',
+    width: 'max-content',
   },
   addBtn: {
     paddingHorizontal: 24,
+    marginLeft: 0,
+  },
+  addBtnContainerMobile: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  addBtnContainer: {
+    marginLeft: 16,
+    alignItems: 'stretch',
   },
   countryBtnMobile: {
     marginLeft: 0,

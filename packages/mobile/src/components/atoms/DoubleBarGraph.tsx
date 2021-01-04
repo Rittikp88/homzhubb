@@ -10,13 +10,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { DateRangeType } from '@homzhub/common/src/constants/FinanceOverview';
-
-export interface IGraphProps {
-  data1: number[];
-  data2: number[];
-  label: string[];
-  type: DateRangeType;
-}
+import { IGraphProps } from '@homzhub/common/src/utils/FinanceUtil';
 
 interface IProps {
   data: IGraphProps;
