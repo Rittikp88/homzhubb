@@ -5,6 +5,8 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { MarketTrendsResults, MarketTrendType } from '@homzhub/common/src/domain/models/MarketTrends';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   data: MarketTrendsResults;
@@ -12,11 +14,12 @@ interface IProps {
 
 const MarketTrendsCard: FC<IProps> = ({ data }: IProps) => {
   const { title, postedAtDate, link, imageUrl, trendType, description } = data;
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const onLinkPress = (): void => {
     window.open(link);
   };
   return (
-    <TouchableOpacity activeOpacity={1} onPress={onLinkPress} style={styles.card}>
+    <TouchableOpacity activeOpacity={1} onPress={onLinkPress} style={[styles.card, isMobile && styles.cardMobile]}>
       {imageUrl && !!imageUrl ? (
         <ImageBackground source={{ uri: imageUrl }} style={styles.image}>
           {trendType === MarketTrendType.VIDEO && (
@@ -56,6 +59,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     marginRight: 16,
     marginBottom: 25,
+  },
+  cardMobile: {
+    marginRight: undefined,
   },
   image: {
     flex: 1,

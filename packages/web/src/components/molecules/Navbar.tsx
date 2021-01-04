@@ -126,12 +126,19 @@ interface INavBarStyle {
 const navBarStyle = (isMobile: boolean, isTablet: boolean, isDesktop: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
   StyleSheet.create<INavBarStyle>({
     container: {
+      width: '100%',
       backgroundColor: theme.colors.white,
       alignItems: 'center',
-      zIndex: 1200,
+      shadowColor: theme.colors.shadow,
+      shadowOpacity: 0.04,
+      shadowRadius: 4,
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
     },
     subContainer: {
-      width: '90vw',
+      width: isMobile ? theme.layout.dashboardMobileWidth : theme.layout.dashboardWidth,
       flexDirection: 'row',
       paddingVertical: 4,
       justifyContent: 'space-between',

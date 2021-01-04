@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
@@ -10,12 +10,12 @@ interface IPopupOptions {
   label: string;
 }
 
-interface IProps {
-  options: IPopupOptions[];
-  onMenuOptionPress: (option: IPopupOptions) => void;
+interface IProps<T extends IPopupOptions> {
+  options: T[];
+  onMenuOptionPress: (option: T) => void;
 }
 
-const PopupMenuOptions: FC<IProps> = ({ options, onMenuOptionPress }: IProps) => {
+const PopupMenuOptions = <T extends IPopupOptions>({ options, onMenuOptionPress }: IProps<T>): React.ReactElement => {
   const { primaryColor, darkTint4 } = theme.colors;
   return (
     <View style={styles.optionContainer}>

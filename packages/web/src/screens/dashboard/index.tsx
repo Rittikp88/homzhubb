@@ -5,12 +5,15 @@ import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { useDispatch, useSelector } from 'react-redux';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 import PropertyUpdates from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
-import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
+import { PropertyVisualsEstimates } from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 import VacantProperties from '@homzhub/web/src/screens/dashboard/components/VacantProperties';
 import { PendingPropertiesCard } from '@homzhub/web/src/components';
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
@@ -18,21 +21,32 @@ import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-interface IProps {
+interface IOwnProps {
   investmentDataArray: Asset[];
 }
 
+type IProps = IOwnProps;
+
 const Dashboard: FC<IProps> = (props: IProps) => {
   const isMobile = useUp(deviceBreakpoint.MOBILE);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const { investmentDataArray } = props;
+  const selectedCountry = 0;
   const [pendingProperty, setPendingProperty] = useState({} as Asset[]);
   const [vacantProperty, setVacantProperty] = useState({} as Asset[]);
   const [propertyMetrics, setPropertyMetrics] = useState({} as AssetMetrics);
   useEffect(() => {
-    getPendingPropertyDetails((response) => setPendingProperty(response)).then();
+    if (isLoggedIn) {
+      dispatch(UserActions.getUserPreferences());
+      dispatch(UserActions.getUserProfile());
+      dispatch(UserActions.getFavouriteProperties());
+      dispatch(UserActions.getAssets());
+    }
+    getPendingPropertyDetails(setPendingProperty).then();
     getPropertyMetrics((response) => setPropertyMetrics(response)).then();
     getVacantPropertyDetails((response) => setVacantProperty(response)).then();
-  }, []);
+  }, [dispatch, isLoggedIn]);
   const PendingPropertyAndUserSubscriptionComponent = (): React.ReactElement => (
     <>
       <PendingPropertiesCard data={pendingProperty} />
@@ -43,7 +57,7 @@ const Dashboard: FC<IProps> = (props: IProps) => {
     <View style={styles.container}>
       <PropertyOverview data={propertyMetrics?.assetMetrics?.miscellaneous ?? []} />
       <PropertyUpdates updatesData={propertyMetrics?.updates ?? {}} />
-      <PropertyVisualsEstimates />
+      <PropertyVisualsEstimates selectedCountry={selectedCountry} />
       {isMobile ? (
         <View style={[styles.wrapper, isMobile && styles.row]}>
           <PendingPropertyAndUserSubscriptionComponent />
