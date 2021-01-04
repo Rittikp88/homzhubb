@@ -18,13 +18,6 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
       }
     }
   >
-  <View
-    style={
-      Object {
-        "flex": 1,
-      }
-    }
-  >
     <Text
       onPress={[Function]}
       style={
@@ -337,13 +330,6 @@ exports[`Onboarding Screen should render with data in state 1`] = `
     }
   }
 >
-  <View
-    style={
-      Object {
-        "flex": 1,
-      }
-    }
-  >
   <View
     style={
       Object {
