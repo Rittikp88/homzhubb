@@ -1,9 +1,10 @@
 import { TFunction } from 'i18next';
 import { DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
-import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
-
 import {
   DateFilter,
   DateRangeType,
@@ -30,44 +31,40 @@ export interface IGeneralLedgersParams {
   selectedProperty?: number | undefined;
 }
 
-export class FinanceUtils {
-  private params: IGeneralLedgersParams;
+class FinanceUtils {
+  public getGeneralLedgers = async (
+    params: IGeneralLedgersParams,
+    success: (data: GeneralLedgers[]) => void,
+    failure: (errorMsg: string) => void
+  ): Promise<void> => {
+    const { selectedTimeRange, financialYear, selectedCountry, selectedProperty } = params;
+    const { endDate: finEndDate, startDate: finStartDate } = financialYear;
+    // @ts-ignore
+    let { endDate, startDate } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
+    // @ts-ignore
+    const { value, dataGroupBy } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
 
-  private data: GeneralLedgers[];
+    if (value === DateFilter.thisFinancialYear) {
+      endDate = finEndDate;
+      startDate = finStartDate;
+    }
 
-  constructor(
-    selectedTimeRange: DateFilter,
-    financialYear: { startDate: string; endDate: string; startMonthIndex: number; endMonthIndex: number },
-    data: GeneralLedgers[],
-    selectedCountry?: number,
-    selectedProperty?: number
-  ) {
-    this.data = data;
-    this.params = {
-      selectedCountry,
-      selectedProperty,
-      financialYear,
-      selectedTimeRange,
-    };
-  }
-
-  public updateData = (
-    selectedTimeRange: DateFilter,
-    financialYear: { startDate: string; endDate: string; startMonthIndex: number; endMonthIndex: number },
-    data: GeneralLedgers[],
-    selectedCountry?: number,
-    selectedProperty?: number
-  ): void => {
-    this.data = data;
-    this.params = {
-      selectedCountry,
-      selectedProperty,
-      financialYear,
-      selectedTimeRange,
-    };
+    try {
+      const response: GeneralLedgers[] = await LedgerRepository.getLedgerPerformances({
+        transaction_date__gte: startDate,
+        transaction_date__lte: endDate,
+        transaction_date_group_by: dataGroupBy,
+        asset_id: selectedProperty || undefined,
+        country_id: selectedCountry || undefined,
+      });
+      success(response);
+    } catch (err) {
+      failure(ErrorUtils.getErrorMessage(err.details));
+    }
   };
 
-  public renderCalenderLabel = (selectedTimeRange: DateFilter): string => {
+  public renderCalenderLabel = (params: IGeneralLedgersParams): string => {
+    const { selectedTimeRange, financialYear } = params;
     switch (selectedTimeRange) {
       case DateFilter.thisYear:
         return DateUtils.getCurrentYear();
@@ -76,7 +73,7 @@ export class FinanceUtils {
       case DateFilter.lastYear:
         return DateUtils.getLastYear();
       case DateFilter.thisFinancialYear: {
-        const { startDate, endDate, startMonthIndex, endMonthIndex } = this.params.financialYear;
+        const { startDate, endDate, startMonthIndex, endMonthIndex } = financialYear;
 
         const startMonth = MonthNames[startMonthIndex];
         const startYear = startDate.split('-')[0];
@@ -101,19 +98,20 @@ export class FinanceUtils {
     });
   };
 
-  public getBarGraphData = (selectedTimeRange: DateFilter): IGraphProps => {
+  public getBarGraphData = (params: IGeneralLedgersParams, ledgersData: GeneralLedgers[]): IGraphProps => {
+    const { selectedTimeRange, financialYear } = params;
     switch (selectedTimeRange) {
       case DateFilter.thisYear:
       case DateFilter.thisFinancialYear:
       case DateFilter.lastYear:
-        return this.getGraphDataForYear();
+        return this.getGraphDataForYear({ selectedTimeRange, financialYear }, ledgersData);
       default:
-        return this.getGraphDataForMonth();
+        return this.getGraphDataForMonth(selectedTimeRange, ledgersData);
     }
   };
 
-  private getGraphDataForYear = (): IGraphProps => {
-    const { financialYear, selectedTimeRange } = this.params;
+  private getGraphDataForYear = (params: IGeneralLedgersParams, ledgersData: GeneralLedgers[]): IGraphProps => {
+    const { selectedTimeRange, financialYear } = params;
     const { startMonthIndex, endMonthIndex } = financialYear;
 
     let monthList = MonthNames;
@@ -124,7 +122,7 @@ export class FinanceUtils {
     let debitArray = new Array(12).fill(0);
     let creditArray = new Array(12).fill(0);
 
-    const dataByMonth = ObjectUtils.groupBy<GeneralLedgers>(this.data, 'transactionDateLabel');
+    const dataByMonth = ObjectUtils.groupBy<GeneralLedgers>(ledgersData, 'transactionDateLabel');
     Object.keys(dataByMonth).forEach((key: string) => {
       const currentMonthData = dataByMonth[key];
 
@@ -153,10 +151,10 @@ export class FinanceUtils {
     };
   };
 
-  private getGraphDataForMonth = (): IGraphProps => {
+  private getGraphDataForMonth = (selectedTimeRange: DateFilter, ledgersData: GeneralLedgers[]): IGraphProps => {
     const currentYear = Number(DateUtils.getCurrentYear());
     const requiredMonth =
-      this.params.selectedTimeRange === DateFilter.thisMonth
+      selectedTimeRange === DateFilter.thisMonth
         ? DateUtils.getCurrentMonthIndex()
         : DateUtils.getCurrentMonthIndex() - 1;
 
@@ -175,7 +173,7 @@ export class FinanceUtils {
 
     const debitArray = new Array(weekCount).fill(0);
     const creditArray = new Array(weekCount).fill(0);
-    const dataByWeek = ObjectUtils.groupBy<GeneralLedgers>(this.data, 'transactionDateLabel');
+    const dataByWeek = ObjectUtils.groupBy<GeneralLedgers>(ledgersData, 'transactionDateLabel');
 
     Object.keys(dataByWeek).forEach((key: string) => {
       const currentWeekData = dataByWeek[key];
@@ -198,3 +196,6 @@ export class FinanceUtils {
     };
   };
 }
+
+const financeUtils = new FinanceUtils();
+export { financeUtils as FinanceUtils };

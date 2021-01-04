@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropertyVisualsEstimates from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
+import { PropertyVisualsEstimates } from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 import DuesCard from '@homzhub/web/src/screens/Financials/DuesCard';
 import Transactions from '@homzhub/web/src/screens/Financials/Transactions';
 

@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FinanceUtils } from '@homzhub/common/src/utils/FinanceUtil';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
-import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -23,7 +22,7 @@ import PopupMenuOptions from '@homzhub/web/src/components/molecules/PopupMenuOpt
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { DateFilter, FINANCIAL_DROPDOWN_DATA, IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
+import { DateFilter, IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
 
 export interface IGeneralLedgersParams {
   selectedTimeRange: DateFilter;
@@ -69,51 +68,9 @@ const getPropertyList = (t: TFunction, assets: Asset[], selectedCountry: number)
   return [{ label: t('assetFinancial:allProperties'), icon: icons.stackFilled, value: 0 }, ...properties];
 };
 
-const renderFilterOptions = (t: TFunction): IDropdownObject[] => {
-  const data = Object.values(FINANCIAL_DROPDOWN_DATA);
-
-  return data.map((currentData: IDropdownObject) => {
-    return {
-      ...currentData,
-      label: t(currentData.label),
-    };
-  });
-};
-
-const getGeneralLedgers = async (
-  params: IGeneralLedgersParams,
-  callback: (response: GeneralLedgers[]) => void
-): Promise<void> => {
-  const { financialYear, selectedTimeRange, selectedCountry, selectedProperty } = params;
-  const { endDate: finEndDate, startDate: finStartDate } = financialYear;
-
-  // @ts-ignore
-  let { endDate, startDate } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
-  // @ts-ignore
-  const { value, dataGroupBy } = FINANCIAL_DROPDOWN_DATA[selectedTimeRange];
-
-  if (value === DateFilter.thisFinancialYear) {
-    endDate = finEndDate;
-    startDate = finStartDate;
-  }
-
-  try {
-    const response: GeneralLedgers[] = await LedgerRepository.getLedgerPerformances({
-      transaction_date__gte: startDate,
-      transaction_date__lte: endDate,
-      transaction_date_group_by: dataGroupBy,
-      asset_id: selectedProperty || undefined,
-      country_id: selectedCountry || undefined,
-    });
-    callback(response);
-  } catch (err) {
-    // TODO:(bishal) Handle error case here
-  }
-};
-
 const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const dateFilterOptions = renderFilterOptions(t);
+  const dateFilterOptions = FinanceUtils.renderFilterOptions(t);
   const defaultFilterOption = dateFilterOptions.find((d: IDropdownOption) => d.value === DateFilter.thisMonth);
   const assets = useSelector(UserSelector.getUserAssets);
   const financialYear = useSelector(UserSelector.getUserFinancialYear);
@@ -126,7 +83,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
   const styles = propertyVisualEstimatesStyle(isMobile);
   const dateFilter = selectedDateFilter?.value ?? DateFilter.thisMonth;
   useEffect(() => {
-    getGeneralLedgers(
+    FinanceUtils.getGeneralLedgers(
       {
         selectedTimeRange: dateFilter,
         financialYear,
@@ -134,11 +91,13 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
       },
       (data) => {
         setLedgerData(data);
+      },
+      () => {
+        // todo: handle failure case here
       }
     ).then();
   }, [dateFilter, financialYear, selectedProperty]);
-  const financeUtil = new FinanceUtils(dateFilter, financialYear, ledgerData);
-  const columnGraphData = financeUtil.getBarGraphData(dateFilter);
+  const columnGraphData = FinanceUtils.getBarGraphData({ selectedTimeRange: dateFilter, financialYear }, ledgerData);
   const closePopup = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
@@ -173,7 +132,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
           <View style={styles.monthInfo}>
             <Icon name={icons.calendar} size={18} color={theme.colors.darkTint4} style={styles.dropdownIcon} />
             <Typography variant="label" size="large" style={styles.optionLabel}>
-              {financeUtil.renderCalenderLabel(selectedDateFilter?.value ?? DateFilter.thisYear)}
+              {FinanceUtils.renderCalenderLabel({ selectedTimeRange: dateFilter, financialYear })}
             </Typography>
           </View>
           <Popover
@@ -252,7 +211,7 @@ const propertyVisualEstimatesStyle = (isMobile: boolean): StyleSheet.NamedStyles
       minWidth: 'max-content',
       marginBottom: isMobile ? 20 : undefined,
       flexDirection: 'row',
-      paddingHorizontal: 12,
+      paddingHorizontal: isMobile ? 4 : 12,
       paddingVertical: 4,
       borderColor: theme.colors.darkTint9,
       borderWidth: 1,
@@ -262,7 +221,7 @@ const propertyVisualEstimatesStyle = (isMobile: boolean): StyleSheet.NamedStyles
     chooseTimeRange: {
       minWidth: 'max-content',
       flexDirection: 'row',
-      paddingHorizontal: 12,
+      paddingHorizontal: isMobile ? 4 : 12,
       paddingVertical: 6,
       alignItems: 'center',
       borderRadius: 4,
