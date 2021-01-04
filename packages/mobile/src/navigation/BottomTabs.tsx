@@ -1,7 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useRoute } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
@@ -30,7 +28,9 @@ import {
   IForgotPasswordProps,
   IOtpNavProps,
   IPropertyDetailProps,
+  IServicesForSelectAssetParams,
   IUpdateProfileProps,
+  IUpdatePropertyProps,
   IVerifyEmail,
   NestedNavigatorParams,
   ScreensKeys,
@@ -51,6 +51,9 @@ import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
+import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
+import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
+import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -74,6 +77,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
+  [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -96,6 +100,8 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
   [ScreensKeys.SavedPropertiesScreen]: undefined;
   [ScreensKeys.KYC]: undefined;
+  [ScreensKeys.ValueAddedServices]: undefined;
+  [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -132,6 +138,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.PortfolioLandingScreen} component={Portfolio} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
+      <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
     </PortfolioNavigator.Navigator>
   );
 };
@@ -173,23 +180,16 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
       <MoreStackNavigator.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
     </MoreStackNavigator.Navigator>
   );
 };
 
 export const BottomTabs = (): React.ReactElement => {
   const { t } = useTranslation();
-  const routeName = getFocusedRouteNameFromRoute(useRoute()) ?? ScreensKeys.Dashboard;
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const dispatch = useDispatch();
-  // Initial Route for guest and logged in user gets decided here
-  if (PlatformUtils.isAndroid()) {
-    if (isLoggedIn && routeName !== ScreensKeys.Search) {
-      StatusBar.setBackgroundColor(theme.colors.primaryColor);
-    } else {
-      StatusBar.setBackgroundColor(theme.colors.white);
-    }
-  }
 
   const getTabBarVisibility = (route: any): boolean => {
     const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';

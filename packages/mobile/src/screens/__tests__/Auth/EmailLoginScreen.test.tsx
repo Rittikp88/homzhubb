@@ -36,11 +36,6 @@ describe('Email Login Screen', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should navigate on icon press', () => {
-    component.find('[testID="headerIconPress"]').prop('onIconPress')();
-    expect(mock).toHaveBeenCalled();
-  });
-
   it('should navigate to forgot password', () => {
     component.find('[testID="loginForm"]').prop('handleForgotPassword')();
     expect(mock).toHaveBeenCalled();

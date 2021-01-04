@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -10,10 +10,9 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { CurrentLocation, Header } from '@homzhub/mobile/src/components';
+import { CurrentLocation } from '@homzhub/mobile/src/components';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import {
   GoogleGeocodeData,
@@ -57,31 +56,31 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
     const { searchString, suggestions, showAutoDetect } = this.state;
 
     return (
-      <View style={styles.container}>
-        <Header
-          isBarVisible={false}
-          type="primary"
-          icon={icons.leftArrow}
-          onIconPress={this.onBackPress}
-          isHeadingVisible
-          title={t('common:location')}
-          testID="header"
-        />
-        <GoogleSearchBar
-          placeholder={t('searchProject')}
-          value={searchString}
-          updateValue={this.onUpdateSearchString}
-          onFocusChange={this.onToggleAutoDetect}
-          testID="searchBar"
-        />
-        <View style={styles.bar} />
+      <Screen
+        headerProps={{
+          barVisible: true,
+          type: 'primary',
+          onIconPress: this.onBackPress,
+          title: t('common:location'),
+          children: (
+            <GoogleSearchBar
+              placeholder={t('searchProject')}
+              value={searchString}
+              updateValue={this.onUpdateSearchString}
+              onFocusChange={this.onToggleAutoDetect}
+              testID="searchBar"
+            />
+          ),
+        }}
+        contentContainerStyle={styles.content}
+      >
         {suggestions.length > 0 && searchString.length > 0 && (
           <SearchResults results={suggestions} onResultPress={this.onSuggestionPress} testID="searchResults" />
         )}
         {showAutoDetect && searchString.length <= 0 && (
           <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} testID="currentLocation" />
         )}
-      </View>
+      </Screen>
     );
   }
 
@@ -160,13 +159,6 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
   };
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  bar: { height: 4, backgroundColor: theme.colors.green },
-});
-
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     isAddPropertyFlow: UserSelector.isAddPropertyFlow(state),
@@ -189,3 +181,9 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(AssetLocationSearch));
+
+const styles = StyleSheet.create({
+  content: {
+    paddingHorizontal: 0,
+  },
+});

@@ -1,10 +1,10 @@
 import React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
-import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 
 interface IOwnState {
   scrollEnabled: boolean;
@@ -12,25 +12,18 @@ interface IOwnState {
 type libraryProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.MarketTrends>;
 type Props = WithTranslation & libraryProps;
 
-export class MarketTrends extends React.PureComponent<Props, IOwnState> {
-  public state = {
-    scrollEnabled: true,
-  };
-
+export class MarketTrends extends React.PureComponent<Props> {
   public render = (): React.ReactElement => {
     const { t } = this.props;
-    const { scrollEnabled } = this.state;
     return (
-      <AnimatedProfileHeader
-        keyboardShouldPersistTaps
+      <UserScreen
         title={t('assetMore:more')}
-        sectionHeader={t('marketTrends')}
-        sectionTitleType="semiBold"
+        pageTitle={t('assetMore:marketTrends')}
         onBackPress={this.handleIconPress}
-        isOuterScrollEnabled={scrollEnabled}
+        scrollEnabled={false}
       >
-        <AssetMarketTrends shouldEnableOuterScroll={this.toggleScroll} onTrendPress={this.openWebView} />
-      </AnimatedProfileHeader>
+        <AssetMarketTrends onTrendPress={this.openWebView} />
+      </UserScreen>
     );
   };
 
@@ -45,10 +38,6 @@ export class MarketTrends extends React.PureComponent<Props, IOwnState> {
     }
 
     navigation.goBack();
-  };
-
-  private toggleScroll = (scrollEnabled: boolean): void => {
-    this.setState({ scrollEnabled });
   };
 
   private openWebView = (url: string, trendId: number): void => {

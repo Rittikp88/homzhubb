@@ -1,19 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Login Screen should render login screen 1`] = `
-<AnimatedHeader
-  linkText="auth:signup"
-  onIconPress={[Function]}
-  onLinkPress={[Function]}
-  subTitle="auth:newAroundHere"
-  testID="headerEvents"
-  title="login"
+<Screen
+  backgroundColor="#FFFFFF"
+  headerProps={
+    Object {
+      "icon": "close",
+      "onIconPress": [Function],
+      "type": "secondary",
+    }
+  }
+  pageHeaderProps={
+    Object {
+      "contentLink": "auth:signup",
+      "contentSubTitle": "auth:newAroundHere",
+      "contentTitle": "login",
+      "onLinkPress": [Function],
+    }
+  }
 >
   <withI18nextTranslation(LoginForm)
     onLoginSuccess={[Function]}
     testID="loginForm"
   />
-  <Connect(withI18nextTranslation(SocialMediaComponent))
+  <Connect(withI18nextTranslation(AuthenticationGateways))
     isFromLogin={true}
     navigation={
       Object {
@@ -24,5 +34,5 @@ exports[`Login Screen should render login screen 1`] = `
     onEmailLogin={[Function]}
     testID="socialEmailLogin"
   />
-</AnimatedHeader>
+</Screen>
 `;

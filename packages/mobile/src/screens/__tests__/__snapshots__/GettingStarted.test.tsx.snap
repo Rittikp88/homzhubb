@@ -2,10 +2,6 @@
 
 exports[`Getting started Screen should render the getting started screen 1`] = `
 <Fragment>
-  <Memo(StatusBarComponent)
-    backgroundColor="#F0F5F9"
-    isTranslucent={true}
-  />
   <View
     style={
       Object {

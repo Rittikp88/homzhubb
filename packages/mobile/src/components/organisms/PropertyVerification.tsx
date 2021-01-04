@@ -66,15 +66,18 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public render(): React.ReactElement {
     const { t } = this.props;
-    const { existingDocuments, localDocuments, isLoading } = this.state;
+    const { existingDocuments, localDocuments, isLoading, verificationTypes } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
     // TODO (21-12-2020): Remove this temp hack once camera module is refactored
     const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
     const containsAllReqd =
-      uploadedTypes.includes(VerificationDocumentCategory.ID_PROOF) &&
-      uploadedTypes.includes(VerificationDocumentCategory.OCCUPANCY_CERTIFICATE) &&
-      uploadedTypes.includes(VerificationDocumentCategory.PROPERTY_TAX);
+      verificationTypes.length > 3
+        ? uploadedTypes.includes(VerificationDocumentCategory.ID_PROOF) &&
+          uploadedTypes.includes(VerificationDocumentCategory.OCCUPANCY_CERTIFICATE) &&
+          uploadedTypes.includes(VerificationDocumentCategory.PROPERTY_TAX)
+        : uploadedTypes.includes(VerificationDocumentCategory.ID_PROOF) &&
+          uploadedTypes.includes(VerificationDocumentCategory.OWNERSHIP_VERIFICATION_DOCUMENT);
 
     return (
       <>
@@ -184,10 +187,13 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public captureSelfie = (verificationDocumentId: number, data: VerificationDocumentTypes): void => {
     ImagePicker.openCamera({
+      width: 400,
+      height: 400,
       compressImageMaxWidth: 400,
       compressImageMaxHeight: 400,
       compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
       useFrontCamera: true,
+      cropping: true,
     }).then((image: any) => {
       const source = {
         uri: image.path,

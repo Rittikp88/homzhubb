@@ -1,11 +1,13 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ISocialUserData } from '@homzhub/common/src/assets/constants';
 import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
@@ -60,6 +62,7 @@ export enum ScreensKeys {
   PortfolioLandingScreen = 'PortfolioLandingScreen',
   PropertyDetailScreen = 'PropertyDetailScreen',
   PropertyDetailsNotifications = 'PropertyDetailsNotifications',
+  UpdatePropertyScreen = 'UpdatePropertyScreen',
 
   // Financials Stack
   FinancialsLandingScreen = 'FinancialsLandingScreen',
@@ -99,6 +102,8 @@ export enum ScreensKeys {
   ReferEarn = 'ReferEarn',
   SavedPropertiesScreen = 'SavedPropertiesScreen',
   KYC = 'KYC',
+  ValueAddedServices = 'ValueAddedServices',
+  ServicesForSelectedAsset = 'ServicesForSelectedAsset',
 }
 
 export enum OtpNavTypes {
@@ -107,6 +112,12 @@ export enum OtpNavTypes {
   SocialMedia = 'SocialMedia',
   UpdateProfileByEmailPhoneOtp = 'UpdateProfileByEmailPhoneOtp',
   UpdateProfileByOtp = 'UpdateProfileByOtp',
+}
+
+export enum UpdatePropertyFormTypes {
+  CancelListing = 'CANCEL_LISTING',
+  TerminateListing = 'TERMINATE_LISTING',
+  RenewListing = 'RENEW_LISTING',
 }
 
 export interface IScreenCallback {
@@ -120,6 +131,7 @@ export interface IOtpNavProps extends IScreenCallback {
   otpSentTo: string;
   email?: string;
   userData?: ISignUpPayload;
+  socialUserData?: ISocialUserData;
   updateProfileCallback?: (phoneOtp: string, emailOtp?: string) => void;
 }
 
@@ -207,6 +219,26 @@ export interface IPropertyDetailProps {
   tabKey?: Tabs;
 }
 
+export interface IUpdatePropertyProps {
+  formType: UpdatePropertyFormTypes;
+}
+
 export interface ISignUpParams extends IScreenCallback {
   referralCode?: string;
+}
+
+export interface IBadgeInfo {
+  title: string;
+  color: string;
+}
+
+export interface IServicesForSelectAssetParams {
+  propertyId: number;
+  serviceByIds: IGetServicesByIds;
+  badgeInfo: IBadgeInfo;
+  amenities: IAmenitiesIcons[];
+  assetType: string;
+  projectName: string;
+  address: string;
+  flag: string;
 }

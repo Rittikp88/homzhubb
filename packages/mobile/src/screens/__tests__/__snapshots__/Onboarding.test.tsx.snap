@@ -11,15 +11,13 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
     }
   }
 >
-  <Memo(StatusBarComponent)
-    backgroundColor="#FFFFFF"
-    isTranslucent={true}
-    statusBarStyle={
+  <View
+    style={
       Object {
-        "height": 20,
+        "flex": 1,
       }
     }
-  />
+  >
   <View
     style={
       Object {
@@ -339,15 +337,13 @@ exports[`Onboarding Screen should render with data in state 1`] = `
     }
   }
 >
-  <Memo(StatusBarComponent)
-    backgroundColor="#FFFFFF"
-    isTranslucent={true}
-    statusBarStyle={
+  <View
+    style={
       Object {
-        "height": 20,
+        "flex": 1,
       }
     }
-  />
+  >
   <View
     style={
       Object {

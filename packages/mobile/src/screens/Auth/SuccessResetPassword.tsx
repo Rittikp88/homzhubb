@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
 import { CommonActions } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
-export type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.ResetPassword>;
+export type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SuccessResetPassword>;
 
 export class SuccessResetPassword extends Component<Props, {}> {
   public render(): React.ReactNode {
     const { t } = this.props;
     return (
-      <View style={styles.container}>
-        <DetailedHeader
-          icon={icons.close}
-          title={t('auth:successResetPassword')}
-          subTitle={t('auth:successResetPasswordDescription')}
-          onIconPress={this.navigateToLogin}
-          headerContainerStyle={styles.headerContainer}
-        />
+      <Screen
+        headerProps={{
+          type: 'secondary',
+          icon: icons.close,
+          onIconPress: this.navigateToLogin,
+        }}
+        pageHeaderProps={{
+          contentTitle: t('auth:successResetPassword'),
+          contentSubTitle: t('auth:successResetPasswordDescription'),
+          disableDivider: true,
+        }}
+        backgroundColor={theme.colors.white}
+      >
         <Button
           type="primary"
           title={t('common:login')}
@@ -30,7 +35,7 @@ export class SuccessResetPassword extends Component<Props, {}> {
           containerStyle={styles.button}
           testID="btnLogin"
         />
-      </View>
+      </Screen>
     );
   }
 
@@ -49,15 +54,7 @@ export class SuccessResetPassword extends Component<Props, {}> {
 export default withTranslation()(SuccessResetPassword);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-  },
-  headerContainer: {
-    borderBottomWidth: 0,
-  },
   button: {
     flex: 0,
-    margin: theme.layout.screenPadding,
   },
 });

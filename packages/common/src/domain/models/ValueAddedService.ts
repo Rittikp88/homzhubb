@@ -2,6 +2,12 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { IValueBundle, ValueBundle } from '@homzhub/common/src/domain/models/ValueBundle';
 
+export interface IGetServicesByIds {
+  assetGroupId: number;
+  countryId: number;
+  city: string;
+}
+
 export interface ISelectedValueServices {
   id: number;
   value: boolean;

@@ -11,11 +11,11 @@ import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import ReferEarnIcon from '@homzhub/common/src/assets/images/referEarn.svg';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 
 type Props = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ReferEarn>;
 
@@ -31,10 +31,13 @@ const ReferEarn = (props: Props): React.ReactElement => {
     LinkingService.buildShortLink(
       DynamicLinkTypes.Referral,
       `${DynamicLinkParamKeys.ReferralCode}=${code}&${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}`
-    ).then((link) => {
-      url.current = `${t('shareHomzhub')} ${link}`;
-      setLoading(false);
-    });
+    )
+      .then((link) => {
+        url.current = `${t('shareHomzhub')} ${link}`;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [code, t]);
 
   const onCopyToClipboard = useCallback((): void => {
@@ -82,13 +85,7 @@ const ReferEarn = (props: Props): React.ReactElement => {
   ]);
 
   return (
-    <AnimatedProfileHeader
-      title={t('more')}
-      sectionHeader={t('refer')}
-      onBackPress={navigation.goBack}
-      sectionTitleType="semiBold"
-      loading={loading}
-    >
+    <UserScreen title={t('more')} loading={loading} onBackPress={navigation.goBack} pageTitle={t('referFriend')}>
       <View style={styles.container}>
         <ReferEarnIcon style={styles.icon} />
         <Text type="small" textType="semiBold" style={styles.refer}>
@@ -124,7 +121,7 @@ const ReferEarn = (props: Props): React.ReactElement => {
           ))}
         </View>
       </View>
-    </AnimatedProfileHeader>
+    </UserScreen>
   );
 };
 

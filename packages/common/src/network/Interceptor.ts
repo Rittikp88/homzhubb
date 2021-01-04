@@ -10,7 +10,7 @@ import {
 import { IRefreshToken } from '@homzhub/common/src/domain/repositories/interfaces';
 import { TOKEN_NOT_VALID } from '@homzhub/common/src/network/Constants';
 
-const REFRESH_TOKEN_ENDPOINT = 'token/refresh/';
+const REFRESH_TOKEN_ENDPOINT = 'users/token/refresh/';
 
 class Interceptor implements IApiInterceptor {
   private client: AxiosInstance = axios.create({
@@ -37,8 +37,9 @@ class Interceptor implements IApiInterceptor {
 
     const onRejected = async (error: AxiosError): Promise<any> => {
       const originalRequest: AxiosRequestConfig = error.config;
-      const errorCode = error.response?.data?.error?.error_code || '';
-      const token = StoreProviderService.getUserToken();
+      const errorCode = error.response?.data?.error[0]?.error_code || '';
+
+      const token = StoreProviderService.getUserRefreshToken();
 
       // If not a token expiry error, proceed as usual, or not a logged in user
       if (errorCode !== TOKEN_NOT_VALID || !token) {

@@ -1,21 +1,21 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
-export interface ISocialMediaProvider {
+export interface ISocialAuthProvider {
   provider: string;
   description: string;
-  clientID: string;
+  visible: boolean;
 }
 
-@JsonObject('SocialMediaProvider')
-export class SocialMediaProvider {
+@JsonObject('SocialAuthProvider')
+export class SocialAuthProvider {
   @JsonProperty('provider', String)
   private _provider = '';
 
   @JsonProperty('description', String)
   private _description = '';
 
-  @JsonProperty('client_id', String)
-  private _clientID = '';
+  @JsonProperty('visible', Boolean)
+  private _visible = false;
 
   get provider(): string {
     return this._provider;
@@ -25,7 +25,7 @@ export class SocialMediaProvider {
     return this._description;
   }
 
-  get clientID(): string {
-    return this._clientID;
+  get visible(): boolean {
+    return this._visible;
   }
 }

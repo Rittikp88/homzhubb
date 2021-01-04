@@ -14,14 +14,15 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
-import { AnimatedProfileHeader, AssetMetricsList, BottomSheetListView } from '@homzhub/mobile/src/components';
+import { AssetMetricsList, BottomSheetListView } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetPropertiesPayload,
@@ -89,36 +90,28 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { t, tenancies, properties, currentFilter, isTenanciesLoading } = this.props;
     const { isBottomSheetVisible, metrics, filters, isSpinnerLoading, assetType, isLoading } = this.state;
     return (
-      <>
-        <AnimatedProfileHeader
-          isGradientHeader
-          loading={isLoading || isTenanciesLoading || isSpinnerLoading}
-          title={t('portfolio')}
-        >
-          <>
-            <AssetMetricsList
-              title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
-              data={metrics?.assetMetrics?.assetGroups ?? []}
-              subscription={metrics?.userServicePlan?.label}
-              onPlusIconClicked={this.handleAddProperty}
-              onMetricsClicked={this.onMetricsClicked}
-              selectedAssetType={assetType}
-              numOfElements={2}
-            />
-            {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
-            {this.renderPortfolio(properties)}
-            <BottomSheetListView
-              data={filters}
-              selectedValue={currentFilter}
-              listTitle={t('propertySearch:filters')}
-              listHeight={500}
-              isBottomSheetVisible={isBottomSheetVisible}
-              onCloseDropDown={this.closeBottomSheet}
-              onSelectItem={this.onSelectFilter}
-            />
-          </>
-        </AnimatedProfileHeader>
-      </>
+      <UserScreen isGradient loading={isLoading || isTenanciesLoading || isSpinnerLoading} title={t('portfolio')}>
+        <AssetMetricsList
+          title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
+          data={metrics?.assetMetrics?.assetGroups ?? []}
+          subscription={metrics?.userServicePlan?.label}
+          onPlusIconClicked={this.handleAddProperty}
+          onMetricsClicked={this.onMetricsClicked}
+          selectedAssetType={assetType}
+          numOfElements={2}
+        />
+        {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
+        {this.renderPortfolio(properties)}
+        <BottomSheetListView
+          data={filters}
+          selectedValue={currentFilter}
+          listTitle={t('propertySearch:filters')}
+          listHeight={500}
+          isBottomSheetVisible={isBottomSheetVisible}
+          onCloseDropDown={this.closeBottomSheet}
+          onSelectItem={this.onSelectFilter}
+        />
+      </UserScreen>
     );
   };
 
@@ -175,6 +168,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
       this.onViewProperty({ ...data, dataType: type }, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
+    const onPressAction = (): void => this.handleActions(item.id);
     return (
       <AssetCard
         assetData={item}
@@ -185,6 +179,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         onPressArrow={handleArrowPress}
         onCompleteDetails={this.onCompleteDetails}
         onOfferVisitPress={this.onOfferVisitPress}
+        onHandleAction={onPressAction}
       />
     );
   };
@@ -307,6 +302,12 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private handleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+  };
+
+  private handleActions = (assetId: number): void => {
+    const { navigation, setAssetId } = this.props;
+    setAssetId(assetId);
+    navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType: UpdatePropertyFormTypes.CancelListing });
   };
 
   private handleAddProperty = (): void => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
@@ -10,9 +10,9 @@ import { IForgotPasswordPayload } from '@homzhub/common/src/domain/repositories/
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
@@ -34,50 +34,53 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
     } = this.props;
     const formData = { ...this.state };
     return (
-      <View style={styles.container}>
-        <DetailedHeader
-          icon={icons.close}
-          title={t('auth:forgotPassword')}
-          subTitle={t('auth:forgotPasswordDescription')}
-          onIconPress={this.handleIconPress}
-          headerContainerStyle={styles.headerContainer}
-        />
-        <View style={styles.content}>
-          <Formik onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)} initialValues={formData}>
-            {(formProps: FormikProps<FormikValues>): React.ReactElement => (
-              <>
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="email"
-                  name="email"
-                  label="Email"
-                  placeholder={t('auth:enterEmail')}
-                  isMandatory
-                />
-                <FormButton
-                  formProps={formProps}
-                  type="primary"
-                  title={t('auth:forgotPasswordRequestLink')}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  containerStyle={styles.formButtonStyle}
-                />
-              </>
-            )}
-          </Formik>
-          {params && !params.isFromMore && (
-            <Text
-              type="small"
-              textType="semiBold"
-              style={styles.backToLoginLink}
-              onPress={this.navigateToLogin}
-              testID="txtLogin"
-            >
-              {t('auth:backToLogin')}
-            </Text>
+      <Screen
+        headerProps={{
+          type: 'secondary',
+          icon: icons.close,
+          onIconPress: this.handleIconPress,
+        }}
+        pageHeaderProps={{
+          contentTitle: t('auth:forgotPassword'),
+          contentSubTitle: t('auth:forgotPasswordDescription'),
+          disableDivider: true,
+        }}
+        backgroundColor={theme.colors.white}
+      >
+        <Formik onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)} initialValues={formData}>
+          {(formProps: FormikProps<FormikValues>): React.ReactElement => (
+            <>
+              <FormTextInput
+                formProps={formProps}
+                inputType="email"
+                name="email"
+                label="Email"
+                placeholder={t('auth:enterEmail')}
+                isMandatory
+              />
+              <FormButton
+                formProps={formProps}
+                type="primary"
+                title={t('auth:forgotPasswordRequestLink')}
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                containerStyle={styles.formButtonStyle}
+              />
+            </>
           )}
-        </View>
-      </View>
+        </Formik>
+        {params && !params.isFromMore && (
+          <Text
+            type="small"
+            textType="semiBold"
+            style={styles.backToLoginLink}
+            onPress={this.navigateToLogin}
+            testID="txtLogin"
+          >
+            {t('auth:backToLogin')}
+          </Text>
+        )}
+      </Screen>
     );
   }
 
@@ -134,17 +137,6 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
 export default withTranslation()(ForgotPassword);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  headerContainer: {
-    borderBottomWidth: 0,
-  },
   formButtonStyle: {
     flex: 0,
     marginVertical: 30,
