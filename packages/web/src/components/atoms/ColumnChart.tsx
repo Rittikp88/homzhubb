@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollView } from 'react-native';
 import ReactApexCharts from 'react-apexcharts';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { sum } from 'lodash';
@@ -17,7 +18,17 @@ class ColumnChart extends React.PureComponent<IProps> {
     const { data } = this.props;
     const { data1: debit, data2: credit, label, type } = data;
     const { options } = this.initConfig(label, type, sum(debit), sum(credit));
-    return <ReactApexCharts options={options} series={this.seriesData(debit, credit)} type="bar" height="250" />;
+    return (
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ReactApexCharts
+          options={options}
+          series={this.seriesData(debit, credit)}
+          type="bar"
+          height={250}
+          width={550}
+        />
+      </ScrollView>
+    );
   }
 
   public initConfig = (label: string[], type: string, totalDebit: number, totalCredit: number): any => ({

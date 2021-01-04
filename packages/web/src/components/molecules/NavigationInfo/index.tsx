@@ -97,13 +97,14 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    width: '90vw',
+    width: theme.layout.dashboardWidth,
     marginTop: 24,
     marginBottom: 20,
     alignSelf: 'center',
     alignItems: 'center',
   },
   containerMobile: {
+    width: theme.layout.dashboardMobileWidth,
     flexDirection: 'column',
     alignItems: undefined,
   },

@@ -113,7 +113,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
   };
 
   return (
-    <View>
+    <View style={styles.chartsContainer}>
       <View style={styles.header}>
         <Popover
           forwardedRef={popupRef}
@@ -121,8 +121,8 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
           popupProps={popupProps}
         >
           <TouchableOpacity activeOpacity={1} style={styles.chooseProperty}>
-            <Icon name={icons.portfolio} size={18} color={theme.colors.darkTint4} style={styles.optionIcon} />
-            <Typography variant="label" size="large" style={styles.optionLabel}>
+            <Icon name={icons.portfolio} size={18} color={theme.colors.darkTint4} />
+            <Typography variant="label" size="regular" style={styles.optionLabel}>
               {selectedProperty.label}
             </Typography>
             <Icon name={icons.downArrow} size={18} color={theme.colors.darkTint4} style={styles.dropdownIcon} />
@@ -131,7 +131,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
         <View style={styles.columnChartOption}>
           <View style={styles.monthInfo}>
             <Icon name={icons.calendar} size={18} color={theme.colors.darkTint4} style={styles.dropdownIcon} />
-            <Typography variant="label" size="large" style={styles.optionLabel}>
+            <Typography variant="label" size="regular" style={styles.optionLabel}>
               {FinanceUtils.renderCalenderLabel({ selectedTimeRange: dateFilter, financialYear })}
             </Typography>
           </View>
@@ -141,29 +141,29 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
             popupProps={{ ...popupProps, position: 'bottom right' }}
           >
             <TouchableOpacity activeOpacity={1} style={styles.chooseTimeRange}>
-              <Typography variant="label" size="large" style={[styles.optionLabel, styles.timeRangeLabel]}>
+              <Typography variant="label" size="regular" style={[styles.optionLabel, styles.timeRangeLabel]}>
                 {selectedDateFilter?.label ?? ''}
               </Typography>
-              <Icon name={icons.downArrow} size={18} color={theme.colors.blue} style={styles.dropdownIcon} />
+              <Icon name={icons.downArrow} size={18} color={theme.colors.blue} />
             </TouchableOpacity>
           </Popover>
         </View>
       </View>
-      <View style={styles.container}>
+      <View style={styles.mainContainer}>
         {ledgerData.length === 0 ? (
           <EmptyState />
         ) : (
           <>
             <View style={styles.donutChart}>
               <Typography variant="label" size="large" fontWeight="bold">
-                Cost Breakdown
+                {t('assetDashboard:costBreakdown')}
               </Typography>
               <DonutChart data={LedgerUtils.filterByType(LedgerTypes.debit, ledgerData)} />
             </View>
             {isMobile && <Divider containerStyles={styles.dividerStyles} />}
             <View style={styles.columnChart}>
               <Typography variant="label" size="large" fontWeight="bold">
-                Cash Flow
+                {t('assetDashboard:cashFlow')}
               </Typography>
               <ColumnChart data={columnGraphData} />
             </View>
@@ -179,7 +179,8 @@ export { memoizedComponent as PropertyVisualsEstimates };
 
 interface IStyle {
   header: ViewStyle;
-  container: ViewStyle;
+  chartsContainer: ViewStyle;
+  mainContainer: ViewStyle;
   donutChart: ViewStyle;
   monthInfo: ViewStyle;
   columnChartOption: ViewStyle;
@@ -187,7 +188,6 @@ interface IStyle {
   chooseProperty: ViewStyle;
   chooseTimeRange: ViewStyle;
   timeRangeLabel: TextStyle;
-  optionIcon: ViewStyle;
   optionLabel: TextStyle;
   dropdownIcon: ViewStyle;
   dividerStyles: ViewStyle;
@@ -195,13 +195,17 @@ interface IStyle {
 
 const propertyVisualEstimatesStyle = (isMobile: boolean): StyleSheet.NamedStyles<IStyle> =>
   StyleSheet.create<IStyle>({
+    chartsContainer: {
+      backgroundColor: theme.colors.white,
+      borderRadius: 4,
+      marginTop: 24,
+    },
     header: {
       flexDirection: isMobile ? 'column' : 'row',
       justifyContent: 'space-between',
       paddingHorizontal: 20,
       paddingTop: 24,
       paddingBottom: 16,
-      backgroundColor: theme.colors.white,
     },
     dividerStyles: {
       marginVertical: 20,
@@ -216,10 +220,10 @@ const propertyVisualEstimatesStyle = (isMobile: boolean): StyleSheet.NamedStyles
       borderColor: theme.colors.darkTint9,
       borderWidth: 1,
       borderRadius: 4,
-      alignItems: 'center',
+      alignItems: 'stretch',
     },
     chooseTimeRange: {
-      minWidth: 'max-content',
+      minWidth: isMobile ? '100%' : 'max-content',
       flexDirection: 'row',
       paddingHorizontal: isMobile ? 4 : 12,
       paddingVertical: 6,
@@ -228,27 +232,24 @@ const propertyVisualEstimatesStyle = (isMobile: boolean): StyleSheet.NamedStyles
       backgroundColor: theme.colors.background,
     },
     timeRangeLabel: {
-      marginRight: 4,
       color: theme.colors.blue,
     },
     monthInfo: {
       flexDirection: 'row',
-      marginRight: 24,
+      marginRight: isMobile ? 8 : 24,
       alignItems: 'center',
     },
-    optionIcon: {},
     optionLabel: {
       flex: 1,
+      marginHorizontal: 4,
       color: theme.colors.darkTint9,
-      marginLeft: 8,
     },
     dropdownIcon: {
       marginRight: 8,
     },
-    container: {
+    mainContainer: {
       flexDirection: isMobile ? 'column' : 'row',
       justifyContent: isMobile ? undefined : 'space-around',
-      backgroundColor: theme.colors.white,
       borderTopColor: theme.colors.background,
       borderTopWidth: 1,
       paddingBottom: 15,
@@ -263,5 +264,6 @@ const propertyVisualEstimatesStyle = (isMobile: boolean): StyleSheet.NamedStyles
     },
     columnChartOption: {
       flexDirection: 'row',
+      justifyContent: 'space-between',
     },
   });

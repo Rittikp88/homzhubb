@@ -48,15 +48,15 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
     data: [],
   };
 
-  public componentDidMount = async (): Promise<void> => {
-    await this.getLedgersData();
+  public componentDidMount = (): void => {
+    this.getLedgersData().then();
   };
 
-  public componentDidUpdate = async (prevProps: Props): Promise<void> => {
+  public componentDidUpdate = (prevProps: Props): void => {
     const { selectedCountry: oldCountry, selectedProperty: oldProperty } = prevProps;
     const { selectedProperty, selectedCountry } = this.props;
     if (selectedProperty !== oldProperty || selectedCountry !== oldCountry) {
-      await this.getLedgersData().then();
+      this.getLedgersData().then();
     }
   };
 

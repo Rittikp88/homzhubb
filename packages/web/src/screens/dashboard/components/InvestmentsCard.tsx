@@ -1,18 +1,19 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
-// import { PropertyInvestment } from '@homzhub/common/src/domain/models/PropertyInvestment'; //todos (LAKSHIT) - change dummy data with actual api data
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
-import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
-import { Badge } from '@homzhub/common/src/components/atoms/Badge';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import InvestmentFooter from '@homzhub/web/src/screens/dashboard/components/InvestmentFooter';
+import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 // TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
@@ -23,6 +24,7 @@ interface IProps {
 
 const InvestmentsCard = (props: IProps): React.ReactElement => {
   const { investmentData } = props;
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const {
     address,
     asset_type,
@@ -66,7 +68,7 @@ const InvestmentsCard = (props: IProps): React.ReactElement => {
   ];
   const badgeTitle = propertyTitle(investmentData.investmentStatus);
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, isMobile && styles.cardMobile]}>
       <View>
         <ImageSquare
           style={styles.image}
@@ -123,6 +125,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     marginRight: 16,
     marginBottom: 25,
+  },
+  cardMobile: {
+    marginRight: undefined,
   },
   image: {
     flex: 1,

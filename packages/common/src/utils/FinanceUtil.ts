@@ -1,10 +1,17 @@
 import { TFunction } from 'i18next';
+import { sum } from 'lodash';
 import { DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
-import { GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import {
+  BarGraphLegends,
+  GeneralLedgers,
+  IGeneralLedgerGraphData,
+  LedgerTypes,
+} from '@homzhub/common/src/domain/models/GeneralLedgers';
 import {
   DateFilter,
   DateRangeType,
@@ -80,7 +87,7 @@ class FinanceUtils {
         const endMonth = MonthNames[endMonthIndex];
         const endYear = endDate.split('-')[0];
 
-        return `${startMonth} ${startYear} - ${endMonth} ${endYear}`;
+        return `${startMonth} ${parseInt(startYear, 10) % 100} - ${endMonth} ${parseInt(endYear, 10) % 100}`;
       }
       default:
         return DateUtils.getCurrentMonth();
@@ -96,6 +103,23 @@ class FinanceUtils {
         label: t(currentData.label),
       };
     });
+  };
+
+  public barGraphLegends = (debit: number[], credit: number[]): IGeneralLedgerGraphData[] => {
+    return [
+      {
+        key: 1,
+        title: BarGraphLegends.expense,
+        value: sum(debit),
+        svg: { fill: theme.colors.expense },
+      },
+      {
+        key: 1,
+        title: BarGraphLegends.income,
+        value: sum(credit),
+        svg: { fill: theme.colors.income },
+      },
+    ];
   };
 
   public getBarGraphData = (params: IGeneralLedgersParams, ledgersData: GeneralLedgers[]): IGraphProps => {

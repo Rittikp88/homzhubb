@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
 import { ImageStyle, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import IconWithBadge from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates/IconWithBadge';
 import { IPropertyNotification } from '@homzhub/common/src/constants/DashBoard';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProp {
   data: IPropertyNotification;
@@ -14,7 +16,8 @@ interface IProp {
 
 const PropertyUpdatesCard: FC<IProp> = ({ data }: IProp) => {
   const { t } = useTranslation();
-  const styles = propertyUpdatesCardStyle(data.iconColor);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const styles = propertyUpdatesCardStyle(data.iconColor, isMobile);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -68,15 +71,16 @@ interface IStyle {
   badgeContainer: ViewStyle;
 }
 
-const propertyUpdatesCardStyle = (iconBgColor: string): StyleSheet.NamedStyles<IStyle> =>
+const propertyUpdatesCardStyle = (iconBgColor: string, isMobile: boolean): StyleSheet.NamedStyles<IStyle> =>
   StyleSheet.create<IStyle>({
     container: {
-      width: '32%',
+      width: isMobile ? '100%' : '32%',
       padding: 15,
-      marginVertical: 24,
+      marginTop: 24,
       maxHeight: 161,
       justifyContent: 'space-evenly',
       backgroundColor: theme.colors.white,
+      borderRadius: 4,
     },
     header: {
       flexDirection: 'row',

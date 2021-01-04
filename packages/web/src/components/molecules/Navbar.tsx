@@ -138,7 +138,7 @@ const navBarStyle = (isMobile: boolean, isTablet: boolean, isDesktop: boolean): 
       },
     },
     subContainer: {
-      width: '90vw',
+      width: isMobile ? theme.layout.dashboardMobileWidth : theme.layout.dashboardWidth,
       flexDirection: 'row',
       paddingVertical: 4,
       justifyContent: 'space-between',

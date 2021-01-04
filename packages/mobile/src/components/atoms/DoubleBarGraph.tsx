@@ -3,14 +3,13 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import { PathProps } from 'react-native-svg';
-import { sum, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
+import { FinanceUtils, IGraphProps } from '@homzhub/common/src/utils/FinanceUtil';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
-import { BarGraphLegends, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { DateRangeType } from '@homzhub/common/src/constants/FinanceOverview';
-import { IGraphProps } from '@homzhub/common/src/utils/FinanceUtil';
 
 interface IProps {
   data: IGraphProps;
@@ -48,22 +47,6 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
       svg: { fill: theme.colors.income } as Partial<PathProps>,
     },
   ];
-  const barGraphLegends = (): IGeneralLedgerGraphData[] => {
-    return [
-      {
-        key: 1,
-        title: BarGraphLegends.expense,
-        value: sum(data1),
-        svg: { fill: theme.colors.expense },
-      },
-      {
-        key: 1,
-        title: BarGraphLegends.income,
-        value: sum(data2),
-        svg: { fill: theme.colors.income },
-      },
-    ];
-  };
 
   const isData1Empty = data1.every((value) => value === 0);
   const isData2Empty = data2.every((value) => value === 0);
@@ -102,7 +85,7 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
           />
         </View>
       </ScrollView>
-      <GraphLegends data={barGraphLegends()} />
+      <GraphLegends data={FinanceUtils.barGraphLegends(data1, data2)} />
     </>
   );
 };
