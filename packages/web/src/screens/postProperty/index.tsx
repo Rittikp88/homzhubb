@@ -8,17 +8,17 @@ import { PermissionsServiceWeb, PERMISSION_TYPE_WEB } from '@homzhub/web/src/ser
 
 const PostProperty: FC = () => {
   useEffect(() => {
-    console.log('PlatfromUtils => ', PlatformUtils.isWeb());
+    // console.log('PlatfromUtils => ', PlatformUtils.isWeb());
     const permission = PermissionsServiceWeb.checkPermission(PERMISSION_TYPE_WEB.location);
     console.log('Permission => ', permission);
-    GeolocationService.getCurrentPosition(
-      (res: GeolocationResponse) => {
-        console.log('location response => ', res);
-      },
-      (error) => {
-        console.error({ message: 'errorFetchingLocation' });
-      }
-    );
+    // GeolocationService.getCurrentPosition(
+    //   (res: GeolocationResponse) => {
+    //     console.log('location response => ', res);
+    //   },
+    //   (error) => {
+    //     console.error({ message: 'errorFetchingLocation' });
+    //   }
+    // );
   }, []);
   return (
     <View>
