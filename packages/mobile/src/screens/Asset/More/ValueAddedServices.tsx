@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   textStyle: {
     backgroundColor: theme.colors.white,
     padding: 16,
-    paddingTop: 24,
+    paddingTop: 8,
   },
   carouselStyle: {
     height: 200,

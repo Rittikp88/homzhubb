@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
+    paddingBottom: 0,
     alignSelf: 'center',
   },
 });

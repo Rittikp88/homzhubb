@@ -20,6 +20,7 @@ exports[`Badge should match snapshot 1`] = `
       Object {
         "alignSelf": "center",
         "color": "#FFFFFF",
+        "paddingBottom": 0,
       }
     }
     textType="semiBold"

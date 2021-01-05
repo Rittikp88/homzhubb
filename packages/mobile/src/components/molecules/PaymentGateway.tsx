@@ -6,11 +6,12 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { IPaymentParams, PaymentFailureResponse } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
-import { IPaymentParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 let options = {
   image: '',
@@ -97,12 +98,19 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
       .then(paymentApi)
       .catch((error: IRazorPayError) => {
         paymentApi({
-          code: error.code,
+          error_code: this.getErrorResponse(error.code),
           payment_transaction_id,
           user_invoice_id,
         });
         AlertHelper.error({ message: error.description });
       });
+  };
+
+  // eslint-disable-next-line consistent-return
+  private getErrorResponse = (errorCode: number): PaymentFailureResponse | undefined => {
+    if ((PlatformUtils.isAndroid && errorCode === 0) || (PlatformUtils.isIOS && errorCode === 2)) {
+      return PaymentFailureResponse.PAYMENT_CANCELLED;
+    }
   };
 }
 

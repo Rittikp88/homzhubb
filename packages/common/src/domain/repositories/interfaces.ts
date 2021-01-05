@@ -63,6 +63,10 @@ export enum EmailVerificationActions {
   VERIFY_EMAIL = 'VERIFY_EMAIL',
 }
 
+export enum PaymentFailureResponse {
+  PAYMENT_CANCELLED = 'PAYMENT_CANCELLED',
+}
+
 export enum ClosureReasonType {
   LEASE_TRANSACTION_TERMINATION = 'LEASE_TRANSACTION_TERMINATION',
   LEASE_LISTING_CANCELLATION = 'LEASE_LISTING_CANCELLATION',
@@ -517,7 +521,7 @@ export interface IPaymentParams {
   razorpay_payment_id?: string;
   razorpay_order_id?: string;
   razorpay_signature?: string;
-  code?: number;
+  error_code?: PaymentFailureResponse;
   payment_transaction_id?: number;
   user_invoice_id?: number;
 }

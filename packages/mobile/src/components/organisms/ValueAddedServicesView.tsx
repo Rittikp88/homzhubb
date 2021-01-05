@@ -22,6 +22,7 @@ interface IOwnProps extends WithTranslation {
   typeOfPlan?: TypeOfPlan;
   lastVisitedStep?: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
+  buttonStyle?: StyleProp<ViewStyle>;
 }
 
 interface IOwnState {
@@ -34,7 +35,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   public render = (): ReactElement => {
-    const { setValueAddedServices, valueAddedServices, containerStyle, t } = this.props;
+    const { setValueAddedServices, valueAddedServices, containerStyle, buttonStyle, t } = this.props;
     const { searchString } = this.state;
 
     if (valueAddedServices && valueAddedServices.length <= 0) {
@@ -97,7 +98,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
           disabled={valueAddedServices.filter((service) => service.value).length === 0}
           type="primary"
           title={t('common:continue')}
-          containerStyle={styles.buttonStyle}
+          containerStyle={[styles.buttonStyle, buttonStyle]}
           onPress={this.handleContinue}
         />
       </>
