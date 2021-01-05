@@ -13,6 +13,10 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
   <Loader
     visible={false}
   />
+  <Memo(HomzhubStatusBar)
+    barStyle="light-content"
+    statusBarBackground="#001B36"
+  />
   <ParallaxScrollView
     backgroundColor="transparent"
     backgroundScrollSpeed={5}

@@ -11,7 +11,6 @@ import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -37,6 +36,7 @@ import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker'
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
+import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
@@ -169,7 +169,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { isPreview },
       },
     } = this.props;
-    const { isFullScreen } = this.state;
+    const { isFullScreen, isScroll } = this.state;
     if (!assetDetails) return null;
     const {
       contacts: { fullName, phoneNumber, countryCode, profilePicture },
@@ -178,6 +178,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     return (
       <>
+        <StatusBar
+          statusBarBackground={!isScroll ? theme.colors.white : theme.colors.darkTint1}
+          barStyle={isScroll ? 'light-content' : 'dark-content'}
+        />
         <ParallaxScrollView
           backgroundColor={theme.colors.transparent}
           stickyHeaderHeight={STICKY_HEADER_HEIGHT}
@@ -418,6 +422,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         data={assetDetails?.attachments ?? []}
         activeSlide={activeSlide}
         updateSlide={this.updateSlide}
+        containerStyles={styles.carousel}
       />
     );
   };
@@ -861,11 +866,11 @@ const styles = StyleSheet.create({
   fixedSection: {
     position: 'absolute',
     width: theme.viewport.width,
-    top: PlatformUtils.isIOS() ? 5 : 15,
+    top: 4,
     flexDirection: 'row',
   },
   initialSection: {
-    top: PlatformUtils.isIOS() ? 50 : 40,
+    top: 4,
   },
   stickySection: {
     paddingBottom: 10,
@@ -875,7 +880,6 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     marginLeft: 40,
-    marginTop: PlatformUtils.isIOS() ? 0 : 10,
     width: theme.viewport.width / 2,
     color: theme.colors.darkTint1,
   },
@@ -937,5 +941,8 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     backgroundColor: theme.colors.darkTint5,
+  },
+  carousel: {
+    borderRadius: 0,
   },
 });

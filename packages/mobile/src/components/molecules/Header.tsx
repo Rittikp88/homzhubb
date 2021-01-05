@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     right: 16,
   },
   animatedDivider: {
-    height: 1,
+    height: 0,
     backgroundColor: theme.colors.disabled,
   },
 });
