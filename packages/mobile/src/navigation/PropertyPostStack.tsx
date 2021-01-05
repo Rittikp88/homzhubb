@@ -17,7 +17,7 @@ import AssetLeaseListing from '@homzhub/mobile/src/screens/Asset/Record/AssetLea
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 
 export type PropertyPostStackParamList = {
-  [ScreensKeys.AssetLocationSearch]: undefined;
+  [ScreensKeys.AssetLocationSearch]: undefined | { isFromPortfolio: boolean };
   [ScreensKeys.AssetLocationMap]: IAssetLocationMapProps;
   [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps | undefined;
   [ScreensKeys.AddProperty]: undefined | { previousScreen: string };

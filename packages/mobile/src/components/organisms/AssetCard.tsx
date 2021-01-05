@@ -20,6 +20,12 @@ import { User } from '@homzhub/common/src/domain/models/User';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import {
+  ClosureReasonType,
+  IClosureReasonPayload,
+  IListingParam,
+} from '@homzhub/common/src/domain/repositories/interfaces';
+import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 
 interface IListProps {
   assetData: Asset;
@@ -30,14 +36,12 @@ interface IListProps {
   onPressArrow?: (id: number) => void;
   enterFullScreen?: (attachments: Attachment[]) => void;
   onCompleteDetails: (id: number) => void;
-  onHandleAction?: () => void;
+  onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
   onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 type Props = WithTranslation & IListProps;
-
-const ShowInMvpRelease = false;
 
 export class AssetCard extends Component<Props> {
   public render(): React.ReactNode {
@@ -163,7 +167,7 @@ export class AssetCard extends Component<Props> {
   };
 
   private renderExpandedView = (): React.ReactNode => {
-    const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false, onHandleAction } = this.props;
+    const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
 
     if (!assetData || !assetData.assetStatusInfo) return null;
 
@@ -214,7 +218,7 @@ export class AssetCard extends Component<Props> {
               isPropertyVacant={label === Filters.VACANT}
               assetCreation={assetCreation}
             />
-            {label !== Filters.OCCUPIED && assetCreation.percentage < 100 && (
+            {label !== Filters.OCCUPIED && assetCreation.percentage < 100 && !buttonAction && (
               <Button
                 type="primary"
                 textType="label"
@@ -239,16 +243,20 @@ export class AssetCard extends Component<Props> {
           />
         )}
         <View style={styles.buttonGroup}>
-          {ShowInMvpRelease && buttonAction && (
+          {buttonAction && (
             <Button
               type="primary"
               textType="label"
               textSize="regular"
               fontType="semiBold"
-              containerStyle={[styles.buttonStyle, { backgroundColor: buttonAction.color }]}
+              containerStyle={[
+                styles.buttonStyle,
+                { backgroundColor: buttonAction.color },
+                buttonAction.label === ActionType.CANCEL && styles.cancelButton,
+              ]}
               title={buttonAction.label}
-              titleStyle={styles.buttonTitle}
-              onPress={onHandleAction}
+              titleStyle={[styles.buttonTitle, buttonAction.label === ActionType.CANCEL && styles.cancelTitle]}
+              onPress={this.onPressAction}
             />
           )}
         </View>
@@ -259,6 +267,39 @@ export class AssetCard extends Component<Props> {
   private onCompleteDetails = (): void => {
     const { onCompleteDetails, assetData } = this.props;
     onCompleteDetails(assetData.id);
+  };
+
+  private onPressAction = (): void => {
+    const {
+      onHandleAction,
+      assetData: { assetGroup, country, assetStatusInfo },
+    } = this.props;
+    const { LEASE_LISTING_CANCELLATION, SALE_LISTING_CANCELLATION, LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
+    if (assetStatusInfo) {
+      const {
+        action,
+        leaseListingId,
+        leaseTransaction: { leasePeriod },
+      } = assetStatusInfo;
+      const type =
+        action?.label === ActionType.CANCEL
+          ? leaseListingId
+            ? LEASE_LISTING_CANCELLATION
+            : SALE_LISTING_CANCELLATION
+          : LEASE_TRANSACTION_TERMINATION;
+      const payload = {
+        type,
+        asset_group: assetGroup.id,
+        asset_country: country.id,
+      };
+      if (onHandleAction) {
+        onHandleAction(payload, {
+          id: leasePeriod?.id,
+          endDate: leasePeriod?.leaseEndDate,
+          hasTakeAction: action?.label === ActionType.ACTION,
+        });
+      }
+    }
   };
 }
 
@@ -339,5 +380,13 @@ const styles = StyleSheet.create({
   },
   placeholderImage: {
     marginTop: 12,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: theme.colors.ratingLow,
+  },
+  cancelTitle: {
+    marginVertical: 10,
+    color: theme.colors.error,
   },
 });

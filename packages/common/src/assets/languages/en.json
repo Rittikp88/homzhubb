@@ -153,8 +153,14 @@
     "invalidLinkError": "You can't open this link.",
     "iAmLooking": "I am looking to",
     "somethingWentWrongText": "Something went wrong obtaining access token",
+    "reasonExample": "Eg. Reason Title",
+    "reason": "Reason",
+    "typeDescriptionHere": "Type your description here...",
+    "actionNotDone": "This action cannot be undone",
+    "terminate": "Terminate",
     "backText": "Back",
-    "changePropertyText": "Change Property"
+    "changePropertyText": "Change Property",
+    "wantToLeave": "Are you sure want to leave?"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -432,7 +438,14 @@
     "saveYourDetailsCautionText": "The changes you’ve made are not saved. Do you want to save them?",
     "editProperty": "Edit Property",
     "deleteProperty": "Delete Property",
-    "editListing": "Edit Listing"
+    "editListing": "Edit Listing",
+    "cancelListing": "Cancel Listing",
+    "terminateListing": "Terminate Listing",
+    "renewListing": "Renew Listing",
+    "deleteListing": "Delete Listing",
+    "selectMoveOutDate": "Select move-out date",
+    "terminationDate": "Termination Date",
+    "listingCancelled": "Your property listing has been cancelled."
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -667,7 +680,6 @@
     "savedPropertiesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
     "searchByDoc": "Search by document name",
     "noDocs": "There are no documents matching your search term",
-    "savedProperties": "Saved Properties",
     "changeProperty": "Change Property",
     "changePropertyCaution": "You are about to change property without completing the process. Please note that all selected information will be deleted, as  you can only add value added service to one property at a time",
     "goBackCaution": "You will lose any unsaved changes if you do!",

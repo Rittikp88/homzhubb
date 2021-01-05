@@ -1,7 +1,11 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
-import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IClosureReasonPayload,
+  IListingParam,
+  ISignUpPayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
@@ -221,6 +225,8 @@ export interface IPropertyDetailProps {
 
 export interface IUpdatePropertyProps {
   formType: UpdatePropertyFormTypes;
+  payload: IClosureReasonPayload;
+  param?: IListingParam;
 }
 
 export interface ISignUpParams extends IScreenCallback {

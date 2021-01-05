@@ -30,6 +30,11 @@ import {
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import {
+  ClosureReasonType,
+  IClosureReasonPayload,
+  IListingParam,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -168,7 +173,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
       this.onViewProperty({ ...data, dataType: type }, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
-    const onPressAction = (): void => this.handleActions(item.id);
+    const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
+      this.handleActions(item.id, payload, param);
     return (
       <AssetCard
         assetData={item}
@@ -304,10 +310,21 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
-  private handleActions = (assetId: number): void => {
+  private handleActions = (assetId: number, payload: IClosureReasonPayload, param?: IListingParam): void => {
     const { navigation, setAssetId } = this.props;
     setAssetId(assetId);
-    navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType: UpdatePropertyFormTypes.CancelListing });
+    const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
+    const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
+    const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
+    if (param && param.hasTakeAction) {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.PropertyPostStack, {
+        screen: ScreensKeys.AssetPlanSelection,
+        param: { isFromPortfolio: true },
+      });
+    } else {
+      navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param });
+    }
   };
 
   private handleAddProperty = (): void => {

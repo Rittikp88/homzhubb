@@ -21,6 +21,7 @@ interface ICalendarProps {
   selectedDate: string;
   allowPastDates?: boolean;
   maxDate?: string;
+  minDate?: string;
   isOnlyYearView?: boolean;
 }
 
@@ -146,7 +147,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   };
 
   private renderCalendar = (): React.ReactElement => {
-    const { allowPastDates, maxDate } = this.props;
+    const { allowPastDates, maxDate, minDate } = this.props;
     const { day, month, year, selectedDate } = this.state;
     const updateMonth = month + 1;
     const date = selectedDate || DateUtils.getFormattedDate(day, updateMonth, year, 'YYYY-MM-DD').toDateString();
@@ -157,7 +158,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           hideArrows
           // @ts-ignore
           renderHeader={(): null => null}
-          minDate={allowPastDates ? undefined : new Date()}
+          minDate={minDate || (allowPastDates ? undefined : new Date())}
           maxDate={maxDate}
           current={date}
           key={date}
@@ -230,8 +231,8 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
    */
   private handleBackPress = (): void => {
     const { allowPastDates, isOnlyYearView } = this.props;
-    const { year, isMonthView, selectedDate, isYearView, yearTitle } = this.state;
-    let { month } = this.state;
+    const { isMonthView, selectedDate, isYearView, yearTitle } = this.state;
+    let { month, year } = this.state;
 
     // For year view
     const value = Number(yearTitle.split('-')[0]);
@@ -239,6 +240,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
 
     if (selectedDate) {
       month = moment(selectedDate).month();
+      year = moment(selectedDate).year().toString();
     }
 
     if (!allowPastDates && month === moment().month() && !isYearView) {
@@ -266,19 +268,20 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
    * Cases: Day, Month and Year view
    */
   private handleNextPress = (): void => {
-    const { year, isMonthView, selectedDate, isYearView, yearTitle } = this.state;
+    const { isMonthView, selectedDate, isYearView, yearTitle } = this.state;
     const { maxDate, isOnlyYearView } = this.props;
 
     // For year view
     const value = Number(yearTitle.split('-')[1]);
     // For year view
 
-    let { month } = this.state;
+    let { month, year } = this.state;
     if (maxDate && moment(maxDate).month() === moment().month()) {
       return;
     }
     if (selectedDate) {
       month = moment(selectedDate).month();
+      year = moment(selectedDate).year().toString();
     }
 
     if (isMonthView) {
