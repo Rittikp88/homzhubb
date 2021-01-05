@@ -219,10 +219,10 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
         },
       };
       AssetRepository.terminateLease(payload)
-        .then(() => {
+        .then((res) => {
           navigation.goBack();
-          // TODO: (SHIKHA) - Update message string and move to en.json
-          AlertHelper.success({ message: '“The owner/tenant has been notified of the termination request”.' });
+          const role = res.app_permissions.is_asset_owner ? t('property:tenant') : t('property:owner');
+          AlertHelper.success({ message: t('property:terminationRequest', { role }) });
         })
         .catch((err) => {
           AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });

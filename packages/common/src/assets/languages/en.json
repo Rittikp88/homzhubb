@@ -445,7 +445,8 @@
     "deleteListing": "Delete Listing",
     "selectMoveOutDate": "Select move-out date",
     "terminationDate": "Termination Date",
-    "listingCancelled": "Your property listing has been cancelled."
+    "listingCancelled": "Your property listing has been cancelled.",
+    "terminationRequest": "The {{role}} has been notified of the termination request"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

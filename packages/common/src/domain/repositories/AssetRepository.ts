@@ -28,7 +28,7 @@ import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
-import { ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { ILeaseTermination, ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
 import { ICreateSaleTermParams, IUpdateSaleTermParams, SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import {
@@ -338,7 +338,7 @@ class AssetRepository {
     return await this.apiClient.patch(ENDPOINTS.cancelListing(payload.param), payload.data);
   };
 
-  public terminateLease = async (payload: ITerminateListingPayload): Promise<void> => {
+  public terminateLease = async (payload: ITerminateListingPayload): Promise<ILeaseTermination> => {
     return await this.apiClient.post(ENDPOINTS.terminateTransaction(payload.id), payload.data);
   };
 }

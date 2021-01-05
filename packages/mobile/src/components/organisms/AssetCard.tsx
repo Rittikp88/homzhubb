@@ -143,7 +143,7 @@ export class AssetCard extends Component<Props> {
     } = item;
 
     return (
-      <TouchableOpacity onPress={isDetailView ? handleFullScreen : handlePropertyView}>
+      <TouchableOpacity onPress={isDetailView ? handleFullScreen : (): void => handlePropertyView()}>
         {mediaType === 'IMAGE' && (
           <Image
             source={{

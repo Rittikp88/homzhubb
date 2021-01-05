@@ -725,15 +725,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private getViewCounts = async (): Promise<void> => {
     const { startDate } = this.state;
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, assetDetails } = this.props;
     const endDate = this.getFormattedDate();
+    if (!assetDetails) return;
+    const { leaseTerm, saleTerm } = assetDetails;
     const payload = {
       visit_type: VisitType.PROPERTY_VIEW,
       lead_type: 11, // TODO: (Shikha) Need to add proper Id once Logic integrated
       start_date: startDate,
       end_date: endDate,
-      lease_listing: 1,
-      sale_listing: null,
+      lease_listing: leaseTerm ? leaseTerm.id : null,
+      sale_listing: saleTerm ? saleTerm.id : null,
     };
     if (isLoggedIn) {
       try {
