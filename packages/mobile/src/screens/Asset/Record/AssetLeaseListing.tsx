@@ -528,10 +528,18 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     this.setState({
       isNextStep: false,
     });
-    navigation.navigate(ScreensKeys.PropertyAssetDescription, {
-      propertyTermId,
-      isPreview: true,
-      propertyId: id,
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs, {
+      screen: ScreensKeys.Search,
+      params: {
+        screen: ScreensKeys.PropertyAssetDescription,
+        initial: false,
+        params: {
+          propertyTermId,
+          isPreview: true,
+          propertyId: id,
+        },
+      },
     });
     resetState();
   };
