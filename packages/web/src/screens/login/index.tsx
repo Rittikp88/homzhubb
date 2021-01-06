@@ -38,8 +38,8 @@ const Login: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.auth);
   const password = useRef(null);
   const formData = {
-    email: '',
-    password: '',
+    email: 'bishal.patnaik@nineleaps.com',
+    password: 'India#123',
   };
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });

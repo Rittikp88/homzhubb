@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text Area should match snapshot 1`] = `
+<View
+  style={Object {}}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 6,
+        }
+      }
+      type="large"
+    >
+      Some label
+    </Label>
+  </View>
+  <View
+    style={
+      Object {
+        "borderColor": "#C9D6DF",
+        "borderWidth": 1,
+        "padding": 5,
+      }
+    }
+  >
+    <Component
+      allowFontScaling={true}
+      autoCorrect={false}
+      maxLength={250}
+      multiline={true}
+      placeholder="placeholder"
+      rejectResponderTermination={true}
+      style={
+        Array [
+          Object {
+            "height": 150,
+            "justifyContent": "flex-start",
+            "textAlignVertical": "top",
+          },
+          Object {},
+        ]
+      }
+      underlineColorAndroid="transparent"
+      value="Message"
+    />
+  </View>
+  <Label
+    style={
+      Array [
+        Object {
+          "color": "#33495E",
+          "marginVertical": 6,
+        },
+        Object {
+          "paddingVertical": 6,
+        },
+      ]
+    }
+    type="small"
+  >
+    charactersRemaining
+  </Label>
+</View>
+`;
+
+exports[`Text Area should match snapshot for optional 1`] = `
+<View
+  style={Object {}}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <Label
+      style={
+        Object {
+          "color": "#33495E",
+          "marginVertical": 6,
+        }
+      }
+      type="large"
+    >
+      Some label
+    </Label>
+  </View>
+  <View
+    style={
+      Object {
+        "borderColor": "#C9D6DF",
+        "borderWidth": 1,
+        "padding": 5,
+      }
+    }
+  >
+    <Component
+      allowFontScaling={true}
+      autoCorrect={false}
+      maxLength={250}
+      multiline={true}
+      placeholder="placeholder"
+      rejectResponderTermination={true}
+      style={
+        Array [
+          Object {
+            "height": 150,
+            "justifyContent": "flex-start",
+            "textAlignVertical": "top",
+          },
+          Object {},
+        ]
+      }
+      underlineColorAndroid="transparent"
+      value="Message"
+    />
+  </View>
+  <Label
+    style={
+      Array [
+        Object {
+          "color": "#33495E",
+          "marginVertical": 6,
+        },
+        Object {
+          "paddingVertical": 6,
+        },
+      ]
+    }
+    type="small"
+  >
+    charactersRemaining
+  </Label>
+</View>
+`;

@@ -20,8 +20,8 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const { location } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
-  const { DASHBOARD } = protectedRoutes;
-  const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD], pathname);
+  const { DASHBOARD, FINANCIALS } = protectedRoutes;
+  const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD, FINANCIALS], pathname);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   return (
     <View style={styles.container}>
@@ -43,6 +43,7 @@ export default AppLayout;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.background,
+    overflow: 'hidden',
   },
   mainContent: {
     width: '90vw',
