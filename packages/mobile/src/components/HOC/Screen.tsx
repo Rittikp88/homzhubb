@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { Extrapolate } from 'react-native-reanimated';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
@@ -42,6 +42,7 @@ export const Screen = (props: IProps): React.ReactElement => {
     opacity = new Animated.interpolate(scrollY, {
       inputRange: [10, TITLE_HEIGHT],
       outputRange: [0, 1],
+      extrapolate: Extrapolate.CLAMP,
     });
     onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }]);
   }

@@ -14,6 +14,10 @@ import {
   IUpdateVisitPayload,
   IRescheduleVisitPayload,
   ISendNotificationPayload,
+  IClosureReasonPayload,
+  ICancelListingPayload,
+  ICancelListingParam,
+  ITerminateListingPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -24,7 +28,7 @@ import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
-import { ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { ILeaseTermination, ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
 import { ICreateSaleTermParams, IUpdateSaleTermParams, SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import {
@@ -83,6 +87,11 @@ const ENDPOINTS = {
   availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
   assetCount: (): string => 'assets/count/',
   sendNotification: (): string => 'assets/notifications/listing-reviews/',
+  valueServicesAssetList: (): string => 'assets?extra=asset_status_info',
+  cancelListing: (param: ICancelListingParam): string =>
+    `assets/${param.assetId}/${param.listingType}/${param.listingId}/cancel/`,
+  terminateTransaction: (id: number): string => `lease-transactions/${id}/terminate/`,
+  closureReason: 'closure-reasons/',
 };
 
 class AssetRepository {
@@ -301,11 +310,6 @@ class AssetRepository {
     return await this.apiClient.put(ENDPOINTS.rescheduleVisit(), payload);
   };
 
-  public getAllVisitAsset = async (): Promise<VisitAssetDetail[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.allVisitAsset());
-    return ObjectMapper.deserializeArray(VisitAssetDetail, response);
-  };
-
   public getAssetCount = async (): Promise<Count> => {
     const response = await this.apiClient.get(ENDPOINTS.assetCount());
     return ObjectMapper.deserialize(Count, response);
@@ -313,6 +317,29 @@ class AssetRepository {
 
   public sendNotification = async (payload: ISendNotificationPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.sendNotification(), payload);
+  };
+
+  public getAllVisitAsset = async (): Promise<VisitAssetDetail[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.allVisitAsset());
+    return ObjectMapper.deserializeArray(VisitAssetDetail, response);
+  };
+
+  public getValueServicesAssetList = async (): Promise<Asset[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.valueServicesAssetList());
+    return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  public getClosureReason = async (payload: IClosureReasonPayload): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.closureReason, payload);
+    return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public cancelAssetListing = async (payload: ICancelListingPayload): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.cancelListing(payload.param), payload.data);
+  };
+
+  public terminateLease = async (payload: ITerminateListingPayload): Promise<ILeaseTermination> => {
+    return await this.apiClient.post(ENDPOINTS.terminateTransaction(payload.id), payload.data);
   };
 }
 

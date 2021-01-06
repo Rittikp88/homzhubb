@@ -302,6 +302,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
+    if (propertyId < 1) return;
     try {
       const response: AssetGallery[] = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
       const coverImageIndex = findIndex(response, (image: AssetGallery) => {

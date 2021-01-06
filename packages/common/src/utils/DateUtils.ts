@@ -18,6 +18,7 @@ export const DateFormats = {
   MMMDDYYYYHMMA: 'MMM D YYYY - h:mm A',
   MMMYYYY: 'MMM, YYYY',
   MMYYYY: 'MM/YYYY',
+  DD_MM_YYYY: 'DD/MM/YYYY',
   MMYY: 'MM/YY',
   YYYYMMDD: 'YYYY-MM-DD',
   YYYYMMMDD: 'YYYY-MMM-DD',

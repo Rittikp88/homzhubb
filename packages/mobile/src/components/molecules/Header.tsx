@@ -45,7 +45,7 @@ const Header = (props: IHeaderProps): React.ReactElement => {
   }
 
   return (
-    <>
+    <View style={{ backgroundColor }}>
       <StatusBar
         statusBarBackground={backgroundColor}
         barStyle={statusBarType as 'light-content' | 'dark-content'}
@@ -62,7 +62,8 @@ const Header = (props: IHeaderProps): React.ReactElement => {
       </View>
       {children}
       {barVisible && <View style={styles.bar} />}
-    </>
+      <Animated.View style={[styles.animatedDivider, { opacity }]} />
+    </View>
   );
 };
 
@@ -97,5 +98,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: BOTTOM_PADDING,
     right: 16,
+  },
+  animatedDivider: {
+    height: 0,
+    backgroundColor: theme.colors.disabled,
   },
 });

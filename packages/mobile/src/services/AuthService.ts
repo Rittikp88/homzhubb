@@ -1,6 +1,7 @@
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from 'react-native-fbsdk';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { ISocialUserData, SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
 
@@ -9,8 +10,8 @@ class AuthService {
   public signInWithGoogle = async (successCallback: (result: ISocialUserData) => Promise<void>): Promise<void> => {
     try {
       GoogleSignin.configure({
-        webClientId: '894249713165-ig82ihgl39q5u4sqk5vu0u1vr67rqnhk.apps.googleusercontent.com',
-        iosClientId: '894249713165-4c1riqt38nv51dsvlumfhsoadmnjsomr.apps.googleusercontent.com',
+        webClientId: ConfigHelper.getGoogleWebClientId(),
+        iosClientId: ConfigHelper.getGoogleIosClientId(),
       });
 
       await GoogleSignin.hasPlayServices();

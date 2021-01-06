@@ -23,11 +23,11 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
-  IAssetDescriptionProps,
   IComingSoon,
   IForgotPasswordProps,
   IOtpNavProps,
   IPropertyDetailProps,
+  IServicesForSelectAssetParams,
   IUpdateProfileProps,
   IUpdatePropertyProps,
   IVerifyEmail,
@@ -45,12 +45,13 @@ import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
-import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
+import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
+import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -66,7 +67,6 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
-  [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };
 
 export type PortfolioNavigatorParamList = {
@@ -97,6 +97,8 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
   [ScreensKeys.SavedPropertiesScreen]: undefined;
   [ScreensKeys.KYC]: undefined;
+  [ScreensKeys.ValueAddedServices]: undefined;
+  [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -117,7 +119,6 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
-      <DashboardNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
     </DashboardNavigator.Navigator>
   );
 };
@@ -175,6 +176,8 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
       <MoreStackNavigator.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
     </MoreStackNavigator.Navigator>
   );
 };

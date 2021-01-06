@@ -63,6 +63,9 @@ export class Transaction {
 
 @JsonObject('LeasePeriod')
 export class LeasePeriod {
+  @JsonProperty('id', Number, true)
+  private _id = 0;
+
   @JsonProperty('lease_start_date', String)
   private _leaseStartDate = '';
 
@@ -77,6 +80,10 @@ export class LeasePeriod {
 
   @JsonProperty('action', LabelColor, true)
   private _action: LabelColor | null = null;
+
+  get id(): number {
+    return this._id;
+  }
 
   get leaseStartDate(): string {
     return moment(this._leaseStartDate).format('DD/MM/YYYY');

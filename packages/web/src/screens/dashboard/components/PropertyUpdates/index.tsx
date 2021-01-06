@@ -109,7 +109,7 @@ const propertyUpdatesStyle = (isMobile: boolean): StyleSheet.NamedStyles<IStyle>
   StyleSheet.create<IStyle>({
     container: {
       flexDirection: isMobile ? 'column' : 'row',
-      display: isMobile ? 'none' : 'flex',
+      display: 'flex',
       justifyContent: 'space-between',
     },
   });

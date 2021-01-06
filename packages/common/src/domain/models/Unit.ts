@@ -33,6 +33,9 @@ export class Unit {
   @JsonProperty('code', String, true)
   private _code = '';
 
+  @JsonProperty('type', String, true)
+  private _type = '';
+
   get id(): number {
     return this._id;
   }
@@ -59,5 +62,9 @@ export class Unit {
 
   get value(): string {
     return this._value;
+  }
+
+  get type(): string {
+    return this._type;
   }
 }

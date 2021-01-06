@@ -2,6 +2,12 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { LabelColor, LeaseTransaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { User } from '@homzhub/common/src/domain/models/User';
 
+export enum ActionType {
+  CANCEL = 'CANCEL LISTING',
+  ACTION = 'TAKE ACTIONS',
+  TERMINATE = 'TERMINATE',
+}
+
 @JsonObject('AssetStatusInfo')
 export class AssetStatusInfo {
   @JsonProperty('tag', LabelColor, true)

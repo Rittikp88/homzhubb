@@ -20,15 +20,16 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const { location } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
-  const { DASHBOARD, FINANCIALS } = protectedRoutes;
-  const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD, FINANCIALS], pathname);
+  const { DASHBOARD } = protectedRoutes;
+  const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD], pathname);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   return (
     <View style={styles.container}>
       <Navbar />
       <NavigationInfo />
       <View>
-        <View style={styles.mainContent}>
+        <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
           {!isTablet && isSideMenuVisible && <SideMenu onItemClick={FunctionUtils.noop} />}
           <MainRouter />
         </View>
@@ -46,8 +47,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   mainContent: {
-    width: '90vw',
+    width: theme.layout.dashboardWidth,
     flexDirection: 'row',
     alignSelf: 'center',
+  },
+  mainContentMobile: {
+    width: theme.layout.dashboardMobileWidth,
   },
 });
