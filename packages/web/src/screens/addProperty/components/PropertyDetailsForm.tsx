@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
-import PostAssetDetails from '@homzhub/web/src/screens/addProperty/components/AddAssetDetails';
+import AddAssetDetails from '@homzhub/web/src/screens/addProperty/components/AddAssetDetails';
 
 const PropertyDetails: FC = () => {
   return (
     <View style={styles.container}>
-      <PostAssetDetails />
+      <AddAssetDetails />
     </View>
   );
 };
