@@ -131,7 +131,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
 
     return (
       <>
-        <Header title={t('headerTitle')} onIconPress={this.handleGoBack} isBarVisible />
+        <Header title={t('headerTitle')} onIconPress={this.handleGoBack} barVisible />
         <SafeAreaView style={styles.container}>{this.renderForm()}</SafeAreaView>
         <Loader visible={isLoading} />
         {this.renderGoBackCaution()}

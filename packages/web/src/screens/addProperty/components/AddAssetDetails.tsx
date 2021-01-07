@@ -12,14 +12,14 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAssetForm';
+import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';
-import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAssetForm';
 
 interface IStateProps {
   assetGroups: AssetGroup[];

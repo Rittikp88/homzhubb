@@ -1,8 +1,8 @@
 import React, { FC, useRef } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useHistory, useLocation } from 'react-router-dom';
-import { History } from 'history';
 import { useTranslation } from 'react-i18next';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -12,7 +12,6 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import BreadCrumbs from '@homzhub/web/src/components/molecules/BreadCrumbs';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
-import { PopupActions } from 'reactjs-popup/dist/types';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';

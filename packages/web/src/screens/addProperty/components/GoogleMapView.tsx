@@ -23,10 +23,7 @@ interface IProps {
 
 const GoogleMapView: FC<IProps> = (props: IProps) => {
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
-  console.log('Map Instance => ', map);
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
-    console.log('onLoad called---------------');
-    console.log(mapInstance);
     setMap(mapInstance);
   }, []);
 
@@ -34,15 +31,13 @@ const GoogleMapView: FC<IProps> = (props: IProps) => {
     setMap(null);
   }, []);
   const onLoadMarker = (marker: google.maps.Marker): void => {
-    console.log('marker: ', marker);
+    // todos empty
   };
   const onDragStart = (event: google.maps.MapMouseEvent): void => {
-    console.log('Start => ', event);
+    // todos empty
   };
   const onDragEnd = (event: google.maps.MapMouseEvent): void => {
-    console.log('End => ', event);
-    const { lat, lng } = event.latLng;
-    console.log('Lat : Lng => ', lat(), ' : ', lng());
+    // todos empty
   };
   return (
     <View style={styles.container}>
