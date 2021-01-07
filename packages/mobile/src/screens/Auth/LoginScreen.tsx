@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AnimatedHeader, LoginForm, SocialMediaComponent } from '@homzhub/mobile/src/components';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { LoginForm, AuthenticationGateways } from '@homzhub/mobile/src/components';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -12,24 +15,30 @@ export class LoginScreen extends Component<Props> {
     const { t, navigation } = this.props;
 
     return (
-      <AnimatedHeader
-        title={t('login')}
-        subTitle={t('auth:newAroundHere')}
-        linkText={t('auth:signup')}
-        onIconPress={this.onClosePress}
-        onLinkPress={this.onSignUpClicked}
-        testID="headerEvents"
+      <Screen
+        headerProps={{
+          type: 'secondary',
+          icon: icons.close,
+          onIconPress: this.onClosePress,
+        }}
+        pageHeaderProps={{
+          contentTitle: t('login'),
+          contentSubTitle: t('auth:newAroundHere'),
+          contentLink: t('auth:signup'),
+          onLinkPress: this.onSignUpClicked,
+        }}
+        backgroundColor={theme.colors.white}
       >
         <>
           <LoginForm onLoginSuccess={this.onOtpLoginPress} testID="loginForm" />
-          <SocialMediaComponent
+          <AuthenticationGateways
             isFromLogin
             onEmailLogin={this.onEmailLoginPress}
             navigation={navigation}
             testID="socialEmailLogin"
           />
         </>
-      </AnimatedHeader>
+      </Screen>
     );
   }
 

@@ -1,6 +1,7 @@
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
+import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 // ENUMS
 
@@ -62,6 +63,21 @@ export enum EmailVerificationActions {
   VERIFY_EMAIL = 'VERIFY_EMAIL',
 }
 
+export enum PaymentFailureResponse {
+  PAYMENT_CANCELLED = 'PAYMENT_CANCELLED',
+}
+
+export enum ClosureReasonType {
+  LEASE_TRANSACTION_TERMINATION = 'LEASE_TRANSACTION_TERMINATION',
+  LEASE_LISTING_CANCELLATION = 'LEASE_LISTING_CANCELLATION',
+  SALE_LISTING_CANCELLATION = 'SALE_LISTING_CANCELLATION',
+}
+
+export enum ListingType {
+  LEASE_LISTING = 'lease-listings',
+  SALE_LISTING = 'sale-listings',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -76,8 +92,11 @@ export interface ISignUpPayload {
 }
 
 export interface ISocialSignUpPayload {
+  provider: SocialAuthKeys;
+  id_token: string;
   otp: string;
-  user_details: ISignUpPayload;
+  phone_code: string;
+  phone_number: string;
 }
 
 export interface IEmailLoginPayload {
@@ -502,7 +521,7 @@ export interface IPaymentParams {
   razorpay_payment_id?: string;
   razorpay_order_id?: string;
   razorpay_signature?: string;
-  code?: number;
+  error_code?: PaymentFailureResponse;
   payment_transaction_id?: number;
   user_invoice_id?: number;
 }
@@ -553,4 +572,50 @@ export interface IMarketTrendParams {
 
 export interface IReferralResponse {
   is_applicable: boolean;
+}
+
+export interface IVerifyAuthToken {
+  provider: string;
+  id_token: string;
+}
+
+export interface IVerifyAuthTokenResponse {
+  is_new_user: boolean;
+  is_token_verified: boolean;
+}
+
+export interface IClosureReasonPayload {
+  type: ClosureReasonType;
+  asset_group: number;
+  asset_country: number;
+}
+
+export interface IListingParam {
+  id?: number;
+  endDate?: string;
+  hasTakeAction?: boolean;
+}
+
+export interface ICancelListingParam {
+  listingType: ListingType;
+  listingId: number;
+  assetId: number;
+}
+
+export interface ICancelListingPayload {
+  param: ICancelListingParam;
+  data: {
+    cancel_reason: number;
+    cancel_date: string;
+    cancel_description?: string;
+  };
+}
+
+export interface ITerminateListingPayload {
+  id: number;
+  data: {
+    termination_reason: number;
+    termination_date: string;
+    termination_description?: string;
+  };
 }

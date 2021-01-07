@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
@@ -8,8 +9,10 @@ import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import MarketTrendsCard from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCard';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { IMarketTrendParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const MarketTrendsCarousel: FC = () => {
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [marketTrends, setMarketTrends] = useState({} as MarketTrends);
 
   useEffect(() => {
@@ -22,7 +25,7 @@ const MarketTrendsCarousel: FC = () => {
   }
 
   return (
-    <View style={styles.carouselContainer}>
+    <View style={[styles.carouselContainer, isMobile && styles.carouselContainerMobile]}>
       <View style={styles.titleContainer}>
         <Icon name={icons.increase} color={theme.colors.dark} size={24} style={styles.icon} />
         <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.title}>
@@ -63,6 +66,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
     marginVertical: 10,
     marginRight: -16,
+  },
+  carouselContainerMobile: {
+    marginRight: undefined,
   },
   titleContainer: {
     flexDirection: 'row',

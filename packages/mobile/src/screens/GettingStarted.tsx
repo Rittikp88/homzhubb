@@ -5,7 +5,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
-import { StatusBarComponent } from '@homzhub/mobile/src/components';
 import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/GuestStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -16,7 +15,6 @@ export class GettingStarted extends React.PureComponent<IProps> {
     const { t } = this.props;
     return (
       <>
-        <StatusBarComponent backgroundColor={theme.colors.background} isTranslucent />
         <View style={styles.container}>
           <Image source={{ uri: '' }} style={styles.image} />
           <Text type="regular" textType="semiBold" style={styles.header}>

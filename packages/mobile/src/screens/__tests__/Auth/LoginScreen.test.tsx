@@ -34,16 +34,6 @@ describe('Login Screen', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should navigate go back', () => {
-    component.find('[testID="headerEvents"]').prop('onIconPress')();
-    expect(mock).toHaveBeenCalled();
-  });
-
-  it('should navigate to signup screen', () => {
-    component.find('[testID="headerEvents"]').prop('onLinkPress')();
-    expect(mock).toHaveBeenCalled();
-  });
-
   it('should navigate to email login', () => {
     component.find('[testID="socialEmailLogin"]').prop('onEmailLogin')();
     expect(mock).toHaveBeenCalled();

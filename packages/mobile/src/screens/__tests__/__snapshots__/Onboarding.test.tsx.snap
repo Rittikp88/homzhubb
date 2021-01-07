@@ -3,631 +3,653 @@
 exports[`Onboarding Screen should match snapshot 1`] = `""`;
 
 exports[`Onboarding Screen should render got it button for active slide 1`] = `
-<ForwardRef(SafeAreaView)
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-    }
-  }
->
-  <Memo(StatusBarComponent)
-    backgroundColor="#FFFFFF"
-    isTranslucent={true}
-    statusBarStyle={
-      Object {
-        "height": 20,
-      }
-    }
+<Fragment>
+  <Memo(HomzhubStatusBar)
+    barStyle="dark-content"
+    statusBarBackground="#FFFFFF"
   />
-  <Text
-    onPress={[Function]}
+  <ForwardRef(SafeAreaView)
     style={
       Object {
-        "alignSelf": "flex-end",
-        "color": "#0084F8",
-        "marginHorizontal": 20,
-      }
-    }
-    textType="bold"
-    type="small"
-  >
-    skip
-  </Text>
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "paddingTop": 40,
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
       }
     }
   >
-    <Text
-      style={
-        Object {
-          "color": "#0084F8",
-          "fontSize": 30,
-          "paddingHorizontal": 20,
-          "paddingTop": 10,
-        }
-      }
-      textType="bold"
-      type="large"
-    >
-      Maintain
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#4FA800",
-          "textAlign": "center",
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
-    </Text>
-  </View>
-  <SnapCarousel
-    activeIndex={2}
-    carouselData={
-      Array [
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-          "title": "Search",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-          "title": "Post",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-          "title": "Maintain",
-        },
-      ]
-    }
-    carouselItem={[Function]}
-    onSnapToItem={[Function]}
-  />
-  <PaginationComponent
-    activeDotStyle={
-      Object {
-        "backgroundColor": "#0084F8",
-        "borderColor": "#0084F8",
-        "width": 16,
-      }
-    }
-    activeSlide={2}
-    dotsLength={3}
-    inactiveDotStyle={
-      Object {
-        "backgroundColor": "#CCD1D7",
-        "borderColor": "#CCD1D7",
-        "borderRadius": 5,
-        "height": 10,
-        "width": 10,
-      }
-    }
-  />
-  <Text
-    style={
-      Object {
-        "alignSelf": "center",
-        "color": "#33495E",
-        "paddingBottom": 16,
-      }
-    }
-    textType="semiBold"
-    type="regular"
-  >
-    iAmLooking
-  </Text>
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="plus"
-    iconColor="#FFFFFF"
-    iconSize={26}
-    onPress={[Function]}
-    testID="btnAddProperty"
-    title="property:addProperty"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="primary"
-  />
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="search"
-    iconColor="#0084F8"
-    iconSize={20}
-    onPress={[Function]}
-    testID="btnSearchProperty"
-    title="property:searchProperties"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="secondary"
-  />
-  <BottomSheet
-    onCloseSheet={[Function]}
-    sheetHeight={450}
-    visible={false}
-  >
-    <Text
-      style={
-        Object {
-          "marginBottom": 20,
-          "textAlign": "center",
-        }
-      }
-      textType="semiBold"
-      type="regular"
-    >
-      iAm
-    </Text>
     <View
       style={
         Object {
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "marginBottom": 50,
-          "marginHorizontal": 20,
+          "flex": 1,
         }
       }
     >
-      <Button
-        containerStyle={
+      <Text
+        onPress={[Function]}
+        style={
           Object {
-            "borderColor": "#C9D6DF",
-            "flex": 0,
-            "flexDirection": "column-reverse",
-            "marginBottom": 10,
-            "marginRight": 10,
-            "paddingVertical": 15,
-            "width": 90,
+            "alignSelf": "flex-end",
+            "color": "#0084F8",
+            "marginHorizontal": 20,
           }
         }
-        fontType="regular"
-        icon="owner"
-        iconColor="#33495E"
-        iconSize={24}
-        key="1"
-        onPress={[Function]}
-        testID="btnSelect"
-        title="property:propertyOwner"
-        titleStyle={
+        textType="bold"
+        type="small"
+      >
+        skip
+      </Text>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "paddingTop": 40,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#0084F8",
+              "fontSize": 30,
+              "paddingHorizontal": 20,
+              "paddingTop": 10,
+            }
+          }
+          textType="bold"
+          type="large"
+        >
+          Maintain
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#4FA800",
+              "textAlign": "center",
+            }
+          }
+          textType="regular"
+          type="small"
+        >
+          Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+        </Text>
+      </View>
+      <SnapCarousel
+        activeIndex={2}
+        carouselData={
           Array [
             Object {
-              "marginHorizontal": 0,
-              "width": 100,
+              "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+              "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+              "title": "Search",
             },
             Object {
-              "color": "#19324A",
+              "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+              "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+              "title": "Post",
+            },
+            Object {
+              "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+              "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+              "title": "Maintain",
             },
           ]
         }
-        type="secondary"
+        carouselItem={[Function]}
+        contentStyle={
+          Object {
+            "alignItems": "center",
+          }
+        }
+        itemWidth={720}
+        onSnapToItem={[Function]}
+      />
+      <PaginationComponent
+        activeDotStyle={
+          Object {
+            "backgroundColor": "#0084F8",
+            "borderColor": "#0084F8",
+            "width": 16,
+          }
+        }
+        activeSlide={2}
+        dotsLength={3}
+        inactiveDotStyle={
+          Object {
+            "backgroundColor": "#CCD1D7",
+            "borderColor": "#CCD1D7",
+            "borderRadius": 5,
+            "height": 10,
+            "width": 10,
+          }
+        }
+      />
+      <Text
+        style={
+          Object {
+            "alignSelf": "center",
+            "color": "#33495E",
+            "paddingBottom": 16,
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        iAmLooking
+      </Text>
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+            "flexDirection": "row-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 36,
+          }
+        }
+        icon="plus"
+        iconColor="#FFFFFF"
+        iconSize={26}
+        onPress={[Function]}
+        testID="btnAddProperty"
+        title="property:addProperty"
+        titleStyle={
+          Object {
+            "marginHorizontal": 12,
+          }
+        }
+        type="primary"
       />
       <Button
         containerStyle={
           Object {
-            "borderColor": "#C9D6DF",
             "flex": 0,
-            "flexDirection": "column-reverse",
+            "flexDirection": "row-reverse",
             "marginBottom": 10,
-            "marginRight": 10,
-            "paddingVertical": 15,
-            "width": 90,
+            "marginHorizontal": 36,
           }
         }
-        fontType="regular"
-        icon="agent"
-        iconColor="#33495E"
-        iconSize={24}
-        key="2"
+        icon="search"
+        iconColor="#0084F8"
+        iconSize={20}
         onPress={[Function]}
-        testID="btnSelect"
-        title="property:propertyAgent"
+        testID="btnSearchProperty"
+        title="property:searchProperties"
         titleStyle={
-          Array [
-            Object {
-              "marginHorizontal": 0,
-              "width": 100,
-            },
-            Object {
-              "color": "#19324A",
-            },
-          ]
-        }
-        type="secondary"
-      />
-      <Button
-        containerStyle={
           Object {
-            "borderColor": "#C9D6DF",
-            "flex": 0,
-            "flexDirection": "column-reverse",
-            "marginBottom": 10,
-            "marginRight": 10,
-            "paddingVertical": 15,
-            "width": 90,
+            "marginHorizontal": 12,
           }
-        }
-        fontType="regular"
-        icon="manager"
-        iconColor="#33495E"
-        iconSize={24}
-        key="3"
-        onPress={[Function]}
-        testID="btnSelect"
-        title="property:propertyManager"
-        titleStyle={
-          Array [
-            Object {
-              "marginHorizontal": 0,
-              "width": 100,
-            },
-            Object {
-              "color": "#19324A",
-            },
-          ]
         }
         type="secondary"
       />
     </View>
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "height": 50,
-          "justifyContent": "center",
-          "marginHorizontal": 30,
+    <BottomSheet
+      onCloseSheet={[Function]}
+      sheetHeight={500}
+      visible={false}
+    >
+      <Text
+        style={
+          Object {
+            "marginBottom": 20,
+            "textAlign": "center",
+          }
         }
-      }
-      disabled={true}
-      onPress={[Function]}
-      testID="btnContinue"
-      title="continue"
-      type="primary"
-    />
-  </BottomSheet>
-</ForwardRef(SafeAreaView)>
+        textType="semiBold"
+        type="regular"
+      >
+        iAm
+      </Text>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 50,
+            "marginHorizontal": 20,
+          }
+        }
+      >
+        <Button
+          containerStyle={
+            Object {
+              "borderColor": "#C9D6DF",
+              "flex": 0,
+              "flexDirection": "column-reverse",
+              "marginBottom": 10,
+              "marginRight": 10,
+              "paddingVertical": 15,
+              "width": 90,
+            }
+          }
+          fontType="regular"
+          icon="owner"
+          iconColor="#33495E"
+          iconSize={24}
+          key="1"
+          onPress={[Function]}
+          testID="btnSelect"
+          title="property:propertyOwner"
+          titleStyle={
+            Array [
+              Object {
+                "marginHorizontal": 0,
+                "width": 100,
+              },
+              Object {
+                "color": "#19324A",
+              },
+            ]
+          }
+          type="secondary"
+        />
+        <Button
+          containerStyle={
+            Object {
+              "borderColor": "#C9D6DF",
+              "flex": 0,
+              "flexDirection": "column-reverse",
+              "marginBottom": 10,
+              "marginRight": 10,
+              "paddingVertical": 15,
+              "width": 90,
+            }
+          }
+          fontType="regular"
+          icon="agent"
+          iconColor="#33495E"
+          iconSize={24}
+          key="2"
+          onPress={[Function]}
+          testID="btnSelect"
+          title="property:propertyAgent"
+          titleStyle={
+            Array [
+              Object {
+                "marginHorizontal": 0,
+                "width": 100,
+              },
+              Object {
+                "color": "#19324A",
+              },
+            ]
+          }
+          type="secondary"
+        />
+        <Button
+          containerStyle={
+            Object {
+              "borderColor": "#C9D6DF",
+              "flex": 0,
+              "flexDirection": "column-reverse",
+              "marginBottom": 10,
+              "marginRight": 10,
+              "paddingVertical": 15,
+              "width": 90,
+            }
+          }
+          fontType="regular"
+          icon="manager"
+          iconColor="#33495E"
+          iconSize={24}
+          key="3"
+          onPress={[Function]}
+          testID="btnSelect"
+          title="property:propertyManager"
+          titleStyle={
+            Array [
+              Object {
+                "marginHorizontal": 0,
+                "width": 100,
+              },
+              Object {
+                "color": "#19324A",
+              },
+            ]
+          }
+          type="secondary"
+        />
+      </View>
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+            "height": 50,
+            "justifyContent": "center",
+            "marginHorizontal": 30,
+          }
+        }
+        disabled={true}
+        onPress={[Function]}
+        testID="btnContinue"
+        title="continue"
+        type="primary"
+      />
+    </BottomSheet>
+  </ForwardRef(SafeAreaView)>
+</Fragment>
 `;
 
 exports[`Onboarding Screen should render with data in state 1`] = `
-<ForwardRef(SafeAreaView)
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-    }
-  }
->
-  <Memo(StatusBarComponent)
-    backgroundColor="#FFFFFF"
-    isTranslucent={true}
-    statusBarStyle={
-      Object {
-        "height": 20,
-      }
-    }
+<Fragment>
+  <Memo(HomzhubStatusBar)
+    barStyle="dark-content"
+    statusBarBackground="#FFFFFF"
   />
-  <Text
-    onPress={[Function]}
+  <ForwardRef(SafeAreaView)
     style={
       Object {
-        "alignSelf": "flex-end",
-        "color": "#0084F8",
-        "marginHorizontal": 20,
-      }
-    }
-    textType="bold"
-    type="small"
-  >
-    skip
-  </Text>
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "paddingTop": 40,
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
       }
     }
   >
-    <Text
-      style={
-        Object {
-          "color": "#0084F8",
-          "fontSize": 30,
-          "paddingHorizontal": 20,
-          "paddingTop": 10,
-        }
-      }
-      textType="bold"
-      type="large"
-    >
-      Search
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#4FA800",
-          "textAlign": "center",
-        }
-      }
-      textType="regular"
-      type="small"
-    >
-      Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
-    </Text>
-  </View>
-  <SnapCarousel
-    activeIndex={0}
-    carouselData={
-      Array [
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
-          "title": "Search",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
-          "title": "Post",
-        },
-        Object {
-          "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
-          "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
-          "title": "Maintain",
-        },
-      ]
-    }
-    carouselItem={[Function]}
-    onSnapToItem={[Function]}
-  />
-  <PaginationComponent
-    activeDotStyle={
-      Object {
-        "backgroundColor": "#0084F8",
-        "borderColor": "#0084F8",
-        "width": 16,
-      }
-    }
-    activeSlide={0}
-    dotsLength={3}
-    inactiveDotStyle={
-      Object {
-        "backgroundColor": "#CCD1D7",
-        "borderColor": "#CCD1D7",
-        "borderRadius": 5,
-        "height": 10,
-        "width": 10,
-      }
-    }
-  />
-  <Text
-    style={
-      Object {
-        "alignSelf": "center",
-        "color": "#33495E",
-        "paddingBottom": 16,
-      }
-    }
-    textType="semiBold"
-    type="regular"
-  >
-    iAmLooking
-  </Text>
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="plus"
-    iconColor="#FFFFFF"
-    iconSize={26}
-    onPress={[Function]}
-    testID="btnAddProperty"
-    title="property:addProperty"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="primary"
-  />
-  <Button
-    containerStyle={
-      Object {
-        "flex": 0,
-        "flexDirection": "row-reverse",
-        "marginBottom": 10,
-        "marginHorizontal": 36,
-      }
-    }
-    icon="search"
-    iconColor="#0084F8"
-    iconSize={20}
-    onPress={[Function]}
-    testID="btnSearchProperty"
-    title="property:searchProperties"
-    titleStyle={
-      Object {
-        "marginHorizontal": 12,
-      }
-    }
-    type="secondary"
-  />
-  <BottomSheet
-    onCloseSheet={[Function]}
-    sheetHeight={450}
-    visible={false}
-  >
-    <Text
-      style={
-        Object {
-          "marginBottom": 20,
-          "textAlign": "center",
-        }
-      }
-      textType="semiBold"
-      type="regular"
-    >
-      iAm
-    </Text>
     <View
       style={
         Object {
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "marginBottom": 50,
-          "marginHorizontal": 20,
+          "flex": 1,
         }
       }
     >
-      <Button
-        containerStyle={
+      <Text
+        onPress={[Function]}
+        style={
           Object {
-            "borderColor": "#C9D6DF",
-            "flex": 0,
-            "flexDirection": "column-reverse",
-            "marginBottom": 10,
-            "marginRight": 10,
-            "paddingVertical": 15,
-            "width": 90,
+            "alignSelf": "flex-end",
+            "color": "#0084F8",
+            "marginHorizontal": 20,
           }
         }
-        fontType="regular"
-        icon="owner"
-        iconColor="#33495E"
-        iconSize={24}
-        key="1"
-        onPress={[Function]}
-        testID="btnSelect"
-        title="property:propertyOwner"
-        titleStyle={
+        textType="bold"
+        type="small"
+      >
+        skip
+      </Text>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "paddingTop": 40,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#0084F8",
+              "fontSize": 30,
+              "paddingHorizontal": 20,
+              "paddingTop": 10,
+            }
+          }
+          textType="bold"
+          type="large"
+        >
+          Search
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#4FA800",
+              "textAlign": "center",
+            }
+          }
+          textType="regular"
+          type="small"
+        >
+          Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.
+        </Text>
+      </View>
+      <SnapCarousel
+        activeIndex={0}
+        carouselData={
           Array [
             Object {
-              "marginHorizontal": 0,
-              "width": 100,
+              "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+              "image_url": "https://homzhub-bucket.s3.amazonaws.com/Search_Onboarding.svg",
+              "title": "Search",
             },
             Object {
-              "color": "#19324A",
+              "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+              "image_url": "https://homzhub-bucket.s3.amazonaws.com/Post_Onboarding.svg",
+              "title": "Post",
+            },
+            Object {
+              "description": "Sit amet, in enim nunc, etiam amet velit. Malesuada non neque nec in a.",
+              "image_url": "https://homzhub-bucket.s3.amazonaws.com/Maintain_Onboarding.svg",
+              "title": "Maintain",
             },
           ]
         }
-        type="secondary"
+        carouselItem={[Function]}
+        contentStyle={
+          Object {
+            "alignItems": "center",
+          }
+        }
+        itemWidth={720}
+        onSnapToItem={[Function]}
+      />
+      <PaginationComponent
+        activeDotStyle={
+          Object {
+            "backgroundColor": "#0084F8",
+            "borderColor": "#0084F8",
+            "width": 16,
+          }
+        }
+        activeSlide={0}
+        dotsLength={3}
+        inactiveDotStyle={
+          Object {
+            "backgroundColor": "#CCD1D7",
+            "borderColor": "#CCD1D7",
+            "borderRadius": 5,
+            "height": 10,
+            "width": 10,
+          }
+        }
+      />
+      <Text
+        style={
+          Object {
+            "alignSelf": "center",
+            "color": "#33495E",
+            "paddingBottom": 16,
+          }
+        }
+        textType="semiBold"
+        type="regular"
+      >
+        iAmLooking
+      </Text>
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+            "flexDirection": "row-reverse",
+            "marginBottom": 10,
+            "marginHorizontal": 36,
+          }
+        }
+        icon="plus"
+        iconColor="#FFFFFF"
+        iconSize={26}
+        onPress={[Function]}
+        testID="btnAddProperty"
+        title="property:addProperty"
+        titleStyle={
+          Object {
+            "marginHorizontal": 12,
+          }
+        }
+        type="primary"
       />
       <Button
         containerStyle={
           Object {
-            "borderColor": "#C9D6DF",
             "flex": 0,
-            "flexDirection": "column-reverse",
+            "flexDirection": "row-reverse",
             "marginBottom": 10,
-            "marginRight": 10,
-            "paddingVertical": 15,
-            "width": 90,
+            "marginHorizontal": 36,
           }
         }
-        fontType="regular"
-        icon="agent"
-        iconColor="#33495E"
-        iconSize={24}
-        key="2"
+        icon="search"
+        iconColor="#0084F8"
+        iconSize={20}
         onPress={[Function]}
-        testID="btnSelect"
-        title="property:propertyAgent"
+        testID="btnSearchProperty"
+        title="property:searchProperties"
         titleStyle={
-          Array [
-            Object {
-              "marginHorizontal": 0,
-              "width": 100,
-            },
-            Object {
-              "color": "#19324A",
-            },
-          ]
-        }
-        type="secondary"
-      />
-      <Button
-        containerStyle={
           Object {
-            "borderColor": "#C9D6DF",
-            "flex": 0,
-            "flexDirection": "column-reverse",
-            "marginBottom": 10,
-            "marginRight": 10,
-            "paddingVertical": 15,
-            "width": 90,
+            "marginHorizontal": 12,
           }
-        }
-        fontType="regular"
-        icon="manager"
-        iconColor="#33495E"
-        iconSize={24}
-        key="3"
-        onPress={[Function]}
-        testID="btnSelect"
-        title="property:propertyManager"
-        titleStyle={
-          Array [
-            Object {
-              "marginHorizontal": 0,
-              "width": 100,
-            },
-            Object {
-              "color": "#19324A",
-            },
-          ]
         }
         type="secondary"
       />
     </View>
-    <Button
-      containerStyle={
-        Object {
-          "flex": 0,
-          "height": 50,
-          "justifyContent": "center",
-          "marginHorizontal": 30,
+    <BottomSheet
+      onCloseSheet={[Function]}
+      sheetHeight={500}
+      visible={false}
+    >
+      <Text
+        style={
+          Object {
+            "marginBottom": 20,
+            "textAlign": "center",
+          }
         }
-      }
-      disabled={true}
-      onPress={[Function]}
-      testID="btnContinue"
-      title="continue"
-      type="primary"
-    />
-  </BottomSheet>
-</ForwardRef(SafeAreaView)>
+        textType="semiBold"
+        type="regular"
+      >
+        iAm
+      </Text>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 50,
+            "marginHorizontal": 20,
+          }
+        }
+      >
+        <Button
+          containerStyle={
+            Object {
+              "borderColor": "#C9D6DF",
+              "flex": 0,
+              "flexDirection": "column-reverse",
+              "marginBottom": 10,
+              "marginRight": 10,
+              "paddingVertical": 15,
+              "width": 90,
+            }
+          }
+          fontType="regular"
+          icon="owner"
+          iconColor="#33495E"
+          iconSize={24}
+          key="1"
+          onPress={[Function]}
+          testID="btnSelect"
+          title="property:propertyOwner"
+          titleStyle={
+            Array [
+              Object {
+                "marginHorizontal": 0,
+                "width": 100,
+              },
+              Object {
+                "color": "#19324A",
+              },
+            ]
+          }
+          type="secondary"
+        />
+        <Button
+          containerStyle={
+            Object {
+              "borderColor": "#C9D6DF",
+              "flex": 0,
+              "flexDirection": "column-reverse",
+              "marginBottom": 10,
+              "marginRight": 10,
+              "paddingVertical": 15,
+              "width": 90,
+            }
+          }
+          fontType="regular"
+          icon="agent"
+          iconColor="#33495E"
+          iconSize={24}
+          key="2"
+          onPress={[Function]}
+          testID="btnSelect"
+          title="property:propertyAgent"
+          titleStyle={
+            Array [
+              Object {
+                "marginHorizontal": 0,
+                "width": 100,
+              },
+              Object {
+                "color": "#19324A",
+              },
+            ]
+          }
+          type="secondary"
+        />
+        <Button
+          containerStyle={
+            Object {
+              "borderColor": "#C9D6DF",
+              "flex": 0,
+              "flexDirection": "column-reverse",
+              "marginBottom": 10,
+              "marginRight": 10,
+              "paddingVertical": 15,
+              "width": 90,
+            }
+          }
+          fontType="regular"
+          icon="manager"
+          iconColor="#33495E"
+          iconSize={24}
+          key="3"
+          onPress={[Function]}
+          testID="btnSelect"
+          title="property:propertyManager"
+          titleStyle={
+            Array [
+              Object {
+                "marginHorizontal": 0,
+                "width": 100,
+              },
+              Object {
+                "color": "#19324A",
+              },
+            ]
+          }
+          type="secondary"
+        />
+      </View>
+      <Button
+        containerStyle={
+          Object {
+            "flex": 0,
+            "height": 50,
+            "justifyContent": "center",
+            "marginHorizontal": 30,
+          }
+        }
+        disabled={true}
+        onPress={[Function]}
+        testID="btnContinue"
+        title="continue"
+        type="primary"
+      />
+    </BottomSheet>
+  </ForwardRef(SafeAreaView)>
+</Fragment>
 `;
 
 exports[`Onboarding Screen should render without data in state 1`] = `""`;

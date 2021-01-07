@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { CommonActions } from '@react-navigation/native';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -11,7 +10,8 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader, MoreProfile } from '@homzhub/mobile/src/components';
+import { MoreProfile } from '@homzhub/mobile/src/components';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { MORE_SCREENS, LOGOUT, IMoreScreenItem, MoreScreenTypes } from '@homzhub/common/src/constants/MoreScreens';
 
 interface IDispatchProps {
@@ -26,30 +26,28 @@ export class More extends React.PureComponent<Props> {
     const { t } = this.props;
     const screenKeys: string[] = Object.keys(MORE_SCREENS);
     return (
-      <AnimatedProfileHeader title={t('assetMore:more')}>
-        <View style={styles.moreStack}>
-          <MoreProfile onIconPress={this.onIconPress} />
-          {screenKeys.map(
-            (section: string, sectionCount: number): React.ReactElement => {
-              const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
-              return (
-                <React.Fragment key={sectionCount}>
-                  {currentData.map((item, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        {this.renderItem(item)}
-                        {index !== currentData.length - 1 && this.renderSeparator()}
-                      </React.Fragment>
-                    );
-                  })}
-                  {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
-                </React.Fragment>
-              );
-            }
-          )}
-          {this.renderLogout()}
-        </View>
-      </AnimatedProfileHeader>
+      <UserScreen title={t('assetMore:more')}>
+        <MoreProfile onIconPress={this.onIconPress} />
+        {screenKeys.map(
+          (section: string, sectionCount: number): React.ReactElement => {
+            const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
+            return (
+              <React.Fragment key={sectionCount}>
+                {currentData.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      {this.renderItem(item)}
+                      {index !== currentData.length - 1 && this.renderSeparator()}
+                    </React.Fragment>
+                  );
+                })}
+                {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
+              </React.Fragment>
+            );
+          }
+        )}
+        {this.renderLogout()}
+      </UserScreen>
     );
   };
 
@@ -114,60 +112,32 @@ export class More extends React.PureComponent<Props> {
     const { navigation, t } = this.props;
     switch (type) {
       case MoreScreenTypes.NOTIFICATIONS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.AssetNotifications,
-          })
-        );
+        navigation.navigate(ScreensKeys.AssetNotifications);
         break;
       case MoreScreenTypes.MARKET_TRENDS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.MarketTrends,
-          })
-        );
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.MarketTrends);
         break;
       case MoreScreenTypes.PROPERTY_VISITS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.PropertyVisits,
-          })
-        );
+        navigation.navigate(ScreensKeys.PropertyVisits);
         break;
       case MoreScreenTypes.SETTINGS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.SettingsScreen,
-          })
-        );
+        navigation.navigate(ScreensKeys.SettingsScreen);
         break;
       case MoreScreenTypes.SUPPORT:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.SupportScreen,
-          })
-        );
+        navigation.navigate(ScreensKeys.SupportScreen);
         break;
       case MoreScreenTypes.REFER_FRIEND:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.ReferEarn,
-          })
-        );
+        navigation.navigate(ScreensKeys.ReferEarn);
         break;
       case MoreScreenTypes.SAVED_PROPERTIES:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.SavedPropertiesScreen,
-          })
-        );
+        navigation.navigate(ScreensKeys.SavedPropertiesScreen);
         break;
       case MoreScreenTypes.KYC_DOCUMENTS:
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ScreensKeys.KYC,
-          })
-        );
+        navigation.navigate(ScreensKeys.KYC);
+        break;
+      case MoreScreenTypes.VALUE_ADDED_SERVICES:
+        navigation.navigate(ScreensKeys.ValueAddedServices);
         break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
@@ -189,9 +159,6 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(null, mapDispatchToProps)(withTranslation()(More));
 
 const styles = StyleSheet.create({
-  moreStack: {
-    backgroundColor: theme.colors.white,
-  },
   moreItem: {
     flex: 1,
     flexDirection: 'row',

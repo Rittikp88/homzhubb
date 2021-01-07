@@ -24,9 +24,11 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
 
   public render(): React.ReactNode {
     const { banners, activeSlide } = this.state;
-    if (!banners) {
+
+    if (banners?.results?.length <= 0 || !banners) {
       return null;
     }
+
     return (
       <View style={styles.container}>
         <SnapCarousel

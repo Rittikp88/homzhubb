@@ -51,9 +51,13 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { getAssetPlanList } = this.props;
+    const {
+      getAssetPlanList,
+      route: { params },
+    } = this.props;
     getAssetPlanList();
     await this.getAssetAdvertisements();
+    if (params) return;
     setTimeout(() => {
       this.setState({ isSheetVisible: true });
     }, 0);

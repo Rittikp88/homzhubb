@@ -25,9 +25,13 @@ exports[`Avatar should match snapshot 1`] = `
           Object {
             "alignItems": "center",
             "backgroundColor": "#808D9B",
+            "borderColor": "#FFFFFF",
+            "borderWidth": 1,
+            "justifyContent": "center",
+          },
+          Object {
             "borderRadius": 21,
             "height": 42,
-            "justifyContent": "center",
             "width": 42,
           },
           undefined,
@@ -113,9 +117,13 @@ exports[`Avatar should match snapshot with phone number 1`] = `
           Object {
             "alignItems": "center",
             "backgroundColor": "#808D9B",
+            "borderColor": "#FFFFFF",
+            "borderWidth": 1,
+            "justifyContent": "center",
+          },
+          Object {
             "borderRadius": 21,
             "height": 42,
-            "justifyContent": "center",
             "width": 42,
           },
           undefined,

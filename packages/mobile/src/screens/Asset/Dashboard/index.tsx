@@ -10,16 +10,12 @@ import { DashboardRepository } from '@homzhub/common/src/domain/repositories/Das
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import {
-  AnimatedProfileHeader,
-  AssetAdvertisementBanner,
-  AssetMetricsList,
-  AssetSummary,
-} from '@homzhub/mobile/src/components';
+import { AssetAdvertisementBanner, AssetMetricsList, AssetSummary } from '@homzhub/mobile/src/components';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -74,23 +70,21 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     const { isLoading, pendingProperties } = this.state;
 
     return (
-      <AnimatedProfileHeader loading={isLoading} isGradientHeader title={t('dashboard')}>
-        <>
-          {this.renderAssetMetricsAndUpdates()}
-          {pendingProperties.length > 0 && (
-            <PendingPropertyListCard
-              data={pendingProperties}
-              onPressComplete={this.onCompleteDetails}
-              onSelectAction={this.handleActionSelection}
-              onViewProperty={this.onViewProperty}
-            />
-          )}
-          <FinanceOverview />
-          <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
-          <AssetAdvertisementBanner />
-          {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
-        </>
-      </AnimatedProfileHeader>
+      <UserScreen loading={isLoading} isGradient title={t('dashboard')}>
+        {this.renderAssetMetricsAndUpdates()}
+        {pendingProperties.length > 0 && (
+          <PendingPropertyListCard
+            data={pendingProperties}
+            onPressComplete={this.onCompleteDetails}
+            onSelectAction={this.handleActionSelection}
+            onViewProperty={this.onViewProperty}
+          />
+        )}
+        <FinanceOverview />
+        <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
+        <AssetAdvertisementBanner />
+        {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
+      </UserScreen>
     );
   };
 

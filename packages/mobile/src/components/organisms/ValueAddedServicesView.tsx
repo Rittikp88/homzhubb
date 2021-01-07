@@ -18,12 +18,11 @@ interface IOwnProps extends WithTranslation {
   valueAddedServices: ValueAddedService[];
   handleNextStep: () => void;
   propertyId: number;
-  assetGroupId: number;
-  countryId: number;
-  typeOfPlan: TypeOfPlan;
   setValueAddedServices: (payload: ISelectedValueServices) => void;
+  typeOfPlan?: TypeOfPlan;
+  lastVisitedStep?: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
-  lastVisitedStep: ILastVisitedStep;
+  buttonStyle?: StyleProp<ViewStyle>;
 }
 
 interface IOwnState {
@@ -36,7 +35,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   public render = (): ReactElement => {
-    const { setValueAddedServices, valueAddedServices, containerStyle, t } = this.props;
+    const { setValueAddedServices, valueAddedServices, containerStyle, buttonStyle, t } = this.props;
     const { searchString } = this.state;
 
     if (valueAddedServices && valueAddedServices.length <= 0) {
@@ -57,43 +56,49 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
             containerStyle={styles.searchStyle}
           />
 
-          {this.dynamicSearch().map((item: ValueAddedService) => {
-            const {
-              id,
-              valueBundle: {
-                valueBundleItems,
-                label,
-                attachment: { link },
-              },
-              bundlePrice,
-              discountedPrice,
-            } = item;
+          {this.dynamicSearch().length > 0 ? (
+            this.dynamicSearch().map((item: ValueAddedService) => {
+              const {
+                id,
+                valueBundle: {
+                  valueBundleItems,
+                  label,
+                  attachment: { link },
+                },
+                bundlePrice,
+                discountedPrice,
+              } = item;
 
-            const handleToggle = (value: boolean): void => {
-              setValueAddedServices({ id, value });
-            };
+              const handleToggle = (value: boolean): void => {
+                setValueAddedServices({ id, value });
+              };
 
-            return (
-              <CardWithCheckbox
-                key={id}
-                heading={label}
-                selected={item.value}
-                image={link}
-                price={bundlePrice}
-                discountedPrice={discountedPrice}
-                bundleItems={valueBundleItems}
-                currency={item.currency}
-                containerStyle={styles.cardContainer}
-                onToggle={handleToggle}
-              />
-            );
-          })}
+              return (
+                <CardWithCheckbox
+                  key={id}
+                  heading={label}
+                  selected={item.value}
+                  image={link}
+                  price={bundlePrice}
+                  discountedPrice={discountedPrice}
+                  bundleItems={valueBundleItems}
+                  currency={item.currency}
+                  containerStyle={styles.cardContainer}
+                  onToggle={handleToggle}
+                />
+              );
+            })
+          ) : (
+            <Text style={styles.noResults} type="regular">
+              {t('common:noResultsFound')}
+            </Text>
+          )}
         </View>
         <Button
           disabled={valueAddedServices.filter((service) => service.value).length === 0}
           type="primary"
           title={t('common:continue')}
-          containerStyle={styles.buttonStyle}
+          containerStyle={[styles.buttonStyle, buttonStyle]}
           onPress={this.handleContinue}
         />
       </>
@@ -115,20 +120,22 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
 
   private handleContinue = async (): Promise<void> => {
     const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
-
-    const updateAssetPayload: IUpdateAssetParams = {
-      last_visited_step: {
-        ...lastVisitedStep,
-        listing: {
-          ...lastVisitedStep.listing,
-          type: typeOfPlan,
-          is_services_done: true,
-        },
-      },
-    };
+    let updateAssetPayload: IUpdateAssetParams;
 
     try {
-      await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+      if (lastVisitedStep && typeOfPlan) {
+        updateAssetPayload = {
+          last_visited_step: {
+            ...lastVisitedStep,
+            listing: {
+              ...lastVisitedStep.listing,
+              type: typeOfPlan,
+              is_services_done: true,
+            },
+          },
+        };
+        await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+      }
       handleNextStep();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -145,6 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   noResults: {
+    marginTop: 16,
     textAlign: 'center',
   },
   buttonStyle: {

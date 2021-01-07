@@ -20,6 +20,7 @@ jest.mock('@react-navigation/material-top-tabs', () => {
     createMaterialTopTabNavigator: jest.fn(),
   };
 });
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 jest.mock('react-native-permissions', () => {
   return {
     request: jest.fn(),

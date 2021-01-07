@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
@@ -12,9 +12,9 @@ import { StoreProviderService } from '@homzhub/common/src/services/StoreProvider
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
@@ -33,42 +33,42 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
     const { t } = this.props;
     const formData = { ...this.state };
     return (
-      <View style={styles.container}>
-        <DetailedHeader
-          icon={icons.close}
-          subTitle={t('auth:resetPassword')}
-          subTitleType="large"
-          subTitleColor={theme.colors.dark}
-          onIconPress={this.handleIconPress}
-          headerContainerStyle={styles.headerContainer}
-          testID="headerIconPress"
-        />
-        <View style={styles.content}>
-          <Formik onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)} initialValues={formData}>
-            {(formProps: FormikProps<FormikValues>): React.ReactElement => (
-              <>
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="password"
-                  name="password"
-                  label="Password"
-                  helpText={t('auth:passwordValidation')}
-                  placeholder={t('auth:enterPassword')}
-                  isMandatory
-                />
-                <FormButton
-                  formProps={formProps}
-                  type="primary"
-                  title={t('auth:resetPasswordButtonTitle')}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  containerStyle={styles.formButtonStyle}
-                />
-              </>
-            )}
-          </Formik>
-        </View>
-      </View>
+      <Screen
+        headerProps={{
+          type: 'secondary',
+          icon: icons.close,
+          onIconPress: this.handleIconPress,
+        }}
+        pageHeaderProps={{
+          contentTitle: t('auth:resetPassword'),
+          disableDivider: true,
+        }}
+        backgroundColor={theme.colors.white}
+      >
+        <Formik onSubmit={this.onSubmit} validate={FormUtils.validate(this.formSchema)} initialValues={formData}>
+          {(formProps: FormikProps<FormikValues>): React.ReactElement => (
+            <>
+              <FormTextInput
+                formProps={formProps}
+                inputType="password"
+                name="password"
+                label="Password"
+                helpText={t('auth:passwordValidation')}
+                placeholder={t('auth:enterPassword')}
+                isMandatory
+              />
+              <FormButton
+                formProps={formProps}
+                type="primary"
+                title={t('auth:resetPasswordButtonTitle')}
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                containerStyle={styles.formButtonStyle}
+              />
+            </>
+          )}
+        </Formik>
+      </Screen>
     );
   }
 
@@ -125,16 +125,6 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
 export default withTranslation()(ResetPassword);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-  },
-  content: {
-    paddingHorizontal: 24,
-  },
-  headerContainer: {
-    borderBottomWidth: 0,
-  },
   formButtonStyle: {
     flex: 0,
     marginVertical: 30,

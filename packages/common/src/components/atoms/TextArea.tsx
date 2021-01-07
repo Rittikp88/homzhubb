@@ -12,10 +12,20 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   onMessageChange?: (text: string) => void;
   wordCountLimit?: number;
+  inputContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export const TextArea = (props: IProps): React.ReactElement => {
-  const { label, placeholder, containerStyle = {}, onMessageChange, value, wordCountLimit = 250, helpText } = props;
+  const {
+    label,
+    placeholder,
+    containerStyle = {},
+    inputContainerStyle = {},
+    onMessageChange,
+    value,
+    wordCountLimit = 250,
+    helpText,
+  } = props;
   const { t } = useTranslation();
   const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
   return (
@@ -33,7 +43,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
       <View style={styles.textAreaContainer}>
         <TextInput
           autoCorrect={false}
-          style={styles.textArea}
+          style={[styles.textArea, inputContainerStyle]}
           placeholder={placeholder}
           maxLength={250}
           multiline

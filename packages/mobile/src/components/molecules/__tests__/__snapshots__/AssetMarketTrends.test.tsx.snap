@@ -6,12 +6,11 @@ exports[`AssetMarketTrends should match snapshot with empty results 1`] = `
     Array [
       Object {
         "backgroundColor": "#FFFFFF",
+        "flex": 1,
         "padding": 16,
         "paddingBottom": 0,
       },
-      Object {
-        "height": 933.8,
-      },
+      false,
     ]
   }
 >
@@ -59,12 +58,11 @@ exports[`AssetMarketTrends should match snapshot with results 1`] = `
     Array [
       Object {
         "backgroundColor": "#FFFFFF",
+        "flex": 1,
         "padding": 16,
         "paddingBottom": 0,
       },
-      Object {
-        "height": 933.8,
-      },
+      false,
     ]
   }
 >

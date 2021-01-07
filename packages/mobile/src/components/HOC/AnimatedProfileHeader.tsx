@@ -10,7 +10,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
-import { StatusBarComponent } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -61,11 +60,6 @@ const AnimatedProfileHeader = (props: IProps): React.ReactElement => {
   const renderContent = useCallback(
     (): React.ReactElement => (
       <>
-        <StatusBarComponent
-          backgroundColor={isGradientHeader ? theme.colors.transparent : theme.colors.primaryColor}
-          isTranslucent
-          barStyle="light-content"
-        />
         <View
           style={[
             styles.headerContainer,

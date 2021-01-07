@@ -1,288 +1,183 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`OTP Screen should match snapshot in error 1`] = `
-<ForwardRef(SafeAreaView)
-  style={
+<Screen
+  backgroundColor="#FFFFFF"
+  headerProps={
     Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
+      "onIconPress": [MockFunction],
+      "type": "secondary",
+    }
+  }
+  isLoading={false}
+  pageHeaderProps={
+    Object {
+      "contentSubTitle": "enterOTP",
+      "contentTitle": "Otp",
+      "disableDivider": true,
     }
   }
 >
-  <DetailedHeader
-    headerContainerStyle={
-      Object {
-        "borderBottomWidth": 0,
-      }
-    }
-    icon="left-arrow"
-    onIconPress={[MockFunction]}
-  />
   <View
     style={
       Object {
-        "flex": 1,
-        "marginHorizontal": 16,
-        "marginTop": 24,
+        "alignItems": "center",
+        "flexDirection": "row",
       }
     }
   >
     <Text
       textType="semiBold"
-      type="large"
+      type="small"
     >
-      Otp
+      INR 99999999999
     </Text>
-    <Label
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="note-book"
+      onPress={[Function]}
+      size={16}
       style={
         Object {
-          "color": "#33495E",
-          "marginVertical": 8,
+          "marginStart": 8,
         }
       }
-      textType="regular"
-      type="large"
-    >
-      enterOTP
-    </Label>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        textType="semiBold"
-        type="small"
-      >
-        INR 99999999999
-      </Text>
-      <Icon
-        allowFontScaling={false}
-        color="#0084F8"
-        name="note-book"
-        onPress={[Function]}
-        size={16}
-        style={
-          Object {
-            "marginStart": 8,
-          }
-        }
-        testID="icnEdit"
-      />
-    </View>
-    <OtpInputs
-      bubbleOtp={[Function]}
-      error="otpError"
-      otpType="PhoneOrEmail"
-      toggleError={[Function]}
-    />
-    <OtpTimer
-      onResentPress={[Function]}
+      testID="icnEdit"
     />
   </View>
-  <Loader
-    visible={false}
+  <OtpInputs
+    bubbleOtp={[Function]}
+    error="otpError"
+    otpType="PhoneOrEmail"
+    toggleError={[Function]}
   />
-</ForwardRef(SafeAreaView)>
+  <OtpTimer
+    onResentPress={[Function]}
+  />
+</Screen>
 `;
 
 exports[`OTP Screen should render snapshot 1`] = `
-<ForwardRef(SafeAreaView)
-  style={
+<Screen
+  backgroundColor="#FFFFFF"
+  headerProps={
     Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
+      "onIconPress": [MockFunction],
+      "type": "secondary",
+    }
+  }
+  isLoading={false}
+  pageHeaderProps={
+    Object {
+      "contentSubTitle": "enterOTP",
+      "contentTitle": "Otp",
+      "disableDivider": true,
     }
   }
 >
-  <DetailedHeader
-    headerContainerStyle={
-      Object {
-        "borderBottomWidth": 0,
-      }
-    }
-    icon="left-arrow"
-    onIconPress={[MockFunction]}
-  />
   <View
     style={
       Object {
-        "flex": 1,
-        "marginHorizontal": 16,
-        "marginTop": 24,
+        "alignItems": "center",
+        "flexDirection": "row",
       }
     }
   >
     <Text
       textType="semiBold"
-      type="large"
+      type="small"
     >
-      Otp
+      INR 99999999999
     </Text>
-    <Label
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="note-book"
+      onPress={[Function]}
+      size={16}
       style={
         Object {
-          "color": "#33495E",
-          "marginVertical": 8,
+          "marginStart": 8,
         }
       }
-      textType="regular"
-      type="large"
-    >
-      enterOTP
-    </Label>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        textType="semiBold"
-        type="small"
-      >
-        INR 99999999999
-      </Text>
-      <Icon
-        allowFontScaling={false}
-        color="#0084F8"
-        name="note-book"
-        onPress={[Function]}
-        size={16}
-        style={
-          Object {
-            "marginStart": 8,
-          }
-        }
-        testID="icnEdit"
-      />
-    </View>
-    <OtpInputs
-      bubbleOtp={[Function]}
-      otpType="PhoneOrEmail"
-      toggleError={[Function]}
-    />
-    <OtpTimer
-      onResentPress={[Function]}
+      testID="icnEdit"
     />
   </View>
-  <Loader
-    visible={false}
+  <OtpInputs
+    bubbleOtp={[Function]}
+    otpType="PhoneOrEmail"
+    toggleError={[Function]}
   />
-</ForwardRef(SafeAreaView)>
+  <OtpTimer
+    onResentPress={[Function]}
+  />
+</Screen>
 `;
 
 exports[`OTP Screen should render snapshot with userData 1`] = `
-<ForwardRef(SafeAreaView)
-  style={
+<Screen
+  backgroundColor="#FFFFFF"
+  headerProps={
     Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
+      "onIconPress": [MockFunction],
+      "type": "secondary",
+    }
+  }
+  isLoading={false}
+  pageHeaderProps={
+    Object {
+      "contentSubTitle": "enterOTP",
+      "contentTitle": "verifyNumber",
+      "disableDivider": true,
     }
   }
 >
-  <DetailedHeader
-    headerContainerStyle={
-      Object {
-        "borderBottomWidth": 0,
-      }
-    }
-    icon="left-arrow"
-    onIconPress={[MockFunction]}
-  />
   <View
     style={
       Object {
-        "flex": 1,
-        "marginHorizontal": 16,
-        "marginTop": 24,
+        "alignItems": "center",
+        "flexDirection": "row",
       }
     }
   >
     <Text
       textType="semiBold"
-      type="large"
+      type="small"
     >
-      verifyNumber
+      INR 
     </Text>
-    <Label
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="note-book"
+      onPress={[Function]}
+      size={16}
       style={
         Object {
-          "color": "#33495E",
-          "marginVertical": 8,
+          "marginStart": 8,
         }
       }
-      textType="regular"
-      type="large"
-    >
-      enterOTP
-    </Label>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        textType="semiBold"
-        type="small"
-      >
-        INR 
-      </Text>
-      <Icon
-        allowFontScaling={false}
-        color="#0084F8"
-        name="note-book"
-        onPress={[Function]}
-        size={16}
-        style={
-          Object {
-            "marginStart": 8,
-          }
-        }
-        testID="icnEdit"
-      />
-    </View>
-    <OtpInputs
-      bubbleOtp={[Function]}
-      otpType="PhoneOrEmail"
-      toggleError={[Function]}
-    />
-    <OtpTimer
-      onResentPress={[Function]}
+      testID="icnEdit"
     />
   </View>
-  <Loader
-    visible={false}
+  <OtpInputs
+    bubbleOtp={[Function]}
+    otpType="PhoneOrEmail"
+    toggleError={[Function]}
   />
-</ForwardRef(SafeAreaView)>
+  <OtpTimer
+    onResentPress={[Function]}
+  />
+</Screen>
 `;
 
 exports[`OTP Screen should verify otp 1`] = `
-<ForwardRef(SafeAreaView)
-  style={
+<Screen
+  backgroundColor="#FFFFFF"
+  headerProps={
     Object {
-      "backgroundColor": "#FFFFFF",
-      "flex": 1,
-    }
-  }
->
-  <DetailedHeader
-    headerContainerStyle={
-      Object {
-        "borderBottomWidth": 0,
-      }
-    }
-    icon="left-arrow"
-    onIconPress={
-      [MockFunction] {
+      "onIconPress": [MockFunction] {
         "calls": Array [
           Array [
             Object {
@@ -312,75 +207,54 @@ exports[`OTP Screen should verify otp 1`] = `
             "value": undefined,
           },
         ],
-      }
+      },
+      "type": "secondary",
     }
-  />
+  }
+  isLoading={false}
+  pageHeaderProps={
+    Object {
+      "contentSubTitle": "enterOTP",
+      "contentTitle": "Otp",
+      "disableDivider": true,
+    }
+  }
+>
   <View
     style={
       Object {
-        "flex": 1,
-        "marginHorizontal": 16,
-        "marginTop": 24,
+        "alignItems": "center",
+        "flexDirection": "row",
       }
     }
   >
     <Text
       textType="semiBold"
-      type="large"
+      type="small"
     >
-      Otp
+      INR 99999999999
     </Text>
-    <Label
+    <Icon
+      allowFontScaling={false}
+      color="#0084F8"
+      name="note-book"
+      onPress={[Function]}
+      size={16}
       style={
         Object {
-          "color": "#33495E",
-          "marginVertical": 8,
+          "marginStart": 8,
         }
       }
-      textType="regular"
-      type="large"
-    >
-      enterOTP
-    </Label>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        textType="semiBold"
-        type="small"
-      >
-        INR 99999999999
-      </Text>
-      <Icon
-        allowFontScaling={false}
-        color="#0084F8"
-        name="note-book"
-        onPress={[Function]}
-        size={16}
-        style={
-          Object {
-            "marginStart": 8,
-          }
-        }
-        testID="icnEdit"
-      />
-    </View>
-    <OtpInputs
-      bubbleOtp={[Function]}
-      otpType="PhoneOrEmail"
-      toggleError={[Function]}
-    />
-    <OtpTimer
-      onResentPress={[Function]}
+      testID="icnEdit"
     />
   </View>
-  <Loader
-    visible={false}
+  <OtpInputs
+    bubbleOtp={[Function]}
+    otpType="PhoneOrEmail"
+    toggleError={[Function]}
   />
-</ForwardRef(SafeAreaView)>
+  <OtpTimer
+    onResentPress={[Function]}
+  />
+</Screen>
 `;

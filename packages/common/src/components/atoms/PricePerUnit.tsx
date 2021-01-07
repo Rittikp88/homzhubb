@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
-import { FontWeightType, Label, Text, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 
 interface IProps {
@@ -12,6 +12,7 @@ interface IProps {
   priceTransformation?: boolean;
   labelStyle?: StyleProp<TextStyle>;
   textSizeType?: TextSizeType;
+  textFieldType?: TextFieldType;
   textFontWeight?: FontWeightType;
   textStyle?: StyleProp<TextStyle>;
 }
@@ -27,22 +28,30 @@ const PricePerUnit = (props: IProps): React.ReactElement => {
     textStyle,
     textSizeType = 'regular',
     textFontWeight = 'semiBold',
+    textFieldType = 'text',
   } = props;
 
   const transformedPrice = priceTransformation
     ? CurrencyUtils.getCurrency(currency.currencyCode ?? currency, price)
     : price;
   const priceWithCurrency = `${currency.currencySymbol} ${transformedPrice}`;
+  const TextField = textFieldType === 'label' ? Label : Text;
 
   return (
-    <Text type={textSizeType} textType={textFontWeight} style={textStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
+    <TextField
+      type={textSizeType}
+      textType={textFontWeight}
+      style={textStyle}
+      minimumFontScale={0.5}
+      adjustsFontSizeToFit
+    >
       {prefixText ? `${prefixText} ${priceWithCurrency}` : priceWithCurrency}
       {unit.length > 0 && (
         <Label type="large" textType="regular" style={labelStyle} minimumFontScale={0.5} adjustsFontSizeToFit>
           / {unit}
         </Label>
       )}
-    </Text>
+    </TextField>
   );
 };
 

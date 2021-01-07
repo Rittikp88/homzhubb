@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { ForgotPassword } from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
-import { DetailedHeader } from '@homzhub/common/src/components/molecules/DetailedHeader';
 
 const mock = jest.fn();
 
@@ -36,11 +35,6 @@ describe('Forgot Password Screen', () => {
 
   it('should navigate to login screen', () => {
     component.find('[testID="txtLogin"]').prop('onPress')();
-    expect(mock).toHaveBeenCalled();
-  });
-
-  it('should navigate back', () => {
-    component.find(DetailedHeader).prop('onIconPress')();
     expect(mock).toHaveBeenCalled();
   });
 });

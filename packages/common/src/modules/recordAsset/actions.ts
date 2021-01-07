@@ -7,6 +7,7 @@ import {
   ISelectedValueServices,
   IValueAddedServices,
   ValueAddedService,
+  IGetServicesByIds,
 } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Unit, IUnit } from '@homzhub/common/src/domain/models/Unit';
 
@@ -105,8 +106,9 @@ const getMaintenanceUnitsSuccess = (payload: Unit[]): IFluxStandardAction<IUnit[
   payload: ObjectMapper.serializeArray(payload),
 });
 
-const getValueAddedServices = (): IFluxStandardAction => ({
+const getValueAddedServices = (payload?: IGetServicesByIds): IFluxStandardAction<IGetServicesByIds> => ({
   type: RecordAssetActionTypes.GET.VALUE_ADDED_SERVICES,
+  payload,
 });
 
 const getValueAddedServicesSuccess = (payload: ValueAddedService[]): IFluxStandardAction<IValueAddedServices[]> => ({

@@ -5,6 +5,12 @@ import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 
+export interface ILeaseTermination {
+  app_permissions: {
+    is_asset_owner: boolean;
+  };
+}
+
 export interface ILeaseTermParams {
   lease_listing?: number;
   expected_monthly_rent: number;

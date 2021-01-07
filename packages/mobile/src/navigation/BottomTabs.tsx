@@ -1,7 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useRoute } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
@@ -25,12 +23,13 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
-  IAssetDescriptionProps,
   IComingSoon,
   IForgotPasswordProps,
   IOtpNavProps,
   IPropertyDetailProps,
+  IServicesForSelectAssetParams,
   IUpdateProfileProps,
+  IUpdatePropertyProps,
   IVerifyEmail,
   NestedNavigatorParams,
   ScreensKeys,
@@ -46,11 +45,13 @@ import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
-import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
+import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
+import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
+import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -66,7 +67,6 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
-  [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };
 
 export type PortfolioNavigatorParamList = {
@@ -74,6 +74,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
+  [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -96,6 +97,8 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ForgotPassword]: IForgotPasswordProps;
   [ScreensKeys.SavedPropertiesScreen]: undefined;
   [ScreensKeys.KYC]: undefined;
+  [ScreensKeys.ValueAddedServices]: undefined;
+  [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -116,7 +119,6 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
-      <DashboardNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
     </DashboardNavigator.Navigator>
   );
 };
@@ -132,6 +134,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.PortfolioLandingScreen} component={Portfolio} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
+      <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
     </PortfolioNavigator.Navigator>
   );
 };
@@ -173,23 +176,16 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
       <MoreStackNavigator.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
     </MoreStackNavigator.Navigator>
   );
 };
 
 export const BottomTabs = (): React.ReactElement => {
   const { t } = useTranslation();
-  const routeName = getFocusedRouteNameFromRoute(useRoute()) ?? ScreensKeys.Dashboard;
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const dispatch = useDispatch();
-  // Initial Route for guest and logged in user gets decided here
-  if (PlatformUtils.isAndroid()) {
-    if (isLoggedIn && routeName !== ScreensKeys.Search) {
-      StatusBar.setBackgroundColor(theme.colors.primaryColor);
-    } else {
-      StatusBar.setBackgroundColor(theme.colors.white);
-    }
-  }
 
   const getTabBarVisibility = (route: any): boolean => {
     const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';

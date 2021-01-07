@@ -20,6 +20,11 @@ class StoreProviderService {
     return state.user.tokens?.access_token ?? '';
   }
 
+  public getUserRefreshToken(): string {
+    const state = this.getStore().getState();
+    return state.user.tokens?.refresh_token ?? '';
+  }
+
   public logoutUser(): void {
     store.dispatch(UserActions.logoutSuccess());
     store.dispatch(SearchActions.setInitialState());

@@ -29,7 +29,7 @@
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-community/async-storage": "^1.10.0",
     "@react-native-community/clipboard": "^1.5.1",
-    "@react-native-community/google-signin": "^4.0.3",
+    "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/picker": "^1.5.1",
     "@react-native-community/slider": "^3.0.0",

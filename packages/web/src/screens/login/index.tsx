@@ -14,6 +14,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IEmailLoginPayload, ILoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 
 interface IFormData {
   email: string;
@@ -45,6 +46,9 @@ const Login: FC<IProps> = (props: IProps) => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
   const handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
+    // TODO: remove .logoutUser after logout functionality is implemented
+    StoreProviderService.logoutUser();
+
     formActions.setSubmitting(true);
 
     const emailLoginData: IEmailLoginPayload = {

@@ -5,11 +5,12 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
-import { SocialMediaProvider } from '@homzhub/common/src/domain/models/SocialMediaProvider';
+import { SocialAuthProvider } from '@homzhub/common/src/domain/models/SocialAuthProvider';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { ISupportPayload, IMarketTrendParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { SocialAuthProviders } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 const ENDPOINTS = {
   getCountryCodes: 'countries/',
@@ -17,7 +18,6 @@ const ENDPOINTS = {
   carpetAreaUnits: 'carpet-area-units/',
   maintenanceUnits: 'list-of-values/maintenance-units/',
   onBoarding: 'onboardings/',
-  socialMedia: 'social-providers/',
   supportCategories: 'list-of-values/client-support-categories/',
   supportContact: 'client-support/contacts/',
   clientSupport: 'client-support/',
@@ -52,9 +52,8 @@ class CommonRepository {
     return ObjectMapper.deserializeArray(OnBoarding, response);
   };
 
-  public getSocialMedia = async (): Promise<SocialMediaProvider[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.socialMedia);
-    return ObjectMapper.deserializeArray(SocialMediaProvider, response);
+  public getSocialMedia = (): SocialAuthProvider[] => {
+    return ObjectMapper.deserializeArray(SocialAuthProvider, SocialAuthProviders);
   };
 
   public getMaintenanceUnits = async (): Promise<Unit[]> => {

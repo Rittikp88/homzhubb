@@ -12,9 +12,10 @@ import { GuestStackNavigatorParamList } from '@homzhub/mobile/src/navigation/Gue
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { BottomSheet, PaginationComponent, SnapCarousel, StatusBarComponent } from '@homzhub/mobile/src/components';
+import { BottomSheet, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { User, UserType } from '@homzhub/common/src/constants/OnBoarding';
 
@@ -57,104 +58,106 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 
     const currentSlide: OnBoarding = data[activeSlide];
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBarComponent backgroundColor={theme.colors.white} isTranslucent statusBarStyle={styles.statusBar} />
-        <View style={styles.flexOne}>
-          <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
-            {t('skip')}
-          </Text>
-          <View style={styles.textContainer}>
-            <Text type="large" textType="bold" style={styles.title}>
-              {currentSlide.title}
+      <>
+        <StatusBar barStyle="dark-content" statusBarBackground={theme.colors.white} />
+        <SafeAreaView style={styles.container}>
+          <View style={styles.flexOne}>
+            <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
+              {t('skip')}
             </Text>
-            <Text type="small" textType="regular" style={styles.description}>
-              {currentSlide.description}
-            </Text>
-          </View>
-          <SnapCarousel
-            carouselData={data}
-            carouselItem={this.renderCarouselItem}
-            activeIndex={activeSlide}
-            onSnapToItem={this.onSnapToItem}
-            itemWidth={theme.viewport.width - 30}
-            contentStyle={styles.imageView}
-          />
-          <PaginationComponent
-            dotsLength={data.length}
-            activeSlide={activeSlide}
-            activeDotStyle={styles.activeDot}
-            inactiveDotStyle={styles.inactiveDot}
-          />
-          <Text type="regular" textType="semiBold" style={styles.heading}>
-            {t('iAmLooking')}
-          </Text>
-          <Button
-            type="primary"
-            title={t('property:addProperty')}
-            icon={icons.plus}
-            iconSize={26}
-            iconColor={theme.colors.white}
-            onPress={this.onAddProperty}
-            containerStyle={styles.button}
-            titleStyle={styles.buttonTitle}
-            testID="btnAddProperty"
-          />
-          <Button
-            type="secondary"
-            title={t('property:searchProperties')}
-            icon={icons.search}
-            iconSize={20}
-            iconColor={theme.colors.blue}
-            titleStyle={styles.buttonTitle}
-            onPress={this.searchProperty}
-            containerStyle={styles.button}
-            testID="btnSearchProperty"
-          />
-        </View>
-        <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={500}>
-          <>
-            <Text type="regular" textType="semiBold" style={styles.sheetTitle}>
-              {t('iAm')}
-            </Text>
-            <View style={styles.sheetContent}>
-              {UserType.map((item) => {
-                const isSelected = selectedType === item.key;
-                return (
-                  <Button
-                    key={item.id}
-                    type={isSelected ? 'primary' : 'secondary'}
-                    fontType="regular"
-                    title={t(item.name)}
-                    icon={item.icon}
-                    iconSize={24}
-                    iconColor={isSelected ? theme.colors.white : theme.colors.darkTint3}
-                    titleStyle={[
-                      styles.selectionButton,
-                      { color: isSelected ? theme.colors.white : theme.colors.darkTint2 },
-                    ]}
-                    onPress={(): void => this.onSelectType(item.key)}
-                    containerStyle={styles.buttonContainer}
-                    testID="btnSelect"
-                  />
-                );
-              })}
-            </View>
-            {!!message && (
-              <Text type="small" textType="regular" style={styles.message}>
-                {message}
+            <View style={styles.textContainer}>
+              <Text type="large" textType="bold" style={styles.title}>
+                {currentSlide.title}
               </Text>
-            )}
+              <Text type="small" textType="regular" style={styles.description}>
+                {currentSlide.description}
+              </Text>
+            </View>
+            <SnapCarousel
+              carouselData={data}
+              carouselItem={this.renderCarouselItem}
+              activeIndex={activeSlide}
+              onSnapToItem={this.onSnapToItem}
+              itemWidth={theme.viewport.width - 30}
+              contentStyle={styles.imageView}
+            />
+            <PaginationComponent
+              dotsLength={data.length}
+              activeSlide={activeSlide}
+              activeDotStyle={styles.activeDot}
+              inactiveDotStyle={styles.inactiveDot}
+            />
+            <Text type="regular" textType="semiBold" style={styles.heading}>
+              {t('iAmLooking')}
+            </Text>
             <Button
               type="primary"
-              title={t('continue')}
-              disabled={!selectedType || selectedType !== User.OWNER}
-              onPress={this.onContinue}
-              containerStyle={styles.continueBtn}
-              testID="btnContinue"
+              title={t('property:addProperty')}
+              icon={icons.plus}
+              iconSize={26}
+              iconColor={theme.colors.white}
+              onPress={this.onAddProperty}
+              containerStyle={styles.button}
+              titleStyle={styles.buttonTitle}
+              testID="btnAddProperty"
             />
-          </>
-        </BottomSheet>
-      </SafeAreaView>
+            <Button
+              type="secondary"
+              title={t('property:searchProperties')}
+              icon={icons.search}
+              iconSize={20}
+              iconColor={theme.colors.blue}
+              titleStyle={styles.buttonTitle}
+              onPress={this.searchProperty}
+              containerStyle={styles.button}
+              testID="btnSearchProperty"
+            />
+          </View>
+          <BottomSheet visible={isSheetVisible} onCloseSheet={this.onCloseSheet} sheetHeight={500}>
+            <>
+              <Text type="regular" textType="semiBold" style={styles.sheetTitle}>
+                {t('iAm')}
+              </Text>
+              <View style={styles.sheetContent}>
+                {UserType.map((item) => {
+                  const isSelected = selectedType === item.key;
+                  return (
+                    <Button
+                      key={item.id}
+                      type={isSelected ? 'primary' : 'secondary'}
+                      fontType="regular"
+                      title={t(item.name)}
+                      icon={item.icon}
+                      iconSize={24}
+                      iconColor={isSelected ? theme.colors.white : theme.colors.darkTint3}
+                      titleStyle={[
+                        styles.selectionButton,
+                        { color: isSelected ? theme.colors.white : theme.colors.darkTint2 },
+                      ]}
+                      onPress={(): void => this.onSelectType(item.key)}
+                      containerStyle={styles.buttonContainer}
+                      testID="btnSelect"
+                    />
+                  );
+                })}
+              </View>
+              {!!message && (
+                <Text type="small" textType="regular" style={styles.message}>
+                  {message}
+                </Text>
+              )}
+              <Button
+                type="primary"
+                title={t('continue')}
+                disabled={!selectedType || selectedType !== User.OWNER}
+                onPress={this.onContinue}
+                containerStyle={styles.continueBtn}
+                testID="btnContinue"
+              />
+            </>
+          </BottomSheet>
+        </SafeAreaView>
+      </>
     );
   }
 
@@ -172,8 +175,8 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             ? 450
             : 320
           : width === MEDIUM.width
-            ? 280
-            : 220
+          ? 280
+          : 220
         : 150;
     /* eslint-enable */
     const imgWidth = width > SMALL.width ? (width > MEDIUM.width ? 320 : width === MEDIUM.width ? 350 : 330) : 280;
@@ -254,9 +257,6 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
 }
 
 const styles = StyleSheet.create({
-  statusBar: {
-    height: PlatformUtils.isIOS() ? 20 : 40,
-  },
   flexOne: {
     flex: 1,
   },

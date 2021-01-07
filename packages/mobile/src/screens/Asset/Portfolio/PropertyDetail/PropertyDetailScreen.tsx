@@ -37,8 +37,13 @@ import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/Pro
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
-import { IPropertyDetailPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  ClosureReasonType,
+  IClosureReasonPayload,
+  IListingParam,
+  IPropertyDetailPayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
@@ -149,6 +154,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     } = propertyData;
 
     const menuItems = this.getMenuList(isListingCreated);
+    const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
+      this.handleAction(propertyData.id, payload, param);
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
     const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED;
@@ -174,6 +181,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
                 enterFullScreen={this.onFullScreenToggle}
                 onCompleteDetails={this.onCompleteDetails}
                 onOfferVisitPress={FunctionUtils.noop}
+                onHandleAction={onPressAction}
                 containerStyle={styles.card}
               />
               <TabView
@@ -507,8 +515,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { t } = this.props;
     const list = [
       { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
-      // TODO: Uncomment when delete API becomes ready
-      // { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
+      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
     ];
 
     if (isListingCreated) {
@@ -516,6 +523,25 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
 
     return list;
+  };
+
+  private handleAction = (assetId: number, payload: IClosureReasonPayload, param?: IListingParam): void => {
+    const { navigation, setAssetId } = this.props;
+    const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
+    const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
+    const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
+
+    setAssetId(assetId);
+
+    if (param && param.hasTakeAction) {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.PropertyPostStack, {
+        screen: ScreensKeys.AssetPlanSelection,
+        param: { isFromPortfolio: true },
+      });
+    } else {
+      navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param });
+    }
   };
 
   private updateSlide = (slideNumber: number): void => {

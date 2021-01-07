@@ -65,6 +65,8 @@ export { moreProfile as MoreProfile };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    borderTopEndRadius: 4,
+    borderTopStartRadius: 4,
   },
   flexRow: {
     flexDirection: 'row',
@@ -79,12 +81,6 @@ const styles = StyleSheet.create({
     height: 120,
   },
   initialsContainer: {
-    ...(theme.circleCSS(60) as object),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.darkTint7,
-    borderColor: theme.colors.white,
-    borderWidth: 1,
     elevation: 10,
     shadowColor: theme.colors.shadow,
     shadowRadius: 4,

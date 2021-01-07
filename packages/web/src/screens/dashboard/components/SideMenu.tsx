@@ -2,22 +2,26 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import ReactTooltip from 'react-tooltip';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IMenuItemList, MenuItemList, sideMenuItems } from '@homzhub/common/src/constants/DashBoard';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { useHistory } from 'react-router-dom';
 
-interface IProps {
+interface IFormProps {
   onItemClick: (ItemId: number) => void;
 }
 
-const SideMenu: FC<IProps> = (props: IProps) => {
+const SideMenu: FC<IFormProps> = (props: IFormProps) => {
+  const history = useHistory();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
   const [selectedItem, setSelectedItem] = useState(1);
   const onItemPress = (item: number): void => {
     setSelectedItem(item);
+    NavigationUtils.navigate(history, { path: MenuItemList[item - 1].url });
   };
   const isSelectedItem = (id: number): boolean => selectedItem === id;
   return (
