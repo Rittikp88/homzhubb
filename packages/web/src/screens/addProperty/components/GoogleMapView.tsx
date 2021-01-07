@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 
 const containerStyle = {
   width: '100%',
@@ -20,7 +21,7 @@ interface IProps {
   center?: { lat: string; lng: string };
 }
 
-const MapsPOC: FC<IProps> = (props: IProps) => {
+const GoogleMapView: FC<IProps> = (props: IProps) => {
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
 
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
@@ -29,7 +30,7 @@ const MapsPOC: FC<IProps> = (props: IProps) => {
     setMap(mapInstance);
   }, []);
 
-  const onUnmount = useCallback((map: google.maps.Map) => {
+  const onUnmount = useCallback((mapInstance: google.maps.Map) => {
     setMap(null);
   }, []);
   const onLoadMarker = (marker: google.maps.Marker): void => {
@@ -45,7 +46,7 @@ const MapsPOC: FC<IProps> = (props: IProps) => {
   };
   return (
     <View style={styles.container}>
-      <LoadScript googleMapsApiKey="AIzaSyAxmAMQxzq9rG52lulvRexqkDxZlqN52GE">
+      <LoadScript googleMapsApiKey={ConfigHelper.getPlacesApiKey()}>
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10} onLoad={onLoad} onUnmount={onUnmount}>
           {/* Child components, such as markers, info windows, etc. */}
           <Marker
@@ -67,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MapsPOC;
+export default GoogleMapView;

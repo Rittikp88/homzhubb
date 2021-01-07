@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
-import PostAssetDetails from '@homzhub/web/src/screens/postProperty/components/PostAssetDetails';
+import PostAssetDetails from '@homzhub/web/src/screens/addProperty/components/AddAssetDetails';
 
 const PropertyDetails: FC = () => {
   return (

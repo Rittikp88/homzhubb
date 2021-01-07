@@ -8,6 +8,7 @@ export const RouteNames = {
     APP_BASE: '/',
     DASHBOARD: '/dashboard',
     FINANCIALS: '/financial',
+    PORTFOLIO: '/dashboard/portfolio',
     ADD_PROPERTY: '/dashboard/addProperty',
   },
 };

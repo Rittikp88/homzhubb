@@ -5,7 +5,7 @@ import Icon from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 
-interface IPopupOptions {
+export interface IPopupOptions {
   icon?: string;
   label: string;
 }

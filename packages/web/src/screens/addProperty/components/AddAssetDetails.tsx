@@ -60,7 +60,7 @@ interface IOwnState {
 
 type Props = WithTranslation & IDispatchProps & IStateProps;
 
-class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
+class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   public state = {
     formData: {
       projectName: '',
@@ -341,4 +341,4 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(PostAssetDetails));
+)(withTranslation(LocaleConstants.namespacesKey.property)(AddAssetDetails));

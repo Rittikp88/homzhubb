@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import MapsPOC from '@homzhub/web/src/screens/postProperty/components/GoogleMapView';
-import PropertyDetailsForm from '@homzhub/web/src/screens/postProperty/components/PropertyDetailsForm';
+import MapsPOC from '@homzhub/web/src/screens/addProperty/components/GoogleMapView';
+import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
 
-const PostProperty: FC = () => {
+const AddProperty: FC = () => {
   return (
     <View style={styles.container}>
       <MapsPOC />
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-export default PostProperty;
+export default AddProperty;
