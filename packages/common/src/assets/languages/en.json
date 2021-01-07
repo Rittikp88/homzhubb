@@ -234,7 +234,8 @@
     "userCancelledLoginProcess": "User cancelled the login process",
     "signInUnderProgress": "Sign in is in progress",
     "googlePlayServicesNotAvailable": "Google Play Services not available",
-    "errorInFacebookSignIn": "Error in Facebook Sign in"
+    "errorInFacebookSignIn": "Error in Facebook Sign in",
+    "fbEmailLinkingError": "Seems that you have not linked your email with Facebook, Please Sign up."
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
