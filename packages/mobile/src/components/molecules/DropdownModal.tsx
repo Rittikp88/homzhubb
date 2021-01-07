@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     padding: 12,
     width: 170,
     position: 'absolute',
-    top: theme.viewport.width > 350 ? '16%' : '32%', // TODO: Make it more reusable
+    top: theme.viewport.width > 350 ? '18%' : '32%', // TODO: Make it more reusable
     right: 14,
     borderRadius: 4,
     shadowColor: theme.colors.boxShadow,

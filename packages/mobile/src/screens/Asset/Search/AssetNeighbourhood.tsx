@@ -78,13 +78,7 @@ export class AssetNeighbourhood extends React.Component<Props, IOwnState> {
 
     return (
       <View style={styles.flexOne}>
-        <Header
-          type="secondary"
-          icon={icons.leftArrow}
-          onIconPress={this.onBackPress}
-          isHeadingVisible
-          title={asset.projectName}
-        />
+        <Header type="secondary" icon={icons.leftArrow} onIconPress={this.onBackPress} title={asset.projectName} />
         <MapView
           ref={(mapRef: MapView): void => {
             this.mapRef = mapRef;

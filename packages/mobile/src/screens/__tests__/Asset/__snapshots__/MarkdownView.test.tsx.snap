@@ -10,7 +10,6 @@ exports[`Markdown View should render snapshot 1`] = `
 >
   <Memo(Header)
     icon="left-arrow"
-    isHeadingVisible={true}
     onIconPress={[Function]}
     testID="header"
     title=""
@@ -62,7 +61,6 @@ exports[`Markdown View should render snapshot when is from verification 1`] = `
 >
   <Memo(Header)
     icon="left-arrow"
-    isHeadingVisible={true}
     onIconPress={[Function]}
     testID="header"
     title=""

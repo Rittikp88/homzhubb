@@ -109,9 +109,11 @@ const LeaseTermForm = ({
   ];
 
   let dateLabel;
+  let minDate;
   let maxDate: string | undefined = DateUtils.getFutureDate(assetGroupType === AssetGroupTypes.COM ? 180 : 60);
   if (isFromManage) {
-    maxDate = undefined;
+    maxDate = DateUtils.getFutureYearLastDate(5);
+    minDate = DateUtils.getPreviousYearStartDate(5);
     dateLabel = t('common:startingFrom');
   }
   // CONSTANTS END
@@ -204,6 +206,7 @@ const LeaseTermForm = ({
             label={dateLabel}
             allowPastDates={isFromManage}
             maxDate={maxDate}
+            minDate={minDate}
             name={LeaseFormKeys.availableFrom}
             textType="label"
             textSize="regular"

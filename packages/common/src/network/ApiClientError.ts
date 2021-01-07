@@ -22,7 +22,6 @@ export class ApiClientError extends Error {
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, ApiClientError.prototype);
-
     this.details = details;
   }
 

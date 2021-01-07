@@ -320,7 +320,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
       // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetPlanSelection,
-        param: { isFromPortfolio: true },
+        params: { isFromPortfolio: true },
       });
     } else {
       navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param });

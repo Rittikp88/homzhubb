@@ -87,7 +87,7 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
     return (
       <>
         <Header
-          isBarVisible={false}
+          barVisible={false}
           type="primary"
           icon={icons.leftArrow}
           onIconPress={this.onBackPress}

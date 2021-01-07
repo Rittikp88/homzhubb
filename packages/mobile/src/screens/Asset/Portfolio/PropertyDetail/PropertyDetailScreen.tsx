@@ -17,13 +17,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import {
-  AnimatedProfileHeader,
-  BottomSheet,
-  FullScreenAssetDetailsCarousel,
-  HeaderCard,
-  Loader,
-} from '@homzhub/mobile/src/components';
+import { BottomSheet, FullScreenAssetDetailsCarousel, HeaderCard, Loader } from '@homzhub/mobile/src/components';
 import DropdownModal from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
@@ -34,6 +28,7 @@ import DetailTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetai
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -50,7 +45,11 @@ import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
 import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 
-const { height } = theme.viewport;
+const { height, width } = theme.viewport;
+const TAB_LAYOUT = {
+  width: width - theme.layout.screenPadding * 2,
+  height,
+};
 
 enum MenuItems {
   EDIT_LISTING = 'EDIT_LISTING',
@@ -146,23 +145,19 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       return null;
     }
 
-    const {
-      lastVisitedStep: {
-        listing: { isListingCreated },
-      },
-      assetStatusInfo,
-    } = propertyData;
+    const { assetStatusInfo } = propertyData;
 
-    const menuItems = this.getMenuList(isListingCreated);
+    const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
       this.handleAction(propertyData.id, payload, param);
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
     const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED;
+
     return (
       <TouchableWithoutFeedback onPress={this.onCloseMenu}>
         <View style={styles.flexOne}>
-          <AnimatedProfileHeader isOuterScrollEnabled={scrollEnabled} title={title}>
+          <UserScreen scrollEnabled={scrollEnabled} title={title} backgroundColor={theme.colors.background}>
             <View onStartShouldSetResponder={this.handleResponder}>
               <HeaderCard
                 title={t('propertyDetails')}
@@ -185,9 +180,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
                 containerStyle={styles.card}
               />
               <TabView
+                lazy
                 swipeEnabled={false}
                 style={{ height: heights[currentIndex] }}
-                initialLayout={theme.viewport}
+                initialLayout={TAB_LAYOUT}
                 renderScene={({ route }): React.ReactElement | null => this.renderTabScene(route)}
                 onIndexChange={this.handleIndexChange}
                 renderTabBar={(props): React.ReactElement => {
@@ -236,7 +232,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
                 }}
               />
             </View>
-          </AnimatedProfileHeader>
+          </UserScreen>
           {this.renderFullscreenCarousel()}
           <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
           <BottomSheet
@@ -374,13 +370,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     const { heights } = this.state;
     const { height: newHeight } = e.nativeEvent.layout;
     const arrayToUpdate = [...heights];
-    // TODO: Need to refactor
     if (newHeight !== arrayToUpdate[index]) {
-      if (index !== Routes.length - 1) {
-        arrayToUpdate[index] = newHeight * 1.5;
-      } else {
-        arrayToUpdate[index] = newHeight * 1.1;
-      }
+      arrayToUpdate[index] = newHeight * 1.3;
       this.setState({ heights: arrayToUpdate });
     }
   };

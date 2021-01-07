@@ -180,7 +180,13 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
             },
           }}
         />
-        <Button type="primary" title="Select" containerStyle={styles.buttonStyle} onPress={this.handleSelect} />
+        <Button
+          type="primary"
+          title="Select"
+          containerStyle={styles.buttonStyle}
+          disabled={!selectedDate}
+          onPress={this.handleSelect}
+        />
       </>
     );
   };
@@ -257,9 +263,10 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
       const title = `${yearData[0]} - ${yearData[yearData.length - 1]}`;
       this.setState({ yearTitle: title, yearList: yearData });
     } else {
-      const previousMonth = month - 1;
-      this.getSelectedDate(previousMonth, Number(year));
-      this.setState({ month: previousMonth });
+      const previousMonth = month < 1 ? 11 : month - 1;
+      const updatedYear = month < 1 ? Number(year) - 1 : Number(year);
+      this.getSelectedDate(previousMonth, updatedYear);
+      this.setState({ month: previousMonth, year: updatedYear.toString() });
     }
   };
 
