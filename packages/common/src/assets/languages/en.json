@@ -85,6 +85,8 @@
     "thisMonth": "Current Month",
     "lastMonth": "Last month",
     "thisYear": "Current Year",
+    "yearToDate": "Year to date",
+    "monthToDate": "Month to date",
     "thisFinancialYear": "Current Financial Year",
     "lastYear": "Last year",
     "lastWeek": "Last week",

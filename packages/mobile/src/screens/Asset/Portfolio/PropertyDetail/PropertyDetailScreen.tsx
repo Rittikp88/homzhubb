@@ -97,6 +97,8 @@ type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKe
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class PropertyDetailScreen extends Component<Props, IDetailState> {
+  public focusListener: any;
+
   public state = {
     propertyData: {} as Asset,
     isFullScreen: false,
@@ -110,8 +112,9 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     isDeleteProperty: false,
   };
 
-  public componentDidMount = async (): Promise<void> => {
+  public componentDidMount = (): void => {
     const {
+      navigation,
       route: { params },
     } = this.props;
     if (params && params.tabKey) {
@@ -119,8 +122,15 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         currentIndex: Routes.findIndex((item) => item.key === params.tabKey),
       });
     }
-    await this.getAssetDetail();
+
+    this.focusListener = navigation.addListener('focus', () => {
+      this.getAssetDetail().then();
+    });
   };
+
+  public componentWillUnmount(): void {
+    this.focusListener();
+  }
 
   public render = (): React.ReactNode => {
     const {

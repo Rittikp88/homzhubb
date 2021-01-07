@@ -84,6 +84,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
       this.getScreenData().then();
+      this.setState({
+        assetType: '',
+      });
     });
   };
 
