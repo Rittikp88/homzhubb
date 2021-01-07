@@ -1,6 +1,7 @@
 import React, { FC, useRef } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useLocation } from 'react-router-dom';
+import { History } from 'history';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,6 +15,13 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { PopupActions } from 'reactjs-popup/dist/types';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+// import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils'; todos
+
+interface IProps {
+  history: History;
+}
+
+type Props = IProps;
 
 const humanize = (str: string): string => {
   return str.replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
@@ -27,8 +35,9 @@ const quickActionOptions = [
 ];
 
 // todo: replace dummy data with actual data
-export const NavigationInfo: FC = () => {
+export const NavigationInfo: FC<IProps> = (props: Props) => {
   const location = useLocation();
+  // const { history } = props; todos
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const popupRef = useRef<PopupActions>(null);
@@ -36,6 +45,7 @@ export const NavigationInfo: FC = () => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
+    // NavigationUtils.navigate(history, { path: option.route }); todos
   };
   const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
   const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch' };

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { History } from 'history';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
@@ -13,11 +14,12 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 
 interface IProps {
   location: LocationParams;
+  history: History;
 }
 type LocationParams = { pathname: string };
 
 const AppLayout: FC<IProps> = (props: IProps) => {
-  const { location } = props;
+  const { location, history } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
   const { DASHBOARD } = protectedRoutes;
@@ -27,7 +29,7 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <Navbar />
-      <NavigationInfo />
+      <NavigationInfo history={history} />
       <View>
         <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
           {!isTablet && isSideMenuVisible && <SideMenu onItemClick={FunctionUtils.noop} />}
