@@ -13,13 +13,22 @@ import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SignUp>;
 
-export class SignUpScreen extends Component<Props> {
+interface IOwnState {
+  isLoading: boolean;
+}
+
+export class SignUpScreen extends Component<Props, IOwnState> {
+  public state = {
+    isLoading: false,
+  };
+
   public render(): React.ReactNode {
     const {
       t,
       navigation,
       route: { params },
     } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <Screen
@@ -36,6 +45,7 @@ export class SignUpScreen extends Component<Props> {
         }}
         backgroundColor={theme.colors.white}
         keyboardShouldPersistTaps
+        isLoading={isLoading}
       >
         <>
           <SignUpForm
@@ -44,7 +54,7 @@ export class SignUpScreen extends Component<Props> {
             referralCode={params && params?.referralCode}
             testID="signupForm"
           />
-          <AuthenticationGateways isFromLogin={false} navigation={navigation} />
+          <AuthenticationGateways toggleLoading={this.toggleLoading} isFromLogin={false} navigation={navigation} />
         </>
       </Screen>
     );
@@ -109,6 +119,10 @@ export class SignUpScreen extends Component<Props> {
   private handleTermsCondition = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
+  };
+
+  private toggleLoading = (isLoading: boolean): void => {
+    this.setState({ isLoading });
   };
 }
 
