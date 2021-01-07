@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "894249713165-emkoed21qi57lqlaf703tg2oo41cia9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.homzhub",
+            "certificate_hash": "e65c25039ff75115a711d3630e228a906bf84144"
+          }
+        },
+        {
           "client_id": "894249713165-ig82ihgl39q5u4sqk5vu0u1vr67rqnhk.apps.googleusercontent.com",
           "client_type": 3
         }

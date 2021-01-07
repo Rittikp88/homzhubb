@@ -32,6 +32,7 @@ interface IAuthenticationGatewayProps {
   onEmailLogin?: () => void;
   testID?: string;
   navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
+  toggleLoading?: (isLoading: boolean) => void;
 }
 type Props = IAuthenticationGatewayProps & WithTranslation & IDispatchProps;
 
@@ -135,13 +136,24 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
   };
 
   private initiateSocialAuthentication = async (key: string): Promise<void> => {
+    const { isFromLogin, navigation } = this.props;
+    this.setLoading(true);
     if (key === SocialAuthKeys.Google) {
       await AuthService.signInWithGoogle(this.onSocialAuthSuccess);
+      this.setLoading(false);
       return;
     }
 
     if (key === SocialAuthKeys.Facebook) {
-      await AuthService.signInWithFacebook(this.onSocialAuthSuccess);
+      await AuthService.signInWithFacebook(this.onSocialAuthSuccess, isFromLogin && navigation);
+      this.setLoading(false);
+    }
+  };
+
+  private setLoading = (isLoading: boolean): void => {
+    const { toggleLoading } = this.props;
+    if (toggleLoading) {
+      toggleLoading(isLoading);
     }
   };
 
