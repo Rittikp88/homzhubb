@@ -7,6 +7,7 @@ import { AppRouter } from '@homzhub/web/src/router/AppRouter';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { configureStore } from '@homzhub/common/src/modules/store';
 import '@homzhub/web/src/globalStyles.scss';
+import { BrowserRouter } from 'react-router-dom';
 
 interface IState {
   isLocalizationInitialised: boolean;
@@ -38,7 +39,9 @@ export class App extends React.PureComponent<{}, IState> {
 
     return (
       <Provider store={store}>
-        <AppRouter />
+        <BrowserRouter>
+          <AppRouter />
+        </BrowserRouter>
       </Provider>
     );
   };
