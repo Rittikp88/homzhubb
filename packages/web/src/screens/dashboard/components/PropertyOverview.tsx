@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { ImageStyle, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
@@ -12,6 +12,8 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable, MultiCarousel, NextPrevBtn } from '@homzhub/web/src/components';
 import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
 
 interface ICardProps {
   data: Miscellaneous;
@@ -25,16 +27,39 @@ interface IProps {
 
 const PropertyOverview: FC<IProps> = ({ data }: IProps) => {
   const [selectedCard, setSelectedCard] = useState('');
+  const [detailsOptions, setDetailsOptions] = useState<Miscellaneous[]>([]);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyOverviewStyle(isMobile);
-  const total = data?.length ?? 0;
+  console.log('here---------------------------------------------');
+  console.log(data);
+  console.log(detailsOptions);
+  const total = detailsOptions?.length ?? 0;
+  const updateOptions = (updatedOptions: Miscellaneous[]): void => {
+    setDetailsOptions(updatedOptions);
+    console.log(updatedOptions);
+  };
+  useEffect(() => {
+    console.log('use effect working');
+  }, [detailsOptions]);
+  const customCarouselProps: CarouselProps = {
+    children: undefined,
+    arrows: false,
+    draggable: true,
+    focusOnSelect: false,
+    renderButtonGroupOutside: true,
+    customButtonGroup: <CarouselControlsGrp options={detailsOptions} updatedOptions={updateOptions} />,
+    responsive: CarouselResponsive,
+  };
+  useEffect(() => {
+    setDetailsOptions(data);
+  }, [data]);
   return (
     <View style={styles.container}>
       <EstPortfolioValue />
       {total > 0 ? (
         <View style={styles.carouselContainer}>
           <MultiCarousel passedProps={customCarouselProps}>
-            {data.map((item: Miscellaneous) => {
+            {detailsOptions.map((item: Miscellaneous) => {
               const onCardPress = (): void => setSelectedCard(item.label);
               return (
                 <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
@@ -141,8 +166,29 @@ const CarouselResponsive = {
   },
 };
 
-const CarouselControlsGrp = ({ next, previous }: ButtonGroupProps): React.ReactElement => {
+interface ICarouselControlsGrp {
+  options: Miscellaneous[];
+  updatedOptions: (options: Miscellaneous[]) => void;
+}
+
+const getPropertyDetailsOptions = (data: Miscellaneous[]): IPopupOptions[] => {
+  const settingsOptions: IPopupOptions[] = [];
+  data.forEach((option): void => {
+    settingsOptions.push({ label: option.label, iconRight: icons.checkboxOff, checked: false });
+  });
+  return settingsOptions;
+};
+
+const CarouselControlsGrp = ({
+  next,
+  previous,
+  options,
+  updatedOptions,
+}: ICarouselControlsGrp & ButtonGroupProps): React.ReactElement => {
   const { t } = useTranslation();
+  const detailsOptions = getPropertyDetailsOptions(options);
+  const [settingsOptions, setSettingsOptions] = useState<IPopupOptions[]>(detailsOptions);
+  const styles = propertyDetailsControlStyle;
   const updateCarouselIndex = (updateIndexBy: number): void => {
     if (updateIndexBy === 1 && next) {
       next();
@@ -150,24 +196,92 @@ const CarouselControlsGrp = ({ next, previous }: ButtonGroupProps): React.ReactE
       previous();
     }
   };
-  const styles = propertyDetailsControlStyle;
+  const isMaximumNoOfOptionsSelected = (): boolean => {
+    let count = 0;
+    const MaximumNoOfAllowedSelection = 3;
+    settingsOptions.forEach((item) => {
+      if (item.iconRight === icons.checkboxOn) {
+        count += 1;
+      }
+    });
+    return count >= MaximumNoOfAllowedSelection;
+  };
+  const onOptionClick = (selectedOption: IPopupOptions): void => {
+    const newOptions: IPopupOptions[] = [];
+    settingsOptions.forEach((item) => {
+      if (item.label === selectedOption.label) {
+        if (isMaximumNoOfOptionsSelected()) {
+          if (item.checked) {
+            newOptions.push({
+              label: selectedOption.label,
+              iconRight: icons.checkboxOff,
+              checked: false,
+            });
+          } else {
+            newOptions.push(item);
+          }
+        } else {
+          newOptions.push({
+            label: selectedOption.label,
+            iconRight: !item.checked ? icons.checkboxOn : icons.checkboxOff,
+            checked: !item.checked,
+          });
+        }
+      } else {
+        newOptions.push(item);
+      }
+    });
+    setSettingsOptions(newOptions);
+  };
+  const updateOptionsList = (): void => {
+    // updating popup options list
+    const newOptions: IPopupOptions[] = settingsOptions;
+    newOptions.sort((a) => {
+      if (a.checked) {
+        return -1;
+      }
+      return 0;
+    });
+    setSettingsOptions(newOptions);
+    // updating the property details options data
+    const newUpdatedOptions: Miscellaneous[] = options;
+    newUpdatedOptions.sort((a, b) => {
+      return (
+        newOptions.findIndex((value) => value.label === a.label) -
+        newOptions.findIndex((value) => value.label === b.label)
+      );
+    });
+    updatedOptions(newUpdatedOptions);
+  };
   return (
     <View style={styles.container}>
       <Typography variant="text" size="small" fontWeight="regular" style={styles.heading}>
         {t('assetPortfolio:propertyDetails')}
       </Typography>
-      <Button
-        icon={icons.gearFilled}
-        iconSize={16}
-        iconColor={theme.colors.blue}
-        containerStyle={styles.settings}
-        type="secondary"
-      />
+      <Popover
+        content={<PopupMenuOptions options={settingsOptions} onMenuOptionPress={onOptionClick} />}
+        popupProps={{
+          on: 'click',
+          closeOnDocumentClick: true,
+          modal: true,
+          children: undefined,
+          onClose: updateOptionsList,
+        }}
+      >
+        <Button
+          icon={icons.gearFilled}
+          iconSize={16}
+          iconColor={theme.colors.blue}
+          containerStyle={styles.settings}
+          type="secondary"
+        />
+      </Popover>
       <NextPrevBtn onBtnClick={updateCarouselIndex} />
     </View>
   );
 };
 
+// region style
 const propertyDetailsControlStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -190,16 +304,6 @@ const propertyDetailsControlStyle = StyleSheet.create({
     backgroundColor: theme.colors.lightGrayishBlue,
   },
 });
-
-const customCarouselProps: CarouselProps = {
-  children: undefined,
-  arrows: false,
-  draggable: true,
-  focusOnSelect: false,
-  renderButtonGroupOutside: true,
-  customButtonGroup: <CarouselControlsGrp />,
-  responsive: CarouselResponsive,
-};
 
 interface ICardStyle {
   card: ViewStyle;
@@ -305,5 +409,7 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IProp
       color: theme.colors.darkTint6,
     },
   });
+
+// endregion
 
 export default PropertyOverview;
