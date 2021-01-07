@@ -5,7 +5,6 @@ import DuesCard from '@homzhub/web/src/screens/Financials/DuesCard';
 import Transactions from '@homzhub/web/src/screens/Financials/Transactions';
 
 const Financials: FC = () => {
-  console.log('mai arha hu ki nahi haiohaii');
   return (
     <View style={styles.container}>
       <PropertyVisualsEstimates />

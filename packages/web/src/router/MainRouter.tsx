@@ -1,11 +1,11 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
-import PostProperty from '@homzhub/web/src/screens/postProperty';
-import Financials from '@homzhub/web/src/screens/Financials';
 
+const Financials = lazy(() => import('@homzhub/web/src/screens/Financials'));
+const PostProperty = lazy(() => import('@homzhub/web/src/screens/postProperty'));
 export const MainRouter = (): React.ReactElement => {
   const { DASHBOARD, ADD_PROPERTY, APP_BASE, FINANCIALS } = RouteNames.protectedRoutes;
   const { t } = useTranslation();

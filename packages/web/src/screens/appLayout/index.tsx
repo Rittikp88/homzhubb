@@ -44,7 +44,6 @@ export default AppLayout;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.background,
-    overflow: 'hidden',
   },
   mainContent: {
     width: theme.layout.dashboardWidth,

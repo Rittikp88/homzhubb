@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddRecordForm should match snapshot 1`] = `
+<View>
+  <SelectionPicker
+    data={
+      Array [
+        Object {
+          "title": "income",
+          "value": 1,
+        },
+        Object {
+          "title": "expense",
+          "value": 2,
+        },
+      ]
+    }
+    onValueChange={[Function]}
+    selectedItem={
+      Array [
+        1,
+      ]
+    }
+  />
+  <Formik
+    enableReinitialize={true}
+    initialValues={
+      Object {
+        "amount": "",
+        "category": 0,
+        "date": "2021-01-06",
+        "label": "",
+        "notes": "",
+        "property": -1,
+        "tellerName": "",
+      }
+    }
+    innerRef={
+      Object {
+        "current": null,
+      }
+    }
+    onSubmit={[Function]}
+    validate={[Function]}
+  >
+    <Component />
+  </Formik>
+</View>
+`;

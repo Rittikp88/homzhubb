@@ -33,7 +33,6 @@
     "postinstall": "jetify"
   },
   "dependencies": {
-    "@types/react-datepicker": "^3.1.2",
     "axios": "^0.19.2",
     "formik": "^2.1.5",
     "i18next": "^19.4.4",
@@ -42,7 +41,6 @@
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
     "react": "16.13.1",
-    "react-datepicker": "^3.3.0",
     "react-i18next": "^11.4.0",
     "react-native": "0.62.2",
     "react-native-progress": "^4.1.2",
