@@ -23,7 +23,6 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
-  IAssetDescriptionProps,
   IComingSoon,
   IForgotPasswordProps,
   IOtpNavProps,
@@ -46,7 +45,6 @@ import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
-import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
@@ -69,7 +67,6 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
-  [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
 };
 
 export type PortfolioNavigatorParamList = {
@@ -122,7 +119,6 @@ export const DashboardStack = (): React.ReactElement => {
       <DashboardNavigator.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <DashboardNavigator.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <DashboardNavigator.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />
-      <DashboardNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
     </DashboardNavigator.Navigator>
   );
 };

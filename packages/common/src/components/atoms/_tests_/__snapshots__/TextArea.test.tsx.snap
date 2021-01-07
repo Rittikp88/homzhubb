@@ -42,11 +42,14 @@ exports[`Text Area should match snapshot 1`] = `
       placeholder="placeholder"
       rejectResponderTermination={true}
       style={
-        Object {
-          "height": 150,
-          "justifyContent": "flex-start",
-          "textAlignVertical": "top",
-        }
+        Array [
+          Object {
+            "height": 150,
+            "justifyContent": "flex-start",
+            "textAlignVertical": "top",
+          },
+          Object {},
+        ]
       }
       underlineColorAndroid="transparent"
       value="Message"
@@ -113,11 +116,14 @@ exports[`Text Area should match snapshot for optional 1`] = `
       placeholder="placeholder"
       rejectResponderTermination={true}
       style={
-        Object {
-          "height": 150,
-          "justifyContent": "flex-start",
-          "textAlignVertical": "top",
-        }
+        Array [
+          Object {
+            "height": 150,
+            "justifyContent": "flex-start",
+            "textAlignVertical": "top",
+          },
+          Object {},
+        ]
       }
       underlineColorAndroid="transparent"
       value="Message"

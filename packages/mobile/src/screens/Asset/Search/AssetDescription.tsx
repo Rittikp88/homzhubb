@@ -566,7 +566,21 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private onGoBack = (): void => {
-    const { navigation, isLoggedIn } = this.props;
+    const {
+      navigation,
+      isLoggedIn,
+      route: { params },
+    } = this.props;
+
+    if (params && params.isPreview) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreensKeys.BottomTabs }],
+        })
+      );
+      return;
+    }
 
     // Todo (Sriram 2020.09.11) Do we have to move this logic to Utils?
     if (navigation.canGoBack()) {
@@ -574,6 +588,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       return;
     }
 
+    // TODO: Remove if there is no use-case
     if (isLoggedIn) {
       navigation.dispatch(
         CommonActions.reset({
@@ -581,15 +596,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           routes: [{ name: ScreensKeys.PropertyPostLandingScreen }],
         })
       );
-      return;
     }
-
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: ScreensKeys.BottomTabs }],
-      })
-    );
   };
 
   private onBookVisit = (): void => {
@@ -733,7 +740,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { isLoggedIn, assetDetails } = this.props;
     const endDate = this.getFormattedDate();
     if (!assetDetails) return;
-    const { leaseTerm, saleTerm } = assetDetails;
+    const { leaseTerm, saleTerm, appPermissions } = assetDetails;
+    if (appPermissions && !appPermissions.addListingVisit) return;
+
     const payload = {
       visit_type: VisitType.PROPERTY_VIEW,
       lead_type: 11, // TODO: (Shikha) Need to add proper Id once Logic integrated

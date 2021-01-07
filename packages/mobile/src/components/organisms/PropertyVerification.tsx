@@ -1,27 +1,23 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import { cloneDeep, findIndex } from 'lodash';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import {
   AllowedAttachmentFormats,
   AttachmentError,
   AttachmentService,
   AttachmentType,
 } from '@homzhub/common/src/services/AttachmentService';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
+import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
+import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import {
   ExistingVerificationDocuments,
   IExistingVerificationDocuments,
@@ -29,10 +25,8 @@ import {
   VerificationDocumentCategory,
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
-import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
-import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -60,12 +54,11 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public componentDidMount = async (): Promise<void> => {
     const { propertyId } = this.props;
-    await this.getVerificationTypes();
     await this.getExistingDocuments(propertyId);
   };
 
   public render(): React.ReactElement {
-    const { t } = this.props;
+    const { t, typeOfPlan } = this.props;
     const { existingDocuments, localDocuments, isLoading, verificationTypes } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
@@ -81,7 +74,13 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
     return (
       <>
-        <View style={styles.container}>{this.renderVerificationTypes()}</View>
+        <VerificationTypes
+          typeOfPlan={typeOfPlan}
+          existingDocuments={existingDocuments}
+          localDocuments={localDocuments}
+          handleUpload={this.handleVerificationDocumentUploads}
+          deleteDocument={this.deleteDocument}
+        />
         <Button
           type="primary"
           title={t('common:continue')}
@@ -93,95 +92,15 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     );
   }
 
-  public renderVerificationTypes = (): React.ReactNode => {
-    const { verificationTypes } = this.state;
-    return verificationTypes.map((verificationType: VerificationDocumentTypes, index: number) => {
-      const data: VerificationDocumentTypes = verificationType;
-      return (
-        <View style={styles.proofChild} key={index}>
-          <Text type="small" textType="semiBold" style={styles.title}>
-            {data.title}
-          </Text>
-          {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
-            <>
-              <Selfie style={styles.selfie} />
-              {selfieInstruction.map((instruction, i) => {
-                return (
-                  <Label type="regular" textType="regular" style={styles.instruction} key={i}>
-                    {instruction}
-                  </Label>
-                );
-              })}
-            </>
-          ) : (
-            <>
-              {data.description !== '' && (
-                <Label type="regular" textType="regular" style={styles.subTitle}>
-                  {data.description}
-                </Label>
-              )}
-            </>
-          )}
-          {this.renderImageOrUploadBox(verificationType)}
-        </View>
-      );
-    });
-  };
+  // HANDLERS START
 
-  public renderImageOrUploadBox = (currentData: VerificationDocumentTypes): React.ReactElement => {
-    const { existingDocuments, localDocuments } = this.state;
-
-    const onPress = async (): Promise<void> => this.handleVerificationDocumentUploads(currentData);
-
-    const totalDocuments = existingDocuments.concat(localDocuments);
-    const thumbnailIndex = findIndex(totalDocuments, (document: ExistingVerificationDocuments) => {
-      return currentData.id === document.verificationDocumentType.id;
-    });
-
-    if (thumbnailIndex !== -1) {
-      const currentDocument: ExistingVerificationDocuments = totalDocuments[thumbnailIndex];
-      const thumbnailImage = currentDocument.document.link;
-      const fileType = currentDocument.document.link.split('/')?.pop()?.split('.');
-
-      const onDeleteImageThumbnail = (): Promise<void> =>
-        this.deleteDocument(currentDocument, currentDocument.isLocalDocument);
-
-      const { mimeType } = currentDocument.document;
-
-      return mimeType === AllowedAttachmentFormats.AppPdf || !fileType || fileType[1] === 'pdf' ? (
-        <View style={styles.pdfContainer}>
-          <Text type="small" textType="regular" style={styles.pdfName}>
-            {currentDocument.document.name || fileType || [0]}
-          </Text>
-          <TouchableOpacity style={styles.iconContainer} onPress={onDeleteImageThumbnail}>
-            <Icon name={icons.close} size={22} color={theme.colors.shadow} />
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <ImageThumbnail imageUrl={thumbnailImage} onIconPress={onDeleteImageThumbnail} />
-      );
-    }
-
-    return (
-      <UploadBox
-        icon={currentData.icon}
-        header={currentData.label}
-        subHeader={currentData.helpText}
-        onPress={onPress}
-        containerStyle={styles.uploadBox}
-      />
-    );
-  };
-
-  public uploadDocument = async (verificationDocumentId: number, data: VerificationDocumentTypes): Promise<void> => {
-    const document = await DocumentPicker.pick({
-      type: [DocumentPicker.types.allFiles],
-    });
-    if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
-      const source = { uri: document.uri, type: document.type, name: document.name };
-      this.updateLocalDocuments(verificationDocumentId, source, data);
+  public handleVerificationDocumentUploads = async (data: VerificationDocumentTypes): Promise<void> => {
+    const verificationDocumentId = data.id;
+    const verificationDocumentType = data.name;
+    if (verificationDocumentType === VerificationDocumentCategory.SELFIE_ID_PROOF) {
+      this.captureSelfie(verificationDocumentId, data);
     } else {
-      AlertHelper.error({ message: data.helpText });
+      await this.uploadDocument(verificationDocumentId, data);
     }
   };
 
@@ -206,30 +125,44 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     });
   };
 
-  public handleVerificationDocumentUploads = async (data: VerificationDocumentTypes): Promise<void> => {
-    const verificationDocumentId = data.id;
-    const verificationDocumentType = data.name;
-    if (verificationDocumentType === VerificationDocumentCategory.SELFIE_ID_PROOF) {
-      this.captureSelfie(verificationDocumentId, data);
+  public uploadDocument = async (verificationDocumentId: number, data: VerificationDocumentTypes): Promise<void> => {
+    const document = await DocumentPicker.pick({
+      type: [DocumentPicker.types.allFiles],
+    });
+    if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
+      const source = { uri: document.uri, type: document.type, name: document.name };
+      this.updateLocalDocuments(verificationDocumentId, source, data);
     } else {
-      await this.uploadDocument(verificationDocumentId, data);
+      AlertHelper.error({ message: data.helpText });
     }
   };
 
-  public getVerificationTypes = async (): Promise<void> => {
-    const { typeOfPlan } = this.props;
-    try {
-      const response: VerificationDocumentTypes[] = await AssetRepository.getVerificationDocumentTypes();
-      const filteredResponse = response.filter((data: VerificationDocumentTypes) => {
-        return data.category === typeOfPlan || data.category === 'IDENTITY';
-      });
-      this.setState({
-        verificationTypes: filteredResponse,
-      });
-    } catch (error) {
-      AlertHelper.error({ message: error.message });
-    }
+  public updateLocalDocuments = (
+    verificationDocumentId: number,
+    source: { uri: string; type: string; name: string },
+    data: VerificationDocumentTypes
+  ): void => {
+    const imageObject: IExistingVerificationDocuments = {
+      id: null,
+      verification_document_type: ObjectMapper.serialize(data),
+      document: {
+        id: data.id,
+        name: source.name,
+        attachment_type: source.type,
+        mime_type: source.type,
+        link: source.uri,
+      },
+      is_local_document: true,
+    };
+    const { localDocuments } = this.state;
+    this.setState({
+      localDocuments: [...localDocuments, ObjectMapper.deserialize(ExistingVerificationDocuments, imageObject)],
+    });
   };
+
+  // HANDLERS END
+
+  // API'S START
 
   public getExistingDocuments = async (propertyId: number): Promise<void> => {
     try {
@@ -346,87 +279,14 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     }
   };
 
-  public updateLocalDocuments = (
-    verificationDocumentId: number,
-    source: { uri: string; type: string; name: string },
-    data: VerificationDocumentTypes
-  ): void => {
-    const imageObject: IExistingVerificationDocuments = {
-      id: null,
-      verification_document_type: ObjectMapper.serialize(data),
-      document: {
-        id: data.id,
-        name: source.name,
-        attachment_type: source.type,
-        mime_type: source.type,
-        link: source.uri,
-      },
-      is_local_document: true,
-    };
-    const { localDocuments } = this.state;
-    this.setState({
-      localDocuments: [...localDocuments, ObjectMapper.deserialize(ExistingVerificationDocuments, imageObject)],
-    });
-  };
+  // API'S END
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyVerification);
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    marginTop: 4,
-    backgroundColor: theme.colors.white,
-  },
-  proofChild: {
-    marginBottom: 10,
-    marginTop: 20,
-  },
-  uploadBox: {
-    marginTop: 20,
-  },
-  title: {
-    color: theme.colors.darkTint4,
-  },
-  subTitle: {
-    color: theme.colors.darkTint3,
-    marginVertical: 10,
-  },
-  pdfContainer: {
-    flex: 0,
-    flexDirection: 'row',
-    backgroundColor: theme.colors.white,
-    padding: 16,
-    borderColor: theme.colors.primaryColor,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    marginTop: 10,
-    borderRadius: 4,
-  },
-  iconContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 13,
-    right: 10,
-    bottom: 0,
-  },
   buttonStyle: {
     flex: 0,
     marginVertical: 20,
-  },
-  pdfName: {
-    flex: 0.9,
-  },
-  instruction: {
-    color: theme.colors.darkTint3,
-    marginBottom: 6,
-  },
-  selfie: {
-    alignSelf: 'center',
-    marginVertical: 12,
   },
 });

@@ -23,7 +23,7 @@ interface IProps {
 
 const GoogleMapView: FC<IProps> = (props: IProps) => {
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
-
+  console.log('Map Instance => ', map);
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
     console.log('onLoad called---------------');
     console.log(mapInstance);
