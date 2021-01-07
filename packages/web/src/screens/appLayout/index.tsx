@@ -14,12 +14,11 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 
 interface IProps {
   location: LocationParams;
-  history: History;
 }
 type LocationParams = { pathname: string };
 
 const AppLayout: FC<IProps> = (props: IProps) => {
-  const { location, history } = props;
+  const { location } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
   const { DASHBOARD } = protectedRoutes;
@@ -29,7 +28,7 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <Navbar />
-      <NavigationInfo history={history} />
+      <NavigationInfo />
       <View>
         <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
           {!isTablet && isSideMenuVisible && <SideMenu onItemClick={FunctionUtils.noop} />}
