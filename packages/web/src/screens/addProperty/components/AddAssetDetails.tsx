@@ -7,6 +7,7 @@ import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -136,7 +137,19 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
                 scrollRef={null}
               />
               {/* todos PropertyDetailsLocation => Add Map Component */}
-              <WithShadowView>
+              {PlatformUtils.isMobile() ? (
+                <WithShadowView>
+                  <FormButton
+                    disabled={assetGroupTypeId === -1}
+                    type="primary"
+                    title={t('common:submit')}
+                    containerStyle={styles.buttonStyle}
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    formProps={formProps}
+                  />
+                </WithShadowView>
+              ) : (
                 <FormButton
                   disabled={assetGroupTypeId === -1}
                   type="primary"
@@ -146,7 +159,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
                   onPress={formProps.handleSubmit}
                   formProps={formProps}
                 />
-              </WithShadowView>
+              )}
             </>
           );
         }}
@@ -291,7 +304,10 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
+    width: 'fit-content',
     margin: 16,
+    alignSelf: 'flex-end',
+    paddingHorizontal: '10%',
   },
   sheetStyle: {
     paddingHorizontal: theme.layout.screenPadding,

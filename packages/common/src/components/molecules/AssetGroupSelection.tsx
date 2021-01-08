@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -89,7 +90,7 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
     const conditionalContainerStyle =
       type === Type.AssetGroup
         ? styles.itemContainer
-        : [styles.subItemContainer, { marginEnd: index % 2 === 0 ? marginEnd : 0 }];
+        : [styles.subItemContainer, PlatformUtils.isMobile() && { marginEnd: index % 2 === 0 ? marginEnd : 0 }];
 
     let color = theme.colors.darkTint4;
     let backgroundColor;
@@ -145,6 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   itemContainer: {
     alignItems: 'center',
@@ -156,7 +158,8 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.disabled,
   },
   subItemContainer: {
-    width: (width - (screenPadding * 2 + marginEnd)) / 2,
+    width: PlatformUtils.isWeb() ? '30%' : (width - (screenPadding * 2 + marginEnd)) / 2,
+    margin: PlatformUtils.isWeb() ? 8 : undefined,
     paddingVertical: 4,
     justifyContent: 'center',
     alignItems: 'center',
