@@ -15,7 +15,6 @@ export { AddressWithStepIndicator } from '@homzhub/mobile/src/components/molecul
 export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecules/AssetAdvertisementBanner';
 export { AssetDescriptionForm } from '@homzhub/mobile/src/components/molecules/AssetDescriptionForm';
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
-export { AssetGroupSelection } from '@homzhub/mobile/src/components/molecules/AssetGroupSelection';
 export { AssetMarketTrends } from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 export { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
 export { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
@@ -35,7 +34,6 @@ export { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/Mai
 export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { OtpTypes } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
-export { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 export { Range } from '@homzhub/mobile/src/components/molecules/Range';

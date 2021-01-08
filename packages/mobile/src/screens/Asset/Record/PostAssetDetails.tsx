@@ -18,14 +18,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import {
-  PostAssetForm,
-  Header,
-  PropertyDetailsLocation,
-  AssetGroupSelection,
-  Loader,
-  BottomSheet,
-} from '@homzhub/mobile/src/components';
+import { Header, PropertyDetailsLocation, Loader, BottomSheet } from '@homzhub/mobile/src/components';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
@@ -34,6 +27,8 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';
+import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAssetForm';
 
 interface IStateProps {
   assetGroups: AssetGroup[];

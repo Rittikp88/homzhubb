@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { History } from 'history';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
