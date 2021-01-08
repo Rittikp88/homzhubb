@@ -7,7 +7,6 @@ import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -16,7 +15,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAssetForm';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
@@ -136,30 +134,15 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
                 onAssetGroupSelected={this.onAssetGroupSelected}
                 scrollRef={null}
               />
-              {/* todos PropertyDetailsLocation => Add Map Component */}
-              {PlatformUtils.isMobile() ? (
-                <WithShadowView>
-                  <FormButton
-                    disabled={assetGroupTypeId === -1}
-                    type="primary"
-                    title={t('common:submit')}
-                    containerStyle={styles.buttonStyle}
-                    // @ts-ignore
-                    onPress={formProps.handleSubmit}
-                    formProps={formProps}
-                  />
-                </WithShadowView>
-              ) : (
-                <FormButton
-                  disabled={assetGroupTypeId === -1}
-                  type="primary"
-                  title={t('common:submit')}
-                  containerStyle={styles.buttonStyle}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  formProps={formProps}
-                />
-              )}
+              <FormButton
+                disabled={assetGroupTypeId === -1}
+                type="primary"
+                title={t('common:submit')}
+                containerStyle={[styles.buttonStyle]}
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                formProps={formProps}
+              />
             </>
           );
         }}

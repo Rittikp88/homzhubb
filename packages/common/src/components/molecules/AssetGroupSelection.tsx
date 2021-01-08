@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: PlatformUtils.isWeb() ? 'space-between' : undefined,
   },
   itemContainer: {
     alignItems: 'center',
