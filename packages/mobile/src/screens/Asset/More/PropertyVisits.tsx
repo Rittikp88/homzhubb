@@ -92,6 +92,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
             onReschedule={this.rescheduleVisit}
             selectedAssetId={selectedAssetId}
             navigation={navigation}
+            // @ts-ignore
             visitId={params && params.visitId ? params.visitId : null}
             setVisitPayload={this.setVisitPayload}
           />

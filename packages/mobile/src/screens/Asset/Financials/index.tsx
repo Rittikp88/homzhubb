@@ -117,6 +117,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       return;
     }
 
+    // @ts-ignore
     navigate(ScreensKeys.AddRecordScreen);
   };
 

@@ -88,7 +88,7 @@ export const portfolioReducer = (
     case PortfolioActionTypes.SET.CURRENT_FILTER:
       return { ...state, ['currentFilter']: action.payload as Filters };
     case PortfolioActionTypes.SET.INITIAL_STATE:
-      return initialPortfolioState;
+      return { ...initialPortfolioState, ['currentAsset']: state.currentAsset };
     default:
       return state;
   }

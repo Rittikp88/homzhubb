@@ -85,6 +85,8 @@
     "thisMonth": "Current Month",
     "lastMonth": "Last month",
     "thisYear": "Current Year",
+    "yearToDate": "Year to date",
+    "monthToDate": "Month to date",
     "thisFinancialYear": "Current Financial Year",
     "lastYear": "Last year",
     "lastWeek": "Last week",
@@ -234,7 +236,8 @@
     "userCancelledLoginProcess": "User cancelled the login process",
     "signInUnderProgress": "Sign in is in progress",
     "googlePlayServicesNotAvailable": "Google Play Services not available",
-    "errorInFacebookSignIn": "Error in Facebook Sign in"
+    "errorInFacebookSignIn": "Error in Facebook Sign in",
+    "fbEmailLinkingError": "Seems that you have not linked your email with Facebook, Please Sign up."
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -605,8 +608,8 @@
     "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}",
     "noPropertiesAdded": "You haven't added any properties",
     "noFilterProperties": "There are no properties for the selected filter",
-    "deletePropertyDescription": "Sed mattis ultrices arcu turpis feugiat consequat, purus. In arcu leo sed a id imperdiet magna.",
-    "deleteConfirmation": "Do you want to delete property?"
+    "deletePropertyDescription": "Once deleted all the historical records of this property will be lost. Homzhub will remove or mask any sensitive information but will retain transactional data.",
+    "deleteConfirmation": "Do you want to continue deleting this property?"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -685,7 +688,8 @@
     "changePropertyCaution": "You are about to change property without completing the process. Please note that all selected information will be deleted, as  you can only add value added service to one property at a time",
     "goBackCaution": "You will lose any unsaved changes if you do!",
     "selectedProperty": "Selected Property",
-    "chooseAPropertyText": "Choose a property to buy the services"
+    "chooseAPropertyText": "Choose a property to buy the services",
+    "valueServicesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now."
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

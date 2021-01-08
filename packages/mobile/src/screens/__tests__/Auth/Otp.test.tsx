@@ -2,11 +2,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { IEmailLoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import { initialCommonState } from '@homzhub/common/src/modules/common/reducer';
 import { UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { initialUserState } from '@homzhub/common/src/modules/user/reducer';
 import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
+import { initialRecordAssetState } from '@homzhub/common/src/modules/recordAsset/reducer';
 import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { OtpInputs } from '@homzhub/mobile/src/components';
 import { Otp, mapDispatchToProps, mapStateToProps } from '@homzhub/mobile/src/screens/Auth/Otp';
@@ -97,6 +99,12 @@ describe('OTP Screen', () => {
       },
       portfolio: {
         ...initialPortfolioState,
+      },
+      common: {
+        ...initialCommonState,
+      },
+      recordAsset: {
+        ...initialRecordAssetState,
       },
     };
     const state = mapStateToProps(mockedState);

@@ -15,9 +15,11 @@ describe.skip('AssetMetrics', () => {
       header: 'header',
       value: 'value',
       angle: 180,
+      currency: 'INR',
       location: [0, 1],
-      colorA: theme.colors.white,
-      colorB: theme.colors.background,
+      showPlusIcon: true,
+      colorCode: theme.colors.white,
+      isCurrency: true,
     };
     wrapper = shallow(<AssetMetrics {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -28,10 +30,11 @@ describe.skip('AssetMetrics', () => {
       header: 'header',
       value: 'value',
       angle: 180,
+      currency: 'INR',
       location: [0, 1],
-      colorA: theme.colors.white,
-      colorB: theme.colors.background,
       showPlusIcon: true,
+      colorCode: theme.colors.white,
+      isCurrency: true,
     };
     wrapper = shallow(<AssetMetrics {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -44,9 +47,9 @@ describe.skip('AssetMetrics', () => {
       angle: 180,
       currency: 'INR',
       location: [0, 1],
-      colorA: theme.colors.white,
-      colorB: theme.colors.background,
       showPlusIcon: true,
+      colorCode: theme.colors.white,
+      isCurrency: true,
     };
     wrapper = shallow(<AssetMetrics {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();

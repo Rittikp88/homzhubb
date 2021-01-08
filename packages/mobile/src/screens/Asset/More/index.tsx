@@ -105,6 +105,7 @@ export class More extends React.PureComponent<Props> {
     const {
       navigation: { navigate },
     } = this.props;
+    // @ts-ignore
     navigate(ScreensKeys.UserProfileScreen);
   };
 

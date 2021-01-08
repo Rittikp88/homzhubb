@@ -27,7 +27,7 @@ class Interceptor implements IApiInterceptor {
       return config;
     };
 
-    const onRejected = (error: AxiosError): any => error;
+    const onRejected = (error: AxiosError): AxiosError => error;
 
     return { onFulfilled, onRejected };
   };
@@ -37,7 +37,16 @@ class Interceptor implements IApiInterceptor {
 
     const onRejected = async (error: AxiosError): Promise<any> => {
       const originalRequest: AxiosRequestConfig = error.config;
-      const errorCode = error.response?.data?.error[0]?.error_code || '';
+      let errorCode = '';
+
+      if (error.response && error.response.data) {
+        const { data } = error.response;
+        if (data.data && data.data.length > 0) {
+          errorCode = data.data[0].error_code;
+        } else if (data.error && data.error.length > 0) {
+          errorCode = data.error[0].error_code;
+        }
+      }
 
       const token = StoreProviderService.getUserRefreshToken();
 

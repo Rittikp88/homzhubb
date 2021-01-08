@@ -10,9 +10,8 @@ exports[`Contact Form Screen should render snapshot 1`] = `
   onBack={[Function]}
 >
   <Memo(Header)
+    barVisible={false}
     icon="close"
-    isBarVisible={false}
-    isHeadingVisible={true}
     onIconPress={[Function]}
     testID="header"
     title="contact"

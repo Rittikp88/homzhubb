@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 
 interface IProps {
   testID?: string;
@@ -31,7 +31,7 @@ export const DocumentCard = ({
   } = document;
   const { t } = useTranslation();
   const uploadedBy = userEmail === user?.email ? t('you') : user?.fullName;
-  const uploadedOn = DateUtils.getDisplayDate(document.uploadedOn, 'L');
+  const uploadedOn = DateUtils.getDisplayDate(document.uploadedOn, DateFormats.DD_MM_YYYY);
   const onShare = (): void => handleShare(link);
   const onDelete = (): void => handleDelete(document.id);
   const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);

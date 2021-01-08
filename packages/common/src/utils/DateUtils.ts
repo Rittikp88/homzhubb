@@ -153,12 +153,22 @@ class DateUtils {
     return current[1];
   };
 
-  public getPreviousYearStartDate = (): string => {
-    return moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
+  public getPreviousYearStartDate = (count?: number): string => {
+    return moment()
+      .subtract(count || 1, 'years')
+      .startOf('year')
+      .format('YYYY-MM-DD');
   };
 
-  public getPreviousYearLastDate = (): string => {
-    return moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
+  public getPreviousYearLastDate = (count?: number): string => {
+    return moment()
+      .subtract(count || 1, 'years')
+      .endOf('year')
+      .format('YYYY-MM-DD');
+  };
+
+  public getFutureYearLastDate = (count: number): string => {
+    return moment().add(count, 'years').endOf('year').format('YYYY-MM-DD');
   };
 
   public getCurrentMonthIndex = (): number => {

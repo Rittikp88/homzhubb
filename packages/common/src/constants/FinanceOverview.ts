@@ -29,7 +29,7 @@ const translationKey = LocaleConstants.namespacesKey.common;
 
 export const FINANCIAL_DROPDOWN_DATA = {
   [DateFilter.thisMonth]: {
-    label: `${translationKey}:thisMonth`,
+    label: `${translationKey}:monthToDate`,
     value: DateFilter.thisMonth,
     startDate: DateUtils.getCurrentMonthStartDate(),
     endDate: DateUtils.getCurrentMonthLastDate(),
@@ -43,7 +43,7 @@ export const FINANCIAL_DROPDOWN_DATA = {
     dataGroupBy: DataGroupBy.week,
   },
   [DateFilter.thisYear]: {
-    label: `${translationKey}:thisYear`,
+    label: `${translationKey}:yearToDate`,
     value: DateFilter.thisYear,
     startDate: DateUtils.getCurrentYearStartDate(),
     endDate: DateUtils.getCurrentDate(),
