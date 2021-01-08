@@ -12,14 +12,13 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
+import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAssetForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { AssetGroupSelection } from '@homzhub/mobile/src/components/molecules/AssetGroupSelection';
-import { PostAssetForm } from '@homzhub/mobile/src/components/molecules/PostAssetForm';
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -60,7 +59,7 @@ interface IOwnState {
 
 type Props = WithTranslation & IDispatchProps & IStateProps;
 
-class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
+class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   public state = {
     formData: {
       projectName: '',
@@ -135,18 +134,15 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                 onAssetGroupSelected={this.onAssetGroupSelected}
                 scrollRef={null}
               />
-              {/* todos PropertyDetailsLocation => Add Map Component */}
-              <WithShadowView>
-                <FormButton
-                  disabled={assetGroupTypeId === -1}
-                  type="primary"
-                  title={t('common:submit')}
-                  containerStyle={styles.buttonStyle}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  formProps={formProps}
-                />
-              </WithShadowView>
+              <FormButton
+                disabled={assetGroupTypeId === -1}
+                type="primary"
+                title={t('common:submit')}
+                containerStyle={[styles.buttonStyle]}
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                formProps={formProps}
+              />
             </>
           );
         }}
@@ -291,7 +287,10 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
+    width: 'fit-content',
     margin: 16,
+    alignSelf: 'flex-end',
+    paddingHorizontal: '10%',
   },
   sheetStyle: {
     paddingHorizontal: theme.layout.screenPadding,
@@ -341,4 +340,4 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(PostAssetDetails));
+)(withTranslation(LocaleConstants.namespacesKey.property)(AddAssetDetails));
