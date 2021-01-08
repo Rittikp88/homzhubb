@@ -42,7 +42,6 @@ export class MarkdownView extends PureComponent<Props, IMarkdownState> {
           type="primary"
           icon={icons.leftArrow}
           onIconPress={this.navigateBack}
-          isHeadingVisible
           title={params.title ?? ''}
           testID="header"
         />

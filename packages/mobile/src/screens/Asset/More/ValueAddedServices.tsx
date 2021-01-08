@@ -9,6 +9,7 @@ import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { IBadgeInfo, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components';
@@ -46,6 +47,13 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
     }
   }, []);
 
+  const navigateToAddPropertyScreen = (): void => {
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AssetLocationSearch,
+    });
+  };
+
   const render = (): ReactElement => {
     return (
       <UserScreen
@@ -54,77 +62,91 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
         onBackPress={navigation.goBack}
         loading={loading}
       >
-        <View>
-          <Text style={styles.textStyle} type="small" textType="semiBold">
-            {t('chooseAPropertyText')}
-          </Text>
-          {assets.map((asset: Asset) => {
-            const {
-              id,
-              attachments,
-              assetStatusInfo,
-              projectName,
-              address,
-              unitNumber,
-              blockNumber,
-              spaces,
-              furnishing,
-              carpetArea,
-              carpetAreaUnit,
-              assetGroupId,
-              city,
-              assetGroup: { code },
-              assetType: { name: propertyType },
-              country: { flag, id: countryId },
-            } = asset;
-            const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-              spaces,
-              furnishing,
-              code,
-              carpetArea,
-              carpetAreaUnit?.title ?? ''
-            );
-            const badgeTitle = assetStatusInfo?.tag.label ?? '';
-            const badgeColor = assetStatusInfo?.tag.color ?? '';
-            const navigate = (): void => {
-              navigateToService(
-                id,
-                propertyType,
-                projectName,
-                address,
-                flag,
-                { assetGroupId, countryId, city },
-                { title: badgeTitle, color: badgeColor },
-                amenitiesData
-              );
-            };
+        <>
+          {assets && assets.length > 0 ? (
+            <>
+              <Text style={styles.textStyle} type="small" textType="semiBold">
+                {t('chooseAPropertyText')}
+              </Text>
+              {assets.map((asset: Asset) => {
+                const {
+                  id,
+                  attachments,
+                  assetStatusInfo,
+                  projectName,
+                  address,
+                  unitNumber,
+                  blockNumber,
+                  spaces,
+                  furnishing,
+                  carpetArea,
+                  carpetAreaUnit,
+                  assetGroupId,
+                  city,
+                  assetGroup: { code },
+                  assetType: { name: propertyType },
+                  country: { flag, id: countryId },
+                } = asset;
+                const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
+                  spaces,
+                  furnishing,
+                  code,
+                  carpetArea,
+                  carpetAreaUnit?.title ?? ''
+                );
+                const badgeTitle = assetStatusInfo?.tag.label ?? '';
+                const badgeColor = assetStatusInfo?.tag.color ?? '';
+                const navigate = (): void => {
+                  navigateToService(
+                    id,
+                    propertyType,
+                    projectName,
+                    address,
+                    flag,
+                    { assetGroupId, countryId, city },
+                    { title: badgeTitle, color: badgeColor },
+                    amenitiesData
+                  );
+                };
 
-            return (
-              <View key={id} style={styles.cardView}>
-                <TouchableOpacity onPress={navigate} style={styles.cardContent}>
-                  <Badge badgeStyle={styles.badgeStyle} title={badgeTitle} badgeColor={badgeColor} />
-                  {renderImages(attachments)}
-                  <View style={styles.cardDescription}>
-                    <Text type="small" textType="regular" style={styles.propertyTypeText}>
-                      {propertyType}
-                    </Text>
-                    <PropertyAddressCountry
-                      primaryAddress={projectName}
-                      countryFlag={flag}
-                      subAddress={address ?? `${unitNumber} ${blockNumber}`}
-                    />
-                    <PropertyAmenities
-                      containerStyle={styles.amenities}
-                      contentContainerStyle={styles.amenitiesContentStyle}
-                      data={amenitiesData}
-                      direction="row"
-                    />
+                return (
+                  <View key={id} style={styles.cardView}>
+                    <TouchableOpacity onPress={navigate} style={styles.cardContent}>
+                      <Badge badgeStyle={styles.badgeStyle} title={badgeTitle} badgeColor={badgeColor} />
+                      {renderImages(attachments)}
+                      <View style={styles.cardDescription}>
+                        <Text type="small" textType="regular" style={styles.propertyTypeText}>
+                          {propertyType}
+                        </Text>
+                        <PropertyAddressCountry
+                          primaryAddress={projectName}
+                          countryFlag={flag}
+                          subAddress={address ?? `${unitNumber} ${blockNumber}`}
+                        />
+                        <PropertyAmenities
+                          containerStyle={styles.amenities}
+                          contentContainerStyle={styles.amenitiesContentStyle}
+                          data={amenitiesData}
+                          direction="row"
+                        />
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </View>
+                );
+              })}
+            </>
+          ) : (
+            <EmptyState
+              title={t('valueServicesEmptyText')}
+              buttonProps={{
+                type: 'secondary',
+                title: t('property:addProperty'),
+                onPress: navigateToAddPropertyScreen,
+              }}
+              containerStyle={styles.emptyContainer}
+            />
+          )}
+        </>
       </UserScreen>
     );
   };
@@ -231,5 +253,8 @@ const styles = StyleSheet.create({
   },
   amenitiesContentStyle: {
     marginRight: 16,
+  },
+  emptyContainer: {
+    paddingVertical: '50%',
   },
 });

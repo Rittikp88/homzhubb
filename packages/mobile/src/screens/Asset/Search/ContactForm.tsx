@@ -61,8 +61,7 @@ export class ContactForm extends React.PureComponent<Props, IContactState> {
       <HandleBack onBack={this.goBack} navigation={navigation}>
         <Header
           icon={icons.close}
-          isBarVisible={false}
-          isHeadingVisible
+          barVisible={false}
           title={t('contact')}
           type="secondary"
           onIconPress={this.goBack}

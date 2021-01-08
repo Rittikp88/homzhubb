@@ -84,4 +84,8 @@ export class AssetStatusInfo {
   get saleUnitId(): number | null {
     return this._saleUnitId;
   }
+
+  get isListingPresent(): boolean {
+    return !!((this.leaseListingId && this.leaseListingId > 0) || (this.saleListingId && this.saleListingId > 0));
+  }
 }

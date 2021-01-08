@@ -40,7 +40,6 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
               label={t('areaUnit')}
               options={dropDownOptions.areaUnitDropdownValues}
               placeholder={t('selectAreaUnit')}
-              maxLabelLength={8}
               formProps={formProps}
             />
           </View>
@@ -50,7 +49,6 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           name="facing"
           options={dropDownOptions.facing}
           placeholder={t('propertySearch:selectFacing')}
-          maxLabelLength={36}
           formProps={formProps}
         />
         <FormDropdown
@@ -58,7 +56,6 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           name="flooringType"
           options={dropDownOptions.typeOfFlooring}
           placeholder={t('selectFlooringType')}
-          maxLabelLength={36}
           formProps={formProps}
         />
         <FormCalendar

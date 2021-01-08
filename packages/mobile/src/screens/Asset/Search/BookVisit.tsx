@@ -113,8 +113,7 @@ export class BookVisit extends Component<Props, IVisitState> {
       <HandleBack onBack={this.goBack} navigation={navigation}>
         <Header
           icon={icons.close}
-          isBarVisible={false}
-          isHeadingVisible
+          barVisible={false}
           title={t('assetDescription:scheduleVisit')}
           type="secondary"
           onIconPress={this.goBack}

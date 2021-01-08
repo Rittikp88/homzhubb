@@ -42,6 +42,7 @@ interface IStateProps {
 interface IDispatchProps {
   setAssetId: (id: number) => void;
   getAssetGroups: () => void;
+  resetState: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
@@ -396,10 +397,12 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       navigation,
       setEditPropertyFlow,
       editPropertyFlowDetails: { isEditPropertyFlow },
+      resetState,
     } = this.props;
 
     if (isEditPropertyFlow) {
       setEditPropertyFlow(false);
+      resetState();
     }
     navigation.goBack();
   };
@@ -539,13 +542,20 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetGroups, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } = RecordAssetActions;
+  const {
+    getAssetGroups,
+    setAssetId,
+    setEditPropertyFlow,
+    toggleEditPropertyFlowBottomSheet,
+    resetState,
+  } = RecordAssetActions;
   return bindActionCreators(
     {
       setAssetId,
       getAssetGroups,
       setEditPropertyFlow,
       toggleEditPropertyFlowBottomSheet,
+      resetState,
     },
     dispatch
   );

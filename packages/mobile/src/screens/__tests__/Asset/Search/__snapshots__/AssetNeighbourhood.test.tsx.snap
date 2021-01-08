@@ -10,7 +10,6 @@ exports[`AssetNeighbourhood should render snapshot 1`] = `
 >
   <Memo(Header)
     icon="left-arrow"
-    isHeadingVisible={true}
     onIconPress={[Function]}
     type="secondary"
   />
