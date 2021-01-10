@@ -292,9 +292,11 @@ const styles = StyleSheet.create({
   editButton: {
     marginLeft: 10,
     flexDirection: 'row-reverse',
+    height: 50,
   },
   doneButton: {
     flexDirection: 'row-reverse',
+    height: 50,
   },
   buttonTitle: {
     marginHorizontal: 4,

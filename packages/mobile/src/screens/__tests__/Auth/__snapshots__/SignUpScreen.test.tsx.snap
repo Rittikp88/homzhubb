@@ -10,6 +10,7 @@ exports[`SignUp Screen should render signup screen 1`] = `
       "type": "secondary",
     }
   }
+  isLoading={false}
   keyboardShouldPersistTaps={true}
   pageHeaderProps={
     Object {
@@ -33,6 +34,7 @@ exports[`SignUp Screen should render signup screen 1`] = `
         "navigate": [MockFunction],
       }
     }
+    toggleLoading={[Function]}
   />
 </Screen>
 `;

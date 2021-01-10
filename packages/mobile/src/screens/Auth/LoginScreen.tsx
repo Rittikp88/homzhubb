@@ -10,9 +10,18 @@ import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfac
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.Login>;
 
-export class LoginScreen extends Component<Props> {
+interface IOwnState {
+  isLoading: boolean;
+}
+
+export class LoginScreen extends Component<Props, IOwnState> {
+  public state = {
+    isLoading: false,
+  };
+
   public render(): React.ReactNode {
     const { t, navigation } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <Screen
@@ -28,6 +37,7 @@ export class LoginScreen extends Component<Props> {
           onLinkPress: this.onSignUpClicked,
         }}
         backgroundColor={theme.colors.white}
+        isLoading={isLoading}
       >
         <>
           <LoginForm onLoginSuccess={this.onOtpLoginPress} testID="loginForm" />
@@ -36,6 +46,7 @@ export class LoginScreen extends Component<Props> {
             onEmailLogin={this.onEmailLoginPress}
             navigation={navigation}
             testID="socialEmailLogin"
+            toggleLoading={this.toggleLoading}
           />
         </>
       </Screen>
@@ -78,6 +89,10 @@ export class LoginScreen extends Component<Props> {
       otpSentTo: values.phone_number,
       ...(params && params.onCallback && { onCallback: params.onCallback }),
     });
+  };
+
+  private toggleLoading = (isLoading: boolean): void => {
+    this.setState({ isLoading });
   };
 }
 

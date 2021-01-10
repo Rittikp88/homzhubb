@@ -1,40 +1,50 @@
 import React, { FC, useRef } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import BreadCrumbs from '@homzhub/web/src/components/molecules/BreadCrumbs';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
-import PopupMenuOptions from '@homzhub/web/src/components/molecules/PopupMenuOptions';
+import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { PopupActions } from 'reactjs-popup/dist/types';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 
 const humanize = (str: string): string => {
-  return str.replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
+  const splicedStr = str.split('/');
+  const lastIndex = splicedStr.length - 1;
+  return splicedStr[lastIndex].replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
 };
 
-const quickActionOptions = [
-  { icon: icons.stackFilled, label: 'Add Property' },
-  { icon: icons.stackFilled, label: 'Add Records' },
-  { icon: icons.stackFilled, label: 'Create Support Ticket' },
-  { icon: icons.stackFilled, label: 'Create Service Ticket' },
+interface IQuickActions extends IPopupOptions {
+  route: string;
+}
+
+const quickActionOptions: IQuickActions[] = [
+  { icon: icons.stackFilled, label: 'Add Property', route: RouteNames.protectedRoutes.ADD_PROPERTY },
+  { icon: icons.stackFilled, label: 'Add Records', route: RouteNames.protectedRoutes.DASHBOARD },
+  { icon: icons.stackFilled, label: 'Create Support Ticket', route: RouteNames.protectedRoutes.DASHBOARD },
+  { icon: icons.stackFilled, label: 'Create Service Ticket', route: RouteNames.protectedRoutes.DASHBOARD },
 ];
 
-// todo: replace dummy data with actual data
+// todo: replace  dummy data with actual data
 export const NavigationInfo: FC = () => {
   const location = useLocation();
+  const history = useHistory();
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const popupRef = useRef<PopupActions>(null);
-  const closePopup = (): void => {
+  const onMenuItemClick = (option: IQuickActions): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
+    NavigationUtils.navigate(history, { path: option.route });
   };
   const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
   const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch' };
@@ -69,7 +79,7 @@ export const NavigationInfo: FC = () => {
           <View style={[styles.addBtnContainer, isMobile && styles.addBtnContainerMobile]}>
             <Popover
               forwardedRef={popupRef}
-              content={<PopupMenuOptions options={quickActionOptions} onMenuOptionPress={closePopup} />}
+              content={<PopupMenuOptions options={quickActionOptions} onMenuOptionPress={onMenuItemClick} />}
               popupProps={{
                 position: 'bottom right',
                 on: ['click'],

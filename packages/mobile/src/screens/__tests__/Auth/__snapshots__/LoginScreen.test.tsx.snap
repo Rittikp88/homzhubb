@@ -10,6 +10,7 @@ exports[`Login Screen should render login screen 1`] = `
       "type": "secondary",
     }
   }
+  isLoading={false}
   pageHeaderProps={
     Object {
       "contentLink": "auth:signup",
@@ -33,6 +34,7 @@ exports[`Login Screen should render login screen 1`] = `
     }
     onEmailLogin={[Function]}
     testID="socialEmailLogin"
+    toggleLoading={[Function]}
   />
 </Screen>
 `;
