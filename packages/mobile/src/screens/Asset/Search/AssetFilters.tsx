@@ -24,12 +24,13 @@ import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/component
 import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
 import { BottomSheet } from '@homzhub/mobile/src/components';
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
-import { IFacing, IFilter, IFilterDetails, IPropertyAmenities } from '@homzhub/common/src/domain/models/Search';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 
 interface IStateProps {
   filters: IFilter;
-  filterDetails: IFilterDetails | null;
+  filterDetails: FilterDetail | null;
 }
 
 interface IDispatchProps {
@@ -168,7 +169,6 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           iconColor={theme.colors.darkTint7}
           containerStyle={styles.dropdownContainer}
           numColumns={2}
-          maxLabelLength={36}
         />
       </>
     );
@@ -204,7 +204,6 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           iconColor={theme.colors.darkTint7}
           containerStyle={styles.dropdownContainer}
           numColumns={2}
-          maxLabelLength={36}
         />
       </>
     );
@@ -240,7 +239,6 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           iconColor={theme.colors.darkTint7}
           containerStyle={styles.dropdownContainer}
           numColumns={2}
-          maxLabelLength={36}
         />
       </>
     );
@@ -276,7 +274,6 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           iconColor={theme.colors.darkTint7}
           containerStyle={styles.dropdownContainer}
           numColumns={2}
-          maxLabelLength={36}
         />
       </>
     );
@@ -442,13 +439,11 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
 
     const { propertyAmenity } = miscellaneous;
 
-    const propertyAmenities = filterDetails?.filters?.additional_filters?.property_amenities ?? [];
+    const propertyAmenities = filterDetails?.filters?.additionalFilters?.propertyAmenities ?? [];
     const findSelectedAmenities = (): { title: string; value: number }[] => {
       const selectedAmenities: { title: string; value: number }[] = [];
-      const filteredArray = propertyAmenities.filter((amenity: IPropertyAmenities) =>
-        propertyAmenity.includes(amenity.id)
-      );
-      filteredArray.forEach((obj: IPropertyAmenities) => {
+      const filteredArray = propertyAmenities.filter((amenity) => propertyAmenity.includes(amenity.id));
+      filteredArray.forEach((obj) => {
         selectedAmenities.push({
           title: obj.name,
           value: obj.id,
@@ -636,9 +631,9 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
 
   public transformFacingData = (): { title: string; value: string }[] => {
     const { filterDetails } = this.props;
-    const facingData = filterDetails?.filters?.additional_filters?.facing ?? [];
+    const facingData = filterDetails?.filters?.additionalFilters?.facing ?? [];
     const transformedFacing: { title: string; value: string }[] = [];
-    facingData.forEach((data: IFacing) => {
+    facingData.forEach((data) => {
       transformedFacing.push({
         title: data.label,
         value: data.name,
@@ -649,7 +644,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
 
   public facingCheckboxGroupData = (facing: string[]): ICheckboxGroupData[] => {
     const { filterDetails } = this.props;
-    const facingData = filterDetails?.filters?.additional_filters?.facing ?? [];
+    const facingData = filterDetails?.filters?.additionalFilters?.facing ?? [];
     return facingData.map((facingType: { name: string; label: string }) => ({
       id: facingType.name,
       label: facingType.label,
@@ -683,7 +678,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
       filterDetails,
       filters: { miscellaneous },
     } = this.props;
-    const propertyAmenitiesData = filterDetails?.filters?.additional_filters?.property_amenities ?? [];
+    const propertyAmenitiesData = filterDetails?.filters?.additionalFilters?.propertyAmenities ?? [];
     return propertyAmenitiesData.map((amenityType: { name: string; id: number }) => ({
       id: amenityType.id,
       label: amenityType.name,

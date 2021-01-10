@@ -11,6 +11,7 @@ import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/se
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { AddressWithStepIndicator, BottomSheet, PropertyPayment } from '@homzhub/mobile/src/components';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
@@ -25,8 +26,8 @@ interface IRoutes {
 }
 
 enum RouteKeys {
-  Services = 'services',
-  Payment = 'payment',
+  Services = 'Services',
+  Payment = 'Payment',
 }
 
 const { height, width } = theme.viewport;
@@ -50,14 +51,16 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
     { key: RouteKeys.Payment, title: t('property:payment') },
   ];
   const Steps = [RouteKeys.Services, RouteKeys.Payment];
+  const primaryAddressTextStyles = { size: 'small' };
+  const subAddressTextStyles = { variant: 'label', size: 'large' };
 
   // Local State
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [showGoBackCaution, setShowGoBackCaution] = useState(false);
-  const [stepPositionArr, setStepPositionArr] = useState<boolean[]>([true, false]);
-  const [tabViewHeights, setTabViewHeights] = useState<number[]>([height, height]);
+  const [isStepDone, setStepPositionArr] = useState<boolean[]>([false, false]);
+  const [tabViewHeights, setIsStepDone] = useState<number[]>([height, height]);
 
   // Redux
   const dispatch = useDispatch();
@@ -89,11 +92,14 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
             subAddress={address}
             countryFlag={flag}
             currentIndex={currentIndex}
-            isStepDone={stepPositionArr}
+            isStepDone={isStepDone}
             onPressSteps={onStepPress}
             badgeInfo={badgeInfo}
+            badgeStyle={styles.badgeStyle}
             amenities={amenities}
-            stepIndicatorSeparatorStyle={{ width: width / 1.7 }}
+            stepIndicatorSeparatorStyle={{ width: width / 2 }}
+            primaryAddressTextStyles={primaryAddressTextStyles as ITypographyProps}
+            subAddressTextStyles={subAddressTextStyles as ITypographyProps}
           />
           {renderTabHeader()}
           <TabView
@@ -152,6 +158,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
               valueAddedServices={valueAddedServices}
               setValueAddedServices={setValueAddedServices}
               handleNextStep={handleNextStep}
+              buttonStyle={styles.buttonStyle}
             />
           </View>
         );
@@ -208,7 +215,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
 
   const handleIndexChange = (index: number): void => {
     setCurrentIndex(index);
-    setStepPositionArr([false, true]);
+    setStepPositionArr([true, false]);
   };
 
   const goBackToServices = (): void => {
@@ -230,6 +237,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
   const onBackPress = (isBackPressed: boolean): void => {
     if (valueAddedServices.filter((service) => service.value).length === 0) {
       navigation.goBack();
+      return;
     }
     setShowGoBackCaution(isBackPressed);
     setBottomSheetVisible(true);
@@ -254,7 +262,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
 
     if (newHeight !== arrayToUpdate[index]) {
       arrayToUpdate[index] = newHeight;
-      setTabViewHeights(arrayToUpdate);
+      setIsStepDone(arrayToUpdate);
     }
   };
 
@@ -284,14 +292,26 @@ const styles = StyleSheet.create({
   editButton: {
     marginLeft: 10,
     flexDirection: 'row-reverse',
+    height: 50,
   },
   doneButton: {
     flexDirection: 'row-reverse',
+    height: 50,
   },
   buttonTitle: {
     marginHorizontal: 4,
   },
   bottomSheet: {
     paddingHorizontal: theme.layout.screenPadding,
+  },
+  badgeStyle: {
+    minWidth: 75,
+    paddingHorizontal: 10,
+    paddingVertical: 1,
+    marginBottom: 10,
+    alignSelf: 'flex-start',
+  },
+  buttonStyle: {
+    marginHorizontal: theme.layout.screenPadding,
   },
 });

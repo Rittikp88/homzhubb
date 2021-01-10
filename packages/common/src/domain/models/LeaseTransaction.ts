@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { DateFormats } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
 export interface ILabelColor {
@@ -86,11 +87,11 @@ export class LeasePeriod {
   }
 
   get leaseStartDate(): string {
-    return moment(this._leaseStartDate).format('DD/MM/YYYY');
+    return moment(this._leaseStartDate, DateFormats.ISO).format('DD/MM/YYYY');
   }
 
   get leaseEndDate(): string {
-    return moment(this._leaseEndDate).format('DD/MM/YYYY');
+    return moment(this._leaseEndDate, DateFormats.ISO).format('DD/MM/YYYY');
   }
 
   get totalLeasePeriod(): string {

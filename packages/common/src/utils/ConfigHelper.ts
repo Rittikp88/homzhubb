@@ -28,6 +28,8 @@ const {
   REACT_NATIVE_APP_STORAGE_SECRET,
   REACT_NATIVE_APP_YOUTUBE_API_KEY,
   REACT_NATIVE_APP_MODE = AppModes.DEBUG,
+  REACT_NATIVE_APP_GOOGLE_WEB_CLIENT_ID,
+  REACT_NATIVE_APP_GOOGLE_IOS_CLIENT_ID,
 } = Config;
 
 class ConfigHelper {
@@ -39,6 +41,8 @@ class ConfigHelper {
   private readonly razorPayApiKey: string;
   private readonly youtubeApiKey: string;
   private readonly appMode: AppModes;
+  private readonly googleWebClientId: string | undefined;
+  private readonly googleIosClientId: string | undefined;
 
   constructor() {
     this.baseUrl = REACT_APP_API_BASE_URL;
@@ -60,6 +64,8 @@ class ConfigHelper {
       this.razorPayApiKey = REACT_NATIVE_APP_RAZOR_API_KEY;
       this.youtubeApiKey = REACT_NATIVE_APP_YOUTUBE_API_KEY;
       this.appMode = REACT_NATIVE_APP_MODE as AppModes;
+      this.googleWebClientId = REACT_NATIVE_APP_GOOGLE_WEB_CLIENT_ID;
+      this.googleIosClientId = REACT_NATIVE_APP_GOOGLE_IOS_CLIENT_ID;
     }
   }
 
@@ -78,6 +84,10 @@ class ConfigHelper {
   public getYoutubeApiKey = (): string => this.youtubeApiKey;
 
   public getAppMode = (): AppModes => this.appMode;
+
+  public getGoogleWebClientId = (): string => this.googleWebClientId || '';
+
+  public getGoogleIosClientId = (): string => this.googleIosClientId || '';
 }
 
 const configHelper = new ConfigHelper();

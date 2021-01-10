@@ -165,13 +165,15 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     );
   };
 
-  private onToggleCoin = async (): Promise<void> => {
+  private onToggleCoin = (): void => {
     const {
       isCoinApplied,
       orderSummary: { coins },
     } = this.state;
-    this.setState({ isCoinApplied: !isCoinApplied });
-    await this.getOrderSummary({ coins: coins.currentBalance });
+    this.setState({ isCoinApplied: !isCoinApplied }, () => {
+      // eslint-disable-next-line react/destructuring-assignment
+      this.getOrderSummary({ coins: this.state.isCoinApplied ? coins.currentBalance : 0 }).then();
+    });
   };
 
   private paymentApi = async (paymentParams: IPaymentParams): Promise<void> => {
@@ -238,7 +240,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     const payload: IOrderSummaryPayload = {
       value_added_services: this.getServiceIds(),
       ...(propertyId && { asset: propertyId }),
-      ...(data?.coins && { coins: data.coins }),
+      ...(data?.coins && data.coins > 0 && { coins: data.coins }),
       ...(data?.promo_code && { promo_code: data.promo_code }),
     };
     this.setState({ isLoading: true });

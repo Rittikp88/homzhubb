@@ -1,33 +1,41 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { useSelector } from 'react-redux';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import BreadCrumbs from '@homzhub/web/src/components/molecules/BreadCrumbs';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
+import BreadCrumbs from '@homzhub/web/src/components/molecules/BreadCrumbs';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { PopupActions } from 'reactjs-popup/dist/types';
-import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
+import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 
 const humanize = (str: string): string => {
-  return str.replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
+  const splicedStr = str.split('/');
+  const lastIndex = splicedStr.length - 1;
+  return splicedStr[lastIndex].replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
 };
 
-const quickActionOptions = [
-  { icon: icons.stackFilled, label: 'Add Property' },
-  { icon: icons.stackFilled, label: 'Add Records' },
-  { icon: icons.stackFilled, label: 'Create Support Ticket' },
-  { icon: icons.stackFilled, label: 'Create Service Ticket' },
+interface IQuickActions extends IPopupOptions {
+  route: string;
+}
+
+const quickActionOptions: IQuickActions[] = [
+  { icon: icons.stackFilled, label: 'Add Property', route: RouteNames.protectedRoutes.ADD_PROPERTY },
+  { icon: icons.stackFilled, label: 'Add Records', route: RouteNames.protectedRoutes.DASHBOARD },
+  { icon: icons.stackFilled, label: 'Create Support Ticket', route: RouteNames.protectedRoutes.DASHBOARD },
+  { icon: icons.stackFilled, label: 'Create Service Ticket', route: RouteNames.protectedRoutes.DASHBOARD },
 ];
 
 const getCountryList = (assets: Asset[]): Country[] => {
@@ -49,6 +57,7 @@ const DashBoardActionsGrp: FC = () => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const popupRef = useRef<PopupActions>(null);
+  const history = useHistory();
   const [selectedCountry, setSelectedCountry] = useState(0);
   const assets: Asset[] = useSelector(UserSelector.getUserAssets);
   const countryList = getCountryList(assets);
@@ -63,6 +72,10 @@ const DashBoardActionsGrp: FC = () => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
+  };
+  const onMenuItemClick = (option: IQuickActions): void => {
+    closePopup();
+    NavigationUtils.navigate(history, { path: option.route });
   };
   const onCountryOptionSelect = (option: IPopupOptions): void => {
     setSelectedCountry(option.value as number);
@@ -109,7 +122,7 @@ const DashBoardActionsGrp: FC = () => {
       <View style={[styles.addBtnContainer, isMobile && styles.addBtnContainerMobile]}>
         <Popover
           forwardedRef={popupRef}
-          content={<PopupMenuOptions options={quickActionOptions} onMenuOptionPress={closePopup} />}
+          content={<PopupMenuOptions options={quickActionOptions} onMenuOptionPress={onMenuItemClick} />}
           popupProps={defaultDropDownProps('fitContent')}
         >
           <Button type="secondary" containerStyle={[styles.button, styles.addBtn]}>

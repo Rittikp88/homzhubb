@@ -58,6 +58,7 @@ describe('Property Images Component', () => {
   it('should fetch the property images by id', async () => {
     jest
       .spyOn(AssetRepository, 'getPropertyImagesByPropertyId')
+      // @ts-ignore
       .mockImplementation(async () => Promise.resolve(PropertyImagesByPropertyId));
     await instance.componentDidMount();
     const response = await AssetRepository.getPropertyImagesByPropertyId(1);

@@ -179,6 +179,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
       navigation: { navigate },
     } = this.props;
 
+    // @ts-ignore
     navigate(ScreensKeys.WebViewScreen, { url });
   };
 

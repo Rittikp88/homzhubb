@@ -49,7 +49,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
             <Image source={{ uri: image }} style={styles.image} />
             <View style={styles.content}>
               <View style={styles.headingStyle}>
-                <Label type="large" numberOfLines={3} style={styles.textStyle}>
+                <Label type="large" textType="semiBold" numberOfLines={3} style={styles.textStyle}>
                   {heading}
                 </Label>
                 <RNCheckbox selected={selected} onToggle={this.onToggle} />
@@ -65,7 +65,8 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
                   <PricePerUnit
                     price={price}
                     currency={currency}
-                    textSizeType="small"
+                    textSizeType="regular"
+                    textFieldType="label"
                     textStyle={styles.originalPrice}
                   />
                 )}
@@ -95,7 +96,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
         {bundleItems.map((item) => {
           return (
             <View key={item.id} style={[styles.rowStyle, styles.marginBottom]}>
-              <Icon name={icons.roundFilled} color={theme.colors.disabled} size={10} style={styles.iconStyle} />
+              <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={10} style={styles.iconStyle} />
               <Label type="regular" style={styles.label}>
                 {item.label}
               </Label>

@@ -5,7 +5,8 @@ import { IBadgeInfo } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { IAmenitiesData, PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -30,6 +31,8 @@ interface IProps {
   stepContainerStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   stepIndicatorSeparatorStyle?: StyleProp<ViewStyle>;
+  primaryAddressTextStyles?: ITypographyProps;
+  subAddressTextStyles?: ITypographyProps;
 }
 const {
   viewport: { width },
@@ -54,6 +57,8 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     onEditPress,
     countryFlag,
     stepIndicatorSeparatorStyle,
+    subAddressTextStyles,
+    primaryAddressTextStyles,
   } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
@@ -126,9 +131,9 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.topView}>
-        <Text type="small" textType="regular" style={styles.propertyTypeStyle}>
+        <Label type="large" textType="regular" style={styles.propertyTypeStyle}>
           {propertyType}
-        </Text>
+        </Label>
         {icon && <Icon name={icon} size={23} color={blue} onPress={onEditPress} />}
         {(selectedPan || badgeInfo) && (
           <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />
@@ -139,9 +144,12 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         subAddress={subAddress}
         countryFlag={countryFlag}
         containerStyle={styles.addressView}
+        primaryAddressTextStyles={primaryAddressTextStyles}
+        subAddressTextStyles={subAddressTextStyles}
       />
       {amenities && (
         <PropertyAmenities
+          labelStyles={subAddressTextStyles}
           containerStyle={styles.amenities}
           contentContainerStyle={styles.amenitiesContentStyle}
           data={amenities}

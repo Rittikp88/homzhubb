@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
-import { deviceBreakpoint } from '../constants/DeviceBreakpoints';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IScaledSize {
   width: number;

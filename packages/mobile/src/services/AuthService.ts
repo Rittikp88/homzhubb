@@ -1,6 +1,9 @@
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from 'react-native-fbsdk';
 import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { ISocialUserData, SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
 
@@ -9,8 +12,8 @@ class AuthService {
   public signInWithGoogle = async (successCallback: (result: ISocialUserData) => Promise<void>): Promise<void> => {
     try {
       GoogleSignin.configure({
-        webClientId: '894249713165-ig82ihgl39q5u4sqk5vu0u1vr67rqnhk.apps.googleusercontent.com',
-        iosClientId: '894249713165-4c1riqt38nv51dsvlumfhsoadmnjsomr.apps.googleusercontent.com',
+        webClientId: ConfigHelper.getGoogleWebClientId(),
+        iosClientId: ConfigHelper.getGoogleIosClientId(),
       });
 
       await GoogleSignin.hasPlayServices();
@@ -53,27 +56,44 @@ class AuthService {
   };
 
   // eslint-disable-next-line consistent-return
-  public signInWithFacebook = async (successCallback: (result: ISocialUserData) => Promise<void>): Promise<void> => {
+  public signInWithFacebook = async (
+    successCallback: (result: ISocialUserData) => Promise<void>,
+    navigation?: any
+  ): Promise<void> => {
     try {
+      if (PlatformUtils.isAndroid()) {
+        LoginManager.setLoginBehavior('web_only');
+      }
       // Attempt login with permissions
-      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-
-      if (result.isCancelled) {
-        throw new Error(I18nService.t('auth:userCancelledLoginProcess'));
+      const fbAccessToken = await AccessToken.getCurrentAccessToken();
+      if (!fbAccessToken) {
+        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+        if (result.isCancelled) {
+          throw new Error(I18nService.t('auth:userCancelledLoginProcess'));
+        }
       }
 
-      // Once signed in, get the users AccesToken
       const accessToken = await AccessToken.getCurrentAccessToken();
-
       if (!accessToken) {
-        throw new Error(I18nService.t('auth:userCancelledLoginProcess'));
+        throw new Error(I18nService.t('auth:errorInFacebookSignIn'));
       }
+
       const infoRequest = new GraphRequest(
         `/me?fields=email,first_name,last_name&access_token=${accessToken.accessToken}`,
         null,
         (error?: object, response?: object) => {
           if (error || !response) {
             throw new Error(I18nService.t('auth:errorInFacebookSignIn'));
+            return;
+          }
+          // @ts-ignore
+          if (!response.email) {
+            if (navigation) {
+              navigation.navigate(ScreensKeys.AuthStack, {
+                screen: ScreensKeys.SignUp,
+              });
+            }
+            AlertHelper.error({ message: I18nService.t('auth:fbEmailLinkingError') });
             return;
           }
           successCallback(this.getFbUserData(response, accessToken.accessToken));

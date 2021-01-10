@@ -18,14 +18,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import {
-  PostAssetForm,
-  Header,
-  PropertyDetailsLocation,
-  AssetGroupSelection,
-  Loader,
-  BottomSheet,
-} from '@homzhub/mobile/src/components';
+import { Header, PropertyDetailsLocation, Loader, BottomSheet } from '@homzhub/mobile/src/components';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
@@ -34,6 +27,8 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';
+import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAssetForm';
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -47,6 +42,7 @@ interface IStateProps {
 interface IDispatchProps {
   setAssetId: (id: number) => void;
   getAssetGroups: () => void;
+  resetState: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
@@ -136,7 +132,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
 
     return (
       <>
-        <Header title={t('headerTitle')} onIconPress={this.handleGoBack} isBarVisible />
+        <Header title={t('headerTitle')} onIconPress={this.handleGoBack} barVisible />
         <SafeAreaView style={styles.container}>{this.renderForm()}</SafeAreaView>
         <Loader visible={isLoading} />
         {this.renderGoBackCaution()}
@@ -401,10 +397,12 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       navigation,
       setEditPropertyFlow,
       editPropertyFlowDetails: { isEditPropertyFlow },
+      resetState,
     } = this.props;
 
     if (isEditPropertyFlow) {
       setEditPropertyFlow(false);
+      resetState();
     }
     navigation.goBack();
   };
@@ -544,13 +542,20 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetGroups, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } = RecordAssetActions;
+  const {
+    getAssetGroups,
+    setAssetId,
+    setEditPropertyFlow,
+    toggleEditPropertyFlowBottomSheet,
+    resetState,
+  } = RecordAssetActions;
   return bindActionCreators(
     {
       setAssetId,
       getAssetGroups,
       setEditPropertyFlow,
       toggleEditPropertyFlowBottomSheet,
+      resetState,
     },
     dispatch
   );

@@ -4,7 +4,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import { ITypographyProps, Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 interface IProps {
   direction: 'row' | 'column';
@@ -12,6 +12,7 @@ interface IProps {
   iconSize?: number;
   iconColor?: string;
   label: string;
+  labelStyles?: ITypographyProps;
   isLastIndex?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -25,14 +26,15 @@ const AmenitiesIcon = (props: IProps): React.ReactElement => {
     label,
     isLastIndex = false,
     containerStyle,
+    labelStyles,
   } = props;
 
   const renderText = (): React.ReactElement => {
     const labelStyle = direction === 'column' ? styles.columnLabel : styles.rowLabel;
     return (
       <Typography
-        variant={PlatformUtils.isWeb() ? 'label' : 'text'}
-        size={PlatformUtils.isWeb() ? 'regular' : 'small'}
+        variant={PlatformUtils.isWeb() ? 'label' : labelStyles ? labelStyles.variant : 'text'}
+        size={PlatformUtils.isWeb() ? 'regular' : labelStyles ? labelStyles.size : 'small'}
         fontWeight="regular"
         style={[styles.label, labelStyle]}
         minimumFontScale={0.5}
