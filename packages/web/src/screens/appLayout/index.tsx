@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { History } from 'history';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
@@ -15,6 +14,7 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 interface IProps {
   location: LocationParams;
 }
+
 type LocationParams = { pathname: string };
 
 const AppLayout: FC<IProps> = (props: IProps) => {

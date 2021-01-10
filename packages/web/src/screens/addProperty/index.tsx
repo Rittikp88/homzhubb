@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import MapsPOC from '@homzhub/web/src/screens/addProperty/components/GoogleMapView';
+import MapsPOC from '@homzhub/web/src/components/atoms/GoogleMapView';
 import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
