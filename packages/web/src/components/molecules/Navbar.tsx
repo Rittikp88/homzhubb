@@ -1,11 +1,14 @@
 import React, { FC, useState } from 'react';
 import { ImageStyle, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import HomzhubLogo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
@@ -48,18 +51,23 @@ const Navbar: FC = () => {
   const [isSelected, setIsSelected] = useState(-1);
   const [searchText, setSearchText] = useState('');
   const navBarStyles = navBarStyle(isMobile, isTablet, isDesktop);
+  const history = useHistory();
   const navItems = [
     {
       icon: icons.headset,
       text: t('assetMore:support'),
+      url: RouteNames.protectedRoutes.HELPANDSUPPORT,
     },
     {
       icon: icons.refer,
       text: t('assetMore:refer'),
+      url: RouteNames.protectedRoutes.REFERANDEARN,
     },
   ];
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
+    console.log(index);
+    NavigationUtils.navigate(history, { path: navItems[index].url });
   };
   const onChange = (text: string): void => {
     setSearchText(text);

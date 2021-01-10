@@ -37,6 +37,7 @@ const namedColors = {
   gold: '#FFD700',
   lightGreen: '#4FA800',
   alertInfo: '#52616B',
+  divider: '#E5E8EC',
 };
 
 const tintColors = {
