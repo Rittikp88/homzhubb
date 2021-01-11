@@ -100,7 +100,7 @@ const searchViewStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.notificationRed,
+    backgroundColor: theme.colors.white,
     flexDirection: 'row',
     padding: 20,
     marginBottom: 48,
