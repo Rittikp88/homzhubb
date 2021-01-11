@@ -1,43 +1,40 @@
-// List out all required permission types here
-export enum PERMISSION_TYPE_WEB {
-  location = 'location',
-}
+import { PERMISSION_TYPE } from '@homzhub/common/src/constants/PermissionTypes';
+
 enum RESULTS {
   GRANTED = 'granted',
   DENIED = 'denied',
   PROMPT = 'prompt',
 }
 
+const isLocationAvailable = (): boolean => {
+  return 'geolocation' in navigator;
+};
+
 class Permissions {
-  public checkPermission = async (type: PERMISSION_TYPE_WEB): Promise<boolean> => {
-    // Should be a Promise Function
-    try {
-      const permissionStatus = await this.check();
-      if (permissionStatus === RESULTS.GRANTED) {
-        return true;
+  public checkPermission = async (type: PERMISSION_TYPE): Promise<boolean> => {
+    if (type === PERMISSION_TYPE.location) {
+      try {
+        const permissionStatus = await this.hasPermission();
+        if (permissionStatus === RESULTS.GRANTED) {
+          return true;
+        }
+        if (permissionStatus === RESULTS.PROMPT) {
+          return false;
+        }
+        if (permissionStatus === RESULTS.DENIED) {
+          return false;
+        }
+        return false;
+      } catch (e) {
+        return false;
       }
-      return await this.requestPermission();
-    } catch (e) {
+    } else {
       return false;
     }
   };
 
-  private requestPermission = async (): Promise<boolean> => {
-    // Should be a Promise Function
-    try {
-      const response = await this.request();
-      return response === RESULTS.GRANTED;
-    } catch (e) {
-      return false;
-    }
-  };
-
-  private isLocationAvailable = (): boolean => {
-    return 'geolocation' in navigator;
-  };
-
-  private check = async (): Promise<RESULTS> => {
-    const status = this.isLocationAvailable();
+  private hasPermission = async (): Promise<RESULTS> => {
+    const status = isLocationAvailable();
     let permissionState;
     const response = await navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
       permissionState = permissionStatus.state;
@@ -49,23 +46,10 @@ class Permissions {
     if (response === 'granted' && status) {
       return RESULTS.GRANTED;
     }
+    if (response === 'prompt' && status) {
+      return RESULTS.PROMPT;
+    }
     return RESULTS.DENIED;
-  };
-
-  private request = async (): Promise<RESULTS> => {
-    const requestPermission: RESULTS = await new Promise((resolve, reject) => {
-      const repsonse = navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log(position);
-        },
-        (error) => {
-          console.error(`Error Code = ${error.code} - ${error.message}`);
-        }
-      );
-      console.log(repsonse);
-    });
-    console.log(requestPermission);
-    return requestPermission;
   };
 }
 
