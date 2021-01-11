@@ -8,7 +8,7 @@ const containerStyle = {
   height: '100%',
 };
 
-const center = {
+const centerDefault = {
   lat: 12.930993354465738,
   lng: 77.63309735316916,
 };
@@ -18,10 +18,11 @@ const markerPosition = {
 };
 
 interface IProps {
-  center?: { lat: string; lng: string };
+  center?: { lat: number; lng: number };
 }
 
 const GoogleMapView: FC<IProps> = (props: IProps) => {
+  const { center } = props;
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
     setMap(mapInstance);
@@ -42,11 +43,17 @@ const GoogleMapView: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <LoadScript googleMapsApiKey={ConfigHelper.getPlacesApiKey()}>
-        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10} onLoad={onLoad} onUnmount={onUnmount}>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center || centerDefault}
+          zoom={10}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+        >
           {/* Child components, such as markers, info windows, etc. */}
           <Marker
             onLoad={onLoadMarker}
-            position={markerPosition}
+            position={center || markerPosition}
             draggable
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
