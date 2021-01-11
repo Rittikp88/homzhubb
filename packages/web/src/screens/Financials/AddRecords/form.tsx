@@ -25,10 +25,9 @@ interface IFormData {
 const Form: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.auth);
   const [isActiveIncome, setIsActiveIncome] = useState(true);
-  const [isActiveExpense, setIsActiveExpense] = useState(false);
-  const buttons = [
+  const actionButtons = [
     { key: 1, name: 'Income', isActive: isActiveIncome },
-    { key: 2, name: 'Expense', isActive: isActiveExpense },
+    { key: 2, name: 'Expense', isActive: !isActiveIncome },
   ];
   const formData = {
     details: '',
@@ -41,14 +40,12 @@ const Form: FC = () => {
     formActions.setSubmitting(true);
     console.log(values);
   };
-  const buttonClick = (text: string): void => {
+  const handleChangeColor = (text: string): void => {
     if (text === 'Income') {
       setIsActiveIncome(true);
-      setIsActiveExpense(false);
     }
     if (text === 'Expense') {
       setIsActiveIncome(false);
-      setIsActiveExpense(true);
     }
   };
 
@@ -62,13 +59,14 @@ const Form: FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        {buttons.map((items, key) => {
+        {actionButtons.map((items, key) => {
+          const onActionButtonPress = (): void => handleChangeColor(items.name);
           return (
             <Button
               key={key}
               type="secondary"
               containerStyle={[styles.button, items.isActive && styles.activeButton]}
-              onPress={(): void => buttonClick(items.name)}
+              onPress={onActionButtonPress}
             >
               <Typography
                 variant="text"
