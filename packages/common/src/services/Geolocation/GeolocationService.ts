@@ -3,12 +3,13 @@ import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/G
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
-import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';
+import { PermissionsService } from '@homzhub/common/src/services/Permissions/PermissionService';
 import {
   GeolocationError,
   GeolocationOptions,
   GeolocationResponse,
 } from '@homzhub/common/src/services/Geolocation/interfaces';
+import { PERMISSION_TYPE } from '@homzhub/common/src/constants/PermissionTypes';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import { Geolocation } from './index';
