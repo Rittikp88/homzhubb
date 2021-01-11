@@ -3,10 +3,11 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
-import { UserPreferences, MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
+import { MetricSystems, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { Country } from '../../domain/models/Country';
 
 const isLoggedIn = (state: IState): boolean => {
   return !!state.user.tokens;
@@ -117,6 +118,13 @@ const getCurrency = (state: IState): Currency => {
   return userPreferences.currencyObj;
 };
 
+const getUserCountryCode = (state: IState): number => {
+  const {
+    user: { userCountryCode },
+  } = state;
+  return userCountryCode ?? 0;
+};
+
 const isUserPreferencesLoading = (state: IState): boolean => {
   const {
     user: {
@@ -183,6 +191,7 @@ export const UserSelector = {
   isUserPreferencesLoading,
   getMetricSystem,
   getCurrency,
+  getUserCountryCode,
   getUserAssets,
   getFavouritePropertyIds,
   getFavouriteProperties,

@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { ImageStyle, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
+import { cloneDeep } from 'lodash';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -30,17 +31,10 @@ const PropertyOverview: FC<IProps> = ({ data }: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<Miscellaneous[]>([]);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyOverviewStyle(isMobile);
-  console.log('here---------------------------------------------');
-  console.log(data);
-  console.log(detailsOptions);
   const total = detailsOptions?.length ?? 0;
   const updateOptions = (updatedOptions: Miscellaneous[]): void => {
-    setDetailsOptions(updatedOptions);
-    console.log(updatedOptions);
+    setDetailsOptions(cloneDeep(updatedOptions));
   };
-  useEffect(() => {
-    console.log('use effect working');
-  }, [detailsOptions]);
   const customCarouselProps: CarouselProps = {
     children: undefined,
     arrows: false,
@@ -174,7 +168,7 @@ interface ICarouselControlsGrp {
 const getPropertyDetailsOptions = (data: Miscellaneous[]): IPopupOptions[] => {
   const settingsOptions: IPopupOptions[] = [];
   data.forEach((option): void => {
-    settingsOptions.push({ label: option.label, iconRight: icons.checkboxOff, checked: false });
+    settingsOptions.push({ label: option.label, icon: icons.checkboxOff, checked: false });
   });
   return settingsOptions;
 };
@@ -200,7 +194,7 @@ const CarouselControlsGrp = ({
     let count = 0;
     const MaximumNoOfAllowedSelection = 3;
     settingsOptions.forEach((item) => {
-      if (item.iconRight === icons.checkboxOn) {
+      if (item.icon === icons.checkboxOn) {
         count += 1;
       }
     });
@@ -214,7 +208,7 @@ const CarouselControlsGrp = ({
           if (item.checked) {
             newOptions.push({
               label: selectedOption.label,
-              iconRight: icons.checkboxOff,
+              icon: icons.checkboxOff,
               checked: false,
             });
           } else {
@@ -223,7 +217,7 @@ const CarouselControlsGrp = ({
         } else {
           newOptions.push({
             label: selectedOption.label,
-            iconRight: !item.checked ? icons.checkboxOn : icons.checkboxOff,
+            icon: !item.checked ? icons.checkboxOn : icons.checkboxOff,
             checked: !item.checked,
           });
         }
@@ -263,7 +257,8 @@ const CarouselControlsGrp = ({
         popupProps={{
           on: 'click',
           closeOnDocumentClick: true,
-          modal: true,
+          arrow: false,
+          contentStyle: { marginTop: '4px', alignItems: 'stretch' },
           children: undefined,
           onClose: updateOptionsList,
         }}

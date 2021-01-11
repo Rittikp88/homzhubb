@@ -2,36 +2,65 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import ReactApexCharts from 'react-apexcharts';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { sum } from 'lodash';
+import _ from 'lodash';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { BarGraphLegends } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IGraphProps } from '@homzhub/common/src/utils/FinanceUtil';
 
 interface IOwnProps {
   data: IGraphProps;
+  currencySymbol: string;
+}
+
+interface ISeries {
+  data: number[];
+  name: string;
+}
+
+interface IOwnState {
+  seriesData: ISeries[];
 }
 
 type IProps = WithTranslation & IOwnProps;
 
-class ColumnChart extends React.PureComponent<IProps> {
+class ColumnChart extends React.PureComponent<IProps, IOwnState> {
+  public state = {
+    seriesData: [],
+  };
+
+  public componentDidMount(): void {
+    this.updateData();
+  }
+
+  public componentDidUpdate(prevProps: Readonly<IProps>): boolean {
+    const { data, currencySymbol } = this.props;
+    const hasPropsChanged = !_.isEqual(prevProps.data, data) || !_.isEqual(prevProps.currencySymbol, currencySymbol);
+    if (hasPropsChanged) {
+      this.updateData();
+    }
+    return hasPropsChanged;
+  }
+
   public render(): React.ReactNode {
-    const { data } = this.props;
+    const { data, currencySymbol } = this.props;
     const { data1: debit, data2: credit, label, type } = data;
-    const { options } = this.initConfig(label, type, sum(debit), sum(credit));
+    console.log(`inside renderer: ${currencySymbol}`);
+    const { options } = this.initConfig(currencySymbol, label, type, _.sum(debit), _.sum(credit));
+    const { seriesData } = this.state;
     return (
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <ReactApexCharts
-          options={options}
-          series={this.seriesData(debit, credit)}
-          type="bar"
-          height={250}
-          width={550}
-        />
+        <ReactApexCharts options={options} series={seriesData} type="bar" height={250} width={550} />
       </ScrollView>
     );
   }
 
-  public initConfig = (label: string[], type: string, totalDebit: number, totalCredit: number): any => ({
+  public initConfig = (
+    currencySymbol: string,
+    label: string[],
+    type: string,
+    totalDebit: number,
+    totalCredit: number
+  ): any => ({
     // Initial Config of Graph
     options: {
       chart: {
@@ -61,7 +90,7 @@ class ColumnChart extends React.PureComponent<IProps> {
       yaxis: {
         labels: {
           formatter(value: number): string {
-            return `$ ${value > 1000 ? value / 1000 : value}${value > 1000 ? 'k' : ''}`;
+            return `${currencySymbol} ${value > 1000 ? value / 1000 : value}${value > 1000 ? 'k' : ''}`;
           },
         },
       },
@@ -72,13 +101,14 @@ class ColumnChart extends React.PureComponent<IProps> {
         position: 'bottom',
         horizontalAlign: 'center',
         formatter(seriesName: string): string[] {
-          return [seriesName, ' - ', seriesName === 'Expense' ? `$ ${totalDebit}` : `$ ${totalCredit}`];
+          console.log(`inside formatter: ${currencySymbol}`);
+          return [seriesName, ' - ', `${currencySymbol} ${seriesName === 'Expense' ? totalDebit : totalCredit}`];
         },
       },
       tooltip: {
         y: {
           formatter(val: number): string {
-            return `$ ${val}`;
+            return `${currencySymbol} ${val}`;
           },
         },
       },
@@ -96,6 +126,18 @@ class ColumnChart extends React.PureComponent<IProps> {
         data: credit,
       },
     ];
+  };
+
+  private updateData = (): void => {
+    const { data } = this.props;
+    const { data1: debit, data2: credit } = data;
+    const seriesData: ISeries[] = [];
+    this.seriesData(debit, credit).forEach((item): void => {
+      seriesData.push(item);
+    });
+    this.setState({
+      seriesData,
+    });
   };
 }
 

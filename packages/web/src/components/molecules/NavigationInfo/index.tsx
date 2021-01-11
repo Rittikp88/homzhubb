@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +8,7 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -20,6 +20,9 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 
 const humanize = (str: string): string => {
   const splicedStr = str.split('/');
@@ -29,6 +32,10 @@ const humanize = (str: string): string => {
 
 interface IQuickActions extends IPopupOptions {
   route: string;
+}
+
+interface ICurrencyOption extends IPopupOptions {
+  currency: Currency;
 }
 
 const quickActionOptions: IQuickActions[] = [
@@ -55,11 +62,33 @@ const defaultDropDownProps = (width: string): any => ({
 
 const DashBoardActionsGrp: FC = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const popupRef = useRef<PopupActions>(null);
   const history = useHistory();
-  const [selectedCountry, setSelectedCountry] = useState(0);
+  const selectedCountry = useSelector(UserSelector.getUserCountryCode);
+  const [selectedCurrency, setSelectedCurrency] = useState<ICurrencyOption>();
   const assets: Asset[] = useSelector(UserSelector.getUserAssets);
+  const userCurrency: Currency = useSelector(UserSelector.getCurrency);
+  const countriesList: Country[] = useSelector(CommonSelectors.getCountryList);
+  useEffect(() => {
+    const defaultCurrencyOption = {
+      label: `${userCurrency.currencyCode} ${userCurrency.currencySymbol}`,
+      currency: userCurrency,
+    };
+    setSelectedCurrency(defaultCurrencyOption);
+  }, [userCurrency]);
+
+  const currencyOptions = useCallback((): ICurrencyOption[] => {
+    return countriesList.map((item) => {
+      const { currencyCode, currencySymbol } = item.currencies[0];
+      return {
+        label: `${currencyCode} ${currencySymbol}`,
+        currency: item.currencies[0],
+      };
+    });
+  }, [countriesList]);
+
   const countryList = getCountryList(assets);
   const countryOptions = useCallback((): IPopupOptions[] => {
     const options = countryList.map((item) => ({
@@ -77,8 +106,13 @@ const DashBoardActionsGrp: FC = () => {
     closePopup();
     NavigationUtils.navigate(history, { path: option.route });
   };
+  const onCurrencyOptionSelect = (option: ICurrencyOption): void => {
+    setSelectedCurrency(option);
+    dispatch(UserActions.updateUserPreferences({ currency: option.currency.currencyCode }));
+    closePopup();
+  };
   const onCountryOptionSelect = (option: IPopupOptions): void => {
-    setSelectedCountry(option.value as number);
+    dispatch(UserActions.setUserCountryCode(option.value as number));
     closePopup();
   };
   const styles = DashBoardActionStyles;
@@ -109,12 +143,12 @@ const DashBoardActionsGrp: FC = () => {
       </Popover>
       <Popover
         forwardedRef={popupRef}
-        content={<PopupMenuOptions options={countryOptions()} onMenuOptionPress={onCountryOptionSelect} />}
+        content={<PopupMenuOptions options={currencyOptions()} onMenuOptionPress={onCurrencyOptionSelect} />}
         popupProps={defaultDropDownProps('88px')}
       >
         <Button type="secondaryOutline" containerStyle={styles.button}>
           <Typography variant="label" size="large" style={styles.buttonTitle}>
-            {!isMobile && 'INR'} &#x20B9;
+            {!isMobile ? selectedCurrency?.label : selectedCurrency?.currency.currencySymbol}
           </Typography>
           <Icon name={icons.downArrow} color={theme.colors.white} />
         </Button>
