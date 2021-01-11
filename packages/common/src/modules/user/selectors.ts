@@ -7,7 +7,6 @@ import { MetricSystems, UserPreferences } from '@homzhub/common/src/domain/model
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { Country } from '../../domain/models/Country';
 
 const isLoggedIn = (state: IState): boolean => {
   return !!state.user.tokens;

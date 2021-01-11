@@ -9,7 +9,9 @@ import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { useDispatch, useSelector } from 'react-redux';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
@@ -19,10 +21,8 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
-import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 
 const humanize = (str: string): string => {
   const splicedStr = str.split('/');

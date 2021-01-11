@@ -3,9 +3,9 @@ import { ScrollView } from 'react-native';
 import ReactApexCharts from 'react-apexcharts';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import _ from 'lodash';
+import { IGraphProps } from '@homzhub/common/src/utils/FinanceUtil';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { BarGraphLegends } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { IGraphProps } from '@homzhub/common/src/utils/FinanceUtil';
 
 interface IOwnProps {
   data: IGraphProps;
@@ -44,7 +44,6 @@ class ColumnChart extends React.PureComponent<IProps, IOwnState> {
   public render(): React.ReactNode {
     const { data, currencySymbol } = this.props;
     const { data1: debit, data2: credit, label, type } = data;
-    console.log(`inside renderer: ${currencySymbol}`);
     const { options } = this.initConfig(currencySymbol, label, type, _.sum(debit), _.sum(credit));
     const { seriesData } = this.state;
     return (
@@ -60,7 +59,7 @@ class ColumnChart extends React.PureComponent<IProps, IOwnState> {
     type: string,
     totalDebit: number,
     totalCredit: number
-  ): any => ({
+  ): Record<string, any> => ({
     // Initial Config of Graph
     options: {
       chart: {
@@ -101,7 +100,6 @@ class ColumnChart extends React.PureComponent<IProps, IOwnState> {
         position: 'bottom',
         horizontalAlign: 'center',
         formatter(seriesName: string): string[] {
-          console.log(`inside formatter: ${currencySymbol}`);
           return [seriesName, ' - ', `${currencySymbol} ${seriesName === 'Expense' ? totalDebit : totalCredit}`];
         },
       },
