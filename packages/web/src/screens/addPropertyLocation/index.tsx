@@ -10,6 +10,8 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { SearchField } from '@homzhub/web/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
+import { GeolocationError, GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 
 const AddPropertyLocation: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -34,7 +36,17 @@ const SearchView: FC = () => {
     width: '100%',
     height: '100%',
   };
-
+  const [coords, setCoords] = useState({ lat: 0, lng: 0 });
+  const onPressAutoDetect = (): void => {
+    GeolocationService.getCurrentPosition(onFetchSuccess, onFetchError);
+  };
+  const onFetchSuccess = (response: GeolocationResponse): void => {
+    const { latitude, longitude } = response.coords;
+    setCoords({ lat: latitude, lng: longitude });
+  };
+  const onFetchError = (error: GeolocationError): void => {
+    console.log('Error => ', error);
+  };
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
       <div style={blurBackgroundStyle} />
@@ -48,7 +60,7 @@ const SearchView: FC = () => {
           updateValue={updateSearchValue}
           containerStyle={styles.searchBar}
         />
-        <Button type="secondaryOutline" containerStyle={styles.buttonContainer}>
+        <Button type="secondaryOutline" containerStyle={styles.buttonContainer} onPress={onPressAutoDetect}>
           <Icon name={icons.location} size={15} color={theme.colors.white} />
           <Typography variant="label" size="regular" style={styles.buttonTitle}>
             {t('property:autoDetectLocation')}
