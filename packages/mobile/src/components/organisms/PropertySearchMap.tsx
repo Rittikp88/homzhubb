@@ -10,6 +10,7 @@ import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 const {
   viewport: { width },
@@ -27,6 +28,9 @@ interface IProps {
   properties: Asset[];
   transaction_type: number;
   onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
+  getPropertiesListView: () => void;
+  setFilter: (payload: IFilter) => void;
+  filters: IFilter;
 }
 type Props = IProps & WithTranslation;
 
@@ -39,13 +43,17 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
-    const { properties, searchLocation } = this.props;
+    const {
+      properties,
+      searchLocation,
+      filters: { offset },
+    } = this.props;
     if (properties.length <= 0) {
       this.animateCamera(searchLocation.lat, searchLocation.lng);
       return;
     }
 
-    if (prevProps.properties.length !== properties.length) {
+    if (prevProps.properties.length !== properties.length && offset === 0) {
       this.animateCamera(properties[0].latitude, properties[0].longitude);
       // @ts-ignore
       this.carouselRef.snapToItem(0);
@@ -96,6 +104,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
           itemWidth={SLIDER_WIDTH}
           carouselItem={this.renderCarouselItem}
           onSnapToItem={this.onSnapToItem}
+          onLoadMore={this.loadMoreProperties}
           bubbleRef={(ref): void => {
             this.carouselRef = ref;
           }}
@@ -187,6 +196,18 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       return Number(saleTerm.expectedPrice);
     }
     return 0;
+  };
+
+  public loadMoreProperties = (): void => {
+    const {
+      setFilter,
+      getPropertiesListView,
+      filters: { offset },
+      properties,
+    } = this.props;
+
+    setFilter({ offset: (offset ?? 0) + properties.length, is_sorting: false });
+    getPropertiesListView();
   };
 }
 

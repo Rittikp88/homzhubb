@@ -4,6 +4,7 @@ import toJson from 'enzyme-to-json';
 import { PropertySearchMap } from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
 import { PropertySearchData } from '@homzhub/common/src/mocks/PropertySearchData';
 import { mockAsset } from '@homzhub/common/src/mocks/AssetDescription';
+import { SearchFilter } from '@homzhub/common/src/mocks/FilterData';
 
 let props: any;
 let wrapper: ShallowWrapper;
@@ -17,6 +18,9 @@ describe('PropertySearchMap', () => {
     properties: PropertySearchData,
     transaction_type: 1,
     onSelectedProperty: jest.fn(),
+    getPropertiesListView: jest.fn(),
+    setFilter: jest.fn(),
+    filters: SearchFilter,
     ...testProps,
   });
 

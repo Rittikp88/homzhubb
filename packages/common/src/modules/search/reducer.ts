@@ -26,6 +26,7 @@ export const initialSearchState: ISearchState = {
     offset: 0,
     currency_code: '',
     sort_by: '',
+    is_sorting: false,
     miscellaneous: {
       show_verified: false,
       agent_listed: false,
@@ -126,7 +127,7 @@ export const searchReducer = (
           ...state.properties,
           count,
           links,
-          results: [...state.properties.results, ...results],
+          results: state.filter.is_sorting ? results : [...state.properties.results, ...results],
         },
         ['loaders']: { ...state.loaders, ['search']: false },
       };

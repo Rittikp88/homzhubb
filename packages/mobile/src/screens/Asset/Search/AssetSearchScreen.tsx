@@ -199,6 +199,9 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
               transaction_type={filters.asset_transaction_type || 0}
               onSelectedProperty={this.navigateToAssetDetails}
               searchLocation={searchLocation}
+              filters={filters}
+              setFilter={setFilter}
+              getPropertiesListView={getPropertiesListView}
             />
             {this.renderNoResults()}
             {this.renderMenuTray()}
@@ -579,6 +582,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
           search_address: place.description,
           search_latitude: placeDetail.geometry.location.lat,
           search_longitude: placeDetail.geometry.location.lng,
+          offset: 0,
         });
         getProperties();
         this.setState({ isSearchBarFocused: false, searchString: place.description });
@@ -592,7 +596,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
   private onSelectSort = (value: string): void => {
     const { setFilter, getPropertiesListView } = this.props;
-    setFilter({ sort_by: value });
+    setFilter({ sort_by: value, is_sorting: true, offset: 0 });
     getPropertiesListView();
     this.handleCloseSort();
   };

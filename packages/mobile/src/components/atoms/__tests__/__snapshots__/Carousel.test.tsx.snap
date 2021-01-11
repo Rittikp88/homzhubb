@@ -46,6 +46,7 @@ exports[`Carousel Atom should match snapshot 1`] = `
   lockScrollWhileSnapping={false}
   loop={false}
   loopClonesPerSide={3}
+  onEndReached={[Function]}
   onLayout={[Function]}
   removeClippedSubviews={false}
   renderItem={[Function]}
