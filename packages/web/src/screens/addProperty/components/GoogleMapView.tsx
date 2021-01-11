@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
@@ -23,13 +23,13 @@ interface IProps {
 
 const GoogleMapView: FC<IProps> = (props: IProps) => {
   // const [map, setMap] = React.useState<google.maps.Map | null>(null);
-  // const onLoad = useCallback((mapInstance: google.maps.Map) => {
-  //   setMap(mapInstance);
-  // }, []);
+  const onLoad = useCallback((mapInstance: google.maps.Map) => {
+    // setMap(mapInstance);
+  }, []);
 
-  // const onUnmount = useCallback((mapInstance: google.maps.Map) => {
-  //   setMap(null);
-  // }, []);
+  const onUnmount = useCallback((mapInstance: google.maps.Map) => {
+    // setMap(null);
+  }, []);
   const onLoadMarker = (marker: google.maps.Marker): void => {
     // todos empty
   };

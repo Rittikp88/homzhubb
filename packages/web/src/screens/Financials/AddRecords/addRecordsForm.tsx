@@ -23,8 +23,8 @@ const AddRecordsForm = (): React.ReactElement => {
         </View>
         <Divider containerStyles={styles.divider} />
         <View style={styles.actionButton}>
-          <Button type="secondary" title="Cancle" />
-          <Button type="secondary" title="Add Now" containerStyle={styles.button1} titleStyle={styles.titleStyle} />
+          <Button type="secondary" title="Cancel" />
+          <Button type="secondary" title="Add Now" containerStyle={styles.button} titleStyle={styles.titleStyle} />
         </View>
       </ScrollView>
     </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 16,
   },
-  button1: {
+  button: {
     marginLeft: 16,
     backgroundColor: theme.colors.blue,
   },

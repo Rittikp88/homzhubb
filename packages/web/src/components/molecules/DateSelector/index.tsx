@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { theme } from '@homzhub/common/src/styles/theme';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import '@homzhub/web/src/components/molecules/DateSelector/style.scss';
@@ -27,7 +27,7 @@ export const DateSelector = (props: IProgressBarProps): React.ReactElement => {
         <Icon name={icons.schedule} size={17} style={styles.calenderIcon} />
         <DatePicker
           selected={StartDate}
-          onChange={(date): void => handleChange(date)}
+          onChange={handleChange}
           timeIntervals={20}
           timeCaption="time"
           dateFormat="MMMM d, yyyy "
@@ -67,8 +67,15 @@ const styles = StyleSheet.create({
   DatePicker: {
     width: 500,
   },
-  abc: {},
-  calenderIcon: { color: theme.colors.darkTint5 },
-  Icon: { color: theme.colors.darkTint9 },
-  label: { color: theme.colors.darkTint3, paddingBottom: 8, marginTop: 16 },
+  calenderIcon: {
+    color: theme.colors.darkTint5,
+  },
+  Icon: {
+    color: theme.colors.darkTint9,
+  },
+  label: {
+    color: theme.colors.darkTint3,
+    paddingBottom: 8,
+    marginTop: 16,
+  },
 });

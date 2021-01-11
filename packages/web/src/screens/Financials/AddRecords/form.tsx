@@ -1,9 +1,9 @@
 import React, { FC, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
@@ -24,8 +24,12 @@ interface IFormData {
 }
 const Form: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.auth);
-  const [isActiveIncome, setisActiveIncome] = useState(true);
-  const [isActiveExpense, setisActiveExpense] = useState(false);
+  const [isActiveIncome, setIsActiveIncome] = useState(true);
+  const [isActiveExpense, setIsActiveExpense] = useState(false);
+  const buttons = [
+    { key: 1, name: 'Income', isActive: isActiveIncome },
+    { key: 2, name: 'Expense', isActive: isActiveExpense },
+  ];
   const formData = {
     details: '',
     personName: '',
@@ -33,19 +37,18 @@ const Form: FC = () => {
     property: [''],
     category: [''],
   };
-
   const handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
     formActions.setSubmitting(true);
     console.log(values);
   };
   const buttonClick = (text: string): void => {
     if (text === 'Income') {
-      setisActiveIncome(true);
-      setisActiveExpense(false);
+      setIsActiveIncome(true);
+      setIsActiveExpense(false);
     }
     if (text === 'Expense') {
-      setisActiveIncome(false);
-      setisActiveExpense(true);
+      setIsActiveIncome(false);
+      setIsActiveExpense(true);
     }
   };
 
@@ -59,32 +62,24 @@ const Form: FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <Button
-          type="secondary"
-          containerStyle={[isActiveIncome ? [styles.button1, styles.activeButton] : styles.button1]}
-          onPress={(): void => buttonClick('Income')}
-        >
-          <Typography
-            variant="text"
-            size="small"
-            style={[isActiveIncome ? styles.activeButtonTitle : styles.buttonTitle]}
-          >
-            Income
-          </Typography>
-        </Button>
-        <Button
-          type="secondary"
-          containerStyle={[isActiveExpense ? [styles.button2, styles.activeButton] : styles.button2]}
-          onPress={(): void => buttonClick('Expense')}
-        >
-          <Typography
-            variant="text"
-            size="small"
-            style={[isActiveExpense ? styles.activeButtonTitle : styles.buttonTitle]}
-          >
-            Expense
-          </Typography>
-        </Button>
+        {buttons.map((items, key) => {
+          return (
+            <Button
+              key={key}
+              type="secondary"
+              containerStyle={[styles.button, items.isActive && styles.activeButton]}
+              onPress={(): void => buttonClick(items.name)}
+            >
+              <Typography
+                variant="text"
+                size="small"
+                style={[styles.buttonTitle, items.isActive && styles.activeButtonTitle]}
+              >
+                {items.name}
+              </Typography>
+            </Button>
+          );
+        })}
       </View>
       <Formik initialValues={formData} onSubmit={handleSubmit}>
         {(formProps: FormikProps<IFormData>): React.ReactElement => (
@@ -209,30 +204,19 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 20,
-    width: '50%',
+    width: 'max-content',
     marginLeft: 24,
-  },
-  button1: {
+    borderRadius: 4,
     borderColor: theme.colors.blue,
+    borderWidth: 1,
+  },
+  button: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 48,
-    maxWidth: 'max-content',
-    height: 'max-content',
-    borderBottomEndRadius: 0,
-    borderTopEndRadius: 0,
-  },
-  button2: {
-    borderColor: theme.colors.blue,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 48,
-    maxWidth: 'max-content',
-    height: 'max-content',
-    borderBottomStartRadius: 0,
-    borderTopStartRadius: 0,
+    borderWidth: 0,
+    borderRadius: 0,
   },
   activeButton: {
     backgroundColor: theme.colors.blue,

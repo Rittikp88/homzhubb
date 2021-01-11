@@ -56,17 +56,16 @@ const Navbar: FC = () => {
     {
       icon: icons.headset,
       text: t('assetMore:support'),
-      url: RouteNames.protectedRoutes.HELPANDSUPPORT,
+      url: RouteNames.protectedRoutes.HELP_SUPPORT,
     },
     {
       icon: icons.refer,
       text: t('assetMore:refer'),
-      url: RouteNames.protectedRoutes.REFERANDEARN,
+      url: RouteNames.protectedRoutes.REFER_EARN,
     },
   ];
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
-    console.log(index);
     NavigationUtils.navigate(history, { path: navItems[index].url });
   };
   const onChange = (text: string): void => {
