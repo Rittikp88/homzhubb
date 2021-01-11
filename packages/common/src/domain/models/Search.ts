@@ -58,6 +58,7 @@ export interface IFilter {
   offset?: number;
   currency_code?: string;
   sort_by?: string;
+  is_sorting?: boolean;
   miscellaneous?: {
     show_verified: boolean;
     agent_listed: boolean;

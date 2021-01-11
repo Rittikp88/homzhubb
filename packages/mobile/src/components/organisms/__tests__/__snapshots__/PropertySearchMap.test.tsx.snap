@@ -192,6 +192,7 @@ exports[`PropertySearchMap should match snapshot 1`] = `
       }
     }
     itemWidth={600}
+    onLoadMore={[Function]}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -390,6 +391,7 @@ exports[`PropertySearchMap should match snapshot for Snap To Item 1`] = `
       }
     }
     itemWidth={600}
+    onLoadMore={[Function]}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -588,6 +590,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem 1`] = `
       }
     }
     itemWidth={600}
+    onLoadMore={[Function]}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -786,6 +789,7 @@ exports[`PropertySearchMap should match snapshot for carouselItem when transacti
       }
     }
     itemWidth={600}
+    onLoadMore={[Function]}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />
@@ -823,6 +827,7 @@ exports[`PropertySearchMap should match snapshot when properties are empty 1`] =
       }
     }
     itemWidth={600}
+    onLoadMore={[Function]}
     onSnapToItem={[Function]}
     testID="assetSnap"
   />

@@ -17,6 +17,7 @@ interface ICarouselProps<T> {
   containerStyle?: StyleProp<ViewStyle>;
   testID?: string;
   extraData?: number[];
+  onLoadMore?: () => void;
 }
 
 const ACTIVE_SLIDE_OFFSET = 20;
@@ -36,6 +37,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
       sliderWidth = theme.viewport.width,
       itemWidth = theme.viewport.width - 30,
       extraData,
+      onLoadMore,
     } = this.props;
     return (
       <Carousel
@@ -50,6 +52,11 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
         contentContainerCustomStyle={contentStyle}
         containerCustomStyle={containerStyle}
         onLayout={this.updateRef}
+        onEndReached={({ distanceFromEnd }: { distanceFromEnd: number }): void => {
+          if (distanceFromEnd > 0 && onLoadMore) {
+            onLoadMore();
+          }
+        }}
         onSnapToItem={onSnapToItem}
         extraData={extraData}
         removeClippedSubviews={PlatformUtils.isAndroid()}

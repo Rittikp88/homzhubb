@@ -118,7 +118,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
       properties,
     } = this.props;
 
-    setFilter({ offset: (offset ?? 0) + properties.results.length });
+    setFilter({ offset: (offset ?? 0) + properties.results.length, is_sorting: false });
     getPropertiesListView();
   };
 }
