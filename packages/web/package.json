@@ -31,9 +31,11 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
     "react-tooltip": "4.2.10",
-    "reactjs-popup": "2.0.4"
+    "reactjs-popup": "2.0.4",
+    "react-datepicker": "3.3.0"
   },
   "devDependencies": {
+    "@types/react-datepicker": "3.1.2",
     "@types/crypto-js": "3.1.47",
     "@types/exenv": "1.2.0",
     "@types/googlemaps": "3.43.1",
