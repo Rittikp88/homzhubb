@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
@@ -15,7 +15,8 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { BottomSheet, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { User, UserType } from '@homzhub/common/src/constants/OnBoarding';
 

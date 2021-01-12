@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { cloneDeep } from 'lodash';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
@@ -20,8 +20,8 @@ import {
   LeaseFormSchema,
   LeaseTermForm,
 } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
-import { FlowTypes, PropertySpaces } from '@homzhub/mobile/src/components/organisms/PropertySpaces';
-import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
+import { FlowTypes, PropertySpaces } from '@homzhub/common/src/components/organisms/PropertySpaces';
+import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';

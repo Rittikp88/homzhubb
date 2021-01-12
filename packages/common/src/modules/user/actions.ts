@@ -34,6 +34,7 @@ export const UserActionTypes = {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
     IS_ADD_PROPERTY_FLOW: `${actionTypePrefix}IS_ADD_PROPERTY_FLOW`,
     CLEAR_FAVOURITE_PROPERTIES: `${actionTypePrefix}CLEAR_FAVOURITE_PROPERTIES`,
+    USER_COUNTRY_CODE: `${actionTypePrefix}USER_COUNTRY_CODE`,
   },
   UPDATE: {
     ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
@@ -88,6 +89,11 @@ const updateOnBoarding = (updatedOnBoarding: boolean): IFluxStandardAction<boole
 
 const setChangeStack = (payload: boolean): IFluxStandardAction<boolean> => ({
   type: UserActionTypes.SET.CHANGE_STACK,
+  payload,
+});
+
+const setUserCountryCode = (payload: number): IFluxStandardAction<number> => ({
+  type: UserActionTypes.SET.USER_COUNTRY_CODE,
   payload,
 });
 
@@ -156,6 +162,7 @@ const clearFavouriteProperties = (): IFluxStandardAction => ({
 export type UserPayloadTypes =
   | string
   | boolean
+  | number
   | IUserTokens
   | IUserProfile
   | IUserPreferences
@@ -171,6 +178,7 @@ export const UserActions = {
   logoutFailure,
   updateOnBoarding,
   setChangeStack,
+  setUserCountryCode,
   getUserProfile,
   getUserProfileSuccess,
   getUserProfileFailure,

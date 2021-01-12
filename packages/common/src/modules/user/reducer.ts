@@ -13,6 +13,7 @@ export const initialUserState: IUserState = {
   isOnBoardingCompleted: false,
   isChangeStack: true,
   isAddPropertyFlow: false,
+  userCountryCode: 0,
   assets: [],
   favouriteProperties: [],
   error: {
@@ -65,6 +66,8 @@ export const userReducer = (
       };
     case UserActionTypes.SET.CHANGE_STACK:
       return { ...state, ['isChangeStack']: action.payload as boolean };
+    case UserActionTypes.SET.USER_COUNTRY_CODE:
+      return { ...state, ['userCountryCode']: action.payload as number };
     case UserActionTypes.GET.USER_PROFILE:
       return {
         ...state,

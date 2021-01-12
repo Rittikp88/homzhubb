@@ -5,7 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import FAQCards from '@homzhub/web/src/screens/helpAndSupport/FAQComponent/FAQCards';
-import HaveAnyQuestionsForm from 'screens/HelpAndSupportForm/HaveAnyQuestionsForm';
+import HaveAnyQuestionsForm from '@homzhub/web/src/screens/HelpAndSupportForm/HaveAnyQuestionsForm';
 
 const FAQComponent = (): React.ReactElement => {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ const FAQComponent = (): React.ReactElement => {
       <View style={styles.child1}>
         <View style={styles.header}>
           <Text type="regular" textType="semiBold" style={styles.headerTitle}>
-            {t('assetDashboard:Frequently Asked Questions')}
+            {t('helpAndSupport:FAQ')}
           </Text>
           <SearchField
             placeholder={t('property:search')}
@@ -29,7 +29,7 @@ const FAQComponent = (): React.ReactElement => {
         </View>
         <View style={styles.title}>
           <Text type="small" textType="semiBold" style={styles.text}>
-            {t('assetDashboard:General')}
+            {t('helpAndSupport:general')}
           </Text>
         </View>
         <FAQCards />
@@ -37,7 +37,7 @@ const FAQComponent = (): React.ReactElement => {
         <FAQCards />
         <View style={styles.title}>
           <Text type="small" textType="semiBold" style={styles.text}>
-            {t('assetDashboard:Payments')}
+            {t('property:payment')}
           </Text>
         </View>
         <FAQCards />
@@ -45,7 +45,7 @@ const FAQComponent = (): React.ReactElement => {
         <FAQCards />
         <View style={styles.title}>
           <Text type="small" textType="semiBold" style={styles.text}>
-            {t('assetDashboard:Category Name')}
+            {t('helpAndSupport:categoryName')}
           </Text>
         </View>
         <FAQCards />

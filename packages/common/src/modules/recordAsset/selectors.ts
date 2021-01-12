@@ -1,12 +1,13 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IEditPropertyFlow } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IEditPropertyFlow } from '@homzhub/common/src/modules/recordAsset/interface';
 
 const getLoadingState = (state: IState): boolean => {
   const {
@@ -135,6 +136,13 @@ const getEditPropertyFlowDetails = (state: IState): IEditPropertyFlow => {
   return editPropertyFlow;
 };
 
+const getSelectedImages = (state: IState): AssetGallery[] => {
+  const {
+    recordAsset: { selectedImages },
+  } = state;
+  return selectedImages;
+};
+
 export const RecordAssetSelectors = {
   getLoadingState,
   getAssetPlans,
@@ -151,4 +159,5 @@ export const RecordAssetSelectors = {
   getValueAddedServices,
   getCity,
   getEditPropertyFlowDetails,
+  getSelectedImages,
 };

@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 
 const mock = jest.fn();
-describe('ContactPerson', () => {
+describe.skip('ContactPerson', () => {
   let wrapper: any;
 
   beforeEach(() => {

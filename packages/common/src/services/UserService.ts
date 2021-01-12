@@ -1,4 +1,4 @@
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IOtpVerify, OtpActionTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';

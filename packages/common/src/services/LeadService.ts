@@ -1,4 +1,4 @@
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LeadRepository } from '@homzhub/common/src/domain/repositories/LeadRepository';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';

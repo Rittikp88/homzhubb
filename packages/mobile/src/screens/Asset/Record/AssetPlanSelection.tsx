@@ -17,7 +17,8 @@ import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/Prope
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { BottomSheet, Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { AssetAdvertisement, AssetAdvertisementResults } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 import { AssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';

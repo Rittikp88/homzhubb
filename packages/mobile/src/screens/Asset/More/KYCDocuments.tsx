@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { Share, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';

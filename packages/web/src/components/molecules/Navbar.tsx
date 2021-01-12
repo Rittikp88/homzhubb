@@ -66,7 +66,6 @@ const Navbar: FC = () => {
   ];
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
-    console.log(index);
     NavigationUtils.navigate(history, { path: navItems[index].url });
   };
   const onChange = (text: string): void => {

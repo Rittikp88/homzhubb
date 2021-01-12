@@ -152,6 +152,7 @@ export const icons = {
   closeTemplate: 'close-template',
   billPamphlet: 'bill-pamphlet',
   sort: 'sort',
+  reply: 'reply',
 
   // COMMUTE
   train: 'train',

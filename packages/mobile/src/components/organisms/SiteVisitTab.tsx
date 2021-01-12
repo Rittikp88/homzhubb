@@ -6,7 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -17,7 +17,7 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import EventWithProfile from '@homzhub/mobile/src/components/molecules/EventWithProfile';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
 import { IVisitByKey, VisitActions, VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';

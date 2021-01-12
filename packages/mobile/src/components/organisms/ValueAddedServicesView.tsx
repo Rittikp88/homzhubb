@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';

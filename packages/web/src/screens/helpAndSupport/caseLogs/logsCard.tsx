@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { useTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -20,8 +21,8 @@ const defaultResponsive = {
     slidesToSlide: 1,
   },
 };
-
 const AccordianHeader: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.accordianHeader}>
       <View style={styles.firstChild}>
@@ -37,7 +38,7 @@ const AccordianHeader: React.FC = () => {
       <View style={styles.secondChild}>
         <View>
           <Label type="small" textType="regular" style={styles.titleLabel}>
-            Case ID
+            {t('helpAndSupport:caseId')}
           </Label>
           <Label type="regular" textType="semiBold" style={styles.titleData}>
             HOMZ1234
@@ -45,7 +46,7 @@ const AccordianHeader: React.FC = () => {
         </View>
         <View>
           <Label type="small" textType="regular" style={styles.titleLabel}>
-            Date
+            {t('helpAndSupport:date')}
           </Label>
           <Label type="regular" textType="semiBold" style={styles.titleData}>
             23/sept/2020
@@ -53,7 +54,7 @@ const AccordianHeader: React.FC = () => {
         </View>
         <View>
           <Label type="small" textType="regular" style={styles.titleData}>
-            Status
+            {t('helpAndSupport:status')}
           </Label>
           <Label type="regular" textType="semiBold" style={styles.titleData}>
             Approval PEnding
@@ -76,6 +77,7 @@ const CarouselProps = {
   showDots: false,
 };
 const AccordianContent: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.content}>
       <Label type="large" textType="regular" style={styles.contentLabel}>
@@ -119,8 +121,8 @@ const AccordianContent: React.FC = () => {
       <TextArea
         inputContainerStyle={styles.textAreastyle}
         wordCountLimit={200}
-        placeholder="Type here..."
-        value="123"
+        placeholder={t('common:typehere')}
+        value=""
       />
       <View style={styles.buttonGroup}>
         <Button type="secondaryOutline" containerStyle={styles.buttonStyle1}>

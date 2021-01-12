@@ -1,39 +1,38 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { findIndex, cloneDeep } from 'lodash';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { AddYoutubeUrl } from '@homzhub/common/src/components/molecules/AddYoutubeUrl';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
-import { AddYoutubeUrl } from '@homzhub/mobile/src/components/molecules/AddYoutubeUrl';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
-import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
-import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IPropertySelectedImages, IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   propertyId: number;
   onPressContinue: () => void;
+  onUploadImage: () => void;
+  selectedImages: AssetGallery[];
   lastVisitedStep: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
+  setSelectedImages: (payload: AssetGallery[]) => void;
 }
 
 type Props = WithTranslation & IProps;
 
 interface IPropertyImagesState {
-  selectedImages: AssetGallery[];
   isBottomSheetVisible: boolean;
   isVideoToggled: boolean;
   videoUrl: string;
@@ -42,7 +41,6 @@ interface IPropertyImagesState {
 
 class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   public state = {
-    selectedImages: [],
     isBottomSheetVisible: false,
     isVideoToggled: false,
     videoUrl: '',
@@ -55,24 +53,26 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public render(): React.ReactNode {
-    const { t, containerStyle } = this.props;
-    const { selectedImages, isBottomSheetVisible } = this.state;
+    const { t, containerStyle, onUploadImage, selectedImages } = this.props;
+    const { isBottomSheetVisible } = this.state;
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
     return (
       <>
         <View style={containerStyle}>
-          <AssetListingSection title={t('property:images')}>
-            <>
-              <UploadBox
-                icon={icons.gallery}
-                header={header}
-                subHeader={t('property:supportedImageFormats')}
-                onPress={this.onPhotosUpload}
-              />
-              {this.renderImages()}
-            </>
-          </AssetListingSection>
-          <>{this.renderVideo()}</>
+          <View style={PlatformUtils.isWeb() && styles.uploadView}>
+            <AssetListingSection title={t('property:images')} containerStyles={PlatformUtils.isWeb() && styles.section}>
+              <>
+                <UploadBox
+                  icon={icons.gallery}
+                  header={header}
+                  subHeader={t('property:supportedImageFormats')}
+                  onPress={onUploadImage}
+                />
+                {this.renderImages()}
+              </>
+            </AssetListingSection>
+            {this.renderVideo()}
+          </View>
           <Button
             type="primary"
             title={t('common:continue')}
@@ -80,22 +80,23 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
             onPress={this.postAttachmentsForProperty}
           />
         </View>
-        <BottomSheet
-          isShadowView
-          sheetHeight={650}
-          headerTitle={t('property:propertyImages')}
-          visible={isBottomSheetVisible}
-          onCloseSheet={this.onCloseBottomSheet}
-        >
-          <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
-        </BottomSheet>
+        {PlatformUtils.isMobile() && (
+          <BottomSheet
+            isShadowView
+            sheetHeight={650}
+            headerTitle={t('property:propertyImages')}
+            visible={isBottomSheetVisible}
+            onCloseSheet={this.onCloseBottomSheet}
+          >
+            <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
+          </BottomSheet>
+        )}
       </>
     );
   }
 
   public renderImages = (): React.ReactNode => {
-    const { t } = this.props;
-    const { selectedImages } = this.state;
+    const { t, selectedImages } = this.props;
     if (selectedImages.length === 0) {
       return null;
     }
@@ -113,8 +114,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public renderImageThumbnails = (): React.ReactNode => {
-    const { t } = this.props;
-    const { selectedImages } = this.state;
+    const { t, selectedImages } = this.props;
     const coverPhoto: React.ReactNode[] = [];
     if (selectedImages.length <= 0) {
       return null;
@@ -147,7 +147,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   private renderImagesList = ({ item, index }: { item: AssetGallery; index: number }): React.ReactElement => {
-    const { selectedImages } = this.state;
+    const { selectedImages } = this.props;
     const extraDataLength = selectedImages.length > 6 ? selectedImages.length - 7 : selectedImages.length;
     const isLastThumbnail = index === 5 && extraDataLength > 0;
     const onPressLastThumbnail = (): void => this.onToggleBottomSheet();
@@ -166,8 +166,8 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public renderBottomSheetForPropertyImages = (): React.ReactNode => {
-    const { t } = this.props;
-    const { selectedImages, isSortImage } = this.state;
+    const { t, selectedImages } = this.props;
+    const { isSortImage } = this.state;
     // Sort the images with cover image as first object and then the rest
     if (isSortImage) {
       selectedImages.sort((a, b) => {
@@ -214,62 +214,6 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     return `${id}-${index}`;
   };
 
-  public onPhotosUpload = async (): Promise<void> => {
-    const { propertyId } = this.props;
-    const { selectedImages } = this.state;
-
-    try {
-      // @ts-ignore
-      const images: ImagePickerResponse[] = await ImagePicker.openPicker({
-        multiple: true,
-        compressImageMaxWidth: 400,
-        compressImageMaxHeight: 400,
-        compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
-        includeBase64: true,
-        mediaType: 'photo',
-      });
-      const formData = new FormData();
-      images.forEach((image) => {
-        formData.append('files[]', {
-          // @ts-ignore
-          name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
-          uri: image.path,
-          type: image.mime,
-        });
-      });
-
-      try {
-        const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
-
-        const { data } = response;
-        const localSelectedImages: IPropertySelectedImages[] = [];
-        images.forEach((image, index: number) => {
-          localSelectedImages.push({
-            id: null,
-            description: '',
-            is_cover_image: false,
-            asset: propertyId,
-            attachment: data[index].id,
-            link: data[index].link,
-            file_name: 'localImage',
-            isLocalImage: true,
-          });
-        });
-        if (selectedImages.length === 0) {
-          localSelectedImages[0].is_cover_image = true;
-        }
-        this.setState({
-          // @ts-ignore
-          selectedImages: selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages)),
-        });
-      } catch (e) {
-        AlertHelper.error({ message: e.message });
-      }
-    } catch (e) {
-      AlertHelper.error({ message: e.message });
-    }
-  };
-
   public onToggleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible, isSortImage: true });
@@ -280,8 +224,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public deletePropertyImage = async (selectedImage: AssetGallery): Promise<void> => {
-    const { propertyId } = this.props;
-    const { selectedImages } = this.state;
+    const { propertyId, selectedImages, setSelectedImages } = this.props;
     const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
     if (selectedImage.isLocalImage) {
       const localImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
@@ -294,7 +237,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       if (coverImageIndex === -1 && clonedSelectedImages.length > 0) {
         clonedSelectedImages[0].isCoverImage = true;
       }
-      this.setState({ selectedImages: clonedSelectedImages });
+      setSelectedImages(clonedSelectedImages);
       return;
     }
     await AssetRepository.deletePropertyImage(selectedImage.attachment);
@@ -302,6 +245,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
+    const { setSelectedImages } = this.props;
     if (propertyId < 1) return;
     try {
       const response: AssetGallery[] = await AssetRepository.getPropertyImagesByPropertyId(propertyId);
@@ -311,17 +255,14 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       if (coverImageIndex === -1 && response.length > 0) {
         response[0].isCoverImage = true;
       }
-      this.setState({
-        selectedImages: response,
-      });
+      setSelectedImages(response);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
   };
 
   public markAttachmentAsCoverImage = async (selectedImage: AssetGallery): Promise<void> => {
-    const { propertyId } = this.props;
-    const { selectedImages } = this.state;
+    const { propertyId, selectedImages, setSelectedImages } = this.props;
     const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
     if (!selectedImage.id) {
       const existingCoverImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
@@ -332,8 +273,8 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         return selectedImage.attachment === image.attachment;
       });
       clonedSelectedImages[newCoverImageIndex].isCoverImage = true;
+      setSelectedImages(clonedSelectedImages);
       this.setState({
-        selectedImages: clonedSelectedImages,
         isSortImage: false,
       });
       return;
@@ -343,8 +284,8 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
-    const { propertyId, onPressContinue, lastVisitedStep, t } = this.props;
-    const { selectedImages, isVideoToggled, videoUrl } = this.state;
+    const { propertyId, onPressContinue, lastVisitedStep, t, selectedImages } = this.props;
+    const { isVideoToggled, videoUrl } = this.state;
     const attachmentIds: IPropertyImagesPostPayload[] = [];
     selectedImages.forEach((selectedImage: AssetGallery) =>
       attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.isCoverImage })
@@ -386,6 +327,7 @@ const styles = StyleSheet.create({
   uploadImageContainer: {
     marginVertical: 20,
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   uploadImageText: {
     color: theme.colors.darkTint4,
@@ -410,6 +352,14 @@ const styles = StyleSheet.create({
     margin: theme.layout.screenPadding,
   },
   videoContainer: {
-    marginVertical: 20,
+    marginVertical: PlatformUtils.isMobile() ? 20 : 0,
+    flex: PlatformUtils.isWeb() ? 1 : 0,
+  },
+  uploadView: {
+    flexDirection: 'row',
+  },
+  section: {
+    flex: 1,
+    marginRight: 24,
   },
 });

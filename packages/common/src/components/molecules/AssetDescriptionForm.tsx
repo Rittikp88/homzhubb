@@ -7,7 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
-import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
+import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 
 interface IProps {

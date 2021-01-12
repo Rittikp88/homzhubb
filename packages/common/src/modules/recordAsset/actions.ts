@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { AssetGroup, IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetPlan, IAssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import {
@@ -35,6 +36,7 @@ export const RecordAssetActionTypes = {
     SELECTED_VALUE_SERVICES: `${actionTypePrefix}SELECTED_VALUE_SERVICES`,
     EDIT_PROPERTY_FLOW: `${actionTypePrefix}EDIT_PROPERTY_FLOW`,
     EDIT_PROPERTY_FLOW_BOTTOM_SHEET: `${actionTypePrefix}EDIT_PROPERTY_FLOW_BOTTOM_SHEET`,
+    SELECTED_IMAGE: `${actionTypePrefix}SELECTED_IMAGE`,
   },
   RESET: `${actionTypePrefix}RESET`,
 };
@@ -133,6 +135,11 @@ const toggleEditPropertyFlowBottomSheet = (payload: boolean): IFluxStandardActio
   payload,
 });
 
+const setSelectedImages = (payload: AssetGallery[]): IFluxStandardAction<AssetGallery[]> => ({
+  type: RecordAssetActionTypes.SET.SELECTED_IMAGE,
+  payload,
+});
+
 const resetState = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.RESET,
 });
@@ -146,6 +153,7 @@ export type RecordAssetPayloadTypes =
   | ISelectedAssetPlan
   | IValueAddedServices[]
   | ISelectedValueServices
+  | AssetGallery[]
   | IAsset
   | boolean
   | undefined;
@@ -170,4 +178,5 @@ export const RecordAssetActions = {
   setEditPropertyFlow,
   toggleEditPropertyFlowBottomSheet,
   resetState,
+  setSelectedImages,
 };

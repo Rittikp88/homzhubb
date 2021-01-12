@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FinanceUtils } from '@homzhub/common/src/utils/FinanceUtil';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';

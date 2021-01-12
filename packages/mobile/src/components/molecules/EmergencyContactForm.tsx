@@ -4,7 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import { FormikHelpers } from 'formik/dist/types';
 import * as yup from 'yup';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUpdateEmergencyContact } from '@homzhub/common/src/domain/repositories/interfaces';

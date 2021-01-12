@@ -21,13 +21,9 @@ import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/Prope
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import {
-  ActionController,
-  AddressWithStepIndicator,
-  BottomSheet,
-  Header,
-  Loader,
-} from '@homzhub/mobile/src/components';
+import { ActionController, Header, Loader } from '@homzhub/mobile/src/components';
+import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';

@@ -4,7 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import { cloneDeep, findIndex } from 'lodash';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';

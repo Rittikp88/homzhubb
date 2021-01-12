@@ -3,8 +3,8 @@ import { TouchableHighlight } from 'react-native';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { MessageComponentProps } from 'react-native-flash-message';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
-import { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { Toast } from '@homzhub/common/src/components/molecules/Toast';
 
 const sampleProps: MessageComponentProps = {
   message: {

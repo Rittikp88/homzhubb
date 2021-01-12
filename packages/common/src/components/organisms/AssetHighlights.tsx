@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { cloneDeep, remove } from 'lodash';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
@@ -10,9 +10,9 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
-import AssetHighlightCard from '@homzhub/mobile/src/components/molecules/AssetHighlightCard';
-import { AssetListingSection } from '@homzhub/mobile/src/components/HOC/AssetListingSection';
-import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
+import AssetHighlightCard from '@homzhub/common/src/components/molecules/AssetHighlightCard';
+import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
+import { Amenity, AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -45,6 +45,12 @@ interface IHighlightProps {
   propertyId: number;
   propertyDetail: Asset | null;
   lastVisitedStep: ILastVisitedStep;
+  renderCarousel?: (
+    data: Amenity[][],
+    renderItem: (item: Amenity[]) => ReactElement,
+    activeSlide: number,
+    onSnap: (slideNumber: number) => void
+  ) => ReactElement;
 }
 
 type Props = IHighlightProps & WithTranslation;
@@ -96,6 +102,7 @@ export class AssetHighlights extends Component<Props, IState> {
   }
 
   private renderAmenities = (): React.ReactElement[] => {
+    const { renderCarousel } = this.props;
     const { assetAmenity, selectedAmenity } = this.state;
     return assetAmenity.map((item: AssetAmenity) => {
       const title = this.getAmenitiesTitle(item.name);
@@ -106,6 +113,7 @@ export class AssetHighlights extends Component<Props, IState> {
           key={item.id}
           selectedAmenity={selectedAmenity}
           onAmenityPress={this.onSelectAmenity}
+          renderCarousel={renderCarousel}
         />
       );
     });

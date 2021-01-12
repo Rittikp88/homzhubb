@@ -5,7 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';

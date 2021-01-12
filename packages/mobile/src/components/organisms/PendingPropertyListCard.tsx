@@ -8,7 +8,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
-import { ProgressBar, ShieldGroup } from '@homzhub/mobile/src/components';
+import { Progress, ShieldGroup } from '@homzhub/mobile/src/components';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
@@ -158,7 +158,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       <>
         {isCompleteDetailsRequired && (
           <>
-            <ProgressBar progress={percentage} />
+            <Progress progress={percentage} />
             <Button
               type="primary"
               title={t('completeDetails')}

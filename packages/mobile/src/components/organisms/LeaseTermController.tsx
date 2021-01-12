@@ -2,7 +2,7 @@ import React from 'react';
 import { LayoutChangeEvent, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TabView, NavigationState, SceneRendererProps } from 'react-native-tab-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';

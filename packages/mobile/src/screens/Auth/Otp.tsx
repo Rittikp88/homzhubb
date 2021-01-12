@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';

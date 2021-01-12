@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, takeEvery, debounce } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { SearchRepository } from '@homzhub/common/src/domain/repositories/SearchRepository';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
