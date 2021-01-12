@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 // @ts-ignore
 import RazorpayCheckout from 'react-native-razorpay';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';

@@ -1,13 +1,15 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import FlashMessage, { MessageComponentProps } from 'react-native-flash-message';
+import { BrowserRouter } from 'react-router-dom';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { AppRouter } from '@homzhub/web/src/router/AppRouter';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { configureStore } from '@homzhub/common/src/modules/store';
+import { Toast } from '@homzhub/common/src/components/molecules/Toast';
 import '@homzhub/web/src/globalStyles.scss';
-import { BrowserRouter } from 'react-router-dom';
 
 interface IState {
   isLocalizationInitialised: boolean;
@@ -41,8 +43,11 @@ export class App extends React.PureComponent<{}, IState> {
       <Provider store={store}>
         <BrowserRouter>
           <AppRouter />
+          <FlashMessage position="top" MessageComponent={this.renderToast} />
         </BrowserRouter>
       </Provider>
     );
   };
+
+  private renderToast = (props: MessageComponentProps): React.ReactElement => <Toast {...props} />;
 }

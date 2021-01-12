@@ -6,7 +6,11 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import AddAssetDetails from '@homzhub/web/src/screens/addProperty/components/AddAssetDetails';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const PropertyDetails: FC = () => {
+interface IProps {
+  handleSubmit: () => void;
+}
+
+const PropertyDetails: FC<IProps> = ({ handleSubmit }: IProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   // todo: dummy location to be replaced with actual location
   const locationAddress = 'Sed aliquet amet viverra at urna sodales praesent commodo eget. Vitae.';
@@ -18,7 +22,7 @@ const PropertyDetails: FC = () => {
       <Typography variant="label" size="large" fontWeight="regular" style={styles.subTitle}>
         {locationAddress}
       </Typography>
-      <AddAssetDetails />
+      <AddAssetDetails handleSubmit={handleSubmit} />
     </View>
   );
 };

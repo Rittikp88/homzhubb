@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -19,6 +20,10 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+
+interface IProps {
+  handleSubmit: () => void;
+}
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -57,7 +62,7 @@ interface IOwnState {
   //   displayGoBackCaution: boolean;
 }
 
-type Props = WithTranslation & IDispatchProps & IStateProps;
+type Props = WithTranslation & IDispatchProps & IStateProps & IProps;
 
 class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   public state = {
@@ -166,7 +171,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       countryIsoCode: country_iso2_code,
       address,
     } = values;
-    const { setAssetId, assetId, lastVisitedStep } = this.props;
+    const { setAssetId, assetId, lastVisitedStep, handleSubmit } = this.props;
     const { assetGroupTypeId: asset_type, longitude, latitude } = this.state;
     let visitedStep = {
       asset_creation: {
@@ -210,8 +215,9 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
         const response = await AssetRepository.createAsset(params);
         setAssetId(response.id);
       }
+      handleSubmit();
     } catch (e) {
-      console.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
     formActions.setSubmitting(false);
   };

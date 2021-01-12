@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, ImageBackground, StyleSheet, TouchableOpacity, View, Keyboard } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { theme } from '@homzhub/common/src/styles/theme';

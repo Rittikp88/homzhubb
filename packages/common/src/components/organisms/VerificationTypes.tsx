@@ -1,6 +1,6 @@
 import React, { Component, ReactElement, ReactNode } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { findIndex } from 'lodash';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/services/AttachmentService';

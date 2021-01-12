@@ -87,7 +87,7 @@ const ENDPOINTS = {
   availableSpaces: (id: number): string => `assets/${id}/available-spaces/`,
   assetCount: (): string => 'assets/count/',
   sendNotification: (): string => 'assets/notifications/listing-reviews/',
-  valueServicesAssetList: (): string => 'assets?extra=asset_status_info',
+  valueServicesAssetList: (): string => 'assets/?extra=asset_status_info',
   cancelListing: (param: ICancelListingParam): string =>
     `assets/${param.assetId}/${param.listingType}/${param.listingId}/cancel/`,
   terminateTransaction: (id: number): string => `lease-transactions/${id}/terminate/`,

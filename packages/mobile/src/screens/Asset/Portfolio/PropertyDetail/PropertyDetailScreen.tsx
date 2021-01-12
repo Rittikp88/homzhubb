@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { isEmpty } from 'lodash';
 import { TabBar, TabView } from 'react-native-tab-view';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
@@ -17,7 +17,8 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { BottomSheet, FullScreenAssetDetailsCarousel, HeaderCard, Loader } from '@homzhub/mobile/src/components';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import { FullScreenAssetDetailsCarousel, HeaderCard, Loader } from '@homzhub/mobile/src/components';
 import DropdownModal from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
@@ -55,11 +56,6 @@ enum MenuItems {
   EDIT_LISTING = 'EDIT_LISTING',
   EDIT_PROPERTY = 'EDIT_PROPERTY',
   DELETE_PROPERTY = 'DELETE_PROPERTY',
-}
-
-export interface IEditPropertyFlow {
-  isEditPropertyFlow: boolean;
-  showBottomSheet: boolean;
 }
 
 interface IStateProps {

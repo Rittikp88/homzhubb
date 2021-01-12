@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';

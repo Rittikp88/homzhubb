@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
@@ -57,7 +58,9 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
   return (
     <View style={[styles.rowStyle, containerStyles]}>
       <View style={styles.imageContainer}>
-        {svgImage && <SVGUri height={24} width={24} uri={svgImage} style={styles.svgStyle} />}
+        {svgImage && PlatformUtils.isMobile() && (
+          <SVGUri height={24} width={24} uri={svgImage} style={styles.svgStyle} />
+        )}
         {name && (
           <Text style={[styles.textStyle, name.titleStyle]} type="small">
             {name.title}

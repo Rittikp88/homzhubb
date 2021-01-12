@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';

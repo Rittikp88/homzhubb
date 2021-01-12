@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, NativeSyntheticEvent, NativeScrollEvent }
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
