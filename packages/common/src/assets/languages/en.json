@@ -120,6 +120,7 @@
     "no": "No",
     "phone": "Phone",
     "email": "E-mail",
+    "mobileNumber": "Mobile Number",
     "noServicesFound": "No Services Found",
     "proceed": "Proceed",
     "minCount": "Cannot reduce beyond this",
@@ -714,7 +715,9 @@
     "appInfo": "App info",
     "releaseNotes": "Release Notes",
     "termsConditionsText": "Terms & Conditions",
-    "privacyPolicyText": "Privacy Policy"
+    "privacyPolicyText": "Privacy Policy",
+    "dataPrivacyCautionText": "No user will be able to view your {{name}}, on the properties you post, site visits and offers.",
+    "communicationsCautionText": "You will not receive automated notifications from the app through {{name}}. However, Homzhub might still use {{name}} to communicate with you for important messages"
   },
   "moreProfile": {
     "basicDetails": "Personal Info",

@@ -12,13 +12,13 @@ export enum UserPreferencesKeys {
   Fingerprint = 'fingerprint',
   TwoFactorAuthentication = 'two_factor_authentication',
   Theme = 'theme',
-  ShowLastName = 'show_last_name',
-  ShowMobileNumber = 'showMobileNumber',
-  ShowEmail = 'showEmail',
+  IsLastNameObfuscated = 'is_last_name_obfuscated',
+  IsMobileNumberObfuscated = 'is_mobile_number_obfuscated',
+  IsEmailObfuscated = 'is_email_obfuscated',
   AnalyseAppIssuesAndEvents = 'analyseAppIssuesAndEvents',
-  PushNotifications = 'push_notifications',
-  EmailsText = 'email',
-  MessagesText = 'message',
+  PushNotifications = 'is_push_notification_enabled',
+  EmailsText = 'is_email_notification_enabled',
+  MessagesText = 'is_message_notification_enabled',
   WebView = 'webview',
 }
 
@@ -65,16 +65,22 @@ export class UserPreferences {
   @JsonProperty('theme', String, true)
   private _theme = '';
 
-  @JsonProperty('show_last_name', Boolean, true)
-  private _showLastName = false;
+  @JsonProperty('is_last_name_obfuscated', Boolean, true)
+  private _isLastNameObfuscated = false;
 
-  @JsonProperty('push_notifications', Boolean, true)
+  @JsonProperty('is_mobile_number_obfuscated', Boolean, true)
+  private _isMobileNumberObfuscated = false;
+
+  @JsonProperty('is_email_obfuscated', Boolean, true)
+  private _isEmailObfuscated = false;
+
+  @JsonProperty('is_push_notification_enabled', Boolean, true)
   private _pushNotifications = false;
 
-  @JsonProperty('email', Boolean, true)
+  @JsonProperty('is_email_notification_enabled', Boolean, true)
   private _email = false;
 
-  @JsonProperty('message', Boolean, true)
+  @JsonProperty('is_message_notification_enabled', Boolean, true)
   private _message = false;
 
   get currency(): string {
@@ -97,8 +103,16 @@ export class UserPreferences {
     return this._theme;
   }
 
-  get showLastName(): boolean {
-    return this._showLastName;
+  get isLastNameObfuscated(): boolean {
+    return !this._isLastNameObfuscated;
+  }
+
+  get isMobileNumberObfuscated(): boolean {
+    return !this._isMobileNumberObfuscated;
+  }
+
+  get isEmailObfuscated(): boolean {
+    return !this._isEmailObfuscated;
   }
 
   get pushNotifications(): boolean {
