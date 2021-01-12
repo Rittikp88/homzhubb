@@ -12,7 +12,10 @@ import Accordian from '@homzhub/web/src/components/molecules/Accordian';
 
 const defaultResponsive = {
   desktop: {
-    breakpoint: { max: 3840, min: 0 },
+    breakpoint: {
+      max: 3840,
+      min: 0,
+    },
     items: 1,
     slidesToSlide: 1,
   },
@@ -105,7 +108,6 @@ const AccordianContent: React.FC = () => {
           }}
         />
       </MultiCarousel>
-
       <View style={styles.buttonWrapper}>
         <Button type="secondaryOutline" containerStyle={styles.buttonStyle}>
           <Icon name={icons.circularCheckFilled} color={theme.colors.blue} size={20} />
@@ -114,14 +116,18 @@ const AccordianContent: React.FC = () => {
           </Typography>
         </Button>
       </View>
-      <TextArea wordCountLimit={200} placeholder="Type here..." value="123" />
+      <TextArea
+        inputContainerStyle={styles.textAreastyle}
+        wordCountLimit={200}
+        placeholder="Type here..."
+        value="123"
+      />
       <View style={styles.buttonGroup}>
         <Button type="secondaryOutline" containerStyle={styles.buttonStyle1}>
           <Text type="small" textType="semiBold" style={styles.buttonLabel}>
             Cancle
           </Text>
         </Button>
-
         <Button type="primary" containerStyle={styles.buttonStyle1}>
           <Text type="small" textType="semiBold" style={styles.buttonLabel1}>
             Submit
@@ -141,8 +147,16 @@ const LogsCards: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  titleContent: { color: theme.colors.darkTint2 },
-  contentLabel: { color: theme.colors.darkTint4, margin: 16 },
+  titleContent: {
+    color: theme.colors.darkTint2,
+  },
+  contentLabel: {
+    color: theme.colors.darkTint4,
+    margin: 16,
+  },
+  textAreastyle: {
+    height: 100,
+  },
   accordianContainer: {
     backgroundColor: theme.colors.white,
     borderRadius: 4,
@@ -165,17 +179,39 @@ const styles = StyleSheet.create({
     margin: 8,
     marginLeft: 16,
   },
-  firstChild: { flexDirection: 'row', justifyContent: 'space-between' },
-  secondChild: { flexDirection: 'row', maxWidth: 400, justifyContent: 'space-between', marginTop: 16 },
-  titleLabel: { color: theme.colors.darkTint3 },
-  titleData: { color: theme.colors.darkTint3 },
+  firstChild: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  secondChild: {
+    flexDirection: 'row',
+    maxWidth: 400,
+    justifyContent: 'space-between',
+    marginTop: 16,
+  },
+  titleLabel: {
+    color: theme.colors.darkTint3,
+  },
+  titleData: {
+    color: theme.colors.darkTint3,
+  },
 
-  leftChild: { flexDirection: 'row' },
-  content: { margin: 10, marginTop: -10 },
-  rightChild: { flexDirection: 'row' },
-  icon: { marginLeft: 10 },
-
-  buttonWrapper: { alignItems: 'flex-end' },
+  leftChild: {
+    flexDirection: 'row',
+  },
+  content: {
+    margin: 10,
+    marginTop: -10,
+  },
+  rightChild: {
+    flexDirection: 'row',
+  },
+  icon: {
+    marginLeft: 10,
+  },
+  buttonWrapper: {
+    alignItems: 'flex-end',
+  },
   buttonStyle: {
     flexDirection: 'row',
     borderColor: theme.colors.disabled,
@@ -187,9 +223,18 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     margin: 10,
   },
-  buttonGroup: { flexDirection: 'row', alignSelf: 'flex-end' },
-  buttonLabel: { color: theme.colors.blue, margin: 4 },
-  buttonLabel1: { color: theme.colors.white, margin: 4 },
+  buttonGroup: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+  },
+  buttonLabel: {
+    color: theme.colors.blue,
+    margin: 4,
+  },
+  buttonLabel1: {
+    color: theme.colors.white,
+    margin: 4,
+  },
   buttonStyle1: {
     flexDirection: 'row',
     borderColor: theme.colors.disabled,
