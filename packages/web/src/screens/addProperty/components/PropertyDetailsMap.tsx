@@ -8,39 +8,17 @@ import GoogleMapView from '@homzhub/web/src/components/atoms/GoogleMapView';
 import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const getDataFromPlaceID = (placeID: string, callback: (geocoderResult: google.maps.GeocoderResult) => void): void => {
-  const geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ placeId: placeID }, (results, status) => {
-    if (status === 'OK') {
-      if (results[0]) {
-        callback(results[0]);
-      } else {
-        // window.alert('No results found');
-      }
-    } else {
-      // window.alert('Geocoder failed due to: ' + status);
-    }
-  });
-};
-
 const PropertyDetailsMap: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
-  const { hasScriptLoaded, latLng, selectedPlaceId, setUpdatedLatLng } = useContext(AddPropertyContext);
+  const { hasScriptLoaded, latLng, setUpdatedLatLng } = useContext(AddPropertyContext);
   useEffect(() => {
     if (hasScriptLoaded) {
-      if (selectedPlaceId.length !== 0) {
-        getDataFromPlaceID(selectedPlaceId, () => {
-          // update location
-          // transform data
-        });
-      } else if (latLng) {
-        GooglePlacesService.getLocationData(latLng).then((r) => {
-          // update location
-          // transform data
-        });
-      }
+      GooglePlacesService.getLocationData(latLng).then((r) => {
+        // update location
+        // transform data
+      });
     }
-  }, [latLng, hasScriptLoaded, selectedPlaceId]);
+  }, [latLng, hasScriptLoaded]);
   const handleMapCenterChange = (newCenter: ILatLng): void => {
     setUpdatedLatLng(newCenter);
   };

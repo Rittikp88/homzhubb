@@ -2,17 +2,32 @@ import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 
 import { StyleSheet, TextInput } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
-import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
+
+const getDataFromPlaceID = (placeID: string, callback: (geocoderResult: google.maps.GeocoderResult) => void): void => {
+  const geocoder = new google.maps.Geocoder();
+  geocoder.geocode({ placeId: placeID }, (results, status) => {
+    if (status === 'OK') {
+      if (results[0]) {
+        callback(results[0]);
+      } else {
+        // window.alert('No results found');
+      }
+    } else {
+      // window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+};
 
 const AutoCompletionSearchBar: FC = () => {
   const { t } = useTranslation();
   const popupRef = useRef<PopupActions>(null);
   const searchInputRef = useRef<TextInput>(null);
   const [searchText, setSearchText] = useState('');
-  const { setUpdatedPlaceId, hasScriptLoaded, navigateScreen } = useContext(AddPropertyContext);
+  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen } = useContext(AddPropertyContext);
   const [suggestions, setSuggestions] = useState<google.maps.places.QueryAutocompletePrediction[]>([]);
   const updateSearchValue = (value: string): void => setSearchText(value);
   const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch' };
@@ -40,8 +55,12 @@ const AutoCompletionSearchBar: FC = () => {
   }, [searchText]);
   const handleSuggestionSelection = (selectedOption: IPopupOptions): void => {
     setSearchText(selectedOption.label);
-    setUpdatedPlaceId((selectedOption?.value as string) ?? '');
-    navigateScreen('ahead');
+    if (selectedOption && selectedOption.value) {
+      getDataFromPlaceID((selectedOption?.value as string) ?? '', (result) => {
+        setUpdatedLatLng({ lat: result.geometry.location.lat(), lng: result.geometry.location.lng() } as ILatLng);
+        navigateScreen('ahead');
+      });
+    }
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }

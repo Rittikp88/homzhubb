@@ -16,15 +16,12 @@ interface IComponentMap {
 const AddProperty: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const AddPropertyScreens: IComponentMap = {
-    0: {
-      component: AddPropertyLocation,
-    },
+    0: { component: AddPropertyLocation },
     1: { component: PropertyDetailsMap },
   };
   const [currentComp, setCurrentComp] = useState(0);
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
-  const [placeId, setPlaceId] = useState('');
   const CurrentScreen = AddPropertyScreens[currentComp].component;
   const navigateScreen = (action: string): void => {
     function moveAhead(): void {
@@ -58,9 +55,7 @@ const AddProperty: FC = () => {
     <AddPropertyContext.Provider
       value={{
         hasScriptLoaded,
-        selectedPlaceId: placeId,
         latLng,
-        setUpdatedPlaceId: setPlaceId,
         setUpdatedLatLng: setLatLng,
         navigateScreen,
       }}
