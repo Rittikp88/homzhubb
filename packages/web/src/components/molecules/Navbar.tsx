@@ -10,10 +10,10 @@ import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import HomzhubLogo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 
 interface INavItem {
   icon: string;

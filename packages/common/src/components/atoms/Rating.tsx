@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { Progress } from '@homzhub/mobile/src/components';
+// import { Progress } from '@homzhub/mobile/src/components';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
@@ -39,9 +39,9 @@ const Rating = ({
     return theme.colors.gold;
   }, [value]);
 
-  if (circle) {
-    return <Progress circle progress={value} wholeFactor={5} filledColor={ratingColor()} title={title} />;
-  }
+  // if (circle) {
+  //   return <Progress circle progress={value} wholeFactor={5} filledColor={ratingColor()} title={title} />;
+  // }
 
   if (single) {
     return (

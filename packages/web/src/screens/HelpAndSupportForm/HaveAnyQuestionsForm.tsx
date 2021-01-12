@@ -71,6 +71,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
                 containerStyle={styles.textArea}
                 onMessageChange={handleDescription}
                 wordCountLimit={500}
+                inputContainerStyle={styles.textAreaStyle}
               />
 
               <FormButton
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     flex: 0,
     marginHorizontal: 20,
   },
-
+  textAreaStyle: { height: 100 },
   textArea: {
     marginTop: 16,
   },
@@ -124,8 +125,10 @@ const styles = StyleSheet.create({
 
   content: {
     backgroundColor: theme.colors.white,
-    marginVertical: 20,
     marginLeft: 20,
+    width: '100%',
+    paddingVertical: 24,
+    paddingHorizontal: 20,
   },
 });
 
