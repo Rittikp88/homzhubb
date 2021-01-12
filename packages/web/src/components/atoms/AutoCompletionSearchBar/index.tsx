@@ -6,21 +6,7 @@ import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addPropert
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
-
-const getDataFromPlaceID = (placeID: string, callback: (geocoderResult: google.maps.GeocoderResult) => void): void => {
-  const geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ placeId: placeID }, (results, status) => {
-    if (status === 'OK') {
-      if (results[0]) {
-        callback(results[0]);
-      } else {
-        // window.alert('No results found');
-      }
-    } else {
-      // window.alert('Geocoder failed due to: ' + status);
-    }
-  });
-};
+import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 
 const AutoCompletionSearchBar: FC = () => {
   const { t } = useTranslation();

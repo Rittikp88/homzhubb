@@ -6,10 +6,30 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import AddAssetDetails from '@homzhub/web/src/screens/addProperty/components/AddAssetDetails';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const PropertyDetails: FC = () => {
+interface IProps {
+  placeData: any;
+  addressDetails: any;
+}
+type Props = IProps;
+
+const PropertyDetails: FC<IProps> = (props: Props) => {
+  const { placeData, addressDetails } = props;
+  console.log('placeData => ', placeData);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   // todo: dummy location to be replaced with actual location
   const locationAddress = 'Sed aliquet amet viverra at urna sodales praesent commodo eget. Vitae.';
+  console.log(' Address Details => ', addressDetails);
+  const { city, state, country, pincode, countryIsoCode } = addressDetails;
+  const { formatted_address } = placeData;
+  const asset = {
+    city,
+    state,
+    country,
+    pincode,
+    countryIsoCode,
+    address: formatted_address,
+    projectName: 'Nineleaps',
+  };
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
       <Typography variant="text" size="small" fontWeight="regular" style={styles.title}>

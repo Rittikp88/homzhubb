@@ -7,13 +7,25 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import GoogleMapView from '@homzhub/web/src/components/atoms/GoogleMapView';
 import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 
 const PropertyDetailsMap: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
-  const { hasScriptLoaded, latLng, setUpdatedLatLng } = useContext(AddPropertyContext);
+  const {
+    hasScriptLoaded,
+    latLng,
+    setUpdatedLatLng,
+    setPlacesData,
+    placeData,
+    setAddressDetails,
+    addressDetails,
+  } = useContext(AddPropertyContext);
   useEffect(() => {
     if (hasScriptLoaded) {
-      GooglePlacesService.getLocationData(latLng).then((r) => {
+      GooglePlacesService.getLocationData(latLng).then((response) => {
+        console.log('Service Response => ', response);
+        setPlacesData(response);
+        setAddressDetails(ResponseHelper.getLocationDetails(response));
         // update location
         // transform data
       });
@@ -26,7 +38,7 @@ const PropertyDetailsMap: FC = () => {
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
       {hasScriptLoaded && <GoogleMapView center={latLng} updateCenter={handleMapCenterChange} />}
-      <PropertyDetailsForm />
+      <PropertyDetailsForm placeData={placeData} addressDetails={addressDetails} />
     </View>
   );
 };

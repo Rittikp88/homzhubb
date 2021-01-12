@@ -22,6 +22,8 @@ const AddProperty: FC = () => {
   const [currentComp, setCurrentComp] = useState(0);
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
+  const [placeData, setPlacesData] = useState({});
+  const [addressDetails, setAddressDetails] = useState({});
   const CurrentScreen = AddPropertyScreens[currentComp].component;
   const navigateScreen = (action: string): void => {
     function moveAhead(): void {
@@ -58,6 +60,10 @@ const AddProperty: FC = () => {
         latLng,
         setUpdatedLatLng: setLatLng,
         navigateScreen,
+        placeData,
+        setPlacesData,
+        addressDetails,
+        setAddressDetails,
       }}
     >
       <View style={[styles.container, isTablet && styles.containerTablet]}>

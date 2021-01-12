@@ -24,7 +24,7 @@ interface IStateProps {
   assetGroups: AssetGroup[];
   isLoading: boolean;
   assetId: number;
-  asset: Asset | null;
+  asset?: Asset | null;
   lastVisitedStep: ILastVisitedStep | null;
 }
 
