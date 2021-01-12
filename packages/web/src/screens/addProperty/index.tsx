@@ -7,16 +7,10 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import AddPropertyLocation from '@homzhub/web/src/screens/addPropertyLocation';
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
-import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 
 interface IComponentMap {
-  [index: number]: { component: React.FC<IScreenProps> };
-}
-
-interface IScreenProps {
-  navigateScreen: Function;
-  coords: { lat: number; lng: number };
-  setCoords: Function;
+  [index: number]: { component: React.FC };
 }
 
 const AddProperty: FC = () => {
@@ -29,7 +23,8 @@ const AddProperty: FC = () => {
   };
   const [currentComp, setCurrentComp] = useState(0);
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
-  const [coords, setCoords] = useState({ lat: 0, lng: 0 });
+  const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
+  const [placeId, setPlaceId] = useState('');
   const CurrentScreen = AddPropertyScreens[currentComp].component;
   const navigateScreen = (action: string): void => {
     function moveAhead(): void {
@@ -58,15 +53,24 @@ const AddProperty: FC = () => {
       moveAhead();
     }
   };
-  console.log(' Current Coords => ', coords);
+  console.log(' Current Coords => ', latLng);
   return (
-    <AddPropertyContext.Provider value={{ hasScriptLoaded }}>
+    <AddPropertyContext.Provider
+      value={{
+        hasScriptLoaded,
+        selectedPlaceId: placeId,
+        latLng,
+        setUpdatedPlaceId: setPlaceId,
+        setUpdatedLatLng: setLatLng,
+        navigateScreen,
+      }}
+    >
       <View style={[styles.container, isTablet && styles.containerTablet]}>
         <Script
           url={`https://maps.googleapis.com/maps/api/js?key=${ConfigHelper.getPlacesApiKey()}&libraries=places`}
           onLoad={(): void => setHasScriptLoaded(true)}
         />
-        <CurrentScreen navigateScreen={navigateScreen} coords={coords} setCoords={setCoords} />
+        <CurrentScreen />
       </View>
     </AddPropertyContext.Provider>
   );

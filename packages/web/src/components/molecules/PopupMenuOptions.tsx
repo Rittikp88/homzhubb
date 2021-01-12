@@ -8,6 +8,7 @@ import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 export interface IPopupOptions {
   icon?: string;
   label: string;
+  value?: string | number;
 }
 
 interface IProps<T extends IPopupOptions> {

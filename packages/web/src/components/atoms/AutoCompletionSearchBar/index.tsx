@@ -12,12 +12,12 @@ const AutoCompletionSearchBar: FC = () => {
   const popupRef = useRef<PopupActions>(null);
   const searchInputRef = useRef<TextInput>(null);
   const [searchText, setSearchText] = useState('');
-  const addPropertyContext = useContext(AddPropertyContext);
+  const { setUpdatedPlaceId, hasScriptLoaded, navigateScreen } = useContext(AddPropertyContext);
   const [suggestions, setSuggestions] = useState<google.maps.places.QueryAutocompletePrediction[]>([]);
   const updateSearchValue = (value: string): void => setSearchText(value);
   const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch' };
   const getAutocompleteSuggestions = (query: string): void => {
-    if (addPropertyContext?.hasScriptLoaded) {
+    if (hasScriptLoaded) {
       const service = new google.maps.places.AutocompleteService();
       service.getQueryPredictions({ input: query }, (result, status) => {
         if (status !== google.maps.places.PlacesServiceStatus.OK) {
@@ -40,6 +40,8 @@ const AutoCompletionSearchBar: FC = () => {
   }, [searchText]);
   const handleSuggestionSelection = (selectedOption: IPopupOptions): void => {
     setSearchText(selectedOption.label);
+    setUpdatedPlaceId((selectedOption?.value as string) ?? '');
+    navigateScreen('ahead');
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }

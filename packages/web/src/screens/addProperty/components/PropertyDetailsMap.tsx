@@ -2,25 +2,20 @@ import React, { FC, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import MapsPOC from '@homzhub/web/src/components/atoms/GoogleMapView';
+import GoogleMapView from '@homzhub/web/src/components/atoms/GoogleMapView';
 import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { AddPropertyContext } from '../AddPropertyContext';
 
-interface IProps {
-  navigateScreen: Function;
-}
-interface IMapProps {
-  coords: { lat: number; lng: number };
-}
-type Props = IProps & IMapProps;
-const PropertyDetailsMap: FC<Props> = (props: Props) => {
+const PropertyDetailsMap: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
-  const addPropertyContext = useContext(AddPropertyContext);
-  const { coords } = props;
+  const { hasScriptLoaded, latLng } = useContext(AddPropertyContext);
+  // todo => getDetails from location or place id whatever is available and display data accordingly currently getPlacedetails is not working
+  // GooglePlacesService.getPlaceDetail(selectedPlaceId).then((r) => console.log(`placeid-----------------------${r}`));
+  // GooglePlacesService.getLocationData(latLng).then((r) => console.log(r));
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
-      {addPropertyContext?.hasScriptLoaded && <MapsPOC center={coords} />}
+      {hasScriptLoaded && <GoogleMapView center={latLng} />}
       <PropertyDetailsForm />
     </View>
   );

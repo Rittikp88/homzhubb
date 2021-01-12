@@ -14,26 +14,18 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-interface IProps {
-  navigateScreen: Function;
-  coords: { lat: number; lng: number };
-  setCoords: Function;
-}
-
-type Props = IProps;
-const AddPropertyLocation: FC<IProps> = (props: Props) => {
+const AddPropertyLocation: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const addPropertyContext = useContext(AddPropertyContext);
-  const { coords, setCoords, navigateScreen } = props;
+  const { hasScriptLoaded } = useContext(AddPropertyContext);
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
-      {addPropertyContext?.hasScriptLoaded && <GoogleMapView />}
-      <SearchView coords={coords} setCoords={setCoords} navigateScreen={navigateScreen} />
+      {hasScriptLoaded && <GoogleMapView />}
+      <SearchView />
     </View>
   );
 };
 
-const SearchView: FC<IProps> = (props: IProps) => {
+const SearchView: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = searchViewStyles;
@@ -44,13 +36,13 @@ const SearchView: FC<IProps> = (props: IProps) => {
     width: '100%',
     height: '100%',
   };
-  const { setCoords, navigateScreen } = props;
+  const { setUpdatedLatLng, navigateScreen } = useContext(AddPropertyContext);
   const onPressAutoDetect = (): void => {
     GeolocationService.getCurrentPosition(onFetchSuccess, onFetchError);
   };
   const onFetchSuccess = (response: GeolocationResponse): void => {
     const { latitude, longitude } = response.coords;
-    setCoords({ lat: latitude, lng: longitude });
+    setUpdatedLatLng({ lat: latitude, lng: longitude });
     navigateScreen('ahead');
   };
   const onFetchError = (error: GeolocationError): void => {
