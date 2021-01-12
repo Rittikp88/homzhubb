@@ -5,7 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import GoogleMapView from '@homzhub/web/src/components/atoms/GoogleMapView';
 import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { AddPropertyContext } from '../AddPropertyContext';
+import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 
 const PropertyDetailsMap: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
