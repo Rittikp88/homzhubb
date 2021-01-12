@@ -52,7 +52,10 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   public render = (): ReactNode => {
-    const { t,route: {params}  } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
 
     return (
       <View style={styles.screen}>

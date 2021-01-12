@@ -73,11 +73,7 @@ type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
 class AddPropertyView extends Component<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
-    const {
-      getAssetById,
-      getAssetGroups,
-      previousScreen,
-    } = this.props;
+    const { getAssetById, getAssetGroups, previousScreen } = this.props;
 
     if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
       getAssetGroups();

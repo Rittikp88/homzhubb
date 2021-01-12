@@ -4,6 +4,10 @@ const { PERMISSIONS, RESULTS } = require('react-native-permissions/lib/commonjs/
 require('../../../setupTests');
 
 jest.mock('@react-native-firebase/app', () => {});
+jest.mock('@react-native-community/async-storage', () => {});
+jest.mock('react-native-crypto-js', () => {});
+jest.mock('react-native-reanimated', () => {});
+jest.mock('@react-native-community/google-signin', () => {});
 jest.mock('@react-native-firebase/dynamic-links', () => {});
 jest.mock('@ptomasroos/react-native-multi-slider', () => {});
 jest.mock('react-native-orientation-locker', () => {});

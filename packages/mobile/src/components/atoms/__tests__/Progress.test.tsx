@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { ProgressBar } from '@homzhub/mobile/src/components/atoms/ProgressBar';
+import { Progress } from '@homzhub/mobile/src/components/atoms/Progress';
 
 let props: any;
 
@@ -13,7 +13,7 @@ describe('ProgressBar', () => {
   });
 
   it('should match snapshot', () => {
-    const wrapper: ShallowWrapper = shallow(<ProgressBar {...props} />);
+    const wrapper: ShallowWrapper = shallow(<Progress {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

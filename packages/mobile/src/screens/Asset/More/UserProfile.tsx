@@ -18,8 +18,8 @@ import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/Upda
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { AnimatedProfileHeader, DetailsCard, Loader, Progress } from '@homzhub/mobile/src/components';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import { AnimatedProfileHeader, DetailsCard, Loader, ProgressBar } from '@homzhub/mobile/src/components';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -121,7 +121,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
                 image={profilePicture}
               />
             </View>
-            <ProgressBar
+            <Progress
               containerStyles={styles.progressBar}
               title={t('assetMore:profile')}
               progress={profileProgress || 0}

@@ -15,6 +15,7 @@
     "cancel": "Cancel",
     "gotIt": "Got It",
     "skip": "Skip",
+    "reply": "Reply",
     "offers": "Offers",
     "manageSubscription": "Manage Subscription",
     "location": "Location",
@@ -52,6 +53,7 @@
     "readMore": "Read More",
     "any": "Any",
     "iAm": "I am a",
+    "popularWith": "Popular With",
     "lookingFor": "You are looking for",
     "preferredTime": "Preferred time for call back",
     "message": "Message",
@@ -163,7 +165,8 @@
     "terminate": "Terminate",
     "backText": "Back",
     "changePropertyText": "Change Property",
-    "wantToLeave": "Are you sure want to leave?"
+    "wantToLeave": "Are you sure want to leave?",
+    "notNow": "Not Now"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -450,7 +453,13 @@
     "selectMoveOutDate": "Select move-out date",
     "terminationDate": "Termination Date",
     "listingCancelled": "Your property listing has been cancelled.",
-    "terminationRequest": "The {{role}} has been notified of the termination request"
+    "terminationRequest": "The {{role}} has been notified of the termination request",
+    "writeReview": "Write Review",
+    "propertyReview": "Property Review",
+    "overallExperience": "How would you rate the overall experience?",
+    "overallRating": "Overall Rating",
+    "bestReasons": "What are the best reasons to live here?",
+    "writeComment": "Write your Comment..."
   },
   "propertySearch": {
     "showProperties": "Show Properties",

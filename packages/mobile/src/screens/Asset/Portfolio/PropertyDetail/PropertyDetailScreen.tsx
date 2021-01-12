@@ -22,6 +22,7 @@ import { FullScreenAssetDetailsCarousel, HeaderCard, Loader } from '@homzhub/mob
 import DropdownModal from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
+import { AssetReviews } from '@homzhub/mobile/src/components/organisms/AssetReviews';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -292,7 +293,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.REVIEWS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 3)}>
-            <DummyView />
+            <AssetReviews />
           </View>
         );
       case Tabs.SITE_VISITS:

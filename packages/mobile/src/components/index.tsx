@@ -4,7 +4,7 @@ export { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGr
 export { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 export { MoreProfile } from '@homzhub/mobile/src/components/atoms/MoreProfile';
 export { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
-export { ProgressBar } from '@homzhub/mobile/src/components/atoms/ProgressBar';
+export { Progress } from '@homzhub/mobile/src/components/atoms/Progress';
 export { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 export { RNVideo } from '@homzhub/mobile/src/components/atoms/Video';
 export { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';

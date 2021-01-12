@@ -5,7 +5,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Rating from '@homzhub/common/src/components/atoms/Rating';
+import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
@@ -98,8 +98,8 @@ const Avatar = (props: IProps): React.ReactElement => {
               )}
               {rating && (
                 <View style={styles.numberContainer}>
-                  <Icon name={icons.roundFilled} color={theme.colors.disabled} size={10} style={styles.iconStyle} />
-                  <Rating count={rating} />
+                  <Icon name={icons.roundFilled} color={theme.colors.disabled} size={8} style={styles.iconStyle} />
+                  <Rating single value={rating} />
                 </View>
               )}
             </View>
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 6,
     width: PlatformUtils.isWeb() ? undefined : theme.viewport.width / 2 - 40,
+    justifyContent: 'center',
   },
   numberContainer: {
     flexDirection: 'row',

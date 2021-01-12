@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { LayoutChangeEvent, PickerItemProps, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  LayoutChangeEvent,
+  PickerItemProps,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -9,10 +18,12 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+// import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
+import { ReviewForm } from '@homzhub/mobile/src/components/molecules/ReviewForm';
 import {
   AssetVisit,
   IVisitActions,
@@ -47,6 +58,8 @@ interface IProps {
 
 interface IScreenState {
   isCancelSheet: boolean;
+  showReviewForm: boolean;
+  reviewAsset: AssetVisit | null;
   currentVisitId: number;
   height: number;
 }
@@ -56,6 +69,8 @@ type Props = IProps & WithTranslation;
 class PropertyVisitList extends Component<Props, IScreenState> {
   public state = {
     isCancelSheet: false,
+    showReviewForm: false,
+    reviewAsset: null,
     currentVisitId: 0,
     height: theme.viewport.height,
   };
@@ -122,6 +137,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         )}
         <Loader visible={isLoading ?? false} />
         {this.renderCancelConfirmation()}
+        {this.renderReviewForm()}
       </View>
     );
   }
@@ -180,6 +196,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             containerStyle={styles.horizontalStyle}
           />
           {visitStatus === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
+          {visitStatus === VisitStatusType.COMPLETED && !isAssetOwner && this.renderCompletedButtons(item)}
         </View>
       </View>
     );
@@ -228,6 +245,27 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     );
   };
 
+  private renderCompletedButtons = (item: AssetVisit): React.ReactElement => {
+    const { t } = this.props;
+    const onPress = (): void => {
+      this.setState({ reviewAsset: item, showReviewForm: true });
+    };
+
+    return (
+      <>
+        <Divider containerStyles={styles.dividerStyle} />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.writeReviewButton} onPress={onPress}>
+            <Label textType="semiBold" type="regular" style={styles.writeReviewText}>
+              {t('writeReview')}
+            </Label>
+          </TouchableOpacity>
+          {/* <Rating isOverallRating value={2} /> */}
+        </View>
+      </>
+    );
+  };
+
   private renderCancelConfirmation = (): React.ReactElement => {
     const { isCancelSheet } = this.state;
     const { t } = this.props;
@@ -256,6 +294,34 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     );
   };
 
+  private renderReviewForm = (): React.ReactNode => {
+    const { showReviewForm, reviewAsset } = this.state;
+    const { t } = this.props;
+
+    if (!reviewAsset) return null;
+    const { asset } = reviewAsset;
+
+    return (
+      <BottomSheet
+        visible={showReviewForm}
+        sheetHeight={theme.viewport.height * 0.85}
+        headerTitle={t('propertyReview')}
+        onCloseSheet={this.onCancelReview}
+      >
+        <ReviewForm
+          onClose={this.onCancelReview}
+          asset={asset}
+          ratingCategories={[
+            { id: 1, rating: 1, name: 'Neighborhood' },
+            { id: 2, rating: 2, name: 'Rent' },
+            { id: 3, rating: 4, name: 'Security' },
+            { id: 4, rating: 5, name: 'Maintain' },
+          ]}
+        />
+      </BottomSheet>
+    );
+  };
+
   private onPressConfirmation = (item: string): void => {
     const { handleAction } = this.props;
     const { currentVisitId } = this.state;
@@ -268,6 +334,12 @@ class PropertyVisitList extends Component<Props, IScreenState> {
   private onCancelSheet = (): void => {
     this.setState({
       isCancelSheet: false,
+    });
+  };
+
+  private onCancelReview = (): void => {
+    this.setState({
+      showReviewForm: false,
     });
   };
 
@@ -474,5 +546,17 @@ const styles = StyleSheet.create({
   smallStatusView: {
     marginRight: 10,
     marginTop: 4,
+  },
+  writeReviewButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: theme.colors.lightGrayishBlue,
+    width: 100,
+  },
+  writeReviewText: {
+    color: theme.colors.primaryColor,
+  },
+  buttonContainer: {
+    marginHorizontal: 12,
   },
 });
