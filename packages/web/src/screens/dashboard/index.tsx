@@ -8,6 +8,7 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { useDispatch, useSelector } from 'react-redux';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
@@ -32,7 +33,7 @@ const Dashboard: FC<IProps> = (props: IProps) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const { investmentDataArray } = props;
-  const selectedCountry = 0;
+  const selectedCountry: number = useSelector(UserSelector.getUserCountryCode);
   const [pendingProperty, setPendingProperty] = useState({} as Asset[]);
   const [vacantProperty, setVacantProperty] = useState({} as Asset[]);
   const [propertyMetrics, setPropertyMetrics] = useState({} as AssetMetrics);
@@ -42,6 +43,7 @@ const Dashboard: FC<IProps> = (props: IProps) => {
       dispatch(UserActions.getUserProfile());
       dispatch(UserActions.getFavouriteProperties());
       dispatch(UserActions.getAssets());
+      dispatch(CommonActions.getCountries());
     }
     getPendingPropertyDetails(setPendingProperty).then();
     getPropertyMetrics((response) => setPropertyMetrics(response)).then();

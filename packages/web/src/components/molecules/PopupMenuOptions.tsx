@@ -7,6 +7,9 @@ import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 
 export interface IPopupOptions {
   icon?: string;
+  iconRight?: string;
+  checked?: boolean;
+  value?: string | number;
   label: string;
 }
 
@@ -34,6 +37,9 @@ const PopupMenuOptions = <T extends IPopupOptions>({ options, onMenuOptionPress 
               >
                 {item.label}
               </Label>
+              {item.iconRight && (
+                <Icon name={item.iconRight} color={isHovered ? primaryColor : darkTint4} style={styles.icon} />
+              )}
             </TouchableOpacity>
           )}
         </Hoverable>
