@@ -5,6 +5,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 
 interface IProps {
+  forwardRef?: React.Ref<TextInput>;
   placeholder: string;
   value: string;
   updateValue: (value: string) => void;
@@ -13,7 +14,7 @@ interface IProps {
 }
 
 export const SearchField: FC<IProps> = (props: IProps) => {
-  const { placeholder, value, containerStyle = {} } = props;
+  const { forwardRef, placeholder, value, containerStyle = {} } = props;
   const onChangeText = (changedValue: string): void => {
     const { updateValue } = props;
     updateValue(changedValue);
@@ -21,6 +22,7 @@ export const SearchField: FC<IProps> = (props: IProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <TextInput
+        ref={forwardRef}
         style={styles.textInput}
         value={value}
         placeholder={placeholder}

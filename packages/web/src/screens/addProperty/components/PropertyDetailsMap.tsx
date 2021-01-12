@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import MapsPOC from '@homzhub/web/src/components/atoms/GoogleMapView';
 import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { AddPropertyContext } from '../AddPropertyContext';
 
 interface IProps {
   navigateScreen: Function;
@@ -15,10 +16,11 @@ interface IMapProps {
 type Props = IProps & IMapProps;
 const PropertyDetailsMap: FC<Props> = (props: Props) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const addPropertyContext = useContext(AddPropertyContext);
   const { coords } = props;
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
-      <MapsPOC center={coords} />
+      {addPropertyContext?.hasScriptLoaded && <MapsPOC center={coords} />}
       <PropertyDetailsForm />
     </View>
   );

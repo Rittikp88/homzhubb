@@ -1,40 +1,41 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import MapsPOC from '@homzhub/web/src/components/atoms/GoogleMapView';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { SearchField } from '@homzhub/web/src/components';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { GeolocationError, GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import GoogleMapView from '@homzhub/web/src/components/atoms/GoogleMapView';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import AutoCompletionSearchBar from '@homzhub/web/src/components/atoms/AutoCompletionSearchBar';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   navigateScreen: Function;
   coords: { lat: number; lng: number };
   setCoords: Function;
 }
+
 type Props = IProps;
 const AddPropertyLocation: FC<IProps> = (props: Props) => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const addPropertyContext = useContext(AddPropertyContext);
   const { coords, setCoords, navigateScreen } = props;
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
-      <MapsPOC />
+      {addPropertyContext?.hasScriptLoaded && <GoogleMapView />}
       <SearchView coords={coords} setCoords={setCoords} navigateScreen={navigateScreen} />
     </View>
   );
 };
 
-const SearchView: FC<IProps> = (props: Props) => {
-  const [searchText, setSearchText] = useState('');
+const SearchView: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const updateSearchValue = (value: string): void => setSearchText(value);
   const styles = searchViewStyles;
   const blurBackgroundStyle = {
     position: 'absolute' as 'absolute',
@@ -62,12 +63,7 @@ const SearchView: FC<IProps> = (props: Props) => {
         <Typography size="regular" style={styles.title}>
           {t('findProperty')}
         </Typography>
-        <SearchField
-          placeholder={t('property:searchProject')}
-          value={searchText}
-          updateValue={updateSearchValue}
-          containerStyle={styles.searchBar}
-        />
+        <AutoCompletionSearchBar />
         <Button type="secondaryOutline" containerStyle={styles.buttonContainer} onPress={onPressAutoDetect}>
           <Icon name={icons.location} size={15} color={theme.colors.white} />
           <Typography variant="label" size="regular" style={styles.buttonTitle}>

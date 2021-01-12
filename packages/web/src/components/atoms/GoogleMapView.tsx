@@ -1,7 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
@@ -42,24 +41,22 @@ const GoogleMapView: FC<IProps> = (props: IProps) => {
   };
   return (
     <View style={styles.container}>
-      <LoadScript googleMapsApiKey={ConfigHelper.getPlacesApiKey()}>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center || centerDefault}
-          zoom={10}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
-        >
-          {/* Child components, such as markers, info windows, etc. */}
-          <Marker
-            onLoad={onLoadMarker}
-            position={center || markerPosition}
-            draggable
-            onDragStart={onDragStart}
-            onDragEnd={onDragEnd}
-          />
-        </GoogleMap>
-      </LoadScript>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center || centerDefault}
+        zoom={10}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+      >
+        {/* Child components, such as markers, info windows, etc. */}
+        <Marker
+          onLoad={onLoadMarker}
+          position={center || markerPosition}
+          draggable
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+        />
+      </GoogleMap>
     </View>
   );
 };
