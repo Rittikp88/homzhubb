@@ -1,19 +1,24 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import AddAssetDetails from '@homzhub/web/src/screens/addProperty/components/AddAssetDetails';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 interface IProps {
-  handleSubmit: () => void;
+  data: google.maps.places.PlaceResult | undefined;
 }
-
-const PropertyDetails: FC<IProps> = ({ handleSubmit }: IProps) => {
+const PropertyDetailsForm: FC<IProps> = ({ data }: IProps) => {
+  const { navigateScreen } = useContext(AddPropertyContext);
   const isTablet = useDown(deviceBreakpoint.TABLET);
-  // todo: dummy location to be replaced with actual location
-  const locationAddress = 'Sed aliquet amet viverra at urna sodales praesent commodo eget. Vitae.';
+  const locationAddress = data?.formatted_address ?? '';
+  const onSubmitPress = (): void => {
+    navigateScreen(AddPropertyStack.AddPropertyViewScreen);
+  };
+
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
       <Typography variant="text" size="small" fontWeight="regular" style={styles.title}>
@@ -22,7 +27,7 @@ const PropertyDetails: FC<IProps> = ({ handleSubmit }: IProps) => {
       <Typography variant="label" size="large" fontWeight="regular" style={styles.subTitle}>
         {locationAddress}
       </Typography>
-      <AddAssetDetails handleSubmit={handleSubmit} />
+      <AddAssetDetails data={data} onSubmitPress={onSubmitPress} />
     </View>
   );
 };
@@ -45,4 +50,4 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint3,
   },
 });
-export default PropertyDetails;
+export default PropertyDetailsForm;

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { request, check } from 'react-native-permissions';
-import { PERMISSION_TYPE, PermissionsService } from '@homzhub/mobile/src/services/Permissions';
+import { PermissionsService } from '@homzhub/common/src/services/Permissions/PermissionService';
+import { PERMISSION_TYPE } from '@homzhub/common/src/constants/PermissionTypes';
 
 jest.mock('react-native-permissions', () => ({
   PERMISSIONS: {

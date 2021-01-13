@@ -265,6 +265,7 @@
     "city": "City",
     "state": "State",
     "country": "Country",
+    "autoDetectLocation": "Auto-Detect Location",
     "myProjectIs": "My Property is",
     "selectType": "Select your type",
     "saveLocation": "Save Location",
@@ -466,6 +467,7 @@
     "findingRightProperty": "Finding the right property",
     "madeEasy": "Made Easy",
     "enterLocation": "Enter location to begin",
+    "findProperty": "Find Your Property",
     "type": "Type",
     "beds": "Beds",
     "baths": "Baths",
@@ -766,12 +768,12 @@
   "webLoader": {
     "loadingText": "Loading Application..."
   },
-  "helpAndSupport":{
-    "FAQ":"Frequently Asked Question",
-    "general":"General",
-    "categoryName":"Category Name",
-    "caseId":"Case ID",
-    "date":"Date",
-    "status":"Status"
+  "helpAndSupport": {
+    "FAQ": "Frequently Asked Question",
+    "general": "General",
+    "categoryName": "Category Name",
+    "caseId": "Case ID",
+    "date": "Date",
+    "status": "Status"
   }
 }
