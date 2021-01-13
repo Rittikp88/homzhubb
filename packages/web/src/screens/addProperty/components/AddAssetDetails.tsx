@@ -65,6 +65,7 @@ interface IOwnState {
 
 interface IOwnProps {
   data: google.maps.places.PlaceResult | undefined;
+  onSubmitPress: () => void;
 }
 
 type Props = WithTranslation & IDispatchProps & IStateProps & IOwnProps;
@@ -120,8 +121,6 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   private renderForm = (): React.ReactNode => {
     const { t, assetGroups, asset } = this.props;
     const { formData, assetGroupTypeId, assetGroupId, assetGroupSelectionDisabled } = this.state;
-    console.log('reinnitalized--------------');
-    console.log(formData);
     return (
       <Formik
         validateOnMount
@@ -175,7 +174,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       countryIsoCode: country_iso2_code,
       address,
     } = values;
-    const { setAssetId, assetId, lastVisitedStep } = this.props;
+    const { setAssetId, assetId, lastVisitedStep, onSubmitPress } = this.props;
     const { assetGroupTypeId: asset_type, longitude, latitude } = this.state;
     let visitedStep = {
       asset_creation: {
@@ -219,7 +218,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
         const response = await AssetRepository.createAsset(params);
         setAssetId(response.id);
       }
-      // handleSubmit navigation here
+      onSubmitPress();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }

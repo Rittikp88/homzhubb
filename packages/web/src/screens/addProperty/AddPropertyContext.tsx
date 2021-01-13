@@ -1,6 +1,7 @@
 import React from 'react';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { GoogleGeocodeData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 export interface ILatLng {
   lat: number;
@@ -11,7 +12,8 @@ type AddPropertyContextType = {
   hasScriptLoaded: boolean;
   latLng: ILatLng;
   setUpdatedLatLng: (latLng: ILatLng) => void;
-  navigateScreen: (action: string) => void;
+  navigateScreen: (screen: AddPropertyStack) => void;
+  goBack: () => void;
   setPlacesData: (placeData: GoogleGeocodeData) => void;
   placeData: any;
   setAddressDetails: (addressComp: any) => void;
@@ -26,11 +28,5 @@ export const AddPropertyContext = React.createContext<AddPropertyContextType>({
   placeData: {},
   setAddressDetails: FunctionUtils.noop,
   addressDetails: {},
-  // placeData: {
-  //   address_components: [],
-  //   geometry: {},
-  //   place_id: '',
-  //   types: [],
-  //   formatted_address: '',
-  // },
+  goBack: FunctionUtils.noop,
 });

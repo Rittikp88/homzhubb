@@ -13,6 +13,7 @@ import AutoCompletionSearchBar from '@homzhub/web/src/components/atoms/AutoCompl
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 const AddPropertyLocation: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -43,7 +44,7 @@ const SearchView: FC = () => {
   const onFetchSuccess = (response: GeolocationResponse): void => {
     const { latitude, longitude } = response.coords;
     setUpdatedLatLng({ lat: latitude, lng: longitude });
-    navigateScreen('ahead');
+    navigateScreen(AddPropertyStack.PropertyDetailsMapScreen);
   };
   const onFetchError = (error: GeolocationError): void => {
     console.log('Error => ', error);

@@ -7,6 +7,7 @@ import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addPropert
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 const AutoCompletionSearchBar: FC = () => {
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ const AutoCompletionSearchBar: FC = () => {
     if (selectedOption && selectedOption.value) {
       getDataFromPlaceID((selectedOption?.value as string) ?? '', (result) => {
         setUpdatedLatLng({ lat: result.geometry.location.lat(), lng: result.geometry.location.lng() } as ILatLng);
-        navigateScreen('ahead');
+        navigateScreen(AddPropertyStack.PropertyDetailsMapScreen);
       });
     }
     if (popupRef && popupRef.current) {

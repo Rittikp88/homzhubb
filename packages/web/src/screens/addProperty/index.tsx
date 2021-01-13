@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Script from 'react-load-script';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -6,50 +6,59 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import AddPropertyLocation from '@homzhub/web/src/screens/addPropertyLocation';
+import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropertyView';
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 
 interface IComponentMap {
-  [index: number]: { component: React.FC };
+  component: AddPropertyStack;
 }
-
+export enum AddPropertyStack {
+  AddPropertyLocationScreen,
+  PropertyDetailsMapScreen,
+  AddPropertyViewScreen,
+}
 const AddProperty: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
-  const AddPropertyScreens: IComponentMap = {
-    0: { component: AddPropertyLocation },
-    1: { component: PropertyDetailsMap },
-  };
-  const [currentComp, setCurrentComp] = useState(0);
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
-  const CurrentScreen = AddPropertyScreens[currentComp].component;
-  const navigateScreen = (action: string): void => {
-    function moveAhead(): void {
-      setCurrentComp((prevState) => {
-        if (prevState !== Object.values(AddPropertyScreens).length - 1) {
-          return currentComp + 1;
-        }
+  const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
 
-        return prevState;
-      });
+  const navigateScreen = (comp: AddPropertyStack): void => {
+    setCurrentScreen(comp);
+  };
+  const goBack = (): void => {
+    if (currentScreen !== AddPropertyStack.AddPropertyLocationScreen) {
+      const activeIndex = compArray.findIndex((value) => value.component === currentScreen);
+      setCurrentScreen(compArray[activeIndex - 1].component);
     }
-
-    function goBack(): void {
-      setCurrentComp((prevState) => {
-        if (prevState !== 0) {
-          return currentComp - 1;
-        }
-
-        return prevState;
-      });
-    }
-
-    if (action === 'back') {
-      goBack();
-    } else if (action === 'ahead') {
-      moveAhead();
+  };
+  const compArray: IComponentMap[] = [
+    { component: AddPropertyStack.AddPropertyLocationScreen },
+    { component: AddPropertyStack.PropertyDetailsMapScreen },
+    { component: AddPropertyStack.AddPropertyViewScreen },
+  ];
+  const renderSwitch = (comp: AddPropertyStack): React.ReactElement => {
+    const { AddPropertyLocationScreen, PropertyDetailsMapScreen, AddPropertyViewScreen } = AddPropertyStack;
+    switch (comp) {
+      case AddPropertyLocationScreen:
+        return <AddPropertyLocation />;
+      case PropertyDetailsMapScreen:
+        return <PropertyDetailsMap />;
+      case AddPropertyViewScreen:
+        return (
+          <AddPropertyView
+            onUploadImage={FunctionUtils.noop}
+            onEditPress={FunctionUtils.noop}
+            onNavigateToPlanSelection={FunctionUtils.noop}
+            onNavigateToDetail={FunctionUtils.noop}
+          />
+        );
+      default:
+        return <AddPropertyLocation />;
     }
   };
   return (
@@ -63,6 +72,7 @@ const AddProperty: FC = () => {
         setPlacesData,
         addressDetails,
         setAddressDetails,
+        goBack,
       }}
     >
       <View style={[styles.container, isTablet && styles.containerTablet]}>
@@ -70,7 +80,7 @@ const AddProperty: FC = () => {
           url={`https://maps.googleapis.com/maps/api/js?key=${ConfigHelper.getPlacesApiKey()}&libraries=places`}
           onLoad={(): void => setHasScriptLoaded(true)}
         />
-        <CurrentScreen />
+        {renderSwitch(currentScreen)}
       </View>
     </AddPropertyContext.Provider>
   );
