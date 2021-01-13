@@ -6,12 +6,12 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import AddAssetDetails from '@homzhub/web/src/screens/addProperty/components/AddAssetDetails';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
-import { AddPropertyStack } from '..';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 interface IProps {
   data: google.maps.places.PlaceResult | undefined;
 }
-const PropertyDetails: FC<IProps> = ({ data }: IProps) => {
+const PropertyDetailsForm: FC<IProps> = ({ data }: IProps) => {
   const { navigateScreen } = useContext(AddPropertyContext);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const locationAddress = data?.formatted_address ?? '';
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint3,
   },
 });
-export default PropertyDetails;
+export default PropertyDetailsForm;

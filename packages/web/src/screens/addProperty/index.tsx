@@ -41,7 +41,7 @@ const AddProperty: FC = () => {
     { component: AddPropertyStack.PropertyDetailsMapScreen },
     { component: AddPropertyStack.AddPropertyViewScreen },
   ];
-  const renderSwitch = (comp: AddPropertyStack): React.ReactElement => {
+  const renderScreen = (comp: AddPropertyStack): React.ReactElement => {
     const { AddPropertyLocationScreen, PropertyDetailsMapScreen, AddPropertyViewScreen } = AddPropertyStack;
     switch (comp) {
       case AddPropertyLocationScreen:
@@ -80,7 +80,7 @@ const AddProperty: FC = () => {
           url={`https://maps.googleapis.com/maps/api/js?key=${ConfigHelper.getPlacesApiKey()}&libraries=places`}
           onLoad={(): void => setHasScriptLoaded(true)}
         />
-        {renderSwitch(currentScreen)}
+        {renderScreen(currentScreen)}
       </View>
     </AddPropertyContext.Provider>
   );
