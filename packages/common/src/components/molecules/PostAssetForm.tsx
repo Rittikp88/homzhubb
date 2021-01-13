@@ -5,7 +5,7 @@ import { FormikProps, FormikValues } from 'formik';
 import { debounce } from 'lodash';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';

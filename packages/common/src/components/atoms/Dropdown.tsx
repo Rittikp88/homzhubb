@@ -11,6 +11,7 @@ import {
   Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FontWeightType, Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
@@ -129,17 +130,19 @@ export const Dropdown = (props: IProps): React.ReactElement => {
         )}
         <Icon name={icon} size={iconSize} color={iconColor} style={[styles.iconStyle, iconStyle]} />
       </TouchableOpacity>
-      <BottomSheetListView
-        data={data}
-        selectedValue={selectedItem?.value ?? ''}
-        listTitle={listTitle ?? t('common:selectFromHere')}
-        listHeight={listHeight}
-        isBottomSheetVisible={dropdownVisible}
-        onCloseDropDown={closeDropdown}
-        onSelectItem={onValueChange}
-        testID={testID}
-        numColumns={numColumns}
-      />
+      {PlatformUtils.isMobile() && (
+        <BottomSheetListView
+          data={data}
+          selectedValue={selectedItem?.value ?? ''}
+          listTitle={listTitle ?? t('common:selectFromHere')}
+          listHeight={listHeight}
+          isBottomSheetVisible={dropdownVisible}
+          onCloseDropDown={closeDropdown}
+          onSelectItem={onValueChange}
+          testID={testID}
+          numColumns={numColumns}
+        />
+      )}
     </View>
   );
 };

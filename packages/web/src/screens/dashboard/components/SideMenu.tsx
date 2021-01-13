@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useHistory } from 'react-router-dom';
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
@@ -9,7 +10,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { IMenuItemList, MenuItemList, sideMenuItems } from '@homzhub/common/src/constants/DashBoard';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { useHistory } from 'react-router-dom';
 
 interface IFormProps {
   onItemClick: (ItemId: number) => void;

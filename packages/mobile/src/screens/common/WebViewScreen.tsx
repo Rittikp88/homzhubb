@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import { StyleSheet, View, Share } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { icons } from '@homzhub/common/src/assets/icon';

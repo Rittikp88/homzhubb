@@ -3,7 +3,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUpdateUserPreferences } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -14,11 +14,12 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { AnimatedProfileHeader, BottomSheet } from '@homzhub/mobile/src/components';
 import { OptionTypes, SelectedPreferenceType, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
@@ -36,17 +37,39 @@ interface IStateProps {
   isUserPreferencesLoading: boolean;
 }
 
+interface IUpdatePayload {
+  key: string;
+  value: SelectedPreferenceType;
+}
+
+interface IBottomSheetDetails {
+  title: string;
+  message: string;
+}
+
 type IOwnProps = libraryProps & IStateProps & IDispatchProps;
 
 interface IOwnState {
   settingsData: SettingsData[];
   isLoading: boolean;
+  bottomSheetVisibility: boolean;
+  updatePayload: IUpdatePayload;
+  bottomSheetDetails: IBottomSheetDetails;
 }
 
 class Settings extends React.PureComponent<IOwnProps, IOwnState> {
   public state = {
     settingsData: [],
     isLoading: false,
+    bottomSheetVisibility: false,
+    updatePayload: {
+      key: '',
+      value: '',
+    },
+    bottomSheetDetails: {
+      title: '',
+      message: '',
+    },
   };
 
   public componentDidMount(): void {
@@ -84,24 +107,68 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
             })}
           </View>
         </AnimatedProfileHeader>
+        {this.renderBottomSheet()}
       </>
+    );
+  };
+
+  private renderBottomSheet = (): ReactElement => {
+    const {
+      bottomSheetVisibility,
+      bottomSheetDetails: { title, message },
+    } = this.state;
+    const { t } = this.props;
+
+    return (
+      <BottomSheet
+        visible={bottomSheetVisibility}
+        headerTitle={title}
+        sheetHeight={350}
+        onCloseSheet={this.onSheetClose}
+      >
+        <View style={styles.bottomSheet}>
+          <Text type="small" style={styles.message}>
+            {message}
+          </Text>
+          <Text type="small">{t('common:wantToContinue')}</Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              type="secondary"
+              title={t('common:yes')}
+              titleStyle={styles.buttonTitle}
+              onPress={this.updatePreferences}
+              containerStyle={styles.editButton}
+            />
+            <Button
+              type="primary"
+              title={t('common:no')}
+              onPress={this.onSheetClose}
+              titleStyle={styles.buttonTitle}
+              containerStyle={styles.doneButton}
+            />
+          </View>
+        </View>
+      </BottomSheet>
     );
   };
 
   private renderTitle = (info: SettingsData, showDivider: boolean): ReactElement => {
     const { t } = this.props;
+    const title = t(info.name);
 
     return (
       <>
         <View style={styles.rowStyle}>
           {info.icon && <Icon size={20} name={info.icon} color={theme.colors.darkTint2} />}
           <Label style={styles.title} type="large" textType="semiBold">
-            {t(info.name)}
+            {title}
           </Label>
         </View>
         {info.options.map((option, index) => {
           return (
-            <React.Fragment key={index}>{this.renderSubTitle(option, index < info.options.length - 1)}</React.Fragment>
+            <React.Fragment key={index}>
+              {this.renderSubTitle(title, option, index < info.options.length - 1)}
+            </React.Fragment>
           );
         })}
         {showDivider && <Divider containerStyles={styles.titleDividerStyles} />}
@@ -109,7 +176,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     );
   };
 
-  private renderSubTitle = (options: SettingOptions, showDivider: boolean): ReactElement => {
+  private renderSubTitle = (title: string, options: SettingOptions, showDivider: boolean): ReactElement => {
     const { t } = this.props;
 
     return (
@@ -118,7 +185,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
           <Label style={styles.subTitle} type="large">
             {t(options.label)}
           </Label>
-          {this.renderOptionTypes(options)}
+          {this.renderOptionTypes(title, options)}
         </View>
         {showDivider && (
           <View style={styles.paddingLeft}>
@@ -129,11 +196,11 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     );
   };
 
-  private renderOptionTypes = (options: SettingOptions): ReactElement => {
+  private renderOptionTypes = (title: string, options: SettingOptions): ReactElement => {
     let renderElement: ReactElement;
     let navigateToWebview: () => void;
     const handleChange = (value?: SelectedPreferenceType): void =>
-      this.handlePreferenceUpdate(options.name, value || !options.selected);
+      this.handlePreferenceUpdate(title, options.name, value || !options.selected);
 
     switch (options.type) {
       case OptionTypes.Webview:
@@ -169,8 +236,86 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     navigation.goBack();
   };
 
-  private handlePreferenceUpdate = (key: string, value: SelectedPreferenceType): void => {
+  private onSheetClose = (): void => {
+    this.setState({ bottomSheetVisibility: false });
+  };
+
+  private handlePreferenceUpdate = (title: string, key: string, value: SelectedPreferenceType): void => {
+    const {
+      IsEmailObfuscated,
+      IsLastNameObfuscated,
+      IsMobileNumberObfuscated,
+      PushNotifications,
+      EmailsText,
+      MessagesText,
+    } = UserPreferencesKeys;
+    const enableBottomSheet =
+      (key === IsEmailObfuscated ||
+        key === IsLastNameObfuscated ||
+        key === IsMobileNumberObfuscated ||
+        key === PushNotifications ||
+        key === EmailsText ||
+        key === MessagesText) &&
+      !value;
+
+    let updatedValue = value;
+    if (key === IsMobileNumberObfuscated || key === IsLastNameObfuscated || key === IsEmailObfuscated) {
+      updatedValue = !value;
+    }
+
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        updatePayload: { key, value: updatedValue },
+        ...(enableBottomSheet && { bottomSheetVisibility: true }),
+        ...(enableBottomSheet && { bottomSheetDetails: { title, message: this.getCautionMessageFor(key) } }),
+      }),
+      () => {
+        if (!enableBottomSheet) {
+          this.updatePreferences();
+        }
+      }
+    );
+  };
+
+  private getCautionMessageFor = (key: string): string => {
+    const { t } = this.props;
+    let message: string;
+    switch (key) {
+      case UserPreferencesKeys.EmailsText:
+        message = t('communicationsCautionText', { name: t('emailText') });
+        break;
+      case UserPreferencesKeys.MessagesText:
+        message = t('communicationsCautionText', { name: t('messagesText') });
+        break;
+      case UserPreferencesKeys.PushNotifications:
+        message = t('communicationsCautionText', { name: t('pushNotifications') });
+        break;
+      case UserPreferencesKeys.IsLastNameObfuscated:
+        message = t('dataPrivacyCautionText', { name: t('property:lastName') });
+        break;
+      case UserPreferencesKeys.IsMobileNumberObfuscated:
+        message = t('dataPrivacyCautionText', { name: t('common:mobileNumber') });
+        break;
+      case UserPreferencesKeys.IsEmailObfuscated:
+        message = t('dataPrivacyCautionText', { name: t('common:email') });
+        break;
+      default:
+        message = '';
+    }
+    return message;
+  };
+
+  private updatePreferences = (): void => {
     const { updateUserPreferences } = this.props;
+    const {
+      updatePayload: { key, value },
+      bottomSheetVisibility,
+    } = this.state;
+
+    if (bottomSheetVisibility) {
+      this.onSheetClose();
+    }
     updateUserPreferences({ [key]: value });
   };
 
@@ -222,6 +367,24 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
           case UserPreferencesKeys.MetricUnit:
             option.options = settingDropDownValues.metricUnit;
             option.selected = userPreferences.metricUnit;
+            break;
+          case UserPreferencesKeys.IsLastNameObfuscated:
+            option.selected = userPreferences.isLastNameObfuscated;
+            break;
+          case UserPreferencesKeys.IsMobileNumberObfuscated:
+            option.selected = userPreferences.isMobileNumberObfuscated;
+            break;
+          case UserPreferencesKeys.IsEmailObfuscated:
+            option.selected = userPreferences.isEmailObfuscated;
+            break;
+          case UserPreferencesKeys.PushNotifications:
+            option.selected = userPreferences.pushNotifications;
+            break;
+          case UserPreferencesKeys.MessagesText:
+            option.selected = userPreferences.message;
+            break;
+          case UserPreferencesKeys.EmailsText:
+            option.selected = userPreferences.email;
             break;
           default:
             option.options = [];
@@ -291,5 +454,27 @@ const styles = StyleSheet.create({
   primaryColor: {
     flex: 0,
     color: theme.colors.primaryColor,
+  },
+  message: {
+    marginVertical: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 12,
+  },
+  editButton: {
+    marginLeft: 10,
+    flexDirection: 'row-reverse',
+    height: 50,
+  },
+  doneButton: {
+    flexDirection: 'row-reverse',
+    height: 50,
+  },
+  buttonTitle: {
+    marginHorizontal: 4,
+  },
+  bottomSheet: {
+    paddingHorizontal: theme.layout.screenPadding,
   },
 });

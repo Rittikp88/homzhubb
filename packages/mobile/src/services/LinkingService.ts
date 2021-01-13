@@ -1,7 +1,7 @@
 import { Linking } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';

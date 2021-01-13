@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { BottomSheet, IBottomSheetProps } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { BottomSheet, IBottomSheetProps } from '@homzhub/common/src/components/molecules/BottomSheet';
 
 describe('BottomSheet', () => {
   beforeAll(() => jest.spyOn(React, 'useEffect').mockImplementation((f) => f));

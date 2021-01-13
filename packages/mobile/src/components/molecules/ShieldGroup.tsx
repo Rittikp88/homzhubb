@@ -5,7 +5,7 @@ import Markdown from 'react-native-easy-markdown';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 
 interface IProps {
   propertyType?: string;

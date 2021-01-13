@@ -11,6 +11,7 @@ export interface IUserState {
   isOnBoardingCompleted: boolean;
   isChangeStack: boolean;
   isAddPropertyFlow: boolean;
+  userCountryCode: number;
   favouriteProperties: IAsset[];
   error: {
     user: string;

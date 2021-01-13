@@ -10,8 +10,9 @@ interface IProps {
   value: string;
   placeholder: string;
   helpText?: string;
-  containerStyle?: StyleProp<ViewStyle>;
   onMessageChange?: (text: string) => void;
+  containerStyle?: StyleProp<ViewStyle>;
+  textAreaStyle?: StyleProp<ViewStyle>;
   wordCountLimit?: number;
   inputContainerStyle?: StyleProp<ViewStyle>;
 }
@@ -26,6 +27,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
     value,
     wordCountLimit = 250,
     helpText,
+    textAreaStyle,
   } = props;
   const { t } = useTranslation();
   const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
@@ -41,7 +43,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
           </Label>
         )}
       </View>
-      <View style={styles.textAreaContainer}>
+      <View style={[styles.textAreaContainer, textAreaStyle]}>
         <TextInput
           autoCorrect={false}
           style={[styles.textArea, inputContainerStyle]}
@@ -65,12 +67,12 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint3,
   },
   textAreaContainer: {
+    height: 150,
     borderColor: theme.colors.disabled,
     borderWidth: 1,
     padding: PlatformUtils.isWeb() ? 0 : 5,
   },
   textArea: {
-    height: 150,
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
   },

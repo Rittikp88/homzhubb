@@ -10,7 +10,7 @@ import { configureStore } from '@homzhub/common/src/modules/store';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { RootNavigator } from '@homzhub/mobile/src/navigation/RootNavigator';
-import { Toast } from '@homzhub/mobile/src/components/molecules/Toast';
+import { Toast } from '@homzhub/common/src/components/molecules/Toast';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 
 interface IState {

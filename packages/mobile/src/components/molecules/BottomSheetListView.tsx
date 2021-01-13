@@ -3,7 +3,7 @@ import { FlatList, PickerItemProps, StyleSheet } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ListItem } from '@homzhub/common/src/components/atoms/ListItem';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 
 interface IProps<T> {
   data: PickerItemProps[];

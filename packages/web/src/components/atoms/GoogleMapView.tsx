@@ -27,8 +27,7 @@ const GoogleMapView: FC<IProps> = (props: IProps) => {
     }
   }, []);
 
-  const onUnmount = useCallback((mapInstance: google.maps.Map) => {
-  }, []);
+  const onUnmount = useCallback((mapInstance: google.maps.Map) => {}, []);
   const onLoadMarker = (marker: google.maps.Marker): void => {
     // todos empty
   };

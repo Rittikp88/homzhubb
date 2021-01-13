@@ -56,26 +56,21 @@ export const SettingsScreenData: ISettingsData[] = [
   {
     name: 'dataAndPrivacy',
     icon: icons.hand,
-    visible: false,
+    visible: true,
     options: [
       {
-        name: UserPreferencesKeys.ShowLastName,
+        name: UserPreferencesKeys.IsLastNameObfuscated,
         label: 'showLastName',
         type: OptionTypes.Switch,
       },
       {
-        name: UserPreferencesKeys.ShowMobileNumber,
+        name: UserPreferencesKeys.IsMobileNumberObfuscated,
         label: 'showMobileNumber',
         type: OptionTypes.Switch,
       },
       {
-        name: UserPreferencesKeys.ShowEmail,
+        name: UserPreferencesKeys.IsEmailObfuscated,
         label: 'showEmail',
-        type: OptionTypes.Switch,
-      },
-      {
-        name: UserPreferencesKeys.AnalyseAppIssuesAndEvents,
-        label: 'analyseAppIssuesAndEvents',
         type: OptionTypes.Switch,
       },
     ],
@@ -83,7 +78,7 @@ export const SettingsScreenData: ISettingsData[] = [
   {
     name: 'communications',
     icon: icons.communication,
-    visible: false,
+    visible: true,
     options: [
       {
         name: UserPreferencesKeys.PushNotifications,

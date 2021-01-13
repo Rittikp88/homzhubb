@@ -52,7 +52,6 @@ const AddProperty: FC = () => {
       moveAhead();
     }
   };
-  console.log(' Current Coords => ', latLng);
   return (
     <AddPropertyContext.Provider
       value={{

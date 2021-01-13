@@ -32,7 +32,11 @@ const AccordianContent: React.FC = () => {
   );
 };
 const FAQCards: React.FC = () => {
-  return <Accordian headerComponent={<Header />} accordianContent={<AccordianContent />} />;
+  return (
+    <View style={styles.cardContainer}>
+      <Accordian headerComponent={<Header />} accordianContent={<AccordianContent />} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -41,22 +45,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    height: 40,
   },
-  leftChild: { flexDirection: 'row' },
-  titleContent: { color: theme.colors.darkTint2 },
-  rightChild: { flexDirection: 'row' },
-  icon: { marginLeft: 10 },
+  leftChild: {
+    flexDirection: 'row',
+  },
+  titleContent: {
+    color: theme.colors.darkTint2,
+  },
+  cardContainer: {
+    backgroundColor: theme.colors.white,
+    borderRadius: 4,
+    margin: 10,
+    marginLeft: 20,
+    borderColor: theme.colors.darkTint10,
+    borderWidth: 1,
+  },
+  rightChild: {
+    flexDirection: 'row',
+  },
+  icon: {
+    marginLeft: 10,
+  },
   content: {
     margin: 10,
     marginTop: -10,
     alignContent: 'center',
   },
-  contentLabel: { color: theme.colors.darkTint4, paddingTop: 20, margin: 16, marginBottom: 0 },
+  contentLabel: {
+    color: theme.colors.darkTint4,
+    paddingTop: 20,
+    margin: 16,
+    marginBottom: 0,
+  },
   videoContainer: {
     height: 400,
     backgroundColor: theme.colors.background,
     margin: 16,
     alignItems: 'center',
+    borderRadius: 4,
   },
 });
 export default FAQCards;

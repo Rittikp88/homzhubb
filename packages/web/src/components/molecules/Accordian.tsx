@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 
 interface IProps {
   headerComponent?: React.ReactNode;
@@ -21,7 +20,6 @@ const Accordian: React.FC<IProps> = (props: IProps) => {
   };
   return (
     <View style={styles.accordianContainer}>
-      <Divider containerStyles={styles.divider} />
       <TouchableOpacity onPress={toggleAccordion}>{headerComponent}</TouchableOpacity>
       <View ref={content} style={[styles.accordianContent, { maxHeight: `${setHeight}` }]}>
         {accordianContent}
@@ -35,7 +33,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: 4,
   },
-  divider: { borderColor: theme.colors.background },
   accordianContent: {
     backgroundColor: theme.colors.grey1,
     overflow: 'hidden',

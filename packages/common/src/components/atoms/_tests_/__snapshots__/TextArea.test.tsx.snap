@@ -27,11 +27,15 @@ exports[`Text Area should match snapshot 1`] = `
   </View>
   <View
     style={
-      Object {
-        "borderColor": "#C9D6DF",
-        "borderWidth": 1,
-        "padding": 5,
-      }
+      Array [
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 1,
+          "height": 150,
+          "padding": 5,
+        },
+        undefined,
+      ]
     }
   >
     <Component
@@ -44,7 +48,6 @@ exports[`Text Area should match snapshot 1`] = `
       style={
         Array [
           Object {
-            "height": 150,
             "justifyContent": "flex-start",
             "textAlignVertical": "top",
           },
@@ -101,11 +104,15 @@ exports[`Text Area should match snapshot for optional 1`] = `
   </View>
   <View
     style={
-      Object {
-        "borderColor": "#C9D6DF",
-        "borderWidth": 1,
-        "padding": 5,
-      }
+      Array [
+        Object {
+          "borderColor": "#C9D6DF",
+          "borderWidth": 1,
+          "height": 150,
+          "padding": 5,
+        },
+        undefined,
+      ]
     }
   >
     <Component
@@ -118,7 +125,6 @@ exports[`Text Area should match snapshot for optional 1`] = `
       style={
         Array [
           Object {
-            "height": 150,
             "justifyContent": "flex-start",
             "textAlignVertical": "top",
           },

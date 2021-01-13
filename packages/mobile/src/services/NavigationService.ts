@@ -1,5 +1,5 @@
 import { CommonActions } from '@react-navigation/native';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';

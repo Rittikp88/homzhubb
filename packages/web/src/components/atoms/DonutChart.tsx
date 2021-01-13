@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactApexCharts from 'react-apexcharts';
-import { sum } from 'lodash';
+import _ from 'lodash';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 interface IProps {
   data: GeneralLedgers[];
+  currencySymbol: string;
 }
 
 interface IState {
@@ -26,17 +27,19 @@ class DonutChart extends React.PureComponent<IProps, IState> {
     this.modelData();
   }
 
-  public componentDidUpdate(prevProps: Readonly<IProps>): void {
-    const { data } = this.props;
-    const hasPropsChanged = JSON.stringify(prevProps.data) !== JSON.stringify(data);
+  public componentDidUpdate(prevProps: Readonly<IProps>): boolean {
+    const { data, currencySymbol } = this.props;
+    const hasPropsChanged = !_.isEqual(prevProps.data, data) || !_.isEqual(prevProps.currencySymbol, currencySymbol);
     if (hasPropsChanged) {
       this.modelData();
     }
+    return hasPropsChanged;
   }
 
   public render(): React.ReactNode {
     const { labels, colors, series } = this.state;
-    const { options } = this.initConfig(labels, colors);
+    const { currencySymbol } = this.props;
+    const { options } = this.initConfig(currencySymbol, labels, colors);
     return <ReactApexCharts options={options} series={series} type="donut" height={280} />;
   }
 
@@ -62,7 +65,7 @@ class DonutChart extends React.PureComponent<IProps, IState> {
     this.setState({ series, colors, labels });
   };
 
-  private initConfig = (dataLabels: string[], colors: string[]): any => ({
+  private initConfig = (currencySymbol: string, dataLabels: string[], colors: string[]): any => ({
     // Initial Config of Graph
     options: {
       chart: {
@@ -79,7 +82,7 @@ class DonutChart extends React.PureComponent<IProps, IState> {
           seriesName: string,
           opts: { w: { globals: { series: number[] } }; seriesIndex: string | number }
         ): string[] {
-          return [seriesName, ' - ', `$ ${sum(opts.w.globals.series)}`];
+          return [seriesName, ' - ', `${currencySymbol} ${opts.w.globals.series[opts.seriesIndex as number]}`];
         },
       },
       colors,
