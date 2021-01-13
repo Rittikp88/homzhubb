@@ -16,16 +16,18 @@ const centerDefault = {
 interface IProps {
   center?: ILatLng;
   updateCenter?: (center: ILatLng) => void;
+  onMapLoadCallBack?: (map: google.maps.Map) => void;
 }
 
 const GoogleMapView: FC<IProps> = (props: IProps) => {
-  const { center, updateCenter } = props;
+  const { center, updateCenter, onMapLoadCallBack } = props;
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
-    // setMap(mapInstance);
+    if (onMapLoadCallBack) {
+      onMapLoadCallBack(mapInstance);
+    }
   }, []);
 
   const onUnmount = useCallback((mapInstance: google.maps.Map) => {
-    // setMap(null);
   }, []);
   const onLoadMarker = (marker: google.maps.Marker): void => {
     // todos empty
@@ -35,7 +37,6 @@ const GoogleMapView: FC<IProps> = (props: IProps) => {
   };
   const onDragEnd = (event: google.maps.MapMouseEvent): void => {
     const newCenter = { lat: event.latLng.lat(), lng: event.latLng.lng() } as ILatLng;
-    // setCurrentLatLng(newCenter);
     if (updateCenter) {
       updateCenter(newCenter);
     }

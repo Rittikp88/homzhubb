@@ -7,6 +7,8 @@ import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -18,7 +20,6 @@ import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAsse
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -57,7 +58,11 @@ interface IOwnState {
   //   displayGoBackCaution: boolean;
 }
 
-type Props = WithTranslation & IDispatchProps & IStateProps;
+interface IOwnProps {
+  data: google.maps.places.PlaceResult | undefined;
+}
+
+type Props = WithTranslation & IDispatchProps & IStateProps & IOwnProps;
 
 class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   public state = {
@@ -82,37 +87,36 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   private formikInnerRef: React.RefObject<FormikProps<IFormData>> | null = createRef<FormikProps<IFormData>>();
 
   public componentDidMount = (): void => {
-    const { getAssetGroups } = this.props;
+    const { getAssetGroups, data } = this.props;
     getAssetGroups();
+    if (!data) {
+      this.setDataFromAsset();
+      return;
+    }
+    this.setDataFromProps();
   };
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>): void {
-    const { asset } = this.props;
-    const { asset: prevAsset } = prevProps;
+    const { asset, data } = this.props;
+    const { asset: prevAsset, data: prevData } = prevProps;
 
     if (asset !== prevAsset) {
       this.setDataFromAsset();
     }
+    if (data !== prevData) {
+      this.setDataFromProps();
+    }
   }
 
   public render(): React.ReactNode {
-    return (
-      <>
-        <View style={styles.container}>{this.renderForm()}</View>
-      </>
-    );
+    return <View style={styles.container}>{this.renderForm()}</View>;
   }
 
   private renderForm = (): React.ReactNode => {
     const { t, assetGroups, asset } = this.props;
-    const {
-      formData,
-      assetGroupTypeId,
-      assetGroupId,
-      //   formData: { projectName, address }, todos =>  Add Form Data
-      assetGroupSelectionDisabled,
-    } = this.state;
-
+    const { formData, assetGroupTypeId, assetGroupId, assetGroupSelectionDisabled } = this.state;
+    console.log('reinnitalized--------------');
+    console.log(formData);
     return (
       <Formik
         validateOnMount
@@ -218,6 +222,35 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
 
   private onAssetGroupSelected = (assetGroupTypeId: number): void => {
     this.setState({ assetGroupTypeId });
+  };
+
+  private setDataFromProps = (): void => {
+    const { data, asset } = this.props;
+    const { formData } = this.state;
+
+    if (!data) return;
+    const { state, city, country, pincode, countryIsoCode } = ResponseHelper.getLocationDetails(data);
+    const { name, formatted_address, geometry } = data;
+
+    this.setState({
+      formData: {
+        ...formData,
+        projectName: name,
+        pincode,
+        city,
+        state,
+        country,
+        countryIsoCode,
+        address: formatted_address ?? '',
+        unitNo: asset?.unitNumber ?? '',
+        blockNo: asset?.blockNumber ?? '',
+      },
+      assetGroupId: asset?.assetGroupId ?? -1,
+      assetGroupTypeId: asset?.assetGroupTypeId ?? -1,
+      assetGroupSelectionDisabled: !!asset,
+      longitude: geometry?.location.lng() ?? 0,
+      latitude: geometry?.location.lat() ?? 0,
+    });
   };
 
   private setDataFromAsset = (): void => {

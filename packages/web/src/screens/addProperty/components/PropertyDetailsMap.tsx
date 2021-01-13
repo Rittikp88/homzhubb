@@ -1,6 +1,7 @@
-import React, { FC, useContext, useEffect } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { getPlaceDetailsFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,23 +11,32 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 
 const PropertyDetailsMap: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [placeDetails, setPlaceDetails] = useState<google.maps.places.PlaceResult | undefined>(undefined);
   const { hasScriptLoaded, latLng, setUpdatedLatLng } = useContext(AddPropertyContext);
   useEffect(() => {
-    if (hasScriptLoaded) {
+    if (hasScriptLoaded && map !== null) {
       GooglePlacesService.getLocationData(latLng).then((r) => {
-        // update location
-        // transform data
+        getPlaceDetailsFromPlaceID(r.place_id, map, (result) => {
+          setPlaceDetails(result);
+        });
       });
     }
-  }, [latLng, hasScriptLoaded]);
+  }, [map, latLng, hasScriptLoaded]);
   const handleMapCenterChange = (newCenter: ILatLng): void => {
     setUpdatedLatLng(newCenter);
   };
 
+  const handleOnMapLoad = (mapInstance: google.maps.Map): void => {
+    setMap(mapInstance);
+  };
+
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
-      {hasScriptLoaded && <GoogleMapView center={latLng} updateCenter={handleMapCenterChange} />}
-      <PropertyDetailsForm />
+      {hasScriptLoaded && (
+        <GoogleMapView center={latLng} updateCenter={handleMapCenterChange} onMapLoadCallBack={handleOnMapLoad} />
+      )}
+      <PropertyDetailsForm data={placeDetails} />
     </View>
   );
 };

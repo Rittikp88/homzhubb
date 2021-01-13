@@ -2,25 +2,11 @@ import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 
 import { StyleSheet, TextInput } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
+import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
-
-const getDataFromPlaceID = (placeID: string, callback: (geocoderResult: google.maps.GeocoderResult) => void): void => {
-  const geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ placeId: placeID }, (results, status) => {
-    if (status === 'OK') {
-      if (results[0]) {
-        callback(results[0]);
-      } else {
-        // window.alert('No results found');
-      }
-    } else {
-      // window.alert('Geocoder failed due to: ' + status);
-    }
-  });
-};
 
 const AutoCompletionSearchBar: FC = () => {
   const { t } = useTranslation();
