@@ -24,5 +24,7 @@ export const RouteNames = {
     MANAGE_SUBSCRIPTION: '',
     PAYMENT_METHODS: '',
     LOGOUT: '',
+    HELP_SUPPORT: '/dashboard/help&Support',
+    REFER_EARN: '/dashboard/refer&Earn',
   },
 };

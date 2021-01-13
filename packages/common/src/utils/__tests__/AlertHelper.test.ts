@@ -1,5 +1,5 @@
 import * as message from 'react-native-flash-message';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 jest.mock('react-native-flash-message');

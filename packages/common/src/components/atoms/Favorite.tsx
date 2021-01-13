@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ViewStyle, StyleProp, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LeadRepository } from '@homzhub/common/src/domain/repositories/LeadRepository';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';

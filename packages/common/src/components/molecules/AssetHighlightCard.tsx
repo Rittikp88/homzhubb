@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
-import { AssetListingSection, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 
 interface IProps {
@@ -11,6 +12,12 @@ interface IProps {
   data: Amenity[];
   selectedAmenity: number[];
   onAmenityPress: (id: number) => void;
+  renderCarousel?: (
+    data: Amenity[][],
+    renderItem: (item: Amenity[]) => ReactElement,
+    activeSlide: number,
+    onSnap: (slideNumber: number) => void
+  ) => ReactElement;
 }
 
 interface IState {
@@ -23,44 +30,53 @@ class AssetHighlightCard extends Component<IProps, IState> {
   };
 
   public render(): React.ReactNode {
-    const { title } = this.props;
+    const { title, renderCarousel } = this.props;
     const { activeSlide } = this.state;
     const formattedData = this.getFormattedData();
-
     return (
       <AssetListingSection title={title} containerStyles={styles.container}>
-        <>
-          <SnapCarousel
-            carouselData={formattedData}
-            carouselItem={this.carouselItem}
-            activeIndex={activeSlide}
-            onSnapToItem={this.onSnapToItem}
-            containerStyle={styles.carouselContainer}
-          />
-          <PaginationComponent
-            containerStyle={styles.pagination}
-            dotsLength={formattedData.length}
-            activeSlide={activeSlide}
-            activeDotStyle={styles.activeDot}
-            inactiveDotStyle={styles.inactiveDot}
-          />
-        </>
+        {PlatformUtils.isWeb() ? (
+          <>
+            {formattedData.map((item) => {
+              return this.renderCarouselItem(item);
+            })}
+          </>
+        ) : (
+          <>
+            {renderCarousel
+              ? renderCarousel(formattedData, this.renderCarouselItem, activeSlide, this.onSnapToItem)
+              : null}
+          </>
+        )}
       </AssetListingSection>
     );
   }
+
+  private renderCarouselItem = (item: Amenity[]): React.ReactElement => {
+    return (
+      <FlatList
+        data={item}
+        numColumns={PlatformUtils.isMobile() ? 3 : 10}
+        renderItem={this.renderListItem}
+        contentContainerStyle={styles.listContainer}
+      />
+    );
+  };
 
   private renderListItem = ({ item }: { item: Amenity }): React.ReactElement => {
     const { selectedAmenity, onAmenityPress } = this.props;
     const isSelected = selectedAmenity.includes(item.id);
     return (
       <TouchableOpacity style={styles.amenityItem} onPress={(): void => onAmenityPress(item.id)}>
-        <SVGUri
-          uri={item.attachment.link}
-          height={30}
-          width={30}
-          stroke={isSelected ? theme.colors.active : undefined}
-          strokeWidth={isSelected ? 0.5 : undefined}
-        />
+        {PlatformUtils.isMobile() && (
+          <SVGUri
+            uri={item.attachment.link}
+            height={30}
+            width={30}
+            stroke={isSelected ? theme.colors.active : undefined}
+            strokeWidth={isSelected ? 0.5 : undefined}
+          />
+        )}
         <Label type="regular" textType="regular" style={[styles.label, isSelected && { color: theme.colors.blue }]}>
           {item.name}
         </Label>
@@ -84,17 +100,6 @@ class AssetHighlightCard extends Component<IProps, IState> {
     }
     return tempArray;
   };
-
-  private carouselItem = (item: Amenity[]): React.ReactElement => {
-    return (
-      <FlatList
-        data={item}
-        numColumns={3}
-        renderItem={this.renderListItem}
-        contentContainerStyle={styles.listContainer}
-      />
-    );
-  };
 }
 
 export default AssetHighlightCard;
@@ -103,26 +108,13 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
   },
-  carouselContainer: {
-    alignSelf: 'center',
-  },
   listContainer: {
     paddingTop: 16,
   },
-  pagination: {
-    paddingVertical: 0,
-  },
   amenityItem: {
-    width: (theme.viewport.width - 32) / 3,
+    width: PlatformUtils.isMobile() ? (theme.viewport.width - 32) / 3 : 120,
     alignItems: 'center',
     marginBottom: 16,
-  },
-  activeDot: {
-    borderWidth: 1,
-  },
-  inactiveDot: {
-    backgroundColor: theme.colors.darkTint10,
-    borderWidth: 0,
   },
   label: {
     textAlign: 'center',

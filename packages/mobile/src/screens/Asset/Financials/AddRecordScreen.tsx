@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

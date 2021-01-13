@@ -4,7 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import { isEmpty } from 'lodash';
 import * as yup from 'yup';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
@@ -17,16 +17,11 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import {
-  AnimatedProfileHeader,
-  BottomSheet,
-  HeaderCard,
-  Loader,
-  UploadBoxComponent,
-} from '@homzhub/mobile/src/components';
+import { AnimatedProfileHeader, HeaderCard, Loader, UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -20,6 +21,10 @@ import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAsse
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+
+interface IProps {
+  handleSubmit: () => void;
+}
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -214,8 +219,9 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
         const response = await AssetRepository.createAsset(params);
         setAssetId(response.id);
       }
+      // handleSubmit navigation here
     } catch (e) {
-      console.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
     formActions.setSubmitting(false);
   };

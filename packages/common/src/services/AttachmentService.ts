@@ -1,5 +1,5 @@
 import RNFetchBlob from 'rn-fetch-blob';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src//utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src//domain/repositories/AssetRepository';

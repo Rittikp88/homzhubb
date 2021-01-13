@@ -9,7 +9,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { FormCalendar } from '@homzhub/mobile/src/components/molecules/FormCalendar';
+import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
 export interface IFormData {

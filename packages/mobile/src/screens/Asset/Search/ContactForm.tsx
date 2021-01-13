@@ -4,7 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { remove, find, cloneDeep } from 'lodash';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';

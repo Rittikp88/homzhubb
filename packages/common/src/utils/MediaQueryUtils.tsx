@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IScaledSize {
   width: number;
@@ -54,4 +55,20 @@ function useDown(screenSize: IDeviceScreenLimits): boolean {
   return screenWidth < screenSize.up;
 }
 
-export { useViewPort, useOnly, useBetween, useUp, useDown };
+interface IWithMediaQuery {
+  // mediaQuery: (breakpoint: { down: number; up: number }) => boolean;
+  isMobile: boolean;
+  isTablet: boolean;
+}
+
+const withMediaQuery = <P extends IWithMediaQuery>(
+  WrappedComponent: React.ComponentType<P>
+): React.ComponentType<P & IWithMediaQuery> => {
+  return (props: P & IWithMediaQuery): JSX.Element => {
+    props.isMobile = useDown(deviceBreakpoint.MOBILE);
+    props.isTablet = useDown(deviceBreakpoint.TABLET);
+    return <WrappedComponent {...props} />;
+  };
+};
+
+export { useViewPort, useOnly, useBetween, useUp, useDown, withMediaQuery, IWithMediaQuery };

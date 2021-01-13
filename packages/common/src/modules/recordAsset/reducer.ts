@@ -3,6 +3,7 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 import { RecordAssetActionTypes, RecordAssetPayloadTypes } from '@homzhub/common/src/modules/recordAsset/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { IAssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { IAssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
@@ -18,6 +19,7 @@ export const initialRecordAssetState: IRecordAssetState = {
   assetGroups: [],
   maintenanceUnits: [],
   assetDetails: null,
+  selectedImages: [],
   selectedAssetPlan: {
     id: 0,
     selectedPlan: TypeOfPlan.RENT,
@@ -147,6 +149,8 @@ export const recordAssetReducer = (
           ['showBottomSheet']: action.payload as boolean,
         },
       };
+    case RecordAssetActionTypes.SET.SELECTED_IMAGE:
+      return { ...state, ['selectedImages']: action.payload as AssetGallery[] };
     case RecordAssetActionTypes.RESET:
       return initialRecordAssetState;
     default:

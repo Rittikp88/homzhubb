@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-community/clipboard';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';

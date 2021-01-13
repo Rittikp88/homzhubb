@@ -3,11 +3,12 @@ import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, TextStyle, Te
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
 import { CalendarComponent } from '@homzhub/mobile/src/components/atoms/CalendarComponent';
-import { BottomSheet } from '@homzhub/mobile/src/components/molecules/BottomSheet';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 
 interface IFormCalendarProps extends WithTranslation {
   name: string;
@@ -93,22 +94,24 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
           </View>
           <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} />
         </TouchableOpacity>
-        <BottomSheet
-          visible={isCalendarVisible}
-          onCloseSheet={this.onCalendarClose}
-          headerTitle={calendarTitle ?? t('common:availableFrom')}
-          isShadowView
-          sheetHeight={580}
-        >
-          <CalendarComponent
-            allowPastDates={allowPastDates}
-            maxDate={maxDate}
-            minDate={minDate}
-            isOnlyYearView={isYearView}
-            onSelect={this.onDateSelected}
-            selectedDate={selectedValue ?? formProps?.values[name]}
-          />
-        </BottomSheet>
+        {PlatformUtils.isMobile() && (
+          <BottomSheet
+            visible={isCalendarVisible}
+            onCloseSheet={this.onCalendarClose}
+            headerTitle={calendarTitle ?? t('common:availableFrom')}
+            isShadowView
+            sheetHeight={580}
+          >
+            <CalendarComponent
+              allowPastDates={allowPastDates}
+              maxDate={maxDate}
+              minDate={minDate}
+              isOnlyYearView={isYearView}
+              onSelect={this.onDateSelected}
+              selectedDate={selectedValue ?? formProps?.values[name]}
+            />
+          </BottomSheet>
+        )}
       </View>
     );
   }

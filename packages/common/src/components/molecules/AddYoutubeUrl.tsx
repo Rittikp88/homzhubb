@@ -3,7 +3,6 @@ import { View, StyleSheet, ViewStyle, StyleProp, TextInput } from 'react-native'
 import { useTranslation } from 'react-i18next';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
-// @ts-ignore
 import YoutubeSVG from '@homzhub/common/src/assets/images/youtube.svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';

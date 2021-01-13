@@ -74,6 +74,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
   const defaultFilterOption = dateFilterOptions.find((d: IDropdownOption) => d.value === DateFilter.thisMonth);
   const assets = useSelector(UserSelector.getUserAssets);
   const financialYear = useSelector(UserSelector.getUserFinancialYear);
+  const { currencySymbol } = useSelector(UserSelector.getCurrency);
   const propertyOptions = getPropertyList(t, assets, selectedCountry ?? 0);
   const popupRef = useRef<PopupActions>(null);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -158,14 +159,17 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
               <Typography variant="label" size="large" fontWeight="bold">
                 {t('assetDashboard:costBreakdown')}
               </Typography>
-              <DonutChart data={LedgerUtils.filterByType(LedgerTypes.debit, ledgerData)} />
+              <DonutChart
+                data={LedgerUtils.filterByType(LedgerTypes.debit, ledgerData)}
+                currencySymbol={currencySymbol}
+              />
             </View>
             {isMobile && <Divider containerStyles={styles.dividerStyles} />}
             <View style={styles.columnChart}>
               <Typography variant="label" size="large" fontWeight="bold">
                 {t('assetDashboard:cashFlow')}
               </Typography>
-              <ColumnChart data={columnGraphData} />
+              <ColumnChart data={columnGraphData} currencySymbol={currencySymbol} />
             </View>
           </>
         )}
@@ -242,7 +246,7 @@ const propertyVisualEstimatesStyle = (isMobile: boolean): StyleSheet.NamedStyles
     optionLabel: {
       flex: 1,
       marginHorizontal: 4,
-      color: theme.colors.darkTint9,
+      color: theme.colors.darkTint4,
     },
     dropdownIcon: {
       marginRight: 8,

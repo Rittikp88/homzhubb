@@ -44,7 +44,7 @@ interface IListProps {
 type Props = WithTranslation & IListProps;
 
 export class AssetCard extends Component<Props> {
-  public render(): React.ReactNode {
+  public render(): React.ReactElement {
     const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0, containerStyle } = this.props;
     const {
       id,

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { PermissionsService } from '@homzhub/common/src/services/Permissions/PermissionService';
 import { PERMISSION_TYPE } from '@homzhub/common/src/constants/PermissionTypes';

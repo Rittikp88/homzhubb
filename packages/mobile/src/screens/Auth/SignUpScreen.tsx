@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/mobile/src/utils/AlertHelper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
