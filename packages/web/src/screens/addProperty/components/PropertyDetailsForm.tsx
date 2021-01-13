@@ -7,29 +7,11 @@ import AddAssetDetails from '@homzhub/web/src/screens/addProperty/components/Add
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
-  placeData: any;
-  addressDetails: any;
+  data: google.maps.places.PlaceResult | undefined;
 }
-type Props = IProps;
-
-const PropertyDetails: FC<IProps> = (props: Props) => {
-  const { placeData, addressDetails } = props;
-  console.log('placeData => ', placeData);
+const PropertyDetails: FC<IProps> = ({ data }: IProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
-  // todo: dummy location to be replaced with actual location
-  const locationAddress = 'Sed aliquet amet viverra at urna sodales praesent commodo eget. Vitae.';
-  console.log(' Address Details => ', addressDetails);
-  const { city, state, country, pincode, countryIsoCode } = addressDetails;
-  const { formatted_address } = placeData;
-  const asset = {
-    city,
-    state,
-    country,
-    pincode,
-    countryIsoCode,
-    address: formatted_address,
-    projectName: 'Nineleaps',
-  };
+  const locationAddress = data?.formatted_address ?? '';
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
       <Typography variant="text" size="small" fontWeight="regular" style={styles.title}>
@@ -38,7 +20,7 @@ const PropertyDetails: FC<IProps> = (props: Props) => {
       <Typography variant="label" size="large" fontWeight="regular" style={styles.subTitle}>
         {locationAddress}
       </Typography>
-      <AddAssetDetails />
+      <AddAssetDetails data={data} />
     </View>
   );
 };

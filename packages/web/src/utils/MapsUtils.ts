@@ -15,3 +15,21 @@ export const getDataFromPlaceID = (
     }
   });
 };
+export const getPlaceDetailsFromPlaceID = (
+  placeID: string,
+  map: google.maps.Map,
+  callback: (result: google.maps.places.PlaceResult) => void
+): void => {
+  const service = new google.maps.places.PlacesService(map);
+  service.getDetails({ placeId: placeID }, (results, status) => {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      if (results) {
+        callback(results);
+      } else {
+        // window.alert('No results found');
+      }
+    } else {
+      // window.alert('failed due to: ' + status);
+    }
+  });
+};

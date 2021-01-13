@@ -2,11 +2,11 @@ import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 
 import { StyleSheet, TextInput } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
+import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
-import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 
 const AutoCompletionSearchBar: FC = () => {
   const { t } = useTranslation();
