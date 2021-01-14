@@ -86,10 +86,10 @@ export class AssetVisit {
   private _comments = '';
 
   @JsonProperty('sale_listing', Number, true)
-  private _saleListing = -1;
+  private _saleListing = 0;
 
   @JsonProperty('lease_listing', Number, true)
-  private _leaseListing = -1;
+  private _leaseListing = 0;
 
   @JsonProperty('status', String)
   private _status = '';

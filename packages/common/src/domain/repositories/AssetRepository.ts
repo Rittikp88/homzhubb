@@ -18,6 +18,8 @@ import {
   ICancelListingPayload,
   ICancelListingParam,
   ITerminateListingPayload,
+  IListingReviewParams,
+  IGetListingReviews,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -92,6 +94,7 @@ const ENDPOINTS = {
     `assets/${param.assetId}/${param.listingType}/${param.listingId}/cancel/`,
   terminateTransaction: (id: number): string => `lease-transactions/${id}/terminate/`,
   closureReason: 'closure-reasons/',
+  listingReviews: 'listing-reviews/',
 };
 
 class AssetRepository {
@@ -340,6 +343,15 @@ class AssetRepository {
 
   public terminateLease = async (payload: ITerminateListingPayload): Promise<ILeaseTermination> => {
     return await this.apiClient.post(ENDPOINTS.terminateTransaction(payload.id), payload.data);
+  };
+
+  public getListingReviews = async (params: IGetListingReviews): Promise<AssetReview[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.listingReviews, params);
+    return ObjectMapper.deserializeArray(AssetReview, response);
+  };
+
+  public postListingReview = async (params: IListingReviewParams): Promise<void> => {
+    return this.apiClient.post(ENDPOINTS.listingReviews, params);
   };
 }
 

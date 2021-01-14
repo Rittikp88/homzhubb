@@ -1,31 +1,98 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 export interface IAssetReview {
   id: number;
   rating: number;
   experience_area: string;
 }
+const MAX_RATING = 5;
 
 @JsonObject('AssetReview')
 export class AssetReview {
   @JsonProperty('id', Number)
   private _id = 0;
 
+  @JsonProperty('experience_area', String, true)
+  private _experienceArea = '';
+
   @JsonProperty('rating', Number)
   private _rating = 0;
 
-  @JsonProperty('experience_area', String)
-  private _experienceArea = '';
+  @JsonProperty('max_rating', Number, true)
+  private _maxRating = MAX_RATING;
+
+  @JsonProperty('lease_listing', Number, true)
+  private _leaseListing: number | null = null;
+
+  @JsonProperty('sale_listing', Number, true)
+  private _saleListing: number | null = null;
+
+  @JsonProperty('description', String, true)
+  private _description = '';
+
+  @JsonProperty('is_reported', Boolean, true)
+  private _isReported = false;
+
+  @JsonProperty('posted_at', String, true)
+  private _postedAt = '';
+
+  @JsonProperty('reviewed_by', User, true)
+  private _reviewedBy = new User();
+
+  @JsonProperty('comments', [AssetReviewComment], true)
+  private _comments = [];
+
+  @JsonProperty('pillar_ratings', [Pillar], true)
+  private _pillarRatings = [];
 
   get id(): number {
     return this._id;
+  }
+
+  get experienceArea(): string {
+    return this._experienceArea;
   }
 
   get rating(): number {
     return this._rating;
   }
 
-  get experienceArea(): string {
-    return this._experienceArea;
+  get maxRating(): number {
+    return this._maxRating;
+  }
+
+  get leaseListing(): number | null {
+    return this._leaseListing;
+  }
+
+  get saleListing(): number | null {
+    return this._saleListing;
+  }
+
+  get description(): string {
+    return this._description;
+  }
+
+  get isReported(): boolean {
+    return this._isReported;
+  }
+
+  get postedAt(): string {
+    return this._postedAt;
+  }
+
+  get reviewedBy(): User {
+    return this._reviewedBy;
+  }
+
+  get comments(): AssetReviewComment[] {
+    return this._comments;
+  }
+
+  get pillarRatings(): Pillar[] {
+    return this._pillarRatings;
   }
 }
