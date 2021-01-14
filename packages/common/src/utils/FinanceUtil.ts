@@ -149,10 +149,8 @@ class FinanceUtils {
     const dataByMonth = ObjectUtils.groupBy<GeneralLedgers>(ledgersData, 'transactionDateLabel');
     Object.keys(dataByMonth).forEach((key: string) => {
       const currentMonthData = dataByMonth[key];
-
       const debitsSum = LedgerUtils.totalByType(LedgerTypes.debit, currentMonthData);
       const creditsSum = LedgerUtils.totalByType(LedgerTypes.credit, currentMonthData);
-
       const currentMonth = MonthNames[parseInt(key.split('-')[1], 10) - 1];
       const currentMonthIndex = monthList.findIndex((month) => month === currentMonth);
       debitArray[currentMonthIndex] = debitsSum;

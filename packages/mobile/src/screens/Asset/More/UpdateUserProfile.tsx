@@ -9,10 +9,10 @@ import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepo
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';
 import UserProfileForm, { IUserProfileForm } from '@homzhub/mobile/src/components/molecules/UserProfileForm';
 import EmergencyContactForm from '@homzhub/mobile/src/components/molecules/EmergencyContactForm';
 import WorkInfoForm from '@homzhub/mobile/src/components/molecules/WorkInfoForm';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -79,14 +79,9 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     }
 
     return (
-      <AnimatedProfileHeader
-        title={t('assetMore:more')}
-        sectionHeader={this.renderSectionHeader()}
-        onBackPress={this.goBack}
-        sectionTitleType="semiBold"
-      >
+      <UserScreen title={t('assetMore:more')} pageTitle={this.renderSectionHeader()} onBackPress={this.goBack}>
         <View style={styles.container}>{this.renderFormOnType()}</View>
-      </AnimatedProfileHeader>
+      </UserScreen>
     );
   };
 

@@ -11,8 +11,8 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { DocumentCard } from '@homzhub/mobile/src/components/molecules/DocumentCard';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -88,14 +88,7 @@ const KYCDocuments = (props: Props): React.ReactElement => {
   };
 
   return (
-    <AnimatedProfileHeader
-      title={t('more')}
-      sectionHeader={t('kycDocuments')}
-      onBackPress={navigation.goBack}
-      sectionTitleType="semiBold"
-      keyboardShouldPersistTaps
-      loading={loading}
-    >
+    <UserScreen title={t('more')} pageTitle={t('kycDocuments')} onBackPress={navigation.goBack} loading={loading}>
       <View style={styles.container}>
         <SearchBar
           placeholder={t('searchByDoc')}
@@ -105,7 +98,7 @@ const KYCDocuments = (props: Props): React.ReactElement => {
         />
         {renderList()}
       </View>
-    </AnimatedProfileHeader>
+    </UserScreen>
   );
 };
 

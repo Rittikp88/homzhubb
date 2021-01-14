@@ -444,13 +444,13 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         start_date_gte = date;
         break;
       case VisitStatusType.MISSED:
-        dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
+        dropdownData = this.getDropdownData(VisitStatusType.MISSED);
         key = VisitStatusType.MISSED;
         start_date_lte = date;
         status = VisitStatus.PENDING;
         break;
       case VisitStatusType.COMPLETED:
-        dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
+        dropdownData = this.getDropdownData(VisitStatusType.COMPLETED);
         key = VisitStatusType.COMPLETED;
         status__neq = VisitStatus.PENDING;
         start_date_lte = date;

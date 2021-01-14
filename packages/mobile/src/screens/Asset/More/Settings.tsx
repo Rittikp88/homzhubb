@@ -19,7 +19,8 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader, BottomSheet } from '@homzhub/mobile/src/components';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { OptionTypes, SelectedPreferenceType, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
@@ -90,11 +91,10 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
 
     return (
       <>
-        <AnimatedProfileHeader
+        <UserScreen
           title={t('assetMore:more')}
-          sectionHeader={t('assetMore:Settings')}
+          pageTitle={t('assetMore:Settings')}
           onBackPress={this.onBackPress}
-          sectionTitleType="semiBold"
           loading={isUserPreferencesLoading || isLoading}
         >
           <View style={styles.container}>
@@ -106,7 +106,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
               );
             })}
           </View>
-        </AnimatedProfileHeader>
+        </UserScreen>
         {this.renderBottomSheet()}
       </>
     );
@@ -417,7 +417,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 42,
+    paddingTop: 30,
     paddingBottom: 8,
     backgroundColor: theme.colors.white,
   },

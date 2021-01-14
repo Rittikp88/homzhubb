@@ -245,12 +245,12 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
           <BottomSheet
             visible={isDeleteProperty}
             headerTitle={t('property:deleteProperty')}
-            sheetHeight={400}
+            sheetHeight={460}
             onCloseSheet={this.onCloseDeleteView}
           >
             <PropertyConfirmationView
               propertyData={propertyData}
-              description={t('deletePropertyDescription')} // TODO: Replace with proper text
+              description={t('deletePropertyDescription')}
               message={t('deleteConfirmation')}
               onCancel={this.onCloseDeleteView}
               onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
