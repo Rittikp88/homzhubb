@@ -1,6 +1,8 @@
 import React, { memo, useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -8,22 +10,40 @@ import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/Pagina
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { AssetReviewCard } from '@homzhub/mobile/src/components/molecules/AssetReviewCard';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-const SLIDER_WIDTH = theme.viewport.width - theme.layout.screenPadding * 4;
+interface IProps {
+  saleListingId: number | null;
+  leaseListingId: number | null;
+}
+
 const data = [
   { id: 1, rating: 1, name: 'Neighborhood' },
   { id: 2, rating: 2, name: 'Rent' },
   { id: 3, rating: 4, name: 'Security' },
   { id: 4, rating: 5, name: 'Maintain' },
 ];
-const AssetReviews = (): React.ReactElement => {
+const SLIDER_WIDTH = theme.viewport.width - theme.layout.screenPadding * 4;
+
+const AssetReviews = (props: IProps): React.ReactElement => {
+  const { saleListingId, leaseListingId } = props;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [reviews, setReviews] = useState<AssetReview[]>([]);
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   useEffect(() => {
-    // Make APIs here
-  });
+    try {
+      AssetRepository.getListingReviews({
+        ...(leaseListingId && { lease_listing: leaseListingId }),
+        ...(saleListingId && { sale_listing: saleListingId }),
+      }).then((response) => {
+        setReviews(response);
+      });
+    } catch (e) {
+      AlertHelper.error({ message: t('common:genericErrorMessage') });
+    }
+  }, []);
 
   const splitData = useCallback((): any => {
     const newArr = [];
@@ -73,7 +93,17 @@ const AssetReviews = (): React.ReactElement => {
       <Label type="large" textType="semiBold" style={styles.popularWith}>
         {t('common:popularWith')}
       </Label>
-      <AssetReviewCard review="Natoque auctor et faucibus lobortis sed non pretium. Eros, gravida nulla vitae, molestie, Natoque auctor et faucibus lobortis sed non pretium. Eros, gravida nulla vitae, molestie, Natoque auctor et faucibus lobortis sed non pretium. Eros, gravida nulla vitae, molestie" />
+      {reviews.map((review: AssetReview) => (
+        <AssetReviewCard
+          key={review.id}
+          description={review.description}
+          reviewedAt={review.postedAt}
+          reviewedBy={review.reviewedBy}
+          isReported={review.isReported}
+          overallRating={review.rating}
+          pillars={review.pillarRatings}
+        />
+      ))}
     </View>
   );
 };

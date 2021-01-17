@@ -11,21 +11,21 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { User } from '@homzhub/common/src/domain/models/User';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IAssetReviewProps {
-  review?: string;
+  description?: string;
+  overallRating: number;
+  reviewedBy: User;
+  reviewedAt: string;
+  isReported: boolean;
+  pillars: Pillar[];
 }
 
-const data = [
-  { id: 1, rating: 1, name: 'Neighborhood' },
-  { id: 2, rating: 2, name: 'Rent' },
-  { id: 3, rating: 4, name: 'Security' },
-  { id: 4, rating: 5, name: 'Maintain' },
-];
-
 const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
-  const { review } = props;
+  const { description, reviewedBy, reviewedAt, overallRating, pillars } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const owner = useSelector(UserSelector.getUserProfile);
 
@@ -63,22 +63,28 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
 
   return (
     <View style={styles.container}>
-      <Avatar fullName="Aditya Warrier" designation={t('tenant')} rating={5} />
-      {review && (
+      <Avatar
+        fullName={reviewedBy.fullName}
+        image={reviewedBy.profilePicture}
+        designation={t('tenant')}
+        rating={reviewedBy.rating}
+        date={reviewedAt}
+      />
+      {description && (
         <Label type="large" numberOfLines={!showMore ? 2 : undefined} style={styles.review}>
-          {review}
+          {description}
         </Label>
       )}
-      <Rating isOverallRating value={5} />
+      <Rating isOverallRating value={overallRating} />
       {showMore && (
         <View style={styles.pillarContainer}>
-          {data.map((pillarRating, index) => {
+          {pillars.map((pillarRating, index) => {
             return (
               <Rating
                 key={pillarRating.id}
-                title={pillarRating.name}
+                title={pillarRating.pillarName?.name ?? ''}
                 value={pillarRating.rating}
-                containerStyle={index !== data.length - 1 && styles.rating}
+                containerStyle={index !== pillars.length - 1 && styles.rating}
               />
             );
           })}

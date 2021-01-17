@@ -619,3 +619,16 @@ export interface ITerminateListingPayload {
     termination_description?: string;
   };
 }
+
+export interface IListingReviewParams {
+  lease_listing?: number;
+  sale_listing?: number;
+  rating: number;
+  pillar_ratings: { pillar: number; rating: number }[];
+  description?: string;
+}
+
+export interface IGetListingReviews {
+  lease_listing?: number;
+  sale_listing?: number;
+}

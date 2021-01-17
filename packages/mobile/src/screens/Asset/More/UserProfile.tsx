@@ -18,8 +18,9 @@ import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/Upda
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { AnimatedProfileHeader, DetailsCard, Loader, Progress } from '@homzhub/mobile/src/components';
+import { DetailsCard, Loader, Progress } from '@homzhub/mobile/src/components';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -105,12 +106,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
     return (
       <>
-        <AnimatedProfileHeader
-          title={t('assetMore:more')}
-          sectionHeader={t('assetMore:profile')}
-          onBackPress={navigation.goBack}
-          sectionTitleType="semiBold"
-        >
+        <UserScreen title={t('assetMore:more')} pageTitle={t('assetMore:profile')} onBackPress={navigation.goBack}>
           <View style={styles.container}>
             <View style={styles.profileImage}>
               <Avatar
@@ -158,7 +154,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
               type={UpdateUserFormTypes.WorkInfo}
             />
           </View>
-        </AnimatedProfileHeader>
+        </UserScreen>
         <BottomSheet sheetHeight={400} visible={isBottomSheetOpen} onCloseSheet={this.closeBottomSheet}>
           <View>
             <Text style={styles.commonTextStyle} type="large" textType="semiBold">

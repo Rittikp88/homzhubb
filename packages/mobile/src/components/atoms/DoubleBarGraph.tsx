@@ -21,7 +21,7 @@ const SVG_GRID = { strokeDasharray: [5, 5], stroke: theme.colors.darkTint7, widt
 // INSET OPTIONS
 const VERTICAL_INSET = { top: 8, bottom: 8 };
 // VIEWPORT CONSTANTS
-const HEIGHT = theme.viewport.height * 0.5;
+const HEIGHT = 255;
 const Y_AXIS_WIDTH = 55;
 
 const DoubleBarGraph = (props: IProps): React.ReactElement => {
@@ -31,10 +31,12 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
 
   let HORIZONTAL_INSET = { left: 12, right: 12 };
   let WIDTH = theme.viewport.width * 1.3;
+
   if (type === DateRangeType.Month) {
     WIDTH = label.length <= 4 ? theme.viewport.width - 64 : theme.viewport.width;
     HORIZONTAL_INSET = { left: 24, right: 24 };
   }
+
   const currency = useSelector(UserSelector.getCurrency);
 
   const barData = [
@@ -53,7 +55,6 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
   if (isData1Empty && isData2Empty) {
     return <EmptyState />;
   }
-
   return (
     <>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -65,6 +66,7 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
               svg={SVG_FONT}
               formatLabel={(value: number): string => `${currency.currencySymbol} ${value}`}
               style={styles.yAxis}
+              numberOfTicks={5}
             />
             <BarChart
               contentInset={VERTICAL_INSET}

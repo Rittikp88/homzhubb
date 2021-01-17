@@ -4,7 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { DashboardNavigatorParamList, MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -23,18 +23,13 @@ class ComingSoonScreen extends React.PureComponent<Props> {
     } = this.props;
 
     return (
-      <AnimatedProfileHeader
-        title={tabHeader}
-        sectionHeader={title}
-        onBackPress={this.goBack}
-        sectionTitleType="semiBold"
-      >
+      <UserScreen title={tabHeader} pageTitle={title} onBackPress={this.goBack}>
         <View style={styles.screen}>
           <Text type="large" textType="semiBold">
             {t('comingSoonText')}
           </Text>
         </View>
-      </AnimatedProfileHeader>
+      </UserScreen>
     );
   };
 

@@ -10,6 +10,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -20,9 +21,10 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import EventWithProfile from '@homzhub/mobile/src/components/molecules/EventWithProfile';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { IVisitByKey, VisitActions, VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import {
   IAssetVisitPayload,
   IUpdateVisitPayload,
@@ -84,6 +86,7 @@ interface IScreenState {
   isFromNav: boolean;
   userDetail: UserInteraction;
   isProfileVisible: boolean;
+  pillars: Pillar[];
 }
 
 type Props = IDispatchProps & IStateProps & IProps & WithTranslation;
@@ -97,6 +100,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     isFromNav: true,
     userDetail: {} as UserInteraction,
     isProfileVisible: false,
+    pillars: [],
   };
 
   public componentDidMount(): void {
@@ -108,6 +112,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
       });
     }
     this.getVisitsData();
+    this.getRatingPillars();
   }
 
   public componentWillUnmount(): void {
@@ -176,7 +181,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
     const { visits, isLoading } = this.props;
-    const { dropdownValue } = this.state;
+    const { dropdownValue, pillars } = this.state;
     let dropdownData;
 
     switch (route.key) {
@@ -228,6 +233,8 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               handleReschedule={(id, userId): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED, userId)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
+              pillars={pillars}
+              resetData={this.getVisitsData}
             />
           </View>
         );
@@ -311,7 +318,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   };
 
   private handleIndexChange = (index: number): void => {
-    this.setState({ currentIndex: index }, () => this.getVisitsData());
+    this.setState({ currentIndex: index }, this.getVisitsData);
   };
 
   private handleVisitActions = async (visitId: number, action: VisitActions, isUserView?: boolean): Promise<void> => {
@@ -437,13 +444,13 @@ class SiteVisitTab extends Component<Props, IScreenState> {
         start_date_gte = date;
         break;
       case VisitStatusType.MISSED:
-        dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
+        dropdownData = this.getDropdownData(VisitStatusType.MISSED);
         key = VisitStatusType.MISSED;
         start_date_lte = date;
         status = VisitStatus.PENDING;
         break;
       case VisitStatusType.COMPLETED:
-        dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
+        dropdownData = this.getDropdownData(VisitStatusType.COMPLETED);
         key = VisitStatusType.COMPLETED;
         status__neq = VisitStatus.PENDING;
         start_date_lte = date;
@@ -501,6 +508,14 @@ class SiteVisitTab extends Component<Props, IScreenState> {
     }
 
     getAssetVisit(payload);
+  };
+
+  private getRatingPillars = async (): Promise<void> => {
+    try {
+      const pillars = await CommonRepository.getPillars(PillarTypes.LISTING_REVIEW);
+      this.setState({ pillars });
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
   };
 }
 

@@ -1,6 +1,9 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, memo, useEffect } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { cloneDeep } from 'lodash';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -8,27 +11,29 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
+import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-interface IRatingCaregory {
-  id: number;
-  name: string;
-  rating: number;
-}
 interface IProps {
-  asset: Asset;
-  ratingCategories: IRatingCaregory[];
-  onClose: () => void;
+  saleListingId: number | null;
+  leaseListingId: number | null;
+  asset: VisitAssetDetail;
+  ratingCategories: Pillar[];
+  onClose: (reset?: boolean) => void;
 }
 
 const ReviewForm = (props: IProps): React.ReactElement => {
-  const { asset, onClose, ratingCategories } = props;
+  const { asset, onClose, ratingCategories, saleListingId, leaseListingId } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
 
   const [overallRating, setOverallRating] = useState(0);
   const [description, setDescription] = useState('');
-  const [categoryRatings, setcategoryRatings] = useState<IRatingCaregory[]>(ratingCategories);
+  const [categoryRatings, setcategoryRatings] = useState<Pillar[]>([]);
+
+  useEffect(() => {
+    setcategoryRatings(cloneDeep(ratingCategories));
+  }, []);
 
   const updatePillarRating = useCallback(
     (newRating: number, id: number): void => {
@@ -45,14 +50,27 @@ const ReviewForm = (props: IProps): React.ReactElement => {
     [categoryRatings]
   );
 
-  const onSubmit = useCallback(() => {}, []);
+  const onSubmit = useCallback(async (): Promise<void> => {
+    try {
+      await AssetRepository.postListingReview({
+        rating: overallRating,
+        description,
+        pillar_ratings: ratingCategories.map((pillar: Pillar) => ({ pillar: pillar.id, rating: pillar.rating })),
+        ...(leaseListingId && { lease_listing: leaseListingId }),
+        ...(saleListingId && { sale_listing: saleListingId }),
+      });
+      onClose(true);
+    } catch (err) {
+      AlertHelper.error({ message: t('common:genericErrorMessage') });
+    }
+  }, [description, overallRating, ratingCategories, leaseListingId, saleListingId, onClose, t]);
 
   return (
     <>
       <PropertyAddressCountry
         primaryAddress={asset.projectName}
         subAddress={asset.address}
-        countryFlag="https://www.countryflags.io/IN/flat/48.png"
+        countryFlag={asset.country.flag}
         containerStyle={styles.container}
       />
       <Divider containerStyles={styles.dividerStyle} />
@@ -84,7 +102,12 @@ const ReviewForm = (props: IProps): React.ReactElement => {
           textAreaStyle={styles.textArea}
         />
         <View style={styles.buttonContainer}>
-          <Button onPress={onClose} type="secondary" title={t('common:notNow')} titleStyle={styles.buttonTitle} />
+          <Button
+            onPress={(): void => onClose()}
+            type="secondary"
+            title={t('common:notNow')}
+            titleStyle={styles.buttonTitle}
+          />
           <Button
             onPress={onSubmit}
             disabled={overallRating === 0}

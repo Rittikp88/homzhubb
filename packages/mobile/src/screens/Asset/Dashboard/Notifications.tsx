@@ -12,7 +12,8 @@ import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions'
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
-import { AnimatedProfileHeader, SearchBar } from '@homzhub/mobile/src/components';
+import { SearchBar } from '@homzhub/mobile/src/components';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import {
   AssetNotifications,
   Notifications as NotificationModel,
@@ -61,15 +62,14 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     const { scrollEnabled } = this.state;
     const title = params && params.isFromDashboard ? t('dashboard') : t('assetMore:more');
     return (
-      <AnimatedProfileHeader
+      <UserScreen
         isOuterScrollEnabled={scrollEnabled}
         title={title}
         onBackPress={this.handleIconPress}
-        sectionTitleType="semiBold"
-        sectionHeader={t('notification')}
+        pageTitle={t('notification')}
       >
         {this.renderNotifications()}
-      </AnimatedProfileHeader>
+      </UserScreen>
     );
   }
 

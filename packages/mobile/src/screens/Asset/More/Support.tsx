@@ -21,8 +21,9 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { AnimatedProfileHeader, HeaderCard, Loader, UploadBoxComponent } from '@homzhub/mobile/src/components';
+import { HeaderCard, Loader, UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -71,7 +72,7 @@ export class Support extends Component<Props, IScreenState> {
     const { isFormSubmitted, isLoading } = this.state;
     return (
       <>
-        <AnimatedProfileHeader title={t('assetMore:more')}>
+        <UserScreen title={t('assetMore:more')}>
           <HeaderCard
             title={t('assetMore:support')}
             titleFontWeight="semiBold"
@@ -82,7 +83,7 @@ export class Support extends Component<Props, IScreenState> {
             onIconPress={this.onGoBack}
             onClearPress={this.clearForm}
           />
-        </AnimatedProfileHeader>
+        </UserScreen>
         <BottomSheet visible={isFormSubmitted} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
           {this.renderContinueView()}
         </BottomSheet>

@@ -1,11 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Asset Notifications Screen should render snapshot 1`] = `
-<Memo(AnimatedProfileHeader)
+<Memo(UserScreen)
   isOuterScrollEnabled={true}
   onBackPress={[Function]}
-  sectionHeader="notification"
-  sectionTitleType="semiBold"
+  pageTitle="notification"
   title="dashboard"
 >
   <View
@@ -42,15 +41,14 @@ exports[`Asset Notifications Screen should render snapshot 1`] = `
       unreadCount={0}
     />
   </View>
-</Memo(AnimatedProfileHeader)>
+</Memo(UserScreen)>
 `;
 
 exports[`Asset Notifications Screen should render snapshot with empty notifications 1`] = `
-<Memo(AnimatedProfileHeader)
+<Memo(UserScreen)
   isOuterScrollEnabled={true}
   onBackPress={[Function]}
-  sectionHeader="notification"
-  sectionTitleType="semiBold"
+  pageTitle="notification"
   title="dashboard"
 >
   <View
@@ -77,5 +75,5 @@ exports[`Asset Notifications Screen should render snapshot with empty notificati
     />
     <EmptyState />
   </View>
-</Memo(AnimatedProfileHeader)>
+</Memo(UserScreen)>
 `;

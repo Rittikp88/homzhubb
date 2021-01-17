@@ -107,7 +107,6 @@ class AddPropertyView extends Component<Props, IScreenState> {
   public render(): React.ReactNode {
     const { heights, currentIndex } = this.state;
     const { assetDetail, onEditPress } = this.props;
-
     if (!assetDetail) return null;
     const {
       projectName,

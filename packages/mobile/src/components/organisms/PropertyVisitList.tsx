@@ -32,6 +32,7 @@ import {
   VisitActions,
   VisitStatusType,
 } from '@homzhub/common/src/domain/models/AssetVisit';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -54,6 +55,8 @@ interface IProps {
   handleReschedule: (id: number, userId?: number) => void;
   handleDropdown?: (value: string | number, visitType: VisitStatusType) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  pillars?: Pillar[];
+  resetData?: () => void;
 }
 
 interface IScreenState {
@@ -296,10 +299,10 @@ class PropertyVisitList extends Component<Props, IScreenState> {
 
   private renderReviewForm = (): React.ReactNode => {
     const { showReviewForm, reviewAsset } = this.state;
-    const { t } = this.props;
+    const { t, pillars } = this.props;
 
-    if (!reviewAsset) return null;
-    const { asset } = reviewAsset;
+    if (reviewAsset === null) return null;
+    const { asset, leaseListing, saleListing } = (reviewAsset as unknown) as AssetVisit;
 
     return (
       <BottomSheet
@@ -311,12 +314,9 @@ class PropertyVisitList extends Component<Props, IScreenState> {
         <ReviewForm
           onClose={this.onCancelReview}
           asset={asset}
-          ratingCategories={[
-            { id: 1, rating: 1, name: 'Neighborhood' },
-            { id: 2, rating: 2, name: 'Rent' },
-            { id: 3, rating: 4, name: 'Security' },
-            { id: 4, rating: 5, name: 'Maintain' },
-          ]}
+          ratingCategories={pillars ?? []}
+          leaseListingId={leaseListing}
+          saleListingId={saleListing}
         />
       </BottomSheet>
     );
@@ -337,10 +337,17 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     });
   };
 
-  private onCancelReview = (): void => {
-    this.setState({
-      showReviewForm: false,
-    });
+  private onCancelReview = (reset = false): void => {
+    const { resetData } = this.props;
+    this.setState(
+      {
+        showReviewForm: false,
+      },
+      () => {
+        if (!reset || !resetData) return;
+        resetData();
+      }
+    );
   };
 
   private onLayout = (e: LayoutChangeEvent): void => {
