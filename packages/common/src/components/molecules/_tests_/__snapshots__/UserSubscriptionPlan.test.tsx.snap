@@ -81,9 +81,7 @@ exports[`AssetSubscriptionPlan should match snapshot 1`] = `
           "flexDirection": "column",
           "flexWrap": "wrap",
         },
-        Object {
-          "maxHeight": 200,
-        },
+        false,
       ]
     }
   />

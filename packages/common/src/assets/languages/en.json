@@ -766,12 +766,12 @@
   "webLoader": {
     "loadingText": "Loading Application..."
   },
-  "helpAndSupport":{
-    "FAQ":"Frequently Asked Question",
-    "general":"General",
-    "categoryName":"Category Name",
-    "caseId":"Case ID",
-    "date":"Date",
-    "status":"Status"
+  "helpAndSupport": {
+    "FAQ": "Frequently Asked Question",
+    "general": "General",
+    "categoryName": "Category Name",
+    "caseId": "Case ID",
+    "date": "Date",
+    "status": "Status"
   }
 }

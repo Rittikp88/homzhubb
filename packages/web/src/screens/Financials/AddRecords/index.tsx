@@ -21,6 +21,7 @@ const AddRecords = (): React.ReactElement => {
           closeOnDocumentClick: true,
           children: undefined,
           modal: true,
+          contentStyle: { width: '80%' },
         }}
       >
         <Button type="secondary" containerStyle={styles.button}>
