@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PropertyVisualsEstimates } from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
-import DuesCard from '@homzhub/web/src/screens/Financials/DuesCard';
-import Transactions from '@homzhub/web/src/screens/Financials/Transactions';
+import DuesCard from '@homzhub/web/src/screens/financials/DuesCard';
+import Transactions from '@homzhub/web/src/screens/financials/Transactions';
 
 const Financials: FC = () => {
   return (
