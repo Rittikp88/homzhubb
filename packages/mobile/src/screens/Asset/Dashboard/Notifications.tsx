@@ -122,6 +122,8 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
     if (type === NotificationType.SITE_VISIT) {
       navigation.navigate(ScreensKeys.PropertyVisits, { visitId: objectId });
+    } else if (type === NotificationType.REVIEW_AND_RATING) {
+      navigation.navigate(ScreensKeys.PropertyVisits, { reviewVisitId: objectId });
     } else if (type === NotificationType.PROPERTY_DETAIL || type === NotificationType.PROPERTY_PREVIEW) {
       setFilter({ asset_transaction_type: leaseListingId > 0 ? 0 : 1 });
       // @ts-ignore
