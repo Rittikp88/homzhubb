@@ -129,6 +129,6 @@ const styles = StyleSheet.create({
     marginEnd: 12,
   },
   textStyle: {
-    width: 100,
+    width: PlatformUtils.isMobile() ? 100 : '100%',
   },
 });

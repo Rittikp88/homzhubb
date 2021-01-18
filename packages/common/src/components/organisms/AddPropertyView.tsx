@@ -25,6 +25,7 @@ import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfac
 import { DetailType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IEditPropertyFlow } from '@homzhub/common/src/modules/recordAsset/interface';
 import { AddPropertyRoutes, AddPropertySteps, IRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const { height } = theme.viewport;
 
@@ -72,11 +73,11 @@ type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
 class AddPropertyView extends Component<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
-    const { getAssetById, getAssetGroups } = this.props;
+    const { getAssetById, getAssetGroups, previousScreen } = this.props;
 
-    // if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
-    getAssetGroups();
-    // }
+    if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
+      getAssetGroups();
+    }
 
     getAssetById();
     this.state = {

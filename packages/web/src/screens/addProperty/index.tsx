@@ -10,8 +10,6 @@ import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropert
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { useDispatch } from 'react-redux';
-import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 
 interface IComponentMap {
   component: AddPropertyStack;
@@ -29,10 +27,7 @@ const AddProperty: FC = () => {
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
-  const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyViewScreen);
-  // Todo (Bishal) Remove me before pr
-  const dispatch = useDispatch();
-  dispatch(RecordAssetActions.setAssetId(5));
+  const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
 
   const navigateScreen = (comp: AddPropertyStack): void => {
     setCurrentScreen(comp);
