@@ -23,7 +23,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
-import { AddPropertyActionsGrp } from 'screens/addProperty';
+import { AddPropertyActionsGrp } from '@homzhub/web/src/screens/addProperty';
 
 const humanize = (str: string): string => {
   const splicedStr = str.split('/');
@@ -185,7 +185,7 @@ export const NavigationInfo: FC = () => {
       case protectedRoutes.DASHBOARD:
         return <DashBoardActionsGrp />;
       default:
-        return <DashBoardActionsGrp />;
+        return <></>;
     }
   };
   return (
