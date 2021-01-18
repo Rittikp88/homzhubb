@@ -37,6 +37,10 @@ export class AssetReviewComment {
     return this._comment;
   }
 
+  set comment(comment: string) {
+    this._comment = comment;
+  }
+
   get canEdit(): boolean {
     return this._canEdit;
   }

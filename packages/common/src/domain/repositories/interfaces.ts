@@ -633,3 +633,12 @@ export interface IGetListingReviews {
   lease_listing?: number;
   sale_listing?: number;
 }
+
+export interface IAddReviewComment {
+  comment: string;
+}
+
+export interface IReportReview {
+  category: number;
+  report_comment?: string;
+}
