@@ -11,37 +11,32 @@ import Form from '@homzhub/web/src/screens/Financials/AddRecords/form';
 
 const AddRecordsForm = (): React.ReactElement => {
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  const addRecordStyles = addRecordsStyle(isMobile);
+  const styles = addRecordsStyle(isMobile);
 
   return (
-    <View style={addRecordStyles.container}>
-      <View style={addRecordStyles.header}>
-        <Text type="small" textType="semiBold" style={addRecordStyles.headerText}>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text type="small" textType="semiBold" style={styles.headerText}>
           Add Records
         </Text>
         <Icon name={icons.close} size={20} color={theme.colors.darkTint3} />
       </View>
-      <Divider containerStyles={addRecordStyles.divider} />
+      <Divider containerStyles={styles.divider} />
       <ScrollView>
-        <View style={addRecordStyles.formContainer}>
+        <View style={styles.formContainer}>
           <Form />
         </View>
-        <Divider containerStyles={addRecordStyles.divider} />
-        <View style={addRecordStyles.actionButton}>
-          <Button type="secondary" title="Cancel" titleStyle={addRecordStyles.title} />
-          <Button
-            type="secondary"
-            title="Add Now"
-            containerStyle={addRecordStyles.button}
-            titleStyle={addRecordStyles.titleStyle}
-          />
+        <Divider containerStyles={styles.divider} />
+        <View style={styles.actionButton}>
+          <Button type="secondary" title="Cancel" titleStyle={styles.title} />
+          <Button type="secondary" title="Add Now" containerStyle={styles.button} titleStyle={styles.titleStyle} />
         </View>
       </ScrollView>
     </View>
   );
 };
 
-interface IAddRecrdsItemStyle {
+interface IAddRecordsItemStyle {
   container: ViewStyle;
   formContainer: ViewStyle;
   button: ViewStyle;
@@ -53,8 +48,8 @@ interface IAddRecrdsItemStyle {
   title: ViewStyle;
 }
 
-const addRecordsStyle = (isMobile: boolean): StyleSheet.NamedStyles<IAddRecrdsItemStyle> =>
-  StyleSheet.create<IAddRecrdsItemStyle>({
+const addRecordsStyle = (isMobile: boolean): StyleSheet.NamedStyles<IAddRecordsItemStyle> =>
+  StyleSheet.create<IAddRecordsItemStyle>({
     container: {
       width: '100%',
       height: 500,

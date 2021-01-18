@@ -23,15 +23,15 @@ const Header: React.FC = () => {
         </View>
         <View>
           <View style={styles.iconContainer}>
-            <Label type="regular" textType="regular" style={styles.text1}>
+            <Label type="regular" textType="regular" style={styles.maintenance}>
               {t('property:maintenance')}
             </Label>
             <Icon name={icons.attachment} size={18} color={theme.colors.darkTint4} />
           </View>
-          <Label type="large" textType="semiBold" style={styles.text2}>
+          <Label type="large" textType="semiBold" style={styles.plumbingFees}>
             {t('assetFinancial:plumbingFees')}
           </Label>
-          <Label type="large" textType="regular" style={styles.text2}>
+          <Label type="large" textType="regular" style={styles.plumbingFees}>
             Godrej Prime
           </Label>
         </View>
@@ -49,40 +49,40 @@ const Header: React.FC = () => {
 const AccordianContent: React.FC = () => {
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  const transactionDetailsStyles = transactionDetailsStyle(isMobile);
+  const styles = transactionDetailsStyle(isMobile);
   return (
-    <View style={transactionDetailsStyles.content}>
-      <View style={transactionDetailsStyles.contentLeftChild}>
-        <View style={transactionDetailsStyles.childs}>
-          <Text type="small" textType="light" style={transactionDetailsStyles.titleContent}>
+    <View style={styles.content}>
+      <View style={styles.contentLeftChild}>
+        <View style={styles.detailContainer}>
+          <Text type="small" textType="light" style={styles.detailHeading}>
             {t('assetFinancial:paidTo')}
           </Text>
-          <Text type="small" textType="regular" style={transactionDetailsStyles.name}>
+          <Text type="small" textType="regular" style={styles.name}>
             Rajat Kumar Gupt
           </Text>
         </View>
-        <View style={transactionDetailsStyles.childs}>
-          <Text type="small" textType="light" style={transactionDetailsStyles.titleContent}>
+        <View style={styles.detailContainer}>
+          <Text type="small" textType="light" style={styles.detailHeading}>
             {t('assetFinancial:invoice')}
           </Text>
-          <View style={transactionDetailsStyles.attachment}>
-            <Text type="small" textType="regular" style={transactionDetailsStyles.attachmentText}>
+          <View style={styles.attachment}>
+            <Text type="small" textType="regular" style={styles.attachmentText}>
               Attachment Name
             </Text>
-            <Icon style={transactionDetailsStyles.icon} name={icons.download} size={20} color={theme.colors.blue} />
+            <Icon style={styles.icon} name={icons.download} size={20} color={theme.colors.blue} />
           </View>
         </View>
-        <View style={transactionDetailsStyles.childs}>
-          <Text type="small" textType="light" style={transactionDetailsStyles.titleContent}>
+        <View style={styles.detailContainer}>
+          <Text type="small" textType="light" style={styles.detailHeading}>
             {t('assetFinancial:notes')}
           </Text>
 
-          <Text type="small" textType="regular" style={transactionDetailsStyles.note}>
+          <Text type="small" textType="regular" style={styles.note}>
             Fixed on the right time
           </Text>
         </View>
       </View>
-      <Text type="small" textType="regular" style={transactionDetailsStyles.occupation}>
+      <Text type="small" textType="regular" style={styles.occupation}>
         Owner
       </Text>
     </View>
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
   },
-  text1: {
+  maintenance: {
     color: theme.colors.darkTint4,
   },
-  text2: {
+  plumbingFees: {
     color: theme.colors.darkTint3,
   },
   rightChild: {
@@ -143,14 +143,14 @@ const styles = StyleSheet.create({
 interface ITransactionItemStyle {
   content: ViewStyle;
   contentLeftChild: ViewStyle;
-  titleContent: ViewStyle;
+  detailHeading: ViewStyle;
   name: ViewStyle;
   attachment: ViewStyle;
   attachmentText: ViewStyle;
   icon: ViewStyle;
   note: ViewStyle;
   occupation: ViewStyle;
-  childs: ViewStyle;
+  detailContainer: ViewStyle;
 }
 
 const transactionDetailsStyle = (isMobile: boolean): StyleSheet.NamedStyles<ITransactionItemStyle> =>
@@ -164,11 +164,11 @@ const transactionDetailsStyle = (isMobile: boolean): StyleSheet.NamedStyles<ITra
       justifyContent: 'space-around',
       marginVertical: 16,
     },
-    childs: {
+    detailContainer: {
       flexDirection: isMobile ? 'column' : 'row',
       marginVertical: 12,
     },
-    titleContent: {
+    detailHeading: {
       color: theme.colors.darkTint5,
       marginRight: isMobile ? 0 : 60,
       marginBottom: isMobile ? 8 : 0,

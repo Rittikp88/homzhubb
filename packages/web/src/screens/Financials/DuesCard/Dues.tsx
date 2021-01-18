@@ -13,7 +13,7 @@ import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typograph
 const Dues = (): React.ReactElement => {
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  const duesCardStyles = duesCardStyle(isMobile);
+  const styles = duesCardStyle(isMobile);
   const addressTextStyle: ITypographyProps = {
     size: 'small',
     fontWeight: 'semiBold',
@@ -26,9 +26,9 @@ const Dues = (): React.ReactElement => {
   };
   return (
     <>
-      <Divider containerStyles={duesCardStyles.divider} />
-      <View style={duesCardStyles.container}>
-        <View style={duesCardStyles.propertyDetails}>
+      <Divider containerStyles={styles.divider} />
+      <View style={styles.container}>
+        <View style={styles.propertyDetails}>
           <PropertyAddressCountry
             primaryAddress="2BHK - Godrej Prime"
             countryFlag="https://www.countryflags.io/IN/flat/48.png"
@@ -37,20 +37,20 @@ const Dues = (): React.ReactElement => {
             subAddress="Sindhi Society, Chembur, Mumbai- 400071"
           />
         </View>
-        <View style={duesCardStyles.actions}>
-          <View style={duesCardStyles.charges}>
-            <Text type="small" textType="semiBold" style={duesCardStyles.text}>
+        <View style={styles.actions}>
+          <View style={styles.charges}>
+            <Text type="small" textType="semiBold" style={styles.text}>
               {t('assetFinancial:plumbingFees')}
             </Text>
-            <Text type="small" textType="semiBold" style={duesCardStyles.amount}>
+            <Text type="small" textType="semiBold" style={styles.amount}>
               $1900
             </Text>
           </View>
           <Button
             title={t('assetFinancial:payNow')}
             type="primary"
-            containerStyle={duesCardStyles.button}
-            titleStyle={duesCardStyles.buttonTitle}
+            containerStyle={styles.button}
+            titleStyle={styles.buttonTitle}
           />
         </View>
       </View>
