@@ -7,7 +7,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import RecordForm from '@homzhub/web/src/screens/Financials/AddRecords/RecordForm';
+import RecordForm from '@homzhub/web/src/screens/financials/AddRecords/RecordForm';
 
 const AddRecordsForm = (): React.ReactElement => {
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
