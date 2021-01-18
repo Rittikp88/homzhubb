@@ -7,7 +7,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
-import AddRecordsForm from '@homzhub/web/src/screens/Financials/AddRecords/addRecordsForm';
+import AddRecordsForm from '@homzhub/web/src/screens/financials/AddRecords/AddRecordsForm';
 
 const AddRecords = (): React.ReactElement => {
   const { t } = useTranslation();
@@ -21,6 +21,7 @@ const AddRecords = (): React.ReactElement => {
           closeOnDocumentClick: true,
           children: undefined,
           modal: true,
+          contentStyle: { width: '80%' },
         }}
       >
         <Button type="secondary" containerStyle={styles.button}>

@@ -21,6 +21,7 @@ const namedColors = {
   disabledPreference: '#B3BBC3',
   disabledSearch: '#80C1FC',
   danger: '#D60D31',
+  alert: '#D60D31',
   orange: '#FB6E07',
   notificationGreen: '#13AB46',
   notificationRed: '#E93F33',
@@ -104,6 +105,8 @@ const opacity = {
   disabledOpacity: 'rgba(153, 164, 175, 0.1)',
   activeOpacity: 'rgba(0, 132, 248, 0.1)',
   boxShadow: 'rgba(0, 0, 0, 0.24)',
+  alertOpacity: '#FDF5F5',
+  subHeader: 'rgba(255, 255, 255, 0.16)',
 };
 
 const grayShades = {

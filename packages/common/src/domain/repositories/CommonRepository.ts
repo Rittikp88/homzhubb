@@ -5,6 +5,7 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
+import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { SocialAuthProvider } from '@homzhub/common/src/domain/models/SocialAuthProvider';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -23,6 +24,7 @@ const ENDPOINTS = {
   clientSupport: 'client-support/',
   getMarketTrends: 'market-trends/',
   updateMarketTrends: (id: number): string => `market-trends/${id}/`,
+  getPillars: 'pillars/',
 };
 
 class CommonRepository {
@@ -82,6 +84,13 @@ class CommonRepository {
 
   public updateMarketTrends = async (id: number): Promise<void> => {
     await this.apiClient.patch(ENDPOINTS.updateMarketTrends(id));
+  };
+
+  public getPillars = async (reviewType: PillarTypes): Promise<Pillar[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getPillars, {
+      review_type: reviewType,
+    });
+    return ObjectMapper.deserializeArray(Pillar, response);
   };
 }
 

@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { PropertyVisualsEstimates } from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
-import DuesCard from '@homzhub/web/src/screens/Financials/DuesCard';
-import Transactions from '@homzhub/web/src/screens/Financials/Transactions';
+import DuesCard from '@homzhub/web/src/screens/financials/DuesCard';
+import Transactions from '@homzhub/web/src/screens/financials/Transactions';
 
 const Financials: FC = () => {
   return (
@@ -21,5 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+    backgroundColor: theme.colors.white,
+    borderRadius: 4,
   },
 });

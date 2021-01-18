@@ -21,8 +21,8 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const { location } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
-  const { DASHBOARD } = protectedRoutes;
-  const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD], pathname);
+  const { DASHBOARD, FINANCIALS } = protectedRoutes;
+  const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD, FINANCIALS], pathname);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   return (

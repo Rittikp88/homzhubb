@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, TouchableOpacity, PickerItemProps } from 'react-native';
+import { PickerItemProps, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/in
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { GooglePlaceData, GooglePlaceDetail, Point } from '@homzhub/common/src/services/GooglePlaces/interfaces';
@@ -23,7 +24,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Label, Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
+import { FontWeightType, Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { BottomSheetListView, CurrentLocation, Loader, Range, RoomsFilter } from '@homzhub/mobile/src/components';
@@ -38,6 +39,10 @@ import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { ListingType } from '@homzhub/common/src/services/Analytics/interfaces';
+import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -657,11 +662,49 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     getProperties();
   };
 
-  public navigateToAssetDetails = (propertyTermId: number, propertyId: number): void => {
+  public navigateToAssetDetails = (asset: Asset): void => {
     const { navigation } = this.props;
+    const {
+      address,
+      leaseTerm,
+      saleTerm,
+      id,
+      spaces,
+      assetGroup: { name },
+      carpetArea,
+    } = asset;
+
+    // For Analytics
+    let space = {
+      ...(carpetArea && { area: carpetArea }),
+    };
+    spaces.forEach((item) => {
+      if (item.name === SpaceAvailableTypes.BEDROOM) {
+        space = {
+          ...space,
+          bedroom: item.count,
+        };
+      }
+      if (item.name === SpaceAvailableTypes.BATHROOM) {
+        space = {
+          ...space,
+          bathroom: item.count,
+        };
+      }
+    });
+
+    AnalyticsService.track(EventType.SearchPropertyOpen, {
+      property_address: address,
+      asset_group_type: name,
+      listing_type: leaseTerm ? ListingType.RENT : ListingType.SELL,
+      price: leaseTerm ? leaseTerm.expectedPrice : Number(saleTerm?.expectedPrice) ?? 0,
+      ...space,
+    });
+
+    // For Navigation
     navigation.navigate(ScreensKeys.PropertyAssetDescription, {
-      propertyTermId,
-      propertyId,
+      propertyTermId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0,
+      propertyId: id,
     });
   };
 

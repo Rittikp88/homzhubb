@@ -115,7 +115,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { containerStyles, t, assetId } = this.props;
     const { selectedFormType, formValues, currencyCode, currencySymbol } = this.state;
 
-    // @ts-ignore
     return (
       <View style={containerStyles}>
         <SelectionPicker

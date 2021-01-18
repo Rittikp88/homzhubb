@@ -12,6 +12,7 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -19,7 +20,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import { Header, PropertyDetailsLocation, Loader } from '@homzhub/mobile/src/components';
+import { Header, Loader, PropertyDetailsLocation } from '@homzhub/mobile/src/components';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';
@@ -30,6 +31,7 @@ import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IEditPropertyFlow } from '@homzhub/common/src/modules/recordAsset/interface';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -341,15 +343,19 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       } else {
         const response = await AssetRepository.createAsset(params);
         setAssetId(response.id);
+        AnalyticsService.track(EventType.AddPropertySuccess, { property_address: address });
       }
-
       if (!shouldGoBack) {
         navigation.navigate(ScreensKeys.AddProperty);
         return;
       }
       this.goBack();
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      if (assetId < 1) {
+        AnalyticsService.track(EventType.AddPropertyFailure, { property_address: address, error });
+      }
+      AlertHelper.error({ message: error });
     }
     formActions.setSubmitting(false);
   };

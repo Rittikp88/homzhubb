@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IUser, User, UserRole } from '@homzhub/common/src/domain/models/User';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IVisitAssetDetail, VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
@@ -86,10 +87,10 @@ export class AssetVisit {
   private _comments = '';
 
   @JsonProperty('sale_listing', Number, true)
-  private _saleListing = -1;
+  private _saleListing = 0;
 
   @JsonProperty('lease_listing', Number, true)
-  private _leaseListing = -1;
+  private _leaseListing = 0;
 
   @JsonProperty('status', String)
   private _status = '';
@@ -114,6 +115,9 @@ export class AssetVisit {
 
   @JsonProperty('asset', VisitAssetDetail)
   private _asset = new VisitAssetDetail();
+
+  @JsonProperty('review', AssetReview, true)
+  private _review: AssetReview | null = null;
 
   get id(): number {
     return this._id;
@@ -177,5 +181,9 @@ export class AssetVisit {
 
   get updatedAt(): string {
     return this._updatedAt;
+  }
+
+  get review(): AssetReview | null {
+    return this._review;
   }
 }

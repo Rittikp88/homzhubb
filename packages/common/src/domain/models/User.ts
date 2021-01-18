@@ -24,7 +24,7 @@ export class User {
   @JsonProperty('id', Number, true)
   private _id = 0;
 
-  @JsonProperty('full_name', String)
+  @JsonProperty('full_name', String, true)
   private _fullName = '';
 
   @JsonProperty('first_name', String, true)

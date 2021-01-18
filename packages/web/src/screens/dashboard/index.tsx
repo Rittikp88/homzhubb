@@ -23,7 +23,7 @@ import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const Dashboard: FC = () => {
-  const isMobile = useUp(deviceBreakpoint.MOBILE);
+  const notMobile = useUp(deviceBreakpoint.MOBILE);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const selectedCountry: number = useSelector(UserSelector.getUserCountryCode);
@@ -53,8 +53,8 @@ const Dashboard: FC = () => {
       <PropertyOverview data={propertyMetrics?.assetMetrics?.miscellaneous ?? []} />
       <PropertyUpdates updatesData={propertyMetrics?.updates ?? {}} />
       <PropertyVisualsEstimates selectedCountry={selectedCountry} />
-      {isMobile ? (
-        <View style={[styles.wrapper, isMobile && styles.row]}>
+      {notMobile ? (
+        <View style={[styles.wrapper, notMobile && styles.row]}>
           <PendingPropertyAndUserSubscriptionComponent />
         </View>
       ) : (

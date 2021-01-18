@@ -8,13 +8,13 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { IUpdatePassword, ResetPasswordTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { AnimatedProfileHeader } from '@homzhub/mobile/src/components';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IUpdatePassword, ResetPasswordTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IChangePasswordForm {
@@ -41,15 +41,9 @@ class UpdatePassword extends Component<Props, IScreenState> {
   public render(): React.ReactNode {
     const { t } = this.props;
     return (
-      <AnimatedProfileHeader
-        title={t('assetMore:more')}
-        sectionHeader={t('moreProfile:changePassword')}
-        sectionTitleType="semiBold"
-        onBackPress={this.goBack}
-        keyboardShouldPersistTaps
-      >
+      <UserScreen title={t('assetMore:more')} pageTitle={t('moreProfile:changePassword')} onBackPress={this.goBack}>
         {this.renderForm()}
-      </AnimatedProfileHeader>
+      </UserScreen>
     );
   }
 

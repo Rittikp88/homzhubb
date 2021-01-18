@@ -4,7 +4,6 @@ export { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGr
 export { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
 export { MoreProfile } from '@homzhub/mobile/src/components/atoms/MoreProfile';
 export { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
-export { Progress } from '@homzhub/mobile/src/components/atoms/Progress';
 export { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 export { RNVideo } from '@homzhub/mobile/src/components/atoms/Video';
 export { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';
@@ -14,7 +13,6 @@ export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecul
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
 export { AssetMarketTrends } from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 export { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
-export { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
 export { AssetSummary } from '@homzhub/mobile/src/components/molecules/AssetSummary';
 export { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 export { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';

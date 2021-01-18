@@ -110,6 +110,7 @@ export interface IEmailLoginPayload {
 export interface ILoginPayload {
   data: IEmailLoginPayload | IOtpLoginPayload;
   callback?: () => void;
+  is_referral?: boolean;
 }
 
 export interface ISocialLogin {
@@ -618,4 +619,26 @@ export interface ITerminateListingPayload {
     termination_date: string;
     termination_description?: string;
   };
+}
+
+export interface IListingReviewParams {
+  lease_listing?: number;
+  sale_listing?: number;
+  rating: number;
+  pillar_ratings: { pillar: number; rating: number }[];
+  description?: string;
+}
+
+export interface IGetListingReviews {
+  lease_listing?: number;
+  sale_listing?: number;
+}
+
+export interface IAddReviewComment {
+  comment: string;
+}
+
+export interface IReportReview {
+  category: number;
+  report_comment?: string;
 }

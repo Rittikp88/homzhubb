@@ -1,7 +1,10 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, ReactElement } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -11,29 +14,52 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import ReportReviewForm from '@homzhub/mobile/src/components/molecules/ReportReviewForm';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IAssetReviewProps {
-  review?: string;
+  review: AssetReview;
+  reportCategories: Unit[];
 }
 
-const data = [
-  { id: 1, rating: 1, name: 'Neighborhood' },
-  { id: 2, rating: 2, name: 'Rent' },
-  { id: 3, rating: 4, name: 'Security' },
-  { id: 4, rating: 5, name: 'Maintain' },
-];
+const MAX_LENGTH = 50;
 
 const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
-  const { review } = props;
+  // Local const's
+  const { review, reportCategories } = props;
+  const {
+    id: reviewId,
+    description,
+    reviewedBy,
+    postedAt: reviewedAt,
+    rating: overallRating,
+    pillarRatings: pillars,
+    comments,
+    isReported,
+  } = review;
+  const comment = comments.length > 0 ? comments[0].comment : '';
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const owner = useSelector(UserSelector.getUserProfile);
 
+  // State const's
   const [showMore, setShowMore] = useState(false);
   const [showMoreReply, setShowMoreReply] = useState(false);
   const [replyMode, setReplyMode] = useState(false);
-  const [reply, setReply] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [reply, setReply] = useState(comment);
+  const [showReportForm, setShowReportForm] = useState(false);
+  const [isUnderReview, setIsUnderReview] = useState(isReported);
+
+  const enableReportForm = useCallback((): void => {
+    setShowReportForm(true);
+  }, [showReportForm]);
+
+  const disableReportForm = useCallback((): void => {
+    setShowReportForm(false);
+  }, []);
 
   const toggleShowMore = useCallback((): void => {
     setShowMore((oldValue) => !oldValue);
@@ -47,115 +73,217 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     setReplyMode((oldValue) => !oldValue);
   }, []);
 
-  const toggleIsSubmitting = useCallback((): void => {
-    setIsSubmitted((oldValue) => !oldValue);
+  const onCancel = useCallback((): void => {
+    const { comments: reviewComments } = review;
+    if (reviewComments.length > 0) {
+      setReply(reviewComments[0].comment);
+    } else {
+      setReply('');
+    }
+    toggleReplyMode();
   }, []);
 
-  const onSubmit = useCallback(() => {
-    setIsSubmitted(true);
-  }, []);
+  const onSubmit = async (): Promise<void> => {
+    const { comments: reviewComments } = review;
+    try {
+      if (reply && reviewComments.length > 0) {
+        await AssetRepository.editReviewComment(reviewId, reviewComments[0].id, { comment: reply });
+        reviewComments[0].comment = reply;
+      } else {
+        const response: AssetReviewComment = await AssetRepository.addReviewComment(reviewId, { comment: reply });
+        review.comments = [response];
+      }
+    } catch (error) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
+      onCancel();
+    } finally {
+      toggleReplyMode();
+    }
+  };
 
-  const onDeleteReply = useCallback(() => {
-    setReply('');
-    setReplyMode(false);
-    setIsSubmitted(false);
-  }, []);
+  const onDeleteReply = async (): Promise<void> => {
+    const { comments: reviewComments } = review;
+    try {
+      if (reviewComments.length > 0) {
+        await AssetRepository.deleteReviewComment(reviewId, reviewComments[0].id);
+        setReply('');
+        setReplyMode(false);
+        reviewComments[0].comment = '';
+        review.comments = [];
+      }
+    } catch (error) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
+    }
+  };
 
-  return (
-    <View style={styles.container}>
-      <Avatar fullName="Aditya Warrier" designation={t('tenant')} rating={5} />
-      {review && (
-        <Label type="large" numberOfLines={!showMore ? 2 : undefined} style={styles.review}>
-          {review}
-        </Label>
-      )}
-      <Rating isOverallRating value={5} />
-      {showMore && (
-        <View style={styles.pillarContainer}>
-          {data.map((pillarRating, index) => {
-            return (
-              <Rating
-                key={pillarRating.id}
-                title={pillarRating.name}
-                value={pillarRating.rating}
-                containerStyle={index !== data.length - 1 && styles.rating}
-              />
-            );
-          })}
-        </View>
-      )}
-      {/* eslint-disable-next-line react-native/no-inline-styles */}
-      <View style={[styles.buttonContainer, { justifyContent: replyMode ? 'flex-end' : 'space-between' }]}>
-        {!replyMode && (
-          <TouchableOpacity onPress={toggleReplyMode}>
-            <View style={styles.replyContainer}>
-              <Icon name={icons.reply} size={12} color={theme.colors.darkTint4} />
-              <Label type="large" textType="semiBold" style={styles.reply}>
-                {t('common:reply')}
-              </Label>
-            </View>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity onPress={toggleShowMore}>
-          <Label type="large" textType="semiBold" style={styles.showMore}>
-            {showMore ? t('showLess') : t('showMore')}
+  const onReportFormSubmit = (): void => {
+    setIsUnderReview(true);
+    disableReportForm();
+    AlertHelper.info({ message: t('reportSubmittedMessage') });
+  };
+
+  const renderReplyComment = (): ReactElement => {
+    return (
+      <View style={styles.commentStyle}>
+        <Divider containerStyles={styles.divider} />
+        <Avatar fullName={owner.fullName} designation={t('owner')} rating={owner.rating} />
+        <View style={styles.replyContent}>
+          <Label type="large" maxLength={!showMoreReply ? MAX_LENGTH : undefined} style={styles.review}>
+            {reply}
           </Label>
-        </TouchableOpacity>
-      </View>
-      {replyMode && !isSubmitted && (
-        <>
-          <TextArea
-            value={reply}
-            placeholder={t('writeComment')}
-            onMessageChange={setReply}
-            textAreaStyle={styles.textArea}
-          />
-          <View style={styles.replyButtonContainer}>
-            <Button
-              onPress={toggleReplyMode}
-              type="secondary"
-              title={t('common:cancel')}
-              containerStyle={styles.replyButton}
-              titleStyle={styles.replyButtonTitle}
-            />
-            <Button
-              onPress={onSubmit}
-              disabled={reply.length === 0}
-              type="primary"
-              title={t('common:submit')}
-              containerStyle={[styles.replyButton, styles.replySubmit]}
-              titleStyle={styles.replyButtonTitle}
-            />
-          </View>
-        </>
-      )}
-      {replyMode && isSubmitted && (
-        <>
-          <Divider containerStyles={styles.divider} />
-          <Avatar fullName={owner.fullName} designation={t('owner')} rating={owner.rating} />
-          <View style={styles.replyContent}>
-            <Label type="large" numberOfLines={!showMoreReply ? 2 : undefined} style={styles.review}>
-              {reply}
-            </Label>
+          <View style={styles.replyCRUDButtons}>
             <View style={styles.replyCRUDButtons}>
-              <View style={styles.replyCRUDButtons}>
-                <TouchableOpacity onPress={toggleIsSubmitting}>
-                  <Icon name={icons.noteBook} size={16} color={theme.colors.darkTint4} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={onDeleteReply}>
-                  <Icon name={icons.trash} size={16} color={theme.colors.error} style={styles.deleteIcon} />
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={toggleReplyMode}>
+                <Icon name={icons.noteBook} size={16} color={theme.colors.darkTint4} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onDeleteReply}>
+                <Icon name={icons.trash} size={16} color={theme.colors.error} style={styles.deleteIcon} />
+              </TouchableOpacity>
+            </View>
+            {reply.length > MAX_LENGTH && (
               <TouchableOpacity onPress={toggleShowMoreReply}>
                 <Label type="large" textType="semiBold" style={styles.showMore}>
                   {showMoreReply ? t('showLess') : t('showMore')}
                 </Label>
               </TouchableOpacity>
-            </View>
+            )}
           </View>
-        </>
-      )}
-    </View>
+        </View>
+      </View>
+    );
+  };
+
+  const renderTextArea = (): ReactElement => {
+    return (
+      <>
+        <TextArea
+          value={reply}
+          placeholder={t('writeComment')}
+          onMessageChange={setReply}
+          textAreaStyle={styles.textArea}
+        />
+        <View style={styles.replyButtonContainer}>
+          <Button
+            onPress={onCancel}
+            type="secondary"
+            title={t('common:cancel')}
+            containerStyle={styles.replyButton}
+            titleStyle={styles.replyButtonTitle}
+          />
+          <Button
+            onPress={onSubmit}
+            disabled={reply.length === 0 || comment === reply}
+            type="primary"
+            title={t('common:submit')}
+            containerStyle={[styles.replyButton, styles.replySubmit]}
+            titleStyle={styles.replyButtonTitle}
+          />
+        </View>
+      </>
+    );
+  };
+
+  const renderBottomSheet = (): ReactElement => {
+    return (
+      <BottomSheet
+        visible={showReportForm}
+        sheetHeight={theme.viewport.height * 0.85}
+        headerTitle={t('reportComment')}
+        onCloseSheet={disableReportForm}
+      >
+        <ReportReviewForm
+          reviewId={reviewId}
+          reportCategories={reportCategories}
+          onFormCancellation={disableReportForm}
+          onSuccessFullSubmit={onReportFormSubmit}
+        />
+      </BottomSheet>
+    );
+  };
+
+  const renderReviewActions = (): ReactElement => {
+    const disabledStyle = isUnderReview && { color: theme.colors.disabled };
+
+    return (
+      <View style={styles.rowStyle}>
+        <TouchableOpacity disabled={isUnderReview} onPress={toggleReplyMode}>
+          <View style={styles.replyContainer}>
+            <Icon name={icons.reply} size={12} color={isUnderReview ? theme.colors.disabled : theme.colors.darkTint4} />
+            <Label type="large" textType="semiBold" style={[styles.reply, disabledStyle]}>
+              {t('common:reply')}
+            </Label>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity disabled={isUnderReview} onPress={enableReportForm}>
+          <View style={styles.reportContainer}>
+            <Icon name={icons.flag} size={12} color={isUnderReview ? theme.colors.disabled : theme.colors.darkTint4} />
+            <Label type="large" textType="semiBold" style={[styles.reply, disabledStyle]}>
+              {t('common:report')}
+            </Label>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  return (
+    <>
+      <View style={styles.container}>
+        <Avatar
+          fullName={reviewedBy.fullName}
+          image={reviewedBy.profilePicture}
+          designation={t('tenant')}
+          rating={reviewedBy.rating}
+          date={reviewedAt}
+        />
+        {description && (
+          <Label type="large" numberOfLines={!showMore ? 2 : undefined} style={styles.review}>
+            {description}
+          </Label>
+        )}
+        <Rating isOverallRating value={overallRating} />
+        {showMore && (
+          <View style={styles.pillarContainer}>
+            {pillars.map((pillarRating, index) => {
+              return (
+                <Rating
+                  key={pillarRating.id}
+                  title={pillarRating.pillarName?.name ?? ''}
+                  value={pillarRating.rating}
+                  containerStyle={index !== pillars.length - 1 && styles.rating}
+                />
+              );
+            })}
+          </View>
+        )}
+        <View
+          style={[
+            styles.buttonContainer,
+            // eslint-disable-next-line react/prop-types,react-native/no-inline-styles
+            { justifyContent: reply || replyMode ? 'flex-end' : 'space-between' },
+          ]}
+        >
+          {!reply && !replyMode && renderReviewActions()}
+          <TouchableOpacity onPress={toggleShowMore}>
+            <Label type="large" textType="semiBold" style={styles.showMore}>
+              {showMore ? t('showLess') : t('showMore')}
+            </Label>
+          </TouchableOpacity>
+        </View>
+        {!isUnderReview && replyMode && renderTextArea()}
+        {!isUnderReview && !!reply && !replyMode && renderReplyComment()}
+        {isUnderReview && (
+          <View style={styles.underReview}>
+            <Icon name={icons.flag} size={12} color={theme.colors.alert} />
+            <Label type="regular" style={styles.underReviewText}>
+              {t('underReviewMessage')}
+            </Label>
+          </View>
+        )}
+      </View>
+      <Divider containerStyles={styles.cardDivider} />
+      {renderBottomSheet()}
+    </>
   );
 };
 
@@ -224,5 +352,34 @@ const styles = StyleSheet.create({
   },
   deleteIcon: {
     marginStart: 16,
+  },
+  rowStyle: {
+    flexDirection: 'row',
+  },
+  reportContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginStart: 24,
+  },
+  underReview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 60,
+    backgroundColor: theme.colors.alertOpacity,
+    paddingVertical: 12,
+    marginTop: 16,
+    borderRadius: 2,
+    justifyContent: 'center',
+  },
+  underReviewText: {
+    color: theme.colors.alert,
+    marginStart: 6,
+  },
+  cardDivider: {
+    borderColor: theme.colors.background,
+    marginBottom: 16,
+  },
+  commentStyle: {
+    marginStart: 8,
   },
 });

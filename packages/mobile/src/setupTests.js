@@ -15,6 +15,7 @@ jest.mock('react-native-geolocation-service', () => {});
 jest.mock('react-native-progress', () => {});
 jest.mock('rn-fetch-blob', () => {});
 jest.mock('react-native-tab-view', () => {});
+jest.mock('mixpanel-react-native', () => {});
 jest.mock('@react-navigation/material-top-tabs', () => {
   return {
     createMaterialTopTabNavigator: jest.fn(),

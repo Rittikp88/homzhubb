@@ -18,6 +18,10 @@ import {
   ICancelListingPayload,
   ICancelListingParam,
   ITerminateListingPayload,
+  IListingReviewParams,
+  IGetListingReviews,
+  IAddReviewComment,
+  IReportReview,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -37,6 +41,7 @@ import {
   IYoutubeResponse,
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 
@@ -65,7 +70,6 @@ const ENDPOINTS = {
   deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
   getVerificationDocumentDetails: (): string => 'verification-document-types/',
-  getRatings: (id: number): string => `assets/${id}/ratings`,
   getLeaseListing: (propertyTermId: number): string => `lease-listings/${propertyTermId}`,
   getSaleListing: (propertyTermId: number): string => `sale-listings/${propertyTermId}`,
   getSimilarPropertiesForLease: (propertyTermId: number): string =>
@@ -92,6 +96,13 @@ const ENDPOINTS = {
     `assets/${param.assetId}/${param.listingType}/${param.listingId}/cancel/`,
   terminateTransaction: (id: number): string => `lease-transactions/${id}/terminate/`,
   closureReason: 'closure-reasons/',
+  reviewReportCategories: 'list-of-values/review-report-categories/',
+  listingReviews: 'listing-reviews/',
+  addReviewComment: (reviewId: number): string => `listing-reviews/${reviewId}/comments/`,
+  reportReview: (reviewId: number): string => `listing-reviews/${reviewId}/reports/`,
+  editReviewComment: (reviewId: number, commentId: number): string =>
+    `listing-reviews/${reviewId}/comments/${commentId}/`,
+  listingReviewsSummary: 'listing-reviews/summary/',
 };
 
 class AssetRepository {
@@ -208,11 +219,6 @@ class AssetRepository {
   public getVerificationDocumentTypes = async (): Promise<VerificationDocumentTypes[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
     return ObjectMapper.deserializeArray(VerificationDocumentTypes, response);
-  };
-
-  public getRatings = async (id: number): Promise<AssetReview[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.getRatings(id));
-    return ObjectMapper.deserializeArray(AssetReview, response);
   };
 
   public getLeaseListing = async (propertyTermId: number): Promise<Asset> => {
@@ -340,6 +346,42 @@ class AssetRepository {
 
   public terminateLease = async (payload: ITerminateListingPayload): Promise<ILeaseTermination> => {
     return await this.apiClient.post(ENDPOINTS.terminateTransaction(payload.id), payload.data);
+  };
+
+  public getReviewReportCategories = async (): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.reviewReportCategories);
+    return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public getListingReviews = async (params: IGetListingReviews): Promise<AssetReview[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.listingReviews, params);
+    return ObjectMapper.deserializeArray(AssetReview, response);
+  };
+
+  public getListingReviewsSummary = async (params: IGetListingReviews): Promise<AssetReview> => {
+    const response = await this.apiClient.get(ENDPOINTS.listingReviewsSummary, params);
+    return ObjectMapper.deserialize(AssetReview, response);
+  };
+
+  public postListingReview = async (params: IListingReviewParams): Promise<void> => {
+    return this.apiClient.post(ENDPOINTS.listingReviews, params);
+  };
+
+  public addReviewComment = async (reviewId: number, payload: IAddReviewComment): Promise<AssetReviewComment> => {
+    const response = await this.apiClient.post(ENDPOINTS.addReviewComment(reviewId), payload);
+    return ObjectMapper.deserialize(AssetReviewComment, response);
+  };
+
+  public editReviewComment = async (reviewId: number, commentId: number, payload: IAddReviewComment): Promise<void> => {
+    return this.apiClient.put(ENDPOINTS.editReviewComment(reviewId, commentId), payload);
+  };
+
+  public deleteReviewComment = async (reviewId: number, commentId: number): Promise<void> => {
+    return this.apiClient.delete(ENDPOINTS.editReviewComment(reviewId, commentId));
+  };
+
+  public reportReview = async (reviewId: number, payload: IReportReview): Promise<void> => {
+    return this.apiClient.post(ENDPOINTS.reportReview(reviewId), payload);
   };
 }
 

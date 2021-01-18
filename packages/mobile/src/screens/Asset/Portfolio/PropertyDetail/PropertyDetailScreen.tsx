@@ -245,12 +245,12 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
           <BottomSheet
             visible={isDeleteProperty}
             headerTitle={t('property:deleteProperty')}
-            sheetHeight={400}
+            sheetHeight={460}
             onCloseSheet={this.onCloseDeleteView}
           >
             <PropertyConfirmationView
               propertyData={propertyData}
-              description={t('deletePropertyDescription')} // TODO: Replace with proper text
+              description={t('deletePropertyDescription')}
               message={t('deleteConfirmation')}
               onCancel={this.onCloseDeleteView}
               onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
@@ -268,8 +268,14 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       t,
     } = this.props;
     const {
-      propertyData: { id, assetStatusInfo, isManaged },
+      propertyData: {
+        id,
+        assetStatusInfo,
+        isManaged,
+        assetStatusInfo: { leaseListingId, saleListingId },
+      },
     } = this.state;
+
     switch (route.key) {
       case Tabs.NOTIFICATIONS:
         // TODO: Figure-out something to resolve this error
@@ -293,7 +299,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.REVIEWS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 3)}>
-            <AssetReviews />
+            <AssetReviews leaseListingId={leaseListingId} saleListingId={saleListingId} />
           </View>
         );
       case Tabs.SITE_VISITS:

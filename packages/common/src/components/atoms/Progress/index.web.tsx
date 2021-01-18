@@ -13,7 +13,7 @@ interface IProgressBarProps {
   containerStyles?: StyleProp<ViewStyle>;
 }
 
-export const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
+const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
   const { progress, width, filledColor = theme.colors.green, title, containerStyles = {} } = props;
   return (
     <View style={containerStyles}>
@@ -56,3 +56,5 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
 });
+
+export { ProgressBar as Progress };

@@ -39,6 +39,7 @@ interface IDispatchProps {
 }
 
 interface IScreenState {
+  isLoading: boolean;
   isFormTouched: boolean;
   isSheetVisible: boolean;
   reasons: IDropdownOption[];
@@ -52,6 +53,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
     super(props);
     props.getAssetById();
     this.state = {
+      isLoading: false,
       isFormTouched: false,
       isSheetVisible: false,
       reasons: [],
@@ -62,6 +64,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
     const {
       route: { params },
     } = this.props;
+    this.setState({ isLoading: true });
     AssetRepository.getClosureReason(params.payload)
       .then((res) => {
         const formattedData: IDropdownOption[] = [];
@@ -73,29 +76,32 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
         });
         this.setState({
           reasons: formattedData,
+          isLoading: false,
         });
       })
       .catch((err) => {
+        this.setState({ isLoading: false });
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });
       });
   };
 
   public render(): React.ReactNode {
     const { t, assetDetail } = this.props;
-    const { isSheetVisible } = this.state;
-    if (!assetDetail) return null;
+    const { isSheetVisible, isLoading } = this.state;
+
     return (
       <>
         <UserScreen
           title={t('portfolio')}
+          loading={isLoading || !assetDetail}
           pageTitle={this.renderSectionHeader()}
           onBackPress={(): void => this.onBack(false)}
         >
           <View style={styles.container}>
             <PropertyAddressCountry
-              primaryAddress={assetDetail.projectName}
-              subAddress={assetDetail.address}
-              countryFlag={assetDetail.country.flag}
+              primaryAddress={assetDetail?.projectName ?? ''}
+              subAddress={assetDetail?.address ?? ''}
+              countryFlag={assetDetail?.country.flag ?? ''}
               containerStyle={styles.address}
             />
             <Divider containerStyles={styles.divider} />
@@ -209,6 +215,9 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
     if (!assetDetail) return;
     const { id, leaseListingIds, saleListingIds } = assetDetail;
     const { reasonId, isTerminate, description, terminationDate } = formData;
+
+    this.setState({ isLoading: true });
+
     if (isTerminate && params.param && params.param.id) {
       const payload: ITerminateListingPayload = {
         id: params.param.id,
@@ -222,9 +231,11 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
         .then((res) => {
           navigation.goBack();
           const role = res.app_permissions.is_asset_owner ? t('property:tenant') : t('property:owner');
+          this.setState({ isLoading: false });
           AlertHelper.success({ message: t('property:terminationRequest', { role }) });
         })
         .catch((err) => {
+          this.setState({ isLoading: false });
           AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });
         });
     } else {
@@ -243,12 +254,37 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
       AssetRepository.cancelAssetListing(payload)
         .then(() => {
           navigation.goBack();
+          this.updateAsset().then();
+          this.setState({ isLoading: false });
           AlertHelper.success({ message: t('property:listingCancelled') });
         })
         .catch((err) => {
+          this.setState({ isLoading: false });
           AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });
         });
     }
+  };
+
+  private updateAsset = async (): Promise<void> => {
+    const { assetDetail } = this.props;
+
+    if (!assetDetail) return;
+
+    const { lastVisitedStepSerialized, id } = assetDetail;
+
+    const last_visited_step = {
+      ...lastVisitedStepSerialized,
+      listing: {
+        ...lastVisitedStepSerialized.listing,
+        type: '',
+        is_listing_created: false,
+        is_verification_done: false,
+        is_services_done: false,
+        is_payment_done: false,
+      },
+    };
+    const reqBody = { last_visited_step };
+    await AssetRepository.updateAsset(id, reqBody);
   };
 
   // HANDLERS END

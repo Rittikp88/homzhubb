@@ -10,7 +10,7 @@ export interface IAssetCreationStep {
 }
 
 export interface IListingStep {
-  type: TypeOfPlan;
+  type: TypeOfPlan | string;
   is_listing_created?: boolean;
   is_verification_done?: boolean;
   is_services_done?: boolean;

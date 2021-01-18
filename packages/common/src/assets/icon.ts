@@ -141,6 +141,7 @@ export const icons = {
   visit: 'visit',
   schedule: 'schedule',
   dart: 'dart',
+  dartBack: 'back-dart',
   doubleBar: 'double-bar',
   owner: 'owner',
   agent: 'agent',
@@ -153,6 +154,7 @@ export const icons = {
   billPamphlet: 'bill-pamphlet',
   sort: 'sort',
   reply: 'reply',
+  flag: 'flag',
 
   // COMMUTE
   train: 'train',
