@@ -33,7 +33,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
 
   useEffect(() => {
     setcategoryRatings(cloneDeep(ratingCategories));
-  }, []);
+  }, [ratingCategories]);
 
   const updatePillarRating = useCallback(
     (newRating: number, id: number): void => {
@@ -55,7 +55,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
       await AssetRepository.postListingReview({
         rating: overallRating,
         description,
-        pillar_ratings: ratingCategories.map((pillar: Pillar) => ({ pillar: pillar.id, rating: pillar.rating })),
+        pillar_ratings: categoryRatings.map((pillar: Pillar) => ({ pillar: pillar.id, rating: pillar.rating })),
         ...(leaseListingId && { lease_listing: leaseListingId }),
         ...(saleListingId && { sale_listing: saleListingId }),
       });
@@ -63,7 +63,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
     } catch (err) {
       AlertHelper.error({ message: t('common:genericErrorMessage') });
     }
-  }, [description, overallRating, ratingCategories, leaseListingId, saleListingId, onClose, t]);
+  }, [description, overallRating, categoryRatings, leaseListingId, saleListingId, onClose, t]);
 
   return (
     <>

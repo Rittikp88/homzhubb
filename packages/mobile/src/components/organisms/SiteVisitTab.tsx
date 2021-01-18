@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -77,6 +77,7 @@ interface IProps {
   navigation?: NavigationType;
   setVisitPayload?: (payload: IAssetVisitPayload) => void;
   visitId?: number | null;
+  reviewVisitId?: number;
 }
 
 interface IScreenState {
@@ -91,28 +92,36 @@ interface IScreenState {
 
 type Props = IDispatchProps & IStateProps & IProps & WithTranslation;
 
-class SiteVisitTab extends Component<Props, IScreenState> {
+class SiteVisitTab extends PureComponent<Props, IScreenState> {
   public _unsubscribe: any;
-  public state = {
-    currentIndex: 0,
-    dropdownValue: 1,
-    heights: [height, height, height],
-    isFromNav: true,
-    userDetail: {} as UserInteraction,
-    isProfileVisible: false,
-    pillars: [],
-  };
+
+  public constructor(props: Props) {
+    super(props);
+    this.state = {
+      currentIndex: props.reviewVisitId ? 2 : 0,
+      dropdownValue: 1,
+      heights: [height, height, height],
+      isFromNav: true,
+      userDetail: {} as UserInteraction,
+      isProfileVisible: false,
+      pillars: [],
+    };
+  }
 
   public componentDidMount(): void {
-    const { navigation } = this.props;
+    const { navigation, reviewVisitId } = this.props;
+    this.getRatingPillars();
+
     if (navigation) {
       // @ts-ignore
       this._unsubscribe = navigation.addListener('focus', () => {
         this.getVisitsData();
       });
     }
-    this.getVisitsData();
-    this.getRatingPillars();
+
+    if (reviewVisitId) {
+      this.setState({ currentIndex: 2 }, this.getVisitsData);
+    }
   }
 
   public componentWillUnmount(): void {
@@ -180,7 +189,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
   }
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
-    const { visits, isLoading } = this.props;
+    const { visits, isLoading, reviewVisitId } = this.props;
     const { dropdownValue, pillars } = this.state;
     let dropdownData;
 
@@ -235,6 +244,7 @@ class SiteVisitTab extends Component<Props, IScreenState> {
               handleUserView={this.onShowProfile}
               pillars={pillars}
               resetData={this.getVisitsData}
+              reviewVisitId={reviewVisitId}
             />
           </View>
         );

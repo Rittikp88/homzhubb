@@ -66,7 +66,7 @@ export type DashboardNavigatorParamList = {
   [ScreensKeys.DashboardLandingScreen]: undefined;
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
-  [ScreensKeys.PropertyVisits]: undefined | { visitId: number };
+  [ScreensKeys.PropertyVisits]: { visitId?: number; reviewVisitId?: number };
 };
 
 export type PortfolioNavigatorParamList = {
@@ -87,7 +87,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.UpdateUserProfileScreen]: IUpdateProfileProps;
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.SettingsScreen]: undefined;
-  [ScreensKeys.PropertyVisits]: undefined;
+  [ScreensKeys.PropertyVisits]: { visitId?: number; reviewVisitId?: number };
   [ScreensKeys.MarketTrends]: { isFromDashboard: boolean };
   [ScreensKeys.AssetNotifications]: undefined;
   [ScreensKeys.UpdatePassword]: undefined;

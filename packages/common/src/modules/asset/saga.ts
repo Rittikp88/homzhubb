@@ -1,6 +1,6 @@
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { put, takeEvery, call } from '@redux-saga/core/effects';
+import { put, takeEvery, call, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -90,5 +90,5 @@ export function* watchAsset() {
   yield takeEvery(AssetActionTypes.GET.ASSET, getAssetDetails);
   yield takeEvery(AssetActionTypes.GET.REVIEWS, getAssetReviews);
   yield takeEvery(AssetActionTypes.GET.ASSET_DOCUMENT, getAssetDocuments);
-  yield takeEvery(AssetActionTypes.GET.ASSET_VISIT, getAssetVisit);
+  yield takeLatest(AssetActionTypes.GET.ASSET_VISIT, getAssetVisit);
 }
