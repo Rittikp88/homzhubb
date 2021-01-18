@@ -204,7 +204,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              14 Jan 2021
+              18 Jan 2021
             </Label>
           </View>
           <View
@@ -603,6 +603,17 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           }
         />
       </View>
+      <Memo(CollapsibleSection)
+        isDividerRequired={true}
+        title="reviewsRatings"
+      >
+        <Memo(AssetReviewsSummary)
+          reviewSummary={Array []}
+          showDivider={false}
+          sliderWidth={718}
+          titleRequired={false}
+        />
+      </Memo(CollapsibleSection)>
       <withI18nextTranslation(SimilarProperties)
         onSelectedProperty={[Function]}
         propertyTermId={1}

@@ -8,6 +8,7 @@ import { NavigationService } from '@homzhub/mobile/src/services/NavigationServic
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -20,19 +21,37 @@ import {
   ILoginPayload,
   IRefreshTokenPayload,
   IUpdateUserPreferences,
+  LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AuthenticationType, IAuthenticationEvent } from '@homzhub/common/src/services/Analytics/interfaces';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 export function* login(action: IFluxStandardAction<ILoginPayload>) {
   if (!action.payload) return;
   const {
-    payload: { data, callback },
+    payload: { data, callback, is_referral },
   } = action;
+  const { EMAIL, OTP, REFERRAL } = AuthenticationType;
+
+  let trackData: IAuthenticationEvent = {
+    source: is_referral ? REFERRAL : data.action === LoginTypes.EMAIL ? EMAIL : OTP,
+    ...(data.action === LoginTypes.EMAIL && { email: data.payload.email }),
+    ...(data.action === LoginTypes.OTP && { phone_number: data.payload.phone_number }),
+  };
+
   try {
     const userData: User = yield call(UserRepository.login, data);
     const tokens = { refresh_token: userData.refreshToken, access_token: userData.accessToken };
 
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
+
+    if (is_referral) {
+      yield AnalyticsService.track(EventType.SignupSuccess, trackData);
+    } else {
+      yield AnalyticsService.track(EventType.LoginSuccess, trackData);
+    }
+    yield AnalyticsService.setUser(userData);
 
     if (!PlatformUtils.isWeb()) {
       const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
@@ -47,6 +66,16 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
+    trackData = {
+      ...trackData,
+      error,
+    };
+    if (is_referral) {
+      yield AnalyticsService.track(EventType.SignupFailure, trackData);
+    } else {
+      yield AnalyticsService.track(EventType.LoginFailure, trackData);
+    }
+
     AlertHelper.error({ message: error });
     yield put(UserActions.loginFailure(error));
   }

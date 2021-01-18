@@ -14,7 +14,6 @@ export { AssetAdvertisementBanner } from '@homzhub/mobile/src/components/molecul
 export { AssetDetailsImageCarousel } from '@homzhub/mobile/src/components/molecules/AssetDetailsImageCarousel';
 export { AssetMarketTrends } from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 export { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
-export { AssetRatings } from '@homzhub/mobile/src/components/molecules/AssetRatings';
 export { AssetSummary } from '@homzhub/mobile/src/components/molecules/AssetSummary';
 export { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 export { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';

@@ -3,6 +3,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
+import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 
 let store: Store<IState>;
 
@@ -23,6 +24,11 @@ class StoreProviderService {
   public getUserRefreshToken(): string {
     const state = this.getStore().getState();
     return state.user.tokens?.refresh_token ?? '';
+  }
+
+  public getUserData(): IUserProfile | null {
+    const state = this.getStore().getState();
+    return state.user.userProfile;
   }
 
   public logoutUser(): void {

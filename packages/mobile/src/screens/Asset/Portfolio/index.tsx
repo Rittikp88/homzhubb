@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
@@ -35,6 +36,7 @@ import {
   IClosureReasonPayload,
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -334,6 +336,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { navigation } = this.props;
     // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
+    AnalyticsService.track(EventType.AddPropertyInitiation);
   };
 
   private verifyData = (): void => {

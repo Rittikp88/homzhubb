@@ -16,6 +16,7 @@ jest.mock('react-native-progress', () => {});
 jest.mock('react-native-razorpay', () => {});
 jest.mock('rn-fetch-blob', () => {});
 jest.mock('react-native-tab-view', () => {});
+jest.mock('mixpanel-react-native', () => {});
 jest.mock('react-native-permissions', () => {
   return {
     request: jest.fn(),

@@ -29,7 +29,7 @@ export class PillarName {
 
 @JsonObject('Pillar')
 export class Pillar {
-  @JsonProperty('id', Number)
+  @JsonProperty('id', Number, true)
   private _id = 0;
 
   @JsonProperty('name', String, true)
