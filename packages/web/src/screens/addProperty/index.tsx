@@ -28,7 +28,7 @@ export const AddPropertyActionsGrp: FC = () => {
   const { t } = useTranslation();
   const styles = AddPropertyActionStyles;
   const { goBack } = useContext(AddPropertyContext);
-  // if (currentScreen !== AddPropertyStack.AddPropertyLocationScreen) { todos
+  // todo (Lakshit) if currentScreen !== AddPropertyLocationScreen
   return (
     <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={goBack}>
       <Icon name={icons.dartBack} color={theme.colors.white} style={styles.buttonIconRight} />
@@ -37,8 +37,6 @@ export const AddPropertyActionsGrp: FC = () => {
       </Typography>
     </Button>
   );
-  // }
-  // return <></>;
 };
 const AddProperty: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
@@ -62,6 +60,7 @@ const AddProperty: FC = () => {
     { component: AddPropertyStack.PropertyDetailsMapScreen },
     { component: AddPropertyStack.AddPropertyViewScreen },
   ];
+  const styles = AddPropertyStyles;
   const renderScreen = (comp: AddPropertyStack): React.ReactElement => {
     const { AddPropertyLocationScreen, PropertyDetailsMapScreen, AddPropertyViewScreen } = AddPropertyStack;
     switch (comp) {
@@ -71,7 +70,7 @@ const AddProperty: FC = () => {
         return <PropertyDetailsMap />;
       case AddPropertyViewScreen:
         return (
-          <View style={{ flex: 1 }}>
+          <View style={styles.flexOne}>
             <AddPropertyView
               onUploadImage={FunctionUtils.noop}
               onEditPress={FunctionUtils.noop}
@@ -131,7 +130,7 @@ const AddPropertyActionStyles = StyleSheet.create({
     marginRight: 8,
   },
 });
-const styles = StyleSheet.create({
+const AddPropertyStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -139,6 +138,9 @@ const styles = StyleSheet.create({
     marginBottom: 48,
     borderRadius: 4,
     width: '100%',
+  },
+  flexOne: {
+    flex: 1,
   },
   containerTablet: {
     flexDirection: 'column',
