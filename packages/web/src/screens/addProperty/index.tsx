@@ -24,6 +24,7 @@ export enum AddPropertyStack {
   PropertyDetailsMapScreen,
   AddPropertyViewScreen,
 }
+
 export const AddPropertyActionsGrp: FC = () => {
   const { t } = useTranslation();
   const styles = AddPropertyActionStyles;
