@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 
-const Financials = lazy(() => import('@homzhub/web/src/screens/Financials'));
+const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
 

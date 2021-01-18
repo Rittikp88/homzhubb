@@ -9,7 +9,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { NextPrevBtn } from '@homzhub/web/src/components';
-import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdate';
+import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import PropertyDetails from '@homzhub/web/src/screens/dashboard/components/VacantProperties/PropertyDetails';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';

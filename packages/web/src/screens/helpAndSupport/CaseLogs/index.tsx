@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import LogsCards from '@homzhub/web/src/screens/helpAndSupport/caseLogs/logsCard';
-import HaveAnyQuestionsForm from '@homzhub/web/src/screens/HelpAndSupportForm/HaveAnyQuestionsForm';
+import LogsCards from 'screens/helpAndSupport/CaseLogs/LogsCards';
+import HaveAnyQuestionsForm from '@homzhub/web/src/screens/helpAndSupportForm/HaveAnyQuestionsForm';
 
 const CaseLogsCard = (): React.ReactElement => {
   const { t } = useTranslation();

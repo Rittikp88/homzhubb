@@ -272,7 +272,6 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     return (
       <>
         <Divider containerStyles={styles.dividerStyle} />
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
         <View style={[styles.buttonContainer, { flexDirection: !item.review ? 'row' : 'column' }]}>
           {!item.review ? (
             <TouchableOpacity style={styles.writeReviewButton} onPress={onPress}>
