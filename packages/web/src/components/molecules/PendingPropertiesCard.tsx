@@ -12,7 +12,8 @@ import { ITypographyProps, Typography } from '@homzhub/common/src/components/ato
 import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
-import { NextPrevBtn, ProgressBar } from '@homzhub/web/src/components';
+import { NextPrevBtn } from '@homzhub/web/src/components';
+import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -126,7 +127,7 @@ export const PendingPropertiesCard: FC<IProps> = ({ data }: IProps) => {
 };
 
 const getPropertyProgressStatus = (progress: number): React.ReactNode => {
-  return <ProgressBar progress={progress} width={10} containerStyles={styles.progressBar} />;
+  return <Progress progress={progress} width={10} containerStyles={styles.progressBar} />;
 };
 
 const styles = StyleSheet.create({

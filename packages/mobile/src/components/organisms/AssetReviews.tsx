@@ -54,9 +54,11 @@ const AssetReviews = (props: IProps): React.ReactElement => {
   return (
     <View style={styles.container}>
       {reviewSummary && <AssetReviewsSummary reviewSummary={reviewSummary} containerStyle={styles.content} />}
-      <Label type="large" textType="semiBold" style={styles.popularWith}>
-        {t('common:popularWith')}
-      </Label>
+      {reviews.length > 0 && (
+        <Label type="large" textType="semiBold" style={styles.popularWith}>
+          {t('common:popularWith')}
+        </Label>
+      )}
       {reviews.map((review: AssetReview) => (
         <AssetReviewCard
           key={review.id}

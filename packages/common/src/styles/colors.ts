@@ -104,6 +104,7 @@ const opacity = {
   disabledOpacity: 'rgba(153, 164, 175, 0.1)',
   activeOpacity: 'rgba(0, 132, 248, 0.1)',
   boxShadow: 'rgba(0, 0, 0, 0.24)',
+  subHeader: 'rgba(255, 255, 255, 0.16)',
 };
 
 const grayShades = {

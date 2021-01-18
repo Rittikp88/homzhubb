@@ -18,7 +18,8 @@ import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/Upda
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { DetailsCard, Loader, Progress } from '@homzhub/mobile/src/components';
+import { DetailsCard, Loader } from '@homzhub/mobile/src/components';
+import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';

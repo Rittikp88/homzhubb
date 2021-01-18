@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   LayoutChangeEvent,
   PickerItemProps,
@@ -18,7 +18,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-// import { Rating } from '@homzhub/common/src/components/atoms/Rating';
+import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { Loader } from '@homzhub/mobile/src/components';
@@ -57,6 +57,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   pillars?: Pillar[];
   resetData?: () => void;
+  reviewVisitId?: number;
 }
 
 interface IScreenState {
@@ -69,13 +70,24 @@ interface IScreenState {
 
 type Props = IProps & WithTranslation;
 
-class PropertyVisitList extends Component<Props, IScreenState> {
+class PropertyVisitList extends PureComponent<Props, IScreenState> {
   public state = {
     isCancelSheet: false,
     showReviewForm: false,
     reviewAsset: null,
     currentVisitId: 0,
     height: theme.viewport.height,
+  };
+
+  public componentDidMount = (): void => {
+    this.openReviewForm();
+  };
+
+  public componentDidUpdate = (prevProps: Props): void => {
+    const { visitData } = this.props;
+    if (prevProps.visitData.length <= 0 && visitData.length > 0) {
+      this.openReviewForm();
+    }
   };
 
   public render(): React.ReactNode {
@@ -199,7 +211,7 @@ class PropertyVisitList extends Component<Props, IScreenState> {
             containerStyle={styles.horizontalStyle}
           />
           {visitStatus === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
-          {visitStatus === VisitStatusType.COMPLETED && !isAssetOwner && this.renderCompletedButtons(item)}
+          {visitStatus === VisitStatusType.COMPLETED && this.renderCompletedButtons(item)}
         </View>
       </View>
     );
@@ -248,22 +260,28 @@ class PropertyVisitList extends Component<Props, IScreenState> {
     );
   };
 
-  private renderCompletedButtons = (item: AssetVisit): React.ReactElement => {
+  private renderCompletedButtons = (item: AssetVisit): React.ReactNode => {
     const { t } = this.props;
     const onPress = (): void => {
       this.setState({ reviewAsset: item, showReviewForm: true });
     };
+    const { review, isAssetOwner } = item;
+
+    if (isAssetOwner && !review) return null;
 
     return (
       <>
         <Divider containerStyles={styles.dividerStyle} />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.writeReviewButton} onPress={onPress}>
-            <Label textType="semiBold" type="regular" style={styles.writeReviewText}>
-              {t('writeReview')}
-            </Label>
-          </TouchableOpacity>
-          {/* <Rating isOverallRating value={2} /> */}
+          {item.review ? (
+            <TouchableOpacity style={styles.writeReviewButton} onPress={onPress}>
+              <Label textType="semiBold" type="regular" style={styles.writeReviewText}>
+                {t('writeReview')}
+              </Label>
+            </TouchableOpacity>
+          ) : (
+            <Rating isOverallRating value={item.review.rating} />
+          )}
         </View>
       </>
     );
@@ -454,6 +472,22 @@ class PropertyVisitList extends Component<Props, IScreenState> {
       currentVisitId: id,
     });
   };
+
+  private openReviewForm = (): void => {
+    const { reviewVisitId, visitData } = this.props;
+
+    if (!reviewVisitId || visitData.length <= 0) return;
+
+    const visits: any[] = [];
+    visitData.forEach((date) => visits.push(...date.results));
+    const visitToReview = visits.find((item: AssetVisit) => item.id === reviewVisitId);
+
+    if (!visitToReview || visitToReview.review) return;
+
+    setTimeout(() => {
+      this.setState({ reviewAsset: visitToReview, showReviewForm: true });
+    }, 500);
+  };
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyVisitList);
@@ -558,7 +592,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 12,
     backgroundColor: theme.colors.lightGrayishBlue,
-    width: 100,
+    width: 102,
   },
   writeReviewText: {
     color: theme.colors.primaryColor,
