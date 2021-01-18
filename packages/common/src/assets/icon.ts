@@ -154,6 +154,7 @@ export const icons = {
   billPamphlet: 'bill-pamphlet',
   sort: 'sort',
   reply: 'reply',
+  flag: 'flag',
 
   // COMMUTE
   train: 'train',

@@ -13,7 +13,9 @@ declare interface IScriptProps {
   url: string;
 }
 declare class Script {
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility,react/static-property-placement
   props: IScriptProps;
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility,react/static-property-placement
   context: any;
   public state: any;
   public refs: any;

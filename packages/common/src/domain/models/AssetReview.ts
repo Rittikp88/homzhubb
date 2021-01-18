@@ -46,7 +46,7 @@ export class AssetReview {
   private _reviewedBy = new User();
 
   @JsonProperty('comments', [AssetReviewComment], true)
-  private _comments = [];
+  private _comments: AssetReviewComment[] = [];
 
   @JsonProperty('pillar_ratings', [Pillar], true)
   private _pillarRatings = [];
@@ -96,6 +96,10 @@ export class AssetReview {
 
   get comments(): AssetReviewComment[] {
     return this._comments;
+  }
+
+  set comments(comments: AssetReviewComment[]) {
+    this._comments = comments;
   }
 
   get pillarRatings(): Pillar[] {

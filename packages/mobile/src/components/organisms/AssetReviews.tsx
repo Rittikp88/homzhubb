@@ -7,6 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AssetReviewCard } from '@homzhub/mobile/src/components/molecules/AssetReviewCard';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -19,11 +20,14 @@ interface IProps {
 
 const AssetReviews = (props: IProps): React.ReactElement => {
   const { saleListingId, leaseListingId } = props;
-  const [reviews, setReviews] = useState<AssetReview[]>([]);
-  const [reviewSummary, setReviewSummary] = useState<AssetReview | null>(null);
-
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-
+  const [reviews, setReviews] = useState<AssetReview[]>([]);
+  const [reportCategories, setReportCategories] = useState<Unit[]>([]);
+  const [reviewSummary, setReviewSummary] = useState<AssetReview | null>(null);
+  useEffect(() => {
+    // Make APIs here
+    getReportCategories().then();
+  }, []);
   useEffect(() => {
     if (!saleListingId && !leaseListingId) {
       return;
@@ -47,6 +51,11 @@ const AssetReviews = (props: IProps): React.ReactElement => {
     }
   }, []);
 
+  const getReportCategories = async (): Promise<void> => {
+    const response = await AssetRepository.getReviewReportCategories();
+    setReportCategories(response);
+  };
+
   if (reviews.length <= 0 && !reviewSummary) {
     return <EmptyState title={t('property:noReview')} icon={icons.reviews} />;
   }
@@ -60,15 +69,7 @@ const AssetReviews = (props: IProps): React.ReactElement => {
         </Label>
       )}
       {reviews.map((review: AssetReview) => (
-        <AssetReviewCard
-          key={review.id}
-          description={review.description}
-          reviewedAt={review.postedAt}
-          reviewedBy={review.reviewedBy}
-          isReported={review.isReported}
-          overallRating={review.rating}
-          pillars={review.pillarRatings}
-        />
+        <AssetReviewCard key={review.id} review={review} reportCategories={reportCategories} />
       ))}
     </View>
   );

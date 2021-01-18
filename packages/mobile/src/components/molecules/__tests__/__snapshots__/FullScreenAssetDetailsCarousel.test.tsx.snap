@@ -146,7 +146,11 @@ exports[`FullScreenAssetDetailsCarousel should match snapshot for renderItem for
 
 exports[`FullScreenAssetDetailsCarousel should match snapshot for renderItem for VIDEO 1`] = `
 <YoutubeVideo
+<<<<<<< HEAD
   key="0.7637882158225076"
+=======
+  key="0.6354818398273216"
+>>>>>>> 9f0e978c262011a1f57ba481a4ac45294cacd16c
   play={true}
   videoId={1}
 />
