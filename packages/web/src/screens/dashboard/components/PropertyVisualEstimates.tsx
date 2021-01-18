@@ -32,8 +32,8 @@ export interface IGeneralLedgersParams {
     startMonthIndex: number;
     endMonthIndex: number;
   };
-  selectedCountry?: number | undefined;
-  selectedProperty?: number | undefined;
+  selectedCountry?: number;
+  selectedProperty?: number;
 }
 
 interface IProps {

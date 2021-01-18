@@ -21,11 +21,11 @@ import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { DetailType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IEditPropertyFlow } from '@homzhub/common/src/modules/recordAsset/interface';
 import { AddPropertyRoutes, AddPropertySteps, IRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const { height } = theme.viewport;
 
@@ -227,7 +227,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
     }
   };
 
-  // HANDLERS START
+  // region HANDLERS START
 
   private onLayout = (e: LayoutChangeEvent, index: number): void => {
     if (!PlatformUtils.isMobile()) return;
@@ -338,7 +338,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
     }
   };
 
-  // HANDLERS END
+  // endregion HANDLERS END
 }
 
 const mapStateToProps = (state: IState): IStateProps => {

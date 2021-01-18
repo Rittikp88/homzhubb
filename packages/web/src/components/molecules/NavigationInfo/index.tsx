@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
-import { PopupActions } from 'reactjs-popup/dist/types';
+import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -52,7 +52,8 @@ const getCountryList = (assets: Asset[]): Country[] => {
     'id'
   );
 };
-const defaultDropDownProps = (width: string): any => ({
+
+const defaultDropDownProps = (width: string): PopupProps => ({
   position: 'bottom right' as 'bottom right',
   on: ['click' as 'click'],
   arrow: false,
@@ -79,7 +80,6 @@ const DashBoardActionsGrp: FC = () => {
     };
     setSelectedCurrency(defaultCurrencyOption);
   }, [userCurrency]);
-
   const currencyOptions = useCallback((): ICurrencyOption[] => {
     return countriesList.map((item) => {
       const { currencyCode, currencySymbol } = item.currencies[0];
@@ -89,7 +89,6 @@ const DashBoardActionsGrp: FC = () => {
       };
     });
   }, [countriesList]);
-
   const countryList = getCountryList(assets);
   const countryOptions = useCallback((): IPopupOptions[] => {
     const options = countryList.map((item) => ({
@@ -116,10 +115,11 @@ const DashBoardActionsGrp: FC = () => {
     dispatch(UserActions.setUserCountryCode(option.value as number));
     closePopup();
   };
-  const styles = DashBoardActionStyles;
+  const styles = dashBoardActionStyles;
   const selectedCountryIndex = countryList.findIndex((data) => data.id === selectedCountry);
   const countryImage = selectedCountry !== 0 ? countryList[selectedCountryIndex].flag : 'globe';
   const countryName = selectedCountry !== 0 ? countryList[selectedCountryIndex].name : t('common:all');
+
   return (
     <View style={[styles.buttonsGrp, isMobile && styles.buttonsGrpMobile]}>
       <Popover
@@ -206,7 +206,7 @@ export const NavigationInfo: FC = () => {
   );
 };
 
-const DashBoardActionStyles = StyleSheet.create({
+const dashBoardActionStyles = StyleSheet.create({
   buttonsGrp: {
     flexDirection: 'row',
   },

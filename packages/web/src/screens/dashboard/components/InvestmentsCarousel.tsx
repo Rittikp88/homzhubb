@@ -8,15 +8,9 @@ import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import InvestmentsCard from '@homzhub/web/src/screens/dashboard/components/InvestmentsCard';
 import { InvestmentMockData } from '@homzhub/web/src/screens/dashboard/components/InvestmentMockDetails';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-// TODO (LAKSHIT) - change dummy data with actual api data
-interface IProps {
-  // todo (LAKSHIT) - change dummy data with actual api data
-  // investmentData: PropertyInvestment[];
-  investmentData: any[];
-}
-const InvestmentsCarousel = (props: IProps): React.ReactElement => {
-  // todo (LAKSHIT) - change dummy data with actual api data
-  // const{ investmentData } = props;
+
+// todo (LAKSHIT) - change dummy data with actual api data
+const InvestmentsCarousel = (): React.ReactElement => {
   const investmentDataArray = InvestmentMockData;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
@@ -28,9 +22,6 @@ const InvestmentsCarousel = (props: IProps): React.ReactElement => {
         </Text>
       </View>
       <MultiCarousel>
-        {/* todo (LAKSHIT) - change dummy data with actual api data
-        {investmentDataArray.map((item)=>(<InvestmentsCard investmentData={item} />)) }
-         */}
         {investmentDataArray.map((item) => (
           <InvestmentsCard key={item.id} investmentData={item} />
         ))}

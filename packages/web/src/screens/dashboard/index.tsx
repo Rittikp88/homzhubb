@@ -10,7 +10,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
-import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCaraousel';
+import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCarousel';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 import PropertyUpdates from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
@@ -22,17 +22,10 @@ import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-interface IOwnProps {
-  investmentDataArray: Asset[];
-}
-
-type IProps = IOwnProps;
-
-const Dashboard: FC<IProps> = (props: IProps) => {
-  const isMobile = useUp(deviceBreakpoint.MOBILE);
+const Dashboard: FC = () => {
+  const notMobile = useUp(deviceBreakpoint.MOBILE);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
-  const { investmentDataArray } = props;
   const selectedCountry: number = useSelector(UserSelector.getUserCountryCode);
   const [pendingProperty, setPendingProperty] = useState({} as Asset[]);
   const [vacantProperty, setVacantProperty] = useState({} as Asset[]);
@@ -60,15 +53,15 @@ const Dashboard: FC<IProps> = (props: IProps) => {
       <PropertyOverview data={propertyMetrics?.assetMetrics?.miscellaneous ?? []} />
       <PropertyUpdates updatesData={propertyMetrics?.updates ?? {}} />
       <PropertyVisualsEstimates selectedCountry={selectedCountry} />
-      {isMobile ? (
-        <View style={[styles.wrapper, isMobile && styles.row]}>
+      {notMobile ? (
+        <View style={[styles.wrapper, notMobile && styles.row]}>
           <PendingPropertyAndUserSubscriptionComponent />
         </View>
       ) : (
         <PendingPropertyAndUserSubscriptionComponent />
       )}
       <VacantProperties data={vacantProperty} />
-      <InvestmentsCarousel investmentData={investmentDataArray} />
+      <InvestmentsCarousel />
       <MarketTrendsCarousel />
     </View>
   );

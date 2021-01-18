@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TextInput, TouchableOpacity, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 
@@ -8,10 +8,11 @@ export interface IProps {
   selected?: boolean;
   textValue?: string;
   placeholder?: string;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const InputWithCheckbox = (props: IProps): React.ReactElement => {
-  const { onChange, selected = false, textValue = '', placeholder } = props;
+  const { onChange, selected = false, textValue = '', placeholder, containerStyle = {} } = props;
   const [isSelected, setIsSelected] = useState(selected);
   const [text, setText] = useState(textValue);
   const ref: React.RefObject<TextInput> = useRef(null);
@@ -33,7 +34,7 @@ export const InputWithCheckbox = (props: IProps): React.ReactElement => {
   const onFocus = (): void => setIsSelected(true);
 
   return (
-    <TouchableOpacity onPress={onCheckboxToggle} style={styles.inputWithCheckbox}>
+    <TouchableOpacity onPress={onCheckboxToggle} style={[styles.inputWithCheckbox, containerStyle]}>
       <RNCheckbox containerStyle={styles.checkboxStyle} onToggle={onCheckboxToggle} selected={isSelected} />
       <TextInput
         editable

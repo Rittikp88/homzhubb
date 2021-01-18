@@ -22,10 +22,6 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 
-interface IProps {
-  handleSubmit: () => void;
-}
-
 interface IStateProps {
   assetGroups: AssetGroup[];
   isLoading: boolean;

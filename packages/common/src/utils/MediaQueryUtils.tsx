@@ -46,7 +46,7 @@ function useBetween(firstScreenSize: IDeviceScreenLimits, secondScreeSize: IDevi
 // useUp(tablet) => '@media (min-width: 768px)'
 function useUp(screenSize: IDeviceScreenLimits): boolean {
   const screenWidth = useViewPort().width;
-  return screenWidth > screenSize.down;
+  return screenWidth > screenSize.up;
 }
 
 // useDown(tablet) => '@media (max-width: 991.98px)'
@@ -56,18 +56,21 @@ function useDown(screenSize: IDeviceScreenLimits): boolean {
 }
 
 interface IWithMediaQuery {
-  // mediaQuery: (breakpoint: { down: number; up: number }) => boolean;
   isMobile: boolean;
   isTablet: boolean;
 }
 
-const withMediaQuery = <P extends IWithMediaQuery>(
+const withMediaQuery = <P extends {}>(
   WrappedComponent: React.ComponentType<P>
 ): React.ComponentType<P & IWithMediaQuery> => {
-  return (props: P & IWithMediaQuery): JSX.Element => {
-    props.isMobile = useDown(deviceBreakpoint.MOBILE);
-    props.isTablet = useDown(deviceBreakpoint.TABLET);
-    return <WrappedComponent {...props} />;
+  return (props: P): JSX.Element => {
+    return (
+      <WrappedComponent
+        isMobile={useDown(deviceBreakpoint.MOBILE)}
+        isTablet={useDown(deviceBreakpoint.TABLET)}
+        {...props}
+      />
+    );
   };
 };
 

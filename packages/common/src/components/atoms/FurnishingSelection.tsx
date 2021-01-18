@@ -2,10 +2,12 @@ import React from 'react';
 import { TouchableOpacity, View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   titleHidden?: boolean;
@@ -21,6 +23,7 @@ const FurnishingSelection = ({
   containerStyle = {},
 }: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
     <View style={[styles.furnishingContainer, containerStyle]}>
       {!titleHidden && (
@@ -35,8 +38,9 @@ const FurnishingSelection = ({
             const textStyle = StyleSheet.flatten([styles.textStyle, isSelected && styles.selectedTextStyle]);
             const buttonItemContainerStyle = StyleSheet.flatten([
               styles.item,
+              isMobile && styles.itemMobile,
               isSelected && styles.selectedContainerStyle,
-              index === 1 && { marginHorizontal: 16 },
+              index === 1 && { marginHorizontal: isMobile ? 8 : 16 },
             ]);
 
             const onPress = (): void => onFurnishingChange(type);
@@ -71,14 +75,19 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   item: {
-    flex: 1,
+    flex: undefined,
     paddingVertical: 4,
+    paddingHorizontal: 33,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
     borderWidth: 1,
     borderColor: theme.colors.disabled,
     backgroundColor: theme.colors.white,
+  },
+  itemMobile: {
+    flex: 1,
+    paddingHorizontal: undefined,
   },
   selectedContainerStyle: {
     backgroundColor: theme.colors.primaryColor,
