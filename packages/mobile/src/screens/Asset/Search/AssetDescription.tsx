@@ -44,12 +44,12 @@ import { PropertyAddress } from '@homzhub/common/src/components/molecules/Proper
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import {
   AssetDetailsImageCarousel,
-  AssetRatings,
   CollapsibleSection,
   FullScreenAssetDetailsCarousel,
   Loader,
   ShieldGroup,
 } from '@homzhub/mobile/src/components';
+import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';
 import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
 import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
@@ -61,7 +61,7 @@ import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/model
 import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 interface IStateProps {
-  reviews: AssetReview[];
+  reviews: AssetReview | null;
   assetDetails: Asset | null;
   isLoading: boolean;
   filters: IFilter;
@@ -69,7 +69,6 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  getAssetReviews: (id: number) => void;
   getAsset: (payload: IGetAssetPayload) => void;
   setChangeStack: (flag: boolean) => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
@@ -105,8 +104,6 @@ const initialState = {
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
-
-const ShowInMvpRelease = false;
 
 export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public focusListener: any;
@@ -163,14 +160,16 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private renderComponent = (): React.ReactElement | null => {
     const {
       t,
-      reviews,
       assetDetails,
+      reviews,
       route: {
         params: { isPreview },
       },
     } = this.props;
     const { isFullScreen, isScroll } = this.state;
+
     if (!assetDetails) return null;
+
     const {
       contacts: { fullName, phoneNumber, countryCode, profilePicture },
       appPermissions,
@@ -197,9 +196,21 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             {this.renderHeaderSection()}
             <PropertyDetail detail={assetDetails} />
             {this.renderMapSection()}
-            {ShowInMvpRelease && (
+            {reviews && (
               <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
-                <AssetRatings reviews={reviews} />
+                <>
+                  <AssetReviewsSummary
+                    reviewSummary={reviews}
+                    titleRequired={false}
+                    showDivider={false}
+                    sliderWidth={theme.viewport.width - theme.layout.screenPadding * 2}
+                  />
+                  {/* <TouchableOpacity onPress={this.onReadReviews}>
+                    <Label type="large" textType="semiBold" style={styles.primaryText}>
+                      {t('readReviews')}
+                    </Label>
+                  </TouchableOpacity> */}
+                </>
               </CollapsibleSection>
             )}
             {!isPreview && this.renderSimilarProperties()}
@@ -507,6 +518,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.setState({ isFullScreen: !isFullScreen });
   };
 
+  private onReadReviews = (): void => {};
+
   private onContactTypeClicked = async (type: ContactActions, phoneNumber: string, message: string): Promise<void> => {
     const { isLoggedIn, setChangeStack, navigation } = this.props;
     const sendWhatsappMessage = async (): Promise<void> => {
@@ -797,12 +810,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetReviews, getAsset, setVisitIds, getAssetVisit } = AssetActions;
+  const { getAsset, setVisitIds, getAssetVisit } = AssetActions;
   const { setChangeStack } = UserActions;
   const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
   return bindActionCreators(
     {
-      getAssetReviews,
       getAsset,
       setChangeStack,
       setAssetId,

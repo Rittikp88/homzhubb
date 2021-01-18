@@ -5,7 +5,7 @@ import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview, IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetVisit, IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
-import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const actionTypePrefix = 'Asset/';
 
@@ -30,14 +30,14 @@ export const AssetActionTypes = {
   CLEAR_ASSET: `${actionTypePrefix}CLEAR_ASSET`,
 };
 
-const getAssetReviews = (id: number): IFluxStandardAction<number> => ({
+const getAssetReviews = (payload: IGetListingReviews): IFluxStandardAction<IGetListingReviews> => ({
   type: AssetActionTypes.GET.REVIEWS,
-  payload: id,
+  payload,
 });
 
-const getAssetReviewsSuccess = (payload: AssetReview[]): IFluxStandardAction<IAssetReview[]> => ({
+const getAssetReviewsSuccess = (payload: AssetReview): IFluxStandardAction<IAssetReview> => ({
   type: AssetActionTypes.GET.REVIEWS_SUCCESS,
-  payload: ObjectMapper.serializeArray(payload),
+  payload: ObjectMapper.serialize(payload),
 });
 
 const getAssetReviewsFailure = (error: string): IFluxStandardAction => ({
@@ -99,7 +99,7 @@ const setVisitIds = (payload: number[]): IFluxStandardAction<number[]> => ({
   payload,
 });
 
-export type AssetPayloadTypes = number | IAssetReview[] | IAsset | IAssetVisit[] | number[];
+export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[];
 
 export const AssetActions = {
   clearAsset,

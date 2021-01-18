@@ -19,7 +19,7 @@ export const initialAssetState: IAssetState = {
     visits: false,
   },
   asset: null,
-  reviews: [],
+  reviews: null,
   documents: [],
   visits: [],
   visitIds: [],
@@ -33,7 +33,7 @@ export const assetReducer = (
     case AssetActionTypes.GET.REVIEWS:
       return {
         ...state,
-        ['reviews']: [],
+        ['reviews']: null,
         ['loaders']: { ...state.loaders, ['reviews']: true },
         ['error']: { ...state.error, ['reviews']: '' },
       };
@@ -41,7 +41,7 @@ export const assetReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['reviews']: false },
-        ['reviews']: action.payload as IAssetReview[],
+        ['reviews']: action.payload as IAssetReview,
       };
     case AssetActionTypes.GET.REVIEWS_FAILURE:
       return {
