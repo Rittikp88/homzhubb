@@ -24,7 +24,7 @@ interface IFormData {
   property: string[];
   category: string[];
 }
-const Form: FC = () => {
+const RecordForm: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.auth);
   const [isActiveIncome, setIsActiveIncome] = useState(true);
   const isDesktop = useDown(deviceBreakpoint.DESKTOP);
@@ -44,7 +44,6 @@ const Form: FC = () => {
   };
   const handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
     formActions.setSubmitting(true);
-    console.log(values);
   };
   const handleChangeColor = (text: string): void => {
     if (text === 'Income') {
@@ -256,4 +255,4 @@ const formStyle = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyle
     },
   });
 
-export default Form;
+export default RecordForm;

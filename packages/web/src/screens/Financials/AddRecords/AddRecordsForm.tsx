@@ -7,7 +7,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import Form from '@homzhub/web/src/screens/Financials/AddRecords/form';
+import RecordForm from '@homzhub/web/src/screens/Financials/AddRecords/RecordForm';
 
 const AddRecordsForm = (): React.ReactElement => {
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
@@ -24,7 +24,7 @@ const AddRecordsForm = (): React.ReactElement => {
       <Divider containerStyles={styles.divider} />
       <ScrollView>
         <View style={styles.formContainer}>
-          <Form />
+          <RecordForm />
         </View>
         <Divider containerStyles={styles.divider} />
         <View style={styles.actionButton}>
