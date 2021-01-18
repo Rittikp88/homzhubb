@@ -46,13 +46,14 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
 
-    if (is_referral) {
-      yield AnalyticsService.track(EventType.SignupSuccess, trackData);
-    } else {
-      yield AnalyticsService.track(EventType.LoginSuccess, trackData);
+    if (PlatformUtils.isMobile()) {
+      if (is_referral) {
+        yield AnalyticsService.track(EventType.SignupSuccess, trackData);
+      } else {
+        yield AnalyticsService.track(EventType.LoginSuccess, trackData);
+      }
+      yield AnalyticsService.setUser(userData);
     }
-    yield AnalyticsService.setUser(userData);
-
     if (!PlatformUtils.isWeb()) {
       const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
 
@@ -70,12 +71,13 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
       ...trackData,
       error,
     };
-    if (is_referral) {
-      yield AnalyticsService.track(EventType.SignupFailure, trackData);
-    } else {
-      yield AnalyticsService.track(EventType.LoginFailure, trackData);
+    if (PlatformUtils.isMobile()) {
+      if (is_referral) {
+        yield AnalyticsService.track(EventType.SignupFailure, trackData);
+      } else {
+        yield AnalyticsService.track(EventType.LoginFailure, trackData);
+      }
     }
-
     AlertHelper.error({ message: error });
     yield put(UserActions.loginFailure(error));
   }
