@@ -5,10 +5,12 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { ISocialLoginPayload, IVerifyAuthToken, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { AuthService } from '@homzhub/mobile/src/services/AuthService';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -20,8 +22,10 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { SocialAuthProvider } from '@homzhub/common/src/domain/models/SocialAuthProvider';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { SocialAuthKeys, ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IDispatchProps {
   loginSuccess: (data: IUserTokens) => void;
@@ -102,11 +106,16 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
 
   private onSocialAuthSuccess = async (userData: ISocialUserData): Promise<void> => {
     const { loginSuccess, navigation, isFromLogin } = this.props;
-    const { idToken, provider } = userData;
+    const { idToken, provider, user } = userData;
 
     const authPayload: IVerifyAuthToken = {
       provider,
       id_token: idToken,
+    };
+
+    const trackData = {
+      source: provider,
+      email: user.email,
     };
 
     try {
@@ -130,7 +139,11 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
       const tokens = { refresh_token: refreshToken, access_token: accessToken };
       loginSuccess(tokens);
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
+
+      AnalyticsService.track(EventType.LoginSuccess, trackData);
+      AnalyticsService.setUser(ObjectMapper.deserialize(User, user));
     } catch (e) {
+      AnalyticsService.track(EventType.LoginFailure, { ...trackData, error: e.message });
       AlertHelper.error({ message: e.message });
     }
   };

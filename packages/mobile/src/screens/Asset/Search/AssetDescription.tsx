@@ -11,6 +11,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -59,6 +60,7 @@ import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/do
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
   reviews: AssetReview | null;
@@ -120,13 +122,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   // TODO: Do we require a byId reducer here?
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>, snapshot?: any): void {
-    const { getAsset } = this.props;
     const {
       route: {
         params: { propertyTermId: oldPropertyTermId },
       },
     } = prevProps;
     const {
+      getAsset,
       route: {
         params: { propertyTermId: newPropertyTermId },
       },
@@ -521,11 +523,19 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private onReadReviews = (): void => {};
 
   private onContactTypeClicked = async (type: ContactActions, phoneNumber: string, message: string): Promise<void> => {
-    const { isLoggedIn, setChangeStack, navigation } = this.props;
+    const { isLoggedIn, setChangeStack, navigation, assetDetails } = this.props;
     const sendWhatsappMessage = async (): Promise<void> => {
+      AnalyticsService.track(EventType.ContactOwner, {
+        source: ContactActions.WHATSAPP,
+        property_address: assetDetails?.address ?? '',
+      });
       return await LinkingService.whatsappMessage(phoneNumber, message);
     };
     const openDialer = async (): Promise<void> => {
+      AnalyticsService.track(EventType.ContactOwner, {
+        source: ContactActions.CALL,
+        property_address: assetDetails?.address ?? '',
+      });
       return await LinkingService.openDialer(phoneNumber);
     };
     switch (type) {
@@ -560,6 +570,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { navigation, assetDetails, isLoggedIn, setChangeStack } = this.props;
 
     if (!assetDetails) return;
+    AnalyticsService.track(EventType.ContactOwner, {
+      source: ContactActions.MAIL,
+      property_address: assetDetails.address,
+    });
     if (!isLoggedIn) {
       setChangeStack(false);
       navigation.navigate(ScreensKeys.AuthStack, {

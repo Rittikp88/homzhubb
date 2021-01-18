@@ -30,6 +30,7 @@ const {
   REACT_NATIVE_APP_MODE = AppModes.DEBUG,
   REACT_NATIVE_APP_GOOGLE_WEB_CLIENT_ID,
   REACT_NATIVE_APP_GOOGLE_IOS_CLIENT_ID,
+  REACT_NATIVE_APP_MIXPANEL_KEY = 'f8e80fc3189865dd39e4e46c895ee567', // Remove once Key is update in env file
 } = Config;
 
 class ConfigHelper {
@@ -41,6 +42,7 @@ class ConfigHelper {
   private readonly razorPayApiKey: string;
   private readonly youtubeApiKey: string;
   private readonly appMode: AppModes;
+  private readonly mixpanelKey: string | undefined;
   private readonly googleWebClientId: string | undefined;
   private readonly googleIosClientId: string | undefined;
 
@@ -66,6 +68,7 @@ class ConfigHelper {
       this.appMode = REACT_NATIVE_APP_MODE as AppModes;
       this.googleWebClientId = REACT_NATIVE_APP_GOOGLE_WEB_CLIENT_ID;
       this.googleIosClientId = REACT_NATIVE_APP_GOOGLE_IOS_CLIENT_ID;
+      this.mixpanelKey = REACT_NATIVE_APP_MIXPANEL_KEY;
     }
   }
 
@@ -84,6 +87,8 @@ class ConfigHelper {
   public getYoutubeApiKey = (): string => this.youtubeApiKey;
 
   public getAppMode = (): AppModes => this.appMode;
+
+  public getMixpanelKey = (): string => this.mixpanelKey || '';
 
   public getGoogleWebClientId = (): string => this.googleWebClientId || '';
 

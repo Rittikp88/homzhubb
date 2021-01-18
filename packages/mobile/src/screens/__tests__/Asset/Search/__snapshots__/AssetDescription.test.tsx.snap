@@ -610,6 +610,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
         <Memo(AssetReviewsSummary)
           reviewSummary={Array []}
           showDivider={false}
+          sliderWidth={718}
           titleRequired={false}
         />
       </Memo(CollapsibleSection)>

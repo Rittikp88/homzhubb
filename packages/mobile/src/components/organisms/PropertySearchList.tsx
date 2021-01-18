@@ -19,7 +19,7 @@ interface IProps {
   favIds: number[];
   handleToggle: () => void;
   handleSortToggle: () => void;
-  onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
+  onSelectedProperty: (item: Asset) => void;
 }
 
 type Props = IProps & WithTranslation;
@@ -73,12 +73,12 @@ export class PropertySearchList extends React.PureComponent<Props> {
     }
 
     const navigateToAssetDescription = (): void => {
-      const { leaseTerm, saleTerm, id } = item;
+      const { leaseTerm, saleTerm } = item;
       if (leaseTerm) {
-        onSelectedProperty(leaseTerm.id, id);
+        onSelectedProperty(item);
       }
       if (saleTerm) {
-        onSelectedProperty(saleTerm.id, id);
+        onSelectedProperty(item);
       }
     };
     return (
