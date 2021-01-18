@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { Progress } from '@homzhub/mobile/src/components';
+import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
