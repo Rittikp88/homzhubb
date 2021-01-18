@@ -10,6 +10,7 @@ import { UncontrolledCheckboxGroup } from '@homzhub/common/src/components/molecu
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 
 interface IGroupedSpaceType {
   [SpaceFieldTypes.Counter]?: SpaceType[];
@@ -34,8 +35,10 @@ interface IOwnState {
   groupedSpaceTypes: IGroupedSpaceType;
 }
 
-class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
-  constructor(props: IOwnProps) {
+type IProps = IOwnProps & IWithMediaQuery;
+
+class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
@@ -44,7 +47,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
     };
   }
 
-  public static getDerivedStateFromProps(props: IOwnProps, state: IOwnState): IOwnState {
+  public static getDerivedStateFromProps(props: IProps, state: IOwnState): IOwnState {
     return {
       showMore: state.showMore,
       groupedSpaceTypes: props.spacesTypes.reduce((accumulator: any, currentSpace) => {
@@ -61,18 +64,20 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
 
   public render(): React.ReactNode {
     const { showMore, groupedSpaceTypes } = this.state;
-    const { flowType, spacesTypes, t } = this.props;
+    const { flowType, spacesTypes, isMobile, t } = this.props;
 
     const moreItems = spacesTypes.findIndex((space) => !space.isPrimary);
     if (!groupedSpaceTypes) {
       return null;
     }
 
+    const shouldRenderSwitch = isMobile && (flowType !== FlowTypes.LeaseFlow || moreItems > -1);
+
     return (
       <View style={styles.containerStyle}>
         {this.renderSpaces(true)}
 
-        {(flowType !== FlowTypes.LeaseFlow || moreItems > -1) && (
+        {shouldRenderSwitch && (
           <View style={[styles.rowStyle, styles.marginBottom]}>
             <Icon name={icons.threeDots} size={24} />
             <Text type="small" style={styles.moreText}>
@@ -82,13 +87,13 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           </View>
         )}
 
-        <View style={!showMore ? styles.displayNone : undefined}>{this.renderSpaces(false)}</View>
+        {!isMobile ? this.renderSpaces(false) : !showMore ? null : this.renderSpaces(false)}
       </View>
     );
   }
 
   private renderSpaces = (renderPrimary: boolean): React.ReactNode => {
-    const { t, flowType, isEditPropertyFlow } = this.props;
+    const { t, flowType, isEditPropertyFlow, isMobile } = this.props;
     const { groupedSpaceTypes } = this.state;
     const handleCounterChange = (count: number, id?: number): void => {
       this.handleSpacesChange(id || -1, count);
@@ -100,34 +105,46 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
 
     /* This part of the method renders Counters */
     const counterLength = groupedSpaceTypes[SpaceFieldTypes.Counter]?.length ?? 0;
-    const spaceFields = groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
-      if (space.isPrimary !== renderPrimary) {
-        return null;
-      }
+    const spaceFields = [];
+    spaceFields?.push(
+      <View style={!isMobile && styles.counterContainer}>
+        {groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
+          if (space.isPrimary !== renderPrimary) {
+            return null;
+          }
 
-      return (
-        <Counter
-          key={index}
-          containerStyles={index !== counterLength - 1 && styles.marginBottom}
-          defaultValue={space.unitCount ? space.unitCount : space.isMandatory ? 1 : 0}
-          name={{ title: space.name, id: space.id }}
-          svgImage={space.attachment && space.attachment.link}
-          onValueChange={handleCounterChange}
-          maxCount={flowType === FlowTypes.PostAssetFlow ? undefined : space.count}
-          minCount={space.isMandatory ? 1 : 0}
-          disabled={isEditPropertyFlow && space.isPrimary}
-        />
-      );
-    });
+          return (
+            <Counter
+              key={index}
+              containerStyles={[
+                styles.counter,
+                index % 3 === 0 && styles.noMarginLeft,
+                isMobile && styles.counterMobile,
+                isMobile && index !== counterLength - 1 && styles.counterLast,
+              ]}
+              defaultValue={space.unitCount ? space.unitCount : space.isMandatory ? 1 : 0}
+              name={{ title: space.name, id: space.id }}
+              svgImage={space.attachment && space.attachment.link}
+              onValueChange={handleCounterChange}
+              maxCount={flowType === FlowTypes.PostAssetFlow ? undefined : space.count}
+              minCount={space.isMandatory ? 1 : 0}
+              disabled={isEditPropertyFlow && space.isPrimary}
+            />
+          );
+        })}
+      </View>
+    );
 
     /* This part of the method renders Checkbox */
     spaceFields?.push(
-      <UncontrolledCheckboxGroup
-        key="UncontrolledCheckboxGroup"
-        containerStyle={styles.marginTop}
-        data={this.loadCheckboxData(renderPrimary)}
-        onToggle={handleCheckboxGroupToggle}
-      />
+      <View style={{}}>
+        <UncontrolledCheckboxGroup
+          key="UncontrolledCheckboxGroup"
+          containerStyle={[!isMobile && styles.uncontrolledCheckbox]}
+          data={this.loadCheckboxData(renderPrimary)}
+          onToggle={handleCheckboxGroupToggle}
+        />
+      </View>
     );
 
     /* This part of the method renders text input field with checkbox */
@@ -146,6 +163,7 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
           textValue={space.description}
           selected={!!space.unitCount}
           key={index}
+          containerStyle={[styles.checkboxInput, isMobile && styles.checkboxInputMobile]}
           onChange={handleInputWithCheckChange}
           placeholder={t('property:specifyOthersText')}
         />
@@ -200,7 +218,8 @@ class PropertySpaces extends React.PureComponent<IOwnProps, IOwnState> {
   };
 }
 
-const propertySpaces = withTranslation()(PropertySpaces);
+const translatedPropertySpaces = withTranslation()(PropertySpaces);
+const propertySpaces = withMediaQuery<any>(translatedPropertySpaces);
 export { propertySpaces as PropertySpaces };
 
 const styles = StyleSheet.create({
@@ -212,14 +231,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  checkboxInput: {
+    width: '30%',
+  },
+  checkboxInputMobile: {
+    width: undefined,
+  },
+  counterContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  counter: {
+    width: '25%',
+    marginLeft: 60,
+    marginBottom: 24,
+  },
+  counterMobile: {
+    width: undefined,
+    marginLeft: undefined,
+  },
+  counterLast: {
+    marginBottom: 24,
+  },
+  noMarginLeft: {
+    marginLeft: undefined,
+  },
   marginBottom: {
     marginBottom: 24,
   },
-  marginTop: {
+  uncontrolledCheckbox: {
+    flex: 0.16,
     marginTop: 16,
-  },
-  displayNone: {
-    display: 'none',
   },
   moreText: {
     marginStart: 12,

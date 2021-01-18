@@ -56,18 +56,21 @@ function useDown(screenSize: IDeviceScreenLimits): boolean {
 }
 
 interface IWithMediaQuery {
-  // mediaQuery: (breakpoint: { down: number; up: number }) => boolean;
   isMobile: boolean;
   isTablet: boolean;
 }
 
-const withMediaQuery = <P extends IWithMediaQuery>(
+const withMediaQuery = <P extends {}>(
   WrappedComponent: React.ComponentType<P>
 ): React.ComponentType<P & IWithMediaQuery> => {
-  return (props: P & IWithMediaQuery): JSX.Element => {
-    props.isMobile = useDown(deviceBreakpoint.MOBILE);
-    props.isTablet = useDown(deviceBreakpoint.TABLET);
-    return <WrappedComponent {...props} />;
+  return (props: P): JSX.Element => {
+    return (
+      <WrappedComponent
+        isMobile={useDown(deviceBreakpoint.MOBILE)}
+        isTablet={useDown(deviceBreakpoint.TABLET)}
+        {...props}
+      />
+    );
   };
 };
 

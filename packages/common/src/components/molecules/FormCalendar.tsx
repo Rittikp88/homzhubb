@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, TextStyle, Text as RNText } from 'react-native';
+import { StyleProp, StyleSheet, Text as RNText, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text, Label, TextFieldType, TextSizeType, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
+import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { CalendarComponent } from '@homzhub/mobile/src/components/atoms/CalendarComponent';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 
@@ -23,6 +23,7 @@ interface IFormCalendarProps extends WithTranslation {
   isMandatory?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   placeHolderStyle?: StyleProp<TextStyle>;
+  dateContainerStyle?: StyleProp<TextStyle>;
   dateStyle?: StyleProp<TextStyle>;
   textType?: TextFieldType;
   textSize?: TextSizeType;
@@ -31,9 +32,11 @@ interface IFormCalendarProps extends WithTranslation {
   minDate?: string;
   bubbleSelectedDate?: (day: string) => void;
 }
+
 interface IFormCalendarState {
   isCalendarVisible: boolean;
 }
+
 class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   public state = {
     isCalendarVisible: false,
@@ -56,6 +59,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       fontType = 'regular',
       placeHolderStyle = {},
       dateStyle = {},
+      dateContainerStyle = {},
       maxDate,
       minDate,
       isYearView = false,
@@ -81,7 +85,11 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
           {label || t('common:availableFrom')}
           {isMandatory && <RNText style={styles.asterix}> *</RNText>}
         </TextField>
-        <TouchableOpacity testID="toCalenderInput" style={styles.dateView} onPress={this.onCalendarOpen}>
+        <TouchableOpacity
+          testID="toCalenderInput"
+          style={[styles.dateView, dateContainerStyle]}
+          onPress={this.onCalendarOpen}
+        >
           <View style={styles.dateLeft}>
             {!isYearView && <Icon name={icons.calendar} color={iconColor || theme.colors.darkTint5} size={18} />}
             <Text
@@ -136,6 +144,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     this.setState({ isCalendarVisible: false });
   };
 }
+
 const styles = StyleSheet.create({
   dateView: {
     borderWidth: 1,

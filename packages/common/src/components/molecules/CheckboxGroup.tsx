@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
+import { IWithMediaQuery, withMediaQuery } from '../../utils/MediaQueryUtils';
 
 export interface ICheckboxGroupData {
   id: number | string;
@@ -17,9 +18,12 @@ export interface ICheckboxGroupProps {
   testID?: string;
 }
 
-export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> {
+type IProps = ICheckboxGroupProps & IWithMediaQuery;
+
+class CheckboxGroup extends React.PureComponent<IProps, {}> {
   public render = (): React.ReactNode => {
-    const { data, containerStyle = {} } = this.props;
+    const { data, containerStyle = {}, isMobile } = this.props;
+    const styles = checkBoxGrpStyles(isMobile);
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={styles.col}>
@@ -34,7 +38,8 @@ export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> 
 
   private renderCheckbox = (item: ICheckboxGroupData): React.ReactElement => {
     const { label, isSelected = false, isDisabled = false } = item;
-    const { onToggle, labelStyle = {}, testID } = this.props;
+    const { onToggle, labelStyle = {}, testID, isMobile } = this.props;
+    const styles = checkBoxGrpStyles(isMobile);
     const onCheckboxToggle = (): void => onToggle(item.id, !isSelected);
 
     return (
@@ -52,17 +57,31 @@ export class CheckboxGroup extends React.PureComponent<ICheckboxGroupProps, {}> 
   };
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-  col: {
-    flex: 0.5,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  checkboxContainer: {
-    marginVertical: 12,
-  },
-});
+const checkboxGroup = withMediaQuery<any>(CheckboxGroup);
+export { checkboxGroup as CheckboxGroup };
+
+interface ICheckBoxGrpStyle {
+  container: ViewStyle;
+  col: ViewStyle;
+  disabled: ViewStyle;
+  checkboxContainer: ViewStyle;
+}
+
+const checkBoxGrpStyles = (isMobile: boolean): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+    },
+    col: {
+      flex: isMobile ? 0.5 : undefined,
+      flexDirection: isMobile ? 'column' : 'row',
+      flexWrap: isMobile ? undefined : 'wrap',
+    },
+    disabled: {
+      opacity: 0.5,
+    },
+    checkboxContainer: {
+      marginRight: isMobile ? undefined : 40,
+      marginVertical: 12,
+    },
+  });

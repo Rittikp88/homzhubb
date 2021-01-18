@@ -52,7 +52,6 @@ const Avatar = (props: IProps): React.ReactElement => {
               source={{
                 uri: image,
               }}
-              /* eslint-disable-next-line react-native/no-inline-styles */
               style={{
                 ...(theme.circleCSS(imageSize) as object),
                 borderColor: theme.colors.white,

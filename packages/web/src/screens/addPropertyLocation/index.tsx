@@ -17,6 +17,7 @@ import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 const AddPropertyLocation: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const styles = AddPropertyLocationStyles;
   const { hasScriptLoaded } = useContext(AddPropertyContext);
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
@@ -106,7 +107,7 @@ const searchViewStyles = StyleSheet.create({
   },
 });
 
-const styles = StyleSheet.create({
+const AddPropertyLocationStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,

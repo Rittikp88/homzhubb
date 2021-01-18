@@ -7,7 +7,6 @@ import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -21,10 +20,6 @@ import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAsse
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-
-interface IProps {
-  handleSubmit: () => void;
-}
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -127,7 +122,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
         enableReinitialize
         initialValues={formData}
         onSubmit={this.onSubmit}
-        validate={FormUtils.validate(this.formSchema)}
+        // validate={FormUtils.validate(this.formSchema)}
         innerRef={this.formikInnerRef}
       >
         {(formProps: FormikProps<FormikValues>): React.ReactNode => {
@@ -143,7 +138,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
                 scrollRef={null}
               />
               <FormButton
-                disabled={assetGroupTypeId === -1}
+                // disabled={assetGroupTypeId === -1}
                 type="primary"
                 title={t('common:submit')}
                 containerStyle={[styles.buttonStyle]}
@@ -211,12 +206,13 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
     };
 
     formActions.setSubmitting(true);
+    // Todo (Bishal) Remove me before pr
     try {
       if (assetId > -1) {
         await AssetRepository.updateAsset(assetId, params);
       } else {
-        const response = await AssetRepository.createAsset(params);
-        setAssetId(response.id);
+        // const response = await AssetRepository.createAsset(params);
+        setAssetId(5);
       }
       onSubmitPress();
     } catch (e) {

@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -52,8 +53,10 @@ interface IOwnState {
   descriptionDropdownValues: AssetDescriptionDropdownValues | null;
 }
 
-class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
-  constructor(props: IOwnProps) {
+type IProps = IOwnProps & IWithMediaQuery;
+
+class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
+  constructor(props: IProps) {
     super(props);
     const { assetDetails } = this.props;
 
@@ -82,7 +85,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
   }
 
   public render(): ReactElement {
-    const { spaceTypes, t, isEditPropertyFlow } = this.props;
+    const { spaceTypes, t, isEditPropertyFlow, isMobile } = this.props;
     const { descriptionForm, furnishingForm, descriptionDropdownValues } = this.state;
 
     return (
@@ -117,7 +120,7 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
                 <Button
                   type="primary"
                   title={t('common:continue')}
-                  containerStyle={styles.buttonStyle}
+                  containerStyle={[styles.buttonStyle, isMobile && styles.buttonMobileStyle]}
                   onPress={(): Promise<void> => this.onSubmit(formProps.values)}
                 />
               </>
@@ -131,12 +134,12 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
   private renderFurnishingFields = (formProps: FormikProps<FormikValues>): ReactElement => {
     const { t } = this.props;
     const onFurnishingChange = (value: string): void => this.setFurnishingStatus(formProps, value);
-
     return (
       <AssetListingSection title={t('property:furnishing')} containerStyles={styles.furnishingStyle}>
         <>
           <FurnishingSelection
             titleHidden
+            containerStyle={{ flex: undefined }}
             value={formProps.values.furnishingType}
             onFurnishingChange={onFurnishingChange}
           />
@@ -249,7 +252,8 @@ class AddPropertyDetails extends React.PureComponent<IOwnProps, IOwnState> {
   };
 }
 
-const addPropertyDetails = withTranslation()(AddPropertyDetails);
+const translatedAddPropertyDetails = withTranslation()(AddPropertyDetails);
+const addPropertyDetails = withMediaQuery<any>(translatedAddPropertyDetails);
 export { addPropertyDetails as AddPropertyDetails };
 
 const styles = StyleSheet.create({
@@ -258,9 +262,17 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
+    width: '30%',
+    alignSelf: 'flex-end',
+    paddingHorizontal: 90,
     marginHorizontal: 16,
     marginTop: 16,
     marginBottom: 28,
+  },
+  buttonMobileStyle: {
+    width: undefined,
+    alignSelf: undefined,
+    paddingHorizontal: undefined,
   },
   furnishingStyle: {
     marginTop: 16,

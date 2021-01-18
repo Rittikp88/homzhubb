@@ -21,7 +21,6 @@ import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { DetailType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IEditPropertyFlow } from '@homzhub/common/src/modules/recordAsset/interface';
@@ -73,11 +72,11 @@ type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
 class AddPropertyView extends Component<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
-    const { getAssetById, getAssetGroups, previousScreen } = this.props;
+    const { getAssetById, getAssetGroups } = this.props;
 
-    if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
-      getAssetGroups();
-    }
+    // if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
+    getAssetGroups();
+    // }
 
     getAssetById();
     this.state = {
@@ -227,7 +226,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
     }
   };
 
-  // HANDLERS START
+  // region HANDLERS START
 
   private onLayout = (e: LayoutChangeEvent, index: number): void => {
     if (!PlatformUtils.isMobile()) return;
@@ -338,7 +337,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
     }
   };
 
-  // HANDLERS END
+  // endregion HANDLERS END
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
