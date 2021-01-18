@@ -5,8 +5,10 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -27,6 +29,7 @@ import {
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
   isLoading: boolean;
@@ -210,6 +213,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       };
       const loginPayload: ILoginPayload = {
         data: loginData,
+        is_referral: !!userData.signup_referral_code,
         ...(onCallback && { callback: onCallback }),
       };
       login(loginPayload);
@@ -230,6 +234,12 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       return;
     }
 
+    const trackData = {
+      source: socialUserData.provider,
+      email: socialUserData.user.email,
+      phone_number: otpSentTo,
+    };
+
     try {
       const data: User = await UserRepository.socialSignUp({
         provider: socialUserData.provider,
@@ -240,10 +250,13 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       });
 
       const tokens = { refresh_token: data.refreshToken, access_token: data.accessToken };
-
       loginSuccess(tokens);
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
+
+      AnalyticsService.track(EventType.SignupSuccess, trackData);
+      AnalyticsService.setUser(ObjectMapper.deserialize(User, socialUserData.user));
     } catch (e) {
+      AnalyticsService.track(EventType.SignupFailure, { ...trackData, error: e.message });
       AlertHelper.error({ message: e.message });
     }
   };

@@ -6,18 +6,9 @@ type TextFieldType = 'label' | 'text';
 type TextSizeType = 'small' | 'regular' | 'large';
 type FontWeightType = 'light' | 'regular' | 'semiBold' | 'bold' | 'extraBold';
 
-interface IStyle {
-  labelSmall: TextStyle;
-  labelRegular: TextStyle;
-  labelLarge: TextStyle;
-  textSmall: TextStyle;
-  textRegular: TextStyle;
-  textLarge: TextStyle;
-}
-
 interface IProps extends TextProps {
   children: string | React.ReactNode;
-  type: TextSizeType;
+  type?: TextSizeType;
   textType?: FontWeightType;
   testID?: string;
   maxLength?: number;
@@ -43,6 +34,9 @@ const fontLineHeights = {
     small: 20,
     regular: 30,
     large: 26,
+  },
+  title: {
+    regular: 41,
   },
 };
 
@@ -119,7 +113,15 @@ const fontSelection = {
   },
 };
 
-const Label = ({ type, style, children, textType, maxLength, testID, ...props }: IProps): ReactElement<RNText> => {
+const Label = ({
+  type = 'regular',
+  style,
+  children,
+  textType,
+  maxLength,
+  testID,
+  ...props
+}: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = fontSelection[textType ?? 'regular'];
   switch (type) {
@@ -146,7 +148,15 @@ const Label = ({ type, style, children, textType, maxLength, testID, ...props }:
   );
 };
 
-const Text = ({ type, style, children, textType, testID, maxLength, ...props }: IProps): ReactElement<RNText> => {
+const Text = ({
+  type = 'regular',
+  style,
+  children,
+  textType,
+  testID,
+  maxLength,
+  ...props
+}: IProps): ReactElement<RNText> => {
   let defaultStyle: object = {};
   const fontStyle: StyleProp<TextStyle> = fontSelection[textType ?? 'regular'];
   switch (type) {
@@ -173,9 +183,22 @@ const Text = ({ type, style, children, textType, testID, maxLength, ...props }: 
   );
 };
 
-export { Label, Text, fontLineHeights, TextFieldType, TextSizeType, FontWeightType };
+const Title = ({ type, style, children, textType, testID, maxLength, ...props }: IProps): ReactElement<RNText> => {
+  const slicedText =
+    maxLength && children && children.toString().length > maxLength
+      ? `${children.toString().substring(0, maxLength)}...`
+      : children;
 
-const styles: IStyle = StyleSheet.create<IStyle>({
+  return (
+    <RNText style={[styles.titleRegular, fontSelection.semiBold, style]} {...props} testID={testID}>
+      {slicedText || children}
+    </RNText>
+  );
+};
+
+export { Label, Text, Title, fontLineHeights, TextFieldType, TextSizeType, FontWeightType };
+
+const styles = StyleSheet.create({
   labelSmall: {
     fontSize: I18nService.select<number>({
       rtl: 10,
@@ -222,6 +245,14 @@ const styles: IStyle = StyleSheet.create<IStyle>({
       ltr: 24,
     }),
     lineHeight: fontLineHeights.text.large,
+    textAlign: 'left',
+  },
+  titleRegular: {
+    fontSize: I18nService.select<number>({
+      rtl: 30,
+      ltr: 30,
+    }),
+    lineHeight: fontLineHeights.title.regular,
     textAlign: 'left',
   },
 });

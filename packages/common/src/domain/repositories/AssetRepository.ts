@@ -67,7 +67,6 @@ const ENDPOINTS = {
   deletePropertyAttachment: (attachmentId: number): string => `attachments/${attachmentId}`,
   assetIdentityDocuments: (): string => 'asset-identity-documents/',
   getVerificationDocumentDetails: (): string => 'verification-document-types/',
-  getRatings: (id: number): string => `assets/${id}/ratings`,
   getLeaseListing: (propertyTermId: number): string => `lease-listings/${propertyTermId}`,
   getSaleListing: (propertyTermId: number): string => `sale-listings/${propertyTermId}`,
   getSimilarPropertiesForLease: (propertyTermId: number): string =>
@@ -95,6 +94,7 @@ const ENDPOINTS = {
   terminateTransaction: (id: number): string => `lease-transactions/${id}/terminate/`,
   closureReason: 'closure-reasons/',
   listingReviews: 'listing-reviews/',
+  listingReviewsSummary: 'listing-reviews/summary/',
 };
 
 class AssetRepository {
@@ -211,11 +211,6 @@ class AssetRepository {
   public getVerificationDocumentTypes = async (): Promise<VerificationDocumentTypes[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getVerificationDocumentDetails());
     return ObjectMapper.deserializeArray(VerificationDocumentTypes, response);
-  };
-
-  public getRatings = async (id: number): Promise<AssetReview[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.getRatings(id));
-    return ObjectMapper.deserializeArray(AssetReview, response);
   };
 
   public getLeaseListing = async (propertyTermId: number): Promise<Asset> => {
@@ -348,6 +343,11 @@ class AssetRepository {
   public getListingReviews = async (params: IGetListingReviews): Promise<AssetReview[]> => {
     const response = await this.apiClient.get(ENDPOINTS.listingReviews, params);
     return ObjectMapper.deserializeArray(AssetReview, response);
+  };
+
+  public getListingReviewsSummary = async (params: IGetListingReviews): Promise<AssetReview> => {
+    const response = await this.apiClient.get(ENDPOINTS.listingReviewsSummary, params);
+    return ObjectMapper.deserialize(AssetReview, response);
   };
 
   public postListingReview = async (params: IListingReviewParams): Promise<void> => {

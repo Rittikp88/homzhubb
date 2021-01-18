@@ -110,6 +110,7 @@ export interface IEmailLoginPayload {
 export interface ILoginPayload {
   data: IEmailLoginPayload | IOtpLoginPayload;
   callback?: () => void;
+  is_referral?: boolean;
 }
 
 export interface ISocialLogin {

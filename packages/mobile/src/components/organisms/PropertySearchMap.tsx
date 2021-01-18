@@ -27,7 +27,7 @@ interface IProps {
   searchLocation: Point;
   properties: Asset[];
   transaction_type: number;
-  onSelectedProperty: (propertyTermId: number, propertyId: number) => void;
+  onSelectedProperty: (item: Asset) => void;
   getPropertiesListView: () => void;
   setFilter: (payload: IFilter) => void;
   filters: IFilter;
@@ -126,7 +126,6 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       assetGroup: { code },
       leaseTerm,
       saleTerm,
-      id,
     } = item;
     const price = this.getPrice(item);
     const amenities = PropertyUtils.getAmenities(spaces, furnishing, code, carpetArea, carpetAreaUnit?.title ?? '');
@@ -143,10 +142,10 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
 
     const navigateToAssetDetails = (): void => {
       if (leaseTerm) {
-        onSelectedProperty(leaseTerm.id, id);
+        onSelectedProperty(item);
       }
       if (saleTerm) {
-        onSelectedProperty(saleTerm.id, id);
+        onSelectedProperty(item);
       }
     };
 

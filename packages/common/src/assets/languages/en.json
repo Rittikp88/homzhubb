@@ -54,6 +54,7 @@
     "any": "Any",
     "iAm": "I am a",
     "popularWith": "Popular With",
+    "overall": "Overall",
     "lookingFor": "You are looking for",
     "preferredTime": "Preferred time for call back",
     "message": "Message",
@@ -460,7 +461,9 @@
     "overallExperience": "How would you rate the overall experience?",
     "overallRating": "Overall Rating",
     "bestReasons": "What are the best reasons to live here?",
-    "writeComment": "Write your Comment..."
+    "writeComment": "Write your Comment...",
+    "basedOn": "Based on {{count}} reviews",
+    "noReview": "No Reviews Found"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

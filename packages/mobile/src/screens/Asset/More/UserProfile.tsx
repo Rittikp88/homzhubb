@@ -56,7 +56,6 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
   public componentDidMount(): void {
     const { navigation, getUserProfile } = this.props;
-
     if (navigation) {
       this.onFocusSubscription = navigation.addListener('focus', () => {
         getUserProfile();

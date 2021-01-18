@@ -6,7 +6,7 @@ import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 
 export interface IAssetState {
   asset: IAsset | null;
-  reviews: IAssetReview[];
+  reviews: IAssetReview | null;
   documents: AssetDocument[];
   visits: IAssetVisit[];
   visitIds: number[];

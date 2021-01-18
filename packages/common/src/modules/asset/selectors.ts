@@ -7,14 +7,14 @@ import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetVisit, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
-const getAssetReviews = (state: IState): AssetReview[] => {
+const getAssetReviews = (state: IState): AssetReview | null => {
   const {
     asset: { reviews },
   } = state;
 
-  if (reviews.length <= 0) return [];
+  if (!reviews) return null;
 
-  return ObjectMapper.deserializeArray(AssetReview, reviews);
+  return ObjectMapper.deserialize(AssetReview, reviews);
 };
 
 const getAsset = (state: IState): Asset | null => {
