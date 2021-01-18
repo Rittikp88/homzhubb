@@ -23,6 +23,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
+import { AddPropertyActionsGrp } from 'screens/addProperty';
 
 const humanize = (str: string): string => {
   const splicedStr = str.split('/');
@@ -176,6 +177,17 @@ export const NavigationInfo: FC = () => {
   const location = useLocation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
+  const renderNavInfo = (): React.ReactElement => {
+    const { protectedRoutes } = RouteNames;
+    switch (location.pathname) {
+      case protectedRoutes.ADD_PROPERTY:
+        return <AddPropertyActionsGrp />;
+      case protectedRoutes.DASHBOARD:
+        return <DashBoardActionsGrp />;
+      default:
+        return <DashBoardActionsGrp />;
+    }
+  };
   return (
     <View>
       <div className="navigation-bg" />
@@ -188,7 +200,7 @@ export const NavigationInfo: FC = () => {
             <BreadCrumbs />
           </View>
         </View>
-        <DashBoardActionsGrp />
+        {renderNavInfo()}
       </View>
     </View>
   );
