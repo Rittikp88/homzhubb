@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Progress } from '@homzhub/mobile/src/components/atoms/Progress';
+import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
 
 let props: any;
 

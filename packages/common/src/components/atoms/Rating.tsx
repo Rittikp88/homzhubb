@@ -39,9 +39,9 @@ const Rating = ({
     return theme.colors.gold;
   }, [value]);
 
-  // if (circle) {
-  //   return <Progress circle progress={value} wholeFactor={5} filledColor={ratingColor()} title={title} />;
-  // }
+  if (circle) {
+    return <Progress circle progress={value} wholeFactor={5} filledColor={ratingColor()} title={title} />;
+  }
 
   if (single) {
     return (
