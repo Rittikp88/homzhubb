@@ -202,20 +202,22 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
               <>
                 {reviews && reviews.reviewCount > 0 ? (
-                  <AssetReviewsSummary
-                    reviewSummary={reviews}
-                    titleRequired={false}
-                    showDivider={false}
-                    sliderWidth={theme.viewport.width - theme.layout.screenPadding * 2}
-                  />
-                ) : (
-                  <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
-                )}
-                {/* <TouchableOpacity onPress={this.onReadReviews}>
+                  <>
+                    <AssetReviewsSummary
+                      reviewSummary={reviews}
+                      titleRequired={false}
+                      showDivider={false}
+                      sliderWidth={theme.viewport.width - theme.layout.screenPadding * 2}
+                    />
+                    {/* <TouchableOpacity onPress={this.onReadReviews}>
                     <Label type="large" textType="semiBold" style={styles.primaryText}>
                       {t('readReviews')}
                     </Label>
                   </TouchableOpacity> */}
+                  </>
+                ) : (
+                  <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
+                )}
               </>
             </CollapsibleSection>
             {!isPreview && this.renderSimilarProperties()}

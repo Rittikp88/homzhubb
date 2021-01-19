@@ -41,8 +41,8 @@ const Progress = (props: IProgressBarProps): React.ReactElement => {
           strokeCap="round"
           showsText
           formatText={(_): React.ReactElement => (
-            <Label type="large" style={styles.circleProgress}>
-              {progress}
+            <Label type="large" style={styles.circleProgress} numberOfLines={1}>
+              {progress.toFixed(1)}
             </Label>
           )}
         />
