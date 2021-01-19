@@ -35,6 +35,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
@@ -198,23 +199,25 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             {this.renderHeaderSection()}
             <PropertyDetail detail={assetDetails} />
             {this.renderMapSection()}
-            {reviews && (
-              <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
-                <>
+            <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
+              <>
+                {reviews && reviews.reviewCount > 0 ? (
                   <AssetReviewsSummary
                     reviewSummary={reviews}
                     titleRequired={false}
                     showDivider={false}
                     sliderWidth={theme.viewport.width - theme.layout.screenPadding * 2}
                   />
-                  {/* <TouchableOpacity onPress={this.onReadReviews}>
+                ) : (
+                  <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
+                )}
+                {/* <TouchableOpacity onPress={this.onReadReviews}>
                     <Label type="large" textType="semiBold" style={styles.primaryText}>
                       {t('readReviews')}
                     </Label>
                   </TouchableOpacity> */}
-                </>
-              </CollapsibleSection>
-            )}
+              </>
+            </CollapsibleSection>
             {!isPreview && this.renderSimilarProperties()}
           </View>
         </ParallaxScrollView>

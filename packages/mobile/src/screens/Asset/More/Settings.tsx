@@ -283,7 +283,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     let message: string;
     switch (key) {
       case UserPreferencesKeys.EmailsText:
-        message = t('communicationsCautionText', { name: t('emailText') });
+        message = t('communicationsCautionText', { name: t('auth:emailText') });
         break;
       case UserPreferencesKeys.MessagesText:
         message = t('communicationsCautionText', { name: t('messagesText') });

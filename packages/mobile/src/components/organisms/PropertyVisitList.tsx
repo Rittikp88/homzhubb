@@ -280,7 +280,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
               </Label>
             </TouchableOpacity>
           ) : (
-            <Rating isOverallRating value={item.review.rating} />
+            <Rating isOverallRating value={item.review.rating ?? 0} />
           )}
         </View>
       </>

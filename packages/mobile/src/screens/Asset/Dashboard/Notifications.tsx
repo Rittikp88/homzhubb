@@ -126,10 +126,14 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       navigation.navigate(ScreensKeys.PropertyVisits, { reviewVisitId: objectId });
     } else if (type === NotificationType.PROPERTY_DETAIL || type === NotificationType.PROPERTY_PREVIEW) {
       setFilter({ asset_transaction_type: leaseListingId > 0 ? 0 : 1 });
+
       // @ts-ignore
-      navigation.navigate(ScreensKeys.PropertyAssetDescription, {
-        propertyTermId: leaseListingId > 0 ? leaseListingId : saleListingId,
-        propertyId: assetId,
+      navigation.navigate(ScreensKeys.Search, {
+        screen: ScreensKeys.PropertyAssetDescription,
+        params: {
+          propertyTermId: leaseListingId > 0 ? leaseListingId : saleListingId,
+          propertyId: assetId,
+        },
       });
     }
   };

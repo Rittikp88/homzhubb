@@ -63,7 +63,7 @@ const AssetReviewsSummary = ({
         )}
         <View style={styles.overallContainer}>
           <Title>{rating}</Title>
-          <Rating value={rating} />
+          {rating && <Rating value={rating} />}
           <Label style={styles.basedOn}>{t('property:basedOn', { count: reviewCount })}</Label>
         </View>
         <SnapCarousel
