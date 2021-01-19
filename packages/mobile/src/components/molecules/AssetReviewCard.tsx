@@ -293,7 +293,7 @@ export { memoizedComponent as AssetReviewCard };
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   review: {
     color: theme.colors.darkTint5,
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
   },
   cardDivider: {
     borderColor: theme.colors.background,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   commentStyle: {
     marginStart: 8,

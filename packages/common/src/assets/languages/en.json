@@ -473,6 +473,7 @@
     "underReviewMessage": "This comment is under review",
     "basedOn": "Based on {{count}} reviews",
     "noReview": "No Reviews Found",
+    "totalReviews": "Reviews ({{total}})",
     "noPropertyReview": "This property has not been reviewed yet"
   },
   "propertySearch": {

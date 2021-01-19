@@ -174,7 +174,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (!assetDetails) return null;
 
     const {
-      contacts: { fullName, phoneNumber, countryCode, profilePicture },
+      contacts: { phoneNumber, countryCode, profilePicture, firstName, lastName, email },
       appPermissions,
     } = assetDetails;
 
@@ -224,7 +224,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         {this.renderFullscreenCarousel()}
         {appPermissions?.addListingVisit && !isFullScreen && !isPreview && (
           <ContactPerson
-            fullName={fullName}
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
             phoneNumber={`${countryCode}${phoneNumber}`}
             designation="Owner"
             image={profilePicture}

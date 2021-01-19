@@ -3,6 +3,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -45,7 +46,7 @@ class ReportReviewForm extends React.PureComponent<IOwnProps, IOwnState> {
     const { formData } = this.state;
 
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Label type="large" style={styles.labelStyle}>
           {t('inappropriateMessage')}
         </Label>
@@ -104,7 +105,7 @@ class ReportReviewForm extends React.PureComponent<IOwnProps, IOwnState> {
             );
           }}
         </Formik>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 
@@ -155,6 +156,7 @@ export default withTranslation([namespace.property])(ReportReviewForm);
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: theme.layout.screenPadding,
+    marginBottom: 24,
   },
   textArea: {
     height: 200,

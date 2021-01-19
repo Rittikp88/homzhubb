@@ -65,7 +65,7 @@ const AssetReviews = (props: IProps): React.ReactElement => {
       {reviewSummary && <AssetReviewsSummary reviewSummary={reviewSummary} containerStyle={styles.content} />}
       {reviews.length > 0 && (
         <Label type="large" textType="semiBold" style={styles.popularWith}>
-          {t('common:popularWith')}
+          {t('totalReviews', { total: reviews.length })}
         </Label>
       )}
       {reviews.map((review: AssetReview) => (
