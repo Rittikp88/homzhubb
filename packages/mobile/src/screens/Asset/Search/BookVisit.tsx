@@ -114,7 +114,7 @@ export class BookVisit extends Component<Props, IVisitState> {
         <Header
           icon={icons.close}
           barVisible={false}
-          title={t('assetDescription:scheduleVisit')}
+          title={t('assetDescription:BookVisit')}
           type="secondary"
           onIconPress={this.goBack}
           testID="header"

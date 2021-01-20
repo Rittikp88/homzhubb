@@ -296,7 +296,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
 
-    const scheduleVisit = visitDate ? DateUtils.getDisplayDate(visitDate, 'LL') : t('bookTour');
+    const scheduleVisit = visitDate ? DateUtils.getDisplayDate(visitDate, 'LL') : t('assetDescription:BookVisit');
 
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,

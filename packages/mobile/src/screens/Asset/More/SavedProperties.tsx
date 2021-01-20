@@ -158,7 +158,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
             fontType="semiBold"
             titleStyle={styles.buttonTextStyle}
             containerStyle={styles.commonButtonStyle}
-            title={t('scheduleVisit')}
+            title={t('assetDescription:BookVisit')}
             type="primary"
             onPress={onScheduleVisitPress}
           />
