@@ -15,7 +15,6 @@ const centerDefault = {
 
 interface IProps {
   center?: ILatLng;
-  updateCenter?: (center: ILatLng) => void;
   onMapLoadCallBack?: (map: google.maps.Map) => void;
   children?: React.ReactNode;
 }

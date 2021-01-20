@@ -40,7 +40,7 @@ const PropertyDetailsMap: FC = () => {
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
       {hasScriptLoaded && (
-        <GoogleMapView center={latLng} updateCenter={handleMapCenterChange} onMapLoadCallBack={handleOnMapLoad}>
+        <GoogleMapView center={latLng} onMapLoadCallBack={handleOnMapLoad}>
           <Marker position={latLng} draggable animation={google.maps.Animation.DROP} onDragEnd={onDragEnd} />
         </GoogleMapView>
       )}
