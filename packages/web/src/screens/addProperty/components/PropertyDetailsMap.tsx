@@ -24,18 +24,13 @@ const PropertyDetailsMap: FC = () => {
       });
     }
   }, [map, latLng, hasScriptLoaded]);
-  const handleMapCenterChange = (newCenter: ILatLng): void => {
-    setUpdatedLatLng(newCenter);
-  };
 
   const handleOnMapLoad = (mapInstance: google.maps.Map): void => {
     setMap(mapInstance);
   };
   const onDragEnd = (event: google.maps.MapMouseEvent): void => {
     const newCenter = { lat: event.latLng.lat(), lng: event.latLng.lng() } as ILatLng;
-    if (handleMapCenterChange) {
-      handleMapCenterChange(newCenter);
-    }
+    setUpdatedLatLng(newCenter);
   };
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
