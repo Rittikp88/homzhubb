@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
@@ -10,6 +10,7 @@ import { Navbar, NavigationInfo } from '@homzhub/web/src/components';
 import Footer from '@homzhub/web/src/screens/appLayout/Footer';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 
 interface IProps {
   location: LocationParams;
@@ -25,18 +26,21 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const isSideMenuVisible = compareUrlsWithPathname([DASHBOARD, FINANCIALS], pathname);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const [goBackClicked, setGoBackClicked] = useState(false);
   return (
-    <View style={styles.container}>
-      <Navbar />
-      <NavigationInfo />
-      <View>
-        <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
-          {!isTablet && isSideMenuVisible && <SideMenu onItemClick={FunctionUtils.noop} />}
-          <MainRouter />
+    <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked }}>
+      <View style={styles.container}>
+        <Navbar />
+        <NavigationInfo />
+        <View>
+          <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
+            {!isTablet && isSideMenuVisible && <SideMenu onItemClick={FunctionUtils.noop} />}
+            <MainRouter />
+          </View>
+          <Footer />
         </View>
-        <Footer />
       </View>
-    </View>
+    </AppLayoutContext.Provider>
   );
 };
 

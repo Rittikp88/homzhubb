@@ -19,7 +19,7 @@ export interface IButtonProps {
   node?: React.ReactNode;
   children?: React.ReactNode;
   title?: string;
-  onPress?: (event: GestureResponderEvent) => void;
+  onPress?: (event?: GestureResponderEvent) => void;
   disabled?: boolean;
   activeOpacity?: number;
   titleStyle?: StyleProp<TextStyle>;
