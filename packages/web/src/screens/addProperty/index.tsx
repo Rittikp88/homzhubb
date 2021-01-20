@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Script from 'react-load-script';
@@ -14,6 +14,7 @@ import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropert
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 
 interface IComponentMap {
   component: AddPropertyStack;
@@ -28,10 +29,12 @@ export enum AddPropertyStack {
 export const AddPropertyActionsGrp: FC = () => {
   const { t } = useTranslation();
   const styles = AddPropertyActionStyles;
-  const { goBack } = useContext(AddPropertyContext);
-  // todo (Lakshit) if currentScreen !== AddPropertyLocationScreen
+  const { setGoBackClicked } = useContext(AppLayoutContext);
+  const onGoBackPress = (): void => {
+    setGoBackClicked(true);
+  };
   return (
-    <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={goBack}>
+    <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={onGoBackPress}>
       <Icon name={icons.dartBack} color={theme.colors.white} style={styles.buttonIconRight} />
       <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
         {t('backText')}
@@ -40,13 +43,19 @@ export const AddPropertyActionsGrp: FC = () => {
   );
 };
 const AddProperty: FC = () => {
+  const { goBackClicked, setGoBackClicked } = useContext(AppLayoutContext);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
   const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
-
+  useEffect(() => {
+    if (goBackClicked) {
+      goBack();
+      setGoBackClicked(false);
+    }
+  }, [goBackClicked]);
   const navigateScreen = (comp: AddPropertyStack): void => {
     setCurrentScreen(comp);
   };

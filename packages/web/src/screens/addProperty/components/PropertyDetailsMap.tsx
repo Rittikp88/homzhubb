@@ -1,5 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Marker } from '@react-google-maps/api';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { getPlaceDetailsFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
@@ -30,11 +31,18 @@ const PropertyDetailsMap: FC = () => {
   const handleOnMapLoad = (mapInstance: google.maps.Map): void => {
     setMap(mapInstance);
   };
-
+  const onDragEnd = (event: google.maps.MapMouseEvent): void => {
+    const newCenter = { lat: event.latLng.lat(), lng: event.latLng.lng() } as ILatLng;
+    if (handleMapCenterChange) {
+      handleMapCenterChange(newCenter);
+    }
+  };
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
       {hasScriptLoaded && (
-        <GoogleMapView center={latLng} updateCenter={handleMapCenterChange} onMapLoadCallBack={handleOnMapLoad} />
+        <GoogleMapView center={latLng} updateCenter={handleMapCenterChange} onMapLoadCallBack={handleOnMapLoad}>
+          <Marker position={latLng} draggable animation={google.maps.Animation.DROP} onDragEnd={onDragEnd} />
+        </GoogleMapView>
       )}
       <PropertyDetailsForm data={placeDetails} />
     </View>
