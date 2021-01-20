@@ -15,6 +15,8 @@
     "cancel": "Cancel",
     "gotIt": "Got It",
     "skip": "Skip",
+    "reply": "Reply",
+    "report": "Report",
     "offers": "Offers",
     "manageSubscription": "Manage Subscription",
     "location": "Location",
@@ -52,6 +54,8 @@
     "readMore": "Read More",
     "any": "Any",
     "iAm": "I am a",
+    "popularWith": "Popular With",
+    "overall": "Overall",
     "lookingFor": "You are looking for",
     "preferredTime": "Preferred time for call back",
     "message": "Message",
@@ -120,6 +124,7 @@
     "no": "No",
     "phone": "Phone",
     "email": "E-mail",
+    "mobileNumber": "Mobile Number",
     "noServicesFound": "No Services Found",
     "proceed": "Proceed",
     "minCount": "Cannot reduce beyond this",
@@ -162,7 +167,8 @@
     "terminate": "Terminate",
     "backText": "Back",
     "changePropertyText": "Change Property",
-    "wantToLeave": "Are you sure want to leave?"
+    "wantToLeave": "Are you sure want to leave?",
+    "notNow": "Not Now"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -261,6 +267,7 @@
     "city": "City",
     "state": "State",
     "country": "Country",
+    "autoDetectLocation": "Auto-Detect Location",
     "myProjectIs": "My Property is",
     "selectType": "Select your type",
     "saveLocation": "Save Location",
@@ -449,13 +456,30 @@
     "selectMoveOutDate": "Select move-out date",
     "terminationDate": "Termination Date",
     "listingCancelled": "Your property listing has been cancelled.",
-    "terminationRequest": "The {{role}} has been notified of the termination request"
+    "terminationRequest": "The {{role}} has been notified of the termination request",
+    "writeReview": "Write Review",
+    "propertyReview": "Property Review",
+    "overallExperience": "How would you rate the overall experience?",
+    "overallRating": "Overall Rating",
+    "bestReasons": "What are the best reasons to live here?",
+    "writeComment": "Write your Comment...",
+    "reportingReasonRequired": "Please specify your reason.",
+    "tellUsMore": "Tell us more",
+    "tellUsMorePlaceholder": "Type your message here...",
+    "reportComment": "Report this comment",
+    "selectYourReason": "Select your Reason",
+    "inappropriateMessage": "Do you think this is inappropriate? Please let us know!",
+    "reportSubmittedMessage": "We’ve received your request and Homzhub team will respond to it shortly",
+    "underReviewMessage": "This comment is under review",
+    "basedOn": "Based on {{count}} reviews",
+    "noReview": "No Reviews Found"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
     "findingRightProperty": "Finding the right property",
     "madeEasy": "Made Easy",
     "enterLocation": "Enter location to begin",
+    "findProperty": "Find Your Property",
     "type": "Type",
     "beds": "Beds",
     "baths": "Baths",
@@ -714,7 +738,9 @@
     "appInfo": "App info",
     "releaseNotes": "Release Notes",
     "termsConditionsText": "Terms & Conditions",
-    "privacyPolicyText": "Privacy Policy"
+    "privacyPolicyText": "Privacy Policy",
+    "dataPrivacyCautionText": "No user will be able to view your {{name}}, on the properties you post, site visits and offers.",
+    "communicationsCautionText": "You will not receive automated notifications from the app through {{name}}. However, Homzhub might still use {{name}} to communicate with you for important messages"
   },
   "moreProfile": {
     "basicDetails": "Personal Info",
@@ -753,5 +779,13 @@
   },
   "webLoader": {
     "loadingText": "Loading Application..."
+  },
+  "helpAndSupport": {
+    "FAQ": "Frequently Asked Question",
+    "general": "General",
+    "categoryName": "Category Name",
+    "caseId": "Case ID",
+    "date": "Date",
+    "status": "Status"
   }
 }

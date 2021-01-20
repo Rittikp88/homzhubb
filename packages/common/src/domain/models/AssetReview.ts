@@ -21,11 +21,11 @@ export class AssetReview {
   @JsonProperty('id', Number, true)
   private _id = 0;
 
-  @JsonProperty('rating', Number)
-  private _rating = 0;
+  @JsonProperty('rating', Number, true)
+  private _rating: number | null = null;
 
-  @JsonProperty('max_rating', Number)
-  private _maxRating = MAX_RATING;
+  @JsonProperty('max_rating', Number, true)
+  private _maxRating: number | null = MAX_RATING;
 
   @JsonProperty('lease_listing', Number, true)
   private _leaseListing: number | null = null;
@@ -62,11 +62,11 @@ export class AssetReview {
     return this._id;
   }
 
-  get rating(): number {
+  get rating(): number | null {
     return this._rating;
   }
 
-  get maxRating(): number {
+  get maxRating(): number | null {
     return this._maxRating;
   }
 

@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { AssetReviewCard } from '@homzhub/mobile/src/components/molecules/AssetReviewCard';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { icons } from '@homzhub/common/src/assets/icon';
 
 interface IProps {
   saleListingId: number | null;
@@ -56,16 +56,18 @@ const AssetReviews = (props: IProps): React.ReactElement => {
     setReportCategories(response);
   };
 
-  if (reviews.length <= 0 && !reviewSummary) {
+  if (reviews.length <= 0) {
     return <EmptyState title={t('property:noReview')} icon={icons.reviews} />;
   }
 
   return (
     <View style={styles.container}>
-      {reviewSummary && <AssetReviewsSummary reviewSummary={reviewSummary} containerStyle={styles.content} />}
+      {reviewSummary && reviewSummary?.reviewCount > 0 && (
+        <AssetReviewsSummary reviewSummary={reviewSummary} containerStyle={styles.content} />
+      )}
       {reviews.length > 0 && (
         <Label type="large" textType="semiBold" style={styles.popularWith}>
-          {t('common:popularWith')}
+          {t('totalReviews', { total: reviews.length })}
         </Label>
       )}
       {reviews.map((review: AssetReview) => (

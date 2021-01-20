@@ -10,34 +10,33 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
-  fullName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   designation: string;
   phoneNumber: string;
   image?: string;
   onContactTypeClicked: (type: ContactActions, phoneNumber: string, message: string) => void;
 }
 
-const OPTIONS = [
-  { icon: icons.whatsapp, id: ContactActions.WHATSAPP },
-  { icon: icons.phone, id: ContactActions.CALL },
-  { icon: icons.envelope, id: ContactActions.MAIL },
-];
-
 const ContactPerson = (props: IProps): React.ReactElement => {
-  const { fullName, designation, phoneNumber, onContactTypeClicked, image } = props;
+  const { firstName, lastName, email, designation, phoneNumber, onContactTypeClicked, image } = props;
+  const fullName = `${firstName} ${lastName}`;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+
+  const OPTIONS = [
+    { icon: icons.whatsapp, id: ContactActions.WHATSAPP, visible: !phoneNumber.includes('**') },
+    { icon: icons.phone, id: ContactActions.CALL, visible: !phoneNumber.includes('**') },
+    { icon: icons.envelope, id: ContactActions.MAIL, visible: !email.includes('**') },
+  ];
+
   return (
     <View style={styles.container}>
       <Avatar fullName={fullName} designation={designation} image={image} />
       <View style={styles.iconContainer}>
         {OPTIONS.map((item, index: number) => {
-          const { icon, id } = item;
-          let conditionalStyle = {};
-
-          if (index === 1) {
-            conditionalStyle = { marginHorizontal: 12 };
-          }
+          const { icon, id, visible } = item;
 
           const onPress = (): void => {
             if (id === ContactActions.CALL) {
@@ -54,17 +53,21 @@ const ContactPerson = (props: IProps): React.ReactElement => {
           };
 
           return (
-            <TouchableOpacity
-              key={id}
-              style={[
-                styles.iconButton,
-                PlatformUtils.isMobile() ? conditionalStyle : isMobile && styles.iconButtonMobile,
-              ]}
-              onPress={onPress}
-              testID="to"
-            >
-              <Icon name={icon} size={24} color={theme.colors.primaryColor} />
-            </TouchableOpacity>
+            <>
+              {visible && (
+                <TouchableOpacity
+                  key={id}
+                  style={[
+                    styles.iconButton,
+                    PlatformUtils.isMobile() ? undefined : isMobile && styles.iconButtonMobile,
+                  ]}
+                  onPress={onPress}
+                  testID="to"
+                >
+                  <Icon name={icon} size={24} color={theme.colors.primaryColor} />
+                </TouchableOpacity>
+              )}
+            </>
           );
         })}
       </View>
@@ -91,8 +94,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iconButton: {
-    marginLeft: 24,
     borderRadius: 4,
+    marginLeft: 24,
   },
   iconButtonMobile: {
     marginLeft: 12,

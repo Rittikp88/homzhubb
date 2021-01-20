@@ -1,7 +1,8 @@
 import React, { useState, useCallback, memo, useEffect } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { cloneDeep } from 'lodash';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -74,7 +75,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
         containerStyle={styles.container}
       />
       <Divider containerStyles={styles.dividerStyle} />
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false} bounces={false}>
+      <KeyboardAwareScrollView style={styles.container} showsVerticalScrollIndicator={false} bounces={false}>
         <Label type="large" textType="semiBold" style={styles.overallExperience}>
           {t('overallExperience')}
         </Label>
@@ -116,7 +117,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
             containerStyle={styles.submitButton}
           />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </>
   );
 };

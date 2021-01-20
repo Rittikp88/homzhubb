@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { CommonActions } from '@react-navigation/native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Logo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -28,11 +27,17 @@ export class DefaultLogin extends React.PureComponent<IProps> {
 
   public navigateToSignup = (): void => {
     const { navigation } = this.props;
-    navigation.dispatch(
-      CommonActions.navigate({
-        name: ScreensKeys.AuthStack,
-      })
-    );
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.AuthStack, {
+      screen: ScreensKeys.SignUp,
+      params: { onCallback: this.navigateToDashboard },
+    });
+  };
+
+  private navigateToDashboard = (): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs);
   };
 }
 

@@ -36,7 +36,7 @@ export class Pillar {
   private _name = '';
 
   @JsonProperty('max_rating', Number)
-  private _maxRating = 0;
+  private _maxRating = 5;
 
   @JsonProperty('rating', Number, true)
   private _rating = 0;

@@ -16,8 +16,6 @@ function* getAssetReviews(action: IFluxStandardAction<IGetListingReviews>) {
     const response = yield call(AssetRepository.getListingReviewsSummary, action.payload as IGetListingReviews);
     yield put(AssetActions.getAssetReviewsSuccess(response));
   } catch (err) {
-    const error = ErrorUtils.getErrorMessage(err.details);
-    AlertHelper.error({ message: error });
     yield put(AssetActions.getAssetReviewsFailure(err.message));
   }
 }
