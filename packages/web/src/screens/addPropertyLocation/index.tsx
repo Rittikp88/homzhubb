@@ -1,5 +1,5 @@
 import React, { FC, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
@@ -30,7 +30,7 @@ const AddPropertyLocation: FC = () => {
 const SearchView: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const styles = searchViewStyles;
+  const styles = searchViewStyles();
   const blurBackgroundStyle = {
     position: 'absolute' as 'absolute',
     backgroundColor: theme.colors.carouselCardOpacity,
@@ -68,44 +68,50 @@ const SearchView: FC = () => {
     </View>
   );
 };
-const searchViewStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    marginTop: '10%',
-    width: '60%',
-    height: 'fit-content',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  containerMobile: {
-    width: '90%',
-  },
-  innerContainer: {
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    alignSelf: 'stretch',
-  },
-  title: {
-    color: theme.colors.white,
-    marginVertical: 24,
-  },
-  buttonTitle: {
-    color: theme.colors.white,
-    marginLeft: 8,
-    paddingVertical: 4,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 12,
-    marginBottom: 24,
-    borderWidth: 0,
-  },
-  searchBar: {
-    alignSelf: 'stretch',
-    marginHorizontal: 24,
-  },
-});
+interface ISearchViewStyles {
+  container: ViewStyle;
+  containerMobile: ViewStyle;
+  innerContainer: ViewStyle;
+  title: ViewStyle;
+  buttonTitle: ViewStyle;
+  buttonContainer: ViewStyle;
+}
+const searchViewStyles = (): StyleSheet.NamedStyles<ISearchViewStyles> =>
+  StyleSheet.create<ISearchViewStyles>({
+    container: {
+      position: 'absolute',
+      marginTop: '10%',
+      width: '60%',
+      height: 'fit-content',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+    containerMobile: {
+      width: '90%',
+    },
+    innerContainer: {
+      marginHorizontal: 24,
+      alignSelf: 'stretch',
+    },
+    title: {
+      color: theme.colors.white,
+      marginVertical: 24,
+      textAlign: 'center',
+    },
+    buttonTitle: {
+      color: theme.colors.white,
+      marginLeft: 8,
+      paddingVertical: 4,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 12,
+      marginBottom: 24,
+      borderWidth: 0,
+    },
+  });
 
 const AddPropertyLocationStyles = StyleSheet.create({
   container: {

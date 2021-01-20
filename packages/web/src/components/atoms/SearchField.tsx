@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextInput, View, ViewStyle, LayoutChangeEvent } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -11,16 +11,17 @@ interface IProps {
   updateValue: (value: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
   testID?: string;
+  onLayoutChange?: (e: LayoutChangeEvent) => void;
 }
 
 export const SearchField: FC<IProps> = (props: IProps) => {
-  const { forwardRef, placeholder, value, containerStyle = {} } = props;
+  const { forwardRef, placeholder, value, containerStyle = {}, onLayoutChange } = props;
   const onChangeText = (changedValue: string): void => {
     const { updateValue } = props;
     updateValue(changedValue);
   };
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={[styles.container, containerStyle]} onLayout={onLayoutChange}>
       <TextInput
         ref={forwardRef}
         style={styles.textInput}
