@@ -10,8 +10,10 @@ const SalePropertyFooter = (): React.ReactElement => {
     //  TODOS LAKSHIT
   };
   const contactData = {
-    fullName: 'Jane Cooper',
     designation: 'Property Agent',
+    firstName: 'Jane',
+    lastName: 'Cooper',
+    email: 'jane@demo.com',
     phoneNumber: '',
     onContactTypeClicked,
   };
