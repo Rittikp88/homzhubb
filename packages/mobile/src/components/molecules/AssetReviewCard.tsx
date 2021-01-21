@@ -23,25 +23,27 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IAssetReviewProps {
   review: AssetReview;
-  reportCategories: Unit[];
+  reportCategories?: Unit[];
+  hideButtons?: boolean;
 }
 
 const MAX_LENGTH = 50;
 
 const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   // Local const's
-  const { review, reportCategories } = props;
+  const { review, reportCategories, hideButtons = false } = props;
   const {
     id: reviewId,
     description,
     reviewedBy,
-    postedAt: reviewedAt,
+    modifiedAt: reviewedAt,
     rating: overallRating,
     pillarRatings: pillars,
     comments,
     isReported,
   } = review;
   const comment = comments.length > 0 ? comments[0].comment : '';
+  const commentDate = comments.length > 0 ? comments[0].postedAt : undefined;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const owner = useSelector(UserSelector.getUserProfile);
 
@@ -126,7 +128,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     return (
       <View style={styles.commentStyle}>
         <Divider containerStyles={styles.divider} />
-        <Avatar fullName={owner.fullName} designation={t('owner')} rating={owner.rating} />
+        <Avatar fullName={owner.fullName} designation={t('owner')} rating={owner.rating} date={commentDate} />
         <View style={styles.replyContent}>
           <Label type="large" maxLength={!showMoreReply ? MAX_LENGTH : undefined} style={styles.review}>
             {reply}
@@ -193,7 +195,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
       >
         <ReportReviewForm
           reviewId={reviewId}
-          reportCategories={reportCategories}
+          reportCategories={reportCategories ?? []}
           onFormCancellation={disableReportForm}
           onSuccessFullSubmit={onReportFormSubmit}
         />
@@ -241,7 +243,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
             {description}
           </Label>
         )}
-        <Rating isOverallRating value={overallRating} />
+        <Rating isOverallRating value={overallRating ?? 0} />
         {showMore && (
           <View style={styles.pillarContainer}>
             {pillars.map((pillarRating, index) => {
@@ -260,10 +262,10 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
           style={[
             styles.buttonContainer,
             // eslint-disable-next-line react/prop-types,react-native/no-inline-styles
-            { justifyContent: reply || replyMode ? 'flex-end' : 'space-between' },
+            { justifyContent: reply || replyMode || hideButtons ? 'flex-end' : 'space-between' },
           ]}
         >
-          {!reply && !replyMode && renderReviewActions()}
+          {!reply && !replyMode && !hideButtons && renderReviewActions()}
           <TouchableOpacity onPress={toggleShowMore}>
             <Label type="large" textType="semiBold" style={styles.showMore}>
               {showMore ? t('showLess') : t('showMore')}
@@ -272,7 +274,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
         </View>
         {!isUnderReview && replyMode && renderTextArea()}
         {!isUnderReview && !!reply && !replyMode && renderReplyComment()}
-        {isUnderReview && (
+        {!hideButtons && isUnderReview && (
           <View style={styles.underReview}>
             <Icon name={icons.flag} size={12} color={theme.colors.alert} />
             <Label type="regular" style={styles.underReviewText}>

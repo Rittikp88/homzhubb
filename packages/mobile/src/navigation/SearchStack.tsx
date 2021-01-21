@@ -10,11 +10,13 @@ import {
 import { AuthStack, AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import AssetNeighbourhood from '@homzhub/mobile/src/screens/Asset/Search/AssetNeighbourhood';
+import { AssetReviews } from '@homzhub/mobile/src/screens/Asset/Search/AssetReviews';
 import ContactForm from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
 import AssetFilters from '@homzhub/mobile/src/screens/Asset/Search/AssetFilters';
 import AssetSearchScreen from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchScreen';
 import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import { IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export type SearchStackParamList = {
   [ScreensKeys.PropertySearchScreen]: undefined;
@@ -25,6 +27,7 @@ export type SearchStackParamList = {
   [ScreensKeys.ContactForm]: IContactProps;
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
+  [ScreensKeys.AssetReviews]: IGetListingReviews;
 };
 
 const SearchStackNavigator = createStackNavigator<SearchStackParamList>();
@@ -39,6 +42,7 @@ export const SearchStack = (): React.ReactElement => {
     >
       <SearchStackNavigator.Screen name={ScreensKeys.PropertySearchScreen} component={AssetSearchScreen} />
       <SearchStackNavigator.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
+      <SearchStackNavigator.Screen name={ScreensKeys.AssetReviews} component={AssetReviews} />
       <SearchStackNavigator.Screen name={ScreensKeys.AuthStack} component={AuthStack} />
       <SearchStackNavigator.Screen name={ScreensKeys.AssetNeighbourhood} component={AssetNeighbourhood} />
       <SearchStackNavigator.Screen name={ScreensKeys.PropertyFilters} component={AssetFilters} />

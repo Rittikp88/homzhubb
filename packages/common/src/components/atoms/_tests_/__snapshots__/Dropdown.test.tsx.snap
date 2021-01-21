@@ -21,7 +21,7 @@ exports[`Dropdown should match snapshot 1`] = `
           "borderWidth": 1,
           "flexDirection": "row",
           "paddingHorizontal": 16,
-          "paddingVertical": 8,
+          "paddingVertical": 6,
         },
         Object {},
       ]
@@ -148,7 +148,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
           "borderWidth": 1,
           "flexDirection": "row",
           "paddingHorizontal": 16,
-          "paddingVertical": 8,
+          "paddingVertical": 6,
         },
         Object {},
       ]
@@ -220,7 +220,7 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
           "borderWidth": 1,
           "flexDirection": "row",
           "paddingHorizontal": 16,
-          "paddingVertical": 8,
+          "paddingVertical": 6,
         },
         Object {},
       ]

@@ -581,7 +581,11 @@
     "scheduleVisit": "Schedule Site Visit",
     "noAmenities": "No Amenities Selected",
     "noHighlights": "No Highlights Added",
-    "noInformation": "No Information Added"
+    "noInformation": "No Information Added",
+    "customerReviews": "Customer Reviews",
+    "mostRecent": "Most Recent",
+    "positive": "Positive",
+    "critical": "Critical"
   },
   "assetDashboard": {
     "notification": "Notifications",

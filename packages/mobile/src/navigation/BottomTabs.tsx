@@ -191,6 +191,7 @@ export const BottomTabs = (): React.ReactElement => {
     const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
     const notAllowedRoutes = [
       ScreensKeys.PropertyAssetDescription,
+      ScreensKeys.AssetReviews,
       ScreensKeys.ContactForm,
       ScreensKeys.AuthStack,
       ScreensKeys.BookVisit,

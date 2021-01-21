@@ -22,10 +22,10 @@ export class AssetReview {
   private _id = 0;
 
   @JsonProperty('rating', Number, true)
-  private _rating: number | null = null;
+  private _rating = 0;
 
   @JsonProperty('max_rating', Number, true)
-  private _maxRating: number | null = MAX_RATING;
+  private _maxRating: number = MAX_RATING;
 
   @JsonProperty('lease_listing', Number, true)
   private _leaseListing: number | null = null;
@@ -41,6 +41,9 @@ export class AssetReview {
 
   @JsonProperty('posted_at', String, true)
   private _postedAt = '';
+
+  @JsonProperty('modified_at', String, true)
+  private _modifiedAt = '';
 
   @JsonProperty('reviewed_by', User, true)
   private _reviewedBy = new User();
@@ -62,11 +65,11 @@ export class AssetReview {
     return this._id;
   }
 
-  get rating(): number | null {
+  get rating(): number {
     return this._rating;
   }
 
-  get maxRating(): number | null {
+  get maxRating(): number {
     return this._maxRating;
   }
 
@@ -104,5 +107,9 @@ export class AssetReview {
 
   get pillarRatings(): Pillar[] {
     return this._pillarRatings;
+  }
+
+  get modifiedAt(): string {
+    return this._modifiedAt;
   }
 }

@@ -209,11 +209,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
                       showDivider={false}
                       sliderWidth={theme.viewport.width - theme.layout.screenPadding * 2}
                     />
-                    {/* <TouchableOpacity onPress={this.onReadReviews}>
-                    <Label type="large" textType="semiBold" style={styles.primaryText}>
-                      {t('readReviews')}
-                    </Label>
-                  </TouchableOpacity> */}
+                    <TouchableOpacity onPress={this.onReadReviews}>
+                      <Label type="large" textType="semiBold" style={styles.primaryText}>
+                        {t('readReviews')}
+                      </Label>
+                    </TouchableOpacity>
                   </>
                 ) : (
                   <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
@@ -527,7 +527,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.setState({ isFullScreen: !isFullScreen });
   };
 
-  private onReadReviews = (): void => {};
+  private onReadReviews = (): void => {
+    const {
+      navigation,
+      assetDetails: { leaseTerm, saleTerm },
+    } = this.props;
+
+    navigation.navigate(ScreensKeys.AssetReviews, {
+      ...(leaseTerm && { lease_listing: leaseTerm.id }),
+      ...(saleTerm && { sale_listing: saleTerm.id }),
+    });
+  };
 
   private onContactTypeClicked = async (type: ContactActions, phoneNumber: string, message: string): Promise<void> => {
     const { isLoggedIn, setChangeStack, navigation, assetDetails } = this.props;

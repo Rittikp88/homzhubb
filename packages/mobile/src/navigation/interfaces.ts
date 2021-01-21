@@ -86,6 +86,7 @@ export enum ScreensKeys {
   PropertySearchLanding = 'PropertySearchLanding',
   PropertySearchScreen = 'PropertySearchScreen',
   PropertyAssetDescription = 'PropertyAssetDescription',
+  AssetReviews = 'AssetReviews',
   AssetNeighbourhood = 'AssetNeighbourhood',
   PropertyFilters = 'PropertyFilters',
   ContactSignup = 'ContactSignup',
