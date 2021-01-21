@@ -30,11 +30,11 @@ import {
   IVisitByKey,
   RoleType,
   VisitActions,
-  VisitStatusType,
 } from '@homzhub/common/src/domain/models/AssetVisit';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 // CONSTANTS
 const confirmation = ['Yes', 'No'];
@@ -42,7 +42,7 @@ const confirmation = ['Yes', 'No'];
 // END CONSTANTS
 
 interface IProps {
-  visitType?: VisitStatusType;
+  visitType?: Tabs;
   visitData: IVisitByKey[];
   dropdownData?: PickerItemProps[];
   isLoading?: boolean;
@@ -53,7 +53,7 @@ interface IProps {
   handleUserView?: (id: number) => void;
   handleConfirmation?: (id: number) => void;
   handleReschedule: (id: number, userId?: number) => void;
-  handleDropdown?: (value: string | number, visitType: VisitStatusType) => void;
+  handleDropdown?: (value: string | number, visitType: Tabs) => void;
   containerStyle?: StyleProp<ViewStyle>;
   pillars?: Pillar[];
   resetData?: () => void;
@@ -104,6 +104,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     } = this.props;
     const { height } = this.state;
     const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
+
     return (
       <View onLayout={this.onLayout} style={[styles.mainView, containerStyle]}>
         {dropdownData && handleDropdown && visitType && (
@@ -129,7 +130,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
               const results = item.results as AssetVisit[];
               return (
                 <>
-                  {!isUserView && (
+                  {!isUserView && results.length > 0 && (
                     <View style={styles.dateView}>
                       <View style={styles.dividerView} />
                       <Text type="small" style={styles.horizontalStyle}>
@@ -174,8 +175,8 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     } = item;
     const { visitType, handleReschedule, isUserView, handleUserView } = this.props;
     const visitStatus = visitType ?? this.getUserVisitStatus(startDate, status);
-    const isMissed = visitStatus === VisitStatusType.MISSED;
-    const isCompleted = visitStatus === VisitStatusType.COMPLETED;
+    const isMissed = visitStatus === Tabs.MISSED;
+    const isCompleted = visitStatus === Tabs.COMPLETED;
 
     const userRole = this.getUserRole(role);
 
@@ -210,8 +211,8 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
             onPressSchedule={onReschedule}
             containerStyle={styles.horizontalStyle}
           />
-          {visitStatus === VisitStatusType.UPCOMING && this.renderUpcomingView(item)}
-          {visitStatus === VisitStatusType.COMPLETED && this.renderCompletedButtons(item)}
+          {visitStatus === Tabs.UPCOMING && this.renderUpcomingView(item)}
+          {visitStatus === Tabs.COMPLETED && this.renderCompletedButtons(item)}
         </View>
       </View>
     );
@@ -438,17 +439,17 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private getUserVisitStatus = (startDate: string, status: string): VisitStatusType => {
+  private getUserVisitStatus = (startDate: string, status: string): Tabs => {
     const formattedDate = DateUtils.getDisplayDate(startDate, DateFormats.ISO24Format);
     const currentDate = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
     const dateDiff = DateUtils.getDateDiff(formattedDate, currentDate);
     if (dateDiff > 0) {
-      return VisitStatusType.UPCOMING;
+      return Tabs.UPCOMING;
     }
     if (dateDiff < 0 && status === VisitStatus.PENDING) {
-      return VisitStatusType.MISSED;
+      return Tabs.MISSED;
     }
-    return VisitStatusType.COMPLETED;
+    return Tabs.COMPLETED;
   };
 
   private getUserRole = (role: RoleType): string => {

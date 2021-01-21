@@ -45,4 +45,6 @@ export interface ISetAssetPayload {
   listing_id: number;
   assetType: DetailType;
   dataType?: DataType;
+  lease_listing_id?: number | null;
+  sale_listing_id?: number | null;
 }

@@ -1,4 +1,5 @@
 import { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
 
 // enum START
 
@@ -15,13 +16,17 @@ export enum Tabs {
   DETAILS = 'Details',
   HIGHLIGHTS = 'Highlights',
   GALLERY = 'Gallery',
+  UPCOMING = 'Upcoming',
+  MISSED = 'Missed',
+  COMPLETED = 'Completed',
 }
 
 // enum END
 
 export interface IRoutes {
-  key: string;
+  key: Tabs;
   title: string;
+  color?: string;
 }
 
 // Property Detail Screen Tabs START
@@ -64,3 +69,13 @@ export const AddPropertyRoutes: IRoutes[] = [
 export const AddPropertySteps = [Tabs.DETAILS, Tabs.HIGHLIGHTS, Tabs.GALLERY];
 
 // Add Property Tabs END
+
+// Site Visit Tabs START
+
+export const VisitRoutes: IRoutes[] = [
+  { key: Tabs.UPCOMING, title: Tabs.UPCOMING, color: theme.colors.mediumPriority },
+  { key: Tabs.MISSED, title: Tabs.MISSED, color: theme.colors.error },
+  { key: Tabs.COMPLETED, title: Tabs.COMPLETED, color: theme.colors.green },
+];
+
+// Site Visit Tabs END

@@ -439,6 +439,7 @@ export interface IAssetVisitPayload {
   start_date__gt?: string;
   start_date__lt?: string;
   status?: VisitStatus;
+  status__in?: string;
   status__neq?: VisitStatus;
   id?: number;
 }

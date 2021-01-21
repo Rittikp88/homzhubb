@@ -396,7 +396,7 @@ export class BookVisit extends Component<Props, IVisitState> {
       ...(message && { comments: message }),
       lease_listing: params.lease_listing_id && params.lease_listing_id > 0 ? params.lease_listing_id : leaseListingId,
       sale_listing: params.sale_listing_id && params.sale_listing_id > 0 ? params.sale_listing_id : saleListingId,
-      ...(params.userId && params.userId > 0 && { scheduled_for: params.userId }),
+      ...(params && params.userId && params.userId > 0 && { scheduled_for: params.userId }),
     };
 
     const reschedulePayload: IRescheduleVisitPayload = {

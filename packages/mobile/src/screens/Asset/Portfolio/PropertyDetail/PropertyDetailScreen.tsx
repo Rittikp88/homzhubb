@@ -305,7 +305,12 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.SITE_VISITS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 4)}>
-            <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} isFromProperty />
+            <SiteVisitTab
+              onReschedule={this.navigateToBookVisit}
+              navigation={navigation}
+              isFromProperty
+              isFromTenancies={params?.isFromTenancies}
+            />
           </View>
         );
       case Tabs.FINANCIALS:
@@ -475,10 +480,13 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
-  private navigateToBookVisit = (isNew?: boolean): void => {
+  private navigateToBookVisit = (isNew?: boolean, userId?: number): void => {
     const { navigation } = this.props;
     // @ts-ignore
-    navigation.navigate(ScreensKeys.BookVisit, { isReschedule: !isNew });
+    navigation.navigate(ScreensKeys.BookVisit, {
+      isReschedule: !isNew,
+      ...(userId && { userId }),
+    });
   };
 
   private handleIndexChange = (index: number): void => {

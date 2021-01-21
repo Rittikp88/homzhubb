@@ -154,11 +154,13 @@ class PropertyUtils {
   public getAssetPayload = (info: AssetStatusInfo, id: number): ISetAssetPayload => {
     const { leaseUnitId, leaseListingId, saleListingId } = info;
     const { LEASE_UNIT, LEASE_LISTING, SALE_LISTING, ASSET } = DetailType;
-    // TODO: (Shikha) - Need to Refactor
+
     return {
       asset_id: id,
       listing_id: leaseUnitId ?? leaseListingId ?? saleListingId ?? 0,
       assetType: leaseUnitId ? LEASE_UNIT : leaseListingId ? LEASE_LISTING : saleListingId ? SALE_LISTING : ASSET,
+      lease_listing_id: leaseListingId,
+      sale_listing_id: saleListingId,
     };
   };
 }

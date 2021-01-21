@@ -4,6 +4,7 @@ import { AssetActionTypes, AssetPayloadTypes } from '@homzhub/common/src/modules
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export const initialAssetState: IAssetState = {
   error: {
@@ -23,6 +24,7 @@ export const initialAssetState: IAssetState = {
   documents: [],
   visits: [],
   visitIds: [],
+  visitType: Tabs.UPCOMING,
 };
 
 export const assetReducer = (
@@ -108,6 +110,8 @@ export const assetReducer = (
       };
     case AssetActionTypes.SET.VISIT_IDS:
       return { ...state, ['visitIds']: action.payload as number[] };
+    case AssetActionTypes.SET.VISIT_TYPE:
+      return { ...state, ['visitType']: action.payload as Tabs };
     case AssetActionTypes.CLEAR_ASSET:
       return initialAssetState;
     default:

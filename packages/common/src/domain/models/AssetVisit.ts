@@ -13,12 +13,6 @@ export enum VisitActions {
   CANCEL = 'CANCEL',
 }
 
-export enum VisitStatusType {
-  UPCOMING = 'upcoming',
-  MISSED = 'missed',
-  COMPLETED = 'completed',
-}
-
 export enum RoleType {
   PROPERTY_AGENT = 'PROPERTY_AGENT',
   TENANT = 'TENANT',

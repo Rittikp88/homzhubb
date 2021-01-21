@@ -1,11 +1,13 @@
 import { groupBy } from 'lodash';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetVisit, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 const getAssetReviews = (state: IState): AssetReview | null => {
   const {
@@ -54,10 +56,26 @@ const getAssetVisits = (state: IState): AssetVisit[] => {
 
 const getAssetVisitsByDate = (state: IState): IVisitByKey[] => {
   const {
-    asset: { visits },
+    asset: { visits, visitType },
   } = state;
   if (visits.length <= 0) return [];
   const data = ObjectMapper.deserializeArray(AssetVisit, visits);
+
+  if (visitType === Tabs.MISSED) {
+    data.forEach((item) => {
+      const formattedDate = DateUtils.getDisplayDate(item.startDate, DateFormats.ISO24Format);
+      const currentDate = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
+      const dateDiff = DateUtils.getDateDiff(formattedDate, currentDate);
+
+      if (item.status === VisitStatus.PENDING && dateDiff >= 0) {
+        data.splice(
+          data.findIndex((visit) => visit.id === item.id),
+          1
+        );
+      }
+    });
+  }
+
   const groupData = groupBy(data, (results) => {
     return DateUtils.getUtcFormattedDate(results.startDate, 'DD-MMM-YYYY');
   });

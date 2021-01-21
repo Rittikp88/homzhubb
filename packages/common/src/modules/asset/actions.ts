@@ -6,6 +6,7 @@ import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview, IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetVisit, IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 const actionTypePrefix = 'Asset/';
 
@@ -26,6 +27,7 @@ export const AssetActionTypes = {
   },
   SET: {
     VISIT_IDS: `${actionTypePrefix}VISIT_IDS`,
+    VISIT_TYPE: `${actionTypePrefix}VISIT_TYPE`,
   },
   CLEAR_ASSET: `${actionTypePrefix}CLEAR_ASSET`,
 };
@@ -99,7 +101,12 @@ const setVisitIds = (payload: number[]): IFluxStandardAction<number[]> => ({
   payload,
 });
 
-export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[];
+const setVisitType = (payload: Tabs): IFluxStandardAction<Tabs> => ({
+  type: AssetActionTypes.SET.VISIT_TYPE,
+  payload,
+});
+
+export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[] | Tabs;
 
 export const AssetActions = {
   clearAsset,
@@ -116,4 +123,5 @@ export const AssetActions = {
   getAssetVisitSuccess,
   getAssetVisitFailure,
   setVisitIds,
+  setVisitType,
 };

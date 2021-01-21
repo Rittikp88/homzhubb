@@ -7,17 +7,20 @@ import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { AnimatedProfileHeader, HeaderCard } from '@homzhub/mobile/src/components';
+import { HeaderCard } from '@homzhub/mobile/src/components';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/SiteVisitCalendarView';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
+  setVisitType: (payload: Tabs) => void;
 }
 
 interface IScreenState {
@@ -50,7 +53,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     const { t } = this.props;
     const { isCalendarView } = this.state;
     return (
-      <AnimatedProfileHeader isOuterScrollEnabled title={t('assetMore:more')}>
+      <UserScreen isOuterScrollEnabled title={t('assetMore:more')}>
         <HeaderCard
           title={t('assetMore:propertyVisits')}
           titleFontWeight="semiBold"
@@ -64,7 +67,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
           containerStyles={styles.headerContainer}
           headerStyle={styles.headerStyle}
         />
-      </AnimatedProfileHeader>
+      </UserScreen>
     );
   }
 
@@ -112,6 +115,8 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private handleCalendarPress = (): void => {
     const { isCalendarView } = this.state;
+    const { setVisitType } = this.props;
+    setVisitType(Tabs.UPCOMING);
     this.setState({
       isCalendarView: !isCalendarView,
     });
@@ -177,10 +182,11 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetVisit } = AssetActions;
+  const { getAssetVisit, setVisitType } = AssetActions;
   return bindActionCreators(
     {
       getAssetVisit,
+      setVisitType,
     },
     dispatch
   );

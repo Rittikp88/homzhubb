@@ -125,18 +125,23 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     );
   };
 
-  private renderTenancies = (tenancies: Asset[]): React.ReactElement => {
+  private renderTenancies = (tenancies: Asset[]): React.ReactElement | null => {
     const { t } = this.props;
     const { assetType } = this.state;
+    const filteredData = tenancies.filter((item) => item.assetGroup.name === assetType);
+
+    if (assetType && filteredData.length < 1) {
+      return null;
+    }
+
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('tenancies')}
         </Text>
-        {(assetType
-          ? tenancies.filter((item) => item.assetGroup.name === assetType)
-          : tenancies
-        ).map((tenancy, index) => this.renderList(tenancy, index, DataType.TENANCIES))}
+        {(assetType ? filteredData : tenancies).map((tenancy, index) =>
+          this.renderList(tenancy, index, DataType.TENANCIES)
+        )}
       </>
     );
   };

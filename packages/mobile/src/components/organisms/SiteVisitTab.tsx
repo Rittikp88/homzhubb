@@ -21,11 +21,11 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import EventWithProfile from '@homzhub/mobile/src/components/molecules/EventWithProfile';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
-import { IVisitByKey, VisitActions, VisitStatusType } from '@homzhub/common/src/domain/models/AssetVisit';
+import { IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
+  DetailType,
   IAssetVisitPayload,
   IUpdateVisitPayload,
   VisitStatus,
@@ -34,34 +34,21 @@ import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzh
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
 import { MISSED_COMPLETED_DATA, UPCOMING_DROPDOWN_DATA } from '@homzhub/common/src/constants/SiteVisit';
+import { IRoutes, Tabs, VisitRoutes } from '@homzhub/common/src/constants/Tabs';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
-
-interface IRoutes {
-  key: VisitStatusType;
-  title: string;
-  color: string;
-}
-
-const Routes: IRoutes[] = [
-  {
-    key: VisitStatusType.UPCOMING,
-    title: 'Upcoming',
-    color: theme.colors.mediumPriority,
-  },
-  { key: VisitStatusType.MISSED, title: 'Missed', color: theme.colors.error },
-  { key: VisitStatusType.COMPLETED, title: 'Completed', color: theme.colors.green },
-];
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 const { height } = theme.viewport;
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
   setVisitIds: (payload: number[]) => void;
+  setVisitType: (payload: Tabs) => void;
 }
 
 interface IStateProps {
   visits: IVisitByKey[];
-  asset: Asset | null;
+  asset: ISetAssetPayload;
   isLoading: boolean;
 }
 
@@ -71,6 +58,7 @@ type NavigationType =
 
 interface IProps {
   isFromProperty?: boolean;
+  isFromTenancies?: boolean;
   onReschedule: (isNew?: boolean, userId?: number) => void;
   selectedAssetId?: number;
   isViewChanged?: boolean;
@@ -110,7 +98,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
 
   public componentDidMount(): void {
     const { navigation, reviewVisitId } = this.props;
-    this.getRatingPillars();
+    this.getRatingPillars().then();
 
     if (navigation) {
       // @ts-ignore
@@ -122,6 +110,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     if (reviewVisitId) {
       this.setState({ currentIndex: 2 }, this.getVisitsData);
     }
+    this.getVisitsData();
   }
 
   public componentWillUnmount(): void {
@@ -165,7 +154,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
           swipeEnabled={false}
           navigationState={{
             index: statusIndex || currentIndex,
-            routes: Routes,
+            routes: VisitRoutes,
           }}
         />
         {!isEmpty(userDetail) && (
@@ -194,52 +183,52 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     let dropdownData;
 
     switch (route.key) {
-      case VisitStatusType.UPCOMING:
-        dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
+      case Tabs.UPCOMING:
+        dropdownData = this.getDropdownData(Tabs.UPCOMING);
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
             <PropertyVisitList
-              visitType={VisitStatusType.UPCOMING}
+              visitType={route.key}
               visitData={visits}
               dropdownData={dropdownData}
               dropdownValue={dropdownValue}
               isLoading={isLoading}
               handleAction={this.handleVisitActions}
-              handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.UPCOMING)}
+              handleReschedule={(id): void => this.handleRescheduleVisit(id, Tabs.UPCOMING)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
             />
           </View>
         );
-      case VisitStatusType.MISSED:
-        dropdownData = this.getDropdownData(VisitStatusType.MISSED);
+      case Tabs.MISSED:
+        dropdownData = this.getDropdownData(Tabs.MISSED);
         return (
           <View onLayout={(e): void => this.onLayout(e, 1)}>
             <PropertyVisitList
-              visitType={VisitStatusType.MISSED}
+              visitType={route.key}
               visitData={visits}
               isLoading={isLoading}
               dropdownValue={dropdownValue}
               dropdownData={dropdownData}
               handleAction={this.handleVisitActions}
-              handleReschedule={(id): void => this.handleRescheduleVisit(id, VisitStatusType.MISSED)}
+              handleReschedule={(id): void => this.handleRescheduleVisit(id, Tabs.MISSED)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
             />
           </View>
         );
-      case VisitStatusType.COMPLETED:
-        dropdownData = this.getDropdownData(VisitStatusType.COMPLETED);
+      case Tabs.COMPLETED:
+        dropdownData = this.getDropdownData(Tabs.COMPLETED);
         return (
           <View onLayout={(e): void => this.onLayout(e, 2)}>
             <PropertyVisitList
-              visitType={VisitStatusType.COMPLETED}
+              visitType={route.key}
               visitData={visits}
               isLoading={isLoading}
               dropdownValue={dropdownValue}
               dropdownData={dropdownData}
               handleAction={this.handleVisitActions}
-              handleReschedule={(id, userId): void => this.handleRescheduleVisit(id, VisitStatusType.COMPLETED, userId)}
+              handleReschedule={(id, userId): void => this.handleRescheduleVisit(id, Tabs.COMPLETED, userId)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
               pillars={pillars}
@@ -253,17 +242,17 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private onDropdownValueSelect = (startDate: string, endDate: string, visitType: VisitStatusType): void => {
+  private onDropdownValueSelect = (startDate: string, endDate: string, visitType: Tabs): void => {
     const { getAssetVisit, selectedAssetId, setVisitPayload } = this.props;
     let status;
     const start_date__lt = endDate;
     const start_date__gte = startDate;
 
     switch (visitType) {
-      case VisitStatusType.MISSED:
+      case Tabs.MISSED:
         status = VisitStatus.PENDING;
         break;
-      case VisitStatusType.COMPLETED:
+      case Tabs.COMPLETED:
         status = VisitStatus.ACCEPTED;
         break;
       default:
@@ -317,10 +306,11 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
       });
   };
 
-  private handleRescheduleVisit = (id: number, key: VisitStatusType, userId?: number): void => {
+  private handleRescheduleVisit = (id: number, key: Tabs, userId?: number): void => {
     const { onReschedule, setVisitIds } = this.props;
     setVisitIds([id]);
-    if (key === VisitStatusType.COMPLETED) {
+    console.log(key, userId);
+    if (key === Tabs.COMPLETED) {
       onReschedule(true, userId);
     } else {
       onReschedule(false);
@@ -328,7 +318,10 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
   };
 
   private handleIndexChange = (index: number): void => {
-    this.setState({ currentIndex: index }, this.getVisitsData);
+    const { setVisitType } = this.props;
+    const { key } = VisitRoutes[index];
+    setVisitType(key);
+    this.setState({ currentIndex: index, dropdownValue: 1 }, this.getVisitsData);
   };
 
   private handleVisitActions = async (visitId: number, action: VisitActions, isUserView?: boolean): Promise<void> => {
@@ -356,7 +349,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private handleDropdownSelection = (value: string | number, visitType: VisitStatusType): void => {
+  private handleDropdownSelection = (value: string | number, visitType: Tabs): void => {
     const currentDate = DateUtils.getCurrentDateISO();
     this.setState({
       dropdownValue: value as number,
@@ -365,9 +358,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     const selectedData = data.find((item) => item.value === (value as number));
     if (selectedData) {
       const fromDate =
-        visitType === VisitStatusType.UPCOMING && selectedData.startDate < currentDate
-          ? currentDate
-          : selectedData.startDate;
+        visitType === Tabs.UPCOMING && selectedData.startDate < currentDate ? currentDate : selectedData.startDate;
       this.onDropdownValueSelect(fromDate, selectedData.endDate, visitType);
     }
   };
@@ -409,15 +400,15 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     });
   };
 
-  private getDropdownData = (visitType: VisitStatusType): IDropdownObject[] => {
+  private getDropdownData = (visitType: Tabs): IDropdownObject[] => {
     const { t } = this.props;
     let results;
     switch (visitType) {
-      case VisitStatusType.UPCOMING:
+      case Tabs.UPCOMING:
         results = Object.values(UPCOMING_DROPDOWN_DATA);
         break;
-      case VisitStatusType.MISSED:
-      case VisitStatusType.COMPLETED:
+      case Tabs.MISSED:
+      case Tabs.COMPLETED:
         results = Object.values(MISSED_COMPLETED_DATA);
         break;
       default:
@@ -433,9 +424,9 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
   };
 
   private getVisitsData = (): void => {
-    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload, visitId } = this.props;
+    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload, visitId, isFromTenancies } = this.props;
     const { currentIndex, dropdownValue, isFromNav } = this.state;
-    const currentRoute = Routes[currentIndex];
+    const currentRoute = VisitRoutes[currentIndex];
     const date = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
     let dropdownData: IDropdownObject[] = [];
     let key = '';
@@ -446,24 +437,29 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     let sale_listing_id;
     let start_date_lt;
     let status;
-    let status__neq;
+
+    if(isFromTenancies) {
+      return;
+    }
+
     switch (currentRoute.key) {
-      case VisitStatusType.UPCOMING:
-        dropdownData = this.getDropdownData(VisitStatusType.UPCOMING);
-        key = VisitStatusType.UPCOMING;
+      case Tabs.UPCOMING:
+        dropdownData = this.getDropdownData(Tabs.UPCOMING);
+        key = Tabs.UPCOMING;
         start_date_gte = date;
+        status = `${VisitStatus.ACCEPTED},${VisitStatus.PENDING}`;
         break;
-      case VisitStatusType.MISSED:
-        dropdownData = this.getDropdownData(VisitStatusType.MISSED);
-        key = VisitStatusType.MISSED;
-        start_date_lte = date;
-        status = VisitStatus.PENDING;
+      case Tabs.MISSED:
+        dropdownData = this.getDropdownData(Tabs.MISSED);
+        key = Tabs.MISSED;
+        start_date_gte = date;
+        status = `${VisitStatus.REJECTED},${VisitStatus.CANCELLED},${VisitStatus.PENDING}`;
         break;
-      case VisitStatusType.COMPLETED:
-        dropdownData = this.getDropdownData(VisitStatusType.COMPLETED);
-        key = VisitStatusType.COMPLETED;
-        status__neq = VisitStatus.PENDING;
+      case Tabs.COMPLETED:
+        dropdownData = this.getDropdownData(Tabs.COMPLETED);
+        key = Tabs.COMPLETED;
         start_date_lte = date;
+        status = `${VisitStatus.ACCEPTED}`;
         break;
       default:
     }
@@ -472,9 +468,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
 
     if (selectedData) {
       start_date_gte =
-        key === (VisitStatusType.UPCOMING || VisitStatusType.MISSED) && selectedData.startDate < date
-          ? date
-          : selectedData.startDate;
+        key === (Tabs.UPCOMING || Tabs.MISSED) && selectedData.startDate < date ? date : selectedData.startDate;
       start_date_lt = selectedData.endDate;
     }
 
@@ -483,19 +477,16 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
         ...(start_date_lte && { start_date__lte: start_date_lte }),
         ...(start_date_gte && { start_date__gte: start_date_gte }),
         ...(start_date_lt && { start_date__lt: start_date_lt }),
-        ...(status && { status }),
-        ...(status__neq && { status__neq }),
+        ...(status && { status__in: status }),
       });
     }
 
-    if (isFromProperty && asset && asset.assetStatusInfo) {
-      if (!asset.assetStatusInfo.saleListingId && !asset.assetStatusInfo.leaseListingId) {
-        return;
-      }
-      if (asset.assetStatusInfo.leaseListingId) {
-        lease_listing_id = asset.assetStatusInfo.leaseListingId;
+    if (isFromProperty && asset && asset.assetType) {
+      const isLease = asset.assetType === DetailType.LEASE_UNIT || asset.assetType === DetailType.LEASE_LISTING;
+      if (isLease) {
+        lease_listing_id = asset.lease_listing_id;
       } else {
-        sale_listing_id = asset.assetStatusInfo.saleListingId;
+        sale_listing_id = asset.sale_listing_id;
       }
     }
     let payload: IAssetVisitPayload;
@@ -507,13 +498,12 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     } else {
       payload = {
         ...(start_date_lte && { start_date__lte: start_date_lte }),
-        ...(start_date_lt && { start_date__lt: start_date_lt }),
+        ...(key !== Tabs.MISSED && start_date_lt && { start_date__lt: start_date_lt }),
         ...(start_date_gte && { start_date__gte: start_date_gte }),
         ...(isFromProperty && lease_listing_id && { lease_listing_id }),
         ...(isFromProperty && sale_listing_id && { sale_listing_id }),
         ...(selectedAssetId && selectedAssetId !== 0 && { asset_id: selectedAssetId }),
-        ...(status && { status }),
-        ...(status__neq && { status__neq }),
+        ...(status && { status__in: status }),
       };
     }
 
@@ -533,16 +523,17 @@ export const mapStateToProps = (state: IState): IStateProps => {
   return {
     visits: AssetSelectors.getAssetVisitsByDate(state),
     isLoading: AssetSelectors.getVisitLoadingState(state),
-    asset: PortfolioSelectors.getAssetById(state),
+    asset: PortfolioSelectors.getCurrentAssetPayload(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetVisit, setVisitIds } = AssetActions;
+  const { getAssetVisit, setVisitIds, setVisitType } = AssetActions;
   return bindActionCreators(
     {
       getAssetVisit,
       setVisitIds,
+      setVisitType,
     },
     dispatch
   );

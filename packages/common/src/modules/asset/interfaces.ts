@@ -3,6 +3,7 @@ import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export interface IAssetState {
   asset: IAsset | null;
@@ -10,6 +11,7 @@ export interface IAssetState {
   documents: AssetDocument[];
   visits: IAssetVisit[];
   visitIds: number[];
+  visitType: Tabs;
   error: {
     asset: string;
     reviews: string;

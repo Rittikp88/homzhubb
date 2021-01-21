@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse, AxiosInstance } from 'axios';
-import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import {
   IApiInterceptor,
@@ -20,6 +21,8 @@ class Interceptor implements IApiInterceptor {
   public request = (): IApiRequestInterceptor => {
     const onFulfilled = (config: AxiosRequestConfig): AxiosRequestConfig => {
       const token = StoreProviderService.getUserToken();
+      config.headers.Timezone = TimeUtils.getTimeZone();
+
       if (!token) {
         return config;
       }
